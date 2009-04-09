@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="..\..\guichan\include\guichan\actionevent.hpp" open="1" top="0" tabpos="3">
+		<Cursor position="1233" topLine="21" />
+	</File>
+	<File name="..\..\guichan\src\actionevent.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="992" topLine="0" />
+	</File>
+	<File name="..\..\src\Core\Random.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\src\Core\main.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="3698" topLine="0" />
+	</File>
+	<File name="..\..\src\Render\ColorManager.h" open="1" top="1" tabpos="5">
+		<Cursor position="187" topLine="0" />
+	</File>
+</CodeBlocks_layout_file>

@@ -1,0 +1,4067 @@
+# depslib dependency file v1.0
+1236205228 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\actor.cpp
+	<stdafx.h>
+	<Actor.h>
+	<Timer.h>
+
+1237442130 c:\documents and settings\impaler\desktop\my engine\khazad\src\stdafx.h
+	<windows.h>
+	<stdio.h>
+	<tchar.h>
+	<assert.h>
+	<gl/gl.h>
+	<gl/glu.h>
+	<glut.h>
+	<sdl.h>
+	<SDL_opengl.h>
+	<string>
+	<vector>
+	<math.h>
+	<algorithm>
+	<functional>
+	<iostream>
+	<stdarg.h>
+	<guichan.hpp>
+	<guichan/sdl.hpp>
+	<guichan/opengl.hpp>
+	<guichan/opengl/openglsdlimageloader.hpp>
+	<enum.h>
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl.h
+	"SDL_main.h"
+	"SDL_stdinc.h"
+	"SDL_audio.h"
+	"SDL_cdrom.h"
+	"SDL_cpuinfo.h"
+	"SDL_endian.h"
+	"SDL_error.h"
+	"SDL_events.h"
+	"SDL_loadso.h"
+	"SDL_mutex.h"
+	"SDL_rwops.h"
+	"SDL_thread.h"
+	"SDL_timer.h"
+	"SDL_video.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_main.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+	"begin_code.h"
+	"close_code.h"
+
+1124613502 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_types.h
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\begin_code.h
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\close_code.h
+
+1124613502 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_getenv.h
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_error.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_rwops.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_audio.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_endian.h"
+	"SDL_mutex.h"
+	"SDL_thread.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1124613502 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_byteorder.h
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_cdrom.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_joystick.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_events.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_active.h"
+	"SDL_keyboard.h"
+	"SDL_mouse.h"
+	"SDL_joystick.h"
+	"SDL_quit.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_active.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_keyboard.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_keysym.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_keysym.h
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_mouse.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_video.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_mutex.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_quit.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_version.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_opengl.h
+	"SDL_config.h"
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<gl.h>
+	<glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<windows.h>
+	<stddef.h>
+
+1237872796 c:\documents and settings\impaler\desktop\my engine\khazad\src\actor.h
+	<stdafx.h>
+	<Vector3.h>
+	<ScreenManager.h>
+
+1235468170 c:\documents and settings\impaler\desktop\my engine\khazad\src\vector3.h
+	<stdafx.h>
+
+1236150267 c:\documents and settings\impaler\desktop\my engine\khazad\src\colormanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1234818278 c:\documents and settings\impaler\desktop\my engine\khazad\src\singleton.h
+
+1237523681 c:\documents and settings\impaler\desktop\my engine\khazad\src\screenmanager.h
+	<stdafx.h>
+	<PrimTypes.h>
+	<Singleton.h>
+
+1184996068 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1219532746 c:\documents and settings\impaler\desktop\my engine\khazad\src\primtypes.h
+
+1235510582 c:\documents and settings\impaler\desktop\my engine\khazad\src\clipimage.h
+	<stdafx.h>
+
+1235510582 c:\documents and settings\impaler\desktop\my engine\khazad\src\timer.h
+	<stdafx.h>
+	<sdl.h>
+
+1236233080 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\camera.cpp
+	<stdafx.h>
+	<Camera.h>
+	<Plane.h>
+	<ScreenManager.h>
+	<Map.h>
+
+1236145835 c:\documents and settings\impaler\desktop\my engine\khazad\src\camera.h
+	<stdafx.h>
+	<Plane.h>
+
+1235511147 c:\documents and settings\impaler\desktop\my engine\khazad\src\plane.h
+	<stdafx.h>
+	<Vector3.h>
+
+1236463221 c:\documents and settings\impaler\desktop\my engine\khazad\src\map.h
+	<Singleton.h>
+	<stdafx.h>
+
+1237872674 c:\documents and settings\impaler\desktop\my engine\khazad\src\cell.h
+	<stdafx.h>
+	<Actor.h>
+
+1236408851 c:\documents and settings\impaler\desktop\my engine\khazad\src\cube.h
+	<stdafx.h>
+	<Actor.h>
+
+1236404917 c:\documents and settings\impaler\desktop\my engine\khazad\src\face.h
+	<stdafx.h>
+	<Actor.h>
+	<Cube.h>
+
+1237872674 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\cell.cpp
+	<stdafx.h>
+	<Cell.h>
+	<Cube.h>
+	<ConfigManager.h>
+	<Random.h>
+	<Game.h>
+
+1236070059 c:\documents and settings\impaler\desktop\my engine\khazad\src\configmanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1236070425 c:\documents and settings\impaler\desktop\my engine\khazad\src\random.h
+	<stdafx.h>
+	<cstdlib>
+	<ctime>
+	<Singleton.h>
+
+1236204795 c:\documents and settings\impaler\desktop\my engine\khazad\src\game.h
+	<stdafx.h>
+	<Singleton.h>
+	<Actor.h>
+
+1236065424 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\clipimage.cpp
+	<stdafx.h>
+	<ClipImage.h>
+	<ImagePage.h>
+
+1234818278 c:\documents and settings\impaler\desktop\my engine\khazad\src\imagepage.h
+	<stdafx.h>
+	<SDL_image.h>
+
+1235712263 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\colormanager.cpp
+	<ColorManager.h>
+	<Singleton.h>
+	<XMLManager.h>
+
+1235556021 c:\documents and settings\impaler\desktop\my engine\khazad\src\xmlmanager.h
+	<stdafx.h>
+	<Singleton.h>
+	<tinystr.h>
+	<tinyxml.h>
+
+1178491284 c:\documents and settings\impaler\desktop\my engine\khazad\src\tinystr.h
+	<assert.h>
+	<string.h>
+
+1178491284 c:\documents and settings\impaler\desktop\my engine\khazad\src\tinyxml.h
+	<ctype.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<string>
+	<iostream>
+	<sstream>
+	"tinystr.h"
+
+1235712263 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\configmanager.cpp
+	<ConfigManager.h>
+	<Singleton.h>
+	<XMLManager.h>
+
+1236849116 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\cube.cpp
+	<stdafx.h>
+	<Game.h>
+	<Camera.h>
+	<ScreenManager.h>
+	<Cube.h>
+	<Map.h>
+	<Face.h>
+	<Slope.h>
+
+1235712264 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\datamanager.cpp
+	<DataManager.h>
+	<Singleton.h>
+	<XMLManager.h>
+
+1235556021 c:\documents and settings\impaler\desktop\my engine\khazad\src\datamanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1219823562 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\doublevector.cpp
+
+1237869741 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\face.cpp
+	<stdafx.h>
+	<Cube.h>
+	<Face.h>
+	<Game.h>
+	<TextureManager.h>
+	<ScreenManager.h>
+
+1237277299 c:\documents and settings\impaler\desktop\my engine\khazad\src\texturemanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1237795655 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\fontmanager.cpp
+	<stdafx.h>
+	<SDL_ttf.h>
+	<FontManager.h>
+	<Singleton.h>
+
+1185039004 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_ttf.h
+	"SDL.h"
+	"begin_code.h"
+	"close_code.h"
+
+1237795411 c:\documents and settings\impaler\desktop\my engine\khazad\src\fontmanager.h
+	<SDL_ttf.h>
+	<stdafx.h>
+	<Singleton.h>
+
+1237873237 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\game.cpp
+	<stdafx.h>
+	<Game.h>
+	<Singleton.h>
+	<Pawn.h>
+	<Vector3.h>
+	<TextureManager.h>
+
+1236065559 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\imagemanager.cpp
+	<stdafx.h>
+	<ImagePage.h>
+	<ClipImage.h>
+	<ImageManager.h>
+
+1236070311 c:\documents and settings\impaler\desktop\my engine\khazad\src\imagemanager.h
+	<stdafx.h>
+	<SDL_image.h>
+
+1236065633 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\imagepage.cpp
+	<stdafx.h>
+	<ImagePage.h>
+
+1237522357 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\inputmanager.cpp
+	<stdafx.h>
+	<Game.h>
+	<InputManager.h>
+	<ScreenManager.h>
+	<Camera.h>
+	<Singleton.h>
+	<Cube.h>
+
+1236070311 c:\documents and settings\impaler\desktop\my engine\khazad\src\inputmanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1237445073 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\map.cpp
+	<stdafx.h>
+	<Map.h>
+	<Singleton.h>
+	<ConfigManager.h>
+	<Cube.h>
+	<Cell.h>
+	<Random.h>
+
+1236065633 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\plane.cpp
+	<stdafx.h>
+	<Plane.h>
+
+1235806485 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\random.cpp
+	<Singleton.h>
+	<Random.h>
+
+1238010540 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\screenmanager.cpp
+	<stdafx.h>
+	<ScreenManager.h>
+	<Singleton.h>
+	<ImagePage.h>
+	<ClipImage.h>
+	<Camera.h>
+	<ConfigManager.h>
+	<FontManager.h>
+	<ColorManager.h>
+	<TextureManager.h>
+	<Game.h>
+	<Map.h>
+	<Cell.h>
+	<Gui.h>
+
+1237277299 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\texturemanager.cpp
+	<stdafx.h>
+	<ImagePage.h>
+	<ClipImage.h>
+	<TextureManager.h>
+
+1236065823 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\timer.cpp
+	<stdafx.h>
+	<Timer.h>
+
+1133414966 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\vector2.cpp
+
+1236065823 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\vector3.cpp
+	<stdafx.h>
+	<Vector3.h>
+
+1236065823 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\xmlmanager.cpp
+	<stdafx.h>
+	<XMLManager.h>
+	<tinystr.h>
+	<tinyxml.h>
+
+1237870865 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\main.cpp
+	<stdafx.h>
+	<Timer.h>
+	<TextureManager.h>
+	<FontManager.h>
+	<ColorManager.h>
+	<XMLManager.h>
+	<Random.h>
+	<ScreenManager.h>
+	<ConfigManager.h>
+	<DataManager.h>
+	<InputManager.h>
+	<Game.h>
+	<Map.h>
+	<Gui.h>
+
+1178491284 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\tinystr.cpp
+	"tinystr.h"
+
+1178491284 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\tinyxml.cpp
+	<ctype.h>
+	<sstream>
+	<iostream>
+	"tinyxml.h"
+
+1178491284 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\tinyxmlerror.cpp
+	"tinyxml.h"
+
+1178491284 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\tinyxmlparser.cpp
+	<ctype.h>
+	<stddef.h>
+	"tinyxml.h"
+	<windows.h>
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_stdinc.h
+	"SDL_config.h"
+	<sys/types.h>
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdarg.h>
+	<stdlib.h>
+	<malloc.h>
+	<stddef.h>
+	<stdarg.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<inttypes.h>
+	<stdint.h>
+	<ctype.h>
+	<iconv.h>
+	"begin_code.h"
+	<alloca.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_config.h
+	"SDL_platform.h"
+	<stdarg.h>
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_platform.h
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_endian.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_thread.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_mutex.h"
+	"begin_code.h"
+	<process.h>
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_cpuinfo.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\my engine\khazad\include\sdl_loadso.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1236926967 c:\documents and settings\impaler\desktop\my engine\khazad\src\enum.h
+
+1236233080 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\pawn.cpp
+	<stdafx.h>
+	<Pawn.h>
+	<Random.h>
+	<ScreenManager.h>
+	<Game.h>
+	<Map.h>
+	<Cube.h>
+
+1236141136 c:\documents and settings\impaler\desktop\my engine\khazad\src\pawn.h
+	<stdafx.h>
+	<Actor.h>
+
+1236405116 c:\documents and settings\impaler\desktop\my engine\khazad\src\slope.h
+	<stdafx.h>
+	<Actor.h>
+
+1237868030 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\slope.cpp
+	<stdafx.h>
+	<Slope.h>
+	<Cube.h>
+	<Game.h>
+	<TextureManager.h>
+	<ScreenManager.h>
+
+1237278855 c:\documents and settings\impaler\desktop\my engine\khazad\include\glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1200863990 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan.hpp
+	<guichan/actionevent.hpp>
+	<guichan/actionlistener.hpp>
+	<guichan/cliprectangle.hpp>
+	<guichan/color.hpp>
+	<guichan/deathlistener.hpp>
+	<guichan/event.hpp>
+	<guichan/exception.hpp>
+	<guichan/focushandler.hpp>
+	<guichan/focuslistener.hpp>
+	<guichan/font.hpp>
+	<guichan/genericinput.hpp>
+	<guichan/graphics.hpp>
+	<guichan/gui.hpp>
+	<guichan/image.hpp>
+	<guichan/imagefont.hpp>
+	<guichan/imageloader.hpp>
+	<guichan/input.hpp>
+	<guichan/inputevent.hpp>
+	<guichan/key.hpp>
+	<guichan/keyevent.hpp>
+	<guichan/keyinput.hpp>
+	<guichan/keylistener.hpp>
+	<guichan/listmodel.hpp>
+	<guichan/mouseevent.hpp>
+	<guichan/mouseinput.hpp>
+	<guichan/mouselistener.hpp>
+	<guichan/rectangle.hpp>
+	<guichan/selectionevent.hpp>
+	<guichan/selectionlistener.hpp>
+	<guichan/widget.hpp>
+	<guichan/widgetlistener.hpp>
+	<guichan/widgets/button.hpp>
+	<guichan/widgets/checkbox.hpp>
+	<guichan/widgets/container.hpp>
+	<guichan/widgets/dropdown.hpp>
+	<guichan/widgets/icon.hpp>
+	<guichan/widgets/imagebutton.hpp>
+	<guichan/widgets/label.hpp>
+	<guichan/widgets/listbox.hpp>
+	<guichan/widgets/scrollarea.hpp>
+	<guichan/widgets/slider.hpp>
+	<guichan/widgets/radiobutton.hpp>
+	<guichan/widgets/tab.hpp>
+	<guichan/widgets/tabbedarea.hpp>
+	<guichan/widgets/textbox.hpp>
+	<guichan/widgets/textfield.hpp>
+	<guichan/widgets/window.hpp>
+	"guichan/platform.hpp"
+
+1200865585 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\platform.hpp
+
+1200865618 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\sdl.hpp
+	<guichan/sdl/sdlgraphics.hpp>
+	<guichan/sdl/sdlimage.hpp>
+	<guichan/sdl/sdlimageloader.hpp>
+	<guichan/sdl/sdlinput.hpp>
+	"platform.hpp"
+
+1200865539 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\opengl.hpp
+	<guichan/opengl/openglgraphics.hpp>
+	<guichan/opengl/openglimage.hpp>
+	"guichan/platform.hpp"
+
+1200865147 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\actionevent.hpp
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+	<string>
+
+1200865312 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\event.hpp
+	"guichan/platform.hpp"
+
+1200865160 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\actionlistener.hpp
+	<string>
+	"guichan/actionevent.hpp"
+	"guichan/platform.hpp"
+
+1200865299 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\cliprectangle.hpp
+	"guichan/rectangle.hpp"
+	"guichan/platform.hpp"
+
+1201946842 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\rectangle.hpp
+	"guichan/platform.hpp"
+	<iostream>
+
+1201946842 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\color.hpp
+	"guichan/platform.hpp"
+	<iostream>
+
+1200865306 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\deathlistener.hpp
+	<string>
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865316 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\exception.hpp
+	<string>
+	"guichan/platform.hpp"
+
+1200865320 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\focushandler.hpp
+	<vector>
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865324 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\focuslistener.hpp
+	<string>
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865327 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\font.hpp
+	<string>
+	"guichan/platform.hpp"
+
+1200865331 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\genericinput.hpp
+	<queue>
+	"guichan/input.hpp"
+	"guichan/keyinput.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/platform.hpp"
+
+1200865421 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\input.hpp
+	"guichan/platform.hpp"
+
+1200865431 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\keyinput.hpp
+	"guichan/key.hpp"
+	"guichan/platform.hpp"
+
+1208002809 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\key.hpp
+	"guichan/platform.hpp"
+
+1200865445 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\mouseinput.hpp
+	"guichan/platform.hpp"
+
+1200865372 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\graphics.hpp
+	<iosfwd>
+	<stack>
+	"guichan/cliprectangle.hpp"
+	"guichan/platform.hpp"
+
+1200865376 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\gui.hpp
+	<list>
+	<deque>
+	"guichan/keyevent.hpp"
+	"guichan/mouseevent.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/platform.hpp"
+
+1200865429 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\keyevent.hpp
+	"guichan/inputevent.hpp"
+	"guichan/key.hpp"
+	"guichan/platform.hpp"
+
+1200865424 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\inputevent.hpp
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865442 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\mouseevent.hpp
+	"guichan/inputevent.hpp"
+	"guichan/platform.hpp"
+
+1200865410 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\image.hpp
+	<string>
+	"guichan/platform.hpp"
+
+1207470398 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\imagefont.hpp
+	<string>
+	"guichan/font.hpp"
+	"guichan/platform.hpp"
+	"guichan/rectangle.hpp"
+
+1200865418 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\imageloader.hpp
+	<iosfwd>
+	"guichan/platform.hpp"
+
+1200865437 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\keylistener.hpp
+	"guichan/keyevent.hpp"
+	"guichan/platform.hpp"
+
+1200865439 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\listmodel.hpp
+	<string>
+	"guichan/platform.hpp"
+
+1200865448 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\mouselistener.hpp
+	"guichan/mouseevent.hpp"
+	"guichan/platform.hpp"
+
+1200865622 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\selectionevent.hpp
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1201946842 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\selectionlistener.hpp
+	<string>
+	"guichan/selectionevent.hpp"
+	"guichan/platform.hpp"
+
+1200865629 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widget.hpp
+	<list>
+	<string>
+	"guichan/color.hpp"
+	"guichan/rectangle.hpp"
+
+1201946842 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgetlistener.hpp
+	<string>
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865644 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgets\button.hpp
+	<string>
+	"guichan/focuslistener.hpp"
+	"guichan/graphics.hpp"
+	"guichan/keylistener.hpp"
+	"guichan/mouseevent.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1200865647 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgets\checkbox.hpp
+	<string>
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1208003762 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgets\container.hpp
+	<list>
+	"guichan/basiccontainer.hpp"
+	"guichan/graphics.hpp"
+	"guichan/platform.hpp"
+
+1200865291 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\basiccontainer.hpp
+	<list>
+	"guichan/deathlistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1200865652 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgets\dropdown.hpp
+	"guichan/actionlistener.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/deathlistener.hpp"
+	"guichan/focushandler.hpp"
+	"guichan/focuslistener.hpp"
+	"guichan/keylistener.hpp"
+	"guichan/listmodel.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/selectionlistener.hpp"
+	"guichan/widgets/listbox.hpp"
+	"guichan/widgets/scrollarea.hpp"
+
+1207470398 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgets\listbox.hpp
+	<list>
+	"guichan/keylistener.hpp"
+	"guichan/listmodel.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1208003645 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgets\scrollarea.hpp
+	<string>
+	"guichan/basiccontainer.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+
+1200865655 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgets\icon.hpp
+	"guichan/image.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1200865657 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgets\imagebutton.hpp
+	"guichan/platform.hpp"
+	"guichan/widgets/button.hpp"
+
+1200865659 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgets\label.hpp
+	<string>
+	"guichan/graphics.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1200865670 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgets\slider.hpp
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1200865665 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgets\radiobutton.hpp
+	<map>
+	<string>
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1201946842 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgets\tab.hpp
+	<map>
+	<string>
+	"guichan/basiccontainer.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+
+1201946842 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgets\tabbedarea.hpp
+	<map>
+	<string>
+	<vector>
+	"guichan/actionlistener.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+
+1200865678 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgets\textbox.hpp
+	<ctime>
+	<string>
+	<vector>
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1200865681 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgets\textfield.hpp
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+	<string>
+
+1200865683 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\widgets\window.hpp
+	<string>
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widgets/container.hpp"
+
+1200865603 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\sdl\sdlgraphics.hpp
+	"SDL.h"
+	"guichan/color.hpp"
+	"guichan/graphics.hpp"
+	"guichan/platform.hpp"
+
+1200865605 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\sdl\sdlimage.hpp
+	"SDL.h"
+	<string>
+	"guichan/color.hpp"
+	"guichan/platform.hpp"
+	"guichan/image.hpp"
+
+1200865608 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\sdl\sdlimageloader.hpp
+	"guichan/imageloader.hpp"
+	"guichan/platform.hpp"
+	"SDL.h"
+
+1207470397 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\sdl\sdlinput.hpp
+	<queue>
+	"SDL.h"
+	"guichan/input.hpp"
+	"guichan/keyinput.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/platform.hpp"
+
+1200865503 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\opengl\openglgraphics.hpp
+	"guichan/color.hpp"
+	"guichan/graphics.hpp"
+	"guichan/platform.hpp"
+
+1208002827 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\opengl\openglimage.hpp
+	<windows.h>
+	<mgl/gl.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+	<string>
+	"guichan/color.hpp"
+	"guichan/platform.hpp"
+	"guichan/image.hpp"
+
+1237523571 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\gui.cpp
+	<stdafx.h>
+	<Gui.h>
+	<ScreenManager.h>
+	<Singleton.h>
+
+1237507909 c:\documents and settings\impaler\desktop\my engine\khazad\src\gui.h
+	<stdafx.h>
+	<Singleton.h>
+
+1200865530 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\opengl\openglsdlimageloader.hpp
+	<guichan/sdl/sdlimageloader.hpp>
+	<guichan/exception.hpp>
+	<guichan/opengl/openglimage.hpp>
+
+1200865718 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\actionevent.cpp
+	"guichan/actionevent.hpp"
+
+1200865748 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\basiccontainer.cpp
+	"guichan/basiccontainer.hpp"
+	<algorithm>
+	"guichan/exception.hpp"
+	"guichan/focushandler.hpp"
+	"guichan/graphics.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865751 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\cliprectangle.cpp
+	"guichan/cliprectangle.hpp"
+
+1201946844 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\color.cpp
+	"guichan/color.hpp"
+
+1200865758 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\defaultfont.cpp
+	"guichan/defaultfont.hpp"
+	<string>
+	"guichan/graphics.hpp"
+	"guichan/rectangle.hpp"
+
+1200865309 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\defaultfont.hpp
+	"guichan/font.hpp"
+	"guichan/platform.hpp"
+
+1200865762 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\event.cpp
+	"guichan/event.hpp"
+
+1200865764 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\exception.cpp
+	"guichan/exception.hpp"
+
+1200865767 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\focushandler.cpp
+	"guichan/focushandler.hpp"
+	"guichan/focuslistener.hpp"
+	"guichan/exception.hpp"
+	"guichan/widget.hpp"
+
+1200865770 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\font.cpp
+	"guichan/font.hpp"
+	<string>
+
+1200865773 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\genericinput.cpp
+	"guichan/genericinput.hpp"
+	"guichan/exception.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\graphics.cpp
+	"guichan/graphics.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/image.hpp"
+
+1209211212 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\gui.cpp
+	"guichan/gui.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/exception.hpp"
+	"guichan/focushandler.hpp"
+	"guichan/graphics.hpp"
+	"guichan/input.hpp"
+	"guichan/keyinput.hpp"
+	"guichan/keylistener.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/widget.hpp"
+
+1200865802 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\guichan.cpp
+
+1200865827 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\image.cpp
+	"guichan/image.hpp"
+	"guichan/exception.hpp"
+	"guichan/imageloader.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\imagefont.cpp
+	"guichan/imagefont.hpp"
+	<sstream>
+	"guichan/color.hpp"
+	"guichan/exception.hpp"
+	"guichan/graphics.hpp"
+	"guichan/image.hpp"
+
+1200865833 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\inputevent.cpp
+	"guichan/inputevent.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\key.cpp
+	"guichan/key.hpp"
+
+1200865838 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\keyevent.cpp
+	"guichan/keyevent.hpp"
+
+1200865842 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\keyinput.cpp
+	"guichan/keyinput.hpp"
+
+1200865845 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\mouseevent.cpp
+	"guichan/mouseevent.hpp"
+
+1200865847 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\mouseinput.cpp
+	"guichan/mouseinput.hpp"
+
+1200865861 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\opengl\opengl.cpp
+	"guichan/opengl.hpp"
+
+1200865864 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\opengl\openglgraphics.cpp
+	"guichan/opengl/openglgraphics.hpp"
+	<windows.h>
+	<mgl/gl.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+	"guichan/exception.hpp"
+	"guichan/image.hpp"
+	"guichan/opengl/openglimage.hpp"
+
+1200865867 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\opengl\openglimage.cpp
+	"guichan/opengl/openglimage.hpp"
+	"guichan/exception.hpp"
+
+1201946844 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\rectangle.cpp
+	"guichan/rectangle.hpp"
+
+1200865916 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\sdl\sdl.cpp
+	"guichan/sdl.hpp"
+
+1200865919 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\sdl\sdlgraphics.cpp
+	"guichan/sdl/sdlgraphics.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/image.hpp"
+	"guichan/sdl/sdlimage.hpp"
+	"guichan/sdl/sdlpixel.hpp"
+
+1200865613 c:\documents and settings\impaler\desktop\my engine\khazad\guichan\include\guichan\sdl\sdlpixel.hpp
+	"SDL.h"
+	"guichan/color.hpp"
+
+1200865921 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\sdl\sdlimage.cpp
+	"guichan/sdl/sdlimage.hpp"
+	"guichan/exception.hpp"
+	"guichan/sdl/sdlpixel.hpp"
+
+1200865924 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\sdl\sdlimageloader.cpp
+	"guichan/sdl/sdlimage.hpp"
+	"SDL_image.h"
+	"guichan/exception.hpp"
+	"guichan/sdl/sdlimageloader.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\sdl\sdlinput.cpp
+	"guichan/sdl/sdlinput.hpp"
+	"guichan/exception.hpp"
+
+1200865933 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\selectionevent.cpp
+	"guichan/selectionevent.hpp"
+
+1200865938 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widget.cpp
+	"guichan/widget.hpp"
+	"guichan/actionevent.hpp"
+	"guichan/actionlistener.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/deathlistener.hpp"
+	"guichan/defaultfont.hpp"
+	"guichan/event.hpp"
+	"guichan/exception.hpp"
+	"guichan/focushandler.hpp"
+	"guichan/graphics.hpp"
+	"guichan/keyinput.hpp"
+	"guichan/keylistener.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/widgetlistener.hpp"
+
+1200865954 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widgets\button.cpp
+	"guichan/widgets/button.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseevent.hpp"
+	"guichan/mouseinput.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widgets\checkbox.cpp
+	"guichan/widgets/checkbox.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865960 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widgets\container.cpp
+	"guichan/widgets/container.hpp"
+	"guichan/exception.hpp"
+	"guichan/graphics.hpp"
+
+1209211212 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widgets\dropdown.cpp
+	"guichan/widgets/dropdown.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/listmodel.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/widgets/listbox.hpp"
+	"guichan/widgets/scrollarea.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widgets\icon.cpp
+	"guichan/widgets/icon.hpp"
+	"guichan/graphics.hpp"
+	"guichan/image.hpp"
+	"guichan/rectangle.hpp"
+
+1200865968 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widgets\imagebutton.cpp
+	"guichan/widgets/imagebutton.hpp"
+	"guichan/graphics.hpp"
+	"guichan/image.hpp"
+
+1200865970 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widgets\label.cpp
+	"guichan/widgets/label.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widgets\listbox.cpp
+	"guichan/widgets/listbox.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/listmodel.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/selectionlistener.hpp"
+
+1200865981 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widgets\radiobutton.cpp
+	"guichan/widgets/radiobutton.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseinput.hpp"
+
+1208003790 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widgets\scrollarea.cpp
+	"guichan/widgets/scrollarea.hpp"
+	"guichan/exception.hpp"
+	"guichan/graphics.hpp"
+
+1200865986 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widgets\slider.cpp
+	"guichan/widgets/slider.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseinput.hpp"
+
+1201946844 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widgets\tab.cpp
+	"guichan/widgets/tab.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/widgets/button.hpp"
+	"guichan/widgets/label.hpp"
+	"guichan/widgets/tabbedarea.hpp"
+
+1201946844 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widgets\tabbedarea.cpp
+	"guichan/widgets/tabbedarea.hpp"
+	"guichan/exception.hpp"
+	"guichan/focushandler.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/widgets/container.hpp"
+	"guichan/widgets/tab.hpp"
+	<algorithm>
+
+1200865996 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widgets\textbox.cpp
+	"guichan/widgets/textbox.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865999 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widgets\textfield.cpp
+	"guichan/widgets/textfield.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseinput.hpp"
+
+1200866001 source:c:\documents and settings\impaler\desktop\my engine\khazad\guichan\src\widgets\window.cpp
+	"guichan/widgets/window.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/mouseinput.hpp"
+
+1237780637 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\font.cpp
+	<stdafx.h>
+	"Font.h"
+
+1237780652 c:\documents and settings\impaler\desktop\my engine\khazad\src\font.h
+	"SDL_ttf.h"
+
+1238228798 c:\documents and settings\impaler\desktop\my engine\khazad\src\map
+
+1235806485 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\core\random.cpp
+	<Singleton.h>
+	<Random.h>
+
+1239234440 c:\documents and settings\impaler\desktop\my engine\khazad\src\core\singleton.h
+
+1236070425 c:\documents and settings\impaler\desktop\my engine\khazad\src\core\random.h
+	<stdafx.h>
+	<cstdlib>
+	<ctime>
+	<Singleton.h>
+
+1237442130 c:\documents and settings\impaler\desktop\my engine\khazad\src\core\stdafx.h
+	<windows.h>
+	<stdio.h>
+	<tchar.h>
+	<assert.h>
+	<gl/gl.h>
+	<gl/glu.h>
+	<glut.h>
+	<sdl.h>
+	<SDL_opengl.h>
+	<string>
+	<vector>
+	<math.h>
+	<algorithm>
+	<functional>
+	<iostream>
+	<stdarg.h>
+	<guichan.hpp>
+	<guichan/sdl.hpp>
+	<guichan/opengl.hpp>
+	<guichan/opengl/openglsdlimageloader.hpp>
+	<enum.h>
+
+1236926967 c:\documents and settings\impaler\desktop\my engine\khazad\src\core\enum.h
+
+1239167795 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\core\timer.cpp
+	<stdafx.h>
+	<Timer.h>
+
+1239167311 c:\documents and settings\impaler\desktop\my engine\khazad\src\core\timer.h
+	<stdafx.h>
+	<sdl.h>
+
+1239233910 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\core\main.cpp
+	<stdafx.h>
+	<Timer.h>
+	<TextureManager.h>
+	<FontManager.h>
+	<ColorManager.h>
+	<XMLManager.h>
+	<Random.h>
+	<ScreenManager.h>
+	<ConfigManager.h>
+	<DataManager.h>
+	<InputManager.h>
+	<Game.h>
+	<Map.h>
+	<Gui.h>
+
+1237277299 c:\documents and settings\impaler\desktop\my engine\khazad\src\render\texturemanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1237795411 c:\documents and settings\impaler\desktop\my engine\khazad\src\gui\fontmanager.h
+	<SDL_ttf.h>
+	<stdafx.h>
+	<Singleton.h>
+
+1236150267 c:\documents and settings\impaler\desktop\my engine\khazad\src\render\colormanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1235556021 c:\documents and settings\impaler\desktop\my engine\khazad\src\data\xmlmanager.h
+	<stdafx.h>
+	<Singleton.h>
+	<tinystr.h>
+	<tinyxml.h>
+
+1178491284 c:\documents and settings\impaler\desktop\my engine\khazad\src\tinyxml\tinystr.h
+	<assert.h>
+	<string.h>
+
+1178491284 c:\documents and settings\impaler\desktop\my engine\khazad\src\tinyxml\tinyxml.h
+	<ctype.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<string>
+	<iostream>
+	<sstream>
+	"tinystr.h"
+
+1239139683 c:\documents and settings\impaler\desktop\my engine\khazad\src\render\screenmanager.h
+	<stdafx.h>
+	<PrimTypes.h>
+	<Singleton.h>
+
+1219532746 c:\documents and settings\impaler\desktop\my engine\khazad\src\geometry\primtypes.h
+
+1236070059 c:\documents and settings\impaler\desktop\my engine\khazad\src\data\configmanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1235556021 c:\documents and settings\impaler\desktop\my engine\khazad\src\data\datamanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1236070311 c:\documents and settings\impaler\desktop\my engine\khazad\src\gui\inputmanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1236204795 c:\documents and settings\impaler\desktop\my engine\khazad\src\game\game.h
+	<stdafx.h>
+	<Singleton.h>
+	<Actor.h>
+
+1237872796 c:\documents and settings\impaler\desktop\my engine\khazad\src\game\actor.h
+	<stdafx.h>
+	<Vector3.h>
+	<ScreenManager.h>
+
+1235468170 c:\documents and settings\impaler\desktop\my engine\khazad\src\geometry\vector3.h
+	<stdafx.h>
+
+1236463221 c:\documents and settings\impaler\desktop\my engine\khazad\src\map\map.h
+	<Singleton.h>
+	<stdafx.h>
+
+1237507909 c:\documents and settings\impaler\desktop\my engine\khazad\src\gui\gui.h
+	<stdafx.h>
+	<Singleton.h>
+
+1235712263 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\data\configmanager.cpp
+	<ConfigManager.h>
+	<Singleton.h>
+	<XMLManager.h>
+
+1235712264 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\data\datamanager.cpp
+	<DataManager.h>
+	<Singleton.h>
+	<XMLManager.h>
+
+1236065823 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\data\xmlmanager.cpp
+	<stdafx.h>
+	<XMLManager.h>
+	<tinystr.h>
+	<tinyxml.h>
+
+1236205228 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\game\actor.cpp
+	<stdafx.h>
+	<Actor.h>
+	<Timer.h>
+
+1237873237 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\game\game.cpp
+	<stdafx.h>
+	<Game.h>
+	<Singleton.h>
+	<Pawn.h>
+	<Vector3.h>
+	<TextureManager.h>
+
+1236141136 c:\documents and settings\impaler\desktop\my engine\khazad\src\game\pawn.h
+	<stdafx.h>
+	<Actor.h>
+
+1236233080 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\game\pawn.cpp
+	<stdafx.h>
+	<Pawn.h>
+	<Random.h>
+	<ScreenManager.h>
+	<Game.h>
+	<Map.h>
+	<Cube.h>
+
+1236408851 c:\documents and settings\impaler\desktop\my engine\khazad\src\map\cube.h
+	<stdafx.h>
+	<Actor.h>
+
+1236065633 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\geometry\plane.cpp
+	<stdafx.h>
+	<Plane.h>
+
+1235511147 c:\documents and settings\impaler\desktop\my engine\khazad\src\geometry\plane.h
+	<stdafx.h>
+	<Vector3.h>
+
+1133414966 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\geometry\vector2.cpp
+
+1236065823 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\geometry\vector3.cpp
+	<stdafx.h>
+	<Vector3.h>
+
+1237780637 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\gui\font.cpp
+	<stdafx.h>
+	"Font.h"
+
+1237780652 c:\documents and settings\impaler\desktop\my engine\khazad\src\gui\font.h
+	"SDL_ttf.h"
+
+1239139683 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\gui\fontmanager.cpp
+	<stdafx.h>
+	<SDL_ttf.h>
+	<FontManager.h>
+	<Singleton.h>
+
+1237523571 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\gui\gui.cpp
+	<stdafx.h>
+	<Gui.h>
+	<ScreenManager.h>
+	<Singleton.h>
+
+1237522357 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\gui\inputmanager.cpp
+	<stdafx.h>
+	<Game.h>
+	<InputManager.h>
+	<ScreenManager.h>
+	<Camera.h>
+	<Singleton.h>
+	<Cube.h>
+
+1236145835 c:\documents and settings\impaler\desktop\my engine\khazad\src\render\camera.h
+	<stdafx.h>
+	<Plane.h>
+
+1237872674 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\map\cell.cpp
+	<stdafx.h>
+	<Cell.h>
+	<Cube.h>
+	<ConfigManager.h>
+	<Random.h>
+	<Game.h>
+
+1237872674 c:\documents and settings\impaler\desktop\my engine\khazad\src\map\cell.h
+	<stdafx.h>
+	<Actor.h>
+
+1236849116 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\map\cube.cpp
+	<stdafx.h>
+	<Game.h>
+	<Camera.h>
+	<ScreenManager.h>
+	<Cube.h>
+	<Map.h>
+	<Face.h>
+	<Slope.h>
+
+1236404917 c:\documents and settings\impaler\desktop\my engine\khazad\src\map\face.h
+	<stdafx.h>
+	<Actor.h>
+	<Cube.h>
+
+1236405116 c:\documents and settings\impaler\desktop\my engine\khazad\src\map\slope.h
+	<stdafx.h>
+	<Actor.h>
+
+1237869741 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\map\face.cpp
+	<stdafx.h>
+	<Cube.h>
+	<Face.h>
+	<Game.h>
+	<TextureManager.h>
+	<ScreenManager.h>
+
+1237445073 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\map\map.cpp
+	<stdafx.h>
+	<Map.h>
+	<Singleton.h>
+	<ConfigManager.h>
+	<Cube.h>
+	<Cell.h>
+	<Random.h>
+
+1237868030 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\map\slope.cpp
+	<stdafx.h>
+	<Slope.h>
+	<Cube.h>
+	<Game.h>
+	<TextureManager.h>
+	<ScreenManager.h>
+
+1236233080 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\render\camera.cpp
+	<stdafx.h>
+	<Camera.h>
+	<Plane.h>
+	<ScreenManager.h>
+	<Map.h>
+
+1236065424 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\render\clipimage.cpp
+	<stdafx.h>
+	<ClipImage.h>
+	<ImagePage.h>
+
+1235510582 c:\documents and settings\impaler\desktop\my engine\khazad\src\render\clipimage.h
+	<stdafx.h>
+
+1234818278 c:\documents and settings\impaler\desktop\my engine\khazad\src\render\imagepage.h
+	<stdafx.h>
+	<SDL_image.h>
+
+1235712263 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\render\colormanager.cpp
+	<ColorManager.h>
+	<Singleton.h>
+	<XMLManager.h>
+
+1236065559 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\render\imagemanager.cpp
+	<stdafx.h>
+	<ImagePage.h>
+	<ClipImage.h>
+	<ImageManager.h>
+
+1236070311 c:\documents and settings\impaler\desktop\my engine\khazad\src\render\imagemanager.h
+	<stdafx.h>
+	<SDL_image.h>
+
+1236065633 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\render\imagepage.cpp
+	<stdafx.h>
+	<ImagePage.h>
+
+1239139683 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\render\screenmanager.cpp
+	<stdafx.h>
+	<ScreenManager.h>
+	<Singleton.h>
+	<ImagePage.h>
+	<ClipImage.h>
+	<Camera.h>
+	<ConfigManager.h>
+	<FontManager.h>
+	<ColorManager.h>
+	<TextureManager.h>
+	<Game.h>
+	<Map.h>
+	<Cell.h>
+	<Gui.h>
+
+1237277299 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\render\texturemanager.cpp
+	<stdafx.h>
+	<ImagePage.h>
+	<ClipImage.h>
+	<TextureManager.h>
+
+1178491284 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\tinyxml\tinystr.cpp
+	"tinystr.h"
+
+1178491284 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\tinyxml\tinyxml.cpp
+	<ctype.h>
+	<sstream>
+	<iostream>
+	"tinyxml.h"
+
+1178491284 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\tinyxml\tinyxmlerror.cpp
+	"tinyxml.h"
+
+1178491284 source:c:\documents and settings\impaler\desktop\my engine\khazad\src\tinyxml\tinyxmlparser.cpp
+	<ctype.h>
+	<stddef.h>
+	"tinyxml.h"
+	<windows.h>
+
+1200865718 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\actionevent.cpp
+	"guichan/actionevent.hpp"
+
+1200865147 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\actionevent.hpp
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+	<string>
+
+1200865312 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\event.hpp
+	"guichan/platform.hpp"
+
+1200865585 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\platform.hpp
+
+1200865748 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\basiccontainer.cpp
+	"guichan/basiccontainer.hpp"
+	<algorithm>
+	"guichan/exception.hpp"
+	"guichan/focushandler.hpp"
+	"guichan/graphics.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865291 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\basiccontainer.hpp
+	<list>
+	"guichan/deathlistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1200865306 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\deathlistener.hpp
+	<string>
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865629 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widget.hpp
+	<list>
+	<string>
+	"guichan/color.hpp"
+	"guichan/rectangle.hpp"
+
+1201946842 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\color.hpp
+	"guichan/platform.hpp"
+	<iostream>
+
+1201946842 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\rectangle.hpp
+	"guichan/platform.hpp"
+	<iostream>
+
+1200865316 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\exception.hpp
+	<string>
+	"guichan/platform.hpp"
+
+1200865320 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\focushandler.hpp
+	<vector>
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865372 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\graphics.hpp
+	<iosfwd>
+	<stack>
+	"guichan/cliprectangle.hpp"
+	"guichan/platform.hpp"
+
+1200865299 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\cliprectangle.hpp
+	"guichan/rectangle.hpp"
+	"guichan/platform.hpp"
+
+1200865445 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\mouseinput.hpp
+	"guichan/platform.hpp"
+
+1200865751 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\cliprectangle.cpp
+	"guichan/cliprectangle.hpp"
+
+1201946844 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\color.cpp
+	"guichan/color.hpp"
+
+1200865758 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\defaultfont.cpp
+	"guichan/defaultfont.hpp"
+	<string>
+	"guichan/graphics.hpp"
+	"guichan/rectangle.hpp"
+
+1200865309 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\defaultfont.hpp
+	"guichan/font.hpp"
+	"guichan/platform.hpp"
+
+1200865327 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\font.hpp
+	<string>
+	"guichan/platform.hpp"
+
+1200865762 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\event.cpp
+	"guichan/event.hpp"
+
+1200865764 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\exception.cpp
+	"guichan/exception.hpp"
+
+1200865767 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\focushandler.cpp
+	"guichan/focushandler.hpp"
+	"guichan/focuslistener.hpp"
+	"guichan/exception.hpp"
+	"guichan/widget.hpp"
+
+1200865324 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\focuslistener.hpp
+	<string>
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865770 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\font.cpp
+	"guichan/font.hpp"
+	<string>
+
+1200865773 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\genericinput.cpp
+	"guichan/genericinput.hpp"
+	"guichan/exception.hpp"
+
+1200865331 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\genericinput.hpp
+	<queue>
+	"guichan/input.hpp"
+	"guichan/keyinput.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/platform.hpp"
+
+1200865421 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\input.hpp
+	"guichan/platform.hpp"
+
+1200865431 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\keyinput.hpp
+	"guichan/key.hpp"
+	"guichan/platform.hpp"
+
+1208002809 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\key.hpp
+	"guichan/platform.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\graphics.cpp
+	"guichan/graphics.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/image.hpp"
+
+1200865410 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\image.hpp
+	<string>
+	"guichan/platform.hpp"
+
+1209211212 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\gui.cpp
+	"guichan/gui.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/exception.hpp"
+	"guichan/focushandler.hpp"
+	"guichan/graphics.hpp"
+	"guichan/input.hpp"
+	"guichan/keyinput.hpp"
+	"guichan/keylistener.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/widget.hpp"
+
+1200865376 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\gui.hpp
+	<list>
+	<deque>
+	"guichan/keyevent.hpp"
+	"guichan/mouseevent.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/platform.hpp"
+
+1200865429 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\keyevent.hpp
+	"guichan/inputevent.hpp"
+	"guichan/key.hpp"
+	"guichan/platform.hpp"
+
+1200865424 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\inputevent.hpp
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865442 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\mouseevent.hpp
+	"guichan/inputevent.hpp"
+	"guichan/platform.hpp"
+
+1200865437 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\keylistener.hpp
+	"guichan/keyevent.hpp"
+	"guichan/platform.hpp"
+
+1200865448 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\mouselistener.hpp
+	"guichan/mouseevent.hpp"
+	"guichan/platform.hpp"
+
+1200865802 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\guichan.cpp
+
+1200865827 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\image.cpp
+	"guichan/image.hpp"
+	"guichan/exception.hpp"
+	"guichan/imageloader.hpp"
+
+1200865418 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\imageloader.hpp
+	<iosfwd>
+	"guichan/platform.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\imagefont.cpp
+	"guichan/imagefont.hpp"
+	<sstream>
+	"guichan/color.hpp"
+	"guichan/exception.hpp"
+	"guichan/graphics.hpp"
+	"guichan/image.hpp"
+
+1207470398 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\imagefont.hpp
+	<string>
+	"guichan/font.hpp"
+	"guichan/platform.hpp"
+	"guichan/rectangle.hpp"
+
+1200865833 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\inputevent.cpp
+	"guichan/inputevent.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\key.cpp
+	"guichan/key.hpp"
+
+1200865838 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\keyevent.cpp
+	"guichan/keyevent.hpp"
+
+1200865842 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\keyinput.cpp
+	"guichan/keyinput.hpp"
+
+1200865845 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\mouseevent.cpp
+	"guichan/mouseevent.hpp"
+
+1200865847 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\mouseinput.cpp
+	"guichan/mouseinput.hpp"
+
+1200865861 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\opengl\opengl.cpp
+	"guichan/opengl.hpp"
+
+1200865539 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\opengl.hpp
+	<guichan/opengl/openglgraphics.hpp>
+	<guichan/opengl/openglimage.hpp>
+	"guichan/platform.hpp"
+
+1200865503 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\opengl\openglgraphics.hpp
+	"guichan/color.hpp"
+	"guichan/graphics.hpp"
+	"guichan/platform.hpp"
+
+1208002827 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\opengl\openglimage.hpp
+	<windows.h>
+	<mgl/gl.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+	<string>
+	"guichan/color.hpp"
+	"guichan/platform.hpp"
+	"guichan/image.hpp"
+
+1200865864 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\opengl\openglgraphics.cpp
+	"guichan/opengl/openglgraphics.hpp"
+	<windows.h>
+	<mgl/gl.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+	"guichan/exception.hpp"
+	"guichan/image.hpp"
+	"guichan/opengl/openglimage.hpp"
+
+1200865867 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\opengl\openglimage.cpp
+	"guichan/opengl/openglimage.hpp"
+	"guichan/exception.hpp"
+
+1201946844 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\rectangle.cpp
+	"guichan/rectangle.hpp"
+
+1200865916 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\sdl\sdl.cpp
+	"guichan/sdl.hpp"
+
+1200865618 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\sdl.hpp
+	<guichan/sdl/sdlgraphics.hpp>
+	<guichan/sdl/sdlimage.hpp>
+	<guichan/sdl/sdlimageloader.hpp>
+	<guichan/sdl/sdlinput.hpp>
+	"platform.hpp"
+
+1200865603 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\sdl\sdlgraphics.hpp
+	"SDL.h"
+	"guichan/color.hpp"
+	"guichan/graphics.hpp"
+	"guichan/platform.hpp"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl.h
+	"SDL_main.h"
+	"SDL_stdinc.h"
+	"SDL_audio.h"
+	"SDL_cdrom.h"
+	"SDL_cpuinfo.h"
+	"SDL_endian.h"
+	"SDL_error.h"
+	"SDL_events.h"
+	"SDL_loadso.h"
+	"SDL_mutex.h"
+	"SDL_rwops.h"
+	"SDL_thread.h"
+	"SDL_timer.h"
+	"SDL_video.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_main.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_stdinc.h
+	"SDL_config.h"
+	<sys/types.h>
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdarg.h>
+	<stdlib.h>
+	<malloc.h>
+	<stddef.h>
+	<stdarg.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<inttypes.h>
+	<stdint.h>
+	<ctype.h>
+	<iconv.h>
+	"begin_code.h"
+	<alloca.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_config.h
+	"SDL_platform.h"
+	<stdarg.h>
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_platform.h
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\begin_code.h
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\close_code.h
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_audio.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_endian.h"
+	"SDL_mutex.h"
+	"SDL_thread.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_error.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_endian.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_mutex.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_thread.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_mutex.h"
+	"begin_code.h"
+	<process.h>
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_rwops.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_cdrom.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_cpuinfo.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_events.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_active.h"
+	"SDL_keyboard.h"
+	"SDL_mouse.h"
+	"SDL_joystick.h"
+	"SDL_quit.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_active.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_keyboard.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_keysym.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_keysym.h
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_mouse.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_video.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_joystick.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_quit.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_loadso.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_version.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1200865605 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\sdl\sdlimage.hpp
+	"SDL.h"
+	<string>
+	"guichan/color.hpp"
+	"guichan/platform.hpp"
+	"guichan/image.hpp"
+
+1200865608 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\sdl\sdlimageloader.hpp
+	"guichan/imageloader.hpp"
+	"guichan/platform.hpp"
+	"SDL.h"
+
+1207470397 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\sdl\sdlinput.hpp
+	<queue>
+	"SDL.h"
+	"guichan/input.hpp"
+	"guichan/keyinput.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/platform.hpp"
+
+1200865919 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\sdl\sdlgraphics.cpp
+	"guichan/sdl/sdlgraphics.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/image.hpp"
+	"guichan/sdl/sdlimage.hpp"
+	"guichan/sdl/sdlpixel.hpp"
+
+1200865613 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\sdl\sdlpixel.hpp
+	"SDL.h"
+	"guichan/color.hpp"
+
+1200865921 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\sdl\sdlimage.cpp
+	"guichan/sdl/sdlimage.hpp"
+	"guichan/exception.hpp"
+	"guichan/sdl/sdlpixel.hpp"
+
+1200865924 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\sdl\sdlimageloader.cpp
+	"guichan/sdl/sdlimage.hpp"
+	"SDL_image.h"
+	"guichan/exception.hpp"
+	"guichan/sdl/sdlimageloader.hpp"
+
+1184996068 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1207470397 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\sdl\sdlinput.cpp
+	"guichan/sdl/sdlinput.hpp"
+	"guichan/exception.hpp"
+
+1200865933 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\selectionevent.cpp
+	"guichan/selectionevent.hpp"
+
+1200865622 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\selectionevent.hpp
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865938 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widget.cpp
+	"guichan/widget.hpp"
+	"guichan/actionevent.hpp"
+	"guichan/actionlistener.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/deathlistener.hpp"
+	"guichan/defaultfont.hpp"
+	"guichan/event.hpp"
+	"guichan/exception.hpp"
+	"guichan/focushandler.hpp"
+	"guichan/graphics.hpp"
+	"guichan/keyinput.hpp"
+	"guichan/keylistener.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/widgetlistener.hpp"
+
+1200865160 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\actionlistener.hpp
+	<string>
+	"guichan/actionevent.hpp"
+	"guichan/platform.hpp"
+
+1201946842 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgetlistener.hpp
+	<string>
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865954 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widgets\button.cpp
+	"guichan/widgets/button.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseevent.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865644 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgets\button.hpp
+	<string>
+	"guichan/focuslistener.hpp"
+	"guichan/graphics.hpp"
+	"guichan/keylistener.hpp"
+	"guichan/mouseevent.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widgets\checkbox.cpp
+	"guichan/widgets/checkbox.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865647 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgets\checkbox.hpp
+	<string>
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1200865960 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widgets\container.cpp
+	"guichan/widgets/container.hpp"
+	"guichan/exception.hpp"
+	"guichan/graphics.hpp"
+
+1208003762 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgets\container.hpp
+	<list>
+	"guichan/basiccontainer.hpp"
+	"guichan/graphics.hpp"
+	"guichan/platform.hpp"
+
+1209211212 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widgets\dropdown.cpp
+	"guichan/widgets/dropdown.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/listmodel.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/widgets/listbox.hpp"
+	"guichan/widgets/scrollarea.hpp"
+
+1200865652 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgets\dropdown.hpp
+	"guichan/actionlistener.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/deathlistener.hpp"
+	"guichan/focushandler.hpp"
+	"guichan/focuslistener.hpp"
+	"guichan/keylistener.hpp"
+	"guichan/listmodel.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/selectionlistener.hpp"
+	"guichan/widgets/listbox.hpp"
+	"guichan/widgets/scrollarea.hpp"
+
+1200865439 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\listmodel.hpp
+	<string>
+	"guichan/platform.hpp"
+
+1201946842 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\selectionlistener.hpp
+	<string>
+	"guichan/selectionevent.hpp"
+	"guichan/platform.hpp"
+
+1207470398 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgets\listbox.hpp
+	<list>
+	"guichan/keylistener.hpp"
+	"guichan/listmodel.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1208003645 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgets\scrollarea.hpp
+	<string>
+	"guichan/basiccontainer.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widgets\icon.cpp
+	"guichan/widgets/icon.hpp"
+	"guichan/graphics.hpp"
+	"guichan/image.hpp"
+	"guichan/rectangle.hpp"
+
+1200865655 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgets\icon.hpp
+	"guichan/image.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1200865968 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widgets\imagebutton.cpp
+	"guichan/widgets/imagebutton.hpp"
+	"guichan/graphics.hpp"
+	"guichan/image.hpp"
+
+1200865657 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgets\imagebutton.hpp
+	"guichan/platform.hpp"
+	"guichan/widgets/button.hpp"
+
+1200865970 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widgets\label.cpp
+	"guichan/widgets/label.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+
+1200865659 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgets\label.hpp
+	<string>
+	"guichan/graphics.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widgets\listbox.cpp
+	"guichan/widgets/listbox.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/listmodel.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/selectionlistener.hpp"
+
+1200865981 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widgets\radiobutton.cpp
+	"guichan/widgets/radiobutton.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865665 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgets\radiobutton.hpp
+	<map>
+	<string>
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1208003790 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widgets\scrollarea.cpp
+	"guichan/widgets/scrollarea.hpp"
+	"guichan/exception.hpp"
+	"guichan/graphics.hpp"
+
+1200865986 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widgets\slider.cpp
+	"guichan/widgets/slider.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865670 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgets\slider.hpp
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1201946844 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widgets\tab.cpp
+	"guichan/widgets/tab.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/widgets/button.hpp"
+	"guichan/widgets/label.hpp"
+	"guichan/widgets/tabbedarea.hpp"
+
+1201946842 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgets\tab.hpp
+	<map>
+	<string>
+	"guichan/basiccontainer.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+
+1201946842 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgets\tabbedarea.hpp
+	<map>
+	<string>
+	<vector>
+	"guichan/actionlistener.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+
+1201946844 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widgets\tabbedarea.cpp
+	"guichan/widgets/tabbedarea.hpp"
+	"guichan/exception.hpp"
+	"guichan/focushandler.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/widgets/container.hpp"
+	"guichan/widgets/tab.hpp"
+	<algorithm>
+
+1200865996 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widgets\textbox.cpp
+	"guichan/widgets/textbox.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865678 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgets\textbox.hpp
+	<ctime>
+	<string>
+	<vector>
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1200865999 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widgets\textfield.cpp
+	"guichan/widgets/textfield.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865681 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgets\textfield.hpp
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+	<string>
+
+1200866001 source:c:\documents and settings\impaler\desktop\sf-khazad\guichan\src\widgets\window.cpp
+	"guichan/widgets/window.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865683 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\widgets\window.hpp
+	<string>
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widgets/container.hpp"
+
+1235806485 source:c:\documents and settings\impaler\desktop\sf-khazad\src\core\random.cpp
+	<Singleton.h>
+	<Random.h>
+
+1239234440 c:\documents and settings\impaler\desktop\sf-khazad\src\core\singleton.h
+
+1236070425 c:\documents and settings\impaler\desktop\sf-khazad\src\core\random.h
+	<stdafx.h>
+	<cstdlib>
+	<ctime>
+	<Singleton.h>
+
+1237442130 c:\documents and settings\impaler\desktop\sf-khazad\src\core\stdafx.h
+	<windows.h>
+	<stdio.h>
+	<tchar.h>
+	<assert.h>
+	<gl/gl.h>
+	<gl/glu.h>
+	<glut.h>
+	<sdl.h>
+	<SDL_opengl.h>
+	<string>
+	<vector>
+	<math.h>
+	<algorithm>
+	<functional>
+	<iostream>
+	<stdarg.h>
+	<guichan.hpp>
+	<guichan/sdl.hpp>
+	<guichan/opengl.hpp>
+	<guichan/opengl/openglsdlimageloader.hpp>
+	<enum.h>
+
+1237278855 c:\documents and settings\impaler\desktop\sf-khazad\include\glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1199052373 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_opengl.h
+	"SDL_config.h"
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<gl.h>
+	<glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<windows.h>
+	<stddef.h>
+
+1200863990 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan.hpp
+	<guichan/actionevent.hpp>
+	<guichan/actionlistener.hpp>
+	<guichan/cliprectangle.hpp>
+	<guichan/color.hpp>
+	<guichan/deathlistener.hpp>
+	<guichan/event.hpp>
+	<guichan/exception.hpp>
+	<guichan/focushandler.hpp>
+	<guichan/focuslistener.hpp>
+	<guichan/font.hpp>
+	<guichan/genericinput.hpp>
+	<guichan/graphics.hpp>
+	<guichan/gui.hpp>
+	<guichan/image.hpp>
+	<guichan/imagefont.hpp>
+	<guichan/imageloader.hpp>
+	<guichan/input.hpp>
+	<guichan/inputevent.hpp>
+	<guichan/key.hpp>
+	<guichan/keyevent.hpp>
+	<guichan/keyinput.hpp>
+	<guichan/keylistener.hpp>
+	<guichan/listmodel.hpp>
+	<guichan/mouseevent.hpp>
+	<guichan/mouseinput.hpp>
+	<guichan/mouselistener.hpp>
+	<guichan/rectangle.hpp>
+	<guichan/selectionevent.hpp>
+	<guichan/selectionlistener.hpp>
+	<guichan/widget.hpp>
+	<guichan/widgetlistener.hpp>
+	<guichan/widgets/button.hpp>
+	<guichan/widgets/checkbox.hpp>
+	<guichan/widgets/container.hpp>
+	<guichan/widgets/dropdown.hpp>
+	<guichan/widgets/icon.hpp>
+	<guichan/widgets/imagebutton.hpp>
+	<guichan/widgets/label.hpp>
+	<guichan/widgets/listbox.hpp>
+	<guichan/widgets/scrollarea.hpp>
+	<guichan/widgets/slider.hpp>
+	<guichan/widgets/radiobutton.hpp>
+	<guichan/widgets/tab.hpp>
+	<guichan/widgets/tabbedarea.hpp>
+	<guichan/widgets/textbox.hpp>
+	<guichan/widgets/textfield.hpp>
+	<guichan/widgets/window.hpp>
+	"guichan/platform.hpp"
+
+1200865530 c:\documents and settings\impaler\desktop\sf-khazad\guichan\include\guichan\opengl\openglsdlimageloader.hpp
+	<guichan/sdl/sdlimageloader.hpp>
+	<guichan/exception.hpp>
+	<guichan/opengl/openglimage.hpp>
+
+1236926967 c:\documents and settings\impaler\desktop\sf-khazad\src\core\enum.h
+
+1239167795 source:c:\documents and settings\impaler\desktop\sf-khazad\src\core\timer.cpp
+	<stdafx.h>
+	<Timer.h>
+
+1239167311 c:\documents and settings\impaler\desktop\sf-khazad\src\core\timer.h
+	<stdafx.h>
+	<sdl.h>
+
+1239233910 source:c:\documents and settings\impaler\desktop\sf-khazad\src\core\main.cpp
+	<stdafx.h>
+	<Timer.h>
+	<TextureManager.h>
+	<FontManager.h>
+	<ColorManager.h>
+	<XMLManager.h>
+	<Random.h>
+	<ScreenManager.h>
+	<ConfigManager.h>
+	<DataManager.h>
+	<InputManager.h>
+	<Game.h>
+	<Map.h>
+	<Gui.h>
+
+1237277299 c:\documents and settings\impaler\desktop\sf-khazad\src\render\texturemanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1237795411 c:\documents and settings\impaler\desktop\sf-khazad\src\gui\fontmanager.h
+	<SDL_ttf.h>
+	<stdafx.h>
+	<Singleton.h>
+
+1185039004 c:\documents and settings\impaler\desktop\sf-khazad\include\sdl_ttf.h
+	"SDL.h"
+	"begin_code.h"
+	"close_code.h"
+
+1236150267 c:\documents and settings\impaler\desktop\sf-khazad\src\render\colormanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1235556021 c:\documents and settings\impaler\desktop\sf-khazad\src\data\xmlmanager.h
+	<stdafx.h>
+	<Singleton.h>
+	<tinystr.h>
+	<tinyxml.h>
+
+1178491284 c:\documents and settings\impaler\desktop\sf-khazad\src\tinyxml\tinystr.h
+	<assert.h>
+	<string.h>
+
+1178491284 c:\documents and settings\impaler\desktop\sf-khazad\src\tinyxml\tinyxml.h
+	<ctype.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<string>
+	<iostream>
+	<sstream>
+	"tinystr.h"
+
+1239139683 c:\documents and settings\impaler\desktop\sf-khazad\src\render\screenmanager.h
+	<stdafx.h>
+	<PrimTypes.h>
+	<Singleton.h>
+
+1219532746 c:\documents and settings\impaler\desktop\sf-khazad\src\geometry\primtypes.h
+
+1236070059 c:\documents and settings\impaler\desktop\sf-khazad\src\data\configmanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1235556021 c:\documents and settings\impaler\desktop\sf-khazad\src\data\datamanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1236070311 c:\documents and settings\impaler\desktop\sf-khazad\src\gui\inputmanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1236204795 c:\documents and settings\impaler\desktop\sf-khazad\src\game\game.h
+	<stdafx.h>
+	<Singleton.h>
+	<Actor.h>
+
+1237872796 c:\documents and settings\impaler\desktop\sf-khazad\src\game\actor.h
+	<stdafx.h>
+	<Vector3.h>
+	<ScreenManager.h>
+
+1235468170 c:\documents and settings\impaler\desktop\sf-khazad\src\geometry\vector3.h
+	<stdafx.h>
+
+1236463221 c:\documents and settings\impaler\desktop\sf-khazad\src\map\map.h
+	<Singleton.h>
+	<stdafx.h>
+
+1237507909 c:\documents and settings\impaler\desktop\sf-khazad\src\gui\gui.h
+	<stdafx.h>
+	<Singleton.h>
+
+1235712263 source:c:\documents and settings\impaler\desktop\sf-khazad\src\data\configmanager.cpp
+	<ConfigManager.h>
+	<Singleton.h>
+	<XMLManager.h>
+
+1235712264 source:c:\documents and settings\impaler\desktop\sf-khazad\src\data\datamanager.cpp
+	<DataManager.h>
+	<Singleton.h>
+	<XMLManager.h>
+
+1236065823 source:c:\documents and settings\impaler\desktop\sf-khazad\src\data\xmlmanager.cpp
+	<stdafx.h>
+	<XMLManager.h>
+	<tinystr.h>
+	<tinyxml.h>
+
+1236205228 source:c:\documents and settings\impaler\desktop\sf-khazad\src\game\actor.cpp
+	<stdafx.h>
+	<Actor.h>
+	<Timer.h>
+
+1237873237 source:c:\documents and settings\impaler\desktop\sf-khazad\src\game\game.cpp
+	<stdafx.h>
+	<Game.h>
+	<Singleton.h>
+	<Pawn.h>
+	<Vector3.h>
+	<TextureManager.h>
+
+1236141136 c:\documents and settings\impaler\desktop\sf-khazad\src\game\pawn.h
+	<stdafx.h>
+	<Actor.h>
+
+1236233080 source:c:\documents and settings\impaler\desktop\sf-khazad\src\game\pawn.cpp
+	<stdafx.h>
+	<Pawn.h>
+	<Random.h>
+	<ScreenManager.h>
+	<Game.h>
+	<Map.h>
+	<Cube.h>
+
+1236408851 c:\documents and settings\impaler\desktop\sf-khazad\src\map\cube.h
+	<stdafx.h>
+	<Actor.h>
+
+1236065633 source:c:\documents and settings\impaler\desktop\sf-khazad\src\geometry\plane.cpp
+	<stdafx.h>
+	<Plane.h>
+
+1235511147 c:\documents and settings\impaler\desktop\sf-khazad\src\geometry\plane.h
+	<stdafx.h>
+	<Vector3.h>
+
+1133414966 source:c:\documents and settings\impaler\desktop\sf-khazad\src\geometry\vector2.cpp
+
+1236065823 source:c:\documents and settings\impaler\desktop\sf-khazad\src\geometry\vector3.cpp
+	<stdafx.h>
+	<Vector3.h>
+
+1237780637 source:c:\documents and settings\impaler\desktop\sf-khazad\src\gui\font.cpp
+	<stdafx.h>
+	"Font.h"
+
+1237780652 c:\documents and settings\impaler\desktop\sf-khazad\src\gui\font.h
+	"SDL_ttf.h"
+
+1239139683 source:c:\documents and settings\impaler\desktop\sf-khazad\src\gui\fontmanager.cpp
+	<stdafx.h>
+	<SDL_ttf.h>
+	<FontManager.h>
+	<Singleton.h>
+
+1237523571 source:c:\documents and settings\impaler\desktop\sf-khazad\src\gui\gui.cpp
+	<stdafx.h>
+	<Gui.h>
+	<ScreenManager.h>
+	<Singleton.h>
+
+1237522357 source:c:\documents and settings\impaler\desktop\sf-khazad\src\gui\inputmanager.cpp
+	<stdafx.h>
+	<Game.h>
+	<InputManager.h>
+	<ScreenManager.h>
+	<Camera.h>
+	<Singleton.h>
+	<Cube.h>
+
+1236145835 c:\documents and settings\impaler\desktop\sf-khazad\src\render\camera.h
+	<stdafx.h>
+	<Plane.h>
+
+1237872674 source:c:\documents and settings\impaler\desktop\sf-khazad\src\map\cell.cpp
+	<stdafx.h>
+	<Cell.h>
+	<Cube.h>
+	<ConfigManager.h>
+	<Random.h>
+	<Game.h>
+
+1237872674 c:\documents and settings\impaler\desktop\sf-khazad\src\map\cell.h
+	<stdafx.h>
+	<Actor.h>
+
+1236849116 source:c:\documents and settings\impaler\desktop\sf-khazad\src\map\cube.cpp
+	<stdafx.h>
+	<Game.h>
+	<Camera.h>
+	<ScreenManager.h>
+	<Cube.h>
+	<Map.h>
+	<Face.h>
+	<Slope.h>
+
+1236404917 c:\documents and settings\impaler\desktop\sf-khazad\src\map\face.h
+	<stdafx.h>
+	<Actor.h>
+	<Cube.h>
+
+1236405116 c:\documents and settings\impaler\desktop\sf-khazad\src\map\slope.h
+	<stdafx.h>
+	<Actor.h>
+
+1237869741 source:c:\documents and settings\impaler\desktop\sf-khazad\src\map\face.cpp
+	<stdafx.h>
+	<Cube.h>
+	<Face.h>
+	<Game.h>
+	<TextureManager.h>
+	<ScreenManager.h>
+
+1237445073 source:c:\documents and settings\impaler\desktop\sf-khazad\src\map\map.cpp
+	<stdafx.h>
+	<Map.h>
+	<Singleton.h>
+	<ConfigManager.h>
+	<Cube.h>
+	<Cell.h>
+	<Random.h>
+
+1237868030 source:c:\documents and settings\impaler\desktop\sf-khazad\src\map\slope.cpp
+	<stdafx.h>
+	<Slope.h>
+	<Cube.h>
+	<Game.h>
+	<TextureManager.h>
+	<ScreenManager.h>
+
+1236233080 source:c:\documents and settings\impaler\desktop\sf-khazad\src\render\camera.cpp
+	<stdafx.h>
+	<Camera.h>
+	<Plane.h>
+	<ScreenManager.h>
+	<Map.h>
+
+1236065424 source:c:\documents and settings\impaler\desktop\sf-khazad\src\render\clipimage.cpp
+	<stdafx.h>
+	<ClipImage.h>
+	<ImagePage.h>
+
+1235510582 c:\documents and settings\impaler\desktop\sf-khazad\src\render\clipimage.h
+	<stdafx.h>
+
+1234818278 c:\documents and settings\impaler\desktop\sf-khazad\src\render\imagepage.h
+	<stdafx.h>
+	<SDL_image.h>
+
+1235712263 source:c:\documents and settings\impaler\desktop\sf-khazad\src\render\colormanager.cpp
+	<ColorManager.h>
+	<Singleton.h>
+	<XMLManager.h>
+
+1236065559 source:c:\documents and settings\impaler\desktop\sf-khazad\src\render\imagemanager.cpp
+	<stdafx.h>
+	<ImagePage.h>
+	<ClipImage.h>
+	<ImageManager.h>
+
+1236070311 c:\documents and settings\impaler\desktop\sf-khazad\src\render\imagemanager.h
+	<stdafx.h>
+	<SDL_image.h>
+
+1236065633 source:c:\documents and settings\impaler\desktop\sf-khazad\src\render\imagepage.cpp
+	<stdafx.h>
+	<ImagePage.h>
+
+1239139683 source:c:\documents and settings\impaler\desktop\sf-khazad\src\render\screenmanager.cpp
+	<stdafx.h>
+	<ScreenManager.h>
+	<Singleton.h>
+	<ImagePage.h>
+	<ClipImage.h>
+	<Camera.h>
+	<ConfigManager.h>
+	<FontManager.h>
+	<ColorManager.h>
+	<TextureManager.h>
+	<Game.h>
+	<Map.h>
+	<Cell.h>
+	<Gui.h>
+
+1237277299 source:c:\documents and settings\impaler\desktop\sf-khazad\src\render\texturemanager.cpp
+	<stdafx.h>
+	<ImagePage.h>
+	<ClipImage.h>
+	<TextureManager.h>
+
+1178491284 source:c:\documents and settings\impaler\desktop\sf-khazad\src\tinyxml\tinystr.cpp
+	"tinystr.h"
+
+1178491284 source:c:\documents and settings\impaler\desktop\sf-khazad\src\tinyxml\tinyxml.cpp
+	<ctype.h>
+	<sstream>
+	<iostream>
+	"tinyxml.h"
+
+1178491284 source:c:\documents and settings\impaler\desktop\sf-khazad\src\tinyxml\tinyxmlerror.cpp
+	"tinyxml.h"
+
+1178491284 source:c:\documents and settings\impaler\desktop\sf-khazad\src\tinyxml\tinyxmlparser.cpp
+	<ctype.h>
+	<stddef.h>
+	"tinyxml.h"
+	<windows.h>
+
+1200865718 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\actionevent.cpp
+	"guichan/actionevent.hpp"
+
+1200865147 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\actionevent.hpp
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+	<string>
+
+1200865312 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\event.hpp
+	"guichan/platform.hpp"
+
+1200865585 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\platform.hpp
+
+1200865748 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\basiccontainer.cpp
+	"guichan/basiccontainer.hpp"
+	<algorithm>
+	"guichan/exception.hpp"
+	"guichan/focushandler.hpp"
+	"guichan/graphics.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865291 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\basiccontainer.hpp
+	<list>
+	"guichan/deathlistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1200865306 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\deathlistener.hpp
+	<string>
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865629 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widget.hpp
+	<list>
+	<string>
+	"guichan/color.hpp"
+	"guichan/rectangle.hpp"
+
+1201946842 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\color.hpp
+	"guichan/platform.hpp"
+	<iostream>
+
+1201946842 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\rectangle.hpp
+	"guichan/platform.hpp"
+	<iostream>
+
+1200865316 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\exception.hpp
+	<string>
+	"guichan/platform.hpp"
+
+1200865320 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\focushandler.hpp
+	<vector>
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865372 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\graphics.hpp
+	<iosfwd>
+	<stack>
+	"guichan/cliprectangle.hpp"
+	"guichan/platform.hpp"
+
+1200865299 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\cliprectangle.hpp
+	"guichan/rectangle.hpp"
+	"guichan/platform.hpp"
+
+1200865445 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\mouseinput.hpp
+	"guichan/platform.hpp"
+
+1200865751 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\cliprectangle.cpp
+	"guichan/cliprectangle.hpp"
+
+1201946844 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\color.cpp
+	"guichan/color.hpp"
+
+1200865758 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\defaultfont.cpp
+	"guichan/defaultfont.hpp"
+	<string>
+	"guichan/graphics.hpp"
+	"guichan/rectangle.hpp"
+
+1200865309 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\defaultfont.hpp
+	"guichan/font.hpp"
+	"guichan/platform.hpp"
+
+1200865327 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\font.hpp
+	<string>
+	"guichan/platform.hpp"
+
+1200865762 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\event.cpp
+	"guichan/event.hpp"
+
+1200865764 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\exception.cpp
+	"guichan/exception.hpp"
+
+1200865767 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\focushandler.cpp
+	"guichan/focushandler.hpp"
+	"guichan/focuslistener.hpp"
+	"guichan/exception.hpp"
+	"guichan/widget.hpp"
+
+1200865324 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\focuslistener.hpp
+	<string>
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865770 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\font.cpp
+	"guichan/font.hpp"
+	<string>
+
+1200865773 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\genericinput.cpp
+	"guichan/genericinput.hpp"
+	"guichan/exception.hpp"
+
+1200865331 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\genericinput.hpp
+	<queue>
+	"guichan/input.hpp"
+	"guichan/keyinput.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/platform.hpp"
+
+1200865421 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\input.hpp
+	"guichan/platform.hpp"
+
+1200865431 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\keyinput.hpp
+	"guichan/key.hpp"
+	"guichan/platform.hpp"
+
+1208002809 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\key.hpp
+	"guichan/platform.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\graphics.cpp
+	"guichan/graphics.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/image.hpp"
+
+1200865410 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\image.hpp
+	<string>
+	"guichan/platform.hpp"
+
+1209211212 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\gui.cpp
+	"guichan/gui.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/exception.hpp"
+	"guichan/focushandler.hpp"
+	"guichan/graphics.hpp"
+	"guichan/input.hpp"
+	"guichan/keyinput.hpp"
+	"guichan/keylistener.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/widget.hpp"
+
+1200865376 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\gui.hpp
+	<list>
+	<deque>
+	"guichan/keyevent.hpp"
+	"guichan/mouseevent.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/platform.hpp"
+
+1200865429 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\keyevent.hpp
+	"guichan/inputevent.hpp"
+	"guichan/key.hpp"
+	"guichan/platform.hpp"
+
+1200865424 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\inputevent.hpp
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865442 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\mouseevent.hpp
+	"guichan/inputevent.hpp"
+	"guichan/platform.hpp"
+
+1200865437 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\keylistener.hpp
+	"guichan/keyevent.hpp"
+	"guichan/platform.hpp"
+
+1200865448 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\mouselistener.hpp
+	"guichan/mouseevent.hpp"
+	"guichan/platform.hpp"
+
+1200865802 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\guichan.cpp
+
+1200865827 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\image.cpp
+	"guichan/image.hpp"
+	"guichan/exception.hpp"
+	"guichan/imageloader.hpp"
+
+1200865418 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\imageloader.hpp
+	<iosfwd>
+	"guichan/platform.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\imagefont.cpp
+	"guichan/imagefont.hpp"
+	<sstream>
+	"guichan/color.hpp"
+	"guichan/exception.hpp"
+	"guichan/graphics.hpp"
+	"guichan/image.hpp"
+
+1207470398 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\imagefont.hpp
+	<string>
+	"guichan/font.hpp"
+	"guichan/platform.hpp"
+	"guichan/rectangle.hpp"
+
+1200865833 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\inputevent.cpp
+	"guichan/inputevent.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\key.cpp
+	"guichan/key.hpp"
+
+1200865838 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\keyevent.cpp
+	"guichan/keyevent.hpp"
+
+1200865842 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\keyinput.cpp
+	"guichan/keyinput.hpp"
+
+1200865845 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\mouseevent.cpp
+	"guichan/mouseevent.hpp"
+
+1200865847 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\mouseinput.cpp
+	"guichan/mouseinput.hpp"
+
+1200865861 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\opengl\opengl.cpp
+	"guichan/opengl.hpp"
+
+1200865539 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\opengl.hpp
+	<guichan/opengl/openglgraphics.hpp>
+	<guichan/opengl/openglimage.hpp>
+	"guichan/platform.hpp"
+
+1200865503 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\opengl\openglgraphics.hpp
+	"guichan/color.hpp"
+	"guichan/graphics.hpp"
+	"guichan/platform.hpp"
+
+1208002827 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\opengl\openglimage.hpp
+	<windows.h>
+	<mgl/gl.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+	<string>
+	"guichan/color.hpp"
+	"guichan/platform.hpp"
+	"guichan/image.hpp"
+
+1200865864 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\opengl\openglgraphics.cpp
+	"guichan/opengl/openglgraphics.hpp"
+	<windows.h>
+	<mgl/gl.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+	"guichan/exception.hpp"
+	"guichan/image.hpp"
+	"guichan/opengl/openglimage.hpp"
+
+1200865867 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\opengl\openglimage.cpp
+	"guichan/opengl/openglimage.hpp"
+	"guichan/exception.hpp"
+
+1201946844 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\rectangle.cpp
+	"guichan/rectangle.hpp"
+
+1200865916 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\sdl\sdl.cpp
+	"guichan/sdl.hpp"
+
+1200865618 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\sdl.hpp
+	<guichan/sdl/sdlgraphics.hpp>
+	<guichan/sdl/sdlimage.hpp>
+	<guichan/sdl/sdlimageloader.hpp>
+	<guichan/sdl/sdlinput.hpp>
+	"platform.hpp"
+
+1200865603 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\sdl\sdlgraphics.hpp
+	"SDL.h"
+	"guichan/color.hpp"
+	"guichan/graphics.hpp"
+	"guichan/platform.hpp"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl.h
+	"SDL_main.h"
+	"SDL_stdinc.h"
+	"SDL_audio.h"
+	"SDL_cdrom.h"
+	"SDL_cpuinfo.h"
+	"SDL_endian.h"
+	"SDL_error.h"
+	"SDL_events.h"
+	"SDL_loadso.h"
+	"SDL_mutex.h"
+	"SDL_rwops.h"
+	"SDL_thread.h"
+	"SDL_timer.h"
+	"SDL_video.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_main.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_stdinc.h
+	"SDL_config.h"
+	<sys/types.h>
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdarg.h>
+	<stdlib.h>
+	<malloc.h>
+	<stddef.h>
+	<stdarg.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<inttypes.h>
+	<stdint.h>
+	<ctype.h>
+	<iconv.h>
+	"begin_code.h"
+	<alloca.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_config.h
+	"SDL_platform.h"
+	<stdarg.h>
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_platform.h
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\begin_code.h
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\close_code.h
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_audio.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_endian.h"
+	"SDL_mutex.h"
+	"SDL_thread.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_error.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_endian.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_mutex.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_thread.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_mutex.h"
+	"begin_code.h"
+	<process.h>
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_rwops.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_cdrom.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_cpuinfo.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_events.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_active.h"
+	"SDL_keyboard.h"
+	"SDL_mouse.h"
+	"SDL_joystick.h"
+	"SDL_quit.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_active.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_keyboard.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_keysym.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_keysym.h
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_mouse.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_video.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_joystick.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_quit.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_loadso.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_version.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1200865605 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\sdl\sdlimage.hpp
+	"SDL.h"
+	<string>
+	"guichan/color.hpp"
+	"guichan/platform.hpp"
+	"guichan/image.hpp"
+
+1200865608 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\sdl\sdlimageloader.hpp
+	"guichan/imageloader.hpp"
+	"guichan/platform.hpp"
+	"SDL.h"
+
+1207470397 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\sdl\sdlinput.hpp
+	<queue>
+	"SDL.h"
+	"guichan/input.hpp"
+	"guichan/keyinput.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/platform.hpp"
+
+1200865919 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\sdl\sdlgraphics.cpp
+	"guichan/sdl/sdlgraphics.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/image.hpp"
+	"guichan/sdl/sdlimage.hpp"
+	"guichan/sdl/sdlpixel.hpp"
+
+1200865613 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\sdl\sdlpixel.hpp
+	"SDL.h"
+	"guichan/color.hpp"
+
+1200865921 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\sdl\sdlimage.cpp
+	"guichan/sdl/sdlimage.hpp"
+	"guichan/exception.hpp"
+	"guichan/sdl/sdlpixel.hpp"
+
+1200865924 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\sdl\sdlimageloader.cpp
+	"guichan/sdl/sdlimage.hpp"
+	"SDL_image.h"
+	"guichan/exception.hpp"
+	"guichan/sdl/sdlimageloader.hpp"
+
+1184996068 c:\documents and settings\impaler\desktop\khazad\include\sdl_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1207470397 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\sdl\sdlinput.cpp
+	"guichan/sdl/sdlinput.hpp"
+	"guichan/exception.hpp"
+
+1200865933 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\selectionevent.cpp
+	"guichan/selectionevent.hpp"
+
+1200865622 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\selectionevent.hpp
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865938 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widget.cpp
+	"guichan/widget.hpp"
+	"guichan/actionevent.hpp"
+	"guichan/actionlistener.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/deathlistener.hpp"
+	"guichan/defaultfont.hpp"
+	"guichan/event.hpp"
+	"guichan/exception.hpp"
+	"guichan/focushandler.hpp"
+	"guichan/graphics.hpp"
+	"guichan/keyinput.hpp"
+	"guichan/keylistener.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/widgetlistener.hpp"
+
+1200865160 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\actionlistener.hpp
+	<string>
+	"guichan/actionevent.hpp"
+	"guichan/platform.hpp"
+
+1201946842 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgetlistener.hpp
+	<string>
+	"guichan/event.hpp"
+	"guichan/platform.hpp"
+
+1200865954 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widgets\button.cpp
+	"guichan/widgets/button.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseevent.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865644 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgets\button.hpp
+	<string>
+	"guichan/focuslistener.hpp"
+	"guichan/graphics.hpp"
+	"guichan/keylistener.hpp"
+	"guichan/mouseevent.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widgets\checkbox.cpp
+	"guichan/widgets/checkbox.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865647 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgets\checkbox.hpp
+	<string>
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1200865960 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widgets\container.cpp
+	"guichan/widgets/container.hpp"
+	"guichan/exception.hpp"
+	"guichan/graphics.hpp"
+
+1208003762 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgets\container.hpp
+	<list>
+	"guichan/basiccontainer.hpp"
+	"guichan/graphics.hpp"
+	"guichan/platform.hpp"
+
+1209211212 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widgets\dropdown.cpp
+	"guichan/widgets/dropdown.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/listmodel.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/widgets/listbox.hpp"
+	"guichan/widgets/scrollarea.hpp"
+
+1200865652 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgets\dropdown.hpp
+	"guichan/actionlistener.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/deathlistener.hpp"
+	"guichan/focushandler.hpp"
+	"guichan/focuslistener.hpp"
+	"guichan/keylistener.hpp"
+	"guichan/listmodel.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/selectionlistener.hpp"
+	"guichan/widgets/listbox.hpp"
+	"guichan/widgets/scrollarea.hpp"
+
+1200865439 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\listmodel.hpp
+	<string>
+	"guichan/platform.hpp"
+
+1201946842 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\selectionlistener.hpp
+	<string>
+	"guichan/selectionevent.hpp"
+	"guichan/platform.hpp"
+
+1207470398 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgets\listbox.hpp
+	<list>
+	"guichan/keylistener.hpp"
+	"guichan/listmodel.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1208003645 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgets\scrollarea.hpp
+	<string>
+	"guichan/basiccontainer.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widgets\icon.cpp
+	"guichan/widgets/icon.hpp"
+	"guichan/graphics.hpp"
+	"guichan/image.hpp"
+	"guichan/rectangle.hpp"
+
+1200865655 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgets\icon.hpp
+	"guichan/image.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1200865968 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widgets\imagebutton.cpp
+	"guichan/widgets/imagebutton.hpp"
+	"guichan/graphics.hpp"
+	"guichan/image.hpp"
+
+1200865657 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgets\imagebutton.hpp
+	"guichan/platform.hpp"
+	"guichan/widgets/button.hpp"
+
+1200865970 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widgets\label.cpp
+	"guichan/widgets/label.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+
+1200865659 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgets\label.hpp
+	<string>
+	"guichan/graphics.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1207470397 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widgets\listbox.cpp
+	"guichan/widgets/listbox.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/listmodel.hpp"
+	"guichan/mouseinput.hpp"
+	"guichan/selectionlistener.hpp"
+
+1200865981 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widgets\radiobutton.cpp
+	"guichan/widgets/radiobutton.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865665 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgets\radiobutton.hpp
+	<map>
+	<string>
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1208003790 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widgets\scrollarea.cpp
+	"guichan/widgets/scrollarea.hpp"
+	"guichan/exception.hpp"
+	"guichan/graphics.hpp"
+
+1200865986 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widgets\slider.cpp
+	"guichan/widgets/slider.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865670 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgets\slider.hpp
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1201946844 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widgets\tab.cpp
+	"guichan/widgets/tab.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/widgets/button.hpp"
+	"guichan/widgets/label.hpp"
+	"guichan/widgets/tabbedarea.hpp"
+
+1201946842 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgets\tab.hpp
+	<map>
+	<string>
+	"guichan/basiccontainer.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+
+1201946842 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgets\tabbedarea.hpp
+	<map>
+	<string>
+	<vector>
+	"guichan/actionlistener.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+
+1201946844 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widgets\tabbedarea.cpp
+	"guichan/widgets/tabbedarea.hpp"
+	"guichan/exception.hpp"
+	"guichan/focushandler.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/widgets/container.hpp"
+	"guichan/widgets/tab.hpp"
+	<algorithm>
+
+1200865996 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widgets\textbox.cpp
+	"guichan/widgets/textbox.hpp"
+	"guichan/basiccontainer.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865678 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgets\textbox.hpp
+	<ctime>
+	<string>
+	<vector>
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+
+1200865999 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widgets\textfield.cpp
+	"guichan/widgets/textfield.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/key.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865681 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgets\textfield.hpp
+	"guichan/keylistener.hpp"
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widget.hpp"
+	<string>
+
+1200866001 source:c:\documents and settings\impaler\desktop\khazad\guichan\src\widgets\window.cpp
+	"guichan/widgets/window.hpp"
+	"guichan/exception.hpp"
+	"guichan/font.hpp"
+	"guichan/graphics.hpp"
+	"guichan/mouseinput.hpp"
+
+1200865683 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\widgets\window.hpp
+	<string>
+	"guichan/mouselistener.hpp"
+	"guichan/platform.hpp"
+	"guichan/widgets/container.hpp"
+
+1235806485 source:c:\documents and settings\impaler\desktop\khazad\src\core\random.cpp
+	<Singleton.h>
+	<Random.h>
+
+1239234440 c:\documents and settings\impaler\desktop\khazad\src\core\singleton.h
+
+1236070425 c:\documents and settings\impaler\desktop\khazad\src\core\random.h
+	<stdafx.h>
+	<cstdlib>
+	<ctime>
+	<Singleton.h>
+
+1237442130 c:\documents and settings\impaler\desktop\khazad\src\core\stdafx.h
+	<windows.h>
+	<stdio.h>
+	<tchar.h>
+	<assert.h>
+	<gl/gl.h>
+	<gl/glu.h>
+	<glut.h>
+	<sdl.h>
+	<SDL_opengl.h>
+	<string>
+	<vector>
+	<math.h>
+	<algorithm>
+	<functional>
+	<iostream>
+	<stdarg.h>
+	<guichan.hpp>
+	<guichan/sdl.hpp>
+	<guichan/opengl.hpp>
+	<guichan/opengl/openglsdlimageloader.hpp>
+	<enum.h>
+
+1237278855 c:\documents and settings\impaler\desktop\khazad\include\glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1199052373 c:\documents and settings\impaler\desktop\khazad\include\sdl_opengl.h
+	"SDL_config.h"
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<gl.h>
+	<glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<windows.h>
+	<stddef.h>
+
+1200863990 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan.hpp
+	<guichan/actionevent.hpp>
+	<guichan/actionlistener.hpp>
+	<guichan/cliprectangle.hpp>
+	<guichan/color.hpp>
+	<guichan/deathlistener.hpp>
+	<guichan/event.hpp>
+	<guichan/exception.hpp>
+	<guichan/focushandler.hpp>
+	<guichan/focuslistener.hpp>
+	<guichan/font.hpp>
+	<guichan/genericinput.hpp>
+	<guichan/graphics.hpp>
+	<guichan/gui.hpp>
+	<guichan/image.hpp>
+	<guichan/imagefont.hpp>
+	<guichan/imageloader.hpp>
+	<guichan/input.hpp>
+	<guichan/inputevent.hpp>
+	<guichan/key.hpp>
+	<guichan/keyevent.hpp>
+	<guichan/keyinput.hpp>
+	<guichan/keylistener.hpp>
+	<guichan/listmodel.hpp>
+	<guichan/mouseevent.hpp>
+	<guichan/mouseinput.hpp>
+	<guichan/mouselistener.hpp>
+	<guichan/rectangle.hpp>
+	<guichan/selectionevent.hpp>
+	<guichan/selectionlistener.hpp>
+	<guichan/widget.hpp>
+	<guichan/widgetlistener.hpp>
+	<guichan/widgets/button.hpp>
+	<guichan/widgets/checkbox.hpp>
+	<guichan/widgets/container.hpp>
+	<guichan/widgets/dropdown.hpp>
+	<guichan/widgets/icon.hpp>
+	<guichan/widgets/imagebutton.hpp>
+	<guichan/widgets/label.hpp>
+	<guichan/widgets/listbox.hpp>
+	<guichan/widgets/scrollarea.hpp>
+	<guichan/widgets/slider.hpp>
+	<guichan/widgets/radiobutton.hpp>
+	<guichan/widgets/tab.hpp>
+	<guichan/widgets/tabbedarea.hpp>
+	<guichan/widgets/textbox.hpp>
+	<guichan/widgets/textfield.hpp>
+	<guichan/widgets/window.hpp>
+	"guichan/platform.hpp"
+
+1200865530 c:\documents and settings\impaler\desktop\khazad\guichan\include\guichan\opengl\openglsdlimageloader.hpp
+	<guichan/sdl/sdlimageloader.hpp>
+	<guichan/exception.hpp>
+	<guichan/opengl/openglimage.hpp>
+
+1236926967 c:\documents and settings\impaler\desktop\khazad\src\core\enum.h
+
+1239167795 source:c:\documents and settings\impaler\desktop\khazad\src\core\timer.cpp
+	<stdafx.h>
+	<Timer.h>
+
+1239167311 c:\documents and settings\impaler\desktop\khazad\src\core\timer.h
+	<stdafx.h>
+	<sdl.h>
+
+1239233910 source:c:\documents and settings\impaler\desktop\khazad\src\core\main.cpp
+	<stdafx.h>
+	<Timer.h>
+	<TextureManager.h>
+	<FontManager.h>
+	<ColorManager.h>
+	<XMLManager.h>
+	<Random.h>
+	<ScreenManager.h>
+	<ConfigManager.h>
+	<DataManager.h>
+	<InputManager.h>
+	<Game.h>
+	<Map.h>
+	<Gui.h>
+
+1237277299 c:\documents and settings\impaler\desktop\khazad\src\render\texturemanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1237795411 c:\documents and settings\impaler\desktop\khazad\src\gui\fontmanager.h
+	<SDL_ttf.h>
+	<stdafx.h>
+	<Singleton.h>
+
+1185039004 c:\documents and settings\impaler\desktop\khazad\include\sdl_ttf.h
+	"SDL.h"
+	"begin_code.h"
+	"close_code.h"
+
+1236150267 c:\documents and settings\impaler\desktop\khazad\src\render\colormanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1235556021 c:\documents and settings\impaler\desktop\khazad\src\data\xmlmanager.h
+	<stdafx.h>
+	<Singleton.h>
+	<tinystr.h>
+	<tinyxml.h>
+
+1178491284 c:\documents and settings\impaler\desktop\khazad\src\tinyxml\tinystr.h
+	<assert.h>
+	<string.h>
+
+1178491284 c:\documents and settings\impaler\desktop\khazad\src\tinyxml\tinyxml.h
+	<ctype.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<string>
+	<iostream>
+	<sstream>
+	"tinystr.h"
+
+1239139683 c:\documents and settings\impaler\desktop\khazad\src\render\screenmanager.h
+	<stdafx.h>
+	<PrimTypes.h>
+	<Singleton.h>
+
+1219532746 c:\documents and settings\impaler\desktop\khazad\src\geometry\primtypes.h
+
+1236070059 c:\documents and settings\impaler\desktop\khazad\src\data\configmanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1235556021 c:\documents and settings\impaler\desktop\khazad\src\data\datamanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1236070311 c:\documents and settings\impaler\desktop\khazad\src\gui\inputmanager.h
+	<stdafx.h>
+	<Singleton.h>
+
+1236204795 c:\documents and settings\impaler\desktop\khazad\src\game\game.h
+	<stdafx.h>
+	<Singleton.h>
+	<Actor.h>
+
+1237872796 c:\documents and settings\impaler\desktop\khazad\src\game\actor.h
+	<stdafx.h>
+	<Vector3.h>
+	<ScreenManager.h>
+
+1235468170 c:\documents and settings\impaler\desktop\khazad\src\geometry\vector3.h
+	<stdafx.h>
+
+1236463221 c:\documents and settings\impaler\desktop\khazad\src\map\map.h
+	<Singleton.h>
+	<stdafx.h>
+
+1237507909 c:\documents and settings\impaler\desktop\khazad\src\gui\gui.h
+	<stdafx.h>
+	<Singleton.h>
+
+1235712263 source:c:\documents and settings\impaler\desktop\khazad\src\data\configmanager.cpp
+	<ConfigManager.h>
+	<Singleton.h>
+	<XMLManager.h>
+
+1235712264 source:c:\documents and settings\impaler\desktop\khazad\src\data\datamanager.cpp
+	<DataManager.h>
+	<Singleton.h>
+	<XMLManager.h>
+
+1236065823 source:c:\documents and settings\impaler\desktop\khazad\src\data\xmlmanager.cpp
+	<stdafx.h>
+	<XMLManager.h>
+	<tinystr.h>
+	<tinyxml.h>
+
+1236205228 source:c:\documents and settings\impaler\desktop\khazad\src\game\actor.cpp
+	<stdafx.h>
+	<Actor.h>
+	<Timer.h>
+
+1237873237 source:c:\documents and settings\impaler\desktop\khazad\src\game\game.cpp
+	<stdafx.h>
+	<Game.h>
+	<Singleton.h>
+	<Pawn.h>
+	<Vector3.h>
+	<TextureManager.h>
+
+1236141136 c:\documents and settings\impaler\desktop\khazad\src\game\pawn.h
+	<stdafx.h>
+	<Actor.h>
+
+1236233080 source:c:\documents and settings\impaler\desktop\khazad\src\game\pawn.cpp
+	<stdafx.h>
+	<Pawn.h>
+	<Random.h>
+	<ScreenManager.h>
+	<Game.h>
+	<Map.h>
+	<Cube.h>
+
+1236408851 c:\documents and settings\impaler\desktop\khazad\src\map\cube.h
+	<stdafx.h>
+	<Actor.h>
+
+1236065633 source:c:\documents and settings\impaler\desktop\khazad\src\geometry\plane.cpp
+	<stdafx.h>
+	<Plane.h>
+
+1235511147 c:\documents and settings\impaler\desktop\khazad\src\geometry\plane.h
+	<stdafx.h>
+	<Vector3.h>
+
+1133414966 source:c:\documents and settings\impaler\desktop\khazad\src\geometry\vector2.cpp
+
+1236065823 source:c:\documents and settings\impaler\desktop\khazad\src\geometry\vector3.cpp
+	<stdafx.h>
+	<Vector3.h>
+
+1237780637 source:c:\documents and settings\impaler\desktop\khazad\src\gui\font.cpp
+	<stdafx.h>
+	"Font.h"
+
+1237780652 c:\documents and settings\impaler\desktop\khazad\src\gui\font.h
+	"SDL_ttf.h"
+
+1239139683 source:c:\documents and settings\impaler\desktop\khazad\src\gui\fontmanager.cpp
+	<stdafx.h>
+	<SDL_ttf.h>
+	<FontManager.h>
+	<Singleton.h>
+
+1237523571 source:c:\documents and settings\impaler\desktop\khazad\src\gui\gui.cpp
+	<stdafx.h>
+	<Gui.h>
+	<ScreenManager.h>
+	<Singleton.h>
+
+1237522357 source:c:\documents and settings\impaler\desktop\khazad\src\gui\inputmanager.cpp
+	<stdafx.h>
+	<Game.h>
+	<InputManager.h>
+	<ScreenManager.h>
+	<Camera.h>
+	<Singleton.h>
+	<Cube.h>
+
+1236145835 c:\documents and settings\impaler\desktop\khazad\src\render\camera.h
+	<stdafx.h>
+	<Plane.h>
+
+1237872674 source:c:\documents and settings\impaler\desktop\khazad\src\map\cell.cpp
+	<stdafx.h>
+	<Cell.h>
+	<Cube.h>
+	<ConfigManager.h>
+	<Random.h>
+	<Game.h>
+
+1237872674 c:\documents and settings\impaler\desktop\khazad\src\map\cell.h
+	<stdafx.h>
+	<Actor.h>
+
+1236849116 source:c:\documents and settings\impaler\desktop\khazad\src\map\cube.cpp
+	<stdafx.h>
+	<Game.h>
+	<Camera.h>
+	<ScreenManager.h>
+	<Cube.h>
+	<Map.h>
+	<Face.h>
+	<Slope.h>
+
+1236404917 c:\documents and settings\impaler\desktop\khazad\src\map\face.h
+	<stdafx.h>
+	<Actor.h>
+	<Cube.h>
+
+1236405116 c:\documents and settings\impaler\desktop\khazad\src\map\slope.h
+	<stdafx.h>
+	<Actor.h>
+
+1237869741 source:c:\documents and settings\impaler\desktop\khazad\src\map\face.cpp
+	<stdafx.h>
+	<Cube.h>
+	<Face.h>
+	<Game.h>
+	<TextureManager.h>
+	<ScreenManager.h>
+
+1237445073 source:c:\documents and settings\impaler\desktop\khazad\src\map\map.cpp
+	<stdafx.h>
+	<Map.h>
+	<Singleton.h>
+	<ConfigManager.h>
+	<Cube.h>
+	<Cell.h>
+	<Random.h>
+
+1237868030 source:c:\documents and settings\impaler\desktop\khazad\src\map\slope.cpp
+	<stdafx.h>
+	<Slope.h>
+	<Cube.h>
+	<Game.h>
+	<TextureManager.h>
+	<ScreenManager.h>
+
+1236233080 source:c:\documents and settings\impaler\desktop\khazad\src\render\camera.cpp
+	<stdafx.h>
+	<Camera.h>
+	<Plane.h>
+	<ScreenManager.h>
+	<Map.h>
+
+1236065424 source:c:\documents and settings\impaler\desktop\khazad\src\render\clipimage.cpp
+	<stdafx.h>
+	<ClipImage.h>
+	<ImagePage.h>
+
+1235510582 c:\documents and settings\impaler\desktop\khazad\src\render\clipimage.h
+	<stdafx.h>
+
+1234818278 c:\documents and settings\impaler\desktop\khazad\src\render\imagepage.h
+	<stdafx.h>
+	<SDL_image.h>
+
+1235712263 source:c:\documents and settings\impaler\desktop\khazad\src\render\colormanager.cpp
+	<ColorManager.h>
+	<Singleton.h>
+	<XMLManager.h>
+
+1236065559 source:c:\documents and settings\impaler\desktop\khazad\src\render\imagemanager.cpp
+	<stdafx.h>
+	<ImagePage.h>
+	<ClipImage.h>
+	<ImageManager.h>
+
+1236070311 c:\documents and settings\impaler\desktop\khazad\src\render\imagemanager.h
+	<stdafx.h>
+	<SDL_image.h>
+
+1236065633 source:c:\documents and settings\impaler\desktop\khazad\src\render\imagepage.cpp
+	<stdafx.h>
+	<ImagePage.h>
+
+1239139683 source:c:\documents and settings\impaler\desktop\khazad\src\render\screenmanager.cpp
+	<stdafx.h>
+	<ScreenManager.h>
+	<Singleton.h>
+	<ImagePage.h>
+	<ClipImage.h>
+	<Camera.h>
+	<ConfigManager.h>
+	<FontManager.h>
+	<ColorManager.h>
+	<TextureManager.h>
+	<Game.h>
+	<Map.h>
+	<Cell.h>
+	<Gui.h>
+
+1237277299 source:c:\documents and settings\impaler\desktop\khazad\src\render\texturemanager.cpp
+	<stdafx.h>
+	<ImagePage.h>
+	<ClipImage.h>
+	<TextureManager.h>
+
+1178491284 source:c:\documents and settings\impaler\desktop\khazad\src\tinyxml\tinystr.cpp
+	"tinystr.h"
+
+1178491284 source:c:\documents and settings\impaler\desktop\khazad\src\tinyxml\tinyxml.cpp
+	<ctype.h>
+	<sstream>
+	<iostream>
+	"tinyxml.h"
+
+1178491284 source:c:\documents and settings\impaler\desktop\khazad\src\tinyxml\tinyxmlerror.cpp
+	"tinyxml.h"
+
+1178491284 source:c:\documents and settings\impaler\desktop\khazad\src\tinyxml\tinyxmlparser.cpp
+	<ctype.h>
+	<stddef.h>
+	"tinyxml.h"
+	<windows.h>
+

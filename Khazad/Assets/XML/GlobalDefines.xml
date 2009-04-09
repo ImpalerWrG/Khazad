@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<GlobalDefines xmlns="namespace">
+	<ScreenResolution X="1000" Y="800"/>
+	<GameCaption Caption="An XML Caption"/>
+	<MapSize X="3" Y="3" Z="16"/>
+	<CellSize EdgeLength="32"/>
+</GlobalDefines>
