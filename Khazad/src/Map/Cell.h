@@ -16,6 +16,9 @@ public:
 	bool Init();
 	Cube* getCube(Uint16 x, Uint16 y);
 
+    Uint16 getTriangleCount() { return TriangleCount; }
+    void setTriangleCount(Uint16 Triangles) { TriangleCount = Triangles; }
+
 	bool Draw();
 	bool Update();
 
@@ -29,6 +32,8 @@ private:
 	Sint16 XOffset;
 	Sint16 YOffset;
 	Sint16 ZOffset;
+
+    Uint16 TriangleCount;
 
 	Cube** Cubes;
 

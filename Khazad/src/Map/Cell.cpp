@@ -71,6 +71,11 @@ bool Cell::Update()
 
 bool Cell::Draw()
 {
+   // if(Sky | Rock | Air | Basment) //Nothing to draw for these Cells
+    //{
+    //    return true;
+    //}
+
 	Uint16 CellEdgeLenth = CONFIG->getCellEdgeLength();
 
     Cube* LoopCube = NULL;

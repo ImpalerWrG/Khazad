@@ -44,6 +44,7 @@ public:
 
 	void DirtyAllLists();
 	bool Render();
+	void IncrementTriangles(Uint32 Triangles);
 	float getShading(float Zlevel);
 	void PrintDebugging();
 	void ShowAxis(void);
@@ -51,6 +52,7 @@ public:
 	void DrawColoredFacet(Face* DrawingFace, float Shading = 1.0, SDL_Color color);
 	void DrawCube(Cube* DrawCube, float Shading = 1.0);
 
+    Uint32 getTriangleCount() { return TotalTriangles; }
     void ToggleFullScreen();
     void Enable2D();
     void Disable2D();
@@ -73,6 +75,8 @@ private:
 	Uint8 GreenPickingValue;
 	Uint8 BluePickingValue;
 
+    Uint32 TriangleCounter;
+    Uint32 TotalTriangles;
 
     gcn::OpenGLSDLImageLoader* imageLoader;
 

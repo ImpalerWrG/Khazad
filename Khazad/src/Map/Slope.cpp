@@ -326,6 +326,8 @@ bool Slope::Draw()
                 glVertex3f(Points[3].x, Points[3].y, Points[3].z);
                 glTexCoord2f(0.0f, 1.0f);
                 glVertex3f(Points[0].x, Points[0].y, Points[0].z);
+
+                SCREEN->IncrementTriangles(2);
             //glEnd();
 
 /*
@@ -349,6 +351,8 @@ bool Slope::Draw()
                 glVertex3f(Points[1].x, Points[1].y, Points[1].z);
                 glTexCoord2f(1.0f, 0.0f);
                 glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+
+                SCREEN->IncrementTriangles(1);
             //glEnd();
 
 /*
@@ -371,6 +375,8 @@ bool Slope::Draw()
                 glVertex3f(Points[1].x, Points[1].y, Points[1].z);
                 glTexCoord2f(1.0f, 0.0f);
                 glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+
+                SCREEN->IncrementTriangles(1);
             //glEnd();
 /*
             glColor3f (0.0, 0.0, 0.0);
@@ -399,6 +405,8 @@ bool Slope::Draw()
                 glVertex3f(Points[1].x, Points[1].y, Points[1].z);
                 glTexCoord2f(1.0f, 0.0f);
                 glVertex3f(Points[3].x, Points[3].y, Points[3].z);
+
+                SCREEN->IncrementTriangles(2);
             //glEnd();
 /*
             glColor3f (0.0, 0.0, 0.0);

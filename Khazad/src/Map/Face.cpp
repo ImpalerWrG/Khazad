@@ -216,7 +216,9 @@ bool Face::Draw()
             glVertex3f(Points[2].x, Points[2].y, Points[2].z);
             glVertex3f(Points[3].x, Points[3].y, Points[3].z);
         glEnd();
+
 */
+        SCREEN->IncrementTriangles(2);
     }
 
 	return true;

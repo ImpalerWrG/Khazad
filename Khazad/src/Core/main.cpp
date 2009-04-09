@@ -197,7 +197,10 @@ int main(int argv, char** argc)
 
             position.y -= 40;
 
-            sprintf (buffer, "InputTime %3.2f", InputTimer->getAverage());
+            //sprintf (buffer, "InputTime %3.2f", InputTimer->getAverage());
+            //FONT->SDL_GL_RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
+
+            sprintf (buffer, "Triangles %i", SCREEN->getTriangleCount());
             FONT->SDL_GL_RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
             position.y -= 40;

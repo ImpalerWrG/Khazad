@@ -372,6 +372,9 @@ bool ScreenManager::Render()
 	GreenPickingValue = 0;
 	BluePickingValue = 0;
 
+	TotalTriangles = 0;
+    TriangleCounter = 0;
+
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	MainCamera->UpdateView();
 	Uint16 CellEdgeLenth = CONFIG->getCellEdgeLength();
@@ -396,9 +399,12 @@ bool ScreenManager::Render()
 							glDeleteLists(LoopCell->DrawListID, 1);
 							glNewList(LoopCell->DrawListID, GL_COMPILE_AND_EXECUTE);
 
+                                TriangleCounter = 0;  // Reset Counter and Track Triangle count
                                 glBegin(GL_TRIANGLES);
-								LoopCell->Draw();
+                                    LoopCell->Draw();
                                 glEnd();
+                                LoopCell->setTriangleCount(TriangleCounter);
+                                TotalTriangles += TriangleCounter;
 
 							glEndList();
 							LoopCell->DirtyDrawlist = false;
@@ -406,13 +412,14 @@ bool ScreenManager::Render()
 						else
 						{
 							glCallList(LoopCell->DrawListID);
+							TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
 						}
 					}
 				}
 			}
 		}
 	}
-
+/*
 	for (Uint32 i = 0; i < GAME->ActorList.size(); i++)
 	{
 	    if (GAME->ActorList[i]->getType() == PAWN_ACTOR)
@@ -420,7 +427,7 @@ bool ScreenManager::Render()
             GAME->ActorList[i]->Draw();
 	    }
 	}
-
+*/
 
     glTranslatef(10.0, 10.0, 10.0);
 
@@ -428,6 +435,11 @@ bool ScreenManager::Render()
 
 	//return Flip();
 	return true;
+}
+
+void ScreenManager::IncrementTriangles(Uint32 Triangles)
+{
+    TriangleCounter += Triangles;
 }
 
 float ScreenManager::getShading(float Zlevel)
