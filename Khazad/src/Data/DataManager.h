@@ -3,6 +3,7 @@
 
 #include <stdafx.h>
 #include <Singleton.h>
+#include <DataTypes.h>
 
 class DataManager
 {
@@ -12,11 +13,14 @@ public:
 
 	~DataManager();
 	bool Init();
+	bool LoadDataClass(char* Path, char* Entry);
 
+    std::vector<MaterialData*> Materials;
 
 private:
 
 };
+
 
 #define DATA (DataManager::GetInstance())
 

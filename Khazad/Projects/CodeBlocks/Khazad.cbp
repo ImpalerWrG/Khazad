@@ -183,6 +183,8 @@
 		<Unit filename="..\..\src\Data\ConfigManager.h" />
 		<Unit filename="..\..\src\Data\DataManager.cpp" />
 		<Unit filename="..\..\src\Data\DataManager.h" />
+		<Unit filename="..\..\src\Data\DataTypes.cpp" />
+		<Unit filename="..\..\src\Data\DataTypes.h" />
 		<Unit filename="..\..\src\Data\XMLManager.cpp" />
 		<Unit filename="..\..\src\Data\XMLManager.h" />
 		<Unit filename="..\..\src\Game\Actor.cpp" />

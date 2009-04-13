@@ -4975,7 +4975,7 @@
 	<stdafx.h>
 	<sdl.h>
 
-1239312758 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\main.cpp
+1239320836 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\main.cpp
 	<stdafx.h>
 	<Timer.h>
 	<TextureManager.h>
@@ -5009,7 +5009,7 @@
 	<stdafx.h>
 	<Singleton.h>
 
-1235556021 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\xmlmanager.h
+1239598470 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\xmlmanager.h
 	<stdafx.h>
 	<Singleton.h>
 	<tinystr.h>
@@ -5041,9 +5041,10 @@
 	<stdafx.h>
 	<Singleton.h>
 
-1235556021 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\datamanager.h
+1239604181 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\datamanager.h
 	<stdafx.h>
 	<Singleton.h>
+	<DataTypes.h>
 
 1236070311 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\gui\inputmanager.h
 	<stdafx.h>
@@ -5070,17 +5071,20 @@
 	<stdafx.h>
 	<Singleton.h>
 
-1235712263 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\configmanager.cpp
+1239584355 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\configmanager.cpp
 	<ConfigManager.h>
 	<Singleton.h>
 	<XMLManager.h>
 
-1235712264 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\datamanager.cpp
+1239604590 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\datamanager.cpp
 	<DataManager.h>
 	<Singleton.h>
 	<XMLManager.h>
+	<DataTypes.h>
+	<tinystr.h>
+	<tinyxml.h>
 
-1236065823 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\xmlmanager.cpp
+1239605066 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\xmlmanager.cpp
 	<stdafx.h>
 	<XMLManager.h>
 	<tinystr.h>
@@ -5091,7 +5095,7 @@
 	<Actor.h>
 	<Timer.h>
 
-1237873237 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\game\game.cpp
+1239604456 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\game\game.cpp
 	<stdafx.h>
 	<Game.h>
 	<Singleton.h>
@@ -5280,7 +5284,7 @@
 	<TextureManager.h>
 	<ScreenManager.h>
 
-1239312916 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\screenmanager.cpp
+1239604272 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\screenmanager.cpp
 	<stdafx.h>
 	<ScreenManager.h>
 	<Singleton.h>
@@ -5291,8 +5295,17 @@
 	<FontManager.h>
 	<ColorManager.h>
 	<TextureManager.h>
+	<DataManager.h>
 	<Game.h>
 	<Map.h>
 	<Cell.h>
 	<Gui.h>
+
+1239583737 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\datatypes.h
+	<stdafx.h>
+	<tinyxml.h>
+
+1239593351 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\datatypes.cpp
+	<DataTypes.h>
+	<XMLManager.h>
 

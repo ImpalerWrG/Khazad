@@ -153,14 +153,14 @@ void XMLManager::dump_to_stdout(const char* pFilename)
 	}
 }
 
-bool XMLManager::loadFile( const char* Filename )
+TiXmlDocument* XMLManager::loadFile( const char* Filename )
 {
 	TiXmlDocument* doc = new TiXmlDocument(Filename);
 	bool loadOkay = doc->LoadFile();
 	if (loadOkay)
 	{
 		XMLDocLibrary.push_back(doc);
-		return true;
+		return doc;
 	}
-	return false;
+	return NULL;
 }

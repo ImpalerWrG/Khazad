@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Materials xmlns="namespace">
+	<Material>
+		<Name Text="Granite"/>
+		<Texture Int="0"/>
+		<Hardness Int="100"/>
+	</Material>
+	<Material>
+		<Name Text="Limestone"/>
+		<Texture Int="1"/>
+		<Hardness Int="40"/>
+	</Material>
+	<Material>
+		<Name Text="Basalt"/>
+		<Texture Int="2"/>
+		<Hardness Int="60"/>
+	</Material>
+	<Material>
+		<Name Text="Quartzite"/>
+		<Texture Int="3"/>
+		<Hardness Int="80"/>
+	</Material>
+</Materials>

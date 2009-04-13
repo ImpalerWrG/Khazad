@@ -6,7 +6,12 @@ DECLARE_SINGLETON(ConfigManager)
 
 ConfigManager::ConfigManager()
 {
-
+	XResolution = 300;
+	YResolution = 400;
+	XMap = 10;
+	YMap = 10;
+	ZMap = 10;
+	CellEdgeLength = 10;
 }
 
 ConfigManager::~ConfigManager()
@@ -18,17 +23,18 @@ bool ConfigManager::Init()
 {
 	XML->loadFile("Assets\\XML\\GlobalDefines.xml");
 
-	XResolution = 400;
+	//TiXmlDocument* Document = XML->loadFile("Assets\\XML\\GlobalDefines.xml");
+	//TiXmlHandle docHandle( Document );
+
+   // XML->QueryUIntValue(TiXmlElement* Element, "X", XResolution);
+   // TiXmlHandle* root = docHandle.FirstChild( "Materials" ).FirstChildElement( "Material" );
+
+
 	XML->getUIntValue("GlobalDefines", "ScreenResolution", "X", XResolution);
-	YResolution = 300;
 	XML->getUIntValue("GlobalDefines", "ScreenResolution", "Y", YResolution);
-	XMap = 20;
 	XML->getUIntValue("GlobalDefines", "MapSize", "X", XMap);
-	YMap = 30;
 	XML->getUIntValue("GlobalDefines", "MapSize", "Y", YMap);
-	ZMap = 10;
 	XML->getUIntValue("GlobalDefines", "MapSize", "Z", ZMap);
-	CellEdgeLength = 10;
 	XML->getUIntValue("GlobalDefines", "CellSize", "EdgeLength", CellEdgeLength);
 
 	return true;

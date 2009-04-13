@@ -10,6 +10,7 @@
 #include <FontManager.h>
 #include <ColorManager.h>
 #include <TextureManager.h>
+#include <DataManager.h>
 #include <Game.h>
 #include <Map.h>
 #include <Cell.h>
@@ -379,7 +380,7 @@ bool ScreenManager::Render()
 	MainCamera->UpdateView();
 	Uint16 CellEdgeLenth = CONFIG->getCellEdgeLength();
 
-    glBindTexture(GL_TEXTURE_2D, TEXTURE->SingularTextureLibrary[0]);
+    glBindTexture(GL_TEXTURE_2D, TEXTURE->SingularTextureLibrary[2]);
 
 	for(Uint16 Zlevel = 0; Zlevel < MAP->CellSizeZ; Zlevel++) // Bottom up drawing
 	{
@@ -429,9 +430,9 @@ bool ScreenManager::Render()
 	}
 */
 
-    glTranslatef(10.0, 10.0, 10.0);
+    //glTranslatef(10.0, 10.0, 10.0);
 
-	ShowAxis();
+	//ShowAxis();
 
 	//return Flip();
 	return true;

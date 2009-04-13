@@ -22,7 +22,7 @@ public:
 	void dump_to_stdout( TiXmlNode* pParent, unsigned int indent = 0 );
 	bool dump_attribs_to_stdout(TiXmlElement* pElement, unsigned int indent);
 
-	bool loadFile(const char* Filename);
+	TiXmlDocument* loadFile(const char* Filename);
 
 	template <class T>
 	void getSIntValue( const char* Rootname, const char* Element, const char* Attribute, T& defaultvalue )
@@ -33,7 +33,7 @@ public:
 			if (XMLDocLibrary[i])
 			{
 				TiXmlElement* Root = XMLDocLibrary[i]->RootElement();
-				printf(Root->Value());
+				//printf(Root->Value());
 				if (strcmp( Rootname, Root->Value() ) == 0)
 				{
 					Doc = XMLDocLibrary[i];
@@ -59,7 +59,7 @@ public:
 			if (XMLDocLibrary[i])
 			{
 				TiXmlElement* Root = XMLDocLibrary[i]->RootElement();
-				printf(Root->Value());
+				//printf(Root->Value());
 				if (strcmp( Rootname, Root->Value() ) == 0)
 				{
 					Doc = XMLDocLibrary[i];
@@ -70,7 +70,7 @@ public:
 					{
 						int temp = defaultvalue;
 						child->QueryIntAttribute(Attribute, &temp);
-						if (temp > 0)
+						if (temp >= 0)
 						{
 							defaultvalue = temp;
 						}
@@ -80,6 +80,34 @@ public:
 			}
 		}
 	};
+
+	template <class T>
+    void QueryUIntValue(TiXmlElement* Entry, const char* Element, const char* Attribute, T& defaultvalue)
+    {
+        TiXmlElement* child = Entry->FirstChildElement(Element);
+        if (child)
+        {
+            int temp;
+            child->QueryIntAttribute(Attribute, &temp);
+            if (temp >= 0)
+            {
+                //Error
+                defaultvalue = temp;
+            }
+        }
+    };
+
+    template <class T>
+    void QuerySIntValue(TiXmlElement* Entry, const char* Element, const char* Attribute, T& defaultvalue)
+    {
+        TiXmlElement* child = Entry->FirstChildElement(Element);
+        if (child)
+        {
+            int temp;
+            child->QueryIntAttribute(Attribute, &temp);
+            defaultvalue = temp;
+        }
+    };
 
 	const char * getIndentAlt( unsigned int numIndents );
 	const char * getIndent( unsigned int numIndents );

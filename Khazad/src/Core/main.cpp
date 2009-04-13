@@ -227,7 +227,7 @@ int main(int argv, char** argc)
 
 		FPSTimer->Pause(); // FrameRate Captures whole loop
 
-        FrameRate = FrameRateControl(FPSTimer);
+        FrameRate = (Uint32) FrameRateControl(FPSTimer);
 
 	} // Program done, exited
 
