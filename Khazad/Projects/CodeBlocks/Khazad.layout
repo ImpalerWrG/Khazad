@@ -1,76 +1,79 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Release" />
-	<File name="..\..\guichan\include\guichan\actionevent.hpp" open="1" top="0" tabpos="3">
-		<Cursor position="1233" topLine="21" />
+	<ActiveTarget name="Debug" />
+	<File name="..\..\guichan\include\guichan\actionevent.hpp" open="0" top="0" tabpos="3">
+		<Cursor position="383" topLine="0" />
 	</File>
-	<File name="..\..\guichan\src\actionevent.cpp" open="1" top="0" tabpos="2">
+	<File name="..\..\guichan\src\actionevent.cpp" open="0" top="0" tabpos="2">
 		<Cursor position="992" topLine="0" />
 	</File>
 	<File name="..\..\src\Core\Random.cpp" open="1" top="0" tabpos="1">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="..\..\src\Core\main.cpp" open="1" top="0" tabpos="4">
-		<Cursor position="2844" topLine="112" />
+	<File name="..\..\src\Core\main.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="859" topLine="40" />
 	</File>
-	<File name="..\..\src\Data\ConfigManager.cpp" open="1" top="1" tabpos="17">
-		<Cursor position="331" topLine="0" />
+	<File name="..\..\src\Data\ConfigManager.cpp" open="0" top="0" tabpos="17">
+		<Cursor position="675" topLine="7" />
 	</File>
 	<File name="..\..\src\Data\ConfigManager.h" open="0" top="0" tabpos="20">
-		<Cursor position="383" topLine="0" />
+		<Cursor position="535" topLine="5" />
 	</File>
-	<File name="..\..\src\Data\DataManager.cpp" open="1" top="0" tabpos="13">
-		<Cursor position="779" topLine="14" />
+	<File name="..\..\src\Data\DataManager.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="256" topLine="0" />
 	</File>
-	<File name="..\..\src\Data\DataManager.h" open="0" top="0" tabpos="21">
-		<Cursor position="283" topLine="0" />
+	<File name="..\..\src\Data\DataManager.h" open="1" top="0" tabpos="11">
+		<Cursor position="269" topLine="0" />
 	</File>
-	<File name="..\..\src\Data\DataTypes.cpp" open="1" top="0" tabpos="16">
-		<Cursor position="281" topLine="4" />
+	<File name="..\..\src\Data\DataTypes.cpp" open="1" top="0" tabpos="7">
+		<Cursor position="485" topLine="6" />
 	</File>
-	<File name="..\..\src\Data\DataTypes.h" open="0" top="0" tabpos="22">
-		<Cursor position="408" topLine="4" />
+	<File name="..\..\src\Data\DataTypes.h" open="1" top="0" tabpos="8">
+		<Cursor position="376" topLine="4" />
 	</File>
-	<File name="..\..\src\Data\XMLManager.cpp" open="0" top="0" tabpos="14">
-		<Cursor position="476" topLine="39" />
+	<File name="..\..\src\Data\XMLManager.cpp" open="1" top="1" tabpos="10">
+		<Cursor position="3652" topLine="132" />
 	</File>
-	<File name="..\..\src\Data\XMLManager.h" open="1" top="0" tabpos="14">
-		<Cursor position="2508" topLine="76" />
+	<File name="..\..\src\Data\XMLManager.h" open="1" top="0" tabpos="5">
+		<Cursor position="2418" topLine="70" />
+	</File>
+	<File name="..\..\src\Game\Game.cpp" open="1" top="0" tabpos="12">
+		<Cursor position="514" topLine="0" />
 	</File>
 	<File name="..\..\src\Gui\InputManager.h" open="0" top="0" tabpos="0">
 		<Cursor position="354" topLine="0" />
 	</File>
-	<File name="..\..\src\Map\Cell.cpp" open="1" top="0" tabpos="7">
+	<File name="..\..\src\Map\Cell.cpp" open="0" top="0" tabpos="7">
 		<Cursor position="1435" topLine="58" />
 	</File>
-	<File name="..\..\src\Map\Cell.h" open="1" top="0" tabpos="8">
+	<File name="..\..\src\Map\Cell.h" open="0" top="0" tabpos="8">
 		<Cursor position="527" topLine="0" />
 	</File>
-	<File name="..\..\src\Map\Face.cpp" open="1" top="0" tabpos="10">
+	<File name="..\..\src\Map\Face.cpp" open="0" top="0" tabpos="10">
 		<Cursor position="6022" topLine="191" />
 	</File>
-	<File name="..\..\src\Map\Face.h" open="1" top="0" tabpos="9">
+	<File name="..\..\src\Map\Face.h" open="0" top="0" tabpos="9">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="..\..\src\Map\Slope.cpp" open="1" top="0" tabpos="12">
+	<File name="..\..\src\Map\Slope.cpp" open="0" top="0" tabpos="12">
 		<Cursor position="9762" topLine="268" />
 	</File>
-	<File name="..\..\src\Render\ColorManager.h" open="1" top="0" tabpos="5">
-		<Cursor position="97" topLine="0" />
+	<File name="..\..\src\Render\ColorManager.h" open="0" top="0" tabpos="5">
+		<Cursor position="278" topLine="0" />
 	</File>
-	<File name="..\..\src\Render\ScreenManager.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="9895" topLine="381" />
+	<File name="..\..\src\Render\ScreenManager.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="10701" topLine="407" />
 	</File>
-	<File name="..\..\src\Render\ScreenManager.h" open="1" top="0" tabpos="11">
+	<File name="..\..\src\Render\ScreenManager.h" open="0" top="0" tabpos="11">
 		<Cursor position="1415" topLine="40" />
 	</File>
 	<File name="..\..\src\TinyXML\tinystr.h" open="0" top="0" tabpos="18">
 		<Cursor position="6064" topLine="234" />
 	</File>
-	<File name="..\..\src\TinyXML\tinyxml.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="12293" topLine="625" />
+	<File name="..\..\src\TinyXML\tinyxml.cpp" open="1" top="0" tabpos="9">
+		<Cursor position="9969" topLine="479" />
 	</File>
-	<File name="..\..\src\TinyXML\tinyxml.h" open="1" top="0" tabpos="15">
-		<Cursor position="58045" topLine="1601" />
+	<File name="..\..\src\TinyXML\tinyxml.h" open="1" top="0" tabpos="6">
+		<Cursor position="22650" topLine="646" />
 	</File>
 </CodeBlocks_layout_file>

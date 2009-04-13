@@ -21,9 +21,9 @@ DECLARE_SINGLETON(ScreenManager)
 
 ScreenManager::ScreenManager()
 {
-	SCREEN_WIDTH = CONFIG->getXResolution();
-	SCREEN_HEIGHT = CONFIG->getYResolution();
-	SCREEN_BPP = 32;
+	ScreenWidth = CONFIG->getXResolution();
+	ScreenHight = CONFIG->getYResolution();
+	ScreenBPP = 32;
 }
 
 ScreenManager::~ScreenManager()
@@ -120,19 +120,23 @@ bool ScreenManager::Init()
 
 bool ScreenManager::Init()
 {
-    // We simply initialise OpenGL and SDL as we would do with any OpenGL
-    // and SDL application.
     SDL_Init(SDL_INIT_VIDEO);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-    ScreenSurface = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE);
+	SDL_WM_SetCaption("Khazad", "Khazad");
 
-    glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    SDL_Surface* Icon = SDL_LoadBMP("Assets\\Textures\\Khazad_Icon.bmp");
+    Uint32 colorkey = SDL_MapRGB(Icon->format, 255, 0, 255);
+    SDL_SetColorKey(Icon, SDL_SRCCOLORKEY, colorkey);
+
+    SDL_WM_SetIcon(Icon, NULL);
+
+    ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE);
+
+    glViewport(0, 0, ScreenWidth, ScreenHight);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 
-    // We want unicode for the SDLInput object to function properly.
     SDL_EnableUNICODE(1);
-    // We also want to enable key repeat.
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
 
@@ -160,7 +164,14 @@ bool ScreenManager::Init()
 
 bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Hight)
 {
-	ScreenSurface = SDL_SetVideoMode(Width, Hight, SCREEN_BPP, SDL_OPENGL | SDL_RESIZABLE);
+    ScreenWidth = Width;
+    ScreenHight = Hight;
+
+    glViewport(0, 0, ScreenWidth, ScreenHight);
+
+    MainCamera->setIsometricProj(ScreenWidth, ScreenHight, 10000.0);
+
+    //ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE);
 
 	if(SDL_Flip(ScreenSurface) == -1)
 	{
@@ -324,12 +335,12 @@ bool ScreenManager::Flip()
 
 Uint16 ScreenManager::getWidth()
 {
-	return SCREEN_WIDTH;
+	return ScreenWidth;
 }
 
 Uint16 ScreenManager::getHight()
 {
-	return 	SCREEN_HEIGHT;
+	return 	ScreenHight;
 }
 
 void ScreenManager::DirtyAllLists()

@@ -57,9 +57,11 @@ bool Game::RemoveActor(Uint32 ID)
 
 bool Game::Run()
 {
+    /*
 	for (Uint32 i = 0; i < ActorList.size(); i++)
 	{
 		ActorList[i]->Update();
 	}
+	*/
 	return true;
 }

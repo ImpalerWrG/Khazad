@@ -63,9 +63,9 @@ public:
 
 private:
 
-	Uint16 SCREEN_WIDTH;
-	Uint16 SCREEN_HEIGHT;
-	Uint8 SCREEN_BPP;
+	Uint16 ScreenWidth;
+	Uint16 ScreenHight;
+	Uint8 ScreenBPP;
 
 	SDL_Surface* ScreenSurface;
 

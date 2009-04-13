@@ -4975,7 +4975,7 @@
 	<stdafx.h>
 	<sdl.h>
 
-1239320836 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\main.cpp
+1239606725 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\main.cpp
 	<stdafx.h>
 	<Timer.h>
 	<TextureManager.h>
@@ -5030,7 +5030,7 @@
 	<sstream>
 	"tinystr.h"
 
-1239313200 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\screenmanager.h
+1239608008 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\screenmanager.h
 	<stdafx.h>
 	<PrimTypes.h>
 	<Singleton.h>
@@ -5095,7 +5095,7 @@
 	<Actor.h>
 	<Timer.h>
 
-1239604456 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\game\game.cpp
+1239605656 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\game\game.cpp
 	<stdafx.h>
 	<Game.h>
 	<Singleton.h>
@@ -5284,7 +5284,7 @@
 	<TextureManager.h>
 	<ScreenManager.h>
 
-1239604272 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\screenmanager.cpp
+1239608723 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\screenmanager.cpp
 	<stdafx.h>
 	<ScreenManager.h>
 	<Singleton.h>
