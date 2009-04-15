@@ -20,4 +20,9 @@
 		<Texture Int="3"/>
 		<Hardness Int="80"/>
 	</Material>
+	<Material>
+		<Name Text="Quartzite"/>
+		<Texture Int="3"/>
+		<Hardness Int="80"/>
+	</Material>
 </Materials>

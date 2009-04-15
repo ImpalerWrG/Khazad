@@ -74,8 +74,8 @@ bool Pawn::Move(Vector3 Direction)
     {
         if (NewCube->Initalized != true)
         {
-            NewCube->Init();
-            NewCube->setVisible(true);
+            //NewCube->Init();
+            //NewCube->setVisible(true);
         }
     }
 

@@ -144,7 +144,9 @@ public:
 	*/
 	virtual void onMouseEvent(SDL_Event* pEvent);
 
-	void MoveView(float X, float Y, float Z);
+	void MoveViewHorizontal(float X, float Y);
+
+	void MoveViewVertical(float Z);
 
 	void SetDefaultView();
 

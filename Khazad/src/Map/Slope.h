@@ -10,6 +10,7 @@ class Actor;
 
 class Slope: public Actor
 {
+
 public:
 
 	Slope();
@@ -19,7 +20,6 @@ public:
 	void CheckRemoval();
 
 	SDL_Color Color;
-	Uint16 Texture;
 
 	bool Update();
 	bool Draw();
@@ -29,6 +29,7 @@ public:
 private:
 
 	Vector3 Points[4];
+
     Slopping SlopeType;
 	Cube* Owner;
 };

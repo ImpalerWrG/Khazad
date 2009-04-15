@@ -5,6 +5,7 @@
 #include <Game.h>
 #include <TextureManager.h>
 #include <ScreenManager.h>
+#include <DataManager.h>
 
 
 Face::Face()
@@ -24,12 +25,13 @@ Face::~Face()
     //delete Points;
 }
 
-bool Face::Init(Cube* First, Cube* Second, Facet Type)
+bool Face::Init(Cube* First, Cube* Second, Facet Type, Uint16 MaterialType)
 {
 	FirstOwner = First;
     SecondeOwner = Second;
 	FacetType = Type;
 	Visible = true;
+	Material = MaterialType;
 
 	switch(FacetType)
 	{
@@ -51,7 +53,6 @@ bool Face::Init(Cube* First, Cube* Second, Facet Type)
 			Points[3].y = FirstOwner->Position.y - 0.5;
 			Points[3].z = FirstOwner->Position.z + 0.5;
 
-			Texture = 0;
 			break;
 		}
 		case FACET_BOTTOM:
@@ -72,7 +73,6 @@ bool Face::Init(Cube* First, Cube* Second, Facet Type)
 			Points[3].y = FirstOwner->Position.y - 0.5;
 			Points[3].z = FirstOwner->Position.z - 0.5;
 
-			Texture = 0;
 			break;
 		}
 		case FACET_NORTH_EAST:
@@ -93,7 +93,6 @@ bool Face::Init(Cube* First, Cube* Second, Facet Type)
 			Points[3].y = FirstOwner->Position.y - 0.5;
 			Points[3].z = FirstOwner->Position.z + 0.5;
 
-			Texture = 1;
 			break;
 		}
 		case FACET_SOUTH_EAST:
@@ -114,7 +113,6 @@ bool Face::Init(Cube* First, Cube* Second, Facet Type)
 			Points[3].y = FirstOwner->Position.y - 0.5;
 			Points[3].z = FirstOwner->Position.z + 0.5;
 
-			Texture = 1;
 			break;
 		}
 		case FACET_SOUTH_WEST:
@@ -135,7 +133,6 @@ bool Face::Init(Cube* First, Cube* Second, Facet Type)
 			Points[3].y = FirstOwner->Position.y + 0.5;
 			Points[3].z = FirstOwner->Position.z + 0.5;
 
-			Texture = 1;
 			break;
 		}
 		case FACET_NORTH_WEST:
@@ -156,7 +153,6 @@ bool Face::Init(Cube* First, Cube* Second, Facet Type)
 			Points[3].y = FirstOwner->Position.y + 0.5;
 			Points[3].z = FirstOwner->Position.z + 0.5;
 
-			Texture = 1;
 			break;
 		}
 	}
@@ -188,25 +184,15 @@ bool Face::Draw()
 
         glColor3f(Shading, Shading, Shading);
 
-        //glBindTexture(GL_TEXTURE_2D, TEXTURE->SingularTextureLibrary[Texture]);
+        SDL_Rect TexRect = TEXTURE->TextureCordinates[DATA->Materials[Material]->getTexture()];
 
-        //glBegin(GL_TRIANGLES);
-        glTexCoord2f(0.0f, 1.0f);
-        glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-        glTexCoord2f(1.0f, 1.0f);
-        glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-        glTexCoord2f(1.0f, 0.0f);
-        glVertex3f(Points[2].x, Points[2].y, Points[2].z);
-        glTexCoord2f(0.0f, 0.0f);
+        glTexCoord2i(TexRect.x, TexRect.h);         glVertex3f(Points[0].x, Points[0].y, Points[0].z);
+        glTexCoord2i(TexRect.w, TexRect.h);         glVertex3f(Points[1].x, Points[1].y, Points[1].z);
+        glTexCoord2i(TexRect.w, TexRect.y);         glVertex3f(Points[2].x, Points[2].y, Points[2].z);
 
-        glTexCoord2f(1.0f, 0.0f);
-        glVertex3f(Points[2].x, Points[2].y, Points[2].z);
-        glTexCoord2f(0.0f, 0.0f);
-        glVertex3f(Points[3].x, Points[3].y, Points[3].z);
-        glTexCoord2f(0.0f, 1.0f);
-        glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-        //glEnd();
-
+        glTexCoord2i(TexRect.w, TexRect.y);         glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+        glTexCoord2i(TexRect.x, TexRect.y);         glVertex3f(Points[3].x, Points[3].y, Points[3].z);
+        glTexCoord2i(TexRect.x, TexRect.h);         glVertex3f(Points[0].x, Points[0].y, Points[0].z);
 /*
         glColor3f (0.0, 0.0, 0.0);
 

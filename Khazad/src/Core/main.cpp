@@ -52,14 +52,6 @@ bool initManagers()
 	TEXTURE->CreateInstance();
 	TEXTURE->Init();
 
-	TEXTURE->loadClippedSurface("Assets\\Textures\\dots.png", 100,100, 2, 2, true);
-
-	TEXTURE->loadTextureSingular("Assets\\Textures\\floor_detailed.png", false, false);
-
-	TEXTURE->loadTextureSingular("Assets\\Textures\\stone.png", false, false);
-
-	TEXTURE->loadTextureSingular("Assets\\Textures\\grass.png", false, false);
-
     printf("Ui Initializing \n");
     UI->CreateInstance();
     UI->Init();
@@ -193,7 +185,7 @@ int main(int argv, char** argc)
             position.y = SCREEN->getHight() - 80;
 
             sprintf (buffer, "FrameRate %i", FrameRate);
-            FONT->SDL_GL_RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
+            FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
             position.y -= 40;
 
@@ -201,22 +193,22 @@ int main(int argv, char** argc)
             //FONT->SDL_GL_RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
             sprintf (buffer, "Triangles %i", SCREEN->getTriangleCount());
-            FONT->SDL_GL_RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
+            FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
             position.y -= 40;
 
             sprintf (buffer, "GameTime %3.2f", GameTimer->getAverage());
-            FONT->SDL_GL_RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
+            FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
             position.y -= 40;
 
             sprintf (buffer, "RenderTime %3.2f", RenderTimer->getAverage());
-            FONT->SDL_GL_RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
+            FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
             position.y -= 40;
 
             sprintf (buffer, "UITime %3.2f", UITimer->getAverage());
-            FONT->SDL_GL_RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
+            FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
             /* Come out of HUD mode */
             SCREEN->Disable2D();

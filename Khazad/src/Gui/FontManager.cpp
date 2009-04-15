@@ -59,67 +59,58 @@ SDL_Surface* FontManager::makeFontSurface( const char* Text, SDL_Color Color, Ui
 	return NULL;
 }
 
-void FontManager::SDL_GL_RenderText(char *text, TTF_Font *font, SDL_Color color, SDL_Rect *location)
+void FontManager::RenderText(char *text, TTF_Font *font, SDL_Color color, SDL_Rect *location)
 {
-    int TextureID = 1;
+    SDL_Surface* FontSurface = TTF_RenderText_Blended(font, text, color);
+    RenderSurface(FontSurface, location);
+}
 
-	SDL_Surface *initial;
+void FontManager::RenderSurface(SDL_Surface* RenderSurface, SDL_Rect *location)
+{
 	SDL_Surface *intermediary;
 	SDL_Rect rect;
-	int w, h;
 	GLuint texture;
 
-	/* Use SDL_TTF to render our text */
-	initial = TTF_RenderText_Blended(font, text, color);
-
 	/* Convert the rendered text to a known format */
-	w = nextpoweroftwo(initial->w);
-	h = nextpoweroftwo(initial->h);
+	rect.w = nextpoweroftwo(RenderSurface->w);
+	rect.h = nextpoweroftwo(RenderSurface->h);
 
-	intermediary = SDL_CreateRGBSurface(0, w, h, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+	intermediary = SDL_CreateRGBSurface(0, rect.w, rect.h, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
 
-	SDL_BlitSurface(initial, 0, intermediary, 0);
+	SDL_BlitSurface(RenderSurface, 0, intermediary, 0);
 
-	/* Tell GL about our new texture */
-	glGenTextures(TextureID, &texture);
+	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, 4, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, intermediary->pixels );
+	glTexImage2D(GL_TEXTURE_2D, 0, 4, rect.w, rect.h, 0, GL_BGRA, GL_UNSIGNED_BYTE, intermediary->pixels );
 
 	/* GL_NEAREST looks horrible, if scaled... */
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	/* prepare to render our texture */
-	glEnable(GL_TEXTURE_2D);
+    RenderTexture(texture, &rect, location);
+
+	/* return the deltas in the unused w,h part of the rect */
+	location->w = RenderSurface->w;
+	location->h = RenderSurface->h;
+
+	SDL_FreeSurface(intermediary);
+	glDeleteTextures(1, &texture);
+}
+
+void FontManager::RenderTexture(GLuint texture, SDL_Rect *Size, SDL_Rect *location)
+{
+ 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glColor3f(1.0f, 1.0f, 1.0f);
 
-	/* Draw a quad at location */
 	glBegin(GL_QUADS);
-		/* Recall that the origin is in the lower-left corner
-		   That is why the TexCoords specify different corners
-		   than the Vertex coors seem to. */
-		glTexCoord2f(0.0f, 1.0f);
-			glVertex2f(location->x    , location->y);
-		glTexCoord2f(1.0f, 1.0f);
-			glVertex2f(location->x + w, location->y);
-		glTexCoord2f(1.0f, 0.0f);
-			glVertex2f(location->x + w, location->y + h);
-		glTexCoord2f(0.0f, 0.0f);
-			glVertex2f(location->x    , location->y + h);
+		glTexCoord2f(0.0f, 1.0f);   glVertex2f(location->x          , location->y);
+		glTexCoord2f(1.0f, 1.0f);   glVertex2f(location->x + Size->w, location->y);
+		glTexCoord2f(1.0f, 0.0f);   glVertex2f(location->x + Size->w, location->y + Size->h);
+		glTexCoord2f(0.0f, 0.0f);   glVertex2f(location->x          , location->y + Size->h);
 	glEnd();
 
-	/* Bad things happen if we delete the texture before it finishes */
 	glFinish();
-
-	/* return the deltas in the unused w,h part of the rect */
-	location->w = initial->w;
-	location->h = initial->h;
-
-	/* Clean up */
-	SDL_FreeSurface(initial);
-	SDL_FreeSurface(intermediary);
-	glDeleteTextures(TextureID, &texture);
 }
 
 int FontManager::round(double x)
@@ -130,5 +121,5 @@ int FontManager::round(double x)
 int FontManager::nextpoweroftwo(int x)
 {
 	double logbase2 = log(x) / log(2);
-	return round(pow(2,ceil(logbase2)));
+	return round(pow(2, ceil(logbase2)));
 }

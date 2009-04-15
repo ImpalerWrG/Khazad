@@ -253,7 +253,7 @@ bool Map::Generate(Uint32 Seed)
                 {
                     if (NewCube->Initalized != true)
                     {
-                        NewCube->Init();
+                        NewCube->Init(RANDOM->Roll(0, 4));   // TEMPORARY RANDOMIZING OF TEXTURES HACK, must have atleast this many texture and XML material entries
                         if (Type != SLOPE_FLAT)
                         {
                             NewCube->SetSlope(Type);

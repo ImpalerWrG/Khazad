@@ -16,22 +16,24 @@ public:
 
 	Face();
 	~Face();
-	bool Init(Cube* First, Cube* Second, Facet Type);
+	bool Init(Cube* First, Cube* Second, Facet Type, Uint16 MaterialType);
 
 	void CheckRemoval();
 
 	Vector3 Points[4];
 	SDL_Color Color;
-	Uint16 Texture;
 
 	bool Update();
 	bool Draw();
+
+	void setMaterial(Uint16 MaterialID) { Material = MaterialID; }
 
 private:
 
 	Cube* FirstOwner;
 	Cube* SecondeOwner;
 
+	Uint16 Material;
 	Facet FacetType;
 };
 

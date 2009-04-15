@@ -9,6 +9,18 @@ DECLARE_SINGLETON(TextureManager)
 
 bool TextureManager::Init()
 {
+	loadTextureSingular("Assets\\Textures\\lava.png", false, false);
+
+	loadTextureSingular("Assets\\Textures\\stone.png", false, false);
+
+	loadTextureSingular("Assets\\Textures\\water.png", false, false);
+
+	loadTextureSingular("Assets\\Textures\\soil.png", false, false);
+
+	loadTextureSingular("Assets\\Textures\\grass.png", false, false);
+
+    MergeTextures();
+
 	return true;
 }
 
@@ -139,7 +151,7 @@ void TextureManager::loadTextureSingular(char* filepath, bool ColorKey, bool bmp
     SDL_Surface* TextureImage = NULL;
 	TextureImage = IMG_Load(filepath);
 
-/*
+    /*
 	if (ColorKey)
 	{
 		SDL_SetColorKey(TextureImage, SDL_SRCCOLORKEY, SDL_MapRGB(TextureImage->format, 255, 0, 255));
@@ -156,30 +168,71 @@ void TextureManager::loadTextureSingular(char* filepath, bool ColorKey, bool bmp
 	//TextureImage = NewClip->ParentPage->RawSurface;
 
 
-    if ( TextureImage )
+    if (TextureImage)
 	{
-		GLuint NewTex;
-
-	    glGenTextures( 1, &NewTex );
-	    glBindTexture( GL_TEXTURE_2D, NewTex );
-
-		SingularTextureLibrary.push_back(NewTex);
-
-		if (bmp)
-		{
-			glTexImage2D( GL_TEXTURE_2D, 0, 3, TextureImage->w, TextureImage->h, 0, GL_BGR_EXT, GL_UNSIGNED_BYTE, TextureImage->pixels );
-		}
-		else
-		{
-			glTexImage2D( GL_TEXTURE_2D, 0, 3, TextureImage->w, TextureImage->h, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage->pixels );
-		}
-
-	    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-	    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-	}
-
-    if ( TextureImage )
-	{
-	    SDL_FreeSurface( TextureImage );
+        RawTextureVector.push_back(TextureImage);
 	}
 }
+
+void TextureManager::MergeTextures()
+{
+    Uint32 LargestTextureSize = 128;  // TODO Must be found dynamicly, see bellow
+    float root = sqrt((float) RawTextureVector.size());
+    MainTextureSize = nextpoweroftwo(round(root)) * LargestTextureSize;
+
+    AgragateSurface = SDL_CreateRGBSurface(0, MainTextureSize, MainTextureSize, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+
+    SDL_Surface* Source;
+    Uint32 HorizonalSpace;
+
+    SDL_Rect Destination;
+    Destination.x = 0;
+    Destination.y = 0;
+    SDL_Rect TextureCorners;
+
+    for(Uint32 i = 0; i < RawTextureVector.size(); i++)
+    {
+        Source = RawTextureVector[i];
+        if (Destination.x + Source->w > MainTextureSize)   // TODO Improve arangment to waste less space
+        {
+            Destination.x = 0;
+            Destination.y += LargestTextureSize;
+        }
+
+        Destination.w = Source->w;
+        Destination.h = Source->h;
+        SDL_BlitSurface(Source, &Source->clip_rect, AgragateSurface, &Destination);
+
+        TextureCorners = Destination;
+        TextureCorners.w = Destination.x + Destination.w;
+        TextureCorners.h = Destination.y + Destination.h;
+
+        TextureCordinates.push_back(TextureCorners);
+        Destination.x += Source->w;
+    }
+
+    glGenTextures(1, &MainTexture);
+    glBindTexture(GL_TEXTURE_2D, MainTexture);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 4, AgragateSurface->w, AgragateSurface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, AgragateSurface->pixels);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+    SDL_FreeSurface(AgragateSurface);
+}
+
+int TextureManager::round(double x)
+{
+	return (int)(x + 0.5);
+}
+
+int TextureManager::nextpoweroftwo(int x)
+{
+	double logbase2 = log(x) / log(2);
+	return round(pow(2, ceil(logbase2)));
+}
+
+

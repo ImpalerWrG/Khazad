@@ -12,12 +12,13 @@ class Slope;
 
 class Cube: public Actor
 {
+    friend class Slope;
 
 public:
 
 	Cube();
 	~Cube();
-	bool Init();
+	bool Init(Uint16 MaterialType);
 
 
 	bool isSolid() { return Solid; }

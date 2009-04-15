@@ -36,10 +36,11 @@ Cube::~Cube()
 	}
 }
 
-bool Cube::Init()
+bool Cube::Init(Uint16 MaterialType)
 {
 	Initalized = true;
     Cube* Neibor = NULL;
+    Material = MaterialType;
 
     Neibor = MAP->getCube((Sint32) Position.x, (Sint32) Position.y, (Sint32) Position.z - 1);
     if(Neibor != NULL)
@@ -47,7 +48,7 @@ bool Cube::Init()
         if (Neibor->Initalized == false)
         {
             Facets[FACET_BOTTOM] = new Face;
-            Facets[FACET_BOTTOM]->Init(this, Neibor, FACET_BOTTOM);
+            Facets[FACET_BOTTOM]->Init(this, Neibor, FACET_BOTTOM, MaterialType);
         }
         else
         {
@@ -57,7 +58,7 @@ bool Cube::Init()
     else
     {
         Facets[FACET_BOTTOM] = new Face;
-        Facets[FACET_BOTTOM]->Init(this, NULL, FACET_BOTTOM);
+        Facets[FACET_BOTTOM]->Init(this, NULL, FACET_BOTTOM, MaterialType);
     }
 
     Neibor = MAP->getCube((Sint32) Position.x, (Sint32) Position.y, (Sint32) Position.z + 1);
@@ -66,7 +67,7 @@ bool Cube::Init()
         if(Neibor->Initalized == false)
         {
             Facets[FACET_TOP] = new Face;
-            Facets[FACET_TOP]->Init(this, Neibor, FACET_TOP);
+            Facets[FACET_TOP]->Init(this, Neibor, FACET_TOP, MaterialType);
         }
         else
         {
@@ -76,7 +77,7 @@ bool Cube::Init()
     else
     {
         Facets[FACET_TOP] = new Face;
-        Facets[FACET_TOP]->Init(this, NULL, FACET_TOP);
+        Facets[FACET_TOP]->Init(this, NULL, FACET_TOP, MaterialType);
     }
 
     Neibor = MAP->getCube((Sint32) Position.x, (Sint32) Position.y -1, (Sint32) Position.z);
@@ -85,7 +86,7 @@ bool Cube::Init()
         if(Neibor->Initalized == false)
         {
             Facets[FACET_NORTH_EAST] = new Face;
-            Facets[FACET_NORTH_EAST]->Init(this, Neibor, FACET_NORTH_EAST);
+            Facets[FACET_NORTH_EAST]->Init(this, Neibor, FACET_NORTH_EAST, MaterialType);
         }
         else
         {
@@ -95,7 +96,7 @@ bool Cube::Init()
     else
     {
         Facets[FACET_NORTH_EAST] = new Face;
-        Facets[FACET_NORTH_EAST]->Init(this, NULL, FACET_NORTH_EAST);
+        Facets[FACET_NORTH_EAST]->Init(this, NULL, FACET_NORTH_EAST, MaterialType);
     }
 
     Neibor = MAP->getCube(Position.x + 1, Position.y, Position.z);
@@ -104,7 +105,7 @@ bool Cube::Init()
         if(Neibor->Initalized == false)
         {
             Facets[FACET_SOUTH_EAST] = new Face;
-            Facets[FACET_SOUTH_EAST]->Init(this, Neibor, FACET_SOUTH_EAST);
+            Facets[FACET_SOUTH_EAST]->Init(this, Neibor, FACET_SOUTH_EAST, MaterialType);
         }
         else
         {
@@ -114,7 +115,7 @@ bool Cube::Init()
     else
     {
         Facets[FACET_SOUTH_EAST] = new Face;
-        Facets[FACET_SOUTH_EAST]->Init(this, NULL, FACET_SOUTH_EAST);
+        Facets[FACET_SOUTH_EAST]->Init(this, NULL, FACET_SOUTH_EAST, MaterialType);
     }
 
     Neibor = MAP->getCube(Position.x, Position.y + 1, Position.z);
@@ -123,7 +124,7 @@ bool Cube::Init()
         if(Neibor->Initalized == false)
         {
             Facets[FACET_SOUTH_WEST] = new Face;
-            Facets[FACET_SOUTH_WEST]->Init(this, Neibor, FACET_SOUTH_WEST);
+            Facets[FACET_SOUTH_WEST]->Init(this, Neibor, FACET_SOUTH_WEST, MaterialType);
         }
         else
         {
@@ -133,7 +134,7 @@ bool Cube::Init()
     else
     {
         Facets[FACET_SOUTH_WEST] = new Face;
-        Facets[FACET_SOUTH_WEST]->Init(this, NULL, FACET_SOUTH_WEST);
+        Facets[FACET_SOUTH_WEST]->Init(this, NULL, FACET_SOUTH_WEST, MaterialType);
     }
 
     Neibor = MAP->getCube(Position.x - 1, Position.y, Position.z);
@@ -142,7 +143,7 @@ bool Cube::Init()
         if(Neibor->Initalized == false)
         {
             Facets[FACET_NORTH_WEST] = new Face;
-            Facets[FACET_NORTH_WEST]->Init(this, Neibor, FACET_NORTH_WEST);
+            Facets[FACET_NORTH_WEST]->Init(this, Neibor, FACET_NORTH_WEST, MaterialType);
         }
         else
         {
@@ -152,7 +153,7 @@ bool Cube::Init()
     else
     {
         Facets[FACET_NORTH_WEST] = new Face;
-        Facets[FACET_NORTH_WEST]->Init(this, NULL, FACET_NORTH_WEST);
+        Facets[FACET_NORTH_WEST]->Init(this, NULL, FACET_NORTH_WEST, MaterialType);
     }
 
 	return true;

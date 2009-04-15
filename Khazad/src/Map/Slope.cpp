@@ -25,8 +25,6 @@ bool Slope::Init(Cube* NewOwner, Slopping Type)
 {
     Owner = NewOwner;
     SetSlopeType(Type);
-
-    Texture = 2;
 }
 
 void Slope::SetSlopeType(Slopping Type)
@@ -291,44 +289,20 @@ bool Slope::Draw()
     if(Visible)
     {
         float Shading = SCREEN->getShading(Owner->Position.z);
-
         glColor3f(Shading, Shading, Shading);
-
-        //glBindTexture(GL_TEXTURE_2D, TEXTURE->SingularTextureLibrary[Texture]);
+        SDL_Rect TexRect = TEXTURE->TextureCordinates[Owner->Material];
 
         if (SlopeType == SLOPE_NORTH_EAST || SlopeType == SLOPE_SOUTH_EAST || SlopeType == SLOPE_SOUTH_WEST || SlopeType == SLOPE_NORTH_WEST )
         {
-/*
-            glBegin(GL_QUADS);
-                glTexCoord2f(0.0f, 1.0f);
-                glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-                glTexCoord2f(1.0f, 1.0f);
-                glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-                glTexCoord2f(1.0f, 0.0f);
-                glVertex3f(Points[2].x, Points[2].y, Points[2].z);
-                glTexCoord2f(0.0f, 0.0f);
-                glVertex3f(Points[3].x, Points[3].y, Points[3].z);
-            glEnd();
-*/
+                glTexCoord2i(TexRect.x, TexRect.h);   glVertex3f(Points[0].x, Points[0].y, Points[0].z);
+                glTexCoord2i(TexRect.w, TexRect.h);   glVertex3f(Points[1].x, Points[1].y, Points[1].z);
+                glTexCoord2i(TexRect.w, TexRect.y);   glVertex3f(Points[2].x, Points[2].y, Points[2].z);
 
-            //glBegin(GL_TRIANGLES);
-                glTexCoord2f(0.0f, 1.0f);
-                glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-                glTexCoord2f(1.0f, 1.0f);
-                glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-                glTexCoord2f(1.0f, 0.0f);
-                glVertex3f(Points[2].x, Points[2].y, Points[2].z);
-                glTexCoord2f(0.0f, 0.0f);
-
-                glTexCoord2f(1.0f, 0.0f);
-                glVertex3f(Points[2].x, Points[2].y, Points[2].z);
-                glTexCoord2f(0.0f, 0.0f);
-                glVertex3f(Points[3].x, Points[3].y, Points[3].z);
-                glTexCoord2f(0.0f, 1.0f);
-                glVertex3f(Points[0].x, Points[0].y, Points[0].z);
+                glTexCoord2i(TexRect.w, TexRect.y);   glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+                glTexCoord2i(TexRect.x, TexRect.y);   glVertex3f(Points[3].x, Points[3].y, Points[3].z);
+                glTexCoord2i(TexRect.x, TexRect.h);   glVertex3f(Points[0].x, Points[0].y, Points[0].z);
 
                 SCREEN->IncrementTriangles(2);
-            //glEnd();
 
 /*
             glColor3f (0.0, 0.0, 0.0);
@@ -344,16 +318,11 @@ bool Slope::Draw()
 
         if (SlopeType == SLOPE_SMALL_NORTH || SlopeType == SLOPE_SMALL_EAST || SlopeType == SLOPE_SMALL_SOUTH || SlopeType == SLOPE_SMALL_WEST )
         {
-            //glBegin(GL_TRIANGLES);
-                glTexCoord2f(0.0f, 1.0f);
-                glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-                glTexCoord2f(1.0f, 1.0f);
-                glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-                glTexCoord2f(1.0f, 0.0f);
-                glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+                glTexCoord2i(TexRect.x, TexRect.h);   glVertex3f(Points[0].x, Points[0].y, Points[0].z);
+                glTexCoord2i(TexRect.w, TexRect.h);   glVertex3f(Points[1].x, Points[1].y, Points[1].z);
+                glTexCoord2i(TexRect.w, TexRect.y);   glVertex3f(Points[2].x, Points[2].y, Points[2].z);
 
                 SCREEN->IncrementTriangles(1);
-            //glEnd();
 
 /*
             glColor3f (0.0, 0.0, 0.0);
@@ -368,16 +337,11 @@ bool Slope::Draw()
 
         if (SlopeType == SLOPE_LARGE_NORTH || SlopeType == SLOPE_LARGE_EAST || SlopeType == SLOPE_LARGE_SOUTH || SlopeType == SLOPE_LARGE_WEST )
         {
-            //glBegin(GL_TRIANGLES);
-                glTexCoord2f(0.0f, 1.0f);
-                glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-                glTexCoord2f(1.0f, 1.0f);
-                glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-                glTexCoord2f(1.0f, 0.0f);
-                glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+                glTexCoord2i(TexRect.x, TexRect.h);   glVertex3f(Points[0].x, Points[0].y, Points[0].z);
+                glTexCoord2i(TexRect.w, TexRect.h);   glVertex3f(Points[1].x, Points[1].y, Points[1].z);
+                glTexCoord2i(TexRect.w, TexRect.y);   glVertex3f(Points[2].x, Points[2].y, Points[2].z);
 
                 SCREEN->IncrementTriangles(1);
-            //glEnd();
 /*
             glColor3f (0.0, 0.0, 0.0);
 
@@ -391,23 +355,15 @@ bool Slope::Draw()
 
         if (SlopeType == SLOPE_CRESS_NORTH_SOUTH || SlopeType == SLOPE_CRESS_EAST_WEST )
         {
-            //glBegin(GL_TRIANGLES);
-                glTexCoord2f(0.0f, 1.0f);
-                glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-                glTexCoord2f(1.0f, 1.0f);
-                glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-                glTexCoord2f(1.0f, 0.0f);
-                glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+                glTexCoord2i(TexRect.x, TexRect.h);   glVertex3f(Points[0].x, Points[0].y, Points[0].z);
+                glTexCoord2i(TexRect.w, TexRect.h);   glVertex3f(Points[1].x, Points[1].y, Points[1].z);
+                glTexCoord2i(TexRect.w, TexRect.y);   glVertex3f(Points[2].x, Points[2].y, Points[2].z);
 
-                glTexCoord2f(0.0f, 1.0f);
-                glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-                glTexCoord2f(1.0f, 1.0f);
-                glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-                glTexCoord2f(1.0f, 0.0f);
-                glVertex3f(Points[3].x, Points[3].y, Points[3].z);
+                glTexCoord2i(TexRect.x, TexRect.h);   glVertex3f(Points[0].x, Points[0].y, Points[0].z);
+                glTexCoord2i(TexRect.w, TexRect.h);   glVertex3f(Points[1].x, Points[1].y, Points[1].z);
+                glTexCoord2i(TexRect.w, TexRect.y);   glVertex3f(Points[3].x, Points[3].y, Points[3].z);
 
                 SCREEN->IncrementTriangles(2);
-            //glEnd();
 /*
             glColor3f (0.0, 0.0, 0.0);
 

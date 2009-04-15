@@ -128,7 +128,6 @@ bool ScreenManager::Init()
     SDL_Surface* Icon = SDL_LoadBMP("Assets\\Textures\\Khazad_Icon.bmp");
     Uint32 colorkey = SDL_MapRGB(Icon->format, 255, 0, 255);
     SDL_SetColorKey(Icon, SDL_SRCCOLORKEY, colorkey);
-
     SDL_WM_SetIcon(Icon, NULL);
 
     ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE);
@@ -138,7 +137,6 @@ bool ScreenManager::Init()
 
     SDL_EnableUNICODE(1);
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-
 
 	glEnable(GL_TEXTURE_2D);
 	glShadeModel(GL_SMOOTH);
@@ -152,15 +150,12 @@ bool ScreenManager::Init()
 	glDepthFunc(GL_LEQUAL);
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
-
     imageLoader = new gcn::OpenGLSDLImageLoader();
     gcn::Image::setImageLoader(imageLoader);
-
 
     MainCamera = new Camera();
 	MainCamera->Init(true);
 }
-
 
 bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Hight)
 {
@@ -168,10 +163,7 @@ bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Hight)
     ScreenHight = Hight;
 
     glViewport(0, 0, ScreenWidth, ScreenHight);
-
     MainCamera->setIsometricProj(ScreenWidth, ScreenHight, 10000.0);
-
-    //ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE);
 
 	if(SDL_Flip(ScreenSurface) == -1)
 	{
@@ -391,7 +383,10 @@ bool ScreenManager::Render()
 	MainCamera->UpdateView();
 	Uint16 CellEdgeLenth = CONFIG->getCellEdgeLength();
 
-    glBindTexture(GL_TEXTURE_2D, TEXTURE->SingularTextureLibrary[2]);
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+    glScalef(1.0 / (float) TEXTURE->getAggragateTextureSize(), 1.0 / (float) TEXTURE->getAggragateTextureSize(), 1);
+    glBindTexture(GL_TEXTURE_2D, TEXTURE->getAggragateTexture());
 
 	for(Uint16 Zlevel = 0; Zlevel < MAP->CellSizeZ; Zlevel++) // Bottom up drawing
 	{
@@ -445,7 +440,11 @@ bool ScreenManager::Render()
 
 	//ShowAxis();
 
-	//return Flip();
+
+    glMatrixMode(GL_TEXTURE);  //return to normal Texturing for UI
+    glPopMatrix();
+    glLoadIdentity();
+
 	return true;
 }
 

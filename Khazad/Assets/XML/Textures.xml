@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Textures xmlns="namespace">
+	<Texture>
+		<Name Text="lava"/>
+		<File Path="Assets\\Textures\\lava.png"/>
+	</Texture>
+	<Texture>
+		<Name Text="stone"/>
+		<File Path="Assets\\Textures\\stone.png"/>
+	</Texture>
+	<Texture>
+		<Name Text="water"/>
+		<File Path="Assets\\Textures\\water.png"/>
+	</Texture>
+	<Texture>
+		<Name Text="soil"/>
+		<File Path="Assets\\Textures\\soil.png"/>
+	</Texture>
+	<Texture>
+		<Name Text="grass"/>
+		<File Path="Assets\\Textures\\grass.png"/>
+	</Texture>
+</Textures>

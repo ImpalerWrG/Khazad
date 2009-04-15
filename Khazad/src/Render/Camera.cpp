@@ -118,12 +118,12 @@ void Camera::onMouseEvent(SDL_Event* Event)
 			}
 		case SDLK_UP:
 			{
-				MoveView(0, 0, 1.0);
+				MoveViewVertical(1.0);
 				break;
 			}
 		case SDLK_DOWN:
 			{
-				MoveView(0, 0, -1.0);
+				MoveViewVertical(-1.0);
 				break;
 			}
 		case SDLK_INSERT:
@@ -590,16 +590,24 @@ void Camera::ZoomView(float ZoomFactor)
 	}
 }
 
-void Camera::MoveView(float X, float Y, float Z)
+void Camera::MoveViewHorizontal(float X, float Y)
 {
 	EyePosition.x += X;
    	EyePosition.y += Y;
-	EyePosition.z += Z;
 
 	LookPosition.x += X;
 	LookPosition.y += Y;
+
+	generateViewFrustum();
+}
+
+void Camera::MoveViewVertical(float Z)
+{
+	EyePosition.z += Z;
+
 	LookPosition.z += Z;
 
+    SCREEN->DirtyAllLists();
 	generateViewFrustum();
 }
 
