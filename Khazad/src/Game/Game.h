@@ -20,7 +20,7 @@ public:
 
 	bool RemoveActor(Uint32 ID);
 
-private:
+protected:
 
 
 

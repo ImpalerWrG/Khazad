@@ -43,7 +43,7 @@ public:
     int getAggragateTextureSize() { return MainTextureSize; }
     SDL_Surface* getAgragateSurface() { return AgragateSurface; }
 
-private:
+protected:
 
     SDL_Surface* AgragateSurface;
 	GLuint MainTexture;

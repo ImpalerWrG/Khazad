@@ -31,7 +31,7 @@ public:
     int nextpoweroftwo(int x);
 
 
-private:
+protected:
 
     gcn::ImageFont* font;
 

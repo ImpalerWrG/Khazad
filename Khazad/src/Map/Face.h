@@ -28,7 +28,7 @@ public:
 
 	void setMaterial(Uint16 MaterialID) { Material = MaterialID; }
 
-private:
+protected:
 
 	Cube* FirstOwner;
 	Cube* SecondeOwner;

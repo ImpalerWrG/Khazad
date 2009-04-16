@@ -6,13 +6,13 @@
 #include <Random.h>
 #include <Game.h>
 
-
+/*
 Cell::Cell()
 {
 	Active = false;
 	setType(CELL_ACTOR);
     Initalized = false;
-}
+}*/
 
 Cell::~Cell()
 {

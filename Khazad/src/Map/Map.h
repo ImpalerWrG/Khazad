@@ -35,11 +35,9 @@ public:
 	Uint32 CellSizeY;
 	Uint32 CellSizeZ;
 
-private:
-
+protected:
 
 	Cell**** CellArray;
-
 
 	Sint32 XCelloffset;
 	Sint32 YCelloffset;

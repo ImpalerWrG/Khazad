@@ -23,7 +23,7 @@ public:
 	bool Draw();
 
 
-private:
+protected:
 
 	Cell* Location;
 

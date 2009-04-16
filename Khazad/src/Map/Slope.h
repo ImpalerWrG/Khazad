@@ -26,7 +26,7 @@ public:
 
 	void SetSlopeType(Slopping SlopeType);
 
-private:
+protected:
 
 	Vector3 Points[4];
 

@@ -2,7 +2,7 @@
 #define TIMER__HEADER
 
 #include <stdafx.h>
-#include <sdl.h>
+
 
 class Timer
 {
@@ -21,7 +21,7 @@ public:
 	void doAverage();
     float getAverage();
 
-private:
+protected:
 
 	Uint32 StartTime;
 	Uint32 PausedTime;

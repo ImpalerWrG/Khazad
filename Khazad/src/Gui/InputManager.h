@@ -17,7 +17,7 @@ public:
 	bool Init();
 	bool HandleInput();
 
-private:
+protected:
 
 	Actor* Focus;
 

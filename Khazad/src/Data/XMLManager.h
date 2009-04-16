@@ -112,7 +112,7 @@ public:
 	const char * getIndentAlt( unsigned int numIndents );
 	const char * getIndent( unsigned int numIndents );
 
-private:
+protected:
 
 };
 

@@ -14,7 +14,7 @@ public:
     virtual ~DataBase();
     virtual bool Load();
 
-private:
+protected:
 
     char* Name;
 };
@@ -31,7 +31,7 @@ public:
     Uint32 getTexture() { return TextureID; }
     Uint16 getHardness() { return Hardness; }
 
-private:
+protected:
 
     Uint32 TextureID;
     Uint16 Hardness;

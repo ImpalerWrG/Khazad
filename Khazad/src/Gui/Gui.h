@@ -25,7 +25,7 @@ public:
 
     bool Draw();
 
-private:
+protected:
 
 
 };

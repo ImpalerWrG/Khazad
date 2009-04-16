@@ -22,7 +22,7 @@ public:
 
 	Uint16 getCellEdgeLength() { return CellEdgeLength; }
 
-private:
+protected:
 
 	Uint16 XResolution;
 	Uint16 YResolution;

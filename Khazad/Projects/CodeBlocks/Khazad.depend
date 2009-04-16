@@ -4870,15 +4870,14 @@
 	<ctime>
 	<Singleton.h>
 
-1237442130 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\stdafx.h
-	<windows.h>
+1239867720 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\stdafx.h
 	<stdio.h>
 	<tchar.h>
 	<assert.h>
-	<gl/gl.h>
-	<gl/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
 	<glut.h>
-	<sdl.h>
+	<SDL.h>
 	<SDL_opengl.h>
 	<string>
 	<vector>
@@ -4971,11 +4970,10 @@
 	<stdafx.h>
 	<Timer.h>
 
-1239167311 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\timer.h
+1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\timer.h
 	<stdafx.h>
-	<sdl.h>
 
-1239782634 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\main.cpp
+1239788067 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\main.cpp
 	<stdafx.h>
 	<Timer.h>
 	<TextureManager.h>
@@ -4991,11 +4989,11 @@
 	<Map.h>
 	<Gui.h>
 
-1239748214 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\texturemanager.h
+1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\texturemanager.h
 	<stdafx.h>
 	<Singleton.h>
 
-1239750251 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\gui\fontmanager.h
+1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\gui\fontmanager.h
 	<SDL_ttf.h>
 	<stdafx.h>
 	<Singleton.h>
@@ -5009,7 +5007,7 @@
 	<stdafx.h>
 	<Singleton.h>
 
-1239598470 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\xmlmanager.h
+1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\xmlmanager.h
 	<stdafx.h>
 	<Singleton.h>
 	<tinystr.h>
@@ -5030,32 +5028,31 @@
 	<sstream>
 	"tinystr.h"
 
-1239608008 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\screenmanager.h
+1239869857 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\screenmanager.h
 	<stdafx.h>
-	<PrimTypes.h>
 	<Singleton.h>
 
 1219532746 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\geometry\primtypes.h
 
-1236070059 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\configmanager.h
+1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\configmanager.h
 	<stdafx.h>
 	<Singleton.h>
 
-1239604181 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\datamanager.h
+1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\datamanager.h
 	<stdafx.h>
 	<Singleton.h>
 	<DataTypes.h>
 
-1236070311 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\gui\inputmanager.h
+1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\gui\inputmanager.h
 	<stdafx.h>
 	<Singleton.h>
 
-1236204795 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\game\game.h
+1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\game\game.h
 	<stdafx.h>
 	<Singleton.h>
 	<Actor.h>
 
-1237872796 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\game\actor.h
+1239869256 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\game\actor.h
 	<stdafx.h>
 	<Vector3.h>
 	<ScreenManager.h>
@@ -5063,11 +5060,11 @@
 1235468170 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\geometry\vector3.h
 	<stdafx.h>
 
-1236463221 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.h
+1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.h
 	<Singleton.h>
 	<stdafx.h>
 
-1237507909 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\gui\gui.h
+1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\gui\gui.h
 	<stdafx.h>
 	<Singleton.h>
 
@@ -5103,7 +5100,7 @@
 	<Vector3.h>
 	<TextureManager.h>
 
-1236141136 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\game\pawn.h
+1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\game\pawn.h
 	<stdafx.h>
 	<Actor.h>
 
@@ -5116,7 +5113,7 @@
 	<Map.h>
 	<Cube.h>
 
-1239786839 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.h
+1239869090 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.h
 	<stdafx.h>
 	<Actor.h>
 
@@ -5162,11 +5159,11 @@
 	<Singleton.h>
 	<Cube.h>
 
-1239785005 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\camera.h
+1239869090 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\camera.h
 	<stdafx.h>
 	<Plane.h>
 
-1239313006 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cell.cpp
+1239869716 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cell.cpp
 	<stdafx.h>
 	<Cell.h>
 	<Cube.h>
@@ -5174,7 +5171,7 @@
 	<Random.h>
 	<Game.h>
 
-1239312425 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cell.h
+1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cell.h
 	<stdafx.h>
 	<Actor.h>
 
@@ -5188,12 +5185,12 @@
 	<Face.h>
 	<Slope.h>
 
-1239786908 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\face.h
+1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\face.h
 	<stdafx.h>
 	<Actor.h>
 	<Cube.h>
 
-1239786352 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\slope.h
+1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\slope.h
 	<stdafx.h>
 	<Actor.h>
 
@@ -5206,7 +5203,7 @@
 	<Cell.h>
 	<Random.h>
 
-1239786326 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\slope.cpp
+1239868256 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\slope.cpp
 	<stdafx.h>
 	<Slope.h>
 	<Cube.h>
@@ -5244,7 +5241,7 @@
 	<ClipImage.h>
 	<ImageManager.h>
 
-1236070311 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\imagemanager.h
+1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\imagemanager.h
 	<stdafx.h>
 	<SDL_image.h>
 
@@ -5252,7 +5249,7 @@
 	<stdafx.h>
 	<ImagePage.h>
 
-1239785605 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\texturemanager.cpp
+1239787929 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\texturemanager.cpp
 	<stdafx.h>
 	<ImagePage.h>
 	<ClipImage.h>
@@ -5285,7 +5282,7 @@
 	<ScreenManager.h>
 	<DataManager.h>
 
-1239781491 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\screenmanager.cpp
+1239788335 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\screenmanager.cpp
 	<stdafx.h>
 	<ScreenManager.h>
 	<Singleton.h>
@@ -5302,7 +5299,7 @@
 	<Cell.h>
 	<Gui.h>
 
-1239583737 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\datatypes.h
+1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\datatypes.h
 	<stdafx.h>
 	<tinyxml.h>
 

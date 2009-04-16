@@ -1,15 +1,15 @@
 #ifndef STDAFX__HEADER
 #define STDAFX__HEADER
 
-#include <windows.h>
+//#include <windows.h>
 #include <stdio.h>
 #include <tchar.h>
 #include <assert.h>
 
-#include <gl/gl.h>
-#include <gl/glu.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include <glut.h>
-#include <sdl.h>
+#include <SDL.h>
 #include <SDL_opengl.h>
 
 #include <string>

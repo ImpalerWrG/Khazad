@@ -9,7 +9,6 @@ class ClipImage;
 
 class Actor
 {
-    friend class ScreenManager;
 
 public:
 
@@ -38,7 +37,7 @@ public:
 	bool DirtyDrawlist;
 	GLuint DrawListID;
 
-private:
+protected:
 
 	ActorType Type;
 	SDL_Rect BoundingBox;

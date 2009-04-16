@@ -7,12 +7,10 @@
 
 
 class Face;
-class Actor;
 class Slope;
 
 class Cube: public Actor
 {
-    friend class Slope;
 
 public:
 
@@ -32,7 +30,9 @@ public:
 	bool Update();
 	bool Draw();
 
-private:
+	Uint16 getMaterial() { return Material; }
+
+protected:
 
 	bool Solid;
 	Uint16 Material;

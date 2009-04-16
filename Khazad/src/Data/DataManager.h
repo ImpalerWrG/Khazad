@@ -17,7 +17,7 @@ public:
 
     std::vector<MaterialData*> Materials;
 
-private:
+protected:
 
 };
 

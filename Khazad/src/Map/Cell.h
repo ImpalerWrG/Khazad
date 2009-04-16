@@ -22,7 +22,7 @@ public:
 	bool Draw();
 	bool Update();
 
-private:
+protected:
 
 	bool Sky;
 	bool Basment;

@@ -8,7 +8,7 @@
 
 class Camera
 {
-private:
+protected:
 
 	Vector3 EyePosition;
 	Vector3 UpVector;
@@ -27,9 +27,10 @@ private:
 
 	float ViewWidth, ViewHight, ViewDepth;
 
+	Plane FrustumPlanes[4];
+
 public:
 
-	Plane FrustumPlanes[4];
 
 	float EyeX() { return EyePosition.x; }
 	float EyeY() { return EyePosition.y; }
@@ -57,17 +58,6 @@ public:
 	* we can query
 	*/
 	void generateViewFrustum();
-
-	/**
-	* This method is responsible for testing if a sphere has
-	* hit a view frustum boundary.
-	* @param x - x position of the sphere
-	* @param y - y position of the sphere
-	* @param z - z position of the sphere
-	* @param float - radius of the sphere
-	* @return bool - true if the sphere is inside the frustum
-	*/
-	bool isSphereInFrustum( float x, float y, float z, float fRadius );
 
 	/**
 	* This method is responsible for setting the perspective
@@ -123,7 +113,7 @@ public:
 	* This method zooms the Camera in and out by englargin or shinking the model
 	* @param ZoomFactor - Greater then 1 zooms in, less then 1 zooms out
 	*/
-	void Camera::ZoomView(float ZoomFactor);
+	void ZoomView(float ZoomFactor);
 
 	/**
 	* This method moves the Cameras Look Point in the X/Y Plane while maintaining
@@ -131,7 +121,7 @@ public:
 	* @param X - Movement in the X axis
 	* @param Y - Movement in the Y axis
 	*/
-	void Camera::SlideView(float X, float Y);
+	void SlideView(float X, float Y);
 
 
 
@@ -148,11 +138,28 @@ public:
 
 	void MoveViewVertical(float Z);
 
+	/**
+	* SetDefaultView returns the camera to a looking at the Origin
+	* looking northward with an Isometric angle
+	*/
 	void SetDefaultView();
 
 	void PrintDebugging();
 
+	/**
+	* setCameraDirection rotates the camera to the desired cardinal
+	* direction without moving it.
+	* @param NewDirection - desired direction enum
+	*/
 	void setCameraDirection(Direction NewDirection);
+
+    /**
+	* sphereInFrustum is responsible for testing if a sphere is
+	* within the frustrum.
+	* @param Point - position of the sphere
+	* @param float - radius of the sphere
+	* @return bool - true if the sphere is inside the frustum
+	*/
 	bool sphereInFrustum(Vector3 &Point, float Radius);
 };
 

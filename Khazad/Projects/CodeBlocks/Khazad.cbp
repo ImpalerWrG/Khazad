@@ -195,12 +195,9 @@
 		<Unit filename="..\..\src\Game\Pawn.h" />
 		<Unit filename="..\..\src\Geometry\Plane.cpp" />
 		<Unit filename="..\..\src\Geometry\Plane.h" />
-		<Unit filename="..\..\src\Geometry\PrimTypes.h" />
 		<Unit filename="..\..\src\Geometry\Vector2.cpp" />
 		<Unit filename="..\..\src\Geometry\Vector3.cpp" />
 		<Unit filename="..\..\src\Geometry\Vector3.h" />
-		<Unit filename="..\..\src\Gui\Font.cpp" />
-		<Unit filename="..\..\src\Gui\Font.h" />
 		<Unit filename="..\..\src\Gui\FontManager.cpp" />
 		<Unit filename="..\..\src\Gui\FontManager.h" />
 		<Unit filename="..\..\src\Gui\Gui.cpp" />

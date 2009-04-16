@@ -3,7 +3,7 @@
 
 #include <stdafx.h>
 
-#include <PrimTypes.h>
+//#include <PrimTypes.h>
 #include <Singleton.h>
 
 
@@ -32,11 +32,6 @@ public:
 	void BlitText(const char* Text, SDL_Color Color, SDL_Rect Offset, Uint8 FontIndex = 0);
 	bool Flip();
 
-	void DrawPrim( DiffusePrim* pVertices, Uint32 count );
-	void DrawPrim( DiffuseTexPrim* pVertices, Uint32 count );
-	void DrawPrim( NormalDiffuseTexPrim* pVertices, Uint32 count );
-	void DrawQuads( NormalDiffuseTexPrim* pVertices, Uint32 count );
-
 	bool ClearDevice();
 	bool ColorBackground();
 	Uint16 getWidth();
@@ -61,7 +56,9 @@ public:
 
 	SDL_Surface* MainScreen() { return ScreenSurface; }
 
-private:
+	Camera* MainCamera;
+
+protected:
 
 	Uint16 ScreenWidth;
 	Uint16 ScreenHight;
@@ -80,9 +77,6 @@ private:
 
     gcn::OpenGLSDLImageLoader* imageLoader;
 
-public:
-
-	Camera* MainCamera;
 };
 
 #define SCREEN (ScreenManager::GetInstance())
