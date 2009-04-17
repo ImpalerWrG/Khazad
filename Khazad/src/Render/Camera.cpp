@@ -3,6 +3,7 @@
 #include <Camera.h>
 #include <Plane.h>
 #include <ScreenManager.h>
+#include <ConfigManager.h>
 #include <Map.h>
 
 
@@ -11,7 +12,10 @@ Camera::Camera()
 	SlidingMode = false;
 	ZoomingMode = false;
 	IsoMode = false;
-	IsoScalar = 1.0;
+	IsoScalar = CONFIG->ZoomStart();
+    MaxScalar = CONFIG->ZoomMax();
+	MinScalar = CONFIG->ZoomMin();
+
 }
 
 bool Camera::Init(bool Isometric)
@@ -22,9 +26,8 @@ bool Camera::Init(bool Isometric)
 	{
 		setIsometricProj(SCREEN->getWidth(), SCREEN->getHight(), 10000.0);
 		IsoMode = true;
-		IsoScalar = 100.0;
 		CameraDirection = NORTH;
-		ViewLevels = 6;
+		ViewLevels = 2;
 	}
 	else
 	{
@@ -102,7 +105,7 @@ void Camera::onMouseEvent(SDL_Event* Event)
 
 		case SDLK_F1:
 			{
-				//SDL_WM_ToggleFullScreen(SCREEN->ScreenSurface);
+				SCREEN->ToggleFullScreen();  //TODO dose not work??
 				break;
 			}
 
@@ -128,12 +131,12 @@ void Camera::onMouseEvent(SDL_Event* Event)
 			}
 		case SDLK_INSERT:
 			{
-				ViewLevels += 1;
+				ChangeViewLevels(1);
 				break;
 			}
 		case SDLK_DELETE:
 			{
-				ViewLevels -= 1;
+				ChangeViewLevels(-1);
 				break;
 			}
         default:
@@ -266,14 +269,14 @@ void Camera::onMouseEvent(SDL_Event* Event)
 
 
 
-				GLint viewport[4];
-				GLubyte pixel[4];
+				//GLint viewport[4];
+				//GLubyte pixel[4];
 
-				glGetIntegerv(GL_VIEWPORT, viewport);
+				//glGetIntegerv(GL_VIEWPORT, viewport);
 
-				glReadPixels(XPosition, viewport[3] - YPosition, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, (void *)pixel);
+				//glReadPixels(XPosition, viewport[3] - YPosition, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, (void *)pixel);
 
-				printf("%d %d %d %d\n", pixel[0], pixel[1], pixel[2], pixel[3]);
+				//printf("%d %d %d %d\n", pixel[0], pixel[1], pixel[2], pixel[3]);
 				/*
 				if (pixel[0] == 255)
 				  printf ("You picked the 1st snowman on the 1st row\n");
@@ -575,13 +578,13 @@ void Camera::ZoomView(float ZoomFactor)
 	if (IsoMode)
 	{
 		IsoScalar *= ZoomFactor;
-		if (IsoScalar < 12)  //TODO replace with Config Data
+		if (IsoScalar < MinScalar)
 		{
-			IsoScalar = 12;
+			IsoScalar = MinScalar;
 		}
-		if (IsoScalar > 200)
+		if (IsoScalar > MaxScalar)
 		{
-			IsoScalar = 200;
+			IsoScalar = MaxScalar;
 		}
 	}
 	else
@@ -604,11 +607,25 @@ void Camera::MoveViewHorizontal(float X, float Y)
 void Camera::MoveViewVertical(float Z)
 {
 	EyePosition.z += Z;
-
 	LookPosition.z += Z;
 
-    SCREEN->DirtyAllLists();
 	generateViewFrustum();
+    SCREEN->DirtyAllLists();
+}
+
+void Camera::ChangeViewLevels(Sint32 Change)
+{
+    if (Change != 0)
+    {
+        ViewLevels += Change;
+
+        if (ViewLevels < 0)
+        {
+            ViewLevels = 0;
+        }
+        generateViewFrustum();
+        SCREEN->DirtyAllLists();
+    }
 }
 
 void Camera::SetDefaultView()
@@ -626,6 +643,7 @@ void Camera::SetDefaultView()
 	UpVector.z = 0.0;
 
 	generateViewFrustum();
+    SCREEN->DirtyAllLists();
 }
 
 bool Camera::sphereInFrustum(Vector3 &Point, float Radius)

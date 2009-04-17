@@ -24,7 +24,6 @@ public:
 	~ScreenManager();
 	bool Init();
 
-	bool Draw();
 	bool ReSizeScreen(Uint16 Width, Uint16 Hight);
 	void FillRect(SDL_Rect* Rectangle);
 	void applyClipCentered(SDL_Rect Offset, ClipImage* Clip);
@@ -65,6 +64,7 @@ protected:
 	Uint8 ScreenBPP;
 
 	SDL_Surface* ScreenSurface;
+	bool FullScreen;
 
 	std::vector<GLuint*> DrawList;
 

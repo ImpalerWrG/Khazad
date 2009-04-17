@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Release" />
+	<ActiveTarget name="Debug" />
 	<File name="..\..\guichan\include\guichan\actionevent.hpp" open="0" top="0" tabpos="3">
 		<Cursor position="383" topLine="0" />
 	</File>
@@ -29,22 +29,22 @@
 		<Cursor position="133" topLine="0" />
 	</File>
 	<File name="..\..\src\Core\Singleton.h" open="1" top="0" tabpos="5">
-		<Cursor position="1287" topLine="9" />
+		<Cursor position="1448" topLine="0" />
 	</File>
 	<File name="..\..\src\Core\Timer.h" open="1" top="0" tabpos="6">
 		<Cursor position="327" topLine="1" />
 	</File>
-	<File name="..\..\src\Core\main.cpp" open="1" top="0" tabpos="39">
-		<Cursor position="2514" topLine="106" />
+	<File name="..\..\src\Core\main.cpp" open="1" top="1" tabpos="39">
+		<Cursor position="4288" topLine="174" />
 	</File>
 	<File name="..\..\src\Core\stdafx.h" open="1" top="0" tabpos="1">
 		<Cursor position="523" topLine="0" />
 	</File>
-	<File name="..\..\src\Data\ConfigManager.cpp" open="0" top="0" tabpos="17">
-		<Cursor position="675" topLine="7" />
+	<File name="..\..\src\Data\ConfigManager.cpp" open="1" top="0" tabpos="41">
+		<Cursor position="1106" topLine="12" />
 	</File>
 	<File name="..\..\src\Data\ConfigManager.h" open="1" top="0" tabpos="8">
-		<Cursor position="490" topLine="5" />
+		<Cursor position="580" topLine="11" />
 	</File>
 	<File name="..\..\src\Data\DataManager.cpp" open="0" top="0" tabpos="4">
 		<Cursor position="256" topLine="0" />
@@ -85,8 +85,8 @@
 	<File name="..\..\src\Geometry\Vector3.h" open="1" top="0" tabpos="16">
 		<Cursor position="905" topLine="42" />
 	</File>
-	<File name="..\..\src\Gui\FontManager.cpp" open="0" top="0" tabpos="20">
-		<Cursor position="2004" topLine="59" />
+	<File name="..\..\src\Gui\FontManager.cpp" open="1" top="0" tabpos="40">
+		<Cursor position="2622" topLine="58" />
 	</File>
 	<File name="..\..\src\Gui\FontManager.h" open="1" top="0" tabpos="17">
 		<Cursor position="758" topLine="13" />
@@ -101,40 +101,40 @@
 		<Cursor position="255" topLine="0" />
 	</File>
 	<File name="..\..\src\Map\Cell.cpp" open="1" top="0" tabpos="37">
-		<Cursor position="238" topLine="0" />
+		<Cursor position="1526" topLine="63" />
 	</File>
 	<File name="..\..\src\Map\Cell.h" open="1" top="0" tabpos="20">
 		<Cursor position="435" topLine="13" />
 	</File>
-	<File name="..\..\src\Map\Cube.cpp" open="1" top="1" tabpos="36">
-		<Cursor position="420" topLine="0" />
+	<File name="..\..\src\Map\Cube.cpp" open="1" top="0" tabpos="36">
+		<Cursor position="425" topLine="0" />
 	</File>
 	<File name="..\..\src\Map\Cube.h" open="1" top="0" tabpos="21">
 		<Cursor position="106" topLine="0" />
 	</File>
 	<File name="..\..\src\Map\Face.cpp" open="1" top="0" tabpos="35">
-		<Cursor position="4850" topLine="158" />
+		<Cursor position="4852" topLine="171" />
 	</File>
 	<File name="..\..\src\Map\Face.h" open="1" top="0" tabpos="22">
 		<Cursor position="454" topLine="10" />
 	</File>
 	<File name="..\..\src\Map\Map.cpp" open="1" top="0" tabpos="34">
-		<Cursor position="7303" topLine="10" />
+		<Cursor position="722" topLine="37" />
 	</File>
 	<File name="..\..\src\Map\Map.h" open="1" top="0" tabpos="23">
 		<Cursor position="637" topLine="20" />
 	</File>
 	<File name="..\..\src\Map\Slope.cpp" open="1" top="0" tabpos="31">
-		<Cursor position="8243" topLine="277" />
+		<Cursor position="8132" topLine="277" />
 	</File>
 	<File name="..\..\src\Map\Slope.h" open="1" top="0" tabpos="24">
 		<Cursor position="368" topLine="7" />
 	</File>
 	<File name="..\..\src\Render\Camera.cpp" open="1" top="0" tabpos="32">
-		<Cursor position="7234" topLine="315" />
+		<Cursor position="339" topLine="5" />
 	</File>
 	<File name="..\..\src\Render\Camera.h" open="1" top="0" tabpos="25">
-		<Cursor position="409" topLine="0" />
+		<Cursor position="4031" topLine="135" />
 	</File>
 	<File name="..\..\src\Render\ClipImage.h" open="1" top="0" tabpos="26">
 		<Cursor position="0" topLine="0" />
@@ -149,10 +149,10 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="..\..\src\Render\ScreenManager.cpp" open="1" top="0" tabpos="38">
-		<Cursor position="5732" topLine="439" />
+		<Cursor position="1951" topLine="55" />
 	</File>
 	<File name="..\..\src\Render\ScreenManager.h" open="1" top="0" tabpos="29">
-		<Cursor position="659" topLine="19" />
+		<Cursor position="1471" topLine="52" />
 	</File>
 	<File name="..\..\src\Render\TextureManager.cpp" open="0" top="0" tabpos="21">
 		<Cursor position="5067" topLine="208" />

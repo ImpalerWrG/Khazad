@@ -1,0 +1,32 @@
+Release Notes v0.0.1
+
+Khazad is still being built and major sub-systems are still incomplete, buggy or just plain absent
+The current release will show a randomly generated chunk of terrain like textured triangles with 
+some square tiles one level above, all you can do is move the camera around this environment though
+the next thing on the development plan is to make this terrain more interesting by importing it from DF
+or have it be modified in real time.  An XML file config.xml allows the map dimensions to be altered and a few of the constants that determine how the camera is controlled, or for the program to run in full screen mode.
+
+Their is a debugging output showing the Frame rate, feedback on what kind of rates people are getting with various types of hardware is appreciated.
+
+Controls:
+
+Keyboard controls:
+
+Q: Resets view to origin looking north at default zoom
+Up: Moves view up one level
+Down: Moves view down one level
+Insert: Increase number of viewing levels (lowers contrast between levels)
+Delete: Decrease number of viewing levels (ingresses contrast between levels)
+Left: Rotates camera view counterclockwise
+Right: Rotates camera view clockwise
+
+Mouse controls:
+
+ScrollwheelUp: Zooms view in
+ScroolWheelDown: Zooms view out
+
+Right Button down + horizontal mouse movement: pans camera view rightward/leftward
+Right Button down + vertical mouse movement: advances/retreats camera view
+
+Left Button down + horizontal mouse movement: Rotates camera view clockwise/counterclockwise
+Left Button down + vertical mouse movement: Tilts camera view vertical/near-horizontal

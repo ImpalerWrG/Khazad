@@ -24,99 +24,13 @@ ScreenManager::ScreenManager()
 	ScreenWidth = CONFIG->getXResolution();
 	ScreenHight = CONFIG->getYResolution();
 	ScreenBPP = 32;
+	FullScreen = false;
 }
 
 ScreenManager::~ScreenManager()
 {
 
 }
-
-bool ScreenManager::Draw()
-{
-	return true;
-}
-
-/*
-bool ScreenManager::Init()
-{
-	if (SDL_Init(SDL_INIT_VIDEO) == -1) // Could we start SDL_VIDEO?
-	{
-		std::cerr << "Couldn't init SDL";
-		return false;
-	}
-
-	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
-	SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, SCREEN_BPP);
-	SDL_GL_SetAttribute( SDL_GL_STENCIL_SIZE, 0);
-	SDL_GL_SetAttribute( SDL_GL_ACCUM_RED_SIZE, 0);
-	SDL_GL_SetAttribute( SDL_GL_ACCUM_GREEN_SIZE, 0);
-	SDL_GL_SetAttribute( SDL_GL_ACCUM_BLUE_SIZE, 0);
-	SDL_GL_SetAttribute( SDL_GL_ACCUM_ALPHA_SIZE, 0);
-
-	atexit(SDL_Quit); // Now that we're enabled, make sure we cleanup
-
-	/*
-	int videoFlags;
-	const SDL_VideoInfo *videoInfo;
-
-	/*
-    if ( SDL_Init( SDL_INIT_VIDEO ) < 0 )
-		std::cerr << "Video initialization failed: %s\n";
-
-    videoInfo = SDL_GetVideoInfo( );
-    if ( !videoInfo )
-	    std::cerr << "Video query failed: %s\n";
-
-	/*
-    videoFlags  = SDL_OPENGL;          // Enable OpenGL in SDL
-    videoFlags |= SDL_GL_DOUBLEBUFFER; // Enable double buffering
-    videoFlags |= SDL_HWPALETTE;       // Store the palette in hardware
-    videoFlags |= SDL_RESIZABLE;       // Enable window resizing
-
-    // This checks to see if surfaces can be stored in memory
-    if ( videoInfo->hw_available )
-		videoFlags |= SDL_HWSURFACE;
-    else
-		videoFlags |= SDL_SWSURFACE;
-
-
-    if ( videoInfo->blit_hw )
-		videoFlags |= SDL_HWACCEL;
-	/
-
-	ScreenSurface = SDL_SetVideoMode(CONFIG->getXResolution(), CONFIG->getYResolution(), SCREEN_BPP, SDL_OPENGL | SDL_RESIZABLE); //videoFlags);
-	if (!ScreenSurface)
-	{
-		std::cerr << "Couldn't create screen";
-		return false;
-	}
-
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glEnable(GL_TEXTURE_2D);
-	glShadeModel(GL_SMOOTH);
-	glEnable(GL_LINE_SMOOTH);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-	glDepthFunc(GL_LEQUAL);
-	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-
-	//initGL();
-
-	MainCamera = new Camera();
-	MainCamera->Init(true);
-
-	if (glGetError() != GL_NO_ERROR)
-	{
-		return false;
-	}
-
-	SDL_WM_SetCaption("Khazad Keep", "Icon goes here?");
-	return true;
-}
-*/
-
-
 
 bool ScreenManager::Init()
 {
@@ -130,7 +44,14 @@ bool ScreenManager::Init()
     SDL_SetColorKey(Icon, SDL_SRCCOLORKEY, colorkey);
     SDL_WM_SetIcon(Icon, NULL);
 
-    ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE);
+    if(CONFIG->FullScreen())
+    {
+        ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_FULLSCREEN );
+    }
+    else
+    {
+        ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
+    }
 
     glViewport(0, 0, ScreenWidth, ScreenHight);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -247,6 +168,9 @@ Uint16 ScreenManager::getHight()
 
 void ScreenManager::DirtyAllLists()
 {
+    if(MAP == NULL)
+        return;
+
 	for(Uint32 SizeZ = 0; SizeZ < MAP->CellSizeZ; SizeZ++)
 	{
 		for (Uint32 SizeX = 0; SizeX < MAP->CellSizeX; SizeX++)
@@ -388,7 +312,20 @@ float ScreenManager::getShading(float Zlevel)
 
 void ScreenManager::ToggleFullScreen()
 {
-    SDL_WM_ToggleFullScreen(ScreenSurface);
+    FullScreen = !FullScreen;
+    if(FullScreen)
+    {
+        ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_FULLSCREEN);
+        glViewport(0, 0, ScreenWidth, ScreenHight);
+    }
+    else
+    {
+        ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE);
+        glViewport(0, 0, ScreenWidth, ScreenHight);
+    }
+    TEXTURE->FreeInstance();
+	TEXTURE->CreateInstance();
+	TEXTURE->Init();
 }
 
 void ScreenManager::Enable2D()

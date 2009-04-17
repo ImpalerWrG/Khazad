@@ -180,9 +180,8 @@ bool Face::Draw()
 {
     if(Visible)
     {
-        float Shading = SCREEN->getShading(FirstOwner->Position.z);
-
-        glColor3f(Shading, Shading, Shading);
+        //float Shading = SCREEN->getShading(FirstOwner->Position.z);
+        //glColor3f(Shading, Shading, Shading);
 
         SDL_Rect TexRect = TEXTURE->TextureCordinates[DATA->Materials[Material]->getTexture()];
 
@@ -202,7 +201,6 @@ bool Face::Draw()
             glVertex3f(Points[2].x, Points[2].y, Points[2].z);
             glVertex3f(Points[3].x, Points[3].y, Points[3].z);
         glEnd();
-
 */
         SCREEN->IncrementTriangles(2);
     }

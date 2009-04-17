@@ -63,6 +63,7 @@ void FontManager::RenderText(char *text, TTF_Font *font, SDL_Color color, SDL_Re
 {
     SDL_Surface* FontSurface = TTF_RenderText_Blended(font, text, color);
     RenderSurface(FontSurface, location);
+    SDL_FreeSurface(FontSurface);
 }
 
 void FontManager::RenderSurface(SDL_Surface* RenderSurface, SDL_Rect *location)

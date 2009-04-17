@@ -288,8 +288,8 @@ bool Slope::Draw()
 {
     if(Visible)
     {
-        float Shading = SCREEN->getShading(Owner->Position.z);
-        glColor3f(Shading, Shading, Shading);
+        //float Shading = SCREEN->getShading(Owner->Position.z);
+        //glColor3f(Shading, Shading, Shading);
         SDL_Rect TexRect = TEXTURE->TextureCordinates[Owner->getMaterial()];
 
         if (SlopeType == SLOPE_NORTH_EAST || SlopeType == SLOPE_SOUTH_EAST || SlopeType == SLOPE_SOUTH_WEST || SlopeType == SLOPE_NORTH_WEST )

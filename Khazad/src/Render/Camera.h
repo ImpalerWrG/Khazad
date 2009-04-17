@@ -17,6 +17,8 @@ protected:
 
 	bool IsoMode;
 	float IsoScalar;
+	Uint16 MaxScalar;
+	Uint16 MinScalar;
 
 	bool SlidingMode;
 	bool ZoomingMode;
@@ -137,6 +139,12 @@ public:
 	void MoveViewHorizontal(float X, float Y);
 
 	void MoveViewVertical(float Z);
+
+	/**
+	* ChangeViewLevels modifies the number of z levels that will be rendered
+	* @param Change - Amount of change, positive or negative
+	*/
+    void ChangeViewLevels(Sint32 Change);
 
 	/**
 	* SetDefaultView returns the camera to a looking at the Origin

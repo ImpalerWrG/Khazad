@@ -176,11 +176,10 @@ int main(int argv, char** argc)
 		UITimer->Unpause();
             UI->Draw();
 
-            /* Go in HUD-drawing mode */
-            SCREEN->Enable2D();
+
+            SCREEN->Enable2D();  // Go in HUD-drawing mode
 
             SDL_Rect position;
-
             position.x = 10;
             position.y = SCREEN->getHight() - 80;
 
@@ -190,28 +189,28 @@ int main(int argv, char** argc)
             position.y -= 40;
 
             //sprintf (buffer, "InputTime %3.2f", InputTimer->getAverage());
-            //FONT->SDL_GL_RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
+            //FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
             sprintf (buffer, "Triangles %i", SCREEN->getTriangleCount());
             FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
             position.y -= 40;
 
-            sprintf (buffer, "GameTime %3.2f", GameTimer->getAverage());
-            FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
+            //sprintf (buffer, "GameTime %3.2f", GameTimer->getAverage());
+            //FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
             position.y -= 40;
 
-            sprintf (buffer, "RenderTime %3.2f", RenderTimer->getAverage());
-            FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
+            //sprintf (buffer, "RenderTime %3.2f", RenderTimer->getAverage());
+            //FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
             position.y -= 40;
 
-            sprintf (buffer, "UITime %3.2f", UITimer->getAverage());
-            FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
+            //sprintf (buffer, "UITime %3.2f", UITimer->getAverage());
+            //FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
-            /* Come out of HUD mode */
-            SCREEN->Disable2D();
+            SCREEN->Disable2D(); // Come out of HUD mode
+
 
 		UITimer->Pause();
 

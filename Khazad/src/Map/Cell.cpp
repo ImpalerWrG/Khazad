@@ -80,8 +80,11 @@ bool Cell::Draw()
 
     Cube* LoopCube = NULL;
 
-    if(Initalized)
+    float Shading = SCREEN->getShading(Position.z);
+
+    if(Initalized && Shading > 0)
     {
+        glColor3f(Shading, Shading, Shading);
         for (Uint16 x = 0; x < CellEdgeLenth; x++)
         {
             for (Uint16 y = 0; y < CellEdgeLenth; y++)
