@@ -35,6 +35,8 @@ public:
 	Uint32 CellSizeY;
 	Uint32 CellSizeZ;
 
+    void LoadExtract();
+
 protected:
 
 	Cell**** CellArray;

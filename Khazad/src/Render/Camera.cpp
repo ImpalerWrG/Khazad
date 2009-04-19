@@ -15,7 +15,6 @@ Camera::Camera()
 	IsoScalar = CONFIG->ZoomStart();
     MaxScalar = CONFIG->ZoomMax();
 	MinScalar = CONFIG->ZoomMin();
-
 }
 
 bool Camera::Init(bool Isometric)
@@ -27,7 +26,7 @@ bool Camera::Init(bool Isometric)
 		setIsometricProj(SCREEN->getWidth(), SCREEN->getHight(), 10000.0);
 		IsoMode = true;
 		CameraDirection = NORTH;
-		ViewLevels = 2;
+		ViewLevels = 6;
 	}
 	else
 	{

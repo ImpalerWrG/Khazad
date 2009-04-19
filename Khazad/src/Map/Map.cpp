@@ -3,6 +3,7 @@
 #include <Map.h>
 #include <Singleton.h>
 #include <ConfigManager.h>
+#include <Extract.h>
 #include <Cube.h>
 #include <Cell.h>
 #include <Random.h>
@@ -11,7 +12,17 @@ DECLARE_SINGLETON(Map)
 
 Map::Map()
 {
-	CellSizeX = CONFIG->getXMap();
+
+}
+
+Map::~Map()
+{
+
+}
+
+bool Map::Init()
+{
+    CellSizeX = CONFIG->getXMap();
 	CellSizeY = CONFIG->getYMap();
 	CellSizeZ = CONFIG->getZMap();
 
@@ -37,15 +48,7 @@ Map::Map()
     MapSizeX = CellSizeX * CubesPerCellSide;
 	MapSizeY = CellSizeY * CubesPerCellSide;
 	MapSizeZ = CellSizeZ;
-}
 
-Map::~Map()
-{
-
-}
-
-bool Map::Init()
-{
 	return true;
 }
 
@@ -314,4 +317,85 @@ Cube* Map::getCube(Sint32 X, Sint32 Y, Sint32 Z)
         return NULL;
     }
     return NULL;
+}
+
+void Map::LoadExtract()
+{
+    CellSizeX = EXTRACT->x_blocks;
+	CellSizeY = EXTRACT->y_blocks;
+	CellSizeZ = EXTRACT->z_levels + 1; // Extra level for Basement
+
+	CubesPerCellSide = (Uint8) CONFIG->getCellEdgeLength();
+
+	CellArray = new Cell***[CellSizeX];
+
+	for (Uint32 i = 0; i < CellSizeX; i++)
+	{
+		CellArray[i] = new Cell**[CellSizeY];
+
+		for (Uint32 j = 0; j < CellSizeY; j++)
+		{
+			CellArray[i][j] = new Cell*[CellSizeZ];
+
+			for (Uint32 k = 0; k < CellSizeZ; k++)
+			{
+				CellArray[i][j][k] = new Cell(i * CubesPerCellSide, j * CubesPerCellSide, k);
+
+				if(k == 0)
+				{
+				    CellArray[i][j][k]->SetBasment(true);
+				}
+			}
+		}
+	}
+
+    MapSizeX = CellSizeX * CubesPerCellSide;
+	MapSizeY = CellSizeY * CubesPerCellSide;
+	MapSizeZ = CellSizeZ;
+
+    Cube* NewCube = NULL;
+    Cell* TargetCell = NULL;
+
+    for (Uint32 i = 0; i < MapSizeX; i++)
+	{
+		for (Uint32 j = 0; j < MapSizeY; j++)
+		{
+			for (Uint32 k = 0; k < MapSizeZ; k++)
+			{
+			    if(EXTRACT->isOpenTerrain(EXTRACT->tile_types[i][j][k]))
+			    {
+
+
+                    TargetCell = getCubeOwner(i, j, k);
+
+                    if(TargetCell)
+                    {
+                        if(!TargetCell->Initalized)
+                        {
+                            TargetCell->Init();
+                        }
+
+                        NewCube = getCube(i, j, k);
+
+                        if (NewCube)
+                        {
+                            if (NewCube->Initalized != true)
+                            {
+                                NewCube->Init(RANDOM->Roll(0, 4));   // TEMPORARY RANDOMIZING OF TEXTURES HACK, must have atleast this many texture and XML material entries
+                                //if (Type != SLOPE_FLAT)
+                                //{
+                                 //   NewCube->SetSlope(Type);
+                                //}
+                                NewCube->setVisible(true);
+                            }
+                        }
+                    }
+
+
+
+
+			    }
+			}
+		}
+	}
 }

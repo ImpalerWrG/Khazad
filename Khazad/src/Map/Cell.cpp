@@ -56,6 +56,7 @@ Cell::Cell(Sint32 X, Sint32 Y, Sint32 Z)
 	Position.y = (float) Y + (CubesPerCellSide / 2);
 	Position.z = (float) Z;
 
+    Basment = false;
 	Active = true;
 }
 
@@ -71,10 +72,10 @@ bool Cell::Update()
 
 bool Cell::Draw()
 {
-   // if(Sky | Rock | Air | Basment) //Nothing to draw for these Cells
-    //{
-    //    return true;
-    //}
+    if(Basment) // Nothing to draw for these Cells  (Sky | Rock | Air)
+    {
+        return true;
+    }
 
 	Uint16 CellEdgeLenth = CONFIG->getCellEdgeLength();
 

@@ -36,6 +36,8 @@ bool ScreenManager::Init()
 {
     SDL_Init(SDL_INIT_VIDEO);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);  //TODO make this a Config option
+
 
 	SDL_WM_SetCaption("Khazad", "Khazad");
 

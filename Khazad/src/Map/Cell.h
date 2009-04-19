@@ -22,6 +22,8 @@ public:
 	bool Draw();
 	bool Update();
 
+	void SetBasment(bool Value) { Basment = Value; }
+
 protected:
 
 	bool Sky;

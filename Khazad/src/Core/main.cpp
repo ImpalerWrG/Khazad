@@ -13,6 +13,7 @@
 #include <ConfigManager.h>
 #include <DataManager.h>
 #include <InputManager.h>
+#include <Extract.h>
 #include <Game.h>
 #include <Map.h>
 #include <Gui.h>
@@ -60,10 +61,17 @@ bool initManagers()
 	GAME->CreateInstance();
 	GAME->Init();
 
+    printf("Extractor Initializing \n");
+	EXTRACT->CreateInstance();
+	EXTRACT->Init();
+	//EXTRACT->dumpMemory();
+	EXTRACT->loadMap("Assets\\Maps\\full_ice2.txt");
+
     printf("Map Initializing \n");
 	MAP->CreateInstance();
-	MAP->Init();
-	MAP->Generate(0);
+	//MAP->Init();
+	//MAP->Generate(0);
+	MAP->LoadExtract();
 
     printf("Input Initializing \n");
 	INPUT->CreateInstance();
