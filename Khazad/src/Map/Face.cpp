@@ -166,7 +166,10 @@ void Face::CheckRemoval()
 	{
         if (SecondeOwner != NULL && SecondeOwner->Initalized)
         {
-            Visible = false;
+            //if(FirstOwner->isLiquid() ^ SecondeOwner->isLiquid())
+            //{
+                Visible = false;
+            //}
         }
 	}
 }
@@ -180,9 +183,6 @@ bool Face::Draw()
 {
     if(Visible)
     {
-        //float Shading = SCREEN->getShading(FirstOwner->Position.z);
-        //glColor3f(Shading, Shading, Shading);
-
         SDL_Rect TexRect = TEXTURE->TextureCordinates[DATA->Materials[Material]->getTexture()];
 
         glTexCoord2i(TexRect.x, TexRect.h);         glVertex3f(Points[0].x, Points[0].y, Points[0].z);

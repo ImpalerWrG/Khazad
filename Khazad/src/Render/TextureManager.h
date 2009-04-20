@@ -40,6 +40,7 @@ public:
     int nextpoweroftwo(int x);
 
     GLuint getAggragateTexture() { return MainTexture; }
+    Uint16 getTextureCount() { return TextureCordinates.size(); }
     int getAggragateTextureSize() { return MainTextureSize; }
     SDL_Surface* getAgragateSurface() { return AgragateSurface; }
 

@@ -3,8 +3,9 @@
 
 #include <Singleton.h>
 #include <stdafx.h>
+#include <Cell.h>
 
-class Cell;
+//class Cell;
 class Cube;
 class Actor;
 
@@ -36,6 +37,7 @@ public:
 	Uint32 CellSizeZ;
 
     void LoadExtract();
+    void LoadCube(Cube* NewCube, int TileType);
 
 protected:
 

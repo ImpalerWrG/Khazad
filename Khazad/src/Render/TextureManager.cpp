@@ -9,15 +9,78 @@ DECLARE_SINGLETON(TextureManager)
 
 bool TextureManager::Init()
 {
-	loadTextureSingular("Assets\\Textures\\lava.png", false, false);
 
-	loadTextureSingular("Assets\\Textures\\stone.png", false, false);
-
-	loadTextureSingular("Assets\\Textures\\water.png", false, false);
-
-	loadTextureSingular("Assets\\Textures\\soil.png", false, false);
-
+// 0 Grass
 	loadTextureSingular("Assets\\Textures\\grass.png", false, false);
+// 1 Stone
+	loadTextureSingular("Assets\\Textures\\metal.png", false, false);
+// 2 Murky Pool
+	loadTextureSingular("Assets\\Textures\\Pool.png", false, false);
+// 3 Slope ?  Fire
+	loadTextureSingular("Assets\\Textures\\lava.png", false, false);
+// 4 Constructed Stairs & Ramps
+	loadTextureSingular("Assets\\Textures\\Brick.png", false, false);
+// 5 OpenSpace(Air)
+	loadTextureSingular("Assets\\Textures\\water.png", false, false);
+// 6 Not Assigned
+	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+// 7 Detailed Stone / Constructions
+	loadTextureSingular("Assets\\Textures\\floor_detailed.png", false, false);
+// 8 Driftwood
+	loadTextureSingular("Assets\\Textures\\Bark.png", false, false);
+// 9 minStone
+	loadTextureSingular("Assets\\Textures\\soil.png", false, false);
+// 10 Soil
+	loadTextureSingular("Assets\\Textures\\soil.png", false, false);
+// 11
+	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+// 12 Pebbles
+	loadTextureSingular("Assets\\Textures\\Cobblestone.png", false, false);
+// 13 Dead Shrub/Tree/Sappling
+	loadTextureSingular("Assets\\Textures\\grass_dry.png", false, false);
+// 14 Shrub
+	loadTextureSingular("Assets\\Textures\\Shrub.png", false, false);
+// 15 Sappling/Tree
+	loadTextureSingular("Assets\\Textures\\Bark.png", false, false);
+// 16 Rock
+	loadTextureSingular("Assets\\Textures\\stone.png", false, false);
+// 17 rawStone
+	loadTextureSingular("Assets\\Textures\\RawStone.png", false, false);
+// 18 featStone / all Boulders
+	loadTextureSingular("Assets\\Textures\\boulder.png", false, false);
+// 19
+	loadTextureSingular("Assets\\Textures\\Boards.png", false, false);
+// 20
+	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+// 21 Furrowed Soil
+	loadTextureSingular("Assets\\Textures\\Sand.png", false, false);
+// 22 Stone Constructions
+	loadTextureSingular("Assets\\Textures\\constructed_wall.png", false, false);
+// 23
+	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+// 24 Lava
+	loadTextureSingular("Assets\\Textures\\lava.png", false, false);
+// 25 Ice-1
+	loadTextureSingular("Assets\\Textures\\Ice.png", false, false);
+// 26
+	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+// 27 Ice-2
+	loadTextureSingular("Assets\\Textures\\snow.png", false, false);
+// 28
+	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+// 29
+	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+// 30
+	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+// 31 Chasm/Pit
+	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+// 32 Obsidian/Ash
+	loadTextureSingular("Assets\\Textures\\obsidian.png", false, false);
+// 33 dead grass
+	loadTextureSingular("Assets\\Textures\\grass_dry.png", false, false);
+
+
+
 
     MergeTextures();
 
@@ -176,7 +239,7 @@ void TextureManager::loadTextureSingular(char* filepath, bool ColorKey, bool bmp
 
 void TextureManager::MergeTextures()
 {
-    Uint32 LargestTextureSize = 128;  // TODO Must be found dynamicly, see bellow
+    Uint32 LargestTextureSize = 256;  // TODO Must be found dynamicly, see bellow
     float root = sqrt((float) RawTextureVector.size());
     MainTextureSize = nextpoweroftwo(round(root)) * LargestTextureSize;
 

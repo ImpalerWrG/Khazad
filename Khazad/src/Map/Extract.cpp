@@ -632,7 +632,7 @@ int Extractor::picktexture(int in)
         case 52: //up-down stair grass2
         case 53: //down stair grass2
         case 54: //up stair grass2
-            return 16;
+            return 0; //16;
             break;
 
         case 55: //up-down stair stone
@@ -717,7 +717,7 @@ int Extractor::picktexture(int in)
             break;
 
         case 236: //ramp grass2
-            return 16;
+            return 0; //16;
             break;
 
         case 237: //ramp stone
@@ -960,7 +960,7 @@ int Extractor::picktexture(int in)
         case 399: //grass floor2b
         case 400: //grass floor3b
         case 401: //grass floor4b
-            return 16;
+            return 0; //16;
             break;
 
         case 402: //stone boulder

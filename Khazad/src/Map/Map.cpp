@@ -3,8 +3,10 @@
 #include <Map.h>
 #include <Singleton.h>
 #include <ConfigManager.h>
+#include <TextureManager.h>
 #include <Extract.h>
 #include <Cube.h>
+#include <Face.h>
 #include <Cell.h>
 #include <Random.h>
 
@@ -343,6 +345,7 @@ void Map::LoadExtract()
 
 				if(k == 0)
 				{
+				    CellArray[i][j][k]->Init();
 				    CellArray[i][j][k]->SetBasment(true);
 				}
 			}
@@ -360,15 +363,14 @@ void Map::LoadExtract()
 	{
 		for (Uint32 j = 0; j < MapSizeY; j++)
 		{
-			for (Uint32 k = 0; k < MapSizeZ; k++)
+			for (Uint32 k = 1; k < MapSizeZ; k++)
 			{
-			    if(EXTRACT->isOpenTerrain(EXTRACT->tile_types[i][j][k]))
-			    {
+                TargetCell = getCubeOwner(i, j, k);
+                if(TargetCell)
+                {
 
-
-                    TargetCell = getCubeOwner(i, j, k);
-
-                    if(TargetCell)
+                    int TileType = EXTRACT->tile_types[i + 2][j + 2][k - 1];
+                    if(EXTRACT->isFloorTerrain(TileType))
                     {
                         if(!TargetCell->Initalized)
                         {
@@ -376,26 +378,74 @@ void Map::LoadExtract()
                         }
 
                         NewCube = getCube(i, j, k);
-
                         if (NewCube)
                         {
-                            if (NewCube->Initalized != true)
+                            LoadCube(NewCube, TileType);
+                        }
+
+                        // Force Floors to have bottoms
+                        if(NewCube->Facets[FACET_BOTTOM])
+                        {
+                            NewCube->Facets[FACET_BOTTOM]->setVisible(true);
+                        }
+                        else
+                        {
+                            Cube* Neibor = MAP->getCube((Sint32) i, (Sint32) j, (Sint32) k - 1);
+                            NewCube->Facets[FACET_BOTTOM] = new Face;
+                            NewCube->Facets[FACET_BOTTOM]->Init(NewCube, Neibor, FACET_BOTTOM, EXTRACT->picktexture(TileType));
+                        }
+
+                        if(TileType == 2)
+                        {
+                            if(NewCube->Facets[FACET_TOP])
                             {
-                                NewCube->Init(RANDOM->Roll(0, 4));   // TEMPORARY RANDOMIZING OF TEXTURES HACK, must have atleast this many texture and XML material entries
-                                //if (Type != SLOPE_FLAT)
-                                //{
-                                 //   NewCube->SetSlope(Type);
-                                //}
-                                NewCube->setVisible(true);
+                                NewCube->Facets[FACET_TOP]->setVisible(true);
+                            }
+                            else
+                            {
+                                Cube* Neibor = MAP->getCube((Sint32) i, (Sint32) j, (Sint32) k + 1);
+                                NewCube->Facets[FACET_TOP] = new Face;
+                                NewCube->Facets[FACET_TOP]->Init(NewCube, Neibor, FACET_TOP, EXTRACT->picktexture(TileType));
                             }
                         }
+
+
                     }
 
 
+                    if(EXTRACT->isOpenTerrain(TileType))
+                    {
+                        if(!TargetCell->Initalized)
+                        {
+                            TargetCell->Init();
+                        }
+                        NewCube = getCube(i, j, k);
+                        if (NewCube)
+                        {
+                            LoadCube(NewCube, TileType);
+                        }
+                    }
+
+                }
 
 
-			    }
-			}
+            }
+
 		}
 	}
+}
+
+void Map::LoadCube(Cube* NewCube, int TileType)
+{
+    if (NewCube->Initalized != true)
+    {
+        Uint16 Texture = EXTRACT->picktexture(TileType);
+        NewCube->Init(Texture);
+
+        if (EXTRACT->isRampTerrain(TileType))
+        {
+            NewCube->SetSlope(SLOPE_SOUTH_WEST);
+        }
+        NewCube->setVisible(true);
+    }
 }

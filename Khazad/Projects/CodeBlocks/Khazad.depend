@@ -4990,7 +4990,7 @@
 	<Map.h>
 	<Gui.h>
 
-1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\texturemanager.h
+1240131309 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\texturemanager.h
 	<stdafx.h>
 	<Singleton.h>
 
@@ -5061,9 +5061,10 @@
 1235468170 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\geometry\vector3.h
 	<stdafx.h>
 
-1240117217 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.h
+1240219982 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.h
 	<Singleton.h>
 	<stdafx.h>
+	<Cell.h>
 
 1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\gui\gui.h
 	<stdafx.h>
@@ -5114,7 +5115,7 @@
 	<Map.h>
 	<Cube.h>
 
-1239869090 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.h
+1240255740 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.h
 	<stdafx.h>
 	<Actor.h>
 
@@ -5164,7 +5165,7 @@
 	<stdafx.h>
 	<Plane.h>
 
-1240120912 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cell.cpp
+1240122174 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cell.cpp
 	<stdafx.h>
 	<Cell.h>
 	<Cube.h>
@@ -5172,11 +5173,11 @@
 	<Random.h>
 	<Game.h>
 
-1240120912 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cell.h
+1240127023 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cell.h
 	<stdafx.h>
 	<Actor.h>
 
-1240122058 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.cpp
+1240255738 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.cpp
 	<stdafx.h>
 	<Game.h>
 	<Camera.h>
@@ -5195,13 +5196,15 @@
 	<stdafx.h>
 	<Actor.h>
 
-1240121858 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.cpp
+1240255740 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.cpp
 	<stdafx.h>
 	<Map.h>
 	<Singleton.h>
 	<ConfigManager.h>
+	<TextureManager.h>
 	<Extract.h>
 	<Cube.h>
+	<Face.h>
 	<Cell.h>
 	<Random.h>
 
@@ -5252,7 +5255,7 @@
 	<stdafx.h>
 	<ImagePage.h>
 
-1239787929 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\texturemanager.cpp
+1240210382 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\texturemanager.cpp
 	<stdafx.h>
 	<ImagePage.h>
 	<ClipImage.h>
@@ -5276,7 +5279,7 @@
 	"tinyxml.h"
 	<windows.h>
 
-1239923532 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\face.cpp
+1240255767 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\face.cpp
 	<stdafx.h>
 	<Cube.h>
 	<Face.h>
@@ -5310,7 +5313,7 @@
 	<DataTypes.h>
 	<XMLManager.h>
 
-1240117217 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\extract.cpp
+1240132524 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\extract.cpp
 	<windows.h>
 	<stdio.h>
 	"Extract.h"

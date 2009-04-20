@@ -21,20 +21,26 @@ public:
 
 	bool isSolid() { return Solid; }
     void setSolid(bool NewValue) { Solid = NewValue; }
+	bool isLiquid() { return Liquid; }
+	void setLiquid(bool NewValue) { Liquid = NewValue; }
 
 	Face* Facets[NUM_FACETS];
-	Slope* Slopage;
 
+    Slope* getSlope() { return Slopage; }
 	void SetSlope(Slopping Type);
+
+
+	Uint16 getMaterial() { return Material; }
 
 	bool Update();
 	bool Draw();
 
-	Uint16 getMaterial() { return Material; }
-
 protected:
 
+	Slope* Slopage;
+
 	bool Solid;
+	bool Liquid;
 	Uint16 Material;
 
 };

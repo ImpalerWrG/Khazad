@@ -15,6 +15,7 @@ Cube::Cube()
 	Visible = false;
 	Initalized = false;
 	Slopage = NULL;
+	Liquid = false;
 
 	for(Uint8 i = 0; i < NUM_FACETS; i++)
 	{
@@ -40,28 +41,48 @@ bool Cube::Init(Uint16 MaterialType)
 {
 	Initalized = true;
     Cube* Neibor = NULL;
+    Cell* NeiborCell = NULL;
+
     Material = MaterialType;
 
-    Neibor = MAP->getCube((Sint32) Position.x, (Sint32) Position.y, (Sint32) Position.z - 1);
-    if(Neibor != NULL)
+    if(Material == 2 | Material == 5)  // HACK!
     {
-        if (Neibor->Initalized == false)
+        Liquid = true;
+    }
+
+    Neibor = MAP->getCube((Sint32) Position.x, (Sint32) Position.y, (Sint32) Position.z - 1);
+    NeiborCell = MAP->getCubeOwner((Sint32) Position.x, (Sint32) Position.y, (Sint32) Position.z - 1);
+
+    if(!NeiborCell->isBasment())
+    {
+        if(Neibor != NULL)
         {
-            Facets[FACET_BOTTOM] = new Face;
-            Facets[FACET_BOTTOM]->Init(this, Neibor, FACET_BOTTOM, MaterialType);
+            if (Neibor->Initalized == false)
+            {
+                Facets[FACET_BOTTOM] = new Face;
+                Facets[FACET_BOTTOM]->Init(this, Neibor, FACET_BOTTOM, MaterialType);
+            }
+            else
+            {
+                if(Neibor->Facets[FACET_TOP])
+                {
+                    Neibor->Facets[FACET_TOP]->CheckRemoval();
+                }
+            }
         }
         else
         {
-            Neibor->Facets[FACET_TOP]->CheckRemoval();
+            if (NeiborCell->Initalized == false)
+            {
+                Facets[FACET_BOTTOM] = new Face;
+                Facets[FACET_BOTTOM]->Init(this, NULL, FACET_BOTTOM, MaterialType);
+            }
         }
-    }
-    else
-    {
-        Facets[FACET_BOTTOM] = new Face;
-        Facets[FACET_BOTTOM]->Init(this, NULL, FACET_BOTTOM, MaterialType);
     }
 
     Neibor = MAP->getCube((Sint32) Position.x, (Sint32) Position.y, (Sint32) Position.z + 1);
+    NeiborCell = MAP->getCubeOwner((Sint32) Position.x, (Sint32) Position.y, (Sint32) Position.z + 1);
+
     if(Neibor != NULL)
     {
         if(Neibor->Initalized == false)
@@ -71,7 +92,10 @@ bool Cube::Init(Uint16 MaterialType)
         }
         else
         {
-            Neibor->Facets[FACET_BOTTOM]->CheckRemoval();
+            if(Neibor->Facets[FACET_BOTTOM])
+            {
+                Neibor->Facets[FACET_BOTTOM]->CheckRemoval();
+            }
         }
     }
     else
@@ -80,7 +104,7 @@ bool Cube::Init(Uint16 MaterialType)
         Facets[FACET_TOP]->Init(this, NULL, FACET_TOP, MaterialType);
     }
 
-    Neibor = MAP->getCube((Sint32) Position.x, (Sint32) Position.y -1, (Sint32) Position.z);
+    Neibor = MAP->getCube((Sint32) Position.x, (Sint32) Position.y - 1, (Sint32) Position.z);
     if(Neibor != NULL)
     {
         if(Neibor->Initalized == false)
@@ -90,13 +114,16 @@ bool Cube::Init(Uint16 MaterialType)
         }
         else
         {
-            Neibor->Facets[FACET_SOUTH_WEST]->CheckRemoval();
+            if(Neibor->Facets[FACET_SOUTH_WEST])
+            {
+                Neibor->Facets[FACET_SOUTH_WEST]->CheckRemoval();
+            }
         }
     }
     else
     {
-        Facets[FACET_NORTH_EAST] = new Face;
-        Facets[FACET_NORTH_EAST]->Init(this, NULL, FACET_NORTH_EAST, MaterialType);
+        //Facets[FACET_NORTH_EAST] = new Face;
+        //Facets[FACET_NORTH_EAST]->Init(this, NULL, FACET_NORTH_EAST, MaterialType);
     }
 
     Neibor = MAP->getCube(Position.x + 1, Position.y, Position.z);
@@ -109,13 +136,16 @@ bool Cube::Init(Uint16 MaterialType)
         }
         else
         {
-            Neibor->Facets[FACET_NORTH_WEST]->CheckRemoval();
+            if(Neibor->Facets[FACET_NORTH_WEST])
+            {
+                Neibor->Facets[FACET_NORTH_WEST]->CheckRemoval();
+            }
         }
     }
     else
     {
-        Facets[FACET_SOUTH_EAST] = new Face;
-        Facets[FACET_SOUTH_EAST]->Init(this, NULL, FACET_SOUTH_EAST, MaterialType);
+        //Facets[FACET_SOUTH_EAST] = new Face;
+        //Facets[FACET_SOUTH_EAST]->Init(this, NULL, FACET_SOUTH_EAST, MaterialType);
     }
 
     Neibor = MAP->getCube(Position.x, Position.y + 1, Position.z);
@@ -128,13 +158,16 @@ bool Cube::Init(Uint16 MaterialType)
         }
         else
         {
-            Neibor->Facets[FACET_NORTH_EAST]->CheckRemoval();
+            if(Neibor->Facets[FACET_NORTH_EAST])
+            {
+                Neibor->Facets[FACET_NORTH_EAST]->CheckRemoval();
+            }
         }
     }
     else
     {
-        Facets[FACET_SOUTH_WEST] = new Face;
-        Facets[FACET_SOUTH_WEST]->Init(this, NULL, FACET_SOUTH_WEST, MaterialType);
+        //Facets[FACET_SOUTH_WEST] = new Face;
+        //Facets[FACET_SOUTH_WEST]->Init(this, NULL, FACET_SOUTH_WEST, MaterialType);
     }
 
     Neibor = MAP->getCube(Position.x - 1, Position.y, Position.z);
@@ -147,13 +180,16 @@ bool Cube::Init(Uint16 MaterialType)
         }
         else
         {
-            Neibor->Facets[FACET_SOUTH_EAST]->CheckRemoval();
+            if(Neibor->Facets[FACET_SOUTH_EAST])
+            {
+                Neibor->Facets[FACET_SOUTH_EAST]->CheckRemoval();
+            }
         }
     }
     else
     {
-        Facets[FACET_NORTH_WEST] = new Face;
-        Facets[FACET_NORTH_WEST]->Init(this, NULL, FACET_NORTH_WEST, MaterialType);
+        //Facets[FACET_NORTH_WEST] = new Face;
+        //Facets[FACET_NORTH_WEST]->Init(this, NULL, FACET_NORTH_WEST, MaterialType);
     }
 
 	return true;

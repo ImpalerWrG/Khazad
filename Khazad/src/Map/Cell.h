@@ -23,6 +23,7 @@ public:
 	bool Update();
 
 	void SetBasment(bool Value) { Basment = Value; }
+	bool isBasment() { return Basment; }
 
 protected:
 

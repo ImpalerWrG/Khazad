@@ -22,7 +22,77 @@
 	</Material>
 	<Material>
 		<Name Text="Quartzite"/>
-		<Texture Int="3"/>
+		<Texture Int="4"/>
+		<Hardness Int="80"/>
+	</Material>
+	<Material>
+		<Name Text="Quartzite"/>
+		<Texture Int="5"/>
+		<Hardness Int="80"/>
+	</Material>
+	<Material>
+		<Name Text="Quartzite"/>
+		<Texture Int="6"/>
+		<Hardness Int="80"/>
+	</Material>
+	<Material>
+		<Name Text="Quartzite"/>
+		<Texture Int="7"/>
+		<Hardness Int="80"/>
+	</Material>
+	<Material>
+		<Name Text="Quartzite"/>
+		<Texture Int="8"/>
+		<Hardness Int="80"/>
+	</Material>
+	<Material>
+		<Name Text="Quartzite"/>
+		<Texture Int="9"/>
+		<Hardness Int="80"/>
+	</Material>
+	<Material>
+		<Name Text="Quartzite"/>
+		<Texture Int="10"/>
+		<Hardness Int="80"/>
+	</Material>
+	<Material>
+		<Name Text="Quartzite"/>
+		<Texture Int="11"/>
+		<Hardness Int="80"/>
+	</Material>
+	<Material>
+		<Name Text="Quartzite"/>
+		<Texture Int="12"/>
+		<Hardness Int="80"/>
+	</Material>
+	<Material>
+		<Name Text="Quartzite"/>
+		<Texture Int="13"/>
+		<Hardness Int="80"/>
+	</Material>
+	<Material>
+		<Name Text="Quartzite"/>
+		<Texture Int="14"/>
+		<Hardness Int="80"/>
+	</Material>
+	<Material>
+		<Name Text="Quartzite"/>
+		<Texture Int="15"/>
+		<Hardness Int="80"/>
+	</Material>
+	<Material>
+		<Name Text="Quartzite"/>
+		<Texture Int="16"/>
+		<Hardness Int="80"/>
+	</Material>
+	<Material>
+		<Name Text="Quartzite"/>
+		<Texture Int="17"/>
+		<Hardness Int="80"/>
+	</Material>
+	<Material>
+		<Name Text="Quartzite"/>
+		<Texture Int="18"/>
 		<Hardness Int="80"/>
 	</Material>
 </Materials>
