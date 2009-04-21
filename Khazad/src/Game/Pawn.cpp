@@ -13,7 +13,7 @@ Pawn::Pawn()
 	setType(PAWN_ACTOR);
 
 	GAME->ActorList.push_back(this);
-	ID = (Uint32) GAME->ActorList.size();
+	//ID = (Uint32) GAME->ActorList.size();
 }
 
 Pawn::~Pawn()

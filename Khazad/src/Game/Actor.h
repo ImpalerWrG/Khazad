@@ -23,8 +23,8 @@ public:
 	virtual bool Draw();
 
 	Vector3 Position;
-	Uint32 BirthDate;
-	Uint32 ID;
+	//Uint32 BirthDate;
+	//Uint32 ID;
 
 	bool Dead;
 
@@ -40,10 +40,10 @@ public:
 protected:
 
 	ActorType Type;
-	SDL_Rect BoundingBox;
-	SDL_Rect DirtyBox;
+	//SDL_Rect BoundingBox;
+	//SDL_Rect DirtyBox;
 
-	ClipImage* Sprite;
+	//ClipImage* Sprite;
 };
 
 #endif  // ACTOR__HEADER

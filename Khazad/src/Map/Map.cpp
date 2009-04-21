@@ -368,15 +368,14 @@ void Map::LoadExtract()
                 TargetCell = getCubeOwner(i, j, k);
                 if(TargetCell)
                 {
+                    if(!TargetCell->Initalized)
+                    {
+                        TargetCell->Init();
+                    }
 
-                    int TileType = EXTRACT->tile_types[i + 2][j + 2][k - 1];
+                    int TileType = EXTRACT->tile_types[i + 2][j + 2][k + 1];
                     if(EXTRACT->isFloorTerrain(TileType))
                     {
-                        if(!TargetCell->Initalized)
-                        {
-                            TargetCell->Init();
-                        }
-
                         NewCube = getCube(i, j, k);
                         if (NewCube)
                         {
@@ -394,38 +393,18 @@ void Map::LoadExtract()
                             NewCube->Facets[FACET_BOTTOM] = new Face;
                             NewCube->Facets[FACET_BOTTOM]->Init(NewCube, Neibor, FACET_BOTTOM, EXTRACT->picktexture(TileType));
                         }
-
-                        if(TileType == 2)
-                        {
-                            if(NewCube->Facets[FACET_TOP])
-                            {
-                                NewCube->Facets[FACET_TOP]->setVisible(true);
-                            }
-                            else
-                            {
-                                Cube* Neibor = MAP->getCube((Sint32) i, (Sint32) j, (Sint32) k + 1);
-                                NewCube->Facets[FACET_TOP] = new Face;
-                                NewCube->Facets[FACET_TOP]->Init(NewCube, Neibor, FACET_TOP, EXTRACT->picktexture(TileType));
-                            }
-                        }
-
-
                     }
+
 
 
                     if(EXTRACT->isOpenTerrain(TileType))
                     {
-                        if(!TargetCell->Initalized)
-                        {
-                            TargetCell->Init();
-                        }
                         NewCube = getCube(i, j, k);
                         if (NewCube)
                         {
                             LoadCube(NewCube, TileType);
                         }
                     }
-
                 }
 
 

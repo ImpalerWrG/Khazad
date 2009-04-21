@@ -10,7 +10,7 @@ Actor::Actor(ActorType NewType)
 	Type = NewType;
 	Dead = false;
 
-	BirthDate = 0;
+	//BirthDate = 0;
 }
 
 Actor::Actor()

@@ -18,7 +18,7 @@ public:
 	~Face();
 	bool Init(Cube* First, Cube* Second, Facet Type, Uint16 MaterialType);
 
-	void CheckRemoval();
+	bool CheckRemoval();
 
 	Vector3 Points[4];
 	SDL_Color Color;
@@ -28,10 +28,13 @@ public:
 
 	void setMaterial(Uint16 MaterialID) { Material = MaterialID; }
 
+    Cube* getFirstOwner() { return FirstOwner; }
+    Cube* getSecondOwner() { return SecondOwner; }
+
 protected:
 
 	Cube* FirstOwner;
-	Cube* SecondeOwner;
+	Cube* SecondOwner;
 
 	Uint16 Material;
 	Facet FacetType;

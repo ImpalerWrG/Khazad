@@ -13,7 +13,7 @@ Slope::Slope()
 	Owner = NULL;
 
 	GAME->ActorList.push_back(this);
-	ID = (Uint32) GAME->ActorList.size();
+	//ID = (Uint32) GAME->ActorList.size();
 }
 
 Slope::~Slope()

@@ -8,6 +8,7 @@
 
 class Face;
 class Slope;
+class Cell;
 
 class Cube: public Actor
 {
@@ -29,6 +30,12 @@ public:
     Slope* getSlope() { return Slopage; }
 	void SetSlope(Slopping Type);
 
+    void DeleteFace(Facet Type);
+
+    void InitFace(Facet Type);
+    Cube* getNeiborCube(Facet Type);
+    Cell* getNeiborCell(Facet Type);
+    static Facet OpositeFace(Facet Type);
 
 	Uint16 getMaterial() { return Material; }
 

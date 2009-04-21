@@ -4973,7 +4973,7 @@
 1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\timer.h
 	<stdafx.h>
 
-1240117217 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\main.cpp
+1240285232 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\main.cpp
 	<stdafx.h>
 	<Timer.h>
 	<TextureManager.h>
@@ -5053,7 +5053,7 @@
 	<Singleton.h>
 	<Actor.h>
 
-1239869256 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\game\actor.h
+1240285647 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\game\actor.h
 	<stdafx.h>
 	<Vector3.h>
 	<ScreenManager.h>
@@ -5089,7 +5089,7 @@
 	<tinystr.h>
 	<tinyxml.h>
 
-1236205228 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\game\actor.cpp
+1240285656 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\game\actor.cpp
 	<stdafx.h>
 	<Actor.h>
 	<Timer.h>
@@ -5106,7 +5106,7 @@
 	<stdafx.h>
 	<Actor.h>
 
-1239786871 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\game\pawn.cpp
+1240285673 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\game\pawn.cpp
 	<stdafx.h>
 	<Pawn.h>
 	<Random.h>
@@ -5115,7 +5115,7 @@
 	<Map.h>
 	<Cube.h>
 
-1240255740 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.h
+1240277551 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.h
 	<stdafx.h>
 	<Actor.h>
 
@@ -5177,7 +5177,7 @@
 	<stdafx.h>
 	<Actor.h>
 
-1240255738 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.cpp
+1240284826 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.cpp
 	<stdafx.h>
 	<Game.h>
 	<Camera.h>
@@ -5187,7 +5187,7 @@
 	<Face.h>
 	<Slope.h>
 
-1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\face.h
+1240264983 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\face.h
 	<stdafx.h>
 	<Actor.h>
 	<Cube.h>
@@ -5196,7 +5196,7 @@
 	<stdafx.h>
 	<Actor.h>
 
-1240255740 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.cpp
+1240270666 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.cpp
 	<stdafx.h>
 	<Map.h>
 	<Singleton.h>
@@ -5279,7 +5279,7 @@
 	"tinyxml.h"
 	<windows.h>
 
-1240255767 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\face.cpp
+1240284826 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\face.cpp
 	<stdafx.h>
 	<Cube.h>
 	<Face.h>

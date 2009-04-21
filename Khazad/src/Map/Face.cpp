@@ -13,25 +13,30 @@ Face::Face()
 	setType(FACE_ACTOR);
 
 	FirstOwner = NULL;
-	SecondeOwner = NULL;
+	SecondOwner = NULL;
 
-	GAME->ActorList.push_back(this);
-	ID = (Uint32) GAME->ActorList.size();
+	//GAME->ActorList.push_back(this);
+	//ID = (Uint32) GAME->ActorList.size();
 }
 
 Face::~Face()
 {
     //GAME->RemoveActor(ID);
-    //delete Points;
+    //delete[] Points;
 }
 
 bool Face::Init(Cube* First, Cube* Second, Facet Type, Uint16 MaterialType)
 {
 	FirstOwner = First;
-    SecondeOwner = Second;
+    SecondOwner = Second;
 	FacetType = Type;
 	Visible = true;
 	Material = MaterialType;
+
+    if(SecondOwner != NULL)
+    {
+        SecondOwner->Facets[Cube::OpositeFace(Type)] = this;
+    }
 
 	switch(FacetType)
 	{
@@ -160,18 +165,16 @@ bool Face::Init(Cube* First, Cube* Second, Facet Type, Uint16 MaterialType)
 	return true;
 }
 
-void Face::CheckRemoval()
+bool Face::CheckRemoval()
 {
 	if (FirstOwner != NULL && FirstOwner->Initalized)
 	{
-        if (SecondeOwner != NULL && SecondeOwner->Initalized)
+        if (SecondOwner != NULL && SecondOwner->Initalized)
         {
-            //if(FirstOwner->isLiquid() ^ SecondeOwner->isLiquid())
-            //{
-                Visible = false;
-            //}
+            return true;
         }
 	}
+	return false;
 }
 
 bool Face::Update()
