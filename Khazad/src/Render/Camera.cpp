@@ -478,20 +478,20 @@ void Camera::RotateView(float X, float Y, float Z)
 	if(X)
 	{
 		// Rotate the view vVector up or down, then add it to our position
-		LookPosition.z = (float)(EyePosition.z + sin(X)*vVector.y + cos(X)*vVector.z);
-		LookPosition.y = (float)(EyePosition.y + cos(X)*vVector.y - sin(X)*vVector.z);
+		LookPosition.z = (float)(EyePosition.z + sin(X) * vVector.y + cos(X) * vVector.z);
+		LookPosition.y = (float)(EyePosition.y + cos(X) * vVector.y - sin(X) * vVector.z);
 	}
 	if(Y)
 	{
 		// Rotate the view vVector right or left, then add it to our position
-		LookPosition.z = (float)(EyePosition.z + sin(Y)*vVector.x + cos(Y)*vVector.z);
-		LookPosition.x = (float)(EyePosition.x + cos(Y)*vVector.x - sin(Y)*vVector.z);
+		LookPosition.z = (float)(EyePosition.z + sin(Y) * vVector.x + cos(Y) * vVector.z);
+		LookPosition.x = (float)(EyePosition.x + cos(Y) * vVector.x - sin(Y) * vVector.z);
 	}
 	if(Z)
 	{
 		// Rotate the view vVector diagonally right or diagonally down, then add it to our position
-		LookPosition.x = (float)(EyePosition.x + sin(Z)*vVector.y + cos(Z)*vVector.x);
-		LookPosition.y = (float)(EyePosition.y + cos(Z)*vVector.y - sin(Z)*vVector.x);
+		LookPosition.x = (float)(EyePosition.x + sin(Z) * vVector.y + cos(Z) * vVector.x);
+		LookPosition.y = (float)(EyePosition.y + cos(Z) * vVector.y - sin(Z) * vVector.x);
 	}
 
 	generateViewFrustum();
@@ -618,9 +618,9 @@ void Camera::ChangeViewLevels(Sint32 Change)
     {
         ViewLevels += Change;
 
-        if (ViewLevels < 0)
+        if (ViewLevels < 1)
         {
-            ViewLevels = 0;
+            ViewLevels = 1;
         }
         generateViewFrustum();
         SCREEN->DirtyAllLists();
@@ -637,9 +637,38 @@ void Camera::SetDefaultView()
 	LookPosition.y = 0.0;
 	LookPosition.z = 0.0;
 
-	UpVector.x = 1.0;
-	UpVector.y = 1.0;
+	UpVector.x = EyePosition.x - LookPosition.x;
+	UpVector.y = EyePosition.y - LookPosition.y;
 	UpVector.z = 0.0;
+
+    IsoScalar = CONFIG->ZoomStart();
+    ViewLevels = 6;
+
+	generateViewFrustum();
+    SCREEN->DirtyAllLists();
+}
+
+void Camera::CenterView()
+{
+    if(MAP == NULL)
+    {
+        return;
+    }
+
+    LookPosition.x = MAP->getMapSizeX() / 2;
+	LookPosition.y = MAP->getMapSizeY() / 2;
+	LookPosition.z = MAP->getMapSizeZ() / 2;
+
+	EyePosition.x = LookPosition.x + 1.0;
+	EyePosition.y = LookPosition.y + 1.0;
+	EyePosition.z = LookPosition.z + 1.0;
+
+	UpVector.x = EyePosition.x - LookPosition.x;
+	UpVector.y = EyePosition.y - LookPosition.y;
+	UpVector.z = 0.0;
+
+    IsoScalar = CONFIG->ZoomStart();
+    ViewLevels = 6;
 
 	generateViewFrustum();
     SCREEN->DirtyAllLists();

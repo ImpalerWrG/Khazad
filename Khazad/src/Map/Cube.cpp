@@ -29,7 +29,8 @@ Cube::~Cube()
 	{
 		if (Facets[i] != NULL)
 		{
-			Facets[i]->CheckRemoval();
+			//Facets[i]->CheckRemoval();
+			// Not sure how to handle yet
 		}
 	}
 }
@@ -37,17 +38,53 @@ Cube::~Cube()
 bool Cube::Init(Uint16 MaterialType)
 {
 	Initalized = true;
-    Cube* Neibor = NULL;
-    Cell* NeiborCell = NULL;
 
     Material = MaterialType;
 
-	for(Uint8 i = 0; i < NUM_FACETS; i++)
-	{
-		InitFace((Facet) i);
-	}
-
 	return true;
+}
+
+bool Cube::InitAllFaces()
+{
+    if(Initalized)
+    {
+        for(Uint8 i = 0; i < NUM_FACETS; i++)
+        {
+            InitFace((Facet) i);
+        }
+    }
+}
+
+bool Cube::setMaterial(Uint16 MaterialType)
+{
+    Material = MaterialType;
+
+    for(Uint8 i = 0; i < NUM_FACETS; i++)
+    {
+        if (!Facets[i]->isConstructed())
+        {
+            Facets[i]->setMaterial(Material);
+        }
+    }
+}
+
+bool Cube::Open()
+{
+    Solid = false;
+}
+
+Face* Cube::getFacet(Facet Type)
+{
+    if(Initalized)
+    {
+        return Facets[Type];
+    }
+    return NULL;
+}
+
+void Cube::setFacet(Facet Type, Face* NewFace)
+{
+    Facets[Type] = NewFace;
 }
 
 void Cube::InitFace(Facet Type)

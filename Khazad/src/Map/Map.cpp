@@ -383,20 +383,32 @@ void Map::LoadExtract()
                         }
 
                         // Force Floors to have bottoms
-                        if(NewCube->Facets[FACET_BOTTOM])
+                        if(NewCube->getFacet(FACET_BOTTOM))
                         {
-                            NewCube->Facets[FACET_BOTTOM]->setVisible(true);
+                            NewCube->getFacet(FACET_BOTTOM)->setVisible(true);
                         }
                         else
                         {
                             Cube* Neibor = MAP->getCube((Sint32) i, (Sint32) j, (Sint32) k - 1);
-                            NewCube->Facets[FACET_BOTTOM] = new Face;
-                            NewCube->Facets[FACET_BOTTOM]->Init(NewCube, Neibor, FACET_BOTTOM, EXTRACT->picktexture(TileType));
+                            Face* NewFace = new Face;
+                            NewCube->setFacet(FACET_BOTTOM, NewFace);
+                            NewFace->Init(NewCube, Neibor, FACET_BOTTOM, EXTRACT->picktexture(TileType));
                         }
                     }
 
 
 
+
+                    if(EXTRACT->isWallTerrain(TileType))
+                    {
+                        NewCube = getCube(i, j, k);
+                        if (NewCube)
+                        {
+                            LoadCube(NewCube, TileType);
+                        }
+                    }
+
+/*
                     if(EXTRACT->isOpenTerrain(TileType))
                     {
                         NewCube = getCube(i, j, k);
@@ -405,11 +417,12 @@ void Map::LoadExtract()
                             LoadCube(NewCube, TileType);
                         }
                     }
+*/
+
+
+
                 }
-
-
             }
-
 		}
 	}
 }
@@ -428,3 +441,14 @@ void Map::LoadCube(Cube* NewCube, int TileType)
         NewCube->setVisible(true);
     }
 }
+/*
+void Map::LoadCube(Cube* NewCube)  // for OpenSpaces
+{
+    if (NewCube->Initalized != true)
+    {
+        NewCube->Init(Texture);
+
+        NewCube->setVisible(true);
+    }
+}
+*/

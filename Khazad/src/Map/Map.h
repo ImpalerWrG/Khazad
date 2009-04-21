@@ -23,10 +23,22 @@ public:
 	Cell* getCubeOwner(Sint32 X, Sint32 Y, Sint32 Z);
 	Cube* getCube(Sint32 X, Sint32 Y, Sint32 Z);
 
-	//void AddCube(Sint32 X, Sint32 Y, Sint32 Z);
-	std::vector<Actor*> Grid;
+	//std::vector<Actor*> Grid;
 
     bool Generate(Uint32 Seed);
+
+	Uint32 getMapSizeX() { return MapSizeX; }
+	Uint32 getMapSizeY() { return MapSizeY; }
+	Uint32 getMapSizeZ() { return MapSizeZ; }
+
+	Uint32 getCellSizeX() { return CellSizeX; }
+	Uint32 getCellSizeY() { return CellSizeY; }
+	Uint32 getCellSizeZ() { return CellSizeZ; }
+
+    void LoadExtract();
+    void LoadCube(Cube* NewCube, int TileType);
+
+protected:
 
 	Uint32 MapSizeX;
 	Uint32 MapSizeY;
@@ -35,11 +47,6 @@ public:
 	Uint32 CellSizeX;
 	Uint32 CellSizeY;
 	Uint32 CellSizeZ;
-
-    void LoadExtract();
-    void LoadCube(Cube* NewCube, int TileType);
-
-protected:
 
 	Cell**** CellArray;
 

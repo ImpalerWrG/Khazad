@@ -72,6 +72,9 @@ bool Cell::Update()
 
 bool Cell::Draw()
 {
+    float Shading = SCREEN->getShading(Position.z);  // Atleast one gl call must occure in each Drawlist to prevent weird Segfault in Atioglx1.dll
+    glColor3f(Shading, Shading, Shading);
+
     if(Basment) // Nothing to draw for these Cells  (Sky | Rock | Air)
     {
         return true;
@@ -81,11 +84,8 @@ bool Cell::Draw()
 
     Cube* LoopCube = NULL;
 
-    float Shading = SCREEN->getShading(Position.z);
-
     if(Initalized && Shading > 0)
     {
-        glColor3f(Shading, Shading, Shading);
         for (Uint16 x = 0; x < CellEdgeLenth; x++)
         {
             for (Uint16 y = 0; y < CellEdgeLenth; y++)

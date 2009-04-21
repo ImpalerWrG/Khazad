@@ -15,6 +15,9 @@ Face::Face()
 	FirstOwner = NULL;
 	SecondOwner = NULL;
 
+    Constructed = false;
+    Decorated = false;
+
 	//GAME->ActorList.push_back(this);
 	//ID = (Uint32) GAME->ActorList.size();
 }
@@ -35,7 +38,7 @@ bool Face::Init(Cube* First, Cube* Second, Facet Type, Uint16 MaterialType)
 
     if(SecondOwner != NULL)
     {
-        SecondOwner->Facets[Cube::OpositeFace(Type)] = this;
+        SecondOwner->setFacet(Cube::OpositeFace(Type), this);
     }
 
 	switch(FacetType)
@@ -186,7 +189,7 @@ bool Face::Draw()
 {
     if(Visible)
     {
-        SDL_Rect TexRect = TEXTURE->TextureCordinates[DATA->Materials[Material]->getTexture()];
+        SDL_Rect TexRect = TEXTURE->TextureCordinates[/*DATA->Materials[*/Material/*]->getTexture()*/];
 
         glTexCoord2i(TexRect.x, TexRect.h);         glVertex3f(Points[0].x, Points[0].y, Points[0].z);
         glTexCoord2i(TexRect.w, TexRect.h);         glVertex3f(Points[1].x, Points[1].y, Points[1].z);

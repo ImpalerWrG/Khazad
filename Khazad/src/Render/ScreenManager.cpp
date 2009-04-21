@@ -171,13 +171,15 @@ Uint16 ScreenManager::getHight()
 void ScreenManager::DirtyAllLists()
 {
     if(MAP == NULL)
+    {
         return;
+    }
 
-	for(Uint32 SizeZ = 0; SizeZ < MAP->CellSizeZ; SizeZ++)
+	for(Uint32 SizeZ = 0; SizeZ < MAP->getCellSizeZ(); SizeZ++)
 	{
-		for (Uint32 SizeX = 0; SizeX < MAP->CellSizeX; SizeX++)
+		for (Uint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
 		{
-			for (Uint32 SizeY = 0; SizeY < MAP->CellSizeY; SizeY++)
+			for (Uint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
 			{
 				MAP->getCell(SizeX, SizeY, SizeZ)->DirtyDrawlist = true;
 			}
@@ -208,6 +210,11 @@ SDL_Color ScreenManager::getPickingColor()
 
 bool ScreenManager::Render()
 {
+    if(MAP == NULL)
+    {
+        return false;
+    }
+
 	RedPickingValue = 0;
 	GreenPickingValue = 0;
 	BluePickingValue = 0;
@@ -224,27 +231,30 @@ bool ScreenManager::Render()
     glScalef(1.0 / (float) TEXTURE->getAggragateTextureSize(), 1.0 / (float) TEXTURE->getAggragateTextureSize(), 1);
     glBindTexture(GL_TEXTURE_2D, TEXTURE->getAggragateTexture());
 
-	for(Uint16 Zlevel = 0; Zlevel < MAP->CellSizeZ; Zlevel++) // Bottom up drawing
+	for(Uint16 Zlevel = 0; Zlevel < MAP->getCellSizeZ(); Zlevel++) // Bottom up drawing
 	{
 		if (Zlevel <= MainCamera->LookZ())
 		{
-			for (Uint32 SizeX = 0; SizeX < MAP->CellSizeX; SizeX++)
+			for (Uint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
 			{
-				for (Uint32 SizeY = 0; SizeY < MAP->CellSizeY; SizeY++)
+				for (Uint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
 				{
 					Cell* LoopCell = MAP->getCell(SizeX, SizeY, Zlevel);
 
 					if  (MainCamera->sphereInFrustum(LoopCell->Position, CellEdgeLenth))
 					{
-						if (LoopCell->DirtyDrawlist == true)
+						if(LoopCell->DirtyDrawlist == true)
 						{
 							// Rebuild the new Drawlist
-							glDeleteLists(LoopCell->DrawListID, 1);
-							glNewList(LoopCell->DrawListID, GL_COMPILE_AND_EXECUTE);
+							GLuint DrawListID = LoopCell->DrawListID;
+							glDeleteLists(DrawListID, 1);
+							glNewList(DrawListID, GL_COMPILE_AND_EXECUTE);
 
                                 TriangleCounter = 0;  // Reset Counter and Track Triangle count
                                 glBegin(GL_TRIANGLES);
+
                                     LoopCell->Draw();
+
                                 glEnd();
                                 LoopCell->setTriangleCount(TriangleCounter);
                                 TotalTriangles += TriangleCounter;

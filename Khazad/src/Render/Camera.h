@@ -152,6 +152,13 @@ public:
 	*/
 	void SetDefaultView();
 
+	/**
+	* CenterView returns the camera to at Center of the map
+	* looking northward with an Isometric angle
+	*/
+    void CenterView();
+
+    // get rid of?
 	void PrintDebugging();
 
 	/**

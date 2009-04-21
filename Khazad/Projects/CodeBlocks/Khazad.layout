@@ -50,7 +50,7 @@
 		<Cursor position="327" topLine="0" />
 	</File>
 	<File name="..\..\src\Core\main.cpp" open="1" top="0" tabpos="39">
-		<Cursor position="1454" topLine="51" />
+		<Cursor position="1510" topLine="51" />
 	</File>
 	<File name="..\..\src\Core\stdafx.h" open="1" top="0" tabpos="1">
 		<Cursor position="523" topLine="0" />
@@ -71,7 +71,7 @@
 		<Cursor position="228" topLine="0" />
 	</File>
 	<File name="..\..\src\Data\DataTypes.h" open="1" top="0" tabpos="10">
-		<Cursor position="483" topLine="1" />
+		<Cursor position="378" topLine="13" />
 	</File>
 	<File name="..\..\src\Data\XMLManager.cpp" open="0" top="0" tabpos="10">
 		<Cursor position="3652" topLine="132" />
@@ -91,8 +91,8 @@
 	<File name="..\..\src\Game\Game.h" open="1" top="0" tabpos="13">
 		<Cursor position="305" topLine="0" />
 	</File>
-	<File name="..\..\src\Game\Pawn.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1266" topLine="55" />
+	<File name="..\..\src\Game\Pawn.cpp" open="1" top="0" tabpos="51">
+		<Cursor position="958" topLine="59" />
 	</File>
 	<File name="..\..\src\Game\Pawn.h" open="1" top="0" tabpos="14">
 		<Cursor position="329" topLine="0" />
@@ -112,53 +112,53 @@
 	<File name="..\..\src\Gui\Gui.h" open="1" top="0" tabpos="18">
 		<Cursor position="454" topLine="0" />
 	</File>
-	<File name="..\..\src\Gui\InputManager.cpp" open="0" top="0" tabpos="13">
-		<Cursor position="1256" topLine="45" />
+	<File name="..\..\src\Gui\InputManager.cpp" open="1" top="0" tabpos="52">
+		<Cursor position="1314" topLine="50" />
 	</File>
 	<File name="..\..\src\Gui\InputManager.h" open="1" top="0" tabpos="19">
 		<Cursor position="255" topLine="0" />
 	</File>
 	<File name="..\..\src\Map\Cell.cpp" open="1" top="0" tabpos="37">
-		<Cursor position="1618" topLine="62" />
+		<Cursor position="1772" topLine="65" />
 	</File>
 	<File name="..\..\src\Map\Cell.h" open="1" top="0" tabpos="20">
 		<Cursor position="477" topLine="6" />
 	</File>
-	<File name="..\..\src\Map\Cube.cpp" open="1" top="1" tabpos="36">
-		<Cursor position="699" topLine="19" />
+	<File name="..\..\src\Map\Cube.cpp" open="1" top="0" tabpos="36">
+		<Cursor position="1335" topLine="73" />
 	</File>
-	<File name="..\..\src\Map\Cube.h" open="1" top="0" tabpos="21">
-		<Cursor position="798" topLine="35" />
+	<File name="..\..\src\Map\Cube.h" open="1" top="1" tabpos="21">
+		<Cursor position="974" topLine="23" />
 	</File>
 	<File name="..\..\src\Map\Extract.cpp" open="1" top="0" tabpos="43">
-		<Cursor position="47981" topLine="348" />
+		<Cursor position="22448" topLine="492" />
 	</File>
 	<File name="..\..\src\Map\Extract.h" open="1" top="0" tabpos="42">
 		<Cursor position="1683" topLine="55" />
 	</File>
 	<File name="..\..\src\Map\Face.cpp" open="1" top="0" tabpos="35">
-		<Cursor position="4744" topLine="174" />
+		<Cursor position="760" topLine="23" />
 	</File>
 	<File name="..\..\src\Map\Face.h" open="1" top="0" tabpos="22">
-		<Cursor position="606" topLine="25" />
+		<Cursor position="439" topLine="20" />
 	</File>
 	<File name="..\..\src\Map\Map.cpp" open="1" top="0" tabpos="34">
-		<Cursor position="6939" topLine="235" />
+		<Cursor position="10623" topLine="373" />
 	</File>
 	<File name="..\..\src\Map\Map.h" open="1" top="0" tabpos="23">
-		<Cursor position="692" topLine="16" />
+		<Cursor position="474" topLine="28" />
 	</File>
 	<File name="..\..\src\Map\Slope.cpp" open="1" top="0" tabpos="31">
-		<Cursor position="8132" topLine="277" />
+		<Cursor position="8247" topLine="277" />
 	</File>
 	<File name="..\..\src\Map\Slope.h" open="1" top="0" tabpos="24">
 		<Cursor position="368" topLine="0" />
 	</File>
 	<File name="..\..\src\Render\Camera.cpp" open="1" top="0" tabpos="32">
-		<Cursor position="330" topLine="5" />
+		<Cursor position="1455" topLine="62" />
 	</File>
 	<File name="..\..\src\Render\Camera.h" open="1" top="0" tabpos="25">
-		<Cursor position="4031" topLine="134" />
+		<Cursor position="3424" topLine="112" />
 	</File>
 	<File name="..\..\src\Render\ClipImage.h" open="1" top="0" tabpos="26">
 		<Cursor position="0" topLine="0" />
@@ -173,13 +173,13 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="..\..\src\Render\ScreenManager.cpp" open="1" top="0" tabpos="38">
-		<Cursor position="1265" topLine="27" />
+		<Cursor position="6236" topLine="215" />
 	</File>
 	<File name="..\..\src\Render\ScreenManager.h" open="1" top="0" tabpos="29">
 		<Cursor position="1471" topLine="45" />
 	</File>
 	<File name="..\..\src\Render\TextureManager.cpp" open="1" top="0" tabpos="49">
-		<Cursor position="674" topLine="6" />
+		<Cursor position="2103" topLine="30" />
 	</File>
 	<File name="..\..\src\Render\TextureManager.h" open="1" top="0" tabpos="30">
 		<Cursor position="1284" topLine="12" />

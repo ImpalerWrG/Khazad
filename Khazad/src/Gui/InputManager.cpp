@@ -39,22 +39,26 @@ bool InputManager::HandleInput()
 			}
 		case SDL_KEYDOWN:
 			{
-                if (event.key.keysym.mod & KMOD_CTRL)
-                {
-                    SCREEN->ToggleFullScreen();
-                }
-
 				if (event.key.keysym.sym == SDLK_ESCAPE)
 				{
 					return true;  // exit program
 				}
 				else
 				{
+                    if (event.key.keysym.mod & KMOD_CTRL)
+                    {
+                        SCREEN->ToggleFullScreen();
+                    }
+
 					if (event.key.keysym.sym == SDLK_q)
 					{
 						SCREEN->MainCamera->SetDefaultView();
 					}
 					// send the key to the Games focused Actor or UI?
+					if (event.key.keysym.sym == SDLK_c)
+					{
+						SCREEN->MainCamera->CenterView();
+					}
 				}
 				break;
 			}

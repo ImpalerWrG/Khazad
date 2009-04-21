@@ -32,9 +32,9 @@ bool Pawn::Move(Vector3 Direction)
 {
     Position += Direction;
 
-    if(Position.x > MAP->MapSizeX)
+    if(Position.x > MAP->getMapSizeX())
     {
-        Position.x = MAP->MapSizeX;
+        Position.x = MAP->getMapSizeX();
     }
     else
     {
@@ -44,9 +44,9 @@ bool Pawn::Move(Vector3 Direction)
         }
     }
 
-    if(Position.y > MAP->MapSizeY)
+    if(Position.y > MAP->getMapSizeY())
     {
-        Position.y = MAP->MapSizeY;
+        Position.y = MAP->getMapSizeY();
     }
     else
     {
@@ -56,9 +56,9 @@ bool Pawn::Move(Vector3 Direction)
         }
     }
 
-    if(Position.z > MAP->MapSizeZ)
+    if(Position.z > MAP->getMapSizeZ())
     {
-        Position.z = MAP->MapSizeZ;
+        Position.z = MAP->getMapSizeZ();
     }
     else
     {

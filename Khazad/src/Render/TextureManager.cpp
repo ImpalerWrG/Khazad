@@ -23,17 +23,17 @@ bool TextureManager::Init()
 // 5 OpenSpace(Air)
 	loadTextureSingular("Assets\\Textures\\water.png", false, false);
 // 6 Not Assigned
-	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+	loadTextureSingular("Assets\\Textures\\Air.png", false, false);
 // 7 Detailed Stone / Constructions
 	loadTextureSingular("Assets\\Textures\\floor_detailed.png", false, false);
 // 8 Driftwood
 	loadTextureSingular("Assets\\Textures\\Bark.png", false, false);
-// 9 minStone
+// 9 Misilanious Stone
+	loadTextureSingular("Assets\\Textures\\StoneWall.png.png", false, false);
+// 10 Soil ?
 	loadTextureSingular("Assets\\Textures\\soil.png", false, false);
-// 10 Soil
-	loadTextureSingular("Assets\\Textures\\soil.png", false, false);
-// 11
-	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+// 11 Soil
+	loadTextureSingular("Assets\\Textures\\Sand.png", false, false);
 // 12 Pebbles
 	loadTextureSingular("Assets\\Textures\\Cobblestone.png", false, false);
 // 13 Dead Shrub/Tree/Sappling
@@ -44,17 +44,17 @@ bool TextureManager::Init()
 	loadTextureSingular("Assets\\Textures\\Bark.png", false, false);
 // 16 Rock
 	loadTextureSingular("Assets\\Textures\\stone.png", false, false);
-// 17 rawStone
-	loadTextureSingular("Assets\\Textures\\RawStone.png", false, false);
-// 18 featStone / all Boulders
-	loadTextureSingular("Assets\\Textures\\boulder.png", false, false);
-// 19
+// 17 ??
 	loadTextureSingular("Assets\\Textures\\Boards.png", false, false);
+// 18 RawStone
+	loadTextureSingular("Assets\\Textures\\RawStone.png", false, false);
+// 19 all Boulders
+	loadTextureSingular("Assets\\Textures\\boulder.png", false, false);
 // 20
 	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
 // 21 Furrowed Soil
 	loadTextureSingular("Assets\\Textures\\Sand.png", false, false);
-// 22 Stone Constructions
+// 22 Stone Constructions / Veins, Gems, Clusters
 	loadTextureSingular("Assets\\Textures\\constructed_wall.png", false, false);
 // 23
 	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
@@ -73,7 +73,7 @@ bool TextureManager::Init()
 // 30
 	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
 // 31 Chasm/Pit
-	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+	loadTextureSingular("Assets\\Textures\\Pit.png", false, false);
 // 32 Obsidian/Ash
 	loadTextureSingular("Assets\\Textures\\obsidian.png", false, false);
 // 33 dead grass

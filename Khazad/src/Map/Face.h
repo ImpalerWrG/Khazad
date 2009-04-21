@@ -26,12 +26,22 @@ public:
 	bool Update();
 	bool Draw();
 
-	void setMaterial(Uint16 MaterialID) { Material = MaterialID; }
+    Uint16 getMaterial()                    { return Material; }
+	void setMaterial(Uint16 MaterialID)     { Material = MaterialID; }
 
-    Cube* getFirstOwner() { return FirstOwner; }
-    Cube* getSecondOwner() { return SecondOwner; }
+    Cube* getFirstOwner()                   { return FirstOwner; }
+    Cube* getSecondOwner()                  { return SecondOwner; }
+
+    bool isConstructed()                    { return Constructed;}
+    void setConstructe(bool NewValue)       { Constructed = NewValue;}
+
+    bool isDecorated()                      { return Decorated;}
+    void setDecorated(bool NewValue)        { Decorated = NewValue;}
 
 protected:
+
+    bool Constructed; // Face will be independent of Cube addition or removal
+    bool Decorated;   // Face apearance is different from Owner Cube
 
 	Cube* FirstOwner;
 	Cube* SecondOwner;
