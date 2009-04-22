@@ -55,10 +55,16 @@ bool InputManager::HandleInput()
 						SCREEN->MainCamera->SetDefaultView();
 					}
 					// send the key to the Games focused Actor or UI?
+
 					if (event.key.keysym.sym == SDLK_c)
 					{
 						SCREEN->MainCamera->CenterView();
 					}
+                    if (event.key.keysym.sym == SDLK_r)
+					{
+					    SCREEN->MainCamera->setAllFacesDrawing(!SCREEN->MainCamera->isAllFacesDrawing());
+					}
+
 				}
 				break;
 			}

@@ -28,17 +28,19 @@ public:
 
     Slope* getSlope()               { return Slopage; }
 	void SetSlope(Slopping Type);
+	void Cube::RemoveSlope();
+
+	Uint16 getMaterial()            { return Material; }
+    bool setMaterial(Uint16 MaterialType);
 
     Face* getFacet(Facet Type);
     void setFacet(Facet Type, Face* NewFace);
-
-	Uint16 getMaterial() { return Material; }
-    bool setMaterial(Uint16 MaterialType);
-
+    void setAllFacesVisiblity(bool NewValue);
     void DeleteFace(Facet Type);
 
     bool InitAllFaces();
     void InitFace(Facet Type);
+    void InitConstructedFace(Facet FacetType, Uint16 MaterialType);
     bool Open();
 
     Cube* getNeiborCube(Facet Type);

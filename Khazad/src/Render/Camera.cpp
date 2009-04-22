@@ -12,6 +12,8 @@ Camera::Camera()
 	SlidingMode = false;
 	ZoomingMode = false;
 	IsoMode = false;
+	AllFacesDrawing = false;
+
 	IsoScalar = CONFIG->ZoomStart();
     MaxScalar = CONFIG->ZoomMax();
 	MinScalar = CONFIG->ZoomMin();
@@ -107,7 +109,6 @@ void Camera::onMouseEvent(SDL_Event* Event)
 				SCREEN->ToggleFullScreen();  //TODO dose not work??
 				break;
 			}
-
 		case SDLK_RIGHT:
 			{
 				OrbitView((float)0.3);
@@ -748,4 +749,14 @@ void Camera::PrintDebugging()
 	printf("Look Position Z: %f\n", LookPosition.z);
 
 	//printf("CameraDirection %i\n", (int)CameraDirection);
+}
+
+bool Camera::isAllFacesDrawing()
+{
+    return AllFacesDrawing;
+}
+
+void Camera::setAllFacesDrawing(bool NewValue)
+{
+    AllFacesDrawing = NewValue;
 }

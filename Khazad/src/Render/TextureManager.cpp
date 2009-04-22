@@ -53,7 +53,7 @@ bool TextureManager::Init()
 // 20
 	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
 // 21 Furrowed Soil
-	loadTextureSingular("Assets\\Textures\\Sand.png", false, false);
+	loadTextureSingular("Assets\\Textures\\Dirt.png", false, false);
 // 22 Stone Constructions / Veins, Gems, Clusters
 	loadTextureSingular("Assets\\Textures\\constructed_wall.png", false, false);
 // 23

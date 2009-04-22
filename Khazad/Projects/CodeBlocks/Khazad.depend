@@ -5061,7 +5061,7 @@
 1235468170 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\geometry\vector3.h
 	<stdafx.h>
 
-1240343210 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.h
+1240373051 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.h
 	<Singleton.h>
 	<stdafx.h>
 	<Cell.h>
@@ -5115,7 +5115,7 @@
 	<Map.h>
 	<Cube.h>
 
-1240356078 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.h
+1240373881 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.h
 	<stdafx.h>
 	<Actor.h>
 
@@ -5152,7 +5152,7 @@
 	<ScreenManager.h>
 	<Singleton.h>
 
-1240344282 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\gui\inputmanager.cpp
+1240382152 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\gui\inputmanager.cpp
 	<stdafx.h>
 	<Game.h>
 	<InputManager.h>
@@ -5161,7 +5161,7 @@
 	<Singleton.h>
 	<Cube.h>
 
-1240343361 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\camera.h
+1240381658 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\camera.h
 	<stdafx.h>
 	<Plane.h>
 
@@ -5177,7 +5177,7 @@
 	<stdafx.h>
 	<Actor.h>
 
-1240356077 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.cpp
+1240381713 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.cpp
 	<stdafx.h>
 	<Game.h>
 	<Camera.h>
@@ -5187,7 +5187,7 @@
 	<Face.h>
 	<Slope.h>
 
-1240355674 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\face.h
+1240365710 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\face.h
 	<stdafx.h>
 	<Actor.h>
 	<Cube.h>
@@ -5196,7 +5196,7 @@
 	<stdafx.h>
 	<Actor.h>
 
-1240356336 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.cpp
+1240378930 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.cpp
 	<stdafx.h>
 	<Map.h>
 	<Singleton.h>
@@ -5216,7 +5216,7 @@
 	<TextureManager.h>
 	<ScreenManager.h>
 
-1240344282 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\camera.cpp
+1240382280 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\camera.cpp
 	<stdafx.h>
 	<Camera.h>
 	<Plane.h>
@@ -5279,7 +5279,7 @@
 	"tinyxml.h"
 	<windows.h>
 
-1240356078 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\face.cpp
+1240376441 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\face.cpp
 	<stdafx.h>
 	<Cube.h>
 	<Face.h>

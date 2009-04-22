@@ -36,7 +36,6 @@ public:
 	Uint32 getCellSizeZ() { return CellSizeZ; }
 
     void LoadExtract();
-    void LoadCube(Cube* NewCube, int TileType);
 
 protected:
 

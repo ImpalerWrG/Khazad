@@ -14,7 +14,7 @@ protected:
 	Vector3 UpVector;
 	Vector3 LookPosition;
 
-
+    bool AllFacesDrawing;
 	bool IsoMode;
 	float IsoScalar;
 	Uint16 MaxScalar;
@@ -176,6 +176,11 @@ public:
 	* @return bool - true if the sphere is inside the frustum
 	*/
 	bool sphereInFrustum(Vector3 &Point, float Radius);
+
+
+	void setAllFacesDrawing(bool NewValue);
+
+	bool isAllFacesDrawing();
 };
 
 #endif // CAMERA__HEADER

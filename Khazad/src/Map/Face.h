@@ -33,7 +33,7 @@ public:
     Cube* getSecondOwner()                  { return SecondOwner; }
 
     bool isConstructed()                    { return Constructed;}
-    void setConstructe(bool NewValue)       { Constructed = NewValue;}
+    void setConstructed(bool NewValue)       { Constructed = NewValue;}
 
     bool isDecorated()                      { return Decorated;}
     void setDecorated(bool NewValue)        { Decorated = NewValue;}

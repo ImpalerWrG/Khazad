@@ -374,81 +374,69 @@ void Map::LoadExtract()
                     }
 
                     int TileType = EXTRACT->tile_types[i + 2][j + 2][k + 1];
-                    if(EXTRACT->isFloorTerrain(TileType))
+                    Uint16 Material = EXTRACT->picktexture(TileType);
+                    NewCube = getCube(i, j, k);
+
+                    if (NewCube)
                     {
-                        NewCube = getCube(i, j, k);
-                        if (NewCube)
+                        if(EXTRACT->isOpenTerrain(TileType))
                         {
-                            LoadCube(NewCube, TileType);
+                            NewCube->Open();
                         }
 
-                        // Force Floors to have bottoms
-                        if(NewCube->getFacet(FACET_BOTTOM))
+                        if(EXTRACT->isWallTerrain(TileType))
                         {
-                            NewCube->getFacet(FACET_BOTTOM)->setVisible(true);
+                            NewCube->Init(Material);
                         }
-                        else
+
+                        if(EXTRACT->isFloorTerrain(TileType))
                         {
-                            Cube* Neibor = MAP->getCube((Sint32) i, (Sint32) j, (Sint32) k - 1);
-                            Face* NewFace = new Face;
-                            NewCube->setFacet(FACET_BOTTOM, NewFace);
-                            NewFace->Init(NewCube, Neibor, FACET_BOTTOM, EXTRACT->picktexture(TileType));
+                            // Force Floors to have bottoms
+                            if(NewCube->getFacet(FACET_BOTTOM))
+                            {
+                                NewCube->getFacet(FACET_BOTTOM)->setVisible(true);
+                            }
+                            else
+                            {
+                                Cube* Neibor = MAP->getCube((Sint32) i, (Sint32) j, (Sint32) k - 1);
+                                Face* NewFace = new Face;
+                                NewCube->setFacet(FACET_BOTTOM, NewFace);
+                                NewFace->Init(NewCube, Neibor, FACET_BOTTOM, EXTRACT->picktexture(TileType));
+                            }
+
+
+
+
+                            //NewCube->InitConstructedFace(FACET_BOTTOM, Material);
                         }
+
+                        if (EXTRACT->isRampTerrain(TileType))
+                        {
+                            NewCube->Init(Material);
+                            NewCube->SetSlope(SLOPE_SOUTH_WEST);
+                        }
+
+                        NewCube->setVisible(true);
+                        NewCube->setAllFacesVisiblity(true);
                     }
-
-
-
-
-                    if(EXTRACT->isWallTerrain(TileType))
-                    {
-                        NewCube = getCube(i, j, k);
-                        if (NewCube)
-                        {
-                            LoadCube(NewCube, TileType);
-                        }
-                    }
-
-/*
-                    if(EXTRACT->isOpenTerrain(TileType))
-                    {
-                        NewCube = getCube(i, j, k);
-                        if (NewCube)
-                        {
-                            LoadCube(NewCube, TileType);
-                        }
-                    }
-*/
-
-
-
                 }
             }
 		}
 	}
-}
 
-void Map::LoadCube(Cube* NewCube, int TileType)
-{
-    if (NewCube->Initalized != true)
-    {
-        Uint16 Texture = EXTRACT->picktexture(TileType);
-        NewCube->Init(Texture);
 
-        if (EXTRACT->isRampTerrain(TileType))
-        {
-            NewCube->SetSlope(SLOPE_SOUTH_WEST);
-        }
-        NewCube->setVisible(true);
-    }
+    for (Uint32 i = 0; i < MapSizeX; i++)
+	{
+		for (Uint32 j = 0; j < MapSizeY; j++)
+		{
+			for (Uint32 k = 1; k < MapSizeZ; k++)
+			{
+                NewCube = getCube(i, j, k);
+                if(NewCube)
+                {
+                    NewCube->InitAllFaces();
+                }
+			}
+		}
+	}
 }
-/*
-void Map::LoadCube(Cube* NewCube)  // for OpenSpaces
-{
-    if (NewCube->Initalized != true)
-    {
-        NewCube->Init(Texture);
-
-        NewCube->setVisible(true);
-    }
-}
-*/

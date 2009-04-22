@@ -46,13 +46,25 @@ bool Cube::Init(Uint16 MaterialType)
 
 bool Cube::InitAllFaces()
 {
-    if(Initalized)
-    {
+   // if(Initalized)
+    //{
         for(Uint8 i = 0; i < NUM_FACETS; i++)
         {
-            InitFace((Facet) i);
+            Cube* NeiborCube = getNeiborCube((Facet) i);
+            Cell* NeiborCell = getNeiborCell((Facet) i);
+
+            if(NeiborCell != NULL && NeiborCell->Initalized && !NeiborCell->isBasment())
+            {
+                if (NeiborCube != NULL) //&& NeiborCube->Initalized == false && NeiborCube->Facets[OpositeFace(Type)] == NULL)
+                {
+                    if(Solid ^ NeiborCube->isSolid())  // Faces are only needed ware a sold and non-solid meet
+                    {
+                        InitFace((Facet) i);
+                    }
+                }
+            }
         }
-    }
+    //}
 }
 
 bool Cube::setMaterial(Uint16 MaterialType)
@@ -70,7 +82,35 @@ bool Cube::setMaterial(Uint16 MaterialType)
 
 bool Cube::Open()
 {
+    Initalized = true;
     Solid = false;
+
+    for(Uint8 i = 0; i < NUM_FACETS; i++)
+    {
+        Cube* NeiborCube = getNeiborCube((Facet) i);
+        Cell* NeiborCell = getNeiborCell((Facet) i);
+
+        if(NeiborCell != NULL && NeiborCell->Initalized && !NeiborCell->isBasment())
+        {
+            if (NeiborCube != NULL) //&& NeiborCube->Initalized == false && NeiborCube->Facets[OpositeFace(Type)] == NULL)
+            {
+                if(NeiborCube->isSolid())  // Faces are only needed ware a sold and non-solid meet
+                {
+                    InitFace((Facet) i);
+                }
+                else  // Remove faces between two Open Cubes
+                {
+                    NeiborCube->DeleteFace(OpositeFace((Facet) i));
+                }
+            }
+            else
+            {
+                    // What to do? Initilize neiboring Cell and Cube?
+            }
+        }
+    }
+
+    RemoveSlope();
 }
 
 Face* Cube::getFacet(Facet Type)
@@ -82,35 +122,51 @@ Face* Cube::getFacet(Facet Type)
     return NULL;
 }
 
-void Cube::setFacet(Facet Type, Face* NewFace)
+void Cube::setFacet(Facet FacetType, Face* NewFace)
 {
-    Facets[Type] = NewFace;
+    Facets[FacetType] = NewFace;
+}
+
+void Cube::InitConstructedFace(Facet FacetType, Uint16 MaterialType)
+{
+    Cube* NeiborCube = getNeiborCube(FacetType);
+
+    if(NeiborCube != NULL)
+    {
+        Face* OpposingFace = NeiborCube->getFacet(Cube::OpositeFace(FacetType));
+        if(OpposingFace != NULL)
+        {
+            OpposingFace->setMaterial(MaterialType);  // Change the existing face rather then creating a new one
+            OpposingFace->setConstructed(true);
+        }
+        else
+        {
+            Facets[Type] = new Face;
+            Facets[Type]->setConstructed(true);
+            Facets[Type]->Init(this, NeiborCube, FacetType, MaterialType);  // Face Material is independent of Cube Material
+        }
+    }
+    else
+    {
+        Facets[Type] = new Face;
+        Facets[Type]->setConstructed(true);
+        Facets[Type]->Init(this, NeiborCube, FacetType, MaterialType);
+    }
 }
 
 void Cube::InitFace(Facet Type)
 {
     Cube* NeiborCube = getNeiborCube(Type);
-    Cell* NeiborCell = getNeiborCell(Type);
 
-    if(NeiborCell != NULL && NeiborCell->Initalized && !NeiborCell->isBasment())
+    Facets[Type] = new Face;
+
+    if(!Solid)
     {
-        if(NeiborCube != NULL)
-        {
-            if (NeiborCube->Initalized == false && NeiborCube->Facets[OpositeFace(Type)] == NULL)
-            {
-                Facets[Type] = new Face;
-                Facets[Type]->Init(this, NeiborCube, Type, Material);
-            }
-            else
-            {
-                NeiborCube->DeleteFace(OpositeFace(Type));
-            }
-        }
-        else
-        {
-            Facets[Type] = new Face;
-            Facets[Type]->Init(this, NULL, Type, Material);
-        }
+        Facets[Type]->Init(this, NeiborCube, Type, NeiborCube->getMaterial());
+    }
+    else
+    {
+        Facets[Type]->Init(this, NeiborCube, Type, Material);
     }
 }
 
@@ -243,6 +299,26 @@ void Cube::SetSlope(Slopping Type)
     }
 }
 
+void Cube::RemoveSlope()
+{
+    if (Slopage != NULL)
+    {
+        delete Slopage;
+        Slopage = NULL;
+    }
+}
+
+void Cube::setAllFacesVisiblity(bool NewValue)
+{
+    for(Uint8 i = 0; i < NUM_FACETS; i++)
+    {
+        if(Facets[i] != NULL)
+        {
+            Facets[i]->setVisible(NewValue);
+        }
+    }
+}
+
 bool Cube::Update()
 {
 	return true;
@@ -258,62 +334,87 @@ bool Cube::Draw()
 	    }
 	    else
 	    {
-
             if(Facets[FACET_BOTTOM] != NULL)
             {
                 Facets[FACET_BOTTOM]->Draw();
             }
 
-            switch(SCREEN->MainCamera->getDirection())
+            if(SCREEN->MainCamera->isAllFacesDrawing())
             {
-                case NORTH:
+                if(Facets[FACET_NORTH_EAST] != NULL)
                 {
-                    if(Facets[FACET_NORTH_EAST] != NULL)
-                    {
-                        Facets[FACET_NORTH_EAST]->Draw();
-                    }
-                    if(Facets[FACET_NORTH_WEST] != NULL)
-                    {
-                        Facets[FACET_NORTH_WEST]->Draw();
-                    }
-                    break;
+                    Facets[FACET_NORTH_EAST]->Draw();
                 }
-                case EAST:
+                if(Facets[FACET_NORTH_WEST] != NULL)
                 {
-                    if(Facets[FACET_SOUTH_EAST] != NULL)
-                    {
-                        Facets[FACET_SOUTH_EAST]->Draw();
-                    }
-                    if(Facets[FACET_NORTH_EAST] != NULL)
-                    {
-                        Facets[FACET_NORTH_EAST]->Draw();
-                    }
-                    break;
+                    Facets[FACET_NORTH_WEST]->Draw();
                 }
-                case SOUTH:
+                if(Facets[FACET_SOUTH_EAST] != NULL)
                 {
-                    if(Facets[FACET_SOUTH_EAST] != NULL)
-                    {
-                        Facets[FACET_SOUTH_EAST]->Draw();
-                    }
-                    if(Facets[FACET_SOUTH_WEST] != NULL)
-                    {
-                        Facets[FACET_SOUTH_WEST]->Draw();
-                    }
-                    break;
+                    Facets[FACET_SOUTH_EAST]->Draw();
                 }
-                case WEST:
+                if(Facets[FACET_SOUTH_WEST] != NULL)
                 {
-                    if(Facets[FACET_NORTH_WEST] != NULL)
-                    {
-                        Facets[FACET_NORTH_WEST]->Draw();
-                    }
-                    if(Facets[FACET_SOUTH_WEST] != NULL)
-                    {
-                        Facets[FACET_SOUTH_WEST]->Draw();
-                    }
-                    break;
+                    Facets[FACET_SOUTH_WEST]->Draw();
                 }
+            }
+            else
+            {
+                switch(SCREEN->MainCamera->getDirection())
+                {
+                    case NORTH:
+                    case NORTHEAST:
+                    {
+                        if(Facets[FACET_NORTH_EAST] != NULL)
+                        {
+                            Facets[FACET_NORTH_EAST]->Draw();
+                        }
+                        if(Facets[FACET_NORTH_WEST] != NULL)
+                        {
+                            Facets[FACET_NORTH_WEST]->Draw();
+                        }
+                        break;
+                    }
+                    case EAST:
+                    case SOUTHEAST:
+                    {
+                        if(Facets[FACET_SOUTH_EAST] != NULL)
+                        {
+                            Facets[FACET_SOUTH_EAST]->Draw();
+                        }
+                        if(Facets[FACET_NORTH_EAST] != NULL)
+                        {
+                            Facets[FACET_NORTH_EAST]->Draw();
+                        }
+                        break;
+                    }
+                    case SOUTH:
+                    case SOUTHWEST:
+                    {
+                        if(Facets[FACET_SOUTH_EAST] != NULL)
+                        {
+                            Facets[FACET_SOUTH_EAST]->Draw();
+                        }
+                        if(Facets[FACET_SOUTH_WEST] != NULL)
+                        {
+                            Facets[FACET_SOUTH_WEST]->Draw();
+                        }
+                        break;
+                    }
+                    case WEST:
+                    case NORTHWEST:
+                    {
+                        if(Facets[FACET_NORTH_WEST] != NULL)
+                        {
+                            Facets[FACET_NORTH_WEST]->Draw();
+                        }
+                        if(Facets[FACET_SOUTH_WEST] != NULL)
+                        {
+                            Facets[FACET_SOUTH_WEST]->Draw();
+                        }
+                        break;
+                    }
+                /*
                 case NORTHWEST:
                 {
                     if(Facets[FACET_SOUTH_EAST] != NULL)
@@ -345,6 +446,8 @@ bool Cube::Draw()
                         Facets[FACET_NORTH_WEST]->Draw();
                     }
                     break;
+                }
+                */
                 }
             }
         }
