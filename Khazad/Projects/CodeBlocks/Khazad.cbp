@@ -56,23 +56,6 @@
 			<Add library="GLUT32" />
 			<Add directory="..\..\lib" />
 		</Linker>
-		<Unit filename="..\..\boost\boost\multi_array.hpp" />
-		<Unit filename="..\..\boost\boost\multi_array\algorithm.hpp" />
-		<Unit filename="..\..\boost\boost\multi_array\base.hpp" />
-		<Unit filename="..\..\boost\boost\multi_array\collection_concept.hpp" />
-		<Unit filename="..\..\boost\boost\multi_array\concept_checks.hpp" />
-		<Unit filename="..\..\boost\boost\multi_array\copy_array.hpp" />
-		<Unit filename="..\..\boost\boost\multi_array\extent_gen.hpp" />
-		<Unit filename="..\..\boost\boost\multi_array\extent_range.hpp" />
-		<Unit filename="..\..\boost\boost\multi_array\index_gen.hpp" />
-		<Unit filename="..\..\boost\boost\multi_array\index_range.hpp" />
-		<Unit filename="..\..\boost\boost\multi_array\iterator.hpp" />
-		<Unit filename="..\..\boost\boost\multi_array\multi_array_ref.hpp" />
-		<Unit filename="..\..\boost\boost\multi_array\range_list.hpp" />
-		<Unit filename="..\..\boost\boost\multi_array\storage_order.hpp" />
-		<Unit filename="..\..\boost\boost\multi_array\subarray.hpp" />
-		<Unit filename="..\..\boost\boost\multi_array\types.hpp" />
-		<Unit filename="..\..\boost\boost\multi_array\view.hpp" />
 		<Unit filename="..\..\guichan\include\guichan.hpp" />
 		<Unit filename="..\..\guichan\include\guichan\actionevent.hpp" />
 		<Unit filename="..\..\guichan\include\guichan\actionlistener.hpp" />

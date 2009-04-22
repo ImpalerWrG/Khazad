@@ -363,13 +363,13 @@ void Map::LoadExtract()
 	{
 		for (Uint32 j = 0; j < MapSizeY; j++)
 		{
-			for (Uint32 k = 1; k < MapSizeZ; k++)
+			for (Uint32 k = 0; k < MapSizeZ; k++)
 			{
                 TargetCell = getCubeOwner(i, j, k);
                 if(TargetCell)
                 {
-                    //int TileType = EXTRACT->tile_types[i + 2][j + 2][k + 1];
-                    int TileType = EXTRACT->Tiles[i + 2][j + 2][k + 1];
+                    //int TileType = EXTRACT->Tiles[i + 2][j + 2][k + 1];
+                    int TileType = EXTRACT->Tiles[i][j][k];
 
                     bool IsFloor = EXTRACT->isFloorTerrain(TileType);
                     bool IsWall = EXTRACT->isWallTerrain(TileType);
