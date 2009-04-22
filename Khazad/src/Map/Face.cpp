@@ -12,12 +12,16 @@ Face::Face()
 {
 	setType(FACE_ACTOR);
 
+	Initalized = false;
+	Visible = false;
+
 	FirstOwner = NULL;
 	SecondOwner = NULL;
 
     Constructed = false;
     Decorated = false;
 
+    Material = 6;
 	//GAME->ActorList.push_back(this);
 	//ID = (Uint32) GAME->ActorList.size();
 }
@@ -25,11 +29,12 @@ Face::Face()
 Face::~Face()
 {
     //GAME->RemoveActor(ID);
-    //delete[] Points;
 }
 
 bool Face::Init(Cube* First, Cube* Second, Facet Type, Uint16 MaterialType)
 {
+    Initalized = true;
+
 	FirstOwner = First;
     SecondOwner = Second;
 	FacetType = Type;

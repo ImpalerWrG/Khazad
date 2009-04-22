@@ -60,10 +60,12 @@ public:
 
     int toggle_isloaded;
 
+    short int*** Tiles;
+
     boost::multi_array<int, 3> map_blocks;
     boost::multi_array<short int, 3> tile_types;
-    boost::multi_array<short int, 3> cube_sides;
-    boost::multi_array<char, 3> cube_textures;
+//    boost::multi_array<short int, 3> cube_sides;
+//    boost::multi_array<char, 3> cube_textures;
 
     std::vector<memory_info> meminfo;
 

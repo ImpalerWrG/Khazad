@@ -16,6 +16,9 @@ Cube::Cube()
 	Initalized = false;
 	Slopage = NULL;
 	Liquid = false;
+	Solid = true;
+
+	Material = 6;
 
 	for(Uint8 i = 0; i < NUM_FACETS; i++)
 	{
@@ -46,29 +49,33 @@ bool Cube::Init(Uint16 MaterialType)
 
 bool Cube::InitAllFaces()
 {
-   // if(Initalized)
-    //{
-        for(Uint8 i = 0; i < NUM_FACETS; i++)
-        {
-            Cube* NeiborCube = getNeiborCube((Facet) i);
-            Cell* NeiborCell = getNeiborCell((Facet) i);
+	Initalized = true;
 
-            if(NeiborCell != NULL && NeiborCell->Initalized && !NeiborCell->isBasment())
+    for(Uint8 i = 0; i < NUM_FACETS; i++)
+    {
+        Cube* NeiborCube = getNeiborCube((Facet) i);
+        Cell* NeiborCell = getNeiborCell((Facet) i);
+
+        if(NeiborCell != NULL && NeiborCell->Initalized && !NeiborCell->isBasment())
+        {
+            if (NeiborCube != NULL && NeiborCube->Initalized) //&& NeiborCube->Initalized == false && NeiborCube->Facets[OpositeFace(Type)] == NULL)
             {
-                if (NeiborCube != NULL) //&& NeiborCube->Initalized == false && NeiborCube->Facets[OpositeFace(Type)] == NULL)
+                if(Solid ^ NeiborCube->isSolid())  // Faces are only needed ware a sold and non-solid meet
                 {
-                    if(Solid ^ NeiborCube->isSolid())  // Faces are only needed ware a sold and non-solid meet
+                    Face* NeiborFace = NeiborCube->Facets[OpositeFace((Facet) i)];
+                    if(NeiborFace != NULL && !NeiborFace->isConstructed())
                     {
                         InitFace((Facet) i);
                     }
                 }
             }
         }
-    //}
+    }
 }
 
 bool Cube::setMaterial(Uint16 MaterialType)
 {
+    Initalized = true;
     Material = MaterialType;
 
     for(Uint8 i = 0; i < NUM_FACETS; i++)
@@ -138,19 +145,20 @@ void Cube::InitConstructedFace(Facet FacetType, Uint16 MaterialType)
         {
             OpposingFace->setMaterial(MaterialType);  // Change the existing face rather then creating a new one
             OpposingFace->setConstructed(true);
+            OpposingFace->setVisible(true);
         }
         else
         {
-            Facets[Type] = new Face;
-            Facets[Type]->setConstructed(true);
-            Facets[Type]->Init(this, NeiborCube, FacetType, MaterialType);  // Face Material is independent of Cube Material
+            Facets[FacetType] = new Face;
+            Facets[FacetType]->setConstructed(true);
+            Facets[FacetType]->Init(this, NeiborCube, FacetType, MaterialType);  // Face Material is independent of Cube Material
         }
     }
     else
     {
-        Facets[Type] = new Face;
-        Facets[Type]->setConstructed(true);
-        Facets[Type]->Init(this, NeiborCube, FacetType, MaterialType);
+        Facets[FacetType] = new Face;
+        Facets[FacetType]->setConstructed(true);
+        Facets[FacetType]->Init(this, NeiborCube, FacetType, MaterialType);
     }
 }
 
@@ -326,7 +334,7 @@ bool Cube::Update()
 
 bool Cube::Draw()
 {
-	if (Initalized && Visible)
+	if (Initalized ) //&& Visible)
 	{
 	    if(Slopage != NULL)
 	    {

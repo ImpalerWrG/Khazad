@@ -10,7 +10,7 @@ DECLARE_SINGLETON(Extractor)
 
 Extractor::Extractor()
 {
-
+    Tiles = NULL;
 }
 
 bool Extractor::Init()
@@ -137,6 +137,9 @@ int Extractor::dumpMemory( /*scene *thescene*/)
     ReadProcessMemory( DFHandle, (int*)(map_offset), &map_loc, sizeof(int), &bytesRead );
     printf("map data : 0x%.8X\n",map_loc);
 
+
+    Uint8 BlockEdge = 16;
+
     if ( !map_loc )
     {
         printf("Could not find DF map information in memory...\n");
@@ -146,45 +149,41 @@ int Extractor::dumpMemory( /*scene *thescene*/)
     {
         // x_blocks count
         ReadProcessMemory( DFHandle, (int*)(x_count_offset), &x_blocks, sizeof(int), &bytesRead );
-        printf("x_blocks tiles: %u (%d)\n",16*x_blocks,x_blocks);
+        printf("x_blocks tiles: %u (%d)\n",BlockEdge * x_blocks, x_blocks);
 
         // y_blocks count
         ReadProcessMemory( DFHandle, (int*)(y_count_offset), &y_blocks, sizeof(int), &bytesRead );
-        printf("y_blocks tiles: %u (%d)\n",16*y_blocks,y_blocks);
+        printf("y_blocks tiles: %u (%d)\n",BlockEdge * y_blocks, y_blocks);
 
         // z_levels count
         ReadProcessMemory( DFHandle, (int*)(z_count_offset), &z_levels, sizeof(int), &bytesRead );
-        printf("z_levels height: %u\n\n",z_levels);
+        printf("z_levels height: %u\n\n", z_levels);
         z_level_active = (short int*) malloc( sizeof(short int) * z_levels );
         memset(z_level_active, 0, sizeof(short int)*z_levels );
 
 
         //map_blocks = allocateArray3i(x_blocks, y_blocks, z_levels, 0, 0);
         map_blocks.resize(boost::extents[x_blocks][y_blocks][z_levels]);
-        for ( temp1=0; temp1 < x_blocks; temp1++ )
+        for ( temp1 = 0; temp1 < x_blocks; temp1++ )
         {
-            for ( temp2=0; temp2 < y_blocks; temp2++ )
+            for ( temp2 = 0; temp2 < y_blocks; temp2++ )
             {
-                for ( temp3=0; temp3 < z_levels; temp3++ )
+                for ( temp3 = 0; temp3 < z_levels; temp3++ )
                 {
                     map_blocks[temp1][temp2][temp3] = 0;
                 }
             }
         }
 
-        cube_sides.resize(boost::extents[x_blocks*16+4][y_blocks*16+4][z_levels+4]);
-        cube_textures.resize(boost::extents[x_blocks*16+4][y_blocks*16+4][z_levels+4]);
-        tile_types.resize(boost::extents[x_blocks*16+4][y_blocks*16+4][z_levels+4]);
+        tile_types.resize(boost::extents[x_blocks * BlockEdge + 4][y_blocks * BlockEdge + 4][z_levels + 4]);
 
-        for ( temp1=0; temp1 < x_blocks*16+4; temp1++ )
+        for ( temp1=0; temp1 < x_blocks * BlockEdge + 4; temp1++ )
         {
-            for ( temp2=0; temp2 < y_blocks*16+4; temp2++ )
+            for ( temp2=0; temp2 < y_blocks * BlockEdge + 4; temp2++ )
             {
-                for ( temp3=0; temp3 < z_levels+4; temp3++ )
+                for ( temp3=0; temp3 < z_levels + 4; temp3++ )
                 {
                     tile_types[temp1][temp2][temp3] = 32;
-                    cube_sides[temp1][temp2][temp3] = 0;
-                    cube_textures[temp1][temp2][temp3] = 0;
                 }
             }
         }
@@ -193,14 +192,14 @@ int Extractor::dumpMemory( /*scene *thescene*/)
         //in upper left corner
 
         //initialize all the pointers to the map blocks
-        for ( temp1=0; temp1 < x_blocks; temp1++ )
+        for ( temp1 = 0; temp1 < x_blocks; temp1++ )
         {
             temp_locx = map_loc + ( 4 * temp1 );
             ReadProcessMemory( DFHandle, (int*)(temp_locx), &temp_locy, sizeof(int), &bytesRead );
-            for ( temp2=0; temp2 < y_blocks; temp2++ )
+            for ( temp2 = 0; temp2 < y_blocks; temp2++ )
             {
                 ReadProcessMemory( DFHandle, (int*)(temp_locy), &temp_locz, sizeof(int), &bytesRead );
-                for ( temp3=0; temp3 < z_levels; temp3++ )
+                for ( temp3 = 0; temp3 < z_levels; temp3++ )
                 {
                     ReadProcessMemory( DFHandle, (int*)(temp_locz), &temp_loc, sizeof(int), &bytesRead );
                     map_blocks[temp1][temp2][temp3] = temp_loc;
@@ -208,8 +207,6 @@ int Extractor::dumpMemory( /*scene *thescene*/)
                 }
                 temp_locy += 4;
             }
-            //thescene->ce_progress_bar->setProgress(((float)temp1+1.0)/((float)x_blocks*4.0));
-            //thescene->render();
         }
 
         //read the memory from the map blocks
@@ -219,35 +216,29 @@ int Extractor::dumpMemory( /*scene *thescene*/)
             {
                 for ( temp3=0; temp3 < z_levels; temp3++ )
                 {
-                    for ( temp_tiley=0; temp_tiley < 16; temp_tiley++ )
+                    for ( temp_tiley=0; temp_tiley < BlockEdge; temp_tiley++ )
                     {
-                        for ( temp_tilex=0; temp_tilex < 16; temp_tilex++ )
+                        for ( temp_tilex=0; temp_tilex < BlockEdge; temp_tilex++ )
                         {
                             if ( map_blocks[temp1][temp2][temp3] )
                             {
                                 z_level_active[temp3] = 1; //so we know levels to export
 
-                                ReadProcessMemory( DFHandle, (int*)(map_blocks[temp1][temp2][temp3]+tile_type_offset+(2*temp_tiley+(temp_tilex*16*2))), &temp_tile, sizeof(short int), &bytesRead );
+                                ReadProcessMemory( DFHandle, (int*)(map_blocks[temp1][temp2][temp3] + tile_type_offset + (2 * temp_tiley + (temp_tilex * BlockEdge * 2))), &temp_tile, sizeof(short int), &bytesRead );
 
-                                tile_types[temp1*16+temp_tilex+2][temp2*16+temp_tiley+2][temp3+2] = temp_tile;
+                                tile_types[temp1* BlockEdge + temp_tilex + 2][temp2 * BlockEdge + temp_tiley + 2][temp3 + 2] = temp_tile;
 
                                 //points.push_back(new point(temp1*16+temp_tilex,temp2*16+temp_tiley,temp3));
                             }
                             else
                             {
-                                tile_types[temp1*16+temp_tilex+2][temp2*16+temp_tiley+2][temp3+2]=-1;
+                                tile_types[temp1 * BlockEdge + temp_tilex + 2][temp2 * BlockEdge + temp_tiley + 2][temp3 + 2] = -1;
                             }
                         }
                     }
                 }
             }
-            //thescene->ce_progress_bar->setProgress(((float)temp1+1.0)/((float)x_blocks*1.33)+.5);
-            //thescene->render();
         }
-
-        //thescene->ce_progress_bar->setProgress(1.0);
-        //thescene->render();
-        //glfwSleep(.5);
 
         printf("Stuff on levels: ");
         for ( temp1=0; temp1 < z_levels; temp1++ )
@@ -274,23 +265,19 @@ int Extractor::dumpMemory( /*scene *thescene*/)
             {
                 if ( z_level_active[temp1] )
                 {
-                    for ( temp2=0; temp2 < y_blocks*16; temp2++ )
+                    for ( temp2 = 0; temp2 < y_blocks * BlockEdge; temp2++ )
                     {
-                        for ( temp3=0; temp3 < x_blocks*16; temp3++ )
+                        for ( temp3 = 0; temp3 < x_blocks * BlockEdge; temp3++ )
                         {
-                            fwrite(&tile_types[temp3+2][temp2+2][temp1+2],sizeof(short int), 1, file_out);
+                            fwrite(&tile_types[temp3 + 2][temp2 + 2][temp1 + 2],sizeof(short int), 1, file_out);
                         }
                     }
                 }
             }
         }
         fclose(file_out);
-
-        createTerrain();
-
         toggle_isloaded = 1;
     }  //end of major map_loc check
-
 
     return 0;
 }
@@ -299,9 +286,9 @@ int Extractor::loadMap(char* infile/*, scene* myself*/)
 {
     FILE *file_in;
     int temp1, temp2, temp3;
-    double elapsed_time;
 
     file_in = fopen("3dwarf.map", "rb");
+
     if  (file_in == NULL)
     {
         printf("Can't open \"3dwarf.map\" for read.\n");
@@ -309,7 +296,7 @@ int Extractor::loadMap(char* infile/*, scene* myself*/)
     }
     else
     {
-        if  ( toggle_isloaded )
+        if(toggle_isloaded)
         {
             printf("freeing tile memory... ");
             tile_types.resize(boost::extents[0][0][0]);
@@ -324,42 +311,46 @@ int Extractor::loadMap(char* infile/*, scene* myself*/)
 
         printf("Read from file\nx_size: %d\ny_size: %d\nz_levels: %d\n", x_blocks, y_blocks, z_levels);
 
-        tile_types.resize(boost::extents[x_blocks*16+4][y_blocks*16+4][z_levels+4]);
-        cube_sides.resize(boost::extents[x_blocks*16+4][y_blocks*16+4][z_levels+4]);
-        cube_textures.resize(boost::extents[x_blocks*16+4][y_blocks*16+4][z_levels+4]);
+        Uint32 MapSizeX = x_blocks * 16;
+        Uint32 MapSizeY = y_blocks * 16;
+        Uint32 MapSizeZ = z_levels;
+        Uint8 OffSetPad = 2;
 
-        for ( temp1=0; temp1 < x_blocks*16+4; temp1++ )
+
+        Tiles = new short int**[MapSizeX];
+
+        for (Uint32 x = 0; x < MapSizeX + (OffSetPad * 2); x++)
         {
-            for ( temp2=0; temp2 < y_blocks*16+4; temp2++ )
+            Tiles[x] = new short int*[MapSizeY];
+
+            for (Uint32 y = 0; y < MapSizeY + (OffSetPad * 2); y++)
             {
-                for ( temp3=0; temp3 < z_levels+4; temp3++ )
-                {
-                    tile_types[temp1][temp2][temp3] = 32;
-                    cube_sides[temp1][temp2][temp3] = 0;
-                    cube_textures[temp1][temp2][temp3] = 0;
-                }
+                Tiles[x][y] = new short int[MapSizeZ];
+
+                //fread(&Tiles[temp3+2][temp2+2][temp1+2], sizeof(short int), 1, file_in);
             }
         }
 
-        for ( temp1=0; temp1 < z_levels; temp1++ )
+
+        for(temp1 = 0; temp1 < MapSizeZ; temp1++)
         {
-            for ( temp2=0; temp2 < y_blocks*16; temp2++ )
+            for(temp2 = 0; temp2 < MapSizeY; temp2++)
             {
-                for ( temp3=0; temp3 < x_blocks*16; temp3++ )
+                for(temp3 = 0; temp3 < MapSizeX; temp3++)
                 {
-                    fread(&tile_types[temp3+2][temp2+2][temp1+2],sizeof(short int), 1, file_in);
+                    fread(&Tiles[temp3+2][temp2+2][temp1+2], sizeof(short int), 1, file_in);
                 }
             }
         }
 
         fclose(file_in);
-        createTerrain();
         toggle_isloaded = 1;
     }
 
     return 0;
 }
 
+/*
 int Extractor::createTerrain()
 {
     int temp1, temp2, temp3;
@@ -486,6 +477,7 @@ int Extractor::createTerrain()
 
     return 0;
 }
+*/
 
 int Extractor::readMemoryFile()
 {

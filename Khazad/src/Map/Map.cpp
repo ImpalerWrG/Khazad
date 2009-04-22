@@ -368,56 +368,54 @@ void Map::LoadExtract()
                 TargetCell = getCubeOwner(i, j, k);
                 if(TargetCell)
                 {
-                    if(!TargetCell->Initalized)
-                    {
-                        TargetCell->Init();
-                    }
+                    //int TileType = EXTRACT->tile_types[i + 2][j + 2][k + 1];
+                    int TileType = EXTRACT->Tiles[i + 2][j + 2][k + 1];
 
-                    int TileType = EXTRACT->tile_types[i + 2][j + 2][k + 1];
-                    Uint16 Material = EXTRACT->picktexture(TileType);
-                    NewCube = getCube(i, j, k);
+                    bool IsFloor = EXTRACT->isFloorTerrain(TileType);
+                    bool IsWall = EXTRACT->isWallTerrain(TileType);
+                    bool IsOpen = EXTRACT->isOpenTerrain(TileType);
+                    bool IsRamp = EXTRACT->isRampTerrain(TileType);
 
-                    if (NewCube)
+                    if(IsFloor || IsWall || IsOpen || IsRamp)
                     {
-                        if(EXTRACT->isOpenTerrain(TileType))
+                        if(!TargetCell->Initalized)
                         {
-                            NewCube->Open();
+                            TargetCell->Init();
                         }
 
-                        if(EXTRACT->isWallTerrain(TileType))
-                        {
-                            NewCube->Init(Material);
-                        }
+                        Uint16 Material = EXTRACT->picktexture(TileType);
+                        NewCube = getCube(i, j, k);
 
-                        if(EXTRACT->isFloorTerrain(TileType))
+                        if (NewCube)
                         {
-                            // Force Floors to have bottoms
-                            if(NewCube->getFacet(FACET_BOTTOM))
+                            if(IsWall)
                             {
-                                NewCube->getFacet(FACET_BOTTOM)->setVisible(true);
-                            }
-                            else
-                            {
-                                Cube* Neibor = MAP->getCube((Sint32) i, (Sint32) j, (Sint32) k - 1);
-                                Face* NewFace = new Face;
-                                NewCube->setFacet(FACET_BOTTOM, NewFace);
-                                NewFace->Init(NewCube, Neibor, FACET_BOTTOM, EXTRACT->picktexture(TileType));
+                                NewCube->Init(Material);
                             }
 
+                            if(IsOpen)
+                            {
+                                NewCube->Open();
+                                NewCube->setVisible(true);
+                                NewCube->setAllFacesVisiblity(true);
+                            }
 
+                            if(IsFloor)
+                            {
+                                NewCube->InitConstructedFace(FACET_BOTTOM, Material);
+                                //NewCube->Open();
+                            }
 
+                            if (IsRamp)
+                            {
+                                NewCube->Init(Material);
+                                NewCube->SetSlope(SLOPE_SOUTH_WEST);
+                                NewCube->setVisible(true);
+                            }
 
-                            //NewCube->InitConstructedFace(FACET_BOTTOM, Material);
+                            NewCube->setVisible(true);
+                            NewCube->setAllFacesVisiblity(true);
                         }
-
-                        if (EXTRACT->isRampTerrain(TileType))
-                        {
-                            NewCube->Init(Material);
-                            NewCube->SetSlope(SLOPE_SOUTH_WEST);
-                        }
-
-                        NewCube->setVisible(true);
-                        NewCube->setAllFacesVisiblity(true);
                     }
                 }
             }

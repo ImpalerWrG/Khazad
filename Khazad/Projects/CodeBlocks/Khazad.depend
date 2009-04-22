@@ -4973,7 +4973,7 @@
 1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\timer.h
 	<stdafx.h>
 
-1240349658 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\main.cpp
+1240431629 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\main.cpp
 	<stdafx.h>
 	<Timer.h>
 	<TextureManager.h>
@@ -5177,7 +5177,7 @@
 	<stdafx.h>
 	<Actor.h>
 
-1240381713 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.cpp
+1240425927 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.cpp
 	<stdafx.h>
 	<Game.h>
 	<Camera.h>
@@ -5196,7 +5196,7 @@
 	<stdafx.h>
 	<Actor.h>
 
-1240378930 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.cpp
+1240436855 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.cpp
 	<stdafx.h>
 	<Map.h>
 	<Singleton.h>
@@ -5255,7 +5255,7 @@
 	<stdafx.h>
 	<ImagePage.h>
 
-1240356449 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\texturemanager.cpp
+1240392864 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\texturemanager.cpp
 	<stdafx.h>
 	<ImagePage.h>
 	<ClipImage.h>
@@ -5279,7 +5279,7 @@
 	"tinyxml.h"
 	<windows.h>
 
-1240376441 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\face.cpp
+1240428199 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\face.cpp
 	<stdafx.h>
 	<Cube.h>
 	<Face.h>
@@ -5313,13 +5313,13 @@
 	<DataTypes.h>
 	<XMLManager.h>
 
-1240303388 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\extract.cpp
+1240436875 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\extract.cpp
 	<windows.h>
 	<stdio.h>
 	"Extract.h"
 	<stdafx.h>
 
-1240117217 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\extract.h
+1240435629 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\extract.h
 	<Singleton.h>
 	<stdafx.h>
 	<boost/multi_array.hpp>

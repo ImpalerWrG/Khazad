@@ -21,9 +21,9 @@ bool TextureManager::Init()
 // 4 Constructed Stairs & Ramps
 	loadTextureSingular("Assets\\Textures\\Brick.png", false, false);
 // 5 OpenSpace(Air)
-	loadTextureSingular("Assets\\Textures\\water.png", false, false);
-// 6 Not Assigned
 	loadTextureSingular("Assets\\Textures\\Air.png", false, false);
+// 6 Not Assigned
+	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
 // 7 Detailed Stone / Constructions
 	loadTextureSingular("Assets\\Textures\\floor_detailed.png", false, false);
 // 8 Driftwood
@@ -51,7 +51,7 @@ bool TextureManager::Init()
 // 19 all Boulders
 	loadTextureSingular("Assets\\Textures\\boulder.png", false, false);
 // 20
-	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+	loadTextureSingular("Assets\\Textures\\water.png", false, false);
 // 21 Furrowed Soil
 	loadTextureSingular("Assets\\Textures\\Dirt.png", false, false);
 // 22 Stone Constructions / Veins, Gems, Clusters

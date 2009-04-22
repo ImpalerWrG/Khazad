@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="..\..\boost\boost\multi_array\concept_checks.hpp" open="1" top="0" tabpos="48">
-		<Cursor position="636" topLine="5" />
+	<File name="..\..\boost\boost\multi_array.hpp" open="1" top="0" tabpos="49">
+		<Cursor position="992" topLine="13" />
 	</File>
-	<File name="..\..\boost\boost\multi_array\index_range.hpp" open="1" top="0" tabpos="46">
-		<Cursor position="515" topLine="0" />
+	<File name="..\..\boost\boost\multi_array\algorithm.hpp" open="0" top="0" tabpos="0">
+		<Cursor position="1643" topLine="38" />
 	</File>
-	<File name="..\..\boost\boost\multi_array\range_list.hpp" open="1" top="0" tabpos="44">
-		<Cursor position="576" topLine="3" />
+	<File name="..\..\boost\boost\multi_array\base.hpp" open="0" top="0" tabpos="0">
+		<Cursor position="1189" topLine="18" />
 	</File>
-	<File name="..\..\boost\boost\multi_array\storage_order.hpp" open="1" top="0" tabpos="47">
-		<Cursor position="1187" topLine="23" />
+	<File name="..\..\boost\boost\multi_array\concept_checks.hpp" open="0" top="0" tabpos="48">
+		<Cursor position="636" topLine="16" />
 	</File>
-	<File name="..\..\boost\boost\multi_array\types.hpp" open="1" top="0" tabpos="45">
-		<Cursor position="601" topLine="0" />
+	<File name="..\..\boost\boost\multi_array\index_range.hpp" open="0" top="0" tabpos="46">
+		<Cursor position="515" topLine="11" />
+	</File>
+	<File name="..\..\boost\boost\multi_array\multi_array_ref.hpp" open="0" top="0" tabpos="0">
+		<Cursor position="1068" topLine="14" />
+	</File>
+	<File name="..\..\boost\boost\multi_array\range_list.hpp" open="0" top="0" tabpos="44">
+		<Cursor position="1032" topLine="34" />
+	</File>
+	<File name="..\..\boost\boost\multi_array\storage_order.hpp" open="0" top="0" tabpos="47">
+		<Cursor position="3746" topLine="106" />
+	</File>
+	<File name="..\..\boost\boost\multi_array\types.hpp" open="0" top="0" tabpos="45">
+		<Cursor position="601" topLine="15" />
+	</File>
+	<File name="..\..\boost\boost\multi_array\view.hpp" open="0" top="0" tabpos="0">
+		<Cursor position="2704" topLine="63" />
 	</File>
 	<File name="..\..\guichan\include\guichan\actionevent.hpp" open="0" top="0" tabpos="3">
 		<Cursor position="383" topLine="0" />
@@ -71,7 +86,7 @@
 		<Cursor position="228" topLine="0" />
 	</File>
 	<File name="..\..\src\Data\DataTypes.h" open="1" top="0" tabpos="10">
-		<Cursor position="378" topLine="13" />
+		<Cursor position="378" topLine="2" />
 	</File>
 	<File name="..\..\src\Data\XMLManager.cpp" open="0" top="0" tabpos="10">
 		<Cursor position="3652" topLine="132" />
@@ -79,11 +94,11 @@
 	<File name="..\..\src\Data\XMLManager.h" open="1" top="0" tabpos="11">
 		<Cursor position="2982" topLine="81" />
 	</File>
-	<File name="..\..\src\Game\Actor.cpp" open="1" top="0" tabpos="50">
-		<Cursor position="0" topLine="0" />
+	<File name="..\..\src\Game\Actor.cpp" open="1" top="0" tabpos="45">
+		<Cursor position="286" topLine="0" />
 	</File>
 	<File name="..\..\src\Game\Actor.h" open="1" top="0" tabpos="12">
-		<Cursor position="326" topLine="4" />
+		<Cursor position="475" topLine="11" />
 	</File>
 	<File name="..\..\src\Game\Game.cpp" open="0" top="0" tabpos="12">
 		<Cursor position="864" topLine="33" />
@@ -91,7 +106,7 @@
 	<File name="..\..\src\Game\Game.h" open="1" top="0" tabpos="13">
 		<Cursor position="305" topLine="0" />
 	</File>
-	<File name="..\..\src\Game\Pawn.cpp" open="1" top="0" tabpos="51">
+	<File name="..\..\src\Game\Pawn.cpp" open="1" top="0" tabpos="46">
 		<Cursor position="958" topLine="59" />
 	</File>
 	<File name="..\..\src\Game\Pawn.h" open="1" top="0" tabpos="14">
@@ -112,41 +127,41 @@
 	<File name="..\..\src\Gui\Gui.h" open="1" top="0" tabpos="18">
 		<Cursor position="454" topLine="0" />
 	</File>
-	<File name="..\..\src\Gui\InputManager.cpp" open="1" top="0" tabpos="52">
-		<Cursor position="1314" topLine="50" />
+	<File name="..\..\src\Gui\InputManager.cpp" open="1" top="0" tabpos="47">
+		<Cursor position="1055" topLine="50" />
 	</File>
 	<File name="..\..\src\Gui\InputManager.h" open="1" top="0" tabpos="19">
 		<Cursor position="255" topLine="0" />
 	</File>
 	<File name="..\..\src\Map\Cell.cpp" open="1" top="0" tabpos="37">
-		<Cursor position="1772" topLine="65" />
+		<Cursor position="1772" topLine="63" />
 	</File>
 	<File name="..\..\src\Map\Cell.h" open="1" top="0" tabpos="20">
 		<Cursor position="477" topLine="6" />
 	</File>
 	<File name="..\..\src\Map\Cube.cpp" open="1" top="0" tabpos="36">
-		<Cursor position="1335" topLine="73" />
+		<Cursor position="7401" topLine="107" />
 	</File>
-	<File name="..\..\src\Map\Cube.h" open="1" top="1" tabpos="21">
-		<Cursor position="974" topLine="23" />
+	<File name="..\..\src\Map\Cube.h" open="1" top="0" tabpos="21">
+		<Cursor position="790" topLine="14" />
 	</File>
 	<File name="..\..\src\Map\Extract.cpp" open="1" top="0" tabpos="43">
-		<Cursor position="22448" topLine="492" />
+		<Cursor position="48005" topLine="471" />
 	</File>
 	<File name="..\..\src\Map\Extract.h" open="1" top="0" tabpos="42">
 		<Cursor position="1683" topLine="55" />
 	</File>
 	<File name="..\..\src\Map\Face.cpp" open="1" top="0" tabpos="35">
-		<Cursor position="760" topLine="23" />
+		<Cursor position="4816" topLine="0" />
 	</File>
 	<File name="..\..\src\Map\Face.h" open="1" top="0" tabpos="22">
-		<Cursor position="439" topLine="20" />
+		<Cursor position="654" topLine="14" />
 	</File>
-	<File name="..\..\src\Map\Map.cpp" open="1" top="0" tabpos="34">
-		<Cursor position="10623" topLine="373" />
+	<File name="..\..\src\Map\Map.cpp" open="1" top="1" tabpos="34">
+		<Cursor position="10869" topLine="379" />
 	</File>
 	<File name="..\..\src\Map\Map.h" open="1" top="0" tabpos="23">
-		<Cursor position="474" topLine="28" />
+		<Cursor position="825" topLine="21" />
 	</File>
 	<File name="..\..\src\Map\Slope.cpp" open="1" top="0" tabpos="31">
 		<Cursor position="8247" topLine="277" />
@@ -155,16 +170,19 @@
 		<Cursor position="368" topLine="0" />
 	</File>
 	<File name="..\..\src\Render\Camera.cpp" open="1" top="0" tabpos="32">
-		<Cursor position="1455" topLine="62" />
+		<Cursor position="2109" topLine="77" />
 	</File>
 	<File name="..\..\src\Render\Camera.h" open="1" top="0" tabpos="25">
-		<Cursor position="3424" topLine="112" />
+		<Cursor position="4902" topLine="147" />
+	</File>
+	<File name="..\..\src\Render\ClipImage.cpp" open="1" top="0" tabpos="48">
+		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="..\..\src\Render\ClipImage.h" open="1" top="0" tabpos="26">
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="..\..\src\Render\ColorManager.h" open="1" top="0" tabpos="7">
-		<Cursor position="189" topLine="0" />
+		<Cursor position="234" topLine="0" />
 	</File>
 	<File name="..\..\src\Render\ImageManager.h" open="1" top="0" tabpos="27">
 		<Cursor position="530" topLine="0" />
@@ -173,13 +191,13 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="..\..\src\Render\ScreenManager.cpp" open="1" top="0" tabpos="38">
-		<Cursor position="6236" topLine="215" />
+		<Cursor position="6236" topLine="2" />
 	</File>
 	<File name="..\..\src\Render\ScreenManager.h" open="1" top="0" tabpos="29">
 		<Cursor position="1471" topLine="45" />
 	</File>
-	<File name="..\..\src\Render\TextureManager.cpp" open="1" top="0" tabpos="49">
-		<Cursor position="2103" topLine="30" />
+	<File name="..\..\src\Render\TextureManager.cpp" open="1" top="0" tabpos="44">
+		<Cursor position="757" topLine="6" />
 	</File>
 	<File name="..\..\src\Render\TextureManager.h" open="1" top="0" tabpos="30">
 		<Cursor position="1284" topLine="12" />
