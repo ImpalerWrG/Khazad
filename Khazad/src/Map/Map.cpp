@@ -401,18 +401,15 @@ void Map::LoadExtract()
 
                             if(IsFloor)
                             {
-                                if(Material == 31)
-                                {
-                                    int x = 666;
-                                }
                                 NewCube->InitConstructedFace(FACET_BOTTOM, Material);
+                                NewCube->setSolid(false);
                             }
 
                             if (IsRamp)
                             {
                                 NewCube->Init(Material);
-                                NewCube->SetSlope(SLOPE_SOUTH_WEST);
                                 NewCube->setVisible(true);
+                                NewCube->SetSlope(SLOPE_FLAT);  // Prime the Slope, the type can not yet be determined
                             }
 
                             NewCube->setVisible(true);
@@ -435,8 +432,14 @@ void Map::LoadExtract()
                 if(NewCube)
                 {
                     NewCube->InitAllFaces();
+
+                    if(NewCube->getSlope() != NULL)
+                    {
+                        NewCube->DetermineSlope();
+                    }
                 }
 			}
 		}
 	}
 }
+

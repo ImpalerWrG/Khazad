@@ -28,7 +28,8 @@ public:
 
     Slope* getSlope()               { return Slopage; }
 	void SetSlope(Slopping Type);
-	void Cube::RemoveSlope();
+	void RemoveSlope();
+    void DetermineSlope();
 
 	Uint16 getMaterial()            { return Material; }
     bool setMaterial(Uint16 MaterialType);
@@ -43,9 +44,12 @@ public:
     void InitConstructedFace(Facet FacetType, Uint16 MaterialType);
     bool Open();
 
-    Cube* getNeiborCube(Facet Type);
-    Cell* getNeiborCell(Facet Type);
+    Cube* getAdjacentCube(Facet Type);
+    Cube* getNeiborCube(Direction Type);
+
+    Cell* getAdjacentCell(Facet Type);
     static Facet OpositeFace(Facet Type);
+
 
 	bool Update();
 	bool Draw();

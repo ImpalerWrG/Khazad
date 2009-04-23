@@ -35,7 +35,7 @@
 		<Cursor position="327" topLine="0" />
 	</File>
 	<File name="..\..\src\Core\main.cpp" open="1" top="0" tabpos="39">
-		<Cursor position="1338" topLine="52" />
+		<Cursor position="1311" topLine="52" />
 	</File>
 	<File name="..\..\src\Core\stdafx.h" open="1" top="0" tabpos="1">
 		<Cursor position="523" topLine="0" />
@@ -110,28 +110,28 @@
 		<Cursor position="477" topLine="6" />
 	</File>
 	<File name="..\..\src\Map\Cube.cpp" open="1" top="0" tabpos="36">
-		<Cursor position="7401" topLine="107" />
+		<Cursor position="3872" topLine="137" />
 	</File>
 	<File name="..\..\src\Map\Cube.h" open="1" top="0" tabpos="21">
-		<Cursor position="790" topLine="14" />
+		<Cursor position="991" topLine="31" />
 	</File>
-	<File name="..\..\src\Map\Extract.cpp" open="1" top="1" tabpos="43">
-		<Cursor position="8991" topLine="274" />
+	<File name="..\..\src\Map\Extract.cpp" open="1" top="0" tabpos="43">
+		<Cursor position="8967" topLine="310" />
 	</File>
 	<File name="..\..\src\Map\Extract.h" open="1" top="0" tabpos="42">
-		<Cursor position="921" topLine="33" />
+		<Cursor position="433" topLine="25" />
 	</File>
 	<File name="..\..\src\Map\Face.cpp" open="1" top="0" tabpos="35">
-		<Cursor position="366" topLine="18" />
+		<Cursor position="609" topLine="21" />
 	</File>
 	<File name="..\..\src\Map\Face.h" open="1" top="0" tabpos="22">
 		<Cursor position="541" topLine="14" />
 	</File>
-	<File name="..\..\src\Map\Map.cpp" open="1" top="0" tabpos="34">
-		<Cursor position="11075" topLine="355" />
+	<File name="..\..\src\Map\Map.cpp" open="1" top="1" tabpos="34">
+		<Cursor position="12107" topLine="438" />
 	</File>
 	<File name="..\..\src\Map\Map.h" open="1" top="0" tabpos="23">
-		<Cursor position="825" topLine="21" />
+		<Cursor position="497" topLine="11" />
 	</File>
 	<File name="..\..\src\Map\Slope.cpp" open="1" top="0" tabpos="31">
 		<Cursor position="8247" topLine="277" />
@@ -167,7 +167,7 @@
 		<Cursor position="1471" topLine="45" />
 	</File>
 	<File name="..\..\src\Render\TextureManager.cpp" open="1" top="0" tabpos="44">
-		<Cursor position="757" topLine="6" />
+		<Cursor position="2841" topLine="57" />
 	</File>
 	<File name="..\..\src\Render\TextureManager.h" open="1" top="0" tabpos="30">
 		<Cursor position="1284" topLine="12" />

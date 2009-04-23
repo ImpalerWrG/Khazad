@@ -53,8 +53,8 @@ bool Cube::InitAllFaces()
 
     for(Uint8 i = 0; i < NUM_FACETS; i++)
     {
-        Cube* NeiborCube = getNeiborCube((Facet) i);
-        Cell* NeiborCell = getNeiborCell((Facet) i);
+        Cube* NeiborCube = getAdjacentCube((Facet) i);
+        Cell* NeiborCell = getAdjacentCell((Facet) i);
 
         if(NeiborCell != NULL && NeiborCell->Initalized && !NeiborCell->isBasment())
         {
@@ -94,8 +94,8 @@ bool Cube::Open()
 
     for(Uint8 i = 0; i < NUM_FACETS; i++)
     {
-        Cube* NeiborCube = getNeiborCube((Facet) i);
-        Cell* NeiborCell = getNeiborCell((Facet) i);
+        Cube* NeiborCube = getAdjacentCube((Facet) i);
+        Cell* NeiborCell = getAdjacentCell((Facet) i);
 
         if(NeiborCell != NULL && NeiborCell->Initalized && !NeiborCell->isBasment())
         {
@@ -136,7 +136,7 @@ void Cube::setFacet(Facet FacetType, Face* NewFace)
 
 void Cube::InitConstructedFace(Facet FacetType, Uint16 MaterialType)
 {
-    Cube* NeiborCube = getNeiborCube(FacetType);
+    Cube* NeiborCube = getAdjacentCube(FacetType);
 
     if(NeiborCube != NULL)
     {
@@ -164,7 +164,7 @@ void Cube::InitConstructedFace(Facet FacetType, Uint16 MaterialType)
 
 void Cube::InitFace(Facet Type)
 {
-    Cube* NeiborCube = getNeiborCube(Type);
+    Cube* NeiborCube = getAdjacentCube(Type);
 
     Facets[Type] = new Face;
 
@@ -178,7 +178,7 @@ void Cube::InitFace(Facet Type)
     }
 }
 
-Cube* Cube::getNeiborCube(Facet Type)
+Cube* Cube::getAdjacentCube(Facet Type)
 {
     Sint32 x = Position.x;
     Sint32 y = Position.y;
@@ -209,7 +209,49 @@ Cube* Cube::getNeiborCube(Facet Type)
     return MAP->getCube(x, y, z);
 }
 
-Cell* Cube::getNeiborCell(Facet Type)
+Cube* Cube::getNeiborCube(Direction Type)
+{
+    Sint32 x = Position.x;
+    Sint32 y = Position.y;
+    Sint32 z = Position.z;
+
+    switch(Type)
+    {
+        case NORTHEAST:
+            y -= 1;
+            break;
+        case SOUTHEAST:
+            x += 1;
+            break;
+        case SOUTHWEST:
+            y += 1;
+            break;
+        case NORTHWEST:
+            x -= 1;
+            break;
+
+        case NORTH:
+            y -= 1;
+            x -= 1;
+            break;
+        case SOUTH:
+            x += 1;
+            y += 1;
+            break;
+        case WEST:
+            x -= 1;
+            y += 1;
+            break;
+        case EAST:
+            x += 1;
+            y -= 1;
+            break;
+    }
+
+    return MAP->getCube(x, y, z);
+}
+
+Cell* Cube::getAdjacentCell(Facet Type)
 {
     Sint32 x = Position.x;
     Sint32 y = Position.y;
@@ -296,6 +338,8 @@ void Cube::DeleteFace(Facet Type)
 
 void Cube::SetSlope(Slopping Type)
 {
+    Solid = false;
+
     if (Slopage == NULL)
     {
         Slopage = new Slope;
@@ -324,6 +368,135 @@ void Cube::setAllFacesVisiblity(bool NewValue)
         {
             Facets[i]->setVisible(NewValue);
         }
+    }
+}
+
+void Cube::DetermineSlope()
+{
+    Slopping SlopeType = SLOPE_FLAT;
+
+    bool NorthEastSolid = false;
+    bool SouthEastSolid = false;
+    bool NorthWestSolid = false;
+    bool SouthWestSolid = false;
+
+    bool NorthSolid = false;
+    bool SouthSolid = false;
+    bool WestSolid = false;
+    bool EastSolid = false;
+
+    if(getAdjacentCube(FACET_NORTH_EAST) != NULL && getAdjacentCube(FACET_NORTH_EAST)->isSolid())
+    {
+        NorthEastSolid = true;
+    }
+
+    if(getAdjacentCube(FACET_SOUTH_EAST) != NULL && getAdjacentCube(FACET_SOUTH_EAST)->isSolid())
+    {
+        SouthEastSolid = true;
+    }
+
+    if(getAdjacentCube(FACET_NORTH_WEST) != NULL && getAdjacentCube(FACET_NORTH_WEST)->isSolid())
+    {
+       NorthWestSolid = true;
+    }
+
+    if(getAdjacentCube(FACET_SOUTH_WEST) != NULL && getAdjacentCube(FACET_SOUTH_WEST)->isSolid())
+    {
+        SouthWestSolid = true;
+    }
+
+
+    if(getNeiborCube(NORTH) != NULL && getNeiborCube(NORTH)->isSolid())
+    {
+        NorthSolid = true;
+    }
+
+    if(getNeiborCube(SOUTH) != NULL && getNeiborCube(SOUTH)->isSolid())
+    {
+        SouthSolid = true;
+    }
+
+    if(getNeiborCube(WEST) != NULL && getNeiborCube(WEST)->isSolid())
+    {
+       WestSolid = true;
+    }
+
+    if(getNeiborCube(EAST) != NULL && getNeiborCube(EAST)->isSolid())
+    {
+        EastSolid = true;
+    }
+
+
+    if(NorthEastSolid)
+    {
+        SlopeType = SLOPE_SOUTH_WEST;
+    }
+
+    if(SouthEastSolid)
+    {
+        SlopeType = SLOPE_NORTH_WEST;
+    }
+
+    if(NorthWestSolid)
+    {
+        SlopeType = SLOPE_SOUTH_EAST;
+    }
+
+
+
+
+    if(SouthWestSolid)
+    {
+        SlopeType = SLOPE_NORTH_EAST;
+    }
+
+    if(NorthEastSolid && SouthEastSolid)
+    {
+        SlopeType = SLOPE_LARGE_WEST;
+    }
+
+    if(SouthEastSolid && SouthWestSolid)
+    {
+        SlopeType = SLOPE_LARGE_NORTH;
+    }
+
+    if(NorthWestSolid && SouthWestSolid)
+    {
+        SlopeType = SLOPE_LARGE_EAST;
+    }
+
+    if(NorthEastSolid && NorthWestSolid)
+    {
+        SlopeType = SLOPE_LARGE_SOUTH;
+    }
+
+
+    if(SlopeType == SLOPE_FLAT) // No slope yet found, try corners
+    {
+        if(SouthSolid)
+        {
+            SlopeType = SLOPE_SMALL_NORTH;
+        }
+
+        if(NorthSolid)
+        {
+            SlopeType = SLOPE_SMALL_SOUTH;
+        }
+
+        if(EastSolid)
+        {
+            SlopeType = SLOPE_SMALL_WEST;
+        }
+
+        if(WestSolid)
+        {
+            SlopeType = SLOPE_SMALL_EAST;
+        }
+    }
+
+    if(SlopeType != SLOPE_FLAT)
+    {
+        SetSlope(SlopeType);
     }
 }
 

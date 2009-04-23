@@ -323,18 +323,17 @@ int Extractor::loadMap(char* FilePath, bool Legacy)
             Pad = 0;
         }
 
-        Uint32 MapSizeX = x_blocks * BlockSize + (Pad * 2);
-        Uint32 MapSizeY = y_blocks * BlockSize + (Pad * 2);
-        Uint32 MapSizeZ = z_levels + (Pad * 2);
-
+        Uint32 MapSizeX = x_blocks * BlockSize;
+        Uint32 MapSizeY = y_blocks * BlockSize;
+        Uint32 MapSizeZ = z_levels;
 
         Tiles = new short int**[MapSizeX];
 
-        for (Uint32 x = 0; x < MapSizeX; x++)
+        for (Uint32 x = 0; x < MapSizeX + (Pad * 2); x++)
         {
             Tiles[x] = new short int*[MapSizeY];
 
-            for (Uint32 y = 0; y < MapSizeY; y++)
+            for (Uint32 y = 0; y < MapSizeY + (Pad * 2); y++)
             {
                 Tiles[x][y] = new short int[MapSizeZ];
             }

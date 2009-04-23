@@ -64,9 +64,9 @@ bool initManagers()
     printf("Extractor Initializing \n");
 	EXTRACT->CreateInstance();
 	EXTRACT->Init();
-	//EXTRACT->dumpMemory();
-	EXTRACT->loadMap("First.map", true);
-	//EXTRACT->writeMap("NewMap.map");
+	EXTRACT->dumpMemory();
+	//EXTRACT->loadMap("");
+	//EXTRACT->writeMap("");
 
     printf("Map Initializing \n");
 	MAP->CreateInstance();

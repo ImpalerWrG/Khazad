@@ -4973,7 +4973,7 @@
 1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\timer.h
 	<stdafx.h>
 
-1240477619 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\main.cpp
+1240510258 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\main.cpp
 	<stdafx.h>
 	<Timer.h>
 	<TextureManager.h>
@@ -5061,7 +5061,7 @@
 1235468170 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\geometry\vector3.h
 	<stdafx.h>
 
-1240373051 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.h
+1240516035 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.h
 	<Singleton.h>
 	<stdafx.h>
 	<Cell.h>
@@ -5115,7 +5115,7 @@
 	<Map.h>
 	<Cube.h>
 
-1240373881 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.h
+1240515151 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.h
 	<stdafx.h>
 	<Actor.h>
 
@@ -5177,7 +5177,7 @@
 	<stdafx.h>
 	<Actor.h>
 
-1240425927 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.cpp
+1240515956 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\cube.cpp
 	<stdafx.h>
 	<Game.h>
 	<Camera.h>
@@ -5196,7 +5196,7 @@
 	<stdafx.h>
 	<Actor.h>
 
-1240476769 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.cpp
+1240516087 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.cpp
 	<stdafx.h>
 	<Map.h>
 	<Singleton.h>
@@ -5313,7 +5313,7 @@
 	<DataTypes.h>
 	<XMLManager.h>
 
-1240477803 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\extract.cpp
+1240481891 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\extract.cpp
 	<windows.h>
 	<Extract.h>
 	<stdafx.h>
