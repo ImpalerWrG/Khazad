@@ -4973,7 +4973,7 @@
 1239868112 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\timer.h
 	<stdafx.h>
 
-1240441019 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\main.cpp
+1240465461 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\core\main.cpp
 	<stdafx.h>
 	<Timer.h>
 	<TextureManager.h>
@@ -5035,7 +5035,7 @@
 
 1219532746 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\geometry\primtypes.h
 
-1239926932 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\configmanager.h
+1240465178 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\configmanager.h
 	<stdafx.h>
 	<Singleton.h>
 
@@ -5070,7 +5070,7 @@
 	<stdafx.h>
 	<Singleton.h>
 
-1239926932 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\configmanager.cpp
+1240465113 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\data\configmanager.cpp
 	<ConfigManager.h>
 	<Singleton.h>
 	<XMLManager.h>
@@ -5196,7 +5196,7 @@
 	<stdafx.h>
 	<Actor.h>
 
-1240438270 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.cpp
+1240449188 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\map.cpp
 	<stdafx.h>
 	<Map.h>
 	<Singleton.h>
@@ -5216,7 +5216,7 @@
 	<TextureManager.h>
 	<ScreenManager.h>
 
-1240382280 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\camera.cpp
+1240466669 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\render\camera.cpp
 	<stdafx.h>
 	<Camera.h>
 	<Plane.h>
@@ -5313,13 +5313,12 @@
 	<DataTypes.h>
 	<XMLManager.h>
 
-1240440695 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\extract.cpp
+1240448776 source:c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\extract.cpp
 	<windows.h>
-	<stdio.h>
-	"Extract.h"
+	<Extract.h>
 	<stdafx.h>
 
-1240440670 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\extract.h
+1240447630 c:\documents and settings\impaler\desktop\sf-khazad\khazad\src\map\extract.h
 	<Singleton.h>
 	<stdafx.h>
 

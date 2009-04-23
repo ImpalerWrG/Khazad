@@ -111,12 +111,12 @@ void Camera::onMouseEvent(SDL_Event* Event)
 			}
 		case SDLK_RIGHT:
 			{
-				OrbitView((float)0.3);
+				OrbitView( CONFIG->OrbitSpeed() / 100.0);
 				break;
 			}
 		case SDLK_LEFT:
 			{
-				OrbitView((float)-0.3);
+				OrbitView( CONFIG->OrbitSpeed() / -100.0 );
 				break;
 			}
 		case SDLK_UP:
@@ -151,14 +151,14 @@ void Camera::onMouseEvent(SDL_Event* Event)
 
 		case SDL_BUTTON_WHEELUP:
 			{
-				ZoomView(1.25);
+				ZoomView(1.0 / (CONFIG->ZoomSpeed() / (50.0 + CONFIG->ZoomSpeed())));
 				generateViewFrustum();
 				break;
 			}
 
 		case SDL_BUTTON_WHEELDOWN:
 			{
-				ZoomView(0.75);
+				ZoomView((CONFIG->ZoomSpeed() / (50.0 + CONFIG->ZoomSpeed())) / 1.0);
 				generateViewFrustum();
 				break;
 			}
@@ -311,13 +311,13 @@ void Camera::onMouseEvent(SDL_Event* Event)
 
 			if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_RIGHT))
 			{
-				SlideView(DeltaX, DeltaY);
+				SlideView(DeltaX * CONFIG->SlideSpeed() / 50, DeltaY * CONFIG->SlideSpeed() / 50);
 			}
 
 			if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_LEFT))
 			{
-				TiltView(DeltaY * (float)0.1, (float)0.01, (float)10.0);
-				OrbitView(DeltaX * (float)0.01);
+				TiltView(DeltaY *  (CONFIG->TiltSpeed() / 1000.0), (float)0.01, (float)10.0);
+				OrbitView(DeltaX * (CONFIG->OrbitSpeed() / 10000.0));
 
 				generateViewFrustum();
 			}

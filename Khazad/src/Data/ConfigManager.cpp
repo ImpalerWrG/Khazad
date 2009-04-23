@@ -13,6 +13,11 @@ ConfigManager::ConfigManager()
 	YMap = 10;
 	ZMap = 10;
 	CellEdgeLength = 10;
+
+	Orbit = 30;
+	Tilt = 100;
+	Slide = 100;
+	Zoom = 75;
 }
 
 ConfigManager::~ConfigManager()
@@ -37,6 +42,14 @@ bool ConfigManager::Init()
     XML->getUIntValue("GlobalDefines", "Zoom", "Min", ZoomMinimum);
 	XML->getUIntValue("GlobalDefines", "Zoom", "Start", ZoomStartup);
 	XML->getUIntValue("GlobalDefines", "Zoom", "Max", ZoomMaximum);
+
+    XML->getUIntValue("GlobalDefines", "InterfaceSpeed", "Orbit", Orbit);
+    XML->getUIntValue("GlobalDefines", "InterfaceSpeed", "Tilt", Tilt);
+    XML->getUIntValue("GlobalDefines", "InterfaceSpeed", "Slide", Slide);
+    XML->getUIntValue("GlobalDefines", "InterfaceSpeed", "Zoom", Zoom);
+
+    //char* LoadPath;
+   // char* SavePath;
 
 	return true;
 }

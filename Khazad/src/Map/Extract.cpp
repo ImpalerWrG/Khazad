@@ -19,7 +19,7 @@ bool Extractor::Init()
 
 Extractor::~Extractor()
 {
-    FreeMapMemory();
+    FreeMap();
 }
 
 int Extractor::dumpMemory()
@@ -33,15 +33,12 @@ int Extractor::dumpMemory()
 	char process_name[] = "Dwarf Fortress";
     int buffer, map_loc;
 
-	int temp1, temp2, temp3;
     int temp_loc, temp_locx, temp_locy, temp_locz;
-    int temp_tilex, temp_tiley;
     unsigned int current_mem = 0;
     int pe_found;
     short int temp_tile;
     z_active_levels = 0;
 
-    FILE *file_out;
     DWORD bytesRead = 0;
 
 
@@ -137,8 +134,6 @@ int Extractor::dumpMemory()
     printf("map data : 0x%.8X\n",map_loc);
 
 
-    Uint8 BlockEdge = 16;
-
     if ( !map_loc )
     {
         printf("Could not find DF map information in memory...\n");
@@ -148,22 +143,23 @@ int Extractor::dumpMemory()
     {
         // x_blocks count
         ReadProcessMemory( DFHandle, (int*)(x_count_offset), &x_blocks, sizeof(int), &bytesRead );
-        printf("x_blocks tiles: %u (%d)\n",BlockEdge * x_blocks, x_blocks);
+        printf("x_blocks tiles: %u (%d)\n", BlockSize * x_blocks, x_blocks);
 
         // y_blocks count
         ReadProcessMemory( DFHandle, (int*)(y_count_offset), &y_blocks, sizeof(int), &bytesRead );
-        printf("y_blocks tiles: %u (%d)\n",BlockEdge * y_blocks, y_blocks);
+        printf("y_blocks tiles: %u (%d)\n", BlockSize * y_blocks, y_blocks);
 
         // z_levels count
         ReadProcessMemory( DFHandle, (int*)(z_count_offset), &z_levels, sizeof(int), &bytesRead );
         printf("z_levels height: %u\n\n", z_levels);
-        z_level_active = (short int*) malloc( sizeof(short int) * z_levels );
-        memset(z_level_active, 0, sizeof(short int)*z_levels );
+
+        z_level_active = (bool*) malloc( sizeof(bool) * z_levels );
+        memset(z_level_active, 0, sizeof(bool) * z_levels );
 
 
-        Uint32 MapSizeX = x_blocks * 16 + 4;
-        Uint32 MapSizeY = y_blocks * 16 + 4;
-        Uint32 MapSizeZ = z_levels + 4;
+        Uint32 MapSizeX = x_blocks * BlockSize;
+        Uint32 MapSizeY = y_blocks * BlockSize;
+        Uint32 MapSizeZ = z_levels;
 
         Blocks = new int**[x_blocks];
 
@@ -189,18 +185,20 @@ int Extractor::dumpMemory()
             }
         }
 
-        //initialize all the pointers to the map blocks
-        for ( temp1 = 0; temp1 < x_blocks; temp1++ )
+        // Initialize all the pointers to the map blocks
+        for ( int x = 0; x < x_blocks; x++ )
         {
-            temp_locx = map_loc + ( 4 * temp1 );
+            temp_locx = map_loc + ( 4 * x );
             ReadProcessMemory( DFHandle, (int*)(temp_locx), &temp_locy, sizeof(int), &bytesRead );
-            for ( temp2 = 0; temp2 < y_blocks; temp2++ )
+
+            for ( int y = 0; y < y_blocks; y++ )
             {
                 ReadProcessMemory( DFHandle, (int*)(temp_locy), &temp_locz, sizeof(int), &bytesRead );
-                for ( temp3 = 0; temp3 < z_levels; temp3++ )
+
+                for ( int z = 0; z < z_levels; z++ )
                 {
                     ReadProcessMemory( DFHandle, (int*)(temp_locz), &temp_loc, sizeof(int), &bytesRead );
-                    Blocks[temp1][temp2][temp3] = temp_loc;
+                    Blocks[x][y][z] = temp_loc;
                     temp_locz += 4;
                 }
                 temp_locy += 4;
@@ -208,28 +206,28 @@ int Extractor::dumpMemory()
         }
 
         //read the memory from the map blocks
-        for ( temp1=0; temp1 < x_blocks; temp1++ )
+        for(int x = 0; x < x_blocks; x++)
         {
-            for ( temp2=0; temp2 < y_blocks; temp2++ )
+            for(int y = 0; y < y_blocks; y++)
             {
-                for ( temp3=0; temp3 < z_levels; temp3++ )
+                for(int z = 0; z < z_levels; z++)
                 {
-                    for ( temp_tiley=0; temp_tiley < BlockEdge; temp_tiley++ )
+                    for(int BlockY = 0; BlockY < BlockSize; BlockY++ )
                     {
-                        for ( temp_tilex=0; temp_tilex < BlockEdge; temp_tilex++ )
+                        for(int BlockX = 0; BlockX < BlockSize; BlockX++ )
                         {
-                            if ( Blocks[temp1][temp2][temp3] )
+                            if(Blocks[x][y][z])
                             {
-                                z_level_active[temp3] = 1; //so we know levels to export
+                                z_level_active[z] = true; //so we know levels to export
 
-                                ReadProcessMemory( DFHandle, (int*)(Blocks[temp1][temp2][temp3] + tile_type_offset + (2 * temp_tiley + (temp_tilex * BlockEdge * 2))), &temp_tile, sizeof(short int), &bytesRead );
+                                ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + tile_type_offset + (2 * BlockY + (BlockX * BlockSize * 2))), &temp_tile, sizeof(short int), &bytesRead );
 
-                                Tiles[temp1* BlockEdge + temp_tilex + 2][temp2 * BlockEdge + temp_tiley + 2][temp3 + 2] = temp_tile;
+                                Tiles[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = temp_tile;
 
                             }
                             else
                             {
-                                Tiles[temp1 * BlockEdge + temp_tilex + 2][temp2 * BlockEdge + temp_tiley + 2][temp3 + 2] = -1;
+                                Tiles[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = -1;
                             }
                         }
                     }
@@ -238,45 +236,58 @@ int Extractor::dumpMemory()
         }
 
         printf("Stuff on levels: ");
-        for ( temp1 = 0; temp1 < z_levels; temp1++ )
+        for(int z = 0; z < z_levels; z++)
         {
-            if ( z_level_active[temp1] )
+            if (z_level_active[z])
             {
-                printf("%d ",temp1);
+                printf("%d ", z);
                 z_active_levels++;
             }
-
         }
         printf("\n");
 
+        MapLoaded = true;
+    }
 
-        file_out = fopen("3dwarf.map","wb");
-        if  (file_out == NULL) { printf("Can't open \"3dwarf.map\" for write.\n"); }
-        else {
-            //print the debug file
-            fwrite(&x_blocks, sizeof(x_blocks),1,file_out);
-            fwrite(&y_blocks, sizeof(y_blocks),1,file_out);
-            fwrite(&z_active_levels, sizeof(z_active_levels),1,file_out);
+    return 0;
+}
 
-            for ( temp1 = 0; temp1 < z_levels; temp1++ )
+bool Extractor::writeMap(char* FilePath)
+{
+    if(!MapLoaded)
+    {
+        return false;
+    }
+
+    FILE *SaveFile;
+    SaveFile = fopen(FilePath,"wb");
+
+    if (SaveFile == NULL)
+    {
+        printf("Can't create file for write.\n");
+    }
+    else
+    {
+        fwrite(&x_blocks, sizeof(x_blocks), 1, SaveFile);
+        fwrite(&y_blocks, sizeof(y_blocks), 1, SaveFile);
+        fwrite(&z_active_levels, sizeof(z_active_levels), 1, SaveFile);
+
+        for (int temp1 = 0; temp1 < z_levels; temp1++ )
+        {
+            if ( z_level_active[temp1] )
             {
-                if ( z_level_active[temp1] )
+                for (int temp2 = 0; temp2 < y_blocks * BlockSize; temp2++ )
                 {
-                    for ( temp2 = 0; temp2 < y_blocks * BlockEdge; temp2++ )
+                    for (int temp3 = 0; temp3 < x_blocks * BlockSize; temp3++ )
                     {
-                        for ( temp3 = 0; temp3 < x_blocks * BlockEdge; temp3++ )
-                        {
-                            fwrite(&Tiles[temp3 + 2][temp2 + 2][temp1 + 2],sizeof(short int), 1, file_out);
-                        }
+                        fwrite(&Tiles[temp3 + 2][temp2 + 2][temp1 + 2],sizeof(short int), 1, SaveFile);
                     }
                 }
             }
         }
-        fclose(file_out);
-        MapLoaded = true;
-    }  //end of major map_loc check
+    }
 
-    return 0;
+    fclose(SaveFile);
 }
 
 int Extractor::loadMap(char* FilePath)
@@ -293,7 +304,7 @@ int Extractor::loadMap(char* FilePath)
     {
         if(MapLoaded)
         {
-            FreeMapMemory();
+            FreeMap();
         }
 
         fread(&x_blocks, sizeof(int), 1, MapFile);
@@ -302,8 +313,8 @@ int Extractor::loadMap(char* FilePath)
 
         printf("Read from file\nx_size: %d\ny_size: %d\nz_levels: %d\n", x_blocks, y_blocks, z_levels);
 
-        Uint32 MapSizeX = x_blocks * 16;
-        Uint32 MapSizeY = y_blocks * 16;
+        Uint32 MapSizeX = x_blocks * BlockSize;
+        Uint32 MapSizeY = y_blocks * BlockSize;
         Uint32 MapSizeZ = z_levels;
 
 
@@ -337,10 +348,10 @@ int Extractor::loadMap(char* FilePath)
     return 0;
 }
 
-bool Extractor::FreeMapMemory()
+bool Extractor::FreeMap()
 {
-    Uint32 MapSizeX = x_blocks * 16;
-    Uint32 MapSizeY = y_blocks * 16;
+    Uint32 MapSizeX = x_blocks * BlockSize;
+    Uint32 MapSizeY = y_blocks * BlockSize;
     Uint32 MapSizeZ = z_levels;
 
     if(Tiles != NULL)
@@ -1133,7 +1144,7 @@ int Extractor::isOpenTerrain(int in)
 
     switch (in)
     {
-        case -1: //uninitialized tile
+        //case -1: //uninitialized tile
         case 1: //slope down
         case 2: //murky pool
         case 19: //driftwood stack

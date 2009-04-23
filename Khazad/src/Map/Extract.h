@@ -4,6 +4,8 @@
 #include <Singleton.h>
 #include <stdafx.h>
 
+#define BlockSize 16
+
 class memory_info
 {
 public:
@@ -28,7 +30,7 @@ public:
     bool MapLoaded;
 
     short int*** Tiles;
-
+    // Write a designation grabbing array for hidden-ness info
     int*** Blocks;
 
     std::vector<memory_info> meminfo;
@@ -36,17 +38,20 @@ public:
     int x_blocks;
     int y_blocks;
     int z_levels;
+
     int z_active_levels;
-    short int *z_level_active;
+    bool* z_level_active;
 
     bool Init();
     ~Extractor();
 
     int dumpMemory();
+
     int loadMap(char* FilePath);
+    bool writeMap(char* FilePath);
+    bool FreeMap();
 
     int readMemoryFile();
-    bool FreeMapMemory();
 
     int picktexture(int);
     int isOpenTerrain(int);

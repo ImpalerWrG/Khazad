@@ -368,7 +368,6 @@ void Map::LoadExtract()
                 TargetCell = getCubeOwner(i, j, k);
                 if(TargetCell)
                 {
-                    //int TileType = EXTRACT->Tiles[i + 2][j + 2][k + 1];
                     int TileType = EXTRACT->Tiles[i][j][k];
 
                     bool IsFloor = EXTRACT->isFloorTerrain(TileType);
@@ -403,7 +402,6 @@ void Map::LoadExtract()
                             if(IsFloor)
                             {
                                 NewCube->InitConstructedFace(FACET_BOTTOM, Material);
-                                //NewCube->Open();
                             }
 
                             if (IsRamp)
