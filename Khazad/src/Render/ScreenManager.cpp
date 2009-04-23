@@ -210,7 +210,13 @@ SDL_Color ScreenManager::getPickingColor()
 
 bool ScreenManager::Render()
 {
-    if(MAP == NULL)
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	MainCamera->UpdateView();
+
+	TotalTriangles = 0;
+    TriangleCounter = 0;
+
+    if(MAP == NULL || !MAP->Initialized)
     {
         return false;
     }
@@ -219,11 +225,6 @@ bool ScreenManager::Render()
 	GreenPickingValue = 0;
 	BluePickingValue = 0;
 
-	TotalTriangles = 0;
-    TriangleCounter = 0;
-
-	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	MainCamera->UpdateView();
 	Uint16 CellEdgeLenth = CONFIG->getCellEdgeLength();
 
     glMatrixMode(GL_TEXTURE);

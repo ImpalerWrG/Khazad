@@ -13,7 +13,7 @@ bool TextureManager::Init()
 // 0 Grass
 	loadTextureSingular("Assets\\Textures\\grass.png", false, false);
 // 1 Stone
-	loadTextureSingular("Assets\\Textures\\metal.png", false, false);
+	loadTextureSingular("Assets\\Textures\\stone.png", false, false);
 // 2 Murky Pool
 	loadTextureSingular("Assets\\Textures\\Pool.png", false, false);
 // 3 Slope ?  Fire
@@ -55,7 +55,7 @@ bool TextureManager::Init()
 // 21 Furrowed Soil
 	loadTextureSingular("Assets\\Textures\\Dirt.png", false, false);
 // 22 Stone Constructions / Veins, Gems, Clusters
-	loadTextureSingular("Assets\\Textures\\constructed_wall.png", false, false);
+	loadTextureSingular("Assets\\Textures\\metal.png", false, false);
 // 23
 	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
 // 24 Lava
@@ -71,15 +71,13 @@ bool TextureManager::Init()
 // 29
 	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
 // 30
-	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+	loadTextureSingular("Assets\\Textures\\constructed_wall.png", false, false);
 // 31 Chasm/Pit
 	loadTextureSingular("Assets\\Textures\\Pit.png", false, false);
 // 32 Obsidian/Ash
 	loadTextureSingular("Assets\\Textures\\obsidian.png", false, false);
 // 33 dead grass
 	loadTextureSingular("Assets\\Textures\\grass_dry.png", false, false);
-
-
 
 
     MergeTextures();

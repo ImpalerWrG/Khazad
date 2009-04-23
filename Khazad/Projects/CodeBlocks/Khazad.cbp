@@ -23,6 +23,9 @@
 				<Option object_output="..\..\obj\Release\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+				</Compiler>
 			</Target>
 		</Build>
 		<Compiler>

@@ -67,6 +67,14 @@ bool Cube::InitAllFaces()
                     {
                         InitFace((Facet) i);
                     }
+
+                    if(i == FACET_TOP || i == FACET_BOTTOM) // Keep roofs of underground rooms invisible
+                    {
+                        if(!Facets[i]->isConstructed()) // Unless they are themselves floors
+                        {
+                            Facets[i]->setVisible(false);
+                        }
+                    }
                 }
             }
         }

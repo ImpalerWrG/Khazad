@@ -64,15 +64,9 @@ bool initManagers()
     printf("Extractor Initializing \n");
 	EXTRACT->CreateInstance();
 	EXTRACT->Init();
-	EXTRACT->dumpMemory();
-	//EXTRACT->loadMap("");
-	//EXTRACT->writeMap("");
 
     printf("Map Initializing \n");
 	MAP->CreateInstance();
-	//MAP->Init();
-	//MAP->Generate(0);
-	MAP->LoadExtract();
 
     printf("Input Initializing \n");
 	INPUT->CreateInstance();
@@ -107,7 +101,7 @@ void cleanup()
 float FrameRateControl(Timer* FPSTimer)
 {
 	//The frames per second and regulators
-	const Uint16 FRAMES_PER_SECOND = 10000;
+	const Uint16 FRAMES_PER_SECOND = 60;
 	static Uint8 FrameCounter = 0;
 	float AverageFrameTime = 0;
 	float ActualFramesPerSecond = 0;
@@ -183,14 +177,14 @@ int main(int argv, char** argc)
 
 
 		UITimer->Unpause();
-            UI->Draw();
+            //UI->Draw();
 
 
             SCREEN->Enable2D();  // Go in HUD-drawing mode
 
             SDL_Rect position;
             position.x = 10;
-            position.y = SCREEN->getHight() - 80;
+            position.y = SCREEN->getHight() - 40;
 
             sprintf (buffer, "FrameRate %i", FrameRate);
             FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);

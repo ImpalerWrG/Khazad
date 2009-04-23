@@ -19,6 +19,8 @@ public:
 	~Map();
 	bool Init();
 
+    bool Initialized;
+
 	Cell* getCell(Sint32 X, Sint32 Y, Sint32 Z);
 	Cell* getCubeOwner(Sint32 X, Sint32 Y, Sint32 Z);
 	Cube* getCube(Sint32 X, Sint32 Y, Sint32 Z);
@@ -38,6 +40,7 @@ public:
     void LoadExtract();
 
 protected:
+
 
 	Uint32 MapSizeX;
 	Uint32 MapSizeY;

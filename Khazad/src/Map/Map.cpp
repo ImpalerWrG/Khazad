@@ -14,7 +14,7 @@ DECLARE_SINGLETON(Map)
 
 Map::Map()
 {
-
+    Initialized = false;
 }
 
 Map::~Map()
@@ -50,6 +50,8 @@ bool Map::Init()
     MapSizeX = CellSizeX * CubesPerCellSide;
 	MapSizeY = CellSizeY * CubesPerCellSide;
 	MapSizeZ = CellSizeZ;
+
+    Initialized = true;
 
 	return true;
 }
@@ -323,9 +325,14 @@ Cube* Map::getCube(Sint32 X, Sint32 Y, Sint32 Z)
 
 void Map::LoadExtract()
 {
+    if(!EXTRACT->MapLoaded)
+    {
+        return;
+    }
+
     CellSizeX = EXTRACT->x_blocks;
 	CellSizeY = EXTRACT->y_blocks;
-	CellSizeZ = EXTRACT->z_levels + 1; // Extra level for Basement
+	CellSizeZ = EXTRACT->z_levels; // + 1; // Extra level for Basement
 
 	CubesPerCellSide = (Uint8) CONFIG->getCellEdgeLength();
 
@@ -441,5 +448,7 @@ void Map::LoadExtract()
 			}
 		}
 	}
+
+    Initialized = true;
 }
 

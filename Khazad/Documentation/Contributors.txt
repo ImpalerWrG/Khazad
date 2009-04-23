@@ -7,3 +7,5 @@ Project Lead:  Kenneth "Impaler[WrG]" Ferland
 
 Advisors:  Will Miller (Firaxis), Domicic Cerquetti (Firaxis), 
 			Sinothdither (3Dwarf author),
+			
+Libraries:  OpenGL, SDL, Guichan, TinyXML

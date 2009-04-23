@@ -34,8 +34,8 @@
 	<File name="..\..\src\Core\Timer.h" open="1" top="0" tabpos="6">
 		<Cursor position="327" topLine="0" />
 	</File>
-	<File name="..\..\src\Core\main.cpp" open="1" top="0" tabpos="39">
-		<Cursor position="1311" topLine="52" />
+	<File name="..\..\src\Core\main.cpp" open="1" top="1" tabpos="39">
+		<Cursor position="2653" topLine="103" />
 	</File>
 	<File name="..\..\src\Core\stdafx.h" open="1" top="0" tabpos="1">
 		<Cursor position="523" topLine="0" />
@@ -98,7 +98,7 @@
 		<Cursor position="454" topLine="0" />
 	</File>
 	<File name="..\..\src\Gui\InputManager.cpp" open="1" top="0" tabpos="47">
-		<Cursor position="1055" topLine="50" />
+		<Cursor position="595" topLine="38" />
 	</File>
 	<File name="..\..\src\Gui\InputManager.h" open="1" top="0" tabpos="19">
 		<Cursor position="255" topLine="0" />
@@ -110,31 +110,31 @@
 		<Cursor position="477" topLine="6" />
 	</File>
 	<File name="..\..\src\Map\Cube.cpp" open="1" top="0" tabpos="36">
-		<Cursor position="3872" topLine="137" />
+		<Cursor position="1855" topLine="50" />
 	</File>
 	<File name="..\..\src\Map\Cube.h" open="1" top="0" tabpos="21">
-		<Cursor position="991" topLine="31" />
+		<Cursor position="1116" topLine="32" />
 	</File>
 	<File name="..\..\src\Map\Extract.cpp" open="1" top="0" tabpos="43">
-		<Cursor position="8967" topLine="310" />
+		<Cursor position="752" topLine="24" />
 	</File>
 	<File name="..\..\src\Map\Extract.h" open="1" top="0" tabpos="42">
-		<Cursor position="433" topLine="25" />
+		<Cursor position="907" topLine="25" />
 	</File>
 	<File name="..\..\src\Map\Face.cpp" open="1" top="0" tabpos="35">
-		<Cursor position="609" topLine="21" />
+		<Cursor position="609" topLine="187" />
 	</File>
 	<File name="..\..\src\Map\Face.h" open="1" top="0" tabpos="22">
 		<Cursor position="541" topLine="14" />
 	</File>
-	<File name="..\..\src\Map\Map.cpp" open="1" top="1" tabpos="34">
-		<Cursor position="12107" topLine="438" />
+	<File name="..\..\src\Map\Map.cpp" open="1" top="0" tabpos="34">
+		<Cursor position="12018" topLine="394" />
 	</File>
 	<File name="..\..\src\Map\Map.h" open="1" top="0" tabpos="23">
-		<Cursor position="497" topLine="11" />
+		<Cursor position="263" topLine="5" />
 	</File>
 	<File name="..\..\src\Map\Slope.cpp" open="1" top="0" tabpos="31">
-		<Cursor position="8247" topLine="277" />
+		<Cursor position="10138" topLine="347" />
 	</File>
 	<File name="..\..\src\Map\Slope.h" open="1" top="0" tabpos="24">
 		<Cursor position="368" topLine="0" />
@@ -161,13 +161,13 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="..\..\src\Render\ScreenManager.cpp" open="1" top="0" tabpos="38">
-		<Cursor position="713" topLine="13" />
+		<Cursor position="5027" topLine="392" />
 	</File>
 	<File name="..\..\src\Render\ScreenManager.h" open="1" top="0" tabpos="29">
 		<Cursor position="1471" topLine="45" />
 	</File>
 	<File name="..\..\src\Render\TextureManager.cpp" open="1" top="0" tabpos="44">
-		<Cursor position="2841" topLine="57" />
+		<Cursor position="2705" topLine="12" />
 	</File>
 	<File name="..\..\src\Render\TextureManager.h" open="1" top="0" tabpos="30">
 		<Cursor position="1284" topLine="12" />

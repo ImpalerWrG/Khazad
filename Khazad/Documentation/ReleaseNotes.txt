@@ -1,24 +1,34 @@
-Release Notes v0.0.1
+Release Notes v0.0.2
 
-Khazad is still being built and major sub-systems are still incomplete, buggy or just plain absent
-The current release will show a randomly generated chunk of terrain like textured triangles with 
-some square tiles one level above, all you can do is move the camera around this environment though
-the next thing on the development plan is to make this terrain more interesting by importing it from DF
-or have it be modified in real time.  An XML file config.xml allows the map dimensions to be altered and a few of the constants that determine how the camera is controlled, or for the program to run in full screen mode.
+Khazad is still being built and major sub-systems are still incomplete, or just plain absent.
+Thanks to considerable help from Sinoth who shared the extracting code at the heart of 3Dwarf the current release can extract map Data from a running DwarfFortress game.  
 
-Their is a debugging output showing the Frame rate, feedback on what kind of rates people are getting with various types of hardware is appreciated.
+An XML file Assets/XML/config.xml allows the screen resolution to be altered and a few of the constants that determine how the camera is controlled to be tweeked, a full screen optin is also avaliable.  
+The file pathway for map saving and loading is currently hardcoded to MapExtract.map and it is not compatible with 3Dwarf save format.  Extracted maps currently show all underground hidden terrain making an extract a defacto 'Reveal', future versions should make it optional to keep hidden stuff hidden. Anticipate a break in the format of this save file once the hidden option is added.
+
+  Also stairs are not yet rendered and trees, bushes and boulders are flat textures on the ground, thanks again to Sinoth for use of these textures.  Art work under the Creative Commons licence could be used as replacements at a later date.
+
+Their is a debugging output showing the Frame rate and current triangles being rendered, feedback on what kind of rates people are getting with various types of hardware is appreciated along with cool screenshoots of your forts or screenshoots of buggy or undesireable behavior is welcome along with advice on ware the project should go.
+
+The best version of DF to extract from is v0.28.181.40c, the version native to the Extract code Sinoth provided, but their is a memory.ini file reading capability which should allow the extraction of other versions if the correct settings are found on the ini file.  If anyone is able to get the resent d# versions of DF to extract please share it with the rest of us.
+
+An extracted Map has been provided your your convenence, it is a small map that almost anyone should be able to run, beware it will be over-written if you write a map to file (w) so be sure to copy or re-name it if you don't want to lose it.
 
 Controls:
 
 Keyboard controls:
 
-Q: Resets view to origin looking north at default zoom
+c: Centers view to the middle of the map
 Up: Moves view up one level
 Down: Moves view down one level
 Insert: Increase number of viewing levels (lowers contrast between levels)
 Delete: Decrease number of viewing levels (ingresses contrast between levels)
-Left: Rotates camera view counterclockwise
-Right: Rotates camera view clockwise
+Left: Rotates camera view counterclockwise in small increments
+Right: Rotates camera view clockwise in small increments
+
+d: Dumps memory from a running DwarfFortress game (this will update the current map if one is already active)
+w: Writes current map to file
+l: Loads an extracted map from file (also updates the current map if already active)
 
 Mouse controls:
 
@@ -30,3 +40,15 @@ Right Button down + vertical mouse movement: advances/retreats camera view
 
 Left Button down + horizontal mouse movement: Rotates camera view clockwise/counterclockwise
 Left Button down + vertical mouse movement: Tilts camera view vertical/near-horizontal
+
+Known Issues:
+
+- Expanding the window after the game has started will create a 'dead zone' outside of the original area of the screen ware mouse inputs will not work even though the mouse is movable and displays.  Using Fullscreen mode or just setting the Config for a very large screen area is the best work-around for now.
+
+- Occational gaps in the map occure ware their should be some triangles rendered particularly on slopes ware it is nearly impossible to figure out what should fill jumbles of slope tiles but also in other odd in-explicable places.
+
+- Memory footprint is currently huge, around 25 MB without even loading a map and in excess of a 100 with a map, trying to load maps in excess of 8x8 might start to make your system crawl, experiment to see what your systems limits are.
+
+- Rendering 'hangs' momentarily when the map is being rotated and passes through a 90 degree turn (aka map edges become perpendicular & horizontal), this is due to the OpenGL drawlists being updated and is a drawback of the current engine and will only be noticable when zoomed out.
+
+- CPU Hog, Khazad is capped at 60 FPS using SDL_Delay but on many systems it will still use upwards of 99% of the processor and might put too much stress on your system or video card, feedback is apresiated.

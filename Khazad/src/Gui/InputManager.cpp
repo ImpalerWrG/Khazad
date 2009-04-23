@@ -3,6 +3,8 @@
 #include <Game.h>
 #include <InputManager.h>
 #include <ScreenManager.h>
+#include <Extract.h>
+#include <Map.h>
 #include <Camera.h>
 #include <Singleton.h>
 #include <Cube.h>
@@ -62,9 +64,40 @@ bool InputManager::HandleInput()
 					}
                     if (event.key.keysym.sym == SDLK_r)
 					{
-					    SCREEN->MainCamera->setAllFacesDrawing(!SCREEN->MainCamera->isAllFacesDrawing());
+					    //SCREEN->MainCamera->setAllFacesDrawing(!SCREEN->MainCamera->isAllFacesDrawing());
 					}
-
+                    if (event.key.keysym.sym == SDLK_d)
+					{
+					    if(!MAP->Initialized)
+					    {
+                            EXTRACT->dumpMemory();
+                            MAP->LoadExtract();
+                            SCREEN->MainCamera->CenterView();
+					    }
+					    else
+					    {
+                            EXTRACT->dumpMemory();
+                            MAP->LoadExtract();
+					    }
+					}
+                    if (event.key.keysym.sym == SDLK_l)
+					{
+					    if(!MAP->Initialized)
+					    {
+                            EXTRACT->loadMap("KhazadMap.map");
+                            MAP->LoadExtract();
+                            SCREEN->MainCamera->CenterView();
+					    }
+					    else
+					    {
+                            EXTRACT->loadMap("KhazadMap.map");
+                            MAP->LoadExtract();
+					    }
+					}
+                    if (event.key.keysym.sym == SDLK_w)
+					{
+					    EXTRACT->writeMap("KhazadMap.map");
+					}
 				}
 				break;
 			}
