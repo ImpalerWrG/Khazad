@@ -56,8 +56,8 @@ protected:
     Uint16 Slide;
     Uint16 Zoom;
 
-    char* Loading;
-    char* Saveing;
+    char Loading[256];
+    char Saveing[256];
 };
 
 #define CONFIG (ConfigManager::GetInstance())

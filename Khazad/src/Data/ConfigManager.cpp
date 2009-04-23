@@ -27,29 +27,32 @@ ConfigManager::~ConfigManager()
 
 bool ConfigManager::Init()
 {
-	XML->loadFile("Assets\\XML\\GlobalDefines.xml");
+	//XML->loadFile("Assets\\XML\\GlobalDefines.xml");
 
-	XML->getUIntValue("GlobalDefines", "ScreenResolution", "X", XResolution);
-	XML->getUIntValue("GlobalDefines", "ScreenResolution", "Y", YResolution);
-	XML->getUIntValue("GlobalDefines", "ScreenResolution", "Full", Full);
+	TiXmlDocument* Document = XML->loadFile("Assets\\XML\\GlobalDefines.xml");
+    TiXmlElement* Root = Document->RootElement();
 
-	XML->getUIntValue("GlobalDefines", "MapSize", "X", XMap);
-	XML->getUIntValue("GlobalDefines", "MapSize", "Y", YMap);
-	XML->getUIntValue("GlobalDefines", "MapSize", "Z", ZMap);
+	XML->QueryUIntValue(Root, "ScreenResolution", "X", XResolution);
+	XML->QueryUIntValue(Root, "ScreenResolution", "Y", YResolution);
+	XML->QueryUIntValue(Root, "ScreenResolution", "Full", Full);
 
-	XML->getUIntValue("GlobalDefines", "CellSize", "EdgeLength", CellEdgeLength);
+	XML->QueryUIntValue(Root, "MapSize", "X", XMap);
+	XML->QueryUIntValue(Root, "MapSize", "Y", YMap);
+	XML->QueryUIntValue(Root, "MapSize", "Z", ZMap);
 
-    XML->getUIntValue("GlobalDefines", "Zoom", "Min", ZoomMinimum);
-	XML->getUIntValue("GlobalDefines", "Zoom", "Start", ZoomStartup);
-	XML->getUIntValue("GlobalDefines", "Zoom", "Max", ZoomMaximum);
+	XML->QueryUIntValue(Root, "CellSize", "EdgeLength", CellEdgeLength);
 
-    XML->getUIntValue("GlobalDefines", "InterfaceSpeed", "Orbit", Orbit);
-    XML->getUIntValue("GlobalDefines", "InterfaceSpeed", "Tilt", Tilt);
-    XML->getUIntValue("GlobalDefines", "InterfaceSpeed", "Slide", Slide);
-    XML->getUIntValue("GlobalDefines", "InterfaceSpeed", "Zoom", Zoom);
+    XML->QueryUIntValue(Root, "Zoom", "Min", ZoomMinimum);
+	XML->QueryUIntValue(Root, "Zoom", "Start", ZoomStartup);
+	XML->QueryUIntValue(Root, "Zoom", "Max", ZoomMaximum);
 
-    //char* LoadPath;
-   // char* SavePath;
+    XML->QueryUIntValue(Root, "InterfaceSpeed", "Orbit", Orbit);
+    XML->QueryUIntValue(Root, "InterfaceSpeed", "Tilt", Tilt);
+    XML->QueryUIntValue(Root, "InterfaceSpeed", "Slide", Slide);
+    XML->QueryUIntValue(Root, "InterfaceSpeed", "Zoom", Zoom);
+
+   //XML->QueryTextValue(Root, "MapLoading", "Path", Loading);
+    //XML->QueryTextValue(Root, "MapSaving", "Path", Saveing);
 
 	return true;
 }

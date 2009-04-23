@@ -401,6 +401,10 @@ void Map::LoadExtract()
 
                             if(IsFloor)
                             {
+                                if(Material == 31)
+                                {
+                                    int x = 666;
+                                }
                                 NewCube->InitConstructedFace(FACET_BOTTOM, Material);
                             }
 

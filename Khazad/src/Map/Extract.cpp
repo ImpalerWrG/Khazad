@@ -272,15 +272,15 @@ bool Extractor::writeMap(char* FilePath)
         fwrite(&y_blocks, sizeof(y_blocks), 1, SaveFile);
         fwrite(&z_active_levels, sizeof(z_active_levels), 1, SaveFile);
 
-        for (int temp1 = 0; temp1 < z_levels; temp1++ )
+        for (int z = 0; z < z_levels; z++ )
         {
-            if ( z_level_active[temp1] )
+            if (z_level_active[z])
             {
-                for (int temp2 = 0; temp2 < y_blocks * BlockSize; temp2++ )
+                for (int y = 0; y < y_blocks * BlockSize; y++ )
                 {
-                    for (int temp3 = 0; temp3 < x_blocks * BlockSize; temp3++ )
+                    for (int x = 0; x < x_blocks * BlockSize; x++ )
                     {
-                        fwrite(&Tiles[temp3 + 2][temp2 + 2][temp1 + 2],sizeof(short int), 1, SaveFile);
+                        fwrite(&Tiles[x][y][z], sizeof(short int), 1, SaveFile);
                     }
                 }
             }
@@ -290,14 +290,14 @@ bool Extractor::writeMap(char* FilePath)
     fclose(SaveFile);
 }
 
-int Extractor::loadMap(char* FilePath)
+int Extractor::loadMap(char* FilePath, bool Legacy)
 {
     FILE *MapFile;
-    MapFile = fopen("3dwarf.map", "rb");
+    MapFile = fopen(FilePath, "rb");
 
     if  (MapFile == NULL)
     {
-        printf("Can't open \"3dwarf.map\" for read.\n");
+        printf("Can't open File for read.\n");
         return 1;
     }
     else
@@ -313,9 +313,19 @@ int Extractor::loadMap(char* FilePath)
 
         printf("Read from file\nx_size: %d\ny_size: %d\nz_levels: %d\n", x_blocks, y_blocks, z_levels);
 
-        Uint32 MapSizeX = x_blocks * BlockSize;
-        Uint32 MapSizeY = y_blocks * BlockSize;
-        Uint32 MapSizeZ = z_levels;
+        int Pad;
+        if(Legacy)  // 3Dwarf map file format used padded indexes, Legacy mode supports it
+        {
+            Pad = 2;
+        }
+        else
+        {
+            Pad = 0;
+        }
+
+        Uint32 MapSizeX = x_blocks * BlockSize + (Pad * 2);
+        Uint32 MapSizeY = y_blocks * BlockSize + (Pad * 2);
+        Uint32 MapSizeZ = z_levels + (Pad * 2);
 
 
         Tiles = new short int**[MapSizeX];
@@ -336,7 +346,7 @@ int Extractor::loadMap(char* FilePath)
             {
                 for(int x = 0; x < MapSizeX; x++)
                 {
-                    fread(&Tiles[x][y][z], sizeof(short int), 1, MapFile);
+                    fread(&Tiles[x + Pad][y + Pad][z + Pad], sizeof(short int), 1, MapFile);
                 }
             }
         }
@@ -1302,6 +1312,7 @@ int Extractor::isFloorTerrain(int in)
         case 34: //shrub
         case 38: //up stair lavastone
         case 41: //up stair soil
+        case 42: //eerie pit
         case 43: //stone floor detailed
         case 44: //lavastone floor detailed
         case 45: //featstone? floor detailed

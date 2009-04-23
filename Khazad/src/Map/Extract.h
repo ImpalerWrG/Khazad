@@ -47,7 +47,7 @@ public:
 
     int dumpMemory();
 
-    int loadMap(char* FilePath);
+    int loadMap(char* FilePath, bool Legacy = false);
     bool writeMap(char* FilePath);
     bool FreeMap();
 

@@ -109,6 +109,20 @@ public:
         }
     };
 
+    void QueryTextValue(TiXmlElement* Entry, const char* Element, const char* Attribute, char* String)
+    {
+        TiXmlElement* child = Entry->FirstChildElement(Element);
+        if (child)
+        {
+            const char* temp;
+            temp = child->Attribute(Attribute);
+            for(int i = 0; temp[i] != NULL; i++)
+            {
+                String[i] = temp[i];
+            }
+        }
+    };
+
 	const char * getIndentAlt( unsigned int numIndents );
 	const char * getIndent( unsigned int numIndents );
 
