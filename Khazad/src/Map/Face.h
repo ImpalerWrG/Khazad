@@ -48,6 +48,8 @@ protected:
 
 	Uint16 Material;
 	Facet FacetType;
+
+	Uint8 Rotation;
 };
 
 #endif // FACE__HEADER

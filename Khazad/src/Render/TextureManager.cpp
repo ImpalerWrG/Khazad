@@ -34,16 +34,16 @@ bool TextureManager::Init()
 	loadTextureSingular("Assets\\Textures\\soil.png", false, false);
 // 11 Soil
 	loadTextureSingular("Assets\\Textures\\Sand.png", false, false);
-// 12 Pebbles
+// 12
 	loadTextureSingular("Assets\\Textures\\Cobblestone.png", false, false);
-// 13 Dead Shrub/Tree/Sappling
+// 13 Pebbles
+	loadTextureSingular("Assets\\Textures\\Cobblestone.png", false, false);
+// 14 Dead Shrub/Tree/Sappling
 	loadTextureSingular("Assets\\Textures\\grass_dry.png", false, false);
-// 14 Shrub
+// 15 Shrub
 	loadTextureSingular("Assets\\Textures\\Shrub.png", false, false);
-// 15 Sappling/Tree
+// 16 Sappling/Tree
 	loadTextureSingular("Assets\\Textures\\Bark.png", false, false);
-// 16 Rock
-	loadTextureSingular("Assets\\Textures\\stone.png", false, false);
 // 17 ??
 	loadTextureSingular("Assets\\Textures\\Boards.png", false, false);
 // 18 RawStone
@@ -296,4 +296,29 @@ int TextureManager::nextpoweroftwo(int x)
 	return round(pow(2, ceil(logbase2)));
 }
 
-
+void TextureManager::BindTexturePoint(Uint32 TextureID, Uint8 Corner)
+{
+    switch(Corner % 4)
+    {
+        case 0:
+        {
+            glTexCoord2i(TextureCordinates[TextureID].x, TextureCordinates[TextureID].y);
+            break;
+        }
+        case 1:
+        {
+            glTexCoord2i(TextureCordinates[TextureID].x, TextureCordinates[TextureID].h);
+            break;
+        }
+        case 2:
+        {
+            glTexCoord2i(TextureCordinates[TextureID].w, TextureCordinates[TextureID].h);
+            break;
+        }
+        case 3:
+        {
+            glTexCoord2i(TextureCordinates[TextureID].w, TextureCordinates[TextureID].y);
+            break;
+        }
+    }
+}

@@ -1,11 +1,13 @@
 #include <stdafx.h>
 
+#include <Cell.h>
 #include <Cube.h>
 #include <Face.h>
 #include <Game.h>
 #include <TextureManager.h>
 #include <ScreenManager.h>
 #include <DataManager.h>
+#include <Random.h>
 
 
 Face::Face()
@@ -22,6 +24,9 @@ Face::Face()
     Decorated = false;
 
     Material = 6;
+
+    Rotation = RANDOM->Roll(0, 255);
+
 	//GAME->ActorList.push_back(this);
 	//ID = (Uint32) GAME->ActorList.size();
 }
@@ -194,25 +199,14 @@ bool Face::Draw()
 {
     if(Visible)
     {
-        SDL_Rect TexRect = TEXTURE->TextureCordinates[/*DATA->Materials[*/Material/*]->getTexture()*/];
+        TEXTURE->BindTexturePoint(Material, 0 + Rotation);         glVertex3f(Points[0].x, Points[0].y, Points[0].z);
+        TEXTURE->BindTexturePoint(Material, 1 + Rotation);         glVertex3f(Points[1].x, Points[1].y, Points[1].z);
+        TEXTURE->BindTexturePoint(Material, 2 + Rotation);         glVertex3f(Points[2].x, Points[2].y, Points[2].z);
 
-        glTexCoord2i(TexRect.x, TexRect.h);         glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-        glTexCoord2i(TexRect.w, TexRect.h);         glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-        glTexCoord2i(TexRect.w, TexRect.y);         glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+        TEXTURE->BindTexturePoint(Material, 2 + Rotation);         glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+        TEXTURE->BindTexturePoint(Material, 3 + Rotation);         glVertex3f(Points[3].x, Points[3].y, Points[3].z);
+        TEXTURE->BindTexturePoint(Material, 0 + Rotation);         glVertex3f(Points[0].x, Points[0].y, Points[0].z);
 
-        glTexCoord2i(TexRect.w, TexRect.y);         glVertex3f(Points[2].x, Points[2].y, Points[2].z);
-        glTexCoord2i(TexRect.x, TexRect.y);         glVertex3f(Points[3].x, Points[3].y, Points[3].z);
-        glTexCoord2i(TexRect.x, TexRect.h);         glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-/*
-        glColor3f (0.0, 0.0, 0.0);
-
-        glBegin(GL_LINE_LOOP);
-            glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-            glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-            glVertex3f(Points[2].x, Points[2].y, Points[2].z);
-            glVertex3f(Points[3].x, Points[3].y, Points[3].z);
-        glEnd();
-*/
         SCREEN->IncrementTriangles(2);
     }
 

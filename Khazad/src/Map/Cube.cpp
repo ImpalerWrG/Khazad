@@ -67,12 +67,14 @@ bool Cube::InitAllFaces()
                     {
                         InitFace((Facet) i);
                     }
-
                     if(i == FACET_TOP || i == FACET_BOTTOM) // Keep roofs of underground rooms invisible
                     {
-                        if(!Facets[i]->isConstructed()) // Unless they are themselves floors
+                        if(Facets[i])
                         {
-                            Facets[i]->setVisible(false);
+                            if(!Facets[i]->isConstructed()) // Unless they are themselves floors
+                            {
+                                Facets[i]->setVisible(false);
+                            }
                         }
                     }
                 }
@@ -259,6 +261,11 @@ Cube* Cube::getNeiborCube(Direction Type)
     return MAP->getCube(x, y, z);
 }
 
+Cell* Cube::getCellOwner()
+{
+    return MAP->getCubeOwner(Position.x, Position.y, Position.z);
+}
+
 Cell* Cube::getAdjacentCell(Facet Type)
 {
     Sint32 x = Position.x;
@@ -313,6 +320,7 @@ Facet Cube::OpositeFace(Facet Type)
             return FACET_SOUTH_EAST;
     }
 }
+
 
 void Cube::DeleteFace(Facet Type)
 {

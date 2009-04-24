@@ -1,5 +1,7 @@
 Change Log for Khazad
 
+- BugFix A - fixed crash when memory dumping
+
 - V 0.0.2 (SVN 019) Dwarf Fortress maps can be dumped from memory (d), written to file (w) and loaded from file (l), Display of the environment is greatly improved
 
 - V 0.0.1 (SVN 007) Initial public release, Khazad displays a randomly generated plane of triangles and has a fully delepoped Isometric camera

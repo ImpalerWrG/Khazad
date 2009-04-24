@@ -39,10 +39,12 @@ public:
     int round(double x);
     int nextpoweroftwo(int x);
 
-    GLuint getAggragateTexture() { return MainTexture; }
-    Uint16 getTextureCount() { return TextureCordinates.size(); }
-    int getAggragateTextureSize() { return MainTextureSize; }
-    SDL_Surface* getAgragateSurface() { return AgragateSurface; }
+    GLuint getAggragateTexture()        { return MainTexture; }
+    Uint16 getTextureCount()            { return TextureCordinates.size(); }
+    int getAggragateTextureSize()       { return MainTextureSize; }
+    SDL_Surface* getAgragateSurface()   { return AgragateSurface; }
+
+    void BindTexturePoint(Uint32 TextureID, Uint8 Corner);
 
 protected:
 

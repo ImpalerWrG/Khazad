@@ -84,7 +84,7 @@ bool Cell::Draw()
 
     Cube* LoopCube = NULL;
 
-    if(Initalized && Shading > 0)
+    if(Initalized && SCREEN->InSlice(Position.z) > 0)
     {
         for (Uint16 x = 0; x < CellEdgeLenth; x++)
         {

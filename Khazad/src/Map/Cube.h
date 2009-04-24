@@ -46,6 +46,7 @@ public:
 
     Cube* getAdjacentCube(Facet Type);
     Cube* getNeiborCube(Direction Type);
+    Cell* getCellOwner();
 
     Cell* getAdjacentCell(Facet Type);
     static Facet OpositeFace(Facet Type);

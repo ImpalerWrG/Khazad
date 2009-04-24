@@ -410,6 +410,12 @@ void Map::LoadExtract()
                             {
                                 NewCube->InitConstructedFace(FACET_BOTTOM, Material);
                                 NewCube->setSolid(false);
+
+                                if(Material == 2)
+                                {
+                                    NewCube->setLiquid(true);
+                                    NewCube->InitConstructedFace(FACET_TOP, Material);
+                                }
                             }
 
                             if (IsRamp)

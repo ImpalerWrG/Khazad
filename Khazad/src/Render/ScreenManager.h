@@ -24,7 +24,14 @@ public:
 	~ScreenManager();
 	bool Init();
 
+	bool isFrameDraw()                  { return FrameDraw; }
+	bool setFrameDraw(bool NewValue)    { FrameDraw = NewValue; }
+
+	bool isShadedDraw()                 { return ShadedDraw; }
+	bool setShadedDraw(bool NewValue);
+
 	bool ReSizeScreen(Uint16 Width, Uint16 Hight);
+
 	void FillRect(SDL_Rect* Rectangle);
 	void applyClipCentered(SDL_Rect Offset, ClipImage* Clip);
 	void applyClipAt(SDL_Rect Offset, ClipImage* Clip);
@@ -33,18 +40,26 @@ public:
 
 	bool ClearDevice();
 	bool ColorBackground();
+
 	Uint16 getWidth();
 	Uint16 getHight();
 
 	void DirtyAllLists();
 	bool Render();
 	void IncrementTriangles(Uint32 Triangles);
+
+	bool InSlice(float Zlevel);
 	float getShading(float Zlevel);
+
 	void PrintDebugging();
+
 	void ShowAxis(void);
 	void DrawPoint(Vector3 Point, float Length = 1.0);
-	void DrawColoredFacet(Face* DrawingFace, float Shading = 1.0, SDL_Color color);
-	void DrawCube(Cube* DrawCube, float Shading = 1.0);
+
+	//void DrawColoredFacet(Face* DrawingFace, float Shading = 1.0, SDL_Color color);
+	//void DrawCube(Cube* DrawCube, float Shading = 1.0);
+
+    void DrawCage(Vector3 Point, float x, float y, float z);
 
     Uint32 getTriangleCount() { return TotalTriangles; }
     void ToggleFullScreen();
@@ -65,6 +80,9 @@ protected:
 
 	SDL_Surface* ScreenSurface;
 	bool FullScreen;
+
+	bool FrameDraw;
+	bool ShadedDraw;
 
 	std::vector<GLuint*> DrawList;
 

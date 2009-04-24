@@ -98,6 +98,14 @@ bool InputManager::HandleInput()
 					{
 					    EXTRACT->writeMap("KhazadMap.map");
 					}
+                    if (event.key.keysym.sym == SDLK_f)
+					{
+					    SCREEN->setFrameDraw(!SCREEN->isFrameDraw());
+					}
+                    if (event.key.keysym.sym == SDLK_s)
+					{
+					    SCREEN->setShadedDraw(!SCREEN->isShadedDraw());
+					}
 				}
 				break;
 			}

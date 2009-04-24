@@ -25,6 +25,9 @@ ScreenManager::ScreenManager()
 	ScreenHight = CONFIG->getYResolution();
 	ScreenBPP = 32;
 	FullScreen = false;
+
+	FrameDraw = true;
+	ShadedDraw = true;
 }
 
 ScreenManager::~ScreenManager()
@@ -273,6 +276,13 @@ bool ScreenManager::Render()
 			}
 		}
 	}
+
+    if(FrameDraw)
+    {
+        Vector3 Point;
+        DrawCage(Point, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ());
+    }
+
 /*
 	for (Uint32 i = 0; i < GAME->ActorList.size(); i++)
 	{
@@ -284,9 +294,6 @@ bool ScreenManager::Render()
 */
 
     //glTranslatef(10.0, 10.0, 10.0);
-
-	//ShowAxis();
-
 
     glMatrixMode(GL_TEXTURE);  //return to normal Texturing for UI
     glPopMatrix();
@@ -300,8 +307,27 @@ void ScreenManager::IncrementTriangles(Uint32 Triangles)
     TriangleCounter += Triangles;
 }
 
+bool ScreenManager::InSlice(float Zlevel)
+{
+    if (Zlevel <= MainCamera->LookZ())
+	{
+		float Depth = MainCamera->LookZ() - Zlevel;
+		if (Depth < MainCamera->getViewLevels())
+		{
+			return true;
+		}
+		return false;
+	}
+	return false;
+}
+
 float ScreenManager::getShading(float Zlevel)
 {
+    if(! ShadedDraw)
+    {
+        return 1.0;
+    }
+
 	if (Zlevel <= MainCamera->LookZ())
 	{
 		float Depth = MainCamera->LookZ() - Zlevel;
@@ -317,10 +343,7 @@ float ScreenManager::getShading(float Zlevel)
 		}
 		return 0.0;
 	}
-	else
-	{
-		return 0.0;
-	}
+    return 0.0;
 }
 
 void ScreenManager::ToggleFullScreen()
@@ -381,6 +404,12 @@ void ScreenManager::ShowAxis(void)
     DrawPoint(Point, 100);
 }
 
+bool ScreenManager::setShadedDraw(bool NewValue)
+{
+    ShadedDraw = NewValue;
+    DirtyAllLists();
+}
+
 void ScreenManager::DrawPoint(Vector3 Point, float Length)
 {
 	// Draw the positive side of the lines x,y,z
@@ -418,3 +447,51 @@ void ScreenManager::DrawPoint(Vector3 Point, float Length)
 
 	glDisable(GL_LINE_STIPPLE); // Disable the line stipple
 }
+
+void ScreenManager::DrawCage(Vector3 Point, float x, float y, float z)
+{
+    glColor3f (1.0, 1.0, 1.0);
+
+    glBegin(GL_LINES);
+
+		glVertex3f(Point.x, Point.y, Point.z);
+		glVertex3f(Point.x + x, Point.y, Point.z);
+
+		glVertex3f(Point.x, Point.y, Point.z);
+		glVertex3f(Point.x, Point.y + y, Point.z);
+
+		glVertex3f(Point.x + x, Point.y, Point.z);
+		glVertex3f(Point.x + x, Point.y + y, Point.z);
+
+		glVertex3f(Point.x, Point.y + y, Point.z);
+		glVertex3f(Point.x + x, Point.y + y, Point.z);
+
+
+		glVertex3f(Point.x, Point.y, Point.z);
+		glVertex3f(Point.x, Point.y, Point.z + z);
+
+		glVertex3f(Point.x + x, Point.y, Point.z);
+		glVertex3f(Point.x + x, Point.y, Point.z + z);
+
+		glVertex3f(Point.x, Point.y + y, Point.z);
+		glVertex3f(Point.x, Point.y + y, Point.z + z);
+
+		glVertex3f(Point.x + x, Point.y + y, Point.z);
+		glVertex3f(Point.x + x, Point.y + y, Point.z + z);
+
+
+		glVertex3f(Point.x, Point.y, Point.z + z);
+		glVertex3f(Point.x + x, Point.y, Point.z + z);
+
+		glVertex3f(Point.x, Point.y, Point.z + z);
+		glVertex3f(Point.x, Point.y + y, Point.z + z);
+
+		glVertex3f(Point.x + x, Point.y, Point.z + z);
+		glVertex3f(Point.x + x, Point.y + y, Point.z + z);
+
+		glVertex3f(Point.x, Point.y + y, Point.z + z);
+		glVertex3f(Point.x + x, Point.y + y, Point.z + z);
+
+	glEnd();
+}
+
