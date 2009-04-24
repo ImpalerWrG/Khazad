@@ -31,8 +31,6 @@
 		<Compiler>
 			<Add directory="..\..\src\Core" />
 			<Add directory="..\..\include" />
-			<Add directory="..\..\guichan\include" />
-			<Add directory="..\..\guichan\src" />
 			<Add directory="..\..\src\Data" />
 			<Add directory="..\..\src\Game" />
 			<Add directory="..\..\src\Geometry" />
@@ -40,6 +38,8 @@
 			<Add directory="..\..\src\Map" />
 			<Add directory="..\..\src\Render" />
 			<Add directory="..\..\src\TinyXML" />
+			<Add directory="..\..\guichan\include" />
+			<Add directory="..\..\guichan\src" />
 		</Compiler>
 		<Linker>
 			<Add library="SDL" />
@@ -50,11 +50,6 @@
 			<Add library="SDL_net" />
 			<Add library="OpenGL32" />
 			<Add library="GLU32" />
-			<Add library="mingw32" />
-			<Add library="SDL.dll" />
-			<Add library="gdi32" />
-			<Add library="winmm" />
-			<Add library="dxguid" />
 			<Add library="GLUT32" />
 			<Add directory="..\..\lib" />
 		</Linker>
