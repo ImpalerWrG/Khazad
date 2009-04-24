@@ -332,7 +332,7 @@ void Map::LoadExtract()
 
     CellSizeX = EXTRACT->x_blocks;
 	CellSizeY = EXTRACT->y_blocks;
-	CellSizeZ = EXTRACT->z_levels; // + 1; // Extra level for Basement
+	CellSizeZ = EXTRACT->z_levels;
 
 	CubesPerCellSide = (Uint8) CONFIG->getCellEdgeLength();
 

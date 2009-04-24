@@ -39,8 +39,8 @@ public:
     int y_blocks;
     int z_levels;
 
-    int z_active_levels;
-    bool* z_level_active;
+    //int z_active_levels;
+    //bool* z_level_active;
 
     bool Init();
     ~Extractor();

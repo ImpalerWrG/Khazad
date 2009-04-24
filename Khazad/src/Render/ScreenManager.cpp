@@ -170,7 +170,7 @@ Uint16 ScreenManager::getHight()
 
 void ScreenManager::DirtyAllLists()
 {
-    if(MAP == NULL)
+    if(MAP == NULL || !MAP->Initialized)
     {
         return;
     }

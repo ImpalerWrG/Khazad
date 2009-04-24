@@ -52,3 +52,5 @@ Known Issues:
 - Rendering 'hangs' momentarily when the map is being rotated and passes through a 90 degree turn (aka map edges become perpendicular & horizontal), this is due to the OpenGL drawlists being updated and is a drawback of the current engine and will only be noticable when zoomed out.
 
 - CPU Hog, Khazad is capped at 60 FPS using SDL_Delay but on many systems it will still use upwards of 99% of the processor and might put too much stress on your system or video card, feedback is apresiated.
+
+- Water features like MurkyPonds, Rivers and streams do not save properly and will be displayed with a placeholder texture.  They are not even correctly represented in live memory dumps lacking a 'surface' with the water being displayed on the bottom of the pond/river/stream if its shallow.

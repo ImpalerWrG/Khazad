@@ -40,7 +40,6 @@
 			<Add directory="..\..\src\Map" />
 			<Add directory="..\..\src\Render" />
 			<Add directory="..\..\src\TinyXML" />
-			<Add directory="..\..\boost" />
 		</Compiler>
 		<Linker>
 			<Add library="SDL" />

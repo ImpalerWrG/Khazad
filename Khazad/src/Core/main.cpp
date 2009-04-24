@@ -1,9 +1,6 @@
-//#include <windows.h>
 #include <stdafx.h>
 
 #include <Timer.h>
-
-
 #include <TextureManager.h>
 #include <FontManager.h>
 #include <ColorManager.h>

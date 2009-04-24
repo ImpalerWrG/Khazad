@@ -37,11 +37,8 @@ int Extractor::dumpMemory()
     unsigned int current_mem = 0;
     int pe_found;
     short int temp_tile;
-    z_active_levels = 0;
 
     DWORD bytesRead = 0;
-
-
 
     meminfo.push_back(memory_info());
 
@@ -153,9 +150,6 @@ int Extractor::dumpMemory()
         ReadProcessMemory( DFHandle, (int*)(z_count_offset), &z_levels, sizeof(int), &bytesRead );
         printf("z_levels height: %u\n\n", z_levels);
 
-        z_level_active = (bool*) malloc( sizeof(bool) * z_levels );
-        memset(z_level_active, 0, sizeof(bool) * z_levels );
-
 
         Uint32 MapSizeX = x_blocks * BlockSize;
         Uint32 MapSizeY = y_blocks * BlockSize;
@@ -218,12 +212,9 @@ int Extractor::dumpMemory()
                         {
                             if(Blocks[x][y][z])
                             {
-                                z_level_active[z] = true; //so we know levels to export
-
                                 ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + tile_type_offset + (2 * BlockY + (BlockX * BlockSize * 2))), &temp_tile, sizeof(short int), &bytesRead );
 
                                 Tiles[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = temp_tile;
-
                             }
                             else
                             {
@@ -234,17 +225,6 @@ int Extractor::dumpMemory()
                 }
             }
         }
-
-        printf("Stuff on levels: ");
-        for(int z = 0; z < z_levels; z++)
-        {
-            if (z_level_active[z])
-            {
-                printf("%d ", z);
-                z_active_levels++;
-            }
-        }
-        printf("\n");
 
         MapLoaded = true;
     }
@@ -270,18 +250,15 @@ bool Extractor::writeMap(char* FilePath)
     {
         fwrite(&x_blocks, sizeof(x_blocks), 1, SaveFile);
         fwrite(&y_blocks, sizeof(y_blocks), 1, SaveFile);
-        fwrite(&z_active_levels, sizeof(z_active_levels), 1, SaveFile);
+        fwrite(&z_levels, sizeof(z_levels), 1, SaveFile);
 
         for (int z = 0; z < z_levels; z++ )
         {
-            if (z_level_active[z])
+            for (int y = 0; y < y_blocks * BlockSize; y++ )
             {
-                for (int y = 0; y < y_blocks * BlockSize; y++ )
+                for (int x = 0; x < x_blocks * BlockSize; x++ )
                 {
-                    for (int x = 0; x < x_blocks * BlockSize; x++ )
-                    {
-                        fwrite(&Tiles[x][y][z], sizeof(short int), 1, SaveFile);
-                    }
+                    fwrite(&Tiles[x][y][z], sizeof(short int), 1, SaveFile);
                 }
             }
         }
@@ -314,7 +291,7 @@ int Extractor::loadMap(char* FilePath, bool Legacy)
         printf("Read from file\nx_size: %d\ny_size: %d\nz_levels: %d\n", x_blocks, y_blocks, z_levels);
 
         int Pad;
-        if(Legacy)  // 3Dwarf map file format used padded indexes, Legacy mode supports it
+        if(Legacy)  // 3Dwarf map file format used padded indexes, Legacy mode supports it (I hope)
         {
             Pad = 2;
         }
@@ -385,136 +362,6 @@ bool Extractor::FreeMap()
     MapLoaded = false;
 }
 
-
-/*
-int Extractor::createTerrain()
-{
-    int temp1, temp2, temp3;
-
-    for ( temp1=1; temp1 < z_levels +3; temp1++ )
-    {
-        for ( temp2=1; temp2 < y_blocks*16 +3; temp2++ )
-        {
-            for ( temp3=1; temp3 < x_blocks*16 +3; temp3++ )
-            {
-                //assign flag for floor or wall
-
-                if ( isWallTerrain(tile_types[temp3][temp2][temp1]) )
-                {
-                    cube_sides[temp3][temp2][temp1] ^= WALL_FLAG;
-                }
-                if ( isFloorTerrain(tile_types[temp3][temp2][temp1]) )
-                {
-                    cube_sides[temp3][temp2][temp1] ^= FLOOR_FLAG;
-                }
-
-                // Assign Textures
-
-                cube_textures[temp3][temp2][temp1] = picktexture(tile_types[temp3][temp2][temp1]);
-
-                // Assign sides visible
-
-                if ( isOpenTerrain(tile_types[temp3][temp2][temp1]) )
-                {
-                    // Walls
-
-                    if ( isWallTerrain(tile_types[temp3+1][temp2][temp1]) )
-                    {
-                         cube_sides[temp3+1][temp2][temp1] ^= CUBE_LEFT;
-                    }
-                    if ( isWallTerrain(tile_types[temp3-1][temp2][temp1]) )
-                    {
-                         cube_sides[temp3-1][temp2][temp1] ^= CUBE_RIGHT;
-                    }
-                    if ( isWallTerrain(tile_types[temp3][temp2+1][temp1]) )
-                    {
-                         cube_sides[temp3][temp2+1][temp1] ^= CUBE_FORWARD;
-                    }
-                    if ( isWallTerrain(tile_types[temp3][temp2-1][temp1] ) )
-                    {
-                         cube_sides[temp3][temp2-1][temp1] ^= CUBE_BACK;
-                    }
-                    if ( isWallTerrain(tile_types[temp3][temp2][temp1+1]) )
-                    {
-                         cube_sides[temp3][temp2][temp1+1] ^= CUBE_DOWN;
-                    }
-                    if ( isWallTerrain(tile_types[temp3][temp2][temp1-1]) )
-                    {
-                         cube_sides[temp3][temp2][temp1-1] ^= CUBE_UP;
-                    }
-
-                    // Floors
-
-                    if ( isFloorTerrain(tile_types[temp3+1][temp2][temp1]) && (isRampTerrain(tile_types[temp3+1][temp2][temp1])))
-                    {
-                         cube_sides[temp3+1][temp2][temp1] ^= FLOOR_LEFT;
-                    }
-                    if ( isFloorTerrain(tile_types[temp3-1][temp2][temp1]) && !(isRampTerrain(tile_types[temp3-1][temp2][temp1])) )
-                    {
-                         cube_sides[temp3-1][temp2][temp1] ^= FLOOR_RIGHT;
-                    }
-                    if ( isFloorTerrain(tile_types[temp3][temp2+1][temp1]) && !(isRampTerrain(tile_types[temp3][temp2+1][temp1])) )
-                    {
-                         cube_sides[temp3][temp2+1][temp1] ^= FLOOR_FORWARD;
-                    }
-                    if ( isFloorTerrain(tile_types[temp3][temp2-1][temp1] ) && !(isRampTerrain(tile_types[temp3][temp2-1][temp1] )) )
-                    {
-                         cube_sides[temp3][temp2-1][temp1] ^= FLOOR_BACK;
-                    }
-                    if ( isFloorTerrain(tile_types[temp3][temp2][temp1+1]) && !(isRampTerrain(tile_types[temp3][temp2][temp1+1])) )
-                    {
-                         cube_sides[temp3][temp2][temp1+1] ^= FLOOR_DOWN;
-                    }
-                }
-
-                //  RAMPS
-
-                if ( isRampTerrain(tile_types[temp3][temp2][temp1]) )
-                {
-                    cube_sides[temp3][temp2][temp1] ^= RAMP_FLAG;
-
-                    if ( isFloorTerrain(tile_types[temp3+1][temp2][temp1+1]) )
-                    {
-                         cube_sides[temp3][temp2][temp1] |= ( RAMP_E | RAMP_NE | RAMP_SE );
-                    }
-                    if ( isFloorTerrain(tile_types[temp3-1][temp2][temp1+1]) )
-                    {
-                         cube_sides[temp3][temp2][temp1] |= ( RAMP_W | RAMP_NW | RAMP_SW );
-                    }
-                    if ( isFloorTerrain(tile_types[temp3][temp2-1][temp1+1]) )
-                    {
-                         cube_sides[temp3][temp2][temp1] |= ( RAMP_N | RAMP_NW | RAMP_NE );
-                    }
-                    if ( isFloorTerrain(tile_types[temp3][temp2+1][temp1+1] ) )
-                    {
-                         cube_sides[temp3][temp2][temp1] |= ( RAMP_S | RAMP_SW | RAMP_SE );
-                    }
-
-                    if ( isFloorTerrain(tile_types[temp3+1][temp2-1][temp1+1]) )
-                    {
-                         cube_sides[temp3][temp2][temp1] |= RAMP_NE;
-                    }
-                    if ( isFloorTerrain(tile_types[temp3+1][temp2+1][temp1+1]) )
-                    {
-                         cube_sides[temp3][temp2][temp1] |= RAMP_SE;
-                    }
-                    if ( isFloorTerrain(tile_types[temp3-1][temp2-1][temp1+1]) )
-                    {
-                         cube_sides[temp3][temp2][temp1] |= RAMP_NW;
-                    }
-                    if ( isFloorTerrain(tile_types[temp3-1][temp2+1][temp1+1]) )
-                    {
-                         cube_sides[temp3][temp2][temp1] |= RAMP_SW;
-                    }
-                }
-            }
-        }
-    }
-
-    return 0;
-}
-*/
-
 int Extractor::readMemoryFile()
 {
     char tempString[100];
@@ -575,9 +422,6 @@ int Extractor::readMemoryFile()
 
 int Extractor::picktexture(int in)
 {
-
-    //return 9;
-
     switch ( in ) {
 
         case 1: //slope down

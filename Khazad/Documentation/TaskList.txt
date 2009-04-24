@@ -4,7 +4,7 @@ This is a list of tasks I'll be working on, most of these items will be adressed
 - Resolve Mouse clamp when incressing screen size
 - Improve slope picking to fill holes in map
 - Make texture pathways XML based
-- Put translucent surface over Murky pools, streams and Rivers
+- Put translucent surface over Murky pools, streams and Rivers and fix water-save issues
 - Extract additional data from DF to check for Hidden terrain, make hiden terrain toglable
 - Get textures under Creative Commons licence
 - Improve DF data parsing to expand/clarify texture types
