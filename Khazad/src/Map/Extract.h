@@ -54,6 +54,7 @@ public:
     int readMemoryFile();
 
     int picktexture(int);
+    int isLiquidTerrain(int in);
     int isOpenTerrain(int);
     int isStairTerrain(int);
     int isRampTerrain(int);

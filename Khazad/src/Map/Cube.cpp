@@ -7,6 +7,7 @@
 #include <Map.h>
 #include <Face.h>
 #include <Slope.h>
+#include <Random.h>
 
 Cube::Cube()
 {
@@ -16,7 +17,7 @@ Cube::Cube()
 	Initalized = false;
 	Slopage = NULL;
 	Liquid = false;
-	Solid = true;
+	Solid = false;
 
 	Material = 6;
 
@@ -42,6 +43,7 @@ bool Cube::Init(Uint16 MaterialType)
 {
 	Initalized = true;
 
+    Solid = true;
     Material = MaterialType;
 
 	return true;
@@ -51,29 +53,37 @@ bool Cube::InitAllFaces()
 {
 	Initalized = true;
 
+    if(Material == 2)
+    {
+           int x = 666;
+    }
+
     for(Uint8 i = 0; i < NUM_FACETS; i++)
     {
-        Cube* NeiborCube = getAdjacentCube((Facet) i);
-        Cell* NeiborCell = getAdjacentCell((Facet) i);
-
-        if(NeiborCell != NULL && NeiborCell->Initalized && !NeiborCell->isBasment())
+        if(Facets[i] == NULL)
         {
-            if (NeiborCube != NULL && NeiborCube->Initalized) //&& NeiborCube->Initalized == false && NeiborCube->Facets[OpositeFace(Type)] == NULL)
+            Cube* NeiborCube = getAdjacentCube((Facet) i);
+            Cell* NeiborCell = getAdjacentCell((Facet) i);
+
+            if(NeiborCell != NULL && NeiborCell->Initalized)
             {
-                if(Solid ^ NeiborCube->isSolid())  // Faces are only needed ware a sold and non-solid meet
+                if (NeiborCube != NULL && NeiborCube->Initalized)
                 {
-                    Face* NeiborFace = NeiborCube->Facets[OpositeFace((Facet) i)];
-                    if(NeiborFace != NULL && !NeiborFace->isConstructed())
+                    Sint16 BestMaterial = FaceMaterial((Facet) i);
+
+                    if(BestMaterial != -1)
                     {
-                        InitFace((Facet) i);
-                    }
-                    if(i == FACET_TOP || i == FACET_BOTTOM) // Keep roofs of underground rooms invisible
-                    {
-                        if(Facets[i])
+                        Facets[i] = new Face;
+                        Facets[i]->Init(this, NeiborCube, (Facet) i, (Uint16) BestMaterial);
+
+                        if(i == FACET_TOP || i == FACET_BOTTOM) // Keep roofs of underground rooms invisible
                         {
-                            if(!Facets[i]->isConstructed()) // Unless they are themselves floors
+                            if(Facets[i])
                             {
-                                Facets[i]->setVisible(false);
+                                if(!Facets[i]->isConstructed()) // Unless they are themselves floors
+                                {
+                                    Facets[i]->setVisible(false);
+                                }
                             }
                         }
                     }
@@ -100,32 +110,9 @@ bool Cube::setMaterial(Uint16 MaterialType)
 bool Cube::Open()
 {
     Initalized = true;
+
     Solid = false;
-
-    for(Uint8 i = 0; i < NUM_FACETS; i++)
-    {
-        Cube* NeiborCube = getAdjacentCube((Facet) i);
-        Cell* NeiborCell = getAdjacentCell((Facet) i);
-
-        if(NeiborCell != NULL && NeiborCell->Initalized && !NeiborCell->isBasment())
-        {
-            if (NeiborCube != NULL) //&& NeiborCube->Initalized == false && NeiborCube->Facets[OpositeFace(Type)] == NULL)
-            {
-                if(NeiborCube->isSolid())  // Faces are only needed ware a sold and non-solid meet
-                {
-                    InitFace((Facet) i);
-                }
-                else  // Remove faces between two Open Cubes
-                {
-                    NeiborCube->DeleteFace(OpositeFace((Facet) i));
-                }
-            }
-            else
-            {
-                    // What to do? Initilize neiboring Cell and Cube?
-            }
-        }
-    }
+    Liquid = false;
 
     RemoveSlope();
 }
@@ -147,28 +134,89 @@ void Cube::setFacet(Facet FacetType, Face* NewFace)
 void Cube::InitConstructedFace(Facet FacetType, Uint16 MaterialType)
 {
     Cube* NeiborCube = getAdjacentCube(FacetType);
+    Face* ConstructionFace = Facets[FacetType];
 
-    if(NeiborCube != NULL)
+    if(Facets[FacetType] != NULL)  // Change the existing face rather then creating a new one
     {
-        Face* OpposingFace = NeiborCube->getFacet(Cube::OpositeFace(FacetType));
-        if(OpposingFace != NULL)
-        {
-            OpposingFace->setMaterial(MaterialType);  // Change the existing face rather then creating a new one
-            OpposingFace->setConstructed(true);
-            OpposingFace->setVisible(true);
-        }
-        else
-        {
-            Facets[FacetType] = new Face;
-            Facets[FacetType]->setConstructed(true);
-            Facets[FacetType]->Init(this, NeiborCube, FacetType, MaterialType);  // Face Material is independent of Cube Material
-        }
+        ConstructionFace->setConstructed(true);
+        ConstructionFace->setMaterial(MaterialType);
+        ConstructionFace->setVisible(true);
     }
-    else
+    else // Face Material is independent of Cube Material
     {
         Facets[FacetType] = new Face;
         Facets[FacetType]->setConstructed(true);
         Facets[FacetType]->Init(this, NeiborCube, FacetType, MaterialType);
+        Facets[FacetType]->setVisible(true);
+    }
+}
+
+Sint16 Cube::FaceMaterial(Facet Type)
+{
+    Cube* NeiborCube = getAdjacentCube(Type);
+
+    if(NeiborCube != NULL)
+    {
+        if(Solid)
+        {
+            if(NeiborCube->isSolid())
+            {
+                return -1; // No solid-solid surfaces displayed
+            }
+            else
+            {
+                return Material;  // Solid materials dominated all others
+            }
+        }
+        else
+        {
+            if(Liquid)
+            {
+                if(NeiborCube->isSolid())
+                {
+                    return NeiborCube->getMaterial();
+                }
+                if(NeiborCube->isLiquid())
+                {
+                    if(NeiborCube->getMaterial() != Material)
+                    {
+                        if(RANDOM->Roll(0, 1))  // Coinflip when liquid-liquid face (this is weird)
+                        {
+                            return Material;
+                        }
+                        else
+                        {
+                            return NeiborCube->getMaterial();
+                        }
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+                }
+                return Material;
+            }
+            else
+            {
+                if(NeiborCube->isSolid())
+                {
+                    return NeiborCube->getMaterial();
+                }
+                if(NeiborCube->isLiquid())
+                {
+                    return NeiborCube->getMaterial();
+                }
+                return -1;  // No Open-Open surfaces
+            }
+        }
+    }
+    else
+    {
+        if(Liquid)
+        {
+            return Material;
+        }
+        return -1; // No Null-Solid sufaces
     }
 }
 
@@ -178,11 +226,9 @@ void Cube::InitFace(Facet Type)
 
     Facets[Type] = new Face;
 
-    if(!Solid)
-    {
-        Facets[Type]->Init(this, NeiborCube, Type, NeiborCube->getMaterial());
-    }
-    else
+    Sint16 Material = FaceMaterial(Type);
+
+    if(Material != -1)
     {
         Facets[Type]->Init(this, NeiborCube, Type, Material);
     }
@@ -320,7 +366,6 @@ Facet Cube::OpositeFace(Facet Type)
             return FACET_SOUTH_EAST;
     }
 }
-
 
 void Cube::DeleteFace(Facet Type)
 {

@@ -27,7 +27,7 @@ ScreenManager::ScreenManager()
 	FullScreen = false;
 
 	FrameDraw = true;
-	ShadedDraw = true;
+	ShadedDraw = false;
 }
 
 ScreenManager::~ScreenManager()
@@ -41,13 +41,18 @@ bool ScreenManager::Init()
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);  //TODO make this a Config option
 
-
 	SDL_WM_SetCaption("Khazad", "Khazad");
 
-    SDL_Surface* Icon = SDL_LoadBMP("Assets\\Textures\\Khazad_Icon.bmp");
-    Uint32 colorkey = SDL_MapRGB(Icon->format, 255, 0, 255);
-    SDL_SetColorKey(Icon, SDL_SRCCOLORKEY, colorkey);
-    SDL_WM_SetIcon(Icon, NULL);
+    //SDL_Surface* Icon = SDL_LoadBMP("Assets\\Textures\\Khazad_Icon.bmp");
+    SDL_Surface* Icon = NULL;
+    Icon = SDL_LoadBMP("Assets\\Textures\\KIcon.bmp");
+
+    if(Icon)
+    {
+        Uint32 colorkey = SDL_MapRGB(Icon->format, 255, 0, 255);
+        SDL_SetColorKey(Icon, SDL_SRCCOLORKEY, colorkey);
+        SDL_WM_SetIcon(Icon, NULL);
+    }
 
     if(CONFIG->FullScreen())
     {
@@ -224,6 +229,12 @@ bool ScreenManager::Render()
         return false;
     }
 
+    if(FrameDraw)
+    {
+        Vector3 Point;
+        DrawCage(Point, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ());
+    }
+
 	RedPickingValue = 0;
 	GreenPickingValue = 0;
 	BluePickingValue = 0;
@@ -277,11 +288,6 @@ bool ScreenManager::Render()
 		}
 	}
 
-    if(FrameDraw)
-    {
-        Vector3 Point;
-        DrawCage(Point, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ());
-    }
 
 /*
 	for (Uint32 i = 0; i < GAME->ActorList.size(); i++)
@@ -450,45 +456,55 @@ void ScreenManager::DrawPoint(Vector3 Point, float Length)
 
 void ScreenManager::DrawCage(Vector3 Point, float x, float y, float z)
 {
-    glColor3f (1.0, 1.0, 1.0);
-
     glBegin(GL_LINES);
 
+        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y, Point.z);
 		glVertex3f(Point.x + x, Point.y, Point.z);
 
+        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y, Point.z);
 		glVertex3f(Point.x, Point.y + y, Point.z);
 
+        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x + x, Point.y, Point.z);
 		glVertex3f(Point.x + x, Point.y + y, Point.z);
 
+        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y + y, Point.z);
 		glVertex3f(Point.x + x, Point.y + y, Point.z);
 
 
+        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y, Point.z);
 		glVertex3f(Point.x, Point.y, Point.z + z);
 
+        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x + x, Point.y, Point.z);
 		glVertex3f(Point.x + x, Point.y, Point.z + z);
 
+        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y + y, Point.z);
 		glVertex3f(Point.x, Point.y + y, Point.z + z);
 
+        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x + x, Point.y + y, Point.z);
 		glVertex3f(Point.x + x, Point.y + y, Point.z + z);
 
 
+        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y, Point.z + z);
 		glVertex3f(Point.x + x, Point.y, Point.z + z);
 
+        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y, Point.z + z);
 		glVertex3f(Point.x, Point.y + y, Point.z + z);
 
+        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x + x, Point.y, Point.z + z);
 		glVertex3f(Point.x + x, Point.y + y, Point.z + z);
 
+        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y + y, Point.z + z);
 		glVertex3f(Point.x + x, Point.y + y, Point.z + z);
 

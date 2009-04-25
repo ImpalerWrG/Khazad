@@ -15,7 +15,7 @@ bool TextureManager::Init()
 // 1 Stone
 	loadTextureSingular("Assets\\Textures\\stone.png", false, false);
 // 2 Murky Pool
-	loadTextureSingular("Assets\\Textures\\Pool.png", false, false);
+	loadTextureSingular("Assets\\Textures\\water.png", false, false);
 // 3 Slope ?  Fire
 	loadTextureSingular("Assets\\Textures\\lava.png", false, false);
 // 4 Constructed Stairs & Ramps
@@ -51,7 +51,7 @@ bool TextureManager::Init()
 // 19 all Boulders
 	loadTextureSingular("Assets\\Textures\\boulder.png", false, false);
 // 20
-	loadTextureSingular("Assets\\Textures\\water.png", false, false);
+	loadTextureSingular("Assets\\Textures\\Pool.png", false, false);
 // 21 Furrowed Soil
 	loadTextureSingular("Assets\\Textures\\Dirt.png", false, false);
 // 22 Stone Constructions / Veins, Gems, Clusters

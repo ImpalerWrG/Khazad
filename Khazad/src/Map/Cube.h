@@ -21,10 +21,10 @@ public:
 
 
 	bool isSolid()                  { return Solid; }
-    void setSolid(bool NewValue)    { Solid = NewValue; }
+    void setSolid(bool NewValue)    { Solid = NewValue; Liquid = !NewValue;}
 
 	bool isLiquid()                 { return Liquid; }
-	void setLiquid(bool NewValue)   { Liquid = NewValue; }
+	void setLiquid(bool NewValue)   { Liquid = NewValue; Solid = !NewValue;}
 
     Slope* getSlope()               { return Slopage; }
 	void SetSlope(Slopping Type);
@@ -33,6 +33,8 @@ public:
 
 	Uint16 getMaterial()            { return Material; }
     bool setMaterial(Uint16 MaterialType);
+
+    Sint16 FaceMaterial(Facet Type);
 
     Face* getFacet(Facet Type);
     void setFacet(Facet Type, Face* NewFace);

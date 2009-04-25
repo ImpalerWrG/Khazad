@@ -381,8 +381,9 @@ void Map::LoadExtract()
                     bool IsWall = EXTRACT->isWallTerrain(TileType);
                     bool IsOpen = EXTRACT->isOpenTerrain(TileType);
                     bool IsRamp = EXTRACT->isRampTerrain(TileType);
+                    bool IsLiquid = EXTRACT->isLiquidTerrain(TileType);
 
-                    if(IsFloor || IsWall || IsOpen || IsRamp)
+                    if(IsFloor || IsWall || IsOpen || IsRamp || IsLiquid)
                     {
                         if(!TargetCell->Initalized)
                         {
@@ -402,31 +403,36 @@ void Map::LoadExtract()
                             if(IsOpen)
                             {
                                 NewCube->Open();
-                                NewCube->setVisible(true);
-                                NewCube->setAllFacesVisiblity(true);
                             }
 
                             if(IsFloor)
                             {
                                 NewCube->InitConstructedFace(FACET_BOTTOM, Material);
-                                NewCube->setSolid(false);
+                            }
 
-                                if(Material == 2)
+                            if (IsLiquid)
+                            {
+                                if(NewCube->getAdjacentCube(FACET_TOP) != NULL && !NewCube->getAdjacentCube(FACET_TOP)->isLiquid())
                                 {
-                                    NewCube->setLiquid(true);
                                     NewCube->InitConstructedFace(FACET_TOP, Material);
                                 }
+                                if(NewCube->getAdjacentCube(FACET_BOTTOM) == NULL || NewCube->getAdjacentCube(FACET_BOTTOM)->isSolid())
+                                {
+                                    NewCube->InitConstructedFace(FACET_BOTTOM, 20);
+                                }
+
+                                NewCube->Init(Material);
+                                NewCube->setLiquid(true);
                             }
 
                             if (IsRamp)
                             {
                                 NewCube->Init(Material);
-                                NewCube->setVisible(true);
                                 NewCube->SetSlope(SLOPE_FLAT);  // Prime the Slope, the type can not yet be determined
                             }
 
                             NewCube->setVisible(true);
-                            NewCube->setAllFacesVisiblity(true);
+                            //NewCube->setAllFacesVisiblity(true);
                         }
                     }
                 }

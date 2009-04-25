@@ -301,6 +301,25 @@ void Slope::SetSlopeType(Slopping Type)
             break;
         }
 
+       case SLOPE_FLAT:
+        {
+			Points[0].x = Owner->Position.x - 0.5;
+			Points[0].y = Owner->Position.y + 0.5;
+			Points[0].z = Owner->Position.z;
+
+			Points[1].x = Owner->Position.x + 0.5;
+			Points[1].y = Owner->Position.y - 0.5;
+			Points[1].z = Owner->Position.z;
+
+			Points[2].x = Owner->Position.x - 0.5;
+			Points[2].y = Owner->Position.y - 0.5;
+			Points[2].z = Owner->Position.z;
+
+			Points[3].x = Owner->Position.x + 0.5;
+			Points[3].y = Owner->Position.y + 0.5;
+			Points[3].z = Owner->Position.z;
+            break;
+        }
 
 
 
@@ -364,6 +383,17 @@ bool Slope::Draw()
                 TEXTURE->BindTexturePoint(Material, 0);    glVertex3f(Points[0].x, Points[0].y, Points[0].z);
                 TEXTURE->BindTexturePoint(Material, 1);    glVertex3f(Points[1].x, Points[1].y, Points[1].z);
                 TEXTURE->BindTexturePoint(Material, 3);    glVertex3f(Points[3].x, Points[3].y, Points[3].z);
+        }
+
+        if(SlopeType == SLOPE_FLAT)
+        {
+                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x, Points[0].y, Points[0].z);
+                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x, Points[1].y, Points[1].z);
+                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+
+                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+                TEXTURE->BindTexturePoint(Material, 3);   glVertex3f(Points[3].x, Points[3].y, Points[3].z);
+                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x, Points[0].y, Points[0].z);
         }
 
         SCREEN->IncrementTriangles(2);

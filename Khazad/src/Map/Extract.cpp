@@ -793,7 +793,7 @@ int Extractor::picktexture(int in)
         case 370: //river ne
         case 371: //river sw
         case 372: //river se
-            return 2;
+            return 19;
             break;
 
         case 373: //stream wall n (below)
@@ -805,7 +805,7 @@ int Extractor::picktexture(int in)
         case 379: //stream wall sw (below)
         case 380: //stream wall se (below)
         case 381: //stream top (above)
-            return 2;
+            return 19;
             break;
 
         case 387: //dry grass floor1
@@ -992,6 +992,40 @@ int Extractor::picktexture(int in)
     return 6;
 }
 
+int Extractor::isLiquidTerrain(int in)
+{
+    switch (in)
+    {
+        case 2:   //murky pool
+
+        case 89: //waterfall landing
+        case 90: //river source
+
+        case 365: //river n
+        case 366: //river s
+        case 367: //river e
+        case 368: //river w
+        case 369: //river nw
+        case 370: //river ne
+        case 371: //river sw
+        case 372: //river se
+
+        case 373: //stream wall n (below)
+        case 374: //stream wall s (below)
+        case 375: //stream wall e (below)
+        case 376: //stream wall w (below)
+        case 377: //stream wall nw (below)
+        case 378: //stream wall ne (below)
+        case 379: //stream wall sw (below)
+        case 380: //stream wall se (below)
+
+            return 1;
+            break;
+    }
+
+    return 0;
+}
+
 int Extractor::isOpenTerrain(int in)
 {
 
@@ -999,7 +1033,6 @@ int Extractor::isOpenTerrain(int in)
     {
         //case -1: //uninitialized tile
         case 1: //slope down
-        case 2: //murky pool
         case 19: //driftwood stack
         case 24: //tree
         case 25: //up-down stair frozen liquid
@@ -1042,8 +1075,6 @@ int Extractor::isOpenTerrain(int in)
         case 81: //featstone pillar
         case 82: //minstone pillar
         case 83: //frozen liquid pillar
-        case 89: //waterfall landing
-        case 90: //river source
         case 231: //sapling
         case 233: //ramp grass dry
         case 234: //ramp grass dead
@@ -1083,14 +1114,7 @@ int Extractor::isOpenTerrain(int in)
         case 357: //soil floor 2 wet (raw) [red sand?]
         case 358: //soil floor 3 wet (raw) [red sand?]
         case 359: //soil floor 4 wet (raw) [red sand?]
-        case 365: //river n
-        case 366: //river s
-        case 367: //river e
-        case 368: //river w
-        case 369: //river nw
-        case 370: //river ne
-        case 371: //river sw
-        case 372: //river se
+        case 381: //stream top (above)
         case 387: //dry grass floor1
         case 388: //dry grass floor2
         case 389: //dry grass floor3
@@ -1148,7 +1172,6 @@ int Extractor::isFloorTerrain(int in)
 {
 
     switch (in) {
-        case 2: //murky pool
         case 19: //driftwood stack
         case 24: //tree
         case 27: //up stair frozen liquid
@@ -1173,8 +1196,6 @@ int Extractor::isFloorTerrain(int in)
         case 81: //featstone pillar
         case 82: //minstone pillar
         case 83: //frozen liquid pillar
-        case 89: //waterfall landing
-        case 90: //river source
         case 231: //sapling
         case 233: //ramp grass dry
         case 234: //ramp grass dead
@@ -1214,14 +1235,6 @@ int Extractor::isFloorTerrain(int in)
         case 357: //soil floor 2 wet (raw) [red sand?]
         case 358: //soil floor 3 wet (raw) [red sand?]
         case 359: //soil floor 4 wet (raw) [red sand?]
-        case 365: //river n
-        case 366: //river s
-        case 367: //river e
-        case 368: //river w
-        case 369: //river nw
-        case 370: //river ne
-        case 371: //river sw
-        case 372: //river se
         case 387: //dry grass floor1
         case 388: //dry grass floor2
         case 389: //dry grass floor3
@@ -1423,14 +1436,6 @@ int Extractor::isWallTerrain(int in)
         case 362: //frozen liquid wall worn2 (middle worn)
         case 363: //frozen liquid wall worn3 (least worn)
         case 364: //frozen liquid wall
-        case 373: //stream wall n (below)
-        case 374: //stream wall s (below)
-        case 375: //stream wall e (below)
-        case 376: //stream wall w (below)
-        case 377: //stream wall nw (below)
-        case 378: //stream wall ne (below)
-        case 379: //stream wall sw (below)
-        case 380: //stream wall se (below)
         case 417: //minstone wall rd2
         case 418: //minstone wall r2d
         case 419: //minstone wall r2u
