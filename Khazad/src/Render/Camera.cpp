@@ -460,7 +460,7 @@ void Camera::UpdateDirection()
 
 	if (CameraDir != CameraDirection)
 	{
-		SCREEN->DirtyAllLists();
+		//SCREEN->DirtyAllLists();
 	}
 	CameraDirection = CameraDir;
 }
@@ -610,7 +610,7 @@ void Camera::MoveViewVertical(float Z)
 	LookPosition.z += Z;
 
 	generateViewFrustum();
-    SCREEN->DirtyAllLists();
+    //SCREEN->DirtyAllLists();
 }
 
 void Camera::ChangeViewLevels(Sint32 Change)
@@ -646,7 +646,7 @@ void Camera::SetDefaultView()
     ViewLevels = 6;
 
 	generateViewFrustum();
-    SCREEN->DirtyAllLists();
+    //SCREEN->DirtyAllLists();
 }
 
 void Camera::CenterView()
@@ -668,11 +668,10 @@ void Camera::CenterView()
 	UpVector.y = EyePosition.y - LookPosition.y;
 	UpVector.z = 0.0;
 
-    IsoScalar = CONFIG->ZoomStart();
-    ViewLevels = 6;
+    IsoScalar = CONFIG->ZoomMax();
 
 	generateViewFrustum();
-    SCREEN->DirtyAllLists();
+    //SCREEN->DirtyAllLists();
 }
 
 bool Camera::sphereInFrustum(Vector3 &Point, float Radius)

@@ -152,7 +152,7 @@ int main(int argv, char** argc)
     RenderTimer->Start();
     UITimer->Start();
 
-	SCREEN->ClearDevice();
+	SCREEN->WipeScreen();
 
 	while(!done) // While program isn't done
 	{
@@ -214,7 +214,7 @@ int main(int argv, char** argc)
 
 		UITimer->Pause();
 
-		SDL_GL_SwapBuffers();
+		SCREEN->Flip();
 
 		FPSTimer->Pause(); // FrameRate Captures whole loop
 

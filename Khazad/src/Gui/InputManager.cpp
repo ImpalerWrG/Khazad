@@ -68,6 +68,7 @@ bool InputManager::HandleInput()
 					}
                     if (event.key.keysym.sym == SDLK_d)
 					{
+                        SCREEN->WipeScreen();
 					    if(!MAP->Initialized)
 					    {
                             EXTRACT->dumpMemory();
@@ -82,6 +83,7 @@ bool InputManager::HandleInput()
 					}
                     if (event.key.keysym.sym == SDLK_l)
 					{
+                        SCREEN->WipeScreen();
 					    if(!MAP->Initialized)
 					    {
                             EXTRACT->loadMap("KhazadMap.map");
@@ -96,6 +98,7 @@ bool InputManager::HandleInput()
 					}
                     if (event.key.keysym.sym == SDLK_w)
 					{
+                        SCREEN->WipeScreen();
 					    EXTRACT->writeMap("KhazadMap.map");
 					}
                     if (event.key.keysym.sym == SDLK_f)

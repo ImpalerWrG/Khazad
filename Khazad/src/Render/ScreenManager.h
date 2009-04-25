@@ -3,7 +3,6 @@
 
 #include <stdafx.h>
 
-//#include <PrimTypes.h>
 #include <Singleton.h>
 
 
@@ -13,6 +12,7 @@ class Camera;
 class Vector3;
 class Face;
 class Cube;
+class Cell;
 
 
 class ScreenManager
@@ -32,20 +32,22 @@ public:
 
 	bool ReSizeScreen(Uint16 Width, Uint16 Hight);
 
-	void FillRect(SDL_Rect* Rectangle);
 	void applyClipCentered(SDL_Rect Offset, ClipImage* Clip);
 	void applyClipAt(SDL_Rect Offset, ClipImage* Clip);
-	void BlitText(const char* Text, SDL_Color Color, SDL_Rect Offset, Uint8 FontIndex = 0);
-	bool Flip();
 
-	bool ClearDevice();
-	bool ColorBackground();
+
+    bool ClearDevice();
+	bool WipeScreen();
+	bool Flip();
 
 	Uint16 getWidth();
 	Uint16 getHight();
 
 	void DirtyAllLists();
 	bool Render();
+
+	void RefreshDrawlist(Cell* TargetCell, GLuint DrawlistID, Direction Orientation, bool Execute);
+
 	void IncrementTriangles(Uint32 Triangles);
 
 	bool InSlice(float Zlevel);

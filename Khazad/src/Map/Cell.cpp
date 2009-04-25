@@ -25,7 +25,7 @@ bool Cell::Init()
     Uint8 CubesPerCellSide = (Uint8) CONFIG->getCellEdgeLength();
     Cubes = new Cube*[CubesPerCellSide];
 
-    DrawListID = glGenLists(1);
+    DrawListID = glGenLists(4);
 
 	float X = Position.x - (CubesPerCellSide / 2);
 	float Y = Position.y - (CubesPerCellSide / 2);
@@ -70,11 +70,8 @@ bool Cell::Update()
 	return true;
 }
 
-bool Cell::Draw()
+bool Cell::Draw(Direction CameraDirection)
 {
-    float Shading = SCREEN->getShading(Position.z);  // Atleast one gl call must occure in each Drawlist to prevent weird Segfault in Atioglx1.dll
-    glColor3f(Shading, Shading, Shading);
-
     if(Basment) // Nothing to draw for these Cells  (Sky | Rock | Air)
     {
         return true;
@@ -93,10 +90,14 @@ bool Cell::Draw()
                 LoopCube = getCube(x, y);
                 if (LoopCube->Visible)
                 {
-                    LoopCube->Draw();
+                    LoopCube->Draw(CameraDirection);
                 }
             }
         }
     }
+
+    float Shading = SCREEN->getShading(Position.z);  // Atleast one gl call must occure in each Drawlist to prevent weird Segfault in Atioglx1.dll
+    glColor3f(Shading, Shading, Shading);
+
 	return true;
 }

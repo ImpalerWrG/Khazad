@@ -566,7 +566,7 @@ bool Cube::Update()
 	return true;
 }
 
-bool Cube::Draw()
+bool Cube::Draw(Direction CameraDirection)
 {
 	if (Initalized ) //&& Visible)
 	{
@@ -583,7 +583,7 @@ bool Cube::Draw()
 
             if(SCREEN->MainCamera->isAllFacesDrawing())
             {
-                if(Facets[FACET_NORTH_EAST] != NULL)
+ /*               if(Facets[FACET_NORTH_EAST] != NULL)
                 {
                     Facets[FACET_NORTH_EAST]->Draw();
                 }
@@ -599,10 +599,11 @@ bool Cube::Draw()
                 {
                     Facets[FACET_SOUTH_WEST]->Draw();
                 }
+                */
             }
             else
             {
-                switch(SCREEN->MainCamera->getDirection())
+                switch(CameraDirection)
                 {
                     case NORTH:
                     case NORTHEAST:

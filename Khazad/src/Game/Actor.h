@@ -20,7 +20,7 @@ public:
     bool Initalized;
 
 	virtual bool Update();
-	virtual bool Draw();
+	virtual bool Draw(Direction CameraDirection);
 
 	Vector3 Position;
 	//Uint32 BirthDate;

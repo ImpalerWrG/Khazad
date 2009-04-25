@@ -1,5 +1,7 @@
 Change Log for Khazad
 
+- V 0.0.3 (SVN 000) Water feature rendering is greatly improved, (f) toggles a wire frame around the whole of the map to help orient perspective, (s) toggles the shadding system, textures beutified
+
 - BugFix A - fixed crash when memory dumping
 
 - V 0.0.2 (SVN 019) Dwarf Fortress maps can be dumped from memory (d), written to file (w) and loaded from file (l), Display of the environment is greatly improved

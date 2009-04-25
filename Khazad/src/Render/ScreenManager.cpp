@@ -118,11 +118,6 @@ void ScreenManager::applyClipAt(SDL_Rect Offset, ClipImage* Clip)
 	}
 }
 
-void ScreenManager::FillRect(SDL_Rect* Rectangle)
-{
-	SDL_FillRect( ScreenSurface, Rectangle, SDL_MapRGB( ScreenSurface->format, 0xFF, 0xFF, 0xFF ) );
-}
-
 void ScreenManager::applyClipCentered(SDL_Rect Offset, ClipImage* Clip)
 {
 	if (Clip != NULL)
@@ -134,20 +129,11 @@ void ScreenManager::applyClipCentered(SDL_Rect Offset, ClipImage* Clip)
 	}
 }
 
-void ScreenManager::BlitText( const char* Text, SDL_Color Color, SDL_Rect Offset, Uint8 FontIndex )
+bool ScreenManager::WipeScreen()
 {
-	SDL_Surface* NewFontSurface = FONT->makeFontSurface(Text, Color, FontIndex);
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	SDL_GL_SwapBuffers();
 
-	if (NewFontSurface != NULL)
-	{
-		SDL_BlitSurface( NewFontSurface, NULL, ScreenSurface, &Offset );
-		SDL_FreeSurface( NewFontSurface );
-	}
-}
-
-bool ScreenManager::ColorBackground()
-{
-	SDL_FillRect( ScreenSurface, &ScreenSurface->clip_rect, SDL_MapRGB( ScreenSurface->format, 0x0, 0x0, 0xFF ) );
 	return true;
 }
 
@@ -232,7 +218,15 @@ bool ScreenManager::Render()
     if(FrameDraw)
     {
         Vector3 Point;
-        DrawCage(Point, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ());
+        Point.x -= 0.48;
+        Point.y -= 0.48;
+        Point.z -= 0.48;
+        DrawCage(Point, MAP->getMapSizeX() - 0.04, MAP->getMapSizeY() - 0.04, MAP->getMapSizeZ() - 0.04);
+
+        Point.x = (int) MainCamera->LookX() - 0.48;
+        Point.y = (int) MainCamera->LookY() - 0.48;
+        Point.z = (int) MainCamera->LookZ() - 0.48;
+        DrawCage(Point, .96, .96, .98);             // Keeps Cube lines from disapearing into tiles
     }
 
 	RedPickingValue = 0;
@@ -248,6 +242,9 @@ bool ScreenManager::Render()
 
 	for(Uint16 Zlevel = 0; Zlevel < MAP->getCellSizeZ(); Zlevel++) // Bottom up drawing
 	{
+        float Shading = SCREEN->getShading(Zlevel);  // Atleast one gl call must occure in each Drawlist to prevent weird Segfault in Atioglx1.dll
+        glColor3f(Shading, Shading, Shading);
+
 		if (Zlevel <= MainCamera->LookZ())
 		{
 			for (Uint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
@@ -262,23 +259,23 @@ bool ScreenManager::Render()
 						{
 							// Rebuild the new Drawlist
 							GLuint DrawListID = LoopCell->DrawListID;
-							glDeleteLists(DrawListID, 1);
-							glNewList(DrawListID, GL_COMPILE_AND_EXECUTE);
+							glDeleteLists(DrawListID, 4);
 
-                                TriangleCounter = 0;  // Reset Counter and Track Triangle count
-                                glBegin(GL_TRIANGLES);
+                            glColor3f(Shading, Shading, Shading);
+                            RefreshDrawlist(LoopCell, DrawListID, NORTHEAST, (MainCamera->getDirection() == NORTHEAST));
+                            glColor3f(Shading, Shading, Shading);
+                            RefreshDrawlist(LoopCell, DrawListID + 1, SOUTHEAST, (MainCamera->getDirection() == SOUTHEAST));
+                            glColor3f(Shading, Shading, Shading);
+                            RefreshDrawlist(LoopCell, DrawListID + 2, SOUTHWEST, (MainCamera->getDirection() == SOUTHWEST));
+                            glColor3f(Shading, Shading, Shading);
+                            RefreshDrawlist(LoopCell, DrawListID + 3, NORTHWEST, (MainCamera->getDirection() == NORTHWEST));
+                            glColor3f(Shading, Shading, Shading);
 
-                                    LoopCell->Draw();
-
-                                glEnd();
-                                LoopCell->setTriangleCount(TriangleCounter);
-                                TotalTriangles += TriangleCounter;
-
-							glEndList();
 							LoopCell->DirtyDrawlist = false;
 						}
 						else
 						{
+                            glColor3f(Shading, Shading, Shading);
 							glCallList(LoopCell->DrawListID);
 							TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
 						}
@@ -308,12 +305,39 @@ bool ScreenManager::Render()
 	return true;
 }
 
+void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, Direction Orientation, bool Execute)
+{
+    if(Execute)
+    {
+        glNewList(DrawListID, GL_COMPILE_AND_EXECUTE);
+    }
+    else
+    {
+        glNewList(DrawListID, GL_COMPILE);
+    }
+
+        TriangleCounter = 0;  // Reset Counter and Track Triangle count
+        glBegin(GL_TRIANGLES);
+
+            TargetCell->Draw(Orientation);
+
+        glEnd();
+
+        if(Execute)
+        {
+            TargetCell->setTriangleCount(TriangleCounter);
+            TotalTriangles += TriangleCounter;
+        }
+
+    glEndList();
+}
+
 void ScreenManager::IncrementTriangles(Uint32 Triangles)
 {
     TriangleCounter += Triangles;
 }
 
-bool ScreenManager::InSlice(float Zlevel)
+bool ScreenManager::InSlice(float Zlevel)  //TODO move to camera class
 {
     if (Zlevel <= MainCamera->LookZ())
 	{

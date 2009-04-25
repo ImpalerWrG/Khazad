@@ -4,7 +4,7 @@
 	<GameCaption Caption="An XML Caption"/>
 	<MapSize X="12" Y="12" Z="8"/>
 	<CellSize EdgeLength="16"/>
-	<Zoom Min="5" Start="100" Max="500"/>
+	<Zoom Min="4" Start="100" Max="130"/>
 	<InterfaceSpeed Orbit="100" Tilt="100" Slide="100" Zoom="100"/>
 	<MapLoading Path=""/>
 	<MapSaving Path=""/>

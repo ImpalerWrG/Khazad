@@ -44,7 +44,7 @@ public:
     int getAggragateTextureSize()       { return MainTextureSize; }
     SDL_Surface* getAgragateSurface()   { return AgragateSurface; }
 
-    void BindTexturePoint(Uint32 TextureID, Uint8 Corner);
+    void BindTexturePoint(Uint32 TextureID, Uint8 Corner = 0);
 
 protected:
 

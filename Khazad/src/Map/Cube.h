@@ -55,7 +55,7 @@ public:
 
 
 	bool Update();
-	bool Draw();
+	bool Draw(Direction CameraDirection);
 
 protected:
 

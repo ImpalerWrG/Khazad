@@ -44,7 +44,7 @@ bool Actor::Update()
 	return true;
 }
 
-bool Actor::Draw()
+bool Actor::Draw(Direction CameraDirection)
 {
 	return true;
 }
