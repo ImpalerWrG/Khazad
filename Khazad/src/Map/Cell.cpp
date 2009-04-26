@@ -81,7 +81,7 @@ bool Cell::Draw(Direction CameraDirection)
 
     Cube* LoopCube = NULL;
 
-    if(Initalized && SCREEN->InSlice(Position.z) > 0)
+    if(Initalized)
     {
         for (Uint16 x = 0; x < CellEdgeLenth; x++)
         {
@@ -95,9 +95,6 @@ bool Cell::Draw(Direction CameraDirection)
             }
         }
     }
-
-    float Shading = SCREEN->getShading(Position.z);  // Atleast one gl call must occure in each Drawlist to prevent weird Segfault in Atioglx1.dll
-    glColor3f(Shading, Shading, Shading);
 
 	return true;
 }

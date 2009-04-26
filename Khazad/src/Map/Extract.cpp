@@ -36,7 +36,10 @@ int Extractor::dumpMemory()
     int temp_loc, temp_locx, temp_locy, temp_locz;
     unsigned int current_mem = 0;
     int pe_found;
-    short int temp_tile;
+
+    short int TemporaryTile;
+    int TemporaryDesignation;
+    int TemporaryOccupancy;
 
     DWORD bytesRead = 0;
 
@@ -61,6 +64,8 @@ int Extractor::dumpMemory()
     int y_count_offset = meminfo[0].y_count_offset;
     int z_count_offset = meminfo[0].z_count_offset;
     int tile_type_offset = meminfo[0].tile_type_offset;
+    int designation_offset = meminfo[0].tile_type_offset;
+    int occupancy_offset = meminfo[0].tile_type_offset;
 
 
     for ( unsigned int i=1; i < meminfo.size(); i++ )
@@ -123,6 +128,8 @@ int Extractor::dumpMemory()
             y_count_offset = meminfo[current_mem].y_count_offset;
             z_count_offset = meminfo[current_mem].z_count_offset;
             tile_type_offset = meminfo[current_mem].tile_type_offset;
+            designation_offset = meminfo[current_mem].designation_offset;
+            occupancy_offset = meminfo[current_mem].occupancy_offset;
         }
     }
 
@@ -168,14 +175,20 @@ int Extractor::dumpMemory()
         }
 
         Tiles = new short int**[MapSizeX];
+        Designations = new int**[MapSizeX];
+        Ocupancy = new int**[MapSizeX];
 
         for (Uint32 x = 0; x < MapSizeX; x++)
         {
             Tiles[x] = new short int*[MapSizeY];
+            Designations[x] = new int*[MapSizeY];
+            Ocupancy[x] = new int*[MapSizeY];
 
             for (Uint32 y = 0; y < MapSizeY; y++)
             {
                 Tiles[x][y] = new short int[MapSizeZ];
+                Designations[x][y] = new int[MapSizeZ];
+                Ocupancy[x][y] = new int[MapSizeZ];
             }
         }
 
@@ -212,13 +225,20 @@ int Extractor::dumpMemory()
                         {
                             if(Blocks[x][y][z])
                             {
-                                ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + tile_type_offset + (2 * BlockY + (BlockX * BlockSize * 2))), &temp_tile, sizeof(short int), &bytesRead );
+                                ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + tile_type_offset + (2 * BlockY + (BlockX * BlockSize * 2))), &TemporaryTile, sizeof(short int), &bytesRead );
+                                Tiles[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = TemporaryTile;
 
-                                Tiles[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = temp_tile;
+                                ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + designation_offset + (4 * BlockY + (BlockX * BlockSize * 4))), &TemporaryDesignation, sizeof(int), &bytesRead );
+                                Designations[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = TemporaryDesignation;
+
+                                ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + occupancy_offset + (4 * BlockY + (BlockX * BlockSize * 4))), &TemporaryOccupancy, sizeof(int), &bytesRead );
+                                Ocupancy[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = TemporaryOccupancy;
                             }
                             else
                             {
                                 Tiles[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = -1;
+                                Designations[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = 0;
+                                Ocupancy[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = 0;
                             }
                         }
                     }
@@ -259,6 +279,8 @@ bool Extractor::writeMap(char* FilePath)
                 for (int x = 0; x < x_blocks * BlockSize; x++ )
                 {
                     fwrite(&Tiles[x][y][z], sizeof(short int), 1, SaveFile);
+                    fwrite(&Designations[x][y][z], sizeof(int), 1, SaveFile);
+                    fwrite(&Ocupancy[x][y][z], sizeof(int), 1, SaveFile);
                 }
             }
         }
@@ -305,14 +327,20 @@ int Extractor::loadMap(char* FilePath, bool Legacy)
         Uint32 MapSizeZ = z_levels;
 
         Tiles = new short int**[MapSizeX];
+        Designations = new int**[MapSizeX];
+        Ocupancy = new int**[MapSizeX];
 
         for (Uint32 x = 0; x < MapSizeX + (Pad * 2); x++)
         {
             Tiles[x] = new short int*[MapSizeY];
+            Designations[x] = new int*[MapSizeY];
+            Ocupancy[x] = new int*[MapSizeY];
 
             for (Uint32 y = 0; y < MapSizeY + (Pad * 2); y++)
             {
                 Tiles[x][y] = new short int[MapSizeZ];
+                Designations[x][y] = new int[MapSizeZ];
+                Ocupancy[x][y] = new int[MapSizeZ];
             }
         }
 
@@ -323,6 +351,8 @@ int Extractor::loadMap(char* FilePath, bool Legacy)
                 for(int x = 0; x < MapSizeX; x++)
                 {
                     fread(&Tiles[x + Pad][y + Pad][z + Pad], sizeof(short int), 1, MapFile);
+                    fread(&Designations[x + Pad][y + Pad][z + Pad], sizeof(int), 1, MapFile);
+                    fread(&Ocupancy[x + Pad][y + Pad][z + Pad], sizeof(int), 1, MapFile);
                 }
             }
         }
@@ -1507,3 +1537,12 @@ int Extractor::isWallTerrain(int in)
     return 0;
 }
 
+bool Extractor::isDesignationFlag(unsigned int flag, int x, int y, int z)
+{
+    return (Designations[x][y][z] & (1 << flag));
+}
+
+bool Extractor::isOcupancyFlag(unsigned int flag, int x, int y, int z)
+{
+    return (Ocupancy[x][y][z] & (1 << flag));
+}

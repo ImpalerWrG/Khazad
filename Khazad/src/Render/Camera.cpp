@@ -70,8 +70,6 @@ void Camera::setIsometricProj( float Width, float Hight, float Depth )
 	generateViewFrustum();
 }
 
-// Add Flat projection for UI with gluOrtho2D
-
 void Camera::setViewMatrix( Vector3& vecEye, Vector3& vecLookAt, Vector3& vecUp)
 {
 	EyePosition = vecEye;
@@ -402,55 +400,20 @@ void Camera::UpdateDirection()
 
 	if (X >= 0)
 	{
-		if (X == 0)
-		{
-			if (Y >= 0)
-			{
-				if (Y == 0)
-				{
-					//CameraDirection = // DOWN ??
-				}
-				else // Y > 0
-				{
-					CameraDir = NORTHEAST;
-				}
-			}
-			else // Y < 0
-			{
-				CameraDir = SOUTHWEST;
-			}
-		}
-		else // X > 0
-		{
-			if (Y >= 0)
-			{
-				if (Y == 0)
-				{
-					CameraDir = NORTHWEST;
-				}
-				else // Y > 0
-				{
-					CameraDir = NORTH;
-				}
-			}
-			else // Y < 0
-			{
-				CameraDir = WEST;
-			}
-		}
+        if (Y >= 0)
+        {
+            CameraDir = NORTH;
+        }
+        else // Y < 0
+        {
+            CameraDir = WEST;
+        }
 	}
 	else // X < 0
 	{
 		if (Y >= 0)
 		{
-			if (Y == 0)
-			{
-				CameraDir = SOUTHEAST;
-			}
-			else // Y > 0
-			{
-				CameraDir = EAST;
-			}
+            CameraDir = EAST;
 		}
 		else // Y < 0
 		{
@@ -458,13 +421,8 @@ void Camera::UpdateDirection()
 		}
 	}
 
-	if (CameraDir != CameraDirection)
-	{
-		//SCREEN->DirtyAllLists();
-	}
 	CameraDirection = CameraDir;
 }
-
 
 void Camera::RotateView(float X, float Y, float Z)
 {
@@ -610,7 +568,11 @@ void Camera::MoveViewVertical(float Z)
 	LookPosition.z += Z;
 
 	generateViewFrustum();
-    //SCREEN->DirtyAllLists();
+
+	if(SCREEN->isShadedDraw())
+	{
+        SCREEN->DirtyAllLists();
+	}
 }
 
 void Camera::ChangeViewLevels(Sint32 Change)
@@ -624,7 +586,11 @@ void Camera::ChangeViewLevels(Sint32 Change)
             ViewLevels = 1;
         }
         generateViewFrustum();
-        SCREEN->DirtyAllLists();
+
+        if(SCREEN->isShadedDraw())
+        {
+            SCREEN->DirtyAllLists();
+        }
     }
 }
 
@@ -643,10 +609,9 @@ void Camera::SetDefaultView()
 	UpVector.z = 0.0;
 
     IsoScalar = CONFIG->ZoomStart();
-    ViewLevels = 6;
+    ViewLevels = 5;
 
 	generateViewFrustum();
-    //SCREEN->DirtyAllLists();
 }
 
 void Camera::CenterView()
@@ -671,10 +636,43 @@ void Camera::CenterView()
     IsoScalar = CONFIG->ZoomMax();
 
 	generateViewFrustum();
-    //SCREEN->DirtyAllLists();
 }
 
-bool Camera::sphereInFrustum(Vector3 &Point, float Radius)
+bool Camera::InSlice(float Zlevel)
+{
+    if (Zlevel <= LookPosition.z)
+	{
+		float Depth = LookPosition.z - Zlevel;
+		if (Depth < ViewLevels)
+		{
+			return true;
+		}
+		return false;
+	}
+	return false;
+}
+
+float Camera::getShading(float Zlevel)
+{
+	if (Zlevel <= LookPosition.z)
+	{
+		float Depth = LookPosition.z - Zlevel;
+		if (Depth < ViewLevels)
+		{
+			float Shading = 1.0;
+			if (Depth > 0) // Below look level
+			{
+				Shading -= (float) Depth / (float) ViewLevels;
+				return Shading;
+			}
+			return Shading;
+		}
+		return 0.0;
+	}
+    return 0.0;
+}
+
+bool Camera::sphereInFrustum(Vector3 Point, float Radius)
 {
 	float distance;
 

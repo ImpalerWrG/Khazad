@@ -30,7 +30,9 @@ public:
     bool MapLoaded;
 
     short int*** Tiles;
-    // Write a designation grabbing array for hidden-ness info
+    int*** Designations;
+    int*** Ocupancy;
+
     int*** Blocks;
 
     std::vector<memory_info> meminfo;
@@ -38,9 +40,6 @@ public:
     int x_blocks;
     int y_blocks;
     int z_levels;
-
-    //int z_active_levels;
-    //bool* z_level_active;
 
     bool Init();
     ~Extractor();
@@ -61,6 +60,8 @@ public:
     int isFloorTerrain(int);
     int isWallTerrain(int);
 
+    bool isDesignationFlag(unsigned int flag, int x, int y, int z);
+    bool isOcupancyFlag(unsigned int flag, int x, int y, int z);
 };
 
 

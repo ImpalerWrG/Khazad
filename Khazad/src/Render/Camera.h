@@ -33,26 +33,29 @@ protected:
 
 public:
 
-
-	float EyeX() { return EyePosition.x; }
-	float EyeY() { return EyePosition.y; }
-	float EyeZ() { return EyePosition.z; }
-	Vector3 Eye() { return EyePosition; }
-
-	float LookX() { return LookPosition.x; }
-	float LookY() { return LookPosition.y; }
-	float LookZ() { return LookPosition.z; }
-	Vector3 Look() { return LookPosition; }
-
-	Uint8 getViewLevels() { return ViewLevels; }
-	Direction getDirection() { return CameraDirection; }
-	void UpdateDirection();
-	float getScalar() { return IsoScalar; }
-	float getShading(float Zlevel);
-
 	Camera();
 	bool Init(bool IsoMetric);
 	~Camera();
+
+	float EyeX()    { return EyePosition.x; }
+	float EyeY()    { return EyePosition.y; }
+	float EyeZ()    { return EyePosition.z; }
+	Vector3 Eye()   { return EyePosition; }
+
+	float LookX()   { return LookPosition.x; }
+	float LookY()   { return LookPosition.y; }
+	float LookZ()   { return LookPosition.z; }
+	Vector3 Look()  { return LookPosition; }
+
+	Uint8 getViewLevels()           { return ViewLevels; }
+	Direction getDirection()        { return CameraDirection; }
+	void UpdateDirection();
+
+	float getScalar()               { return IsoScalar; }
+
+    bool InSlice(float Zlevel);
+    float getShading(float Zlevel);
+
 
 	/**
 	* This method is responsible for capturing our current view
@@ -175,7 +178,7 @@ public:
 	* @param float - radius of the sphere
 	* @return bool - true if the sphere is inside the frustum
 	*/
-	bool sphereInFrustum(Vector3 &Point, float Radius);
+	bool sphereInFrustum(Vector3 Point, float Radius);
 
 
 	void setAllFacesDrawing(bool NewValue);

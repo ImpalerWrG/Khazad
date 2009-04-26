@@ -240,48 +240,45 @@ bool ScreenManager::Render()
     glScalef(1.0 / (float) TEXTURE->getAggragateTextureSize(), 1.0 / (float) TEXTURE->getAggragateTextureSize(), 1);
     glBindTexture(GL_TEXTURE_2D, TEXTURE->getAggragateTexture());
 
-	for(Uint16 Zlevel = 0; Zlevel < MAP->getCellSizeZ(); Zlevel++) // Bottom up drawing
+	for(Uint16 Zlevel = 0; Zlevel < MAP->getCellSizeZ(); Zlevel++)
 	{
-        float Shading = SCREEN->getShading(Zlevel);  // Atleast one gl call must occure in each Drawlist to prevent weird Segfault in Atioglx1.dll
-        glColor3f(Shading, Shading, Shading);
-
-		if (Zlevel <= MainCamera->LookZ())
+		if (MainCamera->InSlice(Zlevel))
 		{
-			for (Uint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
-			{
-				for (Uint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
-				{
-					Cell* LoopCell = MAP->getCell(SizeX, SizeY, Zlevel);
+            float Shading = 1.0;
+            if(ShadedDraw)
+            {
+                Shading = MainCamera->getShading(Zlevel);
+            }
 
-					if  (MainCamera->sphereInFrustum(LoopCell->Position, CellEdgeLenth))
-					{
-						if(LoopCell->DirtyDrawlist == true)
-						{
-							// Rebuild the new Drawlist
-							GLuint DrawListID = LoopCell->DrawListID;
-							glDeleteLists(DrawListID, 4);
+            for (Uint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
+            {
+                for (Uint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
+                {
+                    Cell* LoopCell = MAP->getCell(SizeX, SizeY, Zlevel);
 
-                            glColor3f(Shading, Shading, Shading);
-                            RefreshDrawlist(LoopCell, DrawListID, NORTHEAST, (MainCamera->getDirection() == NORTHEAST));
-                            glColor3f(Shading, Shading, Shading);
-                            RefreshDrawlist(LoopCell, DrawListID + 1, SOUTHEAST, (MainCamera->getDirection() == SOUTHEAST));
-                            glColor3f(Shading, Shading, Shading);
-                            RefreshDrawlist(LoopCell, DrawListID + 2, SOUTHWEST, (MainCamera->getDirection() == SOUTHWEST));
-                            glColor3f(Shading, Shading, Shading);
-                            RefreshDrawlist(LoopCell, DrawListID + 3, NORTHWEST, (MainCamera->getDirection() == NORTHWEST));
-                            glColor3f(Shading, Shading, Shading);
+                    if  (MainCamera->sphereInFrustum(LoopCell->Position, CellEdgeLenth))
+                    {
+                        if(LoopCell->DirtyDrawlist)
+                        {
+                            // Rebuild the new Drawlist
+                            GLuint DrawListID = LoopCell->DrawListID;
+                            glDeleteLists(DrawListID, 4);
 
-							LoopCell->DirtyDrawlist = false;
-						}
-						else
-						{
-                            glColor3f(Shading, Shading, Shading);
-							glCallList(LoopCell->DrawListID);
-							TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
-						}
-					}
-				}
-			}
+                            RefreshDrawlist(LoopCell, DrawListID, NORTH, Shading, (MainCamera->getDirection() == NORTH));
+                            RefreshDrawlist(LoopCell, DrawListID + 1, SOUTH, Shading, (MainCamera->getDirection() == SOUTH));
+                            RefreshDrawlist(LoopCell, DrawListID + 2, EAST, Shading, (MainCamera->getDirection() == EAST));
+                            RefreshDrawlist(LoopCell, DrawListID + 3, WEST, Shading, (MainCamera->getDirection() == WEST));
+
+                            LoopCell->DirtyDrawlist = false;
+                        }
+                        else
+                        {
+                            glCallList(LoopCell->DrawListID);
+                            TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
+                        }
+                    }
+                }
+            }
 		}
 	}
 
@@ -305,7 +302,7 @@ bool ScreenManager::Render()
 	return true;
 }
 
-void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, Direction Orientation, bool Execute)
+void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, Direction Orientation, float Shadding, bool Execute)
 {
     if(Execute)
     {
@@ -318,6 +315,8 @@ void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, Directi
 
         TriangleCounter = 0;  // Reset Counter and Track Triangle count
         glBegin(GL_TRIANGLES);
+
+            glColor3f(Shadding, Shadding, Shadding); // Atleast one gl call must occure in each Drawlist to prevent weird Segfault in Atioglx1.dll
 
             TargetCell->Draw(Orientation);
 
@@ -335,45 +334,6 @@ void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, Directi
 void ScreenManager::IncrementTriangles(Uint32 Triangles)
 {
     TriangleCounter += Triangles;
-}
-
-bool ScreenManager::InSlice(float Zlevel)  //TODO move to camera class
-{
-    if (Zlevel <= MainCamera->LookZ())
-	{
-		float Depth = MainCamera->LookZ() - Zlevel;
-		if (Depth < MainCamera->getViewLevels())
-		{
-			return true;
-		}
-		return false;
-	}
-	return false;
-}
-
-float ScreenManager::getShading(float Zlevel)
-{
-    if(! ShadedDraw)
-    {
-        return 1.0;
-    }
-
-	if (Zlevel <= MainCamera->LookZ())
-	{
-		float Depth = MainCamera->LookZ() - Zlevel;
-		if (Depth < MainCamera->getViewLevels())
-		{
-			float Shading = 1.0;
-			if (Depth > 0) // Below look level
-			{
-				Shading -= Depth / MainCamera->getViewLevels();
-				return Shading;
-			}
-			return Shading;
-		}
-		return 0.0;
-	}
-    return 0.0;
 }
 
 void ScreenManager::ToggleFullScreen()

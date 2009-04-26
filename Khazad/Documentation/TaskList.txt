@@ -8,4 +8,4 @@ This is a list of tasks I'll be working on, most of these items will be adressed
 - Extract additional data from DF to check for Hidden terrain, make hiden terrain toglable
 - Get textures under Creative Commons licence
 - Improve DF data parsing to expand/clarify texture types
-- Reduce drawlist updates by storing 4 drawlists per cell
+

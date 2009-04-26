@@ -46,12 +46,9 @@ public:
 	void DirtyAllLists();
 	bool Render();
 
-	void RefreshDrawlist(Cell* TargetCell, GLuint DrawlistID, Direction Orientation, bool Execute);
+	void RefreshDrawlist(Cell* TargetCell, GLuint DrawlistID, Direction Orientation, float Shadding, bool Execute);
 
 	void IncrementTriangles(Uint32 Triangles);
-
-	bool InSlice(float Zlevel);
-	float getShading(float Zlevel);
 
 	void PrintDebugging();
 
