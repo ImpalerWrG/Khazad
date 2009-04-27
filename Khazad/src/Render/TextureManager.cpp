@@ -144,12 +144,13 @@ SDL_Surface* TextureManager::loadSurface(char* filepath, bool Color)
 		else
 		{
 			ConvertedSurface = SDL_DisplayFormatAlpha(RawSurface);
-			SDL_FreeSurface(RawSurface);
 			if (ConvertedSurface != NULL)
 			{
+                SDL_FreeSurface(RawSurface);
 				return ConvertedSurface;
 			}
-			return ConvertedSurface;
+            SDL_FreeSurface(ConvertedSurface);
+			return RawSurface;
 		}
 
 		return NULL;
@@ -207,7 +208,7 @@ void TextureManager::loadClippedSurface(char* filepath, int cliphight, int clipw
 	}
 }
 
-void TextureManager::loadTextureSingular(char* filepath, bool ColorKey, bool bmp)
+SDL_Surface* TextureManager::loadTextureSingular(char* filepath, bool ColorKey, bool bmp)
 {
     SDL_Surface* TextureImage = NULL;
 	TextureImage = IMG_Load(filepath);
@@ -232,7 +233,9 @@ void TextureManager::loadTextureSingular(char* filepath, bool ColorKey, bool bmp
     if (TextureImage)
 	{
         RawTextureVector.push_back(TextureImage);
+        return TextureImage;
 	}
+	return NULL;
 }
 
 void TextureManager::MergeTextures()
@@ -270,6 +273,8 @@ void TextureManager::MergeTextures()
 
         TextureCordinates.push_back(TextureCorners);
         Destination.x += Source->w;
+
+        SDL_FreeSurface(Source);
     }
 
     glGenTextures(1, &MainTexture);

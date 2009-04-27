@@ -248,7 +248,7 @@ bool Map::Generate(Uint32 Seed)
 
             if(TargetCell)
             {
-                if(!TargetCell->Initalized)
+                if(!TargetCell->isInitalized())
                 {
                     TargetCell->Init();
                 }
@@ -258,7 +258,7 @@ bool Map::Generate(Uint32 Seed)
 
                 if (NewCube)
                 {
-                    if (NewCube->Initalized != true)
+                    if (NewCube->isInitalized() != true)
                     {
                         NewCube->Init(RANDOM->Roll(0, 4));   // TEMPORARY RANDOMIZING OF TEXTURES HACK, must have atleast this many texture and XML material entries
                         if (Type != SLOPE_FLAT)
@@ -310,7 +310,7 @@ Cube* Map::getCube(Sint32 X, Sint32 Y, Sint32 Z)
 
     if(TargetCell)
     {
-        if(TargetCell->Initalized)
+        if(TargetCell->isInitalized())
         {
             Sint32 CubeX = X % CubesPerCellSide;
             Sint32 CubeY = Y % CubesPerCellSide;
@@ -382,10 +382,11 @@ void Map::LoadExtract()
                     bool IsOpen = EXTRACT->isOpenTerrain(TileType);
                     bool IsRamp = EXTRACT->isRampTerrain(TileType);
                     bool IsLiquid = EXTRACT->isLiquidTerrain(TileType);
+                    bool IsStairs = EXTRACT->isStairTerrain(TileType);
 
-                    if(IsFloor || IsWall || IsOpen || IsRamp || IsLiquid)
+                    if(IsFloor || IsWall || IsOpen || IsRamp || IsLiquid || IsStairs)
                     {
-                        if(!TargetCell->Initalized)
+                        if(!TargetCell->isInitalized())
                         {
                             TargetCell->Init();
                         }
@@ -431,8 +432,17 @@ void Map::LoadExtract()
                                 NewCube->SetSlope(SLOPE_FLAT);  // Prime the Slope, the type can not yet be determined
                             }
 
+                            if (IsStairs)
+                            {
+                                NewCube->Open();
+                                //TODO render stairs
+                            }
+
                             NewCube->setVisible(true);
-                            //NewCube->setAllFacesVisiblity(true);
+                            if(EXTRACT->isDesignationFlag(9, i, j, k))
+                            {
+                                NewCube->setHidden(true);
+                            }
                         }
                     }
                 }

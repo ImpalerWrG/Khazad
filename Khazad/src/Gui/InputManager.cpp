@@ -8,6 +8,8 @@
 #include <Camera.h>
 #include <Singleton.h>
 #include <Cube.h>
+#include <ConfigManager.h>
+#include <ColorManager.h>
 
 
 DECLARE_SINGLETON(InputManager)
@@ -64,11 +66,20 @@ bool InputManager::HandleInput()
 					}
                     if (event.key.keysym.sym == SDLK_r)
 					{
-					    //SCREEN->MainCamera->setAllFacesDrawing(!SCREEN->MainCamera->isAllFacesDrawing());
+					    //SCREEN->MainCamera->setAllFacesDrawing(!SCREEN->MainCamera->isAllFacesDrawing()); //TODO remove allfacesdrawing concept
 					}
                     if (event.key.keysym.sym == SDLK_d)
 					{
                         SCREEN->WipeScreen();
+                        SCREEN->setDrawingFlat();
+                        SCREEN->RenderLogo();
+
+                        SCREEN->RenderTextCentered("Dumping Memory", 0, WHITE, 0);
+
+                        SCREEN->Flip();
+
+                        //SCREEN->RenderSurface("Assets//Textures//KhazadLogo.png", position);
+
 					    if(!MAP->Initialized)
 					    {
                             EXTRACT->dumpMemory();
@@ -84,22 +95,42 @@ bool InputManager::HandleInput()
                     if (event.key.keysym.sym == SDLK_l)
 					{
                         SCREEN->WipeScreen();
+                        SCREEN->setDrawingFlat();
+                        SCREEN->RenderLogo();
+
+                        char buffer[256];
+                        sprintf(buffer, "Loading from File:  %s", CONFIG->LoadPath());
+                        SCREEN->RenderTextCentered(buffer, 0, WHITE, 0);
+                        SCREEN->Flip();
+
+                        //SCREEN->RenderSurface(TEXTURE->loadTextureSingular("Assets//Textures//KhazadLogo.png"), position);
+
+
 					    if(!MAP->Initialized)
 					    {
-                            EXTRACT->loadMap("KhazadMap.map");
+                            EXTRACT->loadMap(CONFIG->LoadPath());
                             MAP->LoadExtract();
                             SCREEN->MainCamera->CenterView();
 					    }
 					    else
 					    {
-                            EXTRACT->loadMap("KhazadMap.map");
+                            EXTRACT->loadMap(CONFIG->LoadPath());
                             MAP->LoadExtract();
 					    }
 					}
                     if (event.key.keysym.sym == SDLK_w)
 					{
                         SCREEN->WipeScreen();
-					    EXTRACT->writeMap("KhazadMap.map");
+                        SCREEN->setDrawingFlat();
+                        SCREEN->RenderLogo();
+
+                        char buffer[256];
+                        sprintf(buffer, "Writing to File:  %s", CONFIG->SavePath());
+                        SCREEN->RenderTextCentered(buffer, 0, WHITE, 0);
+                        SCREEN->Flip();
+
+
+					    EXTRACT->writeMap(CONFIG->SavePath());
 					}
                     if (event.key.keysym.sym == SDLK_f)
 					{
@@ -108,6 +139,10 @@ bool InputManager::HandleInput()
                     if (event.key.keysym.sym == SDLK_s)
 					{
 					    SCREEN->setShadedDraw(!SCREEN->isShadedDraw());
+					}
+                    if (event.key.keysym.sym == SDLK_h)
+					{
+					    SCREEN->setHiddenDraw(!SCREEN->isHiddenDraw());
 					}
 				}
 				break;

@@ -28,6 +28,9 @@ ScreenManager::ScreenManager()
 
 	FrameDraw = true;
 	ShadedDraw = false;
+	HiddenDraw = false;
+
+	LogoSurface = NULL;
 }
 
 ScreenManager::~ScreenManager()
@@ -53,6 +56,8 @@ bool ScreenManager::Init()
         SDL_SetColorKey(Icon, SDL_SRCCOLORKEY, colorkey);
         SDL_WM_SetIcon(Icon, NULL);
     }
+
+    LogoSurface = TEXTURE->loadSurface("Assets\\Textures\\KhazadLogo.png");
 
     if(CONFIG->FullScreen())
     {
@@ -86,6 +91,8 @@ bool ScreenManager::Init()
 
     MainCamera = new Camera();
 	MainCamera->Init(true);
+
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Hight)
@@ -101,6 +108,98 @@ bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Hight)
 		return true;
 	}
 	return false;
+}
+
+void ScreenManager::RenderText(char *text, Sint8 FontIndex, SDL_Color Color, SDL_Rect *location)
+{
+    SDL_Surface* FontSurface = FONT->makeFontSurface(text, Color, FontIndex);
+    RenderSurface(FontSurface, location);
+    SDL_FreeSurface(FontSurface);
+}
+
+void ScreenManager::RenderTextCentered(char *text, Sint8 FontIndex, SDL_Color Color, Sint16 Verticaladjust)
+{
+    SDL_Surface* FontSurface = FONT->makeFontSurface(text, Color, FontIndex);
+
+    SDL_Rect location;
+    location.x = (ScreenWidth / 2) - (FontSurface->clip_rect.w / 2);
+    location.y = (ScreenHight / 2) - (FontSurface->clip_rect.h / 2) + Verticaladjust;
+    location.w = FontSurface->clip_rect.w;
+    location.h = FontSurface->clip_rect.h;
+
+    RenderSurface(FontSurface, &location);
+    SDL_FreeSurface(FontSurface);
+}
+
+void ScreenManager::RenderSurface(SDL_Surface* RenderSurface, SDL_Rect *location)
+{
+	SDL_Surface *intermediary;
+	SDL_Rect rect;
+	GLuint texture;
+
+	rect.w = nextpoweroftwo(RenderSurface->w);
+	rect.h = nextpoweroftwo(RenderSurface->h);
+
+	intermediary = SDL_CreateRGBSurface(0, rect.w, rect.h, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+
+	SDL_BlitSurface(RenderSurface, 0, intermediary, 0);
+
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexImage2D(GL_TEXTURE_2D, 0, 4, rect.w, rect.h, 0, GL_BGRA, GL_UNSIGNED_BYTE, intermediary->pixels );
+
+	/* GL_NEAREST looks horrible, if scaled... */
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    RenderTexture(texture, &rect, location);
+
+	/* return the deltas in the unused w,h part of the rect */
+	location->w = RenderSurface->w;
+	location->h = RenderSurface->h;
+
+	SDL_FreeSurface(intermediary);
+	glDeleteTextures(1, &texture);
+}
+
+void ScreenManager::RenderTexture(GLuint texture, SDL_Rect *Size, SDL_Rect *location)
+{
+ 	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glColor3f(1.0f, 1.0f, 1.0f);
+
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 1.0f);   glVertex2f(location->x           , location->y);
+		glTexCoord2f(1.0f, 1.0f);   glVertex2f(location->x + Size->w , location->y);
+		glTexCoord2f(1.0f, 0.0f);   glVertex2f(location->x + Size->w , location->y + Size->h);
+		glTexCoord2f(0.0f, 0.0f);   glVertex2f(location->x           , location->y + Size->h);
+	glEnd();
+
+	glFinish();
+}
+
+void ScreenManager::RenderLogo()
+{
+    SDL_Rect location;
+
+    location.x = (ScreenWidth / 2) - (LogoSurface->clip_rect.w / 2);
+    location.y = (ScreenHight * 2 / 3) - (LogoSurface->clip_rect.h / 2);
+
+    location.w = LogoSurface->clip_rect.w;
+    location.h = LogoSurface->clip_rect.h;
+
+    RenderSurface(LogoSurface, &location);
+}
+
+int ScreenManager::round(double x)
+{
+	return (int)(x + 0.5);
+}
+
+int ScreenManager::nextpoweroftwo(int x)
+{
+	double logbase2 = log(x) / log(2);
+	return round(pow(2, ceil(logbase2)));
 }
 
 void ScreenManager::applyClipAt(SDL_Rect Offset, ClipImage* Clip)
@@ -120,6 +219,8 @@ void ScreenManager::applyClipAt(SDL_Rect Offset, ClipImage* Clip)
 
 void ScreenManager::applyClipCentered(SDL_Rect Offset, ClipImage* Clip)
 {
+    setDrawingFlat();
+
 	if (Clip != NULL)
 	{
 		SDL_Rect finalOffset;
@@ -205,15 +306,33 @@ SDL_Color ScreenManager::getPickingColor()
 bool ScreenManager::Render()
 {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	MainCamera->UpdateView();
+
+    if(MAP == NULL || !MAP->Initialized)
+    {
+        setDrawingFlat();
+        RenderLogo();
+        RenderTextCentered("KHAZAD", 0, WHITE, +40);
+
+        RenderTextCentered("Press (d) to Dump memory from Dwarf Fortress,", 0, WHITE, -10);
+        RenderTextCentered("or (l) to load from File, (w) write too file", 0, WHITE, -40);
+
+        RenderTextCentered("Press (s) to toggle depth shaddowing,", 0, WHITE, -100);
+        RenderTextCentered("Press (h) to reveal hidden features,", 0, WHITE, -130);
+        RenderTextCentered("Press (f) to toggle wireframe,", 0, WHITE, -160);
+        RenderTextCentered("Press (c) to center the view,", 0, WHITE, -190);
+
+        return false;
+    }
 
 	TotalTriangles = 0;
     TriangleCounter = 0;
 
-    if(MAP == NULL || !MAP->Initialized)
+    if(FlatDraw)
     {
-        return false;
+        setDrawing3D();
     }
+
+	MainCamera->UpdateView();
 
     if(FrameDraw)
     {
@@ -223,7 +342,7 @@ bool ScreenManager::Render()
         Point.z -= 0.48;
         DrawCage(Point, MAP->getMapSizeX() - 0.04, MAP->getMapSizeY() - 0.04, MAP->getMapSizeZ() - 0.04);
 
-        Point.x = (int) MainCamera->LookX() - 0.48;
+        Point.x = (int) MainCamera->LookX() - 0.48;  //TODO move most of this logic into DrawCage
         Point.y = (int) MainCamera->LookY() - 0.48;
         Point.z = (int) MainCamera->LookZ() - 0.48;
         DrawCage(Point, .96, .96, .98);             // Keeps Cube lines from disapearing into tiles
@@ -318,7 +437,7 @@ void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, Directi
 
             glColor3f(Shadding, Shadding, Shadding); // Atleast one gl call must occure in each Drawlist to prevent weird Segfault in Atioglx1.dll
 
-            TargetCell->Draw(Orientation);
+            TargetCell->Draw(Orientation, HiddenDraw);
 
         glEnd();
 
@@ -354,32 +473,42 @@ void ScreenManager::ToggleFullScreen()
 	TEXTURE->Init();
 }
 
-void ScreenManager::Enable2D()
+void ScreenManager::setDrawingFlat()
 {
-	int vPort[4];
+    if(!FlatDraw)
+    {
+        int vPort[4];
 
-	glGetIntegerv(GL_VIEWPORT, vPort);
+        glGetIntegerv(GL_VIEWPORT, vPort);
 
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
 
-	glOrtho(0, vPort[2], 0, vPort[3], -1, 1);
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
+        glOrtho(0, vPort[2], 0, vPort[3], -10000, 10000);
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
 
-    glDisable(GL_DEPTH_TEST);
+        glDisable(GL_DEPTH_TEST);
+
+        FlatDraw = true;
+    }
 }
 
-void ScreenManager::Disable2D()
+void ScreenManager::setDrawing3D()
 {
-    glEnable(GL_DEPTH_TEST);
+    if(FlatDraw)
+    {
+        glEnable(GL_DEPTH_TEST);
 
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        glPopMatrix();
+
+        FlatDraw = false;
+    }
 }
 
 void ScreenManager::PrintDebugging()
@@ -394,9 +523,15 @@ void ScreenManager::ShowAxis(void)
     DrawPoint(Point, 100);
 }
 
-bool ScreenManager::setShadedDraw(bool NewValue)
+void ScreenManager::setShadedDraw(bool NewValue)
 {
     ShadedDraw = NewValue;
+    DirtyAllLists();
+}
+
+void ScreenManager::setHiddenDraw(bool NewValue)
+{
+    HiddenDraw = NewValue;
     DirtyAllLists();
 }
 

@@ -19,7 +19,7 @@ public:
     Uint16 getTriangleCount() { return TriangleCount; }
     void setTriangleCount(Uint16 Triangles) { TriangleCount = Triangles; }
 
-	bool Draw(Direction CameraDirection);
+	bool Draw(Direction CameraDirection, bool DrawHidden = false);
 	bool Update();
 
 	void SetBasment(bool Value) { Basment = Value; }

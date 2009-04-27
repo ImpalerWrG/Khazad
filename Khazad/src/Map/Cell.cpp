@@ -70,7 +70,7 @@ bool Cell::Update()
 	return true;
 }
 
-bool Cell::Draw(Direction CameraDirection)
+bool Cell::Draw(Direction CameraDirection, bool DrawHidden)
 {
     if(Basment) // Nothing to draw for these Cells  (Sky | Rock | Air)
     {
@@ -78,7 +78,6 @@ bool Cell::Draw(Direction CameraDirection)
     }
 
 	Uint16 CellEdgeLenth = CONFIG->getCellEdgeLength();
-
     Cube* LoopCube = NULL;
 
     if(Initalized)
@@ -88,9 +87,9 @@ bool Cell::Draw(Direction CameraDirection)
             for (Uint16 y = 0; y < CellEdgeLenth; y++)
             {
                 LoopCube = getCube(x, y);
-                if (LoopCube->Visible)
+                if (LoopCube->isVisible())
                 {
-                    LoopCube->Draw(CameraDirection);
+                    LoopCube->Draw(CameraDirection, DrawHidden);
                 }
             }
         }

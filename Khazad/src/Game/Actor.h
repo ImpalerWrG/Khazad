@@ -15,35 +15,40 @@ public:
 	Actor(ActorType Type);
 	Actor();
 	bool Init();
-	~Actor();
+	virtual ~Actor();
 
-    bool Initalized;
 
 	virtual bool Update();
 	virtual bool Draw(Direction CameraDirection);
 
 	Vector3 Position;
-	//Uint32 BirthDate;
-	//Uint32 ID;
 
 	bool Dead;
 
-	ActorType getType();
-	void setType(ActorType NewType);
+
+	ActorType getType()                { return Type; }
+	void setType(ActorType NewType)    { Type = NewType; }
 
 	bool Visible;
-	void setVisible(bool NewValue) { Visible = NewValue; }
+
+	bool isInitalized()                { return Initalized; }
+	void setInitalized(bool NewValue)  { Initalized = NewValue; }
+
+	bool isVisible()                { return Visible; }
+	void setVisible(bool NewValue)  { Visible = NewValue; }
 
 	bool DirtyDrawlist;
 	GLuint DrawListID;
 
+	bool isHidden()                 { return Hidden; }
+	void setHidden(bool NewValue)   { Hidden = NewValue; }
+
 protected:
 
 	ActorType Type;
-	//SDL_Rect BoundingBox;
-	//SDL_Rect DirtyBox;
 
-	//ClipImage* Sprite;
+    bool Initalized;
+    bool Hidden;
 };
 
 #endif  // ACTOR__HEADER

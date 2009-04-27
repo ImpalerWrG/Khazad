@@ -32,7 +32,7 @@ public:
 	SDL_Surface* loadBMPSurface(char* filepath, bool ColorKey = false);
 	SDL_Surface* loadSurface(char* filepath, bool ColorKey = false);
 
-	void loadTextureSingular(char* filepath, bool ColorKey = false, bool bmp = false);
+	SDL_Surface* loadTextureSingular(char* filepath, bool ColorKey = false, bool bmp = false);
 	void loadTexturePaged(char* filepath, int cliphight, int clipwidth, int rows, int columns, bool ColorKey = false, bool bmp = false);
     void MergeTextures();
 

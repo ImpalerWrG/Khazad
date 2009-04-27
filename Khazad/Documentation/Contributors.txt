@@ -1,15 +1,12 @@
-
 People and things that contributed to the creation of Khazad
-------------------------------------------------
+------------------------------------------------------------
 
+Project Lead:  		Kenneth "Impaler[WrG]" Ferland
 
-Project Lead:  Kenneth "Impaler[WrG]" Ferland
+Advisors:  			Will Miller (Firaxis), Domicic Cerquetti (Firaxis), Sinothdither (3Dwarf author) 
 
-Advisors:  	Will Miller (Firaxis), Domicic Cerquetti (Firaxis), 
-			Sinothdither (3Dwarf author), 
-			
-Special Thanks:  Mithaldu (Lifevis / Extractor author)
-			
-Artists: 	Davion
+Special Thanks:  	Mithaldu (Lifevis / Extractor author)
 
-Libraries:  OpenGL, SDL, Guichan, TinyXML
+Artists: 			Davion
+
+Libraries:  		OpenGL, SDL, Guichan, TinyXML

@@ -180,9 +180,9 @@ bool Face::Init(Cube* First, Cube* Second, Facet Type, Uint16 MaterialType)
 
 bool Face::CheckRemoval()
 {
-	if (FirstOwner != NULL && FirstOwner->Initalized)
+	if (FirstOwner != NULL && FirstOwner->isInitalized())
 	{
-        if (SecondOwner != NULL && SecondOwner->Initalized)
+        if (SecondOwner != NULL && SecondOwner->isInitalized())
         {
             return true;
         }

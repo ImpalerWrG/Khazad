@@ -4,6 +4,7 @@
 #include <stdafx.h>
 
 #include <Singleton.h>
+#include <SDL_ttf.h>
 
 
 class ClipImage;
@@ -13,6 +14,7 @@ class Vector3;
 class Face;
 class Cube;
 class Cell;
+
 
 
 class ScreenManager
@@ -25,16 +27,29 @@ public:
 	bool Init();
 
 	bool isFrameDraw()                  { return FrameDraw; }
-	bool setFrameDraw(bool NewValue)    { FrameDraw = NewValue; }
+	void setFrameDraw(bool NewValue)    { FrameDraw = NewValue; }
 
 	bool isShadedDraw()                 { return ShadedDraw; }
-	bool setShadedDraw(bool NewValue);
+	void setShadedDraw(bool NewValue);
+
+	bool isHiddenDraw()                 { return HiddenDraw; }
+	void setHiddenDraw(bool NewValue);
 
 	bool ReSizeScreen(Uint16 Width, Uint16 Hight);
+
+    void RenderText(char* text, Sint8 FontIndex, SDL_Color color, SDL_Rect *location);
+    void RenderTextCentered(char* text, Sint8 FontIndex, SDL_Color color, Sint16 Verticaladjust);
+
+    void RenderSurface(SDL_Surface* RenderSurface, SDL_Rect* location);
+    void RenderTexture(GLuint texture, SDL_Rect* Size, SDL_Rect* location);
+
+    void RenderLogo();
 
 	void applyClipCentered(SDL_Rect Offset, ClipImage* Clip);
 	void applyClipAt(SDL_Rect Offset, ClipImage* Clip);
 
+    int round(double x);
+    int nextpoweroftwo(int x);
 
     bool ClearDevice();
 	bool WipeScreen();
@@ -54,16 +69,13 @@ public:
 
 	void ShowAxis(void);
 	void DrawPoint(Vector3 Point, float Length = 1.0);
-
-	//void DrawColoredFacet(Face* DrawingFace, float Shading = 1.0, SDL_Color color);
-	//void DrawCube(Cube* DrawCube, float Shading = 1.0);
-
     void DrawCage(Vector3 Point, float x, float y, float z);
 
     Uint32 getTriangleCount() { return TotalTriangles; }
     void ToggleFullScreen();
-    void Enable2D();
-    void Disable2D();
+
+    void setDrawing3D();
+    void setDrawingFlat();
 
 	SDL_Color getPickingColor();
 
@@ -78,10 +90,15 @@ protected:
 	Uint8 ScreenBPP;
 
 	SDL_Surface* ScreenSurface;
+
+	SDL_Surface* LogoSurface;  //Temporary TODO remove
+
 	bool FullScreen;
 
 	bool FrameDraw;
 	bool ShadedDraw;
+	bool HiddenDraw;
+	bool FlatDraw;
 
 	std::vector<GLuint*> DrawList;
 

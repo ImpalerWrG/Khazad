@@ -1,18 +1,17 @@
-Release Notes v0.0.2
+Release Notes v0.0.3
 
 Khazad is still being built and major sub-systems are still incomplete, or just plain absent.
-Thanks to considerable help from Sinoth who shared the extracting code at the heart of 3Dwarf the current release can extract map Data from a running DwarfFortress game.  
+Thanks to additional help from Sinoth who shared the extracting code originaly created by Mithaldu I was able to get Designation and Occupancy flag data extracted from DF, also by using the most recent memory offsets taken from Lifevis the current release can extract map Data from a version official release 40d, but NOT I must point out ANY of the 40d# OpenGL builds.  
 
-An XML file Assets/XML/config.xml allows the screen resolution to be altered and a few of the constants that determine how the camera is controlled to be tweeked, a full screen optin is also avaliable.  
-The file pathway for map saving and loading is currently hardcoded to MapExtract.map and it is not compatible with 3Dwarf save format.  Extracted maps currently show all underground hidden terrain making an extract a defacto 'Reveal', future versions should make it optional to keep hidden stuff hidden. Anticipate a break in the format of this save file once the hidden option is added.
+Most textures were modified with a thin black line around the edge to give a look more consistent with classic Isometric games such as SimCity 2000, Transport Tycoon, X-Com etc etc.  Feed back is apreciated to see if this is something to keep doing or if another style is better.
 
-  Also stairs are not yet rendered and trees, bushes and boulders are flat textures on the ground, thanks again to Sinoth for use of these textures.  Art work under the Creative Commons licence could be used as replacements at a later date.
+An XML file Assets/XML/config.xml allows the screen resolution to be altered and a few of the constants that determine how the camera is controlled to be tweeked, a full screen optin is also avaliable.  The file pathway for map saving and loading is set their as well.  The save file is currently mosterously large and using it on very large maps is not recomended, expect the save format to get smaller in the future but for this to break back-compatibility.  Extracted maps store underground hidden terrain but Khazad hides them by default, pressing (h) will toggle showing them.  A number of other toggle options have been made available for your convenience.
+
+Stairs are not yet rendered and trees, bushes and boulders are flat textures on the ground, thanks again to Sinoth for use of these textures.  Art work under the Creative Commons licence could be used as replacements at a later date.
 
 Their is a debugging output showing the Frame rate and current triangles being rendered, feedback on what kind of rates people are getting with various types of hardware is appreciated along with cool screenshoots of your forts or screenshoots of buggy or undesireable behavior is welcome along with advice on ware the project should go.
 
-The best version of DF to extract from is v0.28.181.40c, the version native to the Extract code Sinoth provided, but their is a memory.ini file reading capability which should allow the extraction of other versions if the correct settings are found on the ini file.  If anyone is able to get the resent d# versions of DF to extract please share it with the rest of us.
-
-An extracted Map has been provided your your convenence, it is a small map that almost anyone should be able to run, beware it will be over-written if you write a map to file (w) so be sure to copy or re-name it if you don't want to lose it.
+Special Thanks to Davion for creating the offical Khazad Logo which is used for the first time in this version.
 
 Controls:
 
@@ -21,14 +20,22 @@ Keyboard controls:
 c: Centers view to the middle of the map
 Up: Moves view up one level
 Down: Moves view down one level
+
 Insert: Increase number of viewing levels (lowers contrast between levels)
 Delete: Decrease number of viewing levels (ingresses contrast between levels)
+
 Left: Rotates camera view counterclockwise in small increments
 Right: Rotates camera view clockwise in small increments
 
 d: Dumps memory from a running DwarfFortress game (this will update the current map if one is already active)
 w: Writes current map to file
 l: Loads an extracted map from file (also updates the current map if already active)
+
+NEW OPTIONS! 
+
+f: toggles the wirefram around the whole of the map and a single cube wireframe at the center of the view, on by default
+h: toggles the viewing of hidden features such as underground pools, off by default
+s: toggles shaddowed viewing mode, in shaddow mode the vertical depth of terrain is shown with by darkening it, in un-shaddowed mode all terrain is fully lite, off by default
 
 Mouse controls:
 
@@ -45,12 +52,14 @@ Known Issues:
 
 - Expanding the window after the game has started will create a 'dead zone' outside of the original area of the screen ware mouse inputs will not work even though the mouse is movable and displays.  Using Fullscreen mode or just setting the Config for a very large screen area is the best work-around for now.
 
-- Occational gaps in the map occure ware their should be some triangles rendered particularly on slopes ware it is nearly impossible to figure out what should fill jumbles of slope tiles but also in other odd in-explicable places.
+- Occational gaps in the map occure ware their should be some triangles rendered particularly on slopes ware it is nearly impossible to figure out what should fill jumbles of slope tiles but also in other odd in-explicable places usualy water.
 
 - Memory footprint is currently huge, around 25 MB without even loading a map and in excess of a 100 with a map, trying to load maps in excess of 8x8 might start to make your system crawl, experiment to see what your systems limits are.
 
-- Rendering 'hangs' momentarily when the map is being rotated and passes through a 90 degree turn (aka map edges become perpendicular & horizontal), this is due to the OpenGL drawlists being updated and is a drawback of the current engine and will only be noticable when zoomed out.
+- Shaddowed mode puts a heavier load on the Rendering system when changing viewing levels or moving the view up or down due to the re-shadding that takes place, for maximum speed use unshadded mode.
 
-- CPU Hog, Khazad is capped at 60 FPS using SDL_Delay but on many systems it will still use upwards of 99% of the processor and might put too much stress on your system or video card, feedback is apresiated.
+- CPU Hog, Khazad is capped at 60 FPS using SDL_Delay but on many systems it will still use upwards of 99% of the processor when viewing a large area and might put too much stress on your system or video card, feedback is apresiated.  The FPS readout is based on the time that rendering itself took and frequently exceeds 60, when ever it dose your processer should go below 100% utilization.  At this point the readout is more theoretical then actual it represents the FPS you would be creating if Khazad weren't throttling back.
 
-- Water features like MurkyPonds, Rivers and streams do not save properly and will be displayed with a placeholder texture.  They are not even correctly represented in live memory dumps lacking a 'surface' with the water being displayed on the bottom of the pond/river/stream if its shallow.
+- Non-natural water luck as in a channel or Cistern or pump tower is not displayed, only naturally occuring murky pools, streams and rivers.  Lava is not rendered at all.
+
+- Textures may me mis-assigned and all will be very very ugly untill artist make something for me to use.

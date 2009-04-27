@@ -25,63 +25,6 @@ public:
 	TiXmlDocument* loadFile(const char* Filename);
 
 	template <class T>
-	void getSIntValue( const char* Rootname, const char* Element, const char* Attribute, T& defaultvalue )
-	{
-		TiXmlDocument* Doc;
-		for (Uint32 i = 0; i < XMLDocLibrary.size(); i++)
-		{
-			if (XMLDocLibrary[i])
-			{
-				TiXmlElement* Root = XMLDocLibrary[i]->RootElement();
-				//printf(Root->Value());
-				if (strcmp( Rootname, Root->Value() ) == 0)
-				{
-					Doc = XMLDocLibrary[i];
-
-					TiXmlHandle DocHandle( Doc );
-					TiXmlElement* child = DocHandle.FirstChild( Rootname ).FirstChild( Element ).ToElement();
-					if ( child )
-					{
-						child->QueryIntAttribute(Attribute, &defaultvalue);
-					}
-					break;
-				}
-			}
-		}
-	};
-
-	template <class T>
-	void getUIntValue( const char* Rootname, const char* Element, const char* Attribute, T& defaultvalue )
-	{
-		TiXmlDocument* Doc;
-		for (Uint32 i = 0; i < XMLDocLibrary.size(); i++)
-		{
-			if (XMLDocLibrary[i])
-			{
-				TiXmlElement* Root = XMLDocLibrary[i]->RootElement();
-				//printf(Root->Value());
-				if (strcmp( Rootname, Root->Value() ) == 0)
-				{
-					Doc = XMLDocLibrary[i];
-
-					TiXmlHandle DocHandle( Doc );
-					TiXmlElement* child = DocHandle.FirstChild( Rootname ).FirstChild( Element ).ToElement();
-					if ( child )
-					{
-						int temp = defaultvalue;
-						child->QueryIntAttribute(Attribute, &temp);
-						if (temp >= 0)
-						{
-							defaultvalue = temp;
-						}
-					}
-					break;
-				}
-			}
-		}
-	};
-
-	template <class T>
     void QueryUIntValue(TiXmlElement* Entry, const char* Element, const char* Attribute, T& defaultvalue)
     {
         TiXmlElement* child = Entry->FirstChildElement(Element);
@@ -116,10 +59,12 @@ public:
         {
             const char* temp;
             temp = child->Attribute(Attribute);
-            for(int i = 0; temp[i] != NULL; i++)
+            int i;
+            for(i = 0; temp[i] != NULL; i++)
             {
                 String[i] = temp[i];
             }
+            String[i] = NULL;
         }
     };
 

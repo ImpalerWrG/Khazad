@@ -72,7 +72,7 @@ bool Pawn::Move(Vector3 Direction)
 
     if (NewCube)
     {
-        if (NewCube->Initalized != true)
+        if (NewCube->isInitalized() != true)
         {
             //NewCube->Init();
             //NewCube->setVisible(true);
@@ -84,7 +84,7 @@ bool Pawn::Move(Vector3 Direction)
 
 bool Pawn::Update()
 {
-    if(RANDOM->Roll(0, 5) == 5)
+    if(RANDOM->Roll(0, 20) == 20)
     {
         switch (RANDOM->Roll(0, 5))
         {

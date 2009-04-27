@@ -142,12 +142,12 @@ int main(int argv, char** argc)
 	Timer* GameTimer = new Timer(20);
 	Timer* UITimer = new Timer(20);
 	Timer* RenderTimer = new Timer(20);
-    Timer* InputTimer = new Timer(20);
+    //Timer* InputTimer = new Timer(20);
 
 	Uint8 FrameCounter = 0;
 	Uint32 FrameRate = 0;
 
-    InputTimer->Start();
+    //InputTimer->Start();
     GameTimer->Start();
     RenderTimer->Start();
     UITimer->Start();
@@ -158,63 +158,54 @@ int main(int argv, char** argc)
 	{
 		FPSTimer->Start();
 
-		InputTimer->Unpause();
-            done = INPUT->HandleInput();
-		InputTimer->Pause();
+        done = INPUT->HandleInput();
 
-
-		GameTimer->Unpause();
+        GameTimer->Unpause();
             GAME->Run();
-		GameTimer->Pause();
+        GameTimer->Pause();
 
-
-		RenderTimer->Unpause();
+        RenderTimer->Unpause();
             SCREEN->Render();
         RenderTimer->Pause();
 
+        //UITimer->Unpause();
+        //UI->Draw();
 
-		UITimer->Unpause();
-            //UI->Draw();
-
-
-            SCREEN->Enable2D();  // Go in HUD-drawing mode
+        if(MAP->Initialized)
+        {
+            SCREEN->setDrawingFlat();  // Go into HUD-drawing mode
 
             SDL_Rect position;
             position.x = 10;
             position.y = SCREEN->getHight() - 40;
 
             sprintf (buffer, "FrameRate %i", FrameRate);
-            FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
+            SCREEN->RenderText(buffer, 0, WHITE, &position);
 
             position.y -= 40;
-
-            //sprintf (buffer, "InputTime %3.2f", InputTimer->getAverage());
-            //FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
             sprintf (buffer, "Triangles %i", SCREEN->getTriangleCount());
-            FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
+            SCREEN->RenderText(buffer, 0, WHITE, &position);
 
-            position.y -= 40;
-
+            //position.y -= 40;
             //sprintf (buffer, "GameTime %3.2f", GameTimer->getAverage());
             //FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
-            position.y -= 40;
-
+            //position.y -= 40;
             //sprintf (buffer, "RenderTime %3.2f", RenderTimer->getAverage());
             //FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
-            position.y -= 40;
-
+            //position.y -= 40;
             //sprintf (buffer, "UITime %3.2f", UITimer->getAverage());
             //FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
-            SCREEN->Disable2D(); // Come out of HUD mode
+            //SCREEN->setDrawing3D(); // Come out of HUD mode
+        }
 
+        SCREEN->Flip();
 
-		UITimer->Pause();
+		//UITimer->Pause();
 
-		SCREEN->Flip();
 
 		FPSTimer->Pause(); // FrameRate Captures whole loop
 

@@ -65,9 +65,9 @@ bool Cube::InitAllFaces()
             Cube* NeiborCube = getAdjacentCube((Facet) i);
             Cell* NeiborCell = getAdjacentCell((Facet) i);
 
-            if(NeiborCell != NULL && NeiborCell->Initalized)
+            if(NeiborCell != NULL && NeiborCell->isInitalized())
             {
-                if (NeiborCube != NULL && NeiborCube->Initalized)
+                if (NeiborCube != NULL && NeiborCube->isInitalized())
                 {
                     Sint16 BestMaterial = FaceMaterial((Facet) i);
 
@@ -566,10 +566,16 @@ bool Cube::Update()
 	return true;
 }
 
-bool Cube::Draw(Direction CameraDirection)
+bool Cube::Draw(Direction CameraDirection, bool DrawHidden)
 {
-	if (Initalized ) //&& Visible)
+
+	if (isInitalized()) //&& Visible)
 	{
+        if(Hidden && !DrawHidden)
+        {
+            return true;
+        }
+
 	    if(Slopage != NULL)
 	    {
 	        Slopage->Draw();

@@ -12,12 +12,12 @@ ConfigManager::ConfigManager()
 	XMap = 10;
 	YMap = 10;
 	ZMap = 10;
-	CellEdgeLength = 10;
+	CellEdgeLength = 16;
 
-	Orbit = 30;
+	Orbit = 100;
 	Tilt = 100;
 	Slide = 100;
-	Zoom = 75;
+	Zoom = 100;
 }
 
 ConfigManager::~ConfigManager()
@@ -27,8 +27,6 @@ ConfigManager::~ConfigManager()
 
 bool ConfigManager::Init()
 {
-	//XML->loadFile("Assets\\XML\\GlobalDefines.xml");
-
 	TiXmlDocument* Document = XML->loadFile("Assets\\XML\\GlobalDefines.xml");
     TiXmlElement* Root = Document->RootElement();
 
@@ -51,8 +49,8 @@ bool ConfigManager::Init()
     XML->QueryUIntValue(Root, "InterfaceSpeed", "Slide", Slide);
     XML->QueryUIntValue(Root, "InterfaceSpeed", "Zoom", Zoom);
 
-   //XML->QueryTextValue(Root, "MapLoading", "Path", Loading);
-    //XML->QueryTextValue(Root, "MapSaving", "Path", Saveing);
+    XML->QueryTextValue(Root, "MapLoading", "Path", Loading);
+    XML->QueryTextValue(Root, "MapSaving", "Path", Saveing);
 
 	return true;
 }

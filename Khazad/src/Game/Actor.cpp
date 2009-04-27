@@ -16,22 +16,13 @@ Actor::Actor(ActorType NewType)
 Actor::Actor()
 {
 	Visible = false;
+	Hidden = false;
 	DirtyDrawlist = true;
 }
 
 Actor::~Actor()
 {
 
-}
-
-ActorType Actor::getType()
-{
-	return Type;
-}
-
-void Actor::setType(ActorType NewType)
-{
-	Type = NewType;
 }
 
 bool Actor::Init()

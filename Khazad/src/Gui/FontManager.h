@@ -18,14 +18,9 @@ public:
 	std::vector<TTF_Font*> FontLibrary;
 
 	TTF_Font* loadFont(char* filepath, Uint32 size);
-	SDL_Surface* makeFontSurface( const char* Text, SDL_Color Color, Uint8 FontIndex = 0 );
+	SDL_Surface* makeFontSurface( const char* Text, SDL_Color Color, Sint8 FontIndex = -1);
 
-    void RenderText(char *text, TTF_Font *font, SDL_Color color, SDL_Rect *location);
-    void RenderSurface(SDL_Surface* RenderSurface, SDL_Rect *location);
-    void RenderTexture(GLuint texture, SDL_Rect *Size, SDL_Rect *location);
-
-    void glEnable2D();
-    void glDisable2D();
+    TTF_Font* getDefaultFont();
 
     int round(double x);
     int nextpoweroftwo(int x);
