@@ -56,8 +56,8 @@ bool TextureManager::Init()
 	loadTextureSingular("Assets\\Textures\\Dirt.png", false, false);
 // 22 Stone Constructions / Veins, Gems, Clusters
 	loadTextureSingular("Assets\\Textures\\metal.png", false, false);
-// 23
-	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+// 23 Rough Stone Wall
+	loadTextureSingular("Assets\\Textures\\Brick.png", false, false);
 // 24 Lava
 	loadTextureSingular("Assets\\Textures\\lava.png", false, false);
 // 25 Ice-1
@@ -67,9 +67,9 @@ bool TextureManager::Init()
 // 27 Ice-2
 	loadTextureSingular("Assets\\Textures\\snow.png", false, false);
 // 28
-	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+	loadTextureSingular("Assets\\Textures\\constructed_wall.png", false, false);
 // 29
-	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
+	loadTextureSingular("Assets\\Textures\\constructed_wall.png", false, false);
 // 30
 	loadTextureSingular("Assets\\Textures\\constructed_wall.png", false, false);
 // 31 Chasm/Pit

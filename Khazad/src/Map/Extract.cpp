@@ -1068,7 +1068,7 @@ int Extractor::isOpenTerrain(int in)
         case 25: //up-down stair frozen liquid
         case 26: //down stair frozen liquid
         case 27: //up stair frozen liquid
-        case 32:  //open space
+        case 32: //open space
         case 34: //shrub
         case 35: //chasm
         case 36: //up-down stair lavastone
@@ -1206,6 +1206,7 @@ int Extractor::isFloorTerrain(int in)
         case 24: //tree
         case 27: //up stair frozen liquid
         case 34: //shrub
+        case 35: //Chasm
         case 38: //up stair lavastone
         case 41: //up stair soil
         case 42: //eerie pit

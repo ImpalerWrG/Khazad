@@ -55,9 +55,9 @@ void Camera::setPerspectiveProj( float fAspect, float Zmin, float Zmax )
 
 void Camera::setIsometricProj( float Width, float Hight, float Depth )
 {
-	ViewWidth = Width * 2;
-	ViewHight = Hight * 2;
-	ViewDepth = Depth * 2;
+	ViewWidth = Width;
+	ViewHight = Hight;
+	ViewDepth = Depth;
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -698,8 +698,8 @@ void Camera::generateViewFrustum()
 {
 	if (IsoMode)
 	{
-		float Hight = (ViewHight / 2) * (1 / IsoScalar);
-		float Width = (ViewWidth / 2) * (1 / IsoScalar);
+		float Hight = (ViewHight) * (1 / IsoScalar);
+		float Width = (ViewWidth) * (1 / IsoScalar);
 
 		Vector3 TempVector = UpVector;
 		TempVector.normalize();

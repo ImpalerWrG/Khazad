@@ -53,11 +53,6 @@ bool Cube::InitAllFaces()
 {
 	Initalized = true;
 
-    if(Material == 2)
-    {
-           int x = 666;
-    }
-
     for(Uint8 i = 0; i < NUM_FACETS; i++)
     {
         if(Facets[i] == NULL)
@@ -558,6 +553,10 @@ void Cube::DetermineSlope()
     if(SlopeType != SLOPE_FLAT)
     {
         SetSlope(SlopeType);
+    }
+    else
+    {
+        SetSlope(SLOPE_SOUTH_WEST);  // Default slope for isolated slopes, possibly replace with something better??
     }
 }
 

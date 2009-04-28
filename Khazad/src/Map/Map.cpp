@@ -350,11 +350,11 @@ void Map::LoadExtract()
 			{
 				CellArray[i][j][k] = new Cell(i * CubesPerCellSide, j * CubesPerCellSide, k);
 
-				if(k == 0)
-				{
-				    CellArray[i][j][k]->Init();
-				    CellArray[i][j][k]->SetBasment(true);
-				}
+				//if(k == 0)
+				//{
+				//    CellArray[i][j][k]->Init();
+				//    CellArray[i][j][k]->SetBasment(true);
+				//}
 			}
 		}
 	}

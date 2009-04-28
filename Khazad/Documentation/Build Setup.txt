@@ -1,0 +1,20 @@
+How to Build Khazad (for Programmers)
+
+Recomended IDE: CodeBlocks the free crossplatform IDE
+
+Recommended Compiler: GCC
+
+Download both from this link 
+
+http://downloads.sourceforge.net/codeblocks/codeblocks-8.02mingw-setup.exe
+
+Settings: 
+
+CodeBlocks + GCC:
+
+Under Settings -> Global compiler settings -> Linker settings -> Other linker options:
+
+Add the following:
+-lmingw32
+-lSDLmain
+-lSDL

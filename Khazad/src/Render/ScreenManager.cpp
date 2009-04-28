@@ -100,14 +100,21 @@ bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Hight)
     ScreenWidth = Width;
     ScreenHight = Hight;
 
-    glViewport(0, 0, ScreenWidth, ScreenHight);
-    MainCamera->setIsometricProj(ScreenWidth, ScreenHight, 10000.0);
+    setDrawing3D(); // Dispose of any Flat Projection
 
-	if(SDL_Flip(ScreenSurface) == -1)
-	{
-		return true;
-	}
-	return false;
+    MainCamera->setIsometricProj(ScreenWidth, ScreenHight, 10000.0);
+    glViewport(0, 0, ScreenWidth, ScreenHight);
+
+    if(FlatDraw) // Reset Flat drawing if thats what we were in
+    {
+        setDrawingFlat();
+    }
+
+    // Will need full texture rebuild to work
+    //ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
+
+
+	return true;
 }
 
 void ScreenManager::RenderText(char *text, Sint8 FontIndex, SDL_Color Color, SDL_Rect *location)
@@ -392,7 +399,34 @@ bool ScreenManager::Render()
                         }
                         else
                         {
-                            glCallList(LoopCell->DrawListID);
+                            switch(MainCamera->getDirection())
+                            {
+                                case NORTH:
+                                //case NORTHWEST:
+                                {
+                                    glCallList(LoopCell->DrawListID);
+                                    break;
+                                }
+                                case SOUTH:
+                                //case NORTHWEST:
+                                {
+                                    glCallList(LoopCell->DrawListID + 1);
+                                    break;
+                                }
+                                case EAST:
+                                //case NORTHWEST:
+                                {
+                                    glCallList(LoopCell->DrawListID + 2);
+                                    break;
+                                }
+                                case WEST:
+                                //case NORTHWEST:
+                                {
+                                    glCallList(LoopCell->DrawListID + 3);
+                                    break;
+                                }
+                            }
+                                //glCallList(LoopCell->DrawListID);
                             TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
                         }
                     }
@@ -486,6 +520,7 @@ void ScreenManager::setDrawingFlat()
         glLoadIdentity();
 
         glOrtho(0, vPort[2], 0, vPort[3], -10000, 10000);
+
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glLoadIdentity();
