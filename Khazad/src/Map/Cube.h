@@ -55,7 +55,7 @@ public:
 
 
 	bool Update();
-	bool Draw(Direction CameraDirection, bool DrawHidden = false);
+	bool Draw(CameraOrientation Orientation, bool DrawHidden = false);
 
 protected:
 

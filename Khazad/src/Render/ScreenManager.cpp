@@ -29,6 +29,7 @@ ScreenManager::ScreenManager()
 	FrameDraw = true;
 	ShadedDraw = false;
 	HiddenDraw = false;
+	FlatDraw = false;
 
 	LogoSurface = NULL;
 }
@@ -91,6 +92,8 @@ bool ScreenManager::Init()
 
     MainCamera = new Camera();
 	MainCamera->Init(true);
+
+    //SDL_ShowCursor(false); //Use alternative cursor?
 
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -384,51 +387,24 @@ bool ScreenManager::Render()
 
                     if  (MainCamera->sphereInFrustum(LoopCell->Position, CellEdgeLenth))
                     {
+                        CameraOrientation CurrentOrientation = MainCamera->getOrientation();
                         if(LoopCell->DirtyDrawlist)
                         {
                             // Rebuild the new Drawlist
                             GLuint DrawListID = LoopCell->DrawListID;
-                            glDeleteLists(DrawListID, 4);
+                            glDeleteLists(DrawListID, 5);
 
-                            RefreshDrawlist(LoopCell, DrawListID, NORTH, Shading, (MainCamera->getDirection() == NORTH));
-                            RefreshDrawlist(LoopCell, DrawListID + 1, SOUTH, Shading, (MainCamera->getDirection() == SOUTH));
-                            RefreshDrawlist(LoopCell, DrawListID + 2, EAST, Shading, (MainCamera->getDirection() == EAST));
-                            RefreshDrawlist(LoopCell, DrawListID + 3, WEST, Shading, (MainCamera->getDirection() == WEST));
-
+                            for(CameraOrientation i = CAMERA_DOWN; i < NUM_ORIENTATIONS; ++i)
+                            {
+                                RefreshDrawlist(LoopCell, DrawListID + (GLuint) i, i, Shading, CurrentOrientation == i);
+                            }
                             LoopCell->DirtyDrawlist = false;
                         }
                         else
                         {
-                            switch(MainCamera->getDirection())
-                            {
-                                case NORTH:
-                                //case NORTHWEST:
-                                {
-                                    glCallList(LoopCell->DrawListID);
-                                    break;
-                                }
-                                case SOUTH:
-                                //case NORTHWEST:
-                                {
-                                    glCallList(LoopCell->DrawListID + 1);
-                                    break;
-                                }
-                                case EAST:
-                                //case NORTHWEST:
-                                {
-                                    glCallList(LoopCell->DrawListID + 2);
-                                    break;
-                                }
-                                case WEST:
-                                //case NORTHWEST:
-                                {
-                                    glCallList(LoopCell->DrawListID + 3);
-                                    break;
-                                }
-                            }
-                                //glCallList(LoopCell->DrawListID);
-                            TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
+                            glCallList(LoopCell->DrawListID + (GLuint) CurrentOrientation);
                         }
+                        TotalTriangles += LoopCell->getTriangleCount(CurrentOrientation);  // Use stored Triangle Count
                     }
                 }
             }
@@ -455,7 +431,7 @@ bool ScreenManager::Render()
 	return true;
 }
 
-void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, Direction Orientation, float Shadding, bool Execute)
+void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, CameraOrientation Orientation, float Shadding, bool Execute)
 {
     if(Execute)
     {
@@ -474,14 +450,9 @@ void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, Directi
             TargetCell->Draw(Orientation, HiddenDraw);
 
         glEnd();
+        glEndList();
 
-        if(Execute)
-        {
-            TargetCell->setTriangleCount(TriangleCounter);
-            TotalTriangles += TriangleCounter;
-        }
-
-    glEndList();
+    TargetCell->setTriangleCount(Orientation, TriangleCounter);
 }
 
 void ScreenManager::IncrementTriangles(Uint32 Triangles)

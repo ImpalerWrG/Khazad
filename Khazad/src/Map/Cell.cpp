@@ -25,7 +25,7 @@ bool Cell::Init()
     Uint8 CubesPerCellSide = (Uint8) CONFIG->getCellEdgeLength();
     Cubes = new Cube*[CubesPerCellSide];
 
-    DrawListID = glGenLists(4);
+    DrawListID = glGenLists(5);
 
 	float X = Position.x - (CubesPerCellSide / 2);
 	float Y = Position.y - (CubesPerCellSide / 2);
@@ -70,13 +70,8 @@ bool Cell::Update()
 	return true;
 }
 
-bool Cell::Draw(Direction CameraDirection, bool DrawHidden)
+bool Cell::Draw(CameraOrientation Orientation, bool DrawHidden)
 {
-    if(Basment) // Nothing to draw for these Cells  (Sky | Rock | Air)
-    {
-        return true;
-    }
-
 	Uint16 CellEdgeLenth = CONFIG->getCellEdgeLength();
     Cube* LoopCube = NULL;
 
@@ -89,7 +84,7 @@ bool Cell::Draw(Direction CameraDirection, bool DrawHidden)
                 LoopCube = getCube(x, y);
                 if (LoopCube->isVisible())
                 {
-                    LoopCube->Draw(CameraDirection, DrawHidden);
+                    LoopCube->Draw(Orientation, DrawHidden);
                 }
             }
         }

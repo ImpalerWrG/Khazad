@@ -441,6 +441,7 @@ void Cube::DetermineSlope()
     bool WestSolid = false;
     bool EastSolid = false;
 
+
     if(getAdjacentCube(FACET_NORTH_EAST) != NULL && getAdjacentCube(FACET_NORTH_EAST)->isSolid())
     {
         NorthEastSolid = true;
@@ -466,17 +467,14 @@ void Cube::DetermineSlope()
     {
         NorthSolid = true;
     }
-
     if(getNeiborCube(SOUTH) != NULL && getNeiborCube(SOUTH)->isSolid())
     {
         SouthSolid = true;
     }
-
     if(getNeiborCube(WEST) != NULL && getNeiborCube(WEST)->isSolid())
     {
        WestSolid = true;
     }
-
     if(getNeiborCube(EAST) != NULL && getNeiborCube(EAST)->isSolid())
     {
         EastSolid = true;
@@ -487,40 +485,32 @@ void Cube::DetermineSlope()
     {
         SlopeType = SLOPE_SOUTH_WEST;
     }
-
     if(SouthEastSolid)
     {
         SlopeType = SLOPE_NORTH_WEST;
     }
-
     if(NorthWestSolid)
     {
         SlopeType = SLOPE_SOUTH_EAST;
     }
-
-
-
-
     if(SouthWestSolid)
     {
         SlopeType = SLOPE_NORTH_EAST;
     }
 
+
     if(NorthEastSolid && SouthEastSolid)
     {
         SlopeType = SLOPE_LARGE_WEST;
     }
-
     if(SouthEastSolid && SouthWestSolid)
     {
         SlopeType = SLOPE_LARGE_NORTH;
     }
-
     if(NorthWestSolid && SouthWestSolid)
     {
         SlopeType = SLOPE_LARGE_EAST;
     }
-
     if(NorthEastSolid && NorthWestSolid)
     {
         SlopeType = SLOPE_LARGE_SOUTH;
@@ -533,17 +523,14 @@ void Cube::DetermineSlope()
         {
             SlopeType = SLOPE_SMALL_NORTH;
         }
-
         if(NorthSolid)
         {
             SlopeType = SLOPE_SMALL_SOUTH;
         }
-
         if(EastSolid)
         {
             SlopeType = SLOPE_SMALL_WEST;
         }
-
         if(WestSolid)
         {
             SlopeType = SLOPE_SMALL_EAST;
@@ -565,10 +552,9 @@ bool Cube::Update()
 	return true;
 }
 
-bool Cube::Draw(Direction CameraDirection, bool DrawHidden)
+bool Cube::Draw(CameraOrientation Orientation, bool DrawHidden)
 {
-
-	if (isInitalized()) //&& Visible)
+	if (isInitalized())
 	{
         if(Hidden && !DrawHidden)
         {
@@ -585,10 +571,10 @@ bool Cube::Draw(Direction CameraDirection, bool DrawHidden)
             {
                 Facets[FACET_BOTTOM]->Draw();
             }
-
+ /*
             if(SCREEN->MainCamera->isAllFacesDrawing())
             {
- /*               if(Facets[FACET_NORTH_EAST] != NULL)
+               if(Facets[FACET_NORTH_EAST] != NULL)
                 {
                     Facets[FACET_NORTH_EAST]->Draw();
                 }
@@ -604,14 +590,13 @@ bool Cube::Draw(Direction CameraDirection, bool DrawHidden)
                 {
                     Facets[FACET_SOUTH_WEST]->Draw();
                 }
-                */
             }
             else
             {
-                switch(CameraDirection)
+                */
+                switch(Orientation)
                 {
-                    case NORTH:
-                    case NORTHEAST:
+                    case CAMERA_NORTH:
                     {
                         if(Facets[FACET_NORTH_EAST] != NULL)
                         {
@@ -623,8 +608,7 @@ bool Cube::Draw(Direction CameraDirection, bool DrawHidden)
                         }
                         break;
                     }
-                    case EAST:
-                    case SOUTHEAST:
+                    case CAMERA_EAST:
                     {
                         if(Facets[FACET_SOUTH_EAST] != NULL)
                         {
@@ -636,8 +620,7 @@ bool Cube::Draw(Direction CameraDirection, bool DrawHidden)
                         }
                         break;
                     }
-                    case SOUTH:
-                    case SOUTHWEST:
+                    case CAMERA_SOUTH:
                     {
                         if(Facets[FACET_SOUTH_EAST] != NULL)
                         {
@@ -649,8 +632,7 @@ bool Cube::Draw(Direction CameraDirection, bool DrawHidden)
                         }
                         break;
                     }
-                    case WEST:
-                    case NORTHWEST:
+                    case CAMERA_WEST:
                     {
                         if(Facets[FACET_NORTH_WEST] != NULL)
                         {
@@ -697,7 +679,7 @@ bool Cube::Draw(Direction CameraDirection, bool DrawHidden)
                 }
                 */
                 }
-            }
+            //}
         }
 	}
 	return true;

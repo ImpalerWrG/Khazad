@@ -27,7 +27,7 @@ bool Camera::Init(bool Isometric)
 	{
 		setIsometricProj(SCREEN->getWidth(), SCREEN->getHight(), 10000.0);
 		IsoMode = true;
-		CameraDirection = NORTH;
+		Orientation = CAMERA_NORTH;
 		ViewLevels = 6;
 	}
 	else
@@ -323,65 +323,42 @@ void Camera::onMouseEvent(SDL_Event* Event)
 	}
 }
 
-void Camera::setCameraDirection(Direction NewDirection)
+void Camera::setCameraOrientation(CameraOrientation NewOrientation)
 {
-	CameraDirection = NewDirection;
-
-	if (CameraDirection == NUM_DIRECTIONS)
+	if (NewOrientation >= NUM_ORIENTATIONS)
 	{
-		CameraDirection = NORTH;
-	}
-	if ((Sint8) CameraDirection == -2)
-	{
-		CameraDirection = WEST;
+		return;
 	}
 
-	switch(CameraDirection)
+	Orientation = NewOrientation;
+
+	switch(Orientation)
 	{
-		case NORTH:
+		case CAMERA_DOWN:
+		{
+			EyePosition.x = LookPosition.x; EyePosition.y = LookPosition.y ;
+			break;
+		}
+		case CAMERA_NORTH:
 		{
 			EyePosition.x = LookPosition.x + 1; EyePosition.y = LookPosition.y + 1;
 			UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
 			break;
 		}
-		case NORTHEAST:
-		{
-			EyePosition.x = LookPosition.x + 1; EyePosition.y = LookPosition.y + 1;
-			UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
-			break;
-		}
-		case EAST:
+		case CAMERA_EAST:
 		{
 			EyePosition.x = LookPosition.x + 1; EyePosition.y = LookPosition.y - 1;
 			UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
 			break;
 		}
-		case SOUTHEAST:
-		{
-			EyePosition.x = LookPosition.x + 1; EyePosition.y = LookPosition.y -1;
-			UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
-			break;
-		}
-		case SOUTH:
+		case CAMERA_SOUTH:
 		{
 			EyePosition.x = LookPosition.x - 1; EyePosition.y = LookPosition.y -1;
 			UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
 
 			break;
 		}
-		case SOUTHWEST:
-		{
-			EyePosition.x = LookPosition.x -1; EyePosition.y = LookPosition.y - 1;
-			UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
-			break;
-		}
-		case WEST:
-		{
-			EyePosition.x = LookPosition.x - 1; EyePosition.y = LookPosition.y + 1;
-			UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
-			break;
-		}
-		case NORTHWEST:
+		case CAMERA_WEST:
 		{
 			EyePosition.x = LookPosition.x - 1; EyePosition.y = LookPosition.y + 1;
 			UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
@@ -396,32 +373,34 @@ void Camera::UpdateDirection()
 	float X = EyePosition.x - LookPosition.x;
 	float Y = EyePosition.y - LookPosition.y;
 
-	Direction CameraDir;
+    if (X == 0 && Y == 0)
+    {
+        Orientation = CAMERA_DOWN;
+        return;
+    }
 
-	if (X >= 0)
+	if (X > 0)
 	{
-        if (Y >= 0)
+        if (Y > 0)
         {
-            CameraDir = NORTH;
+            Orientation = CAMERA_NORTH;
         }
         else // Y < 0
         {
-            CameraDir = WEST;
+            Orientation = CAMERA_WEST;
         }
 	}
 	else // X < 0
 	{
-		if (Y >= 0)
+		if (Y > 0)
 		{
-            CameraDir = EAST;
+            Orientation = CAMERA_EAST;
 		}
 		else // Y < 0
 		{
-			CameraDir = SOUTH;
+			Orientation = CAMERA_SOUTH;
 		}
 	}
-
-	CameraDirection = CameraDir;
 }
 
 void Camera::RotateView(float X, float Y, float Z)
@@ -458,43 +437,81 @@ void Camera::RotateView(float X, float Y, float Z)
 
 void Camera::OrbitView(float Rotation)
 {
-	float xRelative = EyePosition.x - LookPosition.x;
-	float yRelative = EyePosition.y - LookPosition.y;
+    if(Orientation == CAMERA_DOWN)
+    {
+        float xRelative = UpVector.x;
+        float yRelative = UpVector.y;
 
-	float x = (xRelative * cos(Rotation)) - (yRelative * sin(Rotation));
-	float y = (xRelative * sin(Rotation)) + (yRelative * cos(Rotation));
+        UpVector.x = (xRelative * cos(Rotation)) - (yRelative * sin(Rotation));
+        UpVector.y = (xRelative * sin(Rotation)) + (yRelative * cos(Rotation));
 
-	EyePosition.x += x - xRelative;
-	EyePosition.y += y - yRelative;
+        UpVector.normalize();
+        UpdateDirection();
+    }
+    else
+    {
+        float xRelative = EyePosition.x - LookPosition.x;
+        float yRelative = EyePosition.y - LookPosition.y;
 
-	UpVector.x = EyePosition.x - LookPosition.x;
-	UpVector.y = EyePosition.y - LookPosition.y;
+        float x = (xRelative * cos(Rotation)) - (yRelative * sin(Rotation));
+        float y = (xRelative * sin(Rotation)) + (yRelative * cos(Rotation));
 
-	UpVector.normalize();
-	UpdateDirection();
+        EyePosition.x += x - xRelative;
+        EyePosition.y += y - yRelative;
+
+        UpVector.x = EyePosition.x - LookPosition.x;
+        UpVector.y = EyePosition.y - LookPosition.y;
+
+        UpVector.normalize();
+        UpdateDirection();
+    }
 }
 
 void Camera::TiltView(float Movement, float Min, float Max)
 {
-	Vector3 LookVector = EyePosition - LookPosition;
-	LookVector.z = 0;
+    float Distance = 0;
+    Vector3 LookVector;
 
-	float Distance = LookVector.length() - Movement;
+    if((Orientation == CAMERA_DOWN) && (Movement < 0)) // Break out of vertical using Up Vector
+    {
+        Distance = Min;
 
-	if (Distance > Max)
-	{
-		Distance = Max;
-	}
-	if (Distance < Min)
-	{
-		Distance = Min;
-	}
+        LookVector = UpVector;
+        LookVector.z = 0;
 
-	float EyeHight = EyePosition.z;
-	LookVector.normalize();
-	EyePosition = LookPosition;
-	EyePosition += LookVector * (Distance);
-	EyePosition.z = EyeHight;
+        float EyeHight = EyePosition.z;
+        LookVector.normalize();
+
+        EyePosition = LookPosition;
+        EyePosition += LookVector * (Distance);
+        EyePosition.z = EyeHight;
+
+        UpdateDirection();
+    }
+    else
+    {
+        LookVector = EyePosition - LookPosition;
+        LookVector.z = 0;
+
+        Distance = LookVector.length() - Movement;
+
+        if (Distance > Max)
+        {
+            Distance = Max;
+        }
+        if (Distance < Min)
+        {
+            setCameraOrientation(CAMERA_DOWN); // Camera goes to perfect vertical rendering
+            return;
+        }
+
+        float EyeHight = EyePosition.z;
+        LookVector.normalize();
+
+        EyePosition = LookPosition;
+        EyePosition += LookVector * (Distance);
+        EyePosition.z = EyeHight;
+    }
 }
 
 void Camera::SlideView(float X, float Y)
@@ -744,8 +761,6 @@ void Camera::PrintDebugging()
 	printf("Look Position X: %f\n", LookPosition.x);
 	printf("Look Position Y: %f\n", LookPosition.y);
 	printf("Look Position Z: %f\n", LookPosition.z);
-
-	//printf("CameraDirection %i\n", (int)CameraDirection);
 }
 
 bool Camera::isAllFacesDrawing()

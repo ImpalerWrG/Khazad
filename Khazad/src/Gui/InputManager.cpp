@@ -144,6 +144,10 @@ bool InputManager::HandleInput()
 					{
 					    SCREEN->setHiddenDraw(!SCREEN->isHiddenDraw());
 					}
+                    if (event.key.keysym.sym == SDLK_v)
+					{
+					    SCREEN->MainCamera->setCameraOrientation(CAMERA_DOWN);
+					}
 				}
 				break;
 			}

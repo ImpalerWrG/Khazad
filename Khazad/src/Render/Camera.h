@@ -23,7 +23,7 @@ protected:
 	bool SlidingMode;
 	bool ZoomingMode;
 
-	Direction CameraDirection;
+	CameraOrientation Orientation;
 
 	Uint8 ViewLevels;
 
@@ -47,8 +47,8 @@ public:
 	float LookZ()   { return LookPosition.z; }
 	Vector3 Look()  { return LookPosition; }
 
-	Uint8 getViewLevels()           { return ViewLevels; }
-	Direction getDirection()        { return CameraDirection; }
+	Uint8 getViewLevels()               { return ViewLevels; }
+	CameraOrientation getOrientation()  { return Orientation; }
 	void UpdateDirection();
 
 	float getScalar()               { return IsoScalar; }
@@ -169,7 +169,7 @@ public:
 	* direction without moving it.
 	* @param NewDirection - desired direction enum
 	*/
-	void setCameraDirection(Direction NewDirection);
+	void setCameraOrientation(CameraOrientation NewOrientation);
 
     /**
 	* sphereInFrustum is responsible for testing if a sphere is

@@ -19,7 +19,7 @@ public:
 
 
 	virtual bool Update();
-	virtual bool Draw(Direction CameraDirection);
+	virtual bool Draw(CameraOrientation Orientaion);
 
 	Vector3 Position;
 

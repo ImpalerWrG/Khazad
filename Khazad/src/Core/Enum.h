@@ -51,6 +51,8 @@ enum Slopping
 
 enum Direction
 {
+    UP,
+    DOWN,
 	NORTH,
 	NORTHEAST,
 	EAST,
@@ -62,5 +64,19 @@ enum Direction
 
 	NUM_DIRECTIONS
 };
+
+enum CameraOrientation
+{
+    CAMERA_DOWN,
+	CAMERA_NORTH,
+	CAMERA_EAST,
+	CAMERA_SOUTH,
+	CAMERA_WEST,
+
+	NUM_ORIENTATIONS
+};
+
+inline CameraOrientation &operator++ (CameraOrientation &Orientation)      { return Orientation = CameraOrientation(Orientation + 1); }
+
 
 #endif // ENUM_HEADER

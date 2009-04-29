@@ -16,10 +16,10 @@ public:
 	bool Init();
 	Cube* getCube(Uint16 x, Uint16 y);
 
-    Uint16 getTriangleCount() { return TriangleCount; }
-    void setTriangleCount(Uint16 Triangles) { TriangleCount = Triangles; }
+    Uint16 getTriangleCount(CameraOrientation Orientation) { return TriangleCount[Orientation]; }
+    void setTriangleCount(CameraOrientation Orientation, Uint16 Triangles) { TriangleCount[Orientation] = Triangles; }
 
-	bool Draw(Direction CameraDirection, bool DrawHidden = false);
+	bool Draw(CameraOrientation Orientation, bool DrawHidden = false);
 	bool Update();
 
 	void SetBasment(bool Value) { Basment = Value; }
@@ -36,7 +36,7 @@ protected:
 	Sint16 YOffset;
 	Sint16 ZOffset;
 
-    Uint16 TriangleCount;
+    Uint16 TriangleCount[5];
 
 	Cube** Cubes;
 
