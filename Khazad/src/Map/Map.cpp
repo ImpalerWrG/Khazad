@@ -413,22 +413,15 @@ void Map::LoadExtract()
 
                             if (IsLiquid)
                             {
-                                if(NewCube->getAdjacentCube(FACET_TOP) != NULL && !NewCube->getAdjacentCube(FACET_TOP)->isLiquid())
-                                {
-                                    NewCube->InitConstructedFace(FACET_TOP, Material);
-                                }
-                                if(NewCube->getAdjacentCube(FACET_BOTTOM) == NULL || NewCube->getAdjacentCube(FACET_BOTTOM)->isSolid())
-                                {
-                                    NewCube->InitConstructedFace(FACET_BOTTOM, 20);
-                                }
-
+                                NewCube->InitConstructedFace(FACET_BOTTOM, 20);
                                 NewCube->Init(Material);
-                                NewCube->setLiquid(true);
+                                NewCube->Open();
                             }
 
                             if (IsRamp)
                             {
                                 NewCube->Init(Material);
+                                NewCube->Open();
                                 NewCube->SetSlope(SLOPE_FLAT);  // Prime the Slope, the type can not yet be determined
                             }
 

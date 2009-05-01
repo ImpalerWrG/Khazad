@@ -48,128 +48,129 @@ bool Face::Init(Cube* First, Cube* Second, Facet Type, Uint16 MaterialType)
 
     if(SecondOwner != NULL)
     {
-        SecondOwner->setFacet(Cube::OpositeFace(Type), this);
+        //SecondOwner->setFacet(FacetType, this);
+        SecondOwner->setFacet(Cube::OpositeFace(FacetType), this);
     }
 
 	switch(FacetType)
 	{
 		case FACET_TOP:
 		{
-			Points[0].x = FirstOwner->Position.x - 0.5;
-			Points[0].y = FirstOwner->Position.y + 0.5;
-			Points[0].z = FirstOwner->Position.z + 0.5;
+			Points[0].x = - 0.5;
+			Points[0].y = + 0.5;
+			Points[0].z = + 0.5;
 
-			Points[1].x = FirstOwner->Position.x + 0.5;
-			Points[1].y = FirstOwner->Position.y + 0.5;
-			Points[1].z = FirstOwner->Position.z + 0.5;
+			Points[1].x = + 0.5;
+			Points[1].y = + 0.5;
+			Points[1].z = + 0.5;
 
-			Points[2].x = FirstOwner->Position.x + 0.5;
-			Points[2].y = FirstOwner->Position.y - 0.5;
-			Points[2].z = FirstOwner->Position.z + 0.5;
+			Points[2].x = + 0.5;
+			Points[2].y = - 0.5;
+			Points[2].z = + 0.5;
 
-			Points[3].x = FirstOwner->Position.x - 0.5;
-			Points[3].y = FirstOwner->Position.y - 0.5;
-			Points[3].z = FirstOwner->Position.z + 0.5;
+			Points[3].x = - 0.5;
+			Points[3].y = - 0.5;
+			Points[3].z = + 0.5;
 
 			break;
 		}
 		case FACET_BOTTOM:
 		{
-			Points[0].x = FirstOwner->Position.x - 0.5;
-			Points[0].y = FirstOwner->Position.y + 0.5;
-			Points[0].z = FirstOwner->Position.z - 0.5;
+			Points[0].x = - 0.5;
+			Points[0].y = + 0.5;
+			Points[0].z = - 0.5;
 
-			Points[1].x = FirstOwner->Position.x + 0.5;
-			Points[1].y = FirstOwner->Position.y + 0.5;
-			Points[1].z = FirstOwner->Position.z - 0.5;
+			Points[1].x = + 0.5;
+			Points[1].y = + 0.5;
+			Points[1].z = - 0.5;
 
-			Points[2].x = FirstOwner->Position.x + 0.5;
-			Points[2].y = FirstOwner->Position.y - 0.5;
-			Points[2].z = FirstOwner->Position.z - 0.5;
+			Points[2].x = + 0.5;
+			Points[2].y = - 0.5;
+			Points[2].z = - 0.5;
 
-			Points[3].x = FirstOwner->Position.x - 0.5;
-			Points[3].y = FirstOwner->Position.y - 0.5;
-			Points[3].z = FirstOwner->Position.z - 0.5;
+			Points[3].x = - 0.5;
+			Points[3].y = - 0.5;
+			Points[3].z = - 0.5;
 
 			break;
 		}
 		case FACET_NORTH_EAST:
 		{
-			Points[0].x = FirstOwner->Position.x - 0.5;
-			Points[0].y = FirstOwner->Position.y - 0.5;
-			Points[0].z = FirstOwner->Position.z - 0.5;
+			Points[0].x = - 0.5;
+			Points[0].y = - 0.5;
+			Points[0].z = - 0.5;
 
-			Points[1].x = FirstOwner->Position.x + 0.5;
-			Points[1].y = FirstOwner->Position.y - 0.5;
-			Points[1].z = FirstOwner->Position.z - 0.5;
+			Points[1].x = + 0.5;
+			Points[1].y = - 0.5;
+			Points[1].z = - 0.5;
 
-			Points[2].x = FirstOwner->Position.x + 0.5;
-			Points[2].y = FirstOwner->Position.y - 0.5;
-			Points[2].z = FirstOwner->Position.z + 0.5;
+			Points[2].x = + 0.5;
+			Points[2].y = - 0.5;
+			Points[2].z = + 0.5;
 
-			Points[3].x = FirstOwner->Position.x - 0.5;
-			Points[3].y = FirstOwner->Position.y - 0.5;
-			Points[3].z = FirstOwner->Position.z + 0.5;
+			Points[3].x = - 0.5;
+			Points[3].y = - 0.5;
+			Points[3].z = + 0.5;
 
 			break;
 		}
 		case FACET_SOUTH_EAST:
 		{
-			Points[0].x = FirstOwner->Position.x + 0.5;
-			Points[0].y = FirstOwner->Position.y - 0.5;
-			Points[0].z = FirstOwner->Position.z - 0.5;
+			Points[0].x = + 0.5;
+			Points[0].y = - 0.5;
+			Points[0].z = - 0.5;
 
-			Points[1].x = FirstOwner->Position.x + 0.5;
-			Points[1].y = FirstOwner->Position.y + 0.5;
-			Points[1].z = FirstOwner->Position.z - 0.5;
+			Points[1].x = + 0.5;
+			Points[1].y = + 0.5;
+			Points[1].z = - 0.5;
 
-			Points[2].x = FirstOwner->Position.x + 0.5;
-			Points[2].y = FirstOwner->Position.y + 0.5;
-			Points[2].z = FirstOwner->Position.z + 0.5;
+			Points[2].x = + 0.5;
+			Points[2].y = + 0.5;
+			Points[2].z = + 0.5;
 
-			Points[3].x = FirstOwner->Position.x + 0.5;
-			Points[3].y = FirstOwner->Position.y - 0.5;
-			Points[3].z = FirstOwner->Position.z + 0.5;
+			Points[3].x = + 0.5;
+			Points[3].y = - 0.5;
+			Points[3].z = + 0.5;
 
 			break;
 		}
 		case FACET_SOUTH_WEST:
 		{
-			Points[0].x = FirstOwner->Position.x + 0.5;
-			Points[0].y = FirstOwner->Position.y + 0.5;
-			Points[0].z = FirstOwner->Position.z - 0.5;
+			Points[0].x = + 0.5;
+			Points[0].y = + 0.5;
+			Points[0].z = - 0.5;
 
-			Points[1].x = FirstOwner->Position.x - 0.5;
-			Points[1].y = FirstOwner->Position.y + 0.5;
-			Points[1].z = FirstOwner->Position.z - 0.5;
+			Points[1].x = - 0.5;
+			Points[1].y = + 0.5;
+			Points[1].z = - 0.5;
 
-			Points[2].x = FirstOwner->Position.x - 0.5;
-			Points[2].y = FirstOwner->Position.y + 0.5;
-			Points[2].z = FirstOwner->Position.z + 0.5;
+			Points[2].x = - 0.5;
+			Points[2].y = + 0.5;
+			Points[2].z = + 0.5;
 
-			Points[3].x = FirstOwner->Position.x + 0.5;
-			Points[3].y = FirstOwner->Position.y + 0.5;
-			Points[3].z = FirstOwner->Position.z + 0.5;
+			Points[3].x = + 0.5;
+			Points[3].y = + 0.5;
+			Points[3].z = + 0.5;
 
 			break;
 		}
 		case FACET_NORTH_WEST:
 		{
-			Points[0].x = FirstOwner->Position.x - 0.5;
-			Points[0].y = FirstOwner->Position.y + 0.5;
-			Points[0].z = FirstOwner->Position.z - 0.5;
+			Points[0].x = - 0.5;
+			Points[0].y = + 0.5;
+			Points[0].z = - 0.5;
 
-			Points[1].x = FirstOwner->Position.x - 0.5;
-			Points[1].y = FirstOwner->Position.y - 0.5;
-			Points[1].z = FirstOwner->Position.z - 0.5;
+			Points[1].x = - 0.5;
+			Points[1].y = - 0.5;
+			Points[1].z = - 0.5;
 
-			Points[2].x = FirstOwner->Position.x - 0.5;
-			Points[2].y = FirstOwner->Position.y - 0.5;
-			Points[2].z = FirstOwner->Position.z + 0.5;
+			Points[2].x = - 0.5;
+			Points[2].y = - 0.5;
+			Points[2].z = + 0.5;
 
-			Points[3].x = FirstOwner->Position.x - 0.5;
-			Points[3].y = FirstOwner->Position.y + 0.5;
-			Points[3].z = FirstOwner->Position.z + 0.5;
+			Points[3].x = - 0.5;
+			Points[3].y = + 0.5;
+			Points[3].z = + 0.5;
 
 			break;
 		}
@@ -195,17 +196,17 @@ bool Face::Update()
 	return true;
 }
 
-bool Face::Draw()
+bool Face::Draw(float xTranslate, float yTranslate)
 {
     if(Visible)
     {
-        TEXTURE->BindTexturePoint(Material, 0 + Rotation);         glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-        TEXTURE->BindTexturePoint(Material, 1 + Rotation);         glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-        TEXTURE->BindTexturePoint(Material, 2 + Rotation);         glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+        TEXTURE->BindTexturePoint(Material, 0 + Rotation);         glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+        TEXTURE->BindTexturePoint(Material, 1 + Rotation);         glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+        TEXTURE->BindTexturePoint(Material, 2 + Rotation);         glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
 
-        TEXTURE->BindTexturePoint(Material, 2 + Rotation);         glVertex3f(Points[2].x, Points[2].y, Points[2].z);
-        TEXTURE->BindTexturePoint(Material, 3 + Rotation);         glVertex3f(Points[3].x, Points[3].y, Points[3].z);
-        TEXTURE->BindTexturePoint(Material, 0 + Rotation);         glVertex3f(Points[0].x, Points[0].y, Points[0].z);
+        TEXTURE->BindTexturePoint(Material, 2 + Rotation);         glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+        TEXTURE->BindTexturePoint(Material, 3 + Rotation);         glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
+        TEXTURE->BindTexturePoint(Material, 0 + Rotation);         glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
 
         SCREEN->IncrementTriangles(2);
     }

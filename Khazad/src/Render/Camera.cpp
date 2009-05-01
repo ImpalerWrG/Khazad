@@ -586,10 +586,10 @@ void Camera::MoveViewVertical(float Z)
 
 	generateViewFrustum();
 
-	if(SCREEN->isShadedDraw())
-	{
-        SCREEN->DirtyAllLists();
-	}
+	//if(SCREEN->isShadedDraw())
+	//{
+    //    SCREEN->DirtyAllLists();
+	//}
 }
 
 void Camera::ChangeViewLevels(Sint32 Change)
@@ -604,10 +604,10 @@ void Camera::ChangeViewLevels(Sint32 Change)
         }
         generateViewFrustum();
 
-        if(SCREEN->isShadedDraw())
-        {
-            SCREEN->DirtyAllLists();
-        }
+        //if(SCREEN->isShadedDraw())
+        //{
+        //    SCREEN->DirtyAllLists();
+        //}
     }
 }
 

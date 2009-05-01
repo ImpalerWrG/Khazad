@@ -362,12 +362,17 @@ bool ScreenManager::Render()
 	GreenPickingValue = 0;
 	BluePickingValue = 0;
 
-	Uint16 CellEdgeLenth = CONFIG->getCellEdgeLength();
 
     glMatrixMode(GL_TEXTURE);
     glLoadIdentity();
-    glScalef(1.0 / (float) TEXTURE->getAggragateTextureSize(), 1.0 / (float) TEXTURE->getAggragateTextureSize(), 1);
+    glScalef(1.0 / (float) TEXTURE->getAggragateTextureSize(), 1.0 / (float) TEXTURE->getAggragateTextureSize(), 1.0);
     glBindTexture(GL_TEXTURE_2D, TEXTURE->getAggragateTexture());
+
+
+	glMatrixMode(GL_MODELVIEW);
+    CameraOrientation CurrentOrientation = MainCamera->getOrientation();
+	Uint16 CellEdgeLenth = CONFIG->getCellEdgeLength();
+    glColor3f(1.0, 1.0, 1.0);
 
 	for(Uint16 Zlevel = 0; Zlevel < MAP->getCellSizeZ(); Zlevel++)
 	{
@@ -387,7 +392,6 @@ bool ScreenManager::Render()
 
                     if  (MainCamera->sphereInFrustum(LoopCell->Position, CellEdgeLenth))
                     {
-                        CameraOrientation CurrentOrientation = MainCamera->getOrientation();
                         if(LoopCell->DirtyDrawlist)
                         {
                             // Rebuild the new Drawlist
@@ -402,6 +406,7 @@ bool ScreenManager::Render()
                         }
                         else
                         {
+                            glColor3f(Shading, Shading, Shading);
                             glCallList(LoopCell->DrawListID + (GLuint) CurrentOrientation);
                         }
                         TotalTriangles += LoopCell->getTriangleCount(CurrentOrientation);  // Use stored Triangle Count
@@ -411,6 +416,7 @@ bool ScreenManager::Render()
 		}
 	}
 
+	//glPopMatrix();
 
 /*
 	for (Uint32 i = 0; i < GAME->ActorList.size(); i++)
@@ -421,8 +427,6 @@ bool ScreenManager::Render()
 	    }
 	}
 */
-
-    //glTranslatef(10.0, 10.0, 10.0);
 
     glMatrixMode(GL_TEXTURE);  //return to normal Texturing for UI
     glPopMatrix();
@@ -441,16 +445,18 @@ void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, CameraO
     {
         glNewList(DrawListID, GL_COMPILE);
     }
-
         TriangleCounter = 0;  // Reset Counter and Track Triangle count
+
+        glPushMatrix();
+        glTranslatef(TargetCell->Position.x , TargetCell->Position.y, TargetCell->Position.z);
+
         glBegin(GL_TRIANGLES);
-
-            glColor3f(Shadding, Shadding, Shadding); // Atleast one gl call must occure in each Drawlist to prevent weird Segfault in Atioglx1.dll
-
             TargetCell->Draw(Orientation, HiddenDraw);
-
         glEnd();
-        glEndList();
+
+        glPopMatrix();
+
+    glEndList();
 
     TargetCell->setTriangleCount(Orientation, TriangleCounter);
 }
@@ -504,7 +510,7 @@ void ScreenManager::setDrawingFlat()
 
 void ScreenManager::setDrawing3D()
 {
-    if(FlatDraw)
+    if(FlatDraw)  // Discard the FlatProjection Matrices
     {
         glEnable(GL_DEPTH_TEST);
 
@@ -532,7 +538,7 @@ void ScreenManager::ShowAxis(void)
 void ScreenManager::setShadedDraw(bool NewValue)
 {
     ShadedDraw = NewValue;
-    DirtyAllLists();
+    //DirtyAllLists();
 }
 
 void ScreenManager::setHiddenDraw(bool NewValue)

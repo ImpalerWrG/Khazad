@@ -36,288 +36,288 @@ void Slope::SetSlopeType(Slopping Type)
     {
         case SLOPE_NORTH_EAST:
         {
-            Points[0].x = Owner->Position.x + 0.5;
-			Points[0].y = Owner->Position.y + 0.5;
-			Points[0].z = Owner->Position.z + 0.5;
+            Points[0].x = + 0.5;
+			Points[0].y = + 0.5;
+			Points[0].z = + 0.5;
 
-			Points[1].x = Owner->Position.x - 0.5;
-			Points[1].y = Owner->Position.y + 0.5;
-			Points[1].z = Owner->Position.z + 0.5;
+			Points[1].x = - 0.5;
+			Points[1].y = + 0.5;
+			Points[1].z = + 0.5;
 
-			Points[2].x = Owner->Position.x - 0.5;
-			Points[2].y = Owner->Position.y - 0.5;
-			Points[2].z = Owner->Position.z - 0.5;
+			Points[2].x = - 0.5;
+			Points[2].y = - 0.5;
+			Points[2].z = - 0.5;
 
-			Points[3].x = Owner->Position.x + 0.5;
-			Points[3].y = Owner->Position.y - 0.5;
-			Points[3].z = Owner->Position.z - 0.5;
+			Points[3].x = + 0.5;
+			Points[3].y = - 0.5;
+			Points[3].z = - 0.5;
             break;
         }
         case SLOPE_SOUTH_EAST:
         {
-			Points[0].x = Owner->Position.x - 0.5;
-			Points[0].y = Owner->Position.y + 0.5;
-			Points[0].z = Owner->Position.z + 0.5;
+			Points[0].x = - 0.5;
+			Points[0].y = + 0.5;
+			Points[0].z = + 0.5;
 
-			Points[1].x = Owner->Position.x - 0.5;
-			Points[1].y = Owner->Position.y - 0.5;
-			Points[1].z = Owner->Position.z + 0.5;
+			Points[1].x = - 0.5;
+			Points[1].y = - 0.5;
+			Points[1].z = + 0.5;
 
-			Points[2].x = Owner->Position.x + 0.5;
-			Points[2].y = Owner->Position.y - 0.5;
-			Points[2].z = Owner->Position.z - 0.5;
+			Points[2].x = + 0.5;
+			Points[2].y = - 0.5;
+			Points[2].z = - 0.5;
 
-			Points[3].x = Owner->Position.x + 0.5;
-			Points[3].y = Owner->Position.y + 0.5;
-			Points[3].z = Owner->Position.z - 0.5;
+			Points[3].x = + 0.5;
+			Points[3].y = + 0.5;
+			Points[3].z = - 0.5;
             break;
         }
         case SLOPE_SOUTH_WEST:
         {
-			Points[0].x = Owner->Position.x - 0.5;
-			Points[0].y = Owner->Position.y - 0.5;
-			Points[0].z = Owner->Position.z + 0.5;
+			Points[0].x = - 0.5;
+			Points[0].y = - 0.5;
+			Points[0].z = + 0.5;
 
-			Points[1].x = Owner->Position.x + 0.5;
-			Points[1].y = Owner->Position.y - 0.5;
-			Points[1].z = Owner->Position.z + 0.5;
+			Points[1].x = + 0.5;
+			Points[1].y = - 0.5;
+			Points[1].z = + 0.5;
 
-			Points[2].x = Owner->Position.x + 0.5;
-			Points[2].y = Owner->Position.y + 0.5;
-			Points[2].z = Owner->Position.z - 0.5;
+			Points[2].x = + 0.5;
+			Points[2].y = + 0.5;
+			Points[2].z = - 0.5;
 
-			Points[3].x = Owner->Position.x - 0.5;
-			Points[3].y = Owner->Position.y + 0.5;
-			Points[3].z = Owner->Position.z - 0.5;
+			Points[3].x = - 0.5;
+			Points[3].y = + 0.5;
+			Points[3].z = - 0.5;
             break;
         }
         case SLOPE_NORTH_WEST:
         {
-			Points[0].x = Owner->Position.x + 0.5;
-			Points[0].y = Owner->Position.y + 0.5;
-			Points[0].z = Owner->Position.z + 0.5;
+			Points[0].x = + 0.5;
+			Points[0].y = + 0.5;
+			Points[0].z = + 0.5;
 
-			Points[1].x = Owner->Position.x + 0.5;
-			Points[1].y = Owner->Position.y - 0.5;
-			Points[1].z = Owner->Position.z + 0.5;
+			Points[1].x = + 0.5;
+			Points[1].y = - 0.5;
+			Points[1].z = + 0.5;
 
-			Points[2].x = Owner->Position.x - 0.5;
-			Points[2].y = Owner->Position.y - 0.5;
-			Points[2].z = Owner->Position.z - 0.5;
+			Points[2].x = - 0.5;
+			Points[2].y = - 0.5;
+			Points[2].z = - 0.5;
 
-			Points[3].x = Owner->Position.x - 0.5;
-			Points[3].y = Owner->Position.y + 0.5;
-			Points[3].z = Owner->Position.z - 0.5;
+			Points[3].x = - 0.5;
+			Points[3].y = + 0.5;
+			Points[3].z = - 0.5;
             break;
         }
         case SLOPE_LARGE_NORTH:
         {
-			Points[0].x = Owner->Position.x - 0.5;
-			Points[0].y = Owner->Position.y + 0.5;
-			Points[0].z = Owner->Position.z + 0.5;
+			Points[0].x = - 0.5;
+			Points[0].y = + 0.5;
+			Points[0].z = + 0.5;
 
-			Points[1].x = Owner->Position.x + 0.5;
-			Points[1].y = Owner->Position.y - 0.5;
-			Points[1].z = Owner->Position.z + 0.5;
+			Points[1].x = + 0.5;
+			Points[1].y = - 0.5;
+			Points[1].z = + 0.5;
 
-			Points[2].x = Owner->Position.x - 0.5;
-			Points[2].y = Owner->Position.y - 0.5;
-			Points[2].z = Owner->Position.z - 0.5;
+			Points[2].x = - 0.5;
+			Points[2].y = - 0.5;
+			Points[2].z = - 0.5;
 
-			Points[3].x = Owner->Position.x + 0.5;
-			Points[3].y = Owner->Position.y + 0.5;
-			Points[3].z = Owner->Position.z + 0.5;
+			Points[3].x = + 0.5;
+			Points[3].y = + 0.5;
+			Points[3].z = + 0.5;
             break;
         }
         case SLOPE_LARGE_EAST:
         {
-			Points[0].x = Owner->Position.x - 0.5;
-			Points[0].y = Owner->Position.y - 0.5;
-			Points[0].z = Owner->Position.z + 0.5;
+			Points[0].x = - 0.5;
+			Points[0].y = - 0.5;
+			Points[0].z = + 0.5;
 
-			Points[1].x = Owner->Position.x + 0.5;
-			Points[1].y = Owner->Position.y + 0.5;
-			Points[1].z = Owner->Position.z + 0.5;
+			Points[1].x = + 0.5;
+			Points[1].y = + 0.5;
+			Points[1].z = + 0.5;
 
-			Points[2].x = Owner->Position.x + 0.5;
-			Points[2].y = Owner->Position.y - 0.5;
-			Points[2].z = Owner->Position.z - 0.5;
+			Points[2].x = + 0.5;
+			Points[2].y = - 0.5;
+			Points[2].z = - 0.5;
 
-			Points[3].x = Owner->Position.x - 0.5;
-			Points[3].y = Owner->Position.y + 0.5;
-			Points[3].z = Owner->Position.z + 0.5;
+			Points[3].x = - 0.5;
+			Points[3].y = + 0.5;
+			Points[3].z = + 0.5;
             break;
         }
         case SLOPE_LARGE_SOUTH:
         {
-			Points[0].x = Owner->Position.x - 0.5;
-			Points[0].y = Owner->Position.y + 0.5;
-			Points[0].z = Owner->Position.z + 0.5;
+			Points[0].x = - 0.5;
+			Points[0].y = + 0.5;
+			Points[0].z = + 0.5;
 
-			Points[1].x = Owner->Position.x + 0.5;
-			Points[1].y = Owner->Position.y - 0.5;
-			Points[1].z = Owner->Position.z + 0.5;
+			Points[1].x = + 0.5;
+			Points[1].y = - 0.5;
+			Points[1].z = + 0.5;
 
-			Points[2].x = Owner->Position.x + 0.5;
-			Points[2].y = Owner->Position.y + 0.5;
-			Points[2].z = Owner->Position.z - 0.5;
+			Points[2].x = + 0.5;
+			Points[2].y = + 0.5;
+			Points[2].z = - 0.5;
 
-			Points[3].x = Owner->Position.x - 0.5;
-			Points[3].y = Owner->Position.y - 0.5;
-			Points[3].z = Owner->Position.z + 0.5;
+			Points[3].x = - 0.5;
+			Points[3].y = - 0.5;
+			Points[3].z = + 0.5;
             break;
         }
         case SLOPE_LARGE_WEST:
         {
-			Points[0].x = Owner->Position.x - 0.5;
-			Points[0].y = Owner->Position.y - 0.5;
-			Points[0].z = Owner->Position.z + 0.5;
+			Points[0].x = - 0.5;
+			Points[0].y = - 0.5;
+			Points[0].z = + 0.5;
 
-			Points[1].x = Owner->Position.x + 0.5;
-			Points[1].y = Owner->Position.y + 0.5;
-			Points[1].z = Owner->Position.z + 0.5;
+			Points[1].x = + 0.5;
+			Points[1].y = + 0.5;
+			Points[1].z = + 0.5;
 
-			Points[2].x = Owner->Position.x - 0.5;
-			Points[2].y = Owner->Position.y + 0.5;
-			Points[2].z = Owner->Position.z - 0.5;
+			Points[2].x = - 0.5;
+			Points[2].y = + 0.5;
+			Points[2].z = - 0.5;
 
-			Points[3].x = Owner->Position.x + 0.5;
-			Points[3].y = Owner->Position.y - 0.5;
-			Points[3].z = Owner->Position.z + 0.5;
+			Points[3].x = + 0.5;
+			Points[3].y = - 0.5;
+			Points[3].z = + 0.5;
             break;
         }
         case SLOPE_SMALL_NORTH:
         {
-			Points[0].x = Owner->Position.x + 0.5;
-			Points[0].y = Owner->Position.y + 0.5;
-			Points[0].z = Owner->Position.z + 0.5;
+			Points[0].x = + 0.5;
+			Points[0].y = + 0.5;
+			Points[0].z = + 0.5;
 
-			Points[1].x = Owner->Position.x + 0.5;
-			Points[1].y = Owner->Position.y - 0.5;
-			Points[1].z = Owner->Position.z - 0.5;
+			Points[1].x = + 0.5;
+			Points[1].y = - 0.5;
+			Points[1].z = - 0.5;
 
-			Points[2].x = Owner->Position.x - 0.5;
-			Points[2].y = Owner->Position.y + 0.5;
-			Points[2].z = Owner->Position.z - 0.5;
+			Points[2].x = - 0.5;
+			Points[2].y = + 0.5;
+			Points[2].z = - 0.5;
 
-			Points[3].x = Owner->Position.x - 0.5;
-			Points[3].y = Owner->Position.y - 0.5;
-			Points[3].z = Owner->Position.z - 0.5;
+			Points[3].x = - 0.5;
+			Points[3].y = - 0.5;
+			Points[3].z = - 0.5;
             break;
         }
         case SLOPE_SMALL_EAST:
         {
-			Points[0].x = Owner->Position.x - 0.5;
-			Points[0].y = Owner->Position.y + 0.5;
-			Points[0].z = Owner->Position.z + 0.5;
+			Points[0].x = - 0.5;
+			Points[0].y = + 0.5;
+			Points[0].z = + 0.5;
 
-			Points[1].x = Owner->Position.x - 0.5;
-			Points[1].y = Owner->Position.y - 0.5;
-			Points[1].z = Owner->Position.z - 0.5;
+			Points[1].x = - 0.5;
+			Points[1].y = - 0.5;
+			Points[1].z = - 0.5;
 
-			Points[2].x = Owner->Position.x + 0.5;
-			Points[2].y = Owner->Position.y + 0.5;
-			Points[2].z = Owner->Position.z - 0.5;
+			Points[2].x = + 0.5;
+			Points[2].y = + 0.5;
+			Points[2].z = - 0.5;
 
-			Points[3].x = Owner->Position.x + 0.5;
-			Points[3].y = Owner->Position.y - 0.5;
-			Points[3].z = Owner->Position.z - 0.5;
+			Points[3].x = + 0.5;
+			Points[3].y = - 0.5;
+			Points[3].z = - 0.5;
             break;
         }
         case SLOPE_SMALL_SOUTH:
         {
-			Points[0].x = Owner->Position.x - 0.5;
-			Points[0].y = Owner->Position.y - 0.5;
-			Points[0].z = Owner->Position.z + 0.5;
+			Points[0].x = - 0.5;
+			Points[0].y = - 0.5;
+			Points[0].z = + 0.5;
 
-			Points[1].x = Owner->Position.x - 0.5;
-			Points[1].y = Owner->Position.y + 0.5;
-			Points[1].z = Owner->Position.z - 0.5;
+			Points[1].x = - 0.5;
+			Points[1].y = + 0.5;
+			Points[1].z = - 0.5;
 
-			Points[2].x = Owner->Position.x + 0.5;
-			Points[2].y = Owner->Position.y - 0.5;
-			Points[2].z = Owner->Position.z - 0.5;
+			Points[2].x = + 0.5;
+			Points[2].y = - 0.5;
+			Points[2].z = - 0.5;
 
-			Points[3].x = Owner->Position.x + 0.5;
-			Points[3].y = Owner->Position.y + 0.5;
-			Points[3].z = Owner->Position.z - 0.5;
+			Points[3].x = + 0.5;
+			Points[3].y = + 0.5;
+			Points[3].z = - 0.5;
             break;
         }
        case SLOPE_SMALL_WEST:
         {
-			Points[0].x = Owner->Position.x + 0.5;
-			Points[0].y = Owner->Position.y - 0.5;
-			Points[0].z = Owner->Position.z + 0.5;
+			Points[0].x = + 0.5;
+			Points[0].y = - 0.5;
+			Points[0].z = + 0.5;
 
-			Points[1].x = Owner->Position.x + 0.5;
-			Points[1].y = Owner->Position.y + 0.5;
-			Points[1].z = Owner->Position.z - 0.5;
+			Points[1].x = + 0.5;
+			Points[1].y = + 0.5;
+			Points[1].z = - 0.5;
 
-			Points[2].x = Owner->Position.x - 0.5;
-			Points[2].y = Owner->Position.y - 0.5;
-			Points[2].z = Owner->Position.z - 0.5;
+			Points[2].x = - 0.5;
+			Points[2].y = - 0.5;
+			Points[2].z = - 0.5;
 
-			Points[3].x = Owner->Position.x - 0.5;
-			Points[3].y = Owner->Position.y + 0.5;
-			Points[3].z = Owner->Position.z - 0.5;
+			Points[3].x = - 0.5;
+			Points[3].y = + 0.5;
+			Points[3].z = - 0.5;
             break;
         }
        case SLOPE_CRESS_NORTH_SOUTH:
         {
-			Points[0].x = Owner->Position.x - 0.5;
-			Points[0].y = Owner->Position.y - 0.5;
-			Points[0].z = Owner->Position.z - 0.5;
+			Points[0].x = - 0.5;
+			Points[0].y = - 0.5;
+			Points[0].z = - 0.5;
 
-			Points[1].x = Owner->Position.x + 0.5;
-			Points[1].y = Owner->Position.y + 0.5;
-			Points[1].z = Owner->Position.z - 0.5;
+			Points[1].x = + 0.5;
+			Points[1].y = + 0.5;
+			Points[1].z = - 0.5;
 
-			Points[2].x = Owner->Position.x + 0.5;
-			Points[2].y = Owner->Position.y - 0.5;
-			Points[2].z = Owner->Position.z + 0.5;
+			Points[2].x = + 0.5;
+			Points[2].y = - 0.5;
+			Points[2].z = + 0.5;
 
-			Points[3].x = Owner->Position.x - 0.5;
-			Points[3].y = Owner->Position.y + 0.5;
-			Points[3].z = Owner->Position.z + 0.5;
+			Points[3].x = - 0.5;
+			Points[3].y = + 0.5;
+			Points[3].z = + 0.5;
             break;
         }
        case SLOPE_CRESS_EAST_WEST:
         {
-			Points[0].x = Owner->Position.x - 0.5;
-			Points[0].y = Owner->Position.y + 0.5;
-			Points[0].z = Owner->Position.z - 0.5;
+			Points[0].x = - 0.5;
+			Points[0].y = + 0.5;
+			Points[0].z = - 0.5;
 
-			Points[1].x = Owner->Position.x + 0.5;
-			Points[1].y = Owner->Position.y - 0.5;
-			Points[1].z = Owner->Position.z - 0.5;
+			Points[1].x = + 0.5;
+			Points[1].y = - 0.5;
+			Points[1].z = - 0.5;
 
-			Points[2].x = Owner->Position.x - 0.5;
-			Points[2].y = Owner->Position.y - 0.5;
-			Points[2].z = Owner->Position.z + 0.5;
+			Points[2].x = - 0.5;
+			Points[2].y = - 0.5;
+			Points[2].z = + 0.5;
 
-			Points[3].x = Owner->Position.x + 0.5;
-			Points[3].y = Owner->Position.y + 0.5;
-			Points[3].z = Owner->Position.z + 0.5;
+			Points[3].x = + 0.5;
+			Points[3].y = + 0.5;
+			Points[3].z = + 0.5;
             break;
         }
 
        case SLOPE_FLAT:
         {
-			Points[0].x = Owner->Position.x - 0.5;
-			Points[0].y = Owner->Position.y + 0.5;
-			Points[0].z = Owner->Position.z;
+			Points[0].x = - 0.5;
+			Points[0].y = + 0.5;
+			Points[0].z = 0;
 
-			Points[1].x = Owner->Position.x + 0.5;
-			Points[1].y = Owner->Position.y - 0.5;
-			Points[1].z = Owner->Position.z;
+			Points[1].x = + 0.5;
+			Points[1].y = - 0.5;
+			Points[1].z = 0;
 
-			Points[2].x = Owner->Position.x - 0.5;
-			Points[2].y = Owner->Position.y - 0.5;
-			Points[2].z = Owner->Position.z;
+			Points[2].x = - 0.5;
+			Points[2].y = - 0.5;
+			Points[2].z = 0;
 
-			Points[3].x = Owner->Position.x + 0.5;
-			Points[3].y = Owner->Position.y + 0.5;
-			Points[3].z = Owner->Position.z;
+			Points[3].x = + 0.5;
+			Points[3].y = + 0.5;
+			Points[3].z = 0;
             break;
         }
 
@@ -335,7 +335,7 @@ bool Slope::Update()
     return true;
 }
 
-bool Slope::Draw()
+bool Slope::Draw(float xTranslate, float yTranslate)
 {
     if(Visible)
     {
@@ -343,57 +343,57 @@ bool Slope::Draw()
 
         if (SlopeType == SLOPE_NORTH_EAST || SlopeType == SLOPE_SOUTH_EAST || SlopeType == SLOPE_SOUTH_WEST || SlopeType == SLOPE_NORTH_WEST )
         {
-                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
 
-                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x, Points[2].y, Points[2].z);
-                TEXTURE->BindTexturePoint(Material, 3);   glVertex3f(Points[3].x, Points[3].y, Points[3].z);
-                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x, Points[0].y, Points[0].z);
+                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+                TEXTURE->BindTexturePoint(Material, 3);   glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
+                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
         }
 
         if (SlopeType == SLOPE_SMALL_NORTH || SlopeType == SLOPE_SMALL_EAST || SlopeType == SLOPE_SMALL_SOUTH || SlopeType == SLOPE_SMALL_WEST )
         {
-                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
 
-                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x, Points[2].y, Points[2].z);
-                TEXTURE->BindTexturePoint(Material, 3);   glVertex3f(Points[3].x, Points[3].y, Points[3].z);
+                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+                TEXTURE->BindTexturePoint(Material, 3);   glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
         }
 
         if (SlopeType == SLOPE_LARGE_NORTH || SlopeType == SLOPE_LARGE_EAST || SlopeType == SLOPE_LARGE_SOUTH || SlopeType == SLOPE_LARGE_WEST )
         {
-                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
 
-                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-                TEXTURE->BindTexturePoint(Material, 3);   glVertex3f(Points[3].x, Points[3].y, Points[3].z);
+                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Material, 3);   glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
         }
 
         if (SlopeType == SLOPE_CRESS_NORTH_SOUTH || SlopeType == SLOPE_CRESS_EAST_WEST )
         {
-                TEXTURE->BindTexturePoint(Material, 0);    glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-                TEXTURE->BindTexturePoint(Material, 1);    glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-                TEXTURE->BindTexturePoint(Material, 2);    glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+                TEXTURE->BindTexturePoint(Material, 0);    glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                TEXTURE->BindTexturePoint(Material, 1);    glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Material, 2);    glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
 
-                TEXTURE->BindTexturePoint(Material, 0);    glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-                TEXTURE->BindTexturePoint(Material, 1);    glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-                TEXTURE->BindTexturePoint(Material, 3);    glVertex3f(Points[3].x, Points[3].y, Points[3].z);
+                TEXTURE->BindTexturePoint(Material, 0);    glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                TEXTURE->BindTexturePoint(Material, 1);    glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Material, 3);    glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
         }
 
         if(SlopeType == SLOPE_FLAT)
         {
-                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x, Points[0].y, Points[0].z);
-                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x, Points[1].y, Points[1].z);
-                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x, Points[2].y, Points[2].z);
+                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
 
-                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x, Points[2].y, Points[2].z);
-                TEXTURE->BindTexturePoint(Material, 3);   glVertex3f(Points[3].x, Points[3].y, Points[3].z);
-                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x, Points[0].y, Points[0].z);
+                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+                TEXTURE->BindTexturePoint(Material, 3);   glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
+                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
         }
 
         SCREEN->IncrementTriangles(2);

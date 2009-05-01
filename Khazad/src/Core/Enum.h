@@ -24,6 +24,8 @@ enum Facet
 	NUM_FACETS
 };
 
+inline Facet &operator++ (Facet &OldFace)      { return OldFace = Facet(OldFace + 1); }
+
 enum Slopping
 {
     SLOPE_FLAT,
@@ -49,6 +51,8 @@ enum Slopping
     NUM_SLOPES
 };
 
+inline Slopping &operator++ (Slopping &OldSlope)      { return OldSlope = Slopping(OldSlope + 1); }
+
 enum Direction
 {
     UP,
@@ -64,6 +68,8 @@ enum Direction
 
 	NUM_DIRECTIONS
 };
+
+inline Direction &operator++ (Direction &OldDirection)      { return OldDirection = Direction(OldDirection + 1); }
 
 enum CameraOrientation
 {

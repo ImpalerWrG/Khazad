@@ -22,7 +22,7 @@ public:
 	SDL_Color Color;
 
 	bool Update();
-	bool Draw();
+	bool Draw(float xTranslate, float yTranslate);
 
 	void SetSlopeType(Slopping SlopeType);
 

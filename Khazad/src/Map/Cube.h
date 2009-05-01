@@ -21,10 +21,10 @@ public:
 
 
 	bool isSolid()                  { return Solid; }
-    void setSolid(bool NewValue)    { Solid = NewValue; Liquid = !NewValue;}
+    void setSolid(bool NewValue)    { Solid = NewValue; /*Liquid = !NewValue;*/}
 
-	bool isLiquid()                 { return Liquid; }
-	void setLiquid(bool NewValue)   { Liquid = NewValue; Solid = !NewValue;}
+	//bool isLiquid()                 { return Liquid; }
+	//void setLiquid(bool NewValue)   { Liquid = NewValue; Solid = !NewValue;}
 
     Slope* getSlope()               { return Slopage; }
 	void SetSlope(Slopping Type);
@@ -55,7 +55,7 @@ public:
 
 
 	bool Update();
-	bool Draw(CameraOrientation Orientation, bool DrawHidden = false);
+	bool Draw(CameraOrientation Orientation, float xTranslate, float yTranslate, bool DrawHidden = false);
 
 protected:
 
@@ -64,7 +64,7 @@ protected:
 	Slope* Slopage;
 
 	bool Solid;
-	bool Liquid;
+	//bool Liquid;
 	Uint16 Material;
 
 };

@@ -24,7 +24,7 @@ public:
 	SDL_Color Color;
 
 	bool Update();
-	bool Draw();
+	bool Draw(float xTranslate, float yTranslate);
 
     Uint16 getMaterial()                    { return Material; }
 	void setMaterial(Uint16 MaterialID)     { Material = MaterialID; }
