@@ -200,6 +200,8 @@ int main(int argv, char** argc)
             //FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
             //SCREEN->setDrawing3D(); // Come out of HUD mode
+
+            SCREEN->PrintDebugging();
         }
 
         SCREEN->Flip();

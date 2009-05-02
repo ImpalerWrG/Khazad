@@ -11,6 +11,7 @@
 #include <ColorManager.h>
 #include <TextureManager.h>
 #include <DataManager.h>
+#include <Extract.h>
 #include <Game.h>
 #include <Map.h>
 #include <Cell.h>
@@ -525,7 +526,61 @@ void ScreenManager::setDrawing3D()
 
 void ScreenManager::PrintDebugging()
 {
-	MainCamera->PrintDebugging();
+    char buffer[256];
+	setDrawingFlat();
+
+	Vector3 Point;
+    Point.x = (int) MainCamera->LookX();
+    Point.y = (int) MainCamera->LookY();
+    Point.z = (int) MainCamera->LookZ();
+
+	int TileType = -1;
+	int Designation = 0;
+	int Ocupancy = 0;
+
+	TileType = EXTRACT->getTileType(Point.x, Point.y, Point.z);
+	Designation = EXTRACT->getDesignations(Point.x, Point.y, Point.z);
+	Ocupancy = EXTRACT->getOccupancies(Point.x, Point.y, Point.z);
+
+	SDL_Rect position;
+    position.x = 10;
+    position.y = 160;
+
+    sprintf (buffer, "Cordinates: x%i y%i z%i", (int)Point.x, (int)Point.y, (int)Point.z);
+    SCREEN->RenderText(buffer, 0, WHITE, &position);
+    position.y -= 40;
+
+    sprintf (buffer, "Tile: %i", TileType);
+    SCREEN->RenderText(buffer, 0, WHITE, &position);
+    position.y -= 40;
+
+    char binarybuffer[33];
+
+    binarysprintf(binarybuffer, Designation);
+    sprintf (buffer, "Designation: %s", binarybuffer);
+    SCREEN->RenderText(buffer, 0, WHITE, &position);
+
+    position.y -= 40;
+
+    binarysprintf(binarybuffer, Ocupancy);
+    sprintf (buffer, "Ocupancy: %s", binarybuffer);
+    SCREEN->RenderText(buffer, 0, WHITE, &position);
+}
+
+void ScreenManager::binarysprintf(char* buffer, int Input)
+{
+    for (int i = 31; i > -1; i--)
+    {
+        if (Input & (1 << i))
+        {
+            buffer[31 - i] = '1';
+        }
+        else
+        {
+            buffer[31 - i] = '0';
+        }
+    }
+    buffer[32] = NULL;
 }
 
 void ScreenManager::ShowAxis(void)
@@ -538,7 +593,6 @@ void ScreenManager::ShowAxis(void)
 void ScreenManager::setShadedDraw(bool NewValue)
 {
     ShadedDraw = NewValue;
-    //DirtyAllLists();
 }
 
 void ScreenManager::setHiddenDraw(bool NewValue)

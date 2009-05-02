@@ -83,6 +83,9 @@ public:
 
 	Camera* MainCamera;
 
+
+    void binarysprintf(char* buffer, int Input); // TODO move this to some global place;
+
 protected:
 
 	Uint16 ScreenWidth;

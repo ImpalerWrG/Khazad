@@ -23,8 +23,8 @@ public:
 	bool isSolid()                  { return Solid; }
     void setSolid(bool NewValue)    { Solid = NewValue; /*Liquid = !NewValue;*/}
 
-	//bool isLiquid()                 { return Liquid; }
-	//void setLiquid(bool NewValue)   { Liquid = NewValue; Solid = !NewValue;}
+	Uint8 getLiquid()                 { return Liquid; }
+	void setLiquid(Uint8 NewValue)      { Liquid = NewValue; }
 
     Slope* getSlope()               { return Slopage; }
 	void SetSlope(Slopping Type);
@@ -64,7 +64,7 @@ protected:
 	Slope* Slopage;
 
 	bool Solid;
-	//bool Liquid;
+	Uint8 Liquid;
 	Uint16 Material;
 
 };

@@ -1,7 +1,7 @@
 #include <windows.h>
 
 #include <Extract.h>
-#include <stdafx.h>
+//#include <stdafx.h>
 
 
 DECLARE_SINGLETON(Extractor)
@@ -22,7 +22,7 @@ Extractor::~Extractor()
     FreeMap();
 }
 
-int Extractor::dumpMemory()
+bool Extractor::dumpMemory()
 {
     HWND DFProcess;
     HANDLE DFHandle;
@@ -289,7 +289,7 @@ bool Extractor::writeMap(char* FilePath)
     fclose(SaveFile);
 }
 
-int Extractor::loadMap(char* FilePath, bool Legacy)
+bool Extractor::loadMap(char* FilePath)
 {
     FILE *MapFile;
     MapFile = fopen(FilePath, "rb");
@@ -297,7 +297,7 @@ int Extractor::loadMap(char* FilePath, bool Legacy)
     if  (MapFile == NULL)
     {
         printf("Can't open File for read.\n");
-        return 1;
+        return false;
     }
     else
     {
@@ -310,49 +310,39 @@ int Extractor::loadMap(char* FilePath, bool Legacy)
         fread(&y_blocks, sizeof(int), 1, MapFile);
         fread(&z_levels, sizeof(int), 1, MapFile);
 
-        printf("Read from file\nx_size: %d\ny_size: %d\nz_levels: %d\n", x_blocks, y_blocks, z_levels);
+        printf("Read from file %s\nX block size: %d\nY block size: %d\nZ levels: %d\n", FilePath, x_blocks, y_blocks, z_levels);
 
-        int Pad;
-        if(Legacy)  // 3Dwarf map file format used padded indexes, Legacy mode supports it (I hope)
-        {
-            Pad = 2;
-        }
-        else
-        {
-            Pad = 0;
-        }
 
-        Uint32 MapSizeX = x_blocks * BlockSize;
-        Uint32 MapSizeY = y_blocks * BlockSize;
-        Uint32 MapSizeZ = z_levels;
+        MapSizeX = x_blocks * BlockSize;
+        MapSizeY = y_blocks * BlockSize;
 
         Tiles = new short int**[MapSizeX];
         Designations = new int**[MapSizeX];
         Ocupancy = new int**[MapSizeX];
 
-        for (Uint32 x = 0; x < MapSizeX + (Pad * 2); x++)
+        for (Uint32 x = 0; x < MapSizeX; x++)
         {
             Tiles[x] = new short int*[MapSizeY];
             Designations[x] = new int*[MapSizeY];
             Ocupancy[x] = new int*[MapSizeY];
 
-            for (Uint32 y = 0; y < MapSizeY + (Pad * 2); y++)
+            for (Uint32 y = 0; y < MapSizeY ; y++)
             {
-                Tiles[x][y] = new short int[MapSizeZ];
-                Designations[x][y] = new int[MapSizeZ];
-                Ocupancy[x][y] = new int[MapSizeZ];
+                Tiles[x][y] = new short int[z_levels];
+                Designations[x][y] = new int[z_levels];
+                Ocupancy[x][y] = new int[z_levels];
             }
         }
 
-        for(int z = 0; z < MapSizeZ; z++)
+        for(int z = 0; z < z_levels; z++)
         {
             for(int y = 0; y < MapSizeY; y++)
             {
                 for(int x = 0; x < MapSizeX; x++)
                 {
-                    fread(&Tiles[x + Pad][y + Pad][z + Pad], sizeof(short int), 1, MapFile);
-                    fread(&Designations[x + Pad][y + Pad][z + Pad], sizeof(int), 1, MapFile);
-                    fread(&Ocupancy[x + Pad][y + Pad][z + Pad], sizeof(int), 1, MapFile);
+                    fread(&Tiles[x][y][z], sizeof(short int), 1, MapFile);
+                    fread(&Designations[x][y][z], sizeof(int), 1, MapFile);
+                    fread(&Ocupancy[x][y][z], sizeof(int), 1, MapFile);
                 }
             }
         }
@@ -361,15 +351,11 @@ int Extractor::loadMap(char* FilePath, bool Legacy)
         MapLoaded = true;
     }
 
-    return 0;
+    return true;
 }
 
 bool Extractor::FreeMap()
 {
-    Uint32 MapSizeX = x_blocks * BlockSize;
-    Uint32 MapSizeY = y_blocks * BlockSize;
-    Uint32 MapSizeZ = z_levels;
-
     if(Tiles != NULL)
     {
         for (Uint32 x = 0; x < MapSizeX; x++)
@@ -389,7 +375,47 @@ bool Extractor::FreeMap()
         delete[] Tiles;
     }
 
+    if(Designations != NULL)
+    {
+        for (Uint32 x = 0; x < MapSizeX; x++)
+        {
+            if(Designations[x] != NULL)
+            {
+                for (Uint32 y = 0; y < MapSizeY; y++)
+                {
+                    if(Designations[x][y] != NULL)
+                    {
+                        delete[] Designations[x][y];
+                    }
+                }
+                delete[] Designations[x];
+            }
+        }
+        delete[] Designations;
+    }
+
+
+    if(Ocupancy != NULL)
+    {
+        for (Uint32 x = 0; x < MapSizeX; x++)
+        {
+            if(Ocupancy[x] != NULL)
+            {
+                for (Uint32 y = 0; y < MapSizeY; y++)
+                {
+                    if(Ocupancy[x][y] != NULL)
+                    {
+                        delete[] Ocupancy[x][y];
+                    }
+                }
+                delete[] Ocupancy[x];
+            }
+        }
+        delete[] Ocupancy;
+    }
+
     MapLoaded = false;
+    return true;
 }
 
 int Extractor::readMemoryFile()
@@ -459,7 +485,7 @@ int Extractor::picktexture(int in)
             break;
 
         case 2: //murky pool
-            return 2;
+            return 20;
             break;
 
         case 19: //driftwood stack
@@ -588,11 +614,11 @@ int Extractor::picktexture(int in)
             break;
 
         case 89: //waterfall landing
-            return 2;
+            return 20;
             break;
 
         case 90: //river source
-            return 2;
+            return 20;
             break;
 
         case 176: //stone wall worn1 (most worn)
@@ -1022,43 +1048,43 @@ int Extractor::picktexture(int in)
     return 6;
 }
 
-int Extractor::isLiquidTerrain(int in)
+int Extractor::getLiquidLevel(int x, int y, int z)
 {
-    switch (in)
+    if(x < MapSizeX && x > 0 && y < MapSizeY && y > 0 && z < z_levels && z > 0)
     {
-        case 2:   //murky pool
-
-        case 89: //waterfall landing
-        case 90: //river source
-
-        case 365: //river n
-        case 366: //river s
-        case 367: //river e
-        case 368: //river w
-        case 369: //river nw
-        case 370: //river ne
-        case 371: //river sw
-        case 372: //river se
-
-        case 373: //stream wall n (below)
-        case 374: //stream wall s (below)
-        case 375: //stream wall e (below)
-        case 376: //stream wall w (below)
-        case 377: //stream wall nw (below)
-        case 378: //stream wall ne (below)
-        case 379: //stream wall sw (below)
-        case 380: //stream wall se (below)
-
-            return 1;
-            break;
+        return Designations[x][y][z] & 7; // Extracts the first 3 bits
     }
-
-    return 0;
 }
 
-int Extractor::isOpenTerrain(int in)
+short int Extractor::getTileType(int x, int y, int z)
 {
+    if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
+    {
+        return Tiles[x][y][z];
+    }
+    return -1;
+}
 
+int Extractor::getDesignations(int x, int y, int z)
+{
+    if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
+    {
+        return Designations[x][y][z];
+    }
+    return -1;
+}
+
+int Extractor::getOccupancies(int x, int y, int z)
+{
+    if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
+    {
+        return Ocupancy[x][y][z];
+    }
+    return -1;
+}
+
+bool Extractor::isOpenTerrain(int in)
+{
     switch (in)
     {
         //case -1: //uninitialized tile
@@ -1191,17 +1217,19 @@ int Extractor::isOpenTerrain(int in)
         case 517: //stair up constructed
         case 518: //ramp constructed
 
-            return 1;
+            return true;
             break;
     }
 
-    return 0;
+    return false;
 }
 
-int Extractor::isFloorTerrain(int in)
+bool Extractor::isFloorTerrain(int in)
 {
+    switch (in)
+    {
+        case 2:   //murky pool
 
-    switch (in) {
         case 19: //driftwood stack
         case 24: //tree
         case 27: //up stair frozen liquid
@@ -1227,6 +1255,9 @@ int Extractor::isFloorTerrain(int in)
         case 81: //featstone pillar
         case 82: //minstone pillar
         case 83: //frozen liquid pillar
+        case 89: //waterfall landing
+        case 90: //river source
+
         case 231: //sapling
         case 233: //ramp grass dry
         case 234: //ramp grass dead
@@ -1266,6 +1297,25 @@ int Extractor::isFloorTerrain(int in)
         case 357: //soil floor 2 wet (raw) [red sand?]
         case 358: //soil floor 3 wet (raw) [red sand?]
         case 359: //soil floor 4 wet (raw) [red sand?]
+
+        case 365: //river n
+        case 366: //river s
+        case 367: //river e
+        case 368: //river w
+        case 369: //river nw
+        case 370: //river ne
+        case 371: //river sw
+        case 372: //river se
+
+        case 373: //stream wall n (below)
+        case 374: //stream wall s (below)
+        case 375: //stream wall e (below)
+        case 376: //stream wall w (below)
+        case 377: //stream wall nw (below)
+        case 378: //stream wall ne (below)
+        case 379: //stream wall sw (below)
+        case 380: //stream wall se (below)
+
         case 387: //dry grass floor1
         case 388: //dry grass floor2
         case 389: //dry grass floor3
@@ -1309,17 +1359,17 @@ int Extractor::isFloorTerrain(int in)
         case 495: //constructed pillar
         case 517: //stair up constructed
         case 518: //ramp constructed
-            return 1;
+            return true;
             break;
     }
 
-    return 0;
+    return false;
 }
 
-int Extractor::isRampTerrain(int in)
+bool Extractor::isRampTerrain(int in)
 {
-
-    switch (in) {
+    switch (in)
+    {
         case 233: //ramp grass dry
         case 234: //ramp grass dead
         case 235: //ramp grass1 [muddy?]
@@ -1331,17 +1381,17 @@ int Extractor::isRampTerrain(int in)
         case 241: //ramp soil
         case 245: //ramp frozen liquid
         case 518: //ramp constructed
-            return 1;
+            return true;
             break;
     }
 
-    return 0;
+    return false;
 }
 
-int Extractor::isStairTerrain(int in)
+bool Extractor::isStairTerrain(int in)
 {
-
-    switch (in) {
+    switch (in)
+    {
         case 25: //up-down stair frozen liquid
         case 26: //down stair frozen liquid
         case 27: //up stair frozen liquid
@@ -1369,17 +1419,17 @@ int Extractor::isStairTerrain(int in)
         case 515: //stair up-down constructed
         case 516: //stair down constructed
         case 517: //stair up constructed
-            return 1;
+            return true;
             break;
     }
 
-    return 0;
+    return false;
 }
 
-int Extractor::isWallTerrain(int in)
+bool Extractor::isWallTerrain(int in)
 {
-
-    switch (in) {
+    switch (in)
+    {
         case 65: //stone fortification
         case 79: //stone pillar
         case 80: //lavastone pillar
@@ -1531,19 +1581,33 @@ int Extractor::isWallTerrain(int in)
         case 512: //constructed wall ld
         case 513: //constructed wall ud
         case 514: //constructed wall lr
-            return 1;
+            return true;
             break;
     }
 
-    return 0;
+    return false;
 }
 
 bool Extractor::isDesignationFlag(unsigned int flag, int x, int y, int z)
 {
-    return (Designations[x][y][z] & (1 << flag));
+    if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
+    {
+        if(flag < sizeof(int) && flag >= 0)
+        {
+            return (Designations[x][y][z] & (1 << flag));
+        }
+    }
+    return false;
 }
 
 bool Extractor::isOcupancyFlag(unsigned int flag, int x, int y, int z)
 {
-    return (Ocupancy[x][y][z] & (1 << flag));
+    if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
+    {
+        if(flag < sizeof(int) && flag >= 0)
+        {
+            return (Ocupancy[x][y][z] & (1 << flag));
+        }
+    }
+    return false;
 }

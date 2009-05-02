@@ -325,14 +325,14 @@ Cube* Map::getCube(Sint32 X, Sint32 Y, Sint32 Z)
 
 void Map::LoadExtract()
 {
-    if(!EXTRACT->MapLoaded)
+    if(!EXTRACT->isMapLoaded())
     {
         return;
     }
 
-    CellSizeX = EXTRACT->x_blocks;
-	CellSizeY = EXTRACT->y_blocks;
-	CellSizeZ = EXTRACT->z_levels;
+    CellSizeX = EXTRACT->getXBlocks();
+	CellSizeY = EXTRACT->getYBlocks();
+	CellSizeZ = EXTRACT->getZBlocks();
 
 	CubesPerCellSide = (Uint8) CONFIG->getCellEdgeLength();
 
@@ -375,16 +375,17 @@ void Map::LoadExtract()
                 TargetCell = getCubeOwner(i, j, k);
                 if(TargetCell)
                 {
-                    int TileType = EXTRACT->Tiles[i][j][k];
+                    int TileType = EXTRACT->getTileType(i, j, k);
 
                     bool IsFloor = EXTRACT->isFloorTerrain(TileType);
                     bool IsWall = EXTRACT->isWallTerrain(TileType);
                     bool IsOpen = EXTRACT->isOpenTerrain(TileType);
                     bool IsRamp = EXTRACT->isRampTerrain(TileType);
-                    bool IsLiquid = EXTRACT->isLiquidTerrain(TileType);
                     bool IsStairs = EXTRACT->isStairTerrain(TileType);
 
-                    if(IsFloor || IsWall || IsOpen || IsRamp || IsLiquid || IsStairs)
+                    int Liquid = EXTRACT->getLiquidLevel(i, j, k);
+
+                    if(IsFloor || IsWall || IsOpen || IsRamp || IsStairs)
                     {
                         if(!TargetCell->isInitalized())
                         {
@@ -411,28 +412,26 @@ void Map::LoadExtract()
                                 NewCube->InitConstructedFace(FACET_BOTTOM, Material);
                             }
 
-                            if (IsLiquid)
-                            {
-                                NewCube->InitConstructedFace(FACET_BOTTOM, 20);
-                                NewCube->Init(Material);
-                                NewCube->Open();
-                            }
-
-                            if (IsRamp)
+                            if(IsRamp)
                             {
                                 NewCube->Init(Material);
                                 NewCube->Open();
                                 NewCube->SetSlope(SLOPE_FLAT);  // Prime the Slope, the type can not yet be determined
                             }
 
-                            if (IsStairs)
+                            if(IsStairs)
                             {
                                 NewCube->Open();
                                 //TODO render stairs
                             }
 
+                            if(Liquid)
+                            {
+                                NewCube->setLiquid(Liquid);
+                            }
+
                             NewCube->setVisible(true);
-                            if(EXTRACT->isDesignationFlag(9, i, j, k))
+                            if(EXTRACT->isDesignationFlag(9, i, j, k)) // Hide Hidden stuff
                             {
                                 NewCube->setHidden(true);
                             }
