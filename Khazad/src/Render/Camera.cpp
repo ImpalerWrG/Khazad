@@ -93,9 +93,13 @@ void Camera::UpdateView()
 
 void Camera::onMouseEvent(SDL_Event* Event)
 {
-	// SDL_BUTTON_LEFT		1
-	// SDL_BUTTON_MIDDLE	2
-	// SDL_BUTTON_RIGHT		3
+    Uint8* Keystate = SDL_GetKeyState(NULL);
+
+    int X, Y;
+    Uint8 MouseButtonState = SDL_GetRelativeMouseState(&X, &Y);
+
+    float DeltaX = (float)X;
+    float DeltaY = (float)Y;
 
 	if (Event->type == SDL_KEYDOWN)
 	{
@@ -109,12 +113,12 @@ void Camera::onMouseEvent(SDL_Event* Event)
 			}
 		case SDLK_RIGHT:
 			{
-				OrbitView( CONFIG->OrbitSpeed() / 100.0);
+				OrbitView(CONFIG->OrbitSpeed() / 100.0);
 				break;
 			}
 		case SDLK_LEFT:
 			{
-				OrbitView( CONFIG->OrbitSpeed() / -100.0 );
+				OrbitView(CONFIG->OrbitSpeed() / -100.0);
 				break;
 			}
 		case SDLK_UP:
@@ -146,21 +150,43 @@ void Camera::onMouseEvent(SDL_Event* Event)
 	{
 		switch(Event->button.button)
 		{
-
-		case SDL_BUTTON_WHEELUP:
+            case SDL_BUTTON_WHEELUP:
 			{
-				ZoomView(1.0 / (CONFIG->ZoomSpeed() / (50.0 + CONFIG->ZoomSpeed())));
-				generateViewFrustum();
+			    if(Keystate[SDLK_RSHIFT] || Keystate[SDLK_LSHIFT])
+			    {
+                    ChangeViewLevels(1);
+                    break;
+			    }
+
+			    if(Keystate[SDLK_SPACE])
+			    {
+                    MoveViewVertical(1.0);
+                    break;
+			    }
+
+                ZoomView(1.0 / (CONFIG->ZoomSpeed() / (50.0 + CONFIG->ZoomSpeed())));
+                generateViewFrustum();
+                break;
+			}
+            case SDL_BUTTON_WHEELDOWN:
+			{
+			    if(Keystate[SDLK_RSHIFT] || Keystate[SDLK_LSHIFT])
+			    {
+                    ChangeViewLevels(-1);
+                    break;
+			    }
+
+			    if(Keystate[SDLK_SPACE])
+			    {
+                    MoveViewVertical(-1.0);
+                    break;
+			    }
+
+                ZoomView((CONFIG->ZoomSpeed() / (50.0 + CONFIG->ZoomSpeed())) / 1.0);
+                generateViewFrustum();
 				break;
 			}
-
-		case SDL_BUTTON_WHEELDOWN:
-			{
-				ZoomView((CONFIG->ZoomSpeed() / (50.0 + CONFIG->ZoomSpeed())) / 1.0);
-				generateViewFrustum();
-				break;
-			}
-		case SDL_BUTTON_LEFT:
+            case SDL_BUTTON_LEFT:
 			{
 				int XPosition, YPosition;
 				SDL_GetMouseState(&XPosition, &YPosition);
@@ -301,12 +327,6 @@ void Camera::onMouseEvent(SDL_Event* Event)
 	{
 		if (Event->type == SDL_MOUSEMOTION )
 		{
-			int X, Y;
-			Uint8 MouseButtonState = SDL_GetRelativeMouseState(&X, &Y);
-
-			float DeltaX = (float)X;
-			float DeltaY = (float)Y;
-
 			if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_RIGHT))
 			{
 				SlideView(DeltaX * CONFIG->SlideSpeed() / 50, DeltaY * CONFIG->SlideSpeed() / 50);
@@ -585,11 +605,6 @@ void Camera::MoveViewVertical(float Z)
 	LookPosition.z += Z;
 
 	generateViewFrustum();
-
-	//if(SCREEN->isShadedDraw())
-	//{
-    //    SCREEN->DirtyAllLists();
-	//}
 }
 
 void Camera::ChangeViewLevels(Sint32 Change)
@@ -603,11 +618,6 @@ void Camera::ChangeViewLevels(Sint32 Change)
             ViewLevels = 1;
         }
         generateViewFrustum();
-
-        //if(SCREEN->isShadedDraw())
-        //{
-        //    SCREEN->DirtyAllLists();
-        //}
     }
 }
 

@@ -9,4 +9,5 @@ This is a list of tasks I'll be working on, most of these items will be adressed
 - Show Water/Lava depth
 - Reduce map save size/incresse load & dump speed
 - Use listlists in render system
-- Allow scrool wheel to adjust slice thickness?
+- Assosiate Faces with Cells directly
+- Exploded View

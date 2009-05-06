@@ -1,98 +1,98 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Materials xmlns="namespace">
 	<Material>
-		<Name Text="Granite"/>
-		<Texture Int="0"/>
+		<Name Label="MATERIAL_GRANITE"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="100"/>
 	</Material>
 	<Material>
-		<Name Text="Limestone"/>
-		<Texture Int="1"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="40"/>
 	</Material>
 	<Material>
-		<Name Text="Basalt"/>
-		<Texture Int="2"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="60"/>
 	</Material>
 	<Material>
-		<Name Text="Quartzite"/>
-		<Texture Int="3"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="80"/>
 	</Material>
 	<Material>
-		<Name Text="Quartzite"/>
-		<Texture Int="4"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="80"/>
 	</Material>
 	<Material>
-		<Name Text="Quartzite"/>
-		<Texture Int="5"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="80"/>
 	</Material>
 	<Material>
-		<Name Text="Quartzite"/>
-		<Texture Int="6"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="80"/>
 	</Material>
 	<Material>
-		<Name Text="Quartzite"/>
-		<Texture Int="7"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="80"/>
 	</Material>
 	<Material>
-		<Name Text="Quartzite"/>
-		<Texture Int="8"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="80"/>
 	</Material>
 	<Material>
-		<Name Text="Quartzite"/>
-		<Texture Int="9"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="80"/>
 	</Material>
 	<Material>
-		<Name Text="Quartzite"/>
-		<Texture Int="10"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="80"/>
 	</Material>
 	<Material>
-		<Name Text="Quartzite"/>
-		<Texture Int="11"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="80"/>
 	</Material>
 	<Material>
-		<Name Text="Quartzite"/>
-		<Texture Int="12"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="80"/>
 	</Material>
 	<Material>
-		<Name Text="Quartzite"/>
-		<Texture Int="13"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="80"/>
 	</Material>
 	<Material>
-		<Name Text="Quartzite"/>
-		<Texture Int="14"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="80"/>
 	</Material>
 	<Material>
-		<Name Text="Quartzite"/>
-		<Texture Int="15"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="80"/>
 	</Material>
 	<Material>
-		<Name Text="Quartzite"/>
-		<Texture Int="16"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="80"/>
 	</Material>
 	<Material>
-		<Name Text="Quartzite"/>
-		<Texture Int="17"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="80"/>
 	</Material>
 	<Material>
-		<Name Text="Quartzite"/>
-		<Texture Int="18"/>
+		<Name Label="MATERIAL_"/>
+		<Texture label="TEXTURE_STONE"/>
 		<Hardness Int="80"/>
 	</Material>
 </Materials>

@@ -43,6 +43,7 @@ protected:
 
     unsigned int MapSizeX;
     unsigned int MapSizeY;
+    unsigned int MapSizeZ;
 
 public:
 

@@ -391,33 +391,36 @@ bool ScreenManager::Render()
                 {
                     Cell* LoopCell = MAP->getCell(SizeX, SizeY, Zlevel);
 
-                    if  (MainCamera->sphereInFrustum(LoopCell->Position, CellEdgeLenth))
+                    if(LoopCell->isActive())
                     {
-                        if(LoopCell->DirtyDrawlist)
+                        if(MainCamera->sphereInFrustum(LoopCell->Position, CellEdgeLenth))
                         {
-                            // Rebuild the new Drawlist
-                            GLuint DrawListID = LoopCell->DrawListID;
-                            glDeleteLists(DrawListID, 5);
-
-                            for(CameraOrientation i = CAMERA_DOWN; i < NUM_ORIENTATIONS; ++i)
+                            if(LoopCell->DirtyDrawlist)
                             {
-                                RefreshDrawlist(LoopCell, DrawListID + (GLuint) i, i, Shading, CurrentOrientation == i);
+                                // Rebuild the new Drawlist
+                                GLuint DrawListID = LoopCell->DrawListID;
+                                glDeleteLists(DrawListID, 5);
+
+                                for(CameraOrientation i = CAMERA_DOWN; i < NUM_ORIENTATIONS; ++i)
+                                {
+                                    RefreshDrawlist(LoopCell, DrawListID + (GLuint) i, i, Shading, CurrentOrientation == i);
+                                }
+                                LoopCell->DirtyDrawlist = false;
                             }
-                            LoopCell->DirtyDrawlist = false;
+                            else
+                            {
+                                glColor3f(Shading, Shading, Shading);
+                                glCallList(LoopCell->DrawListID + (GLuint) CurrentOrientation);
+
+                                TotalTriangles += LoopCell->getTriangleCount(CurrentOrientation);  // Use stored Triangle Count
+                            }
                         }
-                        else
-                        {
-                            glColor3f(Shading, Shading, Shading);
-                            glCallList(LoopCell->DrawListID + (GLuint) CurrentOrientation);
-                        }
-                        TotalTriangles += LoopCell->getTriangleCount(CurrentOrientation);  // Use stored Triangle Count
                     }
                 }
             }
 		}
 	}
 
-	//glPopMatrix();
 
 /*
 	for (Uint32 i = 0; i < GAME->ActorList.size(); i++)
@@ -453,6 +456,10 @@ void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, CameraO
 
         glBegin(GL_TRIANGLES);
             TargetCell->Draw(Orientation, HiddenDraw);
+
+
+            glColor3f(1.0, 1.0, 1.0);
+
         glEnd();
 
         glPopMatrix();
@@ -534,13 +541,16 @@ void ScreenManager::PrintDebugging()
     Point.y = (int) MainCamera->LookY();
     Point.z = (int) MainCamera->LookZ();
 
-	int TileType = -1;
+	int TileType = 0;
 	int Designation = 0;
 	int Ocupancy = 0;
 
-	TileType = EXTRACT->getTileType(Point.x, Point.y, Point.z);
-	Designation = EXTRACT->getDesignations(Point.x, Point.y, Point.z);
-	Ocupancy = EXTRACT->getOccupancies(Point.x, Point.y, Point.z);
+    if(!(HiddenDraw ^ EXTRACT->isDesignationFlag(9, Point.x, Point.y, Point.z)))
+    {
+        TileType = EXTRACT->getTileType(Point.x, Point.y, Point.z);
+        Designation = EXTRACT->getDesignations(Point.x, Point.y, Point.z);
+        Ocupancy = EXTRACT->getOccupancies(Point.x, Point.y, Point.z);
+    }
 
 	SDL_Rect position;
     position.x = 10;

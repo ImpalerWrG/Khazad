@@ -16,7 +16,7 @@ Cube::Cube()
 	Visible = false;
 	Initalized = false;
 	Slopage = NULL;
-	//Liquid = false;
+	Liquid = false;
 	Solid = false;
 
 	Material = 6;
@@ -53,9 +53,9 @@ bool Cube::InitAllFaces()
 {
 	Initalized = true;
 
-    if(!Solid)
+    if(!(Solid || Liquid))
     {
-        return true;
+        return false;
     }
 
     for(Facet FaceType = FACET_TOP; FaceType < NUM_FACETS; ++FaceType)
@@ -67,25 +67,33 @@ bool Cube::InitAllFaces()
 
             if(NeiborCell != NULL) // && NeiborCell->isInitalized())
             {
-                if (NeiborCube != NULL) // && NeiborCube->isInitalized())
+                if (NeiborCube != NULL) //&& NeiborCube->isInitalized())
                 {
                     Sint16 BestMaterial = FaceMaterial(FaceType);
 
                     if(BestMaterial != -1)
                     {
-                        Facets[FaceType] = new Face;
-                        Facets[FaceType]->Init(this, NeiborCube, FaceType, (Uint16) BestMaterial);
+                        if(FaceType == FACET_TOP)
+                        {
+                            Face* TemporaryPointer = new Face;
+                            TemporaryPointer->Init(NeiborCube, this, FACET_BOTTOM, (Uint16) BestMaterial);
+                        }
+                        else
+                        {
+                            Facets[FaceType] = new Face;
+                            Facets[FaceType]->Init(this, NeiborCube, FaceType, (Uint16) BestMaterial);
+                        }
 
+                        getCellOwner()->setActive(true);
+/*
                         if(FaceType == FACET_TOP || FaceType == FACET_BOTTOM) // Keep roofs of underground rooms invisible
                         {
-                            //if(Facets[i])
-                            //{
                             if(!Facets[FaceType]->isConstructed()) // Unless they are themselves floors
                             {
                                 Facets[FaceType]->setVisible(false);
                             }
-                            //}
                         }
+                        */
                     }
                 }
             }
@@ -147,13 +155,15 @@ void Cube::InitConstructedFace(Facet FacetType, Uint16 MaterialType)
         Facets[FacetType]->Init(this, getAdjacentCube(FacetType), FacetType, MaterialType);
         Facets[FacetType]->setVisible(true);
     }
+
+    getCellOwner()->setActive(true);
 }
 
 Sint16 Cube::FaceMaterial(Facet Type)
 {
     Cube* NeiborCube = getAdjacentCube(Type);
 
-    if(NeiborCube != NULL)
+    if(NeiborCube != NULL) // && NeiborCube->isInitalized())
     {
         if(Solid)
         {
@@ -174,26 +184,31 @@ Sint16 Cube::FaceMaterial(Facet Type)
             }
             else
             {
-                return -1;  // No Open-Open surfaces
+                if(Liquid)
+                {
+                    if(!NeiborCube->getLiquid())
+                    {
+                        return 2;
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+                }
+                else
+                {
+                    if (NeiborCube->getLiquid())
+                    {
+                        return 2;
+                    }
+
+                    return -1;  // No Open-Open surfaces
+                }
             }
         }
     }
 
     return -1; // No Null-Solid sufaces
-}
-
-void Cube::InitFace(Facet Type)
-{
-    //Cube* NeiborCube = getAdjacentCube(Type);
-
-    //Facets[Type] = new Face;
-
-    //Sint16 Material = FaceMaterial(Type);
-
-    //if(Material != -1)
-    //{
-    //    Facets[Type]->Init(this, NeiborCube, Type, Material);
-    //}
 }
 
 Cube* Cube::getAdjacentCube(Facet Type)
@@ -356,7 +371,6 @@ void Cube::DeleteFace(Facet Type)
 
         delete Target;
     }
-	// Face is not present
 }
 
 void Cube::SetSlope(Slopping Type)
@@ -532,13 +546,19 @@ bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslat
 	    if(Slopage != NULL)
 	    {
 	        Slopage->Draw(xTranslate, yTranslate);
+
 	        return true;
 	    }
 	    else
 	    {
-            if(Facets[FACET_BOTTOM] != NULL)
+            if(Facets[FACET_BOTTOM] != NULL && Facets[FACET_BOTTOM]->getFirstOwner() == this)
             {
                 Facets[FACET_BOTTOM]->Draw(xTranslate, yTranslate);
+            }
+
+            if(Facets[FACET_TOP] != NULL && Facets[FACET_TOP]->getFirstOwner() == this)
+            {
+                Facets[FACET_TOP]->Draw(xTranslate, yTranslate);
             }
 	    }
 
@@ -676,5 +696,6 @@ bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslat
             }
         }
 	}
+
 	return true;
 }

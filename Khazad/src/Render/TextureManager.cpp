@@ -3,6 +3,7 @@
 #include <ImagePage.h>
 #include <ClipImage.h>
 #include <TextureManager.h>
+#include <DataManager.h>
 
 
 DECLARE_SINGLETON(TextureManager)
@@ -10,6 +11,7 @@ DECLARE_SINGLETON(TextureManager)
 bool TextureManager::Init()
 {
 
+/*
 // 0 Grass
 	loadTextureSingular("Assets\\Textures\\grass.png", false, false);
 // 1 Stone
@@ -29,7 +31,7 @@ bool TextureManager::Init()
 // 8 Driftwood
 	loadTextureSingular("Assets\\Textures\\Bark.png", false, false);
 // 9 Misilanious Stone
-	loadTextureSingular("Assets\\Textures\\StoneWall.png.png", false, false);
+	loadTextureSingular("Assets\\Textures\\StoneWall.png", false, false);
 // 10 Soil ?
 	loadTextureSingular("Assets\\Textures\\soil.png", false, false);
 // 11 Soil
@@ -78,7 +80,11 @@ bool TextureManager::Init()
 	loadTextureSingular("Assets\\Textures\\obsidian.png", false, false);
 // 33 dead grass
 	loadTextureSingular("Assets\\Textures\\grass_dry.png", false, false);
-
+*/
+    for(int i = 0; i < DATA->getNumTextureData(); ++i)
+    {
+        loadTextureSingular(DATA->getTextureData(i)->getPath(), false, false);
+    }
 
     MergeTextures();
 

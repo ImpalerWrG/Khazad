@@ -1,23 +1,107 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Textures xmlns="namespace">
+<Textures xmlns="namespace">	
 	<Texture>
-		<Name Text="lava"/>
-		<File Path="Assets\\Textures\\lava.png"/>
+		<Name Label="TEXTURE_GRASS"/>
+		<File Path="Assets\\Textures\\grass.png"/>
 	</Texture>
 	<Texture>
-		<Name Text="stone"/>
+		<Name Label="TEXTURE_STONE"/>
 		<File Path="Assets\\Textures\\stone.png"/>
 	</Texture>
 	<Texture>
-		<Name Text="water"/>
+		<Name Label="TEXTURE_WATER"/>
 		<File Path="Assets\\Textures\\water.png"/>
 	</Texture>
 	<Texture>
-		<Name Text="soil"/>
+		<Name Label="TEXTURE_LAVA"/>
+		<File Path="Assets\\Textures\\lava.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_BRICK"/>
+		<File Path="Assets\\Textures\\brick.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_AIR"/>
+		<File Path="Assets\\Textures\\Air.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_NEHE"/>
+		<File Path="Assets\\Textures\\nehe.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_DETAILED_FLOOR"/>
+		<File Path="Assets\\Textures\\floor_detailed.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_BOARDS"/>
+		<File Path="Assets\\Textures\\Boards.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_STONE_WALL"/>
+		<File Path="Assets\\Textures\\StoneWall.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_SOIL"/>
 		<File Path="Assets\\Textures\\soil.png"/>
 	</Texture>
 	<Texture>
-		<Name Text="grass"/>
-		<File Path="Assets\\Textures\\grass.png"/>
+		<Name Label="TEXTURE_SAND"/>
+		<File Path="Assets\\Textures\\sand.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_COBBLESTONE"/>
+		<File Path="Assets\\Textures\\Cobblestone.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_DRY_GRASS"/>
+		<File Path="Assets\\Textures\\grass_dry.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_SHRUB"/>
+		<File Path="Assets\\Textures\\Shrub.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_BARK"/>
+		<File Path="Assets\\Textures\\Bark.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_POOL"/>
+		<File Path="Assets\\Textures\\Pool.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_ROUGH_STONE"/>
+		<File Path="Assets\\Textures\\RawStone.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_BOULDER"/>
+		<File Path="Assets\\Textures\\boulder.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_METAL"/>
+		<File Path="Assets\\Textures\\metal.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_DIRT"/>
+		<File Path="Assets\\Textures\\Dirt.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_ICE"/>
+		<File Path="Assets\\Textures\\Ice.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_SNOW"/>
+		<File Path="Assets\\Textures\\snow.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_CONSTRUCTED_WALL"/>
+		<File Path="Assets\\Textures\\constructed_wall.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_PIT"/>
+		<File Path="Assets\\Textures\\pit.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_OBSIDIAN"/>
+		<File Path="Assets\\Textures\\obsidian.png"/>
 	</Texture>
 </Textures>

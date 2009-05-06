@@ -46,9 +46,13 @@ bool Face::Init(Cube* First, Cube* Second, Facet Type, Uint16 MaterialType)
 	Visible = true;
 	Material = MaterialType;
 
+    if(FirstOwner != NULL)
+    {
+        FirstOwner->setFacet(FacetType, this);
+    }
+
     if(SecondOwner != NULL)
     {
-        //SecondOwner->setFacet(FacetType, this);
         SecondOwner->setFacet(Cube::OpositeFace(FacetType), this);
     }
 

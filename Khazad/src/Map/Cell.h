@@ -22,15 +22,18 @@ public:
 	bool Draw(CameraOrientation Orientation, bool DrawHidden = false);
 	bool Update();
 
-	void SetBasment(bool Value) { Basment = Value; }
-	bool isBasment() { return Basment; }
+	//void SetBasment(bool Value)         { Basment = Value; }
+	//bool isBasment()                    { return Basment; }
+
+    bool isActive()                     { return Active; }
+    void setActive(bool NewValue)       { Active = NewValue; }
 
 protected:
 
-	bool Sky;
-	bool Basment;
-	bool Rock;
-	bool Air;
+	//bool Sky;
+	//bool Basment;
+	//bool Rock;
+	//bool Air;
 
 	Sint16 XOffset;
 	Sint16 YOffset;

@@ -1,5 +1,10 @@
 Change Log for Khazad
 
+- V 0.0.4 (SVN 000) Splash Screen bug fixed attempted again, None-natural water will now be displayed such as undergournd cistersn, pools, channels etc etc, slow down in shaded mode removed, Scroll wheel can change viewing level and slice thickness, 
+
+
+- BugFix A - fixed Constructed wall texture and upside down splash screen bug
+
 - V 0.0.3 (SVN 025) Now compatible with 40d (but not the 40d# OpenGL builds).  Water feature rendering is greatly improved, (f) toggles a wire frame around the whole of the map to help orient perspective and a single cube at the center of the view, (s) toggles the shadding system, (h) toggles hidden features (hidden by default), textures beutified.  Speed improved. Simple splash screen with instructions and new Logo added.
 
 - BugFix A - fixed crash when memory dumping

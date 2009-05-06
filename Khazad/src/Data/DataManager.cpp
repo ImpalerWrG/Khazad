@@ -21,28 +21,33 @@ DataManager::~DataManager()
 
 bool DataManager::Init()
 {
-    //Try to grab all XML files
-    LoadDataClass("Assets\\XML\\Materials.xml", "Material");
-
+    LoadDataClass(&Textures, "Assets\\XML\\Textures.xml", "Texture");
+    LoadDataClass(&Materials, "Assets\\XML\\Materials.xml", "Material");
 
     //Post process all data and dynamicly link references
+
+	PostProcessDataClass(&Materials);
+
     return true;
 }
 
-bool DataManager::LoadDataClass(char* Path, char* Entry)
+Uint32 DataManager::getLabelIndex(char* Label)
 {
-    // Templatize this ?
-	TiXmlDocument* Document = XML->loadFile(Path);
-    TiXmlElement* Parent = Document->RootElement();
-    TiXmlElement* Iterator = Parent->FirstChildElement( Entry );
+    std::map<char*, Uint32, ltstr>::iterator iter;
+    iter = GlobalLabelMap.find(Label);
 
-	for(int i = 0; Iterator != NULL; Iterator = Iterator->NextSiblingElement(Entry))
+	if(iter != GlobalLabelMap.end())
 	{
-	    //TODO allow the type of Element to fork to different loading types so mixed files are possible
-        MaterialData* NewMaterial = new MaterialData;
-        NewMaterial->Load(Iterator);
-        Materials.push_back(NewMaterial);
+		return iter->second;
 	}
+	else
+	{
+		cout << "Label is not in GlobalLabelMap" << endl;
+		return 0;
+	}
+}
 
-    return true;
+void DataManager::addLabel(char* Label, Uint32 Index)
+{
+    GlobalLabelMap[Label] = Index;
 }

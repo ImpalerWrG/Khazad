@@ -427,7 +427,8 @@ void Map::LoadExtract()
 
                             if(Liquid)
                             {
-                                NewCube->setLiquid(Liquid);
+                                NewCube->Open();
+                                NewCube->setLiquid((Uint8) Liquid);
                             }
 
                             NewCube->setVisible(true);

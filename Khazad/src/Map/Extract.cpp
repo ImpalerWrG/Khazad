@@ -158,9 +158,8 @@ bool Extractor::dumpMemory()
         printf("z_levels height: %u\n\n", z_levels);
 
 
-        Uint32 MapSizeX = x_blocks * BlockSize;
-        Uint32 MapSizeY = y_blocks * BlockSize;
-        Uint32 MapSizeZ = z_levels;
+        MapSizeX = x_blocks * BlockSize;
+        MapSizeY = y_blocks * BlockSize;
 
         Blocks = new int**[x_blocks];
 
@@ -186,9 +185,9 @@ bool Extractor::dumpMemory()
 
             for (Uint32 y = 0; y < MapSizeY; y++)
             {
-                Tiles[x][y] = new short int[MapSizeZ];
-                Designations[x][y] = new int[MapSizeZ];
-                Ocupancy[x][y] = new int[MapSizeZ];
+                Tiles[x][y] = new short int[z_levels];
+                Designations[x][y] = new int[z_levels];
+                Ocupancy[x][y] = new int[z_levels];
             }
         }
 
@@ -478,227 +477,178 @@ int Extractor::readMemoryFile()
 
 int Extractor::picktexture(int in)
 {
-    switch ( in ) {
-
+    switch ( in )
+    {
         case 1: //slope down
             return 3;
-            break;
 
         case 2: //murky pool
             return 20;
-            break;
 
         case 19: //driftwood stack
             return 8;
-            break;
 
         case 24: //tree
             //return 3;
             return 15;
-            break;
 
         case 25: //up-down stair frozen liquid
         case 26: //down stair frozen liquid
         case 27: //up stair frozen liquid
             return 25;
-            break;
 
         case 32:  //open space
             return 5;
-            break;
 
         case 34: //shrub
             return 14;
-            break;
 
         case 35: //chasm
             return 31;
-            break;
 
         case 36: //up-down stair lavastone
         case 37: //down stair lavastone
         case 38: //up stair lavastone
             return 32;
-            break;
 
         case 39: //up-down stair soil
         case 40: //down stair soil
         case 41: //up stair soil
             return 10;
-            break;
 
         case 42: //eerie pit
             return 31;
-            break;
 
         case 43: //stone floor detailed
             return 7;
-            break;
 
         case 44: //lavastone floor detailed
             return 32;
-            break;
 
         case 45: //featstone? floor detailed
             return 18;
-            break;
 
         case 46: //minstone? floor detailed [calcite]
             return 9;
-            break;
 
         case 47: //frozen liquid floor detailed
             return 27;
-            break;
 
         case 49: //up-down stair grass1 [muddy?]
         case 50: //down stair grass1 [muddy?]
         case 51: //up stair grass1 [muddy?]
             return 0;
-            break;
 
         case 52: //up-down stair grass2
         case 53: //down stair grass2
         case 54: //up stair grass2
             return 0; //16;
-            break;
 
         case 55: //up-down stair stone
         case 56: //down stair stone
         case 57: //up stair stone
             return 1;
-            break;
 
         case 58: //up-down stair minstone
         case 59: //down stair minstone
         case 60: //up stair minstone
             return 9;
-            break;
 
         case 61: //up-down stair featstone
         case 62: //down stair featstone
         case 63: //up stair featstone
             return 18;
-            break;
 
         case 65: //stone fortification
             return 22;
-            break;
 
         case 67: //campfire
             return 3;
-            break;
 
         case 70: //fire
             return 3;
-            break;
 
         case 79: //stone pillar
             return 1;
-            break;
 
         case 80: //lavastone pillar
             return 32;
-            break;
 
         case 81: //featstone pillar
             return 18;
-            break;
 
         case 82: //minstone pillar
             return 9;
-            break;
 
         case 83: //frozen liquid pillar
             return 27;
-            break;
 
         case 89: //waterfall landing
             return 20;
-            break;
 
         case 90: //river source
             return 20;
-            break;
 
         case 176: //stone wall worn1 (most worn)
         case 177: //stone wall worn2 (sorta worn)
         case 178: //stone wall worn3 (least worn)
         case 219: //stone wall (not worn)
             return 1;
-            break;
 
         case 231: //sapling
             return 15;
-            break;
 
         case 233: //ramp grass dry
             return 33;
-            break;
 
         case 234: //ramp grass dead
             return 33;
-            break;
 
         case 235: //ramp grass1 [muddy?]
             return 0;
-            break;
 
         case 236: //ramp grass2
             return 0; //16;
-            break;
 
         case 237: //ramp stone
             return 1;
-            break;
 
         case 238: //ramp lavastone
             return 32;
-            break;
 
         case 239: //ramp featstone
             return 18;
-            break;
 
         case 240: //ramp minstone
             return 9;
-            break;
 
         case 241: //ramp soil
             return 10;
-            break;
 
         case 242: //ash1
         case 243: //ash2
         case 244: //ash3
             return 32;
-            break;
 
         case 245: //ramp frozen liquid
             return 27;
-            break;
 
         case 258: //frozen liquid 1
         case 259: //frozen liquid 2
         case 260: //frozen liquid 3
             return 25;
-            break;
 
         case 261: //furrowed soil [road?]
             return 21;
-            break;
 
         case 262: //frozen liquid 0
             return 25;
-            break;
 
         case 264: //lava
             return 24;
-            break;
 
         case 265: //soil wall
             return 10;
-            break;
 
         case 269: //lavastone wall rd2
         case 270: //lavastone wall r2d
@@ -720,7 +670,6 @@ int Extractor::picktexture(int in)
         case 286: //lavastone wall ud
         case 287: //lavastone wall lr
             return 32;
-            break;
 
         case 288: //featstone wall rd2
         case 289: //featstone wall r2d
@@ -742,7 +691,6 @@ int Extractor::picktexture(int in)
         case 305: //featstone wall ud
         case 306: //featstone wall lr
             return 18;
-            break;
 
         case 307: //stone wall rd2
         case 308: //stone wall r2d
@@ -764,82 +712,69 @@ int Extractor::picktexture(int in)
         case 324: //stone wall ud
         case 325: //stone wall lr
             return 1;
-            break;
 
         case 326: //lavastone fortification
             return 32;
-            break;
 
         case 327: //featstone fortification
             return 18;
-            break;
 
         case 328: //lavastone wall worn1 (most worn)
         case 329: //lavastone wall worn2 (middle worn)
         case 330: //lavastone wall worn3 (least worn)
         case 331: //lavastone wall
             return 32;
-            break;
 
         case 332: //featstone wall worn1 (most worn)
         case 333: //featstone wall worn2 (middle worn)
         case 334: //featstone wall worn3 (least worn)
         case 335: //featstone wall
             return 18;
-            break;
 
         case 336: //stone floor 1 (raw stone)
         case 337: //stone floor 2 (raw stone)
         case 338: //stone floor 3 (raw stone)
         case 339: //stone floor 4 (raw stone)
             return 17;
-            break;
 
         case 340: //lavastone floor 1 (raw stone)
         case 341: //lavastone floor 2 (raw stone)
         case 342: //lavastone floor 3 (raw stone)
         case 343: //lavastone floor 4 (raw stone)
             return 32;
-            break;
 
         case 344: //featstone floor 1 (raw stone)
         case 345: //featstone floor 2 (raw stone)
         case 346: //featstone floor 3 (raw stone)
         case 347: //featstone floor 4 (raw stone)
             return 18;
-            break;
 
         case 348: //grass floor 1 (raw)
         case 349: //grass floor 2 (raw)
         case 350: //grass floor 3 (raw)
         case 351: //grass floor 4 (raw)
             return 0;
-            break;
 
         case 352: //soil floor 1 (raw)
         case 353: //soil floor 2 (raw)
         case 354: //soil floor 3 (raw)
         case 355: //soil floor 4 (raw)
             return 10;
-            break;
 
         case 356: //soil floor 1 wet (raw) [red sand?]
         case 357: //soil floor 2 wet (raw) [red sand?]
         case 358: //soil floor 3 wet (raw) [red sand?]
         case 359: //soil floor 4 wet (raw) [red sand?]
             return 10;
-            break;
 
         case 360: //frozen liquid fortification
             return 27;
-            break;
 
         case 361: //frozen liquid wall worn1 (most worn)
         case 362: //frozen liquid wall worn2 (middle worn)
         case 363: //frozen liquid wall worn3 (least worn)
         case 364: //frozen liquid wall
             return 25;
-            break;
 
         case 365: //river n
         case 366: //river s
@@ -850,7 +785,6 @@ int Extractor::picktexture(int in)
         case 371: //river sw
         case 372: //river se
             return 19;
-            break;
 
         case 373: //stream wall n (below)
         case 374: //stream wall s (below)
@@ -862,61 +796,52 @@ int Extractor::picktexture(int in)
         case 380: //stream wall se (below)
         case 381: //stream top (above)
             return 19;
-            break;
 
         case 387: //dry grass floor1
         case 388: //dry grass floor2
         case 389: //dry grass floor3
         case 390: //dry grass floor4
             return 33;
-            break;
 
         case 391: //dead tree
         case 392: //dead sapling
         case 393: //dead shrub
             return 13;
-            break;
 
         case 394: //dead grass floor1
         case 395: //dead grass floor2
         case 396: //dead grass floor3
         case 397: //dead grass floor4
             return 33;
-            break;
 
         case 398: //grass floor1b
         case 399: //grass floor2b
         case 400: //grass floor3b
         case 401: //grass floor4b
             return 0; //16;
-            break;
 
         case 402: //stone boulder
         case 403: //lavastone boulder
         case 404: //featstone boulder
             return 18;
-            break;
 
         case 405: //stone pebbles 1
         case 406: //stone pebbles 2
         case 407: //stone pebbles 3
         case 408: //stone pebbles 4
             return 12;
-            break;
 
         case 409: //lavastone pebbles 1
         case 410: //lavastone pebbles 2
         case 411: //lavastone pebbles 3
         case 412: //lavastone pebbles 4
             return 12;
-            break;
 
         case 413: //featstone pebbles 1
         case 414: //featstone pebbles 2
         case 415: //featstone pebbles 3
         case 416: //featstone pebbles 4
             return 12;
-            break;
 
         case 417: //minstone wall rd2
         case 418: //minstone wall r2d
@@ -938,36 +863,30 @@ int Extractor::picktexture(int in)
         case 434: //minstone wall ud
         case 435: //minstone wall lr
             return 9;
-            break;
 
         case 436: //minstone fortification
             return 21;
-            break;
 
         case 437: //minstone wall worn1
         case 438: //minstone wall worn2
         case 439: //minstone wall worn3
         case 440: //minstone wall worn4
             return 21;
-            break;
 
         case 441: //minstone floor 1 (cavern raw)
         case 442: //minstone floor 2 (cavern raw)
         case 443: //minstone floor 3 (cavern raw)
         case 444: //minstone floor 4 (cavern raw)
             return 9;
-            break;
 
         case 445: //minstone boulder
             return 18;
-            break;
 
         case 446: //minstone pebbles 1
         case 447: //minstone pebbles 2
         case 448: //minstone pebbles 3
         case 449: //minstone pebbles 4
             return 12;
-            break;
 
         case 450: //frozen liquid wall rd2
         case 451: //frozen liquid wall r2d
@@ -989,19 +908,15 @@ int Extractor::picktexture(int in)
         case 467: //frozen liquid wall ud
         case 468: //frozen liquid wall lr
             return 25;
-            break;
 
         case 493: //constructed floor detailed
             return 7;
-            break;
 
         case 494: //constructed fortification
             return 7;
-            break;
 
         case 495: //constructed pillar
             return 7;
-            break;
 
         case 496: //constructed wall rd2
         case 497: //constructed wall r2d
@@ -1023,26 +938,21 @@ int Extractor::picktexture(int in)
         case 513: //constructed wall ud
         case 514: //constructed wall lr
             return 22;
-            break;
 
         case 515: //stair up-down constructed
         case 516: //stair down constructed
         case 517: //stair up constructed
             return 4;
-            break;
 
         case 518: //ramp constructed
             return 4;
-            break;
 
         case -1: //not assigned memory
             return 6;
-            break;
 
         default:  //none of the above
             printf("TILE NOT FOUND [%d]\n",in);
             return -1;
-            break;
     }
 
     return 6;
@@ -1050,10 +960,11 @@ int Extractor::picktexture(int in)
 
 int Extractor::getLiquidLevel(int x, int y, int z)
 {
-    if(x < MapSizeX && x > 0 && y < MapSizeY && y > 0 && z < z_levels && z > 0)
+    if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
     {
         return Designations[x][y][z] & 7; // Extracts the first 3 bits
     }
+    return 0;
 }
 
 short int Extractor::getTileType(int x, int y, int z)
@@ -1592,7 +1503,7 @@ bool Extractor::isDesignationFlag(unsigned int flag, int x, int y, int z)
 {
     if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
     {
-        if(flag < sizeof(int) && flag >= 0)
+        if(flag < 32 && flag >= 0)
         {
             return (Designations[x][y][z] & (1 << flag));
         }
@@ -1604,7 +1515,7 @@ bool Extractor::isOcupancyFlag(unsigned int flag, int x, int y, int z)
 {
     if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
     {
-        if(flag < sizeof(int) && flag >= 0)
+        if(flag < 32 && flag >= 0)
         {
             return (Ocupancy[x][y][z] & (1 << flag));
         }

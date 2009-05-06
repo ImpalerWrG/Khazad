@@ -25,10 +25,6 @@ bool Cell::Init()
     Uint8 CubesPerCellSide = (Uint8) CONFIG->getCellEdgeLength();
     Cubes = new Cube*[CubesPerCellSide];
 
-    DrawListID = glGenLists(5);
-
-	//float X = Position.x - (CubesPerCellSide / 2);
-	//float Y = Position.y - (CubesPerCellSide / 2);
 	float HalfCell = CubesPerCellSide / 2;
 
 	for (Uint8 i = 0; i < CubesPerCellSide; i++)
@@ -50,6 +46,9 @@ Cell::Cell(Sint32 X, Sint32 Y, Sint32 Z)
 {
 	Active = false;
     Initalized = false;
+
+    DrawListID = glGenLists(5);
+
 	setType(CELL_ACTOR);
     Uint8 CubesPerCellSide = (Uint8) CONFIG->getCellEdgeLength();
 
@@ -57,8 +56,7 @@ Cell::Cell(Sint32 X, Sint32 Y, Sint32 Z)
 	Position.y = (float) Y + (CubesPerCellSide / 2) - 0.5;
 	Position.z = (float) Z;
 
-    Basment = false;
-	Active = true;
+    //Basment = false;
 }
 
 Cube* Cell::getCube(Uint16 x, Uint16 y)

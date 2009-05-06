@@ -42,7 +42,6 @@ public:
     void DeleteFace(Facet Type);
 
     bool InitAllFaces();
-    void InitFace(Facet Type);
     void InitConstructedFace(Facet FacetType, Uint16 MaterialType);
     bool Open();
 
