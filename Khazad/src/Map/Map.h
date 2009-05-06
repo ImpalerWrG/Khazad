@@ -25,7 +25,8 @@ public:
 	Cell* getCubeOwner(Sint32 X, Sint32 Y, Sint32 Z);
 	Cube* getCube(Sint32 X, Sint32 Y, Sint32 Z);
 
-	//std::vector<Actor*> Grid;
+    void InitilizeTilePicker();
+    Uint32 PickTexture(int TileType);
 
     bool Generate(Uint32 Seed);
 
@@ -38,6 +39,7 @@ public:
 	Uint32 getCellSizeZ() { return CellSizeZ; }
 
     void LoadExtract();
+
 
 protected:
 
@@ -56,6 +58,8 @@ protected:
 	Sint32 YCelloffset;
 
 	Uint8 CubesPerCellSide;
+
+	Uint16 TilePicker[600];
 };
 
 #define MAP (Map::GetInstance())

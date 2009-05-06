@@ -10,82 +10,10 @@ DECLARE_SINGLETON(TextureManager)
 
 bool TextureManager::Init()
 {
-
-/*
-// 0 Grass
-	loadTextureSingular("Assets\\Textures\\grass.png", false, false);
-// 1 Stone
-	loadTextureSingular("Assets\\Textures\\stone.png", false, false);
-// 2 Murky Pool
-	loadTextureSingular("Assets\\Textures\\water.png", false, false);
-// 3 Slope ?  Fire
-	loadTextureSingular("Assets\\Textures\\lava.png", false, false);
-// 4 Constructed Stairs & Ramps
-	loadTextureSingular("Assets\\Textures\\Brick.png", false, false);
-// 5 OpenSpace(Air)
-	loadTextureSingular("Assets\\Textures\\Air.png", false, false);
-// 6 Not Assigned
-	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
-// 7 Detailed Stone / Constructions
-	loadTextureSingular("Assets\\Textures\\floor_detailed.png", false, false);
-// 8 Driftwood
-	loadTextureSingular("Assets\\Textures\\Bark.png", false, false);
-// 9 Misilanious Stone
-	loadTextureSingular("Assets\\Textures\\StoneWall.png", false, false);
-// 10 Soil ?
-	loadTextureSingular("Assets\\Textures\\soil.png", false, false);
-// 11 Soil
-	loadTextureSingular("Assets\\Textures\\Sand.png", false, false);
-// 12
-	loadTextureSingular("Assets\\Textures\\Cobblestone.png", false, false);
-// 13 Pebbles
-	loadTextureSingular("Assets\\Textures\\Cobblestone.png", false, false);
-// 14 Dead Shrub/Tree/Sappling
-	loadTextureSingular("Assets\\Textures\\grass_dry.png", false, false);
-// 15 Shrub
-	loadTextureSingular("Assets\\Textures\\Shrub.png", false, false);
-// 16 Sappling/Tree
-	loadTextureSingular("Assets\\Textures\\Bark.png", false, false);
-// 17 ??
-	loadTextureSingular("Assets\\Textures\\Boards.png", false, false);
-// 18 RawStone
-	loadTextureSingular("Assets\\Textures\\RawStone.png", false, false);
-// 19 all Boulders
-	loadTextureSingular("Assets\\Textures\\boulder.png", false, false);
-// 20
-	loadTextureSingular("Assets\\Textures\\Pool.png", false, false);
-// 21 Furrowed Soil
-	loadTextureSingular("Assets\\Textures\\Dirt.png", false, false);
-// 22 Stone Constructions / Veins, Gems, Clusters
-	loadTextureSingular("Assets\\Textures\\metal.png", false, false);
-// 23 Rough Stone Wall
-	loadTextureSingular("Assets\\Textures\\Brick.png", false, false);
-// 24 Lava
-	loadTextureSingular("Assets\\Textures\\lava.png", false, false);
-// 25 Ice-1
-	loadTextureSingular("Assets\\Textures\\Ice.png", false, false);
-// 26
-	loadTextureSingular("Assets\\Textures\\nehe.png", false, false);
-// 27 Ice-2
-	loadTextureSingular("Assets\\Textures\\snow.png", false, false);
-// 28
-	loadTextureSingular("Assets\\Textures\\constructed_wall.png", false, false);
-// 29
-	loadTextureSingular("Assets\\Textures\\constructed_wall.png", false, false);
-// 30
-	loadTextureSingular("Assets\\Textures\\constructed_wall.png", false, false);
-// 31 Chasm/Pit
-	loadTextureSingular("Assets\\Textures\\Pit.png", false, false);
-// 32 Obsidian/Ash
-	loadTextureSingular("Assets\\Textures\\obsidian.png", false, false);
-// 33 dead grass
-	loadTextureSingular("Assets\\Textures\\grass_dry.png", false, false);
-*/
-    for(int i = 0; i < DATA->getNumTextureData(); ++i)
+    for(int i = 0; i < DATA->getNumTextures(); ++i)
     {
         loadTextureSingular(DATA->getTextureData(i)->getPath(), false, false);
     }
-
     MergeTextures();
 
 	return true;

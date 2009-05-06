@@ -1,98 +1,306 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Materials xmlns="namespace">
 	<Material>
-		<Name Label="MATERIAL_GRANITE"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="100"/>
+		<Name Label="MATERIAL_GRASS"/>
+		<Texture label="TEXTURE_GRASS"/>
+		<TileValues>
+			<Tile Int="235"/>
+			<Tile Int="236"/>
+			<Tile Int="348"/>
+			<Tile Int="349"/>
+			<Tile Int="350"/>
+			<Tile Int="351"/>
+			<Tile Int="398"/>
+			<Tile Int="399"/>
+			<Tile Int="400"/>
+			<Tile Int="401"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="40"/>
+		<Name Label="MATERIAL_BOULDER"/>
+		<Texture label="TEXTURE_BOULDER"/>
+		<TileValues>
+			<Tile Int="402"/>
+			<Tile Int="403"/>
+			<Tile Int="404"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="60"/>
+		<Name Label="MATERIAL_ROUGH_STONE"/>
+		<Texture label="TEXTURE_ROUGH_STONE"/>
+		<TileValues>
+			<Tile Int="336"/>
+			<Tile Int="337"/>
+			<Tile Int="338"/>
+			<Tile Int="339"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="80"/>
+		<Name Label="MATERIAL_WATER"/>
+		<Texture label="TEXTURE_WATER"/>
+		<TileValues>
+			<Tile Int="-1"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
+		<Name Label="MATERIAL_SMOOTH_STONE"/>
 		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="80"/>
+		<TileValues>
+			<Tile Int="43"/>
+			<Tile Int="219"/>
+			<Tile Int="237"/>
+			<Tile Int="307"/>
+			<Tile Int="308"/>
+			<Tile Int="309"/>
+			<Tile Int="310"/>
+			<Tile Int="311"/>
+			<Tile Int="312"/>
+			<Tile Int="313"/>
+			<Tile Int="314"/>
+			<Tile Int="315"/>
+			<Tile Int="316"/>
+			<Tile Int="317"/>
+			<Tile Int="318"/>
+			<Tile Int="319"/>
+			<Tile Int="320"/>
+			<Tile Int="321"/>
+			<Tile Int="322"/>
+			<Tile Int="323"/>
+			<Tile Int="324"/>
+			<Tile Int="325"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
+		<Name Label="MATERIAL_LAVA"/>
 		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="80"/>
+		<TileValues>
+			<Tile Int="-1"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="80"/>
+		<Name Label="MATERIAL_CONSTRUCTED_WALL"/>
+		<Texture label="TEXTURE_BRICK"/>
+		<TileValues>
+			<Tile Int="493"/>
+			<Tile Int="496"/>
+			<Tile Int="497"/>
+			<Tile Int="498"/>
+			<Tile Int="499"/>
+			<Tile Int="500"/>
+			<Tile Int="501"/>
+			<Tile Int="502"/>
+			<Tile Int="503"/>
+			<Tile Int="504"/>
+			<Tile Int="505"/>
+			<Tile Int="506"/>
+			<Tile Int="507"/>
+			<Tile Int="508"/>
+			<Tile Int="509"/>
+			<Tile Int="510"/>
+			<Tile Int="511"/>
+			<Tile Int="512"/>
+			<Tile Int="513"/>
+			<Tile Int="514"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="80"/>
+		<Name Label="MATERIAL_EMPTYSPACE"/>
+		<Texture label="TEXTURE_AIR"/>
+		<TileValues>
+			<Tile Int="32"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="80"/>
+		<Name Label="MATERIAL_SMOOTH_FLOOR"/>
+		<Texture label="TEXTURE_DETAILED_FLOOR"/>
+		<TileValues>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="80"/>
+		<Name Label="MATERIAL_MURKY_POOL"/>
+		<Texture label="TEXTURE_DIRT"/>
+		<TileValues>
+			<Tile Int="2"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="80"/>
+		<Name Label="MATERIAL_SAND"/>
+		<Texture label="TEXTURE_SAND"/>
+		<TileValues>
+			<Tile Int="241"/>
+			<Tile Int="265"/>
+			<Tile Int="352"/>
+			<Tile Int="353"/>
+			<Tile Int="354"/>
+			<Tile Int="355"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="80"/>
+		<Name Label="MATERIAL_PEPPLES"/>
+		<Texture label="TEXTURE_COBBLESTONE"/>
+		<TileValues>
+			<Tile Int="405"/>
+			<Tile Int="406"/>
+			<Tile Int="407"/>
+			<Tile Int="408"/>
+			<Tile Int="409"/>
+			<Tile Int="410"/>
+			<Tile Int="411"/>
+			<Tile Int="412"/>
+			<Tile Int="413"/>
+			<Tile Int="414"/>
+			<Tile Int="415"/>
+			<Tile Int="416"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="80"/>
+		<Name Label="MATERIAL_MIN_STONE"/>
+		<Texture label="TEXTURE_METAL"/>
+		<TileValues>
+			<Tile Int="417"/>
+			<Tile Int="418"/>
+			<Tile Int="419"/>
+			<Tile Int="420"/>
+			<Tile Int="421"/>
+			<Tile Int="422"/>
+			<Tile Int="423"/>
+			<Tile Int="424"/>
+			<Tile Int="425"/>
+			<Tile Int="426"/>
+			<Tile Int="427"/>
+			<Tile Int="428"/>
+			<Tile Int="429"/>
+			<Tile Int="430"/>
+			<Tile Int="431"/>
+			<Tile Int="432"/>
+			<Tile Int="433"/>
+			<Tile Int="434"/>
+			<Tile Int="435"/>
+			<Tile Int="436"/>
+			<Tile Int="437"/>
+			<Tile Int="438"/>
+			<Tile Int="439"/>
+			<Tile Int="440"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="80"/>
+		<Name Label="MATERIAL_FEATURE_STONE_FLOOR"/>
+		<Texture label="TEXTURE_OBSIDIAN"/>
+		<TileValues>
+			<Tile Int="441"/>
+			<Tile Int="442"/>
+			<Tile Int="443"/>
+			<Tile Int="444"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="80"/>
+		<Name Label="MATERIAL_MIN_STONE_FLOOR"/>
+		<Texture label="TEXTURE_METAL"/>
+		<TileValues>
+			<Tile Int="46"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="80"/>
+		<Name Label="MATERIAL_DEAD_GRASS"/>
+		<Texture label="TEXTURE_DRY_GRASS"/>
+		<TileValues>
+			<Tile Int="394"/>
+			<Tile Int="395"/>
+			<Tile Int="396"/>
+			<Tile Int="397"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="80"/>
+		<Name Label="MATERIAL_SHRUB"/>
+		<Texture label="TEXTURE_SHRUB"/>
+		<TileValues>
+			<Tile Int="34"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="80"/>
+		<Name Label="MATERIAL_TREE"/>
+		<Texture label="TEXTURE_BARK"/>
+		<TileValues>
+			<Tile Int="24"/>
+		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_"/>
-		<Texture label="TEXTURE_STONE"/>
-		<Hardness Int="80"/>
+		<Name Label="MATERIAL_SAPPLING"/>
+		<Texture label="TEXTURE_BARK"/>
+		<TileValues>
+			<Tile Int="231"/>
+		</TileValues>
+	</Material>
+		<Material>
+		<Name Label="MATERIAL_DEAD_SHRUB"/>
+		<Texture label="TEXTURE_DRY_GRASS"/>
+		<TileValues>
+			<Tile Int="393"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DEAD_TREE"/>
+		<Texture label="TEXTURE_DRY_GRASS"/>
+		<TileValues>
+			<Tile Int="391"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DEAD_SAPPLING"/>
+		<Texture label="TEXTURE_DRY_GRASS"/>
+		<TileValues>
+			<Tile Int="392"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_RIVER"/>
+		<Texture label="TEXTURE_WATER"/>
+		<TileValues>
+			<Tile Int="365"/>
+			<Tile Int="366"/>
+			<Tile Int="367"/>
+			<Tile Int="368"/>
+			<Tile Int="369"/>
+			<Tile Int="370"/>
+			<Tile Int="371"/>
+			<Tile Int="372"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_STREAM"/>
+		<Texture label="TEXTURE_WATER"/>
+		<TileValues>
+			<Tile Int="373"/>
+			<Tile Int="374"/>
+			<Tile Int="375"/>
+			<Tile Int="376"/>
+			<Tile Int="377"/>
+			<Tile Int="378"/>
+			<Tile Int="379"/>
+			<Tile Int="380"/>
+			<Tile Int="381"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SNOW"/>
+		<Texture label="TEXTURE_SNOW"/>
+		<TileValues>
+			<Tile Int="-1"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ICE"/>
+		<Texture label="TEXTURE_ICE"/>
+		<TileValues>
+			<Tile Int="-1"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PIT"/>
+		<Texture label="TEXTURE_PIT"/>
+		<TileValues>
+			<Tile Int="35"/>
+			<Tile Int="42"/>
+		</TileValues>
 	</Material>
 </Materials>

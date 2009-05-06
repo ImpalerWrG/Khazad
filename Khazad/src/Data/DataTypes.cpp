@@ -31,6 +31,9 @@ bool MaterialData::Load(TiXmlElement* Entry, Uint32 Index)
         XML->QueryTextValue(Entry, "Texture", "label", TextureLabel);
         XML->QueryUIntValue(Entry, "Hardness", "Int", Hardness);
 
+        XML->QueryUIntArray(Entry, "TileValues", "Tile", "Int", &TileTypes);
+
+
         DataBase::Load(Entry, Index);
         return true;
     }

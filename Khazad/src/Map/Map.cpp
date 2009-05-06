@@ -4,6 +4,7 @@
 #include <Singleton.h>
 #include <ConfigManager.h>
 #include <TextureManager.h>
+#include <DataManager.h>
 #include <Extract.h>
 #include <Cube.h>
 #include <Face.h>
@@ -14,6 +15,8 @@ DECLARE_SINGLETON(Map)
 
 Map::Map()
 {
+    InitilizeTilePicker();
+
     Initialized = false;
 }
 
@@ -24,6 +27,8 @@ Map::~Map()
 
 bool Map::Init()
 {
+    InitilizeTilePicker();
+
     CellSizeX = CONFIG->getXMap();
 	CellSizeY = CONFIG->getYMap();
 	CellSizeZ = CONFIG->getZMap();
@@ -392,14 +397,24 @@ void Map::LoadExtract()
                             TargetCell->Init();
                         }
 
-                        Uint16 Material = EXTRACT->picktexture(TileType);
+                        Uint16 Material = PickTexture(TileType);
+                        
                         NewCube = getCube(i, j, k);
+                        bool Hidden = EXTRACT->isDesignationFlag(DESIGNATION_HIDDEN, i, j, k);
 
                         if (NewCube)
                         {
                             if(IsWall)
                             {
                                 NewCube->Init(Material);
+                                if(!Hidden)
+                                {
+                                    //NewCube->InitConstructedFace(FACET_BOTTOM, Material);
+                                    //NewCube->InitConstructedFace(FACET_NORTH_EAST, Material);
+                                    //NewCube->InitConstructedFace(FACET_NORTH_WEST, Material);
+                                    //NewCube->InitConstructedFace(FACET_SOUTH_EAST, Material);
+                                    //NewCube->InitConstructedFace(FACET_SOUTH_WEST, Material);
+                                }
                             }
 
                             if(IsOpen)
@@ -432,7 +447,7 @@ void Map::LoadExtract()
                             }
 
                             NewCube->setVisible(true);
-                            if(EXTRACT->isDesignationFlag(9, i, j, k)) // Hide Hidden stuff
+                            if(Hidden)
                             {
                                 NewCube->setHidden(true);
                             }
@@ -467,3 +482,24 @@ void Map::LoadExtract()
     Initialized = true;
 }
 
+void Map::InitilizeTilePicker()
+{
+    for(int i = 0; i < 600; ++i)
+    {
+        TilePicker[i] = DATA->getLabelIndex("TEXTURE_NEHE");
+    }
+
+    for(int i = 0; i < DATA->getNumMaterials(); ++i)
+    {
+        for(int j = 0; j < DATA->getMaterialData(i)->TileTypes.size(); ++j)
+        {
+            int Tile = DATA->getMaterialData(i)->TileTypes[j];
+            TilePicker[Tile] = DATA->getMaterialData(i)->getTexture();
+        }
+    }
+}
+
+Uint32 Map::PickTexture(int TileType)
+{
+    return TilePicker[TileType];
+}

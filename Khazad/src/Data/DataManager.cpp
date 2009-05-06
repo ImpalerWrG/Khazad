@@ -21,11 +21,11 @@ DataManager::~DataManager()
 
 bool DataManager::Init()
 {
+    // Initial loading of all XML files
     LoadDataClass(&Textures, "Assets\\XML\\Textures.xml", "Texture");
     LoadDataClass(&Materials, "Assets\\XML\\Materials.xml", "Material");
 
-    //Post process all data and dynamicly link references
-
+    // Post process all data and dynamicly link references, not order dependent
 	PostProcessDataClass(&Materials);
 
     return true;

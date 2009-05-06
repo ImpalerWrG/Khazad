@@ -1503,7 +1503,7 @@ bool Extractor::isDesignationFlag(unsigned int flag, int x, int y, int z)
 {
     if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
     {
-        if(flag < 32 && flag >= 0)
+        if(flag < 32)
         {
             return (Designations[x][y][z] & (1 << flag));
         }
@@ -1515,10 +1515,40 @@ bool Extractor::isOcupancyFlag(unsigned int flag, int x, int y, int z)
 {
     if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
     {
-        if(flag < 32 && flag >= 0)
+        if(flag < 32)
         {
             return (Ocupancy[x][y][z] & (1 << flag));
         }
     }
     return false;
+}
+
+int Extractor::DesignationBitBlock(unsigned int Start, unsigned int Size, int x, int y, int z)
+{
+    if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
+    {
+        if(Start < 32)
+        {
+            int Total = 0;
+            for(int i = 0; i < Size; ++i)
+            {
+                Total += ((Designations[x][y][z] & (1 << Start + i)) >> Start);
+            }
+        }
+    }
+}
+
+int Extractor::OccupancyBitBlock(unsigned int Start, unsigned int Size, int x, int y, int z)
+{
+    if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
+    {
+        if(Start < 32)
+        {
+            int Total = 0;
+            for(int i = 0; i < Size; ++i)
+            {
+                Total += ((Ocupancy[x][y][z] & (1 << Start + i)) >> Start);
+            }
+        }
+    }
 }

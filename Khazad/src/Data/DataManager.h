@@ -59,10 +59,10 @@ public:
     }
 
     TextureData* getTextureData(Uint32 Index)          { return Textures[Index]; }
-    Uint32 getNumTextureData()                         { return Textures.size(); }
+    Uint32 getNumTextures()                         { return Textures.size(); }
 
     MaterialData* getMaterialData(Uint32 Index)        { return Materials[Index]; }
-    Uint32 getNumMaterialData()                        { return Materials.size(); }
+    Uint32 getNumMaterials()                            { return Materials.size(); }
 
     Uint32 getLabelIndex(char* Label);
     void addLabel(char* Label, Uint32 Index);

@@ -68,6 +68,41 @@ public:
         }
     };
 
+    template <class T>
+    void QuerySIntArray(TiXmlElement* Entry, const char* Element, const char* SubElement, const char* Attribute, std::vector<T>* StorageVector)
+    {
+        TiXmlElement* child = Entry->FirstChildElement(Element);
+        if (child)
+        {
+            TiXmlElement* Iterator = child->FirstChildElement(SubElement);
+            for(; Iterator != NULL; Iterator = Iterator->NextSiblingElement(SubElement))
+            {
+                int temp;
+                Iterator->QueryIntAttribute(Attribute, &temp);
+                StorageVector->push_back(temp);
+            }
+        }
+    };
+
+    template <class T>
+    void QueryUIntArray(TiXmlElement* Entry, const char* Element, const char* SubElement, const char* Attribute, std::vector<T>* StorageVector)
+    {
+        TiXmlElement* child = Entry->FirstChildElement(Element);
+        if (child)
+        {
+            TiXmlElement* Iterator = child->FirstChildElement(SubElement);
+            for(; Iterator != NULL; Iterator = Iterator->NextSiblingElement(SubElement))
+            {
+                int temp;
+                Iterator->QueryIntAttribute(Attribute, &temp);
+                if (temp >= 0)
+                {
+                    StorageVector->push_back(temp);
+                }
+            }
+        }
+    };
+
 	const char * getIndentAlt( unsigned int numIndents );
 	const char * getIndent( unsigned int numIndents );
 
