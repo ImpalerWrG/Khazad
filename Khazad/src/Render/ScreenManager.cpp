@@ -30,6 +30,10 @@ ScreenManager::ScreenManager()
 	FrameDraw = true;
 	ShadedDraw = false;
 	HiddenDraw = false;
+    SubTerranianDraw = true;
+    SkyViewDraw = true;
+    SunLitDraw = true;
+
 	FlatDraw = false;
 
 	LogoSurface = NULL;
@@ -106,7 +110,7 @@ bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Hight)
 
     setDrawing3D(); // Dispose of any Flat Projection
 
-    MainCamera->setIsometricProj(ScreenWidth, ScreenHight, 10000.0);
+    MainCamera->setIsometricProj(ScreenWidth, ScreenHight, 1000000.0);
     glViewport(0, 0, ScreenWidth, ScreenHight);
 
     if(FlatDraw) // Reset Flat drawing if thats what we were in
@@ -350,8 +354,9 @@ bool ScreenManager::Render()
         Vector3 Point;
         Point.x -= 0.48;
         Point.y -= 0.48;
+        Point.z = MainCamera->LookZ() - (MainCamera->LookZ() * MainCamera->getLevelSeperation());
         Point.z -= 0.48;
-        DrawCage(Point, MAP->getMapSizeX() - 0.04, MAP->getMapSizeY() - 0.04, MAP->getMapSizeZ() - 0.04);
+        DrawCage(Point, MAP->getMapSizeX() - 0.04, MAP->getMapSizeY() - 0.04, MAP->getMapSizeZ() * MainCamera->getLevelSeperation() - 0.04);
 
         Point.x = (int) MainCamera->LookX() - 0.48;  //TODO move most of this logic into DrawCage
         Point.y = (int) MainCamera->LookY() - 0.48;
@@ -372,7 +377,6 @@ bool ScreenManager::Render()
 
 	glMatrixMode(GL_MODELVIEW);
     CameraOrientation CurrentOrientation = MainCamera->getOrientation();
-	Uint16 CellEdgeLenth = CONFIG->getCellEdgeLength();
     glColor3f(1.0, 1.0, 1.0);
 
 	for(Uint16 Zlevel = 0; Zlevel < MAP->getCellSizeZ(); Zlevel++)
@@ -393,7 +397,10 @@ bool ScreenManager::Render()
 
                     if(LoopCell->isActive())
                     {
-                        if(MainCamera->sphereInFrustum(LoopCell->Position, CellEdgeLenth))
+                        Vector3 RenderingPosition = LoopCell->Position;
+                        RenderingPosition.z = MainCamera->LookZ() - ((MainCamera->LookZ() - LoopCell->Position.z) * MainCamera->getLevelSeperation());
+
+                        if(MainCamera->sphereInFrustum(RenderingPosition, CellEdgeSize))
                         {
                             if(LoopCell->DirtyDrawlist)
                             {
@@ -409,8 +416,13 @@ bool ScreenManager::Render()
                             }
                             else
                             {
+                                glPushMatrix();
+                                glTranslatef(RenderingPosition.x , RenderingPosition.y, RenderingPosition.z);
+
                                 glColor3f(Shading, Shading, Shading);
                                 glCallList(LoopCell->DrawListID + (GLuint) CurrentOrientation);
+
+                                glPopMatrix();
 
                                 TotalTriangles += LoopCell->getTriangleCount(CurrentOrientation);  // Use stored Triangle Count
                             }
@@ -451,18 +463,12 @@ void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, CameraO
     }
         TriangleCounter = 0;  // Reset Counter and Track Triangle count
 
-        glPushMatrix();
-        glTranslatef(TargetCell->Position.x , TargetCell->Position.y, TargetCell->Position.z);
-
         glBegin(GL_TRIANGLES);
-            TargetCell->Draw(Orientation, HiddenDraw);
-
+            TargetCell->Draw(Orientation, HiddenDraw, SubTerranianDraw, SkyViewDraw, SunLitDraw);
 
             glColor3f(1.0, 1.0, 1.0);
 
         glEnd();
-
-        glPopMatrix();
 
     glEndList();
 
@@ -608,6 +614,24 @@ void ScreenManager::setShadedDraw(bool NewValue)
 void ScreenManager::setHiddenDraw(bool NewValue)
 {
     HiddenDraw = NewValue;
+    DirtyAllLists();
+}
+
+void ScreenManager::setSubTerranianDraw(bool NewValue)
+{
+    SubTerranianDraw = NewValue;
+    DirtyAllLists();
+}
+
+void ScreenManager::setSkyViewDraw(bool NewValue)
+{
+    SkyViewDraw = NewValue;
+    DirtyAllLists();
+}
+
+void ScreenManager::setSunLitDraw(bool NewValue)
+{
+    SunLitDraw = NewValue;
     DirtyAllLists();
 }
 

@@ -167,7 +167,7 @@ Sint16 Cube::FaceMaterial(Facet Type)
     {
         if(Solid)
         {
-            if(NeiborCube->isSolid())
+            if(NeiborCube->isSolid() || NeiborCube->Slopage != NULL)
             {
                 return -1; // No solid-solid surfaces displayed
             }
@@ -534,11 +534,23 @@ bool Cube::Update()
 	return true;
 }
 
-bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslate, bool DrawHidden)
+bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslate, bool DrawHidden, bool DrawSubTerranian, bool DrawSkyView, bool DrawSunLit)
 {
 	if (isInitalized())
 	{
         if(Hidden && !DrawHidden)
+        {
+            return true;
+        }
+        if(SubTerranian && !DrawSubTerranian)
+        {
+            return true;
+        }
+        if(SkyView && !DrawSkyView)
+        {
+            return true;
+        }
+        if(SunLit && !DrawSunLit)
         {
             return true;
         }

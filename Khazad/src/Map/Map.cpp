@@ -33,8 +33,6 @@ bool Map::Init()
 	CellSizeY = CONFIG->getYMap();
 	CellSizeZ = CONFIG->getZMap();
 
-	CubesPerCellSide = (Uint8) CONFIG->getCellEdgeLength();
-
 	CellArray = new Cell***[CellSizeX];
 
 	for (Uint32 i = 0; i < CellSizeX; i++)
@@ -47,13 +45,13 @@ bool Map::Init()
 
 			for (Uint32 k = 0; k < CellSizeZ; k++)
 			{
-				CellArray[i][j][k] = new Cell(i * CubesPerCellSide, j * CubesPerCellSide, k);
+				CellArray[i][j][k] = new Cell(i * CellEdgeSize, j * CellEdgeSize, k);
 			}
 		}
 	}
 
-    MapSizeX = CellSizeX * CubesPerCellSide;
-	MapSizeY = CellSizeY * CubesPerCellSide;
+    MapSizeX = CellSizeX * CellEdgeSize;
+	MapSizeY = CellSizeY * CellEdgeSize;
 	MapSizeZ = CellSizeZ;
 
     Initialized = true;
@@ -303,8 +301,8 @@ Cell* Map::getCubeOwner(Sint32 X, Sint32 Y, Sint32 Z)
         return NULL;
     }
 
-    Sint32 CellX = X / CubesPerCellSide;
-    Sint32 CellY = Y / CubesPerCellSide;
+    Sint32 CellX = X / CellEdgeSize;
+    Sint32 CellY = Y / CellEdgeSize;
 
     return getCell(CellX, CellY, Z);
 }
@@ -317,8 +315,8 @@ Cube* Map::getCube(Sint32 X, Sint32 Y, Sint32 Z)
     {
         if(TargetCell->isInitalized())
         {
-            Sint32 CubeX = X % CubesPerCellSide;
-            Sint32 CubeY = Y % CubesPerCellSide;
+            Sint32 CubeX = X % CellEdgeSize;
+            Sint32 CubeY = Y % CellEdgeSize;
             Cube* TargetCube = TargetCell->getCube(CubeX, CubeY);
 
             return TargetCube;
@@ -339,8 +337,6 @@ void Map::LoadExtract()
 	CellSizeY = EXTRACT->getYBlocks();
 	CellSizeZ = EXTRACT->getZBlocks();
 
-	CubesPerCellSide = (Uint8) CONFIG->getCellEdgeLength();
-
 	CellArray = new Cell***[CellSizeX];
 
 	for (Uint32 i = 0; i < CellSizeX; i++)
@@ -353,7 +349,7 @@ void Map::LoadExtract()
 
 			for (Uint32 k = 0; k < CellSizeZ; k++)
 			{
-				CellArray[i][j][k] = new Cell(i * CubesPerCellSide, j * CubesPerCellSide, k);
+				CellArray[i][j][k] = new Cell(i * CellEdgeSize, j * CellEdgeSize, k);
 
 				//if(k == 0)
 				//{
@@ -364,8 +360,8 @@ void Map::LoadExtract()
 		}
 	}
 
-    MapSizeX = CellSizeX * CubesPerCellSide;
-	MapSizeY = CellSizeY * CubesPerCellSide;
+    MapSizeX = CellSizeX * CellEdgeSize;
+	MapSizeY = CellSizeY * CellEdgeSize;
 	MapSizeZ = CellSizeZ;
 
     Cube* NewCube = NULL;
@@ -398,9 +394,15 @@ void Map::LoadExtract()
                         }
 
                         Uint16 Material = PickTexture(TileType);
-                        
+
                         NewCube = getCube(i, j, k);
+
                         bool Hidden = EXTRACT->isDesignationFlag(DESIGNATION_HIDDEN, i, j, k);
+                        NewCube->setHidden(Hidden);
+
+                        NewCube->setSubTerranean(EXTRACT->isDesignationFlag(DESIGNATION_SUBTERRANEAN, i, j, k));
+                        NewCube->setSkyView(EXTRACT->isDesignationFlag(DESIGNATION_SKY_VIEW, i, j, k));
+                        NewCube->setSunLit(EXTRACT->isDesignationFlag(DESIGNATION_OPEN_TO_SUN, i, j, k));
 
                         if (NewCube)
                         {
@@ -409,7 +411,7 @@ void Map::LoadExtract()
                                 NewCube->Init(Material);
                                 if(!Hidden)
                                 {
-                                    //NewCube->InitConstructedFace(FACET_BOTTOM, Material);
+                                    //NewCube->InitConstructedFace(FACET_TOP, Material);
                                     //NewCube->InitConstructedFace(FACET_NORTH_EAST, Material);
                                     //NewCube->InitConstructedFace(FACET_NORTH_WEST, Material);
                                     //NewCube->InitConstructedFace(FACET_SOUTH_EAST, Material);
@@ -447,10 +449,6 @@ void Map::LoadExtract()
                             }
 
                             NewCube->setVisible(true);
-                            if(Hidden)
-                            {
-                                NewCube->setHidden(true);
-                            }
                         }
                     }
                 }

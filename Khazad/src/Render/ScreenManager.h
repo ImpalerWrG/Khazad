@@ -35,6 +35,15 @@ public:
 	bool isHiddenDraw()                 { return HiddenDraw; }
 	void setHiddenDraw(bool NewValue);
 
+	bool isSubTerranianDraw()                   { return SubTerranianDraw; }
+	void setSubTerranianDraw(bool NewValue);
+
+	bool isSkyViewDraw()                        { return SkyViewDraw; }
+	void setSkyViewDraw(bool NewValue);
+
+	bool isSunLitDraw()                         { return SunLitDraw; }
+	void setSunLitDraw(bool NewValue);
+
 	bool ReSizeScreen(Uint16 Width, Uint16 Hight);
 
     void RenderText(char* text, Sint8 FontIndex, SDL_Color color, SDL_Rect *location);
@@ -100,7 +109,12 @@ protected:
 
 	bool FrameDraw;
 	bool ShadedDraw;
+
 	bool HiddenDraw;
+    bool SubTerranianDraw;
+    bool SkyViewDraw;
+    bool SunLitDraw;
+
 	bool FlatDraw;
 
 	std::vector<GLuint*> DrawList;

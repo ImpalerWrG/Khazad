@@ -12,7 +12,6 @@ ConfigManager::ConfigManager()
 	XMap = 10;
 	YMap = 10;
 	ZMap = 10;
-	CellEdgeLength = 16;
 
 	Orbit = 100;
 	Tilt = 100;
@@ -37,8 +36,6 @@ bool ConfigManager::Init()
 	XML->QueryUIntValue(Root, "MapSize", "X", XMap);
 	XML->QueryUIntValue(Root, "MapSize", "Y", YMap);
 	XML->QueryUIntValue(Root, "MapSize", "Z", ZMap);
-
-	XML->QueryUIntValue(Root, "CellSize", "EdgeLength", CellEdgeLength);
 
     XML->QueryUIntValue(Root, "Zoom", "Min", ZoomMinimum);
 	XML->QueryUIntValue(Root, "Zoom", "Start", ZoomStartup);

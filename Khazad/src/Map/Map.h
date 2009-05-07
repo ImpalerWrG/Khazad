@@ -57,8 +57,6 @@ protected:
 	Sint32 XCelloffset;
 	Sint32 YCelloffset;
 
-	Uint8 CubesPerCellSide;
-
 	Uint16 TilePicker[600];
 };
 

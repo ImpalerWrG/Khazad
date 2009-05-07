@@ -14,6 +14,8 @@ Camera::Camera()
 	IsoMode = false;
 	AllFacesDrawing = false;
 
+	LevelSeperation = 1;
+
 	IsoScalar = CONFIG->ZoomStart();
     MaxScalar = CONFIG->ZoomMax();
 	MinScalar = CONFIG->ZoomMin();
@@ -25,14 +27,14 @@ bool Camera::Init(bool Isometric)
 
 	if (Isometric)
 	{
-		setIsometricProj(SCREEN->getWidth(), SCREEN->getHight(), 10000.0);
+		setIsometricProj(SCREEN->getWidth(), SCREEN->getHight(), 1000000.0);
 		IsoMode = true;
 		Orientation = CAMERA_NORTH;
 		ViewLevels = 6;
 	}
 	else
 	{
-		setPerspectiveProj(45.0, 1.0, 100000.0);
+		setPerspectiveProj(45.0, 1.0, 10000000.0);
 	}
 	return true;
 }
@@ -618,6 +620,16 @@ void Camera::ChangeViewLevels(Sint32 Change)
             ViewLevels = 1;
         }
         generateViewFrustum();
+    }
+}
+
+void Camera::changeLevelSeperation(Sint8 Change)
+{
+    LevelSeperation += Change;
+
+    if(LevelSeperation < 1)
+    {
+        LevelSeperation = 1;
     }
 }
 

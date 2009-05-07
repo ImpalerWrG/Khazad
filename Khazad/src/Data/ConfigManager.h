@@ -21,7 +21,7 @@ public:
 	Uint16 getYMap()            { return YMap; }
 	Uint16 getZMap()            { return ZMap; }
 
-	Uint16 getCellEdgeLength()  { return CellEdgeLength; }
+	//Uint16 getCellEdgeLength()  { return CellEdgeLength; }
 
 	Uint16 ZoomMin()            { return ZoomMinimum; }
 	Uint16 ZoomStart()          { return ZoomStartup; }

@@ -54,7 +54,17 @@ public:
 
 
 	bool Update();
-	bool Draw(CameraOrientation Orientation, float xTranslate, float yTranslate, bool DrawHidden = false);
+	bool Draw(CameraOrientation Orientation, float xTranslate, float yTranslate, bool DrawHidden, bool DrawSubTerranian, bool DrawSkyView, bool DrawSunLit);
+
+	bool isSubTerranean()                 { return SubTerranian; }
+	void setSubTerranean(bool NewValue)   { SubTerranian = NewValue; }
+
+	bool isSkyView()                 { return SkyView; }
+	void setSkyView(bool NewValue)   { SkyView = NewValue; }
+
+	bool isSunLit()                 { return SunLit; }
+	void setSunLit(bool NewValue)   { SunLit = NewValue; }
+
 
 protected:
 
@@ -66,6 +76,9 @@ protected:
 	Uint8 Liquid;
 	Uint16 Material;
 
+    bool SubTerranian;
+    bool SkyView;
+    bool SunLit;
 };
 
 #endif // CUBE__HEADER

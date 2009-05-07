@@ -26,6 +26,7 @@ protected:
 	CameraOrientation Orientation;
 
 	Uint8 ViewLevels;
+	Uint8 LevelSeperation;
 
 	float ViewWidth, ViewHight, ViewDepth;
 
@@ -48,6 +49,9 @@ public:
 	Vector3 Look()  { return LookPosition; }
 
 	Uint8 getViewLevels()               { return ViewLevels; }
+	Uint8 getLevelSeperation()          { return LevelSeperation; }
+	void changeLevelSeperation(Sint8 Change);
+
 	CameraOrientation getOrientation()  { return Orientation; }
 	void UpdateDirection();
 

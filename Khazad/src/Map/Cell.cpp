@@ -1,6 +1,7 @@
 #include <stdafx.h>
 
 #include <Cell.h>
+#include <Face.h>
 #include <Cube.h>
 #include <ConfigManager.h>
 #include <Random.h>
@@ -22,20 +23,24 @@ Cell::~Cell()
 bool Cell::Init()
 {
     Initalized = true;
-    Uint8 CubesPerCellSide = (Uint8) CONFIG->getCellEdgeLength();
-    Cubes = new Cube*[CubesPerCellSide];
 
-	float HalfCell = CubesPerCellSide / 2;
+    Cubes = new Cube*[CellEdgeSize];
+    Facets = new Face**[CellEdgeSize];
 
-	for (Uint8 i = 0; i < CubesPerCellSide; i++)
+	float HalfCell = CellEdgeSize / 2;
+
+	for(Uint8 i = 0; i < CellEdgeSize; i++)
 	{
-		Cubes[i] = new Cube[CubesPerCellSide];
+		Cubes[i] = new Cube[CellEdgeSize];
+		Facets[i] = new Face*[CellEdgeSize];
 
-		for (Uint8 j = 0; j < CubesPerCellSide; j++)
+		for(Uint8 j = 0; j < CellEdgeSize; j++)
 		{
 			Cubes[i][j].Position.x = (float) Position.x - HalfCell + i + 0.5;
 			Cubes[i][j].Position.y = (float) Position.y - HalfCell + j + 0.5;
 			Cubes[i][j].Position.z = (float) Position.z;
+
+            Facets[i][j] = new Face[NUM_FACETS];
 		}
 	}
 
@@ -50,10 +55,9 @@ Cell::Cell(Sint32 X, Sint32 Y, Sint32 Z)
     DrawListID = glGenLists(5);
 
 	setType(CELL_ACTOR);
-    Uint8 CubesPerCellSide = (Uint8) CONFIG->getCellEdgeLength();
 
-	Position.x = (float) X + (CubesPerCellSide / 2) - 0.5;
-	Position.y = (float) Y + (CubesPerCellSide / 2) - 0.5;
+	Position.x = (float) X + (CellEdgeSize / 2) - 0.5;
+	Position.y = (float) Y + (CellEdgeSize / 2) - 0.5;
 	Position.z = (float) Z;
 
     //Basment = false;
@@ -69,23 +73,22 @@ bool Cell::Update()
 	return true;
 }
 
-bool Cell::Draw(CameraOrientation Orientation, bool DrawHidden)
+bool Cell::Draw(CameraOrientation Orientation, bool DrawHidden, bool DrawSubTerranian, bool DrawSkyView, bool DrawSunLit)
 {
-	Uint16 CellEdgeLength = CONFIG->getCellEdgeLength();
     Cube* LoopCube = NULL;
 
-    float HalfCell = CellEdgeLength / 2;
+    float HalfCell = CellEdgeSize / 2;
 
     if(Initalized)
     {
-        for (Uint16 x = 0; x < CellEdgeLength; x++)
+        for (Uint16 x = 0; x < CellEdgeSize; x++)
         {
-            for (Uint16 y = 0; y < CellEdgeLength; y++)
+            for (Uint16 y = 0; y < CellEdgeSize; y++)
             {
                 LoopCube = getCube(x, y);
                 if (LoopCube->isVisible())
                 {
-                    LoopCube->Draw(Orientation, x - HalfCell + 0.5, y - HalfCell + 0.5, DrawHidden);
+                    LoopCube->Draw(Orientation, x - HalfCell + 0.5, y - HalfCell + 0.5, DrawHidden, DrawSubTerranian, DrawSkyView, DrawSunLit);
                 }
             }
         }

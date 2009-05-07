@@ -78,7 +78,6 @@ bool InputManager::HandleInput()
 
                         SCREEN->Flip();
 
-                        //SCREEN->RenderSurface("Assets//Textures//KhazadLogo.png", position);
 
 					    if(!MAP->Initialized)
 					    {
@@ -144,9 +143,29 @@ bool InputManager::HandleInput()
 					{
 					    SCREEN->setHiddenDraw(!SCREEN->isHiddenDraw());
 					}
+                    if (event.key.keysym.sym == SDLK_u)
+					{
+					    SCREEN->setSubTerranianDraw(!SCREEN->isSubTerranianDraw());
+					}
+                    if (event.key.keysym.sym == SDLK_i)
+					{
+					    SCREEN->setSkyViewDraw(!SCREEN->isSkyViewDraw());
+					}
+                    if (event.key.keysym.sym == SDLK_o)
+					{
+					    SCREEN->setSunLitDraw(!SCREEN->isSunLitDraw());
+					}
                     if (event.key.keysym.sym == SDLK_v)
 					{
 					    SCREEN->MainCamera->setCameraOrientation(CAMERA_DOWN);
+					}
+                    if (event.key.keysym.sym == SDLK_PAGEUP)
+					{
+					    SCREEN->MainCamera->changeLevelSeperation(1);
+					}
+                    if (event.key.keysym.sym == SDLK_PAGEDOWN)
+					{
+					    SCREEN->MainCamera->changeLevelSeperation(-1);
 					}
 				}
 				break;

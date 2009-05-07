@@ -4,6 +4,8 @@
 
 #include <Actor.h>
 
+#define CellEdgeSize 16
+
 class Cube;
 
 class Cell: public Actor
@@ -17,9 +19,11 @@ public:
 	Cube* getCube(Uint16 x, Uint16 y);
 
     Uint16 getTriangleCount(CameraOrientation Orientation) { return TriangleCount[Orientation]; }
+
     void setTriangleCount(CameraOrientation Orientation, Uint16 Triangles) { TriangleCount[Orientation] = Triangles; }
 
-	bool Draw(CameraOrientation Orientation, bool DrawHidden = false);
+	bool Draw(CameraOrientation Orientation, bool DrawHidden, bool DrawSubTerranian, bool DrawSkyView, bool DrawSunLit);
+
 	bool Update();
 
 	//void SetBasment(bool Value)         { Basment = Value; }
@@ -42,6 +46,7 @@ protected:
     Uint16 TriangleCount[5];
 
 	Cube** Cubes;
+	Face*** Facets;
 
 	bool Active;
 };
