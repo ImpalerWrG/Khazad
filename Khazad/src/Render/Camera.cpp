@@ -93,15 +93,43 @@ void Camera::UpdateView()
 	generateViewFrustum();
 }
 
+void Camera::onMousePoll()
+{
+    int RealX;
+    int RealY;
+    Uint8 MouseState = SDL_GetMouseState(&RealX, &RealY);
+
+    if(RealX <= 10)
+    {
+        SlideView(-CONFIG->SlideSpeed() / 5, 0);
+    }
+    if(RealX >= SCREEN->getWidth() - 10)
+    {
+        SlideView(CONFIG->SlideSpeed() / 5, 0);
+    }
+
+    if(RealY <= 10)
+    {
+        SlideView(0, -CONFIG->SlideSpeed() / 5);
+    }
+    if(RealY >= SCREEN->getHight() - 10)
+    {
+        SlideView(0, CONFIG->SlideSpeed() / 5);
+    }
+}
+
 void Camera::onMouseEvent(SDL_Event* Event)
 {
     Uint8* Keystate = SDL_GetKeyState(NULL);
 
-    int X, Y;
-    Uint8 MouseButtonState = SDL_GetRelativeMouseState(&X, &Y);
+    int RelativeX, RelativeY;
+    Uint8 MouseButtonState = SDL_GetRelativeMouseState(&RelativeX, &RelativeY);
 
-    float DeltaX = (float)X;
-    float DeltaY = (float)Y;
+    int RealX, RealY;
+    Uint8 MouseState = SDL_GetMouseState(&RealX, &RealY);
+
+    float DeltaX = (float)RelativeX;
+    float DeltaY = (float)RelativeY;
 
 	if (Event->type == SDL_KEYDOWN)
 	{

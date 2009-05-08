@@ -381,6 +381,10 @@ bool ScreenManager::Render()
 
 	for(Uint16 Zlevel = 0; Zlevel < MAP->getCellSizeZ(); Zlevel++)
 	{
+        glPushMatrix();
+        float ZTranslate = MainCamera->LookZ() - ((MainCamera->LookZ() - Zlevel) * MainCamera->getLevelSeperation());
+        glTranslatef(0.0 , 0.0, ZTranslate);
+
 		if (MainCamera->InSlice(Zlevel))
 		{
             float Shading = 1.0;
@@ -398,7 +402,7 @@ bool ScreenManager::Render()
                     if(LoopCell->isActive())
                     {
                         Vector3 RenderingPosition = LoopCell->getPosition();
-                        RenderingPosition.z = MainCamera->LookZ() - ((MainCamera->LookZ() - LoopCell->getPosition().z) * MainCamera->getLevelSeperation());
+                        RenderingPosition.z = ZTranslate;
 
                         if(MainCamera->sphereInFrustum(RenderingPosition, CELLEDGESIZE))
                         {
@@ -408,21 +412,16 @@ bool ScreenManager::Render()
                                 GLuint DrawListID = LoopCell->DrawListID;
                                 glDeleteLists(DrawListID, 5);
 
-                                for(CameraOrientation i = CAMERA_DOWN; i < NUM_ORIENTATIONS; ++i)
+                                for(CameraOrientation Orientation = CAMERA_DOWN; Orientation < NUM_ORIENTATIONS; ++Orientation)
                                 {
-                                    RefreshDrawlist(LoopCell, DrawListID + (GLuint) i, i, Shading, CurrentOrientation == i);
+                                    RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation, CurrentOrientation == Orientation);
                                 }
                                 LoopCell->DirtyDrawlist = false;
                             }
                             else
                             {
-                                glPushMatrix();
-                                glTranslatef(RenderingPosition.x , RenderingPosition.y, RenderingPosition.z);
-
                                 glColor3f(Shading, Shading, Shading);
                                 glCallList(LoopCell->DrawListID + (GLuint) CurrentOrientation);
-
-                                glPopMatrix();
 
                                 TotalTriangles += LoopCell->getTriangleCount(CurrentOrientation);  // Use stored Triangle Count
                             }
@@ -431,6 +430,8 @@ bool ScreenManager::Render()
                 }
             }
 		}
+
+		glPopMatrix();
 	}
 
 
@@ -451,7 +452,7 @@ bool ScreenManager::Render()
 	return true;
 }
 
-void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, CameraOrientation Orientation, float Shadding, bool Execute)
+void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, CameraOrientation Orientation, bool Execute)
 {
     if(Execute)
     {

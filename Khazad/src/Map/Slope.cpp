@@ -5,12 +5,16 @@
 #include <Game.h>
 #include <TextureManager.h>
 #include <ScreenManager.h>
+#include <DataManager.h>
 
 Slope::Slope()
 {
 	setType(SLOPE_ACTOR);
 
 	Owner = NULL;
+
+    Material = 6;
+	Texture = 0;
 
 	GAME->ActorList.push_back(this);
 	//ID = (Uint32) GAME->ActorList.size();
@@ -25,6 +29,9 @@ bool Slope::Init(Cube* NewOwner, Slopping Type)
 {
     Owner = NewOwner;
     SetSlopeType(Type);
+
+    Material = Owner->getMaterial();
+	Texture = DATA->getMaterialData(Material)->getTexture();
 }
 
 void Slope::SetSlopeType(Slopping Type)
@@ -343,57 +350,57 @@ bool Slope::Draw(float xTranslate, float yTranslate)
 
         if (SlopeType == SLOPE_NORTH_EAST || SlopeType == SLOPE_SOUTH_EAST || SlopeType == SLOPE_SOUTH_WEST || SlopeType == SLOPE_NORTH_WEST )
         {
-                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
-                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
-                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+                TEXTURE->BindTexturePoint(Texture, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                TEXTURE->BindTexturePoint(Texture, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Texture, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
 
-                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
-                TEXTURE->BindTexturePoint(Material, 3);   glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
-                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                TEXTURE->BindTexturePoint(Texture, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+                TEXTURE->BindTexturePoint(Texture, 3);   glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
+                TEXTURE->BindTexturePoint(Texture, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
         }
 
         if (SlopeType == SLOPE_SMALL_NORTH || SlopeType == SLOPE_SMALL_EAST || SlopeType == SLOPE_SMALL_SOUTH || SlopeType == SLOPE_SMALL_WEST )
         {
-                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
-                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
-                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+                TEXTURE->BindTexturePoint(Texture, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                TEXTURE->BindTexturePoint(Texture, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Texture, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
 
-                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
-                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
-                TEXTURE->BindTexturePoint(Material, 3);   glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
+                TEXTURE->BindTexturePoint(Texture, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Texture, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+                TEXTURE->BindTexturePoint(Texture, 3);   glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
         }
 
         if (SlopeType == SLOPE_LARGE_NORTH || SlopeType == SLOPE_LARGE_EAST || SlopeType == SLOPE_LARGE_SOUTH || SlopeType == SLOPE_LARGE_WEST )
         {
-                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
-                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
-                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+                TEXTURE->BindTexturePoint(Texture, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                TEXTURE->BindTexturePoint(Texture, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Texture, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
 
-                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
-                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
-                TEXTURE->BindTexturePoint(Material, 3);   glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
+                TEXTURE->BindTexturePoint(Texture, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                TEXTURE->BindTexturePoint(Texture, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Texture, 3);   glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
         }
 
         if (SlopeType == SLOPE_CRESS_NORTH_SOUTH || SlopeType == SLOPE_CRESS_EAST_WEST )
         {
-                TEXTURE->BindTexturePoint(Material, 0);    glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
-                TEXTURE->BindTexturePoint(Material, 1);    glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
-                TEXTURE->BindTexturePoint(Material, 2);    glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+                TEXTURE->BindTexturePoint(Texture, 0);    glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                TEXTURE->BindTexturePoint(Texture, 1);    glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Texture, 2);    glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
 
-                TEXTURE->BindTexturePoint(Material, 0);    glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
-                TEXTURE->BindTexturePoint(Material, 1);    glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
-                TEXTURE->BindTexturePoint(Material, 3);    glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
+                TEXTURE->BindTexturePoint(Texture, 0);    glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                TEXTURE->BindTexturePoint(Texture, 1);    glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Texture, 3);    glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
         }
 
         if(SlopeType == SLOPE_FLAT)
         {
-                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
-                TEXTURE->BindTexturePoint(Material, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
-                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+                TEXTURE->BindTexturePoint(Texture, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                TEXTURE->BindTexturePoint(Texture, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Texture, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
 
-                TEXTURE->BindTexturePoint(Material, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
-                TEXTURE->BindTexturePoint(Material, 3);   glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
-                TEXTURE->BindTexturePoint(Material, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                TEXTURE->BindTexturePoint(Texture, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+                TEXTURE->BindTexturePoint(Texture, 3);   glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
+                TEXTURE->BindTexturePoint(Texture, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
         }
 
         SCREEN->IncrementTriangles(2);

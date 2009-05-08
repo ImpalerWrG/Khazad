@@ -32,6 +32,10 @@ protected:
 
     Slopping SlopeType;
 	Cube* Owner;
+
+    Uint16 Material;
+	Uint16 Texture;
+
 };
 
 #endif // SLOPE__HEADER

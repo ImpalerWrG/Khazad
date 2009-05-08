@@ -102,9 +102,6 @@ bool InputManager::HandleInput()
                         SCREEN->RenderTextCentered(buffer, 0, WHITE, 0);
                         SCREEN->Flip();
 
-                        //SCREEN->RenderSurface(TEXTURE->loadTextureSingular("Assets//Textures//KhazadLogo.png"), position);
-
-
 					    if(!MAP->Initialized)
 					    {
                             EXTRACT->loadMap(CONFIG->LoadPath());
@@ -186,6 +183,9 @@ bool InputManager::HandleInput()
 			}
 		}
 	}
+
+	SCREEN->MainCamera->onMousePoll();
+
 
 	return false;
 }

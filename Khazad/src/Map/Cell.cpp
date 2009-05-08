@@ -137,7 +137,7 @@ bool Cell::Draw(CameraOrientation Orientation, bool DrawHidden, bool DrawSubTerr
                 {
                     if(LoopCube->getSlope())
                     {
-                        LoopCube->getSlope()->Draw(x - HalfCell + HALFCUBE, y - HalfCell + HALFCUBE);
+                        LoopCube->getSlope()->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
                     }
                     //LoopCube->Draw(Orientation, x - HalfCell + HALFCUBE, y - HalfCell + HALFCUBE, DrawHidden, DrawSubTerranian, DrawSkyView, DrawSunLit);
 
@@ -145,7 +145,7 @@ bool Cell::Draw(CameraOrientation Orientation, bool DrawHidden, bool DrawSubTerr
                     {
                         if(Facets[x][y][Face])
                         {
-                            Facets[x][y][Face]->Draw(x - HalfCell + HALFCUBE, y - HalfCell + HALFCUBE);
+                            Facets[x][y][Face]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
                         }
                     }
                 }

@@ -243,10 +243,22 @@
 		<Name Label="MATERIAL_DEAD_GRASS"/>
 		<Texture label="TEXTURE_DRY_GRASS"/>
 		<TileValues>
+			<Tile Int="234"/>
 			<Tile Int="394"/>
 			<Tile Int="395"/>
 			<Tile Int="396"/>
 			<Tile Int="397"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DRY_GRASS"/>
+		<Texture label="TEXTURE_DRY_GRASS"/>
+		<TileValues>
+			<Tile Int="233"/>
+			<Tile Int="387"/>
+			<Tile Int="388"/>
+			<Tile Int="389"/>
+			<Tile Int="390"/>
 		</TileValues>
 	</Material>
 	<Material>

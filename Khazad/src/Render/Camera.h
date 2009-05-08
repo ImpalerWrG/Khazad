@@ -143,6 +143,12 @@ public:
 	*/
 	virtual void onMouseEvent(SDL_Event* pEvent);
 
+	/**
+	* This method every time events are polled to do the screen edge scroll
+	* on the mouse's real position rather then relative position
+	*/
+    void onMousePoll();
+
 	void MoveViewHorizontal(float X, float Y);
 
 	void MoveViewVertical(float Z);

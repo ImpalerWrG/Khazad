@@ -1037,11 +1037,13 @@ bool Extractor::isOpenTerrain(int in)
         case 63: //up stair featstone
         case 67: //campfire
         case 70: //fire
+        /*
         case 79: //stone pillar
         case 80: //lavastone pillar
         case 81: //featstone pillar
         case 82: //minstone pillar
         case 83: //frozen liquid pillar
+        */
         case 231: //sapling
         case 233: //ramp grass dry
         case 234: //ramp grass dead
@@ -1122,7 +1124,7 @@ bool Extractor::isOpenTerrain(int in)
         case 448: //minstone pebbles 3
         case 449: //minstone pebbles 4
         case 493: //constructed floor detailed
-        case 495: //constructed pillar
+        //case 495: //constructed pillar
         case 515: //stair up-down constructed
         case 516: //stair down constructed
         case 517: //stair up constructed
@@ -1163,11 +1165,13 @@ bool Extractor::isFloorTerrain(int in)
         */
         case 67: //campfire
         case 70: //fire
+        /*
         case 79: //stone pillar
         case 80: //lavastone pillar
         case 81: //featstone pillar
         case 82: //minstone pillar
         case 83: //frozen liquid pillar
+        */
         case 89: //waterfall landing
         case 90: //river source
 
