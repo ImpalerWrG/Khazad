@@ -21,10 +21,12 @@ public:
 	virtual bool Update();
 	virtual bool Draw(CameraOrientation Orientaion);
 
-	Vector3 Position;
 
 	bool Dead;
 
+    Vector3 getPosition()                       { return Position; }
+    void setPosition(Vector3 NewPosition)       { Position = NewPosition; }
+    void setPosition(float x, float y, float z);
 
 	ActorType getType()                { return Type; }
 	void setType(ActorType NewType)    { Type = NewType; }
@@ -44,6 +46,8 @@ public:
 	void setHidden(bool NewValue)   { Hidden = NewValue; }
 
 protected:
+
+	Vector3 Position;
 
 	ActorType Type;
 

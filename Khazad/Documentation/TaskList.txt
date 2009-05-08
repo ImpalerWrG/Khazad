@@ -2,12 +2,8 @@ This is a list of tasks I'll be working on, most of these items will be adressed
 
 - Resolve Mouse clamp when incressing screen size
 - Improve slope picking to fill holes in map
-- Make texture pathways XML based
-- Put translucent surface over Murky pools??
 - Get textures under Creative Commons licence
-- Improve DF data parsing to expand/clarify texture types
 - Show Water/Lava depth
 - Reduce map save size/incresse load & dump speed
-- Use listlists in render system
-- Assosiate Faces with Cells directly
-- Exploded View
+- Hotkey save/load view package (includes location, zoom, rotation, slice thickness ect ect)
+- Scroll on mouse at edge of window

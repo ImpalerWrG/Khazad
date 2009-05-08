@@ -397,10 +397,10 @@ bool ScreenManager::Render()
 
                     if(LoopCell->isActive())
                     {
-                        Vector3 RenderingPosition = LoopCell->Position;
-                        RenderingPosition.z = MainCamera->LookZ() - ((MainCamera->LookZ() - LoopCell->Position.z) * MainCamera->getLevelSeperation());
+                        Vector3 RenderingPosition = LoopCell->getPosition();
+                        RenderingPosition.z = MainCamera->LookZ() - ((MainCamera->LookZ() - LoopCell->getPosition().z) * MainCamera->getLevelSeperation());
 
-                        if(MainCamera->sphereInFrustum(RenderingPosition, CellEdgeSize))
+                        if(MainCamera->sphereInFrustum(RenderingPosition, CELLEDGESIZE))
                         {
                             if(LoopCell->DirtyDrawlist)
                             {

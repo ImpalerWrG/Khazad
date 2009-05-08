@@ -36,287 +36,287 @@ void Slope::SetSlopeType(Slopping Type)
     {
         case SLOPE_NORTH_EAST:
         {
-            Points[0].x = + 0.5;
-			Points[0].y = + 0.5;
-			Points[0].z = + 0.5;
+            Points[0].x = + HALFCUBE;
+			Points[0].y = + HALFCUBE;
+			Points[0].z = + HALFCUBE;
 
-			Points[1].x = - 0.5;
-			Points[1].y = + 0.5;
-			Points[1].z = + 0.5;
+			Points[1].x = - HALFCUBE;
+			Points[1].y = + HALFCUBE;
+			Points[1].z = + HALFCUBE;
 
-			Points[2].x = - 0.5;
-			Points[2].y = - 0.5;
-			Points[2].z = - 0.5;
+			Points[2].x = - HALFCUBE;
+			Points[2].y = - HALFCUBE;
+			Points[2].z = - HALFCUBE;
 
-			Points[3].x = + 0.5;
-			Points[3].y = - 0.5;
-			Points[3].z = - 0.5;
+			Points[3].x = + HALFCUBE;
+			Points[3].y = - HALFCUBE;
+			Points[3].z = - HALFCUBE;
             break;
         }
         case SLOPE_SOUTH_EAST:
         {
-			Points[0].x = - 0.5;
-			Points[0].y = + 0.5;
-			Points[0].z = + 0.5;
+			Points[0].x = - HALFCUBE;
+			Points[0].y = + HALFCUBE;
+			Points[0].z = + HALFCUBE;
 
-			Points[1].x = - 0.5;
-			Points[1].y = - 0.5;
-			Points[1].z = + 0.5;
+			Points[1].x = - HALFCUBE;
+			Points[1].y = - HALFCUBE;
+			Points[1].z = + HALFCUBE;
 
-			Points[2].x = + 0.5;
-			Points[2].y = - 0.5;
-			Points[2].z = - 0.5;
+			Points[2].x = + HALFCUBE;
+			Points[2].y = - HALFCUBE;
+			Points[2].z = - HALFCUBE;
 
-			Points[3].x = + 0.5;
-			Points[3].y = + 0.5;
-			Points[3].z = - 0.5;
+			Points[3].x = + HALFCUBE;
+			Points[3].y = + HALFCUBE;
+			Points[3].z = - HALFCUBE;
             break;
         }
         case SLOPE_SOUTH_WEST:
         {
-			Points[0].x = - 0.5;
-			Points[0].y = - 0.5;
-			Points[0].z = + 0.5;
+			Points[0].x = - HALFCUBE;
+			Points[0].y = - HALFCUBE;
+			Points[0].z = + HALFCUBE;
 
-			Points[1].x = + 0.5;
-			Points[1].y = - 0.5;
-			Points[1].z = + 0.5;
+			Points[1].x = + HALFCUBE;
+			Points[1].y = - HALFCUBE;
+			Points[1].z = + HALFCUBE;
 
-			Points[2].x = + 0.5;
-			Points[2].y = + 0.5;
-			Points[2].z = - 0.5;
+			Points[2].x = + HALFCUBE;
+			Points[2].y = + HALFCUBE;
+			Points[2].z = - HALFCUBE;
 
-			Points[3].x = - 0.5;
-			Points[3].y = + 0.5;
-			Points[3].z = - 0.5;
+			Points[3].x = - HALFCUBE;
+			Points[3].y = + HALFCUBE;
+			Points[3].z = - HALFCUBE;
             break;
         }
         case SLOPE_NORTH_WEST:
         {
-			Points[0].x = + 0.5;
-			Points[0].y = + 0.5;
-			Points[0].z = + 0.5;
+			Points[0].x = + HALFCUBE;
+			Points[0].y = + HALFCUBE;
+			Points[0].z = + HALFCUBE;
 
-			Points[1].x = + 0.5;
-			Points[1].y = - 0.5;
-			Points[1].z = + 0.5;
+			Points[1].x = + HALFCUBE;
+			Points[1].y = - HALFCUBE;
+			Points[1].z = + HALFCUBE;
 
-			Points[2].x = - 0.5;
-			Points[2].y = - 0.5;
-			Points[2].z = - 0.5;
+			Points[2].x = - HALFCUBE;
+			Points[2].y = - HALFCUBE;
+			Points[2].z = - HALFCUBE;
 
-			Points[3].x = - 0.5;
-			Points[3].y = + 0.5;
-			Points[3].z = - 0.5;
+			Points[3].x = - HALFCUBE;
+			Points[3].y = + HALFCUBE;
+			Points[3].z = - HALFCUBE;
             break;
         }
         case SLOPE_LARGE_NORTH:
         {
-			Points[0].x = - 0.5;
-			Points[0].y = + 0.5;
-			Points[0].z = + 0.5;
+			Points[0].x = - HALFCUBE;
+			Points[0].y = + HALFCUBE;
+			Points[0].z = + HALFCUBE;
 
-			Points[1].x = + 0.5;
-			Points[1].y = - 0.5;
-			Points[1].z = + 0.5;
+			Points[1].x = + HALFCUBE;
+			Points[1].y = - HALFCUBE;
+			Points[1].z = + HALFCUBE;
 
-			Points[2].x = - 0.5;
-			Points[2].y = - 0.5;
-			Points[2].z = - 0.5;
+			Points[2].x = - HALFCUBE;
+			Points[2].y = - HALFCUBE;
+			Points[2].z = - HALFCUBE;
 
-			Points[3].x = + 0.5;
-			Points[3].y = + 0.5;
-			Points[3].z = + 0.5;
+			Points[3].x = + HALFCUBE;
+			Points[3].y = + HALFCUBE;
+			Points[3].z = + HALFCUBE;
             break;
         }
         case SLOPE_LARGE_EAST:
         {
-			Points[0].x = - 0.5;
-			Points[0].y = - 0.5;
-			Points[0].z = + 0.5;
+			Points[0].x = - HALFCUBE;
+			Points[0].y = - HALFCUBE;
+			Points[0].z = + HALFCUBE;
 
-			Points[1].x = + 0.5;
-			Points[1].y = + 0.5;
-			Points[1].z = + 0.5;
+			Points[1].x = + HALFCUBE;
+			Points[1].y = + HALFCUBE;
+			Points[1].z = + HALFCUBE;
 
-			Points[2].x = + 0.5;
-			Points[2].y = - 0.5;
-			Points[2].z = - 0.5;
+			Points[2].x = + HALFCUBE;
+			Points[2].y = - HALFCUBE;
+			Points[2].z = - HALFCUBE;
 
-			Points[3].x = - 0.5;
-			Points[3].y = + 0.5;
-			Points[3].z = + 0.5;
+			Points[3].x = - HALFCUBE;
+			Points[3].y = + HALFCUBE;
+			Points[3].z = + HALFCUBE;
             break;
         }
         case SLOPE_LARGE_SOUTH:
         {
-			Points[0].x = - 0.5;
-			Points[0].y = + 0.5;
-			Points[0].z = + 0.5;
+			Points[0].x = - HALFCUBE;
+			Points[0].y = + HALFCUBE;
+			Points[0].z = + HALFCUBE;
 
-			Points[1].x = + 0.5;
-			Points[1].y = - 0.5;
-			Points[1].z = + 0.5;
+			Points[1].x = + HALFCUBE;
+			Points[1].y = - HALFCUBE;
+			Points[1].z = + HALFCUBE;
 
-			Points[2].x = + 0.5;
-			Points[2].y = + 0.5;
-			Points[2].z = - 0.5;
+			Points[2].x = + HALFCUBE;
+			Points[2].y = + HALFCUBE;
+			Points[2].z = - HALFCUBE;
 
-			Points[3].x = - 0.5;
-			Points[3].y = - 0.5;
-			Points[3].z = + 0.5;
+			Points[3].x = - HALFCUBE;
+			Points[3].y = - HALFCUBE;
+			Points[3].z = + HALFCUBE;
             break;
         }
         case SLOPE_LARGE_WEST:
         {
-			Points[0].x = - 0.5;
-			Points[0].y = - 0.5;
-			Points[0].z = + 0.5;
+			Points[0].x = - HALFCUBE;
+			Points[0].y = - HALFCUBE;
+			Points[0].z = + HALFCUBE;
 
-			Points[1].x = + 0.5;
-			Points[1].y = + 0.5;
-			Points[1].z = + 0.5;
+			Points[1].x = + HALFCUBE;
+			Points[1].y = + HALFCUBE;
+			Points[1].z = + HALFCUBE;
 
-			Points[2].x = - 0.5;
-			Points[2].y = + 0.5;
-			Points[2].z = - 0.5;
+			Points[2].x = - HALFCUBE;
+			Points[2].y = + HALFCUBE;
+			Points[2].z = - HALFCUBE;
 
-			Points[3].x = + 0.5;
-			Points[3].y = - 0.5;
-			Points[3].z = + 0.5;
+			Points[3].x = + HALFCUBE;
+			Points[3].y = - HALFCUBE;
+			Points[3].z = + HALFCUBE;
             break;
         }
         case SLOPE_SMALL_NORTH:
         {
-			Points[0].x = + 0.5;
-			Points[0].y = + 0.5;
-			Points[0].z = + 0.5;
+			Points[0].x = + HALFCUBE;
+			Points[0].y = + HALFCUBE;
+			Points[0].z = + HALFCUBE;
 
-			Points[1].x = + 0.5;
-			Points[1].y = - 0.5;
-			Points[1].z = - 0.5;
+			Points[1].x = + HALFCUBE;
+			Points[1].y = - HALFCUBE;
+			Points[1].z = - HALFCUBE;
 
-			Points[2].x = - 0.5;
-			Points[2].y = + 0.5;
-			Points[2].z = - 0.5;
+			Points[2].x = - HALFCUBE;
+			Points[2].y = + HALFCUBE;
+			Points[2].z = - HALFCUBE;
 
-			Points[3].x = - 0.5;
-			Points[3].y = - 0.5;
-			Points[3].z = - 0.5;
+			Points[3].x = - HALFCUBE;
+			Points[3].y = - HALFCUBE;
+			Points[3].z = - HALFCUBE;
             break;
         }
         case SLOPE_SMALL_EAST:
         {
-			Points[0].x = - 0.5;
-			Points[0].y = + 0.5;
-			Points[0].z = + 0.5;
+			Points[0].x = - HALFCUBE;
+			Points[0].y = + HALFCUBE;
+			Points[0].z = + HALFCUBE;
 
-			Points[1].x = - 0.5;
-			Points[1].y = - 0.5;
-			Points[1].z = - 0.5;
+			Points[1].x = - HALFCUBE;
+			Points[1].y = - HALFCUBE;
+			Points[1].z = - HALFCUBE;
 
-			Points[2].x = + 0.5;
-			Points[2].y = + 0.5;
-			Points[2].z = - 0.5;
+			Points[2].x = + HALFCUBE;
+			Points[2].y = + HALFCUBE;
+			Points[2].z = - HALFCUBE;
 
-			Points[3].x = + 0.5;
-			Points[3].y = - 0.5;
-			Points[3].z = - 0.5;
+			Points[3].x = + HALFCUBE;
+			Points[3].y = - HALFCUBE;
+			Points[3].z = - HALFCUBE;
             break;
         }
         case SLOPE_SMALL_SOUTH:
         {
-			Points[0].x = - 0.5;
-			Points[0].y = - 0.5;
-			Points[0].z = + 0.5;
+			Points[0].x = - HALFCUBE;
+			Points[0].y = - HALFCUBE;
+			Points[0].z = + HALFCUBE;
 
-			Points[1].x = - 0.5;
-			Points[1].y = + 0.5;
-			Points[1].z = - 0.5;
+			Points[1].x = - HALFCUBE;
+			Points[1].y = + HALFCUBE;
+			Points[1].z = - HALFCUBE;
 
-			Points[2].x = + 0.5;
-			Points[2].y = - 0.5;
-			Points[2].z = - 0.5;
+			Points[2].x = + HALFCUBE;
+			Points[2].y = - HALFCUBE;
+			Points[2].z = - HALFCUBE;
 
-			Points[3].x = + 0.5;
-			Points[3].y = + 0.5;
-			Points[3].z = - 0.5;
+			Points[3].x = + HALFCUBE;
+			Points[3].y = + HALFCUBE;
+			Points[3].z = - HALFCUBE;
             break;
         }
        case SLOPE_SMALL_WEST:
         {
-			Points[0].x = + 0.5;
-			Points[0].y = - 0.5;
-			Points[0].z = + 0.5;
+			Points[0].x = + HALFCUBE;
+			Points[0].y = - HALFCUBE;
+			Points[0].z = + HALFCUBE;
 
-			Points[1].x = + 0.5;
-			Points[1].y = + 0.5;
-			Points[1].z = - 0.5;
+			Points[1].x = + HALFCUBE;
+			Points[1].y = + HALFCUBE;
+			Points[1].z = - HALFCUBE;
 
-			Points[2].x = - 0.5;
-			Points[2].y = - 0.5;
-			Points[2].z = - 0.5;
+			Points[2].x = - HALFCUBE;
+			Points[2].y = - HALFCUBE;
+			Points[2].z = - HALFCUBE;
 
-			Points[3].x = - 0.5;
-			Points[3].y = + 0.5;
-			Points[3].z = - 0.5;
+			Points[3].x = - HALFCUBE;
+			Points[3].y = + HALFCUBE;
+			Points[3].z = - HALFCUBE;
             break;
         }
        case SLOPE_CRESS_NORTH_SOUTH:
         {
-			Points[0].x = - 0.5;
-			Points[0].y = - 0.5;
-			Points[0].z = - 0.5;
+			Points[0].x = - HALFCUBE;
+			Points[0].y = - HALFCUBE;
+			Points[0].z = - HALFCUBE;
 
-			Points[1].x = + 0.5;
-			Points[1].y = + 0.5;
-			Points[1].z = - 0.5;
+			Points[1].x = + HALFCUBE;
+			Points[1].y = + HALFCUBE;
+			Points[1].z = - HALFCUBE;
 
-			Points[2].x = + 0.5;
-			Points[2].y = - 0.5;
-			Points[2].z = + 0.5;
+			Points[2].x = + HALFCUBE;
+			Points[2].y = - HALFCUBE;
+			Points[2].z = + HALFCUBE;
 
-			Points[3].x = - 0.5;
-			Points[3].y = + 0.5;
-			Points[3].z = + 0.5;
+			Points[3].x = - HALFCUBE;
+			Points[3].y = + HALFCUBE;
+			Points[3].z = + HALFCUBE;
             break;
         }
        case SLOPE_CRESS_EAST_WEST:
         {
-			Points[0].x = - 0.5;
-			Points[0].y = + 0.5;
-			Points[0].z = - 0.5;
+			Points[0].x = - HALFCUBE;
+			Points[0].y = + HALFCUBE;
+			Points[0].z = - HALFCUBE;
 
-			Points[1].x = + 0.5;
-			Points[1].y = - 0.5;
-			Points[1].z = - 0.5;
+			Points[1].x = + HALFCUBE;
+			Points[1].y = - HALFCUBE;
+			Points[1].z = - HALFCUBE;
 
-			Points[2].x = - 0.5;
-			Points[2].y = - 0.5;
-			Points[2].z = + 0.5;
+			Points[2].x = - HALFCUBE;
+			Points[2].y = - HALFCUBE;
+			Points[2].z = + HALFCUBE;
 
-			Points[3].x = + 0.5;
-			Points[3].y = + 0.5;
-			Points[3].z = + 0.5;
+			Points[3].x = + HALFCUBE;
+			Points[3].y = + HALFCUBE;
+			Points[3].z = + HALFCUBE;
             break;
         }
 
        case SLOPE_FLAT:
         {
-			Points[0].x = - 0.5;
-			Points[0].y = + 0.5;
+			Points[0].x = - HALFCUBE;
+			Points[0].y = + HALFCUBE;
 			Points[0].z = 0;
 
-			Points[1].x = + 0.5;
-			Points[1].y = - 0.5;
+			Points[1].x = + HALFCUBE;
+			Points[1].y = - HALFCUBE;
 			Points[1].z = 0;
 
-			Points[2].x = - 0.5;
-			Points[2].y = - 0.5;
+			Points[2].x = - HALFCUBE;
+			Points[2].y = - HALFCUBE;
 			Points[2].z = 0;
 
-			Points[3].x = + 0.5;
-			Points[3].y = + 0.5;
+			Points[3].x = + HALFCUBE;
+			Points[3].y = + HALFCUBE;
 			Points[3].z = 0;
             break;
         }

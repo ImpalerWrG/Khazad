@@ -1143,22 +1143,24 @@ bool Extractor::isFloorTerrain(int in)
 
         case 19: //driftwood stack
         case 24: //tree
-        case 27: //up stair frozen liquid
+       // case 27: //up stair frozen liquid
         case 34: //shrub
         case 35: //Chasm
-        case 38: //up stair lavastone
-        case 41: //up stair soil
+       // case 38: //up stair lavastone
+       // case 41: //up stair soil
         case 42: //eerie pit
         case 43: //stone floor detailed
         case 44: //lavastone floor detailed
         case 45: //featstone? floor detailed
         case 46: //minstone? floor detailed [calcite]
         case 47: //frozen liquid floor detailed
+        /*
         case 51: //up stair grass1 [muddy?]
         case 54: //up stair grass2
         case 57: //up stair stone
         case 60: //up stair minstone
         case 63: //up stair featstone
+        */
         case 67: //campfire
         case 70: //fire
         case 79: //stone pillar
@@ -1170,6 +1172,7 @@ bool Extractor::isFloorTerrain(int in)
         case 90: //river source
 
         case 231: //sapling
+        /*
         case 233: //ramp grass dry
         case 234: //ramp grass dead
         case 235: //ramp grass1 [muddy?]
@@ -1179,11 +1182,13 @@ bool Extractor::isFloorTerrain(int in)
         case 239: //ramp featstone
         case 240: //ramp minstone
         case 241: //ramp soil
+        */
         case 242: //ash1
         case 243: //ash2
         case 244: //ash3
         case 245: //ramp frozen liquid
         case 261: //furrowed soil [road?]
+        case 264: //Lava bottom of map
         case 336: //stone floor 1 (raw stone)
         case 337: //stone floor 2 (raw stone)
         case 338: //stone floor 3 (raw stone)
@@ -1267,9 +1272,9 @@ bool Extractor::isFloorTerrain(int in)
         case 448: //minstone pebbles 3
         case 449: //minstone pebbles 4
         case 493: //constructed floor detailed
-        case 495: //constructed pillar
+        //case 495: //constructed pillar
         case 517: //stair up constructed
-        case 518: //ramp constructed
+        //case 518: //ramp constructed
             return true;
             break;
     }

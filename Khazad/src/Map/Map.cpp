@@ -45,13 +45,13 @@ bool Map::Init()
 
 			for (Uint32 k = 0; k < CellSizeZ; k++)
 			{
-				CellArray[i][j][k] = new Cell(i * CellEdgeSize, j * CellEdgeSize, k);
+				CellArray[i][j][k] = new Cell(i * CELLEDGESIZE, j * CELLEDGESIZE, k);
 			}
 		}
 	}
 
-    MapSizeX = CellSizeX * CellEdgeSize;
-	MapSizeY = CellSizeY * CellEdgeSize;
+    MapSizeX = CellSizeX * CELLEDGESIZE;
+	MapSizeY = CellSizeY * CELLEDGESIZE;
 	MapSizeZ = CellSizeZ;
 
     Initialized = true;
@@ -301,8 +301,8 @@ Cell* Map::getCubeOwner(Sint32 X, Sint32 Y, Sint32 Z)
         return NULL;
     }
 
-    Sint32 CellX = X / CellEdgeSize;
-    Sint32 CellY = Y / CellEdgeSize;
+    Sint32 CellX = X / CELLEDGESIZE;
+    Sint32 CellY = Y / CELLEDGESIZE;
 
     return getCell(CellX, CellY, Z);
 }
@@ -315,11 +315,28 @@ Cube* Map::getCube(Sint32 X, Sint32 Y, Sint32 Z)
     {
         if(TargetCell->isInitalized())
         {
-            Sint32 CubeX = X % CellEdgeSize;
-            Sint32 CubeY = Y % CellEdgeSize;
-            Cube* TargetCube = TargetCell->getCube(CubeX, CubeY);
+            Sint32 CubeX = X % CELLEDGESIZE;
+            Sint32 CubeY = Y % CELLEDGESIZE;
 
-            return TargetCube;
+            return TargetCell->getCube(CubeX, CubeY);
+        }
+        return NULL;
+    }
+    return NULL;
+}
+
+Face* Map::getFace(Sint32 X, Sint32 Y, Sint32 Z, Facet FaceType)
+{
+    Cell* TargetCell = getCubeOwner(X, Y, Z);
+
+    if(TargetCell)
+    {
+        if(TargetCell->isInitalized())
+        {
+            Sint32 CubeX = X % CELLEDGESIZE;
+            Sint32 CubeY = Y % CELLEDGESIZE;
+
+            return TargetCell->getFace(CubeX, CubeY, FaceType);
         }
         return NULL;
     }
@@ -349,7 +366,7 @@ void Map::LoadExtract()
 
 			for (Uint32 k = 0; k < CellSizeZ; k++)
 			{
-				CellArray[i][j][k] = new Cell(i * CellEdgeSize, j * CellEdgeSize, k);
+				CellArray[i][j][k] = new Cell(i * CELLEDGESIZE, j * CELLEDGESIZE, k);
 
 				//if(k == 0)
 				//{
@@ -360,11 +377,11 @@ void Map::LoadExtract()
 		}
 	}
 
-    MapSizeX = CellSizeX * CellEdgeSize;
-	MapSizeY = CellSizeY * CellEdgeSize;
+    MapSizeX = CellSizeX * CELLEDGESIZE;
+	MapSizeY = CellSizeY * CELLEDGESIZE;
 	MapSizeZ = CellSizeZ;
 
-    Cube* NewCube = NULL;
+    Cube* TargetCube = NULL;
     Cell* TargetCell = NULL;
 
     for (Uint32 i = 0; i < MapSizeX; i++)
@@ -393,63 +410,79 @@ void Map::LoadExtract()
                             TargetCell->Init();
                         }
 
+                        TargetCube = getCube(i, j, k);
+
+                        if(!TargetCube)
+                        {
+                            TargetCube = new Cube();
+                            TargetCell->setCube(TargetCube, i % CELLEDGESIZE, j % CELLEDGESIZE);
+                            TargetCube->setPosition((float) i, (float) j, (float) k);
+                        }
+
                         Uint16 Material = PickTexture(TileType);
 
-                        NewCube = getCube(i, j, k);
-
                         bool Hidden = EXTRACT->isDesignationFlag(DESIGNATION_HIDDEN, i, j, k);
-                        NewCube->setHidden(Hidden);
+                        TargetCube->setHidden(Hidden);
 
-                        NewCube->setSubTerranean(EXTRACT->isDesignationFlag(DESIGNATION_SUBTERRANEAN, i, j, k));
-                        NewCube->setSkyView(EXTRACT->isDesignationFlag(DESIGNATION_SKY_VIEW, i, j, k));
-                        NewCube->setSunLit(EXTRACT->isDesignationFlag(DESIGNATION_OPEN_TO_SUN, i, j, k));
+                        TargetCube->setSubTerranean(EXTRACT->isDesignationFlag(DESIGNATION_SUBTERRANEAN, i, j, k));
+                        TargetCube->setSkyView(EXTRACT->isDesignationFlag(DESIGNATION_SKY_VIEW, i, j, k));
+                        TargetCube->setSunLit(EXTRACT->isDesignationFlag(DESIGNATION_OPEN_TO_SUN, i, j, k));
 
-                        if (NewCube)
+                        if(IsWall)
                         {
-                            if(IsWall)
+                            TargetCube->Init(Material);
+                            if(!Hidden)
                             {
-                                NewCube->Init(Material);
-                                if(!Hidden)
-                                {
-                                    //NewCube->InitConstructedFace(FACET_TOP, Material);
-                                    //NewCube->InitConstructedFace(FACET_NORTH_EAST, Material);
-                                    //NewCube->InitConstructedFace(FACET_NORTH_WEST, Material);
-                                    //NewCube->InitConstructedFace(FACET_SOUTH_EAST, Material);
-                                    //NewCube->InitConstructedFace(FACET_SOUTH_WEST, Material);
-                                }
+                                //NewCube->InitConstructedFace(FACET_TOP, Material);
+                                //NewCube->InitConstructedFace(FACET_NORTH_EAST, Material);
+                                //NewCube->InitConstructedFace(FACET_NORTH_WEST, Material);
+                                //NewCube->InitConstructedFace(FACET_SOUTH_EAST, Material);
+                                //NewCube->InitConstructedFace(FACET_SOUTH_WEST, Material);
                             }
-
-                            if(IsOpen)
-                            {
-                                NewCube->Open();
-                            }
-
-                            if(IsFloor)
-                            {
-                                NewCube->InitConstructedFace(FACET_BOTTOM, Material);
-                            }
-
-                            if(IsRamp)
-                            {
-                                NewCube->Init(Material);
-                                NewCube->Open();
-                                NewCube->SetSlope(SLOPE_FLAT);  // Prime the Slope, the type can not yet be determined
-                            }
-
-                            if(IsStairs)
-                            {
-                                NewCube->Open();
-                                //TODO render stairs
-                            }
-
-                            if(Liquid)
-                            {
-                                NewCube->Open();
-                                NewCube->setLiquid((Uint8) Liquid);
-                            }
-
-                            NewCube->setVisible(true);
                         }
+
+                        if(IsOpen)
+                        {
+                            TargetCube->Open();
+                        }
+
+                        if(IsRamp)
+                        {
+                            TargetCube->Init(Material);
+                            TargetCube->Open();
+                            TargetCube->SetSlope(SLOPE_FLAT);  // Prime the Slope, the type can not yet be determined
+                        }
+
+                        if(IsFloor)
+                        {
+                            TargetCube->InitConstructedFace(FACET_BOTTOM, Material);
+                        }
+
+                        if(IsStairs)
+                        {
+                            TargetCube->Init(Material);
+                            TargetCube->Open();
+                            TargetCube->SetSlope(SLOPE_FLAT);
+                            //TODO render stairs differently
+                        }
+
+                        if(Liquid)
+                        {
+                            TargetCube->Open();
+                            TargetCube->setLiquid((Uint8) Liquid);
+
+                            if(EXTRACT->isDesignationFlag(DESIGNATION_LIQUID_TYPE, i, j, k))
+                            {
+                                TargetCube->InitConstructedFace(FACET_TOP, DATA->getLabelIndex("MATERIAL_LAVA"));
+                            }
+                            else
+                            {
+
+                                TargetCube->InitConstructedFace(FACET_TOP, DATA->getLabelIndex("MATERIAL_WATER"));
+                            }
+                        }
+
+                        TargetCube->setVisible(true);
                     }
                 }
             }
@@ -463,14 +496,14 @@ void Map::LoadExtract()
 		{
 			for (Uint32 k = 1; k < MapSizeZ; k++)
 			{
-                NewCube = getCube(i, j, k);
-                if(NewCube)
+                TargetCube = getCube(i, j, k);
+                if(TargetCube)
                 {
-                    NewCube->InitAllFaces();
+                    TargetCube->InitAllFaces();
 
-                    if(NewCube->getSlope() != NULL)
+                    if(TargetCube->getSlope() != NULL)
                     {
-                        NewCube->DetermineSlope();
+                        TargetCube->DetermineSlope();
                     }
                 }
 			}
@@ -492,7 +525,7 @@ void Map::InitilizeTilePicker()
         for(int j = 0; j < DATA->getMaterialData(i)->TileTypes.size(); ++j)
         {
             int Tile = DATA->getMaterialData(i)->TileTypes[j];
-            TilePicker[Tile] = DATA->getMaterialData(i)->getTexture();
+            TilePicker[Tile] = i;
         }
     }
 }

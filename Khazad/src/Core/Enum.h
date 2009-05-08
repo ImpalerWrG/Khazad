@@ -9,7 +9,8 @@ enum ActorType
 	CELL_ACTOR,
 	PAWN_ACTOR,
 
-	NUM_ACTOR_TYPES
+	NUM_ACTORS,
+	ACTORS_START = 0
 };
 
 enum Facet
@@ -21,7 +22,8 @@ enum Facet
 	FACET_SOUTH_WEST,
 	FACET_NORTH_WEST,
 
-	NUM_FACETS
+	NUM_FACETS,
+	FACETS_START = 0
 };
 
 inline Facet &operator++ (Facet &OldFace)      { return OldFace = Facet(OldFace + 1); }
@@ -48,7 +50,8 @@ enum Slopping
     SLOPE_CRESS_NORTH_SOUTH,
     SLOPE_CRESS_EAST_WEST,
 
-    NUM_SLOPES
+    NUM_SLOPES,
+    SLOPES_START = 0
 };
 
 inline Slopping &operator++ (Slopping &OldSlope)      { return OldSlope = Slopping(OldSlope + 1); }
@@ -66,7 +69,8 @@ enum Direction
 	WEST,
 	NORTHWEST,
 
-	NUM_DIRECTIONS
+	NUM_DIRECTIONS,
+    DIRECTIONS_START = 0
 };
 
 inline Direction &operator++ (Direction &OldDirection)      { return OldDirection = Direction(OldDirection + 1); }
@@ -79,7 +83,8 @@ enum CameraOrientation
 	CAMERA_SOUTH,
 	CAMERA_WEST,
 
-	NUM_ORIENTATIONS
+	NUM_ORIENTATIONS,
+    ORIENTATIONS_START = 0
 };
 
 inline CameraOrientation &operator++ (CameraOrientation &Orientation)      { return Orientation = CameraOrientation(Orientation + 1); }

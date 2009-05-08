@@ -4,7 +4,7 @@
 
 #include <Actor.h>
 
-#define CellEdgeSize 16
+#define CELLEDGESIZE 16
 
 class Cube;
 
@@ -16,7 +16,13 @@ public:
 	Cell(Sint32 X, Sint32 Y, Sint32 Z);
 	~Cell();
 	bool Init();
-	Cube* getCube(Uint16 x, Uint16 y);
+
+	Cube* getCube(Uint8 x, Uint8 y);
+	void setCube(Cube* NewCube, Uint8 x, Uint8 y);
+
+
+    Face* getFace(Uint8 x, Uint8 y, Facet FaceType);
+	void setFace(Face* NewFace, Uint8 x, Uint8 y, Facet FaceType);
 
     Uint16 getTriangleCount(CameraOrientation Orientation) { return TriangleCount[Orientation]; }
 
@@ -45,8 +51,8 @@ protected:
 
     Uint16 TriangleCount[5];
 
-	Cube** Cubes;
-	Face*** Facets;
+	Cube*** Cubes;
+	Face**** Facets;
 
 	bool Active;
 };

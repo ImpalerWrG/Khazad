@@ -17,9 +17,6 @@ Face::Face()
 	Initalized = false;
 	Visible = false;
 
-	FirstOwner = NULL;
-	SecondOwner = NULL;
-
     Constructed = false;
     Decorated = false;
 
@@ -36,163 +33,140 @@ Face::~Face()
     //GAME->RemoveActor(ID);
 }
 
-bool Face::Init(Cube* First, Cube* Second, Facet Type, Uint16 MaterialType)
+bool Face::Init(Facet Type, Uint16 MaterialType)
 {
     Initalized = true;
 
-	FirstOwner = First;
-    SecondOwner = Second;
 	FacetType = Type;
 	Visible = true;
 	Material = MaterialType;
-
-    if(FirstOwner != NULL)
-    {
-        FirstOwner->setFacet(FacetType, this);
-    }
-
-    if(SecondOwner != NULL)
-    {
-        SecondOwner->setFacet(Cube::OpositeFace(FacetType), this);
-    }
+	Texture = DATA->getMaterialData(Material)->getTexture();
 
 	switch(FacetType)
 	{
 		case FACET_TOP:
 		{
-			Points[0].x = - 0.5;
-			Points[0].y = + 0.5;
-			Points[0].z = + 0.5;
+			Points[0].x = - HALFCUBE;
+			Points[0].y = + HALFCUBE;
+			Points[0].z = + HALFCUBE;
 
-			Points[1].x = + 0.5;
-			Points[1].y = + 0.5;
-			Points[1].z = + 0.5;
+			Points[1].x = + HALFCUBE;
+			Points[1].y = + HALFCUBE;
+			Points[1].z = + HALFCUBE;
 
-			Points[2].x = + 0.5;
-			Points[2].y = - 0.5;
-			Points[2].z = + 0.5;
+			Points[2].x = + HALFCUBE;
+			Points[2].y = - HALFCUBE;
+			Points[2].z = + HALFCUBE;
 
-			Points[3].x = - 0.5;
-			Points[3].y = - 0.5;
-			Points[3].z = + 0.5;
+			Points[3].x = - HALFCUBE;
+			Points[3].y = - HALFCUBE;
+			Points[3].z = + HALFCUBE;
 
 			break;
 		}
 		case FACET_BOTTOM:
 		{
-			Points[0].x = - 0.5;
-			Points[0].y = + 0.5;
-			Points[0].z = - 0.5;
+			Points[0].x = - HALFCUBE;
+			Points[0].y = + HALFCUBE;
+			Points[0].z = - HALFCUBE;
 
-			Points[1].x = + 0.5;
-			Points[1].y = + 0.5;
-			Points[1].z = - 0.5;
+			Points[1].x = + HALFCUBE;
+			Points[1].y = + HALFCUBE;
+			Points[1].z = - HALFCUBE;
 
-			Points[2].x = + 0.5;
-			Points[2].y = - 0.5;
-			Points[2].z = - 0.5;
+			Points[2].x = + HALFCUBE;
+			Points[2].y = - HALFCUBE;
+			Points[2].z = - HALFCUBE;
 
-			Points[3].x = - 0.5;
-			Points[3].y = - 0.5;
-			Points[3].z = - 0.5;
+			Points[3].x = - HALFCUBE;
+			Points[3].y = - HALFCUBE;
+			Points[3].z = - HALFCUBE;
 
 			break;
 		}
 		case FACET_NORTH_EAST:
 		{
-			Points[0].x = - 0.5;
-			Points[0].y = - 0.5;
-			Points[0].z = - 0.5;
+			Points[0].x = - HALFCUBE;
+			Points[0].y = - HALFCUBE;
+			Points[0].z = - HALFCUBE;
 
-			Points[1].x = + 0.5;
-			Points[1].y = - 0.5;
-			Points[1].z = - 0.5;
+			Points[1].x = + HALFCUBE;
+			Points[1].y = - HALFCUBE;
+			Points[1].z = - HALFCUBE;
 
-			Points[2].x = + 0.5;
-			Points[2].y = - 0.5;
-			Points[2].z = + 0.5;
+			Points[2].x = + HALFCUBE;
+			Points[2].y = - HALFCUBE;
+			Points[2].z = + HALFCUBE;
 
-			Points[3].x = - 0.5;
-			Points[3].y = - 0.5;
-			Points[3].z = + 0.5;
+			Points[3].x = - HALFCUBE;
+			Points[3].y = - HALFCUBE;
+			Points[3].z = + HALFCUBE;
 
 			break;
 		}
 		case FACET_SOUTH_EAST:
 		{
-			Points[0].x = + 0.5;
-			Points[0].y = - 0.5;
-			Points[0].z = - 0.5;
+			Points[0].x = + HALFCUBE;
+			Points[0].y = - HALFCUBE;
+			Points[0].z = - HALFCUBE;
 
-			Points[1].x = + 0.5;
-			Points[1].y = + 0.5;
-			Points[1].z = - 0.5;
+			Points[1].x = + HALFCUBE;
+			Points[1].y = + HALFCUBE;
+			Points[1].z = - HALFCUBE;
 
-			Points[2].x = + 0.5;
-			Points[2].y = + 0.5;
-			Points[2].z = + 0.5;
+			Points[2].x = + HALFCUBE;
+			Points[2].y = + HALFCUBE;
+			Points[2].z = + HALFCUBE;
 
-			Points[3].x = + 0.5;
-			Points[3].y = - 0.5;
-			Points[3].z = + 0.5;
+			Points[3].x = + HALFCUBE;
+			Points[3].y = - HALFCUBE;
+			Points[3].z = + HALFCUBE;
 
 			break;
 		}
 		case FACET_SOUTH_WEST:
 		{
-			Points[0].x = + 0.5;
-			Points[0].y = + 0.5;
-			Points[0].z = - 0.5;
+			Points[0].x = + HALFCUBE;
+			Points[0].y = + HALFCUBE;
+			Points[0].z = - HALFCUBE;
 
-			Points[1].x = - 0.5;
-			Points[1].y = + 0.5;
-			Points[1].z = - 0.5;
+			Points[1].x = - HALFCUBE;
+			Points[1].y = + HALFCUBE;
+			Points[1].z = - HALFCUBE;
 
-			Points[2].x = - 0.5;
-			Points[2].y = + 0.5;
-			Points[2].z = + 0.5;
+			Points[2].x = - HALFCUBE;
+			Points[2].y = + HALFCUBE;
+			Points[2].z = + HALFCUBE;
 
-			Points[3].x = + 0.5;
-			Points[3].y = + 0.5;
-			Points[3].z = + 0.5;
+			Points[3].x = + HALFCUBE;
+			Points[3].y = + HALFCUBE;
+			Points[3].z = + HALFCUBE;
 
 			break;
 		}
 		case FACET_NORTH_WEST:
 		{
-			Points[0].x = - 0.5;
-			Points[0].y = + 0.5;
-			Points[0].z = - 0.5;
+			Points[0].x = - HALFCUBE;
+			Points[0].y = + HALFCUBE;
+			Points[0].z = - HALFCUBE;
 
-			Points[1].x = - 0.5;
-			Points[1].y = - 0.5;
-			Points[1].z = - 0.5;
+			Points[1].x = - HALFCUBE;
+			Points[1].y = - HALFCUBE;
+			Points[1].z = - HALFCUBE;
 
-			Points[2].x = - 0.5;
-			Points[2].y = - 0.5;
-			Points[2].z = + 0.5;
+			Points[2].x = - HALFCUBE;
+			Points[2].y = - HALFCUBE;
+			Points[2].z = + HALFCUBE;
 
-			Points[3].x = - 0.5;
-			Points[3].y = + 0.5;
-			Points[3].z = + 0.5;
+			Points[3].x = - HALFCUBE;
+			Points[3].y = + HALFCUBE;
+			Points[3].z = + HALFCUBE;
 
 			break;
 		}
 	}
 
 	return true;
-}
-
-bool Face::CheckRemoval()
-{
-	if (FirstOwner != NULL && FirstOwner->isInitalized())
-	{
-        if (SecondOwner != NULL && SecondOwner->isInitalized())
-        {
-            return true;
-        }
-	}
-	return false;
 }
 
 bool Face::Update()
@@ -204,13 +178,13 @@ bool Face::Draw(float xTranslate, float yTranslate)
 {
     if(Visible)
     {
-        TEXTURE->BindTexturePoint(Material, 0 + Rotation);         glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
-        TEXTURE->BindTexturePoint(Material, 1 + Rotation);         glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
-        TEXTURE->BindTexturePoint(Material, 2 + Rotation);         glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+        TEXTURE->BindTexturePoint(Texture, 0 + Rotation);         glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+        TEXTURE->BindTexturePoint(Texture, 1 + Rotation);         glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+        TEXTURE->BindTexturePoint(Texture, 2 + Rotation);         glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
 
-        TEXTURE->BindTexturePoint(Material, 2 + Rotation);         glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
-        TEXTURE->BindTexturePoint(Material, 3 + Rotation);         glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
-        TEXTURE->BindTexturePoint(Material, 0 + Rotation);         glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+        TEXTURE->BindTexturePoint(Texture, 2 + Rotation);         glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+        TEXTURE->BindTexturePoint(Texture, 3 + Rotation);         glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
+        TEXTURE->BindTexturePoint(Texture, 0 + Rotation);         glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
 
         SCREEN->IncrementTriangles(2);
     }

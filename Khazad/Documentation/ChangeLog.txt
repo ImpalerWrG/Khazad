@@ -1,6 +1,6 @@
 Change Log for Khazad
 
-- V 0.0.4 (SVN 000) Splash Screen bug fixed attempted again, None-natural water will now be displayed such as undergournd cistersn, pools, channels etc etc, slow down in shaded mode removed, Scroll wheel can change viewing level and slice thickness, 
+- V 0.0.4 (SVN 000) Splash Screen bug fixed attempted again, None-natural water will now be displayed such as undergournd cistersn, pools, channels etc etc, slow down in shaded mode removed, Scroll wheel can change viewing level and slice thickness, Exploded View option added controled with PageUp/PageDown, 
 
 
 - BugFix A - fixed Constructed wall texture and upside down splash screen bug

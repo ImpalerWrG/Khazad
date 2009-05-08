@@ -47,6 +47,10 @@
 		<Texture label="TEXTURE_STONE"/>
 		<TileValues>
 			<Tile Int="43"/>
+			<Tile Int="55"/>
+			<Tile Int="56"/>
+			<Tile Int="57"/>			
+			<Tile Int="79"/>
 			<Tile Int="219"/>
 			<Tile Int="237"/>
 			<Tile Int="307"/>
@@ -71,17 +75,11 @@
 		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_LAVA"/>
-		<Texture label="TEXTURE_STONE"/>
-		<TileValues>
-			<Tile Int="-1"/>
-		</TileValues>
-	</Material>
-	<Material>
 		<Name Label="MATERIAL_CONSTRUCTED_WALL"/>
 		<Texture label="TEXTURE_BRICK"/>
 		<TileValues>
-			<Tile Int="493"/>
+			<Tile Int="494"/>
+			<Tile Int="495"/>
 			<Tile Int="496"/>
 			<Tile Int="497"/>
 			<Tile Int="498"/>
@@ -101,6 +99,10 @@
 			<Tile Int="512"/>
 			<Tile Int="513"/>
 			<Tile Int="514"/>
+			<Tile Int="515"/>
+			<Tile Int="516"/>
+			<Tile Int="517"/>
+			<Tile Int="518"/>
 		</TileValues>
 	</Material>
 	<Material>
@@ -111,9 +113,17 @@
 		</TileValues>
 	</Material>
 	<Material>
+		<Name Label="MATERIAL_LAVA"/>
+		<Texture label="TEXTURE_LAVA"/>
+		<TileValues>
+			<Tile Int="264"/>
+		</TileValues>
+	</Material>
+	<Material>
 		<Name Label="MATERIAL_SMOOTH_FLOOR"/>
 		<Texture label="TEXTURE_DETAILED_FLOOR"/>
 		<TileValues>
+			<Tile Int="493"/>
 		</TileValues>
 	</Material>
 	<Material>
@@ -157,6 +167,12 @@
 		<Name Label="MATERIAL_MIN_STONE"/>
 		<Texture label="TEXTURE_METAL"/>
 		<TileValues>
+			<Tile Int="58"/>
+			<Tile Int="59"/>
+			<Tile Int="60"/>
+			
+			<Tile Int="240"/>
+			
 			<Tile Int="417"/>
 			<Tile Int="418"/>
 			<Tile Int="419"/>
@@ -185,12 +201,35 @@
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_FEATURE_STONE_FLOOR"/>
-		<Texture label="TEXTURE_OBSIDIAN"/>
+		<Texture label="TEXTURE_BOARDS"/>
 		<TileValues>
+			<Tile Int="61"/>
+			<Tile Int="62"/>
+			<Tile Int="63"/>
+		
 			<Tile Int="441"/>
 			<Tile Int="442"/>
 			<Tile Int="443"/>
 			<Tile Int="444"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ROUGH_OBSIDIAN_FLOOR"/>
+		<Texture label="TEXTURE_OBSIDIAN"/>
+		<TileValues>
+			<Tile Int="36"/>
+			<Tile Int="37"/>
+			<Tile Int="38"/>
+		
+			<Tile Int="80"/>
+			<Tile Int="328"/>
+			<Tile Int="329"/>
+			<Tile Int="330"/>
+			<Tile Int="331"/>
+			<Tile Int="340"/>
+			<Tile Int="341"/>
+			<Tile Int="342"/>
+			<Tile Int="343"/>
 		</TileValues>
 	</Material>
 	<Material>

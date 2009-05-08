@@ -5,6 +5,7 @@
 
 #include <Actor.h>
 
+#define HALFCUBE 0.5
 
 class Face;
 class Slope;
@@ -19,11 +20,12 @@ public:
 	~Cube();
 	bool Init(Uint16 MaterialType);
 
+    void SetOwner(Cell* NewOwner, Uint8 X, Uint8 Y);
 
 	bool isSolid()                  { return Solid; }
-    void setSolid(bool NewValue)    { Solid = NewValue; /*Liquid = !NewValue;*/}
+    void setSolid(bool NewValue)    { Solid = NewValue;}
 
-	Uint8 getLiquid()                 { return Liquid; }
+	Uint8 getLiquid()                   { return Liquid; }
 	void setLiquid(Uint8 NewValue)      { Liquid = NewValue; }
 
     Slope* getSlope()               { return Slopage; }
@@ -37,7 +39,7 @@ public:
     Sint16 FaceMaterial(Facet Type);
 
     Face* getFacet(Facet Type);
-    void setFacet(Facet Type, Face* NewFace);
+    void setFacet(Face* NewFace, Facet Type);
     void setAllFacesVisiblity(bool NewValue);
     void DeleteFace(Facet Type);
 
@@ -47,7 +49,7 @@ public:
 
     Cube* getAdjacentCube(Facet Type);
     Cube* getNeiborCube(Direction Type);
-    Cell* getCellOwner();
+    Cell* getCellOwner()                    { return Owner; }
 
     Cell* getAdjacentCell(Facet Type);
     static Facet OpositeFace(Facet Type);
@@ -68,8 +70,6 @@ public:
 
 protected:
 
-	Face* Facets[NUM_FACETS];
-
 	Slope* Slopage;
 
 	bool Solid;
@@ -79,6 +79,11 @@ protected:
     bool SubTerranian;
     bool SkyView;
     bool SunLit;
+
+    Cell* Owner;
+
+    Uint8 CellX;
+    Uint8 CellY;
 };
 
 #endif // CUBE__HEADER

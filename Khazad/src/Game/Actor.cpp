@@ -30,6 +30,13 @@ bool Actor::Init()
 	return true;
 }
 
+void Actor::setPosition(float X, float Y, float Z)
+{
+    Position.x = X;
+    Position.y = Y;
+    Position.z = Z;
+}
+
 bool Actor::Update()
 {
 	return true;
