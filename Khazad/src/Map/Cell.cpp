@@ -120,7 +120,7 @@ bool Cell::Update()
 	return true;
 }
 
-bool Cell::Draw(CameraOrientation Orientation, bool DrawHidden, bool DrawSubTerranian, bool DrawSkyView, bool DrawSunLit)
+bool Cell::Draw(CameraOrientation Orientation, bool DrawHidden, bool DrawSubTerranean, bool DrawSkyView, bool DrawSunLit)
 {
     Cube* LoopCube = NULL;
 
@@ -135,11 +135,27 @@ bool Cell::Draw(CameraOrientation Orientation, bool DrawHidden, bool DrawSubTerr
                 LoopCube = getCube(x, y);
                 if (LoopCube->isVisible())
                 {
+                    if(LoopCube->isHidden() && !DrawHidden)
+                    {
+                        continue;
+                    }
+                    if(LoopCube->isSubTerranean() && !DrawSubTerranean)
+                    {
+                        continue;
+                    }
+                    if(LoopCube->isSkyView() && !DrawSkyView)
+                    {
+                        continue;
+                    }
+                    if(LoopCube->isSunLit() && !DrawSunLit)
+                    {
+                        continue;
+                    }
+
                     if(LoopCube->getSlope())
                     {
                         LoopCube->getSlope()->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
                     }
-                    //LoopCube->Draw(Orientation, x - HalfCell + HALFCUBE, y - HalfCell + HALFCUBE, DrawHidden, DrawSubTerranian, DrawSkyView, DrawSunLit);
 
                     for(Facet Face = FACETS_START; Face < NUM_FACETS; ++Face)
                     {

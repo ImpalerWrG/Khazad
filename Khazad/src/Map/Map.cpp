@@ -431,14 +431,6 @@ void Map::LoadExtract()
                         if(IsWall)
                         {
                             TargetCube->Init(Material);
-                            if(!Hidden)
-                            {
-                                //NewCube->InitConstructedFace(FACET_TOP, Material);
-                                //NewCube->InitConstructedFace(FACET_NORTH_EAST, Material);
-                                //NewCube->InitConstructedFace(FACET_NORTH_WEST, Material);
-                                //NewCube->InitConstructedFace(FACET_SOUTH_EAST, Material);
-                                //NewCube->InitConstructedFace(FACET_SOUTH_WEST, Material);
-                            }
                         }
 
                         if(IsOpen)
@@ -489,17 +481,20 @@ void Map::LoadExtract()
 		}
 	}
 
-
+    // Initialize Faces
     for (Uint32 i = 0; i < MapSizeX; i++)
 	{
 		for (Uint32 j = 0; j < MapSizeY; j++)
 		{
-			for (Uint32 k = 1; k < MapSizeZ; k++)
+			for (Uint32 k = 0; k < MapSizeZ; k++)
 			{
                 TargetCube = getCube(i, j, k);
                 if(TargetCube)
                 {
-                    TargetCube->InitAllFaces();
+                    if(!TargetCube->isSolid())
+                    {
+                        TargetCube->InitFacesOpen();
+                    }
 
                     if(TargetCube->getSlope() != NULL)
                     {
@@ -509,6 +504,35 @@ void Map::LoadExtract()
 			}
 		}
 	}
+
+    // Initialize Drawlists
+	for(Uint16 Zlevel = 0; Zlevel < getCellSizeZ(); Zlevel++)
+	{
+        for (Uint32 SizeX = 0; SizeX < getCellSizeX(); SizeX++)
+        {
+            for (Uint32 SizeY = 0; SizeY < getCellSizeY(); SizeY++)
+            {
+                Cell* LoopCell = getCell(SizeX, SizeY, Zlevel);
+
+                if(LoopCell->isActive())
+                {
+                    if(LoopCell->DirtyDrawlist)
+                    {
+                        // Rebuild the new Drawlist
+                        GLuint DrawListID = LoopCell->DrawListID;
+                        glDeleteLists(DrawListID, 5);
+
+                        for(CameraOrientation Orientation = CAMERA_DOWN; Orientation < NUM_ORIENTATIONS; ++Orientation)
+                        {
+                            SCREEN->RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation, false);
+                        }
+                        LoopCell->DirtyDrawlist = false;
+                    }
+                }
+            }
+        }
+	}
+
 
     Initialized = true;
 }

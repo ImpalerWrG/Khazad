@@ -52,14 +52,59 @@ bool Cube::Init(Uint16 MaterialType)
 	return true;
 }
 
-bool Cube::InitAllFaces()
+bool Cube::InitFacesOpen()
 {
 	Initalized = true;
 
-    if(!(Solid || Liquid))
+    for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
     {
-        return false;
+        Cube* NeiborCube = getNeiborCube(DirectionType);
+
+        if(NeiborCube != NULL && NeiborCube->isSolid())
+        {
+            NeiborCube->InitFacesSolid();
+        }
     }
+
+    for(Facet FaceType = FACETS_START; FaceType < NUM_FACETS; ++FaceType)
+    {
+        if(getFacet(FaceType) == NULL)
+        {
+
+            Sint16 BestMaterial = FaceMaterial(FaceType);
+
+            if(BestMaterial != -1)
+            {
+                Face* TemporaryPointer = new Face;
+
+                if(FaceType == FACET_TOP)
+                {
+                    TemporaryPointer->Init(FACET_BOTTOM, (Uint16) BestMaterial);
+                }
+                else
+                {
+                    TemporaryPointer = new Face;
+                    TemporaryPointer->Init(FaceType, (Uint16) BestMaterial);
+                    setFacet(TemporaryPointer, FaceType);
+                }
+
+                getCellOwner()->setActive(true);
+
+                if(FaceType == FACET_TOP || FaceType == FACET_BOTTOM) // Keep roofs of underground rooms invisible
+                {
+                    if(!TemporaryPointer->isConstructed()) // Unless they are themselves floors
+                    {
+                        TemporaryPointer->setVisible(false);
+                    }
+                }
+            }
+        }
+    }
+}
+
+bool Cube::InitFacesSolid()
+{
+    Initalized = true;
 
     for(Facet FaceType = FACETS_START; FaceType < NUM_FACETS; ++FaceType)
     {
@@ -68,39 +113,19 @@ bool Cube::InitAllFaces()
             Cube* NeiborCube = getAdjacentCube(FaceType);
             Cell* NeiborCell = getAdjacentCell(FaceType);
 
-            if(NeiborCell != NULL) // && NeiborCell->isInitalized())
+            if(FaceType == FACET_TOP)
             {
-                if (NeiborCube != NULL) //&& NeiborCube->isInitalized())
-                {
-                    Sint16 BestMaterial = FaceMaterial(FaceType);
-
-                    if(BestMaterial != -1)
-                    {
-                        Face* TemporaryPointer = new Face;
-
-                        if(FaceType == FACET_TOP)
-                        {
-                            TemporaryPointer->Init(FACET_BOTTOM, (Uint16) BestMaterial);
-                        }
-                        else
-                        {
-                            TemporaryPointer = new Face;
-                            TemporaryPointer->Init(FaceType, (Uint16) BestMaterial);
-                            setFacet(TemporaryPointer, FaceType);
-                        }
-
-                        getCellOwner()->setActive(true);
-
-                        if(FaceType == FACET_TOP || FaceType == FACET_BOTTOM) // Keep roofs of underground rooms invisible
-                        {
-                            if(TemporaryPointer->isConstructed()) // Unless they are themselves floors
-                            {
-                                TemporaryPointer->setVisible(false);
-                            }
-                        }
-                    }
-                }
+                Face* TemporaryPointer = new Face;
+                TemporaryPointer->Init(FaceType, Material);
+                setFacet(TemporaryPointer, FaceType);
+                getCellOwner()->setActive(true);
+                continue;
             }
+
+            Face* TemporaryPointer = new Face;
+            TemporaryPointer->Init(FaceType, Material);
+            setFacet(TemporaryPointer, FaceType);
+            getCellOwner()->setActive(true);
         }
     }
 }
@@ -163,7 +188,7 @@ Sint16 Cube::FaceMaterial(Facet Type)
 {
     Cube* NeiborCube = getAdjacentCube(Type);
 
-    if(NeiborCube != NULL) // && NeiborCube->isInitalized())
+    if(NeiborCube != NULL)
     {
         if(Solid)
         {

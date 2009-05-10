@@ -1,17 +1,23 @@
-Release Notes v0.0.3
+Release Notes v0.0.4
 
-Khazad is still being built and major sub-systems are still incomplete, or just plain absent.
-Thanks to additional help from Sinoth who shared the extracting code originaly created by Mithaldu I was able to get Designation and Occupancy flag data extracted from DF, also by using the most recent memory offsets taken from Lifevis the current release can extract map Data from a version official release 40d, but NOT I must point out ANY of the 40d# OpenGL builds.  
+Khazad is still being built and dose little more then show the static geometry of a map, more options to controll rendering have been added in 0.0.4 and a lot of low level data structure rewriting has been done behind the scenes.
 
-Most textures were modified with a thin black line around the edge to give a look more consistent with classic Isometric games such as SimCity 2000, Transport Tycoon, X-Com etc etc.  Feed back is apreciated to see if this is something to keep doing or if another style is better.
+A new debugging output showing the Tile, Designation and Occupancy data taken directly from the map Extraction of the outlined cube at the center of the view, the Debugging output is now togglable with (b).
 
-An XML file Assets/XML/config.xml allows the screen resolution to be altered and a few of the constants that determine how the camera is controlled to be tweeked, a full screen optin is also avaliable.  The file pathway for map saving and loading is set their as well.  The save file is currently mosterously large and using it on very large maps is not recomended, expect the save format to get smaller in the future but for this to break back-compatibility.  Extracted maps store underground hidden terrain but Khazad hides them by default, pressing (h) will toggle showing them.  A number of other toggle options have been made available for your convenience.
+Textures are now fully modable, two files Textures.xml and Materials.xml allow the end-users to set any texture for any of DwarfFortres Tile number of which their are hundreds, I've tried to get most common tiles on the list but their will certainly be gaps ware you will see the Default NEHE texture, please report these or even better edit the XML files and post them so I can include the changes.
 
-Stairs are not yet rendered and trees, bushes and boulders are flat textures on the ground, thanks again to Sinoth for use of these textures.  Art work under the Creative Commons licence could be used as replacements at a later date.
+The config.xml is largly unchanged, it allows the screen resolution to be altered and a few of the constants that determine how the camera is controlled to be tweeked, a full screen option is stil avaliable.  The file pathway for map saving and loading is set their as well.  
 
-Their is a debugging output showing the Frame rate and current triangles being rendered, feedback on what kind of rates people are getting with various types of hardware is appreciated along with cool screenshoots of your forts or screenshoots of buggy or undesireable behavior is welcome along with advice on ware the project should go.
+Extracted maps store underground hidden terrain but Khazad hides them by default, pressing (h) will toggle showing them.  Three new toggle options have been made available for your convenience, they are Underground toggle (u), SkyView (i) and Sunlit (o) and toggle based on designation flags in DF, unfotunatly DF has some very weird determinations for how it decides these states and weird looking results are common particularly with hill sides.
 
-Special Thanks to Davion for creating the offical Khazad Logo which is used for the first time in this version.
+Stairs are now rendered just like ramps and this will look weird untill a stair specific geometry is added.  Most internal ramps and staris look very weird right now and cause gaps in walls/hill sides etc etc. In addition Walls adjacent to tunnels are now given tops and sides so they are much easier to see from a top down perspective.
+
+A top-down DwarfFortress like display angle is now available either by manualy tilting the camera to vertical or by pressing (v) to go into and lock the camera to vertical, pressing (v) again will unlock the camera and allow you to tilt normaly again, all other camera controls remain the same in vertical mode.
+
+A new Exploded setting is now available, this simply adds vertical space between the levels allowing 'pancake' levels to be viewed simultaniously, press (Page Down) to add space and 'explode' or (Page Up) to 'compress'.  Orienting yourself can be a bit hard in this mode so be warned.
+
+Screenshoots of buggy or undesireable behavior is welcome along with advice on ware the project should go.  A number of people are getting buggy behavior and I'm hoping to find more testers to help track down the source of these bugs, if someone with a reproducable bug can programm as well and try to track down a bug and its fix on their system that would be greatly appresiated.
+
 
 Controls:
 
@@ -30,12 +36,23 @@ Right: Rotates camera view clockwise in small increments
 d: Dumps memory from a running DwarfFortress game (this will update the current map if one is already active)
 w: Writes current map to file
 l: Loads an extracted map from file (also updates the current map if already active)
-
-NEW OPTIONS! 
-
 f: toggles the wirefram around the whole of the map and a single cube wireframe at the center of the view, on by default
 h: toggles the viewing of hidden features such as underground pools, off by default
 s: toggles shaddowed viewing mode, in shaddow mode the vertical depth of terrain is shown with by darkening it, in un-shaddowed mode all terrain is fully lite, off by default
+
+NEW OPTIONS! 
+
+Exploded Slices - This option adds vertical space between levels allow you to see 'Inside' multiple levels of a fortress at the same time
+
+PageDown:  Incresses space between levels (will roll over if raised above 255)
+PageUp: Decresses space between levels (can not go bellow 1)
+
+v: Move into and lock vertical mode or unlock from vertical mode
+b: Toggles Debugging output which now includes TileType, Designation and Occupancy flags extracted from DF
+
+u: Toggles SubTerranean rendering
+i: Toggles SkyView rendering
+o: Toggles SunLit rendering
 
 Mouse controls:
 
@@ -48,18 +65,19 @@ Right Button down + vertical mouse movement: advances/retreats camera view
 Left Button down + horizontal mouse movement: Rotates camera view clockwise/counterclockwise
 Left Button down + vertical mouse movement: Tilts camera view vertical/near-horizontal
 
+ScrollwheelUp + SHIFT: Moves view up/down one level (same as Up/Down)
+ScroolWheelDown + SPACEBAR: Increase/decresse number of viewing levels (same as Insert/Delete)
+
+The window will scroll if the mouse is brought to within 10 pixels of the window edge
+
 Known Issues:
 
 - Expanding the window after the game has started will create a 'dead zone' outside of the original area of the screen ware mouse inputs will not work even though the mouse is movable and displays.  Using Fullscreen mode or just setting the Config for a very large screen area is the best work-around for now.
 
 - Occational gaps in the map occure ware their should be some triangles rendered particularly on slopes ware it is nearly impossible to figure out what should fill jumbles of slope tiles but also in other odd in-explicable places usualy water.
 
-- Memory footprint is currently huge, around 25 MB without even loading a map and in excess of a 100 with a map, trying to load maps in excess of 8x8 might start to make your system crawl, experiment to see what your systems limits are.
-
-- Shaddowed mode puts a heavier load on the Rendering system when changing viewing levels or moving the view up or down due to the re-shadding that takes place, for maximum speed use unshadded mode.
+- Memory footprint is currently huge, around 30 MB without even loading a map and in excess of a 500 with a map, trying to load maps in excess of 8x8 might start to make your system crawl, experiment to see what your systems limits are.
 
 - CPU Hog, Khazad is capped at 60 FPS using SDL_Delay but on many systems it will still use upwards of 99% of the processor when viewing a large area and might put too much stress on your system or video card, feedback is apresiated.  The FPS readout is based on the time that rendering itself took and frequently exceeds 60, when ever it dose your processer should go below 100% utilization.  At this point the readout is more theoretical then actual it represents the FPS you would be creating if Khazad weren't throttling back.
 
-- Non-natural water luck as in a channel or Cistern or pump tower is not displayed, only naturally occuring murky pools, streams and rivers.  Lava is not rendered at all.
-
-- Textures may me mis-assigned and all will be very very ugly untill artist make something for me to use.
+- Textures may be missing from the Material assignment system, fortunatly this is modable and anyone can edit their Textrue and Material xml files to re-assign any texture combination

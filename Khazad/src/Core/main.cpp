@@ -150,7 +150,6 @@ int main(int argv, char** argc)
     //InputTimer->Start();
     GameTimer->Start();
     RenderTimer->Start();
-    UITimer->Start();
 
 	SCREEN->WipeScreen();
 
@@ -168,45 +167,48 @@ int main(int argv, char** argc)
             SCREEN->Render();
         RenderTimer->Pause();
 
-        //UITimer->Unpause();
-        //UI->Draw();
 
         if(MAP->Initialized)
         {
             SCREEN->setDrawingFlat();  // Go into HUD-drawing mode
 
-            SDL_Rect position;
-            position.x = 10;
-            position.y = SCREEN->getHight() - 40;
+            if(SCREEN->isDebuggingDraw())
+            {
+                SDL_Rect position;
+                position.x = 10;
+                position.y = SCREEN->getHight() - 40;
 
-            sprintf (buffer, "FrameRate %i", FrameRate);
-            SCREEN->RenderText(buffer, 0, WHITE, &position);
+                sprintf (buffer, "FrameRate %i", FrameRate);
+                SCREEN->RenderText(buffer, 0, WHITE, &position);
 
-            position.y -= 40;
+                position.y -= 40;
 
-            sprintf (buffer, "Triangles %i", SCREEN->getTriangleCount());
-            SCREEN->RenderText(buffer, 0, WHITE, &position);
+                sprintf (buffer, "Triangles %i", SCREEN->getTriangleCount());
+                SCREEN->RenderText(buffer, 0, WHITE, &position);
 
-            //position.y -= 40;
-            //sprintf (buffer, "GameTime %3.2f", GameTimer->getAverage());
-            //FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
+                //position.y -= 40;
+                //sprintf (buffer, "GameTime %3.2f", GameTimer->getAverage());
+                //FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
 
-            //position.y -= 40;
-            //sprintf (buffer, "RenderTime %3.2f", RenderTimer->getAverage());
-            //FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
+                //position.y -= 40;
+                //sprintf (buffer, "RenderTime %3.2f", RenderTimer->getAverage());
+                //FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
+                SCREEN->PrintDebugging();
+            }
+            else
+            {
+                SDL_Rect position;
+                position.x = 10;
+                position.y = SCREEN->getHight() - 40;
 
-            //position.y -= 40;
-            //sprintf (buffer, "UITime %3.2f", UITimer->getAverage());
-            //FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
+                sprintf (buffer, "KHAZAD");
+                SCREEN->RenderText(buffer, 0, WHITE, &position);
+            }
 
-            //SCREEN->setDrawing3D(); // Come out of HUD mode
-
-            SCREEN->PrintDebugging();
+            SCREEN->setDrawing3D(); // Come out of HUD mode
         }
 
         SCREEN->Flip();
-
-		//UITimer->Pause();
 
 
 		FPSTimer->Pause(); // FrameRate Captures whole loop

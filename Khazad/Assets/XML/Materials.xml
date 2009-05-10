@@ -170,6 +170,7 @@
 			<Tile Int="58"/>
 			<Tile Int="59"/>
 			<Tile Int="60"/>
+			<Tile Int="82"/>
 			
 			<Tile Int="240"/>
 			
@@ -222,6 +223,26 @@
 			<Tile Int="38"/>
 		
 			<Tile Int="80"/>
+			<Tile Int="269"/>
+			<Tile Int="270"/>
+			<Tile Int="271"/>
+			<Tile Int="272"/>
+			<Tile Int="273"/>
+			<Tile Int="274"/>
+			<Tile Int="275"/>
+			<Tile Int="276"/>
+			<Tile Int="277"/>
+			<Tile Int="278"/>
+			<Tile Int="279"/>
+			<Tile Int="280"/>
+			<Tile Int="281"/>
+			<Tile Int="282"/>
+			<Tile Int="283"/>
+			<Tile Int="284"/>
+			<Tile Int="285"/>
+			<Tile Int="286"/>
+			<Tile Int="287"/>
+			
 			<Tile Int="328"/>
 			<Tile Int="329"/>
 			<Tile Int="330"/>

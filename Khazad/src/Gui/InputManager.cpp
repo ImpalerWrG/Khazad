@@ -154,13 +154,17 @@ bool InputManager::HandleInput()
 					}
                     if (event.key.keysym.sym == SDLK_v)
 					{
-					    SCREEN->MainCamera->setCameraOrientation(CAMERA_DOWN);
+					    SCREEN->MainCamera->setVerticalMode(!SCREEN->MainCamera->isVerticalMode());
 					}
-                    if (event.key.keysym.sym == SDLK_PAGEUP)
+                    if (event.key.keysym.sym == SDLK_b)
+					{
+					    SCREEN->setDebuggingDraw(!SCREEN->isDebuggingDraw());
+					}
+                    if (event.key.keysym.sym == SDLK_PAGEDOWN)
 					{
 					    SCREEN->MainCamera->changeLevelSeperation(1);
 					}
-                    if (event.key.keysym.sym == SDLK_PAGEDOWN)
+                    if (event.key.keysym.sym == SDLK_PAGEUP)
 					{
 					    SCREEN->MainCamera->changeLevelSeperation(-1);
 					}

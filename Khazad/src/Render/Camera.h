@@ -22,6 +22,7 @@ protected:
 
 	bool SlidingMode;
 	bool ZoomingMode;
+	bool VerticalMode;
 
 	CameraOrientation Orientation;
 
@@ -60,6 +61,9 @@ public:
     bool InSlice(float Zlevel);
     float getShading(float Zlevel);
 
+
+	bool isVerticalMode()                   { return VerticalMode;}
+    void setVerticalMode(bool NewValue);
 
 	/**
 	* This method is responsible for capturing our current view

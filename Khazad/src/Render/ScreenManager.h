@@ -26,6 +26,9 @@ public:
 	~ScreenManager();
 	bool Init();
 
+	bool isDebuggingDraw()                      { return DebuggingDraw; }
+	void setDebuggingDraw(bool NewValue)        { DebuggingDraw = NewValue; }
+
 	bool isFrameDraw()                  { return FrameDraw; }
 	void setFrameDraw(bool NewValue)    { FrameDraw = NewValue; }
 
@@ -116,6 +119,7 @@ protected:
     bool SunLitDraw;
 
 	bool FlatDraw;
+	bool DebuggingDraw;
 
 	std::vector<GLuint*> DrawList;
 

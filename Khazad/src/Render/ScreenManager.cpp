@@ -28,13 +28,14 @@ ScreenManager::ScreenManager()
 	FullScreen = false;
 
 	FrameDraw = true;
-	ShadedDraw = false;
+	ShadedDraw = true;
 	HiddenDraw = false;
     SubTerranianDraw = true;
     SkyViewDraw = true;
     SunLitDraw = true;
 
 	FlatDraw = false;
+	DebuggingDraw = true;
 
 	LogoSurface = NULL;
 }
@@ -329,12 +330,14 @@ bool ScreenManager::Render()
         RenderTextCentered("KHAZAD", 0, WHITE, +40);
 
         RenderTextCentered("Press (d) to Dump memory from Dwarf Fortress,", 0, WHITE, -10);
-        RenderTextCentered("or (l) to load from File, (w) write too file", 0, WHITE, -40);
+        RenderTextCentered("or (l) to load from File, (w) for writing too file", 0, WHITE, -40);
 
-        RenderTextCentered("Press (s) to toggle depth shaddowing,", 0, WHITE, -100);
-        RenderTextCentered("Press (h) to reveal hidden features,", 0, WHITE, -130);
-        RenderTextCentered("Press (f) to toggle wireframe,", 0, WHITE, -160);
-        RenderTextCentered("Press (c) to center the view,", 0, WHITE, -190);
+        RenderTextCentered("Press (b) to toggle Debugging Information,", 0, WHITE, -100);
+        RenderTextCentered("Press (s) to toggle depth shaddowing,", 0, WHITE, -130);
+        RenderTextCentered("Press (h) to reveal hidden features,", 0, WHITE, -160);
+        RenderTextCentered("Press (f) to toggle wireframe,", 0, WHITE, -190);
+        RenderTextCentered("Press (c) to center the view,", 0, WHITE, -220);
+        RenderTextCentered("Press (v) to toggle Vertical Lock", 0, WHITE, -250);
 
         return false;
     }
@@ -368,16 +371,13 @@ bool ScreenManager::Render()
 	GreenPickingValue = 0;
 	BluePickingValue = 0;
 
-
     glMatrixMode(GL_TEXTURE);
     glLoadIdentity();
     glScalef(1.0 / (float) TEXTURE->getAggragateTextureSize(), 1.0 / (float) TEXTURE->getAggragateTextureSize(), 1.0);
     glBindTexture(GL_TEXTURE_2D, TEXTURE->getAggragateTexture());
 
-
 	glMatrixMode(GL_MODELVIEW);
     CameraOrientation CurrentOrientation = MainCamera->getOrientation();
-    glColor3f(1.0, 1.0, 1.0);
 
 	for(Uint16 Zlevel = 0; Zlevel < MAP->getCellSizeZ(); Zlevel++)
 	{

@@ -43,7 +43,9 @@ public:
     void setAllFacesVisiblity(bool NewValue);
     void DeleteFace(Facet Type);
 
-    bool InitAllFaces();
+    bool InitFacesOpen();
+    bool InitFacesSolid();
+
     void InitConstructedFace(Facet FacetType, Uint16 MaterialType);
     bool Open();
 

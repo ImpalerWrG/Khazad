@@ -11,6 +11,8 @@ Camera::Camera()
 {
 	SlidingMode = false;
 	ZoomingMode = false;
+	VerticalMode = false;
+
 	IsoMode = false;
 	AllFacesDrawing = false;
 
@@ -380,6 +382,11 @@ void Camera::setCameraOrientation(CameraOrientation NewOrientation)
 		return;
 	}
 
+	if (VerticalMode && NewOrientation != CAMERA_DOWN)
+	{
+	    return;
+	}
+
 	Orientation = NewOrientation;
 
 	switch(Orientation)
@@ -521,6 +528,11 @@ void Camera::TiltView(float Movement, float Min, float Max)
 {
     float Distance = 0;
     Vector3 LookVector;
+
+    if(VerticalMode)
+    {
+        return;
+    }
 
     if((Orientation == CAMERA_DOWN) && (Movement < 0)) // Break out of vertical using Up Vector
     {
@@ -679,6 +691,16 @@ void Camera::SetDefaultView()
     ViewLevels = 5;
 
 	generateViewFrustum();
+}
+
+void Camera::setVerticalMode(bool NewValue)
+{
+    VerticalMode = NewValue;
+
+    if(VerticalMode)
+    {
+        setCameraOrientation(CAMERA_DOWN);
+    }
 }
 
 void Camera::CenterView()
