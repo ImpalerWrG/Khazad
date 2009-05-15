@@ -74,7 +74,7 @@ void Camera::setIsometricProj( float Width, float Hight, float Depth )
 	generateViewFrustum();
 }
 
-void Camera::setViewMatrix( Vector3& vecEye, Vector3& vecLookAt, Vector3& vecUp)
+void Camera::setViewMatrix(Vector3& vecEye, Vector3& vecLookAt, Vector3& vecUp)
 {
 	EyePosition = vecEye;
 	UpVector = vecUp;
@@ -91,7 +91,7 @@ void Camera::UpdateView()
 		glScalef(IsoScalar, IsoScalar, IsoScalar);
 	}
 
-	gluLookAt( EyePosition.x, EyePosition.y, EyePosition.z, LookPosition.x, LookPosition.y, LookPosition.z, UpVector.x, UpVector.y, UpVector.z );
+	gluLookAt(EyePosition.x, EyePosition.y, EyePosition.z, LookPosition.x, LookPosition.y, LookPosition.z, UpVector.x, UpVector.y, UpVector.z);
 	generateViewFrustum();
 }
 
@@ -132,51 +132,6 @@ void Camera::onMouseEvent(SDL_Event* Event)
 
     float DeltaX = (float)RelativeX;
     float DeltaY = (float)RelativeY;
-
-	if (Event->type == SDL_KEYDOWN)
-	{
-		switch(Event->key.keysym.sym)
-		{
-
-		case SDLK_F1:
-			{
-				SCREEN->ToggleFullScreen();  //TODO dose not work??
-				break;
-			}
-		case SDLK_RIGHT:
-			{
-				OrbitView(CONFIG->OrbitSpeed() / 100.0);
-				break;
-			}
-		case SDLK_LEFT:
-			{
-				OrbitView(CONFIG->OrbitSpeed() / -100.0);
-				break;
-			}
-		case SDLK_UP:
-			{
-				MoveViewVertical(1.0);
-				break;
-			}
-		case SDLK_DOWN:
-			{
-				MoveViewVertical(-1.0);
-				break;
-			}
-		case SDLK_INSERT:
-			{
-				ChangeViewLevels(1);
-				break;
-			}
-		case SDLK_DELETE:
-			{
-				ChangeViewLevels(-1);
-				break;
-			}
-        default:
-            break;
-		}
-	}
 
 	if (Event->type == SDL_MOUSEBUTTONDOWN)
 	{
@@ -649,6 +604,19 @@ void Camera::MoveViewVertical(float Z)
 	generateViewFrustum();
 }
 
+void Camera::setViewHight(Sint32 ZLevel)
+{
+    if(ZLevel != LookPosition.z)
+    {
+        float Difference = EyePosition.z - LookPosition.z;
+
+        LookPosition.z = ZLevel;
+        EyePosition.z = ZLevel + Difference;
+
+        generateViewFrustum();
+    }
+}
+
 void Camera::ChangeViewLevels(Sint32 Change)
 {
     if (Change != 0)
@@ -671,6 +639,11 @@ void Camera::changeLevelSeperation(Sint8 Change)
     {
         LevelSeperation = 1;
     }
+}
+
+void Camera::changeViewTop(Sint16 Change)
+{
+    ViewTop += Change;
 }
 
 void Camera::SetDefaultView()

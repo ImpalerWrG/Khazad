@@ -379,13 +379,16 @@ bool ScreenManager::Render()
 	glMatrixMode(GL_MODELVIEW);
     CameraOrientation CurrentOrientation = MainCamera->getOrientation();
 
+
 	for(Uint16 Zlevel = 0; Zlevel < MAP->getCellSizeZ(); Zlevel++)
 	{
         glPushMatrix();
         float ZTranslate = MainCamera->LookZ() - ((MainCamera->LookZ() - Zlevel) * MainCamera->getLevelSeperation());
-        glTranslatef(0.0 , 0.0, ZTranslate);
+        glTranslatef(0.0, 0.0, ZTranslate);
 
-		if (MainCamera->InSlice(Zlevel))
+        glBegin(GL_TRIANGLES);
+
+		if(MainCamera->InSlice(Zlevel))
 		{
             float Shading = 1.0;
             if(ShadedDraw)
@@ -393,9 +396,9 @@ bool ScreenManager::Render()
                 Shading = MainCamera->getShading(Zlevel);
             }
 
-            for (Uint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
+            for(Uint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
             {
-                for (Uint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
+                for(Uint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
                 {
                     Cell* LoopCell = MAP->getCell(SizeX, SizeY, Zlevel);
 
@@ -430,10 +433,10 @@ bool ScreenManager::Render()
                 }
             }
 		}
+        glEnd();
 
 		glPopMatrix();
 	}
-
 
 /*
 	for (Uint32 i = 0; i < GAME->ActorList.size(); i++)
@@ -464,12 +467,9 @@ void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, CameraO
     }
         TriangleCounter = 0;  // Reset Counter and Track Triangle count
 
-        glBegin(GL_TRIANGLES);
-            TargetCell->Draw(Orientation, HiddenDraw, SubTerranianDraw, SkyViewDraw, SunLitDraw);
+        TargetCell->Draw(Orientation, HiddenDraw, SubTerranianDraw, SkyViewDraw, SunLitDraw);
 
-            glColor3f(1.0, 1.0, 1.0);
-
-        glEnd();
+        glColor3f(1.0, 1.0, 1.0);
 
     glEndList();
 

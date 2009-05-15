@@ -16,19 +16,20 @@ public:
 
     gcn::Gui* GuiChanMainObject;
     gcn::SDLInput* Input;
-    //gcn::SDLGraphics* GraphicsImplementation;
     gcn::OpenGLGraphics* GraphicsImplementation;
 
     gcn::Container* top;
     gcn::ImageFont* font;
     gcn::Label* label;
 
+    bool ProcessEvent(SDL_Event event);
     bool Draw();
 
 protected:
 
 
 };
+
 
 #define UI (Ui::GetInstance())
 #define GRAPHICS (Ui::GetInstance()->GraphicsImplementation)

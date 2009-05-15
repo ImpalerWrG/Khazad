@@ -27,6 +27,7 @@ protected:
 	CameraOrientation Orientation;
 
 	Uint8 ViewLevels;
+	Uint16 ViewTop;
 	Uint8 LevelSeperation;
 
 	float ViewWidth, ViewHight, ViewDepth;
@@ -51,6 +52,10 @@ public:
 
 	Uint8 getViewLevels()               { return ViewLevels; }
 	Uint8 getLevelSeperation()          { return LevelSeperation; }
+    Uint16 getViewTop()                  { return ViewTop; }
+
+    void changeViewTop(Sint16 Change);
+
 	void changeLevelSeperation(Sint8 Change);
 
 	CameraOrientation getOrientation()  { return Orientation; }
@@ -156,6 +161,8 @@ public:
 	void MoveViewHorizontal(float X, float Y);
 
 	void MoveViewVertical(float Z);
+
+    void setViewHight(Sint32 Change);
 
 	/**
 	* ChangeViewLevels modifies the number of z levels that will be rendered

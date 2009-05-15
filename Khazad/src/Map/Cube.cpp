@@ -577,7 +577,7 @@ bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslat
             }
 	    }
 
-	    if(true) // Add option here
+	    if(false) // Add option here
 	    {
             if(Orientation == CAMERA_DOWN)
             {

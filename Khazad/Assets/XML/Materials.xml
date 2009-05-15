@@ -198,7 +198,13 @@
 			<Tile Int="438"/>
 			<Tile Int="439"/>
 			<Tile Int="440"/>
-		</TileValues>
+
+			<Tile Int="441"/>
+			<Tile Int="442"/>
+			<Tile Int="443"/>
+			<Tile Int="444"/>
+
+			</TileValues>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_FEATURE_STONE_FLOOR"/>
@@ -208,10 +214,6 @@
 			<Tile Int="62"/>
 			<Tile Int="63"/>
 		
-			<Tile Int="441"/>
-			<Tile Int="442"/>
-			<Tile Int="443"/>
-			<Tile Int="444"/>
 		</TileValues>
 	</Material>
 	<Material>

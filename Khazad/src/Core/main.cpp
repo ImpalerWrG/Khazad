@@ -142,12 +142,10 @@ int main(int argv, char** argc)
 	Timer* GameTimer = new Timer(20);
 	Timer* UITimer = new Timer(20);
 	Timer* RenderTimer = new Timer(20);
-    //Timer* InputTimer = new Timer(20);
 
 	Uint8 FrameCounter = 0;
 	Uint32 FrameRate = 0;
 
-    //InputTimer->Start();
     GameTimer->Start();
     RenderTimer->Start();
 
@@ -167,9 +165,10 @@ int main(int argv, char** argc)
             SCREEN->Render();
         RenderTimer->Pause();
 
-
         if(MAP->Initialized)
         {
+            UI->Draw();
+
             SCREEN->setDrawingFlat();  // Go into HUD-drawing mode
 
             if(SCREEN->isDebuggingDraw())
@@ -186,13 +185,6 @@ int main(int argv, char** argc)
                 sprintf (buffer, "Triangles %i", SCREEN->getTriangleCount());
                 SCREEN->RenderText(buffer, 0, WHITE, &position);
 
-                //position.y -= 40;
-                //sprintf (buffer, "GameTime %3.2f", GameTimer->getAverage());
-                //FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
-
-                //position.y -= 40;
-                //sprintf (buffer, "RenderTime %3.2f", RenderTimer->getAverage());
-                //FONT->RenderText(buffer, FONT->FontLibrary[0], WHITE, &position);
                 SCREEN->PrintDebugging();
             }
             else
@@ -209,7 +201,6 @@ int main(int argv, char** argc)
         }
 
         SCREEN->Flip();
-
 
 		FPSTimer->Pause(); // FrameRate Captures whole loop
 
