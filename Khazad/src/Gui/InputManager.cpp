@@ -36,8 +36,12 @@ bool InputManager::HandleInput()
 
 	while(SDL_PollEvent(&event)) // Poll events
 	{
+        Sint32 RelativeX = 0;
+        Sint32 RelativeY = 0;
+        Uint8 MouseButtonState = SDL_GetRelativeMouseState(&RelativeX, &RelativeY);
+
         // Pass events into the GUI, if they are consumed their skip other checks
-		if(UI->ProcessEvent(event))
+		if(UI->ProcessEvent(event, RelativeX, RelativeY))
 		{
 		    break;
 		}
@@ -64,12 +68,12 @@ bool InputManager::HandleInput()
                     }
                     case SDLK_RIGHT:
                     {
-                        SCREEN->MainCamera->OrbitView(CONFIG->OrbitSpeed() / 100.0);
+                        SCREEN->MainCamera->OrbitView(CONFIG->OrbitSpeed() / 1000.0);
                         break;
                     }
                     case SDLK_LEFT:
                     {
-                        SCREEN->MainCamera->OrbitView(CONFIG->OrbitSpeed() / -100.0);
+                        SCREEN->MainCamera->OrbitView(CONFIG->OrbitSpeed() / -1000.0);
                         break;
                     }
                     case SDLK_UP:
@@ -172,46 +176,57 @@ bool InputManager::HandleInput()
 
 
 					    EXTRACT->writeMap(CONFIG->SavePath());
+					    break;
 					}
                     case SDLK_f:
 					{
 					    SCREEN->setFrameDraw(!SCREEN->isFrameDraw());
+					    break;
 					}
                     case SDLK_s:
 					{
 					    SCREEN->setShadedDraw(!SCREEN->isShadedDraw());
+					    break;
 					}
                     case SDLK_h:
 					{
 					    SCREEN->setHiddenDraw(!SCREEN->isHiddenDraw());
+					    break;
 					}
                     case SDLK_u:
 					{
 					    SCREEN->setSubTerranianDraw(!SCREEN->isSubTerranianDraw());
+					    break;
 					}
                     case SDLK_i:
 					{
 					    SCREEN->setSkyViewDraw(!SCREEN->isSkyViewDraw());
+					    break;
 					}
                     case SDLK_o:
 					{
 					    SCREEN->setSunLitDraw(!SCREEN->isSunLitDraw());
+					    break;
 					}
                     case SDLK_v:
 					{
 					    SCREEN->MainCamera->setVerticalMode(!SCREEN->MainCamera->isVerticalMode());
+					    break;
 					}
                     case SDLK_b:
 					{
 					    SCREEN->setDebuggingDraw(!SCREEN->isDebuggingDraw());
+					    break;
 					}
                     case SDLK_PAGEDOWN:
 					{
 					    SCREEN->MainCamera->changeLevelSeperation(1);
+					    break;
 					}
                     case SDLK_PAGEUP:
 					{
 					    SCREEN->MainCamera->changeLevelSeperation(-1);
+					    break;
 					}
 				}
 				break;
@@ -228,7 +243,7 @@ bool InputManager::HandleInput()
 		{
 			if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)
 			{
-				SCREEN->MainCamera->onMouseEvent(&event);
+				SCREEN->MainCamera->onMouseEvent(&event, RelativeX, RelativeY);
 				break;
 			}
 		}

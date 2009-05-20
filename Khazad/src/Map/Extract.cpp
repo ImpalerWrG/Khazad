@@ -1059,6 +1059,7 @@ bool Extractor::isOpenTerrain(int in)
         case 244: //ash3
         case 245: //ramp frozen liquid
         case 261: //furrowed soil [road?]
+        case 262: //Ice floor
         case 336: //stone floor 1 (raw stone)
         case 337: //stone floor 2 (raw stone)
         case 338: //stone floor 3 (raw stone)
@@ -1192,6 +1193,7 @@ bool Extractor::isFloorTerrain(int in)
         case 244: //ash3
         case 245: //ramp frozen liquid
         case 261: //furrowed soil [road?]
+        case 262: //Ice floor
         case 264: //Lava bottom of map
         case 336: //stone floor 1 (raw stone)
         case 337: //stone floor 2 (raw stone)

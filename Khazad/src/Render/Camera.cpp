@@ -99,7 +99,7 @@ void Camera::onMousePoll()
 {
     int RealX;
     int RealY;
-    Uint8 MouseState = SDL_GetMouseState(&RealX, &RealY);
+    Uint8 MouseButtonState = SDL_GetMouseState(&RealX, &RealY);
 
     if(RealX <= 10)
     {
@@ -120,15 +120,12 @@ void Camera::onMousePoll()
     }
 }
 
-void Camera::onMouseEvent(SDL_Event* Event)
+void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY)
 {
     Uint8* Keystate = SDL_GetKeyState(NULL);
 
-    int RelativeX, RelativeY;
-    Uint8 MouseButtonState = SDL_GetRelativeMouseState(&RelativeX, &RelativeY);
-
     int RealX, RealY;
-    Uint8 MouseState = SDL_GetMouseState(&RealX, &RealY);
+    Uint8 MouseButtonState = SDL_GetMouseState(&RealX, &RealY);
 
     float DeltaX = (float)RelativeX;
     float DeltaY = (float)RelativeY;
@@ -611,7 +608,7 @@ void Camera::setViewHight(Sint32 ZLevel)
         float Difference = EyePosition.z - LookPosition.z;
 
         LookPosition.z = ZLevel;
-        EyePosition.z = ZLevel + Difference;
+        EyePosition.z = LookPosition.z + Difference;
 
         generateViewFrustum();
     }
@@ -683,19 +680,25 @@ void Camera::CenterView()
         return;
     }
 
+    float DifferenceX = EyePosition.x - LookPosition.x;
+    float DifferenceY = EyePosition.y - LookPosition.y;
+    float DifferenceZ = EyePosition.z - LookPosition.z;
+
     LookPosition.x = MAP->getMapSizeX() / 2;
-	LookPosition.y = MAP->getMapSizeY() / 2;
-	LookPosition.z = MAP->getMapSizeZ() / 2;
+    LookPosition.y = MAP->getMapSizeY() / 2;
+    LookPosition.z = MAP->getMapSizeZ() / 2;
 
-	EyePosition.x = LookPosition.x + 1.0;
-	EyePosition.y = LookPosition.y + 1.0;
-	EyePosition.z = LookPosition.z + 1.0;
-
-	UpVector.x = EyePosition.x - LookPosition.x;
-	UpVector.y = EyePosition.y - LookPosition.y;
-	UpVector.z = 0.0;
+    EyePosition.x = LookPosition.x + DifferenceX;
+    EyePosition.y = LookPosition.y + DifferenceY;
+    EyePosition.z = LookPosition.z + DifferenceZ;
 
     IsoScalar = CONFIG->ZoomMax();
+
+    if(!Orientation == CAMERA_DOWN)
+    {
+        UpVector.x = EyePosition.x - LookPosition.x;
+        UpVector.y = EyePosition.y - LookPosition.y;
+    }
 
 	generateViewFrustum();
 }

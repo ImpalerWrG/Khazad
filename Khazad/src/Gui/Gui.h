@@ -18,16 +18,24 @@ public:
     gcn::SDLInput* Input;
     gcn::OpenGLGraphics* GraphicsImplementation;
 
-    gcn::Container* top;
     gcn::ImageFont* font;
     gcn::Label* label;
 
-    bool ProcessEvent(SDL_Event event);
+    bool ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY);
+    bool isWidgetCollision(gcn::Widget* TestWidget, Uint16 RealX, Uint16 RealY);
     bool Draw();
 
 protected:
 
+    void InitMainMenu();
+    void InitCameraControlMenu();
+    void InitDepthSlider();
 
+    gcn::Container* TopWidget;
+
+    gcn::Window* CameraControlWindow;
+    gcn::Window* MainMenuWindow;
+    gcn::Slider* DepthSlider;
 };
 
 

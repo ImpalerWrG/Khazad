@@ -131,6 +131,8 @@
 		<Texture label="TEXTURE_DIRT"/>
 		<TileValues>
 			<Tile Int="2"/>
+			<Tile Int="261"/>
+			<Tile Int="265"/>
 		</TileValues>
 	</Material>
 	<Material>
@@ -138,7 +140,6 @@
 		<Texture label="TEXTURE_SAND"/>
 		<TileValues>
 			<Tile Int="241"/>
-			<Tile Int="265"/>
 			<Tile Int="352"/>
 			<Tile Int="353"/>
 			<Tile Int="354"/>
@@ -366,7 +367,33 @@
 		<Name Label="MATERIAL_ICE"/>
 		<Texture label="TEXTURE_ICE"/>
 		<TileValues>
-			<Tile Int="-1"/>
+			<Tile Int="245"/>
+			<Tile Int="262"/>
+			<Tile Int="360"/>
+			<Tile Int="361"/>
+			<Tile Int="362"/>
+			<Tile Int="363"/>
+			<Tile Int="364"/>
+			
+			<Tile Int="450"/>
+			<Tile Int="451"/>
+			<Tile Int="452"/>
+			<Tile Int="453"/>
+			<Tile Int="454"/>
+			<Tile Int="455"/>
+			<Tile Int="456"/>
+			<Tile Int="457"/>
+			<Tile Int="458"/>
+			<Tile Int="459"/>
+			<Tile Int="460"/>
+			<Tile Int="461"/>
+			<Tile Int="462"/>
+			<Tile Int="463"/>
+			<Tile Int="464"/>
+			<Tile Int="465"/>
+			<Tile Int="466"/>
+			<Tile Int="467"/>
+			<Tile Int="468"/>
 		</TileValues>
 	</Material>
 	<Material>
