@@ -113,6 +113,17 @@ protected:
     unsigned int MapSizeY;
     unsigned int MapSizeZ;
 
+
+    int pe_offset;
+    int pe_timestamp;
+    int map_offset;
+    int x_count_offset;
+    int y_count_offset;
+    int z_count_offset;
+    int tile_type_offset;
+    int designation_offset;
+    int occupancy_offset;
+
 public:
 
     bool Init();
@@ -124,6 +135,7 @@ public:
     bool loadMap(char* FilePath);
     bool writeMap(char* FilePath);
     bool FreeMap();
+    bool setMemoryOffsets(HANDLE Handle);
 
     unsigned int getXBlocks()        { return x_blocks; }
     unsigned int getYBlocks()        { return y_blocks; }
@@ -133,7 +145,7 @@ public:
     int getDesignations(int x, int y, int z);
     int getOccupancies(int x, int y, int z);
 
-    int readMemoryFile();
+    int readMemoryFile(char* FilePath);
 
     int picktexture(int);
 

@@ -14,6 +14,9 @@ Extractor::Extractor()
 
 bool Extractor::Init()
 {
+    // Load the Know Memory offset data
+    readMemoryFile("Assets//Maps//memory.ini");
+
     return true;
 }
 
@@ -34,45 +37,13 @@ bool Extractor::dumpMemory()
     int buffer, map_loc;
 
     int temp_loc, temp_locx, temp_locy, temp_locz;
-    unsigned int current_mem = 0;
-    int pe_found;
 
     short int TemporaryTile;
     int TemporaryDesignation;
     int TemporaryOccupancy;
 
-    DWORD bytesRead = 0;
 
-    meminfo.push_back(memory_info());
-
-    sprintf(meminfo[0].version,"v0.28.181.40c");
-
-    meminfo[0].pe_timestamp        = (0x48AD802C);
-    meminfo[0].pe_timestamp_offset = (0x004000F8);
-    meminfo[0].map_offset          = (0x015C3D60);
-    meminfo[0].x_count_offset      = (0x015C3D78);
-    meminfo[0].y_count_offset      = (0x015C3D7C);
-    meminfo[0].z_count_offset      = (0x015C3D80);
-    meminfo[0].tile_type_offset    = (0x00000062);
-    meminfo[0].designation_offset  = (0x00000264);
-    meminfo[0].occupancy_offset    = (0x00000664);
-
-    int pe_offset = meminfo[0].pe_timestamp_offset;
-    int pe_timestamp = meminfo[0].pe_timestamp;
-    int map_offset = meminfo[0].map_offset;
-    int x_count_offset = meminfo[0].x_count_offset;
-    int y_count_offset = meminfo[0].y_count_offset;
-    int z_count_offset = meminfo[0].z_count_offset;
-    int tile_type_offset = meminfo[0].tile_type_offset;
-    int designation_offset = meminfo[0].tile_type_offset;
-    int occupancy_offset = meminfo[0].tile_type_offset;
-
-
-    for ( unsigned int i=1; i < meminfo.size(); i++ )
-    {
-        printf("ver: %s\n",meminfo[i].version);
-    }
-
+    // Attempt to Find Process
 	DFProcess = FindWindow(NULL,process_name);
 	if(!DFProcess)
 	{
@@ -80,6 +51,7 @@ bool Extractor::dumpMemory()
 		return 3;
     }
 
+    // And Create Handle
 	GetWindowThreadProcessId(DFProcess, &DFProcessID);
 	printf("Window Thread Process ID [%u] \n", (unsigned int)DFProcessID);
 	DFHandle = OpenProcess(PROCESS_ALL_ACCESS, 0, DFProcessID);
@@ -90,55 +62,20 @@ bool Extractor::dumpMemory()
 		return 2;
     }
 
-    //pe_timestamp
-    pe_found = 0;
-    ReadProcessMemory( DFHandle, (int*)(pe_offset), &buffer, sizeof(int), &bytesRead );
-    printf("pe_timestamp : 0x%.8X [0x%.8X]\n",buffer,pe_timestamp);
 
-    if ( pe_timestamp != buffer )
+    // See if this is a known Version of DF and if so get proper Memory Offsets
+    if(!setMemoryOffsets(DFHandle))
     {
-        readMemoryFile();
-        for (current_mem++; current_mem < meminfo.size() && !pe_found; current_mem++ )
-        {
-            printf("PE timestamps do not match for %s.  Trying next... ", meminfo[current_mem-1].version);
-            ReadProcessMemory( DFHandle, (int*)(meminfo[current_mem].pe_timestamp_offset), &buffer, sizeof(int), &bytesRead );
-
-            if ( meminfo[current_mem].pe_timestamp == buffer )
-            {
-                pe_found = true;
-                printf("found[%d].\nUsing version %s.\n", current_mem, meminfo[current_mem].version);
-            }
-            else
-            {
-                printf("no match.\n");
-            }
-        }
-
-        if ( !pe_found )
-        {
-            return 1;
-        }
-        else
-        {
-            current_mem--;
-            pe_offset = meminfo[current_mem].pe_timestamp_offset;
-            pe_timestamp = meminfo[current_mem].pe_timestamp;
-            map_offset = meminfo[current_mem].map_offset;
-            x_count_offset = meminfo[current_mem].x_count_offset;
-            y_count_offset = meminfo[current_mem].y_count_offset;
-            z_count_offset = meminfo[current_mem].z_count_offset;
-            tile_type_offset = meminfo[current_mem].tile_type_offset;
-            designation_offset = meminfo[current_mem].designation_offset;
-            occupancy_offset = meminfo[current_mem].occupancy_offset;
-        }
+        printf("No PE timestamp match found, Memory Dump Aborted\n");
+        return false;
     }
 
-    //map_loc
-    ReadProcessMemory( DFHandle, (int*)(map_offset), &map_loc, sizeof(int), &bytesRead );
-    printf("map data : 0x%.8X\n",map_loc);
 
+    // Read Map Data Blocks
+    ReadProcessMemory(DFHandle, (int*)(map_offset), &map_loc, sizeof(int), NULL);
+    printf("map data : 0x%.8X\n", map_loc);
 
-    if ( !map_loc )
+    if (!map_loc)
     {
         printf("Could not find DF map information in memory...\n");
         return 1;
@@ -146,15 +83,15 @@ bool Extractor::dumpMemory()
     else
     {
         // x_blocks count
-        ReadProcessMemory( DFHandle, (int*)(x_count_offset), &x_blocks, sizeof(int), &bytesRead );
+        ReadProcessMemory(DFHandle, (int*)(x_count_offset), &x_blocks, sizeof(int), NULL);
         printf("x_blocks tiles: %u (%d)\n", BlockSize * x_blocks, x_blocks);
 
         // y_blocks count
-        ReadProcessMemory( DFHandle, (int*)(y_count_offset), &y_blocks, sizeof(int), &bytesRead );
+        ReadProcessMemory(DFHandle, (int*)(y_count_offset), &y_blocks, sizeof(int), NULL);
         printf("y_blocks tiles: %u (%d)\n", BlockSize * y_blocks, y_blocks);
 
         // z_levels count
-        ReadProcessMemory( DFHandle, (int*)(z_count_offset), &z_levels, sizeof(int), &bytesRead );
+        ReadProcessMemory(DFHandle, (int*)(z_count_offset), &z_levels, sizeof(int), NULL);
         printf("z_levels height: %u\n\n", z_levels);
 
 
@@ -195,15 +132,15 @@ bool Extractor::dumpMemory()
         for ( int x = 0; x < x_blocks; x++ )
         {
             temp_locx = map_loc + ( 4 * x );
-            ReadProcessMemory( DFHandle, (int*)(temp_locx), &temp_locy, sizeof(int), &bytesRead );
+            ReadProcessMemory( DFHandle, (int*)(temp_locx), &temp_locy, sizeof(int), NULL);
 
             for ( int y = 0; y < y_blocks; y++ )
             {
-                ReadProcessMemory( DFHandle, (int*)(temp_locy), &temp_locz, sizeof(int), &bytesRead );
+                ReadProcessMemory( DFHandle, (int*)(temp_locy), &temp_locz, sizeof(int), NULL);
 
                 for ( int z = 0; z < z_levels; z++ )
                 {
-                    ReadProcessMemory( DFHandle, (int*)(temp_locz), &temp_loc, sizeof(int), &bytesRead );
+                    ReadProcessMemory( DFHandle, (int*)(temp_locz), &temp_loc, sizeof(int), NULL);
                     Blocks[x][y][z] = temp_loc;
                     temp_locz += 4;
                 }
@@ -224,13 +161,13 @@ bool Extractor::dumpMemory()
                         {
                             if(Blocks[x][y][z])
                             {
-                                ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + tile_type_offset + (2 * BlockY + (BlockX * BlockSize * 2))), &TemporaryTile, sizeof(short int), &bytesRead );
+                                ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + tile_type_offset + (2 * BlockY + (BlockX * BlockSize * 2))), &TemporaryTile, sizeof(short int), NULL);
                                 Tiles[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = TemporaryTile;
 
-                                ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + designation_offset + (4 * BlockY + (BlockX * BlockSize * 4))), &TemporaryDesignation, sizeof(int), &bytesRead );
+                                ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + designation_offset + (4 * BlockY + (BlockX * BlockSize * 4))), &TemporaryDesignation, sizeof(int), NULL);
                                 Designations[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = TemporaryDesignation;
 
-                                ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + occupancy_offset + (4 * BlockY + (BlockX * BlockSize * 4))), &TemporaryOccupancy, sizeof(int), &bytesRead );
+                                ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + occupancy_offset + (4 * BlockY + (BlockX * BlockSize * 4))), &TemporaryOccupancy, sizeof(int), NULL);
                                 Ocupancy[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = TemporaryOccupancy;
                             }
                             else
@@ -249,6 +186,38 @@ bool Extractor::dumpMemory()
     }
 
     return 0;
+}
+
+bool Extractor::setMemoryOffsets(HANDLE DFHandle)
+{
+    int buffer;
+
+    for (unsigned int current_mem = 0; current_mem < meminfo.size(); current_mem++ )
+    {
+        pe_offset = meminfo[current_mem].pe_timestamp_offset;
+        pe_timestamp = meminfo[current_mem].pe_timestamp;
+        map_offset = meminfo[current_mem].map_offset;
+        x_count_offset = meminfo[current_mem].x_count_offset;
+        y_count_offset = meminfo[current_mem].y_count_offset;
+        z_count_offset = meminfo[current_mem].z_count_offset;
+        tile_type_offset = meminfo[current_mem].tile_type_offset;
+        designation_offset = meminfo[current_mem].designation_offset;
+        occupancy_offset = meminfo[current_mem].occupancy_offset;
+
+
+        ReadProcessMemory(DFHandle, (int*)(meminfo[current_mem].pe_timestamp_offset), &buffer, sizeof(int), NULL);
+
+        if (meminfo[current_mem].pe_timestamp == buffer)
+        {
+            printf("Match found! Using version %s.\n", meminfo[current_mem].version);
+            return true;
+        }
+        else
+        {
+            printf("PE timestamps do not match version %s.", meminfo[current_mem].version);
+        }
+    }
+    return false;
 }
 
 bool Extractor::writeMap(char* FilePath)
@@ -417,7 +386,7 @@ bool Extractor::FreeMap()
     return true;
 }
 
-int Extractor::readMemoryFile()
+int Extractor::readMemoryFile(char* FilePath)
 {
     char tempString[100];
     char tempString2[100];
@@ -425,10 +394,10 @@ int Extractor::readMemoryFile()
     memory_info temp_meminfo;
     FILE *infile;
 
-
-    if ((infile = fopen("Assets//Maps//memory.ini", "r")) == NULL)
+    printf("Opening Memory File: %s\n", FilePath);
+    if ((infile = fopen(FilePath, "r")) == NULL)
     {
-        fprintf(stderr, "Cannot open %s for read\n", "memory.ini");
+        fprintf(stderr, "Cannot open %s for read\n", FilePath);
         return -1;
     }
 
@@ -468,6 +437,9 @@ int Extractor::readMemoryFile()
                 }
                 fgets(tempString, 100, infile);
             }
+
+            printf("Version Data Loaded: %s\n", temp_meminfo.version);
+
             meminfo.push_back(temp_meminfo);
         }
     }
