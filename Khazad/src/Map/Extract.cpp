@@ -2,7 +2,7 @@
 
 #include <Extract.h>
 //#include <stdafx.h>
-
+#include <winnt.h>
 
 DECLARE_SINGLETON(Extractor)
 
@@ -190,7 +190,16 @@ bool Extractor::dumpMemory()
 
 bool Extractor::setMemoryOffsets(HANDLE DFHandle)
 {
-    int buffer;
+    int Base = 0x400000;
+
+    // New Method
+    int TempOffset;
+    ReadProcessMemory(DFHandle, (int*) (Base + 60), &TempOffset, sizeof(int), NULL);
+
+    int TimeStamp;
+    ReadProcessMemory(DFHandle, (int*) (Base + TempOffset + 8), &TimeStamp, sizeof(int), NULL);
+
+    printf("TimeStampFound [%x] at Offset [%x].\n", TimeStamp, Base + TempOffset + 8);
 
     for (unsigned int current_mem = 0; current_mem < meminfo.size(); current_mem++ )
     {
@@ -204,17 +213,18 @@ bool Extractor::setMemoryOffsets(HANDLE DFHandle)
         designation_offset = meminfo[current_mem].designation_offset;
         occupancy_offset = meminfo[current_mem].occupancy_offset;
 
+        // Old Method
+        int OldTimeStamp;
+        ReadProcessMemory(DFHandle, (int*) pe_offset, &OldTimeStamp, sizeof(int), NULL);
 
-        ReadProcessMemory(DFHandle, (int*)(meminfo[current_mem].pe_timestamp_offset), &buffer, sizeof(int), NULL);
-
-        if (meminfo[current_mem].pe_timestamp == buffer)
+        if (pe_timestamp == TimeStamp || pe_timestamp == OldTimeStamp)
         {
             printf("Match found! Using version %s.\n", meminfo[current_mem].version);
             return true;
         }
         else
         {
-            printf("PE timestamps do not match version %s.", meminfo[current_mem].version);
+            printf("PE timestamps do not match version %s.\n", meminfo[current_mem].version);
         }
     }
     return false;
@@ -230,7 +240,7 @@ bool Extractor::writeMap(char* FilePath)
     FILE *SaveFile;
     SaveFile = fopen(FilePath,"wb");
 
-    if (SaveFile == NULL)
+    if(SaveFile == NULL)
     {
         printf("Can't create file for write.\n");
     }

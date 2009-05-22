@@ -3,7 +3,7 @@ People and things that contributed to the creation of Khazad
 
 Project Lead:  		Kenneth "Impaler[WrG]" Ferland
 
-Advisors:  			Will Miller (Firaxis), Domicic Cerquetti (Firaxis), Sinothdither (3Dwarf author) 
+Advisors:  			Will Miller (Firaxis), Domicic Cerquetti (Firaxis), Sinothdither (3Dwarf author), 0x517A5D (DwarfManager author)
 
 Special Thanks:  	Mithaldu (Lifevis / Extractor author)
 
