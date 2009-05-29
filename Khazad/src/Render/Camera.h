@@ -27,7 +27,7 @@ protected:
 	CameraOrientation Orientation;
 
 	Uint8 ViewLevels;
-	Uint16 ViewTop;
+	Uint16 SliceTop;
 	Uint8 LevelSeperation;
 
 	float ViewWidth, ViewHight, ViewDepth;
@@ -52,7 +52,7 @@ public:
 
 	Uint8 getViewLevels()               { return ViewLevels; }
 	Uint8 getLevelSeperation()          { return LevelSeperation; }
-    Uint16 getViewTop()                  { return ViewTop; }
+    Uint16 getSliceTop()                 { return SliceTop; }
 
     void changeViewTop(Sint16 Change);
 
@@ -159,6 +159,8 @@ public:
     void onMousePoll();
 
 	void MoveViewHorizontal(float X, float Y);
+
+    void ConfineLookPosition();
 
 	void MoveViewVertical(float Z);
 

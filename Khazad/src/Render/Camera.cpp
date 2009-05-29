@@ -530,6 +530,9 @@ void Camera::TiltView(float Movement, float Min, float Max)
 
 void Camera::SlideView(float X, float Y)
 {
+    float DifferenceX = LookPosition.x - EyePosition.x;
+    float DifferenceY = LookPosition.y - EyePosition.y;
+
 	if (IsoMode)
 	{
 		Vector3 LookVector = EyePosition - LookPosition;
@@ -546,6 +549,7 @@ void Camera::SlideView(float X, float Y)
 		EyePosition += CrossProduct * X * (1 / IsoScalar);
 		LookPosition += CrossProduct * X * (1 / IsoScalar);
 
+        ConfineLookPosition();
 		generateViewFrustum();
 	}
 
@@ -590,13 +594,73 @@ void Camera::MoveViewHorizontal(float X, float Y)
 	LookPosition.x += X;
 	LookPosition.y += Y;
 
+    ConfineLookPosition();
+
 	generateViewFrustum();
+}
+
+void Camera::ConfineLookPosition()
+{
+    float DifferenceX = LookPosition.x - EyePosition.x;
+    float DifferenceY = LookPosition.y - EyePosition.y;
+    float DifferenceZ = LookPosition.z - EyePosition.z;
+
+    bool CorrectionNeeded = false;
+
+	if(true) // Confine within the map
+	{
+	    if(LookPosition.x >= MAP->getMapSizeX())
+	    {
+	        LookPosition.x = MAP->getMapSizeX() - 1;
+	        CorrectionNeeded = true;
+        }
+
+	    if(LookPosition.x < 0)
+	    {
+	        LookPosition.x = 0;
+	        CorrectionNeeded = true;
+        }
+
+	    if(LookPosition.y >= MAP->getMapSizeY())
+	    {
+	        LookPosition.y = MAP->getMapSizeY() -1;
+	        CorrectionNeeded = true;
+        }
+
+	    if(LookPosition.y < 0)
+	    {
+	        LookPosition.y = 0;
+	        CorrectionNeeded = true;
+        }
+
+        if(CorrectionNeeded)
+        {
+	        EyePosition.x = LookPosition.x - DifferenceX;
+	        EyePosition.y = LookPosition.y - DifferenceY;
+        }
+	}
 }
 
 void Camera::MoveViewVertical(float Z)
 {
 	EyePosition.z += Z;
 	LookPosition.z += Z;
+
+	if(true) // Confing within the slice
+	{
+	    if(LookPosition.z < 0)
+	    {
+	        int Difference = EyePosition.z - LookPosition.z;
+            LookPosition.z = 0;
+            EyePosition.z = Difference;
+	    }
+	    if(LookPosition.z > MAP->getMapSizeZ())
+	    {
+	        int Difference = EyePosition.z - LookPosition.z;
+            LookPosition.z = MAP->getMapSizeZ();
+            EyePosition.z = MAP->getMapSizeZ() + Difference;
+	    }
+	}
 
 	generateViewFrustum();
 }
@@ -605,6 +669,15 @@ void Camera::setViewHight(Sint32 ZLevel)
 {
     if(ZLevel != LookPosition.z)
     {
+        if(ZLevel > SliceTop)
+        {
+            SliceTop = ZLevel;
+        }
+        if(ZLevel < (SliceTop - ViewLevels))
+        {
+            SliceTop = ZLevel + ViewLevels;
+        }
+
         float Difference = EyePosition.z - LookPosition.z;
 
         LookPosition.z = ZLevel;
@@ -640,7 +713,7 @@ void Camera::changeLevelSeperation(Sint8 Change)
 
 void Camera::changeViewTop(Sint16 Change)
 {
-    ViewTop += Change;
+    SliceTop += Change;
 }
 
 void Camera::SetDefaultView()
@@ -688,6 +761,8 @@ void Camera::CenterView()
     LookPosition.y = MAP->getMapSizeY() / 2;
     LookPosition.z = MAP->getMapSizeZ() / 2;
 
+    SliceTop = LookPosition.z;
+
     EyePosition.x = LookPosition.x + DifferenceX;
     EyePosition.y = LookPosition.y + DifferenceY;
     EyePosition.z = LookPosition.z + DifferenceZ;
@@ -705,9 +780,9 @@ void Camera::CenterView()
 
 bool Camera::InSlice(float Zlevel)
 {
-    if (Zlevel <= LookPosition.z)
+    if (Zlevel <= SliceTop)
 	{
-		float Depth = LookPosition.z - Zlevel;
+		float Depth = SliceTop - Zlevel;
 		if (Depth < ViewLevels)
 		{
 			return true;
@@ -719,9 +794,9 @@ bool Camera::InSlice(float Zlevel)
 
 float Camera::getShading(float Zlevel)
 {
-	if (Zlevel <= LookPosition.z)
+	if (Zlevel <= SliceTop)
 	{
-		float Depth = LookPosition.z - Zlevel;
+		float Depth = SliceTop - Zlevel;
 		if (Depth < ViewLevels)
 		{
 			float Shading = 1.0;

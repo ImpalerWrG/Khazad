@@ -22,7 +22,9 @@ public:
 	std::vector<ClipImage*> ClipLibrary;
 	std::vector<GLuint> SingularTextureLibrary;
 	std::vector<GLuint**> PagedTextureLibrary;
-	std::vector<SDL_Surface*> RawTextureVector;
+
+	std::vector<SDL_Surface*> SDLTextureVector;
+	std::vector<unsigned char*> RawTextureVector;
 
 	std::vector<SDL_Rect> TextureCordinates;
 
@@ -47,6 +49,8 @@ public:
     void BindTexturePoint(Uint32 TextureID, Uint8 Corner = 0);
 
 protected:
+
+    bool isFileEnding(const char* FilePath, const char* Ending);
 
     SDL_Surface* AgragateSurface;
 	GLuint MainTexture;

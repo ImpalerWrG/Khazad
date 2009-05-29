@@ -9,6 +9,43 @@
 #include <ColorManager.h>
 #include <ConfigManager.h>
 
+class MainKeyListener : public gcn::KeyListener
+{
+    void keyPressed(gcn::KeyEvent& keyEvent)
+    {
+        std::cout << "Key pressed: " << keyEvent.getKey().getValue() << std::endl;
+    }
+
+    void keyReleased(gcn::KeyEvent& keyEvent)
+    {
+        std::cout << "Key released: " << keyEvent.getKey().getValue() << std::endl;
+    }
+};
+
+class ExitActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        UI->setDone(true);
+    }
+};
+
+class ConfirmExitActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        UI->GetConfirmation("CONFIRM EXIT", UI->getExitListener());
+    }
+};
+
+class ConfirmationHideListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        UI->HideConfirmationWindow();
+    }
+};
+
 class DepthChangeActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)

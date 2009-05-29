@@ -4,6 +4,7 @@
 #include <ClipImage.h>
 #include <TextureManager.h>
 #include <DataManager.h>
+#include <SOIL.h>
 
 
 DECLARE_SINGLETON(TextureManager)
@@ -27,6 +28,15 @@ TextureManager::TextureManager()
 TextureManager::~TextureManager()
 {
 
+}
+
+bool TextureManager::isFileEnding(const char* FilePath, const char* Ending)
+{
+    Uint16 PathLength = strlen(FilePath);
+    Uint16 EndingLength = strlen(Ending);
+    Uint16 EndingStart = PathLength - EndingLength;
+
+    return strcmp(FilePath + EndingStart,  Ending) == 0;
 }
 
 SDL_Surface* TextureManager::loadBMPSurface(char* filepath, bool Color)
@@ -144,30 +154,23 @@ void TextureManager::loadClippedSurface(char* filepath, int cliphight, int clipw
 
 SDL_Surface* TextureManager::loadTextureSingular(char* filepath, bool ColorKey, bool bmp)
 {
-    SDL_Surface* TextureImage = NULL;
-	TextureImage = IMG_Load(filepath);
+	unsigned char* RawImage = NULL;
+	int width, height, channels;
 
-    /*
-	if (ColorKey)
+	RawImage = SOIL_load_image(filepath, &width, &height, &channels, SOIL_LOAD_RGBA);
+
+    if(RawImage)
+    {
+        RawTextureVector.push_back(RawImage);
+    }
+
+    SDL_Surface* SDLImage = NULL;
+	SDLImage = IMG_Load(filepath);
+
+    if (SDLImage)
 	{
-		SDL_SetColorKey(TextureImage, SDL_SRCCOLORKEY, SDL_MapRGB(TextureImage->format, 255, 0, 255));
-		SDL_Surface* alphasurface = SDL_DisplayFormatAlpha(TextureImage);
-
-		TextureImage = alphasurface;
-		SDL_FreeSurface(alphasurface);
-	}
-	*/
-
-
-	//NewClip = loadSingleSurface(filepath, ColorKey, bmp);
-
-	//TextureImage = NewClip->ParentPage->RawSurface;
-
-
-    if (TextureImage)
-	{
-        RawTextureVector.push_back(TextureImage);
-        return TextureImage;
+        SDLTextureVector.push_back(SDLImage);
+        return SDLImage;
 	}
 	return NULL;
 }
@@ -175,9 +178,10 @@ SDL_Surface* TextureManager::loadTextureSingular(char* filepath, bool ColorKey, 
 void TextureManager::MergeTextures()
 {
     Uint32 LargestTextureSize = 256;  // TODO Must be found dynamicly, see bellow
-    float root = sqrt((float) RawTextureVector.size());
+    float root = sqrt((float) SDLTextureVector.size());
     MainTextureSize = nextpoweroftwo(round(root)) * LargestTextureSize;
 
+	unsigned char* RawAgragate = NULL;
     AgragateSurface = SDL_CreateRGBSurface(0, MainTextureSize, MainTextureSize, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
 
     SDL_Surface* Source;
@@ -188,9 +192,9 @@ void TextureManager::MergeTextures()
     Destination.y = 0;
     SDL_Rect TextureCorners;
 
-    for(Uint32 i = 0; i < RawTextureVector.size(); i++)
+    for(Uint32 i = 0; i < SDLTextureVector.size(); i++)
     {
-        Source = RawTextureVector[i];
+        Source = SDLTextureVector[i];
         if (Destination.x + Source->w > MainTextureSize)   // TODO Improve arangment to waste less space
         {
             Destination.x = 0;
@@ -209,6 +213,13 @@ void TextureManager::MergeTextures()
         Destination.x += Source->w;
 
         SDL_FreeSurface(Source);
+    }
+
+    for(Uint32 i = 0; i < RawTextureVector.size(); i++)
+    {
+
+
+
     }
 
     glGenTextures(1, &MainTexture);

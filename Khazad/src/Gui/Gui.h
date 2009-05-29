@@ -25,17 +25,35 @@ public:
     bool isWidgetCollision(gcn::Widget* TestWidget, Uint16 RealX, Uint16 RealY);
     bool Draw();
 
+    bool isDone()                   { return done; }
+    void setDone(bool NewState)     { done = NewState; }
+
+    void GetConfirmation(const char* Question, gcn::ActionListener* Listener);
+    void HideConfirmationWindow();
+
+    gcn::ActionListener* getExitListener()      { return ExitListener; }
+
 protected:
 
     void InitMainMenu();
     void InitCameraControlMenu();
+    void InitConfirmationWindow();
     void InitDepthSlider();
 
     gcn::Container* TopWidget;
 
     gcn::Window* CameraControlWindow;
     gcn::Window* MainMenuWindow;
+    gcn::Window* ConfirmationWindow;
+
+    gcn::ImageButton* YesButton;
+    gcn::ImageButton* NoButton;
+    gcn::ActionListener* ConfirmationAction;
+    gcn::ActionListener* ExitListener;
+
     gcn::Slider* DepthSlider;
+
+    bool done;  // quit program command recived by UI
 };
 
 

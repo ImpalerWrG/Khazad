@@ -43,7 +43,11 @@ bool InputManager::HandleInput()
         // Pass events into the GUI, if they are consumed their skip other checks
 		if(UI->ProcessEvent(event, RelativeX, RelativeY))
 		{
-		    break;
+		    if(UI->isDone())
+		    {
+		        return true;  // End Program
+		    }
+		    continue;
 		}
 
         switch(event.type) // Check event type
@@ -57,10 +61,10 @@ bool InputManager::HandleInput()
             {
                 switch(event.key.keysym.sym)
                 {
-                    case SDLK_ESCAPE: // Escape key exits program
-                    {
-                        return true;  // exit program
-                    }
+                    //case SDLK_ESCAPE: // Escape key exits program
+                    //{
+                    //    return true;  // exit program
+                    //}
                     case SDLK_F1:
                     {
                         SCREEN->ToggleFullScreen();  //TODO dose not work??
@@ -96,6 +100,16 @@ bool InputManager::HandleInput()
                         SCREEN->MainCamera->ChangeViewLevels(-1);
                         break;
                     }
+                    case SDLK_PAGEDOWN:
+					{
+					    SCREEN->MainCamera->changeLevelSeperation(1);
+					    break;
+					}
+                    case SDLK_PAGEUP:
+					{
+					    SCREEN->MainCamera->changeLevelSeperation(-1);
+					    break;
+					}
                     case SDLK_q:
                     {
                         SCREEN->MainCamera->SetDefaultView();
@@ -159,10 +173,6 @@ bool InputManager::HandleInput()
                         }
                         break;
                     }
-                    //case KMOD_CTRL:
-                    //{
-                    //    SCREEN->ToggleFullScreen();
-                    //}
                     case SDLK_w:
 					{
                         SCREEN->WipeScreen();
@@ -216,16 +226,6 @@ bool InputManager::HandleInput()
                     case SDLK_b:
 					{
 					    SCREEN->setDebuggingDraw(!SCREEN->isDebuggingDraw());
-					    break;
-					}
-                    case SDLK_PAGEDOWN:
-					{
-					    SCREEN->MainCamera->changeLevelSeperation(1);
-					    break;
-					}
-                    case SDLK_PAGEUP:
-					{
-					    SCREEN->MainCamera->changeLevelSeperation(-1);
 					    break;
 					}
 				}

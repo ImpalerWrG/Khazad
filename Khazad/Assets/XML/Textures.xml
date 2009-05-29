@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Textures xmlns="namespace">	
 	<Texture>
+		<Name Label="TEXTURE_TOP"/>
+		<File Path="Assets\\Testing\\Top.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_BOTTOM"/>
+		<File Path="Assets\\Testing\\Bottom.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_NORTHEAST"/>
+		<File Path="Assets\\Testing\\NorthEast.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_SOUTHEAST"/>
+		<File Path="Assets\\Testing\\SouthEast.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_SOUTHWEST"/>
+		<File Path="Assets\\Testing\\SouthWest.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_NORTHWEST"/>
+		<File Path="Assets\\Testing\\NorthWest.png"/>
+	</Texture>
+	<Texture>
 		<Name Label="TEXTURE_GRASS"/>
 		<File Path="Assets\\Textures\\grass.png"/>
 	</Texture>

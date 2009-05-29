@@ -122,10 +122,13 @@ bool Cube::InitFacesSolid()
                 continue;
             }
 
-            Face* TemporaryPointer = new Face;
-            TemporaryPointer->Init(FaceType, Material);
-            setFacet(TemporaryPointer, FaceType);
-            getCellOwner()->setActive(true);
+            if(NeiborCube != NULL && NeiborCube->isHidden() && NeiborCube->isSolid())
+            {
+                Face* TemporaryPointer = new Face;
+                TemporaryPointer->Init(FaceType, Material);
+                setFacet(TemporaryPointer, FaceType);
+                getCellOwner()->setActive(true);
+            }
         }
     }
 }
@@ -539,6 +542,10 @@ bool Cube::Update()
 
 bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslate, bool DrawHidden, bool DrawSubTerranian, bool DrawSkyView, bool DrawSunLit)
 {
+    return false;
+
+
+
 	if (isInitalized())
 	{
         if(Hidden && !DrawHidden)

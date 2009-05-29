@@ -53,6 +53,24 @@
 			<Add library="GLUT32" />
 			<Add directory="..\..\lib" />
 		</Linker>
+		<Unit filename="..\..\SOIL\SOIL.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\SOIL\SOIL.h" />
+		<Unit filename="..\..\SOIL\image_DXT.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\SOIL\image_DXT.h" />
+		<Unit filename="..\..\SOIL\image_helper.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\SOIL\image_helper.h" />
+		<Unit filename="..\..\SOIL\stb_image_aug.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\SOIL\stb_image_aug.h" />
+		<Unit filename="..\..\SOIL\stbi_DDS_aug.h" />
+		<Unit filename="..\..\SOIL\stbi_DDS_aug_c.h" />
 		<Unit filename="..\..\guichan\include\guichan.hpp" />
 		<Unit filename="..\..\guichan\include\guichan\actionevent.hpp" />
 		<Unit filename="..\..\guichan\include\guichan\actionlistener.hpp" />

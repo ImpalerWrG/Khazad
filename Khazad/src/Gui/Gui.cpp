@@ -16,9 +16,15 @@ bool Ui::Init()
     TopWidget->setDimension(gcn::Rectangle(0, 0, SCREEN->getWidth(), SCREEN->getHight()));
     GuiChanMainObject->setTop(TopWidget);
 
+    // Initializing
+    ConfirmationAction = NULL; // No actions yet linked to confirmation window
+    done = false;  // quit program command recived by UI
+    ExitListener = new ExitActionListener();
 
+    // Core Widget Initialization
     InitMainMenu();
     InitCameraControlMenu();
+    InitConfirmationWindow();
     InitDepthSlider();
 
 	return true;
@@ -45,32 +51,41 @@ Ui::Ui()
 
 void Ui::InitMainMenu()
 {
+    Uint16 ButtonSize = 32;
+
     MainMenuWindow = new gcn::Window("MAIN MENU");
-    MainMenuWindow->setSize(128, 48);
+    MainMenuWindow->setSize((ButtonSize + 1) * 4, (ButtonSize * 1) + 16);
     TopWidget->add(MainMenuWindow);
     MainMenuWindow->setPosition(250, 50);
 
 
     // Populate the Window with Buttons
     gcn::ImageButton* MapDumpButton = new gcn::ImageButton("Assets\\Buttons\\Dump.png");
-    MapDumpButton->setSize(32, 32);
+    MapDumpButton->setSize(ButtonSize, ButtonSize);
     MainMenuWindow->add(MapDumpButton, 0, 0);
     gcn::ActionListener* MapDumpListener = new MapDumpActionListener();
     MapDumpButton->addActionListener(MapDumpListener);
 
     // Populate the Window with Buttons
     gcn::ImageButton* MapLoadButton = new gcn::ImageButton("Assets\\Buttons\\OpenFile.png");
-    MapLoadButton->setSize(32, 32);
+    MapLoadButton->setSize(ButtonSize, ButtonSize);
     MainMenuWindow->add(MapLoadButton, 32, 0);
     gcn::ActionListener* MapLoadListener = new MapLoadActionListener();
     MapLoadButton->addActionListener(MapLoadListener);
 
     // Populate the Window with Buttons
     gcn::ImageButton* MapSaveButton = new gcn::ImageButton("Assets\\Buttons\\SaveFile.png");
-    MapSaveButton->setSize(32, 32);
+    MapSaveButton->setSize(ButtonSize, ButtonSize);
     MainMenuWindow->add(MapSaveButton, 64, 0);
     gcn::ActionListener* MapSaveListener = new MapSaveActionListener();
     MapSaveButton->addActionListener(MapSaveListener);
+
+    // Populate the Window with Buttons
+    gcn::ImageButton* ExitButton = new gcn::ImageButton("Assets\\Buttons\\Exit.png");
+    ExitButton->setSize(ButtonSize, ButtonSize);
+    MainMenuWindow->add(ExitButton, 96, 0);
+    gcn::ActionListener* ExitListener = new ConfirmExitActionListener();
+    ExitButton->addActionListener(ExitListener);
 
 }
 
@@ -78,21 +93,13 @@ void Ui::InitCameraControlMenu()
 {
     Uint16 ButtonSize = 32;
 
-    // New Window created under the Top object
+    // Window holding Buttons that control the Camera
     CameraControlWindow = new gcn::Window("CAMERA CONTROLS");
-    CameraControlWindow->setSize((ButtonSize + 1) * 6, (ButtonSize * 4) - 16);
+    CameraControlWindow->setSize((ButtonSize + 1) * 6, (ButtonSize * 3) + 16);
     TopWidget->add(CameraControlWindow);
     CameraControlWindow->setPosition(SCREEN->getWidth() - 300, 50);
 
 /*
-    // Populate the Window with Buttons
-    gcn::ImageButton* CenterButton = new gcn::ImageButton("Assets\\Icons\\Center.png");
-    CenterButton->setSize(32, 32);
-    CameraControlWindow->add(CenterButton, 0, 0);
-    gcn::ActionListener* CenterListener = new CenteringActionListener();
-    CenterButton->addActionListener(CenterListener);
-
-
     gcn::ImageButton* VerticalButton = new gcn::ImageButton("Assets\\Icons\\Vertical.png");
     VerticalButton->setSize(32, 32);
     CameraControlWindow->add(VerticalButton, 32, 0);
@@ -103,82 +110,124 @@ void Ui::InitCameraControlMenu()
 
 
     gcn::ImageButton* ViewUpButton = new gcn::ImageButton("Assets\\Buttons\\UpArrow.png");
-    ViewUpButton->setSize(32, 32);
+    ViewUpButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* MoveViewUpListener = new MoveViewUpActionListener();
     ViewUpButton->addActionListener(MoveViewUpListener);
     CameraControlWindow->add(ViewUpButton, ButtonSize * 0, ButtonSize * 1);
 
     gcn::ImageButton* ViewDownButton = new gcn::ImageButton("Assets\\Buttons\\DownArrow.png");
-    ViewDownButton->setSize(32, 32);
+    ViewDownButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* MoveViewDownListener = new MoveViewDownActionListener();
     ViewDownButton->addActionListener(MoveViewDownListener);
     CameraControlWindow->add(ViewDownButton, ButtonSize * 0, ButtonSize * 2);
 
 
     gcn::ImageButton* IncresseLevelsButton = new gcn::ImageButton("Assets\\Buttons\\IncresseLevels.png");
-    IncresseLevelsButton->setSize(32, 32);
+    IncresseLevelsButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* IncresseViewLevelsListener = new IncreseViewLevelsActionListener();
     IncresseLevelsButton->addActionListener(IncresseViewLevelsListener);
     CameraControlWindow->add(IncresseLevelsButton, ButtonSize * 1, ButtonSize * 1);
 
     gcn::ImageButton* DecreseLevelsButton = new gcn::ImageButton("Assets\\Buttons\\DecresseLevels.png");
-    DecreseLevelsButton->setSize(32, 32);
+    DecreseLevelsButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* DecreseLevelsListener = new DecreseViewLevelsActionListener();
     DecreseLevelsButton->addActionListener(DecreseLevelsListener);
     CameraControlWindow->add(DecreseLevelsButton, ButtonSize * 1, ButtonSize * 2);
 
 
     gcn::ImageButton* OrbitClockwiseButton = new gcn::ImageButton("Assets\\Buttons\\Clockwise.png");
-    OrbitClockwiseButton->setSize(32, 32);
+    OrbitClockwiseButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* OrbitClockwiseListener = new OrbitClockwiseActionListener();
     OrbitClockwiseButton->addActionListener(OrbitClockwiseListener);
     CameraControlWindow->add(OrbitClockwiseButton, ButtonSize * 2, ButtonSize * 1);
 
     gcn::ImageButton* OrbitCounterClockwiseButton = new gcn::ImageButton("Assets\\Buttons\\CounterClockwise.png");
-    OrbitCounterClockwiseButton->setSize(32, 32);
+    OrbitCounterClockwiseButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* OrbitCounterClockwiseListener = new OrbitCounterClockwiseActionListener();
     OrbitCounterClockwiseButton->addActionListener(OrbitCounterClockwiseListener);
     CameraControlWindow->add(OrbitCounterClockwiseButton, ButtonSize * 2, ButtonSize * 2);
 
 
     gcn::ImageButton* ExplodeLevelsButton = new gcn::ImageButton("Assets\\Buttons\\Explode.png");
-    ExplodeLevelsButton->setSize(32, 32);
+    ExplodeLevelsButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* ExplodeLevelsListener = new IncresseLevelSeperationActionListener();
     ExplodeLevelsButton->addActionListener(ExplodeLevelsListener);
     CameraControlWindow->add(ExplodeLevelsButton, ButtonSize * 3, ButtonSize * 1);
 
     gcn::ImageButton* ContractLevelsButton = new gcn::ImageButton("Assets\\Buttons\\Contract.png");
-    ContractLevelsButton->setSize(32, 32);
+    ContractLevelsButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* ContractLevelsListener = new DecresseLevelSeperationActionListener();
     ContractLevelsButton->addActionListener(ContractLevelsListener);
     CameraControlWindow->add(ContractLevelsButton, ButtonSize * 3, ButtonSize * 2);
 
 
     gcn::ImageButton* ZoomInButton = new gcn::ImageButton("Assets\\Buttons\\ZoomIn.png");
-    ZoomInButton->setSize(32, 32);
+    ZoomInButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* ZoomInListener = new ZoomInActionListener();
     ZoomInButton->addActionListener(ZoomInListener);
     CameraControlWindow->add(ZoomInButton, ButtonSize * 4, ButtonSize * 1);
 
     gcn::ImageButton* ZoomOutButton = new gcn::ImageButton("Assets\\Buttons\\ZoomOut.png");
-    ZoomOutButton->setSize(32, 32);
+    ZoomOutButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* ZoomOutListener = new ZoomOutActionListener();
     ZoomOutButton->addActionListener(ZoomOutListener);
     CameraControlWindow->add(ZoomOutButton, ButtonSize * 4, ButtonSize * 2);
 
 
     gcn::ImageButton* TiltUpButton = new gcn::ImageButton("Assets\\Buttons\\TiltUp.png");
-    TiltUpButton->setSize(32, 32);
+    TiltUpButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* TiltUpListener = new TiltUpActionListener();
     TiltUpButton->addActionListener(TiltUpListener);
     CameraControlWindow->add(TiltUpButton, ButtonSize * 5, ButtonSize * 1);
 
     gcn::ImageButton* TiltDownButton = new gcn::ImageButton("Assets\\Buttons\\TiltDown.png");
-    TiltDownButton->setSize(32, 32);
+    TiltDownButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* TiltDownListener = new TiltDownActionListener();
     TiltDownButton->addActionListener(TiltDownListener);
     CameraControlWindow->add(TiltDownButton, ButtonSize * 5, ButtonSize * 2);
 
+}
+
+void Ui::InitConfirmationWindow()
+{
+    Uint16 ButtonSize = 32;
+
+    ConfirmationWindow = new gcn::Window("CONFIRMATION");
+    ConfirmationWindow->setSize(ButtonSize * 3 + 16, (ButtonSize * 2) + 16);
+    TopWidget->add(ConfirmationWindow);
+    ConfirmationWindow->setPosition(SCREEN->getWidth() / 2 - ConfirmationWindow->getWidth() / 2, SCREEN->getHight() / 2 - ConfirmationWindow->getHeight() / 2);
+    ConfirmationWindow->setVisible(false);
+
+    gcn::ActionListener* ConfirmationListener = new ConfirmationHideListener();
+
+    YesButton = new gcn::ImageButton("Assets\\Buttons\\Yes.png");
+    YesButton->setSize(ButtonSize, ButtonSize);
+    YesButton->addActionListener(ConfirmationListener);
+    ConfirmationWindow->add(YesButton, 16, ButtonSize / 2);
+
+    NoButton = new gcn::ImageButton("Assets\\Buttons\\No.png");
+    NoButton->setSize(ButtonSize, ButtonSize);
+    NoButton->addActionListener(ConfirmationListener);
+    ConfirmationWindow->add(NoButton, ButtonSize * 2, ButtonSize / 2);
+}
+
+void Ui::HideConfirmationWindow()
+{
+    ConfirmationWindow->setVisible(false);
+}
+
+void Ui::GetConfirmation(const char* Question, gcn::ActionListener* Listener)
+{
+    if(ConfirmationAction)
+    {
+        YesButton->removeActionListener(ConfirmationAction);
+    }
+
+    ConfirmationWindow->setCaption(Question);
+    YesButton->addActionListener(Listener);
+    ConfirmationAction = Listener;
+
+    ConfirmationWindow->setVisible(true);
 }
 
 void Ui::InitDepthSlider()
@@ -231,6 +280,11 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
         }
 
         if(isWidgetCollision(CameraControlWindow, OriginX, OriginY))
+        {
+            return true;
+        }
+
+        if(isWidgetCollision(ConfirmationWindow, OriginX, OriginY))
         {
             return true;
         }
