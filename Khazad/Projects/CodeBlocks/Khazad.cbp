@@ -40,6 +40,7 @@
 			<Add directory="..\..\src\TinyXML" />
 			<Add directory="..\..\guichan\include" />
 			<Add directory="..\..\guichan\src" />
+			<Add directory="..\..\SOIL" />
 		</Compiler>
 		<Linker>
 			<Add library="SDL" />
@@ -71,6 +72,12 @@
 		<Unit filename="..\..\SOIL\stb_image_aug.h" />
 		<Unit filename="..\..\SOIL\stbi_DDS_aug.h" />
 		<Unit filename="..\..\SOIL\stbi_DDS_aug_c.h" />
+		<Unit filename="..\..\TinyXML\tinystr.cpp" />
+		<Unit filename="..\..\TinyXML\tinystr.h" />
+		<Unit filename="..\..\TinyXML\tinyxml.cpp" />
+		<Unit filename="..\..\TinyXML\tinyxml.h" />
+		<Unit filename="..\..\TinyXML\tinyxmlerror.cpp" />
+		<Unit filename="..\..\TinyXML\tinyxmlparser.cpp" />
 		<Unit filename="..\..\guichan\include\guichan.hpp" />
 		<Unit filename="..\..\guichan\include\guichan\actionevent.hpp" />
 		<Unit filename="..\..\guichan\include\guichan\actionlistener.hpp" />
@@ -111,7 +118,6 @@
 		<Unit filename="..\..\guichan\include\guichan\openlayer.hpp" />
 		<Unit filename="..\..\guichan\include\guichan\platform.hpp" />
 		<Unit filename="..\..\guichan\include\guichan\rectangle.hpp" />
-		<Unit filename="..\..\guichan\include\guichan\sdl.hpp" />
 		<Unit filename="..\..\guichan\include\guichan\sdl\sdlgraphics.hpp" />
 		<Unit filename="..\..\guichan\include\guichan\sdl\sdlimage.hpp" />
 		<Unit filename="..\..\guichan\include\guichan\sdl\sdlimageloader.hpp" />
@@ -245,12 +251,6 @@
 		<Unit filename="..\..\src\Render\ScreenManager.h" />
 		<Unit filename="..\..\src\Render\TextureManager.cpp" />
 		<Unit filename="..\..\src\Render\TextureManager.h" />
-		<Unit filename="..\..\src\TinyXML\tinystr.cpp" />
-		<Unit filename="..\..\src\TinyXML\tinystr.h" />
-		<Unit filename="..\..\src\TinyXML\tinyxml.cpp" />
-		<Unit filename="..\..\src\TinyXML\tinyxml.h" />
-		<Unit filename="..\..\src\TinyXML\tinyxmlerror.cpp" />
-		<Unit filename="..\..\src\TinyXML\tinyxmlparser.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
