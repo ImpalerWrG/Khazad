@@ -29,13 +29,13 @@ public:
 	bool isDebuggingDraw()                      { return DebuggingDraw; }
 	void setDebuggingDraw(bool NewValue)        { DebuggingDraw = NewValue; }
 
-	bool isFrameDraw()                  { return FrameDraw; }
-	void setFrameDraw(bool NewValue)    { FrameDraw = NewValue; }
+	bool isFrameDraw()                          { return FrameDraw; }
+	void setFrameDraw(bool NewValue)            { FrameDraw = NewValue; }
 
-	bool isShadedDraw()                 { return ShadedDraw; }
+	bool isShadedDraw()                         { return ShadedDraw; }
 	void setShadedDraw(bool NewValue);
 
-	bool isHiddenDraw()                 { return HiddenDraw; }
+	bool isHiddenDraw()                         { return HiddenDraw; }
 	void setHiddenDraw(bool NewValue);
 
 	bool isSubTerranianDraw()                   { return SubTerranianDraw; }
@@ -56,6 +56,8 @@ public:
     void RenderTexture(GLuint texture, SDL_Rect* Size, SDL_Rect* location);
 
     void RenderLogo();
+
+    void CaptureScreenShot();
 
 	void applyClipCentered(SDL_Rect Offset, ClipImage* Clip);
 	void applyClipAt(SDL_Rect Offset, ClipImage* Clip);
@@ -107,6 +109,8 @@ protected:
 	SDL_Surface* ScreenSurface;
 
 	SDL_Surface* LogoSurface;  //Temporary TODO remove
+
+    Uint16 ScreenShotCounter;
 
 	bool FullScreen;
 

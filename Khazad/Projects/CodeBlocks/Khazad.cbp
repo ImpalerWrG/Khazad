@@ -37,10 +37,12 @@
 			<Add directory="..\..\src\Gui" />
 			<Add directory="..\..\src\Map" />
 			<Add directory="..\..\src\Render" />
-			<Add directory="..\..\src\TinyXML" />
 			<Add directory="..\..\guichan\include" />
 			<Add directory="..\..\guichan\src" />
 			<Add directory="..\..\SOIL" />
+			<Add directory="..\..\DevIL\include" />
+			<Add directory="..\..\TinyXML" />
+			<Add directory="..\..\DF Extractor" />
 		</Compiler>
 		<Linker>
 			<Add library="SDL" />
@@ -52,26 +54,22 @@
 			<Add library="OpenGL32" />
 			<Add library="GLU32" />
 			<Add library="GLUT32" />
+			<Add library="Devil" />
+			<Add library="ILU" />
+			<Add library="ILUT" />
 			<Add directory="..\..\lib" />
+			<Add directory="..\..\DevIL\lib" />
 		</Linker>
-		<Unit filename="..\..\SOIL\SOIL.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="..\..\SOIL\SOIL.h" />
-		<Unit filename="..\..\SOIL\image_DXT.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="..\..\SOIL\image_DXT.h" />
-		<Unit filename="..\..\SOIL\image_helper.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="..\..\SOIL\image_helper.h" />
-		<Unit filename="..\..\SOIL\stb_image_aug.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="..\..\SOIL\stb_image_aug.h" />
-		<Unit filename="..\..\SOIL\stbi_DDS_aug.h" />
-		<Unit filename="..\..\SOIL\stbi_DDS_aug_c.h" />
+		<Unit filename="..\..\DF Extractor\Extract.cpp" />
+		<Unit filename="..\..\DF Extractor\Extract.h" />
+		<Unit filename="..\..\DevIL\include\IL\config.h" />
+		<Unit filename="..\..\DevIL\include\IL\devil_internal_exports.h" />
+		<Unit filename="..\..\DevIL\include\IL\il.h" />
+		<Unit filename="..\..\DevIL\include\IL\il_wrap.h" />
+		<Unit filename="..\..\DevIL\include\IL\ilu.h" />
+		<Unit filename="..\..\DevIL\include\IL\ilu_region.h" />
+		<Unit filename="..\..\DevIL\include\IL\ilut.h" />
+		<Unit filename="..\..\DevIL\include\IL\ilut_config.h" />
 		<Unit filename="..\..\TinyXML\tinystr.cpp" />
 		<Unit filename="..\..\TinyXML\tinystr.h" />
 		<Unit filename="..\..\TinyXML\tinyxml.cpp" />
@@ -229,8 +227,6 @@
 		<Unit filename="..\..\src\Map\Cell.h" />
 		<Unit filename="..\..\src\Map\Cube.cpp" />
 		<Unit filename="..\..\src\Map\Cube.h" />
-		<Unit filename="..\..\src\Map\Extract.cpp" />
-		<Unit filename="..\..\src\Map\Extract.h" />
 		<Unit filename="..\..\src\Map\Face.cpp" />
 		<Unit filename="..\..\src\Map\Face.h" />
 		<Unit filename="..\..\src\Map\Map.cpp" />

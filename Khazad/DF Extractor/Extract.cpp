@@ -1,7 +1,6 @@
 #include <windows.h>
 
 #include <Extract.h>
-//#include <stdafx.h>
 #include <winnt.h>
 
 DECLARE_SINGLETON(Extractor)

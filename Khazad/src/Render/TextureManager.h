@@ -5,6 +5,10 @@
 
 #include <Singleton.h>
 
+#include <IL/il.h>
+#include <IL/ilu.h>
+#include <IL/ilut.h>
+
 
 class ImagePage;
 class ClipImage;
@@ -24,7 +28,7 @@ public:
 	std::vector<GLuint**> PagedTextureLibrary;
 
 	std::vector<SDL_Surface*> SDLTextureVector;
-	std::vector<unsigned char*> RawTextureVector;
+	std::vector<ILuint> DevilImageVector;
 
 	std::vector<SDL_Rect> TextureCordinates;
 

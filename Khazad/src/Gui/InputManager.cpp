@@ -125,6 +125,10 @@ bool InputManager::HandleInput()
                         // toggle face drawing options
                         break;
                     }
+                    case SDLK_PRINT:
+                    {
+                        SCREEN->CaptureScreenShot();
+                    }
                     case SDLK_d:
                     {
                         SCREEN->WipeScreen();

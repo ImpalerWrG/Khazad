@@ -4,13 +4,17 @@
 #include <ClipImage.h>
 #include <TextureManager.h>
 #include <DataManager.h>
-#include <SOIL.h>
 
 
 DECLARE_SINGLETON(TextureManager)
 
 bool TextureManager::Init()
 {
+    // Initilize Devil with OpenGL rendering support
+    ilInit();
+    iluInit();
+    ilutRenderer(ILUT_OPENGL);
+
     for(int i = 0; i < DATA->getNumTextures(); ++i)
     {
         loadTextureSingular(DATA->getTextureData(i)->getPath(), false, false);
@@ -157,12 +161,19 @@ SDL_Surface* TextureManager::loadTextureSingular(char* filepath, bool ColorKey, 
 	unsigned char* RawImage = NULL;
 	int width, height, channels;
 
-	RawImage = SOIL_load_image(filepath, &width, &height, &channels, SOIL_LOAD_RGBA);
+    ILuint ImageID;
+    ilGenImages(1, &ImageID);
+    ilBindImage(ImageID);
 
-    if(RawImage)
-    {
-        RawTextureVector.push_back(RawImage);
-    }
+    printf("Loading Image file: %s\n", filepath);
+    ilLoadImage(filepath);
+
+    ILenum Error;
+    Error = ilGetError();
+
+    ilConvertImage(IL_BGR, IL_UNSIGNED_BYTE);
+    DevilImageVector.push_back(ImageID);
+
 
     SDL_Surface* SDLImage = NULL;
 	SDLImage = IMG_Load(filepath);
@@ -177,12 +188,19 @@ SDL_Surface* TextureManager::loadTextureSingular(char* filepath, bool ColorKey, 
 
 void TextureManager::MergeTextures()
 {
-    Uint32 LargestTextureSize = 256;  // TODO Must be found dynamicly, see bellow
+    Uint32 LargestTextureSize = 64;  // TODO Must be found dynamicly, see bellow
     float root = sqrt((float) SDLTextureVector.size());
     MainTextureSize = nextpoweroftwo(round(root)) * LargestTextureSize;
 
 	unsigned char* RawAgragate = NULL;
     AgragateSurface = SDL_CreateRGBSurface(0, MainTextureSize, MainTextureSize, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+
+    // Devil
+    ILuint AgragateImageID;
+    ilGenImages(1, &AgragateImageID);
+
+    // Create a blank page to fill with textures
+    ilTexImage(MainTextureSize, MainTextureSize, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
 
     SDL_Surface* Source;
     Uint32 HorizonalSpace;
@@ -215,12 +233,35 @@ void TextureManager::MergeTextures()
         SDL_FreeSurface(Source);
     }
 
-    for(Uint32 i = 0; i < RawTextureVector.size(); i++)
+    ILuint DestinationX = 0;
+    ILuint DestinationY = 0;
+
+    for(Uint32 i = 0; i < DevilImageVector.size(); i++)
     {
+        //ilBindImage(DevilImageVector[i]);
+        //ILubyte* Data = ilGetData();
 
+        ILuint Width = 64; //ilGetInteger(IL_IMAGE_WIDTH);
+        ILuint Hight = 64; //ilGetInteger(IL_IMAGE_HEIGHT);
 
+        if (DestinationX + Width > MainTextureSize)
+        {
+            DestinationX = 0;
+            DestinationY += Hight;
+        }
 
+        ilOverlayImage(DevilImageVector[i], DestinationX, DestinationY, 0);
+        //TextureCordinates.push_back(TextureCorners); // store texture corners
+
+        DestinationX += Width;
     }
+
+    ilEnable(IL_FILE_OVERWRITE);
+    ilSaveImage("ScreenShots\\Screenie.png");
+
+    //ilutEnable(ILUT_OPENGL_CONV);
+
+
 
     glGenTextures(1, &MainTexture);
     glBindTexture(GL_TEXTURE_2D, MainTexture);

@@ -17,6 +17,8 @@
 #include <Cell.h>
 #include <Gui.h>
 
+#include <IL/ilut.h>
+
 
 DECLARE_SINGLETON(ScreenManager)
 
@@ -36,6 +38,8 @@ ScreenManager::ScreenManager()
 
 	FlatDraw = false;
 	DebuggingDraw = true;
+
+    ScreenShotCounter = 0;
 
 	LogoSurface = NULL;
 }
@@ -205,6 +209,18 @@ void ScreenManager::RenderLogo()
     location.h = LogoSurface->clip_rect.h;
 
     RenderSurface(LogoSurface, &location);
+}
+
+void ScreenManager::CaptureScreenShot()
+{
+    if(ilutGLScreen())
+    {
+        char buffer[256];
+        sprintf(buffer, "ScreenShots\\ScreenShot%i.png", ScreenShotCounter);
+        ilSaveImage(buffer);
+        ScreenShotCounter++;
+        // Find a way to count up if screens already exist with initial count (increment untill error code is not returned?)
+    }
 }
 
 int ScreenManager::round(double x)
