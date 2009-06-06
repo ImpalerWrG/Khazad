@@ -128,6 +128,7 @@ bool InputManager::HandleInput()
                     case SDLK_PRINT:
                     {
                         SCREEN->CaptureScreenShot();
+                        break;
                     }
                     case SDLK_d:
                     {

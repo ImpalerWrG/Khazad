@@ -329,7 +329,7 @@
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RIVER"/>
-		<Texture label="TEXTURE_WATER"/>
+		<Texture label="TEXTURE_COBBLESTONE"/>
 		<TileValues>
 			<Tile Int="365"/>
 			<Tile Int="366"/>
@@ -343,7 +343,7 @@
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_STREAM"/>
-		<Texture label="TEXTURE_WATER"/>
+		<Texture label="TEXTURE_COBBLESTONE"/>
 		<TileValues>
 			<Tile Int="373"/>
 			<Tile Int="374"/>

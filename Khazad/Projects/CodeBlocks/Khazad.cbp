@@ -39,7 +39,6 @@
 			<Add directory="..\..\src\Render" />
 			<Add directory="..\..\guichan\include" />
 			<Add directory="..\..\guichan\src" />
-			<Add directory="..\..\SOIL" />
 			<Add directory="..\..\DevIL\include" />
 			<Add directory="..\..\TinyXML" />
 			<Add directory="..\..\DF Extractor" />

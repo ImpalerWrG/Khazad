@@ -156,10 +156,10 @@ void TextureManager::loadClippedSurface(char* filepath, int cliphight, int clipw
 	}
 }
 
-SDL_Surface* TextureManager::loadTextureSingular(char* filepath, bool ColorKey, bool bmp)
+ILuint TextureManager::loadTextureSingular(char* filepath, bool ColorKey, bool bmp)
 {
 	unsigned char* RawImage = NULL;
-	int width, height, channels;
+    int width, height, channels;
 
     ILuint ImageID;
     ilGenImages(1, &ImageID);
@@ -169,121 +169,91 @@ SDL_Surface* TextureManager::loadTextureSingular(char* filepath, bool ColorKey, 
     ilLoadImage(filepath);
 
     ILenum Error;
-    Error = ilGetError();
+    while ((Error = ilGetError()) != IL_NO_ERROR)
+    {
+        printf("DevIL Error %d: %s\n", Error, iluErrorString(Error));
+    }
+    //ilConvertImage(IL_BGRA, IL_UNSIGNED_BYTE);
+    // Perhapse re-size image?
 
-    ilConvertImage(IL_BGR, IL_UNSIGNED_BYTE);
     DevilImageVector.push_back(ImageID);
-
-
-    SDL_Surface* SDLImage = NULL;
-	SDLImage = IMG_Load(filepath);
-
-    if (SDLImage)
-	{
-        SDLTextureVector.push_back(SDLImage);
-        return SDLImage;
-	}
-	return NULL;
+	return ImageID;
 }
 
 void TextureManager::MergeTextures()
 {
+    printf("Creating Texture Palette from %i individual textures\n", DevilImageVector.size());
+
     Uint32 LargestTextureSize = 64;  // TODO Must be found dynamicly, see bellow
-    float root = sqrt((float) SDLTextureVector.size());
+    float root = sqrt((float) DevilImageVector.size());
     MainTextureSize = nextpoweroftwo(round(root)) * LargestTextureSize;
 
-	unsigned char* RawAgragate = NULL;
-    AgragateSurface = SDL_CreateRGBSurface(0, MainTextureSize, MainTextureSize, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+    ReportDevILErrors();
 
     // Devil
     ILuint AgragateImageID;
     ilGenImages(1, &AgragateImageID);
+    ilBindImage(AgragateImageID);
 
     // Create a blank page to fill with textures
     ilTexImage(MainTextureSize, MainTextureSize, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
 
-    SDL_Surface* Source;
-    Uint32 HorizonalSpace;
+    ReportDevILErrors();
 
-    SDL_Rect Destination;
-    Destination.x = 0;
-    Destination.y = 0;
+    Sint16 DestinationX = 0;
+    Sint16 DestinationY = 0;
+
+    ilDisable(IL_BLIT_BLEND);
     SDL_Rect TextureCorners;
-
-    for(Uint32 i = 0; i < SDLTextureVector.size(); i++)
-    {
-        Source = SDLTextureVector[i];
-        if (Destination.x + Source->w > MainTextureSize)   // TODO Improve arangment to waste less space
-        {
-            Destination.x = 0;
-            Destination.y += LargestTextureSize;
-        }
-
-        Destination.w = Source->w;
-        Destination.h = Source->h;
-        SDL_BlitSurface(Source, &Source->clip_rect, AgragateSurface, &Destination);
-
-        TextureCorners = Destination;
-        TextureCorners.w = Destination.x + Destination.w;
-        TextureCorners.h = Destination.y + Destination.h;
-
-        TextureCordinates.push_back(TextureCorners);
-        Destination.x += Source->w;
-
-        SDL_FreeSurface(Source);
-    }
-
-    ILuint DestinationX = 0;
-    ILuint DestinationY = 0;
 
     for(Uint32 i = 0; i < DevilImageVector.size(); i++)
     {
-        //ilBindImage(DevilImageVector[i]);
-        //ILubyte* Data = ilGetData();
-
-        ILuint Width = 64; //ilGetInteger(IL_IMAGE_WIDTH);
-        ILuint Hight = 64; //ilGetInteger(IL_IMAGE_HEIGHT);
+        Sint16 Width = LargestTextureSize; //get this from image for varable size textures;
+        Sint16 Hight = LargestTextureSize; //get this from image for varable size textures;
 
         if (DestinationX + Width > MainTextureSize)
         {
             DestinationX = 0;
             DestinationY += Hight;
         }
+        ilOverlayImage(DevilImageVector[i], (ILuint) DestinationX, (ILuint) DestinationY, 0);
+        ReportDevILErrors();
 
-        ilOverlayImage(DevilImageVector[i], DestinationX, DestinationY, 0);
-        //TextureCordinates.push_back(TextureCorners); // store texture corners
+        TextureCorners.x = DestinationX;
+        TextureCorners.y = DestinationY;
+        TextureCorners.w = DestinationX + Width;
+        TextureCorners.h = DestinationY + Hight;
+
+        TextureCordinates.push_back(TextureCorners);
 
         DestinationX += Width;
     }
 
-    ilEnable(IL_FILE_OVERWRITE);
-    ilSaveImage("ScreenShots\\Screenie.png");
+    iluFlipImage();
+    ilutEnable(ILUT_OPENGL_CONV);
+    ReportDevILErrors();
 
-    //ilutEnable(ILUT_OPENGL_CONV);
-
-
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     glGenTextures(1, &MainTexture);
     glBindTexture(GL_TEXTURE_2D, MainTexture);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, AgragateSurface->w, AgragateSurface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, AgragateSurface->pixels);
+    printf("Binding Texture Palette to OpenGL\n");
+    MainTexture = ilutGLBindTexImage();
+    ReportDevILErrors();
 
-    if(true)  // Mip Mapping, dosn't seem to look good
+    //glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+
+
+    if(true) // Mip Mapping, dosn't seem to look good but better then without
     {
         glEnable(GL_TEXTURE_2D);
 
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-        gluBuild2DMipmaps(GL_TEXTURE_2D, 4, AgragateSurface->w, AgragateSurface->h, GL_RGBA, GL_UNSIGNED_BYTE, AgragateSurface->pixels);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+        gluBuild2DMipmaps(GL_TEXTURE_2D, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
     }
-    else
-    {
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    }
-
-    SDL_FreeSurface(AgragateSurface);
 }
 
 int TextureManager::round(double x)
@@ -321,5 +291,14 @@ void TextureManager::BindTexturePoint(Uint32 TextureID, Uint8 Corner)
             glTexCoord2i(TextureCordinates[TextureID].w, TextureCordinates[TextureID].y);
             break;
         }
+    }
+}
+
+void TextureManager::ReportDevILErrors()
+{
+    ILenum Error;
+    while ((Error = ilGetError()) != IL_NO_ERROR)
+    {
+        printf("DevIL Error %d: %s\n", Error, iluErrorString(Error));
     }
 }

@@ -38,7 +38,7 @@ public:
 	SDL_Surface* loadBMPSurface(char* filepath, bool ColorKey = false);
 	SDL_Surface* loadSurface(char* filepath, bool ColorKey = false);
 
-	SDL_Surface* loadTextureSingular(char* filepath, bool ColorKey = false, bool bmp = false);
+	ILuint loadTextureSingular(char* filepath, bool ColorKey = false, bool bmp = false);
 	void loadTexturePaged(char* filepath, int cliphight, int clipwidth, int rows, int columns, bool ColorKey = false, bool bmp = false);
     void MergeTextures();
 
@@ -51,6 +51,8 @@ public:
     SDL_Surface* getAgragateSurface()   { return AgragateSurface; }
 
     void BindTexturePoint(Uint32 TextureID, Uint8 Corner = 0);
+
+    void ReportDevILErrors();
 
 protected:
 

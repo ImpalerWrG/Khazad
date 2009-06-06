@@ -22,54 +22,54 @@ char buffer[256];
 
 bool initManagers()
 {
-    printf("XML Initializing \n");
+    printf("-=XML INITIALIZING=-\n");
 	XML->CreateInstance();
 	XML->Init();
 
-    printf("Config Initializing \n");
+    printf("-=CONFIG INITIALIZING=-\n");
 	CONFIG->CreateInstance();
 	CONFIG->Init();
 
-    printf("Random Initializing \n");
+    printf("-=RANDOM INITIALIZING=-\n");
 	RANDOM->CreateInstance();
 	RANDOM->Init();
 
-    printf("Color Initializing \n");
+    printf("-=COLOR INITIALIZING=-\n");
 	COLOR->CreateInstance();
 	COLOR->Init();
 
-    printf("Data Initializing \n");
+    printf("-=DATA INITIALIZING=-\n");
 	DATA->CreateInstance();
 	DATA->Init();
 
-    printf("Screen Initializing \n");
+    printf("-=SCREEN INITIALIZING=-\n");
 	SCREEN->CreateInstance();
 	SCREEN->Init();
 
-    printf("Texture Initializing \n");
+    printf("-=TEXTURE INITIALIZING=-\n");
 	TEXTURE->CreateInstance();
 	TEXTURE->Init();
 
-    printf("Ui Initializing \n");
+    printf("-=UI INITIALIZING=-\n");
     UI->CreateInstance();
     UI->Init();
 
-    printf("Game Initializing \n");
+    printf("-=GAME INITIALIZING=-\n");
 	GAME->CreateInstance();
 	GAME->Init();
 
-    printf("Extractor Initializing \n");
+    printf("-=EXTRACTOR INITIALIZING=-\n");
 	EXTRACT->CreateInstance();
 	EXTRACT->Init();
 
-    printf("Map Initializing \n");
+    printf("-=MAP INITIALIZING=-\n");
 	MAP->CreateInstance();
 
-    printf("Input Initializing \n");
+    printf("-=INPUT INITIALIZING=-\n");
 	INPUT->CreateInstance();
 	INPUT->Init();
 
-    printf("Font Initializing \n");
+    printf("-=FONT INITIALIZING=-\n");
     FONT->CreateInstance();
 	FONT->Init();
 
