@@ -3,7 +3,7 @@
 #include <ImagePage.h>
 
 
-ImagePage::ImagePage(SDL_Surface* Surface, int arghight, int argwidth, int argRows, int argColumns)
+ImagePage::ImagePage(SDL_Surface* Surface, int argwidth, int arghight, int argRows, int argColumns)
 {
 	RawSurface = Surface;
 

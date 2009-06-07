@@ -10,6 +10,7 @@
 #include <FontManager.h>
 #include <ColorManager.h>
 #include <TextureManager.h>
+#include <ImageManager.h>
 #include <DataManager.h>
 #include <Extract.h>
 #include <Game.h>
@@ -68,7 +69,7 @@ bool ScreenManager::Init()
         SDL_WM_SetIcon(Icon, NULL);
     }
 
-    LogoSurface = TEXTURE->loadSurface("Assets\\Textures\\KhazadLogo.png");
+    LogoSurface = IMAGE->loadSurface("Assets\\Textures\\KhazadLogo.png");
 
     if(CONFIG->FullScreen())
     {
@@ -90,9 +91,8 @@ bool ScreenManager::Init()
 	glEnable(GL_LINE_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
 
-	//glBlendFunc(GL_ONE, GL_ONE);
-	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
 	glDepthFunc(GL_LEQUAL);
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);

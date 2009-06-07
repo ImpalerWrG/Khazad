@@ -7,6 +7,7 @@
 #include <XMLManager.h>
 #include <Random.h>
 #include <ScreenManager.h>
+#include <ImageManager.h>
 #include <ConfigManager.h>
 #include <DataManager.h>
 #include <InputManager.h>
@@ -45,6 +46,10 @@ bool initManagers()
     printf("-=SCREEN INITIALIZING=-\n");
 	SCREEN->CreateInstance();
 	SCREEN->Init();
+
+    printf("-=IMAGE INITIALIZING=-\n");
+	IMAGE->CreateInstance();
+	IMAGE->Init();
 
     printf("-=TEXTURE INITIALIZING=-\n");
 	TEXTURE->CreateInstance();

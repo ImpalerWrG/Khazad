@@ -1,6 +1,6 @@
 #include <stdafx.h>
 
-#include <ImagePage.h>
+#include <ImageManager.h>
 #include <ClipImage.h>
 #include <TextureManager.h>
 #include <DataManager.h>
@@ -15,10 +15,18 @@ bool TextureManager::Init()
     iluInit();
     ilutRenderer(ILUT_OPENGL);
 
+    // Load the terrain Textures
     for(int i = 0; i < DATA->getNumTextures(); ++i)
     {
-        loadTextureSingular(DATA->getTextureData(i)->getPath(), false, false);
+        ILuint TextureImage = IMAGE->loadImage(DATA->getTextureData(i)->getPath(), false);
+
+        if(TextureImage != 0)
+        {
+            DevilImageVector.push_back(TextureImage);
+        }
     }
+
+    // Merge to create Terrain Pallette
     MergeTextures();
 
 	return true;
@@ -43,124 +51,8 @@ bool TextureManager::isFileEnding(const char* FilePath, const char* Ending)
     return strcmp(FilePath + EndingStart,  Ending) == 0;
 }
 
-SDL_Surface* TextureManager::loadBMPSurface(char* filepath, bool Color)
+ILuint TextureManager::loadTextureSingular(char* filepath, bool ColorKey)
 {
-	SDL_Surface* RawSurface = IMG_Load(filepath);
-	SDL_Surface* ConvertedSurface = NULL;
-
-	if(RawSurface != NULL)
-	{
-		ConvertedSurface = SDL_DisplayFormat(RawSurface);
-		SDL_FreeSurface(RawSurface);
-		if (ConvertedSurface != NULL)
-		{
-			if (Color)
-			{
-				Uint32 colorkey = SDL_MapRGB( ConvertedSurface->format, 0xFF, 0, 0xFF );
-				SDL_SetColorKey( ConvertedSurface, SDL_SRCCOLORKEY, colorkey );
-				return ConvertedSurface;
-			}
-			return ConvertedSurface;
-		}
-		return NULL;
-	}
-	return NULL;
-}
-
-SDL_Surface* TextureManager::loadSurface(char* filepath, bool Color)
-{
-	SDL_Surface* RawSurface = IMG_Load(filepath);
-	SDL_Surface* ConvertedSurface = NULL;
-
-	if(RawSurface != NULL)
-	{
-		if (Color)
-		{
-			ConvertedSurface = SDL_DisplayFormat(RawSurface);
-			SDL_FreeSurface(RawSurface);
-			if (ConvertedSurface != NULL)
-			{
-				if (Color)
-				{
-					Uint32 colorkey = SDL_MapRGB( ConvertedSurface->format, 0xFF, 0, 0xFF );
-					SDL_SetColorKey( ConvertedSurface, SDL_SRCCOLORKEY, colorkey );
-					return ConvertedSurface;
-				}
-				return ConvertedSurface;
-			}
-		}
-		else
-		{
-			ConvertedSurface = SDL_DisplayFormatAlpha(RawSurface);
-			if (ConvertedSurface != NULL)
-			{
-                SDL_FreeSurface(RawSurface);
-				return ConvertedSurface;
-			}
-            SDL_FreeSurface(ConvertedSurface);
-			return RawSurface;
-		}
-
-		return NULL;
-	}
-	return NULL;
-}
-
-ClipImage* TextureManager::loadSingleSurface(char* filepath, bool ColorKey, bool bmp)
-{
-	SDL_Surface* Surface;
-	if (bmp)
-	{
-		Surface = loadBMPSurface(filepath, ColorKey);
-	}
-	else
-	{
-		Surface = loadSurface(filepath, ColorKey);
-	}
-
-	if (Surface)
-	{
-		ImagePage* NewPage = new ImagePage(Surface, Surface->h, Surface->w, 1, 1);
-		ImageLibrary.push_back(NewPage);
-
-		ClipImage* NewClip = new ClipImage(NewPage);
-		ClipLibrary.push_back(NewClip);
-
-		return NewClip;
-	}
-	return NULL;
-}
-
-void TextureManager::loadClippedSurface(char* filepath, int cliphight, int clipwidth, int rows, int columns, bool ColorKey, bool bmp)
-{
-	SDL_Surface* Surface;
-	if (bmp)
-	{
-		Surface = loadBMPSurface(filepath, ColorKey);
-	}
-	else
-	{
-		Surface = loadSurface(filepath, ColorKey);
-	}
-
-	ImagePage* NewPage = new ImagePage(Surface, cliphight, clipwidth, rows, columns);
-	ImageLibrary.push_back(NewPage);
-
-	for(int i = 0; i < rows; i++)
-	{
-		for(int j = 0; j < columns; j++)
-		{
-			ClipImage* NewClip = new ClipImage(NewPage, i, j);
-			ClipLibrary.push_back(NewClip);
-		}
-	}
-}
-
-ILuint TextureManager::loadTextureSingular(char* filepath, bool ColorKey, bool bmp)
-{
-	unsigned char* RawImage = NULL;
-    int width, height, channels;
-
     ILuint ImageID;
     ilGenImages(1, &ImageID);
     ilBindImage(ImageID);

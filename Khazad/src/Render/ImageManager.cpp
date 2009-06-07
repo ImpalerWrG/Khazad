@@ -5,6 +5,8 @@
 #include <ImageManager.h>
 
 
+DECLARE_SINGLETON(ImageManager)
+
 ImageManager::ImageManager()
 {
 
@@ -15,81 +17,39 @@ ImageManager::~ImageManager()
 
 }
 
-SDL_Surface* ImageManager::loadBMPSurface(char* filepath, bool Color)
+bool ImageManager::Init()
 {
-	SDL_Surface* RawSurface = IMG_Load(filepath);
-	SDL_Surface* ConvertedSurface = NULL;
 
-	if(RawSurface != NULL)
-	{
-		ConvertedSurface = SDL_DisplayFormat(RawSurface);
-		SDL_FreeSurface(RawSurface);
-		if (ConvertedSurface != NULL)
-		{
-			if (Color)
-			{
-				Uint32 colorkey = SDL_MapRGB( ConvertedSurface->format, 0xFF, 0, 0xFF );
-				SDL_SetColorKey( ConvertedSurface, SDL_SRCCOLORKEY, colorkey );
-				return ConvertedSurface;
-			}
-			return ConvertedSurface;
-		}
-		return NULL;
-	}
-	return NULL;
 }
 
-SDL_Surface* ImageManager::loadSurface(char* filepath, bool Color)
+ILuint ImageManager::loadImage(char* filepath, bool ColorKey)
 {
-	SDL_Surface* RawSurface = IMG_Load(filepath);
-	SDL_Surface* ConvertedSurface = NULL;
+    ILuint ImageID;
+    ilGenImages(1, &ImageID);
+    ilBindImage(ImageID);
 
-	if(RawSurface != NULL)
-	{
-		if (Color)
-		{
-			ConvertedSurface = SDL_DisplayFormat(RawSurface);
-			SDL_FreeSurface(RawSurface);
-			if (ConvertedSurface != NULL)
-			{
-				if (Color)
-				{
-					Uint32 colorkey = SDL_MapRGB( ConvertedSurface->format, 0xFF, 0, 0xFF );
-					SDL_SetColorKey( ConvertedSurface, SDL_SRCCOLORKEY, colorkey );
-					return ConvertedSurface;
-				}
-				return ConvertedSurface;
-			}
-		}
-		else
-		{
-			ConvertedSurface = SDL_DisplayFormatAlpha(RawSurface);
-			SDL_FreeSurface(RawSurface);
-			if (ConvertedSurface != NULL)
-			{
-				return ConvertedSurface;
-			}
-			return ConvertedSurface;
-		}
+    printf("Loading Image file: %s\n", filepath);
+    ilLoadImage(filepath);
 
-		return NULL;
-	}
-	return NULL;
+    if(ColorKey)
+    {
+        //convert color key
+    }
+
+    ILenum Error;
+    while ((Error = ilGetError()) != IL_NO_ERROR)
+    {
+        printf("DevIL Error %d: %s\n", Error, iluErrorString(Error));
+    }
+    return ImageID;
 }
 
-ClipImage* ImageManager::loadSingleSurface(char* filepath, bool ColorKey, bool bmp)
+ClipImage* ImageManager::loadSingleSurface(char* filepath, bool ColorKey)
 {
-	SDL_Surface* Surface;
-	if (bmp)
-	{
-		Surface = loadBMPSurface(filepath, ColorKey);
-	}
-	else
-	{
-		Surface = loadSurface(filepath, ColorKey);
-	}
+	ILuint ImageID;
+    ImageID = loadImage(filepath, ColorKey);
 
-	ImagePage* NewPage = new ImagePage(Surface, Surface->h, Surface->w, 1, 1);
+	ImagePage* NewPage = new ImagePage(NULL, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 1, 1);
 	ImageLibrary.push_back(NewPage);
 
 	ClipImage* NewClip = new ClipImage(NewPage);
@@ -98,17 +58,11 @@ ClipImage* ImageManager::loadSingleSurface(char* filepath, bool ColorKey, bool b
 	return NewClip;
 }
 
-void ImageManager::loadClippedSurface(char* filepath, int cliphight, int clipwidth, int rows, int columns, bool ColorKey, bool bmp)
+void ImageManager::loadClippedSurface(char* filepath, int cliphight, int clipwidth, int rows, int columns, bool ColorKey)
 {
+    /*
 	SDL_Surface* Surface;
-	if (bmp)
-	{
-		Surface = loadBMPSurface(filepath, ColorKey);
-	}
-	else
-	{
-		Surface = loadSurface(filepath, ColorKey);
-	}
+    Surface = loadSurface(filepath, ColorKey);
 
 	ImagePage* NewPage = new ImagePage(Surface, cliphight, clipwidth, rows, columns);
 	ImageLibrary.push_back(NewPage);
@@ -121,4 +75,44 @@ void ImageManager::loadClippedSurface(char* filepath, int cliphight, int clipwid
 			ClipLibrary.push_back(NewClip);
 		}
 	}
+	*/
+}
+
+SDL_Surface* ImageManager::loadSurface(char* filepath, bool ColorKey)
+{
+	SDL_Surface* RawSurface = IMG_Load(filepath);
+	SDL_Surface* ConvertedSurface = NULL;
+
+	if(RawSurface != NULL)
+	{
+		if (ColorKey)
+		{
+			ConvertedSurface = SDL_DisplayFormat(RawSurface);
+			SDL_FreeSurface(RawSurface);
+			if (ConvertedSurface != NULL)
+			{
+				if (ColorKey)
+				{
+					Uint32 colorkey = SDL_MapRGB( ConvertedSurface->format, 0xFF, 0, 0xFF );
+					SDL_SetColorKey( ConvertedSurface, SDL_SRCCOLORKEY, colorkey );
+					return ConvertedSurface;
+				}
+				return ConvertedSurface;
+			}
+		}
+		else
+		{
+			ConvertedSurface = SDL_DisplayFormatAlpha(RawSurface);
+			if (ConvertedSurface != NULL)
+			{
+                SDL_FreeSurface(RawSurface);
+				return ConvertedSurface;
+			}
+            SDL_FreeSurface(ConvertedSurface);
+			return RawSurface;
+		}
+
+		return NULL;
+	}
+	return NULL;
 }
