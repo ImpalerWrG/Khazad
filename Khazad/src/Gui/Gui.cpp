@@ -99,13 +99,37 @@ void Ui::InitCameraControlMenu()
     TopWidget->add(CameraControlWindow);
     CameraControlWindow->setPosition(SCREEN->getWidth() - 300, 50);
 
-/*
-    gcn::ImageButton* VerticalButton = new gcn::ImageButton("Assets\\Icons\\Vertical.png");
-    VerticalButton->setSize(32, 32);
-    CameraControlWindow->add(VerticalButton, 32, 0);
+
+    gcn::ImageButton* VerticalToggleButton = new gcn::ImageButton("Assets\\Buttons\\Vertical.png");
+    VerticalToggleButton->setSize(32, 32);
     gcn::ActionListener* VerticalListener = new VerticalActionListener();
-    VerticalButton->addActionListener(VerticalListener);
-*/
+    VerticalToggleButton->addActionListener(VerticalListener);
+    CameraControlWindow->add(VerticalToggleButton, ButtonSize * 0, ButtonSize * 0);
+
+    gcn::ImageButton* DebuggingToggleButton = new gcn::ImageButton("Assets\\Buttons\\Debugging.png");
+    DebuggingToggleButton->setSize(32, 32);
+    gcn::ActionListener* DebuggingToggleListener = new DebuggingToggleActionListener();
+    DebuggingToggleButton->addActionListener(DebuggingToggleListener);
+    CameraControlWindow->add(DebuggingToggleButton, ButtonSize * 1, ButtonSize * 0);
+
+    gcn::ImageButton* ShadingToggleButton = new gcn::ImageButton("Assets\\Buttons\\Shading.png");
+    ShadingToggleButton->setSize(32, 32);
+    gcn::ActionListener* ShadingTobbleListener = new ShadingToggleActionListener();
+    ShadingToggleButton->addActionListener(ShadingTobbleListener);
+    CameraControlWindow->add(ShadingToggleButton, ButtonSize * 2, ButtonSize * 0);
+
+    gcn::ImageButton* TakeScreenShotButton = new gcn::ImageButton("Assets\\Buttons\\TakeScreenShot.png");
+    TakeScreenShotButton->setSize(32, 32);
+    gcn::ActionListener* TakeScreenShotListener = new TakeScreenShotActionListener();
+    TakeScreenShotButton->addActionListener(TakeScreenShotListener);
+    CameraControlWindow->add(TakeScreenShotButton, ButtonSize * 3, ButtonSize * 0);
+
+    gcn::ImageButton* FrameToggleButton = new gcn::ImageButton("Assets\\Buttons\\Frame.png");
+    FrameToggleButton->setSize(32, 32);
+    gcn::ActionListener* FrameToggleListener = new FrameToggleActionListener();
+    FrameToggleButton->addActionListener(FrameToggleListener);
+    CameraControlWindow->add(FrameToggleButton, ButtonSize * 4, ButtonSize * 0);
+
 
 
 

@@ -76,6 +76,38 @@ class VerticalActionListener: public gcn::ActionListener
     }
 };
 
+class DebuggingToggleActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        SCREEN->setDebuggingDraw(!SCREEN->isDebuggingDraw());
+    }
+};
+
+class ShadingToggleActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        SCREEN->setShadedDraw(!SCREEN->isShadedDraw());
+    }
+};
+
+class TakeScreenShotActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        SCREEN->CaptureScreenShot();
+    }
+};
+
+class FrameToggleActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        SCREEN->setFrameDraw(!SCREEN->isFrameDraw());
+    }
+};
+
 class IncresseLevelSeperationActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
