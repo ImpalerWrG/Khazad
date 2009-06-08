@@ -594,7 +594,10 @@ void Camera::MoveViewHorizontal(float X, float Y)
 	LookPosition.x += X;
 	LookPosition.y += Y;
 
-    ConfineLookPosition();
+    if(true) // confine within map toggle?
+    {
+        ConfineLookPosition();
+    }
 
 	generateViewFrustum();
 }
@@ -607,38 +610,50 @@ void Camera::ConfineLookPosition()
 
     bool CorrectionNeeded = false;
 
-	if(true) // Confine within the map
-	{
-	    if(LookPosition.x >= MAP->getMapSizeX())
-	    {
-	        LookPosition.x = MAP->getMapSizeX() - 1;
-	        CorrectionNeeded = true;
-        }
+    // Combined X & Y
+    if(LookPosition.x >= MAP->getMapSizeX() - 1)
+    {
+        LookPosition.x = MAP->getMapSizeX() - 1;
+        CorrectionNeeded = true;
+    }
 
-	    if(LookPosition.x < 0)
-	    {
-	        LookPosition.x = 0;
-	        CorrectionNeeded = true;
-        }
+    if(LookPosition.x < 0)
+    {
+        LookPosition.x = 0;
+        CorrectionNeeded = true;
+    }
 
-	    if(LookPosition.y >= MAP->getMapSizeY())
-	    {
-	        LookPosition.y = MAP->getMapSizeY() -1;
-	        CorrectionNeeded = true;
-        }
+    if(LookPosition.y >= MAP->getMapSizeY() - 1)
+    {
+        LookPosition.y = MAP->getMapSizeY() - 1;
+        CorrectionNeeded = true;
+    }
 
-	    if(LookPosition.y < 0)
-	    {
-	        LookPosition.y = 0;
-	        CorrectionNeeded = true;
-        }
+    if(LookPosition.y < 0)
+    {
+        LookPosition.y = 0;
+        CorrectionNeeded = true;
+    }
 
-        if(CorrectionNeeded)
-        {
-	        EyePosition.x = LookPosition.x - DifferenceX;
-	        EyePosition.y = LookPosition.y - DifferenceY;
-        }
-	}
+    if(CorrectionNeeded)
+    {
+        EyePosition.x = LookPosition.x - DifferenceX;
+        EyePosition.y = LookPosition.y - DifferenceY;
+    }
+
+    // Z Axis
+    if(LookPosition.z < 0)
+    {
+        int Difference = EyePosition.z - LookPosition.z;
+        LookPosition.z = 0;
+        EyePosition.z = Difference;
+    }
+    if(LookPosition.z >= MAP->getMapSizeZ() - 1)
+    {
+        int Difference = EyePosition.z - LookPosition.z;
+        LookPosition.z = MAP->getMapSizeZ() - 1;
+        EyePosition.z = MAP->getMapSizeZ() - 1 + Difference;
+    }
 }
 
 void Camera::MoveViewVertical(float Z)
@@ -646,21 +661,10 @@ void Camera::MoveViewVertical(float Z)
 	EyePosition.z += Z;
 	LookPosition.z += Z;
 
-	if(true) // Confing within the slice
-	{
-	    if(LookPosition.z < 0)
-	    {
-	        int Difference = EyePosition.z - LookPosition.z;
-            LookPosition.z = 0;
-            EyePosition.z = Difference;
-	    }
-	    if(LookPosition.z > MAP->getMapSizeZ())
-	    {
-	        int Difference = EyePosition.z - LookPosition.z;
-            LookPosition.z = MAP->getMapSizeZ();
-            EyePosition.z = MAP->getMapSizeZ() + Difference;
-	    }
-	}
+    if(true) // confine within map toggle?
+    {
+        ConfineLookPosition();
+    }
 
 	generateViewFrustum();
 }
