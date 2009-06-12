@@ -1,5 +1,5 @@
-//#ifndef IMAGE__HEADER
-//#define IMAGE__HEADER
+#ifndef IMAGE__HEADER
+#define IMAGE__HEADER
 
 #include <stdafx.h>
 
@@ -37,4 +37,4 @@ protected:
 
 #define IMAGE (ImageManager::GetInstance())
 
-//#endif // IMAGE_HEADER
+#endif // IMAGE_HEADER

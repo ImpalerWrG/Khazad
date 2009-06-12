@@ -65,41 +65,6 @@ bool Cube::InitFacesOpen()
             NeiborCube->InitFacesSolid();
         }
     }
-
-    for(Facet FaceType = FACETS_START; FaceType < NUM_FACETS; ++FaceType)
-    {
-        if(getFacet(FaceType) == NULL)
-        {
-
-            Sint16 BestMaterial = FaceMaterial(FaceType);
-
-            if(BestMaterial != -1)
-            {
-                Face* TemporaryPointer = new Face;
-
-                if(FaceType == FACET_TOP)
-                {
-                    TemporaryPointer->Init(FACET_BOTTOM, (Uint16) BestMaterial);
-                }
-                else
-                {
-                    TemporaryPointer = new Face;
-                    TemporaryPointer->Init(FaceType, (Uint16) BestMaterial);
-                    setFacet(TemporaryPointer, FaceType);
-                }
-
-                getCellOwner()->setActive(true);
-
-                if(FaceType == FACET_TOP || FaceType == FACET_BOTTOM) // Keep roofs of underground rooms invisible
-                {
-                    if(!TemporaryPointer->isConstructed()) // Unless they are themselves floors
-                    {
-                        TemporaryPointer->setVisible(false);
-                    }
-                }
-            }
-        }
-    }
 }
 
 bool Cube::InitFacesSolid()
@@ -110,27 +75,43 @@ bool Cube::InitFacesSolid()
     {
         if(getFacet(FaceType) == NULL)
         {
-            Cube* NeiborCube = getAdjacentCube(FaceType);
-            Cell* NeiborCell = getAdjacentCell(FaceType);
-
             if(FaceType == FACET_TOP)
             {
-                Face* TemporaryPointer = new Face;
-                TemporaryPointer->Init(FaceType, Material);
-                setFacet(TemporaryPointer, FaceType);
-                getCellOwner()->setActive(true);
+                InitFace(FaceType);
                 continue;
             }
 
-            if(NeiborCube != NULL && NeiborCube->isHidden() && NeiborCube->isSolid())
+            if(getAdjacentCube(FaceType) != NULL)
             {
-                Face* TemporaryPointer = new Face;
-                TemporaryPointer->Init(FaceType, Material);
-                setFacet(TemporaryPointer, FaceType);
-                getCellOwner()->setActive(true);
+                InitFace(FaceType);
             }
         }
     }
+}
+
+bool Cube::InitFaces()
+{
+    Initalized = true;
+
+    for(Facet FaceType = FACETS_START; FaceType < NUM_FACETS; ++FaceType)
+    {
+        Cube* NeiborCube = getAdjacentCube(FaceType);
+
+        if(NeiborCube != NULL && !NeiborCube->isSolid())
+        {
+            InitFace(FaceType);
+        }
+    }
+}
+
+bool Cube::InitFace(Facet FaceType)
+{
+    Face* TemporaryPointer = new Face;
+    TemporaryPointer->Init(FaceType, Material);
+    setFacet(TemporaryPointer, FaceType);
+    getCellOwner()->setActive(true);
+
+    return true;
 }
 
 bool Cube::setMaterial(Uint16 MaterialType)
@@ -187,58 +168,6 @@ void Cube::InitConstructedFace(Facet FacetType, Uint16 MaterialType)
     Owner->setActive(true);
 }
 
-Sint16 Cube::FaceMaterial(Facet Type)
-{
-    Cube* NeiborCube = getAdjacentCube(Type);
-
-    if(NeiborCube != NULL)
-    {
-        if(Solid)
-        {
-            if(NeiborCube->isSolid() || NeiborCube->Slopage != NULL)
-            {
-                return -1; // No solid-solid surfaces displayed
-            }
-            else
-            {
-                return Material;  // Solid materials dominated all others
-            }
-        }
-        else
-        {
-            if(NeiborCube->isSolid())
-            {
-                return NeiborCube->getMaterial();
-            }
-            else
-            {
-                if(Liquid)
-                {
-                    if(!NeiborCube->getLiquid())
-                    {
-                        return 2;
-                    }
-                    else
-                    {
-                        return -1;
-                    }
-                }
-                else
-                {
-                    if (NeiborCube->getLiquid())
-                    {
-                        return 2;
-                    }
-
-                    return -1;  // No Open-Open surfaces
-                }
-            }
-        }
-    }
-
-    return -1; // No Null-Solid sufaces
-}
-
 Cube* Cube::getAdjacentCube(Facet Type)
 {
     Sint32 x = Position.x;
@@ -278,32 +207,32 @@ Cube* Cube::getNeiborCube(Direction Type)
 
     switch(Type)
     {
-        case NORTHEAST:
+        case DIRECTION_NORTHEAST:
             y -= 1;
             break;
-        case SOUTHEAST:
+        case DIRECTION_SOUTHEAST:
             x += 1;
             break;
-        case SOUTHWEST:
+        case DIRECTION_SOUTHWEST:
             y += 1;
             break;
-        case NORTHWEST:
+        case DIRECTION_NORTHWEST:
             x -= 1;
             break;
 
-        case NORTH:
+        case DIRECTION_NORTH:
             y -= 1;
             x -= 1;
             break;
-        case SOUTH:
+        case DIRECTION_SOUTH:
             x += 1;
             y += 1;
             break;
-        case WEST:
+        case DIRECTION_WEST:
             x -= 1;
             y += 1;
             break;
-        case EAST:
+        case DIRECTION_EAST:
             x += 1;
             y -= 1;
             break;
@@ -451,19 +380,19 @@ void Cube::DetermineSlope()
     }
 
 
-    if(getNeiborCube(NORTH) != NULL && getNeiborCube(NORTH)->isSolid())
+    if(getNeiborCube(DIRECTION_NORTH) != NULL && getNeiborCube(DIRECTION_NORTH)->isSolid())
     {
         NorthSolid = true;
     }
-    if(getNeiborCube(SOUTH) != NULL && getNeiborCube(SOUTH)->isSolid())
+    if(getNeiborCube(DIRECTION_SOUTH) != NULL && getNeiborCube(DIRECTION_SOUTH)->isSolid())
     {
         SouthSolid = true;
     }
-    if(getNeiborCube(WEST) != NULL && getNeiborCube(WEST)->isSolid())
+    if(getNeiborCube(DIRECTION_WEST) != NULL && getNeiborCube(DIRECTION_WEST)->isSolid())
     {
        WestSolid = true;
     }
-    if(getNeiborCube(EAST) != NULL && getNeiborCube(EAST)->isSolid())
+    if(getNeiborCube(DIRECTION_EAST) != NULL && getNeiborCube(DIRECTION_EAST)->isSolid())
     {
         EastSolid = true;
     }
@@ -544,8 +473,7 @@ bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslat
 {
     return false;
 
-
-
+/*
 	if (isInitalized())
 	{
         if(Hidden && !DrawHidden)
@@ -582,31 +510,6 @@ bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslat
             {
                 getFacet(FACET_TOP)->Draw(xTranslate, yTranslate);
             }
-	    }
-
-	    if(false) // Add option here
-	    {
-            if(Orientation == CAMERA_DOWN)
-            {
-                return true;
-            }
-            if(getFacet(FACET_NORTH_EAST) != NULL)
-            {
-                getFacet(FACET_NORTH_EAST)->Draw(xTranslate, yTranslate);
-            }
-            if(getFacet(FACET_NORTH_WEST) != NULL)
-            {
-                getFacet(FACET_NORTH_WEST)->Draw(xTranslate, yTranslate);
-            }
-            if(getFacet(FACET_SOUTH_EAST) != NULL)
-            {
-                getFacet(FACET_SOUTH_EAST)->Draw(xTranslate, yTranslate);
-            }
-            if(getFacet(FACET_SOUTH_WEST) != NULL)
-            {
-                getFacet(FACET_SOUTH_WEST)->Draw(xTranslate, yTranslate);
-            }
-            return true;
 	    }
 
         if(Solid)
@@ -720,4 +623,60 @@ bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslat
 	}
 
 	return true;
+	*/
+}
+
+void Cube::Dig()
+{
+    if(Solid)
+    {
+        Solid = false;
+        setHidden(false);
+
+        for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+        {
+            if(DirectionType != DIRECTION_DOWN)
+            {
+                Cube* NeiborCube = getNeiborCube(DirectionType);
+
+                if(NeiborCube != NULL && NeiborCube->isHidden())
+                {
+                    NeiborCube->setHidden(false);
+                    NeiborCube->getCellOwner()->DirtyDrawlist = true;
+                }
+
+                if(NeiborCube != NULL && NeiborCube->isSolid())
+                {
+                    NeiborCube->InitFacesSolid();
+                    NeiborCube->getCellOwner()->DirtyDrawlist = true;
+                }
+            }
+        }
+
+        for(Facet FaceType = FACETS_START; FaceType < NUM_FACETS; ++FaceType)
+        {
+            if(FaceType != FACET_TOP && FaceType != FACET_BOTTOM)
+            {
+                DeleteFace(FaceType);
+            }
+        }
+
+        if(getFacet(FACET_BOTTOM) == NULL)
+        {
+            InitFace(FACET_BOTTOM);
+        }
+        else
+        {
+            if(!getFacet(FACET_BOTTOM)->isConstructed())
+            {
+                InitFace(FACET_BOTTOM);
+            }
+        }
+    }
+
+    if(Slopage)
+    {
+        RemoveSlope();
+        InitFace(FACET_BOTTOM);
+    }
 }

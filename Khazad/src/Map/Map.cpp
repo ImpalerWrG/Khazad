@@ -524,7 +524,7 @@ void Map::LoadExtract()
 
                         for(CameraOrientation Orientation = CAMERA_DOWN; Orientation < NUM_ORIENTATIONS; ++Orientation)
                         {
-                            SCREEN->RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation, false);
+                            SCREEN->RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation);
                         }
                         LoopCell->DirtyDrawlist = false;
                     }

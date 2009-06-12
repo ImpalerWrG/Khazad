@@ -75,7 +75,7 @@ public:
 	void DirtyAllLists();
 	bool Render();
 
-	void RefreshDrawlist(Cell* TargetCell, GLuint DrawlistID, CameraOrientation Orientation, bool Execute);
+	void RefreshDrawlist(Cell* TargetCell, GLuint DrawlistID, CameraOrientation Orientation);
 
 	void IncrementTriangles(Uint32 Triangles);
 

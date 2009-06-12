@@ -132,25 +132,13 @@ bool InputManager::HandleInput()
                     }
                     case SDLK_d:
                     {
-                        SCREEN->WipeScreen();
-                        SCREEN->setDrawingFlat();
-                        SCREEN->RenderLogo();
-
-                        SCREEN->RenderTextCentered("Dumping Memory", 0, WHITE, 0);
-
-                        SCREEN->Flip();
-
-
-                        if(!MAP->Initialized)
+                        Vector3 CubePosition = SCREEN->MainCamera->Look();
+                        Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
+                        if(TargetCube != NULL)
                         {
-                            EXTRACT->dumpMemory();
-                            MAP->LoadExtract();
-                            SCREEN->MainCamera->CenterView();
-                        }
-                        else
-                        {
-                            EXTRACT->dumpMemory();
-                            MAP->LoadExtract();
+                            TargetCube->Dig();
+                            Cell* TargetCell = TargetCube->getCellOwner();
+                            TargetCell->DirtyDrawlist = true;
                         }
                         break;
                     }

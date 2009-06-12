@@ -1,5 +1,5 @@
-#ifndef IMAGE__HEADER
-#define IMAGE__HEADER
+#ifndef IMAGE__PAGE
+#define IMAGE__PAGE
 
 #include <stdafx.h>
 #include <SDL_image.h>
@@ -12,7 +12,7 @@ public:
 	~ImagePage();
 
 	SDL_Surface* RawSurface;
-	
+
 	int clipHight;
 	int clipWidth;
 
@@ -20,4 +20,4 @@ public:
 	int Columns;
 };
 
-#endif // IMAGE__HEADER
+#endif // IMAGE__PAGE

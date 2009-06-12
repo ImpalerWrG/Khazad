@@ -311,17 +311,19 @@ void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY)
 	{
 		if (Event->type == SDL_MOUSEMOTION )
 		{
-			if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_RIGHT))
-			{
-				SlideView(DeltaX * CONFIG->SlideSpeed() / 50, DeltaY * CONFIG->SlideSpeed() / 50);
-			}
-
-			if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_LEFT))
+			if ((MouseButtonState & SDL_BUTTON(SDL_BUTTON_LEFT)) && (MouseButtonState & SDL_BUTTON(SDL_BUTTON_RIGHT)))
 			{
 				TiltView(DeltaY *  (CONFIG->TiltSpeed() / 1000.0), (float)0.01, (float)10.0);
 				OrbitView(DeltaX * (CONFIG->OrbitSpeed() / 10000.0));
 
 				generateViewFrustum();
+			}
+			else
+			{
+                if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_RIGHT))
+                {
+                    SlideView(DeltaX * CONFIG->SlideSpeed() / 50, DeltaY * CONFIG->SlideSpeed() / 50);
+                }
 			}
 		}
 	}
@@ -642,17 +644,18 @@ void Camera::ConfineLookPosition()
     }
 
     // Z Axis
+    int MaxZ = MAP->getMapSizeZ() - 1;
+    int MinZ = 0;
+
     if(LookPosition.z < 0)
     {
-        int Difference = EyePosition.z - LookPosition.z;
         LookPosition.z = 0;
-        EyePosition.z = Difference;
+        EyePosition.z = DifferenceZ;
     }
-    if(LookPosition.z >= MAP->getMapSizeZ() - 1)
+    if(LookPosition.z >= MaxZ)
     {
-        int Difference = EyePosition.z - LookPosition.z;
-        LookPosition.z = MAP->getMapSizeZ() - 1;
-        EyePosition.z = MAP->getMapSizeZ() - 1 + Difference;
+        LookPosition.z = MaxZ;
+        EyePosition.z = MaxZ + DifferenceZ;
     }
 }
 
@@ -671,24 +674,9 @@ void Camera::MoveViewVertical(float Z)
 
 void Camera::setViewHight(Sint32 ZLevel)
 {
-    if(ZLevel != LookPosition.z)
-    {
-        if(ZLevel > SliceTop)
-        {
-            SliceTop = ZLevel;
-        }
-        if(ZLevel < (SliceTop - ViewLevels))
-        {
-            SliceTop = ZLevel + ViewLevels;
-        }
+    SliceTop = ZLevel;
 
-        float Difference = EyePosition.z - LookPosition.z;
-
-        LookPosition.z = ZLevel;
-        EyePosition.z = LookPosition.z + Difference;
-
-        generateViewFrustum();
-    }
+    ConfineLookPosition();
 }
 
 void Camera::ChangeViewLevels(Sint32 Change)

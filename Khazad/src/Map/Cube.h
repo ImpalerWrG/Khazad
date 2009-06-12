@@ -36,8 +36,6 @@ public:
 	Uint16 getMaterial()            { return Material; }
     bool setMaterial(Uint16 MaterialType);
 
-    Sint16 FaceMaterial(Facet Type);
-
     Face* getFacet(Facet Type);
     void setFacet(Face* NewFace, Facet Type);
     void setAllFacesVisiblity(bool NewValue);
@@ -45,6 +43,7 @@ public:
 
     bool InitFacesOpen();
     bool InitFacesSolid();
+    bool InitFaces();
 
     void InitConstructedFace(Facet FacetType, Uint16 MaterialType);
     bool Open();
@@ -56,6 +55,7 @@ public:
     Cell* getAdjacentCell(Facet Type);
     static Facet OpositeFace(Facet Type);
 
+    bool InitFace(Facet FaceType);
 
 	bool Update();
 	bool Draw(CameraOrientation Orientation, float xTranslate, float yTranslate, bool DrawHidden, bool DrawSubTerranian, bool DrawSkyView, bool DrawSunLit);
@@ -69,6 +69,7 @@ public:
 	bool isSunLit()                 { return SunLit; }
 	void setSunLit(bool NewValue)   { SunLit = NewValue; }
 
+    void Dig();
 
 protected:
 

@@ -402,8 +402,6 @@ bool ScreenManager::Render()
         float ZTranslate = MainCamera->LookZ() - ((MainCamera->LookZ() - Zlevel) * MainCamera->getLevelSeperation());
         glTranslatef(0.0, 0.0, ZTranslate);
 
-        glBegin(GL_TRIANGLES);
-
 		if(MainCamera->InSlice(Zlevel))
 		{
             float Shading = 1.0;
@@ -433,23 +431,20 @@ bool ScreenManager::Render()
 
                                 for(CameraOrientation Orientation = CAMERA_DOWN; Orientation < NUM_ORIENTATIONS; ++Orientation)
                                 {
-                                    RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation, CurrentOrientation == Orientation);
+                                    RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation);
                                 }
                                 LoopCell->DirtyDrawlist = false;
                             }
-                            else
-                            {
-                                glColor3f(Shading, Shading, Shading);
-                                glCallList(LoopCell->DrawListID + (GLuint) CurrentOrientation);
 
-                                TotalTriangles += LoopCell->getTriangleCount(CurrentOrientation);  // Use stored Triangle Count
-                            }
+                            glColor3f(Shading, Shading, Shading);
+                            glCallList(LoopCell->DrawListID + (GLuint) CurrentOrientation);
+
+                            TotalTriangles += LoopCell->getTriangleCount(CurrentOrientation);  // Use stored Triangle Count
                         }
                     }
                 }
             }
 		}
-        glEnd();
 
 		glPopMatrix();
 	}
@@ -471,21 +466,19 @@ bool ScreenManager::Render()
 	return true;
 }
 
-void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, CameraOrientation Orientation, bool Execute)
+void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, CameraOrientation Orientation)
 {
-    if(Execute)
-    {
-        glNewList(DrawListID, GL_COMPILE_AND_EXECUTE);
-    }
-    else
-    {
-        glNewList(DrawListID, GL_COMPILE);
-    }
-        TriangleCounter = 0;  // Reset Counter and Track Triangle count
+    glNewList(DrawListID, GL_COMPILE);
+
+    TriangleCounter = 0;  // Reset Counter and Track Triangle count
+
+    glBegin(GL_TRIANGLES);
 
         TargetCell->Draw(Orientation, HiddenDraw, SubTerranianDraw, SkyViewDraw, SunLitDraw);
 
         glColor3f(1.0, 1.0, 1.0);
+
+    glEnd();
 
     glEndList();
 
