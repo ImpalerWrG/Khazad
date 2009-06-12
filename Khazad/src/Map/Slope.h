@@ -17,10 +17,6 @@ public:
 	~Slope();
 	bool Init(Cube* Owner, Slopping SlopeType);
 
-	void CheckRemoval();
-
-	SDL_Color Color;
-
 	bool Update();
 	bool Draw(float xTranslate, float yTranslate);
 

@@ -642,13 +642,13 @@ void Cube::Dig()
                 if(NeiborCube != NULL && NeiborCube->isHidden())
                 {
                     NeiborCube->setHidden(false);
-                    NeiborCube->getCellOwner()->DirtyDrawlist = true;
+                    NeiborCube->getCellOwner()->setDirtyDrawList(true);
                 }
 
                 if(NeiborCube != NULL && NeiborCube->isSolid())
                 {
                     NeiborCube->InitFacesSolid();
-                    NeiborCube->getCellOwner()->DirtyDrawlist = true;
+                    NeiborCube->getCellOwner()->setDirtyDrawList(true);
                 }
             }
         }

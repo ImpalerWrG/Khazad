@@ -17,12 +17,8 @@ public:
 	bool Init();
 	virtual ~Actor();
 
-
 	virtual bool Update();
 	virtual bool Draw(CameraOrientation Orientaion);
-
-
-	bool Dead;
 
     Vector3 getPosition()                       { return Position; }
     void setPosition(Vector3 NewPosition)       { Position = NewPosition; }
@@ -31,16 +27,11 @@ public:
 	ActorType getType()                { return Type; }
 	void setType(ActorType NewType)    { Type = NewType; }
 
-	bool Visible;
+	bool isInitalized()                 { return Initalized; }
+	void setInitalized(bool NewValue)   { Initalized = NewValue; }
 
-	bool isInitalized()                { return Initalized; }
-	void setInitalized(bool NewValue)  { Initalized = NewValue; }
-
-	bool isVisible()                { return Visible; }
-	void setVisible(bool NewValue)  { Visible = NewValue; }
-
-	bool DirtyDrawlist;
-	GLuint DrawListID;
+	bool isVisible()                    { return Visible; }
+	void setVisible(bool NewValue)      { Visible = NewValue; }
 
 	bool isHidden()                 { return Hidden; }
 	void setHidden(bool NewValue)   { Hidden = NewValue; }
@@ -48,9 +39,9 @@ public:
 protected:
 
 	Vector3 Position;
-
 	ActorType Type;
 
+	bool Visible;
     bool Initalized;
     bool Hidden;
 };

@@ -79,8 +79,6 @@ bool Map::Generate(Uint32 Seed)
         }
     }
 
-    float Acumulator = 0.0;
-    float North, South, East, West;
     Slopping Type;
 
     Cube* NewCube = NULL;
@@ -90,164 +88,7 @@ bool Map::Generate(Uint32 Seed)
     {
         for(Sint32 j = 0; j < MapSizeY; j++)
         {
-            North = TerrainArray[i][j];
-            East = TerrainArray[i + 1][j];
-            West = TerrainArray[i][j + 1];
-            South = TerrainArray[i + 1][j + 1];
-
-            if(North == East)
-            {
-                if(South == West)
-                {
-                    if(North > South)
-                    {
-                        Type = SLOPE_SOUTH_WEST;
-                    }
-                    else
-                    {
-                        if(South > North)
-                        {
-                            Type = SLOPE_NORTH_EAST;
-                        }
-                        else
-                        {
-                            Type = SLOPE_FLAT;
-                        }
-                    }
-                }
-                else
-                {
-                    Type = SLOPE_FLAT;
-                }
-            }
-            else
-            {
-                if(East == South)
-                {
-                    if(North == West)
-                    {
-                        if(North > South)
-                        {
-                            Type = SLOPE_SOUTH_EAST;
-                        }
-                        else
-                        {
-                            if(South > North)
-                            {
-                                Type = SLOPE_NORTH_WEST;
-                            }
-                            else
-                            {
-                                Type = SLOPE_FLAT;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Type = SLOPE_FLAT;
-                    }
-                }
-                else
-                {
-                    Type = SLOPE_FLAT;
-                }
-            }
-
-            if(East == West)
-            {
-                if(North > East)
-                {
-                    if(South > East)
-                    {
-                        Type = SLOPE_CRESS_EAST_WEST;
-                    }
-                    else
-                    {
-                        Type = SLOPE_SMALL_SOUTH;
-                    }
-                }
-                else
-                {
-                    if(North < East)
-                    {
-                        if(South < East)
-                        {
-                            Type = SLOPE_CRESS_NORTH_SOUTH;
-                        }
-                        else
-                        {
-                            Type = SLOPE_LARGE_NORTH;
-                        }
-                    }
-                    else
-                    {
-                        if(South < East)
-                        {
-                            Type = SLOPE_LARGE_SOUTH;
-                        }
-                        else
-                        {
-                            if(South > East)
-                            {
-                                Type = SLOPE_SMALL_NORTH;
-                            }
-                            else
-                            {
-                                Type = SLOPE_FLAT;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if(North == South)
-            {
-                if(East > South)
-                {
-                    if(West > South)
-                    {
-                        Type = SLOPE_CRESS_NORTH_SOUTH;
-                    }
-                    else
-                    {
-                        Type = SLOPE_SMALL_WEST;
-                    }
-                }
-                else
-                {
-                    if(East < South)
-                    {
-                        if(West < South)
-                        {
-                            Type = SLOPE_CRESS_EAST_WEST;
-                        }
-                        else
-                        {
-                            Type = SLOPE_LARGE_EAST;
-                        }
-                    }
-                    else
-                    {
-                        if(West < South)
-                        {
-                            Type = SLOPE_LARGE_WEST;
-                        }
-                        else
-                        {
-                            if(West > South)
-                            {
-                                Type = SLOPE_SMALL_EAST;
-                            }
-                            else
-                            {
-                                Type = SLOPE_FLAT;
-                            }
-                        }
-                    }
-                }
-            }
-
-            TargetCell = getCubeOwner(i, j, North);
+            TargetCell = getCubeOwner(i, j, 0);
 
             if(TargetCell)
             {
@@ -256,8 +97,7 @@ bool Map::Generate(Uint32 Seed)
                     TargetCell->Init();
                 }
 
-                Acumulator = North + South + East + West;
-                NewCube = getCube(i, j, Acumulator / 4);
+                NewCube = getCube(i, j, 0);
 
                 if (NewCube)
                 {
@@ -409,7 +249,6 @@ void Map::LoadExtract()
                         {
                             TargetCell->Init();
                         }
-
                         TargetCube = getCube(i, j, k);
 
                         if(!TargetCube)
@@ -432,24 +271,20 @@ void Map::LoadExtract()
                         {
                             TargetCube->Init(Material);
                         }
-
                         if(IsOpen)
                         {
                             TargetCube->Open();
                         }
-
                         if(IsRamp)
                         {
                             TargetCube->Init(Material);
                             TargetCube->Open();
                             TargetCube->SetSlope(SLOPE_FLAT);  // Prime the Slope, the type can not yet be determined
                         }
-
                         if(IsFloor)
                         {
                             TargetCube->InitConstructedFace(FACET_BOTTOM, Material);
                         }
-
                         if(IsStairs)
                         {
                             TargetCube->Init(Material);
@@ -457,7 +292,6 @@ void Map::LoadExtract()
                             TargetCube->SetSlope(SLOPE_FLAT);
                             //TODO render stairs differently
                         }
-
                         if(Liquid)
                         {
                             TargetCube->Open();
@@ -469,17 +303,16 @@ void Map::LoadExtract()
                             }
                             else
                             {
-
                                 TargetCube->InitConstructedFace(FACET_TOP, DATA->getLabelIndex("MATERIAL_WATER"));
                             }
                         }
-
                         TargetCube->setVisible(true);
                     }
                 }
             }
 		}
 	}
+
 
     // Initialize Faces
     for (Uint32 i = 0; i < MapSizeX; i++)
@@ -516,23 +349,22 @@ void Map::LoadExtract()
 
                 if(LoopCell->isActive())
                 {
-                    if(LoopCell->DirtyDrawlist)
+                    if(LoopCell->isDirtyDrawList())
                     {
                         // Rebuild the new Drawlist
-                        GLuint DrawListID = LoopCell->DrawListID;
+                        GLuint DrawListID = LoopCell->getDrawListID();
                         glDeleteLists(DrawListID, 5);
 
                         for(CameraOrientation Orientation = CAMERA_DOWN; Orientation < NUM_ORIENTATIONS; ++Orientation)
                         {
                             SCREEN->RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation);
                         }
-                        LoopCell->DirtyDrawlist = false;
+                        LoopCell->setDirtyDrawList(false);
                     }
                 }
             }
         }
 	}
-
 
     Initialized = true;
 }

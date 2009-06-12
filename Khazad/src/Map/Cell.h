@@ -38,7 +38,14 @@ public:
     bool isActive()                     { return Active; }
     void setActive(bool NewValue)       { Active = NewValue; }
 
+    GLuint getDrawListID()                  { return DrawListID; }
+    bool isDirtyDrawList()                  { return DirtyDrawlist; }
+    void setDirtyDrawList(bool NewValue)    { DirtyDrawlist = NewValue; }
+
 protected:
+
+	bool DirtyDrawlist;
+	GLuint DrawListID;
 
 	//bool Sky;
 	//bool Basment;

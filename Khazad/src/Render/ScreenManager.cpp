@@ -308,7 +308,7 @@ void ScreenManager::DirtyAllLists()
 		{
 			for (Uint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
 			{
-				MAP->getCell(SizeX, SizeY, SizeZ)->DirtyDrawlist = true;
+				MAP->getCell(SizeX, SizeY, SizeZ)->setDirtyDrawList(true);
 			}
 		}
 	}
@@ -416,28 +416,28 @@ bool ScreenManager::Render()
                 {
                     Cell* LoopCell = MAP->getCell(SizeX, SizeY, Zlevel);
 
-                    if(LoopCell->isActive())
+                    if(LoopCell != NULL && LoopCell->isActive())
                     {
                         Vector3 RenderingPosition = LoopCell->getPosition();
                         RenderingPosition.z = ZTranslate;
 
                         if(MainCamera->sphereInFrustum(RenderingPosition, CELLEDGESIZE))
                         {
-                            if(LoopCell->DirtyDrawlist)
+                            if(LoopCell->isDirtyDrawList())
                             {
                                 // Rebuild the new Drawlist
-                                GLuint DrawListID = LoopCell->DrawListID;
+                                GLuint DrawListID = LoopCell->getDrawListID();
                                 glDeleteLists(DrawListID, 5);
 
                                 for(CameraOrientation Orientation = CAMERA_DOWN; Orientation < NUM_ORIENTATIONS; ++Orientation)
                                 {
                                     RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation);
                                 }
-                                LoopCell->DirtyDrawlist = false;
+                                LoopCell->setDirtyDrawList(false);
                             }
 
                             glColor3f(Shading, Shading, Shading);
-                            glCallList(LoopCell->DrawListID + (GLuint) CurrentOrientation);
+                            glCallList(LoopCell->getDrawListID() + (GLuint) CurrentOrientation);
 
                             TotalTriangles += LoopCell->getTriangleCount(CurrentOrientation);  // Use stored Triangle Count
                         }
@@ -549,48 +549,51 @@ void ScreenManager::setDrawing3D()
 
 void ScreenManager::PrintDebugging()
 {
-    char buffer[256];
-	setDrawingFlat();
-
-	Vector3 Point;
-    Point.x = (int) MainCamera->LookX();
-    Point.y = (int) MainCamera->LookY();
-    Point.z = (int) MainCamera->LookZ();
-
-	int TileType = 0;
-	int Designation = 0;
-	int Ocupancy = 0;
-
-    if(!(HiddenDraw ^ EXTRACT->isDesignationFlag(9, Point.x, Point.y, Point.z)))
+    if (EXTRACT->isMapLoaded())
     {
-        TileType = EXTRACT->getTileType(Point.x, Point.y, Point.z);
-        Designation = EXTRACT->getDesignations(Point.x, Point.y, Point.z);
-        Ocupancy = EXTRACT->getOccupancies(Point.x, Point.y, Point.z);
+        char buffer[256];
+        setDrawingFlat();
+
+        Vector3 Point;
+        Point.x = (int) MainCamera->LookX();
+        Point.y = (int) MainCamera->LookY();
+        Point.z = (int) MainCamera->LookZ();
+
+        int TileType = 0;
+        int Designation = 0;
+        int Ocupancy = 0;
+
+        if(!(HiddenDraw ^ EXTRACT->isDesignationFlag(9, Point.x, Point.y, Point.z)))
+        {
+            TileType = EXTRACT->getTileType(Point.x, Point.y, Point.z);
+            Designation = EXTRACT->getDesignations(Point.x, Point.y, Point.z);
+            Ocupancy = EXTRACT->getOccupancies(Point.x, Point.y, Point.z);
+        }
+
+        SDL_Rect position;
+        position.x = 10;
+        position.y = 160;
+
+        sprintf (buffer, "Cordinates: x%i y%i z%i", (int)Point.x, (int)Point.y, (int)Point.z);
+        SCREEN->RenderText(buffer, 0, WHITE, &position);
+        position.y -= 40;
+
+        sprintf (buffer, "Tile: %i", TileType);
+        SCREEN->RenderText(buffer, 0, WHITE, &position);
+        position.y -= 40;
+
+        char binarybuffer[33];
+
+        binarysprintf(binarybuffer, Designation);
+        sprintf (buffer, "Designation: %s", binarybuffer);
+        SCREEN->RenderText(buffer, 0, WHITE, &position);
+
+        position.y -= 40;
+
+        binarysprintf(binarybuffer, Ocupancy);
+        sprintf (buffer, "Ocupancy: %s", binarybuffer);
+        SCREEN->RenderText(buffer, 0, WHITE, &position);
     }
-
-	SDL_Rect position;
-    position.x = 10;
-    position.y = 160;
-
-    sprintf (buffer, "Cordinates: x%i y%i z%i", (int)Point.x, (int)Point.y, (int)Point.z);
-    SCREEN->RenderText(buffer, 0, WHITE, &position);
-    position.y -= 40;
-
-    sprintf (buffer, "Tile: %i", TileType);
-    SCREEN->RenderText(buffer, 0, WHITE, &position);
-    position.y -= 40;
-
-    char binarybuffer[33];
-
-    binarysprintf(binarybuffer, Designation);
-    sprintf (buffer, "Designation: %s", binarybuffer);
-    SCREEN->RenderText(buffer, 0, WHITE, &position);
-
-    position.y -= 40;
-
-    binarysprintf(binarybuffer, Ocupancy);
-    sprintf (buffer, "Ocupancy: %s", binarybuffer);
-    SCREEN->RenderText(buffer, 0, WHITE, &position);
 }
 
 void ScreenManager::binarysprintf(char* buffer, int Input)

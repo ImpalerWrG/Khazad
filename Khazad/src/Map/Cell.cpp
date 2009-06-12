@@ -24,6 +24,7 @@ Cell::~Cell()
 bool Cell::Init()
 {
     Initalized = true;
+	DirtyDrawlist = true;
 
     Cubes = new Cube**[CELLEDGESIZE];
     Facets = new Face***[CELLEDGESIZE];

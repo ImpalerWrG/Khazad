@@ -36,9 +36,6 @@ protected:
     bool Constructed; // Face will be independent of Cube addition or removal
     bool Decorated;   // Face apearance is different from Owner Cube
 
-	Vector3 Points[4];
-	SDL_Color Color;
-
 	Uint16 Material;
 	Uint16 Texture;
 	Facet FacetType;

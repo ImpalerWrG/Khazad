@@ -6,9 +6,7 @@
 Actor::Actor(ActorType NewType)
 {
 	Visible = false;
-	DirtyDrawlist = true;
 	Type = NewType;
-	Dead = false;
 
 	//BirthDate = 0;
 }
@@ -17,7 +15,6 @@ Actor::Actor()
 {
 	Visible = false;
 	Hidden = false;
-	DirtyDrawlist = true;
 }
 
 Actor::~Actor()

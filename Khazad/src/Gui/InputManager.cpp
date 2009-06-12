@@ -138,7 +138,7 @@ bool InputManager::HandleInput()
                         {
                             TargetCube->Dig();
                             Cell* TargetCell = TargetCube->getCellOwner();
-                            TargetCell->DirtyDrawlist = true;
+                            TargetCell->setDirtyDrawList(true);
                         }
                         break;
                     }
@@ -177,15 +177,21 @@ bool InputManager::HandleInput()
                         SCREEN->RenderTextCentered(buffer, 0, WHITE, 0);
                         SCREEN->Flip();
 
-
 					    EXTRACT->writeMap(CONFIG->SavePath());
 					    break;
 					}
                     case SDLK_f:
 					{
+                        EXTRACT->FreeMap();
+                        break;
+					}
+					/*
+                    case SDLK_f:
+					{
 					    SCREEN->setFrameDraw(!SCREEN->isFrameDraw());
 					    break;
 					}
+					*/
                     case SDLK_s:
 					{
 					    SCREEN->setShadedDraw(!SCREEN->isShadedDraw());
