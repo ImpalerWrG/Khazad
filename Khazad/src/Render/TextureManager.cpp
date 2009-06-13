@@ -10,10 +10,24 @@ DECLARE_SINGLETON(TextureManager)
 
 bool TextureManager::Init()
 {
+    // Version Check of DevIL
+    if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION || iluGetInteger(ILU_VERSION_NUM) < ILU_VERSION || ilutGetInteger(ILUT_VERSION_NUM) < ILUT_VERSION)
+    {
+		printf ("DevIL library is out of date! Please upgrade\n");
+		return false;
+	}
+
     // Initilize Devil with OpenGL rendering support
     ilInit();
     iluInit();
+    ilutInit();
     ilutRenderer(ILUT_OPENGL);
+    ilutEnable(ILUT_OPENGL_CONV);
+
+    ilEnable (IL_CONV_PAL);
+
+    //ilEnable(IL_ORIGIN_SET);
+    //ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 
     // Load the terrain Textures
     for(int i = 0; i < DATA->getNumTextures(); ++i)
@@ -122,7 +136,6 @@ void TextureManager::MergeTextures()
     }
 
     iluFlipImage();
-    ilutEnable(ILUT_OPENGL_CONV);
     ReportDevILErrors();
 
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

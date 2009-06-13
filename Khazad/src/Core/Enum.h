@@ -10,7 +10,6 @@ enum ActorType
 	PAWN_ACTOR,
 
 	NUM_ACTORS,
-	ACTORS_START = 0
 };
 
 enum Facet
@@ -89,5 +88,21 @@ enum CameraOrientation
 
 inline CameraOrientation &operator++ (CameraOrientation &Orientation)      { return Orientation = CameraOrientation(Orientation + 1); }
 
+enum SpacialPoint
+{
+    SCACIAL_POINT_CENTER,
+
+    SPACIAL_POINT_NORTH_TOP,
+    SPACIAL_POINT_EAST_TOP,
+    SPACIAL_POINT_SOUTH_TOP,
+    SPACIAL_POINT_WEST_TOP,
+
+    SPACIAL_POINT_NORTH_BOTTOM,
+    SPACIAL_POINT_EAST_BOTTOM,
+    SPACIAL_POINT_SOUTH_BOTTOM,
+    SPACIAL_POINT_WEST_BOTTOM,
+
+    NUM_SPACIAL_POINTS,
+};
 
 #endif // ENUM_HEADER
