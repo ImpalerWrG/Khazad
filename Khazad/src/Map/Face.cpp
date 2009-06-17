@@ -8,6 +8,7 @@
 #include <ScreenManager.h>
 #include <DataManager.h>
 #include <Random.h>
+#include <Map.h>
 
 
 Face::Face()
@@ -24,13 +25,19 @@ Face::Face()
 
     Rotation = RANDOM->Roll(0, 255);
 
+    MAP->ChangeFaceCount(1);
 	//GAME->ActorList.push_back(this);
 	//ID = (Uint32) GAME->ActorList.size();
 }
 
 Face::~Face()
 {
+    MAP->ChangeFaceCount(-1);
     //GAME->RemoveActor(ID);
+    if(Initalized)
+    {
+        MAP->ChangeInitedFaceCount(-1);
+    }
 }
 
 bool Face::Init(Facet Type, Uint16 MaterialType)
@@ -167,6 +174,7 @@ bool Face::Init(Facet Type, Uint16 MaterialType)
 		}
 	}
 */
+    MAP->ChangeInitedFaceCount(1);
 
 	return true;
 }

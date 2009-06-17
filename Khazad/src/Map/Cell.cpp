@@ -7,6 +7,7 @@
 #include <ConfigManager.h>
 #include <Random.h>
 #include <Game.h>
+#include <Map.h>
 
 /*
 Cell::Cell()
@@ -18,7 +19,12 @@ Cell::Cell()
 
 Cell::~Cell()
 {
+    MAP->ChangeCellCount(-1);
 
+    if(Initalized)
+    {
+        MAP->ChangeInitedCellCount(-1);
+    }
 }
 
 bool Cell::Init()
@@ -49,6 +55,8 @@ bool Cell::Init()
 		}
 	}
 
+    MAP->ChangeInitedCellCount(1);
+
 	return true;
 }
 
@@ -65,7 +73,7 @@ Cell::Cell(Sint32 X, Sint32 Y, Sint32 Z)
 	Position.y = (float) Y + (CELLEDGESIZE / 2) - HALFCUBE;
 	Position.z = (float) Z;
 
-    //Basment = false;
+    MAP->ChangeCellCount(1);
 }
 
 Cube* Cell::getCube(Uint8 x, Uint8 y)

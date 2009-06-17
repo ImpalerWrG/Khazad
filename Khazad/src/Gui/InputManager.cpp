@@ -110,11 +110,13 @@ bool InputManager::HandleInput()
 					    SCREEN->MainCamera->changeLevelSeperation(-1);
 					    break;
 					}
+					/*
                     case SDLK_q:
                     {
                         SCREEN->MainCamera->SetDefaultView();
                         break;
                     }
+                    */
                     case SDLK_c:
                     {
                         SCREEN->MainCamera->CenterView();
@@ -142,49 +144,13 @@ bool InputManager::HandleInput()
                         }
                         break;
                     }
-                    case SDLK_l:
-                    {
-                        SCREEN->WipeScreen();
-                        SCREEN->setDrawingFlat();
-                        SCREEN->RenderLogo();
-
-                        char buffer[256];
-                        sprintf(buffer, "Loading from File:  %s", CONFIG->LoadPath());
-                        SCREEN->RenderTextCentered(buffer, 0, WHITE, 0);
-                        SCREEN->Flip();
-
-                        if(!MAP->Initialized)
-                        {
-                            EXTRACT->loadMap(CONFIG->LoadPath());
-                            MAP->LoadExtract();
-                            SCREEN->MainCamera->CenterView();
-                        }
-                        else
-                        {
-                            EXTRACT->loadMap(CONFIG->LoadPath());
-                            MAP->LoadExtract();
-                        }
-                        break;
-                    }
-                    case SDLK_w:
-					{
-                        SCREEN->WipeScreen();
-                        SCREEN->setDrawingFlat();
-                        SCREEN->RenderLogo();
-
-                        char buffer[256];
-                        sprintf(buffer, "Writing to File:  %s", CONFIG->SavePath());
-                        SCREEN->RenderTextCentered(buffer, 0, WHITE, 0);
-                        SCREEN->Flip();
-
-					    EXTRACT->writeMap(CONFIG->SavePath());
-					    break;
-					}
+                    /*
                     case SDLK_f:
 					{
                         EXTRACT->FreeMap();
                         break;
 					}
+					*/
 					/*
                     case SDLK_f:
 					{

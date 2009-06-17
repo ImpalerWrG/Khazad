@@ -30,6 +30,7 @@ public:
 
     void GetConfirmation(const char* Question, gcn::ActionListener* Listener);
     void HideConfirmationWindow();
+    void setMapViewState();
 
     gcn::ActionListener* getExitListener()      { return ExitListener; }
 

@@ -650,12 +650,12 @@ void Camera::ConfineLookPosition()
     if(LookPosition.z < 0)
     {
         LookPosition.z = 0;
-        EyePosition.z = DifferenceZ;
+        EyePosition.z = LookPosition.z - DifferenceZ;
     }
     if(LookPosition.z >= MaxZ)
     {
         LookPosition.z = MaxZ;
-        EyePosition.z = MaxZ + DifferenceZ;
+        EyePosition.z = LookPosition.z - DifferenceZ;
     }
 }
 

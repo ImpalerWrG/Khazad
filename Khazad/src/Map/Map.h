@@ -19,7 +19,7 @@ public:
 	~Map();
 	bool Init();
 
-    bool Initialized;
+    bool isInitialized()        { return Initialized; }
 
 	Cell* getCell(Sint32 X, Sint32 Y, Sint32 Z);
 	Cell* getCubeOwner(Sint32 X, Sint32 Y, Sint32 Z);
@@ -41,9 +41,33 @@ public:
 
     void LoadExtract();
 
+    void ChangeCellCount(Sint8 Change)      { CellCount += Change; }
+    Uint32 getCellCount()                   { return CellCount; }
+
+    void ChangeInitedCellCount(Sint8 Change)      { InitedCellCount += Change; }
+    Uint32 getInitedCellCount()                   { return InitedCellCount; }
+
+    void ChangeCubeCount(Sint8 Change)      { CubeCount += Change; }
+    Uint32 getCubeCount()                   { return CubeCount; }
+
+    void ChangeInitedCubeCount(Sint8 Change)      { InitedCubeCount += Change; }
+    Uint32 getInitedCubeCount()                   { return InitedCubeCount; }
+
+    void ChangeFaceCount(Sint8 Change)      { FaceCount += Change; }
+    Uint32 getFaceCount()                   { return FaceCount; }
+
+    void ChangeInitedFaceCount(Sint8 Change)      { InitedFaceCount += Change; }
+    Uint32 getInitedFaceCount()                   { return InitedFaceCount; }
+
+    void ChangeSlopeCount(Sint8 Change)     { SlopeCount += Change; }
+    Uint32 getSlopeCount()                  { return SlopeCount; }
+
+    void ChangeInitedSlopeCount(Sint8 Change)     { InitedSlopeCount += Change; }
+    Uint32 getInitedSlopeCount()                  { return InitedSlopeCount; }
 
 protected:
 
+    bool Initialized;
 
 	Uint32 MapSizeX;
 	Uint32 MapSizeY;
@@ -59,6 +83,17 @@ protected:
 	Sint32 YCelloffset;
 
 	Uint16 TilePicker[600];
+
+	Uint32 CellCount;
+    Uint32 CubeCount;
+    Uint32 FaceCount;
+    Uint32 SlopeCount;
+
+	Uint32 InitedCellCount;
+    Uint32 InitedCubeCount;
+    Uint32 InitedFaceCount;
+    Uint32 InitedSlopeCount;
+
 };
 
 #define MAP (Map::GetInstance())

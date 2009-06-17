@@ -18,6 +18,16 @@ Map::Map()
     InitilizeTilePicker();
 
     Initialized = false;
+
+    CellCount = 0;
+    CubeCount = 0;
+    FaceCount = 0;
+    SlopeCount = 0;
+
+    InitedCellCount = 0;
+    InitedCubeCount = 0;
+    InitedFaceCount = 0;
+    InitedSlopeCount = 0;
 }
 
 Map::~Map()

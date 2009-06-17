@@ -170,10 +170,10 @@ int main(int argv, char** argc)
             SCREEN->Render();
         RenderTimer->Pause();
 
-        if(MAP->Initialized)
-        {
-            UI->Draw();
+        UI->Draw();
 
+        if(MAP->isInitialized())
+        {
             SCREEN->setDrawingFlat();  // Go into HUD-drawing mode
 
             if(SCREEN->isDebuggingDraw())

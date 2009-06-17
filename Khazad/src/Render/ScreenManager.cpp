@@ -297,7 +297,7 @@ Uint16 ScreenManager::getHight()
 
 void ScreenManager::DirtyAllLists()
 {
-    if(MAP == NULL || !MAP->Initialized)
+    if(MAP == NULL || !MAP->isInitialized())
     {
         return;
     }
@@ -339,21 +339,11 @@ bool ScreenManager::Render()
 {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    if(MAP == NULL || !MAP->Initialized)
+    if(MAP == NULL || !MAP->isInitialized())
     {
         setDrawingFlat();
         RenderLogo();
         RenderTextCentered("KHAZAD", 0, WHITE, +40);
-
-        RenderTextCentered("Press (d) to Dump memory from Dwarf Fortress,", 0, WHITE, -10);
-        RenderTextCentered("or (l) to load from File, (w) for writing too file", 0, WHITE, -40);
-
-        RenderTextCentered("Press (b) to toggle Debugging Information,", 0, WHITE, -100);
-        RenderTextCentered("Press (s) to toggle depth shaddowing,", 0, WHITE, -130);
-        RenderTextCentered("Press (h) to reveal hidden features,", 0, WHITE, -160);
-        RenderTextCentered("Press (f) to toggle wireframe,", 0, WHITE, -190);
-        RenderTextCentered("Press (c) to center the view,", 0, WHITE, -220);
-        RenderTextCentered("Press (v) to toggle Vertical Lock", 0, WHITE, -250);
 
         return false;
     }
@@ -572,7 +562,7 @@ void ScreenManager::PrintDebugging()
 
         SDL_Rect position;
         position.x = 10;
-        position.y = 160;
+        position.y = 200;
 
         sprintf (buffer, "Cordinates: x%i y%i z%i", (int)Point.x, (int)Point.y, (int)Point.z);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
@@ -593,6 +583,17 @@ void ScreenManager::PrintDebugging()
         binarysprintf(binarybuffer, Ocupancy);
         sprintf (buffer, "Ocupancy: %s", binarybuffer);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
+
+        position.y -= 40;
+
+        sprintf (buffer, "Cells: %i  Cubes: %i  Faces: %i  Slopes: %i", MAP->getCellCount(), MAP->getCubeCount(), MAP->getFaceCount(), MAP->getSlopeCount());
+        SCREEN->RenderText(buffer, 0, WHITE, &position);
+
+        position.y -= 40;
+
+        sprintf (buffer, "InitCells: %i  InitCubes: %i  InitFaces: %i  InitSlopes: %i", MAP->getInitedCellCount(), MAP->getInitedCubeCount(), MAP->getInitedFaceCount(), MAP->getInitedSlopeCount());
+        SCREEN->RenderText(buffer, 0, WHITE, &position);
+
     }
 }
 

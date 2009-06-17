@@ -22,6 +22,7 @@ Cube::Cube()
 	Material = 6;
 
 	setPosition(0.0, 0.0, 0.0);
+    MAP->ChangeCubeCount(1);
 }
 
 void Cube::SetOwner(Cell* NewOwner, Uint8 X, Uint8 Y)
@@ -39,7 +40,12 @@ void Cube::SetOwner(Cell* NewOwner, Uint8 X, Uint8 Y)
 
 Cube::~Cube()
 {
+    MAP->ChangeCubeCount(-1);
 
+    if(Initalized)
+    {
+        MAP->ChangeInitedCubeCount(-1);
+    }
 }
 
 bool Cube::Init(Uint16 MaterialType)
@@ -48,6 +54,8 @@ bool Cube::Init(Uint16 MaterialType)
 
     Solid = true;
     Material = MaterialType;
+
+    MAP->ChangeInitedCubeCount(1);
 
 	return true;
 }
@@ -82,6 +90,13 @@ bool Cube::InitFacesSolid()
             }
 
             if(getAdjacentCube(FaceType) != NULL)
+            {
+                if(!getAdjacentCube(FaceType)->isSolid() || getAdjacentCube(FaceType)->isHidden())
+                {
+                    InitFace(FaceType);
+                }
+            }
+            else
             {
                 InitFace(FaceType);
             }

@@ -98,6 +98,7 @@ void Ui::InitCameraControlMenu()
     CameraControlWindow->setSize((ButtonSize + 1) * 6, (ButtonSize * 3) + 16);
     TopWidget->add(CameraControlWindow);
     CameraControlWindow->setPosition(SCREEN->getWidth() - 300, 50);
+    CameraControlWindow->setVisible(false);
 
 
     gcn::ImageButton* VerticalToggleButton = new gcn::ImageButton("Assets\\Buttons\\Vertical.png");
@@ -130,7 +131,11 @@ void Ui::InitCameraControlMenu()
     FrameToggleButton->addActionListener(FrameToggleListener);
     CameraControlWindow->add(FrameToggleButton, ButtonSize * 4, ButtonSize * 0);
 
-
+    gcn::ImageButton* HiddenToggleButton = new gcn::ImageButton("Assets\\Buttons\\Hidden.png");
+    HiddenToggleButton->setSize(32, 32);
+    gcn::ActionListener* HiddenToggleListener = new HiddenToggleActionListener();
+    HiddenToggleButton->addActionListener(HiddenToggleListener);
+    CameraControlWindow->add(HiddenToggleButton, ButtonSize * 5, ButtonSize * 0);
 
 
     gcn::ImageButton* ViewUpButton = new gcn::ImageButton("Assets\\Buttons\\UpArrow.png");
@@ -266,6 +271,13 @@ void Ui::InitDepthSlider()
 
     gcn::ActionListener* actionListener = new DepthChangeActionListener();
     DepthSlider->addActionListener(actionListener);
+    DepthSlider->setVisible(false);
+}
+
+void Ui::setMapViewState()
+{
+    DepthSlider->setVisible(true);
+    CameraControlWindow->setVisible(true);
 }
 
 Ui::~Ui()

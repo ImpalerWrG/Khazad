@@ -6,6 +6,7 @@
 #include <TextureManager.h>
 #include <ScreenManager.h>
 #include <DataManager.h>
+#include <Map.h>
 
 Slope::Slope()
 {
@@ -18,11 +19,17 @@ Slope::Slope()
 
 	GAME->ActorList.push_back(this);
 	//ID = (Uint32) GAME->ActorList.size();
+    MAP->ChangeSlopeCount(1);
 }
 
 Slope::~Slope()
 {
+    MAP->ChangeSlopeCount(-1);
     //GAME->RemoveActor(ID);
+    if(Initalized)
+    {
+        MAP->ChangeInitedSlopeCount(-1);
+    }
 }
 
 bool Slope::Init(Cube* NewOwner, Slopping Type)
@@ -32,6 +39,8 @@ bool Slope::Init(Cube* NewOwner, Slopping Type)
 
     Material = Owner->getMaterial();
 	Texture = DATA->getMaterialData(Material)->getTexture();
+
+    MAP->ChangeInitedSlopeCount(1);
 }
 
 void Slope::SetSlopeType(Slopping Type)

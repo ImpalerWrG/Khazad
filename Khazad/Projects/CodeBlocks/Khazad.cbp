@@ -14,8 +14,12 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-Wall" />
+					<Add option="-pg" />
 					<Add option="-g" />
 				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="..\..\Khazad" prefix_auto="1" extension_auto="1" />
@@ -25,14 +29,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O3" />
-					<Add option="-pg" />
 				</Compiler>
-				<Linker>
-					<Add option="-pg -lgmon" />
-					<Add option="-lmingw32" />
-					<Add option="-lSDLmain" />
-					<Add option="-lSDL" />
-				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
@@ -51,9 +48,6 @@
 			<Add directory="..\..\DF Extractor" />
 		</Compiler>
 		<Linker>
-			<Add option="-lmingw32" />
-			<Add option="-lSDLmain" />
-			<Add option="-lSDL" />
 			<Add library="SDL" />
 			<Add library="SDLmain" />
 			<Add library="SDL_ttf" />

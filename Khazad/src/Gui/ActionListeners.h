@@ -108,6 +108,14 @@ class FrameToggleActionListener: public gcn::ActionListener
     }
 };
 
+class HiddenToggleActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        SCREEN->setHiddenDraw(!SCREEN->isHiddenDraw());
+    }
+};
+
 class IncresseLevelSeperationActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
@@ -215,7 +223,7 @@ class MapDumpActionListener: public gcn::ActionListener
         SCREEN->RenderTextCentered("Dumping Memory", 0, WHITE, 0);
         SCREEN->Flip();
 
-        if(!MAP->Initialized)
+        if(!MAP->isInitialized())
         {
             EXTRACT->dumpMemory();
             MAP->LoadExtract();
@@ -226,6 +234,7 @@ class MapDumpActionListener: public gcn::ActionListener
             EXTRACT->dumpMemory();
             MAP->LoadExtract();
         }
+        UI->setMapViewState();
     }
 };
 
@@ -242,7 +251,7 @@ class MapLoadActionListener: public gcn::ActionListener
         SCREEN->RenderTextCentered(buffer, 0, WHITE, 0);
         SCREEN->Flip();
 
-        if(!MAP->Initialized)
+        if(!MAP->isInitialized())
         {
             EXTRACT->loadMap(CONFIG->LoadPath());
             MAP->LoadExtract();
@@ -253,6 +262,7 @@ class MapLoadActionListener: public gcn::ActionListener
             EXTRACT->loadMap(CONFIG->LoadPath());
             MAP->LoadExtract();
         }
+        UI->setMapViewState();
     }
 };
 
