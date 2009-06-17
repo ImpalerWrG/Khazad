@@ -25,7 +25,14 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O3" />
+					<Add option="-pg" />
 				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+					<Add option="-lmingw32" />
+					<Add option="-lSDLmain" />
+					<Add option="-lSDL" />
+				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
@@ -44,6 +51,9 @@
 			<Add directory="..\..\DF Extractor" />
 		</Compiler>
 		<Linker>
+			<Add option="-lmingw32" />
+			<Add option="-lSDLmain" />
+			<Add option="-lSDL" />
 			<Add library="SDL" />
 			<Add library="SDLmain" />
 			<Add library="SDL_ttf" />
@@ -56,6 +66,7 @@
 			<Add library="Devil" />
 			<Add library="ILU" />
 			<Add library="ILUT" />
+			<Add library="..\..\lib\zdll.lib" />
 			<Add directory="..\..\lib" />
 			<Add directory="..\..\DevIL\lib" />
 		</Linker>

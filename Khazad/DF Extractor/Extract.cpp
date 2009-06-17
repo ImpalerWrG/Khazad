@@ -1,13 +1,13 @@
-#include <windows.h>
-
+// Extractor
 #include <Extract.h>
-#include <winnt.h>
+
+// zlib helper functions for de/compressing files
+#include <ZlibHelper.h>
 
 DECLARE_SINGLETON(Extractor)
 
 Extractor::Extractor()
 {
-    Tiles = NULL;
     MapLoaded = false;
 }
 
@@ -24,6 +24,7 @@ Extractor::~Extractor()
     FreeMap();
 }
 
+
 bool Extractor::dumpMemory()
 {
     HWND DFProcess;
@@ -34,13 +35,11 @@ bool Extractor::dumpMemory()
 
 	char process_name[] = "Dwarf Fortress";
     int buffer, map_loc;
+    unsigned blocks_read = 0U;
 
     int temp_loc, temp_locx, temp_locy, temp_locz;
 
-    short int TemporaryTile;
-    int TemporaryDesignation;
-    int TemporaryOccupancy;
-
+    int*** Blocks = NULL;
 
     // Attempt to Find Process
 	DFProcess = FindWindow(NULL,process_name);
@@ -81,66 +80,76 @@ bool Extractor::dumpMemory()
     }
     else
     {
-        // x_blocks count
-        ReadProcessMemory(DFHandle, (int*)(x_count_offset), &x_blocks, sizeof(int), NULL);
-        printf("x_blocks tiles: %u (%d)\n", BlockSize * x_blocks, x_blocks);
+        // get block count
+        // df_map.x_block_count count
+        ReadProcessMemory(DFHandle, (int*)(x_count_offset), &df_map.x_block_count, sizeof(int), NULL);
+        printf("x_block_count: %u (%d)\n", BLOCK_SIZE * df_map.x_block_count, df_map.x_block_count);
 
-        // y_blocks count
-        ReadProcessMemory(DFHandle, (int*)(y_count_offset), &y_blocks, sizeof(int), NULL);
-        printf("y_blocks tiles: %u (%d)\n", BlockSize * y_blocks, y_blocks);
+        // df_map.y_block_count count
+        ReadProcessMemory(DFHandle, (int*)(y_count_offset), &df_map.y_block_count, sizeof(int), NULL);
+        printf("y_block_count: %u (%d)\n", BLOCK_SIZE * df_map.y_block_count, df_map.y_block_count);
 
-        // z_levels count
-        ReadProcessMemory(DFHandle, (int*)(z_count_offset), &z_levels, sizeof(int), NULL);
-        printf("z_levels height: %u\n\n", z_levels);
+        // z_blocks count
+        ReadProcessMemory(DFHandle, (int*)(z_count_offset), &df_map.z_block_count, sizeof(int), NULL);
+        printf("z_block_count: %u\n\n", df_map.z_block_count);
 
 
-        MapSizeX = x_blocks * BlockSize;
-        MapSizeY = y_blocks * BlockSize;
+        // get cell count (we can just multiply it with BLOCK_SIZE)
+        df_map.x_cell_count = df_map.x_block_count * BLOCK_SIZE;
+        df_map.y_cell_count = df_map.y_block_count * BLOCK_SIZE;
+        df_map.z_cell_count = df_map.z_block_count;
 
-        Blocks = new int**[x_blocks];
+        // init map blocks (but not all)
+        df_map.block = new Block***[df_map.x_block_count];
 
-        for (Uint32 x = 0; x < x_blocks; x++)
+        for (Uint32 x = 0; x < df_map.x_block_count; x++)
         {
-            Blocks[x] = new int*[y_blocks];
+            df_map.block[x] = NULL;
 
-            for (Uint32 y = 0; y < y_blocks; y++)
-            {
-                Blocks[x][y] = new int[z_levels];
-            }
+//            df_map.block[x] = new Block*[df_map.y_block_count];
+//            for (Uint32 y = 0; y < df_map.y_block_count; y++)
+//            {
+//                df_map.block[x][y] = new Block[df_map.z_block_count];
+//
+//            }
         }
 
-        Tiles = new short int**[MapSizeX];
-        Designations = new int**[MapSizeX];
-        Ocupancy = new int**[MapSizeX];
+//        printf("Maximum possible blocks: %d\n",df_map.x_block_count*df_map.y_block_count*df_map.z_block_count);
 
-        for (Uint32 x = 0; x < MapSizeX; x++)
+
+        Blocks = new int**[df_map.x_block_count];
+
+        for (Uint32 x = 0; x < df_map.x_block_count; x++)
         {
-            Tiles[x] = new short int*[MapSizeY];
-            Designations[x] = new int*[MapSizeY];
-            Ocupancy[x] = new int*[MapSizeY];
+            Blocks[x] = new int*[df_map.y_block_count];
 
-            for (Uint32 y = 0; y < MapSizeY; y++)
+            for (Uint32 y = 0; y < df_map.y_block_count; y++)
             {
-                Tiles[x][y] = new short int[z_levels];
-                Designations[x][y] = new int[z_levels];
-                Ocupancy[x][y] = new int[z_levels];
+                Blocks[x][y] = new int[df_map.z_block_count];
             }
         }
 
         // Initialize all the pointers to the map blocks
-        for ( int x = 0; x < x_blocks; x++ )
+        for ( int x = 0; x < df_map.x_block_count; x++ )
         {
             temp_locx = map_loc + ( 4 * x );
             ReadProcessMemory( DFHandle, (int*)(temp_locx), &temp_locy, sizeof(int), NULL);
 
-            for ( int y = 0; y < y_blocks; y++ )
+            for ( int y = 0; y < df_map.y_block_count; y++ )
             {
                 ReadProcessMemory( DFHandle, (int*)(temp_locy), &temp_locz, sizeof(int), NULL);
 
-                for ( int z = 0; z < z_levels; z++ )
+                for ( int z = 0; z < df_map.z_block_count; z++ )
                 {
                     ReadProcessMemory( DFHandle, (int*)(temp_locz), &temp_loc, sizeof(int), NULL);
                     Blocks[x][y][z] = temp_loc;
+
+                    // allocate only the map blocks, where there is actual data.
+                    if(temp_loc)
+                    {
+                        allocateBlocks(x, y);
+                    }
+
                     temp_locz += 4;
                 }
                 temp_locy += 4;
@@ -148,41 +157,70 @@ bool Extractor::dumpMemory()
         }
 
         //read the memory from the map blocks
-        for(int x = 0; x < x_blocks; x++)
+        for(int x = 0; x < df_map.x_block_count; x++)
         {
-            for(int y = 0; y < y_blocks; y++)
+            for(int y = 0; y < df_map.y_block_count; y++)
             {
-                for(int z = 0; z < z_levels; z++)
+                for(int z = 0; z < df_map.z_block_count; z++)
                 {
-                    for(int BlockY = 0; BlockY < BlockSize; BlockY++ )
+                    if (Blocks[x][y][z])
                     {
-                        for(int BlockX = 0; BlockX < BlockSize; BlockX++ )
-                        {
-                            if(Blocks[x][y][z])
-                            {
-                                ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + tile_type_offset + (2 * BlockY + (BlockX * BlockSize * 2))), &TemporaryTile, sizeof(short int), NULL);
-                                Tiles[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = TemporaryTile;
+                        df_map.block[x][y][z] = new Block;
 
-                                ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + designation_offset + (4 * BlockY + (BlockX * BlockSize * 4))), &TemporaryDesignation, sizeof(int), NULL);
-                                Designations[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = TemporaryDesignation;
+                        ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + tile_type_offset), &df_map.block[x][y][z]->tile_type, sizeof(short int)*BLOCK_SIZE*BLOCK_SIZE, NULL);
+                        ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + designation_offset), &(df_map.block[x][y][z]->designation), sizeof(int)*BLOCK_SIZE*BLOCK_SIZE, NULL);
+                        ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + occupancy_offset), &(df_map.block[x][y][z]->occupancy), sizeof(int)*BLOCK_SIZE*BLOCK_SIZE, NULL);
 
-                                ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + occupancy_offset + (4 * BlockY + (BlockX * BlockSize * 4))), &TemporaryOccupancy, sizeof(int), NULL);
-                                Ocupancy[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = TemporaryOccupancy;
-                            }
-                            else
-                            {
-                                Tiles[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = -1;
-                                Designations[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = 0;
-                                Ocupancy[x * BlockSize + BlockX][y * BlockSize + BlockY][z] = 0;
-                            }
-                        }
+                        ++blocks_read;
                     }
+
                 }
             }
         }
 
+
+        printf("Blocks read into memory: %d\n", blocks_read);
+
         MapLoaded = true;
+
+
+#ifndef NDEBUG
+//        printf("Testing map data... ");
+//
+//        // test my data with already working data
+//        if(testMapData(df_map))
+//            printf("OK\n");
+//        else
+//            printf("WRONG DATA\n");
+#endif
+
     }
+
+
+    // block address' not needed anymore.
+    if(Blocks != NULL)
+    {
+        for (Uint32 x = 0; x < df_map.x_block_count; x++)
+        {
+            if( Blocks[x] != NULL )
+            {
+                for (Uint32 y = 0; y < df_map.y_block_count; y++)
+                {
+                    if( Blocks[x][y] != NULL )
+                    {
+                        delete[] Blocks[x][y];
+                    }
+                }
+
+                delete[] Blocks[x];
+            }
+        }
+
+        delete[] Blocks;
+    }
+
+
+    printf("Successfully dumped memory.\n");
 
     return 0;
 }
@@ -229,6 +267,7 @@ bool Extractor::setMemoryOffsets(HANDLE DFHandle)
     return false;
 }
 
+// TODO: how to know when something's NULL?
 bool Extractor::writeMap(char* FilePath)
 {
     if(!MapLoaded)
@@ -241,39 +280,103 @@ bool Extractor::writeMap(char* FilePath)
 
     if(SaveFile == NULL)
     {
-        printf("Can't create file for write.\n");
+        printf("Can\'t create file for write.\n");
+        return false;
     }
     else
     {
-        fwrite(&x_blocks, sizeof(x_blocks), 1, SaveFile);
-        fwrite(&y_blocks, sizeof(y_blocks), 1, SaveFile);
-        fwrite(&z_levels, sizeof(z_levels), 1, SaveFile);
 
-        for (int z = 0; z < z_levels; z++ )
+        fwrite(&df_map.x_block_count, sizeof(df_map.x_block_count), 1, SaveFile);
+        fwrite(&df_map.y_block_count, sizeof(df_map.y_block_count), 1, SaveFile);
+        fwrite(&df_map.z_block_count, sizeof(df_map.z_block_count), 1, SaveFile);
+
+        int x, y, z;
+
+        for (x = 0; x < df_map.x_block_count; x++ )
         {
-            for (int y = 0; y < y_blocks * BlockSize; y++ )
+            for (y = 0; y < df_map.y_block_count; y++ )
             {
-                for (int x = 0; x < x_blocks * BlockSize; x++ )
+                for (z = 0; z < df_map.z_block_count; z++ )
                 {
-                    fwrite(&Tiles[x][y][z], sizeof(short int), 1, SaveFile);
-                    fwrite(&Designations[x][y][z], sizeof(int), 1, SaveFile);
-                    fwrite(&Ocupancy[x][y][z], sizeof(int), 1, SaveFile);
+                    if(df_map.block[x][y][z] != NULL)
+                    {
+                        fwrite(&x, sizeof(int), 1, SaveFile);
+                        fwrite(&y, sizeof(int), 1, SaveFile);
+                        fwrite(&z, sizeof(int), 1, SaveFile);
+
+                        fwrite(&df_map.block[x][y][z]->tile_type, sizeof(short int), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
+                        fwrite(&df_map.block[x][y][z]->designation, sizeof(int), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
+                        fwrite(&df_map.block[x][y][z]->occupancy, sizeof(int), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
+                    }
                 }
             }
         }
+
+        x = y = z = -1;
+        fwrite(&x, sizeof(int), 1, SaveFile);
+        fwrite(&y, sizeof(int), 1, SaveFile);
+        fwrite(&z, sizeof(int), 1, SaveFile);
+
     }
 
+
+    freopen (FilePath,"rb",SaveFile);
+    if(SaveFile == NULL)
+    {
+        printf("Can\'t create file for read.\n");
+        return false;
+    }
+
+
+    FILE *SaveCompressedFile;
+    char *CompressedFilePath = new char[256];
+
+    strcpy(CompressedFilePath, FilePath);
+    strcat(CompressedFilePath, ".comp");
+
+    SaveCompressedFile = fopen(CompressedFilePath,"wb");
+    if(SaveCompressedFile == NULL)
+    {
+        printf("Can\'t create a compressed file for write\n");
+        return false;
+    }
+
+    // compress
+    printf("Compressing... ");
+    int ret = def(SaveFile, SaveCompressedFile, Z_BEST_COMPRESSION);
+
+    printf("DONE\n");
+
+    if (ret != Z_OK)
+        zerr(ret);
+
     fclose(SaveFile);
+    fclose(SaveCompressedFile);
+
+    remove(FilePath);
+    rename(CompressedFilePath, FilePath);
+
+    return true;
 }
 
+// TODO: how to know when something's NULL?
 bool Extractor::loadMap(char* FilePath)
 {
+
+    FILE *DecompressedMapFile;
+    char *DecompressedFilePath = new char[256];
+
+    strcpy(DecompressedFilePath, FilePath);
+    strcat(DecompressedFilePath, ".decomp");
+
     FILE *MapFile;
-    MapFile = fopen(FilePath, "rb");
+    MapFile = fopen(DecompressedFilePath, "wb");
+    unsigned blocks_read = 0U;
+    int x, y, z;
 
     if  (MapFile == NULL)
     {
-        printf("Can't open File for read.\n");
+        printf("Can\'t open a decompressed file for write.\n");
         return false;
     }
     else
@@ -283,48 +386,81 @@ bool Extractor::loadMap(char* FilePath)
             FreeMap();
         }
 
-        fread(&x_blocks, sizeof(int), 1, MapFile);
-        fread(&y_blocks, sizeof(int), 1, MapFile);
-        fread(&z_levels, sizeof(int), 1, MapFile);
 
-        printf("Read from file %s\nX block size: %d\nY block size: %d\nZ levels: %d\n", FilePath, x_blocks, y_blocks, z_levels);
-
-
-        MapSizeX = x_blocks * BlockSize;
-        MapSizeY = y_blocks * BlockSize;
-
-        Tiles = new short int**[MapSizeX];
-        Designations = new int**[MapSizeX];
-        Ocupancy = new int**[MapSizeX];
-
-        for (Uint32 x = 0; x < MapSizeX; x++)
+        //decompress
+        DecompressedMapFile = fopen(FilePath,"rb");
+        if  (DecompressedMapFile == NULL)
         {
-            Tiles[x] = new short int*[MapSizeY];
-            Designations[x] = new int*[MapSizeY];
-            Ocupancy[x] = new int*[MapSizeY];
-
-            for (Uint32 y = 0; y < MapSizeY ; y++)
-            {
-                Tiles[x][y] = new short int[z_levels];
-                Designations[x][y] = new int[z_levels];
-                Ocupancy[x][y] = new int[z_levels];
-            }
+            printf("Can\'t open file for read.\n");
+            return false;
         }
 
-        for(int z = 0; z < z_levels; z++)
+        // Decompress
+        printf("Decompressing... ");
+        int ret = inf(DecompressedMapFile, MapFile);
+
+        printf("DONE\n");
+
+        if (ret != Z_OK)
+            zerr(ret);
+
+        fclose(DecompressedMapFile);
+
+        freopen(DecompressedFilePath, "rb", MapFile);
+        if  (MapFile == NULL)
         {
-            for(int y = 0; y < MapSizeY; y++)
-            {
-                for(int x = 0; x < MapSizeX; x++)
-                {
-                    fread(&Tiles[x][y][z], sizeof(short int), 1, MapFile);
-                    fread(&Designations[x][y][z], sizeof(int), 1, MapFile);
-                    fread(&Ocupancy[x][y][z], sizeof(int), 1, MapFile);
-                }
-            }
+            printf("Can't create decompressed file for read.\n");
+            return false;
         }
+
+        fread(&df_map.x_block_count, sizeof(df_map.x_block_count), 1, MapFile);
+        fread(&df_map.y_block_count, sizeof(df_map.y_block_count), 1, MapFile);
+        fread(&df_map.z_block_count, sizeof(df_map.z_block_count), 1, MapFile);
+
+        printf("Read from file %s\nX block size: %d\nY block size: %d\nZ levels: %d\n", FilePath, df_map.x_block_count, df_map.y_block_count, df_map.z_block_count);
+
+        df_map.x_cell_count = df_map.x_block_count * BLOCK_SIZE;
+        df_map.y_cell_count = df_map.y_block_count * BLOCK_SIZE;
+        df_map.z_cell_count = df_map.z_block_count;
+
+        df_map.block = new Block***[df_map.x_block_count];
+
+        for (x = 0; x < df_map.x_block_count; ++x )
+        {
+            df_map.block[x] = NULL;
+        }
+
+        do{
+
+            fread(&x, sizeof(int), 1, MapFile);
+            fread(&y, sizeof(int), 1, MapFile);
+            fread(&z, sizeof(int), 1, MapFile);
+
+            if(x == -1 || y == -1 || z == -1)
+            {
+                break;
+            }
+
+            // init if necessary
+            allocateBlocks(x, y);
+
+            df_map.block[x][y][z] = new Block;
+
+            fread(&df_map.block[x][y][z]->tile_type, sizeof(short int), BLOCK_SIZE*BLOCK_SIZE, MapFile);
+            fread(&df_map.block[x][y][z]->designation, sizeof(int), BLOCK_SIZE*BLOCK_SIZE, MapFile);
+            fread(&df_map.block[x][y][z]->occupancy, sizeof(int), BLOCK_SIZE*BLOCK_SIZE, MapFile);
+
+            ++blocks_read;
+
+        }while(true);
+
+
+        printf("Blocks read into memory: %d\n", blocks_read);
 
         fclose(MapFile);
+
+        remove(DecompressedFilePath);
+
         MapLoaded = true;
     }
 
@@ -333,62 +469,33 @@ bool Extractor::loadMap(char* FilePath)
 
 bool Extractor::FreeMap()
 {
-    if(Tiles != NULL)
+    if(MapLoaded)
     {
-        for (Uint32 x = 0; x < MapSizeX; x++)
+        if(df_map.block != NULL)
         {
-            if(Tiles[x] != NULL)
+            for (Uint32 x = 0; x < df_map.x_block_count; x++)
             {
-                for (Uint32 y = 0; y < MapSizeY; y++)
+                if(df_map.block[x] != NULL)
                 {
-                    if(Tiles[x][y] != NULL)
+                    for (Uint32 y = 0; y < df_map.y_block_count; y++)
                     {
-                        delete[] Tiles[x][y];
+                        if(df_map.block[x][y] != NULL)
+                        {
+                            for (Uint32 z = 0; z < df_map.z_block_count; z++)
+                            {
+                                if(df_map.block[x][y][z] != NULL)
+                                {
+                                    delete df_map.block[x][y][z];
+                                }
+                            }
+                            delete[] df_map.block[x][y];
+                        }
                     }
+                    delete[] df_map.block[x];
                 }
-                delete[] Tiles[x];
             }
+            delete[] df_map.block;
         }
-        delete[] Tiles;
-    }
-
-    if(Designations != NULL)
-    {
-        for (Uint32 x = 0; x < MapSizeX; x++)
-        {
-            if(Designations[x] != NULL)
-            {
-                for (Uint32 y = 0; y < MapSizeY; y++)
-                {
-                    if(Designations[x][y] != NULL)
-                    {
-                        delete[] Designations[x][y];
-                    }
-                }
-                delete[] Designations[x];
-            }
-        }
-        delete[] Designations;
-    }
-
-
-    if(Ocupancy != NULL)
-    {
-        for (Uint32 x = 0; x < MapSizeX; x++)
-        {
-            if(Ocupancy[x] != NULL)
-            {
-                for (Uint32 y = 0; y < MapSizeY; y++)
-                {
-                    if(Ocupancy[x][y] != NULL)
-                    {
-                        delete[] Ocupancy[x][y];
-                    }
-                }
-                delete[] Ocupancy[x];
-            }
-        }
-        delete[] Ocupancy;
     }
 
     MapLoaded = false;
@@ -941,36 +1048,62 @@ int Extractor::picktexture(int in)
 
 int Extractor::getLiquidLevel(int x, int y, int z)
 {
-    if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
+    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
     {
-        return Designations[x][y][z] & 7; // Extracts the first 3 bits
+        int x2, y2;
+        convertToDfMapCoords(x, y, x, y, x2, y2);
+
+        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
+        {
+            return df_map.block[x][y][z]->designation[x2*BLOCK_SIZE+y2] & 7; // Extracts the first 3 bits
+        }
     }
+
     return 0;
 }
 
 short int Extractor::getTileType(int x, int y, int z)
 {
-    if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
+    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
     {
-        return Tiles[x][y][z];
+        int x2, y2;
+        convertToDfMapCoords(x, y, x, y, x2, y2);
+
+        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
+        {
+            return df_map.block[x][y][z]->tile_type[x2*BLOCK_SIZE+y2];
+        }
     }
+
     return -1;
 }
 
 int Extractor::getDesignations(int x, int y, int z)
 {
-    if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
+    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
     {
-        return Designations[x][y][z];
+        int x2, y2;
+        convertToDfMapCoords(x, y, x, y, x2, y2);
+
+        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
+        {
+            return df_map.block[x][y][z]->designation[x2*BLOCK_SIZE+y2];
+        }
     }
     return -1;
 }
 
 int Extractor::getOccupancies(int x, int y, int z)
 {
-    if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
+    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
     {
-        return Ocupancy[x][y][z];
+        int x2, y2;
+        convertToDfMapCoords(x, y, x, y, x2, y2);
+
+        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
+        {
+            return df_map.block[x][y][z]->occupancy[x2*BLOCK_SIZE+y2];
+        }
     }
     return -1;
 }
@@ -1493,11 +1626,17 @@ bool Extractor::isWallTerrain(int in)
 
 bool Extractor::isDesignationFlag(unsigned int flag, int x, int y, int z)
 {
-    if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
+    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
     {
-        if(flag < 32)
+        int x2, y2;
+        convertToDfMapCoords(x, y, x, y, x2, y2);
+
+        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
         {
-            return (Designations[x][y][z] & (1 << flag));
+            if(flag < 32)
+            {
+                return (df_map.block[x][y][z]->designation[x2*BLOCK_SIZE+y2] & (1 << flag));
+            }
         }
     }
     return false;
@@ -1505,42 +1644,173 @@ bool Extractor::isDesignationFlag(unsigned int flag, int x, int y, int z)
 
 bool Extractor::isOcupancyFlag(unsigned int flag, int x, int y, int z)
 {
-    if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
+    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
     {
-        if(flag < 32)
+        int x2, y2;
+        convertToDfMapCoords(x, y, x, y, x2, y2);
+
+        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
         {
-            return (Ocupancy[x][y][z] & (1 << flag));
+            if(flag < 32)
+            {
+                return (df_map.block[x][y][z]->occupancy[x2*BLOCK_SIZE+y2] & (1 << flag));
+            }
         }
     }
     return false;
 }
 
+// NOTE: UNTESTED!
 int Extractor::DesignationBitBlock(unsigned int Start, unsigned int Size, int x, int y, int z)
 {
-    if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
+    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
     {
-        if(Start < 32)
+        int x2, y2;
+        convertToDfMapCoords(x, y, x, y, x2, y2);
+
+        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
         {
-            int Total = 0;
-            for(int i = 0; i < Size; ++i)
+
+            if(Start < 32)
             {
-                Total += ((Designations[x][y][z] & (1 << Start + i)) >> Start);
+                int Total = 0;
+                for(int i = 0; i < Size; ++i)
+                {
+                    Total += ((df_map.block[x][y][z]->designation[x2*BLOCK_SIZE+y2] & (1 << Start + i)) >> Start);
+                }
             }
         }
     }
+    return -1;
 }
 
+// NOTE: UNTESTED!
 int Extractor::OccupancyBitBlock(unsigned int Start, unsigned int Size, int x, int y, int z)
 {
-    if(x < MapSizeX && x >= 0 && y < MapSizeY && y >= 0 && z < z_levels && z >= 0)
+    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
     {
-        if(Start < 32)
+        int x2, y2;
+        convertToDfMapCoords(x, y, x, y, x2, y2);
+
+        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
         {
-            int Total = 0;
-            for(int i = 0; i < Size; ++i)
+
+            if(Start < 32)
             {
-                Total += ((Ocupancy[x][y][z] & (1 << Start + i)) >> Start);
+                int Total = 0;
+                for(int i = 0; i < Size; ++i)
+                {
+                    Total += ((df_map.block[x][y][z]->occupancy[x2*BLOCK_SIZE+y2] & (1 << Start + i)) >> Start);
+                }
             }
+        }
+    }
+    return -1;
+}
+
+// NOTE: use this function to test for validity of new map data structures
+bool Extractor::testMapData(DfMap df_map)
+{
+//
+//// conversion:
+////    df_map.block[x][y][z]->tile_type[x2*BLOCK_SIZE+y2]
+////    Tiles[x * BLOCK_SIZE + x2][y * BLOCK_SIZE + y2][z]
+//
+//    bool ret = true;
+//
+//
+//
+//    // test every value in map data structures
+//    for (int x = 0; x < df_map.x_block_count; ++x)
+//    {
+//        if(df_map.block[x] != NULL)
+//        {
+//            for (int y = 0; y < df_map.y_block_count; ++y)
+//            {
+//                if(df_map.block[x][y] != NULL)
+//                {
+//                    for (int z = 0; z < df_map.z_block_count; ++z)
+//                    {
+//                        for (int x2 = 0; x2 < BLOCK_SIZE; ++x2)
+//                        {
+//                            for (int y2 = 0; y2< BLOCK_SIZE; ++y2)
+//                            {
+//                                // testing for false-positive (if you uncomment this line, function should return false)
+////                                df_map.block[x][y][z]->tile_type[(x2*BLOCK_SIZE)+y2] = df_map.block[x][y][z]->tile_type[(x2*BLOCK_SIZE)+y2]+1;
+//
+//                                ret &= df_map.block[x][y][z]->tile_type[(x2*BLOCK_SIZE)+y2] == Tiles[(x*BLOCK_SIZE)+x2][(y*BLOCK_SIZE)+y2][z];
+//                                ret &= df_map.block[x][y][z]->designation[(x2*BLOCK_SIZE)+y2] == Designations[(x*BLOCK_SIZE)+x2][(y*BLOCK_SIZE)+y2][z];
+//                                ret &= df_map.block[x][y][z]->occupancy[(x2*BLOCK_SIZE)+y2] == Ocupancy[(x*BLOCK_SIZE)+x2][(y*BLOCK_SIZE)+y2][z];
+//
+//                                // here I also test the conversion function
+//                                int xx = (x*BLOCK_SIZE)+x2;
+//                                int yy = (y*BLOCK_SIZE)+y2;
+//
+//                                int xx2, yy2;
+//                                convertToDfMapCoords(xx, yy, xx, yy, xx2, yy2);
+//
+//                                ret &= df_map.block[xx][yy][z]->tile_type[(xx2*BLOCK_SIZE)+yy2] == Tiles[(x*BLOCK_SIZE)+x2][(y*BLOCK_SIZE)+y2][z];
+//                                ret &= df_map.block[xx][yy][z]->designation[(xx2*BLOCK_SIZE)+yy2] == Designations[(x*BLOCK_SIZE)+x2][(y*BLOCK_SIZE)+y2][z];
+//                                ret &= df_map.block[xx][yy][z]->occupancy[(xx2*BLOCK_SIZE)+yy2] == Ocupancy[(x*BLOCK_SIZE)+x2][(y*BLOCK_SIZE)+y2][z];
+//
+//                                if(!ret)
+//                                {
+//
+//                                    //printf("%d %d\n", df_map.block[x][y][z]->designation[(x2*BLOCK_SIZE)+y2],Designations[(x*BLOCK_SIZE)+x2][(y*BLOCK_SIZE)+y2][z]);
+//                                    printf("%d %d %d %d\n", x,y,x2,y2);
+//                                    printf("%d %d %d %d\n", xx,yy,xx2,yy2);
+//
+//                                    return ret;
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+    //return ret;
+
+    return true;
+}
+
+// converts the (x,y,z) cell coords to internal coords
+// out_y, out_x - block coords
+// out_y2, out_x2 - cell coords in that block
+void Extractor::convertToDfMapCoords(int x, int y, int &out_x, int &out_y, int &out_x2, int &out_y2)
+{
+    out_x2 = x % BLOCK_SIZE;
+    out_y2 = y % BLOCK_SIZE;
+    out_y = int(y / BLOCK_SIZE);
+    out_x = int(x / BLOCK_SIZE);
+}
+
+void Extractor::allocateBlocks(int x, int y)
+{
+    if( df_map.block == NULL )
+    {
+        printf("Unexpected error - DfMap.block is not initialized!\n");
+        return;
+    }
+
+    if( df_map.block[x] == NULL )
+    {
+        df_map.block[x] = new Block**[df_map.y_block_count];
+
+        for (Uint32 y2 = 0; y2 < df_map.y_block_count; y2++)
+        {
+            df_map.block[x][y2] = NULL;
+        }
+    }
+
+    if( df_map.block[x][y] == NULL )
+    {
+        df_map.block[x][y] = new Block*[df_map.z_block_count];
+
+        for (Uint32 z2 = 0; z2 < df_map.z_block_count; z2++)
+        {
+            df_map.block[x][y][z2] = NULL;
         }
     }
 }

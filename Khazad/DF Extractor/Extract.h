@@ -1,10 +1,19 @@
+/* Memory research
+    http://dwarffortresswiki.net/index.php/User:Rick/memory.ini#A_table_of_available_settings
+    http://dwarffortresswiki.net/index.php/User:Rick/Memory_research#Tile_Block
+    http://dwarffortresswiki.net/index.php/User:AzureLightning/Memory_research
+    http://dwarffortresswiki.net/index.php/User:Iluxan/Memory_research
+ */
+
 #ifndef EXTRACT_HEADER
 #define EXTRACT_HEADER
 
 #include <Singleton.h>
 #include <stdafx.h>
 
-#define BlockSize 16
+// windows-specific functions for reading memory
+#include <windows.h>
+#include <winnt.h>
 
 #define DESIGNATION_LIQUID_AMOUNT_BIT1 0
 #define DESIGNATION_LIQUID_AMOUNT_BIT2 1
@@ -73,6 +82,32 @@
 #define OCCUPANCY_DEBRIS5 30
 #define OCCUPANCY_SNOW 31
 
+#define BLOCK_SIZE 16
+
+
+struct Block
+{
+//    short map_x, map_y, map_z; // tiles?
+//    short region_x, region_y; // ?
+
+    short tile_type[BLOCK_SIZE*BLOCK_SIZE]; // tile types (tree,grass,full murky pool,etc)
+    unsigned designation[BLOCK_SIZE*BLOCK_SIZE]; // designation flags (tree,shub,lava,etc)
+    unsigned occupancy[BLOCK_SIZE*BLOCK_SIZE]; // occupancy flags (rat,dwarf,horse,built wall,not build wall,etc)
+};
+
+struct DfMap
+{
+
+    public:
+
+        unsigned x_block_count, y_block_count, z_block_count; // block count
+        unsigned x_cell_count, y_cell_count, z_cell_count; // cell count
+        /// z_block_count == z_cell_count == z levels
+
+        Block ****block;
+};
+
+
 
 class memory_info
 {
@@ -93,26 +128,19 @@ class Extractor
 {
 DECLARE_SINGLETON_CLASS(Extractor)
 
-protected:
+private:
+    // DF map structure
+    DfMap df_map;
 
+    // helpers
+    bool testMapData(DfMap df_map);
+    void convertToDfMapCoords(int x, int y, int &out_x, int &out_y, int &out_x2, int &out_y2);
+    void allocateBlocks(int x, int y);
+
+protected:
     bool MapLoaded;
 
-    short int*** Tiles;
-    int*** Designations;
-    int*** Ocupancy;
-
-    int*** Blocks;
-
     std::vector<memory_info> meminfo;
-
-    unsigned int x_blocks;
-    unsigned int y_blocks;
-    unsigned int z_levels;
-
-    unsigned int MapSizeX;
-    unsigned int MapSizeY;
-    unsigned int MapSizeZ;
-
 
     int pe_offset;
     int pe_timestamp;
@@ -137,9 +165,9 @@ public:
     bool FreeMap();
     bool setMemoryOffsets(HANDLE Handle);
 
-    unsigned int getXBlocks()        { return x_blocks; }
-    unsigned int getYBlocks()        { return y_blocks; }
-    unsigned int getZBlocks()        { return z_levels; }
+    unsigned int getXBlocks()        { return df_map.x_block_count; }
+    unsigned int getYBlocks()        { return df_map.y_block_count; }
+    unsigned int getZBlocks()        { return df_map.z_block_count; }
 
     short int getTileType(int x, int y, int z);
     int getDesignations(int x, int y, int z);
