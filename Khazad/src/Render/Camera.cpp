@@ -175,130 +175,22 @@ void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY)
 				int XPosition, YPosition;
 				SDL_GetMouseState(&XPosition, &YPosition);
 
-				/*
-				GLdouble NearXCordinate, NearYCordinate, NearZCordinate = 0;
-				GLdouble FarXCordinate, FarYCordinate, FarZCordinate = 0;
-				GLdouble ProjectionMatrix[16];
-				GLdouble ModelMatrix[16];
-				GLint ViewPort[4];
+                GLint viewport[4];
+                GLdouble mvmatrix[16], projmatrix[16];
+                GLint realy;  /*  OpenGL y coordinate position  */
+                GLdouble wx, wy, wz;  /*  returned world x, y, z coords  */
 
-				glGetDoublev(GL_PROJECTION_MATRIX, ProjectionMatrix);
-				glGetDoublev(GL_MODELVIEW_MATRIX, ModelMatrix);
-				glGetIntegerv(GL_VIEWPORT, ViewPort);
+                glGetIntegerv (GL_VIEWPORT, viewport);
+                glGetDoublev (GL_MODELVIEW_MATRIX, mvmatrix);
+                glGetDoublev (GL_PROJECTION_MATRIX, projmatrix);
 
-				gluUnProject(XPosition, YPosition, 0.0, ProjectionMatrix, ModelMatrix, ViewPort, &NearXCordinate, &NearYCordinate, &NearZCordinate);
-				gluUnProject(XPosition, YPosition, 1.0, ProjectionMatrix, ModelMatrix, ViewPort, &FarXCordinate, &FarYCordinate, &FarZCordinate);
+                realy = viewport[3] - (GLint) YPosition - 1;
 
-				//GLdouble RayX = (FarXCordinate - NearXCordinate);
-				//GLdouble RayY = (FarYCordinate - NearYCordinate);
-				//GLdouble RayZ = (FarZCordinate - NearZCordinate);
-
-				Vector3 RayOrigin, RayDestination;
-
-				RayOrigin.set(NearXCordinate, -NearYCordinate, NearZCordinate);
-				RayDestination.set(FarXCordinate, -FarYCordinate, FarZCordinate);
-				Vector3 RayVector = RayDestination - RayOrigin;
-
-				Vector3 PlaneNormal, Plane;
-				Plane = LookPosition;
-				PlaneNormal.set(0.0, 0.0, 1.0);
-
-				float distance =  (PlaneNormal.DotProduct(Plane - RayOrigin)) / (PlaneNormal.DotProduct(RayDestination - RayOrigin));
-
-				Vector3 location;
-				location = RayOrigin + ( RayVector * distance );
-
-				//MAP->getCell((Sint32)location.x, (Sint32)location.y, (Sint32)LookPosition.z). ;
-
-
-				*/
-
-
-
-
-
-				/*
-
-				GLuint buffer[512];
-				GLint viewport[4];
-				glGetIntegerv(GL_VIEWPORT, viewport);
-				glSelectBuffer(512, buffer);
-				GLint Hits;
-
-
-				// Puts OpenGL In Selection Mode. Nothing Will Be Drawn. Object ID's and Extents Are Stored In The Buffer.
-				(void) glRenderMode(GL_SELECT);
-
-				glInitNames();
-
-				//glPushName(0);
-				// Get visible Actor ID's into the name list
-
-
-				glMatrixMode(GL_PROJECTION);
-				glPushMatrix();
-				glLoadIdentity();
-
-				// This Creates A Matrix That Will Zoom Up To A Small Portion Of The Screen, Where The Mouse Is
-				gluPickMatrix((GLdouble) XPosition, (GLdouble) viewport[3] - XPosition, 1.0f, 1.0f, viewport);
-
-
-				gluPerspective(45.0f, (GLfloat) (viewport[2] - viewport[0]) / (GLfloat) (viewport[3] - viewport[1]), 0.1f, 100.0f);
-				// make this ISO
-
-				glMatrixMode(GL_MODELVIEW);
-				DrawTargets();
-				glMatrixMode(GL_PROJECTION);
-				glPopMatrix();
-				glMatrixMode(GL_MODELVIEW);
-				Hits = glRenderMode(GL_RENDER);
-
-				if (Hits > 0)
-				{
-					int	choose = buffer[3];
-					int	depth = buffer[1];
-
-					for (int loop = 1; loop < Hits; loop++)
-					{
-						// Select closest Hit
-						if (buffer[loop * 4 + 1] < GLuint(depth))
-						{
-							choose = buffer[loop * 4 + 3];
-							depth = buffer[loop * 4 + 1];
-						}
-					}
-
-					Actor* SelectedActor = ActorList[choose];
-					Vector3 location = SelectedActor.Position;
-
-					//printf("X = %f Y = %f Z = %f \n", location.x, location.y, LookPosition.z);
-				}
-				*/
-
-
-
-				//GLint viewport[4];
-				//GLubyte pixel[4];
-
-				//glGetIntegerv(GL_VIEWPORT, viewport);
-
-				//glReadPixels(XPosition, viewport[3] - YPosition, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, (void *)pixel);
-
-				//printf("%d %d %d %d\n", pixel[0], pixel[1], pixel[2], pixel[3]);
-				/*
-				if (pixel[0] == 255)
-				  printf ("You picked the 1st snowman on the 1st row\n");
-				else if (pixel[1] == 255)
-				  printf ("You picked the 1st snowman on the 2nd row\n");
-				else if (pixel[2] == 255)
-				  printf ("You picked the 2nd snowman on the 1st row\n");
-				else if (pixel[0] == 250)
-				  printf ("You picked the 2nd snowman on the 2nd row\n");
-   				else
-				   printf("You didn't click a snowman!\n");
-				   */
-
-
+                printf ("Coordinates at cursor are (%4d, %4d)\n", XPosition, realy);
+                gluUnProject ((GLdouble) XPosition, (GLdouble) realy, 0.0, mvmatrix, projmatrix, viewport, &wx, &wy, &wz);
+                printf ("World coords at z=0.0 are (%f, %f, %f)\n", wx, wy, wz);
+                gluUnProject ((GLdouble) XPosition, (GLdouble) realy, 1.0, mvmatrix, projmatrix, viewport, &wx, &wy, &wz);
+                printf ("World coords at z=1.0 are (%f, %f, %f)\n", wx, wy, wz);
 
 				break;
 			}
