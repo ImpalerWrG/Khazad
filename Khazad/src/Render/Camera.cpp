@@ -97,10 +97,11 @@ void Camera::UpdateView()
 
 void Camera::onMousePoll()
 {
-    int RealX;
-    int RealY;
-    Uint8 MouseButtonState = SDL_GetMouseState(&RealX, &RealY);
+    //int RealX;
+    //int RealY;
+    //Uint8 MouseButtonState = SDL_GetMouseState(&RealX, &RealY);
 
+    /*
     if(RealX <= 10)
     {
         SlideView(-CONFIG->SlideSpeed() / 5, 0);
@@ -118,6 +119,27 @@ void Camera::onMousePoll()
     {
         SlideView(0, CONFIG->SlideSpeed() / 5);
     }
+    */
+
+    int XPosition, YPosition;
+    SDL_GetMouseState(&XPosition, &YPosition);
+
+    GLint viewport[4];
+    GLdouble mvmatrix[16], projmatrix[16];
+    GLint realy;  /*  OpenGL y coordinate position  */
+    GLdouble wx, wy, wz;  /*  returned world x, y, z coords  */
+
+    glGetIntegerv (GL_VIEWPORT, viewport);
+    glGetDoublev (GL_MODELVIEW_MATRIX, mvmatrix);
+    glGetDoublev (GL_PROJECTION_MATRIX, projmatrix);
+
+    realy = viewport[3] - (GLint) YPosition - 1;
+
+    gluUnProject ((GLdouble) XPosition, (GLdouble) realy, 0.0, mvmatrix, projmatrix, viewport, &wx, &wy, &wz);
+    setNearMouseClickPoint(Vector3((float) wx, (float) wy, (float) wz));
+
+    gluUnProject ((GLdouble) XPosition, (GLdouble) realy, 1.0, mvmatrix, projmatrix, viewport, &wx, &wy, &wz);
+    setFarMouseClickPoint(Vector3((float) wx, (float) wy, (float) wz));
 }
 
 void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY)
@@ -186,11 +208,11 @@ void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY)
 
                 realy = viewport[3] - (GLint) YPosition - 1;
 
-                printf ("Coordinates at cursor are (%4d, %4d)\n", XPosition, realy);
                 gluUnProject ((GLdouble) XPosition, (GLdouble) realy, 0.0, mvmatrix, projmatrix, viewport, &wx, &wy, &wz);
-                printf ("World coords at z=0.0 are (%f, %f, %f)\n", wx, wy, wz);
+                setNearMouseClickPoint(Vector3((float) wx, (float) wy, (float) wz));
+
                 gluUnProject ((GLdouble) XPosition, (GLdouble) realy, 1.0, mvmatrix, projmatrix, viewport, &wx, &wy, &wz);
-                printf ("World coords at z=1.0 are (%f, %f, %f)\n", wx, wy, wz);
+                setFarMouseClickPoint(Vector3((float) wx, (float) wy, (float) wz));
 
 				break;
 			}

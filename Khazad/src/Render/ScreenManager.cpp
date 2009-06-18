@@ -620,11 +620,6 @@ void ScreenManager::ShowAxis(void)
     DrawPoint(Point, 100);
 }
 
-void ScreenManager::setShadedDraw(bool NewValue)
-{
-    ShadedDraw = NewValue;
-}
-
 void ScreenManager::setHiddenDraw(bool NewValue)
 {
     HiddenDraw = NewValue;

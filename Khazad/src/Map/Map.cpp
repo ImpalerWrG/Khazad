@@ -323,6 +323,9 @@ void Map::LoadExtract()
 		}
 	}
 
+    MapSizeX = CellSizeX * CELLEDGESIZE;
+	MapSizeY = CellSizeY * CELLEDGESIZE;
+	MapSizeZ = CellSizeZ;
 
     // Initialize Faces
     for (Uint32 i = 0; i < MapSizeX; i++)
@@ -331,7 +334,7 @@ void Map::LoadExtract()
 		{
 			for (Uint32 k = 0; k < MapSizeZ; k++)
 			{
-                TargetCube = getCube(i, j, k);
+                Cube* TargetCube = getCube(i, j, k);
                 if(TargetCube)
                 {
                     if(!TargetCube->isSolid())
@@ -377,6 +380,86 @@ void Map::LoadExtract()
 	}
 
     Initialized = true;
+}
+
+void Map::LoadCubeData(Uint32 CellX, Uint32 CellY, Uint32 CellZ, Uint32 CubeX, Uint32 CubeY)
+{
+    Uint32 MapX = CellX * CELLEDGESIZE + CubeX;
+	Uint32 MapY = CellY * CELLEDGESIZE + CubeY;
+	Uint32 MapZ = CellZ;
+
+    int TileType = EXTRACT->getTileType(CellX, CellY, CellZ, CubeX, CubeY);
+
+    bool IsFloor = EXTRACT->isFloorTerrain(TileType);
+    bool IsWall = EXTRACT->isWallTerrain(TileType);
+    bool IsOpen = EXTRACT->isOpenTerrain(TileType);
+    bool IsRamp = EXTRACT->isRampTerrain(TileType);
+    bool IsStairs = EXTRACT->isStairTerrain(TileType);
+
+    int Liquid = EXTRACT->getLiquidLevel(MapX, MapY, MapZ);
+
+    if(IsFloor || IsWall || IsOpen || IsRamp || IsStairs)
+    {
+        Cell* TargetCell = getCubeOwner(MapX, MapY, MapZ);
+        Cube* TargetCube = getCube(MapX, MapY, MapZ);
+
+        if(!TargetCube)
+        {
+            TargetCube = new Cube();
+            TargetCell->setCube(TargetCube, CubeX, CubeY);
+            TargetCube->setPosition((float) MapX, (float) MapY, (float) MapZ);
+        }
+
+        Uint16 Material = PickTexture(TileType);
+
+        bool Hidden = EXTRACT->isDesignationFlag(DESIGNATION_HIDDEN, MapX, MapY, MapZ);
+        TargetCube->setHidden(Hidden);
+
+        TargetCube->setSubTerranean(EXTRACT->isDesignationFlag(DESIGNATION_SUBTERRANEAN, MapX, MapY, MapZ));
+        TargetCube->setSkyView(EXTRACT->isDesignationFlag(DESIGNATION_SKY_VIEW, MapX, MapY, MapZ));
+        TargetCube->setSunLit(EXTRACT->isDesignationFlag(DESIGNATION_OPEN_TO_SUN, MapX, MapY, MapZ));
+
+        if(IsWall)
+        {
+            TargetCube->Init(Material);
+        }
+        if(IsOpen)
+        {
+            TargetCube->Open();
+        }
+        if(IsRamp)
+        {
+            TargetCube->Init(Material);
+            TargetCube->Open();
+            TargetCube->SetSlope(SLOPE_FLAT);  // Prime the Slope, the type can not yet be determined
+        }
+        if(IsFloor)
+        {
+            TargetCube->InitConstructedFace(FACET_BOTTOM, Material);
+        }
+        if(IsStairs)
+        {
+            TargetCube->Init(Material);
+            TargetCube->Open();
+            TargetCube->SetSlope(SLOPE_FLAT);
+            //TODO render stairs differently
+        }
+        if(Liquid)
+        {
+            TargetCube->Open();
+            TargetCube->setLiquid((Uint8) Liquid);
+
+            if(EXTRACT->isDesignationFlag(DESIGNATION_LIQUID_TYPE, MapX, MapY, MapZ))
+            {
+                TargetCube->InitConstructedFace(FACET_TOP, DATA->getLabelIndex("MATERIAL_LAVA"));
+            }
+            else
+            {
+                TargetCube->InitConstructedFace(FACET_TOP, DATA->getLabelIndex("MATERIAL_WATER"));
+            }
+        }
+        TargetCube->setVisible(true);
+    }
 }
 
 void Map::InitilizeTilePicker()

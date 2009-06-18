@@ -41,6 +41,8 @@ public:
 
     void LoadExtract();
 
+    void LoadCubeData(Uint32 CellX, Uint32 CellY, Uint32 CellZ, Uint32 CubeX, Uint32 CubeY);
+
     void ChangeCellCount(Sint8 Change)      { CellCount += Change; }
     Uint32 getCellCount()                   { return CellCount; }
 

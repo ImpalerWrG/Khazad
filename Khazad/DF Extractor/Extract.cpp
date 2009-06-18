@@ -1078,6 +1078,19 @@ short int Extractor::getTileType(int x, int y, int z)
     return -1;
 }
 
+short int Extractor::getTileType(int x, int y, int z, int blockX, int blockY)
+{
+    if(x < df_map.x_block_count && x >= 0 && y < df_map.y_block_count && y >= 0)
+    {
+        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
+        {
+            return df_map.block[x][y][z]->tile_type[blockX * BLOCK_SIZE + blockY];
+        }
+    }
+
+    return -1;
+}
+
 int Extractor::getDesignations(int x, int y, int z)
 {
     if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
@@ -1622,6 +1635,11 @@ bool Extractor::isWallTerrain(int in)
     }
 
     return false;
+}
+
+bool Extractor::isBlockInitialized(int x, int y, int z)
+{
+    return df_map.block[x][y][z] != NULL;
 }
 
 bool Extractor::isDesignationFlag(unsigned int flag, int x, int y, int z)

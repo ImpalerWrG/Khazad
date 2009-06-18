@@ -214,7 +214,7 @@ bool InputManager::HandleInput()
 		}
 	}
 
-	//SCREEN->MainCamera->onMousePoll(); // Check for edge scrolling even without events
+	SCREEN->MainCamera->onMousePoll(); // Check for edge scrolling even without events
 
 
 	return false;

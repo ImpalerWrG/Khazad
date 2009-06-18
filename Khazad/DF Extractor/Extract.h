@@ -87,31 +87,25 @@
 
 struct Block
 {
-//    short map_x, map_y, map_z; // tiles?
-//    short region_x, region_y; // ?
-
-    short tile_type[BLOCK_SIZE*BLOCK_SIZE]; // tile types (tree,grass,full murky pool,etc)
-    unsigned designation[BLOCK_SIZE*BLOCK_SIZE]; // designation flags (tree,shub,lava,etc)
-    unsigned occupancy[BLOCK_SIZE*BLOCK_SIZE]; // occupancy flags (rat,dwarf,horse,built wall,not build wall,etc)
+    short tile_type[BLOCK_SIZE * BLOCK_SIZE];         // tile types (tree,grass,full murky pool,etc)
+    unsigned designation[BLOCK_SIZE * BLOCK_SIZE];    // designation flags (tree,shub,lava,etc)
+    unsigned occupancy[BLOCK_SIZE * BLOCK_SIZE];      // occupancy flags (rat,dwarf,horse,built wall,not build wall,etc)
 };
 
 struct DfMap
 {
+public:
 
-    public:
+    unsigned x_block_count, y_block_count, z_block_count;   // block count
+    unsigned x_cell_count, y_cell_count, z_cell_count;      // cell count
 
-        unsigned x_block_count, y_block_count, z_block_count; // block count
-        unsigned x_cell_count, y_cell_count, z_cell_count; // cell count
-        /// z_block_count == z_cell_count == z levels
-
-        Block ****block;
+    Block ****block;
 };
-
-
 
 class memory_info
 {
 public:
+
     char version[20];
     int pe_timestamp;
     int pe_timestamp_offset;
@@ -128,17 +122,15 @@ class Extractor
 {
 DECLARE_SINGLETON_CLASS(Extractor)
 
-private:
-    // DF map structure
-    DfMap df_map;
+protected:
 
-    // helpers
+    bool MapLoaded;
+
+    DfMap df_map;   // DF extracted map structure
+
     bool testMapData(DfMap df_map);
     void convertToDfMapCoords(int x, int y, int &out_x, int &out_y, int &out_x2, int &out_y2);
     void allocateBlocks(int x, int y);
-
-protected:
-    bool MapLoaded;
 
     std::vector<memory_info> meminfo;
 
@@ -170,6 +162,8 @@ public:
     unsigned int getZBlocks()        { return df_map.z_block_count; }
 
     short int getTileType(int x, int y, int z);
+    short int getTileType(int x, int y, int z, int blockX, int blockY);
+
     int getDesignations(int x, int y, int z);
     int getOccupancies(int x, int y, int z);
 
@@ -183,6 +177,8 @@ public:
     bool isRampTerrain(int);
     bool isFloorTerrain(int);
     bool isWallTerrain(int);
+
+    bool isBlockInitialized(int x, int y, int z);
 
     bool isDesignationFlag(unsigned int flag, int x, int y, int z);
     bool isOcupancyFlag(unsigned int flag, int x, int y, int z);

@@ -34,6 +34,11 @@ protected:
 
 	Plane FrustumPlanes[4];
 
+    Vector3 Cursor;
+
+    Vector3 NearMouseClickPoint;
+    Vector3 FarMouseClickPoint;
+
 public:
 
 	Camera();
@@ -66,6 +71,11 @@ public:
     bool InSlice(float Zlevel);
     float getShading(float Zlevel);
 
+    Vector3 getNearMouseClickPoint()                    { return NearMouseClickPoint; }
+    Vector3 setNearMouseClickPoint(Vector3 NewPoint)    { NearMouseClickPoint = NewPoint; }
+
+    Vector3 getFarMouseClickPoint()                     { return FarMouseClickPoint; }
+    Vector3 setFarMouseClickPoint(Vector3 NewPoint)     { FarMouseClickPoint = NewPoint; }
 
 	bool isVerticalMode()                   { return VerticalMode;}
     void setVerticalMode(bool NewValue);

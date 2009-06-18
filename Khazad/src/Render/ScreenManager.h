@@ -33,7 +33,7 @@ public:
 	void setFrameDraw(bool NewValue)            { FrameDraw = NewValue; }
 
 	bool isShadedDraw()                         { return ShadedDraw; }
-	void setShadedDraw(bool NewValue);
+	void setShadedDraw(bool NewValue)           { ShadedDraw = NewValue; }
 
 	bool isHiddenDraw()                         { return HiddenDraw; }
 	void setHiddenDraw(bool NewValue);
