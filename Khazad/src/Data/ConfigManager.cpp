@@ -2,6 +2,8 @@
 #include <Singleton.h>
 #include <XMLManager.h>
 
+#include <Paths.h>
+
 DECLARE_SINGLETON(ConfigManager)
 
 ConfigManager::ConfigManager()
@@ -26,7 +28,7 @@ ConfigManager::~ConfigManager()
 
 bool ConfigManager::Init()
 {
-	TiXmlDocument* Document = XML->loadFile("Assets\\XML\\GlobalDefines.xml");
+	TiXmlDocument* Document = XML->loadFile(Path("Assets\\XML\\GlobalDefines.xml"));
     TiXmlElement* Root = Document->RootElement();
 
 	XML->QueryUIntValue(Root, "ScreenResolution", "X", XResolution);
@@ -46,8 +48,8 @@ bool ConfigManager::Init()
     XML->QueryUIntValue(Root, "InterfaceSpeed", "Slide", Slide);
     XML->QueryUIntValue(Root, "InterfaceSpeed", "Zoom", Zoom);
 
-    XML->QueryTextValue(Root, "MapLoading", "Path", Loading);
-    XML->QueryTextValue(Root, "MapSaving", "Path", Saveing);
+    XML->QueryTextValue(Root, "MapLoading", "Path", &Loading);
+    XML->QueryTextValue(Root, "MapSaving", "Path", &Saveing);
 
 	return true;
 }

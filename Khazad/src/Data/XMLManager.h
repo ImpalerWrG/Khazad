@@ -52,19 +52,21 @@ public:
         }
     };
 
-    void QueryTextValue(TiXmlElement* Entry, const char* Element, const char* Attribute, char* String)
+    void QueryTextValue(TiXmlElement* Entry, const char* Element, const char* Attribute, string* String)
     {
         TiXmlElement* child = Entry->FirstChildElement(Element);
         if (child)
         {
-            const char* temp;
+/*            const char* temp;
             temp = child->Attribute(Attribute);
             int i;
             for(i = 0; temp[i] != NULL; i++)
             {
                 String[i] = temp[i];
             }
-            String[i] = NULL;
+            String[i] = NULL;*/
+            String->clear();
+            String->append(child->Attribute(Attribute));
         }
     };
 

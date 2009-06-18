@@ -3,12 +3,16 @@
 
 //#include <windows.h>
 #include <stdio.h>
-#include <tchar.h>
+//#include <tchar.h>
 #include <assert.h>
 
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <glut.h>
+#ifdef LINUX_BUILD
+    #include <GL/glut.h>
+#else
+    #include <glut.h>
+#endif
 #include <SDL.h>
 #include <SDL_opengl.h>
 
@@ -26,7 +30,7 @@
 #include <guichan/opengl/openglsdlimageloader.hpp>
 
 
-#include <enum.h>
+#include <Enum.h>
 
 using namespace std;
 

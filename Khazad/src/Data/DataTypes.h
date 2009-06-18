@@ -4,6 +4,7 @@
 #include <stdafx.h>
 
 #include <tinyxml.h>
+#include <Paths.h>
 
 class DataBase
 {
@@ -17,7 +18,7 @@ public:
 
 protected:
 
-    char Name[64];
+    string Name;
 };
 
 class TextureData: public DataBase
@@ -29,11 +30,11 @@ public:
     ~TextureData();
     bool Load(TiXmlElement* Element, Uint32 Index);
 
-    char* getPath() { return Path; }
+    Path getPath() { return sPath; }
 
 protected:
 
-    char Path[256];
+    Path sPath;
 };
 
 
@@ -54,7 +55,7 @@ public:
 
 protected:
 
-    char TextureLabel[64];
+    string TextureLabel;
 
     Uint32 TextureID;
     Uint16 Hardness;

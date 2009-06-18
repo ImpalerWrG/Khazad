@@ -10,10 +10,7 @@
 
 #include <Singleton.h>
 #include <stdafx.h>
-
-// windows-specific functions for reading memory
-#include <windows.h>
-#include <winnt.h>
+#include <Process.h>
 
 #define DESIGNATION_LIQUID_AMOUNT_BIT1 0
 #define DESIGNATION_LIQUID_AMOUNT_BIT2 1
@@ -87,35 +84,17 @@
 
 struct Block
 {
-    short tile_type[BLOCK_SIZE * BLOCK_SIZE];         // tile types (tree,grass,full murky pool,etc)
-    unsigned designation[BLOCK_SIZE * BLOCK_SIZE];    // designation flags (tree,shub,lava,etc)
-    unsigned occupancy[BLOCK_SIZE * BLOCK_SIZE];      // occupancy flags (rat,dwarf,horse,built wall,not build wall,etc)
+    short tile_type[BLOCK_SIZE*BLOCK_SIZE];     // tile types (tree,grass,full murky pool,etc)
+    unsigned designation[BLOCK_SIZE*BLOCK_SIZE];// designation flags (tree,shub,lava,etc)
+    unsigned occupancy[BLOCK_SIZE*BLOCK_SIZE];  // occupancy flags (rat,dwarf,horse,built wall,not build wall,etc)
 };
 
 struct DfMap
 {
 public:
-
-    unsigned x_block_count, y_block_count, z_block_count;   // block count
-    unsigned x_cell_count, y_cell_count, z_cell_count;      // cell count
-
+    unsigned x_block_count, y_block_count, z_block_count; // block count
+    unsigned x_cell_count, y_cell_count, z_cell_count;    // cell count
     Block ****block;
-};
-
-class memory_info
-{
-public:
-
-    char version[20];
-    int pe_timestamp;
-    int pe_timestamp_offset;
-    int map_offset;
-    int x_count_offset;
-    int y_count_offset;
-    int z_count_offset;
-    int tile_type_offset;
-    int designation_offset;
-    int occupancy_offset;
 };
 
 class Extractor
@@ -123,16 +102,12 @@ class Extractor
 DECLARE_SINGLETON_CLASS(Extractor)
 
 protected:
-
     bool MapLoaded;
-
     DfMap df_map;   // DF extracted map structure
 
     bool testMapData(DfMap df_map);
     void convertToDfMapCoords(int x, int y, int &out_x, int &out_y, int &out_x2, int &out_y2);
     void allocateBlocks(int x, int y);
-
-    std::vector<memory_info> meminfo;
 
     int pe_offset;
     int pe_timestamp;
@@ -152,10 +127,9 @@ public:
     bool isMapLoaded()      { return MapLoaded; }
 
     bool dumpMemory();
-    bool loadMap(char* FilePath);
-    bool writeMap(char* FilePath);
+    bool loadMap(const char* FilePath);
+    bool writeMap(const char* FilePath);
     bool FreeMap();
-    bool setMemoryOffsets(HANDLE Handle);
 
     unsigned int getXBlocks()        { return df_map.x_block_count; }
     unsigned int getYBlocks()        { return df_map.y_block_count; }
@@ -166,8 +140,6 @@ public:
 
     int getDesignations(int x, int y, int z);
     int getOccupancies(int x, int y, int z);
-
-    int readMemoryFile(char* FilePath);
 
     int picktexture(int);
 

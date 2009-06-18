@@ -17,6 +17,7 @@
 #include <Map.h>
 #include <Cell.h>
 #include <Gui.h>
+#include <Paths.h>
 
 #include <IL/ilut.h>
 
@@ -60,7 +61,7 @@ bool ScreenManager::Init()
 
     //SDL_Surface* Icon = SDL_LoadBMP("Assets\\Textures\\Khazad_Icon.bmp");
     SDL_Surface* Icon = NULL;
-    Icon = SDL_LoadBMP("Assets\\Textures\\KIcon.bmp");
+    Icon = SDL_LoadBMP(Path("Assets\\Textures\\KIcon.bmp"));
 
     if(Icon)
     {
@@ -69,7 +70,7 @@ bool ScreenManager::Init()
         SDL_WM_SetIcon(Icon, NULL);
     }
 
-    LogoSurface = IMAGE->loadSurface("Assets\\Textures\\KhazadLogo.png");
+    LogoSurface = IMAGE->loadSurface(Path("Assets\\Textures\\KhazadLogo.png"));
 
     if(CONFIG->FullScreen())
     {
@@ -217,7 +218,7 @@ void ScreenManager::CaptureScreenShot()
     {
         char buffer[256];
         sprintf(buffer, "ScreenShots\\ScreenShot%i.png", ScreenShotCounter);
-        ilSaveImage(buffer);
+        ilSaveImage(Path(buffer));
         ScreenShotCounter++;
         // Find a way to count up if screens already exist with initial count (increment untill error code is not returned?)
     }

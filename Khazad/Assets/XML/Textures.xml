@@ -42,7 +42,7 @@
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_BRICK"/>
-		<File Path="Assets\\Textures\\brick.png"/>
+		<File Path="Assets\\Textures\\Brick.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_AIR"/>
@@ -70,7 +70,7 @@
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_SAND"/>
-		<File Path="Assets\\Textures\\sand.png"/>
+		<File Path="Assets\\Textures\\Sand.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_COBBLESTONE"/>
@@ -90,7 +90,7 @@
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_POOL"/>
-		<File Path="Assets\\Textures\\Pool.png"/>
+		<File Path="Assets\\Textures\\pool.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_ROUGH_STONE"/>
@@ -114,7 +114,7 @@
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_SNOW"/>
-		<File Path="Assets\\Textures\\snow.png"/>
+		<File Path="Assets\\Textures\\Snow.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_CONSTRUCTED_WALL"/>
@@ -122,7 +122,7 @@
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_PIT"/>
-		<File Path="Assets\\Textures\\pit.png"/>
+		<File Path="Assets\\Textures\\Pit.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_OBSIDIAN"/>

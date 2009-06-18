@@ -3,6 +3,7 @@
 #include <SDL_ttf.h>
 #include <FontManager.h>
 #include <Singleton.h>
+#include <Paths.h>
 
 DECLARE_SINGLETON(FontManager)
 
@@ -14,7 +15,7 @@ bool FontManager::Init()
 		return false;
 	}
 
-    font = new gcn::ImageFont("Assets\\Fonts\\fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+    font = new gcn::ImageFont(Path("Assets\\Fonts\\fixedfont.bmp"), " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
     gcn::Widget::setGlobalFont(font);
 
 	return true;

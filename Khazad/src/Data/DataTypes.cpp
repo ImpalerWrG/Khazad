@@ -13,7 +13,7 @@ bool DataBase::Load(TiXmlElement* Entry, Uint32 Index)
 {
     if(Entry)
     {
-        XML->QueryTextValue(Entry, "Name", "Label", Name);
+        XML->QueryTextValue(Entry, "Name", "Label", &Name);
         DATA->addLabel(Name, Index);
     }
 }
@@ -28,7 +28,7 @@ bool MaterialData::Load(TiXmlElement* Entry, Uint32 Index)
 {
     if(Entry)
     {
-        XML->QueryTextValue(Entry, "Texture", "label", TextureLabel);
+        XML->QueryTextValue(Entry, "Texture", "label", &TextureLabel);
         XML->QueryUIntValue(Entry, "Hardness", "Int", Hardness);
 
         XML->QueryUIntArray(Entry, "TileValues", "Tile", "Int", &TileTypes);
@@ -57,8 +57,9 @@ bool TextureData::Load(TiXmlElement* Entry, Uint32 Index)
 {
     if(Entry)
     {
-        XML->QueryTextValue(Entry, "File", "Path", Path);
-
+        string temp;
+        XML->QueryTextValue(Entry, "File", "Path", &temp);
+        sPath = temp;
         DataBase::Load(Entry, Index);
         return true;
     }

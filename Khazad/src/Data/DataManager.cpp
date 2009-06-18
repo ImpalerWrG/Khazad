@@ -5,6 +5,7 @@
 
 #include <tinystr.h>
 #include <tinyxml.h>
+#include <Paths.h>
 
 
 DECLARE_SINGLETON(DataManager)
@@ -22,8 +23,8 @@ DataManager::~DataManager()
 bool DataManager::Init()
 {
     // Initial loading of all XML files
-    LoadDataClass(&Textures, "Assets\\XML\\Textures.xml", "Texture");
-    LoadDataClass(&Materials, "Assets\\XML\\Materials.xml", "Material");
+    LoadDataClass(&Textures, Path("Assets\\XML\\Textures.xml"), "Texture");
+    LoadDataClass(&Materials, Path("Assets\\XML\\Materials.xml"), "Material");
 
     // Post process all data and dynamicly link references, not order dependent
 	PostProcessDataClass(&Materials);
@@ -31,9 +32,9 @@ bool DataManager::Init()
     return true;
 }
 
-Uint32 DataManager::getLabelIndex(char* Label)
+Uint32 DataManager::getLabelIndex(string Label)
 {
-    std::map<char*, Uint32, ltstr>::iterator iter;
+    std::map<string, Uint32, ltstr>::iterator iter;
     iter = GlobalLabelMap.find(Label);
 
 	if(iter != GlobalLabelMap.end())
@@ -47,7 +48,7 @@ Uint32 DataManager::getLabelIndex(char* Label)
 	}
 }
 
-void DataManager::addLabel(char* Label, Uint32 Index)
+void DataManager::addLabel(string Label, Uint32 Index)
 {
     GlobalLabelMap[Label] = Index;
 }

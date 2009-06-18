@@ -13,9 +13,6 @@ Extractor::Extractor()
 
 bool Extractor::Init()
 {
-    // Load the Know Memory offset data
-    readMemoryFile("Assets//Maps//memory.ini");
-
     return true;
 }
 
@@ -25,86 +22,68 @@ Extractor::~Extractor()
 }
 
 
+// //ReadProcessMemory( DFHandle, (int*)(temp_locy), &temp_locz, sizeof(int), NULL);
 bool Extractor::dumpMemory()
 {
-    HWND DFProcess;
-    HANDLE DFHandle;
-    DWORD DFProcessID;
+    /*
+     * Available memory reading functions of the Process singleton:
+     * readByte  - reads 8 bits
+     * readWord  - reads 16 bits
+     * readDWord - reads 32 bits
+     * readQuad  - reads 64 bits
+     * read      - reads arbitrary amount of data
+     */
 
+    // attach to process
+    printf("Here we go...\n");
+    Process * p = PROCESS;
+    if(!p->attach())
+        return 1; // couldn't attach to process, no go
     MapLoaded = false;
+    memory_info * offset_descriptor = p->getDescriptor();
 
-	char process_name[] = "Dwarf Fortress";
-    int buffer, map_loc;
+    Uint32 map_loc, // location of the X array
+           temp_loc, // block location
+           temp_locx, // iterator for the X array
+           temp_locy, // iterator for the Y array
+           temp_locz; // iterator for the Z array
+    Uint32*** Blocks = NULL;
     unsigned blocks_read = 0U;
-
-    int temp_loc, temp_locx, temp_locy, temp_locz;
-
-    int*** Blocks = NULL;
-
-    // Attempt to Find Process
-	DFProcess = FindWindow(NULL,process_name);
-	if(!DFProcess)
-	{
-	    printf("Cannot find window with name \"%s\"\n", process_name);
-		return 3;
-    }
-
-    // And Create Handle
-	GetWindowThreadProcessId(DFProcess, &DFProcessID);
-	printf("Window Thread Process ID [%u] \n", (unsigned int)DFProcessID);
-	DFHandle = OpenProcess(PROCESS_ALL_ACCESS, 0, DFProcessID);
-
-	if(!DFHandle)
-	{
-	    printf("Could not get application handle to hook. \n");
-		return 2;
-    }
-
-
-    // See if this is a known Version of DF and if so get proper Memory Offsets
-    if(!setMemoryOffsets(DFHandle))
-    {
-        printf("No PE timestamp match found, Memory Dump Aborted\n");
-        return false;
-    }
-
-
     // Read Map Data Blocks
-    ReadProcessMemory(DFHandle, (int*)(map_offset), &map_loc, sizeof(int), NULL);
-    printf("map data : 0x%.8X\n", map_loc);
+    map_offset = offset_descriptor->getOffset("map_data");
+    map_loc = p->readDWord(map_offset);
 
     if (!map_loc)
     {
         printf("Could not find DF map information in memory...\n");
         return 1;
     }
-    else
+    printf("map data : 0x%.8X\n", map_loc);
+
+    x_count_offset = offset_descriptor->getOffset("x_count");
+    y_count_offset = offset_descriptor->getOffset("y_count");
+    z_count_offset = offset_descriptor->getOffset("z_count");
+
+    // x_blocks count
+    df_map.x_block_count = p->readDWord(x_count_offset);
+
+    // y_blocks count
+    df_map.y_block_count = p->readDWord(y_count_offset);
+
+    // z_levels count
+    df_map.z_block_count = p->readByte(z_count_offset);
+
+    // get cell count (we can just multiply it with BLOCK_SIZE)
+    df_map.x_cell_count = df_map.x_block_count * BLOCK_SIZE;
+    df_map.y_cell_count = df_map.y_block_count * BLOCK_SIZE;
+    df_map.z_cell_count = df_map.z_block_count;
+
+    // init map blocks (but not all)
+    df_map.block = new Block***[df_map.x_block_count];
+
+    for (Uint32 x = 0; x < df_map.x_block_count; x++)
     {
-        // get block count
-        // df_map.x_block_count count
-        ReadProcessMemory(DFHandle, (int*)(x_count_offset), &df_map.x_block_count, sizeof(int), NULL);
-        printf("x_block_count: %u (%d)\n", BLOCK_SIZE * df_map.x_block_count, df_map.x_block_count);
-
-        // df_map.y_block_count count
-        ReadProcessMemory(DFHandle, (int*)(y_count_offset), &df_map.y_block_count, sizeof(int), NULL);
-        printf("y_block_count: %u (%d)\n", BLOCK_SIZE * df_map.y_block_count, df_map.y_block_count);
-
-        // z_blocks count
-        ReadProcessMemory(DFHandle, (int*)(z_count_offset), &df_map.z_block_count, sizeof(int), NULL);
-        printf("z_block_count: %u\n\n", df_map.z_block_count);
-
-
-        // get cell count (we can just multiply it with BLOCK_SIZE)
-        df_map.x_cell_count = df_map.x_block_count * BLOCK_SIZE;
-        df_map.y_cell_count = df_map.y_block_count * BLOCK_SIZE;
-        df_map.z_cell_count = df_map.z_block_count;
-
-        // init map blocks (but not all)
-        df_map.block = new Block***[df_map.x_block_count];
-
-        for (Uint32 x = 0; x < df_map.x_block_count; x++)
-        {
-            df_map.block[x] = NULL;
+        df_map.block[x] = NULL;
 
 //            df_map.block[x] = new Block*[df_map.y_block_count];
 //            for (Uint32 y = 0; y < df_map.y_block_count; y++)
@@ -112,91 +91,93 @@ bool Extractor::dumpMemory()
 //                df_map.block[x][y] = new Block[df_map.z_block_count];
 //
 //            }
-        }
+    }
 
 //        printf("Maximum possible blocks: %d\n",df_map.x_block_count*df_map.y_block_count*df_map.z_block_count);
 
 
-        Blocks = new int**[df_map.x_block_count];
+    Blocks = new Uint32**[df_map.x_block_count];
 
-        for (Uint32 x = 0; x < df_map.x_block_count; x++)
+    for (Uint32 x = 0; x < df_map.x_block_count; x++)
+    {
+        Blocks[x] = new Uint32*[df_map.y_block_count];
+
+        for (Uint32 y = 0; y < df_map.y_block_count; y++)
         {
-            Blocks[x] = new int*[df_map.y_block_count];
-
-            for (Uint32 y = 0; y < df_map.y_block_count; y++)
-            {
-                Blocks[x][y] = new int[df_map.z_block_count];
-            }
+            Blocks[x][y] = new Uint32[df_map.z_block_count];
         }
-
-        // Initialize all the pointers to the map blocks
-        for ( int x = 0; x < df_map.x_block_count; x++ )
-        {
-            temp_locx = map_loc + ( 4 * x );
-            ReadProcessMemory( DFHandle, (int*)(temp_locx), &temp_locy, sizeof(int), NULL);
-
-            for ( int y = 0; y < df_map.y_block_count; y++ )
-            {
-                ReadProcessMemory( DFHandle, (int*)(temp_locy), &temp_locz, sizeof(int), NULL);
-
-                for ( int z = 0; z < df_map.z_block_count; z++ )
-                {
-                    ReadProcessMemory( DFHandle, (int*)(temp_locz), &temp_loc, sizeof(int), NULL);
-                    Blocks[x][y][z] = temp_loc;
-
-                    // allocate only the map blocks, where there is actual data.
-                    if(temp_loc)
-                    {
-                        allocateBlocks(x, y);
-                    }
-
-                    temp_locz += 4;
-                }
-                temp_locy += 4;
-            }
-        }
-
-        //read the memory from the map blocks
-        for(int x = 0; x < df_map.x_block_count; x++)
-        {
-            for(int y = 0; y < df_map.y_block_count; y++)
-            {
-                for(int z = 0; z < df_map.z_block_count; z++)
-                {
-                    if (Blocks[x][y][z])
-                    {
-                        df_map.block[x][y][z] = new Block;
-
-                        ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + tile_type_offset), &df_map.block[x][y][z]->tile_type, sizeof(short int)*BLOCK_SIZE*BLOCK_SIZE, NULL);
-                        ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + designation_offset), &(df_map.block[x][y][z]->designation), sizeof(int)*BLOCK_SIZE*BLOCK_SIZE, NULL);
-                        ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + occupancy_offset), &(df_map.block[x][y][z]->occupancy), sizeof(int)*BLOCK_SIZE*BLOCK_SIZE, NULL);
-
-                        ++blocks_read;
-                    }
-
-                }
-            }
-        }
-
-
-        printf("Blocks read into memory: %d\n", blocks_read);
-
-        MapLoaded = true;
-
-
-#ifndef NDEBUG
-//        printf("Testing map data... ");
-//
-//        // test my data with already working data
-//        if(testMapData(df_map))
-//            printf("OK\n");
-//        else
-//            printf("WRONG DATA\n");
-#endif
-
     }
 
 
+    // Initialize all the pointers to the map blocks
+    for ( int x = 0; x < df_map.x_block_count; x++ )
+    {
+        temp_locx = map_loc + ( 4 * x );
+        temp_locy = p->readDWord(temp_locx);
+
+        for ( int y = 0; y < df_map.y_block_count; y++ )
+        {
+            temp_locz = p->readDWord(temp_locy);
+
+            for ( int z = 0; z < df_map.z_block_count; z++ )
+            {
+                temp_loc = p->readDWord(temp_locz);
+                Blocks[x][y][z] = temp_loc;
+
+                // allocate only the map blocks, where there is actual data.
+                if(temp_loc)
+                {
+                    allocateBlocks(x, y);
+                }
+
+                temp_locz += 4;
+            }
+            temp_locy += 4;
+        }
+    }
+
+    // get the offsets within blocks (block is 16x 16y 1z big in game)
+    tile_type_offset = offset_descriptor->getOffset("type");
+    designation_offset = offset_descriptor->getOffset("designation");
+    occupancy_offset = offset_descriptor->getOffset("occupancy");
+
+    //read the memory from the map blocks
+    for(int x = 0; x < df_map.x_block_count; x++)
+    {
+        for(int y = 0; y < df_map.y_block_count; y++)
+        {
+            for(int z = 0; z < df_map.z_block_count; z++)
+            {
+                if (Blocks[x][y][z])
+                {
+                    df_map.block[x][y][z] = new Block;
+                    //
+                    p->read(
+                    /*Uint32 offset*/ Blocks[x][y][z] + tile_type_offset,
+                    /*Uint32 size*/   sizeof(short int)*BLOCK_SIZE*BLOCK_SIZE,
+                    /*void *target*/  &df_map.block[x][y][z]->tile_type
+                           );
+                    p->read(
+                    /*Uint32 offset*/ Blocks[x][y][z] + designation_offset,
+                    /*Uint32 size*/   sizeof(int)*BLOCK_SIZE*BLOCK_SIZE,
+                    /*void *target*/  &df_map.block[x][y][z]->designation
+                           );
+                    p->read(
+                    /*Uint32 offset*/ Blocks[x][y][z] + occupancy_offset,
+                    /*Uint32 size*/   sizeof(int)*BLOCK_SIZE*BLOCK_SIZE,
+                    /*void *target*/  &df_map.block[x][y][z]->occupancy
+                           );
+                    /*
+                    ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + tile_type_offset), &df_map.block[x][y][z]->tile_type, sizeof(short int)*BLOCK_SIZE*BLOCK_SIZE, NULL);
+                    ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + designation_offset), &(df_map.block[x][y][z]->designation), sizeof(int)*BLOCK_SIZE*BLOCK_SIZE, NULL);
+                    ReadProcessMemory(DFHandle, (int*)(Blocks[x][y][z] + occupancy_offset), &(df_map.block[x][y][z]->occupancy), sizeof(int)*BLOCK_SIZE*BLOCK_SIZE, NULL);
+*/
+                    ++blocks_read;
+                }
+
+            }
+        }
+    }
     // block address' not needed anymore.
     if(Blocks != NULL)
     {
@@ -218,57 +199,15 @@ bool Extractor::dumpMemory()
 
         delete[] Blocks;
     }
-
-
-    printf("Successfully dumped memory.\n");
-
-    return 0;
+    printf("Blocks read into memory: %d\n", blocks_read);
+    MapLoaded = true;
+    p->detach();
+    return 1;
 }
 
-bool Extractor::setMemoryOffsets(HANDLE DFHandle)
-{
-    int Base = 0x400000;
-
-    // New Method
-    int TempOffset;
-    ReadProcessMemory(DFHandle, (int*) (Base + 60), &TempOffset, sizeof(int), NULL);
-
-    int TimeStamp;
-    ReadProcessMemory(DFHandle, (int*) (Base + TempOffset + 8), &TimeStamp, sizeof(int), NULL);
-
-    printf("TimeStampFound [%x] at Offset [%x].\n", TimeStamp, Base + TempOffset + 8);
-
-    for (unsigned int current_mem = 0; current_mem < meminfo.size(); current_mem++ )
-    {
-        pe_offset = meminfo[current_mem].pe_timestamp_offset;
-        pe_timestamp = meminfo[current_mem].pe_timestamp;
-        map_offset = meminfo[current_mem].map_offset;
-        x_count_offset = meminfo[current_mem].x_count_offset;
-        y_count_offset = meminfo[current_mem].y_count_offset;
-        z_count_offset = meminfo[current_mem].z_count_offset;
-        tile_type_offset = meminfo[current_mem].tile_type_offset;
-        designation_offset = meminfo[current_mem].designation_offset;
-        occupancy_offset = meminfo[current_mem].occupancy_offset;
-
-        // Old Method
-        int OldTimeStamp;
-        ReadProcessMemory(DFHandle, (int*) pe_offset, &OldTimeStamp, sizeof(int), NULL);
-
-        if (pe_timestamp == TimeStamp || pe_timestamp == OldTimeStamp)
-        {
-            printf("Match found! Using version %s.\n", meminfo[current_mem].version);
-            return true;
-        }
-        else
-        {
-            printf("PE timestamps do not match version %s.\n", meminfo[current_mem].version);
-        }
-    }
-    return false;
-}
 
 // TODO: how to know when something's NULL?
-bool Extractor::writeMap(char* FilePath)
+bool Extractor::writeMap(const char* FilePath)
 {
     if(!MapLoaded)
     {
@@ -360,7 +299,7 @@ bool Extractor::writeMap(char* FilePath)
 }
 
 // TODO: how to know when something's NULL?
-bool Extractor::loadMap(char* FilePath)
+bool Extractor::loadMap(const char* FilePath)
 {
 
     FILE *DecompressedMapFile;
@@ -500,67 +439,6 @@ bool Extractor::FreeMap()
 
     MapLoaded = false;
     return true;
-}
-
-int Extractor::readMemoryFile(char* FilePath)
-{
-    char tempString[100];
-    char tempString2[100];
-    int i,j,count;
-    memory_info temp_meminfo;
-    FILE *infile;
-
-    printf("Opening Memory File: %s\n", FilePath);
-    if ((infile = fopen(FilePath, "r")) == NULL)
-    {
-        fprintf(stderr, "Cannot open %s for read\n", FilePath);
-        return -1;
-    }
-
-    while (fgets(tempString, 100, infile) != NULL)
-    {
-        if ( tempString[0] == 'v' )
-        { //start a processing loop
-            for (i=1; tempString[i] != 'v'; i++);
-            i++;
-            for (j=0; tempString[i+j] != '\n'; j++)
-                tempString2[j] = tempString[j+i];
-            tempString2[j] = '\0';
-
-            //printf("%s\n",tempString2);
-            sprintf(temp_meminfo.version,tempString2);
-            fgets(tempString, 100, infile);
-
-            for ( count=0; count < 9; count++ )
-            {
-                for (i=1; tempString[i] != 'x'; i++);
-                i++;
-                for (j=0; tempString[i+j] != '\n'; j++)
-                    tempString2[j] = tempString[j+i];
-                tempString2[j] = '\0';
-
-                switch (count)
-                {
-                    case 0: temp_meminfo.pe_timestamp = strtoul(tempString2, NULL, 16); break;
-                    case 1: temp_meminfo.pe_timestamp_offset = strtoul(tempString2, NULL, 16); break;
-                    case 2: temp_meminfo.map_offset = strtoul(tempString2, NULL, 16); break;
-                    case 3: temp_meminfo.x_count_offset = strtoul(tempString2, NULL, 16); break;
-                    case 4: temp_meminfo.y_count_offset = strtoul(tempString2, NULL, 16); break;
-                    case 5: temp_meminfo.z_count_offset = strtoul(tempString2, NULL, 16); break;
-                    case 6: temp_meminfo.tile_type_offset = strtoul(tempString2, NULL, 16); break;
-                    case 7: temp_meminfo.designation_offset = strtoul(tempString2, NULL, 16); break;
-                    case 8: temp_meminfo.occupancy_offset = strtoul(tempString2, NULL, 16); break;
-                }
-                fgets(tempString, 100, infile);
-            }
-
-            printf("Version Data Loaded: %s\n", temp_meminfo.version);
-
-            meminfo.push_back(temp_meminfo);
-        }
-    }
-
-    return 0;
 }
 
 int Extractor::picktexture(int in)
@@ -1106,6 +984,11 @@ int Extractor::getDesignations(int x, int y, int z)
     return -1;
 }
 
+bool Extractor::isBlockInitialized(int x, int y, int z)
+{
+    return df_map.block[x][y][z] != NULL;
+}
+
 int Extractor::getOccupancies(int x, int y, int z)
 {
     if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
@@ -1635,11 +1518,6 @@ bool Extractor::isWallTerrain(int in)
     }
 
     return false;
-}
-
-bool Extractor::isBlockInitialized(int x, int y, int z)
-{
-    return df_map.block[x][y][z] != NULL;
 }
 
 bool Extractor::isDesignationFlag(unsigned int flag, int x, int y, int z)

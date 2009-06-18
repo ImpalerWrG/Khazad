@@ -3,6 +3,7 @@
 
 #include <stdafx.h>
 #include <Singleton.h>
+#include <Paths.h>
 
 class ConfigManager
 {
@@ -32,8 +33,8 @@ public:
     Uint16 SlideSpeed()         { return Slide; }
     Uint16 ZoomSpeed()          { return Zoom; }
 
-    char* LoadPath()            { return Loading; }
-    char* SavePath()            { return Saveing; }
+    const char* LoadPath()            { return Loading.c_str(); }
+    const char* SavePath()            { return Saveing.c_str(); }
 
 protected:
 
@@ -56,8 +57,8 @@ protected:
     Uint16 Slide;
     Uint16 Zoom;
 
-    char Loading[256];
-    char Saveing[256];
+    string Loading;
+    string Saveing;
 };
 
 #define CONFIG (ConfigManager::GetInstance())

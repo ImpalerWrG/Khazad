@@ -253,13 +253,13 @@ class MapLoadActionListener: public gcn::ActionListener
 
         if(!MAP->isInitialized())
         {
-            EXTRACT->loadMap(CONFIG->LoadPath());
+            EXTRACT->loadMap(Path(CONFIG->LoadPath()));
             MAP->LoadExtract();
             SCREEN->MainCamera->CenterView();
         }
         else
         {
-            EXTRACT->loadMap(CONFIG->LoadPath());
+            EXTRACT->loadMap(Path(CONFIG->LoadPath()));
             MAP->LoadExtract();
         }
         UI->setMapViewState();

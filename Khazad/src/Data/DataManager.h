@@ -8,9 +8,9 @@
 
 struct ltstr
 {
-    bool operator()(const char* s1, const char* s2) const
+    bool operator()(string s1, string s2) const
     {
-        return strcmp(s1, s2) < 0;
+        return strcmp(s1.c_str(), s2.c_str()) < 0;
     }
 };
 
@@ -64,12 +64,12 @@ public:
     MaterialData* getMaterialData(Uint32 Index)        { return Materials[Index]; }
     Uint32 getNumMaterials()                            { return Materials.size(); }
 
-    Uint32 getLabelIndex(char* Label);
-    void addLabel(char* Label, Uint32 Index);
+    Uint32 getLabelIndex(string Label);
+    void addLabel(string Label, Uint32 Index);
 
 protected:
 
-    std::map<char*, Uint32, ltstr> GlobalLabelMap;
+    std::map<string, Uint32, ltstr> GlobalLabelMap;
 
     // ADD New Data classes Here
 

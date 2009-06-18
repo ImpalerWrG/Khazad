@@ -4,6 +4,7 @@
 //#include <ScreenManager.h>
 #include <Singleton.h>
 #include <ActionListeners.h>
+#include <Paths.h>
 
 
 DECLARE_SINGLETON(Ui)
@@ -47,6 +48,7 @@ Ui::Ui()
 
     GuiChanMainObject->setGraphics(GraphicsImplementation);
     GuiChanMainObject->setInput(Input);
+    glGetError(); // needed on linux to not crash
 }
 
 void Ui::InitMainMenu()
@@ -60,28 +62,28 @@ void Ui::InitMainMenu()
 
 
     // Populate the Window with Buttons
-    gcn::ImageButton* MapDumpButton = new gcn::ImageButton("Assets\\Buttons\\Dump.png");
+    gcn::ImageButton* MapDumpButton = new gcn::ImageButton(Path("Assets\\Buttons\\Dump.png"));
     MapDumpButton->setSize(ButtonSize, ButtonSize);
     MainMenuWindow->add(MapDumpButton, 0, 0);
     gcn::ActionListener* MapDumpListener = new MapDumpActionListener();
     MapDumpButton->addActionListener(MapDumpListener);
 
     // Populate the Window with Buttons
-    gcn::ImageButton* MapLoadButton = new gcn::ImageButton("Assets\\Buttons\\OpenFile.png");
+    gcn::ImageButton* MapLoadButton = new gcn::ImageButton(Path("Assets\\Buttons\\OpenFile.png"));
     MapLoadButton->setSize(ButtonSize, ButtonSize);
     MainMenuWindow->add(MapLoadButton, 32, 0);
     gcn::ActionListener* MapLoadListener = new MapLoadActionListener();
     MapLoadButton->addActionListener(MapLoadListener);
 
     // Populate the Window with Buttons
-    gcn::ImageButton* MapSaveButton = new gcn::ImageButton("Assets\\Buttons\\SaveFile.png");
+    gcn::ImageButton* MapSaveButton = new gcn::ImageButton(Path("Assets\\Buttons\\SaveFile.png"));
     MapSaveButton->setSize(ButtonSize, ButtonSize);
     MainMenuWindow->add(MapSaveButton, 64, 0);
     gcn::ActionListener* MapSaveListener = new MapSaveActionListener();
     MapSaveButton->addActionListener(MapSaveListener);
 
     // Populate the Window with Buttons
-    gcn::ImageButton* ExitButton = new gcn::ImageButton("Assets\\Buttons\\Exit.png");
+    gcn::ImageButton* ExitButton = new gcn::ImageButton(Path("Assets\\Buttons\\Exit.png"));
     ExitButton->setSize(ButtonSize, ButtonSize);
     MainMenuWindow->add(ExitButton, 96, 0);
     gcn::ActionListener* ExitListener = new ConfirmExitActionListener();
@@ -101,115 +103,115 @@ void Ui::InitCameraControlMenu()
     CameraControlWindow->setVisible(false);
 
 
-    gcn::ImageButton* VerticalToggleButton = new gcn::ImageButton("Assets\\Buttons\\Vertical.png");
+    gcn::ImageButton* VerticalToggleButton = new gcn::ImageButton(Path("Assets\\Buttons\\Vertical.png"));
     VerticalToggleButton->setSize(32, 32);
     gcn::ActionListener* VerticalListener = new VerticalActionListener();
     VerticalToggleButton->addActionListener(VerticalListener);
     CameraControlWindow->add(VerticalToggleButton, ButtonSize * 0, ButtonSize * 0);
 
-    gcn::ImageButton* DebuggingToggleButton = new gcn::ImageButton("Assets\\Buttons\\Debugging.png");
+    gcn::ImageButton* DebuggingToggleButton = new gcn::ImageButton(Path("Assets\\Buttons\\Debugging.png"));
     DebuggingToggleButton->setSize(32, 32);
     gcn::ActionListener* DebuggingToggleListener = new DebuggingToggleActionListener();
     DebuggingToggleButton->addActionListener(DebuggingToggleListener);
     CameraControlWindow->add(DebuggingToggleButton, ButtonSize * 1, ButtonSize * 0);
 
-    gcn::ImageButton* ShadingToggleButton = new gcn::ImageButton("Assets\\Buttons\\Shading.png");
+    gcn::ImageButton* ShadingToggleButton = new gcn::ImageButton(Path("Assets\\Buttons\\Shading.png"));
     ShadingToggleButton->setSize(32, 32);
     gcn::ActionListener* ShadingTobbleListener = new ShadingToggleActionListener();
     ShadingToggleButton->addActionListener(ShadingTobbleListener);
     CameraControlWindow->add(ShadingToggleButton, ButtonSize * 2, ButtonSize * 0);
 
-    gcn::ImageButton* TakeScreenShotButton = new gcn::ImageButton("Assets\\Buttons\\TakeScreenShot.png");
+    gcn::ImageButton* TakeScreenShotButton = new gcn::ImageButton(Path("Assets\\Buttons\\TakeScreenShot.png"));
     TakeScreenShotButton->setSize(32, 32);
     gcn::ActionListener* TakeScreenShotListener = new TakeScreenShotActionListener();
     TakeScreenShotButton->addActionListener(TakeScreenShotListener);
     CameraControlWindow->add(TakeScreenShotButton, ButtonSize * 3, ButtonSize * 0);
 
-    gcn::ImageButton* FrameToggleButton = new gcn::ImageButton("Assets\\Buttons\\Frame.png");
+    gcn::ImageButton* FrameToggleButton = new gcn::ImageButton(Path("Assets\\Buttons\\Frame.png"));
     FrameToggleButton->setSize(32, 32);
     gcn::ActionListener* FrameToggleListener = new FrameToggleActionListener();
     FrameToggleButton->addActionListener(FrameToggleListener);
     CameraControlWindow->add(FrameToggleButton, ButtonSize * 4, ButtonSize * 0);
 
-    gcn::ImageButton* HiddenToggleButton = new gcn::ImageButton("Assets\\Buttons\\Hidden.png");
+    gcn::ImageButton* HiddenToggleButton = new gcn::ImageButton(Path("Assets\\Buttons\\Hidden.png"));
     HiddenToggleButton->setSize(32, 32);
     gcn::ActionListener* HiddenToggleListener = new HiddenToggleActionListener();
     HiddenToggleButton->addActionListener(HiddenToggleListener);
     CameraControlWindow->add(HiddenToggleButton, ButtonSize * 5, ButtonSize * 0);
 
 
-    gcn::ImageButton* ViewUpButton = new gcn::ImageButton("Assets\\Buttons\\UpArrow.png");
+    gcn::ImageButton* ViewUpButton = new gcn::ImageButton(Path("Assets\\Buttons\\UpArrow.png"));
     ViewUpButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* MoveViewUpListener = new MoveViewUpActionListener();
     ViewUpButton->addActionListener(MoveViewUpListener);
     CameraControlWindow->add(ViewUpButton, ButtonSize * 0, ButtonSize * 1);
 
-    gcn::ImageButton* ViewDownButton = new gcn::ImageButton("Assets\\Buttons\\DownArrow.png");
+    gcn::ImageButton* ViewDownButton = new gcn::ImageButton(Path("Assets\\Buttons\\DownArrow.png"));
     ViewDownButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* MoveViewDownListener = new MoveViewDownActionListener();
     ViewDownButton->addActionListener(MoveViewDownListener);
     CameraControlWindow->add(ViewDownButton, ButtonSize * 0, ButtonSize * 2);
 
 
-    gcn::ImageButton* IncresseLevelsButton = new gcn::ImageButton("Assets\\Buttons\\IncresseLevels.png");
+    gcn::ImageButton* IncresseLevelsButton = new gcn::ImageButton(Path("Assets\\Buttons\\IncresseLevels.png"));
     IncresseLevelsButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* IncresseViewLevelsListener = new IncreseViewLevelsActionListener();
     IncresseLevelsButton->addActionListener(IncresseViewLevelsListener);
     CameraControlWindow->add(IncresseLevelsButton, ButtonSize * 1, ButtonSize * 1);
 
-    gcn::ImageButton* DecreseLevelsButton = new gcn::ImageButton("Assets\\Buttons\\DecresseLevels.png");
+    gcn::ImageButton* DecreseLevelsButton = new gcn::ImageButton(Path("Assets\\Buttons\\DecresseLevels.png"));
     DecreseLevelsButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* DecreseLevelsListener = new DecreseViewLevelsActionListener();
     DecreseLevelsButton->addActionListener(DecreseLevelsListener);
     CameraControlWindow->add(DecreseLevelsButton, ButtonSize * 1, ButtonSize * 2);
 
 
-    gcn::ImageButton* OrbitClockwiseButton = new gcn::ImageButton("Assets\\Buttons\\Clockwise.png");
+    gcn::ImageButton* OrbitClockwiseButton = new gcn::ImageButton(Path("Assets\\Buttons\\Clockwise.png"));
     OrbitClockwiseButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* OrbitClockwiseListener = new OrbitClockwiseActionListener();
     OrbitClockwiseButton->addActionListener(OrbitClockwiseListener);
     CameraControlWindow->add(OrbitClockwiseButton, ButtonSize * 2, ButtonSize * 1);
 
-    gcn::ImageButton* OrbitCounterClockwiseButton = new gcn::ImageButton("Assets\\Buttons\\CounterClockwise.png");
+    gcn::ImageButton* OrbitCounterClockwiseButton = new gcn::ImageButton(Path("Assets\\Buttons\\CounterClockwise.png"));
     OrbitCounterClockwiseButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* OrbitCounterClockwiseListener = new OrbitCounterClockwiseActionListener();
     OrbitCounterClockwiseButton->addActionListener(OrbitCounterClockwiseListener);
     CameraControlWindow->add(OrbitCounterClockwiseButton, ButtonSize * 2, ButtonSize * 2);
 
 
-    gcn::ImageButton* ExplodeLevelsButton = new gcn::ImageButton("Assets\\Buttons\\Explode.png");
+    gcn::ImageButton* ExplodeLevelsButton = new gcn::ImageButton(Path("Assets\\Buttons\\Explode.png"));
     ExplodeLevelsButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* ExplodeLevelsListener = new IncresseLevelSeperationActionListener();
     ExplodeLevelsButton->addActionListener(ExplodeLevelsListener);
     CameraControlWindow->add(ExplodeLevelsButton, ButtonSize * 3, ButtonSize * 1);
 
-    gcn::ImageButton* ContractLevelsButton = new gcn::ImageButton("Assets\\Buttons\\Contract.png");
+    gcn::ImageButton* ContractLevelsButton = new gcn::ImageButton(Path("Assets\\Buttons\\Contract.png"));
     ContractLevelsButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* ContractLevelsListener = new DecresseLevelSeperationActionListener();
     ContractLevelsButton->addActionListener(ContractLevelsListener);
     CameraControlWindow->add(ContractLevelsButton, ButtonSize * 3, ButtonSize * 2);
 
 
-    gcn::ImageButton* ZoomInButton = new gcn::ImageButton("Assets\\Buttons\\ZoomIn.png");
+    gcn::ImageButton* ZoomInButton = new gcn::ImageButton(Path("Assets\\Buttons\\ZoomIn.png"));
     ZoomInButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* ZoomInListener = new ZoomInActionListener();
     ZoomInButton->addActionListener(ZoomInListener);
     CameraControlWindow->add(ZoomInButton, ButtonSize * 4, ButtonSize * 1);
 
-    gcn::ImageButton* ZoomOutButton = new gcn::ImageButton("Assets\\Buttons\\ZoomOut.png");
+    gcn::ImageButton* ZoomOutButton = new gcn::ImageButton(Path("Assets\\Buttons\\ZoomOut.png"));
     ZoomOutButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* ZoomOutListener = new ZoomOutActionListener();
     ZoomOutButton->addActionListener(ZoomOutListener);
     CameraControlWindow->add(ZoomOutButton, ButtonSize * 4, ButtonSize * 2);
 
 
-    gcn::ImageButton* TiltUpButton = new gcn::ImageButton("Assets\\Buttons\\TiltUp.png");
+    gcn::ImageButton* TiltUpButton = new gcn::ImageButton(Path("Assets\\Buttons\\TiltUp.png"));
     TiltUpButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* TiltUpListener = new TiltUpActionListener();
     TiltUpButton->addActionListener(TiltUpListener);
     CameraControlWindow->add(TiltUpButton, ButtonSize * 5, ButtonSize * 1);
 
-    gcn::ImageButton* TiltDownButton = new gcn::ImageButton("Assets\\Buttons\\TiltDown.png");
+    gcn::ImageButton* TiltDownButton = new gcn::ImageButton(Path("Assets\\Buttons\\TiltDown.png"));
     TiltDownButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* TiltDownListener = new TiltDownActionListener();
     TiltDownButton->addActionListener(TiltDownListener);
@@ -229,12 +231,12 @@ void Ui::InitConfirmationWindow()
 
     gcn::ActionListener* ConfirmationListener = new ConfirmationHideListener();
 
-    YesButton = new gcn::ImageButton("Assets\\Buttons\\Yes.png");
+    YesButton = new gcn::ImageButton(Path("Assets\\Buttons\\Yes.png"));
     YesButton->setSize(ButtonSize, ButtonSize);
     YesButton->addActionListener(ConfirmationListener);
     ConfirmationWindow->add(YesButton, 16, ButtonSize / 2);
 
-    NoButton = new gcn::ImageButton("Assets\\Buttons\\No.png");
+    NoButton = new gcn::ImageButton(Path("Assets\\Buttons\\No.png"));
     NoButton->setSize(ButtonSize, ButtonSize);
     NoButton->addActionListener(ConfirmationListener);
     ConfirmationWindow->add(NoButton, ButtonSize * 2, ButtonSize / 2);

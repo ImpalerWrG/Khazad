@@ -15,6 +15,7 @@
 #include <Game.h>
 #include <Map.h>
 #include <Gui.h>
+#include <Paths.h>
 
 
 // General use char buffer
@@ -63,6 +64,10 @@ bool initManagers()
 	GAME->CreateInstance();
 	GAME->Init();
 
+    printf("-=PROCESS INITIALIZING=-\n");
+    PROCESS->CreateInstance();
+	PROCESS->Init();
+
     printf("-=EXTRACTOR INITIALIZING=-\n");
 	EXTRACT->CreateInstance();
 	EXTRACT->Init();
@@ -78,7 +83,7 @@ bool initManagers()
     FONT->CreateInstance();
 	FONT->Init();
 
-	FONT->loadFont("Assets\\Fonts\\KNIGHT.TTF", 30);
+	FONT->loadFont(Path("Assets\\Fonts\\KNIGHT.TTF"), 30);
 
 	return true;
 }
