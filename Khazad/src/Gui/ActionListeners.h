@@ -223,7 +223,7 @@ class MapDumpActionListener: public gcn::ActionListener
         SCREEN->RenderTextCentered("Dumping Memory", 0, WHITE, 0);
         SCREEN->Flip();
 
-        if(!MAP->isInitialized())
+        if(!MAP->isMapLoaded())
         {
             EXTRACT->dumpMemory();
             MAP->LoadExtract();
@@ -251,7 +251,7 @@ class MapLoadActionListener: public gcn::ActionListener
         SCREEN->RenderTextCentered(buffer, 0, WHITE, 0);
         SCREEN->Flip();
 
-        if(!MAP->isInitialized())
+        if(!MAP->isMapLoaded())
         {
             EXTRACT->loadMap(Path(CONFIG->LoadPath()));
             MAP->LoadExtract();

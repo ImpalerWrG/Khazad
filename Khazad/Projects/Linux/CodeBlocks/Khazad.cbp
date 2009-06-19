@@ -71,7 +71,13 @@
 		</Linker>
 		<Unit filename="../../../DF Extractor/Extract.cpp" />
 		<Unit filename="../../../DF Extractor/Extract.h" />
+		<Unit filename="../../../DF Extractor/Process.cpp" />
+		<Unit filename="../../../DF Extractor/Process.h" />
 		<Unit filename="../../../DF Extractor/ZlibHelper.h" />
+		<Unit filename="../../../DF Extractor/md5.c">
+			<Option compilerVar="CPP" />
+		</Unit>
+		<Unit filename="../../../DF Extractor/md5.h" />
 		<Unit filename="../../../TinyXML/tinystr.cpp" />
 		<Unit filename="../../../TinyXML/tinystr.h" />
 		<Unit filename="../../../TinyXML/tinyxml.cpp" />
@@ -112,10 +118,6 @@
 		<Unit filename="../../../src/Gui/Gui.h" />
 		<Unit filename="../../../src/Gui/InputManager.cpp" />
 		<Unit filename="../../../src/Gui/InputManager.h" />
-		<Unit filename="../../../src/MD5/md5.c">
-			<Option compilerVar="CPP" />
-		</Unit>
-		<Unit filename="../../../src/MD5/md5.h" />
 		<Unit filename="../../../src/Map/Cell.cpp" />
 		<Unit filename="../../../src/Map/Cell.h" />
 		<Unit filename="../../../src/Map/Cube.cpp" />
@@ -126,8 +128,6 @@
 		<Unit filename="../../../src/Map/Map.h" />
 		<Unit filename="../../../src/Map/Slope.cpp" />
 		<Unit filename="../../../src/Map/Slope.h" />
-		<Unit filename="../../../src/Process/Process.cpp" />
-		<Unit filename="../../../src/Process/Process.h" />
 		<Unit filename="../../../src/Render/Camera.cpp" />
 		<Unit filename="../../../src/Render/Camera.h" />
 		<Unit filename="../../../src/Render/ClipImage.cpp" />

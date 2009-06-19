@@ -80,6 +80,9 @@
 		</Linker>
 		<Unit filename="..\..\..\DF Extractor\Extract.cpp" />
 		<Unit filename="..\..\..\DF Extractor\Extract.h" />
+		<Unit filename="..\..\..\DF Extractor\Process.cpp" />
+		<Unit filename="..\..\..\DF Extractor\Process.h" />
+		<Unit filename="..\..\..\DF Extractor\ZlibHelper.h" />
 		<Unit filename="..\..\..\DevIL\include\IL\config.h" />
 		<Unit filename="..\..\..\DevIL\include\IL\devil_internal_exports.h" />
 		<Unit filename="..\..\..\DevIL\include\IL\il.h" />
@@ -251,8 +254,6 @@
 		<Unit filename="..\..\..\src\Map\Map.h" />
 		<Unit filename="..\..\..\src\Map\Slope.cpp" />
 		<Unit filename="..\..\..\src\Map\Slope.h" />
-		<Unit filename="..\..\..\src\Process\Process.cpp" />
-		<Unit filename="..\..\..\src\Process\Process.h" />
 		<Unit filename="..\..\..\src\Render\Camera.cpp" />
 		<Unit filename="..\..\..\src\Render\Camera.h" />
 		<Unit filename="..\..\..\src\Render\ClipImage.cpp" />

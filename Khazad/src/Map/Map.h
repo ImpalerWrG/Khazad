@@ -20,6 +20,7 @@ public:
 	bool Init();
 
     bool isInitialized()        { return Initialized; }
+    bool isMapLoaded()          { return MapLoaded; }
 
 	Cell* getCell(Sint32 X, Sint32 Y, Sint32 Z);
 	Cell* getCubeOwner(Sint32 X, Sint32 Y, Sint32 Z);
@@ -41,7 +42,7 @@ public:
 
     void LoadExtract();
 
-    void LoadCubeData(Uint32 CellX, Uint32 CellY, Uint32 CellZ, Uint32 CubeX, Uint32 CubeY);
+    void LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 CellZ, Uint32 CubeX, Uint32 CubeY);
 
     void ChangeCellCount(Sint8 Change)      { CellCount += Change; }
     Uint32 getCellCount()                   { return CellCount; }
@@ -70,6 +71,7 @@ public:
 protected:
 
     bool Initialized;
+    bool MapLoaded;
 
 	Uint32 MapSizeX;
 	Uint32 MapSizeY;
@@ -81,8 +83,8 @@ protected:
 
 	Cell**** CellArray;
 
-	Sint32 XCelloffset;
-	Sint32 YCelloffset;
+	//Sint32 XCelloffset;
+	//Sint32 YCelloffset;
 
 	Uint16 TilePicker[600];
 

@@ -15,9 +15,15 @@ DECLARE_SINGLETON(Map)
 
 Map::Map()
 {
-    InitilizeTilePicker();
-
     Initialized = false;
+
+	MapSizeX = 0;
+	MapSizeY = 0;
+	MapSizeZ = 0;
+
+	CellSizeX = 0;
+	CellSizeY = 0;
+	CellSizeZ = 0;
 
     CellCount = 0;
     CubeCount = 0;
@@ -28,6 +34,8 @@ Map::Map()
     InitedCubeCount = 0;
     InitedFaceCount = 0;
     InitedSlopeCount = 0;
+
+    CellArray = NULL;
 }
 
 Map::~Map()
@@ -38,31 +46,6 @@ Map::~Map()
 bool Map::Init()
 {
     InitilizeTilePicker();
-
-    CellSizeX = CONFIG->getXMap();
-	CellSizeY = CONFIG->getYMap();
-	CellSizeZ = CONFIG->getZMap();
-
-	CellArray = new Cell***[CellSizeX];
-
-	for (Uint32 i = 0; i < CellSizeX; i++)
-	{
-		CellArray[i] = new Cell**[CellSizeY];
-
-		for (Uint32 j = 0; j < CellSizeY; j++)
-		{
-			CellArray[i][j] = new Cell*[CellSizeZ];
-
-			for (Uint32 k = 0; k < CellSizeZ; k++)
-			{
-				CellArray[i][j][k] = new Cell(i * CELLEDGESIZE, j * CELLEDGESIZE, k);
-			}
-		}
-	}
-
-    MapSizeX = CellSizeX * CELLEDGESIZE;
-	MapSizeY = CellSizeY * CELLEDGESIZE;
-	MapSizeZ = CellSizeZ;
 
     Initialized = true;
 
@@ -161,7 +144,7 @@ Cube* Map::getCube(Sint32 X, Sint32 Y, Sint32 Z)
 {
     Cell* TargetCell = getCubeOwner(X, Y, Z);
 
-    if(TargetCell)
+    if(TargetCell != NULL)
     {
         if(TargetCell->isInitalized())
         {
@@ -216,110 +199,24 @@ void Map::LoadExtract()
 
 			for (Uint32 k = 0; k < CellSizeZ; k++)
 			{
-				CellArray[i][j][k] = new Cell(i * CELLEDGESIZE, j * CELLEDGESIZE, k);
+			    if(EXTRACT->isBlockInitialized(i, j, k))
+			    {
+                    CellArray[i][j][k] = new Cell(i * CELLEDGESIZE, j * CELLEDGESIZE, k);
+                    CellArray[i][j][k]->Init();
 
-				//if(k == 0)
-				//{
-				//    CellArray[i][j][k]->Init();
-				//    CellArray[i][j][k]->SetBasment(true);
-				//}
-			}
-		}
-	}
-
-    MapSizeX = CellSizeX * CELLEDGESIZE;
-	MapSizeY = CellSizeY * CELLEDGESIZE;
-	MapSizeZ = CellSizeZ;
-
-    Cube* TargetCube = NULL;
-    Cell* TargetCell = NULL;
-
-    for (Uint32 i = 0; i < MapSizeX; i++)
-	{
-		for (Uint32 j = 0; j < MapSizeY; j++)
-		{
-			for (Uint32 k = 0; k < MapSizeZ; k++)
-			{
-                TargetCell = getCubeOwner(i, j, k);
-                if(TargetCell)
-                {
-                    int TileType = EXTRACT->getTileType(i, j, k);
-
-                    bool IsFloor = EXTRACT->isFloorTerrain(TileType);
-                    bool IsWall = EXTRACT->isWallTerrain(TileType);
-                    bool IsOpen = EXTRACT->isOpenTerrain(TileType);
-                    bool IsRamp = EXTRACT->isRampTerrain(TileType);
-                    bool IsStairs = EXTRACT->isStairTerrain(TileType);
-
-                    int Liquid = EXTRACT->getLiquidLevel(i, j, k);
-
-                    if(IsFloor || IsWall || IsOpen || IsRamp || IsStairs)
+                    for(Uint32 l = 0; l < CELLEDGESIZE; l++)
                     {
-                        if(!TargetCell->isInitalized())
+                        for(Uint32 m = 0; m < CELLEDGESIZE; m++)
                         {
-                            TargetCell->Init();
+                            LoadCubeData(CellArray[i][j][k], i, j, k, l, m);
                         }
-                        TargetCube = getCube(i, j, k);
-
-                        if(!TargetCube)
-                        {
-                            TargetCube = new Cube();
-                            TargetCell->setCube(TargetCube, i % CELLEDGESIZE, j % CELLEDGESIZE);
-                            TargetCube->setPosition((float) i, (float) j, (float) k);
-                        }
-
-                        Uint16 Material = PickTexture(TileType);
-
-                        bool Hidden = EXTRACT->isDesignationFlag(DESIGNATION_HIDDEN, i, j, k);
-                        TargetCube->setHidden(Hidden);
-
-                        TargetCube->setSubTerranean(EXTRACT->isDesignationFlag(DESIGNATION_SUBTERRANEAN, i, j, k));
-                        TargetCube->setSkyView(EXTRACT->isDesignationFlag(DESIGNATION_SKY_VIEW, i, j, k));
-                        TargetCube->setSunLit(EXTRACT->isDesignationFlag(DESIGNATION_OPEN_TO_SUN, i, j, k));
-
-                        if(IsWall)
-                        {
-                            TargetCube->Init(Material);
-                        }
-                        if(IsOpen)
-                        {
-                            TargetCube->Open();
-                        }
-                        if(IsRamp)
-                        {
-                            TargetCube->Init(Material);
-                            TargetCube->Open();
-                            TargetCube->SetSlope(SLOPE_FLAT);  // Prime the Slope, the type can not yet be determined
-                        }
-                        if(IsFloor)
-                        {
-                            TargetCube->InitConstructedFace(FACET_BOTTOM, Material);
-                        }
-                        if(IsStairs)
-                        {
-                            TargetCube->Init(Material);
-                            TargetCube->Open();
-                            TargetCube->SetSlope(SLOPE_FLAT);
-                            //TODO render stairs differently
-                        }
-                        if(Liquid)
-                        {
-                            TargetCube->Open();
-                            TargetCube->setLiquid((Uint8) Liquid);
-
-                            if(EXTRACT->isDesignationFlag(DESIGNATION_LIQUID_TYPE, i, j, k))
-                            {
-                                TargetCube->InitConstructedFace(FACET_TOP, DATA->getLabelIndex("MATERIAL_LAVA"));
-                            }
-                            else
-                            {
-                                TargetCube->InitConstructedFace(FACET_TOP, DATA->getLabelIndex("MATERIAL_WATER"));
-                            }
-                        }
-                        TargetCube->setVisible(true);
                     }
-                }
-            }
+			    }
+			    else
+			    {
+                    CellArray[i][j][k] = NULL;
+			    }
+			}
 		}
 	}
 
@@ -335,7 +232,7 @@ void Map::LoadExtract()
 			for (Uint32 k = 0; k < MapSizeZ; k++)
 			{
                 Cube* TargetCube = getCube(i, j, k);
-                if(TargetCube)
+                if(TargetCube != NULL)
                 {
                     if(!TargetCube->isSolid())
                     {
@@ -360,7 +257,7 @@ void Map::LoadExtract()
             {
                 Cell* LoopCell = getCell(SizeX, SizeY, Zlevel);
 
-                if(LoopCell->isActive())
+                if(LoopCell != NULL && LoopCell->isActive())
                 {
                     if(LoopCell->isDirtyDrawList())
                     {
@@ -379,13 +276,13 @@ void Map::LoadExtract()
         }
 	}
 
-    Initialized = true;
+    MapLoaded = true;
 }
 
-void Map::LoadCubeData(Uint32 CellX, Uint32 CellY, Uint32 CellZ, Uint32 CubeX, Uint32 CubeY)
+void Map::LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 CellZ, Uint32 CubeX, Uint32 CubeY)
 {
-    Uint32 MapX = CellX * CELLEDGESIZE + CubeX;
-	Uint32 MapY = CellY * CELLEDGESIZE + CubeY;
+    Uint32 MapX = (CellX * CELLEDGESIZE) + CubeX;
+	Uint32 MapY = (CellY * CELLEDGESIZE) + CubeY;
 	Uint32 MapZ = CellZ;
 
     int TileType = EXTRACT->getTileType(CellX, CellY, CellZ, CubeX, CubeY);
@@ -400,15 +297,11 @@ void Map::LoadCubeData(Uint32 CellX, Uint32 CellY, Uint32 CellZ, Uint32 CubeX, U
 
     if(IsFloor || IsWall || IsOpen || IsRamp || IsStairs)
     {
-        Cell* TargetCell = getCubeOwner(MapX, MapY, MapZ);
-        Cube* TargetCube = getCube(MapX, MapY, MapZ);
+        Cube* TargetCube = TargetCell->getCube(CubeX, CubeY);
 
-        if(!TargetCube)
-        {
-            TargetCube = new Cube();
-            TargetCell->setCube(TargetCube, CubeX, CubeY);
-            TargetCube->setPosition((float) MapX, (float) MapY, (float) MapZ);
-        }
+        TargetCube = new Cube();
+        TargetCell->setCube(TargetCube, CubeX, CubeY);
+        TargetCube->setPosition((float) MapX, (float) MapY, (float) MapZ);
 
         Uint16 Material = PickTexture(TileType);
 

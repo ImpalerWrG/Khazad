@@ -74,6 +74,7 @@ bool initManagers()
 
     printf("-=MAP INITIALIZING=-\n");
 	MAP->CreateInstance();
+	MAP->Init();
 
     printf("-=INPUT INITIALIZING=-\n");
 	INPUT->CreateInstance();
@@ -177,7 +178,7 @@ int main(int argv, char** argc)
 
         UI->Draw();
 
-        if(MAP->isInitialized())
+        if(MAP->isMapLoaded())
         {
             SCREEN->setDrawingFlat();  // Go into HUD-drawing mode
 
