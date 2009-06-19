@@ -323,7 +323,7 @@ bool Process::attach()
             ReadProcessMemory(DFHandle, (int*) (*it).getOffset("pe_offset"), &OldTimeStamp, sizeof(int), NULL);
             if (pe_timestamp == TimeStamp || pe_timestamp == OldTimeStamp)
             {
-                printf("Match found! Using version %s.\n", (*it).getString("version"));
+                printf("Match found! Using version %s.\n", (*it).getString("version").c_str());
                 current_descriptor = &*it;
                 attached = true;
                 return true;
