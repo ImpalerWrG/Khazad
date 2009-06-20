@@ -253,6 +253,7 @@ class MapLoadActionListener: public gcn::ActionListener
 
         if(!MAP->isMapLoaded())
         {
+            // this is sooo wrong.
             EXTRACT->loadMap(Path(CONFIG->LoadPath()));
             MAP->LoadExtract();
             SCREEN->MainCamera->CenterView();

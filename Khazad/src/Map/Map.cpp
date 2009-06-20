@@ -182,10 +182,11 @@ void Map::LoadExtract()
     {
         return;
     }
+    DfMap * df_map = EXTRACT->getMap();
 
-    CellSizeX = EXTRACT->getXBlocks();
-	CellSizeY = EXTRACT->getYBlocks();
-	CellSizeZ = EXTRACT->getZBlocks();
+    CellSizeX = df_map->getXBlocks();
+	CellSizeY = df_map->getYBlocks();
+	CellSizeZ = df_map->getZBlocks();
 
 	CellArray = new Cell***[CellSizeX];
 
@@ -199,7 +200,7 @@ void Map::LoadExtract()
 
 			for (Uint32 k = 0; k < CellSizeZ; k++)
 			{
-			    if(EXTRACT->isBlockInitialized(i, j, k))
+			    if(df_map->isBlockInitialized(i, j, k))
 			    {
                     CellArray[i][j][k] = new Cell(i * CELLEDGESIZE, j * CELLEDGESIZE, k);
                     CellArray[i][j][k]->Init();
@@ -285,15 +286,17 @@ void Map::LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 Cell
 	Uint32 MapY = (CellY * CELLEDGESIZE) + CubeY;
 	Uint32 MapZ = CellZ;
 
-    int TileType = EXTRACT->getTileType(CellX, CellY, CellZ, CubeX, CubeY);
+    DfMap *df_map = EXTRACT->getMap();
 
-    bool IsFloor = EXTRACT->isFloorTerrain(TileType);
-    bool IsWall = EXTRACT->isWallTerrain(TileType);
-    bool IsOpen = EXTRACT->isOpenTerrain(TileType);
-    bool IsRamp = EXTRACT->isRampTerrain(TileType);
-    bool IsStairs = EXTRACT->isStairTerrain(TileType);
+    int TileType = df_map->getTileType(CellX, CellY, CellZ, CubeX, CubeY);
 
-    int Liquid = EXTRACT->getLiquidLevel(MapX, MapY, MapZ);
+    bool IsFloor = df_map->isFloorTerrain(TileType);
+    bool IsWall = df_map->isWallTerrain(TileType);
+    bool IsOpen = df_map->isOpenTerrain(TileType);
+    bool IsRamp = df_map->isRampTerrain(TileType);
+    bool IsStairs = df_map->isStairTerrain(TileType);
+
+    int Liquid = df_map->getLiquidLevel(MapX, MapY, MapZ);
 
     if(IsFloor || IsWall || IsOpen || IsRamp || IsStairs)
     {
@@ -305,12 +308,12 @@ void Map::LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 Cell
 
         Uint16 Material = PickTexture(TileType);
 
-        bool Hidden = EXTRACT->isHidden(MapX, MapY, MapZ);
+        bool Hidden = df_map->isHidden(MapX, MapY, MapZ);
         TargetCube->setHidden(Hidden);
 
-        TargetCube->setSubTerranean(EXTRACT->isSubterranean( MapX, MapY, MapZ));
-        TargetCube->setSkyView(EXTRACT->isSkyView( MapX, MapY, MapZ));
-        TargetCube->setSunLit(EXTRACT->isSunLit( MapX, MapY, MapZ));
+        TargetCube->setSubTerranean(df_map->isSubterranean( MapX, MapY, MapZ));
+        TargetCube->setSkyView(df_map->isSkyView( MapX, MapY, MapZ));
+        TargetCube->setSunLit(df_map->isSunLit( MapX, MapY, MapZ));
 
         if(IsWall)
         {
@@ -342,7 +345,7 @@ void Map::LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 Cell
             TargetCube->Open();
             TargetCube->setLiquid((Uint8) Liquid);
 
-            if(EXTRACT->isMagma( MapX, MapY, MapZ))
+            if(df_map->isMagma( MapX, MapY, MapZ))
             {
                 TargetCube->InitConstructedFace(FACET_TOP, DATA->getLabelIndex("MATERIAL_LAVA"));
             }

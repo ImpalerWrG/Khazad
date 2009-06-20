@@ -554,11 +554,12 @@ void ScreenManager::PrintDebugging()
         int Designation = 0;
         int Ocupancy = 0;
 
-        if(!(HiddenDraw ^ EXTRACT->isHidden( Point.x, Point.y, Point.z)))
+        DfMap * df_map = EXTRACT->getMap();
+        if(!(HiddenDraw ^ df_map->isHidden( Point.x, Point.y, Point.z)))
         {
-            TileType = EXTRACT->getTileType(Point.x, Point.y, Point.z);
-            Designation = EXTRACT->getDesignations(Point.x, Point.y, Point.z);
-            Ocupancy = EXTRACT->getOccupancies(Point.x, Point.y, Point.z);
+            TileType = df_map->getTileType(Point.x, Point.y, Point.z);
+            Designation = df_map->getDesignations(Point.x, Point.y, Point.z);
+            Ocupancy = df_map->getOccupancies(Point.x, Point.y, Point.z);
         }
 
         SDL_Rect position;
