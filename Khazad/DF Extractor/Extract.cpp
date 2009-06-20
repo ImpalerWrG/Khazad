@@ -4,6 +4,11 @@
 // zlib helper functions for de/compressing files
 #include <ZlibHelper.h>
 
+// asserts are fun
+#include <assert.h>
+#define CheckBounds x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0 && z < df_map.z_block_count && z >= 0
+#define CheckBlockBounds x < df_map.x_block_count && x >= 0 && y < df_map.y_block_count && y >= 0 && z < df_map.z_block_count && z >= 0
+
 DECLARE_SINGLETON(Extractor)
 
 Extractor::Extractor()
@@ -926,61 +931,52 @@ int Extractor::picktexture(int in)
 
 int Extractor::getLiquidLevel(int x, int y, int z)
 {
-    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
+    assert(CheckBounds);
+
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
+
+    if(df_map.block[x][y][z] != NULL)
     {
-        int x2, y2;
-        convertToDfMapCoords(x, y, x, y, x2, y2);
-
-        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
-        {
-            //return df_map.block[x][y][z]->designation[x2*BLOCK_SIZE+y2] & 7; // Extracts the first 3 bits
-            return df_map.block[x][y][z]->designation[x2][y2].bits.flow_size;
-        }
+        return df_map.block[x][y][z]->designation[x2][y2].bits.flow_size;
     }
-
     return 0;
 }
 
 short int Extractor::getTileType(int x, int y, int z)
 {
-    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
+    assert(CheckBounds);
+
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
+
+    if(df_map.block[x][y][z] != NULL)
     {
-        int x2, y2;
-        convertToDfMapCoords(x, y, x, y, x2, y2);
-
-        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
-        {
-            return df_map.block[x][y][z]->tile_type[x2][y2];
-        }
+        return df_map.block[x][y][z]->tile_type[x2][y2];
     }
-
     return -1;
 }
 
 short int Extractor::getTileType(int x, int y, int z, int blockX, int blockY)
 {
-    if(x < df_map.x_block_count && x >= 0 && y < df_map.y_block_count && y >= 0)
-    {
-        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
-        {
-            return df_map.block[x][y][z]->tile_type[blockX][blockY];
-        }
-    }
+    assert(CheckBlockBounds);
 
+    if(df_map.block[x][y][z] != NULL)
+    {
+        return df_map.block[x][y][z]->tile_type[blockX][blockY];
+    }
     return -1;
 }
 
 int Extractor::getDesignations(int x, int y, int z)
 {
-    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
-    {
-        int x2, y2;
-        convertToDfMapCoords(x, y, x, y, x2, y2);
+    assert(CheckBounds);
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
 
-        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
-        {
-            return df_map.block[x][y][z]->designation[x2][y2].whole;
-        }
+    if(df_map.block[x][y][z] != NULL)
+    {
+        return df_map.block[x][y][z]->designation[x2][y2].whole;
     }
     return -1;
 }
@@ -993,15 +989,14 @@ bool Extractor::isBlockInitialized(int x, int y, int z)
 
 int Extractor::getOccupancies(int x, int y, int z)
 {
-    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
-    {
-        int x2, y2;
-        convertToDfMapCoords(x, y, x, y, x2, y2);
+    assert(CheckBounds);
 
-        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
-        {
-            return df_map.block[x][y][z]->occupancy[x2][y2].whole;
-        }
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
+
+    if(df_map.block[x][y][z] != NULL)
+    {
+        return df_map.block[x][y][z]->occupancy[x2][y2].whole;
     }
     return -1;
 }
@@ -1523,30 +1518,26 @@ bool Extractor::isWallTerrain(int in)
 }
 bool Extractor::isHidden (int x, int y, int z)
 {
-    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
-    {
-        int x2, y2;
-        convertToDfMapCoords(x, y, x, y, x2, y2);
+    assert(CheckBounds);
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
 
-        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
-        {
-            return (df_map.block[x][y][z]->designation[x2][y2].bits.hidden);
-        }
+    if(df_map.block[x][y][z] != NULL)
+    {
+        return (df_map.block[x][y][z]->designation[x2][y2].bits.hidden);
     }
     return false;
 }
 
 bool Extractor::isSubterranean (int x, int y, int z)
 {
-    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
-    {
-        int x2, y2;
-        convertToDfMapCoords(x, y, x, y, x2, y2);
+    assert(CheckBounds);
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
 
-        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
-        {
-            return (df_map.block[x][y][z]->designation[x2][y2].bits.subterranean);
-        }
+    if(df_map.block[x][y][z] != NULL)
+    {
+        return (df_map.block[x][y][z]->designation[x2][y2].bits.subterranean);
     }
     return false;
 }
@@ -1554,45 +1545,39 @@ bool Extractor::isSubterranean (int x, int y, int z)
 // next two functions should be checked for correctness
 bool Extractor::isSkyView (int x, int y, int z)
 {
-    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
-    {
-        int x2, y2;
-        convertToDfMapCoords(x, y, x, y, x2, y2);
+    assert(CheckBounds);
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
 
-        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
-        {
-            return (df_map.block[x][y][z]->designation[x2][y2].bits.skyview);
-        }
+    if(df_map.block[x][y][z] != NULL)
+    {
+        return (df_map.block[x][y][z]->designation[x2][y2].bits.skyview);
     }
     return false;
 }
 
 bool Extractor::isSunLit (int x, int y, int z)
 {
-    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
-    {
-        int x2, y2;
-        convertToDfMapCoords(x, y, x, y, x2, y2);
+    assert(CheckBounds);
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
 
-        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
-        {
-            return (df_map.block[x][y][z]->designation[x2][y2].bits.light);
-        }
+    if(df_map.block[x][y][z] != NULL)
+    {
+        return (df_map.block[x][y][z]->designation[x2][y2].bits.light);
     }
     return false;
 }
 
 bool Extractor::isMagma (int x, int y, int z)
 {
-    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
-    {
-        int x2, y2;
-        convertToDfMapCoords(x, y, x, y, x2, y2);
+    assert(CheckBounds);
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
 
-        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
-        {
-            return (df_map.block[x][y][z]->designation[x2][y2].bits.liquid_type);
-        }
+    if(df_map.block[x][y][z] != NULL)
+    {
+        return (df_map.block[x][y][z]->designation[x2][y2].bits.liquid_type);
     }
     return false;
 }
