@@ -408,17 +408,35 @@ bool Extractor::loadMap(const char* FilePath)
 
 bool Extractor::FreeMap()
 {
-    if(MapLoaded && df_map.block != NULL)
+    if(MapLoaded)
     {
-        for(Uint32 x = 0; x < df_map.x_block_count; x++)
-            for(Uint32 y = 0; y < df_map.x_block_count; y++)
-                for(Uint32 z = 0; z < df_map.x_block_count; z++)
+        if(df_map.block != NULL)
         {
-            if(df_map.block[x][y][z])
-                delete df_map.block[x][y][z];
+            for (Uint32 x = 0; x < df_map.x_block_count; x++)
+            {
+                if(df_map.block[x] != NULL)
+                {
+                    for (Uint32 y = 0; y < df_map.y_block_count; y++)
+                    {
+                        if(df_map.block[x][y] != NULL)
+                        {
+                            for (Uint32 z = 0; z < df_map.z_block_count; z++)
+                            {
+                                if(df_map.block[x][y][z] != NULL)
+                                {
+                                    delete df_map.block[x][y][z];
+                                }
+                            }
+                            delete[] df_map.block[x][y];
+                        }
+                    }
+                    delete[] df_map.block[x];
+                }
+            }
+            delete[] df_map.block;
         }
-        delete[] df_map.block;
     }
+
     MapLoaded = false;
     return true;
 }
