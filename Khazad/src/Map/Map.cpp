@@ -305,12 +305,12 @@ void Map::LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 Cell
 
         Uint16 Material = PickTexture(TileType);
 
-        bool Hidden = EXTRACT->isDesignationFlag(DESIGNATION_HIDDEN, MapX, MapY, MapZ);
+        bool Hidden = EXTRACT->isHidden(MapX, MapY, MapZ);
         TargetCube->setHidden(Hidden);
 
-        TargetCube->setSubTerranean(EXTRACT->isDesignationFlag(DESIGNATION_SUBTERRANEAN, MapX, MapY, MapZ));
-        TargetCube->setSkyView(EXTRACT->isDesignationFlag(DESIGNATION_SKY_VIEW, MapX, MapY, MapZ));
-        TargetCube->setSunLit(EXTRACT->isDesignationFlag(DESIGNATION_OPEN_TO_SUN, MapX, MapY, MapZ));
+        TargetCube->setSubTerranean(EXTRACT->isSubterranean( MapX, MapY, MapZ));
+        TargetCube->setSkyView(EXTRACT->isSkyView( MapX, MapY, MapZ));
+        TargetCube->setSunLit(EXTRACT->isSunLit( MapX, MapY, MapZ));
 
         if(IsWall)
         {
@@ -342,7 +342,7 @@ void Map::LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 Cell
             TargetCube->Open();
             TargetCube->setLiquid((Uint8) Liquid);
 
-            if(EXTRACT->isDesignationFlag(DESIGNATION_LIQUID_TYPE, MapX, MapY, MapZ))
+            if(EXTRACT->isMagma( MapX, MapY, MapZ))
             {
                 TargetCube->InitConstructedFace(FACET_TOP, DATA->getLabelIndex("MATERIAL_LAVA"));
             }

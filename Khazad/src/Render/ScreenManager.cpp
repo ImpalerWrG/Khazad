@@ -554,7 +554,7 @@ void ScreenManager::PrintDebugging()
         int Designation = 0;
         int Ocupancy = 0;
 
-        if(!(HiddenDraw ^ EXTRACT->isDesignationFlag(9, Point.x, Point.y, Point.z)))
+        if(!(HiddenDraw ^ EXTRACT->isHidden( Point.x, Point.y, Point.z)))
         {
             TileType = EXTRACT->getTileType(Point.x, Point.y, Point.z);
             Designation = EXTRACT->getDesignations(Point.x, Point.y, Point.z);

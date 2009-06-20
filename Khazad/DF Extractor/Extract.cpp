@@ -408,35 +408,17 @@ bool Extractor::loadMap(const char* FilePath)
 
 bool Extractor::FreeMap()
 {
-    if(MapLoaded)
+    if(MapLoaded && df_map.block != NULL)
     {
-        if(df_map.block != NULL)
+        for(Uint32 x = 0; x < df_map.x_block_count; x++)
+            for(Uint32 y = 0; y < df_map.x_block_count; y++)
+                for(Uint32 z = 0; z < df_map.x_block_count; z++)
         {
-            for (Uint32 x = 0; x < df_map.x_block_count; x++)
-            {
-                if(df_map.block[x] != NULL)
-                {
-                    for (Uint32 y = 0; y < df_map.y_block_count; y++)
-                    {
-                        if(df_map.block[x][y] != NULL)
-                        {
-                            for (Uint32 z = 0; z < df_map.z_block_count; z++)
-                            {
-                                if(df_map.block[x][y][z] != NULL)
-                                {
-                                    delete df_map.block[x][y][z];
-                                }
-                            }
-                            delete[] df_map.block[x][y];
-                        }
-                    }
-                    delete[] df_map.block[x];
-                }
-            }
-            delete[] df_map.block;
+            if(df_map.block[x][y][z])
+                delete df_map.block[x][y][z];
         }
+        delete[] df_map.block;
     }
-
     MapLoaded = false;
     return true;
 }
@@ -933,7 +915,8 @@ int Extractor::getLiquidLevel(int x, int y, int z)
 
         if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
         {
-            return df_map.block[x][y][z]->designation[x2*BLOCK_SIZE+y2] & 7; // Extracts the first 3 bits
+            //return df_map.block[x][y][z]->designation[x2*BLOCK_SIZE+y2] & 7; // Extracts the first 3 bits
+            return df_map.block[x][y][z]->designation[x2][y2].bits.flow_size;
         }
     }
 
@@ -949,7 +932,7 @@ short int Extractor::getTileType(int x, int y, int z)
 
         if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
         {
-            return df_map.block[x][y][z]->tile_type[x2*BLOCK_SIZE+y2];
+            return df_map.block[x][y][z]->tile_type[x2][y2];
         }
     }
 
@@ -962,7 +945,7 @@ short int Extractor::getTileType(int x, int y, int z, int blockX, int blockY)
     {
         if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
         {
-            return df_map.block[x][y][z]->tile_type[blockX * BLOCK_SIZE + blockY];
+            return df_map.block[x][y][z]->tile_type[blockX][blockY];
         }
     }
 
@@ -978,7 +961,7 @@ int Extractor::getDesignations(int x, int y, int z)
 
         if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
         {
-            return df_map.block[x][y][z]->designation[x2*BLOCK_SIZE+y2];
+            return df_map.block[x][y][z]->designation[x2][y2].whole;
         }
     }
     return -1;
@@ -998,7 +981,7 @@ int Extractor::getOccupancies(int x, int y, int z)
 
         if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
         {
-            return df_map.block[x][y][z]->occupancy[x2*BLOCK_SIZE+y2];
+            return df_map.block[x][y][z]->occupancy[x2][y2].whole;
         }
     }
     return -1;
@@ -1519,8 +1502,7 @@ bool Extractor::isWallTerrain(int in)
 
     return false;
 }
-
-bool Extractor::isDesignationFlag(unsigned int flag, int x, int y, int z)
+bool Extractor::isHidden (int x, int y, int z)
 {
     if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
     {
@@ -1529,16 +1511,13 @@ bool Extractor::isDesignationFlag(unsigned int flag, int x, int y, int z)
 
         if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
         {
-            if(flag < 32)
-            {
-                return (df_map.block[x][y][z]->designation[x2*BLOCK_SIZE+y2] & (1 << flag));
-            }
+            return (df_map.block[x][y][z]->designation[x2][y2].bits.hidden);
         }
     }
     return false;
 }
 
-bool Extractor::isOcupancyFlag(unsigned int flag, int x, int y, int z)
+bool Extractor::isSubterranean (int x, int y, int z)
 {
     if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
     {
@@ -1547,17 +1526,14 @@ bool Extractor::isOcupancyFlag(unsigned int flag, int x, int y, int z)
 
         if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
         {
-            if(flag < 32)
-            {
-                return (df_map.block[x][y][z]->occupancy[x2*BLOCK_SIZE+y2] & (1 << flag));
-            }
+            return (df_map.block[x][y][z]->designation[x2][y2].bits.subterranean);
         }
     }
     return false;
 }
 
-// NOTE: UNTESTED!
-int Extractor::DesignationBitBlock(unsigned int Start, unsigned int Size, int x, int y, int z)
+// next two functions should be checked for correctness
+bool Extractor::isSkyView (int x, int y, int z)
 {
     if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
     {
@@ -1566,22 +1542,13 @@ int Extractor::DesignationBitBlock(unsigned int Start, unsigned int Size, int x,
 
         if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
         {
-
-            if(Start < 32)
-            {
-                int Total = 0;
-                for(int i = 0; i < Size; ++i)
-                {
-                    Total += ((df_map.block[x][y][z]->designation[x2*BLOCK_SIZE+y2] & (1 << Start + i)) >> Start);
-                }
-            }
+            return (df_map.block[x][y][z]->designation[x2][y2].bits.skyview);
         }
     }
-    return -1;
+    return false;
 }
 
-// NOTE: UNTESTED!
-int Extractor::OccupancyBitBlock(unsigned int Start, unsigned int Size, int x, int y, int z)
+bool Extractor::isSunLit (int x, int y, int z)
 {
     if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
     {
@@ -1590,18 +1557,25 @@ int Extractor::OccupancyBitBlock(unsigned int Start, unsigned int Size, int x, i
 
         if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
         {
-
-            if(Start < 32)
-            {
-                int Total = 0;
-                for(int i = 0; i < Size; ++i)
-                {
-                    Total += ((df_map.block[x][y][z]->occupancy[x2*BLOCK_SIZE+y2] & (1 << Start + i)) >> Start);
-                }
-            }
+            return (df_map.block[x][y][z]->designation[x2][y2].bits.light);
         }
     }
-    return -1;
+    return false;
+}
+
+bool Extractor::isMagma (int x, int y, int z)
+{
+    if(x < df_map.x_cell_count && x >= 0 && y < df_map.y_cell_count && y >= 0)
+    {
+        int x2, y2;
+        convertToDfMapCoords(x, y, x, y, x2, y2);
+
+        if(z < df_map.z_block_count && z >= 0 && df_map.block[x][y][z] != NULL)
+        {
+            return (df_map.block[x][y][z]->designation[x2][y2].bits.liquid_type);
+        }
+    }
+    return false;
 }
 
 // NOTE: use this function to test for validity of new map data structures

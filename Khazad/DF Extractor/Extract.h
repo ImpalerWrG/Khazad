@@ -12,81 +12,83 @@
 #include <stdafx.h>
 #include <Process.h>
 
-#define DESIGNATION_LIQUID_AMOUNT_BIT1 0
-#define DESIGNATION_LIQUID_AMOUNT_BIT2 1
-#define DESIGNATION_LIQUID_AMOUNT_BIT3 2
-#define DESIGNATION_PILE 3
-#define DESIGNATION_DIG_BIT1 4
-#define DESIGNATION_DIG_BIT2 5
-#define DESIGNATION_DIG_BIT3 6
-#define DESIGNATION_DETAIL 7
-#define DESIGNATION_DETAIL_EVENT 8
-#define DESIGNATION_HIDDEN 9
-#define DESIGNATION_MATGLOSS_BIT1 10
-#define DESIGNATION_MATGLOSS_BIT2 11
-#define DESIGNATION_MATGLOSS_BIT3 12
-#define DESIGNATION_MATGLOSS_BIT4 13
-#define DESIGNATION_OPEN_TO_SUN 14
-#define DESIGNATION_SUBTERRANEAN 15
-#define DESIGNATION_SKY_VIEW 16
-#define DESIGNATION_BIOME_BIT1 17
-#define DESIGNATION_BIOME_BIT2 18
-#define DESIGNATION_BIOME_BIT3 19
-#define DESIGNATION_BIOME_BIT4 20
-#define DESIGNATION_LIQUID_TYPE 21
-#define DESIGNATION_WATER_TABLE 22
-#define DESIGNATION_RAINED 23
-#define DESIGNATION_TRAFFIC_BIT1 24
-#define DESIGNATION_TRAFFIC_BIT2 25
-#define DESIGNATION_FLOW_FORBID 26
-#define DESIGNATION_LIQUID_STATIC 27
-#define DESIGNATION_MOSS 28
-#define DESIGNATION_FEATURE_PRESENT 29
-#define DESIGNATION_LIQUID_CHARACTER_BIT1 30
-#define DESIGNATION_LIQUID_CHARACTER_BIT2 31
-
-
-#define OCCUPANCY_BUILDING_BIT1 0
-#define OCCUPANCY_BUILDING_BIT2 1
-#define OCCUPANCY_BUILDING_BIT3 2
-#define OCCUPANCY_UNIT 3
-#define OCCUPANCY_GROUNDED_UNIT 4
-#define OCCUPANCY_ITEM 5
-#define OCCUPANCY_MUD 6
-#define OCCUPANCY_VOMIT 7
-#define OCCUPANCY_DEBRIS1 8
-#define OCCUPANCY_DEBRIS2 9
-#define OCCUPANCY_DEBRIS3 10
-#define OCCUPANCY_DEBRIS4 11
-#define OCCUPANCY_BLOOD_G 12
-#define OCCUPANCY_BLOOD_G2 13
-#define OCCUPANCY_BLOOD_B 14
-#define OCCUPANCY_BLOOD_B2 15
-#define OCCUPANCY_BLOOD_Y 16
-#define OCCUPANCY_BLOOD_Y2 17
-#define OCCUPANCY_BLOOD_M 18
-#define OCCUPANCY_BLOOD_M2 19
-#define OCCUPANCY_BLOOD_C 20
-#define OCCUPANCY_BLOOD_C2 21
-#define OCCUPANCY_BLOOD_W 22
-#define OCCUPANCY_BLOOD_W2 23
-#define OCCUPANCY_BLOOD_0 24
-#define OCCUPANCY_BLOOD_02 25
-#define OCCUPANCY_SLIME 26
-#define OCCUPANCY_SLIME2 27
-#define OCCUPANCY_BLOOD 28
-#define OCCUPANCY_BLOOD2 29
-#define OCCUPANCY_DEBRIS5 30
-#define OCCUPANCY_SNOW 31
-
 #define BLOCK_SIZE 16
+
+// designation flags (tree,shub,lava,etc)
+/// TODO: research this further? consult DF hacker wizards?
+union t_designation
+{
+    Uint32 whole;
+    struct {
+    unsigned int flow_size : 3; // how much liquid is here?
+    unsigned int pile : 1; // stockpile?
+    unsigned int dig : 3;// needs more info...
+    unsigned int detail : 1;
+    unsigned int detail_event : 1;// what?
+    unsigned int hidden :1;
+    unsigned int matgloss :4;// how do we know which material it really is?
+    unsigned int light : 1;
+    unsigned int subterranean : 1; // never seen the light of day?
+    unsigned int skyview : 1; // sky is visible now, it rains in here when it rains
+    unsigned int biome : 4; // why four bits for maximum four biomes? is this some bitmap thing?
+    unsigned int liquid_type : 1;
+    unsigned int water_table : 1; // srsly. wtf?
+    unsigned int rained : 1; // does this mean actual rain (as in the blue blocks) or a wet tile?
+    unsigned int traffic : 2; // needs enum
+    unsigned int flow_forbid : 1; // idk wtf bbq
+    unsigned int liquid_static : 1;// good idea there... poor execution
+    unsigned int moss : 1;// I LOVE MOSS
+    unsigned int feature_present : 1; // another wtf... is this required for magma pipes to work?
+    unsigned int liquid_character : 2; // those ripples on streams?
+    } bits;
+};
+
+// occupancy flags (rat,dwarf,horse,built wall,not build wall,etc)
+union t_occupancy
+{
+    Uint32 whole;
+    struct {
+    unsigned int building : 3;// building type... should be an enum?
+    unsigned int unit : 1;
+    unsigned int unit_grounded : 1;
+    unsigned int item : 1;
+    // splatter. everyone loves splatter.
+    unsigned int mud : 1;
+    unsigned int vomit :1;
+    unsigned int debris1 :1;
+    unsigned int debris2 :1;
+    unsigned int debris3 :1;
+    unsigned int debris4 :1;
+    unsigned int blood_g : 1;
+    unsigned int blood_g2 : 1;
+    unsigned int blood_b : 1;
+    unsigned int blood_b2 : 1;
+    unsigned int blood_y : 1;
+    unsigned int blood_y2 : 1;
+    unsigned int blood_m : 1;
+    unsigned int blood_m2 : 1;
+    unsigned int blood_c : 1;
+    unsigned int blood_c2 : 1;
+    unsigned int blood_w : 1;
+    unsigned int blood_w2 : 1;
+    unsigned int blood_o : 1;
+    unsigned int blood_o2 : 1;
+    unsigned int slime : 1;
+    unsigned int slime2 : 1;
+    unsigned int blood : 1;
+    unsigned int blood2 : 1;
+    unsigned int debris5 : 1;
+    unsigned int snow : 1;
+    } bits;
+};
 
 
 struct Block
 {
-    short tile_type[BLOCK_SIZE*BLOCK_SIZE];     // tile types (tree,grass,full murky pool,etc)
-    unsigned designation[BLOCK_SIZE*BLOCK_SIZE];// designation flags (tree,shub,lava,etc)
-    unsigned occupancy[BLOCK_SIZE*BLOCK_SIZE];  // occupancy flags (rat,dwarf,horse,built wall,not build wall,etc)
+    // generic tile type. determines how the tile behaves ingame
+    Uint16 tile_type[BLOCK_SIZE][BLOCK_SIZE];
+    t_designation designation[BLOCK_SIZE][BLOCK_SIZE];
+    t_occupancy occupancy[BLOCK_SIZE][BLOCK_SIZE];
 };
 
 struct DfMap
@@ -94,7 +96,7 @@ struct DfMap
 public:
     unsigned x_block_count, y_block_count, z_block_count; // block count
     unsigned x_cell_count, y_cell_count, z_cell_count;    // cell count
-    Block ****block;
+    Block *** *block;
 };
 
 class Extractor
@@ -108,6 +110,7 @@ protected:
     bool testMapData(DfMap df_map);
     void convertToDfMapCoords(int x, int y, int &out_x, int &out_y, int &out_x2, int &out_y2);
     void allocateBlocks(int x, int y);
+    inline bool checkXYZValid (int x, int y, int z); // for getters to check block validity
 
     int pe_offset;
     int pe_timestamp;
@@ -143,7 +146,6 @@ public:
 
     int picktexture(int);
 
-    int getLiquidLevel(int x, int y, int z);
     bool isOpenTerrain(int);
     bool isStairTerrain(int);
     bool isRampTerrain(int);
@@ -152,11 +154,13 @@ public:
 
     bool isBlockInitialized(int x, int y, int z);
 
-    bool isDesignationFlag(unsigned int flag, int x, int y, int z);
-    bool isOcupancyFlag(unsigned int flag, int x, int y, int z);
+    bool isHidden (int x, int y, int z);
+    bool isSubterranean (int x, int y, int z);
+    bool isSkyView (int x, int y, int z);
+    bool isSunLit (int x, int y, int z);
+    bool isMagma (int x, int y, int z);
 
-    int DesignationBitBlock(unsigned int Start, unsigned int Size, int x, int y, int z);
-    int OccupancyBitBlock(unsigned int Start, unsigned int Size, int x, int y, int z);
+    int getLiquidLevel(int x, int y, int z);
 };
 
 
