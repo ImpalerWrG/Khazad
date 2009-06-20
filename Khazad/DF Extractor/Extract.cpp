@@ -987,7 +987,8 @@ int Extractor::getDesignations(int x, int y, int z)
 
 bool Extractor::isBlockInitialized(int x, int y, int z)
 {
-    return df_map.block[x][y][z] != NULL;
+    // because of the way DfMap is done, more than one check must be made.
+    return df_map.block != NULL && df_map.block[x] != NULL && df_map.block[x][y] != NULL && df_map.block[x][y][z] != NULL;
 }
 
 int Extractor::getOccupancies(int x, int y, int z)
