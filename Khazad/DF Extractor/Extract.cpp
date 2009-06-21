@@ -54,12 +54,6 @@ bool Extractor::dumpMemory()
     }
     printf("map data : 0x%.8X\n", map_loc);
 
-    // get cell count (we can just multiply it with BLOCK_SIZE)
-    /**
-    df_map->x_cell_count = df_map->x_block_count * BLOCK_SIZE;
-    df_map->y_cell_count = df_map->y_block_count * BLOCK_SIZE;
-    df_map->z_cell_count = df_map->z_block_count;
-    */
     if(df_map)
         delete df_map;
     df_map = new DfMap(p->readDWord(x_count_offset),p->readDWord(y_count_offset),p->readByte(z_count_offset));

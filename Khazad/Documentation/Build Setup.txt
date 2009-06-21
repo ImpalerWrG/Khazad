@@ -1,4 +1,8 @@
-How to Build Khazad (for Programmers)
+How to Build Khazad (for Programmers and Linux users)
+
+/*****************************\
+|           Windows           |
+\*****************************/
 
 Recomended IDE: CodeBlocks the free crossplatform IDE
 
@@ -18,3 +22,31 @@ Add the following:
 -lmingw32
 -lSDLmain
 -lSDL
+
+/*****************************\
+|            Linux            |
+\*****************************/
+
+You should get these dependencies first:
+  sdl + friends (just go into the package manager and install everything that looks like it belongs to sdl)
+  libgl (mesa+libgl or working proprietary 3d drivers)
+  freeglut
+  guichan
+  libmhash/mhash
+  zlib/libz
+  subversion (for getting code)
+  codeblocks (for building it)
+You'll also need the -dev packages for all this with the exception of subversion and codeblocks if you use a distro that separates them. 
+
+Check out the code from svn:
+  Start a terminal in your favorite 'bin' folder or your home folder
+  Type in this command:
+    svn co https://khazad.svn.sourceforge.net/svnroot/khazad/Khazad khazad
+  This will download the most actual version of khazad's source code. Note that this is *not* guaranteed to be stable in any way.
+
+Once you have the code, you can build it using codeblocks:
+  codeblocks --build khazad/Projects/Linux/CodeBlocks/Khazad.cbp
+
+If all goes well, you'll have a Khazad binary in ./khazad
+
+Updating goes like this - change into the khazad folder, issue a 'svn update' command and then 'codeblocks --rebuild Projects/Linux/CodeBlocks/Khazad.cbp'.

@@ -52,7 +52,7 @@ DfMap::DfMap(Uint32 x, Uint32 y, Uint32 z)
 DfMap::DfMap(string FileName)
 {
     valid = false;
-    load( FileName);
+    valid = load( FileName);
 }
 
 bool DfMap::isValid ()
@@ -177,100 +177,86 @@ void DfMap::updateCellCount()
 // TODO: how to know when something's NULL?
 bool DfMap::load(string FilePath)
 {
-
-    FILE *DecompressedMapFile;
     string DecompressedFilePath = FilePath + ".decomp";
-
-    FILE *MapFile;
-    MapFile = fopen(DecompressedFilePath.c_str(), "rb");
+    FILE *ToDecompress;
+    FILE *Decompressed;
     unsigned blocks_read = 0U;
     int x, y, z;
 
-
-    if  (MapFile == NULL)
+    // open target file for writing
+    Decompressed = fopen(DecompressedFilePath.c_str(), "wb");
+    if  (Decompressed == NULL)
     {
         printf("Can\'t open a decompressed file for write.\n");
         return false;
     }
-    else
+    //decompress
+    ToDecompress = fopen(FilePath.c_str(),"rb");
+    if  (ToDecompress == NULL)
     {
-        /// TODO: provide 'bool valid' and isValid
-        /*
-        if(MapLoaded)
-        {
-            FreeMap();
-        }
-        */
-
-
-        //decompress
-        DecompressedMapFile = fopen(FilePath.c_str(),"wb");
-        if  (DecompressedMapFile == NULL)
-        {
-            printf("Can\'t open file for read.\n");
-            return false;
-        }
-
-        // Decompress
-        printf("Decompressing... ");
-        int ret = inf(DecompressedMapFile, MapFile);
-
-        printf("DONE\n");
-
-        if (ret != Z_OK)
-            zerr(ret);
-
-        fclose(DecompressedMapFile);
-
-        freopen(DecompressedFilePath.c_str(), "rb", MapFile);
-        if  (MapFile == NULL)
-        {
-            printf("Can't create decompressed file for read.\n");
-            return false;
-        }
-
-        fread(&x_block_count, sizeof(x_block_count), 1, MapFile);
-        fread(&y_block_count, sizeof(y_block_count), 1, MapFile);
-        fread(&z_block_count, sizeof(z_block_count), 1, MapFile);
-
-        printf("Read from file %s\nX block size: %d\nY block size: %d\nZ levels: %d\n", FilePath.c_str(), x_block_count, y_block_count, z_block_count);
-
-        updateCellCount();
-
-        if(isValid())
-        {
-            clear();
-        }
-        allocBlockArray(x_block_count,y_block_count,z_block_count);
-
-        do{
-            fread(&x, sizeof(Uint32), 1, MapFile);
-            fread(&y, sizeof(Uint32), 1, MapFile);
-            fread(&z, sizeof(Uint32), 1, MapFile);
-
-            if(x == -1 || y == -1 || z == -1)
-            {
-                break;
-            }
-
-            Block * b = allocBlock(x,y,z);
-
-            fread(&b->tile_type, sizeof(Uint16), BLOCK_SIZE*BLOCK_SIZE, MapFile);
-            fread(&b->designation, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, MapFile);
-            fread(&b->occupancy, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, MapFile);
-
-            ++blocks_read;
-
-        }while(true);
-
-
-        printf("Blocks read into memory: %d\n", blocks_read);
-
-        fclose(MapFile);
-
-        remove(DecompressedFilePath.c_str());
+        printf("Can\'t open file for read.\n");
+        return false;
     }
 
+    // Decompress
+    printf("Decompressing... ");
+    int ret = inf(/*source*/ToDecompress,/*destination*/Decompressed);
+
+    printf("DONE\n");
+
+    if (ret != Z_OK)
+        zerr(ret);
+
+    fclose(ToDecompress);
+    // reopen decompressed file for reading
+    freopen(DecompressedFilePath.c_str(), "rb", Decompressed);
+    if  (Decompressed == NULL)
+    {
+        printf("Can't create decompressed file for read.\n");
+        return false;
+    }
+
+    fread(&x_block_count, sizeof(x_block_count), 1, Decompressed);
+    fread(&y_block_count, sizeof(y_block_count), 1, Decompressed);
+    fread(&z_block_count, sizeof(z_block_count), 1, Decompressed);
+
+    printf("Read from file %s\nX block size: %d\nY block size: %d\nZ levels: %d\n", FilePath.c_str(), x_block_count, y_block_count, z_block_count);
+
+    updateCellCount();
+
+    // catch cases where we already have a map loaded
+    if(isValid())
+    {
+        clear();
+    }
+    allocBlockArray(x_block_count,y_block_count,z_block_count);
+
+    do{
+        fread(&x, sizeof(Uint32), 1, Decompressed);
+        fread(&y, sizeof(Uint32), 1, Decompressed);
+        fread(&z, sizeof(Uint32), 1, Decompressed);
+
+        if(x == -1 || y == -1 || z == -1)
+        {
+            break;
+        }
+
+        Block * b = allocBlock(x,y,z);
+
+        fread(&b->tile_type, sizeof(Uint16), BLOCK_SIZE*BLOCK_SIZE, Decompressed);
+        fread(&b->designation, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, Decompressed);
+        fread(&b->occupancy, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, Decompressed);
+
+        ++blocks_read;
+
+    }while(true);
+
+
+    printf("Blocks read into memory: %d\n", blocks_read);
+    // close reopened file
+    fclose(Decompressed);
+    // and delete it
+    remove(DecompressedFilePath.c_str());
     return true;
 }
 
