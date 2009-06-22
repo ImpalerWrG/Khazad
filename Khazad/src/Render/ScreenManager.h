@@ -11,6 +11,7 @@ class ClipImage;
 class ImagePage;
 class Camera;
 class Vector3;
+class Plane;
 class Face;
 class Cube;
 class Cell;
@@ -83,6 +84,8 @@ public:
 
 	void ShowAxis(void);
 	void DrawPoint(Vector3 Point, float Length = 1.0);
+    void DrawPlane(Plane ArgumentPlane, float Length = 10);
+
     void DrawCage(Vector3 Point, float x, float y, float z);
 
     Uint32 getTriangleCount() { return TotalTriangles; }

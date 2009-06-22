@@ -17,6 +17,7 @@ Camera::Camera()
 	AllFacesDrawing = false;
 
 	LevelSeperation = 1;
+	CursorLevel = 0;
 
 	IsoScalar = CONFIG->ZoomStart();
     MaxScalar = CONFIG->ZoomMax();
@@ -97,9 +98,9 @@ void Camera::UpdateView()
 
 void Camera::onMousePoll()
 {
-    //int RealX;
-    //int RealY;
-    //Uint8 MouseButtonState = SDL_GetMouseState(&RealX, &RealY);
+    int RealX;
+    int RealY;
+    Uint8 MouseButtonState = SDL_GetMouseState(&RealX, &RealY);
 
     /*
     if(RealX <= 10)
@@ -121,25 +122,35 @@ void Camera::onMousePoll()
     }
     */
 
-    int XPosition, YPosition;
-    SDL_GetMouseState(&XPosition, &YPosition);
+    //UnProjectPoint(RealX, RealY);
+    //DetermineMouseIntersection(LookZ());
+}
 
-    GLint viewport[4];
-    GLdouble mvmatrix[16], projmatrix[16];
-    GLint realy;  /*  OpenGL y coordinate position  */
-    GLdouble wx, wy, wz;  /*  returned world x, y, z coords  */
+Vector3 Camera::DetermineMouseIntersection(float MapZ)
+{
+    Vector3 MouseRay = NearMouseClickPoint - FarMouseClickPoint;
+    MouseRay.normalize();
 
-    glGetIntegerv (GL_VIEWPORT, viewport);
-    glGetDoublev (GL_MODELVIEW_MATRIX, mvmatrix);
-    glGetDoublev (GL_PROJECTION_MATRIX, projmatrix);
+    Plane TestPlane;            // Use more robust tilted planes
+    Vector3 Point(0, 0, MapZ);
+    Vector3 Normal(0, 0, MapZ + 1);
+    TestPlane.set2Points(Point, Normal);
 
-    realy = viewport[3] - (GLint) YPosition - 1;
+    Vector3 PlaneNormal = TestPlane.Point - TestPlane.Normal;
+    PlaneNormal.normalize();
 
-    gluUnProject ((GLdouble) XPosition, (GLdouble) realy, 0.0, mvmatrix, projmatrix, viewport, &wx, &wy, &wz);
-    setNearMouseClickPoint(Vector3((float) wx, (float) wy, (float) wz));
+    float denom = PlaneNormal.DotProduct(MouseRay);
+    float D = MapZ;
 
-    gluUnProject ((GLdouble) XPosition, (GLdouble) realy, 1.0, mvmatrix, projmatrix, viewport, &wx, &wy, &wz);
-    setFarMouseClickPoint(Vector3((float) wx, (float) wy, (float) wz));
+    Vector3 Intersection;
+    if (denom != 0)
+    {
+        float dist = (-(PlaneNormal.DotProduct(NearMouseClickPoint)) + D) / denom;
+        Intersection = NearMouseClickPoint + (dist * MouseRay);
+        Cursor = Intersection;
+    }
+
+    return Intersection;
 }
 
 void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY)
@@ -194,25 +205,8 @@ void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY)
 			}
             case SDL_BUTTON_LEFT:
 			{
-				int XPosition, YPosition;
-				SDL_GetMouseState(&XPosition, &YPosition);
-
-                GLint viewport[4];
-                GLdouble mvmatrix[16], projmatrix[16];
-                GLint realy;  /*  OpenGL y coordinate position  */
-                GLdouble wx, wy, wz;  /*  returned world x, y, z coords  */
-
-                glGetIntegerv (GL_VIEWPORT, viewport);
-                glGetDoublev (GL_MODELVIEW_MATRIX, mvmatrix);
-                glGetDoublev (GL_PROJECTION_MATRIX, projmatrix);
-
-                realy = viewport[3] - (GLint) YPosition - 1;
-
-                gluUnProject ((GLdouble) XPosition, (GLdouble) realy, 0.0, mvmatrix, projmatrix, viewport, &wx, &wy, &wz);
-                setNearMouseClickPoint(Vector3((float) wx, (float) wy, (float) wz));
-
-                gluUnProject ((GLdouble) XPosition, (GLdouble) realy, 1.0, mvmatrix, projmatrix, viewport, &wx, &wy, &wz);
-                setFarMouseClickPoint(Vector3((float) wx, (float) wy, (float) wz));
+                UnProjectPoint(RealX, RealY);
+                DetermineMouseIntersection(CursorLevel - 0.5);
 
 				break;
 			}
@@ -225,22 +219,39 @@ void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY)
 	{
 		if (Event->type == SDL_MOUSEMOTION )
 		{
-			if ((MouseButtonState & SDL_BUTTON(SDL_BUTTON_LEFT)) && (MouseButtonState & SDL_BUTTON(SDL_BUTTON_RIGHT)))
+			if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_MIDDLE))
 			{
 				TiltView(DeltaY *  (CONFIG->TiltSpeed() / 1000.0), (float)0.01, (float)10.0);
 				OrbitView(DeltaX * (CONFIG->OrbitSpeed() / 10000.0));
 
 				generateViewFrustum();
 			}
-			else
-			{
-                if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_RIGHT))
-                {
-                    SlideView(DeltaX * CONFIG->SlideSpeed() / 50, DeltaY * CONFIG->SlideSpeed() / 50);
-                }
-			}
+            if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_RIGHT))
+            {
+                SlideView(DeltaX * CONFIG->SlideSpeed() / 50, DeltaY * CONFIG->SlideSpeed() / 50);
+            }
 		}
 	}
+}
+
+void Camera::UnProjectPoint(int XPosition, int YPosition)
+{
+    GLint viewport[4];
+    GLdouble mvmatrix[16], projmatrix[16];
+    GLint realy;  //  OpenGL y coordinate position
+    GLdouble wx, wy, wz;  //  returned world x, y, z coords
+
+    glGetIntegerv (GL_VIEWPORT, viewport);
+    glGetDoublev (GL_MODELVIEW_MATRIX, mvmatrix);
+    glGetDoublev (GL_PROJECTION_MATRIX, projmatrix);
+
+    realy = viewport[3] - (GLint) YPosition - 1;
+
+    gluUnProject ((GLdouble) XPosition, (GLdouble) realy, 0.0, mvmatrix, projmatrix, viewport, &wx, &wy, &wz);
+    setNearMouseClickPoint(Vector3((float) wx, (float) wy, (float) wz));
+
+    gluUnProject ((GLdouble) XPosition, (GLdouble) realy, 1.0, mvmatrix, projmatrix, viewport, &wx, &wy, &wz);
+    setFarMouseClickPoint(Vector3((float) wx, (float) wy, (float) wz));
 }
 
 void Camera::setCameraOrientation(CameraOrientation NewOrientation)
@@ -461,9 +472,11 @@ void Camera::SlideView(float X, float Y)
 
 		EyePosition += TempUpVector * Y * (1 / IsoScalar);
 		LookPosition += TempUpVector * Y * (1 / IsoScalar);
+        //Cursor += TempUpVector * Y * (1 / IsoScalar);
 
 		EyePosition += CrossProduct * X * (1 / IsoScalar);
 		LookPosition += CrossProduct * X * (1 / IsoScalar);
+        //Cursor += CrossProduct * X * (1 / IsoScalar);
 
         ConfineLookPosition();
 		generateViewFrustum();
@@ -577,6 +590,8 @@ void Camera::MoveViewVertical(float Z)
 {
 	EyePosition.z += Z;
 	LookPosition.z += Z;
+	Cursor.z += Z;
+    CursorLevel += Z;
 
     if(true) // confine within map toggle?
     {
@@ -590,6 +605,14 @@ void Camera::setViewHight(Sint32 ZLevel)
 {
     SliceTop = ZLevel;
 
+    if(CursorLevel > SliceTop)
+    {
+        CursorLevel = SliceTop;
+    }
+    if(CursorLevel < (SliceTop - ViewLevels))
+    {
+        CursorLevel = SliceTop - ViewLevels;
+    }
     ConfineLookPosition();
 }
 
@@ -620,6 +643,7 @@ void Camera::changeLevelSeperation(Sint8 Change)
 void Camera::changeViewTop(Sint16 Change)
 {
     SliceTop += Change;
+    CursorLevel += Change;
 }
 
 void Camera::SetDefaultView()
@@ -668,6 +692,7 @@ void Camera::CenterView()
     LookPosition.z = MAP->getMapSizeZ() / 2;
 
     SliceTop = LookPosition.z;
+    CursorLevel = SliceTop;
 
     EyePosition.x = LookPosition.x + DifferenceX;
     EyePosition.y = LookPosition.y + DifferenceY;

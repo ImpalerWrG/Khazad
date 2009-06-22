@@ -35,6 +35,7 @@ protected:
 	Plane FrustumPlanes[4];
 
     Vector3 Cursor;
+    float CursorLevel;
 
     Vector3 NearMouseClickPoint;
     Vector3 FarMouseClickPoint;
@@ -57,7 +58,7 @@ public:
 
 	Uint8 getViewLevels()               { return ViewLevels; }
 	Uint8 getLevelSeperation()          { return LevelSeperation; }
-    Uint16 getSliceTop()                 { return SliceTop; }
+    Uint16 getSliceTop()                { return SliceTop; }
 
     void changeViewTop(Sint16 Change);
 
@@ -71,11 +72,17 @@ public:
     bool InSlice(float Zlevel);
     float getShading(float Zlevel);
 
+    void UnProjectPoint(int XPosition, int YPosition);
+
     Vector3 getNearMouseClickPoint()                    { return NearMouseClickPoint; }
     Vector3 setNearMouseClickPoint(Vector3 NewPoint)    { NearMouseClickPoint = NewPoint; }
 
     Vector3 getFarMouseClickPoint()                     { return FarMouseClickPoint; }
     Vector3 setFarMouseClickPoint(Vector3 NewPoint)     { FarMouseClickPoint = NewPoint; }
+
+    Vector3 DetermineMouseIntersection(float MapZ);
+
+    Vector3 getCursor()                     { return Cursor; }
 
 	bool isVerticalMode()                   { return VerticalMode;}
     void setVerticalMode(bool NewValue);

@@ -309,7 +309,11 @@ void ScreenManager::DirtyAllLists()
 		{
 			for (Uint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
 			{
-				MAP->getCell(SizeX, SizeY, SizeZ)->setDirtyDrawList(true);
+			    Cell* TargetCell = MAP->getCell(SizeX, SizeY, SizeZ);
+			    if (TargetCell != NULL)
+			    {
+                    TargetCell->setDirtyDrawList(true);
+			    }
 			}
 		}
 	}
@@ -368,9 +372,17 @@ bool ScreenManager::Render()
         Point.z -= 0.48;
         DrawCage(Point, MAP->getMapSizeX() - 0.04, MAP->getMapSizeY() - 0.04, MAP->getMapSizeZ() * MainCamera->getLevelSeperation() - 0.04);
 
-        Point.x = (int) MainCamera->LookX() - 0.48;  //TODO move most of this logic into DrawCage
-        Point.y = (int) MainCamera->LookY() - 0.48;
-        Point.z = (int) MainCamera->LookZ() - 0.48;
+        Vector3 RawCursor = MainCamera->getCursor();
+        Vector3 Cursor;
+
+        Cursor.x = (int) (RawCursor.x + 0.5);
+        Cursor.y = (int) (RawCursor.y + 0.5);
+        Cursor.z = (int) (RawCursor.z + 1);
+
+        Point.x = Cursor.x - 0.48;  //TODO move most of this logic into DrawCage
+        Point.y = Cursor.y - 0.48;
+        Point.z = Cursor.z - 0.48;
+
         DrawCage(Point, .96, .96, .98);             // Keeps Cube lines from disapearing into tiles
     }
 
@@ -545,7 +557,7 @@ void ScreenManager::PrintDebugging()
         char buffer[256];
         setDrawingFlat();
 
-        Vector3 Point;
+        Vector3 Point = MainCamera->getCursor();
         Point.x = (int) MainCamera->LookX();
         Point.y = (int) MainCamera->LookY();
         Point.z = (int) MainCamera->LookZ();
@@ -595,7 +607,6 @@ void ScreenManager::PrintDebugging()
 
         sprintf (buffer, "InitCells: %i  InitCubes: %i  InitFaces: %i  InitSlopes: %i", MAP->getInitedCellCount(), MAP->getInitedCubeCount(), MAP->getInitedFaceCount(), MAP->getInitedSlopeCount());
         SCREEN->RenderText(buffer, 0, WHITE, &position);
-
     }
 }
 
@@ -682,6 +693,41 @@ void ScreenManager::DrawPoint(Vector3 Point, float Length)
 	glEnd();
 
 	glDisable(GL_LINE_STIPPLE); // Disable the line stipple
+}
+
+void ScreenManager::DrawPlane(Plane ArgumentPlane, float Length)
+{
+    // Draws a square line grid in the plane
+    Vector3 CenterPoint = ArgumentPlane.Point;
+    Vector3 NormalPoint = ArgumentPlane.Normal;
+    Vector3 NoramlVector = NormalPoint - CenterPoint;
+
+    NoramlVector.normalize();
+    float D = ArgumentPlane.D;
+
+
+
+    glBegin(GL_LINES);
+
+		glColor3f (0.0, 1.0, 0.0); // Green for x axis
+		glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
+		glVertex3f(CenterPoint.x + 1, CenterPoint.y, CenterPoint.z);
+
+		glColor3f(1.0, 0.0, 0.0); // Red for y axis
+		glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
+		glVertex3f(CenterPoint.x, CenterPoint.y + 1, CenterPoint.z);
+
+		glColor3f(0.0, 0.0, 1.0); // Blue for z axis
+		glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
+		glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z + 1);
+
+
+
+		glColor3f(1.0, 1.0, 1.0); // White for D
+		glVertex3f(0, 0, 0);
+		glVertex3f(NoramlVector.x * D, NoramlVector.y * D, NoramlVector.z * D);
+
+	glEnd();
 }
 
 void ScreenManager::DrawCage(Vector3 Point, float x, float y, float z)
