@@ -101,6 +101,9 @@ public:
     bool write(string FilePath);
     void clear();
 
+    // fix external indexes into df_map. HACK
+    void clamp(int &x,int &y, int &z);
+
     Block* getBlock(int x, int y, int z);
     Block* allocBlock(int x, int y, int z);
     bool   deallocBlock(int x, int y, int z);

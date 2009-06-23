@@ -134,10 +134,8 @@ bool Extractor::isMapLoaded()
 {
     if(df_map != NULL)
     {
-        printf("Extractor::isMapLoaded(): DfMap isn't NULL.\n");
         if(df_map->isValid())
         {
-            printf("Extractor::isMapLoaded(): DfMap is valid.\n");
             return true;
         }
     }

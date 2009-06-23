@@ -132,7 +132,10 @@ float FrameRateControl(Timer* FPSTimer)
 	FrameCounter++;
 	if (FPSTimer->getElapsed() < (1000 / FRAMES_PER_SECOND))
 	{
-		SDL_Delay((1000 / FRAMES_PER_SECOND) - FPSTimer->getElapsed());
+	    float delay = (1000 / FRAMES_PER_SECOND) - FPSTimer->getElapsed();
+		SDL_Delay(delay);
+		if(delay > 100)
+            printf("DELAY %f > 100 !\n", delay);
 	}
 
 	FrameRateAcumulator += FPSTimer->getElapsed();

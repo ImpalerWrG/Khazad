@@ -557,29 +557,31 @@ void ScreenManager::PrintDebugging()
         char buffer[256];
         setDrawingFlat();
 
-        Vector3 Point;
+        int x,y,z;
         Vector3 RawCursor = MainCamera->getCursor();
-        Point.x = (int) RawCursor.x;
-        Point.y = (int) RawCursor.y;
-        Point.z = (int) RawCursor.z;
+        x = (int) RawCursor.x;
+        y = (int) RawCursor.y;
+        z = (int) RawCursor.z;
 
         int TileType = 0;
         int Designation = 0;
         int Ocupancy = 0;
 
         DfMap * df_map = EXTRACT->getMap();
-        if(!(HiddenDraw ^ df_map->isHidden( Point.x, Point.y, Point.z)))
+        /// TODO: remove this hack once the cursoe behaves as it should
+        df_map->clamp(x, y, z);
+        if(!(HiddenDraw ^ df_map->isHidden( x, y, z)))
         {
-            TileType = df_map->getTileType(Point.x, Point.y, Point.z);
-            Designation = df_map->getDesignations(Point.x, Point.y, Point.z);
-            Ocupancy = df_map->getOccupancies(Point.x, Point.y, Point.z);
+            TileType = df_map->getTileType(x, y, z);
+            Designation = df_map->getDesignations(x, y, z);
+            Ocupancy = df_map->getOccupancies(x, y, z);
         }
 
         SDL_Rect position;
         position.x = 10;
         position.y = 200;
 
-        sprintf (buffer, "Cordinates: x%i y%i z%i", (int)Point.x, (int)Point.y, (int)Point.z);
+        sprintf (buffer, "Cordinates: x%i y%i z%i", x, y, z);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 

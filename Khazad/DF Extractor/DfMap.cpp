@@ -58,6 +58,47 @@ DfMap::DfMap(Uint32 x, Uint32 y, Uint32 z)
     allocBlockArray(x,y,z);
 }
 
+// fix external indexes into df_map. HACK
+void DfMap::clamp(int &x,int &y, int &z)
+{
+    if(isValid())
+    {
+        if(x < 0)
+        {
+            fprintf(stderr,"clamp: X underflow prevented\n");
+            x = 0;
+        }
+        if(x >= x_cell_count)
+        {
+            fprintf(stderr,"clamp: X overflow prevented\n");
+            x = x_cell_count-1;
+        }
+        if(y < 0)
+        {
+            fprintf(stderr,"clamp: Y underflow prevented\n");
+            y = 0;
+        }
+        if(y >= y_cell_count)
+        {
+            fprintf(stderr,"clamp: Y overflow prevented\n");
+            y = y_cell_count-1;
+        }
+        if(z < 0)
+        {
+            fprintf(stderr,"clamp: Z underflow prevented\n");
+            z = 0;
+        }
+        if(z >= z_cell_count)
+        {
+            fprintf(stderr,"clamp: Z overflow prevented\n");
+            z = z_cell_count-1;
+        }
+    }
+    else
+    {
+        x = y = z = 0;
+    }
+}
 
 DfMap::DfMap(string FileName)
 {
