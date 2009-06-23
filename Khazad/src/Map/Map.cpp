@@ -48,6 +48,7 @@ bool Map::Init()
     InitilizeTilePicker();
 
     Initialized = true;
+    MapLoaded = false;
 
 	return true;
 }
