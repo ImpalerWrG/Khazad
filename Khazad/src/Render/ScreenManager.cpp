@@ -218,9 +218,14 @@ void ScreenManager::CaptureScreenShot()
     {
         char buffer[256];
         sprintf(buffer, "ScreenShots\\ScreenShot%i.png", ScreenShotCounter);
-        ilSaveImage(Path(buffer));
+        // dumb, but it works.
+        /// TODO: add this functionality to Path
+        while(!ilSaveImage(Path(buffer)))
+        {
+            ScreenShotCounter++;
+            sprintf(buffer, "ScreenShots\\ScreenShot%i.png", ScreenShotCounter);
+        }
         ScreenShotCounter++;
-        // Find a way to count up if screens already exist with initial count (increment untill error code is not returned?)
     }
 }
 
