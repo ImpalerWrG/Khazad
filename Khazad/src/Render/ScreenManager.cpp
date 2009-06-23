@@ -557,10 +557,11 @@ void ScreenManager::PrintDebugging()
         char buffer[256];
         setDrawingFlat();
 
-        Vector3 Point = MainCamera->getCursor();
-        Point.x = (int) MainCamera->LookX();
-        Point.y = (int) MainCamera->LookY();
-        Point.z = (int) MainCamera->LookZ();
+        Vector3 Point;
+        Vector3 RawCursor = MainCamera->getCursor();
+        Point.x = (int) RawCursor.x;
+        Point.y = (int) RawCursor.y;
+        Point.z = (int) RawCursor.z;
 
         int TileType = 0;
         int Designation = 0;
@@ -785,5 +786,34 @@ void ScreenManager::DrawCage(Vector3 Point, float x, float y, float z)
 		glVertex3f(Point.x + x, Point.y + y, Point.z + z);
 
 	glEnd();
+
+	/*
+    glEnable(GL_LINE_STIPPLE); // Enable line stipple to use a dotted pattern for the lines
+	glLineStipple(1, 0x0101); // Dotted stipple pattern for the lines
+
+    glBegin(GL_LINES);
+
+        glColor3f (1.0, 1.0, 1.0);
+		glVertex3f(Point.x, Point.y, Point.z);
+		glVertex3f(Point.x + x, Point.y, Point.z);
+
+        glColor3f (1.0, 1.0, 1.0);
+		glVertex3f(Point.x, Point.y, Point.z);
+		glVertex3f(Point.x, Point.y + y, Point.z);
+
+        glColor3f (1.0, 1.0, 1.0);
+		glVertex3f(Point.x + x, Point.y, Point.z);
+		glVertex3f(Point.x + x, Point.y + y, Point.z);
+
+        glColor3f (1.0, 1.0, 1.0);
+		glVertex3f(Point.x, Point.y + y, Point.z);
+		glVertex3f(Point.x + x, Point.y + y, Point.z);
+
+        glColor3f (1.0, 1.0, 1.0);
+		glVertex3f(Point.x, Point.y, Point.z);
+		glVertex3f(Point.x, Point.y, Point.z);
+
+	glEnd();
+	*/
 }
 

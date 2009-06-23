@@ -16,19 +16,23 @@ bool Extractor::Init()
 Extractor::~Extractor()
 {
     if(df_map)
+    {
         delete df_map;
+    }
 }
 
-
-// //ReadProcessMemory( DFHandle, (int*)(temp_locy), &temp_locz, sizeof(int), NULL);
 bool Extractor::dumpMemory()
 {
     // attach to process
-    printf("Here we go...\n");
+    printf("Attempting to Attach Process\n");
     Process * p = PROCESS;
     if(!p->attach())
-        return 1; // couldn't attach to process, no go
-    memory_info * offset_descriptor = p->getDescriptor();
+    {
+        printf("Could not Attach Process, Aborting\n");
+        return false; // couldn't attach to process, no go
+    }
+    printf("Process succesfully Attached\n");
+    memory_info* offset_descriptor = p->getDescriptor();
 
     Uint32 map_loc, // location of the X array
            temp_loc, // block location
@@ -36,6 +40,7 @@ bool Extractor::dumpMemory()
            temp_locy, // iterator for the Y array
            temp_locz; // iterator for the Z array
     unsigned blocks_read = 0U;
+
     // Read Map Data Blocks
     int map_offset = offset_descriptor->getOffset("map_data");;
     int x_count_offset = offset_descriptor->getOffset("x_count");
@@ -49,13 +54,15 @@ bool Extractor::dumpMemory()
 
     if (!map_loc)
     {
-        printf("Could not find DF map information in memory...\n");
-        return 1;
+        printf("Could not find DF map information in memory, Aborting\n");
+        return false;
     }
-    printf("map data : 0x%.8X\n", map_loc);
+    printf("Map data Found at: 0x%.8X\n", map_loc);
 
-    if(df_map)
+    if(df_map != NULL)
+    {
         delete df_map;
+    }
     df_map = new DfMap(p->readDWord(x_count_offset),p->readDWord(y_count_offset),p->readByte(z_count_offset));
     //read the memory from the map blocks
     for(int x = 0; x < df_map->x_block_count; x++)
@@ -97,28 +104,34 @@ bool Extractor::dumpMemory()
     }
     printf("Blocks read into memory: %d\n", blocks_read);
     p->detach();
-    return 1;
+    return true;
 }
 // wrappers!
 bool Extractor::loadMap(string FileName)
 {
-    if(!df_map)
+    if(df_map == NULL)
+    {
         df_map = new DfMap(FileName);
-    else
-        df_map->load(FileName);
+    }
+
+    df_map->load(FileName);
     return df_map->isValid();
 }
 
 bool Extractor::writeMap(string FileName)
 {
-    if(!df_map)
+    if(df_map == NULL)
+    {
         return false;
+    }
     return df_map->write(FileName);
 }
+
 bool Extractor::isMapLoaded()
 {
-    if(df_map)
-        if(df_map->isValid())
-            return true;
+    if(df_map != NULL && df_map->isValid())
+    {
+        return true;
+    }
     return false;
 }

@@ -1,5 +1,7 @@
 Change Log for Khazad
 
+- V 0.0.5 (SVN ???) 
+
 - V 0.0.4 (SVN 036) Splash Screen bug fixed attempted again, None-natural water and lava will now be displayed such as undergournd cistersn, pools, channels, elf incinerator etc etc, slow down in shaded mode removed shadding now enabled by default, Scroll wheel can change viewing level (Wheel + Spacebar) and slice thickness (Wheel + Shift), Exploded View option added controled with PageUp (compress) / PageDown (explode), bottom level renderind fixed, vertical rendering orientation lock added toggle with (v), Underground walls now render better for visability in vertical mode, SubTerranean, SkyView and SunLit toggles now available with (u), (i) and (o) respectivly and can be used to improve performance by rendering only a portion of the map.  Lastly the window now scrolls when the mouse is brought to the edge.
 
 - BugFix A - fixed Constructed wall texture and upside down splash screen bug

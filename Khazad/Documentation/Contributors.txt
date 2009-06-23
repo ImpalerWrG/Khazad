@@ -3,6 +3,9 @@ People and things that contributed to the creation of Khazad
 
 Project Lead:  		Kenneth "Impaler[WrG]" Ferland
 
+Programmers:		Dorf (DF Extractor speedup, file compression)
+					Petr "Peterix" Mrázek  (Linux port, DF Extractor refinement)
+					
 Advisors:  			Will Miller (Firaxis)
 					Domicic Cerquetti (Firaxis)
 					Sinothdither (3Dwarf author)
