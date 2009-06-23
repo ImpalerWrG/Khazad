@@ -10,12 +10,13 @@ Extractor::Extractor()
 
 bool Extractor::Init()
 {
+    df_map = NULL;
     return true;
 }
 
 Extractor::~Extractor()
 {
-    if(df_map)
+    if(df_map !=NULL )
     {
         delete df_map;
     }
@@ -113,8 +114,10 @@ bool Extractor::loadMap(string FileName)
     {
         df_map = new DfMap(FileName);
     }
-
-    df_map->load(FileName);
+    else
+    {
+        df_map->load(FileName);
+    }
     return df_map->isValid();
 }
 
@@ -129,9 +132,14 @@ bool Extractor::writeMap(string FileName)
 
 bool Extractor::isMapLoaded()
 {
-    if(df_map != NULL && df_map->isValid())
+    if(df_map != NULL)
     {
-        return true;
+        printf("Extractor::isMapLoaded(): DfMap isn't NULL.\n");
+        if(df_map->isValid())
+        {
+            printf("Extractor::isMapLoaded(): DfMap is valid.\n");
+            return true;
+        }
     }
     return false;
 }

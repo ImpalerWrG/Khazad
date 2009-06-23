@@ -9,7 +9,7 @@ enum ActorType
 	CELL_ACTOR,
 	PAWN_ACTOR,
 
-	NUM_ACTORS,
+	NUM_ACTORS
 };
 
 enum Facet
@@ -102,7 +102,7 @@ enum SpacialPoint
     SPACIAL_POINT_SOUTH_BOTTOM,
     SPACIAL_POINT_WEST_BOTTOM,
 
-    NUM_SPACIAL_POINTS,
+    NUM_SPACIAL_POINTS
 };
 
 #endif // ENUM_HEADER

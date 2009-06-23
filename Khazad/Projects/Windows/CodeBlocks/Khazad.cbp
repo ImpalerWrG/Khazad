@@ -86,6 +86,7 @@
 		<Unit filename="..\..\..\DF Extractor\Extract.h" />
 		<Unit filename="..\..\..\DF Extractor\Process.cpp" />
 		<Unit filename="..\..\..\DF Extractor\Process.h" />
+		<Unit filename="..\..\..\DF Extractor\TileTypes.h" />
 		<Unit filename="..\..\..\DF Extractor\ZlibHelper.h" />
 		<Unit filename="..\..\..\DevIL\include\IL\config.h" />
 		<Unit filename="..\..\..\DevIL\include\IL\devil_internal_exports.h" />
