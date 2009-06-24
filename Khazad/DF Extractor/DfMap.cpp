@@ -135,7 +135,6 @@ Block * DfMap::allocBlock (int x,int y,int z)
     return NULL;
 }
 
-// TODO: how to know when something's NULL?
 bool DfMap::write(string FilePath)
 {
     FILE *SaveFile;

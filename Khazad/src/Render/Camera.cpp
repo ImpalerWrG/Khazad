@@ -590,6 +590,7 @@ void Camera::MoveViewVertical(float Z)
 {
 	EyePosition.z += Z;
 	LookPosition.z += Z;
+	///FIXME: this is bad. Cursor should never leave the map. /px
 	Cursor.z += Z;
     CursorLevel += Z;
 
