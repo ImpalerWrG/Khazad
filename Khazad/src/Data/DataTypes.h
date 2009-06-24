@@ -21,6 +21,24 @@ protected:
     string Name;
 };
 
+class FontData: public DataBase
+{
+
+public:
+
+    FontData();
+    ~FontData();
+    bool Load(TiXmlElement* Element, Uint32 Index);
+
+    Path getPath()    { return sPath; }
+    Uint16 getSize()  { return Size; }
+
+protected:
+
+    Path sPath;
+    Uint16 Size;
+};
+
 class TextureData: public DataBase
 {
 

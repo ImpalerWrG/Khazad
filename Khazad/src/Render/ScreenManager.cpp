@@ -388,7 +388,8 @@ bool ScreenManager::Render()
         Point.y = Cursor.y - 0.48;
         Point.z = Cursor.z - 0.48;
 
-        DrawCage(Point, .96, .96, .98);             // Keeps Cube lines from disapearing into tiles
+        DrawCage(Point, .96, .96, .98);  // Keeps Cube lines from disapearing into tiles
+        DrawStreamers(Point, .96, .96, .98, Point.z + 0.5);
     }
 
 	RedPickingValue = 0;
@@ -478,15 +479,15 @@ void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, CameraO
 {
     glNewList(DrawListID, GL_COMPILE);
 
-    TriangleCounter = 0;  // Reset Counter and Track Triangle count
+        TriangleCounter = 0;  // Reset Counter and Track Triangle count
 
-    glBegin(GL_TRIANGLES);
+        glBegin(GL_TRIANGLES);
 
-        TargetCell->Draw(Orientation, HiddenDraw, SubTerranianDraw, SkyViewDraw, SunLitDraw);
+            TargetCell->Draw(Orientation, HiddenDraw, SubTerranianDraw, SkyViewDraw, SunLitDraw);
 
-        glColor3f(1.0, 1.0, 1.0);
+            glColor3f(1.0, 1.0, 1.0);
 
-    glEnd();
+        glEnd();
 
     glEndList();
 
@@ -793,34 +794,32 @@ void ScreenManager::DrawCage(Vector3 Point, float x, float y, float z)
 		glVertex3f(Point.x + x, Point.y + y, Point.z + z);
 
 	glEnd();
+}
 
-	/*
-    glEnable(GL_LINE_STIPPLE); // Enable line stipple to use a dotted pattern for the lines
-	glLineStipple(1, 0x0101); // Dotted stipple pattern for the lines
+void ScreenManager::DrawStreamers(Vector3 Point, float x, float y, float z, float Length)
+{
+    glEnable(GL_LINE_STIPPLE);  // Enable line stipple to use a dotted pattern for the lines
+	glLineStipple(1, 0x0101);   // Dotted stipple pattern for the lines
 
     glBegin(GL_LINES);
 
         glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x, Point.y, Point.z);
 		glVertex3f(Point.x + x, Point.y, Point.z);
-
-        glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x, Point.y, Point.z);
-		glVertex3f(Point.x, Point.y + y, Point.z);
-
-        glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x + x, Point.y, Point.z);
-		glVertex3f(Point.x + x, Point.y + y, Point.z);
+		glVertex3f(Point.x + x, Point.y, Point.z - Length);
 
         glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y + y, Point.z);
+		glVertex3f(Point.x, Point.y + y, Point.z - Length);
+
+        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x + x, Point.y + y, Point.z);
+		glVertex3f(Point.x + x, Point.y + y, Point.z - Length);
 
         glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y, Point.z);
-		glVertex3f(Point.x, Point.y, Point.z);
+		glVertex3f(Point.x, Point.y, Point.z - Length);
 
 	glEnd();
-	*/
-}
 
+    glDisable(GL_LINE_STIPPLE); // Disable the line stipple
+}

@@ -24,6 +24,7 @@ bool DataManager::Init()
 {
     // Initial loading of all XML files
     LoadDataClass(&Textures, Path("Assets\\XML\\Textures.xml"), "Texture");
+    LoadDataClass(&Fonts, Path("Assets\\XML\\Fonts.xml"), "Font");
     LoadDataClass(&Materials, Path("Assets\\XML\\Materials.xml"), "Material");
 
     // Post process all data and dynamicly link references, not order dependent

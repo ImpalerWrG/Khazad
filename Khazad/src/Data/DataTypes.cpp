@@ -47,6 +47,27 @@ bool MaterialData::PostProcessing()
     return true;
 }
 
+FontData::FontData()
+{}
+
+FontData::~FontData()
+{}
+
+bool FontData::Load(TiXmlElement* Entry, Uint32 Index)
+{
+    if(Entry)
+    {
+        string temp;
+        XML->QueryTextValue(Entry, "File", "Path", &temp);
+        XML->QueryUIntValue(Entry, "Size", "Int", Size);
+
+        sPath = temp;
+        DataBase::Load(Entry, Index);
+        return true;
+    }
+    return false;
+}
+
 TextureData::TextureData()
 {}
 

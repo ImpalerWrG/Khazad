@@ -87,6 +87,7 @@ public:
     void DrawPlane(Plane ArgumentPlane, float Length = 10);
 
     void DrawCage(Vector3 Point, float x, float y, float z);
+    void DrawStreamers(Vector3 Point, float x, float y, float z, float Length);
 
     Uint32 getTriangleCount() { return TotalTriangles; }
     void ToggleFullScreen();

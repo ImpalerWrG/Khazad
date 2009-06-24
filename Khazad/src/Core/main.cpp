@@ -84,8 +84,6 @@ bool initManagers()
     FONT->CreateInstance();
 	FONT->Init();
 
-	FONT->loadFont(Path("Assets\\Fonts\\KNIGHT.TTF"), 30);
-
 	return true;
 }
 

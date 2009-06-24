@@ -2,6 +2,7 @@
 
 #include <SDL_ttf.h>
 #include <FontManager.h>
+#include <DataManager.h>
 #include <Singleton.h>
 #include <Paths.h>
 
@@ -14,6 +15,11 @@ bool FontManager::Init()
 	{
 		return false;
 	}
+
+    for(int i = 0; i < DATA->getNumFonts(); ++i)
+    {
+        loadFont(DATA->getFontData(i)->getPath(), DATA->getFontData(i)->getSize());
+    }
 
     font = new gcn::ImageFont(Path("Assets\\Fonts\\fixedfont.bmp"), " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
     gcn::Widget::setGlobalFont(font);
@@ -38,7 +44,10 @@ TTF_Font* FontManager::loadFont(char* filepath, Uint32 size)
 {
 	TTF_Font* newFont;
 	newFont = TTF_OpenFont( filepath, size );
-	FontLibrary.push_back(newFont);
+	if (newFont != NULL)
+	{
+        FontLibrary.push_back(newFont);
+	}
 	return newFont;
 }
 

@@ -40,6 +40,7 @@ public:
             }
             else  // Error durring loading delete the Data object
             {
+                printf("Failed to Load Data object");
                 NewData->~T();
             }
         }
@@ -58,10 +59,13 @@ public:
         return true;
     }
 
-    TextureData* getTextureData(Uint32 Index)          { return Textures[Index]; }
-    Uint32 getNumTextures()                         { return Textures.size(); }
+    TextureData* getTextureData(Uint32 Index)           { return Textures[Index]; }
+    Uint32 getNumTextures()                             { return Textures.size(); }
 
-    MaterialData* getMaterialData(Uint32 Index)        { return Materials[Index]; }
+    FontData* getFontData(Uint32 Index)                 { return Fonts[Index]; }
+    Uint32 getNumFonts()                                { return Fonts.size(); }
+
+    MaterialData* getMaterialData(Uint32 Index)         { return Materials[Index]; }
     Uint32 getNumMaterials()                            { return Materials.size(); }
 
     Uint32 getLabelIndex(string Label);
@@ -74,6 +78,7 @@ protected:
     // ADD New Data classes Here
 
     std::vector<TextureData*> Textures;
+    std::vector<FontData*> Fonts;
     std::vector<MaterialData*> Materials;
 
 };
