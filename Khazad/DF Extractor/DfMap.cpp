@@ -135,6 +135,7 @@ Block * DfMap::allocBlock (int x,int y,int z)
     return NULL;
 }
 
+///TODO: this should use streams and filters
 bool DfMap::write(string FilePath)
 {
     FILE *SaveFile;
@@ -147,7 +148,7 @@ bool DfMap::write(string FilePath)
     }
     else
     {
-
+        // save map size
         fwrite(&x_block_count, sizeof(x_block_count), 1, SaveFile);
         fwrite(&y_block_count, sizeof(y_block_count), 1, SaveFile);
         fwrite(&z_block_count, sizeof(z_block_count), 1, SaveFile);
@@ -163,10 +164,11 @@ bool DfMap::write(string FilePath)
                     Block *b = getBlock(x,y,z);
                     if(b != NULL)
                     {
+                        // which block it is
                         fwrite(&x, sizeof(int), 1, SaveFile);
                         fwrite(&y, sizeof(int), 1, SaveFile);
                         fwrite(&z, sizeof(int), 1, SaveFile);
-
+                        // block data
                         fwrite(&b->tile_type, sizeof(Uint16), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
                         fwrite(&b->designation, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
                         fwrite(&b->occupancy, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
@@ -182,7 +184,7 @@ bool DfMap::write(string FilePath)
 
     }
 
-
+    // reopen file for reading
     freopen (FilePath.c_str(),"rb",SaveFile);
     if(SaveFile == NULL)
     {
@@ -228,7 +230,7 @@ void DfMap::updateCellCount()
     z_cell_count = z_block_count;
 }
 
-// TODO: how to know when something's NULL?
+///TODO: this should use streams and filters
 bool DfMap::load(string FilePath)
 {
     string DecompressedFilePath = FilePath + ".decomp";
@@ -341,6 +343,8 @@ short int DfMap::getTileType(int x, int y, int z)
     {
         return b->tile_type[x2][y2];
     }
+    if(isTileSky(x,y,z,x2,y2))
+        return 32;
     return -1;
 }
 
@@ -352,6 +356,8 @@ short int DfMap::getTileType(int x, int y, int z, int blockX, int blockY)
     {
         return b->tile_type[blockX][blockY];
     }
+    if(isTileSky(x,y,z,blockX,blockY))
+        return 32;
     return -1;
 }
 
@@ -411,10 +417,32 @@ bool DfMap::isSubterranean (int x, int y, int z)
     {
         return (b->designation[x2][y2].bits.subterranean);
     }
+    if(isTileSky( x, y, z, x2, y2))
+        return false;
+    return true;
+}
+
+// x,y,z - coords of block
+// blockX,blockY - coords of tile inside block
+bool DfMap::isTileSky(int x, int y, int z, int blockX, int blockY)
+{
+    assert(CheckBounds);
+    Block *b;
+    // trace down through blocks until we hit an inited one or the base
+    for (int i = z; i>= 0;i--)
+    {
+        b = getBlock(x,y,i);
+        if(b)
+        {
+            // is the inited block open to the sky?
+            return b->designation[blockX][blockY].bits.skyview;
+        }
+    }
+    // we hit base
     return false;
 }
 
-// next two functions should be checked for correctness
+// is the sky above this tile visible?
 bool DfMap::isSkyView (int x, int y, int z)
 {
     assert(CheckBounds);
@@ -425,9 +453,12 @@ bool DfMap::isSkyView (int x, int y, int z)
     {
         return (b->designation[x2][y2].bits.skyview);
     }
+    if(isTileSky(x,y,z,x2,y2))
+        return true;
     return false;
 }
 
+// is there light in this tile?
 bool DfMap::isSunLit (int x, int y, int z)
 {
     assert(CheckBounds);

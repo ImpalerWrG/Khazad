@@ -114,6 +114,7 @@ public:
     unsigned int getYBlocks()        { return y_block_count; }
     unsigned int getZBlocks()        { return z_block_count; }
 
+    bool isTileSky(int x, int y, int z, int blockX, int blockY);
     short int getTileType(int x, int y, int z);
     short int getTileType(int x, int y, int z, int blockX, int blockY);
 
