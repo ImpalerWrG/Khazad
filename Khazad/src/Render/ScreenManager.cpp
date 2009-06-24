@@ -382,7 +382,7 @@ bool ScreenManager::Render()
 
         Cursor.x = (int) (RawCursor.x + 0.5);
         Cursor.y = (int) (RawCursor.y + 0.5);
-        Cursor.z = (int) (RawCursor.z + 1);
+        Cursor.z = (int) (RawCursor.z /*+ 1*/);
 
         Point.x = Cursor.x - 0.48;  //TODO move most of this logic into DrawCage
         Point.y = Cursor.y - 0.48;

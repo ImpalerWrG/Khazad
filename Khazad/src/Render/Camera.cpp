@@ -148,6 +148,9 @@ Vector3 Camera::DetermineMouseIntersection(float MapZ)
         float dist = (-(PlaneNormal.DotProduct(NearMouseClickPoint)) + D) / denom;
         Intersection = NearMouseClickPoint + (dist * MouseRay);
         Cursor = Intersection;
+        Cursor.x = floorf(Cursor.x+ 0.5f);
+        Cursor.y = floorf(Cursor.y+ 0.5f);
+        Cursor.z += 1; // put the cursor above our plane
     }
 
     return Intersection;
