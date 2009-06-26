@@ -2,6 +2,7 @@
 #include <Paths.h>
 #include <fstream>
 #include <StringMagic.h>
+#include <DfVector.h>
 
 ///TODO: move these out of the way, too. they belong into their own file
 Uint32 memory_info::getOffset (string key)
@@ -237,10 +238,9 @@ Uint64 Process::readQuad (Uint32 offset)
     return 0; // we fail with zeros, user should check by calling isValid first.
 }
 
-// This is a terrible cludge. I need to get the memory remapping working.
-bool Process::read (Uint32 offset, Uint32 size, void *target)
+bool Process::read (Uint32 offset, Uint32 size, Uint8 *target)
 {
-    void *mover = target;
+    Uint8 *mover = target;
     Uint32 offseter = offset;
     while (size)
     {
@@ -267,6 +267,22 @@ bool Process::read (Uint32 offset, Uint32 size, void *target)
         }
     }
     return true;
+}
+// read a vector from memory
+DfVector Process::readVector (Uint32 offset, Uint32 item_size)
+{
+    /**
+    GNU libstdc++ vector is three pointers long
+    ptr start
+    ptr end
+    ptr alloc_end
+
+    we don't care about alloc_end because we don't try to add stuff
+    */
+    Uint32 start = readDWord(offset);
+    Uint32 end = readDWord(offset+4);
+    Uint32 size = (end - start) /4;
+    return DfVector(start,size,item_size);
 }
 
 #else
@@ -393,6 +409,25 @@ bool Process::read (Uint32 offset, Uint32 size, void *target)
         return true;
     }
     return false; // we fail with zeros, user should check by calling isValid first.
+}
+
+// read a vector from memory
+DfVector Process::readVector (Uint32 offset, Uint32 item_size)
+{
+    /**
+    MSVC++ vector is four pointers long
+    ptr allocator
+    ptr start
+    ptr end
+    ptr alloc_end
+
+    we don't care about alloc_end because we don't try to add stuff
+    we also don't care about the allocator thing in front
+    */
+    Uint32 start = readDWord(offset+4);
+    Uint32 end = readDWord(offset+8);
+    Uint32 size = (end - start) /4;
+    return DfVector(start,size,item_size);
 }
 
 #endif

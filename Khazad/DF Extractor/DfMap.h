@@ -4,7 +4,7 @@
 #define BLOCK_SIZE 16
 
 #include <stdafx.h>
-
+#include <DataStructures.h>
 // designation flags (tree,shub,lava,etc)
 /// TODO: research this further? consult DF hacker wizards?
 union t_designation
@@ -73,13 +73,19 @@ union t_occupancy
     } bits;
 };
 
-struct Block
+class Block
 {
-    // generic tile type. determines how the tile behaves ingame
+    public:
+    // where does the Block come from?
     Uint32 origin;
+    // generic tile type. determines how the tile behaves ingame
     Uint16 tile_type[BLOCK_SIZE][BLOCK_SIZE];
     t_designation designation[BLOCK_SIZE][BLOCK_SIZE];
     t_occupancy occupancy[BLOCK_SIZE][BLOCK_SIZE];
+    // this is ... temporary
+    vector <t_vein> veins;
+    Uint16 vein_matgloss[BLOCK_SIZE][BLOCK_SIZE];
+    void collapseVeins();
 };
 
 class DfMap
@@ -120,6 +126,12 @@ public:
 
     int getDesignations(int x, int y, int z);
     int getOccupancies(int x, int y, int z);
+    // this is what the vein structures say it is
+    Uint16 getVeinType (int x, int y, int z);
+    // matgloss part of the designation
+    unsigned int getMatgloss (int x, int y, int z);
+    // what kind of building is here?
+    Uint16 getBuilding (int x, int y, int z);
 
     int picktexture(int);
 

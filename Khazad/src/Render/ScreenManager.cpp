@@ -572,15 +572,21 @@ void ScreenManager::PrintDebugging()
         int TileType = 0;
         int Designation = 0;
         int Ocupancy = 0;
+        int structMatgloss = 0;
+        int veinMatgloss = 0;
+        int building = 0;
 
         DfMap * df_map = EXTRACT->getMap();
-        /// TODO: remove this hack once the cursoe behaves as it should
+        /// TODO: remove this hack once the cursor behaves as it should
         df_map->clamp(x, y, z);
         if(!(HiddenDraw ^ df_map->isHidden( x, y, z)))
         {
             TileType = df_map->getTileType(x, y, z);
             Designation = df_map->getDesignations(x, y, z);
             Ocupancy = df_map->getOccupancies(x, y, z);
+            veinMatgloss =  df_map->getVeinType ( x, y, z);
+            structMatgloss =  df_map->getMatgloss ( x, y, z);
+            building = df_map->getBuilding ( x,  y,  z);
         }
 
         SDL_Rect position;
@@ -591,11 +597,29 @@ void ScreenManager::PrintDebugging()
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 
+        Block * b = df_map->getBlock(x/16,y/16,z);
+        if(b != NULL)
+        {
+            sprintf (buffer, "Block offset: 0x%X", b->origin);
+            SCREEN->RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+        }
+
+
         sprintf (buffer, "Tile: %i", TileType);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 
-        char binarybuffer[33];
+        sprintf (buffer, "vein: %i", veinMatgloss);
+        SCREEN->RenderText(buffer, 0, WHITE, &position);
+        position.y -= 40;
+        sprintf (buffer, "mat: %i", structMatgloss);
+        SCREEN->RenderText(buffer, 0, WHITE, &position);
+        position.y -= 40;
+        sprintf (buffer, "building: %i", building);
+        SCREEN->RenderText(buffer, 0, WHITE, &position);
+        position.y -= 40;
+/*        char binarybuffer[33];
 
         binarysprintf(binarybuffer, Designation);
         sprintf (buffer, "Designation: %s", binarybuffer);
@@ -608,7 +632,8 @@ void ScreenManager::PrintDebugging()
         SCREEN->RenderText(buffer, 0, WHITE, &position);
 
         position.y -= 40;
-
+*/
+/*
         sprintf (buffer, "Cells: %i  Cubes: %i  Faces: %i  Slopes: %i", MAP->getCellCount(), MAP->getCubeCount(), MAP->getFaceCount(), MAP->getSlopeCount());
         SCREEN->RenderText(buffer, 0, WHITE, &position);
 
@@ -616,6 +641,7 @@ void ScreenManager::PrintDebugging()
 
         sprintf (buffer, "InitCells: %i  InitCubes: %i  InitFaces: %i  InitSlopes: %i", MAP->getInitedCellCount(), MAP->getInitedCubeCount(), MAP->getInitedFaceCount(), MAP->getInitedSlopeCount());
         SCREEN->RenderText(buffer, 0, WHITE, &position);
+        */
     }
 }
 

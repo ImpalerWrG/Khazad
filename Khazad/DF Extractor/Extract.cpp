@@ -1,5 +1,6 @@
 // Extractor
 #include <Extract.h>
+#include <DfVector.h>
 
 DECLARE_SINGLETON(Extractor)
 
@@ -50,6 +51,8 @@ bool Extractor::dumpMemory()
     int tile_type_offset = offset_descriptor->getOffset("type");
     int designation_offset = offset_descriptor->getOffset("designation");
     int occupancy_offset = offset_descriptor->getOffset("occupancy");
+    int veinvector = offset_descriptor->getOffset("v_vein");
+    int veinsize = offset_descriptor->getOffset("v_vein_size");
 
     map_loc = p->readDWord(map_offset);
 
@@ -86,18 +89,39 @@ bool Extractor::dumpMemory()
                     p->read(
                     /*Uint32 offset*/ temp_loc + tile_type_offset,
                     /*Uint32 size*/   sizeof(short int)*BLOCK_SIZE*BLOCK_SIZE,
-                    /*void *target*/  &b->tile_type
+                    /*void *target*/  (Uint8 *)&b->tile_type
                            );
                     p->read(
                     /*Uint32 offset*/ temp_loc + designation_offset,
                     /*Uint32 size*/   sizeof(int)*BLOCK_SIZE*BLOCK_SIZE,
-                    /*void *target*/  &b->designation
+                    /*void *target*/  (Uint8 *)&b->designation
                            );
                     p->read(
                     /*Uint32 offset*/ temp_loc + occupancy_offset,
                     /*Uint32 size*/   sizeof(int)*BLOCK_SIZE*BLOCK_SIZE,
-                    /*void *target*/  &b->occupancy
+                    /*void *target*/  (Uint8 *)&b->occupancy
                            );
+                    // load veins from the game
+                    if(veinvector && veinsize)
+                    {
+                        assert(sizeof(t_vein) == veinsize);
+                        // veins are stored as a vector of pointers to veins .. at least in df 40d11 on linux
+                        /*pointer is 4 bytes! we work with a 32bit program here, no matter what architecture we compile khazad for*/
+                        DfVector p_veins = p->readVector(temp_loc + veinvector, 4);
+                        // read all veins
+                        for (int i = 0; i< p_veins.getSize();i++)
+                        {
+                            t_vein v;
+                            Uint32 temp;
+                            // read the vein pointer from the vector
+                            p_veins.read((Uint32)i,(Uint8 *)&temp);
+                            // read the vein data (dereference pointer)
+                            p->read(temp, veinsize, (Uint8 *)&v);
+                            // store it in the block
+                            b->veins.push_back(v);
+                        }
+                        b->collapseVeins(); // collapse *our* vein vector into vein matgloss data
+                    }
                     ++blocks_read;
                 }
             }

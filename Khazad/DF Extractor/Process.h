@@ -23,7 +23,9 @@
 #include <winnt.h>
 #endif
 
-///TODO: decouple memory descriptors from the Process class.
+///TODO: decouple memory_info from the Process class?
+
+class DfVector;
 
 class memory_info
 {
@@ -74,12 +76,14 @@ public:
     bool loadDescriptors();
     memory_info *getDescriptor();
 
-    //bool setMemoryOffsets(HANDLE Handle);
+    // methods for reading various amounts of raw data
     Uint8 readByte (Uint32 offset);
     Uint16 readWord (Uint32 offset);
     Uint32 readDWord (Uint32 offset);
     Uint64 readQuad (Uint32 offset);
-    bool read (Uint32 offset, Uint32 size, void *target);
+    bool read (Uint32 offset, Uint32 size, Uint8 *target);
+    // read a platform-specific vector structure from memory
+    DfVector readVector (Uint32 offset, Uint32 item_size);
 };
 
 #define PROCESS (Process::GetInstance())

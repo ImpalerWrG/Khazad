@@ -1,7 +1,10 @@
 #include <DfMap.h>
-
+#include <DfVector.h>
+#include <DfVector.h>
 // zlib helper functions for de/compressing files
 #include <ZlibHelper.h>
+
+#include "DataStructures.h"
 
 // asserts are fun
 #include <assert.h>
@@ -10,6 +13,38 @@
 
 // this expands into lots of ugly switch statement functions
 #include "TileTypes.h"
+
+/*
+struct t_vein
+{
+    Uint32 VTable;
+    int16_t type;
+    Uint16 assignment[16];
+    int16_t unknown;
+    Uint32 flags;
+};
+*/
+// process vein vector into matgloss values...
+/// TODO: check how it lines up with the stuff in game ... if at all
+void Block::collapseVeins()
+{
+    // iterate through assigned veins
+    for( int i = 0; i < veins.size(); i++)
+    {
+        t_vein v = veins[i];
+        //iterate through vein assignment bit arrays - one for every row
+        for(int j = 0;j<16;j++)
+        {
+            //iterate through the bits... I wish I could use assembly here... especially the carry bits
+            for (int k = 0; k< 16;k++)
+            {
+                // and the bit array with a one-bit mask, check if the bit is set
+                bool set = ((1 << k) & v.assignment[j]) >> k;
+                if(set) vein_matgloss[k][j] = v.type;
+            }
+        }
+    }
+}
 
 DfMap::~DfMap()
 {
@@ -390,6 +425,48 @@ int DfMap::getOccupancies(int x, int y, int z)
     if(b != NULL)
     {
         return b->occupancy[x2][y2].whole;
+    }
+    return -1;
+}
+
+// this is what the vein structures say it is
+Uint16 DfMap::getVeinType (int x, int y, int z)
+{
+    assert(CheckBounds);
+
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
+    Block *b = getBlock(x,y,z);
+    if(b != NULL)
+    {
+        return b->vein_matgloss[x2][y2];
+    }
+    return -1;
+}
+// matgloss part of the designation
+unsigned int DfMap::getMatgloss (int x, int y, int z)
+{
+    assert(CheckBounds);
+
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
+    Block *b = getBlock(x,y,z);
+    if(b != NULL)
+    {
+        return b->designation[x2][y2].bits.matgloss;
+    }
+    return -1;
+}
+// what kind of building is here?
+Uint16 DfMap::getBuilding (int x, int y, int z)
+{
+    assert(CheckBounds);
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
+    Block *b = getBlock(x,y,z);
+    if(b != NULL)
+    {
+        return b->occupancy[x2][y2].bits.building;
     }
     return -1;
 }
