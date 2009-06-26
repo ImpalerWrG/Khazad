@@ -400,7 +400,7 @@ Uint64 Process::readQuad (Uint32 offset)
 }
 
 // This is a terrible cludge. I need to get the memory remapping working.
-bool Process::read (Uint32 offset, Uint32 size, void *target)
+bool Process::read (Uint32 offset, Uint32 size, Uint8 *target)
 {
     if(isValid())
     {
