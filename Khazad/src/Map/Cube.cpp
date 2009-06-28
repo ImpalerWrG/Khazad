@@ -47,6 +47,10 @@ Cube::~Cube()
     {
         MAP->ChangeInitedCubeCount(-1);
     }
+    if(Slopage != NULL)
+    {
+        RemoveSlope();
+    }
 }
 
 bool Cube::Init(Uint16 MaterialType)

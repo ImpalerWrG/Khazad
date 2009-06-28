@@ -41,6 +41,7 @@ public:
 	Uint32 getCellSizeZ() { return CellSizeZ; }
 
     void LoadExtract();
+    void ReleaseMap();
 
     void LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 CellZ, Uint32 CubeX, Uint32 CubeY);
 

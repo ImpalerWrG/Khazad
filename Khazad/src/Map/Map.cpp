@@ -40,7 +40,10 @@ Map::Map()
 
 Map::~Map()
 {
-
+    if(MapLoaded)
+    {
+        ReleaseMap();
+    }
 }
 
 bool Map::Init()
@@ -183,11 +186,18 @@ void Map::LoadExtract()
     {
         return;
     }
-    DfMap * df_map = EXTRACT->getMap();
 
-    CellSizeX = df_map->getXBlocks();
-	CellSizeY = df_map->getYBlocks();
-	CellSizeZ = df_map->getZBlocks();
+    if(MapLoaded)
+    {
+        ReleaseMap();
+    }
+
+    DfMap* ExtractedMap = EXTRACT->getMap();
+
+    // Initialize Cells and Cubes
+    CellSizeX = ExtractedMap->getXBlocks();
+	CellSizeY = ExtractedMap->getYBlocks();
+	CellSizeZ = ExtractedMap->getZBlocks();
 
 	CellArray = new Cell***[CellSizeX];
 
@@ -201,7 +211,7 @@ void Map::LoadExtract()
 
 			for (Uint32 k = 0; k < CellSizeZ; k++)
 			{
-			    if(df_map->isBlockInitialized(i, j, k))
+			    if(ExtractedMap->isBlockInitialized(i, j, k))
 			    {
                     CellArray[i][j][k] = new Cell(i * CELLEDGESIZE, j * CELLEDGESIZE, k);
                     CellArray[i][j][k]->Init();
@@ -390,5 +400,37 @@ Vector3 Map::getMapCenter()
     CenterPoint.z = getMapSizeZ();
 
     return CenterPoint;
+}
+
+void Map::ReleaseMap()
+{
+    MapLoaded = false;
+
+    if (CellArray != NULL)
+    {
+        for (Uint32 x = 0; x < CellSizeX; ++x)
+        {
+            if (CellArray[x] != NULL)
+            {
+                for (Uint32 y = 0; y < CellSizeY; ++y)
+                {
+                    if (CellArray[x][y] != NULL)
+                    {
+                        for (Uint32 z = 0; z < CellSizeZ; ++z)
+                        {
+                            if (CellArray[x][y][z] != NULL)
+                            {
+                                delete CellArray[x][y][z];
+                            }
+                        }
+                        delete[] CellArray[x][y];
+                    }
+                }
+                delete[] CellArray[x];
+            }
+        }
+        delete[] CellArray;
+        CellArray = NULL;
+    }
 }
 

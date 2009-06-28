@@ -25,6 +25,24 @@ Cell::~Cell()
     {
         MAP->ChangeInitedCellCount(-1);
     }
+
+    for(Uint8 i = 0; i < CELLEDGESIZE; i++)
+	{
+		for(Uint8 j = 0; j < CELLEDGESIZE; j++)
+		{
+		    delete Cubes[i][j];
+
+            for(Facet Face = FACETS_START; Face < NUM_FACETS; ++Face)
+            {
+                delete Facets[i][j][Face];
+            }
+            delete Facets[i][j];
+		}
+		delete Facets[i];
+		delete Cubes[i];
+	}
+	delete Facets;
+	delete Cubes;
 }
 
 bool Cell::Init()
