@@ -1,10 +1,11 @@
 #include <DfMap.h>
 #include <DfVector.h>
-#include <DfVector.h>
 // zlib helper functions for de/compressing files
 #include <ZlibHelper.h>
 
 #include "DataStructures.h"
+#include "DfMapHeader.h"
+#include <string>
 
 // asserts are fun
 #include <assert.h>
@@ -172,6 +173,7 @@ bool DfMap::write(string FilePath)
 {
     FILE *SaveFile;
     SaveFile = fopen(FilePath.c_str(),"wb");
+    DfMapHeader df_map_header;
 
     if(SaveFile == NULL)
     {
@@ -180,10 +182,17 @@ bool DfMap::write(string FilePath)
     }
     else
     {
-        // save map size
-        fwrite(&x_block_count, sizeof(x_block_count), 1, SaveFile);
-        fwrite(&y_block_count, sizeof(y_block_count), 1, SaveFile);
-        fwrite(&z_block_count, sizeof(z_block_count), 1, SaveFile);
+        // gather information to fill dfmapheader
+        strcpy(df_map_header.identifier, dmh_id);
+        df_map_header.version = dmh_ver;
+        df_map_header.tile_block_count = getBlocksCount();
+        df_map_header.x_block_count = getXBlocks();
+        df_map_header.y_block_count = getYBlocks();
+        df_map_header.z_block_count = getZBlocks();
+        df_map_header.map_data_location = sizeof(DfMapHeader);
+
+        // save map header
+        fwrite(&df_map_header, sizeof(DfMapHeader), 1, SaveFile);
 
         Uint32 x, y, z;
 
@@ -197,9 +206,9 @@ bool DfMap::write(string FilePath)
                     if(b != NULL)
                     {
                         // which block it is
-                        fwrite(&x, sizeof(int), 1, SaveFile);
-                        fwrite(&y, sizeof(int), 1, SaveFile);
-                        fwrite(&z, sizeof(int), 1, SaveFile);
+                        fwrite(&x, sizeof(Uint32), 1, SaveFile);
+                        fwrite(&y, sizeof(Uint32), 1, SaveFile);
+                        fwrite(&z, sizeof(Uint32), 1, SaveFile);
                         // block data
                         fwrite(&b->tile_type, sizeof(Uint16), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
                         fwrite(&b->designation, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
@@ -208,12 +217,6 @@ bool DfMap::write(string FilePath)
                 }
             }
         }
-
-        x = y = z = -1;
-        fwrite(&x, sizeof(Uint32), 1, SaveFile);
-        fwrite(&y, sizeof(Uint32), 1, SaveFile);
-        fwrite(&z, sizeof(Uint32), 1, SaveFile);
-
     }
 
     // reopen file for reading
@@ -268,8 +271,8 @@ bool DfMap::load(string FilePath)
     string DecompressedFilePath = FilePath + ".decomp";
     FILE *ToDecompress;
     FILE *Decompressed;
-    unsigned blocks_read = 0U;
-    int x, y, z;
+    DfMapHeader df_map_header;
+    Uint32 x, y, z;
 
     // open target file for writing
     Decompressed = fopen(DecompressedFilePath.c_str(), "wb");
@@ -302,15 +305,43 @@ bool DfMap::load(string FilePath)
     freopen(DecompressedFilePath.c_str(), "rb", Decompressed);
     if  (Decompressed == NULL)
     {
-        printf("Can't create decompressed file for read.\n");
+        printf("Can\'t create decompressed file for read.\n");
         return false;
     }
     // delete all stuff before we change size
     clear();
+
+    // check, if the file is big enough to contain the header
+    fseek(Decompressed, 0, SEEK_END);
+
+    if (ftell(Decompressed) < sizeof(DfMapHeader))
+    {
+    	printf("This Khazad map file is corrupted - file too small.\n");
+    	return false;
+    }
+
+    // read the header
+    fseek(Decompressed, 0, SEEK_SET);
+    fread(&df_map_header, sizeof(DfMapHeader), 1, Decompressed);
+
+    // check, if it's a Khazad map file
+    if (strcmp(df_map_header.identifier,dmh_id) != 0)
+    {
+    	printf("This file is not a Khazad map file.\n");
+    	return false;
+    }
+
+    // check, if it's the current map version
+    if (df_map_header.version != dmh_ver)
+    {
+    	printf("Khazad map file version(%3d) does not match the program\'s version(%3d).\n", df_map_header.version, dmh_ver);
+    	return false;
+    }
+
     // load new size information
-    fread(&x_block_count, sizeof(x_block_count), 1, Decompressed);
-    fread(&y_block_count, sizeof(y_block_count), 1, Decompressed);
-    fread(&z_block_count, sizeof(z_block_count), 1, Decompressed);
+    x_block_count = df_map_header.x_block_count;
+    y_block_count = df_map_header.y_block_count;
+    z_block_count = df_map_header.z_block_count;
 
     printf("Read from file %s\nX block size: %d\nY block size: %d\nZ levels: %d\n", FilePath.c_str(), x_block_count, y_block_count, z_block_count);
     // make sure those size variables are in sync
@@ -318,15 +349,13 @@ bool DfMap::load(string FilePath)
     // alloc new space for our new size
     allocBlockArray(x_block_count,y_block_count,z_block_count);
 
-    do{
+    fseek(Decompressed, df_map_header.map_data_location, SEEK_SET);
+
+    for (Uint32 tile_block = 0U; tile_block < df_map_header.tile_block_count; ++tile_block)
+    {
         fread(&x, sizeof(Uint32), 1, Decompressed);
         fread(&y, sizeof(Uint32), 1, Decompressed);
         fread(&z, sizeof(Uint32), 1, Decompressed);
-
-        if(x == -1 || y == -1 || z == -1)
-        {
-            break;
-        }
 
         Block * b = allocBlock(x,y,z);
 
@@ -335,12 +364,10 @@ bool DfMap::load(string FilePath)
         fread(&b->occupancy, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, Decompressed);
         ///TODO: load and save matgloss data
         memset(b->vein_matgloss, -1, sizeof(int16_t) * 256);
-        ++blocks_read;
+    }
 
-    }while(true);
+    printf("Blocks read into memory: %d\n", df_map_header.tile_block_count);
 
-
-    printf("Blocks read into memory: %d\n", blocks_read);
     // close reopened file
     fclose(Decompressed);
     // and delete it

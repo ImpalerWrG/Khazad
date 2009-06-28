@@ -109,10 +109,12 @@ class DfMap
 {
 private:
     Block **block;
+    Uint32 blocks_read;
     bool valid;
     void convertToDfMapCoords(int x, int y, int &out_x, int &out_y, int &out_x2, int &out_y2);
     void allocBlockArray(int x,int y, int z);
     void updateCellCount();
+    Uint32 getBlocksCount() const { return blocks_read; }
 public:
     DfMap();
     DfMap(Uint32 x, Uint32 y, Uint32 z);
@@ -132,6 +134,9 @@ public:
     bool   deallocBlock(int x, int y, int z);
     unsigned x_block_count, y_block_count, z_block_count; // block count
     unsigned x_cell_count, y_cell_count, z_cell_count;    // cell count
+
+
+    void setBlocksCount(Uint32 p_blocks_read) { blocks_read = p_blocks_read; }
 
     unsigned int getXBlocks()        { return x_block_count; }
     unsigned int getYBlocks()        { return y_block_count; }
@@ -168,6 +173,8 @@ public:
     bool isMagma (int x, int y, int z);
 
     int getLiquidLevel(int x, int y, int z);
+
+
 };
 
 

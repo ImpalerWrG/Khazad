@@ -353,7 +353,7 @@ void Map::LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 Cell
         }
         if(Liquid)
         {
-            TargetCube->Open();
+            //TargetCube->Open();
             TargetCube->setLiquid((Uint8) Liquid);
 
             if(df_map->isMagma( MapX, MapY, MapZ))

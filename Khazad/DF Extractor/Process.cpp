@@ -11,7 +11,7 @@ Uint32 memory_info::getOffset (string key)
      return strtoul(data[key].c_str(),NULL,16);
     return 0;
 }
-string memory_info::getString (string key)
+std::string memory_info::getString (string key)
 {
     if(hasToken(key))
         return data[key];

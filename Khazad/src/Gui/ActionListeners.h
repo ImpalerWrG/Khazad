@@ -293,6 +293,12 @@ class MapSaveActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
+        if (!MAP->isMapLoaded())
+        {
+        	// map not loaded, exit
+        	return;
+        }
+
         SCREEN->WipeScreen();
         SCREEN->setDrawingFlat();
         SCREEN->RenderLogo();

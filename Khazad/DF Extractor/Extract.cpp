@@ -128,7 +128,11 @@ bool Extractor::dumpMemory()
             }
         }
     }
+
     printf("Blocks read into memory: %d\n", blocks_read);
+    df_map->setBlocksCount(blocks_read);
+
+
     p->detach();
     return true;
 }

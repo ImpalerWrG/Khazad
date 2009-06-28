@@ -8,11 +8,6 @@
 
 #include <GL/gl.h>
 #include <GL/glu.h>
-#ifdef LINUX_BUILD
-    #include <GL/glut.h>
-#else
-    #include <glut.h>
-#endif
 #include <SDL.h>
 #include <SDL_opengl.h>
 

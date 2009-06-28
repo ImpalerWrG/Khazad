@@ -160,6 +160,8 @@ bool InputManager::HandleInput()
 					    SCREEN->setDebuggingDraw(!SCREEN->isDebuggingDraw());
 					    break;
 					}
+					default:
+                        break;
 				}
 				break;
 			}
