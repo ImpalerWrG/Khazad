@@ -6,6 +6,9 @@
 #include <ActionListeners.h>
 #include <Paths.h>
 
+/**
+FIXME: This leaks some bytes. None of those gcn:: things is free'd.
+*/
 
 DECLARE_SINGLETON(Ui)
 

@@ -26,7 +26,7 @@ struct t_vein
 };
 */
 // process vein vector into matgloss values...
-/// TODO: check how it lines up with the stuff in game ... if at all
+/// TODO: check how this behaves with multiple overlapping veins
 void Block::collapseVeins()
 {
     // iterate through assigned veins
@@ -65,7 +65,7 @@ void DfMap::clear()
                 delete b;
             }
         }
-        delete block;
+        delete[] block;
     }
 }
 

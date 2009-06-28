@@ -14,13 +14,13 @@ Fonts are now modable in the same way as texures, the Fonts.xml file defines the
 
 Extracted map files are now only a few hundred KB rather then several thousand due to the work of Dorf, old maps are naturally incompatible now and a new map is included.
 
-The mouse based camera controls have changed a bit, ware as in previous version you pressed the right mouse to Tilt and Orbit the camera you now press the center mouse wheel (just prees down and hold without scrolling).  The left mouse now performs the new cursor-cube selection, each click on the map will move the cube their and a second click in the same tile will center the camera on that spot, pressing (c) will also center on the cursor cube.  The cubes xyz cordinates and data about the spot are displayed in the debugging output.
+The mouse based camera controls have changed a bit, ware as in previous version you pressed the right mouse to Tilt and Orbit the camera you now press the center mouse wheel (just prees down and hold without scrolling).  The left mouse now performs the new cursor-cube selection, each click on the map will move the cube there and a second click in the same tile will center the camera on that spot, pressing (c) will also center on the cursor cube.  The cubes xyz cordinates and data about the spot are displayed in the debugging output.
 
-A limited map editing capacity has been added, by pressing (d) the current cube that the cursor resides on will be dug out just like in game, this will reveal new rock & soil and showcases the ability to modify the maps data structure and properly display the result.  More editing capacity will be added next release.
+A limited map editing capacity has been added, by pressing (d) the current cube that the cursor resides on will be dug out just like in game, this will reveal new rock & soil and showcases the ability to modify the maps data structure and properly display the result. This isn't synchronized with DF. More editing capacity will be added next release.
 
 Screenshots can now be taken, pressing "PrtScr SysRQ" (PrintScreen SystemRequest) will save as screenshot in the ScreenShots folder, numbering is automatic starting with zero and shoots should not get overwritten.  A camera buttton on the UI also saves screenshoots.
 
-Screenshoots of buggy or undesireable behaviors are welcome along with advice on ware the project should go.  A number of people are getting buggy behavior and I'm hoping to find more testers to help track down the source of these bugs, if someone with a reproducable bug can programm as well and try to track down a bug and its fix on their system that would be greatly appresiated.
+Screenshoots of buggy or undesireable behaviors are welcome along with advice on where the project should go.  A number of people are getting buggy behavior and I'm hoping to find more testers to help track down the source of these bugs, if someone with a reproducable bug can program as well and try to track down a bug and its fix on their system that would be greatly appresiated.
 
 
 Controls:

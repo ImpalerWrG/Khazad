@@ -155,6 +155,7 @@ void XMLManager::dump_to_stdout(const char* pFilename)
 
 TiXmlDocument* XMLManager::loadFile( const char* Filename )
 {
+    ///FIXME: memory lost on next line
 	TiXmlDocument* doc = new TiXmlDocument(Filename);
 	bool loadOkay = doc->LoadFile();
 	if (loadOkay)

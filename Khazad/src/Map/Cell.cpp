@@ -30,19 +30,21 @@ Cell::~Cell()
 	{
 		for(Uint8 j = 0; j < CELLEDGESIZE; j++)
 		{
-		    delete Cubes[i][j];
-
-            for(Facet Face = FACETS_START; Face < NUM_FACETS; ++Face)
-            {
-                delete Facets[i][j][Face];
-            }
-            delete Facets[i][j];
+		    if(Cubes[i][j] != NULL)
+		    {
+                delete Cubes[i][j];
+                for(Facet Face = FACETS_START; Face < NUM_FACETS; ++Face)
+                {
+                    if(Facets[i][j][Face] != NULL) delete Facets[i][j][Face];
+                }
+		    }
+//            delete Facets[i][j];
 		}
-		delete Facets[i];
-		delete Cubes[i];
+//		delete Facets[i];
+//		delete Cubes[i];
 	}
-	delete Facets;
-	delete Cubes;
+//	delete Facets;
+//	delete Cubes;
 }
 
 bool Cell::Init()
@@ -50,21 +52,21 @@ bool Cell::Init()
     Initalized = true;
 	DirtyDrawlist = true;
 
-    Cubes = new Cube**[CELLEDGESIZE];
-    Facets = new Face***[CELLEDGESIZE];
+//    Cubes = new Cube**[CELLEDGESIZE];
+//    Facets = new Face***[CELLEDGESIZE];
 
-	float HalfCell = CELLEDGESIZE / 2;
+//	float HalfCell = CELLEDGESIZE / 2;
 
 	for(Uint8 i = 0; i < CELLEDGESIZE; i++)
 	{
-		Cubes[i] = new Cube*[CELLEDGESIZE];
-		Facets[i] = new Face**[CELLEDGESIZE];
+//		Cubes[i] = new Cube*[CELLEDGESIZE];
+//		Facets[i] = new Face**[CELLEDGESIZE];
 
 		for(Uint8 j = 0; j < CELLEDGESIZE; j++)
 		{
 		    Cubes[i][j] = NULL;
 
-            Facets[i][j] = new Face*[NUM_FACETS];
+//            Facets[i][j] = new Face*[NUM_FACETS];
 
             for(Facet Face = FACETS_START; Face < NUM_FACETS; ++Face)
             {

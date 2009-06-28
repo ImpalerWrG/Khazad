@@ -49,7 +49,8 @@ ScreenManager::ScreenManager()
 
 ScreenManager::~ScreenManager()
 {
-
+    if (imageLoader != NULL)
+        delete imageLoader;
 }
 
 bool ScreenManager::Init()

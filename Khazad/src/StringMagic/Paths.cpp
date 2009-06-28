@@ -33,13 +33,13 @@ void Path::Crunch()
 }
 Path::Path(char * path)
 {
-    internal = string(path);
+    internal = path;
     Crunch();
 }
 
 Path::Path(const char * path)
 {
-    internal = string(path);
+    internal = path;
     Crunch();
 }
 

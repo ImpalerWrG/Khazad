@@ -22,10 +22,13 @@ DataManager::~DataManager()
 
 bool DataManager::Init()
 {
+    Path texture_xml = "Assets\\XML\\Textures.xml";
+    Path font_xml = "Assets\\XML\\Fonts.xml";
+    Path material_xml = "Assets\\XML\\Materials.xml";
     // Initial loading of all XML files
-    LoadDataClass(&Textures, Path("Assets\\XML\\Textures.xml"), "Texture");
-    LoadDataClass(&Fonts, Path("Assets\\XML\\Fonts.xml"), "Font");
-    LoadDataClass(&Materials, Path("Assets\\XML\\Materials.xml"), "Material");
+    LoadDataClass(&Textures, texture_xml, "Texture");
+    LoadDataClass(&Fonts, font_xml, "Font");
+    LoadDataClass(&Materials, material_xml, "Material");
 
     // Post process all data and dynamicly link references, not order dependent
 	PostProcessDataClass(&Materials);

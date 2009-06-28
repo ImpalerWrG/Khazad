@@ -58,8 +58,8 @@ protected:
 
     Uint16 TriangleCount[5];
 
-	Cube*** Cubes;
-	Face**** Facets;
+	Cube* Cubes[CELLEDGESIZE][CELLEDGESIZE];
+	Face* Facets[CELLEDGESIZE][CELLEDGESIZE][NUM_FACETS];
 
 	bool Active;
 };
