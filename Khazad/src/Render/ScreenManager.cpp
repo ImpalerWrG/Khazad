@@ -79,7 +79,8 @@ bool ScreenManager::Init()
     }
     else
     {
-        ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
+        // resizing is broken
+        ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL/* | SDL_RESIZABLE*/ );
     }
 
     glViewport(0, 0, ScreenWidth, ScreenHight);
@@ -112,6 +113,9 @@ bool ScreenManager::Init()
 
 bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Hight)
 {
+    // disabled until fixed.
+    return true;
+
     ScreenWidth = Width;
     ScreenHight = Hight;
 
@@ -506,7 +510,8 @@ void ScreenManager::ToggleFullScreen()
     }
     else
     {
-        ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE);
+        // resizing is broken
+        ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL/* | SDL_RESIZABLE*/);
         glViewport(0, 0, ScreenWidth, ScreenHight);
     }
     TEXTURE->FreeInstance();

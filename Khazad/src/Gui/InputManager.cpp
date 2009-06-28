@@ -32,6 +32,11 @@ bool InputManager::Init()
 
 bool InputManager::HandleInput()
 {
+    if(UI->isDone())
+    {
+        return true;  // End Program
+    }
+
 	SDL_Event event;
 
 	while(SDL_PollEvent(&event)) // Poll events
@@ -43,10 +48,6 @@ bool InputManager::HandleInput()
         // Pass events into the GUI, if they are consumed their skip other checks
 		if(UI->ProcessEvent(event, RelativeX, RelativeY))
 		{
-		    if(UI->isDone())
-		    {
-		        return true;  // End Program
-		    }
 		    continue;
 		}
 

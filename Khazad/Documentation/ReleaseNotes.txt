@@ -78,6 +78,4 @@ Known Issues:
 
 - Textures may be missing from the Material assignment system, fortunatly this is modable and anyone can edit their Textrue and Material xml files to re-assign any texture combination
 
-- Shutting down Khazad by the green Exit button and confirmation panel is very slow, we'll try to speed it up in future releases
-
 - A lot of memory leaks when loading or Dumping with a map already displayed, its recomended you quit and restart the program rather then repetedly load maps.
