@@ -5,7 +5,6 @@
 
 #include <stdafx.h>
 #include <DataStructures.h>
-// designation flags (tree,shub,lava,etc)
 /// TODO: research this further? consult DF hacker wizards?
 union t_designation
 {
@@ -13,21 +12,38 @@ union t_designation
     struct {
     unsigned int flow_size : 3; // how much liquid is here?
     unsigned int pile : 1; // stockpile?
-    unsigned int dig : 3;// needs more info...
-    unsigned int detail : 1;
-    unsigned int detail_event : 1;// what?
+/*
+ * All the different dig designations... needs more info, probably an enum
+ */
+    unsigned int dig : 3;
+    unsigned int detail : 1;///<- wtf
+    unsigned int detail_event : 1;///<- more wtf
     unsigned int hidden :1;
-    unsigned int matgloss :4;// how do we know which material it really is?
+
+/*
+ * This one is rather involved, but necessary to retrieve the base layer matgloss index
+ * see http://www.bay12games.com/forum/index.php?topic=608.msg253284#msg253284 for details
+ */
+    unsigned int geolayer_index :4;
     unsigned int light : 1;
     unsigned int subterranean : 1; // never seen the light of day?
     unsigned int skyview : 1; // sky is visible now, it rains in here when it rains
-    unsigned int biome : 4; // why four bits for maximum four biomes? is this some bitmap thing?
+
+/*
+ * Probably similar to the geolayer_index. Only with a different set of offsets and different data.
+ * we don't use this yet
+ */
+    unsigned int biome : 4;
+/*
+0 = water
+1 = magma
+*/
     unsigned int liquid_type : 1;
     unsigned int water_table : 1; // srsly. wtf?
     unsigned int rained : 1; // does this mean actual rain (as in the blue blocks) or a wet tile?
     unsigned int traffic : 2; // needs enum
     unsigned int flow_forbid : 1; // idk wtf bbq
-    unsigned int liquid_static : 1;// good idea there... poor execution
+    unsigned int liquid_static : 1;
     unsigned int moss : 1;// I LOVE MOSS
     unsigned int feature_present : 1; // another wtf... is this required for magma pipes to work?
     unsigned int liquid_character : 2; // those ripples on streams?
@@ -40,6 +56,7 @@ union t_occupancy
     Uint32 whole;
     struct {
     unsigned int building : 3;// building type... should be an enum?
+    // 7 = door
     unsigned int unit : 1;
     unsigned int unit_grounded : 1;
     unsigned int item : 1;
@@ -129,9 +146,10 @@ public:
     // this is what the vein structures say it is
     Uint16 getVeinType (int x, int y, int z);
     // matgloss part of the designation
-    unsigned int getMatgloss (int x, int y, int z);
+    unsigned int getGeolayerIndex (int x, int y, int z);
     // what kind of building is here?
     Uint16 getBuilding (int x, int y, int z);
+    unsigned int getBiome (int x, int y, int z);
 
     int picktexture(int);
 

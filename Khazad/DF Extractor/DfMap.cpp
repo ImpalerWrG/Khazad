@@ -48,32 +48,29 @@ void Block::collapseVeins()
 
 DfMap::~DfMap()
 {
-    if(isValid())
-    {
-        clear();
-    }
+    clear();
 }
 
 void DfMap::clear()
 {
-    valid = false;
-    for(int i = 0; i < x_block_count*y_block_count*z_block_count;i++)
+    if(valid)
     {
-        Block * b = block[i];
-        if(b)
+        valid = false;
+        for(int i = 0; i < x_block_count*y_block_count*z_block_count;i++)
         {
-            delete b;
+            Block * b = block[i];
+            if(b!=NULL)
+            {
+                delete b;
+            }
         }
+        delete block;
     }
-    delete block;
 }
 
 void DfMap::allocBlockArray(int x,int y, int z)
 {
-    if(isValid())
-    {
-        clear();
-    }
+    clear();
     x_block_count = x;
     y_block_count = y;
     z_block_count = z;
@@ -308,20 +305,17 @@ bool DfMap::load(string FilePath)
         printf("Can't create decompressed file for read.\n");
         return false;
     }
-
+    // delete all stuff before we change size
+    clear();
+    // load new size information
     fread(&x_block_count, sizeof(x_block_count), 1, Decompressed);
     fread(&y_block_count, sizeof(y_block_count), 1, Decompressed);
     fread(&z_block_count, sizeof(z_block_count), 1, Decompressed);
 
     printf("Read from file %s\nX block size: %d\nY block size: %d\nZ levels: %d\n", FilePath.c_str(), x_block_count, y_block_count, z_block_count);
-
+    // make sure those size variables are in sync
     updateCellCount();
-
-    // catch cases where we already have a map loaded
-    if(isValid())
-    {
-        clear();
-    }
+    // alloc new space for our new size
     allocBlockArray(x_block_count,y_block_count,z_block_count);
 
     do{
@@ -339,7 +333,8 @@ bool DfMap::load(string FilePath)
         fread(&b->tile_type, sizeof(Uint16), BLOCK_SIZE*BLOCK_SIZE, Decompressed);
         fread(&b->designation, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, Decompressed);
         fread(&b->occupancy, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, Decompressed);
-
+        ///TODO: load and save matgloss data
+        memset(b->vein_matgloss, -1, sizeof(int16_t) * 256);
         ++blocks_read;
 
     }while(true);
@@ -444,7 +439,7 @@ Uint16 DfMap::getVeinType (int x, int y, int z)
     return -1;
 }
 // matgloss part of the designation
-unsigned int DfMap::getMatgloss (int x, int y, int z)
+unsigned int DfMap::getGeolayerIndex (int x, int y, int z)
 {
     assert(CheckBounds);
 
@@ -453,10 +448,25 @@ unsigned int DfMap::getMatgloss (int x, int y, int z)
     Block *b = getBlock(x,y,z);
     if(b != NULL)
     {
-        return b->designation[x2][y2].bits.matgloss;
+        return b->designation[x2][y2].bits.geolayer_index;
     }
     return -1;
 }
+// matgloss part of the designation
+unsigned int DfMap::getBiome (int x, int y, int z)
+{
+    assert(CheckBounds);
+
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
+    Block *b = getBlock(x,y,z);
+    if(b != NULL)
+    {
+        return b->designation[x2][y2].bits.biome;
+    }
+    return -1;
+}
+
 // what kind of building is here?
 Uint16 DfMap::getBuilding (int x, int y, int z)
 {

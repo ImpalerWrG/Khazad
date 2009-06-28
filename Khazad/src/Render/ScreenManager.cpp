@@ -570,7 +570,8 @@ void ScreenManager::PrintDebugging()
         int TileType = 0;
         int Designation = 0;
         int Ocupancy = 0;
-        int structMatgloss = 0;
+        int Biome = 0;
+        int Geolayer = 0;
         int veinMatgloss = 0;
         int building = 0;
 
@@ -580,8 +581,9 @@ void ScreenManager::PrintDebugging()
             TileType = df_map->getTileType(x, y, z);
             Designation = df_map->getDesignations(x, y, z);
             Ocupancy = df_map->getOccupancies(x, y, z);
+            Biome = df_map->getBiome(x, y, z);
             veinMatgloss =  df_map->getVeinType ( x, y, z);
-            structMatgloss =  df_map->getMatgloss ( x, y, z);
+            Geolayer =  df_map->getGeolayerIndex ( x, y, z);
             building = df_map->getBuilding ( x,  y,  z);
         }
 
@@ -607,9 +609,16 @@ void ScreenManager::PrintDebugging()
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 
-        sprintf (buffer, "vein: %i  mat: %i  building: %i"  , veinMatgloss, structMatgloss, building);
+        sprintf (buffer, "biome %i, layer %i, vein: %i", Biome, Geolayer,veinMatgloss);
+
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
+
+/*        sprintf (buffer, "building: %i", building);
+        SCREEN->RenderText(buffer, 0, WHITE, &position);
+        position.y -= 40;*/
+/*        char binarybuffer[33];
+
 
 /*
         char binarybuffer[33];

@@ -120,6 +120,7 @@ bool Extractor::dumpMemory()
                             // store it in the block
                             b->veins.push_back(v);
                         }
+                        memset(b->vein_matgloss, -1, sizeof(int16_t) * 256);
                         b->collapseVeins(); // collapse *our* vein vector into vein matgloss data
                     }
                     ++blocks_read;
