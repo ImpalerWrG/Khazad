@@ -127,6 +127,13 @@ void Camera::onMousePoll()
     //DetermineMouseIntersection(LookZ());
 }
 
+void Camera::setCursor(Vector3 NewPoint)
+{
+    Cursor.x = NewPoint.x;
+    Cursor.y = NewPoint.y;
+    Cursor.z = NewPoint.z;
+}
+
 Vector3 Camera::DetermineMouseIntersection(float MapZ)
 {
     Vector3 MouseRay = NearMouseClickPoint - FarMouseClickPoint;
@@ -590,6 +597,34 @@ void Camera::MoveViewHorizontal(float X, float Y)
 	generateViewFrustum();
 }
 
+void Camera::ConfineCursor()
+{
+    if(Cursor.x < 0)
+    {
+        Cursor.x = 0;
+    }
+    if(Cursor.x >= MAP->getMapSizeX())
+    {
+        Cursor.x = MAP->getMapSizeX() - 1;
+    }
+    if(Cursor.y < 0)
+    {
+        Cursor.y = 0;
+    }
+    if(Cursor.y >= MAP->getMapSizeY())
+    {
+        Cursor.y = MAP->getMapSizeY() - 1;
+    }
+    if(Cursor.z < 0)
+    {
+        Cursor.z = 0;
+    }
+    if(Cursor.z >= MAP->getMapSizeZ())
+    {
+        Cursor.z = MAP->getMapSizeZ() - 1;
+    }
+}
+
 void Camera::ConfineLookPosition()
 {
     float DifferenceX = LookPosition.x - EyePosition.x;
@@ -649,9 +684,11 @@ void Camera::MoveViewVertical(float Z)
 {
 	EyePosition.z += Z;
 	LookPosition.z += Z;
-	///FIXME: this is bad. Cursor should never leave the map. /px
+
 	Cursor.z += Z;
     CursorLevel += Z;
+
+    ConfineCursor();
 
     if(true) // confine within map toggle?
     {

@@ -367,7 +367,13 @@
 		<Name Label="MATERIAL_ICE"/>
 		<Texture label="TEXTURE_ICE"/>
 		<TileValues>
+			<Tile Int="83"/>
 			<Tile Int="245"/>
+			
+			<Tile Int="258"/>
+			<Tile Int="259"/>
+			<Tile Int="260"/>
+			<Tile Int="262"/>
 			<Tile Int="262"/>
 			<Tile Int="360"/>
 			<Tile Int="361"/>

@@ -677,6 +677,9 @@ void Cube::Dig()
         Solid = false;
         setHidden(false);
 
+        Cell* TargetCell = getCellOwner();
+        TargetCell->setDirtyDrawList(true);
+
         for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
         {
             if(DirectionType != DIRECTION_DOWN)

@@ -6,6 +6,7 @@
 #include <Map.h>
 #include <Camera.h>
 #include <Extract.h>
+#include <Cube.h>
 #include <ColorManager.h>
 #include <ConfigManager.h>
 
@@ -212,6 +213,19 @@ class TiltDownActionListener: public gcn::ActionListener
     }
 };
 
+class DigActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        Vector3 CubePosition = SCREEN->MainCamera->getCursor();
+        Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
+        if(TargetCube != NULL)
+        {
+            TargetCube->Dig();
+        }
+    }
+};
+
 class MapDumpActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
@@ -228,6 +242,10 @@ class MapDumpActionListener: public gcn::ActionListener
             EXTRACT->dumpMemory();
             MAP->LoadExtract();
             SCREEN->MainCamera->CenterView(MAP->getMapCenter());
+
+            SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ());
+            SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ());
+            //SCREEN->MainCamera->setCursor(MAP->getMapCenter());
         }
         else
         {
@@ -260,6 +278,7 @@ class MapLoadActionListener: public gcn::ActionListener
 
             SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ());
             SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ());
+            //SCREEN->MainCamera->setCursor(MAP->getMapCenter());
         }
         else
         {

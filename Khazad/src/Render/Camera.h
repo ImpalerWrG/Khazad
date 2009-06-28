@@ -89,6 +89,8 @@ public:
     bool DetermineCursorIntersection();
 
     Vector3 getCursor()                     { return Cursor; }
+    void setCursor(Vector3 NewPoint);
+
     Vector3 getMouseIntersection()          { return MouseIntersection; }
 
 	bool isVerticalMode()                   { return VerticalMode;}
@@ -186,7 +188,10 @@ public:
 
 	void MoveViewHorizontal(float X, float Y);
 
+    void ConfineCursor();
+
     void ConfineLookPosition();
+
 
 	void MoveViewVertical(float Z);
 

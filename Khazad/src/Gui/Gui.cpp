@@ -269,7 +269,7 @@ void Ui::InitDepthSlider()
 
     DepthSlider->setSize(25, SCREEN->getHight());
     DepthSlider->setPosition(SCREEN->getWidth() - 25, 0);
-    DepthSlider->setValue(0.5);
+    DepthSlider->setValue(1.0);
 
     gcn::ActionListener* actionListener = new DepthChangeActionListener();
     DepthSlider->addActionListener(actionListener);

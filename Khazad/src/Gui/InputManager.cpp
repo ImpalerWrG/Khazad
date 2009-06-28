@@ -127,40 +127,14 @@ bool InputManager::HandleInput()
                     }
                     case SDLK_d:
                     {
-                        Vector3 CubePosition = SCREEN->MainCamera->Look();
+                        Vector3 CubePosition = SCREEN->MainCamera->getCursor();
                         Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
                         if(TargetCube != NULL)
                         {
                             TargetCube->Dig();
-                            Cell* TargetCell = TargetCube->getCellOwner();
-                            TargetCell->setDirtyDrawList(true);
                         }
                         break;
                     }
-                    /*
-                    case SDLK_f:
-					{
-                        EXTRACT->FreeMap();
-                        break;
-					}
-					*/
-					/*
-                    case SDLK_f:
-					{
-					    SCREEN->setFrameDraw(!SCREEN->isFrameDraw());
-					    break;
-					}
-					*/
-                    case SDLK_s:
-					{
-					    SCREEN->setShadedDraw(!SCREEN->isShadedDraw());
-					    break;
-					}
-                    case SDLK_h:
-					{
-					    SCREEN->setHiddenDraw(!SCREEN->isHiddenDraw());
-					    break;
-					}
                     case SDLK_u:
 					{
 					    SCREEN->setSubTerranianDraw(!SCREEN->isSubTerranianDraw());
@@ -207,7 +181,7 @@ bool InputManager::HandleInput()
 		}
 	}
 
-	SCREEN->MainCamera->onMousePoll(); // Check for edge scrolling even without events
+	//SCREEN->MainCamera->onMousePoll(); // Check for edge scrolling even without events
 
 
 	return false;
