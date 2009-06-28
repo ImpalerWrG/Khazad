@@ -63,7 +63,7 @@ class CenteringActionListener: public gcn::ActionListener
     void action(const gcn::ActionEvent& actionEvent)
     {
         gcn::Button* Source = (gcn::Button*) actionEvent.getSource();
-        SCREEN->MainCamera->CenterView();
+        SCREEN->MainCamera->CenterView(MAP->getMapCenter());
     }
 };
 
@@ -227,7 +227,7 @@ class MapDumpActionListener: public gcn::ActionListener
         {
             EXTRACT->dumpMemory();
             MAP->LoadExtract();
-            SCREEN->MainCamera->CenterView();
+            SCREEN->MainCamera->CenterView(MAP->getMapCenter());
         }
         else
         {
@@ -256,7 +256,10 @@ class MapLoadActionListener: public gcn::ActionListener
             // this is sooo wrong.
             EXTRACT->loadMap(Path(CONFIG->LoadPath()));
             MAP->LoadExtract();
-            SCREEN->MainCamera->CenterView();
+            SCREEN->MainCamera->CenterView(MAP->getMapCenter());
+
+            SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ());
+            SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ());
         }
         else
         {

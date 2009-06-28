@@ -1,29 +1,25 @@
-Release Notes v0.0.4
+Release Notes v0.0.5
 
-Khazad is still being built and dose little more then show the static geometry of a map, more options to controll rendering have been added in 0.0.4 and a lot of low level data structure rewriting has been done behind the scenes.
+Khazad is still being built and just shows the static geometry of a map, major improvmenents in mouse control and Infterface have been implemented and the DF extractor is now more efficient and begining to grow into a flexible cross platform library well encalsulated and easily usable in other projects.
 
 A new debugging output showing the Tile, Designation and Occupancy data taken directly from the map Extraction of the outlined cube at the center of the view, the Debugging output is now togglable with (b).
 
-Textures are now fully modable, two files Textures.xml and Materials.xml allow the end-users to set any texture for any of DwarfFortres Tile number of which their are hundreds, I've tried to get most common tiles on the list but their will certainly be gaps ware you will see the Default NEHE texture, please report these or even better edit the XML files and post them so I can include the changes.
+Fonts are now modable in the same way as texures, the Fonts.xml file defines the pathway for ttf fonts, the first font listed their will be used throughout the game, substitute your own fonts if desired.  Other Xml files have remained the same.
 
-The config.xml is largly unchanged, it allows the screen resolution to be altered and a few of the constants that determine how the camera is controlled to be tweeked, a full screen option is stil avaliable.  The file pathway for map saving and loading is set their as well.  
+Extracted map files are now only a few hundred KB rather then several thousand due to the work of Dorf, old maps are naturally incompatible now and a new map (a fort of mine) is included.
 
-Extracted maps store underground hidden terrain but Khazad hides them by default, pressing (h) will toggle showing them.  Three new toggle options have been made available for your convenience, they are Underground toggle (u), SkyView (i) and Sunlit (o) and toggle based on designation flags in DF, unfotunatly DF has some very weird determinations for how it decides these states and weird looking results are common particularly with hill sides.
+The camera controls have changed a bit, ware as in previous version you pressed the right mouse to Tilt and Orbit the camera you now press the center mouse wheel (just prees down and hold without scrolling).  The left mouse now performs the new cursor-cube selection, each click on the map will move the cube their and a second click in the same tile will center the camera on that spot, pressing (c) will also center on the cursor cube.  The cubes xyz cordinates and data about the spot are displayed in the debugging output.
 
-Stairs are now rendered just like ramps and this will look weird untill a stair specific geometry is added.  Most internal ramps and staris look very weird right now and cause gaps in walls/hill sides etc etc. In addition Walls adjacent to tunnels are now given tops and sides so they are much easier to see from a top down perspective.
+Screenshots can now be taken, pressing "PrtScr SysRQ" (PrintScreen SystemRequest) will save as screenshot in the ScreenShots folder, numbering is automatic starting with zero and shoots should not get overwritten.  The camera buttton on the UI also saves screenshoots.
 
-A top-down DwarfFortress like display angle is now available either by manualy tilting the camera to vertical or by pressing (v) to go into and lock the camera to vertical, pressing (v) again will unlock the camera and allow you to tilt normaly again, all other camera controls remain the same in vertical mode.
-
-A new Exploded setting is now available, this simply adds vertical space between the levels allowing 'pancake' levels to be viewed simultaniously, press (Page Down) to add space and 'explode' or (Page Up) to 'compress'.  Orienting yourself can be a bit hard in this mode so be warned.
-
-Screenshoots of buggy or undesireable behavior is welcome along with advice on ware the project should go.  A number of people are getting buggy behavior and I'm hoping to find more testers to help track down the source of these bugs, if someone with a reproducable bug can programm as well and try to track down a bug and its fix on their system that would be greatly appresiated.
+Screenshoots of buggy or undesireable behaviors are welcome along with advice on ware the project should go.  A number of people are getting buggy behavior and I'm hoping to find more testers to help track down the source of these bugs, if someone with a reproducable bug can programm as well and try to track down a bug and its fix on their system that would be greatly appresiated.
 
 
 Controls:
 
 Keyboard controls:
 
-c: Centers view to the middle of the map
+c: Centers view to cursor
 Up: Moves view up one level
 Down: Moves view down one level
 
@@ -33,19 +29,15 @@ Delete: Decrease number of viewing levels (ingresses contrast between levels)
 Left: Rotates camera view counterclockwise in small increments
 Right: Rotates camera view clockwise in small increments
 
+PageDown:  Incresses space between levels (will roll over if raised above 255)
+PageUp: Decresses space between levels (can not go bellow 1)
+
 d: Dumps memory from a running DwarfFortress game (this will update the current map if one is already active)
 w: Writes current map to file
 l: Loads an extracted map from file (also updates the current map if already active)
 f: toggles the wirefram around the whole of the map and a single cube wireframe at the center of the view, on by default
 h: toggles the viewing of hidden features such as underground pools, off by default
 s: toggles shaddowed viewing mode, in shaddow mode the vertical depth of terrain is shown with by darkening it, in un-shaddowed mode all terrain is fully lite, off by default
-
-NEW OPTIONS! 
-
-Exploded Slices - This option adds vertical space between levels allow you to see 'Inside' multiple levels of a fortress at the same time
-
-PageDown:  Incresses space between levels (will roll over if raised above 255)
-PageUp: Decresses space between levels (can not go bellow 1)
 
 v: Move into and lock vertical mode or unlock from vertical mode
 b: Toggles Debugging output which now includes TileType, Designation and Occupancy flags extracted from DF
@@ -54,7 +46,12 @@ u: Toggles SubTerranean rendering
 i: Toggles SkyView rendering
 o: Toggles SunLit rendering
 
+NEW OPTIONS! 
+
+
 Mouse controls:
+
+Left Click: Moves the Cursor cube to the clicked tile
 
 ScrollwheelUp: Zooms view in
 ScroolWheelDown: Zooms view out
@@ -62,13 +59,11 @@ ScroolWheelDown: Zooms view out
 Right Button down + horizontal mouse movement: pans camera view rightward/leftward
 Right Button down + vertical mouse movement: advances/retreats camera view
 
-Left Button down + horizontal mouse movement: Rotates camera view clockwise/counterclockwise
-Left Button down + vertical mouse movement: Tilts camera view vertical/near-horizontal
+Middle Button down + horizontal mouse movement: Rotates camera view clockwise/counterclockwise
+Middle Button down + vertical mouse movement: Tilts camera view vertical/near-horizontal
 
 ScrollwheelUp + SHIFT: Moves view up/down one level (same as Up/Down)
 ScroolWheelDown + SPACEBAR: Increase/decresse number of viewing levels (same as Insert/Delete)
-
-The window will scroll if the mouse is brought to within 10 pixels of the window edge
 
 Known Issues:
 
@@ -76,7 +71,7 @@ Known Issues:
 
 - Occational gaps in the map occure ware their should be some triangles rendered particularly on slopes ware it is nearly impossible to figure out what should fill jumbles of slope tiles but also in other odd in-explicable places usualy water.
 
-- Memory footprint is currently huge, around 30 MB without even loading a map and in excess of a 500 with a map, trying to load maps in excess of 8x8 might start to make your system crawl, experiment to see what your systems limits are.
+- Memory footprint has improved but is still large, trying to load maps in excess of 8x8 might start to make your system crawl, experiment to see what your systems limits are.
 
 - CPU Hog, Khazad is capped at 60 FPS using SDL_Delay but on many systems it will still use upwards of 99% of the processor when viewing a large area and might put too much stress on your system or video card, feedback is apresiated.  The FPS readout is based on the time that rendering itself took and frequently exceeds 60, when ever it dose your processer should go below 100% utilization.  At this point the readout is more theoretical then actual it represents the FPS you would be creating if Khazad weren't throttling back.
 

@@ -18,6 +18,7 @@ Cube::Cube()
 	Slopage = NULL;
 	Liquid = false;
 	Solid = false;
+    Faceted = false;
 
 	Material = 6;
 
@@ -126,6 +127,8 @@ bool Cube::InitFace(Facet FaceType)
     setFacet(TemporaryPointer, FaceType);
     getCellOwner()->setActive(true);
 
+    Faceted = true;
+
     return true;
 }
 
@@ -159,11 +162,20 @@ Face* Cube::getFacet(Facet FacetType)
 void Cube::setFacet(Face* NewFace, Facet FacetType)
 {
     Owner->setFace(NewFace, CellX, CellY, FacetType);
+    if(NewFace != NULL)
+    {
+        Faceted = true;
+    }
+    else
+    {
+        CheckFaceted();
+    }
 }
 
 void Cube::InitConstructedFace(Facet FacetType, Uint16 MaterialType)
 {
     Face* ConstructionFace = getFacet(FacetType);
+    Initalized = true;
 
     if(ConstructionFace != NULL)  // Change the existing face rather then creating a new one
     {
@@ -180,6 +192,7 @@ void Cube::InitConstructedFace(Facet FacetType, Uint16 MaterialType)
         Owner->setFace(ConstructionFace, CellX, CellY, FacetType);
     }
 
+    Faceted = true;
     Owner->setActive(true);
 }
 
@@ -308,6 +321,18 @@ Facet Cube::OpositeFace(Facet Type)
 
         case FACET_NORTH_WEST:
             return FACET_SOUTH_EAST;
+    }
+}
+
+void Cube::CheckFaceted()
+{
+    Faceted = false;
+    for(Facet Face = FACETS_START; Face < NUM_FACETS; ++Face)
+    {
+        if(getFacet(Face))
+        {
+            Faceted = true;
+        }
     }
 }
 

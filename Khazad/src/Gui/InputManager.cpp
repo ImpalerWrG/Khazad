@@ -110,16 +110,9 @@ bool InputManager::HandleInput()
 					    SCREEN->MainCamera->changeLevelSeperation(-1);
 					    break;
 					}
-					/*
-                    case SDLK_q:
-                    {
-                        SCREEN->MainCamera->SetDefaultView();
-                        break;
-                    }
-                    */
                     case SDLK_c:
                     {
-                        SCREEN->MainCamera->CenterView();
+                        SCREEN->MainCamera->CenterView(SCREEN->MainCamera->getCursor());
                         break;
                     }
                     case SDLK_r:

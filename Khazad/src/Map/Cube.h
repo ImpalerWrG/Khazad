@@ -23,7 +23,7 @@ public:
     void SetOwner(Cell* NewOwner, Uint8 X, Uint8 Y);
 
 	bool isSolid()                  { return Solid; }
-    void setSolid(bool NewValue)    { Solid = NewValue;}
+    void setSolid(bool NewValue)    { Solid = NewValue; }
 
 	Uint8 getLiquid()                   { return Liquid; }
 	void setLiquid(Uint8 NewValue)      { Liquid = NewValue; }
@@ -36,10 +36,13 @@ public:
 	Uint16 getMaterial()            { return Material; }
     bool setMaterial(Uint16 MaterialType);
 
+    bool isFaceted()                { return Faceted; }
+
     Face* getFacet(Facet Type);
     void setFacet(Face* NewFace, Facet Type);
     void setAllFacesVisiblity(bool NewValue);
     void DeleteFace(Facet Type);
+    void CheckFaceted();
 
     bool InitFacesOpen();
     bool InitFacesSolid();
@@ -82,6 +85,7 @@ protected:
     bool SubTerranian;
     bool SkyView;
     bool SunLit;
+    bool Faceted;
 
     Cell* Owner;
 

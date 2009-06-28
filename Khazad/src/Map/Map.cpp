@@ -380,3 +380,15 @@ Uint32 Map::PickTexture(int TileType)
 {
     return TilePicker[TileType];
 }
+
+Vector3 Map::getMapCenter()
+{
+    Vector3 CenterPoint;
+
+    CenterPoint.x = getMapSizeX() / 2;
+    CenterPoint.y = getMapSizeY() / 2;
+    CenterPoint.z = getMapSizeZ();
+
+    return CenterPoint;
+}
+

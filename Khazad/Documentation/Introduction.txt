@@ -1,6 +1,6 @@
 Greetings fellow developers and Dwarf Fortress fans, 
  
-This project 'Khazad' has two primary goals, first to teach me a bunch of OpenGL and give me experience with engine creation, and second to act as a technical demonstration of UI systems for Dwarf Fortress. The 3Dwarf viewer (by sinothdither) is a key inspirational program for me but ware 3Dwarf can only read data from Dwarf Fortress Khazad will maintain its own complete and editable map data. Khazad will also also explore mouse based selections within its environment and in particular the tasks of accurately Designating in 3 dimensions.
+This project 'Khazad' has two primary goals, first to teach me a bunch of OpenGL and give me experience with engine creation, and second to act as a technical demonstration of UI systems for Dwarf Fortress. The 3Dwarf viewer (by sinothdither) is a key inspirational program for me but ware 3Dwarf can only read data from Dwarf Fortress Khazad will maintain its own complete and editable map and aims to be a more complete engine. Khazad will also also explore mouse based selections within its environment and in particular the tasks of accurately Designating in 3 dimensions.
 
 Assistence is welcome, Art assets in the form of textures are needed badly and experienced programmers who want to begin creating some the incomplete sub-systems or try to test their ideas are welcome.  All code is under the GPL and art assets under variations of the Creative Commons licence.
 

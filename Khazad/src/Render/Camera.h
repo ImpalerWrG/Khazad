@@ -35,6 +35,8 @@ protected:
 	Plane FrustumPlanes[4];
 
     Vector3 Cursor;
+    Vector3 MouseIntersection;
+
     float CursorLevel;
 
     Vector3 NearMouseClickPoint;
@@ -56,13 +58,16 @@ public:
 	float LookZ()   { return LookPosition.z; }
 	Vector3 Look()  { return LookPosition; }
 
-	Uint8 getViewLevels()               { return ViewLevels; }
-	Uint8 getLevelSeperation()          { return LevelSeperation; }
-    Uint16 getSliceTop()                { return SliceTop; }
+	Uint8 getViewLevels()                       { return ViewLevels; }
+	void setViewLevels(Uint8 NewValue);
 
-    void changeViewTop(Sint16 Change);
-
+	Uint8 getLevelSeperation()                  { return LevelSeperation; }
 	void changeLevelSeperation(Sint8 Change);
+	void setLevelSeperation(Sint8 NewValue);
+
+    Uint16 getSliceTop()                        { return SliceTop; }
+    void changeSliceTop(Sint16 Change);
+    void setSliceTop(Sint16 NewValue);
 
 	CameraOrientation getOrientation()  { return Orientation; }
 	void UpdateDirection();
@@ -81,11 +86,15 @@ public:
     Vector3 setFarMouseClickPoint(Vector3 NewPoint)     { FarMouseClickPoint = NewPoint; }
 
     Vector3 DetermineMouseIntersection(float MapZ);
+    bool DetermineCursorIntersection();
 
     Vector3 getCursor()                     { return Cursor; }
+    Vector3 getMouseIntersection()          { return MouseIntersection; }
 
 	bool isVerticalMode()                   { return VerticalMode;}
     void setVerticalMode(bool NewValue);
+
+    Sint32 ZlevelSeperationAdjustment(Sint32);
 
 	/**
 	* This method is responsible for capturing our current view
@@ -199,7 +208,7 @@ public:
 	* CenterView returns the camera to at Center of the map
 	* looking northward with an Isometric angle
 	*/
-    void CenterView();
+    void CenterView(Vector3 CenterPoint);
 
     // get rid of?
 	void PrintDebugging();

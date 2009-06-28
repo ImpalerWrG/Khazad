@@ -5,6 +5,7 @@
 #include <ScreenManager.h>
 #include <ConfigManager.h>
 #include <Map.h>
+#include <Cube.h>
 
 
 Camera::Camera()
@@ -33,7 +34,7 @@ bool Camera::Init(bool Isometric)
 		setIsometricProj(SCREEN->getWidth(), SCREEN->getHight(), 1000000.0);
 		IsoMode = true;
 		Orientation = CAMERA_NORTH;
-		ViewLevels = 6;
+		ViewLevels = 1;
 	}
 	else
 	{
@@ -147,13 +148,56 @@ Vector3 Camera::DetermineMouseIntersection(float MapZ)
     {
         float dist = (-(PlaneNormal.DotProduct(NearMouseClickPoint)) + D) / denom;
         Intersection = NearMouseClickPoint + (dist * MouseRay);
-        Cursor = Intersection;
-        Cursor.x = floorf(Cursor.x+ 0.5f);
-        Cursor.y = floorf(Cursor.y+ 0.5f);
-        Cursor.z += 1; // put the cursor above our plane
     }
 
     return Intersection;
+}
+
+bool Camera::DetermineCursorIntersection()
+{
+    Vector3 Intersection;
+    int Bottom = SliceTop - ViewLevels ;
+    for(int i = SliceTop; i >= Bottom && i >= 0; i--)
+    {
+        MouseIntersection = DetermineMouseIntersection(ZlevelSeperationAdjustment(i) + 0.5);
+        MouseIntersection.x = (int) (MouseIntersection.x + 0.5);
+        MouseIntersection.y = (int) (MouseIntersection.y + 0.5);
+        MouseIntersection.z = i;
+
+        Face* TopFace = MAP->getFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_TOP);
+        if(TopFace != NULL)
+        {
+            if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
+            {
+                return true;
+            }
+        }
+
+        MouseIntersection = DetermineMouseIntersection(ZlevelSeperationAdjustment(i) - 0.5);
+        MouseIntersection.x = (int) (MouseIntersection.x + 0.5);
+        MouseIntersection.y = (int) (MouseIntersection.y + 0.5);
+        MouseIntersection.z = i;
+
+        Face* BottomFace = MAP->getFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_BOTTOM);
+        if(BottomFace != NULL)
+        {
+            if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
+            {
+                return true;
+            }
+        }
+
+        Cube* TargetCube = MAP->getCube((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i);
+        if(TargetCube != NULL && ((TargetCube->isSolid() && TargetCube->isFaceted()) || TargetCube->getSlope() != NULL))
+        {
+            if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
+            {
+                return true;
+            }
+        }
+
+    }
+    return false;
 }
 
 void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY)
@@ -209,8 +253,15 @@ void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY)
             case SDL_BUTTON_LEFT:
 			{
                 UnProjectPoint(RealX, RealY);
-                DetermineMouseIntersection(CursorLevel - 0.5);
 
+                if(DetermineCursorIntersection())
+                {
+                    if(MouseIntersection.x == Cursor.x && MouseIntersection.y == Cursor.y && MouseIntersection.z == Cursor.z)
+                    {
+                        CenterView(Cursor);
+                    }
+                    Cursor = MouseIntersection;
+                }
 				break;
 			}
 			default:
@@ -255,6 +306,11 @@ void Camera::UnProjectPoint(int XPosition, int YPosition)
 
     gluUnProject ((GLdouble) XPosition, (GLdouble) realy, 1.0, mvmatrix, projmatrix, viewport, &wx, &wy, &wz);
     setFarMouseClickPoint(Vector3((float) wx, (float) wy, (float) wz));
+}
+
+Sint32 Camera::ZlevelSeperationAdjustment(Sint32 Zlevel)
+{
+    return LookZ() - ((LookZ() - Zlevel) * getLevelSeperation());
 }
 
 void Camera::setCameraOrientation(CameraOrientation NewOrientation)
@@ -634,6 +690,20 @@ void Camera::ChangeViewLevels(Sint32 Change)
     }
 }
 
+void Camera::setViewLevels(Uint8 NewValue)
+{
+    if (NewValue != ViewLevels)
+    {
+        ViewLevels = NewValue;
+
+        if (ViewLevels < 1)
+        {
+            ViewLevels = 1;
+        }
+        generateViewFrustum();
+    }
+}
+
 void Camera::changeLevelSeperation(Sint8 Change)
 {
     LevelSeperation += Change;
@@ -644,10 +714,26 @@ void Camera::changeLevelSeperation(Sint8 Change)
     }
 }
 
-void Camera::changeViewTop(Sint16 Change)
+void Camera::setLevelSeperation(Sint8 NewValue)
+{
+    LevelSeperation = NewValue;
+
+    if(LevelSeperation < 1)
+    {
+        LevelSeperation = 1;
+    }
+}
+
+void Camera::changeSliceTop(Sint16 Change)
 {
     SliceTop += Change;
     CursorLevel += Change;
+}
+
+void Camera::setSliceTop(Sint16 NewValue)
+{
+    SliceTop = NewValue;
+    CursorLevel = NewValue;
 }
 
 void Camera::SetDefaultView()
@@ -680,7 +766,7 @@ void Camera::setVerticalMode(bool NewValue)
     }
 }
 
-void Camera::CenterView()
+void Camera::CenterView(Vector3 CenterPoint)
 {
     if(MAP == NULL)
     {
@@ -691,18 +777,13 @@ void Camera::CenterView()
     float DifferenceY = EyePosition.y - LookPosition.y;
     float DifferenceZ = EyePosition.z - LookPosition.z;
 
-    LookPosition.x = MAP->getMapSizeX() / 2;
-    LookPosition.y = MAP->getMapSizeY() / 2;
-    LookPosition.z = MAP->getMapSizeZ() / 2;
-
-    SliceTop = LookPosition.z;
-    CursorLevel = SliceTop;
+    LookPosition.x = CenterPoint.x;
+    LookPosition.y = CenterPoint.y;
+    LookPosition.z = CenterPoint.z;
 
     EyePosition.x = LookPosition.x + DifferenceX;
     EyePosition.y = LookPosition.y + DifferenceY;
     EyePosition.z = LookPosition.z + DifferenceZ;
-
-    IsoScalar = CONFIG->ZoomMax();
 
     if(!Orientation == CAMERA_DOWN)
     {

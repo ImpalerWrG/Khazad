@@ -68,6 +68,8 @@ public:
     void ChangeInitedSlopeCount(Sint8 Change)     { InitedSlopeCount += Change; }
     Uint32 getInitedSlopeCount()                  { return InitedSlopeCount; }
 
+    Vector3 getMapCenter();
+
 protected:
 
     bool Initialized;
@@ -82,9 +84,6 @@ protected:
 	Uint32 CellSizeZ;
 
 	Cell**** CellArray;
-
-	//Sint32 XCelloffset;
-	//Sint32 YCelloffset;
 
 	Uint16 TilePicker[600];
 

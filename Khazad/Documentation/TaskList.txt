@@ -6,9 +6,7 @@ This is a list of tasks I'll be working on, most of these items will be adressed
 - Show Water/Lava depth accuratly
 - Fix transparent rendering of water, render water last?
 - Hotkey save/load view package (includes location, zoom, rotation, slice thickness ect ect)
-- stipple lines from the bottom of the cube?
 - determine underground/above ground rendering independently of DF extract data
 - organize Cells into double vectored growable column objects
 - Vertex Arrays
-- Expose Font pathways to XML
 - Explore elimination of Cube from map structure, rolling material data into the Cell

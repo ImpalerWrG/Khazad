@@ -16,6 +16,7 @@
 #include <Game.h>
 #include <Map.h>
 #include <Cell.h>
+#include <Cube.h>
 #include <Gui.h>
 #include <Paths.h>
 
@@ -370,26 +371,22 @@ bool ScreenManager::Render()
 
     if(FrameDraw)
     {
-        Vector3 Point;
-        Point.x -= 0.48;
-        Point.y -= 0.48;
+        Vector3 Point(0, 0, 0);
         Point.z = MainCamera->LookZ() - (MainCamera->LookZ() * MainCamera->getLevelSeperation());
-        Point.z -= 0.48;
-        DrawCage(Point, MAP->getMapSizeX() - 0.04, MAP->getMapSizeY() - 0.04, MAP->getMapSizeZ() * MainCamera->getLevelSeperation() - 0.04);
+        DrawCage(Point, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ() * MainCamera->getLevelSeperation(), false);
 
-        Vector3 RawCursor = MainCamera->getCursor();
-        Vector3 Cursor;
+        Vector3 Cursor = MainCamera->getCursor();
+        Cursor.z = MainCamera->ZlevelSeperationAdjustment(Cursor.z);
 
-        Cursor.x = (int) (RawCursor.x + 0.5);
-        Cursor.y = (int) (RawCursor.y + 0.5);
-        Cursor.z = (int) (RawCursor.z /*+ 1*/);
-
-        Point.x = Cursor.x - 0.48;  //TODO move most of this logic into DrawCage
-        Point.y = Cursor.y - 0.48;
-        Point.z = Cursor.z - 0.48;
-
-        DrawCage(Point, .96, .96, .98);  // Keeps Cube lines from disapearing into tiles
-        DrawStreamers(Point, .96, .96, .98, Point.z + 0.5);
+        Cube* CursorCube = MAP->getCube(Cursor.x, Cursor.y, Cursor.z);
+        if(CursorCube != NULL && CursorCube->isSolid())
+        {
+            DrawCage(Cursor, 1, 1, 1, true);
+        }
+        else
+        {
+            DrawCage(Cursor, 1, 1, 1, false);
+        }
     }
 
 	RedPickingValue = 0;
@@ -408,7 +405,7 @@ bool ScreenManager::Render()
 	for(Uint16 Zlevel = 0; Zlevel < MAP->getCellSizeZ(); Zlevel++)
 	{
         glPushMatrix();
-        float ZTranslate = MainCamera->LookZ() - ((MainCamera->LookZ() - Zlevel) * MainCamera->getLevelSeperation());
+        float ZTranslate = MainCamera->ZlevelSeperationAdjustment(Zlevel);
         glTranslatef(0.0, 0.0, ZTranslate);
 
 		if(MainCamera->InSlice(Zlevel))
@@ -565,6 +562,7 @@ void ScreenManager::PrintDebugging()
 
         int x,y,z;
         Vector3 RawCursor = MainCamera->getCursor();
+
         x = (int) RawCursor.x;
         y = (int) RawCursor.y;
         z = (int) RawCursor.z;
@@ -577,8 +575,6 @@ void ScreenManager::PrintDebugging()
         int building = 0;
 
         DfMap * df_map = EXTRACT->getMap();
-        /// TODO: remove this hack once the cursor behaves as it should
-        df_map->clamp(x, y, z);
         if(!(HiddenDraw ^ df_map->isHidden( x, y, z)))
         {
             TileType = df_map->getTileType(x, y, z);
@@ -591,36 +587,32 @@ void ScreenManager::PrintDebugging()
 
         SDL_Rect position;
         position.x = 10;
-        position.y = 200;
+        position.y = 120;
 
         sprintf (buffer, "Cordinates: x%i y%i z%i", x, y, z);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 
-        Block * b = df_map->getBlock(x/16,y/16,z);
-        if(b != NULL)
+/*
+        Block* TargetBlock = df_map->getBlock(x / 16, y / 16, z);
+        if(TargetBlock != NULL)
         {
-            sprintf (buffer, "Block offset: 0x%X", b->origin);
+            sprintf (buffer, "Block offset: 0x%X", TargetBlock->origin);
             SCREEN->RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
         }
-
+*/
 
         sprintf (buffer, "Tile: %i", TileType);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 
-        sprintf (buffer, "vein: %i", veinMatgloss);
+        sprintf (buffer, "vein: %i  mat: %i  building: %i"  , veinMatgloss, structMatgloss, building);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
-        sprintf (buffer, "mat: %i", structMatgloss);
-        SCREEN->RenderText(buffer, 0, WHITE, &position);
-        position.y -= 40;
-        sprintf (buffer, "building: %i", building);
-        SCREEN->RenderText(buffer, 0, WHITE, &position);
-        position.y -= 40;
-/*        char binarybuffer[33];
 
+/*
+        char binarybuffer[33];
         binarysprintf(binarybuffer, Designation);
         sprintf (buffer, "Designation: %s", binarybuffer);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
@@ -633,6 +625,7 @@ void ScreenManager::PrintDebugging()
 
         position.y -= 40;
 */
+
 /*
         sprintf (buffer, "Cells: %i  Cubes: %i  Faces: %i  Slopes: %i", MAP->getCellCount(), MAP->getCubeCount(), MAP->getFaceCount(), MAP->getSlopeCount());
         SCREEN->RenderText(buffer, 0, WHITE, &position);
@@ -641,7 +634,7 @@ void ScreenManager::PrintDebugging()
 
         sprintf (buffer, "InitCells: %i  InitCubes: %i  InitFaces: %i  InitSlopes: %i", MAP->getInitedCellCount(), MAP->getInitedCubeCount(), MAP->getInitedFaceCount(), MAP->getInitedSlopeCount());
         SCREEN->RenderText(buffer, 0, WHITE, &position);
-        */
+*/
     }
 }
 
@@ -740,10 +733,7 @@ void ScreenManager::DrawPlane(Plane ArgumentPlane, float Length)
     NoramlVector.normalize();
     float D = ArgumentPlane.D;
 
-
-
     glBegin(GL_LINES);
-
 		glColor3f (0.0, 1.0, 0.0); // Green for x axis
 		glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
 		glVertex3f(CenterPoint.x + 1, CenterPoint.y, CenterPoint.z);
@@ -756,69 +746,88 @@ void ScreenManager::DrawPlane(Plane ArgumentPlane, float Length)
 		glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
 		glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z + 1);
 
-
-
 		glColor3f(1.0, 1.0, 1.0); // White for D
 		glVertex3f(0, 0, 0);
 		glVertex3f(NoramlVector.x * D, NoramlVector.y * D, NoramlVector.z * D);
-
 	glEnd();
 }
 
-void ScreenManager::DrawCage(Vector3 Point, float x, float y, float z)
+void ScreenManager::DrawCage(Vector3 RawPoint, float x, float y, float z, bool Inflated)
 {
+    Vector3 Point = RawPoint;
+    float X, Y, Z;
+
+    if(Inflated)
+    {
+        X = x + 0.04;
+        Y = y + 0.04;
+        Z = z + 0.04;
+
+        Point.x -= 0.52;
+        Point.y -= 0.52;
+        Point.z -= 0.52;
+    }
+    else
+    {
+        X = x - 0.04;
+        Y = y - 0.04;
+        Z = z - 0.04;
+
+        Point.x -= 0.48;
+        Point.y -= 0.48;
+        Point.z -= 0.48;
+    }
+
     glBegin(GL_LINES);
+        glColor3f (1.0, 1.0, 1.0);
+		glVertex3f(Point.x, Point.y, Point.z);
+		glVertex3f(Point.x + X, Point.y, Point.z);
 
         glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y, Point.z);
-		glVertex3f(Point.x + x, Point.y, Point.z);
+		glVertex3f(Point.x, Point.y + Y, Point.z);
 
         glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x, Point.y, Point.z);
-		glVertex3f(Point.x, Point.y + y, Point.z);
+		glVertex3f(Point.x + X, Point.y, Point.z);
+		glVertex3f(Point.x + X, Point.y + Y, Point.z);
 
         glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x + x, Point.y, Point.z);
-		glVertex3f(Point.x + x, Point.y + y, Point.z);
-
-        glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x, Point.y + y, Point.z);
-		glVertex3f(Point.x + x, Point.y + y, Point.z);
+		glVertex3f(Point.x, Point.y + Y, Point.z);
+		glVertex3f(Point.x + X, Point.y + Y, Point.z);
 
 
         glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y, Point.z);
-		glVertex3f(Point.x, Point.y, Point.z + z);
+		glVertex3f(Point.x, Point.y, Point.z + Z);
 
         glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x + x, Point.y, Point.z);
-		glVertex3f(Point.x + x, Point.y, Point.z + z);
+		glVertex3f(Point.x + X, Point.y, Point.z);
+		glVertex3f(Point.x + X, Point.y, Point.z + Z);
 
         glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x, Point.y + y, Point.z);
-		glVertex3f(Point.x, Point.y + y, Point.z + z);
+		glVertex3f(Point.x, Point.y + Y, Point.z);
+		glVertex3f(Point.x, Point.y + Y, Point.z + Z);
 
         glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x + x, Point.y + y, Point.z);
-		glVertex3f(Point.x + x, Point.y + y, Point.z + z);
+		glVertex3f(Point.x + X, Point.y + Y, Point.z);
+		glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
 
 
         glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x, Point.y, Point.z + z);
-		glVertex3f(Point.x + x, Point.y, Point.z + z);
+		glVertex3f(Point.x, Point.y, Point.z + Z);
+		glVertex3f(Point.x + X, Point.y, Point.z + Z);
 
         glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x, Point.y, Point.z + z);
-		glVertex3f(Point.x, Point.y + y, Point.z + z);
+		glVertex3f(Point.x, Point.y, Point.z + Z);
+		glVertex3f(Point.x, Point.y + Y, Point.z + Z);
 
         glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x + x, Point.y, Point.z + z);
-		glVertex3f(Point.x + x, Point.y + y, Point.z + z);
+		glVertex3f(Point.x + X, Point.y, Point.z + Z);
+		glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
 
         glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x, Point.y + y, Point.z + z);
-		glVertex3f(Point.x + x, Point.y + y, Point.z + z);
-
+		glVertex3f(Point.x, Point.y + Y, Point.z + Z);
+		glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
 	glEnd();
 }
 
