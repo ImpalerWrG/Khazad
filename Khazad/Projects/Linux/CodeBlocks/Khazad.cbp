@@ -94,6 +94,7 @@
 		<Unit filename="../../../DF Extractor/DataStructures.h" />
 		<Unit filename="../../../DF Extractor/DfMap.cpp" />
 		<Unit filename="../../../DF Extractor/DfMap.h" />
+		<Unit filename="../../../DF Extractor/DfMapHeader.h" />
 		<Unit filename="../../../DF Extractor/DfVector.h" />
 		<Unit filename="../../../DF Extractor/Extract.cpp" />
 		<Unit filename="../../../DF Extractor/Extract.h" />
