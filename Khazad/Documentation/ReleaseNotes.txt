@@ -1,26 +1,26 @@
 Release Notes v0.0.5
 
-Khazad is still being built and just shows the static geometry of a map, major improvmenents in mouse control and Infterface have been implemented in this version and the DF extractor is now more efficient and begining to grow into a flexible cross platform library well encalsulated and easily usable in other projects.  Support for 40d12 is included as well as the ability to compile the code in Linux thanks to peterix.
+Khazad is still being built and just shows the static geometry of a map, major improvements in mouse control and Interface have been implemented in this version and the DF extractor is now more efficient and beginning to grow into a flexible cross platform library well encapsulated and easily usable in other projects.  Support for 40d12 is included as well as the ability to compile the code in Linux thanks to peterix.
 
-The most noticable changes are the new UserInterface pannels, both full of horribly drawn buttons that replace or augment many of the key commands of earlier versions.  The first panel visible on the splash screen is the Game control panel and performs from left to right the dump from Dwarf Fortress memory, load from file and save to file functionality.  The old key bindings no longer perform these functions, they are available only from the panel.  Lastly an Exit program button brings up a confirmation window which if accepted will close Khazad, unfortunatly it will take upwards of 10 seconds to actuall close Khazad this way so we sugjest running in windowed mode and closing the window which will be nearly instantanious.
+The most noticeable changes are the new User Interface panels, both full of horribly drawn buttons that replace or augment many of the key commands of earlier versions.  The first panel visible on the splash screen is the Game control panel and performs from left to right the dump from Dwarf Fortress memory, load from file and save to file functionality.  The old key bindings no longer perform these functions, they are available only from the panel.  Lastly an Exit program button brings up a confirmation window which if accepted will close Khazad.
 
-The second panel is devoted to Camera controls and viewing options.  On the top row the buttons mostly toggle between viewing option states.  They are from left to right vertical mode, debugging display, Shadded mode, Take Screenshot, Frame draw, Hidden draw.  Each of these (other then take screenshot) toggles on or off some part of the display, the old key combos for these tasks have likewise been retired.  The second and third rows consist of pairs of buttons that each adjust the way the camera looks at the world.  From left to right you will see the vertical up/down, slice thicker/thinner, vertical explode/contract, zoom in/out, tilt up/down.  The key bindings for these functions have been retained for now.
+The second panel is devoted to Camera controls and viewing options.  On the top row the buttons mostly toggle between viewing option states.  They are from left to right vertical mode, debugging display, Shaded mode, Take Screen shot, Frame draw, Hidden draw.  Each of these (other then take screen shot) toggles on or off some part of the display, the old key combos for these tasks have likewise been retired.  The second and third rows consist of pairs of buttons that each adjust the way the camera looks at the world.  From left to right you will see the vertical up/down, slice thicker/thinner, vertical explode/contract, zoom in/out, tilt up/down.  The key bindings for these functions have been retained for now.
 
 The third piece of UI is easily missed, a vertical slider along the right side of the screen, it moves the 'slice' of viewed map up or down while maintaining the same thickness, its one of the handiest pieces of the interface.
 
-The debugging output now shows a Vein type number, the begining of a system being worked on by Peterix which will try to identify the various rocks, minerals and ores with greater accuracy.  Look for this this system to improve greatly in the next realase.  The number you see now can't be totaly relyed on due to being Matgloss dependent, if you have mods it could be a different mineral from an unmoded game.  Were going to need a lot more texture files to express these new minerals and are really hoping to see some eager texture artists pitch in.
+The debugging output now shows a Vein type number, the beginning of a system being worked on by Peterix which will try to identify the various rocks, minerals and ores with greater accuracy.  Look for this this system to improve greatly in the next release.  The number you see now can't be totally relied on due to being Matgloss dependent, if you have mods it could be a different mineral from an un-moded game.  Were going to need a lot more texture files to express these new minerals and are really hoping to see some eager texture artists pitch in.
 
-Fonts are now modable in the same way as texures, the Fonts.xml file defines the pathway for ttf fonts, the first font listed their will be used throughout the game, substitute your own fonts if desired.  Other Xml files have remained the same.
+Fonts are now modable in the same way as textures, the Fonts.xml file defines the pathway for ttf fonts, the first font listed their will be used throughout the game, substitute your own fonts if desired.  Other Xml files have remained the same.
 
 Extracted map files are now only a few hundred KB rather then several thousand due to the work of Dorf, old maps are naturally incompatible now and a new map is included.
 
-The mouse based camera controls have changed a bit, ware as in previous version you pressed the right mouse to Tilt and Orbit the camera you now press the center mouse wheel (just prees down and hold without scrolling).  The left mouse now performs the new cursor-cube selection, each click on the map will move the cube there and a second click in the same tile will center the camera on that spot, pressing (c) will also center on the cursor cube.  The cubes xyz cordinates and data about the spot are displayed in the debugging output.
+The mouse based camera controls have changed a bit, ware as in previous version you pressed the right mouse to Tilt and Orbit the camera you now press the center mouse wheel (just press down and hold without scrolling).  The left mouse now performs the new cursor-cube selection, each click on the map will move the cube there and a second click in the same tile will center the camera on that spot, pressing (c) will also center on the cursor cube.  The cubes xyz coordinates and data about the spot are displayed in the debugging output.
 
 A limited map editing capacity has been added, by pressing (d) the current cube that the cursor resides on will be dug out just like in game, this will reveal new rock & soil and showcases the ability to modify the maps data structure and properly display the result. This isn't synchronized with DF. More editing capacity will be added next release.
 
-Screenshots can now be taken, pressing "PrtScr SysRQ" (PrintScreen SystemRequest) will save as screenshot in the ScreenShots folder, numbering is automatic starting with zero and shoots should not get overwritten.  A camera buttton on the UI also saves screenshoots.
+Screen shots can now be taken, pressing "PrtScr SysRQ" (Print Screen System Request) will save as screen shot in the Screen Shots folder, numbering is automatic starting with zero and shoots should not get overwritten.  A camera button on the UI also saves screen shoots.
 
-Screenshoots of buggy or undesireable behaviors are welcome along with advice on where the project should go.  A number of people are getting buggy behavior and I'm hoping to find more testers to help track down the source of these bugs, if someone with a reproducable bug can program as well and try to track down a bug and its fix on their system that would be greatly appresiated.
+Screen shoots of buggy or undesirable behaviors are welcome along with advice on where the project should go.  A number of people are getting buggy behavior and I'm hoping to find more testers to help track down the source of these bugs, if someone with a reproducible bug can program as well and try to track down a bug and its fix on their system that would be greatly appreciated.
 
 
 Controls:
@@ -37,10 +37,10 @@ Delete: Decrease number of viewing levels (ingresses contrast between levels)
 Left: Rotates camera view counterclockwise in small increments
 Right: Rotates camera view clockwise in small increments
 
-PageDown:  Incresses space between levels (will roll over if raised above 255)
-PageUp: Decresses space between levels (can not go bellow 1)
+PageDown:  Ingresses space between levels (will roll over if raised above 255)
+PageUp: Decreases space between levels (can not go bellow 1)
 
-u: Toggles SubTerranean rendering
+u: Toggles Subterranean rendering
 i: Toggles SkyView rendering
 o: Toggles SunLit rendering
 
@@ -60,7 +60,7 @@ Middle Button down + horizontal mouse movement: Rotates camera view clockwise/co
 Middle Button down + vertical mouse movement: Tilts camera view vertical/near-horizontal
 
 ScrollwheelUp + SHIFT: Moves view up/down one level (same as Up/Down)
-ScroolWheelDown + SPACEBAR: Increase/decresse number of viewing levels (same as Insert/Delete)
+ScroolWheelDown + SPACEBAR: Increase/decrease number of viewing levels (same as Insert/Delete)
 
 NEW OPTIONS! 
 
@@ -70,12 +70,12 @@ Known Issues:
 
 - Expanding the window after the game has started will create a 'dead zone' outside of the original area of the screen ware mouse inputs will not work even though the mouse is movable and displays.  Using Fullscreen mode or just setting the Config for a very large screen area is the best work-around for now.
 
-- Occational gaps in the map occure ware their should be some triangles rendered particularly on slopes ware it is nearly impossible to figure out what should fill jumbles of slope tiles but also in other odd in-explicable places usualy water.
+- Occasional gaps in the map occur ware their should be some triangles rendered particularly on slopes ware it is nearly impossible to figure out what should fill jumbles of slope tiles but also in other odd in-explicable places usually water.
 
 - Memory footprint has improved but is still large, trying to load maps in excess of 8x8 might start to make your system crawl, experiment to see what your systems limits are.
 
-- CPU Hog, Khazad is capped at 60 FPS using SDL_Delay but on many systems it will still use upwards of 99% of the processor when viewing a large area and might put too much stress on your system or video card, feedback is apresiated.  The FPS readout is based on the time that rendering itself took and frequently exceeds 60, when ever it dose your processer should go below 100% utilization.  At this point the readout is more theoretical then actual it represents the FPS you would be creating if Khazad weren't throttling back.
+- CPU Hog, Khazad is capped at 60 FPS using SDL_Delay but on many systems it will still use upwards of 99% of the processor when viewing a large area and might put too much stress on your system or video card, feedback is appreciated.  The FPS readout is based on the time that rendering itself took and frequently exceeds 60, when ever it dose your processor should go below 100% utilization.  At this point the readout is more theoretical then actual it represents the FPS you would be creating if Khazad weren't throttling back.
 
-- Textures may be missing from the Material assignment system, fortunatly this is modable and anyone can edit their Textrue and Material xml files to re-assign any texture combination
+- Textures may be missing from the Material assignment system, fortunately this is modable and anyone can edit their Texture and Material xml files to re-assign any texture combination
 
-- A lot of memory leaks when loading or Dumping with a map already displayed, its recomended you quit and restart the program rather then repetedly load maps.
+- A lot of memory leaks when loading or Dumping with a map already displayed, its recommended you quit and restart the program rather then repeatedly load maps.

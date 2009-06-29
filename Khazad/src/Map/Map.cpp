@@ -236,26 +236,38 @@ void Map::LoadExtract()
 	MapSizeY = CellSizeY * CELLEDGESIZE;
 	MapSizeZ = CellSizeZ;
 
-    // Initialize Faces
-    for (Uint32 i = 0; i < MapSizeX; i++)
+	for (Uint32 i = 0; i < CellSizeX; i++)
 	{
-		for (Uint32 j = 0; j < MapSizeY; j++)
+		for (Uint32 j = 0; j < CellSizeY; j++)
 		{
-			for (Uint32 k = 0; k < MapSizeZ; k++)
+			for (Uint32 k = 0; k < CellSizeZ; k++)
 			{
-                Cube* TargetCube = getCube(i, j, k);
-                if(TargetCube != NULL)
-                {
-                    if(!TargetCube->isSolid())
+			    if(CellArray[i][j][k] != NULL)
+			    {
+                    for(Uint32 l = 0; l < CELLEDGESIZE; l++)
                     {
-                        TargetCube->InitFacesOpen();
-                    }
+                        for(Uint32 m = 0; m < CELLEDGESIZE; m++)
+                        {
+                            Cube* TargetCube = getCube((i * CELLEDGESIZE) + l, (j * CELLEDGESIZE) + m, k);
+                            if(TargetCube != NULL && TargetCube->isInitalized())
+                            {
+                                if(TargetCube->isSolid())
+                                {
+                                    TargetCube->InitFacesSolid();
+                                }
+                                else
+                                {
+                                    TargetCube->InitFacesOpen();
+                                }
 
-                    if(TargetCube->getSlope() != NULL)
-                    {
-                        TargetCube->DetermineSlope();
+                                if(TargetCube->getSlope() != NULL)
+                                {
+                                    TargetCube->DetermineSlope();
+                                }
+                            }
+                        }
                     }
-                }
+			    }
 			}
 		}
 	}

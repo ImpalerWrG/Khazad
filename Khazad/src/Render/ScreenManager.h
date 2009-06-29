@@ -95,6 +95,8 @@ public:
     void setDrawing3D();
     void setDrawingFlat();
 
+    bool isCubeDrawn(Cube* TestCube);
+
 	SDL_Color getPickingColor();
 
 	SDL_Surface* MainScreen() { return ScreenSurface; }

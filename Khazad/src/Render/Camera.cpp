@@ -171,12 +171,16 @@ bool Camera::DetermineCursorIntersection()
         MouseIntersection.y = (int) (MouseIntersection.y + 0.5);
         MouseIntersection.z = i;
 
-        Face* TopFace = MAP->getFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_TOP);
-        if(TopFace != NULL)
+        Cube* TopCube = MAP->getCube((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i);
+        if(TopCube != NULL && SCREEN->isCubeDrawn(TopCube))
         {
-            if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
+            Face* TopFace = MAP->getFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_TOP);
+            if(TopFace != NULL)
             {
-                return true;
+                if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
+                {
+                    return true;
+                }
             }
         }
 
@@ -185,17 +189,22 @@ bool Camera::DetermineCursorIntersection()
         MouseIntersection.y = (int) (MouseIntersection.y + 0.5);
         MouseIntersection.z = i;
 
-        Face* BottomFace = MAP->getFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_BOTTOM);
-        if(BottomFace != NULL)
+        Cube* BottomCube = MAP->getCube((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i);
+        if(BottomCube != NULL && SCREEN->isCubeDrawn(BottomCube))
         {
-            if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
+            Face* BottomFace = MAP->getFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_BOTTOM);
+            if(BottomFace != NULL)
             {
-                return true;
+                if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
+                {
+                    return true;
+                }
             }
         }
 
+        // Find Slopes while not picking Cubes that lack facets or arnt being drawn
         Cube* TargetCube = MAP->getCube((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i);
-        if(TargetCube != NULL && ((TargetCube->isSolid() && TargetCube->isFaceted()) || TargetCube->getSlope() != NULL))
+        if(TargetCube != NULL && SCREEN->isCubeDrawn(TargetCube) && ((TargetCube->isSolid() && TargetCube->isFaceted()) || TargetCube->getSlope() != NULL))
         {
             if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
             {

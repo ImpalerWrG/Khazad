@@ -38,13 +38,8 @@ Cell::~Cell()
                     if(Facets[i][j][Face] != NULL) delete Facets[i][j][Face];
                 }
 		    }
-//            delete Facets[i][j];
 		}
-//		delete Facets[i];
-//		delete Cubes[i];
 	}
-//	delete Facets;
-//	delete Cubes;
 }
 
 bool Cell::Init()
@@ -52,22 +47,11 @@ bool Cell::Init()
     Initalized = true;
 	DirtyDrawlist = true;
 
-//    Cubes = new Cube**[CELLEDGESIZE];
-//    Facets = new Face***[CELLEDGESIZE];
-
-//	float HalfCell = CELLEDGESIZE / 2;
-
 	for(Uint8 i = 0; i < CELLEDGESIZE; i++)
 	{
-//		Cubes[i] = new Cube*[CELLEDGESIZE];
-//		Facets[i] = new Face**[CELLEDGESIZE];
-
 		for(Uint8 j = 0; j < CELLEDGESIZE; j++)
 		{
 		    Cubes[i][j] = NULL;
-
-//            Facets[i][j] = new Face*[NUM_FACETS];
-
             for(Facet Face = FACETS_START; Face < NUM_FACETS; ++Face)
             {
                 Facets[i][j][Face] = NULL;
@@ -162,25 +146,8 @@ bool Cell::Draw(CameraOrientation Orientation, bool DrawHidden, bool DrawSubTerr
             for (Uint16 y = 0; y < CELLEDGESIZE; y++)
             {
                 LoopCube = getCube(x, y);
-                if (LoopCube->isVisible())
+                if (SCREEN->isCubeDrawn(LoopCube))
                 {
-                    if(LoopCube->isHidden() && !DrawHidden)
-                    {
-                        continue;
-                    }
-                    if(LoopCube->isSubTerranean() && !DrawSubTerranean)
-                    {
-                        continue;
-                    }
-                    if(LoopCube->isSkyView() && !DrawSkyView)
-                    {
-                        continue;
-                    }
-                    if(LoopCube->isSunLit() && !DrawSunLit)
-                    {
-                        continue;
-                    }
-
                     if(LoopCube->getSlope())
                     {
                         LoopCube->getSlope()->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);

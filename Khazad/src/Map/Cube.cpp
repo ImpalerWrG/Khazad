@@ -20,7 +20,7 @@ Cube::Cube()
 	Solid = false;
     Faceted = false;
 
-	Material = 6;
+	Material = 0;
 
 	setPosition(0.0, 0.0, 0.0);
     MAP->ChangeCubeCount(1);
@@ -67,43 +67,42 @@ bool Cube::Init(Uint16 MaterialType)
 
 bool Cube::InitFacesOpen()
 {
-	Initalized = true;
-
     for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
     {
         Cube* NeiborCube = getNeiborCube(DirectionType);
 
         if(NeiborCube != NULL && NeiborCube->isSolid())
         {
-            NeiborCube->InitFacesSolid();
+            NeiborCube->InitFaces();
         }
     }
 }
 
 bool Cube::InitFacesSolid()
 {
-    Initalized = true;
-
-    for(Facet FaceType = FACETS_START; FaceType < NUM_FACETS; ++FaceType)
+    if(!Hidden)
     {
-        if(getFacet(FaceType) == NULL)
+        for(Facet FaceType = FACETS_START; FaceType < NUM_FACETS; ++FaceType)
         {
-            if(FaceType == FACET_TOP)
+            if(getFacet(FaceType) == NULL)
             {
-                InitFace(FaceType);
-                continue;
-            }
+                if(FaceType == FACET_TOP)
+                {
+                    InitFace(FaceType);
+                    continue;
+                }
 
-            if(getAdjacentCube(FaceType) != NULL)
-            {
-                if(!getAdjacentCube(FaceType)->isSolid() || getAdjacentCube(FaceType)->isHidden())
+                if(getAdjacentCube(FaceType) != NULL)
+                {
+                    if(!getAdjacentCube(FaceType)->isSolid() || getAdjacentCube(FaceType)->isHidden())
+                    {
+                        InitFace(FaceType);
+                    }
+                }
+                else
                 {
                     InitFace(FaceType);
                 }
-            }
-            else
-            {
-                InitFace(FaceType);
             }
         }
     }
@@ -115,9 +114,15 @@ bool Cube::InitFaces()
 
     for(Facet FaceType = FACETS_START; FaceType < NUM_FACETS; ++FaceType)
     {
+        /*
         Cube* NeiborCube = getAdjacentCube(FaceType);
 
         if(NeiborCube != NULL && !NeiborCube->isSolid())
+        {
+            InitFace(FaceType);
+        }
+        */
+        if(getFacet(FaceType) == NULL)
         {
             InitFace(FaceType);
         }
@@ -675,6 +680,7 @@ void Cube::Dig()
     if(Solid)
     {
         Solid = false;
+        Faceted = false;
         setHidden(false);
 
         Cell* TargetCell = getCellOwner();

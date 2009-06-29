@@ -12,8 +12,16 @@ Download both from this link
 
 http://downloads.sourceforge.net/codeblocks/codeblocks-8.02mingw-setup.exe
 
-Settings: 
-No extra settings needed, it should build out of the box.
+Settings:
+
+Under Settings -> Global compiler settings -> Linker settings -> Other linker options: 	 
+
+Add the following: 	 
+	-lmingw32 	 
+	-lSDLmain 	 
+	-lSDL
+	
+All Build options create Khazad.exe and will overwrite each other, all DLL's are provided and Khazad will run without any additional dependencies.
 
 /*****************************\
 |            Linux            |

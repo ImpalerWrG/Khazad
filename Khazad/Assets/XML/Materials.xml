@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Materials xmlns="namespace">
 	<Material>
+		<Name Label="MATERIAL_UNINITIALIZED"/>
+		<Texture label="TEXTURE_NEHE"/>
+		<TileValues>
+			<Tile Int="-1"/>
+		</TileValues>
+	</Material><Material>
 		<Name Label="MATERIAL_GRASS"/>
 		<Texture label="TEXTURE_GRASS"/>
 		<TileValues>

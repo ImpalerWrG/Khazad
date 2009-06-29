@@ -241,16 +241,22 @@ class MapDumpActionListener: public gcn::ActionListener
         {
             EXTRACT->dumpMemory();
             MAP->LoadExtract();
-            SCREEN->MainCamera->CenterView(MAP->getMapCenter());
 
+            SCREEN->MainCamera->CenterView(MAP->getMapCenter());
             SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ());
             SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ());
             //SCREEN->MainCamera->setCursor(MAP->getMapCenter());
+            SCREEN->MainCamera->ConfineCursor();
         }
         else
         {
             EXTRACT->dumpMemory();
             MAP->LoadExtract();
+
+            SCREEN->MainCamera->CenterView(MAP->getMapCenter());
+            SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ());
+            SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ());
+            SCREEN->MainCamera->ConfineCursor();
         }
         UI->setMapViewState();
     }
@@ -271,19 +277,23 @@ class MapLoadActionListener: public gcn::ActionListener
 
         if(!MAP->isMapLoaded())
         {
-            // this is sooo wrong.
             EXTRACT->loadMap(Path(CONFIG->LoadPath()));
             MAP->LoadExtract();
-            SCREEN->MainCamera->CenterView(MAP->getMapCenter());
 
+            SCREEN->MainCamera->CenterView(MAP->getMapCenter());
             SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ());
             SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ());
-            //SCREEN->MainCamera->setCursor(MAP->getMapCenter());
+            SCREEN->MainCamera->ConfineCursor();
         }
         else
         {
             EXTRACT->loadMap(Path(CONFIG->LoadPath()));
             MAP->LoadExtract();
+
+            SCREEN->MainCamera->CenterView(MAP->getMapCenter());
+            SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ());
+            SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ());
+            SCREEN->MainCamera->ConfineCursor();
         }
         UI->setMapViewState();
     }

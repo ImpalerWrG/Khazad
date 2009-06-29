@@ -10,3 +10,4 @@ This is a list of tasks I'll be working on, most of these items will be adressed
 - organize Cells into double vectored growable column objects
 - Vertex Arrays
 - Explore elimination of Cube from map structure, rolling material data into the Cell
+- Shade walls and floors differently by 1/2 level

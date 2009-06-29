@@ -384,7 +384,7 @@ bool ScreenManager::Render()
         Cursor.z = MainCamera->ZlevelSeperationAdjustment(Cursor.z);
 
         Cube* CursorCube = MAP->getCube(Cursor.x, Cursor.y, Cursor.z);
-        if(CursorCube != NULL && CursorCube->isSolid())
+        if(CursorCube != NULL && (CursorCube->isSolid() || CursorCube->getLiquid()))
         {
             DrawCage(Cursor, 1, 1, 1, true);
         }
@@ -557,6 +557,31 @@ void ScreenManager::setDrawing3D()
 
         FlatDraw = false;
     }
+}
+
+bool ScreenManager::isCubeDrawn(Cube* TestCube)
+{
+    if (TestCube->isVisible())
+    {
+        if(TestCube->isHidden() && !isHiddenDraw())
+        {
+            return false;
+        }
+        if(TestCube->isSubTerranean() && !isSubTerranianDraw())
+        {
+            return false;
+        }
+        if(TestCube->isSkyView() && !isSkyViewDraw())
+        {
+            return false;
+        }
+        if(TestCube->isSunLit() && !isSunLitDraw())
+        {
+            return false;
+        }
+        return true;
+    }
+    return false;
 }
 
 void ScreenManager::PrintDebugging()
