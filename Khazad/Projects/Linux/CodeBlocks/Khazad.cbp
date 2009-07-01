@@ -126,6 +126,8 @@
 		<Unit filename="../../../src/Data/DataManager.h" />
 		<Unit filename="../../../src/Data/DataTypes.cpp" />
 		<Unit filename="../../../src/Data/DataTypes.h" />
+		<Unit filename="../../../src/Data/Paths.cpp" />
+		<Unit filename="../../../src/Data/Paths.h" />
 		<Unit filename="../../../src/Data/XMLManager.cpp" />
 		<Unit filename="../../../src/Data/XMLManager.h" />
 		<Unit filename="../../../src/Game/Actor.cpp" />
@@ -148,6 +150,8 @@
 		<Unit filename="../../../src/Gui/InputManager.h" />
 		<Unit filename="../../../src/Map/Cell.cpp" />
 		<Unit filename="../../../src/Map/Cell.h" />
+		<Unit filename="../../../src/Map/Column.cpp" />
+		<Unit filename="../../../src/Map/Column.h" />
 		<Unit filename="../../../src/Map/Cube.cpp" />
 		<Unit filename="../../../src/Map/Cube.h" />
 		<Unit filename="../../../src/Map/Face.cpp" />
@@ -170,8 +174,6 @@
 		<Unit filename="../../../src/Render/ScreenManager.h" />
 		<Unit filename="../../../src/Render/TextureManager.cpp" />
 		<Unit filename="../../../src/Render/TextureManager.h" />
-		<Unit filename="../../../src/StringMagic/Paths.cpp" />
-		<Unit filename="../../../src/StringMagic/Paths.h" />
 		<Unit filename="../../../src/StringMagic/StringMagic.cpp" />
 		<Unit filename="../../../src/StringMagic/StringMagic.h" />
 		<Extensions>

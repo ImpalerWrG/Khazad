@@ -4,9 +4,6 @@
 #include <Slope.h>
 #include <Face.h>
 #include <Cube.h>
-#include <ConfigManager.h>
-#include <Random.h>
-#include <Game.h>
 #include <Map.h>
 
 /*

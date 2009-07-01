@@ -4,7 +4,6 @@
 #include <stdafx.h>
 
 #include <Singleton.h>
-#include <SDL_ttf.h>
 
 
 class ClipImage;

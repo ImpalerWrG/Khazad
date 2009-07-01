@@ -407,57 +407,57 @@ bool ScreenManager::Render()
     CameraOrientation CurrentOrientation = MainCamera->getOrientation();
 
 
-	for(Uint16 Zlevel = 0; Zlevel < MAP->getCellSizeZ(); Zlevel++)
-	{
-        glPushMatrix();
-        float ZTranslate = MainCamera->ZlevelSeperationAdjustment(Zlevel);
-        glTranslatef(0.0, 0.0, ZTranslate);
 
-		if(MainCamera->InSlice(Zlevel))
-		{
-            float Shading = 1.0;
-            if(ShadedDraw)
-            {
-                Shading = MainCamera->getShading(Zlevel);
-            }
+    for(Uint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
+    {
+        for(Uint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
+        {
+            Sint16 Start = MainCamera->getSliceTop() - MainCamera->getViewLevels() + 1;
+            Sint16 Stop = MainCamera->getSliceTop();
 
-            for(Uint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
+            for(Sint16 Zlevel = Start; Zlevel <= Stop ; Zlevel++)
             {
-                for(Uint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
+                float Shading = 1.0;
+                if(ShadedDraw)
                 {
-                    Cell* LoopCell = MAP->getCell(SizeX, SizeY, Zlevel);
+                    Shading = MainCamera->getShading(Zlevel);
+                }
 
-                    if(LoopCell != NULL && LoopCell->isActive())
+                glPushMatrix();
+                float ZTranslate = MainCamera->ZlevelSeperationAdjustment(Zlevel);
+                glTranslatef(0.0, 0.0, ZTranslate);
+
+                Cell* LoopCell = MAP->getCell(SizeX, SizeY, Zlevel);
+
+                if(LoopCell != NULL && LoopCell->isActive())
+                {
+                    Vector3 RenderingPosition = LoopCell->getPosition();
+                    RenderingPosition.z = ZTranslate;
+
+                    if(MainCamera->sphereInFrustum(RenderingPosition, CELLEDGESIZE))
                     {
-                        Vector3 RenderingPosition = LoopCell->getPosition();
-                        RenderingPosition.z = ZTranslate;
-
-                        if(MainCamera->sphereInFrustum(RenderingPosition, CELLEDGESIZE))
+                        if(LoopCell->isDirtyDrawList())
                         {
-                            if(LoopCell->isDirtyDrawList())
+                            // Rebuild the new Drawlist
+                            GLuint DrawListID = LoopCell->getDrawListID();
+                            glDeleteLists(DrawListID, 5);
+
+                            for(CameraOrientation Orientation = CAMERA_DOWN; Orientation < NUM_ORIENTATIONS; ++Orientation)
                             {
-                                // Rebuild the new Drawlist
-                                GLuint DrawListID = LoopCell->getDrawListID();
-                                glDeleteLists(DrawListID, 5);
-
-                                for(CameraOrientation Orientation = CAMERA_DOWN; Orientation < NUM_ORIENTATIONS; ++Orientation)
-                                {
-                                    RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation);
-                                }
-                                LoopCell->setDirtyDrawList(false);
+                                RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation);
                             }
-
-                            glColor3f(Shading, Shading, Shading);
-                            glCallList(LoopCell->getDrawListID() + (GLuint) CurrentOrientation);
-
-                            TotalTriangles += LoopCell->getTriangleCount(CurrentOrientation);  // Use stored Triangle Count
+                            LoopCell->setDirtyDrawList(false);
                         }
+
+                        glColor3f(Shading, Shading, Shading);
+                        glCallList(LoopCell->getDrawListID() + (GLuint) CurrentOrientation);
+
+                        TotalTriangles += LoopCell->getTriangleCount(CurrentOrientation);  // Use stored Triangle Count
                     }
                 }
+                glPopMatrix();
             }
 		}
-
-		glPopMatrix();
 	}
 
 /*

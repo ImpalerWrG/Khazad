@@ -243,7 +243,7 @@ class MapDumpActionListener: public gcn::ActionListener
             MAP->LoadExtract();
 
             SCREEN->MainCamera->CenterView(MAP->getMapCenter());
-            SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ());
+            SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ() - 1);
             SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ());
             //SCREEN->MainCamera->setCursor(MAP->getMapCenter());
             SCREEN->MainCamera->ConfineCursor();
@@ -254,7 +254,7 @@ class MapDumpActionListener: public gcn::ActionListener
             MAP->LoadExtract();
 
             SCREEN->MainCamera->CenterView(MAP->getMapCenter());
-            SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ());
+            SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ() - 1);
             SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ());
             SCREEN->MainCamera->ConfineCursor();
         }
@@ -282,7 +282,7 @@ class MapLoadActionListener: public gcn::ActionListener
 
             SCREEN->MainCamera->CenterView(MAP->getMapCenter());
             SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ());
-            SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ());
+            SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ() + 1);
             SCREEN->MainCamera->ConfineCursor();
         }
         else
@@ -292,7 +292,7 @@ class MapLoadActionListener: public gcn::ActionListener
 
             SCREEN->MainCamera->CenterView(MAP->getMapCenter());
             SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ());
-            SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ());
+            SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ() + 1);
             SCREEN->MainCamera->ConfineCursor();
         }
         UI->setMapViewState();

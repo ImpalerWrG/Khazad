@@ -2,10 +2,10 @@
 
 #include <Map.h>
 #include <Singleton.h>
-#include <ConfigManager.h>
 #include <TextureManager.h>
 #include <DataManager.h>
 #include <Extract.h>
+#include <Column.h>
 #include <Cube.h>
 #include <Face.h>
 #include <Cell.h>
@@ -35,7 +35,7 @@ Map::Map()
     InitedFaceCount = 0;
     InitedSlopeCount = 0;
 
-    CellArray = NULL;
+    ColumnMatrix = NULL;
 }
 
 Map::~Map()
@@ -100,7 +100,7 @@ bool Map::Generate(Uint32 Seed)
                 {
                     if (NewCube->isInitalized() != true)
                     {
-                        NewCube->Init(RANDOM->Roll(0, 4));   // TEMPORARY RANDOMIZING OF TEXTURES HACK, must have atleast this many texture and XML material entries
+                        NewCube->Init(0);
                         if (Type != SLOPE_FLAT)
                         {
                             NewCube->SetSlope(Type);
@@ -124,9 +124,12 @@ bool Map::Generate(Uint32 Seed)
 
 Cell* Map::getCell(Sint32 X, Sint32 Y, Sint32 Z)
 {
-	if (X >= 0 && X < CellSizeX && Y >= 0 && Y < CellSizeY && Z >= 0 && Z < CellSizeZ )
+	if (X >= 0 && X < CellSizeX && Y >= 0 && Y < CellSizeY)
 	{
-		return CellArray[X][Y][Z];
+	    if(Z >= ColumnMatrix[X][Y]->BottomLevel() && Z < ColumnMatrix[X][Y]->TopLevel())
+	    {
+            return ColumnMatrix[X][Y]->getCell(Z);
+	    }
 	}
 	return NULL;
 }
@@ -199,34 +202,34 @@ void Map::LoadExtract()
 	CellSizeY = ExtractedMap->getYBlocks();
 	CellSizeZ = ExtractedMap->getZBlocks();
 
-	CellArray = new Cell***[CellSizeX];
 
-	for (Uint32 i = 0; i < CellSizeX; i++)
+    ColumnMatrix = new Column**[CellSizeX];
+
+	for (Sint16 i = 0; i < CellSizeX; i++)
 	{
-		CellArray[i] = new Cell**[CellSizeY];
+		ColumnMatrix[i] = new Column*[CellSizeY];
 
-		for (Uint32 j = 0; j < CellSizeY; j++)
+		for (Sint16 j = 0; j < CellSizeY; j++)
 		{
-			CellArray[i][j] = new Cell*[CellSizeZ];
+			ColumnMatrix[i][j] = new Column();
+			ColumnMatrix[i][j]->Init(i, j);
 
 			for (Uint32 k = 0; k < CellSizeZ; k++)
 			{
 			    if(ExtractedMap->isBlockInitialized(i, j, k))
 			    {
-                    CellArray[i][j][k] = new Cell(i * CELLEDGESIZE, j * CELLEDGESIZE, k);
-                    CellArray[i][j][k]->Init();
+                    Cell* NewCell = new Cell(i * CELLEDGESIZE, j * CELLEDGESIZE, k);
+                    NewCell->Init();
 
                     for(Uint32 l = 0; l < CELLEDGESIZE; l++)
                     {
                         for(Uint32 m = 0; m < CELLEDGESIZE; m++)
                         {
-                            LoadCubeData(CellArray[i][j][k], i, j, k, l, m);
+                            LoadCubeData(NewCell, i, j, k, l, m);
                         }
                     }
-			    }
-			    else
-			    {
-                    CellArray[i][j][k] = NULL;
+
+                    ColumnMatrix[i][j]->PushCell(NewCell, k);
 			    }
 			}
 		}
@@ -240,9 +243,9 @@ void Map::LoadExtract()
 	{
 		for (Uint32 j = 0; j < CellSizeY; j++)
 		{
-			for (Uint32 k = 0; k < CellSizeZ; k++)
+			for (Uint32 k = ColumnMatrix[i][j]->BottomLevel(); k < ColumnMatrix[i][j]->TopLevel(); k++)
 			{
-			    if(CellArray[i][j][k] != NULL)
+			    if(getCell(i, j, k) != NULL)
 			    {
                     for(Uint32 l = 0; l < CELLEDGESIZE; l++)
                     {
@@ -418,31 +421,24 @@ void Map::ReleaseMap()
 {
     MapLoaded = false;
 
-    if (CellArray != NULL)
+    if (ColumnMatrix != NULL)
     {
         for (Uint32 x = 0; x < CellSizeX; ++x)
         {
-            if (CellArray[x] != NULL)
+            if (ColumnMatrix[x] != NULL)
             {
                 for (Uint32 y = 0; y < CellSizeY; ++y)
                 {
-                    if (CellArray[x][y] != NULL)
+                    if (ColumnMatrix[x][y] != NULL)
                     {
-                        for (Uint32 z = 0; z < CellSizeZ; ++z)
-                        {
-                            if (CellArray[x][y][z] != NULL)
-                            {
-                                delete CellArray[x][y][z];
-                            }
-                        }
-                        delete[] CellArray[x][y];
+                        delete ColumnMatrix[x][y];
                     }
                 }
-                delete[] CellArray[x];
+                delete[] ColumnMatrix[x];
             }
         }
-        delete[] CellArray;
-        CellArray = NULL;
+        delete[] ColumnMatrix;
+        ColumnMatrix = NULL;
     }
 }
 

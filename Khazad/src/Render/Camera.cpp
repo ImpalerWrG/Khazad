@@ -163,8 +163,8 @@ Vector3 Camera::DetermineMouseIntersection(float MapZ)
 bool Camera::DetermineCursorIntersection()
 {
     Vector3 Intersection;
-    int Bottom = SliceTop - ViewLevels ;
-    for(int i = SliceTop; i >= Bottom && i >= 0; i--)
+    int Bottom = SliceTop - ViewLevels;
+    for(int i = SliceTop; i > Bottom && i >= 0; i--)
     {
         MouseIntersection = DetermineMouseIntersection(ZlevelSeperationAdjustment(i) + 0.5);
         MouseIntersection.x = (int) (MouseIntersection.x + 0.5);
@@ -865,6 +865,8 @@ float Camera::getShading(float Zlevel)
 			if (Depth > 0) // Below look level
 			{
 				Shading -= (float) Depth / (float) ViewLevels;
+				float Minimum = 0.25;
+				Shading = ((1.0 - Minimum) * Shading) + (Minimum);
 				return Shading;
 			}
 			return Shading;

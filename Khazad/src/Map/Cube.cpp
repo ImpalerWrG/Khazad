@@ -1,9 +1,7 @@
 #include <stdafx.h>
 
-#include <Game.h>
-#include <Camera.h>
-#include <ScreenManager.h>
 #include <Cube.h>
+#include <Cell.h>
 #include <Map.h>
 #include <Face.h>
 #include <Slope.h>

@@ -4,8 +4,6 @@
 #include <stdafx.h>
 
 #include <Actor.h>
-#include <Cube.h>
-
 
 class Cube;
 class Actor;

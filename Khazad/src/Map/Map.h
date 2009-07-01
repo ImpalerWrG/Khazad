@@ -3,11 +3,14 @@
 
 #include <Singleton.h>
 #include <stdafx.h>
-#include <Cell.h>
 
-//class Cell;
+#include <Vector3.h>
+
+class Column;
+class Cell;
 class Cube;
 class Actor;
+class Face;
 
 
 class Map
@@ -84,7 +87,7 @@ protected:
 	Uint32 CellSizeY;
 	Uint32 CellSizeZ;
 
-	Cell**** CellArray;
+	Column*** ColumnMatrix;
 
 	Uint16 TilePicker[600];
 
