@@ -81,6 +81,8 @@ public:
     Uint16 readWord (Uint32 offset);
     Uint32 readDWord (Uint32 offset);
     Uint64 readQuad (Uint32 offset);
+    const string readCString (Uint32 offset);
+    const string readSTLString (Uint32 offset);
     bool read (Uint32 offset, Uint32 size, Uint8 *target);
     // read a platform-specific vector structure from memory
     DfVector readVector (Uint32 offset, Uint32 item_size);

@@ -604,6 +604,7 @@ void ScreenManager::PrintDebugging()
         int Biome = 0;
         int Geolayer = 0;
         int veinMatgloss = 0;
+        string matgloss;
         int building = 0;
 
         DfMap * df_map = EXTRACT->getMap();
@@ -613,7 +614,7 @@ void ScreenManager::PrintDebugging()
             Designation = df_map->getDesignations(x, y, z);
             Ocupancy = df_map->getOccupancies(x, y, z);
             Biome = df_map->getBiome(x, y, z);
-            veinMatgloss =  df_map->getVeinType ( x, y, z);
+            matgloss =  df_map->getMaterialString ( x, y, z);
             Geolayer =  df_map->getGeolayerIndex ( x, y, z);
             building = df_map->getBuilding ( x,  y,  z);
         }
@@ -640,7 +641,7 @@ void ScreenManager::PrintDebugging()
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 
-        sprintf (buffer, "biome %i, layer %i, vein: %i", Biome, Geolayer,veinMatgloss);
+        sprintf (buffer, "biome %i, layer %i, vein: %s", Biome, Geolayer,matgloss.c_str());
 
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;

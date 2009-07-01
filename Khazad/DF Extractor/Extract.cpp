@@ -51,8 +51,16 @@ bool Extractor::dumpMemory()
     int tile_type_offset = offset_descriptor->getOffset("type");
     int designation_offset = offset_descriptor->getOffset("designation");
     int occupancy_offset = offset_descriptor->getOffset("occupancy");
+
+    // veins
     int veinvector = offset_descriptor->getOffset("v_vein");
     int veinsize = offset_descriptor->getOffset("v_vein_size");
+
+    // stone/soil/gem matgloss
+    int stone_matgloss_offset = offset_descriptor->getOffset("mat_stone");
+
+    // tree/wood matgloss
+    /// NOT YET
 
     map_loc = p->readDWord(map_offset);
 
@@ -68,6 +76,29 @@ bool Extractor::dumpMemory()
         delete df_map;
     }
     df_map = new DfMap(p->readDWord(x_count_offset),p->readDWord(y_count_offset),p->readByte(z_count_offset));
+
+
+    // read matgloss data from df if we can
+    if(stone_matgloss_offset)
+    {
+        // set up vector of pointers to materials
+        DfVector p_stone_matgloss = p->readVector(stone_matgloss_offset, 4);
+        printf ("YAY, MATGLOSS! %d\n", p_stone_matgloss.getSize());
+        // iterate over it
+        for (int i = 0; i< p_stone_matgloss.getSize();i++)
+        {
+            Uint32 temp;
+            string tmpstr;
+            // read the matgloss pointer from the vector into temp
+            p_stone_matgloss.read((Uint32)i,(Uint8 *)&temp);
+            // read the string pointed at by
+            tmpstr = p->readSTLString(temp); // reads a C string given an address
+            // store it in the block
+            df_map->stone_matgloss.push_back(tmpstr);
+            printf("%d = %s\n",i,tmpstr.c_str());
+        }
+    }
+
     //read the memory from the map blocks
     for(int x = 0; x < df_map->x_block_count; x++)
     {

@@ -121,6 +121,8 @@ public:
     DfMap(string file_name);
     ~DfMap();
 
+    vector<string> stone_matgloss;
+
     bool isValid();
     bool load(string FilePath);
     bool write(string FilePath);
@@ -148,8 +150,11 @@ public:
 
     int getDesignations(int x, int y, int z);
     int getOccupancies(int x, int y, int z);
-    // this is what the vein structures say it is
-    Uint16 getVeinType (int x, int y, int z);
+
+    // get tile material
+    Uint16 getMaterialIndex (int x, int y, int z);
+    string getMaterialString (int x, int y, int z);
+
     // matgloss part of the designation
     unsigned int getGeolayerIndex (int x, int y, int z);
     // what kind of building is here?

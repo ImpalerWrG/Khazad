@@ -284,7 +284,12 @@ DfVector Process::readVector (Uint32 offset, Uint32 item_size)
     Uint32 size = (end - start) /4;
     return DfVector(start,size,item_size);
 }
-
+const string Process::readSTLString (Uint32 offset)
+{
+    //GNU std::string is a single pointer
+    offset = readDWord(offset);
+    return readCString(offset);
+}
 #else
 /**
  *     WINDOWS PART
@@ -430,7 +435,56 @@ DfVector Process::readVector (Uint32 offset, Uint32 item_size)
     return DfVector(start,size,item_size);
 }
 
+const string Process::readSTLString (Uint32 offset)
+{
+    /**
+    MSVC++ string
+    ptr allocator
+    union{
+        char[16] start;
+        char * start_ptr
+    }
+    Uint32 length
+    Uint32 capacity
+    */
+    Uint32 start_offset = offset + 4;
+    Uint32 length = readDWord(offset + 20);
+    Uint32 capacity = readDWord(offset + 24);
+    char * temp = new char[capacity];
+    // read data from inside the string structure
+    if(capacity < 16)
+    {
+        read(start_offset, capacity, (Uint8 *)temp);
+    }
+    else // read data from what the offset + 4 dword points to
+    {
+        start_offset = readDWord(start_offset);// dereference the start offset
+        read(start_offset, capacity, (Uint8 *)temp);
+    }
+    string ret = temp;
+    delete temp;
+    return ret;
+}
+
 #endif
+
+const string Process::readCString (Uint32 offset)
+{
+    string temp;
+    char temp_c[256];
+    int counter = 0;
+    char r;
+    do
+    {
+        r = readByte(offset+counter);
+        temp_c[counter] = r;
+        counter++;
+    } while (r);
+    temp_c[counter] = 0;
+    temp = temp_c;
+    return temp;
+}
+
 // get current memory descriptor. NULL if not attached
 memory_info * Process::getDescriptor()
 {

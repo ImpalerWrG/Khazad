@@ -452,7 +452,7 @@ int DfMap::getOccupancies(int x, int y, int z)
 }
 
 // this is what the vein structures say it is
-Uint16 DfMap::getVeinType (int x, int y, int z)
+Uint16 DfMap::getMaterialIndex (int x, int y, int z)
 {
     assert(CheckBounds);
 
@@ -465,6 +465,31 @@ Uint16 DfMap::getVeinType (int x, int y, int z)
     }
     return -1;
 }
+
+// this is what the vein structures say it is
+string DfMap::getMaterialString (int x, int y, int z)
+{
+    assert(CheckBounds);
+
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
+    Block *b = getBlock(x,y,z);
+    if(b != NULL)
+    {
+        // if matgloss loaded
+        if(stone_matgloss.size() != 0)
+        {
+            // if it's a vein
+            if(b->vein_matgloss[x2][y2] != 65535)
+            {
+                return stone_matgloss[b->vein_matgloss[x2][y2]];
+            }
+        }
+    }
+    string fallback = "UNKNOWN";
+    return fallback;
+}
+
 // matgloss part of the designation
 unsigned int DfMap::getGeolayerIndex (int x, int y, int z)
 {
