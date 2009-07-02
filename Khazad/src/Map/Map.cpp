@@ -76,14 +76,14 @@ bool Map::Generate(Uint32 Seed)
         }
     }
 
-    Slopping Type;
+    Slopping Type = SLOPE_FLAT;
 
     Cube* NewCube = NULL;
     Cell* TargetCell = NULL;
 
-    for(Sint32 i = 0; i < MapSizeX; i++)
+    for(Uint32 i = 0; i < MapSizeX; i++)
     {
-        for(Sint32 j = 0; j < MapSizeY; j++)
+        for(Uint32 j = 0; j < MapSizeY; j++)
         {
             TargetCell = getCubeOwner(i, j, 0);
 
@@ -205,11 +205,11 @@ void Map::LoadExtract()
 
     ColumnMatrix = new Column**[CellSizeX];
 
-	for (Sint16 i = 0; i < CellSizeX; i++)
+	for (Uint16 i = 0; i < CellSizeX; i++)
 	{
 		ColumnMatrix[i] = new Column*[CellSizeY];
 
-		for (Sint16 j = 0; j < CellSizeY; j++)
+		for (Uint16 j = 0; j < CellSizeY; j++)
 		{
 			ColumnMatrix[i][j] = new Column();
 			ColumnMatrix[i][j]->Init(i, j);
@@ -243,7 +243,7 @@ void Map::LoadExtract()
 	{
 		for (Uint32 j = 0; j < CellSizeY; j++)
 		{
-			for (Uint32 k = ColumnMatrix[i][j]->BottomLevel(); k < ColumnMatrix[i][j]->TopLevel(); k++)
+			for (Sint32 k = ColumnMatrix[i][j]->BottomLevel(); k < ColumnMatrix[i][j]->TopLevel(); k++)
 			{
 			    if(getCell(i, j, k) != NULL)
 			    {
@@ -391,9 +391,9 @@ void Map::InitilizeTilePicker()
         TilePicker[i] = DATA->getLabelIndex("TEXTURE_NEHE");
     }
 
-    for(int i = 0; i < DATA->getNumMaterials(); ++i)
+    for(Uint32 i = 0; i < DATA->getNumMaterials(); ++i)
     {
-        for(int j = 0; j < DATA->getMaterialData(i)->TileTypes.size(); ++j)
+        for(Uint32 j = 0; j < DATA->getMaterialData(i)->TileTypes.size(); ++j)
         {
             int Tile = DATA->getMaterialData(i)->TileTypes[j];
             TilePicker[Tile] = i;

@@ -425,7 +425,7 @@ bool ScreenManager::Render()
 
                 glPushMatrix();
                 float ZTranslate = MainCamera->ZlevelSeperationAdjustment(Zlevel);
-                glTranslatef(0.0, 0.0, ZTranslate);
+                glTranslatef(SizeX * CELLEDGESIZE, SizeY * CELLEDGESIZE, ZTranslate);
 
                 Cell* LoopCell = MAP->getCell(SizeX, SizeY, Zlevel);
 
@@ -485,7 +485,7 @@ void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, CameraO
 
         glBegin(GL_TRIANGLES);
 
-            TargetCell->Draw(Orientation, HiddenDraw, SubTerranianDraw, SkyViewDraw, SunLitDraw);
+            TargetCell->Draw(Orientation);
 
             glColor3f(1.0, 1.0, 1.0);
 

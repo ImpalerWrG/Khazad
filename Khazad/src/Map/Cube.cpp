@@ -516,7 +516,45 @@ bool Cube::Update()
 	return true;
 }
 
-bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslate, bool DrawHidden, bool DrawSubTerranian, bool DrawSkyView, bool DrawSunLit)
+Vector3 Cube::ConvertSpacialPoint(SpacialPoint Point)
+{
+    switch(Point)
+    {
+        case SCACIAL_POINT_CENTER:
+            return Vector3(0.0, 0.0, 0.0);
+
+        case SPACIAL_POINT_NORTH_TOP:
+            return Vector3(-0.5, -0.5, 0.5);
+
+        case SPACIAL_POINT_EAST_TOP:
+            return Vector3(0.5, -0.5, 0.5);
+
+        case SPACIAL_POINT_SOUTH_TOP:
+            return Vector3(0.5, 0.5 , 0.5);
+
+        case SPACIAL_POINT_WEST_TOP:
+            return Vector3(-0.5, 0.5, 0.5);
+
+        case SPACIAL_POINT_NORTH_BOTTOM:
+            return Vector3(-0.5, -0.5, -0.5);
+
+        case SPACIAL_POINT_EAST_BOTTOM:
+            return Vector3(0.5, -0.5, -0.5);
+
+        case SPACIAL_POINT_SOUTH_BOTTOM:
+            return Vector3(0.5, 0.5, -0.5);
+
+        case SPACIAL_POINT_WEST_BOTTOM:
+            return Vector3(-0.5, 0.5, -0.5);
+
+        Default:
+            return Vector3(0.5, 0.5  -0.5);
+    }
+
+    return Vector3(0.0, 0.0, 0.0);
+}
+
+bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslate)
 {
     return false;
 

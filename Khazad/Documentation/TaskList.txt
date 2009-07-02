@@ -19,11 +19,11 @@ NEXT RELEASE FEATURES:  Things the user will experience as new features
 - Pixel perfect mouse selection on all surfaces (Impaler)
 - Volumetric mouse drag areas (Impaler)
 - Persistent 'zone' creation with mouse (Impaler)
-- Vein identification by MatGloss parsing (Peterix)
+- Vein/Gem/Cluster identification (Peterix)
+- StoneLayer indentification (Peterix)
 
 NEXT RELEASE NON FEATURE:  Key improvements to existing functionality
 
-- organize Cells into double vectored growable column objects (Impaler)
 - Vertex Array based Renderer (Dorf & Impaler)
 - Shade walls and floors differently by 1/2 level (Impaler)
 
@@ -32,4 +32,4 @@ NEXT RELEASE BUG FIXES:  Bugs in current functionality
 - ScreenShots lack UI elements (Impaler)
 - Improve slope picking to fill holes in map with more triangles (Impaler)
 - Memory leaking when reloading maps (Dorf & Peterix)
-- Crash durring texture loading on Forgeware video drivers (Dorf)
+- Crash durring texture loading on Forceware video drivers (Dorf)

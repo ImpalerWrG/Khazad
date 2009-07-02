@@ -28,12 +28,13 @@ public:
 
     void setTriangleCount(CameraOrientation Orientation, Uint16 Triangles) { TriangleCount[Orientation] = Triangles; }
 
-	bool Draw(CameraOrientation Orientation, bool DrawHidden, bool DrawSubTerranian, bool DrawSkyView, bool DrawSunLit);
+	bool Draw(CameraOrientation Orientation);
 
 	bool Update();
 
 	//void SetBasment(bool Value)         { Basment = Value; }
 	//bool isBasment()                    { return Basment; }
+
 
     bool isActive()                     { return Active; }
     void setActive(bool NewValue)       { Active = NewValue; }

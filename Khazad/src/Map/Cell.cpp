@@ -130,11 +130,11 @@ bool Cell::Update()
 	return true;
 }
 
-bool Cell::Draw(CameraOrientation Orientation, bool DrawHidden, bool DrawSubTerranean, bool DrawSkyView, bool DrawSunLit)
+bool Cell::Draw(CameraOrientation Orientation)
 {
     Cube* LoopCube = NULL;
 
-    float HalfCell = CELLEDGESIZE / 2;
+    //float HalfCell = CELLEDGESIZE / 2;
 
     if(Initalized)
     {
@@ -147,13 +147,13 @@ bool Cell::Draw(CameraOrientation Orientation, bool DrawHidden, bool DrawSubTerr
                 {
                     if(LoopCube->getSlope())
                     {
-                        LoopCube->getSlope()->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                        LoopCube->getSlope()->Draw(x, y);
                     }
                     if(LoopCube->getLiquid())
                     {
                         if(Facets[x][y][FACET_TOP])
                         {
-                            Facets[x][y][FACET_TOP]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                            Facets[x][y][FACET_TOP]->Draw(x, y);
                         }
                     }
 
@@ -163,13 +163,13 @@ bool Cell::Draw(CameraOrientation Orientation, bool DrawHidden, bool DrawSubTerr
                         {
                             if(Facets[x][y][FACET_TOP])
                             {
-                                Facets[x][y][FACET_TOP]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                Facets[x][y][FACET_TOP]->Draw(x, y);
                             }
                             else
                             {
                                 if(Facets[x][y][FACET_BOTTOM])
                                 {
-                                    Facets[x][y][FACET_BOTTOM]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_BOTTOM]->Draw(x, y);
                                 }
                             }
                             break;
@@ -179,24 +179,24 @@ bool Cell::Draw(CameraOrientation Orientation, bool DrawHidden, bool DrawSubTerr
                             if(LoopCube->isSolid())
                             {
                                 if(Facets[x][y][FACET_TOP])
-                                    Facets[x][y][FACET_TOP]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_TOP]->Draw(x, y);
 
                                 if(Facets[x][y][FACET_SOUTH_EAST])
-                                    Facets[x][y][FACET_SOUTH_EAST]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_SOUTH_EAST]->Draw(x, y);
 
                                 if(Facets[x][y][FACET_SOUTH_WEST])
-                                    Facets[x][y][FACET_SOUTH_WEST]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_SOUTH_WEST]->Draw(x, y);
                             }
                             else
                             {
                                 if(Facets[x][y][FACET_BOTTOM])
-                                    Facets[x][y][FACET_BOTTOM]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_BOTTOM]->Draw(x, y);
 
                                 if(Facets[x][y][FACET_NORTH_EAST])
-                                    Facets[x][y][FACET_NORTH_EAST]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_NORTH_EAST]->Draw(x, y);
 
                                 if(Facets[x][y][FACET_NORTH_WEST])
-                                    Facets[x][y][FACET_NORTH_WEST]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_NORTH_WEST]->Draw(x, y);
                             }
                             break;
                         }
@@ -205,24 +205,24 @@ bool Cell::Draw(CameraOrientation Orientation, bool DrawHidden, bool DrawSubTerr
                             if(LoopCube->isSolid())
                             {
                                 if(Facets[x][y][FACET_TOP])
-                                    Facets[x][y][FACET_TOP]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_TOP]->Draw(x, y);
 
                                 if(Facets[x][y][FACET_NORTH_WEST])
-                                    Facets[x][y][FACET_NORTH_WEST]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_NORTH_WEST]->Draw(x, y);
 
                                 if(Facets[x][y][FACET_SOUTH_WEST])
-                                    Facets[x][y][FACET_SOUTH_WEST]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_SOUTH_WEST]->Draw(x, y);
                             }
                             else
                             {
                                 if(Facets[x][y][FACET_BOTTOM])
-                                    Facets[x][y][FACET_BOTTOM]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_BOTTOM]->Draw(x, y);
 
                                 if(Facets[x][y][FACET_NORTH_EAST])
-                                    Facets[x][y][FACET_NORTH_EAST]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_NORTH_EAST]->Draw(x, y);
 
                                 if(Facets[x][y][FACET_SOUTH_EAST])
-                                    Facets[x][y][FACET_SOUTH_EAST]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_SOUTH_EAST]->Draw(x, y);
                             }
                             break;
                         }
@@ -231,24 +231,24 @@ bool Cell::Draw(CameraOrientation Orientation, bool DrawHidden, bool DrawSubTerr
                             if(LoopCube->isSolid())
                             {
                                 if(Facets[x][y][FACET_TOP])
-                                    Facets[x][y][FACET_TOP]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_TOP]->Draw(x, y);
 
                                 if(Facets[x][y][FACET_NORTH_EAST])
-                                    Facets[x][y][FACET_NORTH_EAST]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_NORTH_EAST]->Draw(x, y);
 
                                 if(Facets[x][y][FACET_SOUTH_EAST])
-                                    Facets[x][y][FACET_SOUTH_EAST]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_SOUTH_EAST]->Draw(x, y);
                             }
                             else
                             {
                                 if(Facets[x][y][FACET_BOTTOM])
-                                    Facets[x][y][FACET_BOTTOM]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_BOTTOM]->Draw(x, y);
 
                                 if(Facets[x][y][FACET_NORTH_WEST])
-                                    Facets[x][y][FACET_NORTH_WEST]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_NORTH_WEST]->Draw(x, y);
 
                                 if(Facets[x][y][FACET_SOUTH_WEST])
-                                    Facets[x][y][FACET_SOUTH_WEST]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_SOUTH_WEST]->Draw(x, y);
                             }
                             break;
                         }
@@ -257,24 +257,24 @@ bool Cell::Draw(CameraOrientation Orientation, bool DrawHidden, bool DrawSubTerr
                             if(LoopCube->isSolid())
                             {
                                 if(Facets[x][y][FACET_TOP])
-                                    Facets[x][y][FACET_TOP]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_TOP]->Draw(x, y);
 
                                 if(Facets[x][y][FACET_NORTH_EAST])
-                                    Facets[x][y][FACET_NORTH_EAST]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_NORTH_EAST]->Draw(x, y);
 
                                 if(Facets[x][y][FACET_NORTH_WEST])
-                                    Facets[x][y][FACET_NORTH_WEST]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_NORTH_WEST]->Draw(x, y);
                             }
                             else
                             {
                                 if(Facets[x][y][FACET_BOTTOM])
-                                    Facets[x][y][FACET_BOTTOM]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_BOTTOM]->Draw(x, y);
 
                                 if(Facets[x][y][FACET_SOUTH_EAST])
-                                    Facets[x][y][FACET_SOUTH_EAST]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_SOUTH_EAST]->Draw(x, y);
 
                                 if(Facets[x][y][FACET_SOUTH_WEST])
-                                    Facets[x][y][FACET_SOUTH_WEST]->Draw(Position.x + x - HalfCell + HALFCUBE, Position.y + y - HalfCell + HALFCUBE);
+                                    Facets[x][y][FACET_SOUTH_WEST]->Draw(x, y);
                             }
                             break;
                         }

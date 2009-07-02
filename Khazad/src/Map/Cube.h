@@ -61,7 +61,7 @@ public:
     bool InitFace(Facet FaceType);
 
 	bool Update();
-	bool Draw(CameraOrientation Orientation, float xTranslate, float yTranslate, bool DrawHidden, bool DrawSubTerranian, bool DrawSkyView, bool DrawSunLit);
+	bool Draw(CameraOrientation Orientation, float xTranslate, float yTranslate);
 
 	bool isSubTerranean()                 { return SubTerranian; }
 	void setSubTerranean(bool NewValue)   { SubTerranian = NewValue; }
@@ -71,6 +71,8 @@ public:
 
 	bool isSunLit()                 { return SunLit; }
 	void setSunLit(bool NewValue)   { SunLit = NewValue; }
+
+    static Vector3 ConvertSpacialPoint(SpacialPoint Point);
 
     void Dig();
 
