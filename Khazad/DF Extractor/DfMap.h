@@ -99,10 +99,29 @@ class Block
     Uint16 tile_type[BLOCK_SIZE][BLOCK_SIZE];
     t_designation designation[BLOCK_SIZE][BLOCK_SIZE];
     t_occupancy occupancy[BLOCK_SIZE][BLOCK_SIZE];
-    // this is ... temporary
+    // veins
     vector <t_vein> veins;
-    Uint16 vein_matgloss[BLOCK_SIZE][BLOCK_SIZE];
+    Uint16 material[BLOCK_SIZE][BLOCK_SIZE];
     void collapseVeins();
+    /**
+    // region offset modifiers... what a hack.
+    // here we have double indexed offset into regions.
+    // once inside t_designation, pointing into this, second time from here as a index modifier into region array (2d)
+    // disassembled code where it's used follows. biome is biome from t_designation
+    biome_stuffs = *(_BYTE *)((char)biome + offset_Block + 0x1D84);
+    biome_stuffs_mod3 = biome_stuffs % 3;
+    biome_stuffs_div3 = biome_stuffs / 3;
+    biome_stuffs_mod3_ = biome_stuffs_mod3;
+    if ( !biome_stuffs_mod3_ )
+      --*(_WORD *)X_stuff;
+    if ( biome_stuffs_mod3_ == 2 )
+      ++*(_WORD *)X_stuff;
+    if ( !biome_stuffs_div3 )
+      --*(_WORD *)Y_stuff_;
+    if ( biome_stuffs_div3 == 2 )
+      ++*(_WORD *)Y_stuff_;
+    */
+    Uint8 RegionOffsets[16];// idk if the length is right here
 };
 
 class DfMap
@@ -111,6 +130,9 @@ private:
     Block **block;
     Uint32 blocks_read;
     bool valid;
+    Uint32 regionX;
+    Uint32 regionY;
+    Uint32 regionZ;
     void convertToDfMapCoords(int x, int y, int &out_x, int &out_y, int &out_x2, int &out_y2);
     void allocBlockArray(int x,int y, int z);
     void updateCellCount();
@@ -155,8 +177,15 @@ public:
     Uint16 getMaterialIndex (int x, int y, int z);
     string getMaterialString (int x, int y, int z);
 
+    // get coords of region used for materials
+    void getGeoRegion (int x, int y, int z, int& geoX, int& geoY);
+
     // matgloss part of the designation
     unsigned int getGeolayerIndex (int x, int y, int z);
+
+    void getRegionCoords (int &x,int &y,int &z);
+    void setRegionCoords (int x,int y,int z);
+
     // what kind of building is here?
     Uint16 getBuilding (int x, int y, int z);
     unsigned int getBiome (int x, int y, int z);

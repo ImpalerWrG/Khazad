@@ -10,6 +10,7 @@
 // asserts are fun
 #include <assert.h>
 #define CheckBounds x < x_cell_count && x >= 0 && y < y_cell_count && y >= 0 && z < z_block_count && z >= 0
+#define CheckBoundsXY x < x_cell_count && x >= 0 && y < y_cell_count && y >= 0
 #define CheckBlockBounds x < x_block_count && x >= 0 && y < y_block_count && y >= 0 && z < z_block_count && z >= 0
 
 // this expands into lots of ugly switch statement functions
@@ -41,7 +42,7 @@ void Block::collapseVeins()
             {
                 // and the bit array with a one-bit mask, check if the bit is set
                 bool set = ((1 << k) & v.assignment[j]) >> k;
-                if(set) vein_matgloss[k][j] = v.type;
+                if(set) material[k][j] = v.type;
             }
         }
     }
@@ -67,6 +68,20 @@ void DfMap::clear()
         }
         delete[] block;
     }
+}
+
+void DfMap::getRegionCoords (int &x,int &y,int &z)
+{
+    x= regionX;
+    y= regionY;
+    z= regionZ;
+}
+
+void DfMap::setRegionCoords (int x,int y,int z)
+{
+    regionX = x;
+    regionY = y;
+    regionZ = z;
 }
 
 void DfMap::allocBlockArray(int x,int y, int z)
@@ -363,7 +378,7 @@ bool DfMap::load(string FilePath)
         fread(&b->designation, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, Decompressed);
         fread(&b->occupancy, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, Decompressed);
         ///TODO: load and save matgloss data
-        memset(b->vein_matgloss, -1, sizeof(int16_t) * 256);
+        memset(b->material, -1, sizeof(int16_t) * 256);
     }
 
     printf("Blocks read into memory: %d\n", df_map_header.tile_block_count);
@@ -451,6 +466,30 @@ int DfMap::getOccupancies(int x, int y, int z)
     return -1;
 }
 
+// toady must be crazy
+void DfMap::getGeoRegion (int x, int y, int z, int& geoX, int& geoY)
+{
+    assert(CheckBoundsXY);
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
+    Block *b = getBlock(x,y,z);
+    if(b != NULL)
+    {
+        int biome = b->designation[x2][y2].bits.biome;
+        int BiomeOffset = b->RegionOffsets[biome];
+        int16_t X_biomeB = (regionX / 16) + (BiomeOffset % 3) - 1;
+        int16_t Y_biomeB = (regionY / 16) + (BiomeOffset / 3) - 1;
+        ///FIXME: check and fix bounds here. this is important!
+        geoX = X_biomeB;
+        geoY = Y_biomeB;
+    }
+    else
+    {
+        geoX = regionX / 16;
+        geoY = regionY / 16;
+    }
+}
+
 // this is what the vein structures say it is
 Uint16 DfMap::getMaterialIndex (int x, int y, int z)
 {
@@ -461,7 +500,7 @@ Uint16 DfMap::getMaterialIndex (int x, int y, int z)
     Block *b = getBlock(x,y,z);
     if(b != NULL)
     {
-        return b->vein_matgloss[x2][y2];
+        return b->material[x2][y2];
     }
     return -1;
 }
@@ -480,9 +519,9 @@ string DfMap::getMaterialString (int x, int y, int z)
         if(stone_matgloss.size() != 0)
         {
             // if it's a vein
-            if(b->vein_matgloss[x2][y2] != 65535)
+            if(b->material[x2][y2] != 65535)
             {
-                return stone_matgloss[b->vein_matgloss[x2][y2]];
+                return stone_matgloss[b->material[x2][y2]];
             }
         }
     }

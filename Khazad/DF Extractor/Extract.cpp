@@ -52,6 +52,17 @@ bool Extractor::dumpMemory()
     int designation_offset = offset_descriptor->getOffset("designation");
     int occupancy_offset = offset_descriptor->getOffset("occupancy");
 
+    // layers
+    int region_x_offset = offset_descriptor->getOffset("region_x");
+    int region_y_offset = offset_descriptor->getOffset("region_y");
+    int region_z_offset =  offset_descriptor->getOffset("region_z");
+    int world_offset =  offset_descriptor->getOffset("world");
+    int world_regions_offset =  offset_descriptor->getOffset("world_regions");
+    int sizeof_region =  offset_descriptor->getOffset("region_size");
+    int region_geoindex_offset =  offset_descriptor->getOffset("region_geoindex_offset");
+    int world_geoblocks_offset =  offset_descriptor->getOffset("world_geoblocks");
+    int biome_stuffs = offset_descriptor->getOffset("biome_stuffs");
+
     // veins
     int veinvector = offset_descriptor->getOffset("v_vein");
     int veinsize = offset_descriptor->getOffset("v_vein_size");
@@ -99,6 +110,16 @@ bool Extractor::dumpMemory()
         }
     }
 
+    if(region_x_offset && region_y_offset && region_z_offset)
+    {
+        df_map->setRegionCoords(p->readDWord(region_x_offset),p->readDWord(region_y_offset),p->readDWord(region_z_offset));
+        // we have region offset
+    }
+    else
+    {
+        // crap, can't get the real layer materials
+        df_map->setRegionCoords(0,0,0);
+    }
     //read the memory from the map blocks
     for(int x = 0; x < df_map->x_block_count; x++)
     {
@@ -132,6 +153,16 @@ bool Extractor::dumpMemory()
                     /*Uint32 size*/   sizeof(int)*BLOCK_SIZE*BLOCK_SIZE,
                     /*void *target*/  (Uint8 *)&b->occupancy
                            );
+                    // set all materials to -1.
+                    memset(b->material, -1, sizeof(int16_t) * 256);
+                    if(biome_stuffs) // we got biome stuffs! we can try loading matgloss from here
+                    {
+                        p->read(
+                        /*Uint32 offset*/ temp_loc + biome_stuffs,
+                        /*Uint32 size*/   sizeof(Uint8)*16,
+                        /*void *target*/  (Uint8 *)&b->RegionOffsets
+                               );
+                    }
                     // load veins from the game
                     if(veinvector && veinsize)
                     {
@@ -151,9 +182,20 @@ bool Extractor::dumpMemory()
                             // store it in the block
                             b->veins.push_back(v);
                         }
-                        memset(b->vein_matgloss, -1, sizeof(int16_t) * 256);
                         b->collapseVeins(); // collapse *our* vein vector into vein matgloss data
                     }
+                    // load layer matgloss
+/*                    for(int x_b = 0; x_b < BLOCK_SIZE; x_b++)
+                    {
+                        for(int y_b = 0; y_b < BLOCK_SIZE; y_b++)
+                        {
+                            if(vein_matgloss[x_b][y_b] != -1)
+                            {
+                                int geolayer = b->designation[x_b][y_b].geolayer_index;
+                                int biome = b->designation[x_b][y_b].geolayer_index;
+                            }
+                        }
+                    }*/
                     ++blocks_read;
                 }
             }

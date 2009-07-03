@@ -611,11 +611,14 @@ void ScreenManager::PrintDebugging()
         int TileType = 0;
         int Designation = 0;
         int Ocupancy = 0;
-        int Biome = 0;
+        int BiomeOffset = 0;
         int Geolayer = 0;
         int veinMatgloss = 0;
         string matgloss;
         int building = 0;
+        int region_x = 0;
+        int region_y = 0;
+        int region_z = 0;
 
         DfMap * df_map = EXTRACT->getMap();
         if(!(HiddenDraw ^ df_map->isHidden( x, y, z)))
@@ -623,11 +626,12 @@ void ScreenManager::PrintDebugging()
             TileType = df_map->getTileType(x, y, z);
             Designation = df_map->getDesignations(x, y, z);
             Ocupancy = df_map->getOccupancies(x, y, z);
-            Biome = df_map->getBiome(x, y, z);
+            BiomeOffset = df_map->getBiome(x, y, z);
             matgloss =  df_map->getMaterialString ( x, y, z);
             Geolayer =  df_map->getGeolayerIndex ( x, y, z);
             building = df_map->getBuilding ( x,  y,  z);
         }
+        df_map->getRegionCoords (region_x,region_y,region_z);
 
         SDL_Rect position;
         position.x = 10;
@@ -637,25 +641,46 @@ void ScreenManager::PrintDebugging()
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 
-/*
+        /*
         Block* TargetBlock = df_map->getBlock(x / 16, y / 16, z);
         if(TargetBlock != NULL)
         {
             sprintf (buffer, "Block offset: 0x%X", TargetBlock->origin);
             SCREEN->RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
-        }
-*/
+        }*/
 
         sprintf (buffer, "Tile: %i", TileType);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
+/*
+        int16_t X_biomeA =(
+                            region_x
+                            + ((signed int)(( (int64_t)0x2AAAAAAB * (int64_t)x) >> 32) >> 3)
+                            + ((unsigned int)(((int64_t)0x2AAAAAAB * (int64_t)x) >> 32) >> 31)
+                        ) / 16;
+        int16_t Y_biomeA =(
+                            region_y
+                            + ((signed int)(((int64_t)0x2AAAAAAB * (int64_t)y) >> 32) >> 3)
+                            + ((unsigned int)(((int64_t)0x2AAAAAAB * (int64_t)y) >> 32) >> 31)
+                        ) / 16;*/
 
+        /// TODO: check bounds!
+        int Xbio,Ybio;
+        df_map->getGeoRegion(x,y,z,Xbio,Ybio);
+        sprintf (buffer, "georegion x:%d y:%d. b:%d, layer %i",Xbio,Ybio, BiomeOffset, Geolayer);
+        SCREEN->RenderText(buffer, 0, WHITE, &position);
+        position.y -= 40;
+
+        sprintf (buffer, "material: %s",matgloss.c_str());
+        SCREEN->RenderText(buffer, 0, WHITE, &position);
+        position.y -= 40;
+/*
         sprintf (buffer, "biome %i, layer %i, vein: %s", Biome, Geolayer, matgloss.c_str());
 
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
-
+*/
 /*        sprintf (buffer, "building: %i", building);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;*/
