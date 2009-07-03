@@ -423,9 +423,12 @@ bool ScreenManager::Render()
                     Shading = MainCamera->getShading(Zlevel);
                 }
 
-                glPushMatrix();
                 float ZTranslate = MainCamera->ZlevelSeperationAdjustment(Zlevel);
-                glTranslatef(SizeX * CELLEDGESIZE, SizeY * CELLEDGESIZE, ZTranslate);
+
+			    //if(SizeX == 0 && SizeY == (MAP->getCellSizeY() - 1) && Zlevel == 25)
+			    //{
+			        //bool Debug = true;
+			    //}
 
                 Cell* LoopCell = MAP->getCell(SizeX, SizeY, Zlevel);
 
@@ -436,6 +439,12 @@ bool ScreenManager::Render()
 
                     if(MainCamera->sphereInFrustum(RenderingPosition, CELLEDGESIZE))
                     {
+                        //glColor3f(1.0, 1.0, 1.0);
+                        //LoopCell->DrawCellCage();
+
+                        glPushMatrix();
+                        glTranslatef(SizeX * CELLEDGESIZE, SizeY * CELLEDGESIZE, ZTranslate);
+
                         if(LoopCell->isDirtyDrawList())
                         {
                             // Rebuild the new Drawlist
@@ -453,9 +462,10 @@ bool ScreenManager::Render()
                         glCallList(LoopCell->getDrawListID() + (GLuint) CurrentOrientation);
 
                         TotalTriangles += LoopCell->getTriangleCount(CurrentOrientation);  // Use stored Triangle Count
+
+                        glPopMatrix();
                     }
                 }
-                glPopMatrix();
             }
 		}
 	}
@@ -487,7 +497,7 @@ void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, CameraO
 
             TargetCell->Draw(Orientation);
 
-            glColor3f(1.0, 1.0, 1.0);
+            //glColor3f(1.0, 1.0, 1.0);
 
         glEnd();
 
@@ -641,7 +651,7 @@ void ScreenManager::PrintDebugging()
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 
-        sprintf (buffer, "biome %i, layer %i, vein: %s", Biome, Geolayer,matgloss.c_str());
+        sprintf (buffer, "biome %i, layer %i, vein: %s", Biome, Geolayer, matgloss.c_str());
 
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
@@ -674,6 +684,14 @@ void ScreenManager::PrintDebugging()
         position.y -= 40;
 
         sprintf (buffer, "InitCells: %i  InitCubes: %i  InitFaces: %i  InitSlopes: %i", MAP->getInitedCellCount(), MAP->getInitedCubeCount(), MAP->getInitedFaceCount(), MAP->getInitedSlopeCount());
+        SCREEN->RenderText(buffer, 0, WHITE, &position);
+*/
+
+/*
+        GLint MaxVerts, MaxIndex;
+        glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &MaxVerts);
+        glGetIntegerv(GL_MAX_ELEMENTS_INDICES, &MaxIndex);
+        sprintf (buffer, "MaxElementsVertices: %i  MaxElementsIndices: %i", MaxVerts, MaxIndex);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
 */
     }

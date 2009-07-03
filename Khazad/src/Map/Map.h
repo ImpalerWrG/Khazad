@@ -33,6 +33,8 @@ public:
     void InitilizeTilePicker();
     Uint32 PickTexture(int TileType);
 
+    void BuildVertexArray();
+
     bool Generate(Uint32 Seed);
 
 	Uint32 getMapSizeX() { return MapSizeX; }
@@ -101,6 +103,7 @@ protected:
     Uint32 InitedFaceCount;
     Uint32 InitedSlopeCount;
 
+    float* VertexArray;
 };
 
 #define MAP (Map::GetInstance())

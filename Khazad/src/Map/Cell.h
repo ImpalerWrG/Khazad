@@ -32,9 +32,12 @@ public:
 
 	bool Update();
 
+    void CreateIndices();
+
 	//void SetBasment(bool Value)         { Basment = Value; }
 	//bool isBasment()                    { return Basment; }
 
+    void DrawCellCage();
 
     bool isActive()                     { return Active; }
     void setActive(bool NewValue)       { Active = NewValue; }
@@ -47,6 +50,9 @@ protected:
 
 	bool DirtyDrawlist;
 	GLuint DrawListID;
+
+    Uint16* VertIndices[5];
+    Uint16* TextIndices[5];
 
 	//bool Sky;
 	//bool Basment;

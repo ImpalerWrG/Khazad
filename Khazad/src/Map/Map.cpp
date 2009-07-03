@@ -49,6 +49,7 @@ Map::~Map()
 bool Map::Init()
 {
     InitilizeTilePicker();
+    BuildVertexArray();
 
     Initialized = true;
     MapLoaded = false;
@@ -126,7 +127,7 @@ Cell* Map::getCell(Sint32 X, Sint32 Y, Sint32 Z)
 {
 	if (X >= 0 && X < CellSizeX && Y >= 0 && Y < CellSizeY)
 	{
-	    if(Z >= ColumnMatrix[X][Y]->BottomLevel() && Z < ColumnMatrix[X][Y]->TopLevel())
+	    if(Z >= ColumnMatrix[X][Y]->BottomLevel() && Z <= ColumnMatrix[X][Y]->TopLevel())
 	    {
             return ColumnMatrix[X][Y]->getCell(Z);
 	    }
@@ -205,31 +206,36 @@ void Map::LoadExtract()
 
     ColumnMatrix = new Column**[CellSizeX];
 
-	for (Uint16 i = 0; i < CellSizeX; i++)
+	for (Uint16 x = 0; x < CellSizeX; x++)
 	{
-		ColumnMatrix[i] = new Column*[CellSizeY];
+		ColumnMatrix[x] = new Column*[CellSizeY];
 
-		for (Uint16 j = 0; j < CellSizeY; j++)
+		for (Uint16 y = 0; y < CellSizeY; y++)
 		{
-			ColumnMatrix[i][j] = new Column();
-			ColumnMatrix[i][j]->Init(i, j);
+			ColumnMatrix[x][y] = new Column();
+			ColumnMatrix[x][y]->Init(x, y);
 
-			for (Uint32 k = 0; k < CellSizeZ; k++)
+			for (Uint32 z = 0; z < CellSizeZ; z++)
 			{
-			    if(ExtractedMap->isBlockInitialized(i, j, k))
+			    if(x == 0 && y == (CellSizeY - 1) && z == 25)
 			    {
-                    Cell* NewCell = new Cell(i * CELLEDGESIZE, j * CELLEDGESIZE, k);
+			        bool Debug = true;
+			    }
+
+			    if(ExtractedMap->isBlockInitialized(x, y, z))
+			    {
+                    Cell* NewCell = new Cell(x * CELLEDGESIZE, y * CELLEDGESIZE, z);
                     NewCell->Init();
 
                     for(Uint32 l = 0; l < CELLEDGESIZE; l++)
                     {
                         for(Uint32 m = 0; m < CELLEDGESIZE; m++)
                         {
-                            LoadCubeData(NewCell, i, j, k, l, m);
+                            LoadCubeData(NewCell, x, y, z, l, m);
                         }
                     }
 
-                    ColumnMatrix[i][j]->PushCell(NewCell, k);
+                    ColumnMatrix[x][y]->PushCell(NewCell, z);
 			    }
 			}
 		}
@@ -404,6 +410,30 @@ void Map::InitilizeTilePicker()
 Uint32 Map::PickTexture(int TileType)
 {
     return TilePicker[TileType];
+}
+
+void Map::BuildVertexArray()
+{
+    float XSize = CELLEDGESIZE;
+    float YSize = CELLEDGESIZE;
+    float ZSize = 1.0;
+
+    Uint16 Counter = 0;
+    Uint16 ArraySize = ((Uint16)XSize + 1) * ((Uint16)YSize + 1) * ((Uint16)ZSize + 1) * 3;
+    VertexArray = new float[ArraySize];
+
+    for(Uint16 x = 0; x <= XSize; x++)
+    {
+        for(Uint16 y = 0; y <= YSize; y++)
+        {
+            for(Uint16 z = 0; z <= ZSize; z++)
+            {
+                VertexArray[Counter++] = x - (XSize / 2);
+                VertexArray[Counter++] = y - (YSize / 2);
+                VertexArray[Counter++] = z - (ZSize / 2);
+            }
+        }
+    }
 }
 
 Vector3 Map::getMapCenter()

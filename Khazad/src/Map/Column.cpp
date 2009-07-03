@@ -31,7 +31,7 @@ Cell* Column::getCell(Sint16 Zlevel)
 {
     if(Zlevel < 0)
     {
-        if(Zlevel < NegativeVector.size())
+        if((Zlevel * -1) < NegativeVector.size() + 1)
         {
             return NegativeVector[(Zlevel * -1) - 1];
         }

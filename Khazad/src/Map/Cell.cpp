@@ -130,6 +130,35 @@ bool Cell::Update()
 	return true;
 }
 
+void Cell::CreateIndices()
+{
+    // INCOMPLETE
+
+    VertIndices[0] = new Uint16[CELLEDGESIZE];
+    TextIndices[0] = new Uint16[CELLEDGESIZE];
+
+    Cube* LoopCube = NULL;
+
+    for (Uint16 x = 0; x < CELLEDGESIZE; x++)
+    {
+        for (Uint16 y = 0; y < CELLEDGESIZE; y++)
+        {
+            LoopCube = getCube(x, y);
+            if (SCREEN->isCubeDrawn(LoopCube))
+            {
+                if(LoopCube->getSlope())
+                {
+                    LoopCube->getSlope()->Draw(x, y);
+                }
+
+
+
+
+            }
+        }
+    }
+}
+
 bool Cell::Draw(CameraOrientation Orientation)
 {
     Cube* LoopCube = NULL;
@@ -285,4 +314,14 @@ bool Cell::Draw(CameraOrientation Orientation)
     }
 
 	return true;
+}
+
+void Cell::DrawCellCage()
+{
+    Vector3 AdjustedPoint = getPosition();
+
+    AdjustedPoint.x -= (CELLEDGESIZE / 2) - 0.5;
+    AdjustedPoint.y -= (CELLEDGESIZE / 2) - 0.5;
+
+    SCREEN->DrawCage(AdjustedPoint, CELLEDGESIZE, CELLEDGESIZE, 1.0, true);
 }
