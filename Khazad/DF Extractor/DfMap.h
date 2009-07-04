@@ -5,6 +5,23 @@
 
 #include <stdafx.h>
 #include <DataStructures.h>
+
+enum BiomeOffset
+{
+    eNorthWest,
+    eNorth,
+    eNorthEast,
+    eWest,
+    eHere,
+    eEast,
+    eSouthWest,
+    eSouth,
+    eSouthEast,
+    eBiomeCount
+};
+
+
+
 /// TODO: research this further? consult DF hacker wizards?
 union t_designation
 {
@@ -132,15 +149,18 @@ private:
     Uint32 blocks_read;
     bool valid;
 
-    Uint32 regionX;
-    Uint32 regionY;
-    Uint32 regionZ;
     void convertToDfMapCoords(int x, int y, int &out_x, int &out_y, int &out_x2, int &out_y2);
     void allocBlockArray(int x,int y, int z);
     void updateCellCount();
     Uint32 getBlocksCount() const { return blocks_read; }
 
 public:
+
+/// TODO: refactor needed. next 4 lines are the proof
+    Uint32 regionX;
+    Uint32 regionY;
+    Uint32 regionZ;
+    vector<Uint16> geology[eBiomeCount];
 
     DfMap();
     DfMap(Uint32 x, Uint32 y, Uint32 z);

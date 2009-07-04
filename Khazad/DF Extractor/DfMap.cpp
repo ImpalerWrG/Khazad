@@ -479,7 +479,9 @@ void DfMap::getGeoRegion (int x, int y, int z, int& geoX, int& geoY)
         int BiomeOffset = b->RegionOffsets[biome];
         int16_t X_biomeB = (regionX / 16) + (BiomeOffset % 3) - 1;
         int16_t Y_biomeB = (regionY / 16) + (BiomeOffset / 3) - 1;
-        ///FIXME: check and fix bounds here. this is important!
+        if(X_biomeB < 0) X_biomeB = 0;
+        if(Y_biomeB < 0) Y_biomeB = 0;
+        ///FIXME: check and fix upper bounds here. this is important for embarks on the edge of the world! We need world size for that.
         geoX = X_biomeB;
         geoY = Y_biomeB;
     }

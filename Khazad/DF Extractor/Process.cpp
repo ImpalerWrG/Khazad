@@ -450,7 +450,7 @@ const string Process::readSTLString (Uint32 offset)
     Uint32 start_offset = offset + 4;
     Uint32 length = readDWord(offset + 20);
     Uint32 capacity = readDWord(offset + 24);
-    char * temp = new char[capacity];
+    char * temp = new char[capacity+1];
     // read data from inside the string structure
     if(capacity < 16)
     {
@@ -461,6 +461,7 @@ const string Process::readSTLString (Uint32 offset)
         start_offset = readDWord(start_offset);// dereference the start offset
         read(start_offset, capacity, (Uint8 *)temp);
     }
+    temp[length] = 0;
     string ret = temp;
     delete temp;
     return ret;
