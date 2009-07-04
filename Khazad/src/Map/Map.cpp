@@ -48,7 +48,6 @@ Map::~Map()
 
 bool Map::Init()
 {
-    InitilizeTilePicker();
     BuildVertexArray();
 
     Initialized = true;
@@ -196,6 +195,8 @@ void Map::LoadExtract()
         ReleaseMap();
     }
 
+    InitilizeTilePicker();
+
     DfMap* ExtractedMap = EXTRACT->getMap();
 
     // Initialize Cells and Cubes
@@ -338,7 +339,7 @@ void Map::LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 Cell
         TargetCell->setCube(TargetCube, CubeX, CubeY);
         TargetCube->setPosition((float) MapX, (float) MapY, (float) MapZ);
 
-        Uint16 Material = PickTexture(TileType);
+        Uint16 Material = PickTexture(MapX, MapY, MapZ);
 
         bool Hidden = df_map->isHidden(MapX, MapY, MapZ);
         TargetCube->setHidden(Hidden);
@@ -394,7 +395,7 @@ void Map::InitilizeTilePicker()
 {
     for(int i = 0; i < 600; ++i)
     {
-        TilePicker[i] = DATA->getLabelIndex("TEXTURE_NEHE");
+        TilePicker[i] = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
     }
 
     for(Uint32 i = 0; i < DATA->getNumMaterials(); ++i)
@@ -405,11 +406,50 @@ void Map::InitilizeTilePicker()
             TilePicker[Tile] = i;
         }
     }
+
+    DfMap* df_map = EXTRACT->getMap();
+
+    Uint32 NumStoneMats = df_map->getNumStoneMatGloss();
+    StoneMatGloss = new Sint16[NumStoneMats];
+
+    for(Uint32 i = 0; i < NumStoneMats; i++)
+    {
+        StoneMatGloss[i] = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
+    }
+
+    for(Uint32 i = 0; i < NumStoneMats; i++)
+    {
+        for(Uint32 j = 0; j < DATA->getNumMaterials(); ++j)
+        {
+            if(strcmp(DATA->getMaterialData(j)->getMatGloss().c_str(), df_map->getStoneMatGlossString(i).c_str()) == 0)
+            {
+                StoneMatGloss[i] = j;
+            }
+        }
+    }
+
 }
 
-Uint32 Map::PickTexture(int TileType)
+Uint32 Map::PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ)
 {
-    return TilePicker[TileType];
+    DfMap *df_map = EXTRACT->getMap();
+    Sint16 StoneType = df_map->getMaterialIndex(MapX, MapY, MapZ);
+
+    if(StoneType != -1)
+    {
+        if(StoneMatGloss[StoneType] != DATA->getLabelIndex("MATERIAL_UNINITIALIZED"))
+        {
+            return StoneMatGloss[StoneType];
+        }
+    }
+
+    Sint16 TileType = df_map->getTileType(MapX, MapY, MapZ);
+    if(TileType != -1)
+    {
+        return TilePicker[TileType];
+    }
+
+    return DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
 }
 
 void Map::BuildVertexArray()
@@ -470,5 +510,8 @@ void Map::ReleaseMap()
         delete[] ColumnMatrix;
         ColumnMatrix = NULL;
     }
+
+    delete[] StoneMatGloss;
+    StoneMatGloss = NULL;
 }
 

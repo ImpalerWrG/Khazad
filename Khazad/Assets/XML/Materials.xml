@@ -416,4 +416,14 @@
 			<Tile Int="42"/>
 		</TileValues>
 	</Material>
+	<Material>
+		<Name Label="MATERIAL_OLIVINE"/>
+		<Texture label="TEXTURE_OLIVINE"/>
+		<MatGloss label="OLIVINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_KIMBERLITE"/>
+		<Texture label="TEXTURE_KIMBERLITE"/>
+		<MatGloss label="KIMBERLITE"/>
+	</Material>
 </Materials>

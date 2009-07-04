@@ -30,6 +30,7 @@ bool MaterialData::Load(TiXmlElement* Entry, Uint32 Index)
     {
         XML->QueryTextValue(Entry, "Texture", "label", &TextureLabel);
         XML->QueryUIntValue(Entry, "Hardness", "Int", Hardness);
+        XML->QueryTextValue(Entry, "MatGloss", "label", &MatGloss);
 
         XML->QueryUIntArray(Entry, "TileValues", "Tile", "Int", &TileTypes);
 

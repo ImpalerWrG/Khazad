@@ -63,21 +63,24 @@ public:
 
     MaterialData();
     ~MaterialData();
+
     bool Load(TiXmlElement* Element, Uint32 Index);
     bool PostProcessing();
 
     Uint16 getTexture() { return TextureID; }
     Uint16 getHardness() { return Hardness; }
 
+    string getMatGloss() { return MatGloss; }
+
     std::vector<Uint16> TileTypes;
 
 protected:
 
     string TextureLabel;
+    string MatGloss;
 
     Uint32 TextureID;
     Uint16 Hardness;
-
 };
 
 #endif // DATATYPE__HEADER

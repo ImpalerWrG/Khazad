@@ -30,7 +30,7 @@ bool TextureManager::Init()
     //ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 
     // Load the terrain Textures
-    for(int i = 0; i < DATA->getNumTextures(); ++i)
+    for(Uint32 i = 0; i < DATA->getNumTextures(); ++i)
     {
         ILuint TextureImage = IMAGE->loadImage(DATA->getTextureData(i)->getPath(), false);
 
@@ -74,11 +74,7 @@ ILuint TextureManager::loadTextureSingular(char* filepath, bool ColorKey)
     printf("Loading Image file: %s\n", filepath);
     ilLoadImage(filepath);
 
-    ILenum Error;
-    while ((Error = ilGetError()) != IL_NO_ERROR)
-    {
-        printf("DevIL Error %d: %s\n", Error, iluErrorString(Error));
-    }
+    ReportDevILErrors();
     //ilConvertImage(IL_BGRA, IL_UNSIGNED_BYTE);
     // Perhapse re-size image?
 

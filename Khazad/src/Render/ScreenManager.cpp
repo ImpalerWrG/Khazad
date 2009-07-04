@@ -497,7 +497,7 @@ void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, CameraO
 
             TargetCell->Draw(Orientation);
 
-            //glColor3f(1.0, 1.0, 1.0);
+            glColor3f(1.0, 1.0, 1.0);
 
         glEnd();
 
@@ -627,9 +627,10 @@ void ScreenManager::PrintDebugging()
             Designation = df_map->getDesignations(x, y, z);
             Ocupancy = df_map->getOccupancies(x, y, z);
             BiomeOffset = df_map->getBiome(x, y, z);
-            matgloss =  df_map->getMaterialString ( x, y, z);
-            Geolayer =  df_map->getGeolayerIndex ( x, y, z);
-            building = df_map->getBuilding ( x,  y,  z);
+            matgloss = df_map->getMaterialString(x, y, z);
+            Geolayer = df_map->getGeolayerIndex(x, y, z);
+            veinMatgloss = df_map->getMaterialIndex(x, y, z);
+            building = df_map->getBuilding(x, y, z);
         }
         df_map->getRegionCoords (region_x,region_y,region_z);
 
@@ -676,7 +677,7 @@ void ScreenManager::PrintDebugging()
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 /*
-        sprintf (buffer, "biome %i, layer %i, vein: %s", Biome, Geolayer, matgloss.c_str());
+        sprintf (buffer, "biome %i, layer %i, vein: %s #%i", Biome, Geolayer, matgloss.c_str(), veinMatgloss);
 
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;

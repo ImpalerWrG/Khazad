@@ -491,7 +491,7 @@ void DfMap::getGeoRegion (int x, int y, int z, int& geoX, int& geoY)
 }
 
 // this is what the vein structures say it is
-Uint16 DfMap::getMaterialIndex (int x, int y, int z)
+Sint16 DfMap::getMaterialIndex (int x, int y, int z)
 {
     assert(CheckBounds);
 
@@ -527,6 +527,19 @@ string DfMap::getMaterialString (int x, int y, int z)
     }
     string fallback = "UNKNOWN";
     return fallback;
+}
+
+Uint16 DfMap::getNumStoneMatGloss()
+{
+    return stone_matgloss.size();
+}
+
+string DfMap::getStoneMatGlossString(Uint16 Index)
+{
+    if(Index < stone_matgloss.size())
+    {
+        return stone_matgloss[Index];
+    }
 }
 
 // matgloss part of the designation

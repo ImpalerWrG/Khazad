@@ -31,7 +31,7 @@ public:
     Face* getFace(Sint32 X, Sint32 Y, Sint32 Z, Facet FaceType);
 
     void InitilizeTilePicker();
-    Uint32 PickTexture(int TileType);
+    Uint32 PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ);
 
     void BuildVertexArray();
 
@@ -92,6 +92,7 @@ protected:
 	Column*** ColumnMatrix;
 
 	Uint16 TilePicker[600];
+	Sint16* StoneMatGloss;
 
 	Uint32 CellCount;
     Uint32 CubeCount;

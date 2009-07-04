@@ -128,4 +128,12 @@
 		<Name Label="TEXTURE_OBSIDIAN"/>
 		<File Path="Assets\\Textures\\obsidian.png"/>
 	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_OLIVINE"/>
+		<File Path="Assets\\Textures\\Olivine.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_KIMBERLITE"/>
+		<File Path="Assets\\Textures\\Kimberlite.png"/>
+	</Texture>
 </Textures>

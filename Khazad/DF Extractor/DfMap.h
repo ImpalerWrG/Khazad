@@ -92,7 +92,7 @@ union t_occupancy
 
 class Block
 {
-    public:
+public:
     // where does the Block come from?
     Uint32 origin;
     // generic tile type. determines how the tile behaves ingame
@@ -127,9 +127,11 @@ class Block
 class DfMap
 {
 private:
+
     Block **block;
     Uint32 blocks_read;
     bool valid;
+
     Uint32 regionX;
     Uint32 regionY;
     Uint32 regionZ;
@@ -137,12 +139,16 @@ private:
     void allocBlockArray(int x,int y, int z);
     void updateCellCount();
     Uint32 getBlocksCount() const { return blocks_read; }
+
 public:
+
     DfMap();
     DfMap(Uint32 x, Uint32 y, Uint32 z);
     DfMap(string file_name);
     ~DfMap();
 
+    Uint16 getNumStoneMatGloss();
+    string getStoneMatGlossString(Uint16 Index);
     vector<string> stone_matgloss;
 
     bool isValid();
@@ -156,6 +162,7 @@ public:
     Block* getBlock(int x, int y, int z);
     Block* allocBlock(int x, int y, int z);
     bool   deallocBlock(int x, int y, int z);
+
     unsigned x_block_count, y_block_count, z_block_count; // block count
     unsigned x_cell_count, y_cell_count, z_cell_count;    // cell count
 
@@ -174,7 +181,7 @@ public:
     int getOccupancies(int x, int y, int z);
 
     // get tile material
-    Uint16 getMaterialIndex (int x, int y, int z);
+    Sint16 getMaterialIndex (int x, int y, int z);
     string getMaterialString (int x, int y, int z);
 
     // get coords of region used for materials
@@ -207,8 +214,6 @@ public:
     bool isMagma (int x, int y, int z);
 
     int getLiquidLevel(int x, int y, int z);
-
-
 };
 
 
