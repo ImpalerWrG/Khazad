@@ -104,4 +104,8 @@
 		<Name Label="TEXTURE_VEINS"/>
 		<File Path="Assets\\Textures\\Veins.png"/>
 	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_CRYSTALLIC"/>
+		<File Path="Assets\\Textures\\crystallic.png"/>
+	</Texture>
 </Textures>

@@ -9,11 +9,11 @@
 		<Channels Red="192" Green="192" Blue="192"/>
 	</Color>
 	<Color>
-		<Name Label="COLOR_DARK_GREY"/>
+		<Name Label="COLOR_LIGHT_GREY"/>
 		<Channels Red="128" Green="128" Blue="128"/>
 	</Color>
 	<Color>
-		<Name Label="COLOR_LIGHT_GREY"/>
+		<Name Label="COLOR_DARK_GREY"/>
 		<Channels Red="64" Green="64" Blue="64"/>
 	</Color>
 	<Color>
@@ -23,6 +23,18 @@
 	<Color>
 		<Name Label="COLOR_RED"/>
 		<Channels Red="255" Green="0" Blue="0"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_DARK_RED"/>
+		<Channels Red="80" Green="0" Blue="0"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_DARK_ORANGE"/>
+		<Channels Red="191" Green="104" Blue="32"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_ORANGE"/>
+		<Channels Red="255" Green="128" Blue="0"/>
 	</Color>
 	<Color>
 		<Name Label="COLOR_LIME"/>
@@ -58,7 +70,11 @@
 	</Color>
 	<Color>
 		<Name Label="COLOR_OLIVE"/>
-		<Channels Red="128" Green="128" Blue="0"/>
+		<Channels Red="95" Green="124" Blue="16"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_OLIVE_LIGHT"/>
+		<Channels Red="191" Green="194" Blue="137"/>
 	</Color>
 	<Color>
 		<Name Label="COLOR_PURPLE"/>

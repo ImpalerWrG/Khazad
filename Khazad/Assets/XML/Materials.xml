@@ -631,7 +631,7 @@
 	<Material>
 		<Name Label="MATERIAL_GYPSUM"/>
 		<Texture label="TEXTURE_ROUGH"/>
-		<PrimaryColor label="COLOR_YELLOW"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 		<MatGloss label="GYPSUM"/>
 	</Material>
@@ -694,7 +694,7 @@
 	<Material>
 		<Name Label="MATERIAL_REALGAR"/>
 		<Texture label="TEXTURE_ROUGH"/>
-		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<PrimaryColor label="COLOR_DARK_RED"/>
 		<SecondaryColor label="COLOR_RED"/>
 		<MatGloss label="REALGAR"/>
 	</Material>
@@ -807,7 +807,7 @@
 		<Name Label="MATERIAL_OLIVINE"/>
 		<Texture label="TEXTURE_ROUGH"/>
 		<PrimaryColor label="COLOR_OLIVE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_OLIVE_LIGHT"/>
 		<MatGloss label="OLIVINE"/>
 	</Material>
 	<Material>
@@ -840,9 +840,9 @@
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MICROCLINE"/>
-		<Texture label="TEXTURE_ROUGH"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_AQUA"/>
+		<Texture label="TEXTURE_CRYSTALLIC"/>
+		<PrimaryColor label="COLOR_TEAL"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<MatGloss label="MICROCLINE"/>
 	</Material>
 	<Material>
@@ -897,8 +897,8 @@
 	<Material>
 		<Name Label="MATERIAL_ALUNITE"/>
 		<Texture label="TEXTURE_ROUGH"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_YELLOW"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<MatGloss label="ALUNITE"/>
 	</Material>
 	<Material>
@@ -907,5 +907,33 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_AQUA"/>
 		<MatGloss label="RAW_ADAMANTINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SANDY_CLAY_LOAM"/>
+		<Texture label="TEXTURE_DIRT"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<MatGloss label="SANDY_CLAY_LOAM"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAND_YELLOW"/>
+		<Texture label="TEXTURE_SAND"/>
+		<PrimaryColor label="COLOR_YELLOW"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="SAND_YELLOW"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAND_RED"/>
+		<Texture label="TEXTURE_SAND"/>
+		<PrimaryColor label="COLOR_RED"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="SAND_RED"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAND_BLACK"/>
+		<Texture label="TEXTURE_SAND"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<MatGloss label="SAND_BLACK"/>
 	</Material>
 </Materials>
