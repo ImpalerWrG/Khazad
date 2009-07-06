@@ -22,10 +22,13 @@ DataManager::~DataManager()
 
 bool DataManager::Init()
 {
+    Path color_xml = "Assets\\XML\\Colors.xml";
     Path texture_xml = "Assets\\XML\\Textures.xml";
     Path font_xml = "Assets\\XML\\Fonts.xml";
     Path material_xml = "Assets\\XML\\Materials.xml";
+
     // Initial loading of all XML files
+    LoadDataClass(&Colors, color_xml, "Color");
     LoadDataClass(&Textures, texture_xml, "Texture");
     LoadDataClass(&Fonts, font_xml, "Font");
     LoadDataClass(&Materials, material_xml, "Material");

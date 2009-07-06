@@ -22,24 +22,13 @@ public:
 	~TextureManager();
 	bool Init();
 
-	std::vector<ImagePage*> ImageLibrary;
-	std::vector<ClipImage*> ClipLibrary;
-	std::vector<GLuint> SingularTextureLibrary;
-	std::vector<GLuint**> PagedTextureLibrary;
-
-	std::vector<ILuint> DevilImageVector;
-
-	std::vector<SDL_Rect> TextureCordinates;
-
-	SDL_Surface* loadSurface(char* filepath, bool ColorKey = false);
-
-	ILuint loadTextureSingular(char* filepath, bool ColorKey = false);
-
-	void loadTexturePaged(char* filepath, int cliphight, int clipwidth, int rows, int columns, bool ColorKey = false, bool bmp = false);
+    void ApplyBorder(Uint8* ImageData, Uint32 width, Uint32 height, Uint32 bpp, Uint8 Red, Uint8 Green, Uint8 Blue);
     void MergeTextures();
 
     int round(double x);
     int nextpoweroftwo(int x);
+
+    ILuint GenerateMaterialTexture(Uint16 MaterialID);
 
     GLuint getAggragateTexture()        { return MainTexture; }
     Uint16 getTextureCount()            { return TextureCordinates.size(); }
@@ -50,6 +39,14 @@ public:
     void ReportDevILErrors();
 
 protected:
+
+	std::vector<ImagePage*> ImageLibrary;
+	std::vector<ClipImage*> ClipLibrary;
+	std::vector<GLuint> SingularTextureLibrary;
+	std::vector<GLuint**> PagedTextureLibrary;
+
+	std::vector<ILuint> DevilImageVector;
+	std::vector<SDL_Rect> TextureCordinates;
 
     bool isFileEnding(const char* FilePath, const char* Ending);
 

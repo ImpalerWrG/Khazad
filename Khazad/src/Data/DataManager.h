@@ -59,6 +59,9 @@ public:
         return true;
     }
 
+    ColorData* getColorData(Uint32 Index)               { return Colors[Index]; }
+    Uint32 getNumColors()                               { return Colors.size(); }
+
     TextureData* getTextureData(Uint32 Index)           { return Textures[Index]; }
     Uint32 getNumTextures()                             { return Textures.size(); }
 
@@ -77,6 +80,7 @@ protected:
 
     // ADD New Data classes Here
 
+    std::vector<ColorData*> Colors;
     std::vector<TextureData*> Textures;
     std::vector<FontData*> Fonts;
     std::vector<MaterialData*> Materials;

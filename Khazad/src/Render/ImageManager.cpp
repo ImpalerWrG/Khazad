@@ -31,16 +31,34 @@ ILuint ImageManager::loadImage(char* filepath, bool ColorKey)
     printf("Loading Image file: %s\n", filepath);
     ilLoadImage(filepath);
 
+    /*
+    IL_RGB
+    IL_RGBA
+    IL_BGR
+    IL_BGRA
+    IL_LUMINANCE
+    IL_COLOUR_INDEX
+
+
+    IL_BYTE
+    IL_UNSIGNED_BYTE
+    IL_SHORT
+    IL_UNSIGNED_SHORT
+    IL_INT
+    IL_UNSIGNED_INT
+    IL_FLOAT
+    IL_DOUBLE
+    */
+
+
+    ilConvertImage(IL_LUMINANCE, IL_UNSIGNED_BYTE);
+
     if(ColorKey)
     {
         //convert color key
     }
 
-    ILenum Error;
-    while ((Error = ilGetError()) != IL_NO_ERROR)
-    {
-        printf("DevIL Error %d: %s\n", Error, iluErrorString(Error));
-    }
+    ReportDevILErrors();
     return ImageID;
 }
 
@@ -115,4 +133,13 @@ SDL_Surface* ImageManager::loadSurface(char* filepath, bool ColorKey)
 		return NULL;
 	}
 	return NULL;
+}
+
+void ImageManager::ReportDevILErrors()
+{
+    ILenum Error;
+    while ((Error = ilGetError()) != IL_NO_ERROR)
+    {
+        printf("DevIL Error %d: %s\n", Error, iluErrorString(Error));
+    }
 }

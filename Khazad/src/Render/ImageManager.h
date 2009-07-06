@@ -27,6 +27,7 @@ public:
 	void loadClippedSurface(char* filepath, int cliphight, int clipwidth, int rows, int columns, bool ColorKey = false);
 	ClipImage* loadSingleSurface(char* filepath, bool ColorKey = false);
 
+    void ReportDevILErrors();
     SDL_Surface* loadSurface(char* filepath, bool ColorKey = false);
 
     ILuint loadImage(char* filepath, bool ColorKey = false);

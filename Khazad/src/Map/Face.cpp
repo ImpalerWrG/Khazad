@@ -47,7 +47,7 @@ bool Face::Init(Facet Type, Uint16 MaterialType)
 	FacetType = Type;
 	Visible = true;
 	Material = MaterialType;
-	Texture = DATA->getMaterialData(Material)->getTexture();
+	Texture = Material; //DATA->getMaterialData(Material)->getTexture();
 
     MAP->ChangeInitedFaceCount(1);
 

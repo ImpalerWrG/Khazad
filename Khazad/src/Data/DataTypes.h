@@ -21,22 +21,25 @@ protected:
     string Name;
 };
 
-class FontData: public DataBase
+class ColorData: public DataBase
 {
 
 public:
 
-    FontData();
-    ~FontData();
+    ColorData();
+    ~ColorData();
+
     bool Load(TiXmlElement* Element, Uint32 Index);
 
-    Path getPath()    { return sPath; }
-    Uint16 getSize()  { return Size; }
+    Uint8 getRed()      { return Red; }
+    Uint8 getGreen()    { return Green; }
+    Uint8 getBlue()     { return Blue; }
 
 protected:
 
-    Path sPath;
-    Uint16 Size;
+    Uint8 Red;
+    Uint8 Green;
+    Uint8 Blue;
 };
 
 class TextureData: public DataBase
@@ -55,7 +58,6 @@ protected:
     Path sPath;
 };
 
-
 class MaterialData: public DataBase
 {
 
@@ -67,7 +69,10 @@ public:
     bool Load(TiXmlElement* Element, Uint32 Index);
     bool PostProcessing();
 
-    Uint16 getTexture() { return TextureID; }
+    Uint16 getTexture()         { return TextureID; }
+    Uint16 getPrimaryColor()    { return PrimaryColorID; }
+    Uint16 getSecondaryColor()  { return SecondaryColorID; }
+
     Uint16 getHardness() { return Hardness; }
 
     string getMatGloss() { return MatGloss; }
@@ -77,10 +82,33 @@ public:
 protected:
 
     string TextureLabel;
+    string PrimaryColorLabel;
+    string SecondaryColorLabel;
     string MatGloss;
 
     Uint32 TextureID;
+    Uint32 PrimaryColorID;
+    Uint32 SecondaryColorID;
+
     Uint16 Hardness;
+};
+
+class FontData: public DataBase
+{
+
+public:
+
+    FontData();
+    ~FontData();
+    bool Load(TiXmlElement* Element, Uint32 Index);
+
+    Path getPath()    { return sPath; }
+    Uint16 getSize()  { return Size; }
+
+protected:
+
+    Path sPath;
+    Uint16 Size;
 };
 
 #endif // DATATYPE__HEADER

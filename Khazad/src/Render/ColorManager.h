@@ -5,6 +5,13 @@
 
 #include <Singleton.h>
 
+struct Color
+{
+    Uint8 Red;
+    Uint8 Green;
+    Uint8 Blue;
+};
+
 static const SDL_Color WHITE = {255, 255, 255};
 static const SDL_Color BLACK = {0, 0, 0};
 
@@ -23,7 +30,7 @@ public:
 	~ColorManager();
 	bool Init();
 
-	std::vector<SDL_Color*> ColorLibrary;
+	std::vector<Color> ColorLibrary;
 
 };
 

@@ -38,7 +38,7 @@ bool Slope::Init(Cube* NewOwner, Slopping Type)
     SetSlopeType(Type);
 
     Material = Owner->getMaterial();
-	Texture = DATA->getMaterialData(Material)->getTexture();
+	Texture = Material; //DATA->getMaterialData(Material)->getTexture();
 
     MAP->ChangeInitedSlopeCount(1);
 }

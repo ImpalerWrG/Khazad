@@ -29,18 +29,6 @@
 		<File Path="Assets\\Textures\\grass.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_STONE"/>
-		<File Path="Assets\\Textures\\stone.png"/>
-	</Texture>
-	<Texture>
-		<Name Label="TEXTURE_WATER"/>
-		<File Path="Assets\\Textures\\water.png"/>
-	</Texture>
-	<Texture>
-		<Name Label="TEXTURE_LAVA"/>
-		<File Path="Assets\\Textures\\lava.png"/>
-	</Texture>
-	<Texture>
 		<Name Label="TEXTURE_BRICK"/>
 		<File Path="Assets\\Textures\\Brick.png"/>
 	</Texture>
@@ -53,32 +41,12 @@
 		<File Path="Assets\\Textures\\nehe.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_DETAILED_FLOOR"/>
-		<File Path="Assets\\Textures\\floor_detailed.png"/>
-	</Texture>
-	<Texture>
-		<Name Label="TEXTURE_BOARDS"/>
-		<File Path="Assets\\Textures\\Boards.png"/>
-	</Texture>
-	<Texture>
-		<Name Label="TEXTURE_STONE_WALL"/>
-		<File Path="Assets\\Textures\\StoneWall.png"/>
-	</Texture>
-	<Texture>
-		<Name Label="TEXTURE_SOIL"/>
-		<File Path="Assets\\Textures\\soil.png"/>
-	</Texture>
-	<Texture>
 		<Name Label="TEXTURE_SAND"/>
 		<File Path="Assets\\Textures\\Sand.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_COBBLESTONE"/>
 		<File Path="Assets\\Textures\\Cobblestone.png"/>
-	</Texture>
-	<Texture>
-		<Name Label="TEXTURE_DRY_GRASS"/>
-		<File Path="Assets\\Textures\\grass_dry.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_SHRUB"/>
@@ -89,20 +57,12 @@
 		<File Path="Assets\\Textures\\Bark.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_POOL"/>
-		<File Path="Assets\\Textures\\pool.png"/>
-	</Texture>
-	<Texture>
-		<Name Label="TEXTURE_ROUGH_STONE"/>
-		<File Path="Assets\\Textures\\RawStone.png"/>
-	</Texture>
-	<Texture>
 		<Name Label="TEXTURE_BOULDER"/>
 		<File Path="Assets\\Textures\\boulder.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_METAL"/>
-		<File Path="Assets\\Textures\\metal.png"/>
+		<Name Label="TEXTURE_MATT"/>
+		<File Path="Assets\\Textures\\Matt.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_DIRT"/>
@@ -118,22 +78,30 @@
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_CONSTRUCTED_WALL"/>
-		<File Path="Assets\\Textures\\constructed_wall.png"/>
+		<File Path="Assets\\Textures\\Construction.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_PIT"/>
 		<File Path="Assets\\Textures\\Pit.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_OBSIDIAN"/>
-		<File Path="Assets\\Textures\\obsidian.png"/>
+		<Name Label="TEXTURE_ROUGH"/>
+		<File Path="Assets\\Textures\\Rough.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_OLIVINE"/>
-		<File Path="Assets\\Textures\\Olivine.png"/>
+		<Name Label="TEXTURE_SMOOTH"/>
+		<File Path="Assets\\Textures\\Smooth.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_KIMBERLITE"/>
-		<File Path="Assets\\Textures\\Kimberlite.png"/>
+		<Name Label="TEXTURE_LIQUID"/>
+		<File Path="Assets\\Textures\\Liquid.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_TILES"/>
+		<File Path="Assets\\Textures\\Tiles.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_VEINS"/>
+		<File Path="Assets\\Textures\\Veins.png"/>
 	</Texture>
 </Textures>
