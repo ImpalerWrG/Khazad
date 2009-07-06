@@ -3,7 +3,7 @@
 
 #include <Process.h>
 
-/// TODO: dangerous, there's no sync between our vectors and the in-game ones. do not reuse.
+/// dangerous, there's no sync between our vectors and the in-game ones. do not reuse.
 class DfVector
 {
 private:

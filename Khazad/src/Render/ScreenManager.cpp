@@ -636,20 +636,20 @@ void ScreenManager::PrintDebugging()
 
         SDL_Rect position;
         position.x = 10;
-        position.y = 120;
+        position.y = 160;
 
         sprintf (buffer, "Cordinates: x%i y%i z%i", x, y, z);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 
-        /*
+
         Block* TargetBlock = df_map->getBlock(x / 16, y / 16, z);
         if(TargetBlock != NULL)
         {
             sprintf (buffer, "Block offset: 0x%X", TargetBlock->origin);
             SCREEN->RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
-        }*/
+        }
 
         sprintf (buffer, "Tile: %i", TileType);
         SCREEN->RenderText(buffer, 0, WHITE, &position);

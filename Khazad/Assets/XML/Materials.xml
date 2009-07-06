@@ -10,17 +10,25 @@
 		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_GRASS"/>
+		<Name Label="MATERIAL_GRASS1"/>
 		<Texture label="TEXTURE_GRASS"/>
 		<PrimaryColor label="COLOR_GREEN"/>
 		<SecondaryColor label="COLOR_DARK_GREEN"/>
 		<TileValues>
 			<Tile Int="235"/>
-			<Tile Int="236"/>
 			<Tile Int="348"/>
 			<Tile Int="349"/>
 			<Tile Int="350"/>
 			<Tile Int="351"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRASS2"/>
+		<Texture label="TEXTURE_GRASS"/>
+		<PrimaryColor label="COLOR_GREEN"/>
+		<SecondaryColor label="COLOR_DARKER_GREEN"/>
+		<TileValues>
+			<Tile Int="236"/>
 			<Tile Int="398"/>
 			<Tile Int="399"/>
 			<Tile Int="400"/>
