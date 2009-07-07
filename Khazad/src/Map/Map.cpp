@@ -434,22 +434,64 @@ Uint32 Map::PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ)
 {
     DfMap *df_map = EXTRACT->getMap();
     Sint16 StoneType = df_map->getMaterialIndex(MapX, MapY, MapZ);
+    Sint16 TileType = df_map->getTileType(MapX, MapY, MapZ);
+
+    Uint16 TileTexture = TilePicker[TileType];
+    Uint16 MatGlossTexture = StoneMatGloss[StoneType];
+
+    bool IsFloor = df_map->isFloorTerrain(TileType);
+    bool IsWall = df_map->isWallTerrain(TileType);
+    //bool IsOpen = df_map->isOpenTerrain(TileType);
+    bool IsRamp = df_map->isRampTerrain(TileType);
+    bool IsStairs = df_map->isStairTerrain(TileType);
+
+    static Uint16 Sand = DATA->getLabelIndex("MATERIAL_SAND");
+    static Uint16 Stone = DATA->getLabelIndex("MATERIAL_ROUGH_STONE");
+    static Uint16 Ramp = DATA->getLabelIndex("MATERIAL_RAMP_STONE");
+    static Uint16 LavaStone = DATA->getLabelIndex("MATERIAL_OBSIDIAN");
+    static Uint16 Unknown = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
 
     if(StoneType != -1)
     {
-        if(StoneMatGloss[StoneType] != DATA->getLabelIndex("MATERIAL_UNINITIALIZED"))
+        if(IsFloor && (TileTexture == Sand || TileTexture == Stone))
         {
-            return StoneMatGloss[StoneType];
+            if(MatGlossTexture != Unknown)
+            {
+                return MatGlossTexture;
+            }
+        }
+
+        if(IsRamp && TileTexture == Ramp)
+        {
+            if(MatGlossTexture != Unknown)
+            {
+                return MatGlossTexture;
+            }
+        }
+
+        if(IsWall)
+        {
+            if(TileTexture == LavaStone)
+            {
+                return TileTexture;
+            }
+            else
+            {
+                if(MatGlossTexture == Unknown)
+                {
+                    return TileTexture;
+                }
+                return MatGlossTexture;
+            }
         }
     }
 
-    Sint16 TileType = df_map->getTileType(MapX, MapY, MapZ);
     if(TileType != -1)
     {
-        return TilePicker[TileType];
+        return TileTexture;
     }
 
-    return DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
+    return Unknown;
 }
 
 void Map::BuildVertexArray()

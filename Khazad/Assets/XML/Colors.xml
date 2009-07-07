@@ -85,10 +85,6 @@
 		<Channels Red="0" Green="128" Blue="128"/>
 	</Color>
 	<Color>
-		<Name Label="COLOR_DARK_GREEN"/>
-		<Channels Red="0" Green="64" Blue="0"/>
-	</Color>
-	<Color>
 		<Name Label="COLOR_DARKER_GREEN"/>
 		<Channels Red="0" Green="30" Blue="0"/>
 	</Color>
@@ -97,7 +93,43 @@
 		<Channels Red="102" Green="61" Blue="41"/>
 	</Color>
 	<Color>
+		<Name Label="COLOR_ROYAL_BLUE"/>
+		<Channels Red="0" Green="0" Blue="192"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_SALMON"/>
+		<Channels Red="255" Green="128" Blue="128"/>
+	</Color>
+	<Color>
 		<Name Label="COLOR_PINK"/>
-		<Channels Red="64" Green="0" Blue="0"/>
+		<Channels Red="255" Green="192" Blue="192"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_ORANGE"/>
+		<Channels Red="255" Green="128" Blue="0"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_FOREST_GREEN"/>
+		<Channels Red="0" Green="64" Blue="0"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_PEACH"/>
+		<Channels Red="255" Green="192" Blue="128"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_LEATHER"/>
+		<Channels Red="128" Green="64" Blue="0"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_LAVENDER"/>
+		<Channels Red="128" Green="64" Blue="128"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_RED_ORANGE"/>
+		<Channels Red="255" Green="64" Blue="0"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_TAN"/>
+		<Channels Red="210" Green="180" Blue="140"/>
 	</Color>
 </Colors>

@@ -108,4 +108,24 @@
 		<Name Label="TEXTURE_CRYSTALLIC"/>
 		<File Path="Assets\\Textures\\crystallic.png"/>
 	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_SWIRLY"/>
+		<File Path="Assets\\Textures\\Swirly.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_CLAY"/>
+		<File Path="Assets\\Textures\\Clay.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_BANDED"/>
+		<File Path="Assets\\Textures\\Banded.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_IGNEOUS_INTRUSIVE"/>
+		<File Path="Assets\\Textures\\IgneousIntrusive.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+		<File Path="Assets\\Textures\\IgneousExtrusive.png"/>
+	</Texture>
 </Textures>
