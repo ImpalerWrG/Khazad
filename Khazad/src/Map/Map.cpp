@@ -450,47 +450,24 @@ Uint32 Map::PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ)
     static Uint16 Ramp = DATA->getLabelIndex("MATERIAL_RAMP_STONE");
     static Uint16 LavaStone = DATA->getLabelIndex("MATERIAL_OBSIDIAN");
     static Uint16 Unknown = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
-
-    if(StoneType != -1)
+    static Uint16 Vein = DATA->getLabelIndex("MATERIAL_VEIN_STONE");
+    static Uint16 VeinFloor = DATA->getLabelIndex("MATERIAL_VEIN_STONE_FLOOR");
+    static Uint16 Soil = DATA->getLabelIndex("MATERIAL_SOIL");
+    // use matgloss for textures on some *very* specific tile types
+    if(TileTexture == Vein || TileTexture == VeinFloor || TileTexture == Soil || TileTexture == Sand)
     {
-        if(IsFloor && (TileTexture == Sand || TileTexture == Stone))
+        // and only if it's properly defined
+        if(MatGlossTexture != Unknown)
         {
-            if(MatGlossTexture != Unknown)
-            {
-                return MatGlossTexture;
-            }
-        }
-
-        if(IsRamp && TileTexture == Ramp)
-        {
-            if(MatGlossTexture != Unknown)
-            {
-                return MatGlossTexture;
-            }
-        }
-
-        if(IsWall)
-        {
-            if(TileTexture == LavaStone)
-            {
-                return TileTexture;
-            }
-            else
-            {
-                if(MatGlossTexture == Unknown)
-                {
-                    return TileTexture;
-                }
-                return MatGlossTexture;
-            }
+            return MatGlossTexture;
         }
     }
-
+    // use tile texture otherwise
     if(TileType != -1)
     {
         return TileTexture;
     }
-
+    // fallback for undefined values of tile types and matgloss
     return Unknown;
 }
 

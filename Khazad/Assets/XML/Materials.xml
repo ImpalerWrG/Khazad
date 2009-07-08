@@ -187,6 +187,14 @@
 		<SecondaryColor label="COLOR_BLACK"/>
 		<TileValues>
 			<Tile Int="2"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SOIL"/>
+		<Texture label="TEXTURE_DIRT"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<TileValues>
 			<Tile Int="261"/>
 			<Tile Int="265"/>
 		</TileValues>
@@ -205,7 +213,7 @@
 		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_PEPPLES"/>
+		<Name Label="MATERIAL_PEBBLES"/>
 		<Texture label="TEXTURE_COBBLESTONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
@@ -225,7 +233,7 @@
 		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_MIN_STONE"/>
+		<Name Label="MATERIAL_VEIN_STONE"/>
 		<Texture label="TEXTURE_MATT"/>
 		<PrimaryColor label="COLOR_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
@@ -341,7 +349,7 @@
 		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_MIN_STONE_FLOOR"/>
+		<Name Label="MATERIAL_VEIN_STONE_FLOOR"/>
 		<Texture label="TEXTURE_MATT"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_BLACK"/>
