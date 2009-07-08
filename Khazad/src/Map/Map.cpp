@@ -453,8 +453,19 @@ Uint32 Map::PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ)
     static Uint16 Vein = DATA->getLabelIndex("MATERIAL_VEIN_STONE");
     static Uint16 VeinFloor = DATA->getLabelIndex("MATERIAL_VEIN_STONE_FLOOR");
     static Uint16 Soil = DATA->getLabelIndex("MATERIAL_SOIL");
+    static Uint16 Layer1 = DATA->getLabelIndex("MATERIAL_ROUGH_LAYER_STONE");
+    static Uint16 Layer2 = DATA->getLabelIndex("MATERIAL_SMOOTH_LAYER_STONE");
+    static Uint16 Layer3 = DATA->getLabelIndex("MATERIAL_ROUGH_STONE");
+
     // use matgloss for textures on some *very* specific tile types
-    if(TileTexture == Vein || TileTexture == VeinFloor || TileTexture == Soil || TileTexture == Sand)
+    if(TileTexture == Vein ||
+       TileTexture == VeinFloor ||
+       TileTexture == Soil ||
+       TileTexture == Sand ||
+       TileTexture == Layer1 ||
+       TileTexture == Layer2 ||
+       TileTexture == Layer3
+       )
     {
         // and only if it's properly defined
         if(MatGlossTexture != Unknown)
