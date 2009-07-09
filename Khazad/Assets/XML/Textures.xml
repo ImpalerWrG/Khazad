@@ -45,10 +45,6 @@
 		<File Path="Assets\\Textures\\Sand.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_COBBLESTONE"/>
-		<File Path="Assets\\Textures\\Cobblestone.png"/>
-	</Texture>
-	<Texture>
 		<Name Label="TEXTURE_SHRUB"/>
 		<File Path="Assets\\Textures\\Shrub.png"/>
 	</Texture>
@@ -98,7 +94,7 @@
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_TILES"/>
-		<File Path="Assets\\Textures\\Tiles.png"/>
+		<File Path="Assets\\Textures\\Tiles2.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_VEINS"/>
@@ -119,6 +115,26 @@
 	<Texture>
 		<Name Label="TEXTURE_BANDED"/>
 		<File Path="Assets\\Textures\\Banded.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_LAYERED"/>
+		<File Path="Assets\\Textures\\Layers.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_FOLIATED"/>
+		<File Path="Assets\\Textures\\Foliated.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_CONGLOMERATE"/>
+		<File Path="Assets\\Textures\\Conglomerate.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_CARBONATE"/>
+		<File Path="Assets\\Textures\\Carbonate.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_CUBIC"/>
+		<File Path="Assets\\Textures\\Cubic.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_IGNEOUS_INTRUSIVE"/>
