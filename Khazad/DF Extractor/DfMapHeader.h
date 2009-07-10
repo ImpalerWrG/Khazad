@@ -4,7 +4,7 @@
 #include <string>
 
 static const char dmh_id[] = "!!URIST!!";
-static const Uint8 dmh_ver = 1U;
+static const Uint8 dmh_ver = 2U;
 
 // a header for the DfMap structure
 // size:

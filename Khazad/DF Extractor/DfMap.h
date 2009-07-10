@@ -5,6 +5,7 @@
 
 #include <stdafx.h>
 #include <DataStructures.h>
+#include <DfMapHeader.h>
 
 enum BiomeOffset
 {
@@ -140,7 +141,9 @@ public:
     */
     Uint8 RegionOffsets[16];// idk if the length is right here
 };
-
+/**
+ * This class can load and save DF maps
+ */
 class DfMap
 {
 private:
@@ -153,14 +156,21 @@ private:
     void allocBlockArray(int x,int y, int z);
     void updateCellCount();
     Uint32 getBlocksCount() const { return blocks_read; }
-
+    bool loadVersion1(FILE * Decompressed,DfMapHeader & h);
+    bool loadVersion2(FILE * Decompressed,DfMapHeader & h);
+    bool writeVersion1(FILE * SaveFile);
+    bool writeVersion2(FILE * SaveFile);
 public:
 
-/// TODO: refactor needed. next 4 lines are the proof
+/// TODO: refactor *REALLY* needed. Time to go back to drawing board
+    void applyMatgloss(Block * b);
     Uint32 regionX;
     Uint32 regionY;
     Uint32 regionZ;
     vector<Uint16> geology[eBiomeCount];
+    vector<Uint32> geodebug[eBiomeCount];
+    Uint32 geoblockadresses[eBiomeCount];
+    Uint32 regionadresses[eBiomeCount];
 
     DfMap();
     DfMap(Uint32 x, Uint32 y, Uint32 z);
@@ -175,9 +185,6 @@ public:
     bool load(string FilePath);
     bool write(string FilePath);
     void clear();
-
-    // fix external indexes into df_map. HACK
-    void clamp(int &x,int &y, int &z);
 
     Block* getBlock(int x, int y, int z);
     Block* allocBlock(int x, int y, int z);
@@ -209,6 +216,11 @@ public:
 
     // matgloss part of the designation
     unsigned int getGeolayerIndex (int x, int y, int z);
+
+    // terrible
+    Uint32 getGeolayerAddress (int x, int y, int z);
+    Uint32 getGeoblockAddress (int x, int y, int z);
+    Uint32 getRegionAddress(int x, int y, int z);
 
     void getRegionCoords (int &x,int &y,int &z);
     void setRegionCoords (int x,int y,int z);

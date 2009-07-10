@@ -620,10 +620,13 @@ void ScreenManager::PrintDebugging()
         int region_x = 0;
         int region_y = 0;
         int region_z = 0;
+        int layerAddress = 0;
+        int gblockAddress = 0;
+        int regionAddress = 0;
 
         DfMap * df_map = EXTRACT->getMap();
-        if(!(HiddenDraw ^ df_map->isHidden( x, y, z)))
-        {
+        /*if(!(HiddenDraw ^ df_map->isHidden( x, y, z)))
+        {*/
             TileType = df_map->getTileType(x, y, z);
             Designation = df_map->getDesignations(x, y, z);
             Ocupancy = df_map->getOccupancies(x, y, z);
@@ -633,7 +636,10 @@ void ScreenManager::PrintDebugging()
             Geolayer = df_map->getGeolayerIndex(x, y, z);
             veinMatgloss = df_map->getMaterialIndex(x, y, z);
             building = df_map->getBuilding(x, y, z);
-        }
+            layerAddress = df_map->getGeolayerAddress(x,y,z);
+            gblockAddress = df_map->getGeoblockAddress( x,  y,  z);
+            regionAddress = df_map->getRegionAddress( x,  y,  z);
+        //}
         df_map->getRegionCoords (region_x,region_y,region_z);
 
         SDL_Rect position;
@@ -671,7 +677,7 @@ void ScreenManager::PrintDebugging()
         /// TODO: check bounds!
         int Xbio,Ybio;
         df_map->getGeoRegion(x,y,z,Xbio,Ybio);
-        sprintf (buffer, "georegion x:%d y:%d. b:%d, layer %i",Xbio,Ybio, BiomeOffset, Geolayer);
+        sprintf (buffer, "georegion x:%d y:%d. b:%d, layer %i, addr 0x%X, gaddr 0x%X, raddr 0x%X",Xbio,Ybio, BiomeOffset, Geolayer, layerAddress, gblockAddress, regionAddress);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 

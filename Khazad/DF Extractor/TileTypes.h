@@ -17,10 +17,6 @@ bool DfMap::isWallTerrain(int in)
         case 177: //stone wall worn2 (sorta worn)
         case 178: //stone wall worn3 (least worn)
         case 219: //stone wall (not worn)
-        case 258: //frozen liquid 1
-        case 259: //frozen liquid 2
-        case 260: //frozen liquid 3
-        case 262: //frozen liquid 0
         case 265: //soil wall
         case 269: //lavastone wall rd2
         case 270: //lavastone wall r2d
@@ -218,9 +214,14 @@ bool DfMap::isFloorTerrain(int in)
         case 242: //ash1
         case 243: //ash2
         case 244: //ash3
+        // frozen floors / ramps
         case 245: //ramp frozen liquid
+        case 258: //frozen liquid 1
+        case 259: //frozen liquid 2
+        case 260: //frozen liquid 3
+        case 262: //frozen liquid 0
         case 261: //furrowed soil [road?]
-        case 262: //Ice floor
+//        case 262: //Ice floor
         case 264: //Lava bottom of map
         case 336: //stone floor 1 (raw stone)
         case 337: //stone floor 2 (raw stone)

@@ -148,6 +148,8 @@ bool Extractor::dumpMemory()
                 Uint32 geoblock_off;
                 // get the geoblock from the geoblock vector using the geoindex
                 geoblocks.read(geoindex,(Uint8 *) &geoblock_off);
+                df_map->geoblockadresses[i]=geoblock_off;
+                df_map->regionadresses[i]=geoX + bioRY*region_size + region_geo_index_offset;
                 // get the layer pointer vector :D
                 DfVector geolayers = p->readVector(geoblock_off + geolayer_geoblock_offset , 4); // let's hope
                 // make sure we don't load crap
@@ -159,6 +161,7 @@ bool Extractor::dumpMemory()
                     geolayers.read(j, (Uint8 *) & geol_offset);
                     // read word at pointer + 2, store in our geology vectors
                     df_map->geology[i].push_back(p->readWord(geol_offset + 2));
+                    df_map->geodebug[i].push_back(geol_offset);
                 }
             }
             have_geology = true;
@@ -214,17 +217,13 @@ bool Extractor::dumpMemory()
                         // if we have geology, we can use the geolayers to determine materials
                         if(have_geology)
                         {
-                            // load layer matgloss
-                            for(int x_b = 0; x_b < BLOCK_SIZE; x_b++)
-                            {
-                                for(int y_b = 0; y_b < BLOCK_SIZE; y_b++)
-                                {
-                                    int geolayer = b->designation[x_b][y_b].bits.geolayer_index;
-                                    int biome = b->designation[x_b][y_b].bits.biome;
-                                    b->material[x_b][y_b] = df_map->geology[b->RegionOffsets[biome]][geolayer];
-                                }
-                            }
+                            df_map->applyMatgloss(b);
                         }
+                    }
+                    else
+                    {
+                        // can't load offsets, substitute local biome everywhere
+                        memset(b->RegionOffsets,eHere,sizeof(b->RegionOffsets));
                     }
                     // load veins from the game
                     if(veinvector && veinsize)

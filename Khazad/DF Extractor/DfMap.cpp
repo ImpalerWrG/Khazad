@@ -68,6 +68,13 @@ void DfMap::clear()
         }
         delete[] block;
     }
+    for (int i = eNorthWest; i< eBiomeCount;i++)
+    {
+        geology[i].clear();
+        geodebug[i].clear();
+        geoblockadresses[i] = 0;
+        regionadresses[i] = 0;
+    }
 }
 
 void DfMap::getRegionCoords (int &x,int &y,int &z)
@@ -106,48 +113,6 @@ DfMap::DfMap(Uint32 x, Uint32 y, Uint32 z)
     allocBlockArray(x,y,z);
 }
 
-// fix external indexes into df_map. HACK
-void DfMap::clamp(int &x,int &y, int &z)
-{
-    if(isValid())
-    {
-        if(x < 0)
-        {
-            fprintf(stderr,"clamp: X underflow prevented\n");
-            x = 0;
-        }
-        if(x >= x_cell_count)
-        {
-            fprintf(stderr,"clamp: X overflow prevented\n");
-            x = x_cell_count-1;
-        }
-        if(y < 0)
-        {
-            fprintf(stderr,"clamp: Y underflow prevented\n");
-            y = 0;
-        }
-        if(y >= y_cell_count)
-        {
-            fprintf(stderr,"clamp: Y overflow prevented\n");
-            y = y_cell_count-1;
-        }
-        if(z < 0)
-        {
-            fprintf(stderr,"clamp: Z underflow prevented\n");
-            z = 0;
-        }
-        if(z >= z_cell_count)
-        {
-            fprintf(stderr,"clamp: Z overflow prevented\n");
-            z = z_cell_count-1;
-        }
-    }
-    else
-    {
-        x = y = z = 0;
-    }
-}
-
 DfMap::DfMap(string FileName)
 {
     valid = false;
@@ -183,7 +148,160 @@ Block * DfMap::allocBlock (int x,int y,int z)
     return NULL;
 }
 
-///TODO: this should use streams and filters
+bool DfMap::writeVersion1(FILE * SaveFile)
+{
+    Uint32 x, y, z;
+
+    for (x = 0; x < x_block_count; x++ )
+    {
+        for (y = 0; y < y_block_count; y++ )
+        {
+            for (z = 0; z < z_block_count; z++ )
+            {
+                Block *b = getBlock(x,y,z);
+                if(b != NULL)
+                {
+                    // which block it is
+                    fwrite(&x, sizeof(Uint32), 1, SaveFile);
+                    fwrite(&y, sizeof(Uint32), 1, SaveFile);
+                    fwrite(&z, sizeof(Uint32), 1, SaveFile);
+                    // block data
+                    fwrite(&b->tile_type, sizeof(Uint16), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
+                    fwrite(&b->designation, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
+                    fwrite(&b->occupancy, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
+                }
+            }
+        }
+    }
+    return true;
+}
+bool DfMap::writeVersion2(FILE * SaveFile)
+{
+    /**
+    Uint32 x, y, z;
+    Uint32 temp, temp2;
+    Uint32 numveins;
+    Uint32 nummatgloss;
+    t_vein vein;
+    char buffer [256];
+    // load new size information
+    x_block_count = h.x_block_count;
+    y_block_count = h.y_block_count;
+    z_block_count = h.z_block_count;
+    // make sure those size variables are in sync
+    updateCellCount();
+    // alloc new space for our new size
+    allocBlockArray(x_block_count,y_block_count,z_block_count);
+
+    fseek(Decompressed, h.map_data_location, SEEK_SET);
+
+    // read matgloss vector
+    fread(&nummatgloss, sizeof(Uint32), 1, Decompressed);
+    ///FIXME: buffer overrun possible? probably not. but fix it anyway.
+    for(int i = 0; i< nummatgloss;i++)
+    {
+        fread(&temp, sizeof(Uint32), 1, Decompressed); // string length
+        fread(&buffer, sizeof(char), temp, Decompressed); // string
+        buffer[temp] = 0;
+        stone_matgloss.push_back(buffer);
+    }
+    // read region data known for version 2 format
+    for(int i = eNorthWest; i< eBiomeCount;i++)
+    {
+        fread(&temp, sizeof(Uint32), 1, Decompressed); // layer vector length
+        for(int j = 0; j < temp;j++) // load all geolayers into vectors (just 16bit matgloss indices)
+        {
+            fread(&temp2, sizeof(Uint16), 1, Decompressed);
+            geology[i].push_back(temp2);
+        }
+    }
+    // read blocks
+    for (Uint32 tile_block = 0U; tile_block < h.tile_block_count; ++tile_block)
+    {
+        fread(&x, sizeof(Uint32), 1, Decompressed);
+        fread(&y, sizeof(Uint32), 1, Decompressed);
+        fread(&z, sizeof(Uint32), 1, Decompressed);
+
+        Block * b = allocBlock(x,y,z);
+
+        fread(&b->tile_type, sizeof(b->tile_type), 1, Decompressed);
+        fread(&b->designation, sizeof(b->designation), 1, Decompressed);
+        fread(&b->occupancy, sizeof(b->occupancy), 1, Decompressed);
+        fread(&b->RegionOffsets,sizeof(b->RegionOffsets),1,Decompressed);
+        // load all veins of this block
+        fread(&numveins, sizeof(Uint32), 1, Decompressed);
+        if(nummatgloss)
+        {
+            //applyMatgloss(b);
+            for(int i = 0; i < numveins; i++)
+            {
+                fread(&vein,sizeof(t_vein),1,Decompressed);
+                b->veins.push_back(vein);
+            }
+            if(numveins)
+                b->collapseVeins();
+        }
+        //memset(b->material, -1, sizeof(b->material));
+        // can't load offsets, substitute local biome everywhere
+    }
+    */
+    Uint32 temp, temp2;
+    Uint32 x, y, z;
+    Uint32 numveins;
+    // write matgloss vector
+    Uint32 nummatgloss = stone_matgloss.size();
+    fwrite(&nummatgloss, sizeof(Uint32), 1, SaveFile);
+    for(int i = 0; i< nummatgloss;i++)
+    {
+        const char *saveme = stone_matgloss[i].c_str();
+        Uint32 length = stone_matgloss[i].size();
+        fwrite(&length, sizeof(Uint32),1,SaveFile);
+        fwrite(saveme, sizeof(char), length, SaveFile);
+    }
+    // write region data known for version 2 format
+    for(int i = eNorthWest; i< eBiomeCount;i++)
+    {
+        temp = geology[i].size();
+        fwrite(&temp, sizeof(Uint32), 1, SaveFile); // layer vector length
+        for(int j = 0; j < temp;j++) // write all geolayers (just 16bit matgloss indices)
+        {
+            temp2 = geology[i][j];
+            fwrite(&temp2, sizeof(Uint16), 1, SaveFile);
+        }
+    }
+    // write blocks
+    for (x = 0; x < x_block_count; x++ )
+    {
+        for (y = 0; y < y_block_count; y++ )
+        {
+            for (z = 0; z < z_block_count; z++ )
+            {
+                Block *b = getBlock(x,y,z);
+                if(b != NULL)
+                {
+                    // which block it is
+                    fwrite(&x, sizeof(Uint32), 1, SaveFile);
+                    fwrite(&y, sizeof(Uint32), 1, SaveFile);
+                    fwrite(&z, sizeof(Uint32), 1, SaveFile);
+                    // block data
+                    fwrite(&b->tile_type, sizeof(Uint16), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
+                    fwrite(&b->designation, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
+                    fwrite(&b->occupancy, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
+                    fwrite(&b->RegionOffsets, sizeof(b->RegionOffsets), 1, SaveFile);
+                    // write all veins
+                    numveins = b->veins.size();
+                    fwrite(&numveins, sizeof(Uint32), 1, SaveFile);
+                    for(int i = 0; i < numveins; i++)
+                    {
+                        fwrite(&b->veins[i],sizeof(t_vein),1,SaveFile);
+                    }
+                }
+            }
+        }
+    }
+    return true;
+}
+
 bool DfMap::write(string FilePath)
 {
     FILE *SaveFile;
@@ -208,31 +326,17 @@ bool DfMap::write(string FilePath)
 
         // save map header
         fwrite(&df_map_header, sizeof(DfMapHeader), 1, SaveFile);
-
-        Uint32 x, y, z;
-
-        for (x = 0; x < x_block_count; x++ )
+        switch(dmh_ver)
         {
-            for (y = 0; y < y_block_count; y++ )
-            {
-                for (z = 0; z < z_block_count; z++ )
-                {
-                    Block *b = getBlock(x,y,z);
-                    if(b != NULL)
-                    {
-                        // which block it is
-                        fwrite(&x, sizeof(Uint32), 1, SaveFile);
-                        fwrite(&y, sizeof(Uint32), 1, SaveFile);
-                        fwrite(&z, sizeof(Uint32), 1, SaveFile);
-                        // block data
-                        fwrite(&b->tile_type, sizeof(Uint16), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
-                        fwrite(&b->designation, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
-                        fwrite(&b->occupancy, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, SaveFile);
-                    }
-                }
-            }
+            case 1:
+                writeVersion1(SaveFile);
+                break;
+            case 2:
+                writeVersion2(SaveFile);
+                break;
         }
     }
+
 
     // reopen file for reading
     freopen (FilePath.c_str(),"rb",SaveFile);
@@ -280,6 +384,124 @@ void DfMap::updateCellCount()
     z_cell_count = z_block_count;
 }
 
+void DfMap::applyMatgloss(Block * b)
+{
+    // load layer matgloss
+    for(int x_b = 0; x_b < BLOCK_SIZE; x_b++)
+    {
+        for(int y_b = 0; y_b < BLOCK_SIZE; y_b++)
+        {
+            int geolayer = b->designation[x_b][y_b].bits.geolayer_index;
+            int biome = b->designation[x_b][y_b].bits.biome;
+            b->material[x_b][y_b] = geology[b->RegionOffsets[biome]][geolayer];
+        }
+    }
+}
+
+bool DfMap::loadVersion1(FILE * Decompressed,DfMapHeader & h)
+{
+    Uint32 x, y, z;
+    // load new size information
+    x_block_count = h.x_block_count;
+    y_block_count = h.y_block_count;
+    z_block_count = h.z_block_count;
+    // make sure those size variables are in sync
+    updateCellCount();
+    // alloc new space for our new size
+    allocBlockArray(x_block_count,y_block_count,z_block_count);
+
+    fseek(Decompressed, h.map_data_location, SEEK_SET);
+
+    for (Uint32 tile_block = 0U; tile_block < h.tile_block_count; ++tile_block)
+    {
+        fread(&x, sizeof(Uint32), 1, Decompressed);
+        fread(&y, sizeof(Uint32), 1, Decompressed);
+        fread(&z, sizeof(Uint32), 1, Decompressed);
+
+        Block * b = allocBlock(x,y,z);
+
+        fread(&b->tile_type, sizeof(b->tile_type), 1, Decompressed);
+        fread(&b->designation, sizeof(b->designation), 1, Decompressed);
+        fread(&b->occupancy, sizeof(b->occupancy), 1, Decompressed);
+        memset(b->material, -1, sizeof(b->material));
+        // can't load offsets, substitute local biome everywhere
+        memset(b->RegionOffsets,eHere,sizeof(b->RegionOffsets));
+    }
+
+    printf("Blocks read into memory: %d\n", h.tile_block_count);
+    return true;
+}
+bool DfMap::loadVersion2(FILE * Decompressed,DfMapHeader & h)
+{
+    Uint32 x, y, z;
+    Uint32 temp, temp2;
+    Uint32 numveins;
+    Uint32 nummatgloss;
+    t_vein vein;
+    char buffer [256];
+    // load new size information
+    x_block_count = h.x_block_count;
+    y_block_count = h.y_block_count;
+    z_block_count = h.z_block_count;
+    // make sure those size variables are in sync
+    updateCellCount();
+    // alloc new space for our new size
+    allocBlockArray(x_block_count,y_block_count,z_block_count);
+
+    fseek(Decompressed, h.map_data_location, SEEK_SET);
+
+    // read matgloss vector
+    fread(&nummatgloss, sizeof(Uint32), 1, Decompressed);
+    ///FIXME: buffer overrun possible? probably not. but fix it anyway.
+    for(int i = 0; i< nummatgloss;i++)
+    {
+        fread(&temp, sizeof(Uint32), 1, Decompressed); // string length
+        fread(&buffer, sizeof(char), temp, Decompressed); // string
+        buffer[temp] = 0;
+        stone_matgloss.push_back(buffer);
+    }
+    // read region data known for version 2 format
+    for(int i = eNorthWest; i< eBiomeCount;i++)
+    {
+        fread(&temp, sizeof(Uint32), 1, Decompressed); // layer vector length
+        for(int j = 0; j < temp;j++) // load all geolayers into vectors (just 16bit matgloss indices)
+        {
+            fread(&temp2, sizeof(Uint16), 1, Decompressed);
+            geology[i].push_back(temp2);
+        }
+    }
+    // read blocks
+    for (Uint32 tile_block = 0U; tile_block < h.tile_block_count; ++tile_block)
+    {
+        fread(&x, sizeof(Uint32), 1, Decompressed);
+        fread(&y, sizeof(Uint32), 1, Decompressed);
+        fread(&z, sizeof(Uint32), 1, Decompressed);
+
+        Block * b = allocBlock(x,y,z);
+
+        fread(&b->tile_type, sizeof(b->tile_type), 1, Decompressed);
+        fread(&b->designation, sizeof(b->designation), 1, Decompressed);
+        fread(&b->occupancy, sizeof(b->occupancy), 1, Decompressed);
+        fread(&b->RegionOffsets,sizeof(b->RegionOffsets),1,Decompressed);
+        // load all veins of this block
+        fread(&numveins, sizeof(Uint32), 1, Decompressed);
+        if(nummatgloss)
+        {
+            applyMatgloss(b);
+        }
+        for(int i = 0; i < numveins; i++)
+        {
+            fread(&vein,sizeof(t_vein),1,Decompressed);
+            b->veins.push_back(vein);
+        }
+        if(numveins)
+            b->collapseVeins();
+    }
+
+    printf("Blocks read into memory: %d\n", h.tile_block_count);
+    return true;
+}
+
 ///TODO: this should use streams and filters
 bool DfMap::load(string FilePath)
 {
@@ -287,7 +509,6 @@ bool DfMap::load(string FilePath)
     FILE *ToDecompress;
     FILE *Decompressed;
     DfMapHeader df_map_header;
-    Uint32 x, y, z;
 
     // open target file for writing
     Decompressed = fopen(DecompressedFilePath.c_str(), "wb");
@@ -346,43 +567,26 @@ bool DfMap::load(string FilePath)
     	return false;
     }
 
-    // check, if it's the current map version
-    if (df_map_header.version != dmh_ver)
+    switch(df_map_header.version)
     {
-    	printf("Khazad map file version(%3d) does not match the program\'s version(%3d).\n", df_map_header.version, dmh_ver);
-    	return false;
+        /*
+         * Basic format without matgloss. Kept for compatibility reasons.
+         * Saved from version 0.0.5
+         */
+        case 1:
+            loadVersion1(Decompressed, df_map_header);
+            break;
+        /*
+         * Newer format
+         * Saved from version 0.0.6
+         */
+        case 2:
+            loadVersion2(Decompressed, df_map_header);
+            break;
+        default:
+            printf("Unknown Khazad map file version(%3d).\n", df_map_header.version);
+            return false;
     }
-
-    // load new size information
-    x_block_count = df_map_header.x_block_count;
-    y_block_count = df_map_header.y_block_count;
-    z_block_count = df_map_header.z_block_count;
-
-    printf("Read from file %s\nX block size: %d\nY block size: %d\nZ levels: %d\n", FilePath.c_str(), x_block_count, y_block_count, z_block_count);
-    // make sure those size variables are in sync
-    updateCellCount();
-    // alloc new space for our new size
-    allocBlockArray(x_block_count,y_block_count,z_block_count);
-
-    fseek(Decompressed, df_map_header.map_data_location, SEEK_SET);
-
-    for (Uint32 tile_block = 0U; tile_block < df_map_header.tile_block_count; ++tile_block)
-    {
-        fread(&x, sizeof(Uint32), 1, Decompressed);
-        fread(&y, sizeof(Uint32), 1, Decompressed);
-        fread(&z, sizeof(Uint32), 1, Decompressed);
-
-        Block * b = allocBlock(x,y,z);
-
-        fread(&b->tile_type, sizeof(Uint16), BLOCK_SIZE*BLOCK_SIZE, Decompressed);
-        fread(&b->designation, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, Decompressed);
-        fread(&b->occupancy, sizeof(Uint32), BLOCK_SIZE*BLOCK_SIZE, Decompressed);
-        ///TODO: load and save matgloss data
-        memset(b->material, -1, sizeof(int16_t) * 256);
-    }
-
-    printf("Blocks read into memory: %d\n", df_map_header.tile_block_count);
-
     // close reopened file
     fclose(Decompressed);
     // and delete it
@@ -446,6 +650,66 @@ int DfMap::getDesignations(int x, int y, int z)
     return -1;
 }
 
+Uint32 DfMap::getGeolayerAddress (int x, int y, int z)
+{
+    assert(CheckBoundsXY);
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
+    Block *b = getBlock(x,y,z);
+    if(b != NULL)
+    {
+        int biome = b->designation[x2][y2].bits.biome;
+        int BiomeOffset = b->RegionOffsets[biome];
+        /*int16_t X_biomeB = (regionX / 16) + (BiomeOffset % 3) - 1;
+        int16_t Y_biomeB = (regionY / 16) + (BiomeOffset / 3) - 1;
+        if(X_biomeB < 0) X_biomeB = 0;
+        if(Y_biomeB < 0) Y_biomeB = 0;*/
+        ///FIXME: check and fix upper bounds here. this is important for embarks on the edge of the world! We need world size for that.
+        int geoindex = b->designation[x2][y2].bits.geolayer_index;
+        if(geodebug[BiomeOffset].size() > geoindex)
+        {
+            return geodebug[BiomeOffset][geoindex];
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else return 0;
+}
+
+Uint32 DfMap::getGeoblockAddress(int x, int y, int z)
+{
+    assert(CheckBoundsXY);
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
+    Block *b = getBlock(x,y,z);
+    if(b != NULL)
+    {
+        int biome = b->designation[x2][y2].bits.biome;
+        int BiomeOffset = b->RegionOffsets[biome];
+
+        return geoblockadresses[BiomeOffset];
+    }
+    return 0;
+}
+
+Uint32 DfMap::getRegionAddress(int x, int y, int z)
+{
+    assert(CheckBoundsXY);
+    int x2, y2;
+    convertToDfMapCoords(x, y, x, y, x2, y2);
+    Block *b = getBlock(x,y,z);
+    if(b != NULL)
+    {
+        int biome = b->designation[x2][y2].bits.biome;
+        int BiomeOffset = b->RegionOffsets[biome];
+
+        return regionadresses[BiomeOffset];
+    }
+    return 0;
+}
+
 bool DfMap::isBlockInitialized(int x, int y, int z)
 {
     // because of the way DfMap is done, more than one check must be made.
@@ -466,7 +730,6 @@ int DfMap::getOccupancies(int x, int y, int z)
     return -1;
 }
 
-// toady must be crazy
 void DfMap::getGeoRegion (int x, int y, int z, int& geoX, int& geoY)
 {
     assert(CheckBoundsXY);
@@ -523,7 +786,15 @@ string DfMap::getMaterialString (int x, int y, int z)
             // if it's a vein
             if(b->material[x2][y2] != 65535)
             {
-                return stone_matgloss[b->material[x2][y2]];
+                if(b->material[x2][y2] < stone_matgloss.size())
+                {
+                    return stone_matgloss[b->material[x2][y2]];
+                }
+                else
+                {
+                    string fallback = "ERROR";
+                    return fallback;
+                }
             }
         }
     }

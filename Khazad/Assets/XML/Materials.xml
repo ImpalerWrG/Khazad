@@ -163,6 +163,15 @@
 		</TileValues>
 	</Material>
 	<Material>
+		<Name Label="MATERIAL_DRIFTWOOD"/>
+		<Texture label="TEXTURE_DRIFTWOOD"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_TAN"/>
+		<TileValues>
+			<Tile Int="19"/>
+		</TileValues>
+	</Material>
+	<Material>
 		<Name Label="MATERIAL_LAVA"/>
 		<Texture label="TEXTURE_LIQUID"/>
 		<PrimaryColor label="COLOR_RED"/>
@@ -195,6 +204,9 @@
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<TileValues>
+			<Tile Int="39"/>
+			<Tile Int="40"/>
+			<Tile Int="41"/>
 			<Tile Int="261"/>
 			<Tile Int="265"/>
 		</TileValues>
@@ -485,6 +497,10 @@
 		<PrimaryColor label="COLOR_NAVY"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 		<TileValues>
+			<Tile Int="25"/>
+			<Tile Int="26"/>
+			<Tile Int="27"/>
+			<Tile Int="47"/><!-- smoothed ice floor -->
 			<Tile Int="83"/>
 			<Tile Int="245"/>
 			<Tile Int="258"/>
@@ -1168,8 +1184,8 @@
 	<Material>
 		<Name Label="MATERIAL_GABBRO"/>
 		<Texture label="TEXTURE_IGNEOUS_INTRUSIVE"/>
-		<PrimaryColor label="COLOR_BLACK"/>
-		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
 		<MatGloss label="GABBRO"/>
 	</Material>
 	<Material>

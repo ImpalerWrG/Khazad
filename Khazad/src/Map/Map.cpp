@@ -464,7 +464,8 @@ Uint32 Map::PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ)
        TileTexture == Sand ||
        TileTexture == Layer1 ||
        TileTexture == Layer2 ||
-       TileTexture == Layer3
+       TileTexture == Layer3 ||
+       TileTexture == Ramp
        )
     {
         // and only if it's properly defined

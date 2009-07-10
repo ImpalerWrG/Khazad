@@ -94,7 +94,7 @@
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_TILES"/>
-		<File Path="Assets\\Textures\\Tiles2.png"/>
+		<File Path="Assets\\Textures\\Tiles.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_VEINS"/>
@@ -143,5 +143,9 @@
 	<Texture>
 		<Name Label="TEXTURE_IGNEOUS_EXTRUSIVE"/>
 		<File Path="Assets\\Textures\\IgneousExtrusive.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_DRIFTWOOD"/>
+		<File Path="Assets\\Textures\\driftwood.png"/>
 	</Texture>
 </Textures>
