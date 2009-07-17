@@ -91,6 +91,7 @@
 			<Add directory="../../../lib" />
 			<Add directory="../../../DevIL/lib" />
 		</Linker>
+		<Unit filename="../../../DF Extractor/DFCommon.h" />
 		<Unit filename="../../../DF Extractor/DataModel.cpp" />
 		<Unit filename="../../../DF Extractor/DataModel.h" />
 		<Unit filename="../../../DF Extractor/DfMap.cpp" />
