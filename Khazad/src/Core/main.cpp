@@ -64,13 +64,13 @@ bool initManagers()
 	GAME->CreateInstance();
 	GAME->Init();
 
-    printf("-=PROCESS INITIALIZING=-\n");
+/*    printf("-=PROCESS INITIALIZING=-\n");
     PROCESS->CreateInstance();
-	PROCESS->Init();
+	PROCESS->Init();*/
 
-    printf("-=EXTRACTOR INITIALIZING=-\n");
+/*    printf("-=EXTRACTOR INITIALIZING=-\n");
 	EXTRACT->CreateInstance();
-	EXTRACT->Init();
+	EXTRACT->Init();*/
 
     printf("-=MAP INITIALIZING=-\n");
 	MAP->CreateInstance();
@@ -100,9 +100,9 @@ void cleanup()
 	IMAGE->FreeInstance();
     GAME->FreeInstance();
 	INPUT->FreeInstance();
-	EXTRACT->FreeInstance();
+//	EXTRACT->FreeInstance();
 	MAP->FreeInstance();
-	PROCESS->FreeInstance();
+//	PROCESS->FreeInstance();
 	UI->FreeInstance();
 
 	TTF_Quit();

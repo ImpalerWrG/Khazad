@@ -11,7 +11,8 @@ class Cell;
 class Cube;
 class Actor;
 class Face;
-
+class Extractor;
+class DfMap;
 
 class Map
 {
@@ -45,7 +46,11 @@ public:
 	Uint32 getCellSizeY() { return CellSizeY; }
 	Uint32 getCellSizeZ() { return CellSizeZ; }
 
-    void LoadExtract();
+    void Load();
+    void Load(string filename);
+    void Save(string filename);
+    DfMap *getDFMap();
+
     void ReleaseMap();
 
     void LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 CellZ, Uint32 CubeX, Uint32 CubeY);
@@ -77,7 +82,9 @@ public:
     Vector3 getMapCenter();
 
 protected:
-
+    /// this is the main class of DF extractor.
+    Extractor * DFExtractor;
+    void ReparseExtract();
     bool Initialized;
     bool MapLoaded;
 

@@ -1,18 +1,19 @@
 // Extractor
-#include <Extract.h>
-#include <DfVector.h>
+#include "DFCommon.h"
+using namespace std;
 
-DECLARE_SINGLETON(Extractor)
+#include <Extract.h>
+#include <ProcessManager.h>
+#include <Process.h>
+#include <DfVector.h>
+#include <MemAccess.h>
+#include <DataModel.h>
+#include <MemInfo.h>
+#include <DfMap.h>
 
 Extractor::Extractor()
 {
     df_map = NULL; // important, null pointer means we don't have a map loaded
-}
-
-bool Extractor::Init()
-{
-    df_map = NULL;
-    return true;
 }
 
 Extractor::~Extractor()
@@ -25,9 +26,18 @@ Extractor::~Extractor()
 
 bool Extractor::dumpMemory()
 {
+    // create process manager, get first process
+    ProcessManager pm;
+    if(!pm.findProcessess())
+    {
+        fprintf(stderr,"Can't find any suitable DF process\n");
+        return false;
+    }
     // attach to process
     printf("Attempting to Attach Process\n");
-    Process * p = PROCESS;
+    ///FIXME: this won't do.
+    Process * p = pm[0];
+    DataModel * dm = p->getDataModel();
     if(!p->attach())
     {
         printf("Could not Attach Process, Aborting\n");
@@ -36,11 +46,11 @@ bool Extractor::dumpMemory()
     printf("Process succesfully Attached\n");
     memory_info* offset_descriptor = p->getDescriptor();
 
-    Uint32 map_loc, // location of the X array
-           temp_loc, // block location
-           temp_locx, // iterator for the X array
-           temp_locy, // iterator for the Y array
-           temp_locz; // iterator for the Z array
+    uint32_t map_loc, // location of the X array
+            temp_loc, // block location
+            temp_locx, // iterator for the X array
+            temp_locy, // iterator for the Y array
+            temp_locz; // iterator for the Z array
     unsigned blocks_read = 0U;
 
     // Read Map Data Blocks
@@ -77,7 +87,7 @@ bool Extractor::dumpMemory()
     // tree/wood matgloss
     /// NOT YET
 
-    map_loc = p->readDWord(map_offset);
+    map_loc = MreadDWord(map_offset);
 
     if (!map_loc)
     {
@@ -90,24 +100,24 @@ bool Extractor::dumpMemory()
     {
         delete df_map;
     }
-    df_map = new DfMap(p->readDWord(x_count_offset),p->readDWord(y_count_offset),p->readByte(z_count_offset));
+    df_map = new DfMap(MreadDWord(x_count_offset),MreadDWord(y_count_offset),MreadByte(z_count_offset));
 
 
     // read matgloss data from df if we can
     if(stone_matgloss_offset)
     {
         // set up vector of pointers to materials
-        DfVector p_stone_matgloss = p->readVector(stone_matgloss_offset, 4);
+        DfVector p_stone_matgloss = dm->readVector(stone_matgloss_offset, 4);
         //printf ("YAY, MATGLOSS! %d\n", p_stone_matgloss.getSize());
         // iterate over it
         for (int i = 0; i< p_stone_matgloss.getSize();i++)
         {
-            Uint32 temp;
+            uint32_t temp;
             string tmpstr;
             // read the matgloss pointer from the vector into temp
-            p_stone_matgloss.read((Uint32)i,(Uint8 *)&temp);
+            p_stone_matgloss.read((uint32_t)i,(uint8_t *)&temp);
             // read the string pointed at by
-            tmpstr = p->readSTLString(temp); // reads a C string given an address
+            tmpstr = dm->readSTLString(temp); // reads a C string given an address
             // store it in the block
             df_map->stone_matgloss.push_back(tmpstr);
             //printf("%d = %s\n",i,tmpstr.c_str());
@@ -115,18 +125,18 @@ bool Extractor::dumpMemory()
     }
     if(region_x_offset && region_y_offset && region_z_offset)
     {
-        df_map->setRegionCoords(p->readDWord(region_x_offset),p->readDWord(region_y_offset),p->readDWord(region_z_offset));
+        df_map->setRegionCoords(MreadDWord(region_x_offset),MreadDWord(region_y_offset),MreadDWord(region_z_offset));
         // we have region offset
         // extract layer geology data. we need all these to do that
         if(world_size_x && world_size_y && world_offset && world_regions_offset && world_geoblocks_offset && region_size && region_geo_index_offset && geolayer_geoblock_offset)
         {
             // get world size
-            int worldSizeX = p->readWord(world_offset + world_size_x);
-            int worldSizeY = p->readWord(world_offset + world_size_y);
+            int worldSizeX = MreadWord(world_offset + world_size_x);
+            int worldSizeY = MreadWord(world_offset + world_size_y);
             // get pointer to first part of 2d array of regions
-            Uint32 regions = p->readDWord(world_offset + world_regions_offset);
+            uint32_t regions = MreadDWord(world_offset + world_regions_offset);
             // read the 9 surrounding regions
-            DfVector geoblocks = p->readVector(world_offset + world_geoblocks_offset,4);
+            DfVector geoblocks = dm->readVector(world_offset + world_geoblocks_offset,4);
             // iterate over surrounding biomes. make sure we don't fall off the world
             for(int i = eNorthWest; i< eBiomeCount; i++)
             {
@@ -139,28 +149,28 @@ bool Extractor::dumpMemory()
                 if( bioRY >= worldSizeY) bioRY = worldSizeY - 1;
                 /// TODO: encapsulate access to multidimensional arrays.
                 // load region stuff here
-                Uint32 geoX = p->readDWord(regions + bioRX*4);// get pointer to column of regions
+                uint32_t geoX = MreadDWord(regions + bioRX*4);// get pointer to column of regions
                 // geoX = base
                 // bioRY = index
                 // region_size = size of array objects
                 // region_geo_index_off = offset into the array object
-                Uint16 geoindex = p->readWord(geoX + bioRY*region_size + region_geo_index_offset);
-                Uint32 geoblock_off;
+                uint16_t geoindex = MreadWord(geoX + bioRY*region_size + region_geo_index_offset);
+                uint32_t geoblock_off;
                 // get the geoblock from the geoblock vector using the geoindex
-                geoblocks.read(geoindex,(Uint8 *) &geoblock_off);
+                geoblocks.read(geoindex,(uint8_t *) &geoblock_off);
                 df_map->geoblockadresses[i]=geoblock_off;
                 df_map->regionadresses[i]=geoX + bioRY*region_size + region_geo_index_offset;
                 // get the layer pointer vector :D
-                DfVector geolayers = p->readVector(geoblock_off + geolayer_geoblock_offset , 4); // let's hope
+                DfVector geolayers = dm->readVector(geoblock_off + geolayer_geoblock_offset , 4); // let's hope
                 // make sure we don't load crap
                 assert(geolayers.getSize() > 0 && geolayers.getSize() <= 16);
                 for(int j = 0;j< geolayers.getSize();j++)
                 {
                     int geol_offset;
                     // read pointer to a layer
-                    geolayers.read(j, (Uint8 *) & geol_offset);
+                    geolayers.read(j, (uint8_t *) & geol_offset);
                     // read word at pointer + 2, store in our geology vectors
-                    df_map->geology[i].push_back(p->readWord(geol_offset + 2));
+                    df_map->geology[i].push_back(MreadWord(geol_offset + 2));
                     df_map->geodebug[i].push_back(geol_offset);
                 }
             }
@@ -176,43 +186,43 @@ bool Extractor::dumpMemory()
     for(int x = 0; x < df_map->x_block_count; x++)
     {
         temp_locx = map_loc + ( 4 * x );
-        temp_locy = p->readDWord(temp_locx);
+        temp_locy = MreadDWord(temp_locx);
         for(int y = 0; y < df_map->y_block_count; y++)
         {
-            temp_locz = p->readDWord(temp_locy);
+            temp_locz = MreadDWord(temp_locy);
             temp_locy += 4;
             for(int z = 0; z < df_map->z_block_count; z++)
             {
-                temp_loc = p->readDWord(temp_locz);
+                temp_loc = MreadDWord(temp_locz);
                 temp_locz += 4;
                 if (temp_loc)
                 {
                     Block * b = df_map->allocBlock(x,y,z);
                     b->origin = temp_loc; // save place of block in DF's memory for later
                     //
-                    p->read(
+                    Mread(
                     /*Uint32 offset*/ temp_loc + tile_type_offset,
-                    /*Uint32 size*/   sizeof(short int)*BLOCK_SIZE*BLOCK_SIZE,
-                    /*void *target*/  (Uint8 *)&b->tile_type
+                    /*Uint32 size*/   sizeof(uint16_t)*BLOCK_SIZE*BLOCK_SIZE,
+                    /*void *target*/  (uint8_t *)&b->tile_type
                            );
-                    p->read(
+                    Mread(
                     /*Uint32 offset*/ temp_loc + designation_offset,
-                    /*Uint32 size*/   sizeof(int)*BLOCK_SIZE*BLOCK_SIZE,
-                    /*void *target*/  (Uint8 *)&b->designation
+                    /*Uint32 size*/   sizeof(uint32_t)*BLOCK_SIZE*BLOCK_SIZE,
+                    /*void *target*/  (uint8_t *)&b->designation
                            );
-                    p->read(
+                    Mread(
                     /*Uint32 offset*/ temp_loc + occupancy_offset,
-                    /*Uint32 size*/   sizeof(int)*BLOCK_SIZE*BLOCK_SIZE,
-                    /*void *target*/  (Uint8 *)&b->occupancy
+                    /*Uint32 size*/   sizeof(uint32_t)*BLOCK_SIZE*BLOCK_SIZE,
+                    /*void *target*/  (uint8_t *)&b->occupancy
                            );
                     // set all materials to -1.
                     memset(b->material, -1, sizeof(int16_t) * 256);
                     if(biome_stuffs) // we got biome stuffs! we can try loading matgloss from here
                     {
-                        p->read(
+                        Mread(
                         /*Uint32 offset*/ temp_loc + biome_stuffs,
-                        /*Uint32 size*/   sizeof(Uint8)*16,
-                        /*void *target*/  (Uint8 *)&b->RegionOffsets
+                        /*Uint32 size*/   sizeof(uint8_t)*16,
+                        /*void *target*/  (uint8_t *)&b->RegionOffsets
                                );
                         // if we have geology, we can use the geolayers to determine materials
                         if(have_geology)
@@ -231,16 +241,16 @@ bool Extractor::dumpMemory()
                         assert(sizeof(t_vein) == veinsize);
                         // veins are stored as a vector of pointers to veins .. at least in df 40d11 on linux
                         /*pointer is 4 bytes! we work with a 32bit program here, no matter what architecture we compile khazad for*/
-                        DfVector p_veins = p->readVector(temp_loc + veinvector, 4);
+                        DfVector p_veins = dm->readVector(temp_loc + veinvector, 4);
                         // read all veins
                         for (int i = 0; i< p_veins.getSize();i++)
                         {
                             t_vein v;
-                            Uint32 temp;
+                            uint32_t temp;
                             // read the vein pointer from the vector
-                            p_veins.read((Uint32)i,(Uint8 *)&temp);
+                            p_veins.read((uint32_t)i,(uint8_t *)&temp);
                             // read the vein data (dereference pointer)
-                            p->read(temp, veinsize, (Uint8 *)&v);
+                            Mread(temp, veinsize, (uint8_t *)&v);
                             // store it in the block
                             b->veins.push_back(v);
                         }

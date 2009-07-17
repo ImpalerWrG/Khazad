@@ -3,9 +3,14 @@
 
 #define BLOCK_SIZE 16
 
-#include <stdafx.h>
-#include <DataStructures.h>
-#include <DfMapHeader.h>
+struct t_vein
+{
+    uint32_t VTable;
+    int16_t type;
+    int16_t assignment[16];
+    int16_t unknown;
+    uint32_t flags;
+};
 
 enum BiomeOffset
 {
@@ -21,12 +26,12 @@ enum BiomeOffset
     eBiomeCount
 };
 
-
+class DfMapHeader;
 
 /// TODO: research this further? consult DF hacker wizards?
 union t_designation
 {
-    Uint32 whole;
+    uint32_t whole;
     struct {
     unsigned int flow_size : 3; // how much liquid is here?
     unsigned int pile : 1; // stockpile?
@@ -71,7 +76,7 @@ union t_designation
 // occupancy flags (rat,dwarf,horse,built wall,not build wall,etc)
 union t_occupancy
 {
-    Uint32 whole;
+    uint32_t whole;
     struct {
     unsigned int building : 3;// building type... should be an enum?
     // 7 = door
@@ -112,14 +117,14 @@ class Block
 {
 public:
     // where does the Block come from?
-    Uint32 origin;
+    uint32_t origin;
     // generic tile type. determines how the tile behaves ingame
-    Uint16 tile_type[BLOCK_SIZE][BLOCK_SIZE];
+    uint16_t tile_type[BLOCK_SIZE][BLOCK_SIZE];
     t_designation designation[BLOCK_SIZE][BLOCK_SIZE];
     t_occupancy occupancy[BLOCK_SIZE][BLOCK_SIZE];
     // veins
     vector <t_vein> veins;
-    Uint16 material[BLOCK_SIZE][BLOCK_SIZE];
+    uint16_t material[BLOCK_SIZE][BLOCK_SIZE];
     void collapseVeins();
     /**
     // region offset modifiers... what a hack.
@@ -139,7 +144,7 @@ public:
     if ( biome_stuffs_div3 == 2 )
       ++*(_WORD *)Y_stuff_;
     */
-    Uint8 RegionOffsets[16];// idk if the length is right here
+    uint8_t RegionOffsets[16];// idk if the length is right here
 };
 /**
  * This class can load and save DF maps
@@ -149,13 +154,13 @@ class DfMap
 private:
 
     Block **block;
-    Uint32 blocks_read;
+    uint32_t blocks_read;
     bool valid;
 
     void convertToDfMapCoords(int x, int y, int &out_x, int &out_y, int &out_x2, int &out_y2);
     void allocBlockArray(int x,int y, int z);
     void updateCellCount();
-    Uint32 getBlocksCount() const { return blocks_read; }
+    uint32_t getBlocksCount() const { return blocks_read; }
     bool loadVersion1(FILE * Decompressed,DfMapHeader & h);
     bool loadVersion2(FILE * Decompressed,DfMapHeader & h);
     bool writeVersion1(FILE * SaveFile);
@@ -164,21 +169,21 @@ public:
 
 /// TODO: refactor *REALLY* needed. Time to go back to drawing board
     void applyMatgloss(Block * b);
-    Uint32 regionX;
-    Uint32 regionY;
-    Uint32 regionZ;
-    vector<Uint16> geology[eBiomeCount];
-    vector<Uint32> geodebug[eBiomeCount];
-    Uint32 geoblockadresses[eBiomeCount];
-    Uint32 regionadresses[eBiomeCount];
+    uint32_t regionX;
+    uint32_t regionY;
+    uint32_t regionZ;
+    vector<uint16_t> geology[eBiomeCount];
+    vector<uint32_t> geodebug[eBiomeCount];
+    uint32_t geoblockadresses[eBiomeCount];
+    uint32_t regionadresses[eBiomeCount];
 
     DfMap();
-    DfMap(Uint32 x, Uint32 y, Uint32 z);
+    DfMap(uint32_t x, uint32_t y, uint32_t z);
     DfMap(string file_name);
     ~DfMap();
 
-    Uint16 getNumStoneMatGloss();
-    string getStoneMatGlossString(Uint16 Index);
+    uint16_t getNumStoneMatGloss();
+    string getStoneMatGlossString(uint16_t Index);
     vector<string> stone_matgloss;
 
     bool isValid();
@@ -194,7 +199,7 @@ public:
     unsigned x_cell_count, y_cell_count, z_cell_count;    // cell count
 
 
-    void setBlocksCount(Uint32 p_blocks_read) { blocks_read = p_blocks_read; }
+    void setBlocksCount(uint32_t p_blocks_read) { blocks_read = p_blocks_read; }
 
     unsigned int getXBlocks()        { return x_block_count; }
     unsigned int getYBlocks()        { return y_block_count; }
@@ -208,7 +213,7 @@ public:
     int getOccupancies(int x, int y, int z);
 
     // get tile material
-    Sint16 getMaterialIndex (int x, int y, int z);
+    int16_t getMaterialIndex (int x, int y, int z);
     string getMaterialString (int x, int y, int z);
 
     // get coords of region used for materials
@@ -218,15 +223,15 @@ public:
     unsigned int getGeolayerIndex (int x, int y, int z);
 
     // terrible
-    Uint32 getGeolayerAddress (int x, int y, int z);
-    Uint32 getGeoblockAddress (int x, int y, int z);
-    Uint32 getRegionAddress(int x, int y, int z);
+    uint32_t getGeolayerAddress (int x, int y, int z);
+    uint32_t getGeoblockAddress (int x, int y, int z);
+    uint32_t getRegionAddress(int x, int y, int z);
 
     void getRegionCoords (int &x,int &y,int &z);
     void setRegionCoords (int x,int y,int z);
 
     // what kind of building is here?
-    Uint16 getBuilding (int x, int y, int z);
+    uint16_t getBuilding (int x, int y, int z);
     unsigned int getBiome (int x, int y, int z);
 
     int picktexture(int);

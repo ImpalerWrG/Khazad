@@ -237,27 +237,12 @@ class MapDumpActionListener: public gcn::ActionListener
         SCREEN->RenderTextCentered("Dumping Memory", 0, WHITE, 0);
         SCREEN->Flip();
 
-        if(!MAP->isMapLoaded())
-        {
-            EXTRACT->dumpMemory();
-            MAP->LoadExtract();
+        MAP->Load();
 
-            SCREEN->MainCamera->CenterView(MAP->getMapCenter());
-            SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ() - 1);
-            SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ());
-            //SCREEN->MainCamera->setCursor(MAP->getMapCenter());
-            SCREEN->MainCamera->ConfineCursor();
-        }
-        else
-        {
-            EXTRACT->dumpMemory();
-            MAP->LoadExtract();
-
-            SCREEN->MainCamera->CenterView(MAP->getMapCenter());
-            SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ() - 1);
-            SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ());
-            SCREEN->MainCamera->ConfineCursor();
-        }
+        SCREEN->MainCamera->CenterView(MAP->getMapCenter());
+        SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ() - 1);
+        SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ());
+        SCREEN->MainCamera->ConfineCursor();
         UI->setMapViewState();
     }
 };
@@ -275,26 +260,13 @@ class MapLoadActionListener: public gcn::ActionListener
         SCREEN->RenderTextCentered(buffer, 0, WHITE, 0);
         SCREEN->Flip();
 
-        if(!MAP->isMapLoaded())
-        {
-            EXTRACT->loadMap(Path(CONFIG->LoadPath()));
-            MAP->LoadExtract();
+        MAP->Load(Path(CONFIG->LoadPath()));
 
-            SCREEN->MainCamera->CenterView(MAP->getMapCenter());
-            SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ());
-            SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ() + 1);
-            SCREEN->MainCamera->ConfineCursor();
-        }
-        else
-        {
-            EXTRACT->loadMap(Path(CONFIG->LoadPath()));
-            MAP->LoadExtract();
+        SCREEN->MainCamera->CenterView(MAP->getMapCenter());
+        SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ());
+        SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ() + 1);
+        SCREEN->MainCamera->ConfineCursor();
 
-            SCREEN->MainCamera->CenterView(MAP->getMapCenter());
-            SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ());
-            SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ() + 1);
-            SCREEN->MainCamera->ConfineCursor();
-        }
         UI->setMapViewState();
     }
 };
@@ -318,7 +290,7 @@ class MapSaveActionListener: public gcn::ActionListener
         SCREEN->RenderTextCentered(buffer, 0, WHITE, 0);
         SCREEN->Flip();
 
-        EXTRACT->writeMap(CONFIG->SavePath());
+        MAP->Save(CONFIG->SavePath());
     }
 };
 

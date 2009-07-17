@@ -13,6 +13,7 @@
 #include <ImageManager.h>
 #include <DataManager.h>
 #include <Extract.h>
+#include <DfMap.h>
 #include <Game.h>
 #include <Map.h>
 #include <Cell.h>
@@ -596,7 +597,7 @@ bool ScreenManager::isCubeDrawn(Cube* TestCube)
 
 void ScreenManager::PrintDebugging()
 {
-    if (EXTRACT->isMapLoaded())
+    if (MAP->isMapLoaded())
     {
         char buffer[256];
         setDrawingFlat();
@@ -624,7 +625,7 @@ void ScreenManager::PrintDebugging()
         int gblockAddress = 0;
         int regionAddress = 0;
 
-        DfMap * df_map = EXTRACT->getMap();
+        DfMap * df_map = MAP->getDFMap();
         /*if(!(HiddenDraw ^ df_map->isHidden( x, y, z)))
         {*/
             TileType = df_map->getTileType(x, y, z);

@@ -1,3 +1,5 @@
+#include <string>
+using namespace std;
 #include "md5.h"
 #include <mhash.h>
 #include <stdio.h>

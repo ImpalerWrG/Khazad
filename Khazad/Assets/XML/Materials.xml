@@ -1107,8 +1107,8 @@
 	<Material>
 		<Name Label="MATERIAL_SHALE"/>
 		<Texture label="TEXTURE_LAYERED"/>
-		<PrimaryColor label="COLOR_BLACK"/>
-		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
 		<MatGloss label="SHALE"/>
 	</Material>
 	<Material>
@@ -1135,8 +1135,8 @@
 	<Material>
 		<Name Label="MATERIAL_CONGLOMERATE"/>
 		<Texture label="TEXTURE_CONGLOMERATE"/>
-		<PrimaryColor label="COLOR_DARK_GREY"/>
-		<SecondaryColor label="COLOR_MAROON"/>
+		<PrimaryColor label="COLOR_DARK_ORANGE"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 		<MatGloss label="CONGLOMERATE"/>
 	</Material>
 	<Material>

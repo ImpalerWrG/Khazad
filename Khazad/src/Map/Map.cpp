@@ -4,7 +4,10 @@
 #include <Singleton.h>
 #include <TextureManager.h>
 #include <DataManager.h>
+
 #include <Extract.h>
+#include <DfMap.h>
+
 #include <Column.h>
 #include <Cube.h>
 #include <Face.h>
@@ -36,6 +39,7 @@ Map::Map()
     InitedSlopeCount = 0;
 
     ColumnMatrix = NULL;
+    DFExtractor = new Extractor();
 }
 
 Map::~Map()
@@ -44,6 +48,7 @@ Map::~Map()
     {
         ReleaseMap();
     }
+    delete DFExtractor;
 }
 
 bool Map::Init()
@@ -183,9 +188,14 @@ Face* Map::getFace(Sint32 X, Sint32 Y, Sint32 Z, Facet FaceType)
     return NULL;
 }
 
-void Map::LoadExtract()
+DfMap *Map::getDFMap()
 {
-    if(!EXTRACT->isMapLoaded())
+    return DFExtractor->getMap();
+}
+
+void Map::ReparseExtract()
+{
+    if(!DFExtractor->isMapLoaded())
     {
         return;
     }
@@ -197,7 +207,7 @@ void Map::LoadExtract()
 
     InitilizeTilePicker();
 
-    DfMap* ExtractedMap = EXTRACT->getMap();
+    DfMap* ExtractedMap = DFExtractor->getMap();
 
     // Initialize Cells and Cubes
     CellSizeX = ExtractedMap->getXBlocks();
@@ -309,8 +319,27 @@ void Map::LoadExtract()
             }
         }
 	}
-
     MapLoaded = true;
+}
+
+// extract from DF
+void Map::Load()
+{
+    DFExtractor->dumpMemory();
+    ReparseExtract();
+}
+
+// load from file
+void Map::Load(string filename)
+{
+    DFExtractor->loadMap(filename);
+    ReparseExtract();
+}
+
+// save to file
+void Map::Save(string filename)
+{
+    DFExtractor->writeMap(filename);
 }
 
 void Map::LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 CellZ, Uint32 CubeX, Uint32 CubeY)
@@ -319,7 +348,7 @@ void Map::LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 Cell
 	Uint32 MapY = (CellY * CELLEDGESIZE) + CubeY;
 	Uint32 MapZ = CellZ;
 
-    DfMap *df_map = EXTRACT->getMap();
+    DfMap *df_map = DFExtractor->getMap();
 
     int TileType = df_map->getTileType(CellX, CellY, CellZ, CubeX, CubeY);
 
@@ -407,7 +436,7 @@ void Map::InitilizeTilePicker()
         }
     }
 
-    DfMap* df_map = EXTRACT->getMap();
+    DfMap* df_map = DFExtractor->getMap();
 
     Uint32 NumStoneMats = df_map->getNumStoneMatGloss();
     StoneMatGloss = new Sint16[NumStoneMats];
@@ -432,7 +461,7 @@ void Map::InitilizeTilePicker()
 
 Uint32 Map::PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ)
 {
-    DfMap *df_map = EXTRACT->getMap();
+    DfMap *df_map = DFExtractor->getMap();
     Sint16 StoneType = df_map->getMaterialIndex(MapX, MapY, MapZ);
     Sint16 TileType = df_map->getTileType(MapX, MapY, MapZ);
 

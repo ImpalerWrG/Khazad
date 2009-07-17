@@ -138,9 +138,9 @@ void zerr(int ret)
     switch (ret) {
     case Z_ERRNO:
         if (ferror(stdin))
-            printf("error reading stdin\n", stderr);
+            fprintf(stderr,"error reading stdin\n");
         if (ferror(stdout))
-            printf("error writing stdout\n", stderr);
+            fprintf(stderr,"error writing stdout\n");
         break;
     case Z_STREAM_ERROR:
         printf("invalid compression level\n");
