@@ -1,8 +1,5 @@
 #include "DFCommon.h"
 
-#include <DfVector.h>
-#include <ProcessManager.h>
-#include <Process.h>
 #include <DataModel.h>
 #include <MemInfo.h>
 ///FIXME: what to do with these?
@@ -13,8 +10,11 @@
 Process * g_pProcess; ///< current process. non-NULL when picked
 ProcessHandle g_ProcessHandle; ///< cache of handle to current process. used for speed reasons
 
+/// TODO: Add something that can destroy the vector of processes and their stuff. Add destructor that calls it.
+/// TODO: release ProcessHandles of Windows processes. Scanning for processes over and over could lead to crashed Windows
+
 #ifdef LINUX_BUILD
-/// LINUX version of the process finder
+/// LINUX version of the process finder. lots of headers.
 #include <md5.h>
 #include <sys/param.h>
 #include <sys/user.h>

@@ -1,5 +1,5 @@
 /**
- * DO NOT USE THIS DIRECTLY!
+ * DO NOT USE THIS FILE DIRECTLY!
  */
 inline
 uint8_t MreadByte (uint32_t offset)

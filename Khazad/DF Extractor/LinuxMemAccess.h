@@ -1,17 +1,7 @@
 /**
- * DO NOT USE THIS DIRECTLY!
+ * DO NOT USE THIS FILE DIRECTLY!
  */
 
-/// FIXME: PURGE!
-#include <stdint.h>
-#include <vector>
-#include <string>
-#include <stdio.h>
-#include <sys/types.h>
-using namespace std;
-#include <ProcessManager.h>
-#include <sys/ptrace.h>
-#include <string.h>
 inline
 uint8_t MreadByte (uint32_t offset)
 {

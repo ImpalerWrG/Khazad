@@ -1,7 +1,4 @@
-#include <stdint.h>
-#include <map>
-#include <string>
-using namespace std;
+#include "DFCommon.h"
 #include "MemInfo.h"
 #include <stdlib.h>
 

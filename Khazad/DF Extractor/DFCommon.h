@@ -8,9 +8,11 @@
 using namespace std;
 #include <stdint.h>
 #include <assert.h>
+#include <string.h>
 
 #ifdef LINUX_BUILD
 #include <sys/types.h>
+#include <sys/ptrace.h>
 #else
 #include <windows.h>
 #include <winnt.h>
@@ -22,7 +24,6 @@ using namespace std;
 #include "DfVector.h"
 #include "Process.h"
 #include "DfMap.h"
-
 
 
 #endif // DFCOMMON_H_INCLUDED

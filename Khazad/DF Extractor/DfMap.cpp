@@ -1,30 +1,16 @@
 #include "DFCommon.h"
 // zlib helper functions for de/compressing files
 #include "ZlibHelper.h"
-
-
 #include "DfMapHeader.h"
 
-
-// asserts are fun
-#include <assert.h>
+// some bounds checking in debug mode. used in asserts
 #define CheckBounds x < x_cell_count && x >= 0 && y < y_cell_count && y >= 0 && z < z_block_count && z >= 0
 #define CheckBoundsXY x < x_cell_count && x >= 0 && y < y_cell_count && y >= 0
 #define CheckBlockBounds x < x_block_count && x >= 0 && y < y_block_count && y >= 0 && z < z_block_count && z >= 0
 
-// this expands into lots of ugly switch statement functions
+// this expands into lots of ugly switch statement functions. some of them unused?, but kept for reference
 #include "TileTypes.h"
 
-/*
-struct t_vein
-{
-    Uint32 VTable;
-    int16_t type;
-    Uint16 assignment[16];
-    int16_t unknown;
-    Uint32 flags;
-};
-*/
 // process vein vector into matgloss values...
 /// TODO: check how this behaves with multiple overlapping veins
 void Block::collapseVeins()

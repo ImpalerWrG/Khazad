@@ -3,13 +3,8 @@
 using namespace std;
 
 #include <Extract.h>
-#include <ProcessManager.h>
-#include <Process.h>
-#include <DfVector.h>
-#include <MemAccess.h>
 #include <DataModel.h>
 #include <MemInfo.h>
-#include <DfMap.h>
 
 Extractor::Extractor()
 {

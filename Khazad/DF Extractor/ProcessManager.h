@@ -1,10 +1,6 @@
 #ifndef PROCESSMANAGER_H_INCLUDED
 #define PROCESSMANAGER_H_INCLUDED
 
-/// unifiing typedef for pid_t and HANDLE
-///TODO: investigate if a global variable is faster
-
-
 #ifdef LINUX_BUILD
 typedef pid_t ProcessHandle;
 #else

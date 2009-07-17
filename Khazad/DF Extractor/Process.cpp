@@ -1,17 +1,7 @@
 #include "DFCommon.h"
-#include <ProcessManager.h>
-#include <Process.h>
-#include <Paths.h>
-#include <fstream>
-#include <StringMagic.h>
-#include <DfVector.h>
-
 #ifdef LINUX_BUILD
-#include <md5.h>
 #include <sys/wait.h>
 #endif
-
-///TODO: move these out of the way, too. they belong into their own file
 
 Process::Process(DataModel * dm, memory_info* mi, ProcessHandle ph)
 {
@@ -75,41 +65,20 @@ bool Process::detach()
 /**
  *     WINDOWS PART
  */
-/*bool Process::getProcessINFO(char *p_processname)
-{
-    HWND DFWindow;
-    HANDLE DFHandle;
-    DWORD DFProcessID;
-    DFWindow = FindWindow(NULL,"Dwarf Fortress");
-    if(!DFWindow)
-    {
-        printf("Cannot find window with name \"%s\"\n", p_processname);
-        return false;
-    }
 
-    // And Create Handle
-    GetWindowThreadProcessId(DFProcess, &DFProcessID);
-    printf("Window Thread Process ID [%u] \n", (unsigned int)DFProcessID);
-    ///FIXME: Add corresponding CloseHandle call
-    DFHandle = OpenProcess(PROCESS_ALL_ACCESS, 0, DFProcessID);
-
-    if(!DFHandle)
-    {
-        printf("Could not get application handle to hook. \n");
-        return false;
-    }
-    return true;
-}
-*/
+///TODO: add base as a property and global var. It's required on Vista. Part of hexsearch integration
 bool Process::attach()
 {
-    /// TODO: check for errors!
     attached = true;
+    g_pProcess = this;
+    g_ProcessHandle = my_handle;
     return true;
 }
 bool Process::detach()
 {
     attached = false;
+    g_pProcess = NULL;
+    g_ProcessHandle = 0;
     // nothing to do here, we are not a debbuger on Windows
     return true;
 }
