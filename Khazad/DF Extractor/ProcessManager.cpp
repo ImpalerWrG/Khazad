@@ -141,12 +141,40 @@ bool ProcessManager::findProcessess()
 }
 
 #else
+
+bool EnableDebugPriv()
+{
+   BOOL               bRET = FALSE;
+   TOKEN_PRIVILEGES   tp;
+   HANDLE             hToken;
+
+   if (LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &tp.Privileges[0].Luid))
+   {
+      if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &hToken))
+      {
+         if (hToken != INVALID_HANDLE_VALUE)
+         {
+            tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+            tp.PrivilegeCount = 1;
+            if (AdjustTokenPrivileges(hToken, FALSE, &tp, 0, 0, 0))
+               bRET = TRUE;
+            CloseHandle(hToken);
+         }
+      }
+   }
+   return bRET;
+}
+
+
+
 /// WINDOWS version of the process finder
 bool ProcessManager::findProcessess()
 {
+    /*
     HWND DFWindow;
     HANDLE DFHandle;
     DWORD DFProcessID;
+    // should use "SDL_app" instead of NULL here?
     DFWindow = FindWindow(NULL,"Dwarf Fortress");
     if(!DFWindow)
     {
@@ -165,6 +193,7 @@ bool ProcessManager::findProcessess()
     }
     ///TODO: plug in hexsearch here.
     ///TODO: rewrite for multiple processes. maybe use a library as the APIs have changed between versions of Windows
+    ///destroy the process vector after we're done, free resources
 
     // we need to use memory reading here. assign the global
     g_ProcessHandle = DFHandle;
@@ -189,7 +218,95 @@ bool ProcessManager::findProcessess()
                 return true;
             }
         }
+    }*/
+    /*
+    if( EnumProcessModules(hProcess, hMods, sizeof(hMods), &cbNeeded))
+    {
+        for ( i = 0; i < (cbNeeded / sizeof(HMODULE)); i++ )
+        {
+            TCHAR szModName[MAX_PATH];
+
+            // Get the full path to the module's file.
+
+            if ( GetModuleFileNameEx( hProcess, hMods[i], szModName,
+                                      sizeof(szModName) / sizeof(TCHAR)))
+            {
+                // Print the module name and handle value.
+
+                _tprintf( TEXT("\t%s (0x%08X)\n"), szModName, hMods[i] );
+            }
+        }
     }
+
+    */
+    // Get the list of process identifiers.
+    ///TODO: make this dynamic. (call first to get the array size and second to really get process handles)
+    DWORD ProcArray[512], memoryNeeded, numProccesses;
+    HMODULE hmod = NULL;
+    DWORD junk;
+    HANDLE hProcess;
+    bool found = false;
+
+    IMAGE_NT_HEADERS32 pe_header;
+	IMAGE_SECTION_HEADER sections[16];
+
+    EnableDebugPriv();
+    if ( !EnumProcesses( ProcArray, sizeof(ProcArray), &memoryNeeded ) )
+        return false;
+
+    // Calculate how many process identifiers were returned.
+    numProccesses = memoryNeeded / sizeof(DWORD);
+
+    // iterate through processes
+    for ( int i = 0; i < numProccesses; i++ )
+    {
+        found = false;
+        // open process
+        hProcess = OpenProcess( /*PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_QUERY_INFORMATION | PROCESS_VM_WRITE*/ PROCESS_ALL_ACCESS, FALSE, ProcArray[i] );
+        if (NULL == hProcess)
+            continue;
+        // we've got some process, look at its first module
+        if(EnumProcessModules(hProcess, &hmod, 1 * sizeof(HMODULE), &junk))
+        {
+            /// check module filename to verify that it's DF!
+            // got base ;)
+            uint32_t base = (uint32_t)hmod;
+            // read from this process
+            g_ProcessHandle = hProcess;
+            uint32_t pe_offset = MreadDWord(base+0x3C);
+            Mread(base + pe_offset                   , sizeof(pe_header), (uint8_t *)&pe_header);
+            Mread(base + pe_offset+ sizeof(pe_header), sizeof(sections) , (uint8_t *)&sections );
+            //uint32_t TempOffset = MreadDWord(base + 60);
+            //uint32_t TimeStamp = MreadDWord(base + TempOffset + 8);
+            vector<memory_info>::iterator it;
+            for ( it=meminfo.begin() ; it < meminfo.end(); it++ )
+            {
+                if("windows" == (*it).getString("system")) // is this a windows entry?
+                {
+                    Uint32 pe_timestamp = (*it).getOffset("pe_timestamp");
+                    if (pe_timestamp == pe_header.FileHeader.TimeDateStamp)
+                    {
+                        printf("Match found! Using version %s.\n", (*it).getString("version").c_str());
+                        // give the process a data model and memory layout fixed to the base of first module
+                        memory_info *m = new memory_info(*it);
+                        m->setRebase(0x400000,base);
+                        Process *ret= new Process(new DMWindows40d(),m,hProcess);
+                        processes.push_back(ret);
+                        found = true;
+                        break; // break the iterator loop
+                    }
+                }
+            }
+            // close handle of processes that aren't DF
+            if(!found)
+            {
+                CloseHandle(hProcess);
+            }
+
+        }
+    }
+	if(processes.size())
+        return true;
     return false;
 }
 #endif

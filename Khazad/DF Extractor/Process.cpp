@@ -65,8 +65,6 @@ bool Process::detach()
 /**
  *     WINDOWS PART
  */
-
-///TODO: add base as a property and global var. It's required on Vista. Part of hexsearch integration
 bool Process::attach()
 {
     attached = true;

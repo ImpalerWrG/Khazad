@@ -48,6 +48,7 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-DPSAPI_VERSION=1" />
 			<Add directory="..\..\..\src\Core" />
 			<Add directory="..\..\..\include" />
 			<Add directory="..\..\..\src\Data" />
@@ -65,7 +66,7 @@
 			<Add directory="..\..\..\src\StringMagic" />
 		</Compiler>
 		<Linker>
-			<Add option="-lmingw32 -lSDLmain -lSDL -mwindows" />
+			<Add option="-lmingw32 -lmapi32 -lpsapi -lSDLmain -lSDL -mwindows" />
 			<Add library="SDL" />
 			<Add library="mingw32" />
 			<Add library="SDLmain" />
@@ -77,13 +78,14 @@
 			<Add library="ILU" />
 			<Add library="ILUT" />
 			<Add library="zdll" />
+			<Add library="psapi" />
+			<Add library="mapi32" />
 			<Add directory="..\..\..\lib" />
 			<Add directory="..\..\..\DevIL\lib" />
 		</Linker>
 		<Unit filename="..\..\..\DF Extractor\DFCommon.h" />
 		<Unit filename="..\..\..\DF Extractor\DataModel.cpp" />
 		<Unit filename="..\..\..\DF Extractor\DataModel.h" />
-		<Unit filename="..\..\..\DF Extractor\DataStructures.h" />
 		<Unit filename="..\..\..\DF Extractor\DfMap.cpp" />
 		<Unit filename="..\..\..\DF Extractor\DfMap.h" />
 		<Unit filename="..\..\..\DF Extractor\DfMapHeader.h" />

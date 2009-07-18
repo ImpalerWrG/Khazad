@@ -1,6 +1,18 @@
 /**
  * DO NOT USE THIS FILE DIRECTLY!
  */
+
+    /*
+    char buffer[256];
+    DWORD oldProtect = 0;
+    DWORD numRead = 0;
+    VirtualProtectEx( hProc, (LPVOID)0x77810F34, 256, PAGE_EXECUTE_READWRITE, &oldProtect );
+    ReadProcessMemory( hProc, (LPVOID)0x77810F34, buffer, 256, &numRead );
+    VirtualProtectEx( hProc, (LPVOID)0x77810F34, 256, oldProtect, NULL ); //restore the original protection when you're done
+    */
+
+
+
 inline
 uint8_t MreadByte (uint32_t offset)
 {

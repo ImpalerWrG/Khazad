@@ -14,8 +14,11 @@ using namespace std;
 #include <sys/types.h>
 #include <sys/ptrace.h>
 #else
+#define WINVER 0x0500					// OpenThread(), PSAPI, Toolhelp32
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <winnt.h>
+#include <psapi.h>
 #endif
 
 #include "DataModel.h"
