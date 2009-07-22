@@ -11,8 +11,12 @@ Process::Process(DataModel * dm, memory_info* mi, ProcessHandle ph)
     attached = false;
 }
 
+// destroy data model. this is assigned by processmanager
 Process::~Process()
 {
+    if(attached)
+        detach();
+    delete my_datamodel;
 }
 
 
@@ -25,7 +29,7 @@ memory_info * Process::getDescriptor()
     return my_descriptor;
 }
 
-bool Process::isValid()
+bool Process::isAttached()
 {
     ///TODO: check for weird states here - like crashed DF and similar crap
     return attached; // valid when attached
@@ -60,6 +64,10 @@ bool Process::detach()
     return true;
 }
 
+void Process::freeResources()
+{
+    // nil
+};
 
 #else
 /**
@@ -80,6 +88,10 @@ bool Process::detach()
     // nothing to do here, we are not a debbuger on Windows
     return true;
 }
-
+void Process::freeResources()
+{
+    // opened by process manager
+    CloseHandle(my_handle);
+};
 #endif
 

@@ -17,7 +17,10 @@ extern ProcessHandle g_ProcessHandle; ///< cache of handle to current process. u
 class ProcessManager
 {
     private:
+    // memory info entries loaded from a file
     std::vector<memory_info> meminfo;
+    // vector to keep track of dynamically created memory_info entries
+    std::vector<memory_info *> destroy_meminfo;
     Process * currentProcess;
     ProcessHandle currentProcessHandle;
     std::vector<Process *> processes;
@@ -31,11 +34,10 @@ class ProcessManager
 
     public:
     ProcessManager();
+    ~ProcessManager();
     bool findProcessess();
     uint32_t size();
     Process * operator[](uint32_t index);
-    Process* getCurrentProcess();
-    ProcessHandle getCurrentProcessHandle();
 };
 
 

@@ -20,6 +20,7 @@ public:
     operator const char *();
     operator char *();
     operator string();
+    friend ostream &operator<<(ostream &stream, Path obj);
 };
 
 

@@ -12,7 +12,6 @@
 #include "TileTypes.h"
 
 // process vein vector into matgloss values...
-/// TODO: check how this behaves with multiple overlapping veins
 void Block::collapseVeins()
 {
     // iterate through assigned veins
@@ -419,7 +418,6 @@ bool DfMap::loadVersion2(FILE * Decompressed,DfMapHeader & h)
     return true;
 }
 
-///TODO: this should use streams and filters
 bool DfMap::load(string FilePath)
 {
     string DecompressedFilePath = FilePath + ".decomp";

@@ -63,7 +63,6 @@
 			<Add directory="..\..\..\TinyXML" />
 			<Add directory="..\..\..\DF Extractor" />
 			<Add directory="..\..\..\src\Process" />
-			<Add directory="..\..\..\src\StringMagic" />
 		</Compiler>
 		<Linker>
 			<Add option="-lmingw32 -lmapi32 -lpsapi -lSDLmain -lSDL -mwindows" />
@@ -291,8 +290,8 @@
 		<Unit filename="..\..\..\src\Render\ScreenManager.h" />
 		<Unit filename="..\..\..\src\Render\TextureManager.cpp" />
 		<Unit filename="..\..\..\src\Render\TextureManager.h" />
-		<Unit filename="..\..\..\src\StringMagic\StringMagic.cpp" />
-		<Unit filename="..\..\..\src\StringMagic\StringMagic.h" />
+		<Unit filename="..\..\..\DF Extractor\StringMagic.cpp" />
+		<Unit filename="..\..\..\DF Extractor\StringMagic.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

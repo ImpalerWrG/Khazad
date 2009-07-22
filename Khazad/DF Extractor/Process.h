@@ -10,6 +10,7 @@ protected:
     memory_info * my_descriptor;
     ProcessHandle my_handle;
     bool attached;
+    void freeResources();
 public:
     Process(DataModel * dm, memory_info* mi, ProcessHandle ph);
     ~Process();
@@ -17,7 +18,7 @@ public:
     bool attach();
     bool detach();
     // is the process still there?
-    bool isValid();
+    bool isAttached();
     memory_info *getDescriptor();
     DataModel *getDataModel();
 };

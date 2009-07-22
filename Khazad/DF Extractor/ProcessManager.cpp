@@ -2,16 +2,14 @@
 
 #include <DataModel.h>
 #include <MemInfo.h>
-///FIXME: what to do with these?
+///FIXME: what to do with this one?
 #include <Paths.h>
-#include <StringMagic.h>
+
+#include "StringMagic.h"
 
 /// HACK: global variables (only one process can be attached at the same time.)
 Process * g_pProcess; ///< current process. non-NULL when picked
 ProcessHandle g_ProcessHandle; ///< cache of handle to current process. used for speed reasons
-
-/// TODO: Add something that can destroy the vector of processes and their stuff. Add destructor that calls it.
-/// TODO: release ProcessHandles of Windows processes. Scanning for processes over and over could lead to crashed Windows
 
 #ifdef LINUX_BUILD
 /// LINUX version of the process finder. lots of headers.
@@ -108,6 +106,7 @@ bool ProcessManager::findProcessess()
 					addLinuxProcess(exe_link,result);
 				}
 				// a wine process, we need to do more checking and this may break is the future
+				/// FIXME: this fails when the wine process isn't started from the 'current working directory'. strip path data from cmdline
 				else if(strstr(target_name, "wine-preloader")!= NULL)
 				{
 				    cwd_link = dir_name + "cwd";
@@ -142,9 +141,10 @@ bool ProcessManager::findProcessess()
 
 #else
 
+/// some black magic
 bool EnableDebugPriv()
 {
-   BOOL               bRET = FALSE;
+   bool               bRET = FALSE;
    TOKEN_PRIVILEGES   tp;
    HANDLE             hToken;
 
@@ -165,80 +165,9 @@ bool EnableDebugPriv()
    return bRET;
 }
 
-
-
 /// WINDOWS version of the process finder
 bool ProcessManager::findProcessess()
 {
-    /*
-    HWND DFWindow;
-    HANDLE DFHandle;
-    DWORD DFProcessID;
-    // should use "SDL_app" instead of NULL here?
-    DFWindow = FindWindow(NULL,"Dwarf Fortress");
-    if(!DFWindow)
-    {
-        return false;
-    }
-    // And Create Handle
-    GetWindowThreadProcessId(DFWindow, &DFProcessID);
-    printf("Window Thread Process ID [%u] \n", (unsigned int)DFProcessID);
-    ///FIXME: Add corresponding CloseHandle call
-    DFHandle = OpenProcess(PROCESS_ALL_ACCESS, 0, DFProcessID);
-
-    if(!DFHandle)
-    {
-        printf("Could not get application handle to hook. \n");
-        return false;
-    }
-    ///TODO: plug in hexsearch here.
-    ///TODO: rewrite for multiple processes. maybe use a library as the APIs have changed between versions of Windows
-    ///destroy the process vector after we're done, free resources
-
-    // we need to use memory reading here. assign the global
-    g_ProcessHandle = DFHandle;
-    int Base = 0x400000;
-    // New Method
-    int TempOffset = MreadDWord(Base + 60);
-    int TimeStamp = MreadDWord(Base + TempOffset + 8);
-    vector<memory_info>::iterator it;
-    for ( it=meminfo.begin() ; it < meminfo.end(); it++ )
-    {
-        if("windows" == (*it).getString("system")) // is this a windows entry?
-        {
-            Uint32 pe_timestamp = (*it).getOffset("pe_timestamp");
-            // Old Method
-            int OldTimeStamp = MreadDWord((*it).getOffset("pe_offset"));
-            if (pe_timestamp == TimeStamp || pe_timestamp == OldTimeStamp)
-            {
-                printf("Match found! Using version %s.\n", (*it).getString("version").c_str());
-                memory_info * m = &*it;
-                Process *ret= new Process(new DMWindows40d(),m,DFHandle);
-                processes.push_back(ret);
-                return true;
-            }
-        }
-    }*/
-    /*
-    if( EnumProcessModules(hProcess, hMods, sizeof(hMods), &cbNeeded))
-    {
-        for ( i = 0; i < (cbNeeded / sizeof(HMODULE)); i++ )
-        {
-            TCHAR szModName[MAX_PATH];
-
-            // Get the full path to the module's file.
-
-            if ( GetModuleFileNameEx( hProcess, hMods[i], szModName,
-                                      sizeof(szModName) / sizeof(TCHAR)))
-            {
-                // Print the module name and handle value.
-
-                _tprintf( TEXT("\t%s (0x%08X)\n"), szModName, hMods[i] );
-            }
-        }
-    }
-
-    */
     // Get the list of process identifiers.
     ///TODO: make this dynamic. (call first to get the array size and second to really get process handles)
     DWORD ProcArray[512], memoryNeeded, numProccesses;
@@ -262,7 +191,7 @@ bool ProcessManager::findProcessess()
     {
         found = false;
         // open process
-        hProcess = OpenProcess( /*PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_QUERY_INFORMATION | PROCESS_VM_WRITE*/ PROCESS_ALL_ACCESS, FALSE, ProcArray[i] );
+        hProcess = OpenProcess( PROCESS_ALL_ACCESS, FALSE, ProcArray[i] );
         if (NULL == hProcess)
             continue;
         // we've got some process, look at its first module
@@ -276,12 +205,12 @@ bool ProcessManager::findProcessess()
             uint32_t pe_offset = MreadDWord(base+0x3C);
             Mread(base + pe_offset                   , sizeof(pe_header), (uint8_t *)&pe_header);
             Mread(base + pe_offset+ sizeof(pe_header), sizeof(sections) , (uint8_t *)&sections );
-            //uint32_t TempOffset = MreadDWord(base + 60);
-            //uint32_t TimeStamp = MreadDWord(base + TempOffset + 8);
+            // see if there's a version entry that matches this process
             vector<memory_info>::iterator it;
             for ( it=meminfo.begin() ; it < meminfo.end(); it++ )
             {
-                if("windows" == (*it).getString("system")) // is this a windows entry?
+                // filter by OS
+                if("windows" == (*it).getString("system"))
                 {
                     Uint32 pe_timestamp = (*it).getOffset("pe_timestamp");
                     if (pe_timestamp == pe_header.FileHeader.TimeDateStamp)
@@ -290,6 +219,9 @@ bool ProcessManager::findProcessess()
                         // give the process a data model and memory layout fixed to the base of first module
                         memory_info *m = new memory_info(*it);
                         m->setRebase(0x400000,base);
+                        // keep track of created memory_info objects so we can destroy them later
+                        destroy_meminfo.push_back(m);
+                        // process is responsible for destroying its data model
                         Process *ret= new Process(new DMWindows40d(),m,hProcess);
                         processes.push_back(ret);
                         found = true;
@@ -302,7 +234,6 @@ bool ProcessManager::findProcessess()
             {
                 CloseHandle(hProcess);
             }
-
         }
     }
 	if(processes.size())
@@ -321,7 +252,7 @@ bool ProcessManager::loadDescriptors()
     inFile.open(file);
     if (!inFile)
     {
-        cerr << "Unable to open file datafile.txt";
+        cerr << "Unable to open file " << file << endl;
         return false;
     }
     memory_info mem;
@@ -336,7 +267,7 @@ bool ProcessManager::loadDescriptors()
         tokenize(t1,tokens,"=");
         if(tokens.size() != 2)
         {
-            cerr << "malformed line: " << line << endl;
+//            cerr << "malformed line: " << line << endl;
             continue;
         }
         // assume two tokens
@@ -372,18 +303,22 @@ Process * ProcessManager::operator[](uint32_t index)
     assert(index < processes.size());
     return processes[index];
 };
-Process* ProcessManager::getCurrentProcess()
-{
-    return currentProcess;
-};
-ProcessHandle ProcessManager::getCurrentProcessHandle()
-{
-    return currentProcessHandle;
-};
-
 ProcessManager::ProcessManager()
 {
     currentProcess = NULL;
     currentProcessHandle = 0;
     loadDescriptors();
+}
+ProcessManager::~ProcessManager()
+{
+    // delete all processes
+    for(int i = 0;i < processes.size();i++)
+    {
+        delete processes[i];
+    }
+    //delete all generated memory_info stuff
+    for(int i = 0;i < destroy_meminfo.size();i++)
+    {
+        delete destroy_meminfo[i];
+    }
 }

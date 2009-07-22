@@ -68,7 +68,6 @@
 			<Add directory="/usr/include/SDL/" />
 			<Add directory="../../../src/MD5" />
 			<Add directory="../../../src/Process" />
-			<Add directory="../../../src/StringMagic/" />
 		</Compiler>
 		<Linker>
 			<Add library="SDL" />
@@ -183,8 +182,8 @@
 		<Unit filename="../../../src/Render/ScreenManager.h" />
 		<Unit filename="../../../src/Render/TextureManager.cpp" />
 		<Unit filename="../../../src/Render/TextureManager.h" />
-		<Unit filename="../../../src/StringMagic/StringMagic.cpp" />
-		<Unit filename="../../../src/StringMagic/StringMagic.h" />
+		<Unit filename="../../../DF Extractor/StringMagic.cpp" />
+		<Unit filename="../../../DF Extractor/StringMagic.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

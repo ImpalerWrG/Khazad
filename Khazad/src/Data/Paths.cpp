@@ -12,7 +12,7 @@ Path::~Path()
 {
 
 }
-// properly encapsulated fail, I'll work for now. /px
+// properly encapsulated fail, It'll work for now. /px
 void Path::Crunch()
 {
     #ifdef LINUX_BUILD
@@ -55,7 +55,7 @@ Path::operator const char * ()
     return internal.c_str();
 }
 
-// DANGEROUS!
+/// DANGEROUS!
 Path::operator char * ()
 {
     return (char *) internal.c_str();
@@ -64,4 +64,11 @@ Path::operator char * ()
 Path::operator string ()
 {
     return internal;
+}
+
+// yay for operators
+ostream &operator<<(ostream &stream, Path obj)
+{
+  stream << obj.internal;
+  return stream;  // return the stream
 }
