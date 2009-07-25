@@ -19,10 +19,10 @@ Extractor::~Extractor()
     }
 }
 
-bool Extractor::dumpMemory()
+bool Extractor::dumpMemory( string path_to_xml)
 {
     // create process manager, get first process
-    ProcessManager pm;
+    ProcessManager pm(path_to_xml);
     if(!pm.findProcessess())
     {
         fprintf(stderr,"Can't find any suitable DF process\n");
@@ -49,22 +49,22 @@ bool Extractor::dumpMemory()
     unsigned blocks_read = 0U;
 
     // Read Map Data Blocks
-    int map_offset = offset_descriptor->getBase("map_data");;
-    int x_count_offset = offset_descriptor->getBase("x_count");
-    int y_count_offset = offset_descriptor->getBase("y_count");
-    int z_count_offset = offset_descriptor->getBase("z_count");
+    int map_offset = offset_descriptor->getAddress("map_data");;
+    int x_count_offset = offset_descriptor->getAddress("x_count");
+    int y_count_offset = offset_descriptor->getAddress("y_count");
+    int z_count_offset = offset_descriptor->getAddress("z_count");
     int tile_type_offset = offset_descriptor->getOffset("type");
     int designation_offset = offset_descriptor->getOffset("designation");
     int occupancy_offset = offset_descriptor->getOffset("occupancy");
     int biome_stuffs = offset_descriptor->getOffset("biome_stuffs");
 
     // layers
-    int region_x_offset = offset_descriptor->getBase("region_x");
-    int region_y_offset = offset_descriptor->getBase("region_y");
-    int region_z_offset =  offset_descriptor->getBase("region_z");
-    int world_offset =  offset_descriptor->getBase("world");
+    int region_x_offset = offset_descriptor->getAddress("region_x");
+    int region_y_offset = offset_descriptor->getAddress("region_y");
+    int region_z_offset =  offset_descriptor->getAddress("region_z");
+    int world_offset =  offset_descriptor->getAddress("world");
     int world_regions_offset =  offset_descriptor->getOffset("w_regions_arr");
-    int region_size =  offset_descriptor->getOffset("region_size");
+    int region_size =  offset_descriptor->getHexValue("region_size");
     int region_geo_index_offset =  offset_descriptor->getOffset("region_geo_index_off");
     int world_geoblocks_offset =  offset_descriptor->getOffset("w_geoblocks");
     int world_size_x = offset_descriptor->getOffset("world_size_x");
@@ -72,10 +72,10 @@ bool Extractor::dumpMemory()
     int geolayer_geoblock_offset = offset_descriptor->getOffset("geolayer_geoblock_offset");
     // veins
     int veinvector = offset_descriptor->getOffset("v_vein");
-    int veinsize = offset_descriptor->getOffset("v_vein_size");
+    int veinsize = offset_descriptor->getHexValue("v_vein_size");
 
     // stone/soil/gem matgloss
-    int stone_matgloss_offset = offset_descriptor->getBase("mat_stone");
+    int stone_matgloss_offset = offset_descriptor->getAddress("mat_stone");
 
     bool have_geology = false;
 
@@ -128,6 +128,8 @@ bool Extractor::dumpMemory()
             // get world size
             int worldSizeX = MreadWord(world_offset + world_size_x);
             int worldSizeY = MreadWord(world_offset + world_size_y);
+            df_map->worldSizeX = worldSizeX;
+            df_map->worldSizeY = worldSizeY;
             printf("World size. X=%d Y=%d\n",worldSizeX,worldSizeY);
             // get pointer to first part of 2d array of regions
             uint32_t regions = MreadDWord(world_offset + world_regions_offset);

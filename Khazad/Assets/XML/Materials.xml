@@ -222,6 +222,10 @@
 			<Tile Int="353"/>
 			<Tile Int="354"/>
 			<Tile Int="355"/>
+			<Tile Int="356"/>
+			<Tile Int="357"/>
+			<Tile Int="358"/>
+			<Tile Int="359"/>
 		</TileValues>
 	</Material>
 	<Material>

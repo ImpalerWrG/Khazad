@@ -575,11 +575,6 @@ uint32_t DfMap::getGeolayerAddress (int x, int y, int z)
     {
         int biome = b->designation[x2][y2].bits.biome;
         int BiomeOffset = b->RegionOffsets[biome];
-        /*int16_t X_biomeB = (regionX / 16) + (BiomeOffset % 3) - 1;
-        int16_t Y_biomeB = (regionY / 16) + (BiomeOffset / 3) - 1;
-        if(X_biomeB < 0) X_biomeB = 0;
-        if(Y_biomeB < 0) Y_biomeB = 0;*/
-        ///FIXME: check and fix upper bounds here. this is important for embarks on the edge of the world! We need world size for that.
         int geoindex = b->designation[x2][y2].bits.geolayer_index;
         if(geodebug[BiomeOffset].size() > geoindex)
         {
@@ -659,7 +654,10 @@ void DfMap::getGeoRegion (int x, int y, int z, int& geoX, int& geoY)
         int16_t Y_biomeB = (regionY / 16) + (BiomeOffset / 3) - 1;
         if(X_biomeB < 0) X_biomeB = 0;
         if(Y_biomeB < 0) Y_biomeB = 0;
-        ///FIXME: check and fix upper bounds here. this is important for embarks on the edge of the world! We need world size for that.
+        if(X_biomeB >= worldSizeX)
+            X_biomeB = worldSizeX - 1;
+        if(Y_biomeB >= worldSizeY)
+            Y_biomeB = worldSizeY - 1;
         geoX = X_biomeB;
         geoY = Y_biomeB;
     }

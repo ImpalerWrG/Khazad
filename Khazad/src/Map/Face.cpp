@@ -85,34 +85,34 @@ bool Face::Draw(float xTranslate, float yTranslate)
             }
             case FACET_NORTH_EAST:
             {
-                Points[0] = Cube::ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-                Points[1] = Cube::ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
-                Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-                Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
+                Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
+                Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
+                Points[1] = Cube::ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
+                Points[0] = Cube::ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
                 break;
             }
             case FACET_SOUTH_EAST:
             {
-                Points[0] = Cube::ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
-                Points[1] = Cube::ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-                Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
-                Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
+                Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
+                Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
+                Points[1] = Cube::ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
+                Points[0] = Cube::ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
                 break;
             }
             case FACET_SOUTH_WEST:
             {
-                Points[0] = Cube::ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-                Points[1] = Cube::ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
-                Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-                Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
+                Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
+                Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
+                Points[1] = Cube::ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
+                Points[0] = Cube::ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
                 break;
             }
             case FACET_NORTH_WEST:
             {
-                Points[0] = Cube::ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
-                Points[1] = Cube::ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-                Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
-                Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
+                Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
+                Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
+                Points[1] = Cube::ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
+                Points[0] = Cube::ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
                 break;
             }
         }

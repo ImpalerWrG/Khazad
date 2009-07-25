@@ -177,6 +177,7 @@ bool Cell::Draw(CameraOrientation Orientation)
                     if(LoopCube->getSlope())
                     {
                         LoopCube->getSlope()->Draw(x, y);
+                        continue;
                     }
                     if(LoopCube->getLiquid())
                     {

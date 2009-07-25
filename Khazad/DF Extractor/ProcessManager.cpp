@@ -2,9 +2,10 @@
 
 #include <DataModel.h>
 #include <MemInfo.h>
+
 ///FIXME: what to do with this one?
 #include <Paths.h>
-
+#include <tinyxml.h>
 #include "StringMagic.h"
 
 /// HACK: global variables (only one process can be attached at the same time.)
@@ -33,11 +34,11 @@ Process* ProcessManager::addWineProcess(string & exe,ProcessHandle PH)
     // iterate over the list of memory locations
     vector<memory_info>::iterator it;
     for ( it=meminfo.begin() ; it < meminfo.end(); it++ )
-        if("windows" == (*it).getString("system")) // is this a linux entry?
+        if(memory_info::OS_WINDOWS == (*it).getOS()) // is this a linux entry?
             if(hash == (*it).getString("md5")) // are the md5 hashes the same?
             {
                 memory_info * m = &*it;
-                printf("Found wine process %d. It's DF version %s.\n",PH, m->getString("version").c_str());
+                cout <<"Found wine process " << PH <<  ". It's DF version " << m->getVersion() << "." << endl;
                 Process *ret= new Process(new DMWindows40d(),m,PH);
                 processes.push_back(ret);
                 return ret;
@@ -50,11 +51,11 @@ Process* ProcessManager::addLinuxProcess(string & exe,ProcessHandle PH)
     // iterate over the list of memory locations
     vector<memory_info>::iterator it;
     for ( it=meminfo.begin() ; it < meminfo.end(); it++ )
-        if("linux" == (*it).getString("system")) // is this a linux entry?
+        if(memory_info::OS_LINUX == (*it).getOS()) // is this a linux entry?
             if(hash == (*it).getString("md5")) // are the md5 hashes the same?
             {
                 memory_info * m = &*it;
-                printf("Found linux process %d. It's DF version %s.\n",PH, m->getString("version").c_str());
+                cout <<"Found linux process " << PH <<  ". It's DF version " << m->getVersion() << "." << endl;
                 Process *ret= new Process(new DMLinux40d(),m,PH);
                 processes.push_back(ret);
                 return ret;
@@ -197,7 +198,7 @@ bool ProcessManager::findProcessess()
         // we've got some process, look at its first module
         if(EnumProcessModules(hProcess, &hmod, 1 * sizeof(HMODULE), &junk))
         {
-            /// check module filename to verify that it's DF!
+            /// TODO: check module filename to verify that it's DF!
             // got base ;)
             uint32_t base = (uint32_t)hmod;
             // read from this process
@@ -210,15 +211,15 @@ bool ProcessManager::findProcessess()
             for ( it=meminfo.begin() ; it < meminfo.end(); it++ )
             {
                 // filter by OS
-                if("windows" == (*it).getString("system"))
+                if(memory_info::OS_WINDOWS == (*it).getOS())
                 {
-                    Uint32 pe_timestamp = (*it).getOffset("pe_timestamp");
+                    Uint32 pe_timestamp = (*it).getHexValue("pe_timestamp");
                     if (pe_timestamp == pe_header.FileHeader.TimeDateStamp)
                     {
                         printf("Match found! Using version %s.\n", (*it).getString("version").c_str());
                         // give the process a data model and memory layout fixed to the base of first module
                         memory_info *m = new memory_info(*it);
-                        m->setRebase(0x400000,base);
+                        m->Rebase(base);
                         // keep track of created memory_info objects so we can destroy them later
                         destroy_meminfo.push_back(m);
                         // process is responsible for destroying its data model
@@ -243,8 +244,134 @@ bool ProcessManager::findProcessess()
 #endif
 
 /// OS independent part
-bool ProcessManager::loadDescriptors()
+bool ProcessManager::loadDescriptors(string path_to_xml)
 {
+    TiXmlDocument doc( path_to_xml.c_str() );
+    bool loadOkay = doc.LoadFile();
+	TiXmlHandle hDoc(&doc);
+	TiXmlElement* pElem;
+	TiXmlHandle hRoot(0);
+    memory_info mem;
+
+    if ( loadOkay )
+    {
+        // block: name
+        {
+            pElem=hDoc.FirstChildElement().Element();
+            // should always have a valid root but handle gracefully if it does
+            if (!pElem)
+            {
+                cerr << "no pElem found" << endl;
+                return false;
+            }
+            string m_name=pElem->Value();
+            if(m_name != "DFExtractor")
+            {
+                cerr << "DFExtractor != " << m_name << endl;
+                return false;
+            }
+            cout << "got DFExtractor XML!" << endl;
+            // save this for later
+            hRoot=TiXmlHandle(pElem);
+        }
+        // load elements
+        {
+            meminfo.clear(); // trash existing list
+
+            TiXmlElement* pMemInfo=hRoot.FirstChild( "MemoryDescriptors" ).FirstChild( "Entry" ).Element();
+            TiXmlElement* pMemEntry;
+            for( pMemInfo; pMemInfo; pMemInfo=pMemInfo->NextSiblingElement("Entry"))
+            {
+                mem.flush();
+                const char *cstr_version = pMemInfo->Attribute("version");
+                const char *cstr_os = pMemInfo->Attribute("os");
+                const char *cstr_base = pMemInfo->Attribute("base");
+                // mandatory attributes missing?
+                if(!(cstr_version && cstr_os))
+                {
+                    cerr << "Bad entry in memory.xml detected, version or os attribute is missing.";
+                    // skip if we don't have valid attributes
+                    continue;
+                }
+                string os = cstr_os;
+                mem.setVersion(cstr_version);
+                mem.setOS(cstr_os);
+                //set base to default when undefined (0x400000 for windows 0x0 for linux), check os type
+                if(os == "windows")
+                {
+                    if(cstr_base)
+                        mem.setBase(cstr_base);
+                    else
+                        mem.setBase(0x400000);
+                }
+                else if(os == "linux")
+                {
+                    if(cstr_base)
+                        mem.setBase(cstr_base);
+                    else
+                        mem.setBase(0x0);
+                }
+                else
+                {
+                    cerr << "unknown operating system " << os << endl;
+                    continue;
+                }
+                // process additional entries
+                cout << "Entry " << cstr_version << " " <<  cstr_os << endl;
+                pMemEntry = pMemInfo->FirstChildElement()->ToElement();
+                for(pMemEntry;pMemEntry;pMemEntry=pMemEntry->NextSiblingElement())
+                {
+                    // only elements get processed
+                    if(pMemEntry->Type() == TiXmlNode::ELEMENT)
+                    {
+                        const char *cstr_type = pMemEntry->Value();
+                        const char *cstr_name = pMemEntry->Attribute("name");
+                        const char *cstr_value = pMemEntry->GetText();
+                        // check for missing parts
+                        if(! (cstr_type && cstr_name && cstr_value))
+                        {
+                            cerr << "underspecified MemInfo entry" << endl;
+                            continue;
+                        }
+                        string type = cstr_type;
+                        string name = cstr_name;
+                        string value = cstr_value;
+                        if (type == "HexValue")
+                        {
+                            mem.setHexValue(name, value);
+                        }
+                        else if (type == "Address")
+                        {
+                            mem.setAddress(name, value);
+                        }
+                        else if (type == "Offset")
+                        {
+                            mem.setOffset(name, value);
+                        }
+                        else if (type == "String")
+                        {
+                            mem.setString(name, value);
+                        }
+                        else
+                        {
+                            cerr << "Unknown MemInfo type: " << type << endl;
+                        }
+                        cout << type << " " << name << " = " << value << endl;
+                    }
+                }
+                // managed to get through all the hoops, push mem on vector
+                meminfo.push_back(mem);
+            }
+        }
+        return true;
+    }
+    else
+    {
+        // load failed
+        cerr << "Can't load memory offsets from memory.xml" << endl;
+        return false;
+    }
+/*
     meminfo.clear();
     Path file = "Assets\\Maps\\memory.ini";
     string line;
@@ -291,7 +418,7 @@ bool ProcessManager::loadDescriptors()
     }
     if(mem.hasToken("version")) // one last entry remaining
         meminfo.push_back(mem); // add it to the vector
-    return true;
+    return true;*/
 }
 
 uint32_t ProcessManager::size()
@@ -303,11 +430,11 @@ Process * ProcessManager::operator[](uint32_t index)
     assert(index < processes.size());
     return processes[index];
 };
-ProcessManager::ProcessManager()
+ProcessManager::ProcessManager( string path_to_xml )
 {
     currentProcess = NULL;
     currentProcessHandle = 0;
-    loadDescriptors();
+    loadDescriptors( path_to_xml );
 }
 ProcessManager::~ProcessManager()
 {

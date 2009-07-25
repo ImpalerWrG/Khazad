@@ -52,34 +52,34 @@ void Slope::SetSlopeType(Slopping Type)
     {
         case SLOPE_NORTH_EAST:
         {
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
+            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
+            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
+            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
+            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
             break;
         }
         case SLOPE_SOUTH_EAST:
         {
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
+            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
+            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
+            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
+            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
             break;
         }
         case SLOPE_SOUTH_WEST:
         {
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
+            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
+            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
+            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
+            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
             break;
         }
         case SLOPE_NORTH_WEST:
         {
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
+            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
+            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
+            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
+            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
             break;
         }
         case SLOPE_LARGE_NORTH:
@@ -220,9 +220,12 @@ bool Slope::Draw(float xTranslate, float yTranslate)
                 TEXTURE->BindTexturePoint(Texture, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
                 TEXTURE->BindTexturePoint(Texture, 2);   glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
 
-                TEXTURE->BindTexturePoint(Texture, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+                /*TEXTURE->BindTexturePoint(Texture, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
                 TEXTURE->BindTexturePoint(Texture, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Texture, 3);   glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);*/
                 TEXTURE->BindTexturePoint(Texture, 3);   glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
+                TEXTURE->BindTexturePoint(Texture, 1);   glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+                TEXTURE->BindTexturePoint(Texture, 0);   glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
         }
 
         if (SlopeType == SLOPE_CRESS_NORTH_SOUTH || SlopeType == SLOPE_CRESS_EAST_WEST )

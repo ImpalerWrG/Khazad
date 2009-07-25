@@ -21,6 +21,6 @@ public:
     bool writeMap(string FileName);
     bool isMapLoaded();
     DfMap *getMap() {return df_map;};
-    bool dumpMemory();
+    bool dumpMemory( string path_to_xml);
 };
 #endif // EXTRACT_HEADER

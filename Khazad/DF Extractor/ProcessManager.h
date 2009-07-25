@@ -24,7 +24,7 @@ class ProcessManager
     Process * currentProcess;
     ProcessHandle currentProcessHandle;
     std::vector<Process *> processes;
-    bool loadDescriptors();
+    bool loadDescriptors( string path_to_xml);
 #ifdef LINUX_BUILD
     Process* addWineProcess(string & exe,ProcessHandle PH);
     Process* addLinuxProcess(string & exe,ProcessHandle PH);
@@ -33,7 +33,7 @@ class ProcessManager
 #endif
 
     public:
-    ProcessManager();
+    ProcessManager( string path_to_xml);
     ~ProcessManager();
     bool findProcessess();
     uint32_t size();

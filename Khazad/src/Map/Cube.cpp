@@ -394,56 +394,34 @@ void Cube::setAllFacesVisiblity(bool NewValue)
 void Cube::DetermineSlope()
 {
     Slopping SlopeType = SLOPE_FLAT;
-
-    bool NorthEastSolid = false;
-    bool SouthEastSolid = false;
-    bool NorthWestSolid = false;
-    bool SouthWestSolid = false;
-
-    bool NorthSolid = false;
-    bool SouthSolid = false;
-    bool WestSolid = false;
-    bool EastSolid = false;
-
-
-    if(getAdjacentCube(FACET_NORTH_EAST) != NULL && getAdjacentCube(FACET_NORTH_EAST)->isSolid())
+    /// use this thing here
+    /**
+    union slope
     {
-        NorthEastSolid = true;
-    }
+        uint8_t value,
+        struct bits {
+            unsigned int NorthEastSolid : 1;
+            unsigned int SouthEastSolid : 1;
+            unsigned int NorthWestSolid : 1;
+            unsigned int SouthWestSolid : 1;
 
-    if(getAdjacentCube(FACET_SOUTH_EAST) != NULL && getAdjacentCube(FACET_SOUTH_EAST)->isSolid())
-    {
-        SouthEastSolid = true;
+            unsigned int NorthSolid : 1;
+            unsigned int SouthSolid : 1;
+            unsigned int WestSolid : 1;
+            unsigned int EastSolid : 1;
+        }
     }
+    */
 
-    if(getAdjacentCube(FACET_NORTH_WEST) != NULL && getAdjacentCube(FACET_NORTH_WEST)->isSolid())
-    {
-       NorthWestSolid = true;
-    }
+    bool NorthEastSolid = getAdjacentCube(FACET_NORTH_EAST) != NULL && getAdjacentCube(FACET_NORTH_EAST)->isSolid();
+    bool SouthEastSolid = getAdjacentCube(FACET_SOUTH_EAST) != NULL && getAdjacentCube(FACET_SOUTH_EAST)->isSolid();
+    bool NorthWestSolid = getAdjacentCube(FACET_NORTH_WEST) != NULL && getAdjacentCube(FACET_NORTH_WEST)->isSolid();
+    bool SouthWestSolid = getAdjacentCube(FACET_SOUTH_WEST) != NULL && getAdjacentCube(FACET_SOUTH_WEST)->isSolid();
 
-    if(getAdjacentCube(FACET_SOUTH_WEST) != NULL && getAdjacentCube(FACET_SOUTH_WEST)->isSolid())
-    {
-        SouthWestSolid = true;
-    }
-
-
-    if(getNeiborCube(DIRECTION_NORTH) != NULL && getNeiborCube(DIRECTION_NORTH)->isSolid())
-    {
-        NorthSolid = true;
-    }
-    if(getNeiborCube(DIRECTION_SOUTH) != NULL && getNeiborCube(DIRECTION_SOUTH)->isSolid())
-    {
-        SouthSolid = true;
-    }
-    if(getNeiborCube(DIRECTION_WEST) != NULL && getNeiborCube(DIRECTION_WEST)->isSolid())
-    {
-       WestSolid = true;
-    }
-    if(getNeiborCube(DIRECTION_EAST) != NULL && getNeiborCube(DIRECTION_EAST)->isSolid())
-    {
-        EastSolid = true;
-    }
-
+    bool NorthSolid = getNeiborCube(DIRECTION_NORTH) != NULL && getNeiborCube(DIRECTION_NORTH)->isSolid();
+    bool SouthSolid = getNeiborCube(DIRECTION_SOUTH) != NULL && getNeiborCube(DIRECTION_SOUTH)->isSolid();
+    bool WestSolid = getNeiborCube(DIRECTION_WEST) != NULL && getNeiborCube(DIRECTION_WEST)->isSolid();
+    bool EastSolid = getNeiborCube(DIRECTION_EAST) != NULL && getNeiborCube(DIRECTION_EAST)->isSolid();
 
     if(NorthEastSolid)
     {

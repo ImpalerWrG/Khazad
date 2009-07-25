@@ -325,7 +325,8 @@ void Map::ReparseExtract()
 // extract from DF
 void Map::Load()
 {
-    DFExtractor->dumpMemory();
+    Path path_to_xml("Assets/XML/Memory.xml");
+    DFExtractor->dumpMemory(path_to_xml);
     ReparseExtract();
 }
 

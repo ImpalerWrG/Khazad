@@ -172,6 +172,8 @@ public:
     uint32_t regionX;
     uint32_t regionY;
     uint32_t regionZ;
+    uint32_t worldSizeX;
+    uint32_t worldSizeY;
     vector<uint16_t> geology[eBiomeCount];
     vector<uint32_t> geodebug[eBiomeCount];
     uint32_t geoblockadresses[eBiomeCount];

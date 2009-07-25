@@ -103,10 +103,14 @@
 		<Unit filename="../../../DF Extractor/MemAccess.h" />
 		<Unit filename="../../../DF Extractor/MemInfo.cpp" />
 		<Unit filename="../../../DF Extractor/MemInfo.h" />
+		<Unit filename="../../../DF Extractor/MemInfoManager.cpp" />
+		<Unit filename="../../../DF Extractor/MemInfoManager.h" />
 		<Unit filename="../../../DF Extractor/Process.cpp" />
 		<Unit filename="../../../DF Extractor/Process.h" />
 		<Unit filename="../../../DF Extractor/ProcessManager.cpp" />
 		<Unit filename="../../../DF Extractor/ProcessManager.h" />
+		<Unit filename="../../../DF Extractor/StringMagic.cpp" />
+		<Unit filename="../../../DF Extractor/StringMagic.h" />
 		<Unit filename="../../../DF Extractor/TileTypes.h" />
 		<Unit filename="../../../DF Extractor/WindowsMemAccess.h" />
 		<Unit filename="../../../DF Extractor/ZlibHelper.h" />
@@ -182,8 +186,6 @@
 		<Unit filename="../../../src/Render/ScreenManager.h" />
 		<Unit filename="../../../src/Render/TextureManager.cpp" />
 		<Unit filename="../../../src/Render/TextureManager.h" />
-		<Unit filename="../../../DF Extractor/StringMagic.cpp" />
-		<Unit filename="../../../DF Extractor/StringMagic.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
