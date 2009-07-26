@@ -194,7 +194,7 @@ bool ProcessManager::findProcessess()
                 // filter by OS
                 if(memory_info::OS_WINDOWS == (*it).getOS())
                 {
-                    Uint32 pe_timestamp = (*it).getHexValue("pe_timestamp");
+                    uint32_t pe_timestamp = (*it).getHexValue("pe_timestamp");
                     if (pe_timestamp == pe_header.FileHeader.TimeDateStamp)
                     {
                         printf("Match found! Using version %s.\n", (*it).getString("version").c_str());
