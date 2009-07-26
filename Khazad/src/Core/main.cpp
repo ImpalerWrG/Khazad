@@ -157,10 +157,10 @@ int main(int argv, char** argc)
 
 	Timer* FPSTimer = new Timer(20);
 	Timer* GameTimer = new Timer(20);
-	Timer* UITimer = new Timer(20);
+//	Timer* UITimer = new Timer(20);
 	Timer* RenderTimer = new Timer(20);
 
-	Uint8 FrameCounter = 0;
+//	Uint8 FrameCounter = 0;
 	Uint32 FrameRate = 0;
 
     GameTimer->Start();

@@ -9,7 +9,7 @@ using namespace std;
 //
 string MD5Sum (const char * filename)
 {
-        int i;
+        uint32_t i;
         MHASH td;
         unsigned char buffer;
         unsigned char *hash;

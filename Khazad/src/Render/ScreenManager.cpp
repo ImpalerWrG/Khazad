@@ -113,6 +113,7 @@ bool ScreenManager::Init()
     //SDL_ShowCursor(false); //Use alternative cursor?
 
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    return true;
 }
 
 bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Hight)
@@ -140,14 +141,14 @@ bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Hight)
 	return true;
 }
 
-void ScreenManager::RenderText(char *text, Sint8 FontIndex, SDL_Color Color, SDL_Rect *location)
+void ScreenManager::RenderText(const char *text, Sint8 FontIndex, SDL_Color Color, SDL_Rect *location)
 {
     SDL_Surface* FontSurface = FONT->makeFontSurface(text, Color, FontIndex);
     RenderSurface(FontSurface, location);
     SDL_FreeSurface(FontSurface);
 }
 
-void ScreenManager::RenderTextCentered(char *text, Sint8 FontIndex, SDL_Color Color, Sint16 Verticaladjust)
+void ScreenManager::RenderTextCentered(const char *text, Sint8 FontIndex, SDL_Color Color, Sint16 Verticaladjust)
 {
     SDL_Surface* FontSurface = FONT->makeFontSurface(text, Color, FontIndex);
 
@@ -620,9 +621,9 @@ void ScreenManager::PrintDebugging()
         string matgloss;
         int matglossi;
         int building = 0;
-        int region_x = 0;
-        int region_y = 0;
-        int region_z = 0;
+        uint32_t region_x = 0;
+        uint32_t region_y = 0;
+        uint32_t region_z = 0;
         int layerAddress = 0;
         int gblockAddress = 0;
         int regionAddress = 0;
@@ -696,9 +697,6 @@ void ScreenManager::PrintDebugging()
 /*        sprintf (buffer, "building: %i", building);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;*/
-/*        char binarybuffer[33];
-
-
 /*
         char binarybuffer[33];
         binarysprintf(binarybuffer, Designation);

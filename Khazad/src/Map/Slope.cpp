@@ -41,6 +41,7 @@ bool Slope::Init(Cube* NewOwner, Slopping Type)
 	Texture = Material; //DATA->getMaterialData(Material)->getTexture();
 
     MAP->ChangeInitedSlopeCount(1);
+    return true;
 }
 
 void Slope::SetSlopeType(Slopping Type)
@@ -190,7 +191,7 @@ bool Slope::Draw(float xTranslate, float yTranslate)
 {
     if(Visible)
     {
-        Uint16 Material = Owner->getMaterial();
+        //Uint16 Material = Owner->getMaterial();
 
         if (SlopeType == SLOPE_NORTH_EAST || SlopeType == SLOPE_SOUTH_EAST || SlopeType == SLOPE_SOUTH_WEST || SlopeType == SLOPE_NORTH_WEST )
         {

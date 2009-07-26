@@ -139,7 +139,7 @@ uint32_t memory_info::getHexValue (string key)
 {
     if(hexvals.count(key))
         return hexvals[key];
-    else 0;
+    return 0;
 }
 void memory_info::flush()
 {

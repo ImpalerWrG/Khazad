@@ -1,6 +1,7 @@
 #include <stdafx.h>
 
 #include <Column.h>
+#include <Cell.h>
 
 Column::Column()
 {
@@ -25,6 +26,7 @@ bool Column::Init(Sint16 X, Sint16 Y)
 {
     XLocation = X;
     YLocation = Y;
+    return true;
 }
 
 Cell* Column::getCell(Sint16 Zlevel)

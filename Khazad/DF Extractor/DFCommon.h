@@ -13,6 +13,7 @@ using namespace std;
 #ifdef LINUX_BUILD
 #include <sys/types.h>
 #include <sys/ptrace.h>
+#include <dirent.h>
 #else
 #define WINVER 0x0500					// OpenThread(), PSAPI, Toolhelp32
 #define WIN32_LEAN_AND_MEAN

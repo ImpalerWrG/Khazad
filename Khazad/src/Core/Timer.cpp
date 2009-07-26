@@ -105,7 +105,7 @@ void Timer::SetSampleSize(Uint32 Size)
 
     AcumulationArray = new Uint32[SampleSize];
 
-    for (int i = 0; i < SampleSize; i++)
+    for (uint32_t i = 0; i < SampleSize; i++)
     {
         AcumulationArray[i] = 0;
     }

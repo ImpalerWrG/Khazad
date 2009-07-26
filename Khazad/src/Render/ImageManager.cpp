@@ -19,7 +19,7 @@ ImageManager::~ImageManager()
 
 bool ImageManager::Init()
 {
-
+    return true;
 }
 
 ILuint ImageManager::loadImage(char* filepath, bool ColorKey)

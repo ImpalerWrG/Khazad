@@ -17,10 +17,10 @@ void Path::Crunch()
 {
     #ifdef LINUX_BUILD
     char src = '\\';
-    char *target = "/";
+    const char *target = "/";
     #else
     char src = '/';
-    char *target = "\\";
+    const char *target = "\\";
     #endif
     int len = internal.length();
     for( int i = 0; i < len; i++ )

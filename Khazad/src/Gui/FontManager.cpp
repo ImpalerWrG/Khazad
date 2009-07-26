@@ -16,7 +16,7 @@ bool FontManager::Init()
 		return false;
 	}
 
-    for(int i = 0; i < DATA->getNumFonts(); ++i)
+    for(uint32_t i = 0; i < DATA->getNumFonts(); ++i)
     {
         loadFont(DATA->getFontData(i)->getPath(), DATA->getFontData(i)->getSize());
     }

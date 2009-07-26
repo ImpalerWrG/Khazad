@@ -15,7 +15,9 @@ bool DataBase::Load(TiXmlElement* Entry, Uint32 Index)
     {
         XML->QueryTextValue(Entry, "Name", "Label", &Name);
         DATA->addLabel(Name, Index);
+        return true;
     }
+    return false;
 }
 
 ColorData::ColorData()

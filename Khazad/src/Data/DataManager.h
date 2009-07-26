@@ -24,7 +24,7 @@ public:
 	bool Init();
 
 	template <class T>
-	bool LoadDataClass(std::vector<T*>* DataVector, char* Path, char* Entry)
+	bool LoadDataClass(std::vector<T*>* DataVector, const char* Path, const char* Entry)
     {
         TiXmlDocument* Document = XML->loadFile(Path);
         TiXmlElement* Parent = Document->RootElement();
@@ -52,7 +52,7 @@ public:
 	template <class T>
 	bool PostProcessDataClass(std::vector<T*>* DataVector)
     {
-        for(int i = 0; i < DataVector->size(); ++i)
+        for(uint32_t i = 0; i < DataVector->size(); ++i)
         {
             DataVector->at(i)->PostProcessing();
         }

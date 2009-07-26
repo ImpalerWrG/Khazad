@@ -26,12 +26,8 @@ class ProcessManager
     std::vector<Process *> processes;
     bool loadDescriptors( string path_to_xml);
 #ifdef LINUX_BUILD
-    Process* addWineProcess(string & exe,ProcessHandle PH);
-    Process* addLinuxProcess(string & exe,ProcessHandle PH);
-#else
-    Process* addWindowsProcess(string & exe,ProcessHandle PH);
+    Process* addProcess(string & exe,ProcessHandle PH);
 #endif
-
     public:
     ProcessManager( string path_to_xml);
     ~ProcessManager();

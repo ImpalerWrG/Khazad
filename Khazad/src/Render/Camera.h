@@ -80,10 +80,10 @@ public:
     void UnProjectPoint(int XPosition, int YPosition);
 
     Vector3 getNearMouseClickPoint()                    { return NearMouseClickPoint; }
-    Vector3 setNearMouseClickPoint(Vector3 NewPoint)    { NearMouseClickPoint = NewPoint; }
+    Vector3 setNearMouseClickPoint(Vector3 NewPoint)    { NearMouseClickPoint = NewPoint; return NewPoint; }
 
     Vector3 getFarMouseClickPoint()                     { return FarMouseClickPoint; }
-    Vector3 setFarMouseClickPoint(Vector3 NewPoint)     { FarMouseClickPoint = NewPoint; }
+    Vector3 setFarMouseClickPoint(Vector3 NewPoint)     { FarMouseClickPoint = NewPoint; return NewPoint; }
 
     Vector3 DetermineMouseIntersection(float MapZ);
     bool DetermineCursorIntersection();

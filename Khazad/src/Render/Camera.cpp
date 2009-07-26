@@ -532,8 +532,8 @@ void Camera::TiltView(float Movement, float Min, float Max)
 
 void Camera::SlideView(float X, float Y)
 {
-    float DifferenceX = LookPosition.x - EyePosition.x;
-    float DifferenceY = LookPosition.y - EyePosition.y;
+//    float DifferenceX = LookPosition.x - EyePosition.x;
+//    float DifferenceY = LookPosition.y - EyePosition.y;
 
 	if (IsoMode)
 	{
@@ -675,7 +675,7 @@ void Camera::ConfineLookPosition()
 
     // Z Axis
     int MaxZ = MAP->getMapSizeZ() - 1;
-    int MinZ = 0;
+//    int MinZ = 0;
 
     if(LookPosition.z < 0)
     {

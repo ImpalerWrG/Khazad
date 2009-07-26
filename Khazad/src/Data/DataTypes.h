@@ -14,7 +14,7 @@ public:
     DataBase();
     virtual ~DataBase();
     bool Load(TiXmlElement* Entry, Uint32 Index);   // This must be called to index the Data Title
-    virtual bool PostProcessing()              {};  // Empty for overRiding in derived data classes
+    virtual bool PostProcessing()              {return false;};  // Empty for overRiding in derived data classes
 
 protected:
 

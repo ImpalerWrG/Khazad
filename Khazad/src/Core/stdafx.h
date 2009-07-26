@@ -9,7 +9,8 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <SDL.h>
-#include <SDL_opengl.h>
+// some outdated version of glext.h? WTF?
+//#include <SDL_opengl.h>
 
 #include <string>
 #include <vector>

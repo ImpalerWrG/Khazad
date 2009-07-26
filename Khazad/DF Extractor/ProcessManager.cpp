@@ -3,63 +3,44 @@
 #include <DataModel.h>
 #include <MemInfo.h>
 
-///FIXME: what to do with this one?
-#include <Paths.h>
 #include <tinyxml.h>
-#include "StringMagic.h"
+#include <iostream>
 
 /// HACK: global variables (only one process can be attached at the same time.)
 Process * g_pProcess; ///< current process. non-NULL when picked
 ProcessHandle g_ProcessHandle; ///< cache of handle to current process. used for speed reasons
 
 #ifdef LINUX_BUILD
-/// LINUX version of the process finder. lots of headers.
+/// LINUX version of the process finder.
 #include <md5.h>
-#include <sys/param.h>
-#include <sys/user.h>
-#include <sys/sysctl.h>
-#include <sys/ptrace.h>
-#include <dirent.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <fstream>
 
-Process* ProcessManager::addWineProcess(string & exe,ProcessHandle PH)
+Process* ProcessManager::addProcess(string & exe,ProcessHandle PH)
 {
     string hash = MD5Sum((char *)exe.c_str());// get hash of the running DF process
     // iterate over the list of memory locations
     vector<memory_info>::iterator it;
     for ( it=meminfo.begin() ; it < meminfo.end(); it++ )
-        if(memory_info::OS_WINDOWS == (*it).getOS()) // is this a linux entry?
-            if(hash == (*it).getString("md5")) // are the md5 hashes the same?
+        if(hash == (*it).getString("md5")) // are the md5 hashes the same?
+        {
+            memory_info * m = &*it;
+            Process * ret;
+            cout <<"Found process " << PH <<  ". It's DF version " << m->getVersion() << "." << endl;
+            if(memory_info::OS_WINDOWS == (*it).getOS())
             {
-                memory_info * m = &*it;
-                cout <<"Found wine process " << PH <<  ". It's DF version " << m->getVersion() << "." << endl;
-                Process *ret= new Process(new DMWindows40d(),m,PH);
-                processes.push_back(ret);
-                return ret;
+                ret= new Process(new DMWindows40d(),m,PH);
             }
-    return NULL;
-}
-Process* ProcessManager::addLinuxProcess(string & exe,ProcessHandle PH)
-{
-    string hash = MD5Sum((char *)exe.c_str());// get hash of the running DF process
-    // iterate over the list of memory locations
-    vector<memory_info>::iterator it;
-    for ( it=meminfo.begin() ; it < meminfo.end(); it++ )
-        if(memory_info::OS_LINUX == (*it).getOS()) // is this a linux entry?
-            if(hash == (*it).getString("md5")) // are the md5 hashes the same?
+            else if (memory_info::OS_LINUX == (*it).getOS())
             {
-                memory_info * m = &*it;
-                cout <<"Found linux process " << PH <<  ". It's DF version " << m->getVersion() << "." << endl;
-                Process *ret= new Process(new DMLinux40d(),m,PH);
-                processes.push_back(ret);
-                return ret;
+                ret= new Process(new DMLinux40d(),m,PH);
             }
+            else
+            {
+                // some error happened, continue with next process
+                continue;
+            }
+            processes.push_back(ret);
+            return ret;
+        }
     return NULL;
 }
 
@@ -104,7 +85,7 @@ bool ProcessManager::findProcessess()
 				    // get PID
 					result = atoi(dir_entry_p->d_name);
 					/// create linux process, add it to the vector
-					addLinuxProcess(exe_link,result);
+					addProcess(exe_link,result);
 				}
 				// a wine process, we need to do more checking and this may break is the future
 				/// FIXME: this fails when the wine process isn't started from the 'current working directory'. strip path data from cmdline
@@ -127,7 +108,7 @@ bool ProcessManager::findProcessess()
 				        // get PID
 				        result = atoi(dir_entry_p->d_name);
 				        /// create wine process, add it to the vector
-				        addWineProcess(exe_link,result);
+				        addProcess(exe_link,result);
 				    }
 				}
 			}
@@ -280,7 +261,7 @@ bool ProcessManager::loadDescriptors(string path_to_xml)
 
             TiXmlElement* pMemInfo=hRoot.FirstChild( "MemoryDescriptors" ).FirstChild( "Entry" ).Element();
             TiXmlElement* pMemEntry;
-            for( pMemInfo; pMemInfo; pMemInfo=pMemInfo->NextSiblingElement("Entry"))
+            for( ; pMemInfo; pMemInfo=pMemInfo->NextSiblingElement("Entry"))
             {
                 mem.flush();
                 const char *cstr_version = pMemInfo->Attribute("version");
@@ -319,7 +300,7 @@ bool ProcessManager::loadDescriptors(string path_to_xml)
                 // process additional entries
                 cout << "Entry " << cstr_version << " " <<  cstr_os << endl;
                 pMemEntry = pMemInfo->FirstChildElement()->ToElement();
-                for(pMemEntry;pMemEntry;pMemEntry=pMemEntry->NextSiblingElement())
+                for(;pMemEntry;pMemEntry=pMemEntry->NextSiblingElement())
                 {
                     // only elements get processed
                     if(pMemEntry->Type() == TiXmlNode::ELEMENT)
@@ -439,12 +420,12 @@ ProcessManager::ProcessManager( string path_to_xml )
 ProcessManager::~ProcessManager()
 {
     // delete all processes
-    for(int i = 0;i < processes.size();i++)
+    for(uint32_t i = 0;i < processes.size();i++)
     {
         delete processes[i];
     }
     //delete all generated memory_info stuff
-    for(int i = 0;i < destroy_meminfo.size();i++)
+    for(uint32_t i = 0;i < destroy_meminfo.size();i++)
     {
         delete destroy_meminfo[i];
     }

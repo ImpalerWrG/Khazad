@@ -61,21 +61,21 @@ void DfMap::clear()
     }
 }
 
-void DfMap::getRegionCoords (int &x,int &y,int &z)
+void DfMap::getRegionCoords (uint32_t &x,uint32_t &y,uint32_t &z)
 {
     x= regionX;
     y= regionY;
     z= regionZ;
 }
 
-void DfMap::setRegionCoords (int x,int y,int z)
+void DfMap::setRegionCoords (uint32_t x,uint32_t y,uint32_t z)
 {
     regionX = x;
     regionY = y;
     regionZ = z;
 }
 
-void DfMap::allocBlockArray(int x,int y, int z)
+void DfMap::allocBlockArray(uint32_t x,uint32_t y, uint32_t z)
 {
     clear();
     x_block_count = x;
@@ -108,7 +108,7 @@ bool DfMap::isValid ()
     return valid;
 }
 
-Block * DfMap::getBlock (int x,int y,int z)
+Block * DfMap::getBlock (uint32_t x,uint32_t y,uint32_t z)
 {
     if(isValid())
     {
@@ -117,7 +117,7 @@ Block * DfMap::getBlock (int x,int y,int z)
     return NULL;
 }
 
-Block * DfMap::allocBlock (int x,int y,int z)
+Block * DfMap::allocBlock (uint32_t x,uint32_t y,uint32_t z)
 {
     if(isValid())
     {
@@ -465,7 +465,7 @@ bool DfMap::load(string FilePath)
     // check, if the file is big enough to contain the header
     fseek(Decompressed, 0, SEEK_END);
 
-    if (ftell(Decompressed) < sizeof(DfMapHeader))
+    if (ftell(Decompressed) < (int32_t)sizeof(DfMapHeader))
     {
     	printf("This Khazad map file is corrupted - file too small.\n");
     	return false;
@@ -509,11 +509,11 @@ bool DfMap::load(string FilePath)
     return true;
 }
 
-int DfMap::getLiquidLevel(int x, int y, int z)
+uint8_t DfMap::getLiquidLevel(uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
 
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -523,11 +523,11 @@ int DfMap::getLiquidLevel(int x, int y, int z)
     return 0;
 }
 
-short int DfMap::getTileType(int x, int y, int z)
+uint16_t DfMap::getTileType(uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
 
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -539,7 +539,7 @@ short int DfMap::getTileType(int x, int y, int z)
     return -1;
 }
 
-short int DfMap::getTileType(int x, int y, int z, int blockX, int blockY)
+uint16_t DfMap::getTileType(uint32_t x, uint32_t y, uint32_t z, uint32_t blockX, uint32_t blockY)
 {
     assert(CheckBlockBounds);
     Block *b = getBlock(x,y,z);
@@ -552,10 +552,10 @@ short int DfMap::getTileType(int x, int y, int z, int blockX, int blockY)
     return -1;
 }
 
-int DfMap::getDesignations(int x, int y, int z)
+uint32_t DfMap::getDesignations(uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -565,17 +565,17 @@ int DfMap::getDesignations(int x, int y, int z)
     return -1;
 }
 
-uint32_t DfMap::getGeolayerAddress (int x, int y, int z)
+uint32_t DfMap::getGeolayerAddress (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBoundsXY);
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
     {
         int biome = b->designation[x2][y2].bits.biome;
         int BiomeOffset = b->RegionOffsets[biome];
-        int geoindex = b->designation[x2][y2].bits.geolayer_index;
+        unsigned int geoindex = b->designation[x2][y2].bits.geolayer_index;
         if(geodebug[BiomeOffset].size() > geoindex)
         {
             return geodebug[BiomeOffset][geoindex];
@@ -588,10 +588,10 @@ uint32_t DfMap::getGeolayerAddress (int x, int y, int z)
     else return 0;
 }
 
-uint32_t DfMap::getGeoblockAddress(int x, int y, int z)
+uint32_t DfMap::getGeoblockAddress(uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBoundsXY);
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -604,10 +604,10 @@ uint32_t DfMap::getGeoblockAddress(int x, int y, int z)
     return 0;
 }
 
-uint32_t DfMap::getRegionAddress(int x, int y, int z)
+uint32_t DfMap::getRegionAddress(uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBoundsXY);
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -620,17 +620,17 @@ uint32_t DfMap::getRegionAddress(int x, int y, int z)
     return 0;
 }
 
-bool DfMap::isBlockInitialized(int x, int y, int z)
+bool DfMap::isBlockInitialized(uint32_t x, uint32_t y, uint32_t z)
 {
     // because of the way DfMap is done, more than one check must be made.
     return getBlock(x,y,z) != NULL;
 }
 
-int DfMap::getOccupancies(int x, int y, int z)
+uint32_t DfMap::getOccupancies(uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
 
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -640,10 +640,10 @@ int DfMap::getOccupancies(int x, int y, int z)
     return -1;
 }
 
-void DfMap::getGeoRegion (int x, int y, int z, int& geoX, int& geoY)
+void DfMap::getGeoRegion (uint32_t x, uint32_t y, uint32_t z, int32_t& geoX, int32_t& geoY)
 {
     assert(CheckBoundsXY);
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -654,9 +654,9 @@ void DfMap::getGeoRegion (int x, int y, int z, int& geoX, int& geoY)
         int16_t Y_biomeB = (regionY / 16) + (BiomeOffset / 3) - 1;
         if(X_biomeB < 0) X_biomeB = 0;
         if(Y_biomeB < 0) Y_biomeB = 0;
-        if(X_biomeB >= worldSizeX)
+        if( (uint32_t)X_biomeB >= worldSizeX)
             X_biomeB = worldSizeX - 1;
-        if(Y_biomeB >= worldSizeY)
+        if( (uint32_t)Y_biomeB >= worldSizeY)
             Y_biomeB = worldSizeY - 1;
         geoX = X_biomeB;
         geoY = Y_biomeB;
@@ -669,11 +669,11 @@ void DfMap::getGeoRegion (int x, int y, int z, int& geoX, int& geoY)
 }
 
 // this is what the vein structures say it is
-int16_t DfMap::getMaterialIndex (int x, int y, int z)
+int16_t DfMap::getMaterialIndex (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
 
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -684,11 +684,11 @@ int16_t DfMap::getMaterialIndex (int x, int y, int z)
 }
 
 // this is what the vein structures say it is
-string DfMap::getMaterialString (int x, int y, int z)
+string DfMap::getMaterialString (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
 
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -726,14 +726,15 @@ string DfMap::getStoneMatGlossString(uint16_t Index)
     {
         return stone_matgloss[Index];
     }
+    return string("error");
 }
 
 // matgloss part of the designation
-unsigned int DfMap::getGeolayerIndex (int x, int y, int z)
+unsigned int DfMap::getGeolayerIndex (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
 
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -743,11 +744,11 @@ unsigned int DfMap::getGeolayerIndex (int x, int y, int z)
     return -1;
 }
 // matgloss part of the designation
-unsigned int DfMap::getBiome (int x, int y, int z)
+unsigned int DfMap::getBiome (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
 
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -758,10 +759,10 @@ unsigned int DfMap::getBiome (int x, int y, int z)
 }
 
 // what kind of building is here?
-uint16_t DfMap::getBuilding (int x, int y, int z)
+uint16_t DfMap::getBuilding (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -771,10 +772,10 @@ uint16_t DfMap::getBuilding (int x, int y, int z)
     return -1;
 }
 
-bool DfMap::isHidden (int x, int y, int z)
+bool DfMap::isHidden (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -784,10 +785,10 @@ bool DfMap::isHidden (int x, int y, int z)
     return false;
 }
 
-bool DfMap::isSubterranean (int x, int y, int z)
+bool DfMap::isSubterranean (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -801,7 +802,7 @@ bool DfMap::isSubterranean (int x, int y, int z)
 
 // x,y,z - coords of block
 // blockX,blockY - coords of tile inside block
-bool DfMap::isTileSky(int x, int y, int z, int blockX, int blockY)
+bool DfMap::isTileSky(uint32_t x, uint32_t y, uint32_t z, uint32_t blockX, uint32_t blockY)
 {
     assert(CheckBounds);
     Block *b;
@@ -820,10 +821,10 @@ bool DfMap::isTileSky(int x, int y, int z, int blockX, int blockY)
 }
 
 // is the sky above this tile visible?
-bool DfMap::isSkyView (int x, int y, int z)
+bool DfMap::isSkyView (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -836,10 +837,10 @@ bool DfMap::isSkyView (int x, int y, int z)
 }
 
 // is there light in this tile?
-bool DfMap::isSunLit (int x, int y, int z)
+bool DfMap::isSunLit (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -849,10 +850,10 @@ bool DfMap::isSunLit (int x, int y, int z)
     return false;
 }
 
-bool DfMap::isMagma (int x, int y, int z)
+bool DfMap::isMagma (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
-    int x2, y2;
+    uint32_t x2, y2;
     convertToDfMapCoords(x, y, x, y, x2, y2);
     Block *b = getBlock(x,y,z);
     if(b != NULL)
@@ -865,10 +866,10 @@ bool DfMap::isMagma (int x, int y, int z)
 // converts the (x,y,z) cell coords to internal coords
 // out_y, out_x - block coords
 // out_y2, out_x2 - cell coords in that block
-void DfMap::convertToDfMapCoords(int x, int y, int &out_x, int &out_y, int &out_x2, int &out_y2)
+void DfMap::convertToDfMapCoords(uint32_t x, uint32_t y, uint32_t &out_x, uint32_t &out_y, uint32_t &out_x2, uint32_t &out_y2)
 {
     out_x2 = x % BLOCK_SIZE;
     out_y2 = y % BLOCK_SIZE;
-    out_y = int(y / BLOCK_SIZE);
-    out_x = int(x / BLOCK_SIZE);
+    out_y = uint32_t(y / BLOCK_SIZE);
+    out_x = uint32_t(x / BLOCK_SIZE);
 }

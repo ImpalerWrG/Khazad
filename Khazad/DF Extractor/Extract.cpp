@@ -105,7 +105,7 @@ bool Extractor::dumpMemory( string path_to_xml)
         DfVector p_stone_matgloss = dm->readVector(stone_matgloss_offset, 4);
         //printf ("YAY, MATGLOSS! %d\n", p_stone_matgloss.getSize());
         // iterate over it
-        for (int i = 0; i< p_stone_matgloss.getSize();i++)
+        for (uint32_t i = 0; i< p_stone_matgloss.getSize();i++)
         {
             uint32_t temp;
             string tmpstr;
@@ -163,7 +163,7 @@ bool Extractor::dumpMemory( string path_to_xml)
                 DfVector geolayers = dm->readVector(geoblock_off + geolayer_geoblock_offset , 4); // let's hope
                 // make sure we don't load crap
                 assert(geolayers.getSize() > 0 && geolayers.getSize() <= 16);
-                for(int j = 0;j< geolayers.getSize();j++)
+                for(uint32_t j = 0;j< geolayers.getSize();j++)
                 {
                     int geol_offset;
                     // read pointer to a layer
@@ -182,15 +182,15 @@ bool Extractor::dumpMemory( string path_to_xml)
         df_map->setRegionCoords(0,0,0);
     }
     //read the memory from the map blocks
-    for(int x = 0; x < df_map->x_block_count; x++)
+    for(uint32_t x = 0; x < df_map->x_block_count; x++)
     {
         temp_locx = map_loc + ( 4 * x );
         temp_locy = MreadDWord(temp_locx);
-        for(int y = 0; y < df_map->y_block_count; y++)
+        for(uint32_t y = 0; y < df_map->y_block_count; y++)
         {
             temp_locz = MreadDWord(temp_locy);
             temp_locy += 4;
-            for(int z = 0; z < df_map->z_block_count; z++)
+            for(uint32_t z = 0; z < df_map->z_block_count; z++)
             {
                 temp_loc = MreadDWord(temp_locz);
                 temp_locz += 4;
@@ -242,7 +242,7 @@ bool Extractor::dumpMemory( string path_to_xml)
                         /*pointer is 4 bytes! we work with a 32bit program here, no matter what architecture we compile khazad for*/
                         DfVector p_veins = dm->readVector(temp_loc + veinvector, 4);
                         // read all veins
-                        for (int i = 0; i< p_veins.getSize();i++)
+                        for (uint32_t i = 0; i< p_veins.getSize();i++)
                         {
                             t_vein v;
                             uint32_t temp;

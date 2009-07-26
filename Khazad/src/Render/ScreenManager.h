@@ -49,8 +49,8 @@ public:
 
 	bool ReSizeScreen(Uint16 Width, Uint16 Hight);
 
-    void RenderText(char* text, Sint8 FontIndex, SDL_Color color, SDL_Rect *location);
-    void RenderTextCentered(char* text, Sint8 FontIndex, SDL_Color color, Sint16 Verticaladjust);
+    void RenderText(const char* text, Sint8 FontIndex, SDL_Color color, SDL_Rect *location);
+    void RenderTextCentered(const char* text, Sint8 FontIndex, SDL_Color color, Sint16 Verticaladjust);
 
     void RenderSurface(SDL_Surface* RenderSurface, SDL_Rect* location);
     void RenderTexture(GLuint texture, SDL_Rect* Size, SDL_Rect* location);

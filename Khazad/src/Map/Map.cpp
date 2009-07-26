@@ -228,10 +228,10 @@ void Map::ReparseExtract()
 
 			for (Uint32 z = 0; z < CellSizeZ; z++)
 			{
-			    if(x == 0 && y == (CellSizeY - 1) && z == 25)
+/*			    if(x == 0 && y == (CellSizeY - 1) && z == 25)
 			    {
 			        bool Debug = true;
-			    }
+			    }*/
 
 			    if(ExtractedMap->isBlockInitialized(x, y, z))
 			    {
@@ -469,16 +469,16 @@ Uint32 Map::PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ)
     Uint16 TileTexture = TilePicker[TileType];
     Uint16 MatGlossTexture = StoneMatGloss[StoneType];
 
-    bool IsFloor = df_map->isFloorTerrain(TileType);
-    bool IsWall = df_map->isWallTerrain(TileType);
+//    bool IsFloor = df_map->isFloorTerrain(TileType);
+    //bool IsWall = df_map->isWallTerrain(TileType);
     //bool IsOpen = df_map->isOpenTerrain(TileType);
-    bool IsRamp = df_map->isRampTerrain(TileType);
-    bool IsStairs = df_map->isStairTerrain(TileType);
+    //bool IsRamp = df_map->isRampTerrain(TileType);
+    //bool IsStairs = df_map->isStairTerrain(TileType);
 
     static Uint16 Sand = DATA->getLabelIndex("MATERIAL_SAND");
-    static Uint16 Stone = DATA->getLabelIndex("MATERIAL_ROUGH_STONE");
+    //static Uint16 Stone = DATA->getLabelIndex("MATERIAL_ROUGH_STONE");
     static Uint16 Ramp = DATA->getLabelIndex("MATERIAL_RAMP_STONE");
-    static Uint16 LavaStone = DATA->getLabelIndex("MATERIAL_OBSIDIAN");
+    //static Uint16 LavaStone = DATA->getLabelIndex("MATERIAL_OBSIDIAN");
     static Uint16 Unknown = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
     static Uint16 Vein = DATA->getLabelIndex("MATERIAL_VEIN_STONE");
     static Uint16 VeinFloor = DATA->getLabelIndex("MATERIAL_VEIN_STONE_FLOOR");
