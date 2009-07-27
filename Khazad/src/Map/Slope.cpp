@@ -10,14 +10,14 @@
 
 Slope::Slope()
 {
-	setType(SLOPE_ACTOR);
+//	setType(SLOPE_ACTOR);
 
 	Owner = NULL;
 
     Material = 6;
 	Texture = 0;
 
-	GAME->ActorList.push_back(this);
+//	GAME->ActorList.push_back(this);
 	//ID = (Uint32) GAME->ActorList.size();
     MAP->ChangeSlopeCount(1);
 }

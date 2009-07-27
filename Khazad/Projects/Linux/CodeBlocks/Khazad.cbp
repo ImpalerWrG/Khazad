@@ -3,13 +3,14 @@
 	<FileVersion major="1" minor="6" />
 	<Project>
 		<Option title="Khazad" />
+		<Option platforms="Unix;" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
 				<Option output="../../../Khazad" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../../../Khazad" />
-				<Option object_output="../../../obj/Debug/" />
+				<Option object_output="../../../obj/Linux/Debug/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -20,7 +21,7 @@
 			<Target title="Release">
 				<Option output="../../../Khazad" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../../../Khazad" />
-				<Option object_output="../../../obj/Release/" />
+				<Option object_output="../../../obj/Linux/Release/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -28,25 +29,19 @@
 					<Add option="-DNDEBUG" />
 				</Compiler>
 			</Target>
-			<Target title="Static">
+			<Target title="Profile">
 				<Option output="../../../Khazad" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../../../Khazad" />
-				<Option object_output="../../../obj/Static/" />
+				<Option object_output="../../../obj/Linux/Profile/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-O3" />
+					<Add option="-pg" />
 					<Add option="-DNDEBUG" />
 				</Compiler>
 				<Linker>
-					<Add option="-Xlinker -Bstatic -lSDL -pthread -lSDLmain -lSDL_ttf -lfreetype  -lSDL_image" />
-					<Add option="-Xlinker -Bstatic -lIL -lIlmImf -lIlmThread -lIex -lHalf -ljpeg -lpng -ltiff -lmng -ljasper -ljpeg -lILUT -lILU" />
-					<Add option="-Xlinker -Bstatic -lglut" />
-					<Add option="-Xlinker -Bstatic -lguichan_opengl -lguichan_sdl -lguichan" />
-					<Add option="-Xlinker -Bstatic -lmhash" />
-					<Add option="-Xlinker -Bstatic -lz" />
-					<Add option="-Xlinker -Bdynamic -lGL -lGLU" />
+					<Add option="-pg" />
 				</Linker>
 			</Target>
 		</Build>
@@ -90,6 +85,9 @@
 			<Add directory="../../../lib" />
 			<Add directory="../../../DevIL/lib" />
 		</Linker>
+		<ExtraCommands>
+			<Add before="rm ../../../Khazad" />
+		</ExtraCommands>
 		<Unit filename="../../../DF Extractor/DFCommon.h" />
 		<Unit filename="../../../DF Extractor/DataModel.cpp" />
 		<Unit filename="../../../DF Extractor/DataModel.h" />
@@ -103,8 +101,6 @@
 		<Unit filename="../../../DF Extractor/MemAccess.h" />
 		<Unit filename="../../../DF Extractor/MemInfo.cpp" />
 		<Unit filename="../../../DF Extractor/MemInfo.h" />
-		<Unit filename="../../../DF Extractor/MemInfoManager.cpp" />
-		<Unit filename="../../../DF Extractor/MemInfoManager.h" />
 		<Unit filename="../../../DF Extractor/Process.cpp" />
 		<Unit filename="../../../DF Extractor/Process.h" />
 		<Unit filename="../../../DF Extractor/ProcessManager.cpp" />

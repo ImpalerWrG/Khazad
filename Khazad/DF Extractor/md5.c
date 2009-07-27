@@ -4,7 +4,7 @@ using namespace std;
 #include <mhash.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <StringMagic.h>
+
 
 //
 string MD5Sum (const char * filename)

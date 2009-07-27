@@ -394,24 +394,6 @@ void Cube::setAllFacesVisiblity(bool NewValue)
 void Cube::DetermineSlope()
 {
     Slopping SlopeType = SLOPE_FLAT;
-    /// use this thing here
-    /**
-    union slope
-    {
-        uint8_t value,
-        struct bits {
-            unsigned int NorthEastSolid : 1;
-            unsigned int SouthEastSolid : 1;
-            unsigned int NorthWestSolid : 1;
-            unsigned int SouthWestSolid : 1;
-
-            unsigned int NorthSolid : 1;
-            unsigned int SouthSolid : 1;
-            unsigned int WestSolid : 1;
-            unsigned int EastSolid : 1;
-        }
-    }
-    */
 
     bool NorthEastSolid = getAdjacentCube(FACET_NORTH_EAST) != NULL && getAdjacentCube(FACET_NORTH_EAST)->isSolid();
     bool SouthEastSolid = getAdjacentCube(FACET_SOUTH_EAST) != NULL && getAdjacentCube(FACET_SOUTH_EAST)->isSolid();

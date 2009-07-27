@@ -39,7 +39,7 @@ public:
 
     void DrawCellCage();
 
-    bool isActive()                     { return Active; }
+    inline bool isActive()                     { return Active; }
     void setActive(bool NewValue)       { Active = NewValue; }
 
     GLuint getDrawListID()                  { return DrawListID; }
