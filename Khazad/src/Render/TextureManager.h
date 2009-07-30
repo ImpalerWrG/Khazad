@@ -34,7 +34,7 @@ public:
     Uint16 getTextureCount()            { return TextureCordinates.size(); }
     int getAggragateTextureSize()       { return MainTextureSize; }
 
-    void BindTexturePoint(Uint32 TextureID, Uint8 Corner = 0);
+    void BindTexturePoint(Uint32 TextureID, float u, float v);
 
     void ReportDevILErrors();
 

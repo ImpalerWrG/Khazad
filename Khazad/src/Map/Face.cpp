@@ -83,7 +83,7 @@ bool Face::Draw(float xTranslate, float yTranslate)
                 Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
                 break;
             }
-            case FACET_NORTH_EAST:
+            case FACET_NORTH:
             {
                 Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
                 Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
@@ -91,7 +91,7 @@ bool Face::Draw(float xTranslate, float yTranslate)
                 Points[0] = Cube::ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
                 break;
             }
-            case FACET_SOUTH_EAST:
+            case FACET_EAST:
             {
                 Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
                 Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
@@ -99,7 +99,7 @@ bool Face::Draw(float xTranslate, float yTranslate)
                 Points[0] = Cube::ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
                 break;
             }
-            case FACET_SOUTH_WEST:
+            case FACET_SOUTH:
             {
                 Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
                 Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
@@ -107,7 +107,7 @@ bool Face::Draw(float xTranslate, float yTranslate)
                 Points[0] = Cube::ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
                 break;
             }
-            case FACET_NORTH_WEST:
+            case FACET_WEST:
             {
                 Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
                 Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
@@ -117,13 +117,13 @@ bool Face::Draw(float xTranslate, float yTranslate)
             }
         }
 
-        TEXTURE->BindTexturePoint(Texture, 0 + Rotation);         glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
-        TEXTURE->BindTexturePoint(Texture, 1 + Rotation);         glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
-        TEXTURE->BindTexturePoint(Texture, 2 + Rotation);         glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+        TEXTURE->BindTexturePoint(Texture, 0,0);         glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+        TEXTURE->BindTexturePoint(Texture, 0,1);         glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+        TEXTURE->BindTexturePoint(Texture, 1,1);         glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
 
-        TEXTURE->BindTexturePoint(Texture, 2 + Rotation);         glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
-        TEXTURE->BindTexturePoint(Texture, 3 + Rotation);         glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
-        TEXTURE->BindTexturePoint(Texture, 0 + Rotation);         glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+        TEXTURE->BindTexturePoint(Texture, 1,1);         glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+        TEXTURE->BindTexturePoint(Texture, 1,0);         glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
+        TEXTURE->BindTexturePoint(Texture, 0,0);         glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
 
         SCREEN->IncrementTriangles(2);
     }

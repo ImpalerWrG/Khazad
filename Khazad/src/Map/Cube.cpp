@@ -217,16 +217,16 @@ Cube* Cube::getAdjacentCube(Facet Type)
         case FACET_BOTTOM:
             z -= 1;
             break;
-        case FACET_NORTH_EAST:
+        case FACET_NORTH:
             y -= 1;
             break;
-        case FACET_SOUTH_EAST:
+        case FACET_EAST:
             x += 1;
             break;
-        case FACET_SOUTH_WEST:
+        case FACET_SOUTH:
             y += 1;
             break;
-        case FACET_NORTH_WEST:
+        case FACET_WEST:
             x -= 1;
             break;
     }
@@ -242,34 +242,34 @@ Cube* Cube::getNeiborCube(Direction Type)
 
     switch(Type)
     {
-        case DIRECTION_NORTHEAST:
-            y -= 1;
-            break;
-        case DIRECTION_SOUTHEAST:
-            x += 1;
-            break;
-        case DIRECTION_SOUTHWEST:
-            y += 1;
-            break;
-        case DIRECTION_NORTHWEST:
-            x -= 1;
-            break;
-
         case DIRECTION_NORTH:
             y -= 1;
-            x -= 1;
+            break;
+        case DIRECTION_EAST:
+            x += 1;
             break;
         case DIRECTION_SOUTH:
-            x += 1;
             y += 1;
             break;
         case DIRECTION_WEST:
             x -= 1;
-            y += 1;
             break;
-        case DIRECTION_EAST:
-            x += 1;
+
+        case DIRECTION_NORTHEAST:
             y -= 1;
+            x += 1;
+            break;
+        case DIRECTION_SOUTHEAST:
+            y += 1;
+            x += 1;
+            break;
+        case DIRECTION_SOUTHWEST:
+            y += 1;
+            x -= 1;
+            break;
+        case DIRECTION_NORTHWEST:
+            y -= 1;
+            x -= 1;
             break;
     }
 
@@ -290,16 +290,16 @@ Cell* Cube::getAdjacentCell(Facet Type)
         case FACET_BOTTOM:
             z -= 1;
             break;
-        case FACET_NORTH_EAST:
+        case FACET_NORTH:
             y -= 1;
             break;
-        case FACET_SOUTH_EAST:
+        case FACET_EAST:
             x += 1;
             break;
-        case FACET_SOUTH_WEST:
+        case FACET_SOUTH:
             y += 1;
             break;
-        case FACET_NORTH_WEST:
+        case FACET_WEST:
             x -= 1;
             break;
     }
@@ -317,17 +317,17 @@ Facet Cube::OpositeFace(Facet Type)
         case FACET_BOTTOM:
             return FACET_TOP;
 
-        case FACET_NORTH_EAST:
-            return FACET_SOUTH_WEST;
+        case FACET_NORTH:
+            return FACET_SOUTH;
 
-        case FACET_SOUTH_EAST:
-            return FACET_NORTH_WEST;
+        case FACET_SOUTH:
+            return FACET_NORTH;
 
-        case FACET_SOUTH_WEST:
-            return FACET_NORTH_EAST;
+        case FACET_WEST:
+            return FACET_EAST;
 
-        case FACET_NORTH_WEST:
-            return FACET_SOUTH_EAST;
+        case FACET_EAST:
+            return FACET_WEST;
     }
 }
 
@@ -395,7 +395,7 @@ void Cube::DetermineSlope()
 {
     Slopping SlopeType = SLOPE_FLAT;
 
-    bool NorthEastSolid = getAdjacentCube(FACET_NORTH_EAST) != NULL && getAdjacentCube(FACET_NORTH_EAST)->isSolid();
+/*    bool NorthEastSolid = getAdjacentCube(FACET_NORTH_EAST) != NULL && getAdjacentCube(FACET_NORTH_EAST)->isSolid();
     bool SouthEastSolid = getAdjacentCube(FACET_SOUTH_EAST) != NULL && getAdjacentCube(FACET_SOUTH_EAST)->isSolid();
     bool NorthWestSolid = getAdjacentCube(FACET_NORTH_WEST) != NULL && getAdjacentCube(FACET_NORTH_WEST)->isSolid();
     bool SouthWestSolid = getAdjacentCube(FACET_SOUTH_WEST) != NULL && getAdjacentCube(FACET_SOUTH_WEST)->isSolid();
@@ -403,8 +403,8 @@ void Cube::DetermineSlope()
     bool NorthSolid = getNeiborCube(DIRECTION_NORTH) != NULL && getNeiborCube(DIRECTION_NORTH)->isSolid();
     bool SouthSolid = getNeiborCube(DIRECTION_SOUTH) != NULL && getNeiborCube(DIRECTION_SOUTH)->isSolid();
     bool WestSolid = getNeiborCube(DIRECTION_WEST) != NULL && getNeiborCube(DIRECTION_WEST)->isSolid();
-    bool EastSolid = getNeiborCube(DIRECTION_EAST) != NULL && getNeiborCube(DIRECTION_EAST)->isSolid();
-
+    bool EastSolid = getNeiborCube(DIRECTION_EAST) != NULL && getNeiborCube(DIRECTION_EAST)->isSolid();*/
+/*
     if(NorthEastSolid)
     {
         SlopeType = SLOPE_SOUTH_WEST;
@@ -468,7 +468,8 @@ void Cube::DetermineSlope()
     else
     {
         SetSlope(SLOPE_SOUTH_WEST);  // Default slope for isolated slopes, possibly replace with something better??
-    }
+    }*/
+    SetSlope(SLOPE_SOUTH_WEST);
 }
 
 bool Cube::Update()

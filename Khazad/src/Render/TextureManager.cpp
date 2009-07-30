@@ -241,31 +241,10 @@ int TextureManager::nextpoweroftwo(int x)
 	return round(pow(2, ceil(logbase2)));
 }
 
-void TextureManager::BindTexturePoint(Uint32 TextureID, Uint8 Corner)
+void TextureManager::BindTexturePoint(Uint32 TextureID, float u, float v)
 {
-    switch(Corner % 4)
-    {
-        case 0:
-        {
-            glTexCoord2i(TextureCordinates[TextureID].x, TextureCordinates[TextureID].y);
-            break;
-        }
-        case 1:
-        {
-            glTexCoord2i(TextureCordinates[TextureID].x, TextureCordinates[TextureID].h);
-            break;
-        }
-        case 2:
-        {
-            glTexCoord2i(TextureCordinates[TextureID].w, TextureCordinates[TextureID].h);
-            break;
-        }
-        case 3:
-        {
-            glTexCoord2i(TextureCordinates[TextureID].w, TextureCordinates[TextureID].y);
-            break;
-        }
-    }
+    glTexCoord2i(TextureCordinates[TextureID].x + u * (TextureCordinates[TextureID].w - TextureCordinates[TextureID].x),
+                 TextureCordinates[TextureID].y + v * (TextureCordinates[TextureID].h - TextureCordinates[TextureID].y));
 }
 
 void TextureManager::ReportDevILErrors()

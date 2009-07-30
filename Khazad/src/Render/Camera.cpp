@@ -33,7 +33,7 @@ bool Camera::Init(bool Isometric)
 	{
 		setIsometricProj(SCREEN->getWidth(), SCREEN->getHight(), 1000000.0);
 		IsoMode = true;
-		Orientation = CAMERA_NORTH;
+		Orientation = CAMERA_NORTH_WEST;
 		ViewLevels = 1;
 	}
 	else
@@ -350,26 +350,26 @@ void Camera::setCameraOrientation(CameraOrientation NewOrientation)
 			EyePosition.x = LookPosition.x; EyePosition.y = LookPosition.y ;
 			break;
 		}
-		case CAMERA_NORTH:
+		case CAMERA_NORTH_WEST:
 		{
 			EyePosition.x = LookPosition.x + 1; EyePosition.y = LookPosition.y + 1;
 			UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
 			break;
 		}
-		case CAMERA_EAST:
+		case CAMERA_NORTH_EAST:
 		{
 			EyePosition.x = LookPosition.x + 1; EyePosition.y = LookPosition.y - 1;
 			UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
 			break;
 		}
-		case CAMERA_SOUTH:
+		case CAMERA_SOUTH_EAST:
 		{
 			EyePosition.x = LookPosition.x - 1; EyePosition.y = LookPosition.y -1;
 			UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
 
 			break;
 		}
-		case CAMERA_WEST:
+		case CAMERA_SOUTH_WEST:
 		{
 			EyePosition.x = LookPosition.x - 1; EyePosition.y = LookPosition.y + 1;
 			UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
@@ -394,22 +394,22 @@ void Camera::UpdateDirection()
 	{
         if (Y > 0)
         {
-            Orientation = CAMERA_NORTH;
+            Orientation = CAMERA_NORTH_WEST;
         }
         else // Y < 0
         {
-            Orientation = CAMERA_WEST;
+            Orientation = CAMERA_SOUTH_WEST;
         }
 	}
 	else // X < 0
 	{
 		if (Y > 0)
 		{
-            Orientation = CAMERA_EAST;
+            Orientation = CAMERA_NORTH_EAST;
 		}
 		else // Y < 0
 		{
-			Orientation = CAMERA_SOUTH;
+			Orientation = CAMERA_SOUTH_EAST;
 		}
 	}
 }

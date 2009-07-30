@@ -204,107 +204,107 @@ bool Cell::Draw(CameraOrientation Orientation)
                             }
                             break;
                         }
-                        case CAMERA_NORTH:
+                        case CAMERA_NORTH_WEST:
                         {
                             if(LoopCube->isSolid())
                             {
                                 if(Facets[x][y][FACET_TOP])
                                     Facets[x][y][FACET_TOP]->Draw(x, y);
 
-                                if(Facets[x][y][FACET_SOUTH_EAST])
-                                    Facets[x][y][FACET_SOUTH_EAST]->Draw(x, y);
+                                if(Facets[x][y][FACET_EAST])
+                                    Facets[x][y][FACET_EAST]->Draw(x, y);
 
-                                if(Facets[x][y][FACET_SOUTH_WEST])
-                                    Facets[x][y][FACET_SOUTH_WEST]->Draw(x, y);
+                                if(Facets[x][y][FACET_SOUTH])
+                                    Facets[x][y][FACET_SOUTH]->Draw(x, y);
                             }
                             else
                             {
                                 if(Facets[x][y][FACET_BOTTOM])
                                     Facets[x][y][FACET_BOTTOM]->Draw(x, y);
 
-                                if(Facets[x][y][FACET_NORTH_EAST])
-                                    Facets[x][y][FACET_NORTH_EAST]->Draw(x, y);
+                                if(Facets[x][y][FACET_NORTH])
+                                    Facets[x][y][FACET_NORTH]->Draw(x, y);
 
-                                if(Facets[x][y][FACET_NORTH_WEST])
-                                    Facets[x][y][FACET_NORTH_WEST]->Draw(x, y);
+                                if(Facets[x][y][FACET_WEST])
+                                    Facets[x][y][FACET_WEST]->Draw(x, y);
                             }
                             break;
                         }
-                        case CAMERA_EAST:
+                        case CAMERA_SOUTH_WEST:
                         {
                             if(LoopCube->isSolid())
                             {
                                 if(Facets[x][y][FACET_TOP])
                                     Facets[x][y][FACET_TOP]->Draw(x, y);
 
-                                if(Facets[x][y][FACET_NORTH_WEST])
-                                    Facets[x][y][FACET_NORTH_WEST]->Draw(x, y);
+                                if(Facets[x][y][FACET_NORTH])
+                                    Facets[x][y][FACET_NORTH]->Draw(x, y);
 
-                                if(Facets[x][y][FACET_SOUTH_WEST])
-                                    Facets[x][y][FACET_SOUTH_WEST]->Draw(x, y);
+                                if(Facets[x][y][FACET_EAST])
+                                    Facets[x][y][FACET_EAST]->Draw(x, y);
                             }
                             else
                             {
                                 if(Facets[x][y][FACET_BOTTOM])
                                     Facets[x][y][FACET_BOTTOM]->Draw(x, y);
 
-                                if(Facets[x][y][FACET_NORTH_EAST])
-                                    Facets[x][y][FACET_NORTH_EAST]->Draw(x, y);
+                                if(Facets[x][y][FACET_WEST])
+                                    Facets[x][y][FACET_WEST]->Draw(x, y);
 
-                                if(Facets[x][y][FACET_SOUTH_EAST])
-                                    Facets[x][y][FACET_SOUTH_EAST]->Draw(x, y);
+                                if(Facets[x][y][FACET_SOUTH])
+                                    Facets[x][y][FACET_SOUTH]->Draw(x, y);
                             }
                             break;
                         }
-                        case CAMERA_WEST:
+                        case CAMERA_NORTH_EAST:
                         {
                             if(LoopCube->isSolid())
                             {
                                 if(Facets[x][y][FACET_TOP])
                                     Facets[x][y][FACET_TOP]->Draw(x, y);
 
-                                if(Facets[x][y][FACET_NORTH_EAST])
-                                    Facets[x][y][FACET_NORTH_EAST]->Draw(x, y);
+                                if(Facets[x][y][FACET_WEST])
+                                    Facets[x][y][FACET_WEST]->Draw(x, y);
 
-                                if(Facets[x][y][FACET_SOUTH_EAST])
-                                    Facets[x][y][FACET_SOUTH_EAST]->Draw(x, y);
+                                if(Facets[x][y][FACET_SOUTH])
+                                    Facets[x][y][FACET_SOUTH]->Draw(x, y);
                             }
                             else
                             {
                                 if(Facets[x][y][FACET_BOTTOM])
                                     Facets[x][y][FACET_BOTTOM]->Draw(x, y);
 
-                                if(Facets[x][y][FACET_NORTH_WEST])
-                                    Facets[x][y][FACET_NORTH_WEST]->Draw(x, y);
+                                if(Facets[x][y][FACET_EAST])
+                                    Facets[x][y][FACET_EAST]->Draw(x, y);
 
-                                if(Facets[x][y][FACET_SOUTH_WEST])
-                                    Facets[x][y][FACET_SOUTH_WEST]->Draw(x, y);
+                                if(Facets[x][y][FACET_NORTH])
+                                    Facets[x][y][FACET_NORTH]->Draw(x, y);
                             }
                             break;
                         }
-                        case CAMERA_SOUTH:
+                        case CAMERA_SOUTH_EAST:
                         {
                             if(LoopCube->isSolid())
                             {
                                 if(Facets[x][y][FACET_TOP])
                                     Facets[x][y][FACET_TOP]->Draw(x, y);
 
-                                if(Facets[x][y][FACET_NORTH_EAST])
-                                    Facets[x][y][FACET_NORTH_EAST]->Draw(x, y);
+                                if(Facets[x][y][FACET_NORTH])
+                                    Facets[x][y][FACET_NORTH]->Draw(x, y);
 
-                                if(Facets[x][y][FACET_NORTH_WEST])
-                                    Facets[x][y][FACET_NORTH_WEST]->Draw(x, y);
+                                if(Facets[x][y][FACET_WEST])
+                                    Facets[x][y][FACET_WEST]->Draw(x, y);
                             }
                             else
                             {
                                 if(Facets[x][y][FACET_BOTTOM])
                                     Facets[x][y][FACET_BOTTOM]->Draw(x, y);
 
-                                if(Facets[x][y][FACET_SOUTH_EAST])
-                                    Facets[x][y][FACET_SOUTH_EAST]->Draw(x, y);
+                                if(Facets[x][y][FACET_SOUTH])
+                                    Facets[x][y][FACET_SOUTH]->Draw(x, y);
 
-                                if(Facets[x][y][FACET_SOUTH_WEST])
-                                    Facets[x][y][FACET_SOUTH_WEST]->Draw(x, y);
+                                if(Facets[x][y][FACET_EAST])
+                                    Facets[x][y][FACET_EAST]->Draw(x, y);
                             }
                             break;
                         }
