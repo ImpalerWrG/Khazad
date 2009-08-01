@@ -73,14 +73,15 @@ bool Extractor::dumpMemory( string path_to_xml)
     // veins
     int veinvector = offset_descriptor->getOffset("v_vein");
     int veinsize = offset_descriptor->getHexValue("v_vein_size");
+    // constructions
+    int constructions = offset_descriptor->getAddress("constructions");
 
-    // stone/soil/gem matgloss
-    int stone_matgloss_offset = offset_descriptor->getAddress("mat_stone");
+    // matgloss
+    int matgloss_address = offset_descriptor->getAddress("matgloss");
+    int sizeof_vector = offset_descriptor->getHexValue("sizeof_vector");
 
     bool have_geology = false;
 
-    // tree/wood matgloss
-    /// NOT YET
     printf("Map offset: 0x%.8X\n", map_offset);
     map_loc = MreadDWord(map_offset);
 
@@ -99,23 +100,27 @@ bool Extractor::dumpMemory( string path_to_xml)
 
 
     // read matgloss data from df if we can
-    if(stone_matgloss_offset)
+    if(matgloss_address && sizeof_vector)
     {
-        // set up vector of pointers to materials
-        DfVector p_stone_matgloss = dm->readVector(stone_matgloss_offset, 4);
-        //printf ("YAY, MATGLOSS! %d\n", p_stone_matgloss.getSize());
-        // iterate over it
-        for (uint32_t i = 0; i< p_stone_matgloss.getSize();i++)
+        uint32_t addr = matgloss_address;
+        uint32_t counter = Mat_Wood;
+
+        for(; counter < NUM_MATGLOSS_TYPES; addr += sizeof_vector, counter++)
         {
-            uint32_t temp;
-            string tmpstr;
-            // read the matgloss pointer from the vector into temp
-            p_stone_matgloss.read((uint32_t)i,(uint8_t *)&temp);
-            // read the string pointed at by
-            tmpstr = dm->readSTLString(temp); // reads a C string given an address
-            // store it in the block
-            df_map->stone_matgloss.push_back(tmpstr);
-            printf("%d = %s\n",i,tmpstr.c_str());
+            DfVector p_matgloss = dm->readVector(addr, 4);
+            // iterate over it
+            for (uint32_t i = 0; i< p_matgloss.getSize();i++)
+            {
+                uint32_t temp;
+                string tmpstr;
+                // read the matgloss pointer from the vector into temp
+                p_matgloss.read((uint32_t)i,(uint8_t *)&temp);
+                // read the string pointed at by
+                tmpstr = dm->readSTLString(temp); // reads a C string given an address
+                // store it in the block
+                df_map->matgloss[counter].push_back(tmpstr);
+                printf("%d = %s\n",i,tmpstr.c_str());
+            }
         }
     }
     if(region_x_offset && region_y_offset && region_z_offset)
@@ -226,7 +231,7 @@ bool Extractor::dumpMemory( string path_to_xml)
                         // if we have geology, we can use the geolayers to determine materials
                         if(have_geology)
                         {
-                            df_map->applyMatgloss(b);
+                            df_map->applyGeoMatgloss(b);
                         }
                     }
                     else
@@ -255,16 +260,32 @@ bool Extractor::dumpMemory( string path_to_xml)
                         }
                         b->collapseVeins(); // collapse *our* vein vector into vein matgloss data
                     }
-                    ++blocks_read;
+//                    ++blocks_read;
                 }
             }
         }
     }
-
+    // read constructions, apply immediately. I can imagine doing this for every frame in DF must put the brakes on performance ~_~
+    if(constructions)
+    {
+        // read the constructions vector
+        DfVector p_cons = dm->readVector(constructions,4);
+        // iterate
+        for (uint32_t i = 0; i< p_cons.getSize();i++)
+        {
+            uint32_t temp;
+            t_construction c;
+            // read pointer from vector at position
+            p_cons.read((uint32_t)i,(uint8_t *)&temp);
+            //read construction from memory
+            Mread(temp, sizeof(t_construction), (uint8_t *)&c);
+            // stupid, but it works
+            Block * b = df_map->getBlock(c.x/16,c.y/16,c.z);
+            b->material[c.x%16][c.y%16].type = c.mat_type;
+            b->material[c.x%16][c.y%16].index = c.mat_idx;
+        }
+    }
     printf("Blocks read into memory: %d\n", blocks_read);
-    df_map->setBlocksCount(blocks_read);
-
-
     p->detach();
     return true;
 }

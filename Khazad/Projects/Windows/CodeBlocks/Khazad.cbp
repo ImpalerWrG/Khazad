@@ -90,6 +90,10 @@
 		<Unit filename="..\..\..\libdfhack\DfVector.h" />
 		<Unit filename="..\..\..\libdfhack\Extract.cpp" />
 		<Unit filename="..\..\..\libdfhack\Extract.h" />
+		<Unit filename="..\..\..\libdfhack/LoadSave.cpp" />
+		<Unit filename="..\..\..\libdfhack/LoadSaveV1.cpp" />
+		<Unit filename="..\..\..\libdfhack/LoadSaveV2.cpp" />
+		<Unit filename="..\..\..\libdfhack/LoadSaveV3.cpp" />
 		<Unit filename="..\..\..\libdfhack\MemAccess.h" />
 		<Unit filename="..\..\..\libdfhack\MemInfo.cpp" />
 		<Unit filename="..\..\..\libdfhack\MemInfo.h" />

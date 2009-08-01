@@ -69,6 +69,7 @@ bool Face::Draw(float xTranslate, float yTranslate)
         {
             case FACET_TOP:
             {
+                glNormal3f( 0.0f, 0.0f, 1.0f);
                 Points[0] = Cube::ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
                 Points[1] = Cube::ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
                 Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
@@ -77,6 +78,7 @@ bool Face::Draw(float xTranslate, float yTranslate)
             }
             case FACET_BOTTOM:
             {
+                glNormal3f( 0.0f, 0.0f, 1.0f);
                 Points[0] = Cube::ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
                 Points[1] = Cube::ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
                 Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
@@ -85,6 +87,7 @@ bool Face::Draw(float xTranslate, float yTranslate)
             }
             case FACET_NORTH:
             {
+                glNormal3f( 0.0f, -1.0f, 0.0f);
                 Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
                 Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
                 Points[1] = Cube::ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
@@ -93,6 +96,7 @@ bool Face::Draw(float xTranslate, float yTranslate)
             }
             case FACET_EAST:
             {
+                glNormal3f( 1.0f, 0.0f, 0.0f);
                 Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
                 Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
                 Points[1] = Cube::ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
@@ -101,6 +105,7 @@ bool Face::Draw(float xTranslate, float yTranslate)
             }
             case FACET_SOUTH:
             {
+                glNormal3f( 0.0f, 1.0f, 0.0f);
                 Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
                 Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
                 Points[1] = Cube::ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
@@ -109,6 +114,7 @@ bool Face::Draw(float xTranslate, float yTranslate)
             }
             case FACET_WEST:
             {
+                glNormal3f( -1.0f, 0.0f, 0.0f);
                 Points[3] = Cube::ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
                 Points[2] = Cube::ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
                 Points[1] = Cube::ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);

@@ -12,6 +12,34 @@ struct t_vein
     uint32_t flags;
 };
 
+struct t_construction
+{
+    int16_t x;
+    int16_t y;
+    int16_t z;
+    int16_t unk1;
+    int16_t unk2;
+    int16_t mat_type;
+    int16_t mat_idx;
+    int16_t padding;// remove this when adding entries. I'm sure there's more
+};
+
+// in order in which the raw vectors appear in df memory
+enum MatglossType
+{
+    Mat_Wood,
+    Mat_Stone,
+    Mat_Plant,
+    Mat_Metal,
+    NUM_MATGLOSS_TYPES
+};
+
+struct MatglossPair
+{
+    uint16_t type;
+    uint16_t index;
+};
+
 enum BiomeOffset
 {
     eNorthWest,
@@ -124,7 +152,7 @@ public:
     t_occupancy occupancy[BLOCK_SIZE][BLOCK_SIZE];
     // veins
     vector <t_vein> veins;
-    uint16_t material[BLOCK_SIZE][BLOCK_SIZE];
+    MatglossPair material[BLOCK_SIZE][BLOCK_SIZE];
     void collapseVeins();
     /**
     // region offset modifiers... what a hack.
@@ -154,21 +182,29 @@ class DfMap
 private:
 
     Block **block;
-    uint32_t blocks_read;
+    uint32_t blocks_allocated;
     bool valid;
 
     void convertToDfMapCoords(uint32_t x, uint32_t y, uint32_t &out_x, uint32_t &out_y, uint32_t &out_x2, uint32_t &out_y2);
     void allocBlockArray(uint32_t x,uint32_t y, uint32_t z);
     void updateCellCount();
-    uint32_t getBlocksCount() const { return blocks_read; }
+    //uint32_t getBlocksCount() const { return blocks_read; }
     bool loadVersion1(FILE * Decompressed,DfMapHeader & h);
-    bool loadVersion2(FILE * Decompressed,DfMapHeader & h);
     bool writeVersion1(FILE * SaveFile);
+
+    bool loadMatgloss2(FILE * Decompressed);
+    bool loadBlocks2(FILE * Decompressed,DfMapHeader & h);
+    bool loadRegion2(FILE * Decompressed);
+    bool loadVersion2(FILE * Decompressed,DfMapHeader & h);
+
+    void writeMatgloss2(FILE * SaveFile);
+    void writeBlocks2(FILE * SaveFile);
+    void writeRegion2(FILE * SaveFile);
     bool writeVersion2(FILE * SaveFile);
 public:
 
 /// TODO: refactor *REALLY* needed. Time to go back to drawing board
-    void applyMatgloss(Block * b);
+    void applyGeoMatgloss(Block * b);
     uint32_t regionX;
     uint32_t regionY;
     uint32_t regionZ;
@@ -183,10 +219,9 @@ public:
     DfMap(uint32_t x, uint32_t y, uint32_t z);
     DfMap(string file_name);
     ~DfMap();
-
-    uint16_t getNumStoneMatGloss();
-    string getStoneMatGlossString(uint16_t Index);
-    vector<string> stone_matgloss;
+    uint16_t getNumMatGloss(uint16_t type);
+    string getMatGlossString(uint16_t type, uint16_t index);
+    vector<string> matgloss[NUM_MATGLOSS_TYPES];
 
     bool isValid();
     bool load(string FilePath);
@@ -201,7 +236,7 @@ public:
     unsigned x_cell_count, y_cell_count, z_cell_count;    // cell count
 
 
-    void setBlocksCount(uint32_t p_blocks_read) { blocks_read = p_blocks_read; }
+    //void setBlocksCount(uint32_t p_blocks_read) { blocks_read = p_blocks_read; }
 
     unsigned int getXBlocks()        { return x_block_count; }
     unsigned int getYBlocks()        { return y_block_count; }
@@ -215,7 +250,7 @@ public:
     uint32_t getOccupancies(uint32_t x, uint32_t y, uint32_t z);
 
     // get tile material
-    int16_t getMaterialIndex (uint32_t x, uint32_t y, uint32_t z);
+    MatglossPair getMaterialPair (uint32_t x, uint32_t y, uint32_t z);
     string getMaterialString (uint32_t x, uint32_t y, uint32_t z);
 
     // get coords of region used for materials

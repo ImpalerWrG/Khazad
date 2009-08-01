@@ -5,6 +5,6 @@
 	<MapSize X="12" Y="12" Z="8"/>
 	<Zoom Min="1" Start="100" Max="130"/>
 	<InterfaceSpeed Orbit="100" Tilt="20" Slide="100" Zoom="100"/>
-	<MapLoading Path="Saves/SlopeBroken.map"/>
+	<MapLoading Path="Saves/KhazadMap.map"/>
 	<MapSaving Path="Saves/KhazadMap.map"/>
 </GlobalDefines>

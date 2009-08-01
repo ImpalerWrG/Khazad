@@ -439,7 +439,7 @@ void Map::InitilizeTilePicker()
 
     DfMap* df_map = DFExtractor->getMap();
 
-    Uint32 NumStoneMats = df_map->getNumStoneMatGloss();
+    Uint32 NumStoneMats = df_map->getNumMatGloss(Mat_Stone);
     StoneMatGloss = new Sint16[NumStoneMats];
 
     for(Uint32 i = 0; i < NumStoneMats; i++)
@@ -451,7 +451,7 @@ void Map::InitilizeTilePicker()
     {
         for(Uint32 j = 0; j < DATA->getNumMaterials(); ++j)
         {
-            if(strcmp(DATA->getMaterialData(j)->getMatGloss().c_str(), df_map->getStoneMatGlossString(i).c_str()) == 0)
+            if(strcmp(DATA->getMaterialData(j)->getMatGloss().c_str(), df_map->getMatGlossString(Mat_Stone,i).c_str()) == 0)
             {
                 StoneMatGloss[i] = j;
             }
@@ -463,17 +463,9 @@ void Map::InitilizeTilePicker()
 Uint32 Map::PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ)
 {
     DfMap *df_map = DFExtractor->getMap();
-    Sint16 StoneType = df_map->getMaterialIndex(MapX, MapY, MapZ);
+    MatglossPair mat = df_map->getMaterialPair(MapX, MapY, MapZ);
+    //Sint16 StoneType = df_map->getMaterialIndex(MapX, MapY, MapZ);
     Sint16 TileType = df_map->getTileType(MapX, MapY, MapZ);
-
-    Uint16 TileTexture = TilePicker[TileType];
-    Uint16 MatGlossTexture = StoneMatGloss[StoneType];
-
-//    bool IsFloor = df_map->isFloorTerrain(TileType);
-    //bool IsWall = df_map->isWallTerrain(TileType);
-    //bool IsOpen = df_map->isOpenTerrain(TileType);
-    //bool IsRamp = df_map->isRampTerrain(TileType);
-    //bool IsStairs = df_map->isStairTerrain(TileType);
 
     static Uint16 Sand = DATA->getLabelIndex("MATERIAL_SAND");
     //static Uint16 Stone = DATA->getLabelIndex("MATERIAL_ROUGH_STONE");
@@ -487,29 +479,41 @@ Uint32 Map::PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ)
     static Uint16 Layer2 = DATA->getLabelIndex("MATERIAL_SMOOTH_LAYER_STONE");
     static Uint16 Layer3 = DATA->getLabelIndex("MATERIAL_ROUGH_STONE");
 
-    // use matgloss for textures on some *very* specific tile types
-    if(TileTexture == Vein ||
-       TileTexture == VeinFloor ||
-       TileTexture == Soil ||
-       TileTexture == Sand ||
-       TileTexture == Layer1 ||
-       TileTexture == Layer2 ||
-       TileTexture == Layer3 ||
-       TileTexture == Ramp
-       )
+    if(mat.type == Mat_Stone)
     {
-        // and only if it's properly defined
-        if(MatGlossTexture != Unknown)
+        Uint16 TileTexture = TilePicker[TileType];
+        Uint16 MatGlossTexture = StoneMatGloss[mat.index];
+    //    bool IsFloor = df_map->isFloorTerrain(TileType);
+        //bool IsWall = df_map->isWallTerrain(TileType);
+        //bool IsOpen = df_map->isOpenTerrain(TileType);
+        //bool IsRamp = df_map->isRampTerrain(TileType);
+        //bool IsStairs = df_map->isStairTerrain(TileType);
+
+        // use matgloss for textures on some *very* specific tile types
+        if(TileTexture == Vein ||
+           TileTexture == VeinFloor ||
+           TileTexture == Soil ||
+           TileTexture == Sand ||
+           TileTexture == Layer1 ||
+           TileTexture == Layer2 ||
+           TileTexture == Layer3 ||
+           TileTexture == Ramp
+           )
         {
-            return MatGlossTexture;
+            // and only if it's properly defined
+            if(MatGlossTexture != Unknown)
+            {
+                return MatGlossTexture;
+            }
         }
+        // use tile texture otherwise
+        if(TileType != -1)
+        {
+            return TileTexture;
+        }
+        // fallback for undefined values of tile types and matgloss
+
     }
-    // use tile texture otherwise
-    if(TileType != -1)
-    {
-        return TileTexture;
-    }
-    // fallback for undefined values of tile types and matgloss
     return Unknown;
 }
 

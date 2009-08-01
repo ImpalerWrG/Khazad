@@ -619,7 +619,7 @@ void ScreenManager::PrintDebugging()
         int Geolayer = 0;
         int veinMatgloss = 0;
         string matgloss;
-        int matglossi;
+        MatglossPair matglossdesc;
         int building = 0;
         uint32_t region_x = 0;
         uint32_t region_y = 0;
@@ -636,9 +636,8 @@ void ScreenManager::PrintDebugging()
             Ocupancy = df_map->getOccupancies(x, y, z);
             BiomeOffset = df_map->getBiome(x, y, z);
             matgloss = df_map->getMaterialString(x, y, z);
-            matglossi = df_map->getMaterialIndex(x, y, z);
+            matglossdesc = df_map->getMaterialPair(x, y, z);
             Geolayer = df_map->getGeolayerIndex(x, y, z);
-            veinMatgloss = df_map->getMaterialIndex(x, y, z);
             building = df_map->getBuilding(x, y, z);
             layerAddress = df_map->getGeolayerAddress(x,y,z);
             gblockAddress = df_map->getGeoblockAddress( x,  y,  z);
@@ -679,13 +678,28 @@ void ScreenManager::PrintDebugging()
                         ) / 16;*/
 
         /// TODO: check bounds!
-        int Xbio,Ybio;
+/*        int Xbio,Ybio;
         df_map->getGeoRegion(x,y,z,Xbio,Ybio);
         sprintf (buffer, "georegion x:%d y:%d. b:%d, layer %i, addr 0x%X, gaddr 0x%X, raddr 0x%X",Xbio,Ybio, BiomeOffset, Geolayer, layerAddress, gblockAddress, regionAddress);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
-        position.y -= 40;
-
-        sprintf (buffer, "material: %s %d",matgloss.c_str(), matglossi);
+        position.y -= 40;*/
+        string typestr = "unknown";
+        switch (matglossdesc.type)
+        {
+            case Mat_Wood:
+            typestr = "wood";
+            break;
+            case Mat_Stone:
+            typestr = "stone/soil";
+            break;
+            case Mat_Metal:
+            typestr = "metal";
+            break;
+            case Mat_Plant:
+            typestr = "plant";
+            break;
+        }
+        sprintf (buffer, "material: %s %s:%d",matgloss.c_str(), typestr.c_str(), matglossdesc.index);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 /*
@@ -694,9 +708,9 @@ void ScreenManager::PrintDebugging()
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 */
-/*        sprintf (buffer, "building: %i", building);
+        sprintf (buffer, "building: %i", building);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
-        position.y -= 40;*/
+        position.y -= 40;
 /*
         char binarybuffer[33];
         binarysprintf(binarybuffer, Designation);

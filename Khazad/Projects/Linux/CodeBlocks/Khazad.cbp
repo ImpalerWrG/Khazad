@@ -88,6 +88,12 @@
 		<ExtraCommands>
 			<Add before="#rm ../../../Khazad" />
 		</ExtraCommands>
+		<Unit filename="../../../TinyXML/tinystr.cpp" />
+		<Unit filename="../../../TinyXML/tinystr.h" />
+		<Unit filename="../../../TinyXML/tinyxml.cpp" />
+		<Unit filename="../../../TinyXML/tinyxml.h" />
+		<Unit filename="../../../TinyXML/tinyxmlerror.cpp" />
+		<Unit filename="../../../TinyXML/tinyxmlparser.cpp" />
 		<Unit filename="../../../libdfhack/DFCommon.h" />
 		<Unit filename="../../../libdfhack/DataModel.cpp" />
 		<Unit filename="../../../libdfhack/DataModel.h" />
@@ -98,6 +104,10 @@
 		<Unit filename="../../../libdfhack/Extract.cpp" />
 		<Unit filename="../../../libdfhack/Extract.h" />
 		<Unit filename="../../../libdfhack/LinuxMemAccess.h" />
+		<Unit filename="../../../libdfhack/LoadSave.cpp" />
+		<Unit filename="../../../libdfhack/LoadSaveV1.cpp" />
+		<Unit filename="../../../libdfhack/LoadSaveV2.cpp" />
+		<Unit filename="../../../libdfhack/LoadSaveV3.cpp" />
 		<Unit filename="../../../libdfhack/MemAccess.h" />
 		<Unit filename="../../../libdfhack/MemInfo.cpp" />
 		<Unit filename="../../../libdfhack/MemInfo.h" />
@@ -114,12 +124,6 @@
 			<Option compilerVar="CPP" />
 		</Unit>
 		<Unit filename="../../../libdfhack/md5.h" />
-		<Unit filename="../../../TinyXML/tinystr.cpp" />
-		<Unit filename="../../../TinyXML/tinystr.h" />
-		<Unit filename="../../../TinyXML/tinyxml.cpp" />
-		<Unit filename="../../../TinyXML/tinyxml.h" />
-		<Unit filename="../../../TinyXML/tinyxmlerror.cpp" />
-		<Unit filename="../../../TinyXML/tinyxmlparser.cpp" />
 		<Unit filename="../../../src/Core/Enum.h" />
 		<Unit filename="../../../src/Core/Random.cpp" />
 		<Unit filename="../../../src/Core/Random.h" />

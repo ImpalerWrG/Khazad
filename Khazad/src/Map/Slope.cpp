@@ -189,10 +189,12 @@ bool Slope::Update()
 
 /// TODO: terrible... just terrible. needs better algo and refactor of the surrounding classes. but it works. best to move it out of the way somewhere and make it create an instantiated VBO
 /// TODO: normal vectors. these are required for lighting
+/// TODO: document, scan and clean up notes
 bool Slope::Draw(float xTranslate, float yTranslate)
 {
     if(Visible)
     {
+        // how many strong corners?
         int numStrong = 0;
         bool NorthEastSolid = Owner->getNeiborCube(DIRECTION_NORTHEAST) != NULL && Owner->getNeiborCube(DIRECTION_NORTHEAST)->isSolid();
         bool SouthEastSolid = Owner->getNeiborCube(DIRECTION_SOUTHEAST) != NULL && Owner->getNeiborCube(DIRECTION_SOUTHEAST)->isSolid();
@@ -202,7 +204,8 @@ bool Slope::Draw(float xTranslate, float yTranslate)
         bool SouthSolid = Owner->getNeiborCube(DIRECTION_SOUTH) != NULL && Owner->getNeiborCube(DIRECTION_SOUTH)->isSolid();
         bool WestSolid = Owner->getNeiborCube(DIRECTION_WEST) != NULL && Owner->getNeiborCube(DIRECTION_WEST)->isSolid();
         bool EastSolid = Owner->getNeiborCube(DIRECTION_EAST) != NULL && Owner->getNeiborCube(DIRECTION_EAST)->isSolid();
-        int numSolids = NorthEastSolid + SouthEastSolid + NorthWestSolid + NorthSolid + SouthSolid + WestSolid + EastSolid;
+        // number of solids - only if slope has one adjacent solid tile it has a weak center point
+        int numSolids = NorthEastSolid + SouthEastSolid + NorthWestSolid + SouthWestSolid + NorthSolid + SouthSolid + WestSolid + EastSolid;
 
         bool NorthEastSlope = Owner->getNeiborCube(DIRECTION_NORTHEAST) != NULL && Owner->getNeiborCube(DIRECTION_NORTHEAST)->getSlope();
         bool SouthEastSlope = Owner->getNeiborCube(DIRECTION_SOUTHEAST) != NULL && Owner->getNeiborCube(DIRECTION_SOUTHEAST)->getSlope();
@@ -244,10 +247,16 @@ bool Slope::Draw(float xTranslate, float yTranslate)
         else if(WestSlope) heights[7] = 0;
 
         // strong point check
+        if(NorthSolid && WestSolid && !SouthEastSlope && !SouthEastSolid) numStrong ++;
+        if(NorthSolid && EastSolid && !SouthWestSlope && !SouthWestSolid) numStrong ++;
+        if(SouthSolid && WestSolid && !NorthEastSlope && !NorthEastSolid) numStrong ++;
+        if(SouthSolid && EastSolid && !NorthWestSlope && !NorthWestSolid) numStrong ++;
+/*
         if(NorthSolid && WestSolid && !SouthEastSolid) numStrong ++;
         if(NorthSolid && EastSolid && !SouthWestSolid) numStrong ++;
         if(SouthSolid && WestSolid && !NorthEastSolid) numStrong ++;
         if(SouthSolid && EastSolid && !NorthWestSolid) numStrong ++;
+*/
 
         // weak/strong point processing
         if(numSolids == 1)// maybe weak point
@@ -304,6 +313,7 @@ bool Slope::Draw(float xTranslate, float yTranslate)
         glBegin(GL_TRIANGLES);
 
         // fill in empty spaces if any. another ugly hack :D
+        ///TODO: use matrix manipulation to reduce code multiplication
         if(!NorthSolid && !NorthSlope)
         {
             if(heights[0] > 0.0)
