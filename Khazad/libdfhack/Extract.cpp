@@ -75,6 +75,9 @@ bool Extractor::dumpMemory( string path_to_xml)
     int veinsize = offset_descriptor->getHexValue("v_vein_size");
     // constructions
     int constructions = offset_descriptor->getAddress("constructions");
+    // buildings
+    int buildings = offset_descriptor->getAddress("buildings");
+    /// TODO: what about stockpiles and other designated areas?
 
     // matgloss
     int matgloss_address = offset_descriptor->getAddress("matgloss");
@@ -100,6 +103,8 @@ bool Extractor::dumpMemory( string path_to_xml)
 
 
     // read matgloss data from df if we can
+    /// TODO: turn next line into an XML entry
+    RawType matglossRawMapping[] = {Mat_Wood, Mat_Stone, Mat_Metal, Mat_Plant};
     if(matgloss_address && sizeof_vector)
     {
         uint32_t addr = matgloss_address;
@@ -118,7 +123,7 @@ bool Extractor::dumpMemory( string path_to_xml)
                 // read the string pointed at by
                 tmpstr = dm->readSTLString(temp); // reads a C string given an address
                 // store it in the block
-                df_map->matgloss[counter].push_back(tmpstr);
+                df_map->matgloss[matglossRawMapping[counter]].push_back(tmpstr);
                 printf("%d = %s\n",i,tmpstr.c_str());
             }
         }
@@ -283,6 +288,22 @@ bool Extractor::dumpMemory( string path_to_xml)
             Block * b = df_map->getBlock(c.x/16,c.y/16,c.z);
             b->material[c.x%16][c.y%16].type = c.mat_type;
             b->material[c.x%16][c.y%16].index = c.mat_idx;
+        }
+    }
+    if(buildings)
+    {
+        // read the buildings vector
+        DfVector p_bld = dm->readVector(buildings,4);
+        for (uint32_t i = 0; i< p_bld.getSize();i++)
+        {
+            uint32_t temp;
+            t_building bld;
+            // read pointer from vector at position
+            p_bld.read((uint32_t)i,(uint8_t *)&temp);
+            //read construction from memory
+            Mread(temp, sizeof(t_building), (uint8_t *)&bld);
+            // just dump the stuff, need to decide what to do with it first
+            printf("building %x, xy %d:%d-%d:%d, z %d, material %d:%d\n",bld.vtable,bld.x1,bld.y1,bld.x2,bld.y2,bld.z,bld.mat_type,bld.mat_idx);
         }
     }
     printf("Blocks read into memory: %d\n", blocks_read);

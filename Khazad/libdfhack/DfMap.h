@@ -5,7 +5,7 @@
 
 struct t_vein
 {
-    uint32_t VTable;
+    uint32_t vtable;
     int16_t type;
     int16_t assignment[16];
     int16_t unknown;
@@ -21,11 +21,27 @@ struct t_construction
     int16_t unk2;
     int16_t mat_type;
     int16_t mat_idx;
-    int16_t padding;// remove this when adding entries. I'm sure there's more
+    // not complete
+};
+
+struct t_building
+{
+    uint32_t vtable;
+    uint32_t x1;
+    uint32_t y1;
+    uint32_t unk1;
+    uint32_t x2;
+    uint32_t y2;
+    uint32_t unk2;
+    uint32_t z;
+    uint32_t some_flag;
+    int16_t mat_type;
+    int16_t mat_idx;
+    // not complete
 };
 
 // in order in which the raw vectors appear in df memory
-enum MatglossType
+enum RawType
 {
     Mat_Wood,
     Mat_Stone,

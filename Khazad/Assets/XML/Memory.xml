@@ -63,11 +63,6 @@
 		
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x015C6D70</Address>
-		
-		<Address name="mat_wood">0x015C6D70</Address>
-		<Address name="mat_stone">0x015C6D80</Address>
-		<Address name="mat_plants">0x015C6D90</Address>
-		<Address name="mat_metal">0x015C6DA0</Address>
     </Entry>
     <!-- Windows 40d## sub-versions -->
     <Entry version="v0.28.181.40d9" os="windows">
@@ -109,7 +104,6 @@
 		<Offset name="geolayer_geoblock_offset">0xC</Offset>
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x01534038</Address>
-		<Address name="mat_stone">0x01534048</Address>
     </Entry>
     <Entry version="v0.28.181.40d11" os="windows">
 		<!-- sizes -->
@@ -150,7 +144,6 @@
 		<Offset name="geolayer_geoblock_offset">0xC</Offset>
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x015613C0</Address>
-		<Address name="mat_stone">0x015613D0</Address>
     </Entry>
     <Entry version="v0.28.181.40d12" os="windows">
 		<!-- sizes -->
@@ -191,7 +184,6 @@
 		<Offset name="geolayer_geoblock_offset">0xC</Offset>
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x015FCE44</Address>
-		<Address name="mat_stone">0x015FCE54</Address>
     </Entry>
     <Entry version="v0.28.181.40d13" os="windows">
 		<!-- sizes -->
@@ -232,7 +224,6 @@
 		<Offset name="geolayer_geoblock_offset">0xC</Offset>
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x01601ED4</Address>
-		<Address name="mat_stone">0x01601EE4</Address>
     </Entry>
     <!-- Linux 40d## versions -->
     <Entry version="v0.28.181.40d9" os="linux">
@@ -273,7 +264,6 @@
 		<Offset name="geolayer_geoblock_offset">0x4</Offset>
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x9374E88</Address>
-		<Address name="mat_stone">0x9374E94</Address>
     </Entry>
     <Entry version="v0.28.181.40d11" os="linux">
 		<!-- sizes -->
@@ -313,7 +303,6 @@
 		<Offset name="geolayer_geoblock_offset">0x4</Offset>
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x09301668</Address>
-		<Address name="mat_stone">0x09301674</Address>
     </Entry>
     <Entry version="v0.28.181.40d12" os="linux">
 		<!-- sizes -->
@@ -353,7 +342,6 @@
 		<Offset name="geolayer_geoblock_offset">0x4</Offset>
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x08F97A84</Address>
-		<Address name="mat_stone">0x08F97A90</Address>
     </Entry>
     <Entry version="v0.28.181.40d13" os="linux">
 		<!-- sizes -->
@@ -400,8 +388,6 @@
 		
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x08F9CAA4</Address>
-		<Address name="mat_wood">0x08F9CAA4</Address>
-		<Address name="mat_stone">0x08F9CAB0</Address>
     </Entry>
   </MemoryDescriptors>
 </DFExtractor>

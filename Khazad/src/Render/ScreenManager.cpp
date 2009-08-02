@@ -695,11 +695,35 @@ void ScreenManager::PrintDebugging()
             case Mat_Metal:
             typestr = "metal";
             break;
-            case Mat_Plant:
+/*            case Mat_Plant:
             typestr = "plant";
+            break;*/
+            case 13: // green glass
+            typestr = "green glass";
+            break;
+            case 14: // clear glass
+            typestr = "clear glass";
+            break;
+            case 15: // crystal glass
+            typestr = "crystal glass";
+            break;
+            case 17: // crystal glass
+            typestr = "ice";
+            break;
+            case 18:
+            typestr = "charcoal";
+            break;
+            case 19:
+            typestr = "potash";
+            break;
+            case 21:
+            typestr = "pearlash";
+            break;
+            case 24:
+            typestr = "soap";
             break;
         }
-        sprintf (buffer, "material: %s %s:%d",matgloss.c_str(), typestr.c_str(), matglossdesc.index);
+        sprintf (buffer, "material: %d:%d = %s:%s ",matglossdesc.type, matglossdesc.index,typestr.c_str(), matgloss.c_str());
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 /*
