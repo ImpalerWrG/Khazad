@@ -58,15 +58,17 @@ void DfMap::clear()
     }
     for (uint32_t i = eNorthWest; i< eBiomeCount;i++)
     {
-        geology[i].clear();
-        geodebug[i].clear();
-        geoblockadresses[i] = 0;
-        regionadresses[i] = 0;
+        v_geology[i].clear();
+        //geodebug[i].clear();
+        //geoblockadresses[i] = 0;
+        //regionadresses[i] = 0;
     }
     for(uint32_t counter = Mat_Wood; counter < NUM_MATGLOSS_TYPES; counter++)
     {
-        matgloss[counter].clear();
+        v_matgloss[counter].clear();
     }
+    v_buildings.clear();
+    v_constructions.clear();
     blocks_allocated = 0;
 }
 
@@ -159,7 +161,7 @@ void DfMap::applyGeoMatgloss(Block * b)
             int geolayer = b->designation[x_b][y_b].bits.geolayer_index;
             int biome = b->designation[x_b][y_b].bits.biome;
             b->material[x_b][y_b].type = Mat_Stone;
-            b->material[x_b][y_b].index = geology[b->RegionOffsets[biome]][geolayer];
+            b->material[x_b][y_b].index = v_geology[b->RegionOffsets[biome]][geolayer];
         }
     }
 }
@@ -219,7 +221,7 @@ uint32_t DfMap::getDesignations(uint32_t x, uint32_t y, uint32_t z)
     }
     return -1;
 }
-
+/*
 uint32_t DfMap::getGeolayerAddress (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBoundsXY);
@@ -242,7 +244,8 @@ uint32_t DfMap::getGeolayerAddress (uint32_t x, uint32_t y, uint32_t z)
     }
     else return 0;
 }
-
+*/
+/*
 uint32_t DfMap::getGeoblockAddress(uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBoundsXY);
@@ -258,7 +261,8 @@ uint32_t DfMap::getGeoblockAddress(uint32_t x, uint32_t y, uint32_t z)
     }
     return 0;
 }
-
+*/
+/*
 uint32_t DfMap::getRegionAddress(uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBoundsXY);
@@ -274,7 +278,7 @@ uint32_t DfMap::getRegionAddress(uint32_t x, uint32_t y, uint32_t z)
     }
     return 0;
 }
-
+*/
 bool DfMap::isBlockInitialized(uint32_t x, uint32_t y, uint32_t z)
 {
     // because of the way DfMap is done, more than one check must be made.
@@ -357,9 +361,9 @@ string DfMap::getMaterialString (uint32_t x, uint32_t y, uint32_t z)
         uint16_t index = b->material[x2][y2].index;
         if(index != 65535)
         {
-            if(index < matgloss[type].size())
+            if(index < v_matgloss[type].size())
             {
-                return matgloss[type][index];
+                return v_matgloss[type][index];
             }
             else
             {
@@ -375,14 +379,14 @@ string DfMap::getMaterialString (uint32_t x, uint32_t y, uint32_t z)
 
 uint16_t DfMap::getNumMatGloss(uint16_t type)
 {
-    return matgloss[type].size();
+    return v_matgloss[type].size();
 }
 
 string DfMap::getMatGlossString(uint16_t type,uint16_t index)
 {
-    if(index < matgloss[type].size())
+    if(index < v_matgloss[type].size())
     {
-        return matgloss[type][index];
+        return v_matgloss[type][index];
     }
     return string("error");
 }

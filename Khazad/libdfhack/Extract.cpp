@@ -123,7 +123,7 @@ bool Extractor::dumpMemory( string path_to_xml)
                 // read the string pointed at by
                 tmpstr = dm->readSTLString(temp); // reads a C string given an address
                 // store it in the block
-                df_map->matgloss[matglossRawMapping[counter]].push_back(tmpstr);
+                df_map->v_matgloss[matglossRawMapping[counter]].push_back(tmpstr);
                 printf("%d = %s\n",i,tmpstr.c_str());
             }
         }
@@ -167,8 +167,8 @@ bool Extractor::dumpMemory( string path_to_xml)
                 uint32_t geoblock_off;
                 // get the geoblock from the geoblock vector using the geoindex
                 geoblocks.read(geoindex,(uint8_t *) &geoblock_off);
-                df_map->geoblockadresses[i]=geoblock_off;
-                df_map->regionadresses[i]=geoX + bioRY*region_size + region_geo_index_offset;
+//                df_map->geoblockadresses[i]=geoblock_off;
+//                df_map->regionadresses[i]=geoX + bioRY*region_size + region_geo_index_offset;
                 // get the layer pointer vector :D
                 DfVector geolayers = dm->readVector(geoblock_off + geolayer_geoblock_offset , 4); // let's hope
                 // make sure we don't load crap
@@ -179,8 +179,8 @@ bool Extractor::dumpMemory( string path_to_xml)
                     // read pointer to a layer
                     geolayers.read(j, (uint8_t *) & geol_offset);
                     // read word at pointer + 2, store in our geology vectors
-                    df_map->geology[i].push_back(MreadWord(geol_offset + 2));
-                    df_map->geodebug[i].push_back(geol_offset);
+                    df_map->v_geology[i].push_back(MreadWord(geol_offset + 2));
+//                    df_map->geodebug[i].push_back(geol_offset);
                 }
             }
             have_geology = true;
@@ -280,32 +280,53 @@ bool Extractor::dumpMemory( string path_to_xml)
         {
             uint32_t temp;
             t_construction c;
+            t_construction_df40d c_40d;
             // read pointer from vector at position
             p_cons.read((uint32_t)i,(uint8_t *)&temp);
             //read construction from memory
-            Mread(temp, sizeof(t_construction), (uint8_t *)&c);
-            // stupid, but it works
-            Block * b = df_map->getBlock(c.x/16,c.y/16,c.z);
-            b->material[c.x%16][c.y%16].type = c.mat_type;
-            b->material[c.x%16][c.y%16].index = c.mat_idx;
+            Mread(temp, sizeof(t_construction_df40d), (uint8_t *)&c_40d);
+            // stupid apply. this will probably be removed later
+            Block * b = df_map->getBlock(c_40d.x/16,c_40d.y/16,c_40d.z);
+            b->material[c_40d.x%16][c_40d.y%16].type = c_40d.mat_type;
+            b->material[c_40d.x%16][c_40d.y%16].index = c_40d.mat_idx;
+            // transform
+            c.x = c_40d.x;
+            c.y = c_40d.y;
+            c.z = c_40d.z;
+            c.mat_type = c_40d.mat_type;
+            c.mat_idx = c_40d.mat_idx;
+            // store for save/load
+            df_map->v_constructions.push_back(c);
         }
     }
+    /*
     if(buildings)
     {
-        // read the buildings vector
+        // read the buildings vector.. probably completely wrong.
         DfVector p_bld = dm->readVector(buildings,4);
         for (uint32_t i = 0; i< p_bld.getSize();i++)
         {
             uint32_t temp;
             t_building bld;
+            t_building_df40d bld_40d;
             // read pointer from vector at position
             p_bld.read((uint32_t)i,(uint8_t *)&temp);
             //read construction from memory
-            Mread(temp, sizeof(t_building), (uint8_t *)&bld);
-            // just dump the stuff, need to decide what to do with it first
-            printf("building %x, xy %d:%d-%d:%d, z %d, material %d:%d\n",bld.vtable,bld.x1,bld.y1,bld.x2,bld.y2,bld.z,bld.mat_type,bld.mat_idx);
+            Mread(temp, sizeof(t_building_df40d), (uint8_t *)&bld_40d);
+            // transform
+            bld.type = 0; ///FIXME: this is a placeholder.
+            bld.x1 = bld_40d.x1;
+            bld.x2 = bld_40d.x2;
+            bld.y1 = bld_40d.y1;
+            bld.y2 = bld_40d.y2;
+            bld.z = bld_40d.z;
+            bld.mat_type = bld_40d.mat_type;
+            bld.mat_idx = bld_40d.mat_idx;
+            // store for save/load. will need more processing.
+            df_map->v_buildings.push_back(bld);
         }
     }
+    */
     printf("Blocks read into memory: %d\n", blocks_read);
     p->detach();
     return true;

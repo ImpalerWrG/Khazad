@@ -12,7 +12,14 @@ struct t_vein
     uint32_t flags;
 };
 
-struct t_construction
+struct MatglossPair
+{
+    uint16_t type;
+    uint16_t index;
+};
+
+// raw
+struct t_construction_df40d
 {
     int16_t x;
     int16_t y;
@@ -24,7 +31,18 @@ struct t_construction
     // not complete
 };
 
-struct t_building
+// cooked
+struct t_construction
+{
+    int16_t x;
+    int16_t y;
+    int16_t z;
+    int16_t mat_type;
+    int16_t mat_idx;
+};
+
+//raw
+struct t_building_df40d
 {
     uint32_t vtable;
     uint32_t x1;
@@ -40,6 +58,20 @@ struct t_building
     // not complete
 };
 
+//cooked
+struct t_building
+{
+    uint32_t type;
+    uint32_t x1;
+    uint32_t y1;
+    uint32_t x2;
+    uint32_t y2;
+    uint32_t z;
+    int16_t mat_type;
+    int16_t mat_idx;
+    // not complete
+};
+
 // in order in which the raw vectors appear in df memory
 enum RawType
 {
@@ -48,12 +80,6 @@ enum RawType
     Mat_Plant,
     Mat_Metal,
     NUM_MATGLOSS_TYPES
-};
-
-struct MatglossPair
-{
-    uint16_t type;
-    uint16_t index;
 };
 
 enum BiomeOffset
@@ -226,10 +252,13 @@ public:
     uint32_t regionZ;
     uint32_t worldSizeX;
     uint32_t worldSizeY;
-    vector<uint16_t> geology[eBiomeCount];
-    vector<uint32_t> geodebug[eBiomeCount];
+    vector<uint16_t> v_geology[eBiomeCount];
+    vector<string> v_matgloss[NUM_MATGLOSS_TYPES];
+    vector<t_construction> v_constructions;
+    vector<t_building> v_buildings;
+/*    vector<uint32_t> geodebug[eBiomeCount];
     uint32_t geoblockadresses[eBiomeCount];
-    uint32_t regionadresses[eBiomeCount];
+    uint32_t regionadresses[eBiomeCount];*/
 
     DfMap();
     DfMap(uint32_t x, uint32_t y, uint32_t z);
@@ -237,7 +266,6 @@ public:
     ~DfMap();
     uint16_t getNumMatGloss(uint16_t type);
     string getMatGlossString(uint16_t type, uint16_t index);
-    vector<string> matgloss[NUM_MATGLOSS_TYPES];
 
     bool isValid();
     bool load(string FilePath);
@@ -275,11 +303,12 @@ public:
     // matgloss part of the designation
     uint32_t getGeolayerIndex (uint32_t x, uint32_t y, uint32_t z);
 
+/*
     // terrible
     uint32_t getGeolayerAddress (uint32_t x, uint32_t y, uint32_t z);
     uint32_t getGeoblockAddress (uint32_t x, uint32_t y, uint32_t z);
     uint32_t getRegionAddress(uint32_t x, uint32_t y, uint32_t z);
-
+*/
     void getRegionCoords (uint32_t &x,uint32_t &y,uint32_t &z);
     void setRegionCoords (uint32_t x,uint32_t y,uint32_t z);
 

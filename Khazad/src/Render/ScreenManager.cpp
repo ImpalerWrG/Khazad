@@ -639,9 +639,9 @@ void ScreenManager::PrintDebugging()
             matglossdesc = df_map->getMaterialPair(x, y, z);
             Geolayer = df_map->getGeolayerIndex(x, y, z);
             building = df_map->getBuilding(x, y, z);
-            layerAddress = df_map->getGeolayerAddress(x,y,z);
-            gblockAddress = df_map->getGeoblockAddress( x,  y,  z);
-            regionAddress = df_map->getRegionAddress( x,  y,  z);
+//            layerAddress = df_map->getGeolayerAddress(x,y,z);
+//            gblockAddress = df_map->getGeoblockAddress( x,  y,  z);
+//            regionAddress = df_map->getRegionAddress( x,  y,  z);
         //}
         df_map->getRegionCoords (region_x,region_y,region_z);
 
