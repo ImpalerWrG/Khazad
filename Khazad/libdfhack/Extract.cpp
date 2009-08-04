@@ -81,7 +81,7 @@ bool Extractor::dumpMemory( string path_to_xml)
 
     // matgloss
     int matgloss_address = offset_descriptor->getAddress("matgloss");
-    int sizeof_vector = offset_descriptor->getHexValue("sizeof_vector");
+    int matgloss_skip = offset_descriptor->getHexValue("matgloss_skip");
 
     bool have_geology = false;
 
@@ -105,12 +105,12 @@ bool Extractor::dumpMemory( string path_to_xml)
     // read matgloss data from df if we can
     /// TODO: turn next line into an XML entry
     RawType matglossRawMapping[] = {Mat_Wood, Mat_Stone, Mat_Metal, Mat_Plant};
-    if(matgloss_address && sizeof_vector)
+    if(matgloss_address && matgloss_skip)
     {
         uint32_t addr = matgloss_address;
         uint32_t counter = Mat_Wood;
 
-        for(; counter < NUM_MATGLOSS_TYPES; addr += sizeof_vector, counter++)
+        for(; counter < NUM_MATGLOSS_TYPES; addr += matgloss_skip, counter++)
         {
             DfVector p_matgloss = dm->readVector(addr, 4);
             // iterate over it
@@ -299,7 +299,6 @@ bool Extractor::dumpMemory( string path_to_xml)
             df_map->v_constructions.push_back(c);
         }
     }
-    /*
     if(buildings)
     {
         // read the buildings vector.. probably completely wrong.
@@ -326,7 +325,6 @@ bool Extractor::dumpMemory( string path_to_xml)
             df_map->v_buildings.push_back(bld);
         }
     }
-    */
     printf("Blocks read into memory: %d\n", blocks_read);
     p->detach();
     return true;

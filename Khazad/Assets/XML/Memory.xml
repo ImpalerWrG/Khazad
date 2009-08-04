@@ -99,8 +99,8 @@
 		<!-- geoblock offset(s?) -->
 		<Offset name="geolayer_geoblock_offset">0xC</Offset>
 		<!-- matgloss vectors -->
-		<Address name="matgloss">0x01534038</Address>
-		<HexValue name="matgloss_skip">0x10</HexValue>
+		<Address name="matgloss">0x01534030</Address>
+		<HexValue name="matgloss_skip">0x18</HexValue>
 		<VTable name="building_vtable">
 			<HexValue name="armor_stand">0x008ea084</HexValue>
 			<HexValue name="bed">0x008ea1e4</HexValue>
@@ -308,8 +308,8 @@
 		<!-- geoblock offset(s?) -->
 		<Offset name="geolayer_geoblock_offset">0xC</Offset>
 		<!-- matgloss vectors -->
-		<Address name="matgloss">0x015FCE44</Address>
-		<HexValue name="matgloss_skip">0x10</HexValue>
+		<Address name="matgloss">0x015FCE3C</Address>
+		<HexValue name="matgloss_skip">0x18</HexValue>
 		<VTable name="building_vtable">
 			<HexValue name="wagon">0x008de4a4</HexValue>
 			
@@ -414,8 +414,8 @@
 		<!-- geoblock offset(s?) -->
 		<Offset name="geolayer_geoblock_offset">0xC</Offset>
 		<!-- matgloss vectors -->
-		<Address name="matgloss">0x01601ED4</Address>
-		<HexValue name="matgloss_skip">0x10</HexValue>
+		<Address name="matgloss">0x01601ECC</Address>
+		<HexValue name="matgloss_skip">0x18</HexValue>
 		<VTable name="building_vtable">
 			<HexValue name="armor_stand">0x008df48c</HexValue>
 			<HexValue name="bed">0x008df5ec</HexValue>
