@@ -489,7 +489,12 @@
 		<!-- map data -->
 		<Address name="map_data">0x09372FC0</Address>
 		<Address name="constructions">0x0931ED38</Address>
-			<!-- BUILDINGS -->
+		<!-- srsly, WTF? -->
+		<!--<Address name="buildings">0x09332B54</Address>-->
+		<Address name="buildings">0x09332B60</Address>
+		<!--<Address name="buildings">0x09332B90</Address>-->
+		<!--<Address name="buildings">0x09332C80</Address>-->
+		<!--<Address name="buildings">0x09332EF0</Address>-->
 		<!-- size of the map -->
 		<Address name="x_count">0x09372FD4</Address>
 		<Address name="y_count">0x09372FD8</Address>
@@ -527,7 +532,8 @@
 		<!-- map data -->
 		<Address name="map_data">0x092FF7A0</Address>
 		<Address name="constructions">0x092AB518</Address>
-			<!-- BUILDINGS -->
+		<!-- derived from 40d9 -->
+		<Address name="buildings">0x092BF340</Address>
 		<!-- size of the map -->
 		<Address name="x_count">0x092FF7B4</Address>
 		<Address name="y_count">0x092FF7B8</Address>
@@ -565,7 +571,7 @@
 		<!-- map data -->
 		<Address name="map_data">0x08F95BBC</Address>
 		<Address name="constructions">0x08F41918</Address>
-			<!-- BUILDINGS -->
+		<Address name="buildings">0x08F55740</Address>
 		<!-- size of the map -->
 		<Address name="x_count">0x08F95BD0</Address>
 		<Address name="y_count">0x08F95BD4</Address>
@@ -604,7 +610,7 @@
 		<!-- map data -->
 		<Address name="map_data">0x08F9ABDC</Address>
 		<Address name="constructions">0x08F46938</Address>
-		<!-- BUILDINGS -->
+		<Address name="buildings">0x08F5A760</Address>
 		
 		<!-- size of the map -->
 		<Address name="x_count">0x08F9ABF0</Address>
