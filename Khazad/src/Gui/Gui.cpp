@@ -30,6 +30,7 @@ bool Ui::Init()
     InitCameraControlMenu();
     InitConfirmationWindow();
     InitDepthSlider();
+    InitDepthSlider2();
 
 	return true;
 }
@@ -270,8 +271,8 @@ void Ui::InitDepthSlider()
     DepthSlider->setOrientation(gcn::Slider::VERTICAL);
     TopWidget->add(DepthSlider);
 
-    DepthSlider->setSize(25, SCREEN->getHight());
-    DepthSlider->setPosition(SCREEN->getWidth() - 25, 0);
+    DepthSlider->setSize(15, SCREEN->getHight());
+    DepthSlider->setPosition(SCREEN->getWidth() - 15, 0);
     DepthSlider->setValue(1.0);
 
     gcn::ActionListener* actionListener = new DepthChangeActionListener();
@@ -279,9 +280,31 @@ void Ui::InitDepthSlider()
     DepthSlider->setVisible(false);
 }
 
+void Ui::InitDepthSlider2()
+{
+    DepthSlider2 = new gcn::Slider(0.0, 1.0);
+    DepthSlider2->setOrientation(gcn::Slider::VERTICAL);
+    TopWidget->add(DepthSlider2);
+
+    DepthSlider2->setSize(15, SCREEN->getHight());
+    DepthSlider2->setPosition(SCREEN->getWidth() - 30, 0);
+    DepthSlider2->setValue(0.0);
+
+    gcn::ActionListener* actionListener = new DepthChange2ActionListener();
+    DepthSlider2->addActionListener(actionListener);
+    DepthSlider2->setVisible(false);
+}
+
+void Ui::setZSliders(float A, float B)
+{
+    DepthSlider->setValue(A / MAP->getMapSizeZ());
+    DepthSlider2->setValue(B / MAP->getMapSizeZ());
+}
+
 void Ui::setMapViewState()
 {
     DepthSlider->setVisible(true);
+    DepthSlider2->setVisible(true);
     CameraControlWindow->setVisible(true);
 }
 
@@ -294,14 +317,12 @@ Ui::~Ui()
 
 bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
 {
-    Input->pushInput(event);
-
     if(event.type == SDL_QUIT || event.type == SDL_KEYDOWN)
     {
         return false; // Not consumed in the UI
     }
 
-    if(event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN /*|| event.type == SDL_MOUSEBUTTONUP*/)
+    if(event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)
     {
         Sint32 RealX;
         Sint32 RealY;
@@ -312,21 +333,31 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
 
         if(isWidgetCollision(DepthSlider, OriginX, OriginY))
         {
+            Input->pushInput(event);
+            return true;
+        }
+
+        if(isWidgetCollision(DepthSlider2, OriginX, OriginY))
+        {
+            Input->pushInput(event);
             return true;
         }
 
         if(isWidgetCollision(MainMenuWindow, OriginX, OriginY))
         {
+            Input->pushInput(event);
             return true;
         }
 
         if(isWidgetCollision(CameraControlWindow, OriginX, OriginY))
         {
+            Input->pushInput(event);
             return true;
         }
 
         if(isWidgetCollision(ConfirmationWindow, OriginX, OriginY))
         {
+            Input->pushInput(event);
             return true;
         }
     }

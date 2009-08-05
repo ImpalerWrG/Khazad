@@ -6,6 +6,7 @@
 #include <ConfigManager.h>
 #include <Map.h>
 #include <Cube.h>
+#include <Gui.h>
 
 
 Camera::Camera()
@@ -34,7 +35,7 @@ bool Camera::Init(bool Isometric)
 		setIsometricProj(SCREEN->getWidth(), SCREEN->getHight(), 1000000.0);
 		IsoMode = true;
 		Orientation = CAMERA_NORTH_WEST;
-		ViewLevels = 1;
+//		ViewLevels = 1;
 	}
 	else
 	{
@@ -163,8 +164,7 @@ Vector3 Camera::DetermineMouseIntersection(float MapZ)
 bool Camera::DetermineCursorIntersection()
 {
     Vector3 Intersection;
-    int Bottom = SliceTop - ViewLevels;
-    for(int i = SliceTop; i > Bottom && i >= 0; i--)
+    for(int i = SliceTop; i >= SliceBottom && i >= 0; i--)
     {
         MouseIntersection = DetermineMouseIntersection(ZlevelSeperationAdjustment(i) + 0.5);
         MouseIntersection.x = (int) (MouseIntersection.x + 0.5);
@@ -234,7 +234,7 @@ void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY)
 			{
 			    if(Keystate[SDLK_RSHIFT] || Keystate[SDLK_LSHIFT])
 			    {
-                    ChangeViewLevels(1);
+                    ChangeViewLevel(1);
                     break;
 			    }
 
@@ -252,7 +252,7 @@ void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY)
 			{
 			    if(Keystate[SDLK_RSHIFT] || Keystate[SDLK_LSHIFT])
 			    {
-                    ChangeViewLevels(-1);
+                    ChangeViewLevel(-1);
                     break;
 			    }
 
@@ -707,7 +707,7 @@ void Camera::MoveViewVertical(float Z)
 	generateViewFrustum();
 }
 
-void Camera::setViewHight(Sint32 ZLevel)
+/*void Camera::setViewHight(Sint32 ZLevel)
 {
     SliceTop = ZLevel;
 
@@ -720,22 +720,33 @@ void Camera::setViewHight(Sint32 ZLevel)
         CursorLevel = SliceTop - ViewLevels;
     }
     ConfineLookPosition();
-}
+}*/
 
-void Camera::ChangeViewLevels(Sint32 Change)
+void Camera::ChangeViewLevel(Sint32 Change)
 {
     if (Change != 0)
     {
-        ViewLevels += Change;
-
-        if (ViewLevels < 1)
+        int ZMax = MAP->getMapSizeZ();
+        ///FIXME: possible off-by-one errors?
+        if(SliceTop + Change > ZMax)
         {
-            ViewLevels = 1;
+            Change = ZMax - SliceTop;
         }
+        if(SliceBottom + Change < 0)
+        {
+            Change = -SliceBottom;
+        }
+        SliceA += Change;
+        SliceB += Change;
+        ///FIXME: reflect change in GUI
+        SliceTop = max(SliceA, SliceB);
+        SliceBottom = min(SliceA, SliceB);
+        ViewLevels = abs(SliceA - SliceB) + 1;
+        UI->setZSliders(SliceA,SliceB);
         generateViewFrustum();
     }
 }
-
+/*
 void Camera::setViewLevels(Uint8 NewValue)
 {
     if (NewValue != ViewLevels)
@@ -749,7 +760,7 @@ void Camera::setViewLevels(Uint8 NewValue)
         generateViewFrustum();
     }
 }
-
+*/
 void Camera::changeLevelSeperation(Sint8 Change)
 {
     LevelSeperation += Change;
@@ -770,16 +781,21 @@ void Camera::setLevelSeperation(Sint8 NewValue)
     }
 }
 
-void Camera::changeSliceTop(Sint16 Change)
+void Camera::SetSliceA(int newValue)
 {
-    SliceTop += Change;
-    CursorLevel += Change;
+    SliceA = newValue;
+    SliceTop = max(SliceA, SliceB);
+    SliceBottom = min(SliceA, SliceB);
+    ViewLevels = abs(SliceA - SliceB) + 1;
+    generateViewFrustum();
 }
-
-void Camera::setSliceTop(Sint16 NewValue)
+void Camera::SetSliceB(int newValue)
 {
-    SliceTop = NewValue;
-    CursorLevel = NewValue;
+    SliceB = newValue;
+    SliceTop = max(SliceA, SliceB);
+    SliceBottom = min(SliceA, SliceB);
+    ViewLevels = abs(SliceA - SliceB) + 1;
+    generateViewFrustum();
 }
 
 void Camera::SetDefaultView()
@@ -865,7 +881,7 @@ float Camera::getShading(float Zlevel)
 			if (Depth > 0) // Below look level
 			{
 				Shading -= (float) Depth / (float) ViewLevels;
-				float Minimum = 0.25;
+				float Minimum = 0.4;
 				Shading = ((1.0 - Minimum) * Shading) + (Minimum);
 				return Shading;
 			}

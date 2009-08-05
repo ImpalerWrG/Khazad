@@ -26,8 +26,12 @@ protected:
 
 	CameraOrientation Orientation;
 
-	Uint8 ViewLevels;
+	Uint16 SliceA;
+	Uint16 SliceB;
 	Uint16 SliceTop;
+	Uint16 SliceBottom;
+	Uint16 ViewLevels;
+
 	Uint8 LevelSeperation;
 
 	float ViewWidth, ViewHight, ViewDepth;
@@ -58,16 +62,19 @@ public:
 	float LookZ()   { return LookPosition.z; }
 	Vector3 Look()  { return LookPosition; }
 
-	Uint8 getViewLevels()                       { return ViewLevels; }
-	void setViewLevels(Uint8 NewValue);
+	//Uint8 getViewLevels()                       { return abs(SliceA - SliceB)/*ViewLevels*/; }
+	//void setViewLevels(Uint8 NewValue);
 
 	Uint8 getLevelSeperation()                  { return LevelSeperation; }
 	void changeLevelSeperation(Sint8 Change);
 	void setLevelSeperation(Sint8 NewValue);
 
     Uint16 getSliceTop()                        { return SliceTop; }
-    void changeSliceTop(Sint16 Change);
-    void setSliceTop(Sint16 NewValue);
+    Uint16 getSliceBottom()                        { return SliceBottom; }
+    void SetSliceA(int newValue);
+    void SetSliceB(int newValue);
+    //void changeSliceTop(Sint16 Change);
+    //void setSliceTop(Sint16 NewValue);
 
 	CameraOrientation getOrientation()  { return Orientation; }
 	void UpdateDirection();
@@ -195,13 +202,13 @@ public:
 
 	void MoveViewVertical(float Z);
 
-    void setViewHight(Sint32 Change);
+//    void setViewHight(Sint32 Change);
 
 	/**
 	* ChangeViewLevels modifies the number of z levels that will be rendered
 	* @param Change - Amount of change, positive or negative
 	*/
-    void ChangeViewLevels(Sint32 Change);
+    void ChangeViewLevel(Sint32 Change);
 
 	/**
 	* SetDefaultView returns the camera to a looking at the Origin

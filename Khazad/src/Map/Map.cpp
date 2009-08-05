@@ -14,6 +14,7 @@
 #include <Cell.h>
 #include <Random.h>
 #include <Building.h>
+#include <Tree.h>
 
 DECLARE_SINGLETON(Map)
 
@@ -254,6 +255,15 @@ void Map::ReparseExtract()
                         ///FIXME: destroy buildings when destroying map
                         NewCell->addBuilding(bld);
                     }
+                    vector<t_tree_desc *> * treevect = ExtractedMap->getBlockVegetationVector(x,y,z);
+                    for(int i = 0; i< treevect->size(); i++)
+                    {
+                        t_tree_desc* t = (*treevect)[i];
+                        Tree *tree = new Tree(t->mat_type,t->mat_idx,t->x,t->y,t->z);
+                        ///FIXME: destroy buildings when destroying map
+                        NewCell->addTree(tree);
+                    }
+
                     ColumnMatrix[x][y]->PushCell(NewCell, z);
 			    }
 			}

@@ -27,7 +27,8 @@ bool Building::Draw(CameraOrientation Orientation)
     b /= 256;
 /*    Vector3 Point = Vector3(xa,ya,0);
     glEnd();
-    SCREEN->DrawCage(Point, xb, yb, 1.0, 0, 1,0,0);
+    glBegin(GL_LINES);
+    SCREEN->DrawCage(Point, xb, yb, 1.0, 0, r,g,b);
     glBegin(GL_TRIANGLES);*/
     glEnd();
     glBindTexture(GL_TEXTURE_2D, 0); // unbind

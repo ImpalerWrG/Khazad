@@ -73,6 +73,8 @@ bool Extractor::dumpMemory( string path_to_xml)
     // veins
     int veinvector = offset_descriptor->getOffset("v_vein");
     int veinsize = offset_descriptor->getHexValue("v_vein_size");
+    int vegetation = offset_descriptor->getAddress("vegetation");
+    int tree_desc_offset = offset_descriptor->getOffset("tree_desc_offset");
     // constructions
     int constructions = offset_descriptor->getAddress("constructions");
     // buildings
@@ -327,6 +329,27 @@ bool Extractor::dumpMemory( string path_to_xml)
             // save buildings in a block for later display
             Block * b = df_map->getBlock(bld->x1/16,bld->y1/16,bld->z);
             b->v_buildings.push_back(bld);
+        }
+    }
+    if(vegetation && tree_desc_offset)
+    {
+        DfVector p_tree = dm->readVector(vegetation,4);
+        for (uint32_t i = 0; i< p_tree.getSize();i++)
+        {
+            uint32_t temp;
+            t_tree_desc * tree = new t_tree_desc;
+            // read pointer from vector at position
+            p_tree.read((uint32_t)i,(uint8_t *)&temp);
+            //read construction from memory
+            Mread(temp + tree_desc_offset, sizeof(t_tree_desc), (uint8_t *)tree);
+            // fix bad stuff
+            if(tree->mat_type == 2) tree->mat_type = 3;
+            // store for save/load. will need more processing.
+            df_map->v_trees.push_back(tree);
+            ///FIXME: delete created building structs
+            // save buildings in a block for later display
+            Block * b = df_map->getBlock(tree->x/16,tree->y/16,tree->z);
+            b->v_trees.push_back(tree);
         }
     }
     printf("Blocks read into memory: %d\n", blocks_read);

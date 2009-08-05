@@ -8,6 +8,7 @@
 
 class Cube;
 class Building;
+class Tree;
 
 class Cell: public Actor
 {
@@ -48,6 +49,7 @@ public:
     void setDirtyDrawList(bool NewValue)    { DirtyDrawlist = NewValue; }
 
     void addBuilding(Building *);
+    void addTree(Tree *);
 protected:
 
 	bool DirtyDrawlist;
@@ -71,6 +73,7 @@ protected:
 	Face* Facets[CELLEDGESIZE][CELLEDGESIZE][NUM_FACETS];
 
     vector <Building *> buildings;
+    vector <Tree *> trees;
 	bool Active;
 };
 

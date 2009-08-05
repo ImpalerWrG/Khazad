@@ -6,6 +6,7 @@
 #include <Cube.h>
 #include <Map.h>
 #include <Building.h>
+#include <Tree.h>
 
 /*
 Cell::Cell()
@@ -165,6 +166,11 @@ void Cell::addBuilding(Building * b)
     buildings.push_back(b);
 }
 
+void Cell::addTree(Tree * t)
+{
+    trees.push_back(t);
+}
+
 bool Cell::Draw(CameraOrientation Orientation)
 {
     Cube* LoopCube = NULL;
@@ -183,7 +189,6 @@ bool Cell::Draw(CameraOrientation Orientation)
                     if(LoopCube->getSlope())
                     {
                         LoopCube->getSlope()->Draw(x, y);
-                        continue;
                     }
                     if(LoopCube->getLiquid())
                     {
@@ -321,6 +326,10 @@ bool Cell::Draw(CameraOrientation Orientation)
         for(int i = 0; i < buildings.size();i++)
         {
             buildings[i]->Draw(Orientation);
+        }
+        for(int i = 0; i < trees.size();i++)
+        {
+            trees[i]->Draw(Orientation);
         }
     }
 

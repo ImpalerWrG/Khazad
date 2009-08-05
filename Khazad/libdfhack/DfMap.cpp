@@ -131,15 +131,35 @@ Block * DfMap::getBlock (uint32_t x,uint32_t y,uint32_t z)
 vector<t_building *> * DfMap::getBlockBuildingsVector(uint32_t x,uint32_t y,uint32_t z)
 {
     Block * b = getBlock(x,y,z);
-    return &b->v_buildings;
+    if(b)
+        return &b->v_buildings;
+    return NULL;
 }
 
-uint32_t DfMap::getBuildingVtable (uint32_t x, uint32_t y, uint32_t z)
+vector<t_tree_desc *> *  DfMap::getBlockVegetationVector(uint32_t x,uint32_t y,uint32_t z)
+{
+    Block * b = getBlock(x,y,z);
+    if(b)
+        return &b->v_trees;
+    return NULL;
+}
+
+t_tree_desc *DfMap::getTree (uint32_t x, uint32_t y, uint32_t z)
+{
+    for(int i = 0; i< v_trees.size();i++)
+    {
+        if(x == v_trees[i]->x && y == v_trees[i]->y && z == v_trees[i]->z)
+            return v_trees[i];
+    }
+    return 0;
+}
+
+t_building *DfMap::getBuilding (uint32_t x, uint32_t y, uint32_t z)
 {
     for(int i = 0; i< v_buildings.size();i++)
     {
         if(x >= v_buildings[i]->x1 && x <= v_buildings[i]->x2 && y >= v_buildings[i]->y1 && y <= v_buildings[i]->y2 && z == v_buildings[i]->z)
-            return v_buildings[i]->type;
+            return v_buildings[i];
     }
     return 0;
 }
@@ -361,7 +381,7 @@ MatglossPair DfMap::getMaterialPair (uint32_t x, uint32_t y, uint32_t z)
 
 
 // this is what the vein structures say it is
-string DfMap::getMaterialString (uint32_t x, uint32_t y, uint32_t z)
+string DfMap::getGeoMaterialString (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
 
@@ -370,24 +390,26 @@ string DfMap::getMaterialString (uint32_t x, uint32_t y, uint32_t z)
     Block *b = getBlock(x,y,z);
     if(b != NULL)
     {
-        /*// if matgloss loaded
-        if(stone_matgloss.size() != 0)
-        {*/
-        uint16_t type = b->material[x2][y2].type;
-        uint16_t index = b->material[x2][y2].index;
-        if(index != 65535)
+        return getMaterialString(b->material[x2][y2].type, b->material[x2][y2].index);
+    }
+    string fallback = "UNKNOWN";
+    return fallback;
+}
+
+// this is what the vein structures say it is
+string DfMap::getMaterialString (uint32_t type, uint32_t index)
+{
+    if(index != 65535 && type >= 0 && type < NUM_MATGLOSS_TYPES)
+    {
+        if(index < v_matgloss[type].size())
         {
-            if(index < v_matgloss[type].size())
-            {
-                return v_matgloss[type][index];
-            }
-            else
-            {
-                string fallback = "ERROR";
-                return fallback;
-            }
+            return v_matgloss[type][index];
         }
-        //}
+        else
+        {
+            string fallback = "ERROR";
+            return fallback;
+        }
     }
     string fallback = "UNKNOWN";
     return fallback;
@@ -435,7 +457,7 @@ unsigned int DfMap::getBiome (uint32_t x, uint32_t y, uint32_t z)
     }
     return -1;
 }
-
+/*
 // what kind of building is here?
 uint16_t DfMap::getBuilding (uint32_t x, uint32_t y, uint32_t z)
 {
@@ -449,7 +471,7 @@ uint16_t DfMap::getBuilding (uint32_t x, uint32_t y, uint32_t z)
     }
     return -1;
 }
-
+*/
 bool DfMap::isHidden (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);

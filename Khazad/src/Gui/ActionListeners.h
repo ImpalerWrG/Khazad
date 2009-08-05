@@ -55,9 +55,22 @@ class DepthChangeActionListener: public gcn::ActionListener
 
         float NewLevel = Source->getValue() * MAP->getMapSizeZ();
 
-        SCREEN->MainCamera->setViewHight((Sint16) NewLevel);
+        SCREEN->MainCamera->SetSliceA((Sint16) NewLevel);
     }
 };
+
+class DepthChange2ActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        gcn::Slider* Source = (gcn::Slider*) actionEvent.getSource();
+
+        float NewLevel = Source->getValue() * MAP->getMapSizeZ();
+
+        SCREEN->MainCamera->SetSliceB((Sint16) NewLevel);
+    }
+};
+
 
 class CenteringActionListener: public gcn::ActionListener
 {
@@ -137,7 +150,7 @@ class IncreseViewLevelsActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->MainCamera->ChangeViewLevels(1);
+        SCREEN->MainCamera->ChangeViewLevel(1);
     }
 };
 
@@ -145,7 +158,7 @@ class DecreseViewLevelsActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->MainCamera->ChangeViewLevels(-1);
+        SCREEN->MainCamera->ChangeViewLevel(-1);
     }
 };
 
@@ -240,8 +253,8 @@ class MapDumpActionListener: public gcn::ActionListener
         MAP->Load();
 
         SCREEN->MainCamera->CenterView(MAP->getMapCenter());
-        SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ() - 1);
-        SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ());
+        SCREEN->MainCamera->SetSliceA(MAP->getMapSizeZ());
+        SCREEN->MainCamera->SetSliceB(0);
         SCREEN->MainCamera->ConfineCursor();
         UI->setMapViewState();
     }
@@ -263,8 +276,8 @@ class MapLoadActionListener: public gcn::ActionListener
         MAP->Load(Path(CONFIG->LoadPath()));
 
         SCREEN->MainCamera->CenterView(MAP->getMapCenter());
-        SCREEN->MainCamera->setSliceTop(MAP->getMapSizeZ());
-        SCREEN->MainCamera->setViewLevels(MAP->getMapSizeZ() + 1);
+        SCREEN->MainCamera->SetSliceA(MAP->getMapSizeZ());
+        SCREEN->MainCamera->SetSliceB(0);
         SCREEN->MainCamera->ConfineCursor();
 
         UI->setMapViewState();

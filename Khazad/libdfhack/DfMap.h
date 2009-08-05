@@ -72,6 +72,15 @@ struct t_building
     // not complete
 };
 
+struct t_tree_desc
+{
+    int16_t mat_type;
+    int16_t mat_idx;
+    int16_t x;
+    int16_t y;
+    int16_t z;
+};
+
 // in order in which the raw vectors appear in df memory
 enum RawType
 {
@@ -196,6 +205,7 @@ public:
     vector <t_vein> veins;
     MatglossPair material[BLOCK_SIZE][BLOCK_SIZE];
     vector<t_building*> v_buildings;
+    vector<t_tree_desc*> v_trees;
     void collapseVeins();
     /**
     // region offset modifiers... what a hack.
@@ -257,6 +267,7 @@ public:
     vector<string> v_matgloss[NUM_MATGLOSS_TYPES];
     vector<t_construction> v_constructions;
     vector<t_building*> v_buildings;
+    vector<t_tree_desc*> v_trees;
 /*    vector<uint32_t> geodebug[eBiomeCount];
     uint32_t geoblockadresses[eBiomeCount];
     uint32_t regionadresses[eBiomeCount];*/
@@ -275,6 +286,7 @@ public:
 
     Block* getBlock(uint32_t x, uint32_t y, uint32_t z);
     vector<t_building *> * getBlockBuildingsVector(uint32_t x,uint32_t y,uint32_t z);
+    vector<t_tree_desc *> * getBlockVegetationVector(uint32_t x,uint32_t y,uint32_t z);
     Block* allocBlock(uint32_t x, uint32_t y, uint32_t z);
     bool   deallocBlock(uint32_t x, uint32_t y, uint32_t z);
 
@@ -297,7 +309,8 @@ public:
 
     // get tile material
     MatglossPair getMaterialPair (uint32_t x, uint32_t y, uint32_t z);
-    string getMaterialString (uint32_t x, uint32_t y, uint32_t z);
+    string getGeoMaterialString (uint32_t x, uint32_t y, uint32_t z);
+    string getMaterialString (uint32_t type, uint32_t index);
 
     // get coords of region used for materials
     void getGeoRegion (uint32_t x, uint32_t y, uint32_t z, int32_t& geoX, int32_t& geoY);
@@ -315,8 +328,10 @@ public:
     void setRegionCoords (uint32_t x,uint32_t y,uint32_t z);
 
     // what kind of building is here?
-    uint16_t getBuilding (uint32_t x, uint32_t y, uint32_t z);
-    uint32_t getBuildingVtable (uint32_t x, uint32_t y, uint32_t z);
+    //uint16_t getBuilding (uint32_t x, uint32_t y, uint32_t z);
+    t_building *getBuilding (uint32_t x, uint32_t y, uint32_t z);
+    t_tree_desc *getTree (uint32_t x, uint32_t y, uint32_t z);
+
     unsigned int getBiome (uint32_t x, uint32_t y, uint32_t z);
 
     int picktexture(int);

@@ -93,12 +93,12 @@ bool InputManager::HandleInput()
                     }
                     case SDLK_INSERT:
                     {
-                        SCREEN->MainCamera->ChangeViewLevels(1);
+                        SCREEN->MainCamera->ChangeViewLevel(1);
                         break;
                     }
                     case SDLK_DELETE:
                     {
-                        SCREEN->MainCamera->ChangeViewLevels(-1);
+                        SCREEN->MainCamera->ChangeViewLevel(-1);
                         break;
                     }
                     case SDLK_PAGEDOWN:

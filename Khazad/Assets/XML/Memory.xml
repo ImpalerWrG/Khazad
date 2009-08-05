@@ -31,6 +31,7 @@
 		<Address name="map_data">0x015C4D58</Address>
 		<Address name="constructions">0x0156F8B0</Address>
 		<Address name="buildings">0x015838a0</Address>
+		<Address name="vegetation">0x01587A24</Address>
 		<!-- size of the map -->
 		<Address name="x_count">0x015C4D70</Address>
 		<Address name="y_count">0x015C4D74</Address>
@@ -46,7 +47,13 @@
 		<Offset name="designation">0x0264</Offset>
 		<Offset name="occupancy">0x0664</Offset>
 		<Offset name="biome_stuffs">0x1D64</Offset>
-		
+		<!-- tree and shrub offsets -->
+		<Offset name="tree_desc_offset">0x70</Offset>
+		<!--<Offset name="tree_mat_type">0x70</Offset>
+		<Offset name="tree_mat_idx">0x72</Offset>
+		<Offset name="tree_x">0x74</Offset>
+		<Offset name="tree_y">0x76</Offset>
+		<Offset name="tree_z">0x78</Offset>-->
 		<!-- the world and its offsets -->
 		<Address name="world">0x015C6388</Address>
 		<Offset name="world_size_x">0x84</Offset>
@@ -67,18 +74,26 @@
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x4967C2E0</HexValue>
 		<String name="md5">aea5a207b8b1cda942502f97a429f6c3</String>
+		
 		<!-- map data -->
 		<Address name="map_data">0x01531EC0</Address>
 		<Address name="constructions">0x014da5e0</Address>
 		<Address name="buildings">0x014ee978</Address>
+		<Address name="vegetation">0x014F4B4C</Address>
+		<!-- tree and shrub offsets -->
+		<Offset name="tree_desc_offset">0x70</Offset>
+
+		
 		<!-- size of the map -->
 		<Address name="x_count">0x01531EE0</Address>
 		<Address name="y_count">0x01531EE4</Address>
 		<Address name="z_count">0x01531EE8</Address>
+		
 		<!-- position of the map in world coords -->
 		<Address name="region_x">0x01531EF8</Address>
 		<Address name="region_y">0x01531EFC</Address>
 		<Address name="region_z">0x01531F00</Address>
+		
 		<!-- map block offsets -->
 		<Offset name="v_vein">0x10</Offset>
 		<HexValue name="v_vein_size">0x2C</HexValue>
@@ -93,11 +108,14 @@
 		<Offset name="world_size_y">0x86</Offset>
 		<Offset name="w_geoblocks">0x75C</Offset>
 		<Offset name="w_regions_arr">0x79C</Offset>
+		
 		<!-- values for the region structure -->
 		<HexValue name="region_size">0x64</HexValue>
 		<Offset name="region_geo_index_off">0x60</Offset>
+		
 		<!-- geoblock offset(s?) -->
 		<Offset name="geolayer_geoblock_offset">0xC</Offset>
+		
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x01534030</Address>
 		<HexValue name="matgloss_skip">0x18</HexValue>
@@ -171,18 +189,25 @@
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x49C82D3F</HexValue>
 		<String name="md5">6f81231b845e9c9dc29aaf57705ccc7c</String>
+		
 		<!-- map data -->
 		<Address name="map_data">0x0155F248</Address>
 		<Address name="constructions">0x01507968</Address>
 		<Address name="buildings">0x0151BD00</Address>
+		<Address name="vegetation">0x01521ED4</Address>
+		<!-- tree and shrub offsets -->
+		<Offset name="tree_desc_offset">0x70</Offset>
+
 		<!-- size of the map -->
 		<Address name="x_count">0x0155F268</Address>
 		<Address name="y_count">0x0155F26C</Address>
 		<Address name="z_count">0x0155F270</Address>
+		
 		<!-- position of the map in world coords -->
 		<Address name="region_x">0x0155F280</Address>
 		<Address name="region_y">0x0155F284</Address>
 		<Address name="region_z">0x0155F288</Address>
+		
 		<!-- map block offsets -->
 		<Offset name="v_vein">0x10</Offset>
 		<HexValue name="v_vein_size">0x2C</HexValue>
@@ -197,11 +222,14 @@
 		<Offset name="world_size_y">0x86</Offset>
 		<Offset name="w_geoblocks">0x75C</Offset>
 		<Offset name="w_regions_arr">0x79C</Offset>
+		
 		<!-- values for the region structure -->
 		<HexValue name="region_size">0x64</HexValue>
 		<Offset name="region_geo_index_off">0x60</Offset>
+		
 		<!-- geoblock offset(s?) -->
 		<Offset name="geolayer_geoblock_offset">0xC</Offset>
+		
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x015613B8</Address>
 		<HexValue name="matgloss_skip">0x18</HexValue>
@@ -276,18 +304,25 @@
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x4A3CCB7F</HexValue>
 		<String name="md5">6ea1de36af8e1666bd6478736e298c4c</String>
+		
 		<!-- map data -->
 		<Address name="map_data">0x015FACCC</Address>
 		<Address name="constructions">0x015A33B8</Address>
 		<Address name="buildings">0x015B7750</Address>
+		<Address name="vegetation">0x015BD924</Address>
+		<!-- tree and shrub offsets -->
+		<Offset name="tree_desc_offset">0x70</Offset>
+
 		<!-- size of the map -->
 		<Address name="x_count">0x015FACEC</Address>
 		<Address name="y_count">0x015FACF0</Address>
 		<Address name="z_count">0x015FACF4</Address>
+		
 		<!-- position of the map in world coords -->
 		<Address name="region_x">0x015FAD04</Address>
 		<Address name="region_y">0x015FAD08</Address>
 		<Address name="region_z">0x015FAD0C</Address>
+		
 		<!-- map block offsets -->
 		<Offset name="v_vein">0x10</Offset>
 		<HexValue name="v_vein_size">0x2C</HexValue>
@@ -302,11 +337,14 @@
 		<Offset name="world_size_y">0x86</Offset>
 		<Offset name="w_geoblocks">0x75C</Offset>
 		<Offset name="w_regions_arr">0x79C</Offset>
+		
 		<!-- values for the region structure -->
 		<HexValue name="region_size">0x64</HexValue>
 		<Offset name="region_geo_index_off">0x60</Offset>
+		
 		<!-- geoblock offset(s?) -->
 		<Offset name="geolayer_geoblock_offset">0xC</Offset>
+		
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x015FCE3C</Address>
 		<HexValue name="matgloss_skip">0x18</HexValue>
@@ -383,18 +421,25 @@
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x4A51C26E</HexValue>
 		<String name="md5">04a8d8ce311d8ac75e4241bef68d3147</String>
+		
 		<!-- map data -->
 		<Address name="map_data">0x015FFD5C</Address>
 		<Address name="constructions">0x015a8448</Address>
 		<Address name="buildings">0x015bc7e0</Address>
+		<Address name="vegetation">0x015C29B4</Address>
+		<!-- tree and shrub offsets -->
+		<Offset name="tree_desc_offset">0x70</Offset>
+		
 		<!-- size of the map -->
 		<Address name="x_count">0x015FFD7C</Address>
 		<Address name="y_count">0x015FFD80</Address>
 		<Address name="z_count">0x015FFD84</Address>
+		
 		<!-- position of the map in world coords -->
 		<Address name="region_x">0x015FFD94</Address>
 		<Address name="region_y">0x015FFD98</Address>
 		<Address name="region_z">0x015FFD9C</Address>
+		
 		<!-- map block offsets -->
 		<Offset name="v_vein">0x10</Offset>
 		<HexValue name="v_vein_size">0x2C</HexValue>
@@ -487,6 +532,7 @@
     <Entry version="v0.28.181.40d9" os="linux">
 		<!-- identification -->
 		<String name="md5">992afd73855e787860277f53d18afcbb</String>
+		
 		<!-- map data -->
 		<Address name="map_data">0x09372FC0</Address>
 		<Address name="constructions">0x0931ED38</Address>
@@ -496,14 +542,20 @@
 		<!--<Address name="buildings">0x09332B90</Address>-->
 		<!--<Address name="buildings">0x09332C80</Address>-->
 		<!--<Address name="buildings">0x09332EF0</Address>-->
+		<Address name="vegetation">0x09335CB0</Address>
+		<!-- tree and shrub offsets -->
+		<Offset name="tree_desc_offset">0x40</Offset>
+		
 		<!-- size of the map -->
 		<Address name="x_count">0x09372FD4</Address>
 		<Address name="y_count">0x09372FD8</Address>
 		<Address name="z_count">0x09372FDC</Address>
+		
 		<!-- position of the map in world coords -->
 		<Address name="region_x">0x09372FEC</Address>
 		<Address name="region_y">0x09372FF0</Address>
 		<Address name="region_z">0x09372FF4</Address>
+		
 		<!-- map block offsets -->
 		<Offset name="v_vein">0x08</Offset>
 		<HexValue name="v_vein_size">0x2C</HexValue>
@@ -518,11 +570,14 @@
 		<Offset name="world_size_y">0x56</Offset>
 		<Offset name="w_geoblocks">0x5A4</Offset>
 		<Offset name="w_regions_arr">0x5C8</Offset>
+		
 		<!-- values for the region structure -->
 		<HexValue name="region_size">0x58</HexValue>
 		<Offset name="region_geo_index_off">0x54</Offset>
+		
 		<!-- geoblock offset(s?) -->
 		<Offset name="geolayer_geoblock_offset">0x4</Offset>
+		
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x9374E88</Address>
 		<HexValue name="matgloss_skip">0xC</HexValue>
@@ -530,19 +585,27 @@
     <Entry version="v0.28.181.40d11" os="linux">
 		<!-- identification -->
 		<String name="md5">fb8ecac8a12af5d0d7b1707078985d0d</String>
+		
 		<!-- map data -->
 		<Address name="map_data">0x092FF7A0</Address>
 		<Address name="constructions">0x092AB518</Address>
 		<!-- derived from 40d9 -->
 		<Address name="buildings">0x092BF340</Address>
+		<Address name="vegetation">0x092C2490</Address>
+		
+		<!-- tree and shrub offsets -->
+		<Offset name="tree_desc_offset">0x40</Offset>
+		
 		<!-- size of the map -->
 		<Address name="x_count">0x092FF7B4</Address>
 		<Address name="y_count">0x092FF7B8</Address>
 		<Address name="z_count">0x092FF7BC</Address>
+		
 		<!-- position of the map in world coords -->
 		<Address name="region_x">0x092FF7CC</Address>
 		<Address name="region_y">0x092FF7D0</Address>
 		<Address name="region_z">0x092FF7D4</Address>
+		
 		<!-- map block offsets -->
 		<Offset name="v_vein">0x08</Offset>
 		<HexValue name="v_vein_size">0x2C</HexValue>
@@ -557,11 +620,14 @@
 		<Offset name="world_size_y">0x56</Offset>
 		<Offset name="w_geoblocks">0x5A4</Offset>
 		<Offset name="w_regions_arr">0x5C8</Offset>
+		
 		<!-- values for the region structure -->
 		<HexValue name="region_size">0x58</HexValue>
 		<Offset name="region_geo_index_off">0x54</Offset>
+		
 		<!-- geoblock offset(s?) -->
 		<Offset name="geolayer_geoblock_offset">0x4</Offset>
+		
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x09301668</Address>
 		<HexValue name="matgloss_skip">0xC</HexValue>
@@ -569,18 +635,26 @@
     <Entry version="v0.28.181.40d12" os="linux">
 		<!-- identification -->
 		<String name="md5">4367c59934cbcf14f43fd3af6444c455</String>
+		
 		<!-- map data -->
 		<Address name="map_data">0x08F95BBC</Address>
 		<Address name="constructions">0x08F41918</Address>
 		<Address name="buildings">0x08F55740</Address>
+		<Address name="vegetation">0x08F58890</Address>
+		
+		<!-- tree and shrub offsets -->
+		<Offset name="tree_desc_offset">0x40</Offset>
+		
 		<!-- size of the map -->
 		<Address name="x_count">0x08F95BD0</Address>
 		<Address name="y_count">0x08F95BD4</Address>
 		<Address name="z_count">0x08F95BD8</Address>
+		
 		<!-- position of the map in world coords -->
 		<Address name="region_x">0x08F95BE8</Address>
 		<Address name="region_y">0x08F95BEC</Address>
 		<Address name="region_z">0x08F95BF0</Address>
+		
 		<!-- map block offsets -->
 		<Offset name="v_vein">0x08</Offset>
 		<HexValue name="v_vein_size">0x2C</HexValue>
@@ -595,11 +669,14 @@
 		<Offset name="world_size_y">0x56</Offset>
 		<Offset name="w_geoblocks">0x5A4</Offset>
 		<Offset name="w_regions_arr">0x5C8</Offset>
+		
 		<!-- values for the region structure -->
 		<HexValue name="region_size">0x58</HexValue>
 		<Offset name="region_geo_index_off">0x54</Offset>
+		
 		<!-- geoblock offset(s?) -->
 		<Offset name="geolayer_geoblock_offset">0x4</Offset>
+		
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x08F97A84</Address>
 		<HexValue name="matgloss_skip">0xC</HexValue>
@@ -612,7 +689,11 @@
 		<Address name="map_data">0x08F9ABDC</Address>
 		<Address name="constructions">0x08F46938</Address>
 		<Address name="buildings">0x08F5A760</Address>
+		<Address name="vegetation">0x08F5D8B0</Address>
 		
+		<!-- tree and shrub offsets -->
+		<Offset name="tree_desc_offset">0x40</Offset>
+
 		<!-- size of the map -->
 		<Address name="x_count">0x08F9ABF0</Address>
 		<Address name="y_count">0x08F9ABF4</Address>

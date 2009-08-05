@@ -416,7 +416,7 @@ bool ScreenManager::Render()
     {
         for(Uint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
         {
-            Sint16 Start = MainCamera->getSliceTop() - MainCamera->getViewLevels() + 1;
+            Sint16 Start = MainCamera->getSliceBottom();
             Sint16 Stop = MainCamera->getSliceTop();
 
             for(Sint16 Zlevel = Start; Zlevel <= Stop ; Zlevel++)
@@ -620,7 +620,8 @@ void ScreenManager::PrintDebugging()
         int veinMatgloss = 0;
         string matgloss;
         MatglossPair matglossdesc;
-        int building = 0;
+        t_building *building;
+        t_tree_desc *tree;
         uint32_t region_x = 0;
         uint32_t region_y = 0;
         uint32_t region_z = 0;
@@ -635,10 +636,11 @@ void ScreenManager::PrintDebugging()
             Designation = df_map->getDesignations(x, y, z);
             Ocupancy = df_map->getOccupancies(x, y, z);
             BiomeOffset = df_map->getBiome(x, y, z);
-            matgloss = df_map->getMaterialString(x, y, z);
+            matgloss = df_map->getGeoMaterialString(x, y, z);
             matglossdesc = df_map->getMaterialPair(x, y, z);
             Geolayer = df_map->getGeolayerIndex(x, y, z);
-            building = df_map->getBuildingVtable(x, y, z);
+            building = df_map->getBuilding(x, y, z);
+            tree = df_map->getTree(x, y, z);
 //            layerAddress = df_map->getGeolayerAddress(x,y,z);
 //            gblockAddress = df_map->getGeoblockAddress( x,  y,  z);
 //            regionAddress = df_map->getRegionAddress( x,  y,  z);
@@ -686,18 +688,21 @@ void ScreenManager::PrintDebugging()
         string typestr = "unknown";
         switch (matglossdesc.type)
         {
-            case Mat_Wood:
+            case 0:
             typestr = "wood";
             break;
-            case Mat_Stone:
+            case 1:
             typestr = "stone/soil";
             break;
-            case Mat_Metal:
+            case 2:
             typestr = "metal";
             break;
 /*            case Mat_Plant:
             typestr = "plant";
             break;*/
+            case 11:
+            typestr = "silk";
+            break;
             case 13: // green glass
             typestr = "green glass";
             break;
@@ -732,9 +737,73 @@ void ScreenManager::PrintDebugging()
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 */
-        sprintf (buffer, "building: 0x%x", building);
-        SCREEN->RenderText(buffer, 0, WHITE, &position);
-        position.y -= 40;
+        if(building)
+        {
+            typestr = "unknown";
+            switch (building->mat_type)
+            {
+                case 0:
+                typestr = "wood";
+                break;
+                case 1:
+                typestr = "stone/soil";
+                break;
+                case 2:
+                typestr = "metal";
+                break;
+    /*            case Mat_Plant:
+                typestr = "plant";
+                break;*/
+                case 11:
+                typestr = "silk";
+                break;
+                case 13: // green glass
+                typestr = "green glass";
+                break;
+                case 14: // clear glass
+                typestr = "clear glass";
+                break;
+                case 15: // crystal glass
+                typestr = "crystal glass";
+                break;
+                case 17: // crystal glass
+                typestr = "ice";
+                break;
+                case 18:
+                typestr = "charcoal";
+                break;
+                case 19:
+                typestr = "potash";
+                break;
+                case 21:
+                typestr = "pearlash";
+                break;
+                case 24:
+                typestr = "soap";
+                break;
+            }
+            matgloss = df_map->getMaterialString(building->mat_type,building->mat_idx);
+            sprintf (buffer, "building: 0x%x, material: %d:%d = %s:%s ", building->type,building->mat_type, building->mat_idx,typestr.c_str(), matgloss.c_str());
+            SCREEN->RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+        }
+        if (tree)
+        {
+            typestr = "unknown";
+            switch (tree->mat_type)
+            {
+                case 0:
+                typestr = "tree";
+                break;
+                case 3:
+                typestr = "shrub";
+                break;
+            }
+            matgloss = df_map->getMaterialString(tree->mat_type,tree->mat_idx);
+            sprintf (buffer, "plant: %d:%d = %s:%s ",tree->mat_type, tree->mat_idx,typestr.c_str(), matgloss.c_str());
+            SCREEN->RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+        }
 /*
         char binarybuffer[33];
         binarysprintf(binarybuffer, Designation);

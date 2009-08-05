@@ -31,6 +31,7 @@ public:
     void GetConfirmation(const char* Question, gcn::ActionListener* Listener);
     void HideConfirmationWindow();
     void setMapViewState();
+    void setZSliders(float A, float B);
 
     gcn::ActionListener* getExitListener()      { return ExitListener; }
 
@@ -40,6 +41,7 @@ protected:
     void InitCameraControlMenu();
     void InitConfirmationWindow();
     void InitDepthSlider();
+    void InitDepthSlider2();
 
     gcn::Container* TopWidget;
 
@@ -53,6 +55,7 @@ protected:
     gcn::ActionListener* ExitListener;
 
     gcn::Slider* DepthSlider;
+    gcn::Slider* DepthSlider2;
 
     bool done;  // quit program command recived by UI
 };
