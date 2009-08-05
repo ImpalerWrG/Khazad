@@ -195,6 +195,7 @@ public:
     // veins
     vector <t_vein> veins;
     MatglossPair material[BLOCK_SIZE][BLOCK_SIZE];
+    vector<t_building*> v_buildings;
     void collapseVeins();
     /**
     // region offset modifiers... what a hack.
@@ -255,7 +256,7 @@ public:
     vector<uint16_t> v_geology[eBiomeCount];
     vector<string> v_matgloss[NUM_MATGLOSS_TYPES];
     vector<t_construction> v_constructions;
-    vector<t_building> v_buildings;
+    vector<t_building*> v_buildings;
 /*    vector<uint32_t> geodebug[eBiomeCount];
     uint32_t geoblockadresses[eBiomeCount];
     uint32_t regionadresses[eBiomeCount];*/
@@ -273,6 +274,7 @@ public:
     void clear();
 
     Block* getBlock(uint32_t x, uint32_t y, uint32_t z);
+    vector<t_building *> * getBlockBuildingsVector(uint32_t x,uint32_t y,uint32_t z);
     Block* allocBlock(uint32_t x, uint32_t y, uint32_t z);
     bool   deallocBlock(uint32_t x, uint32_t y, uint32_t z);
 
@@ -314,6 +316,7 @@ public:
 
     // what kind of building is here?
     uint16_t getBuilding (uint32_t x, uint32_t y, uint32_t z);
+    uint32_t getBuildingVtable (uint32_t x, uint32_t y, uint32_t z);
     unsigned int getBiome (uint32_t x, uint32_t y, uint32_t z);
 
     int picktexture(int);

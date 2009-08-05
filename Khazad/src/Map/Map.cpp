@@ -13,6 +13,7 @@
 #include <Face.h>
 #include <Cell.h>
 #include <Random.h>
+#include <Building.h>
 
 DECLARE_SINGLETON(Map)
 
@@ -245,7 +246,14 @@ void Map::ReparseExtract()
                             LoadCubeData(NewCell, x, y, z, l, m);
                         }
                     }
-
+                    vector<t_building *> * bldvect = ExtractedMap->getBlockBuildingsVector(x,y,z);
+                    for(int i = 0; i< bldvect->size(); i++)
+                    {
+                        t_building * b = (*bldvect)[i];
+                        Building *bld = new Building(b->x1,b->y1,b->x2,b->y2,b->z,b->mat_type,b->mat_idx,b->type);
+                        ///FIXME: destroy buildings when destroying map
+                        NewCell->addBuilding(bld);
+                    }
                     ColumnMatrix[x][y]->PushCell(NewCell, z);
 			    }
 			}

@@ -7,6 +7,7 @@
 #define CELLEDGESIZE 16
 
 class Cube;
+class Building;
 
 class Cell: public Actor
 {
@@ -46,6 +47,7 @@ public:
     bool isDirtyDrawList()                  { return DirtyDrawlist; }
     void setDirtyDrawList(bool NewValue)    { DirtyDrawlist = NewValue; }
 
+    void addBuilding(Building *);
 protected:
 
 	bool DirtyDrawlist;
@@ -68,6 +70,7 @@ protected:
 	Cube* Cubes[CELLEDGESIZE][CELLEDGESIZE];
 	Face* Facets[CELLEDGESIZE][CELLEDGESIZE][NUM_FACETS];
 
+    vector <Building *> buildings;
 	bool Active;
 };
 

@@ -5,6 +5,7 @@
 #include <Face.h>
 #include <Cube.h>
 #include <Map.h>
+#include <Building.h>
 
 /*
 Cell::Cell()
@@ -157,6 +158,11 @@ void Cell::CreateIndices()
             }
         }
     }
+}
+
+void Cell::addBuilding(Building * b)
+{
+    buildings.push_back(b);
 }
 
 bool Cell::Draw(CameraOrientation Orientation)
@@ -312,6 +318,10 @@ bool Cell::Draw(CameraOrientation Orientation)
                 }
             }
         }
+        for(int i = 0; i < buildings.size();i++)
+        {
+            buildings[i]->Draw(Orientation);
+        }
     }
 
 	return true;
@@ -324,5 +334,5 @@ void Cell::DrawCellCage()
     AdjustedPoint.x -= (CELLEDGESIZE / 2) - 0.5;
     AdjustedPoint.y -= (CELLEDGESIZE / 2) - 0.5;
 
-    SCREEN->DrawCage(AdjustedPoint, CELLEDGESIZE, CELLEDGESIZE, 1.0, true);
+    SCREEN->DrawCage(AdjustedPoint, CELLEDGESIZE, CELLEDGESIZE, 1.0, true,1,1,1);
 }

@@ -88,6 +88,7 @@
 		<ExtraCommands>
 			<Add before="#rm ../../../Khazad" />
 		</ExtraCommands>
+		<Unit filename="../../../Assets/XML/Memory.xml" />
 		<Unit filename="../../../TinyXML/tinystr.cpp" />
 		<Unit filename="../../../TinyXML/tinystr.h" />
 		<Unit filename="../../../TinyXML/tinyxml.cpp" />
@@ -160,6 +161,8 @@
 		<Unit filename="../../../src/Gui/Gui.h" />
 		<Unit filename="../../../src/Gui/InputManager.cpp" />
 		<Unit filename="../../../src/Gui/InputManager.h" />
+		<Unit filename="../../../src/Map/Building.cpp" />
+		<Unit filename="../../../src/Map/Building.h" />
 		<Unit filename="../../../src/Map/Cell.cpp" />
 		<Unit filename="../../../src/Map/Cell.h" />
 		<Unit filename="../../../src/Map/Column.cpp" />

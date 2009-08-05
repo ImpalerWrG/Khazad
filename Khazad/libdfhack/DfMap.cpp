@@ -128,6 +128,22 @@ Block * DfMap::getBlock (uint32_t x,uint32_t y,uint32_t z)
     return NULL;
 }
 
+vector<t_building *> * DfMap::getBlockBuildingsVector(uint32_t x,uint32_t y,uint32_t z)
+{
+    Block * b = getBlock(x,y,z);
+    return &b->v_buildings;
+}
+
+uint32_t DfMap::getBuildingVtable (uint32_t x, uint32_t y, uint32_t z)
+{
+    for(int i = 0; i< v_buildings.size();i++)
+    {
+        if(x >= v_buildings[i]->x1 && x <= v_buildings[i]->x2 && y >= v_buildings[i]->y1 && y <= v_buildings[i]->y2 && z == v_buildings[i]->z)
+            return v_buildings[i]->type;
+    }
+    return 0;
+}
+
 Block * DfMap::allocBlock (uint32_t x,uint32_t y,uint32_t z)
 {
     if(isValid())

@@ -96,7 +96,7 @@ bool ScreenManager::Init()
 	glEnable(GL_LINE_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
 
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
 
     glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
@@ -382,7 +382,7 @@ bool ScreenManager::Render()
     {
         Vector3 Point(0, 0, 0);
         Point.z = MainCamera->LookZ() - (MainCamera->LookZ() * MainCamera->getLevelSeperation());
-        DrawCage(Point, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ() * MainCamera->getLevelSeperation(), false);
+        DrawCage(Point, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ() * MainCamera->getLevelSeperation(), false,0,1,0);
 
         Vector3 Cursor = MainCamera->getCursor();
         Cursor.z = MainCamera->ZlevelSeperationAdjustment(Cursor.z);
@@ -390,11 +390,11 @@ bool ScreenManager::Render()
         Cube* CursorCube = MAP->getCube(Cursor.x, Cursor.y, Cursor.z);
         if(CursorCube != NULL && (CursorCube->isSolid() || CursorCube->getLiquid()))
         {
-            DrawCage(Cursor, 1, 1, 1, true);
+            DrawCage(Cursor, 1, 1, 1, true,1,1,1);
         }
         else
         {
-            DrawCage(Cursor, 1, 1, 1, false);
+            DrawCage(Cursor, 1, 1, 1, false,1,1,1);
         }
     }
 
@@ -638,7 +638,7 @@ void ScreenManager::PrintDebugging()
             matgloss = df_map->getMaterialString(x, y, z);
             matglossdesc = df_map->getMaterialPair(x, y, z);
             Geolayer = df_map->getGeolayerIndex(x, y, z);
-            building = df_map->getBuilding(x, y, z);
+            building = df_map->getBuildingVtable(x, y, z);
 //            layerAddress = df_map->getGeolayerAddress(x,y,z);
 //            gblockAddress = df_map->getGeoblockAddress( x,  y,  z);
 //            regionAddress = df_map->getRegionAddress( x,  y,  z);
@@ -732,7 +732,7 @@ void ScreenManager::PrintDebugging()
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 */
-        sprintf (buffer, "building: %i", building);
+        sprintf (buffer, "building: 0x%x", building);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 /*
@@ -886,6 +886,11 @@ void ScreenManager::DrawPlane(Plane ArgumentPlane, float Length)
 
 void ScreenManager::DrawCage(Vector3 RawPoint, float x, float y, float z, bool Inflated)
 {
+    DrawCage(RawPoint, x, y, z, Inflated, 1,1,1);
+}
+
+void ScreenManager::DrawCage(Vector3 RawPoint, float x, float y, float z, bool Inflated, float red, float green, float blue)
+{
     Vector3 Point = RawPoint;
     float X, Y, Z;
 
@@ -909,55 +914,55 @@ void ScreenManager::DrawCage(Vector3 RawPoint, float x, float y, float z, bool I
         Point.y -= 0.48;
         Point.z -= 0.48;
     }
-
     glBegin(GL_LINES);
-        glColor3f (1.0, 1.0, 1.0);
+        glColor3f (red, green, blue);
+//        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y, Point.z);
 		glVertex3f(Point.x + X, Point.y, Point.z);
 
-        glColor3f (1.0, 1.0, 1.0);
+//        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y, Point.z);
 		glVertex3f(Point.x, Point.y + Y, Point.z);
 
-        glColor3f (1.0, 1.0, 1.0);
+//        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x + X, Point.y, Point.z);
 		glVertex3f(Point.x + X, Point.y + Y, Point.z);
 
-        glColor3f (1.0, 1.0, 1.0);
+//        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y + Y, Point.z);
 		glVertex3f(Point.x + X, Point.y + Y, Point.z);
 
 
-        glColor3f (1.0, 1.0, 1.0);
+//        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y, Point.z);
 		glVertex3f(Point.x, Point.y, Point.z + Z);
 
-        glColor3f (1.0, 1.0, 1.0);
+//        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x + X, Point.y, Point.z);
 		glVertex3f(Point.x + X, Point.y, Point.z + Z);
 
-        glColor3f (1.0, 1.0, 1.0);
+//        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y + Y, Point.z);
 		glVertex3f(Point.x, Point.y + Y, Point.z + Z);
 
-        glColor3f (1.0, 1.0, 1.0);
+//        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x + X, Point.y + Y, Point.z);
 		glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
 
 
-        glColor3f (1.0, 1.0, 1.0);
+//        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y, Point.z + Z);
 		glVertex3f(Point.x + X, Point.y, Point.z + Z);
 
-        glColor3f (1.0, 1.0, 1.0);
+//        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y, Point.z + Z);
 		glVertex3f(Point.x, Point.y + Y, Point.z + Z);
 
-        glColor3f (1.0, 1.0, 1.0);
+//        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x + X, Point.y, Point.z + Z);
 		glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
 
-        glColor3f (1.0, 1.0, 1.0);
+//        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y + Y, Point.z + Z);
 		glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
 	glEnd();
@@ -965,24 +970,26 @@ void ScreenManager::DrawCage(Vector3 RawPoint, float x, float y, float z, bool I
 
 void ScreenManager::DrawStreamers(Vector3 Point, float x, float y, float z, float Length)
 {
+    DrawStreamers(Point,x,y,z,Length,1,1,1);
+}
+
+void ScreenManager::DrawStreamers(Vector3 Point, float x, float y, float z, float Length, float red, float green, float blue)
+{
     glEnable(GL_LINE_STIPPLE);  // Enable line stipple to use a dotted pattern for the lines
 	glLineStipple(1, 0x0101);   // Dotted stipple pattern for the lines
 
     glBegin(GL_LINES);
 
-        glColor3f (1.0, 1.0, 1.0);
+        glColor3f (red, green, blue);
 		glVertex3f(Point.x + x, Point.y, Point.z);
 		glVertex3f(Point.x + x, Point.y, Point.z - Length);
 
-        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y + y, Point.z);
 		glVertex3f(Point.x, Point.y + y, Point.z - Length);
 
-        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x + x, Point.y + y, Point.z);
 		glVertex3f(Point.x + x, Point.y + y, Point.z - Length);
 
-        glColor3f (1.0, 1.0, 1.0);
 		glVertex3f(Point.x, Point.y, Point.z);
 		glVertex3f(Point.x, Point.y, Point.z - Length);
 

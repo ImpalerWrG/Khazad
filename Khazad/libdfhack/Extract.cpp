@@ -306,23 +306,27 @@ bool Extractor::dumpMemory( string path_to_xml)
         for (uint32_t i = 0; i< p_bld.getSize();i++)
         {
             uint32_t temp;
-            t_building bld;
+            t_building * bld = new t_building;;
             t_building_df40d bld_40d;
             // read pointer from vector at position
             p_bld.read((uint32_t)i,(uint8_t *)&temp);
             //read construction from memory
             Mread(temp, sizeof(t_building_df40d), (uint8_t *)&bld_40d);
             // transform
-            bld.type = 0; ///FIXME: this is a placeholder.
-            bld.x1 = bld_40d.x1;
-            bld.x2 = bld_40d.x2;
-            bld.y1 = bld_40d.y1;
-            bld.y2 = bld_40d.y2;
-            bld.z = bld_40d.z;
-            bld.mat_type = bld_40d.mat_type;
-            bld.mat_idx = bld_40d.mat_idx;
+            bld->type = bld_40d.vtable; ///FIXME: this is a placeholder.
+            bld->x1 = bld_40d.x1;
+            bld->x2 = bld_40d.x2;
+            bld->y1 = bld_40d.y1;
+            bld->y2 = bld_40d.y2;
+            bld->z = bld_40d.z;
+            bld->mat_type = bld_40d.mat_type;
+            bld->mat_idx = bld_40d.mat_idx;
             // store for save/load. will need more processing.
             df_map->v_buildings.push_back(bld);
+            ///FIXME: delete created building structs
+            // save buildings in a block for later display
+            Block * b = df_map->getBlock(bld->x1/16,bld->y1/16,bld->z);
+            b->v_buildings.push_back(bld);
         }
     }
     printf("Blocks read into memory: %d\n", blocks_read);
