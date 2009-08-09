@@ -2,7 +2,7 @@
 <DFExtractor>
   <MemoryDescriptors>
     <!-- Old Windows DF versions -->
-    <Entry version="v0.27.176.38a" os="windows">
+    <!--<Entry version="v0.27.176.38a" os="windows">
 		<HexValue name="pe_timestamp">0x47B6FAC2</HexValue>
 		<Address name="map_data">0x014A4EAC</Address>
 		<Address name="x_count">0x014A4EC4</Address>
@@ -21,7 +21,7 @@
 		<Offset name="type">0x0062</Offset>
 		<Offset name="designation">0x0264</Offset>
 		<Offset name="occupancy">0x0664</Offset>
-    </Entry>
+    </Entry>-->
     <!-- Current Windows stable version -->
     <Entry version="v0.28.181.40d" os="windows">
 		<!-- identification -->
@@ -68,6 +68,87 @@
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x015C6D70</Address>
 		<HexValue name="matgloss_skip">0x10</HexValue>
+		<VTable>
+			<class vtable="0x00979fe4" name="stockpile" />
+			<class vtable="0x00979d34" name="zone" />
+			<!-- BUILDINGS -->
+			<class vtable="0x0097e3cc" name="wagon"/>
+			<class vtable="0x0097b3ac" name="armor_stand"/>
+			<class vtable="0x0097d1ec" name="bed"/>
+			<class vtable="0x0097d4ac" name="seat"/>
+			<class vtable="0x0097d76c" name="burial_receptacle"/>
+			<class vtable="0x0097b50c" name="door"/>
+			<class vtable="0x0097b92c" name="floodgate"/>
+			<class vtable="0x0097b66c" name="floor_hatch"/>
+			<class vtable="0x0097ba8c" name="wall_grate"/>
+			<class vtable="0x0097bbec" name="floor_grate"/>
+			<class vtable="0x0097bd4c" name="vertical_bars"/>
+			<class vtable="0x0097beac" name="floor_bars"/>
+			<class vtable="0x0097b0ec" name="cabinet"/>
+			<class vtable="0x0097af8c" name="container"/>
+			<multiclass vtable="0x0097e10c" name="workshop" typeoffset="0xC8">
+				<class name="alchemists_laboratory" type="0x0"/>
+				<class name="carpenters_workshop"   type="0x1"/>
+				<class name="farmers_workshop"      type="0x2"/>
+				<class name="masons_workshop"       type="0x3"/>
+				<class name="craftdwarfs_workshop"  type="0x4"/>
+				<class name="jewelers_workshop"     type="0x5"/>
+				<class name="metalsmiths_workshop"  type="0x6"/>
+				<class name="magma_forge"           type="0x7"/>
+				<class name="bowyers_workshop"      type="0x8"/>
+				<class name="mechanics_workshop"    type="0x9"/>
+				<class name="siege_workshop"        type="0xA"/>
+				<class name="butchers_shop"         type="0xB"/>
+				<class name="leather_works"         type="0xC"/>
+				<class name="tanners_shop"          type="0xD"/>
+				<class name="clothiers_shop"        type="0xE"/>
+				<class name="fishery"               type="0xF"/>
+				<class name="still"                 type="0x10"/>
+				<class name="loom"                  type="0x11"/>
+				<class name="quern"                 type="0x12"/>
+				<class name="kennels"               type="0x13"/>
+				<class name="kitchen"               type="0x14"/>
+				<class name="ashery"                type="0x15"/>
+				<class name="dyers_shop"            type="0x16"/>
+				<class name="millstone"             type="0x17"/>
+			</multiclass>
+			<class vtable="0x0097dcec" name="farm_plot"/>
+			<class vtable="0x0097b24c" name="weapon_rack"/>
+			<class vtable="0x0097d8cc" name="statue"/>
+			<class vtable="0x0097d34c" name="table"/>
+			<class vtable="0x0097e68c" name="paved_road"/>
+			<class vtable="0x0097b7cc" name="bridge"/>
+			<class vtable="0x00979e84" name="well"/>
+			<multiclass vtable="0x0097d08c" name="siege engine" typeoffset="0xC8">
+				<class name="catapult"              type="0x0"/>
+				<class name="ballista"              type="0x1"/>
+			</multiclass>
+			<multiclass vtable="0x0097dfac" name="furnace" typeoffset="0xDA">
+				<class name="wood_furnace"          type="0x0"/>
+				<class name="smelter"               type="0x1"/>
+				<class name="glass_furnace"         type="0x2"/>
+				<class name="kiln"                  type="0x3"/>
+				<class name="magma_smelter"         type="0x4"/>
+				<class name="magma_glass_furnace"   type="0x5"/>
+				<class name="magma_kiln"            type="0x6"/>
+			</multiclass>
+			<class vtable="0x0097db8c" name="glass_window"/>
+			<class vtable="0x0097da2c" name="gem_window"/>
+			<class vtable="0x0097e26c" name="trade_depot"/>
+			<multiclass vtable="0x0097c00c" name="mechanism" typeoffset="0xC8">
+				<class name="lever"                 type="0x0"/>
+			</multiclass>
+			<class vtable="0x0097c9ac" name="screw_pump"/>
+			<class vtable="0x0097cb0c" name="water_wheel"/>
+			<class vtable="0x0097cc6c" name="windmill"/>
+			<class vtable="0x0097c16c" name="gear_assembly"/>
+			<class vtable="0x0097c2cc" name="horizontal_axle"/>
+			<class vtable="0x0097c42c" name="vertical_axle"/>
+			<class vtable="0x0097c58c" name="support"/>
+			<class vtable="0x0097cf2c" name="cage"/>
+			<class vtable="0x0097c84c" name="archery_target"/>
+			<class vtable="0x0097cdcc" name="restraint"/>
+		</VTable>
     </Entry>
     <!-- Windows 40d## sub-versions -->
     <Entry version="v0.28.181.40d9" os="windows">
@@ -119,7 +200,7 @@
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x01534030</Address>
 		<HexValue name="matgloss_skip">0x18</HexValue>
-		<VTable name="building_vtable">
+		<!--<VTable name="building_vtable">
 			<Class name="armor_stand">0x008ea084</Class>
 			<Class name="bed">0x008ea1e4</Class>
 			<Class name="seat">0x008ea604</Class>
@@ -183,7 +264,7 @@
 			<Class name="cage">0x008ebd64</Class>
 			<Class name="archery_target">0x008ecde4</Class>
 			<Class name="restraint">0x008ecf44</Class>
-		</VTable>
+		</VTable>-->
     </Entry>
     <Entry version="v0.28.181.40d11" os="windows">
 		<!-- identification -->
@@ -233,7 +314,7 @@
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x015613B8</Address>
 		<HexValue name="matgloss_skip">0x18</HexValue>
-		<VTable name="building_vtable">
+		<!--<VTable name="building_vtable">
 			<Class name="wagon">0x008ec0a4</Class>
 			<Class name="armor_stand">0x008e9084</Class>
 			<Class name="bed">0x008e91e4</Class>
@@ -298,7 +379,7 @@
 			<Class name="cage">0x008ead64</Class>
 			<Class name="archery_target">0x008ebde4</Class>
 			<Class name="restraint">0x008ebf44</Class>
-		</VTable>
+		</VTable>-->
     </Entry>
     <Entry version="v0.28.181.40d12" os="windows">
 		<!-- identification -->
@@ -348,74 +429,6 @@
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x015FCE3C</Address>
 		<HexValue name="matgloss_skip">0x18</HexValue>
-		<VTable name="building_vtable">
-			<Class name="wagon">0x008de4a4</Class>
-			<!--
-			<Class name="armor_stand">0x008e9084</Class>
-			<Class name="bed">0x008e91e4</Class>
-			<Class name="seat">0x008e9604</Class>
-			<Class name="burial_receptacle">0x008e9344</Class>
-			<Class name="door">0x008e98c4</Class>
-			<Class name="floodgate">0x008e9a24</Class>
-			<Class name="floor_hatch">0x008e9b84</Class>
-			<Class name="wall_grate">0x008eaec4</Class>
-			<Class name="floor_grate">0x008e8dc4</Class>
-			<Class name="verical_bars">0x008e8c64</Class>
-			<Class name="floor_bars">0x008ebde4</Class>
-			<Class name="cabinet">0x008eb9c4</Class>
-			<Class name="container">0x008e8f24</Class>
-			<Class name="kennels">0x008eb5a4</Class>
-			<Class name="farm_plot">0x008eb184</Class>
-			<Class name="weapon_rack">0x008eb444</Class>
-			<Class name="statue">0x008ec364</Class>
-			<Class name="table">0x008e94a4</Class>
-			<Class name="paved_road">0x008e9764</Class>
-			<Class name="dirt_road">0x008eb024</Class>
-			<Class name="bridge">0x008ebde4</Class>
-			<Class name="well">0x008ebde4</Class>
-			<Class name="ballista">0x008ebde4</Class>
-			<Class name="catapult">0x008ebde4</Class>
-			<Class name="leather_works">0x008ebde4</Class>
-			<Class name="millstone">0x008ebde4</Class>
-			<Class name="loom">0x008ebde4</Class>
-			<Class name="clothiers_shop">0x008ebde4</Class>
-			<Class name="bowyers_workshop">0x008ebde4</Class>
-			<Class name="carpenters_workshop">0x008ebde4</Class>
-			<Class name="metalsmiths_workshop">0x008ebde4</Class>
-			<Class name="jewelers_workshop">0x008ebde4</Class>
-			<Class name="masons_workshop">0x008ebde4</Class>
-			<Class name="butchers_shop">0x008ebde4</Class>
-			<Class name="tanners_shop">0x008ebde4</Class>
-			<Class name="craftdwarfs_workshop">0x008ebde4</Class>
-			<Class name="siege_workshop">0x008ebde4</Class>
-			<Class name="mechanics_workshop">0x008ebde4</Class>
-			<Class name="still">0x008ebde4</Class>
-			<Class name="farmers_workshop">0x008ebde4</Class>
-			<Class name="kitchen">0x008ebde4</Class>
-			<Class name="fishery">0x008ebc84</Class>
-			<Class name="alchemists_laboratory">0x008ebc84</Class>
-			<Class name="ashery">0x008ebc84</Class>
-			<Class name="dyers_shop">0x008e9e44</Class>
-			<Class name="wood_furnace">0x008e9fa4</Class>
-			<Class name="smelter">0x008ea104</Class>
-			<Class name="glass_furnace">0x008ea264</Class>
-			<Class name="kiln">0x008eac04</Class>
-			<Class name="glass_window">0x008ea524</Class>
-			<Class name="gem_window">0x008eaaa4</Class>
-			<Class name="trade_depot">0x008ebc84</Class>
-			<Class name="lever">0x008ea684</Class>
-			<Class name="screw_pump">0x008ea7e4</Class>
-			<Class name="water_wheel">0x008ea944</Class>
-			<Class name="windmill">0x008e9ce4</Class>
-			<Class name="gear_assembly">0x008eb864</Class>
-			<Class name="horizontal_axle">0x008eb704</Class>
-			<Class name="vertical_axle">0x008e7b5c</Class>
-			<Class name="support">0x008ead64</Class>
-			<Class name="cage">0x008ead64</Class>
-			<Class name="archery_target">0x008ebde4</Class>
-			<Class name="restraint">0x008ebf44</Class>
-			-->
-		</VTable>
     </Entry>
     <Entry version="v0.28.181.40d13" os="windows">
 		<!-- identification -->
@@ -462,71 +475,6 @@
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x01601ECC</Address>
 		<HexValue name="matgloss_skip">0x18</HexValue>
-		<VTable name="building_vtable">
-			<Class name="armor_stand">0x008df48c</Class>
-			<Class name="bed">0x008df5ec</Class>
-			<Class name="seat">0x008dfa0c</Class>
-			<Class name="burial_receptacle">0x008df74c</Class>
-			<Class name="door">0x008dfccc</Class>
-			<Class name="floodgate">0x008dfe2c</Class>
-			<Class name="floor_hatch">0x008dff8c</Class>
-			<Class name="wall_grate">0x008e12cc</Class>
-			<Class name="floor_grate">0x008df1cc</Class>
-			<Class name="verical_bars">0x008df06c</Class>
-			<Class name="floor_bars">0x008e21ec</Class>
-			<Class name="cabinet">0x008e1dcc</Class>
-			<Class name="container">0x008df32c</Class>
-			<Class name="kennels">0x008e19ac</Class>
-			<Class name="farm_plot">0x008e158c</Class>
-			<Class name="weapon_rack">0x008e184c</Class>
-			<Class name="statue">0x008e276c</Class>
-			<Class name="table">0x008df8ac</Class>
-			<Class name="paved_road">0x008dfb6c</Class>
-			<Class name="dirt_road">0x008e142c</Class>
-			<Class name="bridge">0x008e21ec</Class>
-			<Class name="well">0x008e21ec</Class>
-			<Class name="ballista">0x008e21ec</Class>
-			<Class name="catapult">0x008e21ec</Class>
-			<Class name="leather_works">0x008e21ec</Class>
-			<Class name="millstone">0x008e21ec</Class>
-			<Class name="loom">0x008e21ec</Class>
-			<Class name="clothiers_shop">0x008e21ec</Class>
-			<Class name="bowyers_workshop">0x008e21ec</Class>
-			<Class name="carpenters_workshop">0x008e21ec</Class>
-			<Class name="metalsmiths_workshop">0x008e21ec</Class>
-			<Class name="jewelers_workshop">0x008e21ec</Class>
-			<Class name="masons_workshop">0x008e21ec</Class>
-			<Class name="butchers_shop">0x008e21ec</Class>
-			<Class name="tanners_shop">0x008e21ec</Class>
-			<Class name="craftdwarfs_workshop">0x008e21ec</Class>
-			<Class name="siege_workshop">0x008e21ec</Class>
-			<Class name="mechanics_workshop">0x008e21ec</Class>
-			<Class name="still">0x008e21ec</Class>
-			<Class name="farmers_workshop">0x008e21ec</Class>
-			<Class name="kitchen">0x008e21ec</Class>
-			<Class name="fishery">0x008e208c</Class>
-			<Class name="alchemists_laboratory">0x008e208c</Class>
-			<Class name="ashery">0x008e208c</Class>
-			<Class name="dyers_shop">0x008e024c</Class>
-			<Class name="wood_furnace">0x008e03ac</Class>
-			<Class name="smelter">0x008e050c</Class>
-			<Class name="glass_furnace">0x008e066c</Class>
-			<Class name="kiln">0x008e100c</Class>
-			<Class name="glass_window">0x008e092c</Class>
-			<Class name="gem_window">0x008e0eac</Class>
-			<Class name="trade_depot">0x008e208c</Class>
-			<Class name="lever">0x008e0a8c</Class>
-			<Class name="screw_pump">0x008e0bec</Class>
-			<Class name="water_wheel">0x008e0d4c</Class>
-			<Class name="windmill">0x008e00ec</Class>
-			<Class name="gear_assembly">0x008e1c6c</Class>
-			<Class name="horizontal_axle">0x008e1b0c</Class>
-			<Class name="vertical_axle">0x008ddf64</Class>
-			<Class name="support">0x008e116c</Class>
-			<Class name="cage">0x008e116c</Class>
-			<Class name="archery_target">0x008e21ec</Class>
-			<Class name="restraint">0x008e234c</Class>
-		</VTable>
     </Entry>
     <!-- Linux 40d## versions -->
     <Entry version="v0.28.181.40d9" os="linux">
@@ -589,7 +537,6 @@
 		<!-- map data -->
 		<Address name="map_data">0x092FF7A0</Address>
 		<Address name="constructions">0x092AB518</Address>
-		<!-- derived from 40d9 -->
 		<Address name="buildings">0x092BF340</Address>
 		<Address name="vegetation">0x092C2490</Address>
 		

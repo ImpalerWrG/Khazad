@@ -260,7 +260,7 @@ void Map::ReparseExtract()
                     {
                         t_tree_desc* t = (*treevect)[i];
                         Tree *tree = new Tree(t->mat_type,t->mat_idx,t->x,t->y,t->z);
-                        ///FIXME: destroy buildings when destroying map
+                        ///FIXME: destroy trees when destroying map
                         NewCell->addTree(tree);
                     }
 

@@ -62,6 +62,7 @@ struct t_building_df40d
 struct t_building
 {
     uint32_t type;
+    string name;
     uint32_t x1;
     uint32_t y1;
     uint32_t x2;

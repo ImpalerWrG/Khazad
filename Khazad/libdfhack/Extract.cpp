@@ -315,7 +315,11 @@ bool Extractor::dumpMemory( string path_to_xml)
             //read construction from memory
             Mread(temp, sizeof(t_building_df40d), (uint8_t *)&bld_40d);
             // transform
-            bld->type = bld_40d.vtable; ///FIXME: this is a placeholder.
+            uint32_t type = bld_40d.vtable;
+            string classname = "unknown";
+            offset_descriptor->resolveClassId(temp,classname, type);
+            bld->type = type;
+            bld->name = classname;
             bld->x1 = bld_40d.x1;
             bld->x2 = bld_40d.x2;
             bld->y1 = bld_40d.y1;

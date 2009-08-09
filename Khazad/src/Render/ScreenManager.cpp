@@ -783,7 +783,7 @@ void ScreenManager::PrintDebugging()
                 break;
             }
             matgloss = df_map->getMaterialString(building->mat_type,building->mat_idx);
-            sprintf (buffer, "building: 0x%x, material: %d:%d = %s:%s ", building->type,building->mat_type, building->mat_idx,typestr.c_str(), matgloss.c_str());
+            sprintf (buffer, "building: 0x%x:%s, material: %d:%d = %s:%s ", building->type, building->name.c_str(),building->mat_type, building->mat_idx,typestr.c_str(), matgloss.c_str());
             SCREEN->RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
         }

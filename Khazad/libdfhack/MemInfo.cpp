@@ -1,10 +1,11 @@
 #include "DFCommon.h"
 #include "MemInfo.h"
 #include <stdlib.h>
-
+#include <iostream>
 memory_info::memory_info()
 {
     base = 0;
+    classindex = 0;
 }
 
 void memory_info::setVersion(const char * v)
@@ -64,6 +65,9 @@ memory_info::memory_info(const memory_info &old)
     hexvals = old.hexvals;
     strings = old.strings;
     base = old.base;
+    classes = old.classes;
+    classsubtypes = old.classsubtypes;
+    classindex = old.classindex;
 }
 
 uint32_t memory_info::getBase ()
@@ -97,6 +101,115 @@ void memory_info::setHexValue (string key, string value)
 void memory_info::setString (string key, string value)
 {
     strings[key] = value;
+}
+
+/// FIXME: next three methods should use some kind of custom container so it doesn't have to search so much.
+void memory_info::setClass (string name, string vtable)
+{
+    for (int i=0; i<classes.size(); i++)
+    {
+        if(classes[i].classname == name)
+        {
+            classes[i].vtable = strtol(vtable.c_str(), NULL, 16);
+            return;
+        }
+    }
+    t_class cls;
+    cls.assign = classindex;
+    cls.classname = name;
+    cls.is_multiclass = false;
+    cls.type_offset = 0;
+    classindex++;
+    cls.vtable = strtol(vtable.c_str(), NULL, 16);
+    classes.push_back(cls);
+    cout << "class " << name << ", assign " << cls.assign << ", vtable  " << cls.vtable << endl;
+}
+uint32_t memory_info::setMultiClass (string name, string vtable, string typeoffset)
+{
+    for (int i=0; i<classes.size(); i++)
+    {
+        if(classes[i].classname == name)
+        {
+            classes[i].vtable = strtol(vtable.c_str(), NULL, 16);
+            classes[i].type_offset = strtol(vtable.c_str(), NULL, 16);
+            return classes[i].multi_index;
+        }
+    }
+    t_class cls;
+    cls.assign = classindex;
+    cls.classname = name;
+    cls.is_multiclass = true;
+    cls.type_offset = strtol(typeoffset.c_str(), NULL, 16);
+    cls.vtable = strtol(vtable.c_str(), NULL, 16);
+    cls.multi_index = classsubtypes.size();
+    classes.push_back(cls);
+    classindex++;
+
+    vector<t_type> thistypes;
+    classsubtypes.push_back(thistypes);
+    cout << "multiclass " << name << ", assign " << cls.assign << ", vtable  " << cls.vtable << endl;
+    return classsubtypes.size() - 1;
+    /// find old entry by name, rewrite, return its multi index. otherwise make a new one, append an empty vector of t_type to classtypes,  return its index.
+}
+void memory_info::setMultiClassChild (uint32_t multi_index, string name, string type)
+{
+    vector <t_type>& vec = classsubtypes[multi_index];
+    for (int i=0; i<vec.size(); i++)
+    {
+        if(vec[i].classname == name)
+        {
+            vec[i].type = strtol(type.c_str(), NULL, 16);
+            return;
+        }
+    }
+    // new multiclass child
+    t_type mcc;
+    mcc.assign = classindex;
+    classindex++;
+    mcc.classname = name;
+    mcc.type = strtol(type.c_str(), NULL, 16);
+    vec.push_back(mcc);
+    cout << "    classtype " << name << ", assign " << mcc.assign << ", vtable  " << mcc.type << endl;
+}
+
+bool memory_info::resolveClassId(uint32_t address, string & classname, uint32_t & classid)
+{
+    uint32_t vtable = MreadDWord(address);
+    /// FIXME: stupid search. we need a better container
+    for(int i = 0;i< classes.size();i++)
+    {
+        if(classes[i].vtable == vtable) // gotcha
+        {
+            if(classes[i].is_multiclass)
+            {
+                vector <t_type>& vec = classsubtypes[classes[i].multi_index];
+                uint32_t type = MreadWord(address + classes[i].type_offset);
+                // return typed building if successful
+                for (int k = 0; k < vec.size();k++)
+                {
+                    if(vec[k].type == type)
+                    {
+                        classname = vec[k].classname;
+                        classid = vec[k].assign;
+                        return true;
+                    }
+                }
+                // otherwise return the parent multiclass
+                classname = classes[i].classname;
+                classid = classes[i].assign;
+                return true;
+            }
+            else
+            {
+                // ordinary class
+                classname = classes[i].classname;
+                classid = classes[i].assign;
+                return true;
+            }
+        }
+    }
+    // we failed
+    return false;
 }
 
 // change base of all addresses

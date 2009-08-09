@@ -261,6 +261,9 @@ bool ProcessManager::loadDescriptors(string path_to_xml)
 
             TiXmlElement* pMemInfo=hRoot.FirstChild( "MemoryDescriptors" ).FirstChild( "Entry" ).Element();
             TiXmlElement* pMemEntry;
+            TiXmlElement* pClassEntry;
+            TiXmlElement* pClassSubEntry;
+            ///TODO: add possibility of stacking definitions
             for( ; pMemInfo; pMemInfo=pMemInfo->NextSiblingElement("Entry"))
             {
                 mem.flush();
@@ -309,35 +312,77 @@ bool ProcessManager::loadDescriptors(string path_to_xml)
                         const char *cstr_name = pMemEntry->Attribute("name");
                         const char *cstr_value = pMemEntry->GetText();
                         // check for missing parts
-                        if(! (cstr_type && cstr_name && cstr_value))
+                        string type, name, value;
+                        type = cstr_type;
+                        if(type != "VTable")
                         {
-                            cerr << "underspecified MemInfo entry" << endl;
-                            continue;
+                            if( !(cstr_name && cstr_value))
+                            {
+                                cerr << "underspecified MemInfo entry" << endl;
+                                continue;
+                            }
+                            name = cstr_name;
+                            value = cstr_value;
+                            if (type == "HexValue")
+                            {
+                                mem.setHexValue(name, value);
+                            }
+                            else if (type == "Address")
+                            {
+                                mem.setAddress(name, value);
+                            }
+                            else if (type == "Offset")
+                            {
+                                mem.setOffset(name, value);
+                            }
+                            else if (type == "String")
+                            {
+                                mem.setString(name, value);
+                            }
+                            else
+                            {
+                                cerr << "Unknown MemInfo type: " << type << endl;
+                            }
                         }
-                        string type = cstr_type;
-                        string name = cstr_name;
-                        string value = cstr_value;
-                        if (type == "HexValue")
+                        else /* if (type == "VTable") */
                         {
-                            mem.setHexValue(name, value);
+                            ///FIXME: break the nested loops into more methods
+                            pClassEntry = pMemEntry->FirstChildElement();
+                            for(;pClassEntry;pClassEntry=pClassEntry->NextSiblingElement())
+                            {
+                                cstr_type = pClassEntry->Value();
+                                cstr_name = pClassEntry->Attribute("name");
+                                const char *cstr_vtable = pClassEntry->Attribute("vtable");
+                                type = cstr_type;
+                                name = cstr_name;
+                                string vtable = cstr_vtable;
+                                if(type== "class")
+                                {
+                                    mem.setClass(name, vtable);
+                                }
+                                else if (type == "multiclass")
+                                {
+                                    const char *cstr_typeoffset = pClassEntry->Attribute("typeoffset");
+                                    string typeoffset = cstr_typeoffset;
+                                    int mclass = mem.setMultiClass(name, vtable, typeoffset);
+                                    pClassSubEntry = pClassEntry->FirstChildElement();
+                                    for(;pClassSubEntry;pClassSubEntry=pClassSubEntry->NextSiblingElement())
+                                    {
+                                        cstr_type = pClassSubEntry->Value();
+                                        type = cstr_type;
+                                        if(type== "class")
+                                        {
+                                            cstr_name = pClassSubEntry->Attribute("name");
+                                            cstr_value = pClassSubEntry->Attribute("type");
+                                            name = cstr_name;
+                                            value = cstr_value;
+                                            mem.setMultiClassChild(mclass,name,value);
+                                        }
+                                    }
+                                }
+                            }
                         }
-                        else if (type == "Address")
-                        {
-                            mem.setAddress(name, value);
-                        }
-                        else if (type == "Offset")
-                        {
-                            mem.setOffset(name, value);
-                        }
-                        else if (type == "String")
-                        {
-                            mem.setString(name, value);
-                        }
-                        else
-                        {
-                            cerr << "Unknown MemInfo type: " << type << endl;
-                        }
-                        cout << type << " " << name << " = " << value << endl;
+                        //cout << type << " " << name << " = " << value << endl;
                     }
                 }
                 // managed to get through all the hoops, push mem on vector

@@ -17,7 +17,7 @@ bool Tree::Draw(CameraOrientation Orientation)
     glEnd();
     glBindTexture(GL_TEXTURE_2D, 0); // unbind
     glBegin(GL_QUADS);
-        glColor3f(0, 0.5, 0);
+        glColor3f(0, 0.3, 0);
         glVertex3f(xa    , ya, -0.3);
         glVertex3f(xa    , ya + 1, -0.3);
         glVertex3f(xa + 1, ya + 1, -0.3);
