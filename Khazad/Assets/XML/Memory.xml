@@ -536,6 +536,94 @@
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x9374E88</Address>
 		<HexValue name="matgloss_skip">0xC</HexValue>
+		<VTable>
+			<class vtable="0x087981a8" name="stockpile" />
+			<class vtable="0x08799e08" name="zone" />
+			<class vtable="0x08797448" name="construction_blueprint" />
+			<!-- BUILDINGS -->
+			<class vtable="0x0879a0e8" name="wagon"/>
+			<class vtable="0x08798a88" name="armor_stand"/>
+			<class vtable="0x08798908" name="bed"/>
+			<class vtable="0x08799088" name="seat"/>
+			<class vtable="0x08798028" name="burial_receptacle"/>
+			<class vtable="0x0879a868" name="door"/>
+			<class vtable="0x0879b168" name="floodgate"/>
+			<class vtable="0x0879a6e8" name="floor_hatch"/>
+			<class vtable="0x0879ae68" name="wall_grate"/>
+			<class vtable="0x0879afe8" name="floor_grate"/>
+			<class vtable="0x0879ace8" name="vertical_bars"/>
+			<class vtable="0x0879ab68" name="floor_bars"/>
+			<class vtable="0x0879a568" name="cabinet"/>
+			<class vtable="0x0879a3e8" name="container"/>
+			<multiclass vtable="0x08799688" name="workshop" typeoffset="0xAC">
+				<class name="alchemists_laboratory" type="0x0"/>
+				<class name="carpenters_workshop"   type="0x1"/>
+				<class name="farmers_workshop"      type="0x2"/>
+				<class name="masons_workshop"       type="0x3"/>
+				<class name="craftdwarfs_workshop"  type="0x4"/>
+				<class name="jewelers_workshop"     type="0x5"/>
+				<class name="metalsmiths_workshop"  type="0x6"/>
+				<class name="magma_forge"           type="0x7"/>
+				<class name="bowyers_workshop"      type="0x8"/>
+				<class name="mechanics_workshop"    type="0x9"/>
+				<class name="siege_workshop"        type="0xA"/>
+				<class name="butchers_shop"         type="0xB"/>
+				<class name="leather_works"         type="0xC"/>
+				<class name="tanners_shop"          type="0xD"/>
+				<class name="clothiers_shop"        type="0xE"/>
+				<class name="fishery"               type="0xF"/>
+				<class name="still"                 type="0x10"/>
+				<class name="loom"                  type="0x11"/>
+				<class name="quern"                 type="0x12"/>
+				<class name="kennels"               type="0x13"/>
+				<class name="kitchen"               type="0x14"/>
+				<class name="ashery"                type="0x15"/>
+				<class name="dyers_shop"            type="0x16"/>
+				<class name="millstone"             type="0x17"/>
+			</multiclass>
+			<class vtable="0x08799c88" name="farm_plot"/>
+			<class vtable="0x08798c08" name="weapon_rack"/>
+			<class vtable="0x08798488" name="statue"/>
+			<class vtable="0x08798d88" name="table"/>
+			<class vtable="0x08797ea8" name="paved_road"/>
+			<class vtable="0x0879a9e8" name="bridge"/>
+			<class vtable="0x08798608" name="well"/>
+			<multiclass vtable="0x8799808" name="siege engine" typeoffset="0xAC">
+				<class name="catapult"              type="0x0"/>
+				<class name="ballista"              type="0x1"/>
+			</multiclass>
+			<multiclass vtable="0x08799b08" name="furnace" typeoffset="0xBA">
+				<class name="wood_furnace"          type="0x0"/>
+				<class name="smelter"               type="0x1"/>
+				<class name="glass_furnace"         type="0x2"/>
+				<class name="kiln"                  type="0x3"/>
+				<class name="magma_smelter"         type="0x4"/>
+				<class name="magma_glass_furnace"   type="0x5"/>
+				<class name="magma_kiln"            type="0x6"/>
+			</multiclass>
+			<class vtable="0x0879bae8" name="glass_window"/>
+			<class vtable="0x0879b948" name="gem_window"/>
+			<class vtable="0x08799f68" name="trade_depot"/>
+			<multiclass vtable="0x08799988" name="mechanism" typeoffset="0xAC">
+				<class name="lever"                 type="0x0"/>
+				<class name="pressure_plate"        type="0x1"/>
+				<class name="cage_trap"             type="0x2"/>
+				<class name="stonefall_trap"        type="0x3"/>
+				<class name="weapon_trap"           type="0x4"/>
+			</multiclass>
+			<class vtable="0x08799208" name="spike" />
+			<class vtable="0x08798f08" name="animal_trap" />
+			<class vtable="0x08796cc8" name="screw_pump"/>
+			<class vtable="0x08796fc8" name="water_wheel"/>
+			<class vtable="0x08796e48" name="windmill"/>
+			<class vtable="0x087978a8" name="gear_assembly"/>
+			<class vtable="0x08797148" name="horizontal_axle"/>
+			<class vtable="0x087972c8" name="vertical_axle"/>
+			<class vtable="0x08799388" name="support"/>
+			<class vtable="0x08797a28" name="cage"/>
+			<class vtable="0x08799508" name="archery_target"/>
+			<class vtable="0x08797ba8" name="restraint"/>
+		</VTable>
     </Entry>
     <Entry version="v0.28.181.40d11" os="linux">
 		<!-- identification -->

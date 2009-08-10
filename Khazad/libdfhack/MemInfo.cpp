@@ -131,7 +131,7 @@ uint32_t memory_info::setMultiClass (string name, string vtable, string typeoffs
         if(classes[i].classname == name)
         {
             classes[i].vtable = strtol(vtable.c_str(), NULL, 16);
-            classes[i].type_offset = strtol(vtable.c_str(), NULL, 16);
+            classes[i].type_offset = strtol(typeoffset.c_str(), NULL, 16);
             return classes[i].multi_index;
         }
     }
@@ -184,11 +184,13 @@ bool memory_info::resolveClassId(uint32_t address, string & classname, uint32_t 
             {
                 vector <t_type>& vec = classsubtypes[classes[i].multi_index];
                 uint32_t type = MreadWord(address + classes[i].type_offset);
+                printf ("class %d:%s offset 0x%x\n", i , classes[i].classname.c_str(), classes[i].type_offset);
                 // return typed building if successful
                 for (int k = 0; k < vec.size();k++)
                 {
                     if(vec[k].type == type)
                     {
+                        cout << " multi " <<  address + classes[i].type_offset << " " << vec[k].classname << endl;
                         classname = vec[k].classname;
                         classid = vec[k].assign;
                         return true;

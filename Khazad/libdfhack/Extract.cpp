@@ -303,12 +303,11 @@ bool Extractor::dumpMemory( string path_to_xml)
     }
     if(buildings)
     {
-        // read the buildings vector.. probably completely wrong.
         DfVector p_bld = dm->readVector(buildings,4);
         for (uint32_t i = 0; i< p_bld.getSize();i++)
         {
             uint32_t temp;
-            t_building * bld = new t_building;;
+            t_building * bld = new t_building;
             t_building_df40d bld_40d;
             // read pointer from vector at position
             p_bld.read((uint32_t)i,(uint8_t *)&temp);

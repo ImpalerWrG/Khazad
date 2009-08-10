@@ -23,6 +23,17 @@
 		</TileValues>
 	</Material>
 	<Material>
+		<Name Label="MATERIAL_ASHES"/>
+		<Texture label="TEXTURE_ASHES"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<TileValues>
+			<Tile Int="242"/>
+			<Tile Int="243"/>
+			<Tile Int="244"/>
+		</TileValues>
+	</Material>
+	<Material>
 		<Name Label="MATERIAL_GRASS2"/>
 		<Texture label="TEXTURE_GRASS"/>
 		<PrimaryColor label="COLOR_GREEN"/>
