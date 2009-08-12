@@ -21,7 +21,7 @@ void Block::collapseVeins()
         //iterate through vein assignment bit arrays - one for every row
         for(uint32_t j = 0;j<16;j++)
         {
-            //iterate through the bits... I wish I could use assembly here... especially the carry bits
+            //iterate through the bits
             for (uint32_t k = 0; k< 16;k++)
             {
                 // and the bit array with a one-bit mask, check if the bit is set
@@ -40,6 +40,7 @@ DfMap::~DfMap()
 {
     clear();
 }
+
 /// TODO: make this sync
 void DfMap::clear()
 {
@@ -70,6 +71,7 @@ void DfMap::clear()
     v_buildings.clear();
     v_constructions.clear();
     blocks_allocated = 0;
+    ///FIXME: destroy all the extracted data here
 }
 
 void DfMap::getRegionCoords (uint32_t &x,uint32_t &y,uint32_t &z)
@@ -257,64 +259,6 @@ uint32_t DfMap::getDesignations(uint32_t x, uint32_t y, uint32_t z)
     }
     return -1;
 }
-/*
-uint32_t DfMap::getGeolayerAddress (uint32_t x, uint32_t y, uint32_t z)
-{
-    assert(CheckBoundsXY);
-    uint32_t x2, y2;
-    convertToDfMapCoords(x, y, x, y, x2, y2);
-    Block *b = getBlock(x,y,z);
-    if(b != NULL)
-    {
-        int biome = b->designation[x2][y2].bits.biome;
-        int BiomeOffset = b->RegionOffsets[biome];
-        unsigned int geoindex = b->designation[x2][y2].bits.geolayer_index;
-        if(geodebug[BiomeOffset].size() > geoindex)
-        {
-            return geodebug[BiomeOffset][geoindex];
-        }
-        else
-        {
-            return 0;
-        }
-    }
-    else return 0;
-}
-*/
-/*
-uint32_t DfMap::getGeoblockAddress(uint32_t x, uint32_t y, uint32_t z)
-{
-    assert(CheckBoundsXY);
-    uint32_t x2, y2;
-    convertToDfMapCoords(x, y, x, y, x2, y2);
-    Block *b = getBlock(x,y,z);
-    if(b != NULL)
-    {
-        int biome = b->designation[x2][y2].bits.biome;
-        int BiomeOffset = b->RegionOffsets[biome];
-
-        return geoblockadresses[BiomeOffset];
-    }
-    return 0;
-}
-*/
-/*
-uint32_t DfMap::getRegionAddress(uint32_t x, uint32_t y, uint32_t z)
-{
-    assert(CheckBoundsXY);
-    uint32_t x2, y2;
-    convertToDfMapCoords(x, y, x, y, x2, y2);
-    Block *b = getBlock(x,y,z);
-    if(b != NULL)
-    {
-        int biome = b->designation[x2][y2].bits.biome;
-        int BiomeOffset = b->RegionOffsets[biome];
-
-        return regionadresses[BiomeOffset];
-    }
-    return 0;
-}
-*/
 bool DfMap::isBlockInitialized(uint32_t x, uint32_t y, uint32_t z)
 {
     // because of the way DfMap is done, more than one check must be made.
@@ -363,7 +307,6 @@ void DfMap::getGeoRegion (uint32_t x, uint32_t y, uint32_t z, int32_t& geoX, int
     }
 }
 
-// this is what the vein structures say it is
 MatglossPair DfMap::getMaterialPair (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
@@ -420,6 +363,15 @@ uint16_t DfMap::getNumMatGloss(uint16_t type)
     return v_matgloss[type].size();
 }
 
+string DfMap::getBuildingTypeName(uint32_t index)
+{
+    if(index < v_buildingtypes.size())
+    {
+        return v_buildingtypes[index];
+    }
+    return string("error");
+}
+
 string DfMap::getMatGlossString(uint16_t type,uint16_t index)
 {
     if(index < v_matgloss[type].size())
@@ -457,21 +409,6 @@ unsigned int DfMap::getBiome (uint32_t x, uint32_t y, uint32_t z)
     }
     return -1;
 }
-/*
-// what kind of building is here?
-uint16_t DfMap::getBuilding (uint32_t x, uint32_t y, uint32_t z)
-{
-    assert(CheckBounds);
-    uint32_t x2, y2;
-    convertToDfMapCoords(x, y, x, y, x2, y2);
-    Block *b = getBlock(x,y,z);
-    if(b != NULL)
-    {
-        return b->occupancy[x2][y2].bits.building;
-    }
-    return -1;
-}
-*/
 bool DfMap::isHidden (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
@@ -561,15 +498,4 @@ bool DfMap::isMagma (uint32_t x, uint32_t y, uint32_t z)
         return (b->designation[x2][y2].bits.liquid_type);
     }
     return false;
-}
-
-// converts the (x,y,z) cell coords to internal coords
-// out_y, out_x - block coords
-// out_y2, out_x2 - cell coords in that block
-void DfMap::convertToDfMapCoords(uint32_t x, uint32_t y, uint32_t &out_x, uint32_t &out_y, uint32_t &out_x2, uint32_t &out_y2)
-{
-    out_x2 = x % BLOCK_SIZE;
-    out_y2 = y % BLOCK_SIZE;
-    out_y = uint32_t(y / BLOCK_SIZE);
-    out_x = uint32_t(x / BLOCK_SIZE);
 }

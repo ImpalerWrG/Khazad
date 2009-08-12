@@ -130,6 +130,17 @@ bool Extractor::dumpMemory( string path_to_xml)
             }
         }
     }
+/*
+    int16_t X_biomeA =(
+                        region_x
+                        + ((signed int)(( (int64_t)0x2AAAAAAB * (int64_t)x) >> 32) >> 3)
+                        + ((unsigned int)(((int64_t)0x2AAAAAAB * (int64_t)x) >> 32) >> 31)
+                    ) / 16;
+    int16_t Y_biomeA =(
+                        region_y
+                        + ((signed int)(((int64_t)0x2AAAAAAB * (int64_t)y) >> 32) >> 3)
+                        + ((unsigned int)(((int64_t)0x2AAAAAAB * (int64_t)y) >> 32) >> 31)
+                    ) / 16;*/
     if(region_x_offset && region_y_offset && region_z_offset)
     {
         df_map->setRegionCoords(MreadDWord(region_x_offset),MreadDWord(region_y_offset),MreadDWord(region_z_offset));
@@ -169,8 +180,6 @@ bool Extractor::dumpMemory( string path_to_xml)
                 uint32_t geoblock_off;
                 // get the geoblock from the geoblock vector using the geoindex
                 geoblocks.read(geoindex,(uint8_t *) &geoblock_off);
-//                df_map->geoblockadresses[i]=geoblock_off;
-//                df_map->regionadresses[i]=geoX + bioRY*region_size + region_geo_index_offset;
                 // get the layer pointer vector :D
                 DfVector geolayers = dm->readVector(geoblock_off + geolayer_geoblock_offset , 4); // let's hope
                 // make sure we don't load crap
@@ -267,12 +276,11 @@ bool Extractor::dumpMemory( string path_to_xml)
                         }
                         b->collapseVeins(); // collapse *our* vein vector into vein matgloss data
                     }
-//                    ++blocks_read;
                 }
             }
         }
     }
-    // read constructions, apply immediately. I can imagine doing this for every frame in DF must put the brakes on performance ~_~
+    // read constructions, apply immediately.
     if(constructions)
     {
         // read the constructions vector
@@ -303,6 +311,8 @@ bool Extractor::dumpMemory( string path_to_xml)
     }
     if(buildings)
     {
+        // fill the building type vector first
+        offset_descriptor->copyBuildings(df_map->v_buildingtypes);
         DfVector p_bld = dm->readVector(buildings,4);
         for (uint32_t i = 0; i< p_bld.getSize();i++)
         {
@@ -315,10 +325,8 @@ bool Extractor::dumpMemory( string path_to_xml)
             Mread(temp, sizeof(t_building_df40d), (uint8_t *)&bld_40d);
             // transform
             uint32_t type = bld_40d.vtable;
-            string classname = "unknown";
-            offset_descriptor->resolveClassId(temp,classname, type);
+            offset_descriptor->resolveClassId(temp, type);
             bld->type = type;
-            bld->name = classname;
             bld->x1 = bld_40d.x1;
             bld->x2 = bld_40d.x2;
             bld->y1 = bld_40d.y1;
@@ -349,7 +357,7 @@ bool Extractor::dumpMemory( string path_to_xml)
             if(tree->mat_type == 2) tree->mat_type = 3;
             // store for save/load. will need more processing.
             df_map->v_trees.push_back(tree);
-            ///FIXME: delete created building structs
+            ///FIXME: delete created tree structs
             // save buildings in a block for later display
             Block * b = df_map->getBlock(tree->x/16,tree->y/16,tree->z);
             b->v_trees.push_back(tree);

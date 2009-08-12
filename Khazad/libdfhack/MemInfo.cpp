@@ -124,6 +124,8 @@ void memory_info::setClass (string name, string vtable)
     classes.push_back(cls);
     cout << "class " << name << ", assign " << cls.assign << ", vtable  " << cls.vtable << endl;
 }
+
+/// find old entry by name, rewrite, return its multi index. otherwise make a new one, append an empty vector of t_type to classtypes,  return its index.
 uint32_t memory_info::setMultiClass (string name, string vtable, string typeoffset)
 {
     for (int i=0; i<classes.size(); i++)
@@ -147,9 +149,8 @@ uint32_t memory_info::setMultiClass (string name, string vtable, string typeoffs
 
     vector<t_type> thistypes;
     classsubtypes.push_back(thistypes);
-    cout << "multiclass " << name << ", assign " << cls.assign << ", vtable  " << cls.vtable << endl;
+    //cout << "multiclass " << name << ", assign " << cls.assign << ", vtable  " << cls.vtable << endl;
     return classsubtypes.size() - 1;
-    /// find old entry by name, rewrite, return its multi index. otherwise make a new one, append an empty vector of t_type to classtypes,  return its index.
 }
 void memory_info::setMultiClassChild (uint32_t multi_index, string name, string type)
 {
@@ -169,49 +170,57 @@ void memory_info::setMultiClassChild (uint32_t multi_index, string name, string 
     mcc.classname = name;
     mcc.type = strtol(type.c_str(), NULL, 16);
     vec.push_back(mcc);
-    cout << "    classtype " << name << ", assign " << mcc.assign << ", vtable  " << mcc.type << endl;
+    //cout << "    classtype " << name << ", assign " << mcc.assign << ", vtable  " << mcc.type << endl;
 }
 
-bool memory_info::resolveClassId(uint32_t address, string & classname, uint32_t & classid)
+bool memory_info::resolveClassId(uint32_t address, uint32_t & classid)
 {
     uint32_t vtable = MreadDWord(address);
     /// FIXME: stupid search. we need a better container
     for(int i = 0;i< classes.size();i++)
     {
-        if(classes[i].vtable == vtable) // gotcha
+        if(classes[i].vtable == vtable) // got class
         {
+            // if it is a multiclass, try resolving it
             if(classes[i].is_multiclass)
             {
                 vector <t_type>& vec = classsubtypes[classes[i].multi_index];
                 uint32_t type = MreadWord(address + classes[i].type_offset);
-                printf ("class %d:%s offset 0x%x\n", i , classes[i].classname.c_str(), classes[i].type_offset);
+                //printf ("class %d:%s offset 0x%x\n", i , classes[i].classname.c_str(), classes[i].type_offset);
                 // return typed building if successful
                 for (int k = 0; k < vec.size();k++)
                 {
                     if(vec[k].type == type)
                     {
-                        cout << " multi " <<  address + classes[i].type_offset << " " << vec[k].classname << endl;
-                        classname = vec[k].classname;
+                        //cout << " multi " <<  address + classes[i].type_offset << " " << vec[k].classname << endl;
                         classid = vec[k].assign;
                         return true;
                     }
                 }
-                // otherwise return the parent multiclass
-                classname = classes[i].classname;
-                classid = classes[i].assign;
-                return true;
             }
-            else
+            // otherwise return the class we found
+            classid = classes[i].assign;
+            return true;
+        }
+    }
+    // we failed to find anything that would match
+    return false;
+}
+
+void memory_info::copyBuildings(vector<string> & v_buildingtypes)
+{
+    for(int i = 0;i< classes.size();i++)
+    {
+        v_buildingtypes.push_back(classes[i].classname);
+        if(classes[i].is_multiclass)
+        {
+            vector <t_type>& vec = classsubtypes[classes[i].multi_index];
+            for (int k = 0; k < vec.size();k++)
             {
-                // ordinary class
-                classname = classes[i].classname;
-                classid = classes[i].assign;
-                return true;
+                v_buildingtypes.push_back(vec[k].classname);
             }
         }
     }
-    // we failed
-    return false;
 }
 
 // change base of all addresses

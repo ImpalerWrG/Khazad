@@ -625,26 +625,21 @@ void ScreenManager::PrintDebugging()
         uint32_t region_x = 0;
         uint32_t region_y = 0;
         uint32_t region_z = 0;
-        int layerAddress = 0;
-        int gblockAddress = 0;
-        int regionAddress = 0;
+        //int layerAddress = 0;
+        //int gblockAddress = 0;
+        //int regionAddress = 0;
 
         DfMap * df_map = MAP->getDFMap();
-        /*if(!(HiddenDraw ^ df_map->isHidden( x, y, z)))
-        {*/
-            TileType = df_map->getTileType(x, y, z);
-            Designation = df_map->getDesignations(x, y, z);
-            Ocupancy = df_map->getOccupancies(x, y, z);
-            BiomeOffset = df_map->getBiome(x, y, z);
-            matgloss = df_map->getGeoMaterialString(x, y, z);
-            matglossdesc = df_map->getMaterialPair(x, y, z);
-            Geolayer = df_map->getGeolayerIndex(x, y, z);
-            building = df_map->getBuilding(x, y, z);
-            tree = df_map->getTree(x, y, z);
-//            layerAddress = df_map->getGeolayerAddress(x,y,z);
-//            gblockAddress = df_map->getGeoblockAddress( x,  y,  z);
-//            regionAddress = df_map->getRegionAddress( x,  y,  z);
-        //}
+        TileType = df_map->getTileType(x, y, z);
+        Designation = df_map->getDesignations(x, y, z);
+        Ocupancy = df_map->getOccupancies(x, y, z);
+        BiomeOffset = df_map->getBiome(x, y, z);
+        matgloss = df_map->getGeoMaterialString(x, y, z);
+        matglossdesc = df_map->getMaterialPair(x, y, z);
+        Geolayer = df_map->getGeolayerIndex(x, y, z);
+        building = df_map->getBuilding(x, y, z);
+        tree = df_map->getTree(x, y, z);
+
         df_map->getRegionCoords (region_x,region_y,region_z);
 
         SDL_Rect position;
@@ -656,77 +651,66 @@ void ScreenManager::PrintDebugging()
         position.y -= 40;
 
 
-        Block* TargetBlock = df_map->getBlock(x / 16, y / 16, z);
+/*        Block* TargetBlock = df_map->getBlock(x / 16, y / 16, z);
         if(TargetBlock != NULL)
         {
             sprintf (buffer, "Block offset: 0x%X", TargetBlock->origin);
             SCREEN->RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
-        }
+        }*/
 
         sprintf (buffer, "Tile: %i", TileType);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
-/*
-        int16_t X_biomeA =(
-                            region_x
-                            + ((signed int)(( (int64_t)0x2AAAAAAB * (int64_t)x) >> 32) >> 3)
-                            + ((unsigned int)(((int64_t)0x2AAAAAAB * (int64_t)x) >> 32) >> 31)
-                        ) / 16;
-        int16_t Y_biomeA =(
-                            region_y
-                            + ((signed int)(((int64_t)0x2AAAAAAB * (int64_t)y) >> 32) >> 3)
-                            + ((unsigned int)(((int64_t)0x2AAAAAAB * (int64_t)y) >> 32) >> 31)
-                        ) / 16;*/
 
-        /// TODO: check bounds!
-/*        int Xbio,Ybio;
-        df_map->getGeoRegion(x,y,z,Xbio,Ybio);
-        sprintf (buffer, "georegion x:%d y:%d. b:%d, layer %i, addr 0x%X, gaddr 0x%X, raddr 0x%X",Xbio,Ybio, BiomeOffset, Geolayer, layerAddress, gblockAddress, regionAddress);
-        SCREEN->RenderText(buffer, 0, WHITE, &position);
-        position.y -= 40;*/
         string typestr = "unknown";
         switch (matglossdesc.type)
         {
-            case 0:
-            typestr = "wood";
-            break;
-            case 1:
-            typestr = "stone/soil";
-            break;
-            case 2:
-            typestr = "metal";
-            break;
-/*            case Mat_Plant:
-            typestr = "plant";
-            break;*/
-            case 11:
-            typestr = "silk";
-            break;
-            case 13: // green glass
-            typestr = "green glass";
-            break;
-            case 14: // clear glass
-            typestr = "clear glass";
-            break;
-            case 15: // crystal glass
-            typestr = "crystal glass";
-            break;
-            case 17: // crystal glass
-            typestr = "ice";
-            break;
-            case 18:
-            typestr = "charcoal";
-            break;
-            case 19:
-            typestr = "potash";
-            break;
-            case 21:
-            typestr = "pearlash";
-            break;
-            case 24:
-            typestr = "soap";
-            break;
+                case 0:
+                typestr = "wood";
+                break;
+                case 1:
+                typestr = "stone/soil";
+                break;
+                case 2:
+                typestr = "metal";
+                break;
+                case 3:
+                typestr = "plant";
+                break;
+                case 10:
+                typestr = "leather";
+                break;
+                case 11:
+                typestr = "silk cloth";
+                break;
+                case 12:
+                typestr = "plant thread cloth";
+                break;
+                case 13: // green glass
+                typestr = "green glass";
+                break;
+                case 14: // clear glass
+                typestr = "clear glass";
+                break;
+                case 15: // crystal glass
+                typestr = "crystal glass";
+                break;
+                case 17: // crystal glass
+                typestr = "ice";
+                break;
+                case 18:
+                typestr = "charcoal";
+                break;
+                case 19:
+                typestr = "potash";
+                break;
+                case 21:
+                typestr = "pearlash";
+                break;
+                case 24:
+                typestr = "soap";
+                break;
         }
         sprintf (buffer, "material: %d:%d = %s:%s ",matglossdesc.type, matglossdesc.index,typestr.c_str(), matgloss.c_str());
         SCREEN->RenderText(buffer, 0, WHITE, &position);
@@ -751,11 +735,17 @@ void ScreenManager::PrintDebugging()
                 case 2:
                 typestr = "metal";
                 break;
-    /*            case Mat_Plant:
+                case 3:
                 typestr = "plant";
-                break;*/
+                break;
+                case 10:
+                typestr = "leather";
+                break;
                 case 11:
-                typestr = "silk";
+                typestr = "silk cloth";
+                break;
+                case 12:
+                typestr = "plant thread cloth";
                 break;
                 case 13: // green glass
                 typestr = "green glass";
@@ -783,7 +773,7 @@ void ScreenManager::PrintDebugging()
                 break;
             }
             matgloss = df_map->getMaterialString(building->mat_type,building->mat_idx);
-            sprintf (buffer, "building: 0x%x:%s, material: %d:%d = %s:%s ", building->type, building->name.c_str(),building->mat_type, building->mat_idx,typestr.c_str(), matgloss.c_str());
+            sprintf (buffer, "building: 0x%x:%s, material: %d:%d = %s:%s ", building->type, df_map->getBuildingTypeName(building->type).c_str(),building->mat_type, building->mat_idx,typestr.c_str(), matgloss.c_str());
             SCREEN->RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
         }

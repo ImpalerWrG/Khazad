@@ -62,7 +62,6 @@ struct t_building_df40d
 struct t_building
 {
     uint32_t type;
-    string name;
     uint32_t x1;
     uint32_t y1;
     uint32_t x2;
@@ -234,17 +233,29 @@ public:
 class DfMap
 {
 private:
+    // allow extractor direct access to our data, avoid call lag and lots of self-serving methods
+    friend class Extractor;
 
     Block **block;
     uint32_t blocks_allocated;
     bool valid;
 
-    void convertToDfMapCoords(uint32_t x, uint32_t y, uint32_t &out_x, uint32_t &out_y, uint32_t &out_x2, uint32_t &out_y2);
+    // converts the (x,y,z) cell coords to internal coords
+    // out_y, out_x - block coords
+    // out_y2, out_x2 - cell coords in that block
+    inline void convertToDfMapCoords(uint32_t x, uint32_t y, uint32_t &out_x, uint32_t &out_y, uint32_t &out_x2, uint32_t &out_y2)
+    {
+        out_x = x / BLOCK_SIZE;
+        out_x2 = x % BLOCK_SIZE;
+        out_y = y / BLOCK_SIZE;
+        out_y2 = y % BLOCK_SIZE;
+    };
+
     void allocBlockArray(uint32_t x,uint32_t y, uint32_t z);
     void updateCellCount();
-    //uint32_t getBlocksCount() const { return blocks_read; }
+
     bool loadVersion1(FILE * Decompressed,DfMapHeader & h);
-    bool writeVersion1(FILE * SaveFile);
+//    bool writeVersion1(FILE * SaveFile);
 
     bool loadMatgloss2(FILE * Decompressed);
     bool loadBlocks2(FILE * Decompressed,DfMapHeader & h);
@@ -255,30 +266,39 @@ private:
     void writeBlocks2(FILE * SaveFile);
     void writeRegion2(FILE * SaveFile);
     bool writeVersion2(FILE * SaveFile);
-public:
 
-/// TODO: refactor *REALLY* needed. Time to go back to drawing board
-    void applyGeoMatgloss(Block * b);
     uint32_t regionX;
     uint32_t regionY;
     uint32_t regionZ;
+
+    ///FIXME: these belong to some world structure
     uint32_t worldSizeX;
     uint32_t worldSizeY;
+
     vector<uint16_t> v_geology[eBiomeCount];
     vector<string> v_matgloss[NUM_MATGLOSS_TYPES];
+    vector<string> v_buildingtypes;
     vector<t_construction> v_constructions;
     vector<t_building*> v_buildings;
     vector<t_tree_desc*> v_trees;
-/*    vector<uint32_t> geodebug[eBiomeCount];
-    uint32_t geoblockadresses[eBiomeCount];
-    uint32_t regionadresses[eBiomeCount];*/
+    unsigned x_block_count, y_block_count, z_block_count; // block count
+    unsigned x_cell_count, y_cell_count, z_cell_count;    // cell count
+
+public:
 
     DfMap();
     DfMap(uint32_t x, uint32_t y, uint32_t z);
     DfMap(string file_name);
     ~DfMap();
+
+    /// TODO: rework matgloss
+    void applyGeoMatgloss(Block * b);
+    // accessing vectors of materials
     uint16_t getNumMatGloss(uint16_t type);
     string getMatGlossString(uint16_t type, uint16_t index);
+    // accessing vectors of building types
+    uint32_t getNumBuildingTypes();
+    string getBuildingTypeName(uint32_t index);
 
     bool isValid();
     bool load(string FilePath);
@@ -286,20 +306,15 @@ public:
     void clear();
 
     Block* getBlock(uint32_t x, uint32_t y, uint32_t z);
-    vector<t_building *> * getBlockBuildingsVector(uint32_t x,uint32_t y,uint32_t z);
-    vector<t_tree_desc *> * getBlockVegetationVector(uint32_t x,uint32_t y,uint32_t z);
     Block* allocBlock(uint32_t x, uint32_t y, uint32_t z);
     bool   deallocBlock(uint32_t x, uint32_t y, uint32_t z);
 
-    unsigned x_block_count, y_block_count, z_block_count; // block count
-    unsigned x_cell_count, y_cell_count, z_cell_count;    // cell count
+    vector<t_building *> * getBlockBuildingsVector(uint32_t x,uint32_t y,uint32_t z);
+    vector<t_tree_desc *> * getBlockVegetationVector(uint32_t x,uint32_t y,uint32_t z);
 
-
-    //void setBlocksCount(uint32_t p_blocks_read) { blocks_read = p_blocks_read; }
-
-    unsigned int getXBlocks()        { return x_block_count; }
-    unsigned int getYBlocks()        { return y_block_count; }
-    unsigned int getZBlocks()        { return z_block_count; }
+    inline unsigned int getXBlocks()        { return x_block_count; }
+    inline unsigned int getYBlocks()        { return y_block_count; }
+    inline unsigned int getZBlocks()        { return z_block_count; }
 
     bool isTileSky(uint32_t x, uint32_t y, uint32_t z, uint32_t blockX, uint32_t blockY);
     uint16_t getTileType(uint32_t x, uint32_t y, uint32_t z);
@@ -319,12 +334,6 @@ public:
     // matgloss part of the designation
     uint32_t getGeolayerIndex (uint32_t x, uint32_t y, uint32_t z);
 
-/*
-    // terrible
-    uint32_t getGeolayerAddress (uint32_t x, uint32_t y, uint32_t z);
-    uint32_t getGeoblockAddress (uint32_t x, uint32_t y, uint32_t z);
-    uint32_t getRegionAddress(uint32_t x, uint32_t y, uint32_t z);
-*/
     void getRegionCoords (uint32_t &x,uint32_t &y,uint32_t &z);
     void setRegionCoords (uint32_t x,uint32_t y,uint32_t z);
 
