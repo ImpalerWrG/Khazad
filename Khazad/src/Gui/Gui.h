@@ -24,6 +24,7 @@ public:
     bool ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY);
     bool isWidgetCollision(gcn::Widget* TestWidget, Uint16 RealX, Uint16 RealY);
     bool Draw();
+    void updateSizing();
 
     bool isDone()                   { return done; }
     void setDone(bool NewState)     { done = NewState; }

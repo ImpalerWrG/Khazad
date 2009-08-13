@@ -315,14 +315,16 @@ Ui::~Ui()
     delete GraphicsImplementation;
 }
 
+/// FIXME: this doesn't work right because mouse input events are somehow dropped. kinda sucks. FIX IT!
 bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
 {
+    // does the GUI hold the mouse?
+    static bool guimousecapture = false;
     if(event.type == SDL_QUIT || event.type == SDL_KEYDOWN)
     {
         return false; // Not consumed in the UI
     }
-
-    if(event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)
+    if(event.type == SDL_MOUSEBUTTONDOWN)
     {
         Sint32 RealX;
         Sint32 RealY;
@@ -331,31 +333,29 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
         Sint32 OriginX = RealX - RelativeX;
         Sint32 OriginY = RealY - RelativeY;
 
-        if(isWidgetCollision(DepthSlider, OriginX, OriginY))
+        if(  isWidgetCollision(DepthSlider, OriginX, OriginY)
+           ||isWidgetCollision(DepthSlider2, OriginX, OriginY)
+           ||isWidgetCollision(MainMenuWindow, OriginX, OriginY)
+           ||isWidgetCollision(CameraControlWindow, OriginX, OriginY)
+           ||isWidgetCollision(ConfirmationWindow, OriginX, OriginY) )
         {
+            Input->pushInput(event);
+            guimousecapture = true;
+            return true;
+        }
+    }
+    else if(event.type == SDL_MOUSEBUTTONUP)
+    {
+        if(guimousecapture == true)
+        {
+            guimousecapture = false;
             Input->pushInput(event);
             return true;
         }
-
-        if(isWidgetCollision(DepthSlider2, OriginX, OriginY))
-        {
-            Input->pushInput(event);
-            return true;
-        }
-
-        if(isWidgetCollision(MainMenuWindow, OriginX, OriginY))
-        {
-            Input->pushInput(event);
-            return true;
-        }
-
-        if(isWidgetCollision(CameraControlWindow, OriginX, OriginY))
-        {
-            Input->pushInput(event);
-            return true;
-        }
-
-        if(isWidgetCollision(ConfirmationWindow, OriginX, OriginY))
+    }
+    else if(event.type == SDL_MOUSEMOTION)
+    {
+        if(guimousecapture == true)
         {
             Input->pushInput(event);
             return true;
@@ -364,6 +364,18 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
 
     return false; // Default not consumed
 }
+
+void Ui::updateSizing()
+{
+    TopWidget->setDimension(gcn::Rectangle(0, 0, SCREEN->getWidth(), SCREEN->getHight()));
+    GraphicsImplementation->setTargetPlane(SCREEN->getWidth(), SCREEN->getHight());
+    DepthSlider2->setSize(15, SCREEN->getHight());
+    DepthSlider2->setPosition(SCREEN->getWidth() - 30, 0);
+    DepthSlider->setSize(15, SCREEN->getHight());
+    DepthSlider->setPosition(SCREEN->getWidth() - 15, 0);
+    ///FIXME: move windows when viewport shrinks? Maybe make their position scale with the main window...
+}
+
 
 bool Ui::isWidgetCollision(gcn::Widget* TestWidget, Uint16 RealX, Uint16 RealY)
 {

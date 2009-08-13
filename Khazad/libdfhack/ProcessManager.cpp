@@ -224,6 +224,138 @@ bool ProcessManager::findProcessess()
 }
 #endif
 
+
+void ProcessManager::ParseVTable(TiXmlElement* vtable, memory_info& mem)
+{
+    TiXmlElement* pClassEntry;
+    TiXmlElement* pClassSubEntry;
+    pClassEntry = vtable->FirstChildElement();
+    for(;pClassEntry;pClassEntry=pClassEntry->NextSiblingElement())
+    {
+        const char *cstr_type = pClassEntry->Value();
+        const char *cstr_name = pClassEntry->Attribute("name");
+        const char *cstr_vtable = pClassEntry->Attribute("vtable");
+        string type = cstr_type;
+        string name = cstr_name;
+        string vtable = cstr_vtable;
+        if(type== "class")
+        {
+            mem.setClass(name, vtable);
+        }
+        else if (type == "multiclass")
+        {
+            const char *cstr_typeoffset = pClassEntry->Attribute("typeoffset");
+            string typeoffset = cstr_typeoffset;
+            int mclass = mem.setMultiClass(name, vtable, typeoffset);
+            pClassSubEntry = pClassEntry->FirstChildElement();
+            for(;pClassSubEntry;pClassSubEntry=pClassSubEntry->NextSiblingElement())
+            {
+                cstr_type = pClassSubEntry->Value();
+                type = cstr_type;
+                if(type== "class")
+                {
+                    cstr_name = pClassSubEntry->Attribute("name");
+                    const char *cstr_value = pClassSubEntry->Attribute("type");
+                    name = cstr_name;
+                    string value = cstr_value;
+                    mem.setMultiClassChild(mclass,name,value);
+                }
+            }
+        }
+    }
+}
+
+
+
+void ProcessManager::ParseEntry (TiXmlElement* entry, memory_info& mem, map <string ,TiXmlElement *>& knownEntries)
+{
+    TiXmlElement* pMemEntry;
+    const char *cstr_version = entry->Attribute("version");
+    const char *cstr_os = entry->Attribute("os");
+    const char *cstr_base = entry->Attribute("base");
+    if(cstr_base)
+    {
+        string base = cstr_base;
+        ParseEntry(knownEntries[base], mem, knownEntries);
+    }
+    // mandatory attributes missing?
+    if(!(cstr_version && cstr_os))
+    {
+        cerr << "Bad entry in memory.xml detected, version or os attribute is missing.";
+        // skip if we don't have valid attributes
+        return;
+    }
+    string os = cstr_os;
+    mem.setVersion(cstr_version);
+    mem.setOS(cstr_os);
+    //set base to default when undefined (0x400000 for windows 0x0 for linux), check os type
+    if(os == "windows")
+    {
+/*        if(cstr_base)
+            mem.setBase(cstr_base);
+        else*/
+        mem.setBase(0x400000);
+    }
+    else if(os == "linux")
+    {
+        /*if(cstr_base)
+            mem.setBase(cstr_base);
+        else*/
+        mem.setBase(0x0);
+    }
+    else
+    {
+        cerr << "unknown operating system " << os << endl;
+        return;
+    }
+    // process additional entries
+    cout << "Entry " << cstr_version << " " <<  cstr_os << endl;
+    pMemEntry = entry->FirstChildElement()->ToElement();
+    for(;pMemEntry;pMemEntry=pMemEntry->NextSiblingElement())
+    {
+        // only elements get processed
+        const char *cstr_type = pMemEntry->Value();
+        const char *cstr_name = pMemEntry->Attribute("name");
+        const char *cstr_value = pMemEntry->GetText();
+        // check for missing parts
+        string type, name, value;
+        type = cstr_type;
+        if(type == "VTable")
+        {
+            ParseVTable(pMemEntry, mem);
+            continue;
+        }
+        if( !(cstr_name && cstr_value))
+        {
+            cerr << "underspecified MemInfo entry" << endl;
+            continue;
+        }
+        name = cstr_name;
+        value = cstr_value;
+        if (type == "HexValue")
+        {
+            mem.setHexValue(name, value);
+        }
+        else if (type == "Address")
+        {
+            mem.setAddress(name, value);
+        }
+        else if (type == "Offset")
+        {
+            mem.setOffset(name, value);
+        }
+        else if (type == "String")
+        {
+            mem.setString(name, value);
+        }
+        else
+        {
+            cerr << "Unknown MemInfo type: " << type << endl;
+        }
+    } // for
+} // method
+
+
 /// OS independent part
 bool ProcessManager::loadDescriptors(string path_to_xml)
 {
@@ -255,139 +387,31 @@ bool ProcessManager::loadDescriptors(string path_to_xml)
             // save this for later
             hRoot=TiXmlHandle(pElem);
         }
-        // load elements
+        // transform elements
         {
             meminfo.clear(); // trash existing list
 
             TiXmlElement* pMemInfo=hRoot.FirstChild( "MemoryDescriptors" ).FirstChild( "Entry" ).Element();
-            TiXmlElement* pMemEntry;
-            TiXmlElement* pClassEntry;
-            TiXmlElement* pClassSubEntry;
-            ///TODO: add possibility of stacking definitions
+            map <string ,TiXmlElement *> map_pNamedEntries;
+            vector <TiXmlElement *> v_pEntries;
             for( ; pMemInfo; pMemInfo=pMemInfo->NextSiblingElement("Entry"))
             {
-                mem.flush();
-                const char *cstr_version = pMemInfo->Attribute("version");
-                const char *cstr_os = pMemInfo->Attribute("os");
-                const char *cstr_base = pMemInfo->Attribute("base");
-                // mandatory attributes missing?
-                if(!(cstr_version && cstr_os))
+                v_pEntries.push_back(pMemInfo);
+                const char *id;
+                if(id= pMemInfo->Attribute("id"))
                 {
-                    cerr << "Bad entry in memory.xml detected, version or os attribute is missing.";
-                    // skip if we don't have valid attributes
-                    continue;
+                    string str_id = id;
+                    map_pNamedEntries[str_id] = pMemInfo;
                 }
-                string os = cstr_os;
-                mem.setVersion(cstr_version);
-                mem.setOS(cstr_os);
-                //set base to default when undefined (0x400000 for windows 0x0 for linux), check os type
-                if(os == "windows")
-                {
-                    if(cstr_base)
-                        mem.setBase(cstr_base);
-                    else
-                        mem.setBase(0x400000);
-                }
-                else if(os == "linux")
-                {
-                    if(cstr_base)
-                        mem.setBase(cstr_base);
-                    else
-                        mem.setBase(0x0);
-                }
-                else
-                {
-                    cerr << "unknown operating system " << os << endl;
-                    continue;
-                }
-                // process additional entries
-                cout << "Entry " << cstr_version << " " <<  cstr_os << endl;
-                pMemEntry = pMemInfo->FirstChildElement()->ToElement();
-                for(;pMemEntry;pMemEntry=pMemEntry->NextSiblingElement())
-                {
-                    // only elements get processed
-                    if(pMemEntry->Type() == TiXmlNode::ELEMENT)
-                    {
-                        const char *cstr_type = pMemEntry->Value();
-                        const char *cstr_name = pMemEntry->Attribute("name");
-                        const char *cstr_value = pMemEntry->GetText();
-                        // check for missing parts
-                        string type, name, value;
-                        type = cstr_type;
-                        if(type != "VTable")
-                        {
-                            if( !(cstr_name && cstr_value))
-                            {
-                                cerr << "underspecified MemInfo entry" << endl;
-                                continue;
-                            }
-                            name = cstr_name;
-                            value = cstr_value;
-                            if (type == "HexValue")
-                            {
-                                mem.setHexValue(name, value);
-                            }
-                            else if (type == "Address")
-                            {
-                                mem.setAddress(name, value);
-                            }
-                            else if (type == "Offset")
-                            {
-                                mem.setOffset(name, value);
-                            }
-                            else if (type == "String")
-                            {
-                                mem.setString(name, value);
-                            }
-                            else
-                            {
-                                cerr << "Unknown MemInfo type: " << type << endl;
-                            }
-                        }
-                        else /* if (type == "VTable") */
-                        {
-                            ///FIXME: break the nested loops into more methods
-                            pClassEntry = pMemEntry->FirstChildElement();
-                            for(;pClassEntry;pClassEntry=pClassEntry->NextSiblingElement())
-                            {
-                                cstr_type = pClassEntry->Value();
-                                cstr_name = pClassEntry->Attribute("name");
-                                const char *cstr_vtable = pClassEntry->Attribute("vtable");
-                                type = cstr_type;
-                                name = cstr_name;
-                                string vtable = cstr_vtable;
-                                if(type== "class")
-                                {
-                                    mem.setClass(name, vtable);
-                                }
-                                else if (type == "multiclass")
-                                {
-                                    const char *cstr_typeoffset = pClassEntry->Attribute("typeoffset");
-                                    string typeoffset = cstr_typeoffset;
-                                    int mclass = mem.setMultiClass(name, vtable, typeoffset);
-                                    pClassSubEntry = pClassEntry->FirstChildElement();
-                                    for(;pClassSubEntry;pClassSubEntry=pClassSubEntry->NextSiblingElement())
-                                    {
-                                        cstr_type = pClassSubEntry->Value();
-                                        type = cstr_type;
-                                        if(type== "class")
-                                        {
-                                            cstr_name = pClassSubEntry->Attribute("name");
-                                            cstr_value = pClassSubEntry->Attribute("type");
-                                            name = cstr_name;
-                                            value = cstr_value;
-                                            mem.setMultiClassChild(mclass,name,value);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        //cout << type << " " << name << " = " << value << endl;
-                    }
-                }
-                // managed to get through all the hoops, push mem on vector
+            }
+            for(int i = 0; i< v_pEntries.size();i++)
+            {
+                memory_info mem;
+                ///FIXME: add a set of entries processed in a step of this cycle, use it to check for infinite loops
+                /* recursive */ParseEntry( v_pEntries[i] , mem , map_pNamedEntries);
                 meminfo.push_back(mem);
             }
+            // process found things here
         }
         return true;
     }

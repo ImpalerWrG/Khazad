@@ -9,6 +9,7 @@ typedef HANDLE ProcessHandle;
 
 class Process;
 class memory_info;
+class TiXmlElement;
 
 /// HACK: global variables (only one process can be attached at the same time.)
 extern Process * g_pProcess; ///< current process. non-NULL when picked
@@ -25,6 +26,8 @@ class ProcessManager
     ProcessHandle currentProcessHandle;
     std::vector<Process *> processes;
     bool loadDescriptors( string path_to_xml);
+    void ParseVTable(TiXmlElement* vtable, memory_info& mem);
+    void ParseEntry (TiXmlElement* entry, memory_info& mem, map <string ,TiXmlElement *>& knownEntries);
 #ifdef LINUX_BUILD
     Process* addProcess(string & exe,ProcessHandle PH);
 #endif

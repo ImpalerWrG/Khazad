@@ -82,7 +82,7 @@ bool ScreenManager::Init()
     else
     {
         // resizing is broken
-        ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL/* | SDL_RESIZABLE*/ );
+        ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
     }
 
     glViewport(0, 0, ScreenWidth, ScreenHight);
@@ -119,7 +119,7 @@ bool ScreenManager::Init()
 bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Hight)
 {
     // disabled until fixed.
-    return true;
+    //return true;
 
     ScreenWidth = Width;
     ScreenHight = Hight;
@@ -135,8 +135,9 @@ bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Hight)
     }
 
     // Will need full texture rebuild to work
-    //ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
-
+    ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
+    glViewport(0, 0, ScreenWidth, ScreenHight);
+    UI->updateSizing();
 
 	return true;
 }
@@ -518,7 +519,8 @@ void ScreenManager::IncrementTriangles(Uint32 Triangles)
 void ScreenManager::ToggleFullScreen()
 {
     FullScreen = !FullScreen;
-    if(FullScreen)
+    SDL_WM_ToggleFullScreen(ScreenSurface);
+    /*if(FullScreen)
     {
         ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_FULLSCREEN);
         glViewport(0, 0, ScreenWidth, ScreenHight);
@@ -526,12 +528,13 @@ void ScreenManager::ToggleFullScreen()
     else
     {
         // resizing is broken
-        ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL/* | SDL_RESIZABLE*/);
+        ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE);
         glViewport(0, 0, ScreenWidth, ScreenHight);
-    }
-    TEXTURE->FreeInstance();
+    }*/
+    // keeping this around fucks up textures for some reason
+    /*TEXTURE->FreeInstance();
 	TEXTURE->CreateInstance();
-	TEXTURE->Init();
+	TEXTURE->Init();*/
 }
 
 void ScreenManager::setDrawingFlat()
