@@ -69,8 +69,14 @@ public:
 	bool WipeScreen();
 	bool Flip();
 
-	Uint16 getWidth();
-	Uint16 getHight();
+	inline Uint16 getWidth()
+	{
+        return ScreenWidth;
+    };
+	inline Uint16 getHeight()
+	{
+        return 	ScreenHight;
+    };
 
 	void DirtyAllLists();
 	bool Render();

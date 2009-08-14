@@ -192,7 +192,7 @@ int main(int argv, char** argc)
             {
                 SDL_Rect position;
                 position.x = 10;
-                position.y = SCREEN->getHight() - 40;
+                position.y = SCREEN->getHeight() - 40;
 
                 sprintf (buffer, "FrameRate %i", FrameRate);
                 SCREEN->RenderText(buffer, 0, WHITE, &position);
@@ -208,7 +208,7 @@ int main(int argv, char** argc)
             {
                 SDL_Rect position;
                 position.x = 10;
-                position.y = SCREEN->getHight() - 40;
+                position.y = SCREEN->getHeight() - 40;
 
                 sprintf (buffer, "KHAZAD");
                 SCREEN->RenderText(buffer, 0, WHITE, &position);

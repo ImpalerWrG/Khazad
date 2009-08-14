@@ -20,6 +20,7 @@ public:
 
     gcn::ImageFont* font;
     gcn::Label* label;
+    gcn::Container* TopWidget;
 
     bool ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY);
     bool isWidgetCollision(gcn::Widget* TestWidget, Uint16 RealX, Uint16 RealY);
@@ -43,8 +44,6 @@ protected:
     void InitConfirmationWindow();
     void InitDepthSlider();
     void InitDepthSlider2();
-
-    gcn::Container* TopWidget;
 
     gcn::Window* CameraControlWindow;
     gcn::Window* MainMenuWindow;

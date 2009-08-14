@@ -17,7 +17,7 @@ bool Ui::Init()
     // Create a Top level Container
     TopWidget = new gcn::Container();
     TopWidget->setOpaque(false);
-    TopWidget->setDimension(gcn::Rectangle(0, 0, SCREEN->getWidth(), SCREEN->getHight()));
+    TopWidget->setDimension(gcn::Rectangle(0, 0, SCREEN->getWidth(), SCREEN->getHeight()));
     GuiChanMainObject->setTop(TopWidget);
 
     // Initializing
@@ -45,7 +45,7 @@ Ui::Ui()
     // making Guichan able to utilise OpenGL and SDL.
 
     GraphicsImplementation = new gcn::OpenGLGraphics();
-    GraphicsImplementation->setTargetPlane(SCREEN->getWidth(), SCREEN->getHight());
+    GraphicsImplementation->setTargetPlane(SCREEN->getWidth(), SCREEN->getHeight());
 
     Input = new gcn::SDLInput();
     GuiChanMainObject = new gcn::Gui();
@@ -230,7 +230,7 @@ void Ui::InitConfirmationWindow()
     ConfirmationWindow = new gcn::Window("CONFIRMATION");
     ConfirmationWindow->setSize(ButtonSize * 3 + 16, (ButtonSize * 2) + 16);
     TopWidget->add(ConfirmationWindow);
-    ConfirmationWindow->setPosition(SCREEN->getWidth() / 2 - ConfirmationWindow->getWidth() / 2, SCREEN->getHight() / 2 - ConfirmationWindow->getHeight() / 2);
+    ConfirmationWindow->setPosition(SCREEN->getWidth() / 2 - ConfirmationWindow->getWidth() / 2, SCREEN->getHeight() / 2 - ConfirmationWindow->getHeight() / 2);
     ConfirmationWindow->setVisible(false);
 
     gcn::ActionListener* ConfirmationListener = new ConfirmationHideListener();
@@ -271,7 +271,7 @@ void Ui::InitDepthSlider()
     DepthSlider->setOrientation(gcn::Slider::VERTICAL);
     TopWidget->add(DepthSlider);
 
-    DepthSlider->setSize(15, SCREEN->getHight());
+    DepthSlider->setSize(15, SCREEN->getHeight());
     DepthSlider->setPosition(SCREEN->getWidth() - 15, 0);
     DepthSlider->setValue(1.0);
 
@@ -286,7 +286,7 @@ void Ui::InitDepthSlider2()
     DepthSlider2->setOrientation(gcn::Slider::VERTICAL);
     TopWidget->add(DepthSlider2);
 
-    DepthSlider2->setSize(15, SCREEN->getHight());
+    DepthSlider2->setSize(15, SCREEN->getHeight());
     DepthSlider2->setPosition(SCREEN->getWidth() - 30, 0);
     DepthSlider2->setValue(0.0);
 
@@ -339,6 +339,7 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
            ||isWidgetCollision(CameraControlWindow, OriginX, OriginY)
            ||isWidgetCollision(ConfirmationWindow, OriginX, OriginY) )
         {
+            cout << "mouse down" << endl;
             Input->pushInput(event);
             guimousecapture = true;
             return true;
@@ -348,6 +349,7 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
     {
         if(guimousecapture == true)
         {
+            cout << "mouse up" << endl;
             guimousecapture = false;
             Input->pushInput(event);
             return true;
@@ -357,6 +359,7 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
     {
         if(guimousecapture == true)
         {
+            cout << "mouse moved" << endl;
             Input->pushInput(event);
             return true;
         }
@@ -367,11 +370,11 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
 
 void Ui::updateSizing()
 {
-    TopWidget->setDimension(gcn::Rectangle(0, 0, SCREEN->getWidth(), SCREEN->getHight()));
-    GraphicsImplementation->setTargetPlane(SCREEN->getWidth(), SCREEN->getHight());
-    DepthSlider2->setSize(15, SCREEN->getHight());
+    TopWidget->setDimension(gcn::Rectangle(0, 0, SCREEN->getWidth(), SCREEN->getHeight()));
+    GraphicsImplementation->setTargetPlane(SCREEN->getWidth(), SCREEN->getHeight());
+    DepthSlider2->setSize(15, SCREEN->getHeight());
     DepthSlider2->setPosition(SCREEN->getWidth() - 30, 0);
-    DepthSlider->setSize(15, SCREEN->getHight());
+    DepthSlider->setSize(15, SCREEN->getHeight());
     DepthSlider->setPosition(SCREEN->getWidth() - 15, 0);
     ///FIXME: move windows when viewport shrinks? Maybe make their position scale with the main window...
 }

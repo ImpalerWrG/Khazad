@@ -32,7 +32,7 @@ bool Camera::Init(bool Isometric)
 
 	if (Isometric)
 	{
-		setIsometricProj(SCREEN->getWidth(), SCREEN->getHight(), 1000000.0);
+		setIsometricProj(SCREEN->getWidth(), SCREEN->getHeight(), 1000000.0);
 		IsoMode = true;
 		Orientation = CAMERA_NORTH_WEST;
 //		ViewLevels = 1;

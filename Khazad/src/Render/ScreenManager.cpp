@@ -302,16 +302,6 @@ bool ScreenManager::Flip()
 	return true;
 }
 
-Uint16 ScreenManager::getWidth()
-{
-	return ScreenWidth;
-}
-
-Uint16 ScreenManager::getHight()
-{
-	return 	ScreenHight;
-}
-
 void ScreenManager::DirtyAllLists()
 {
     if(MAP == NULL || !MAP->isInitialized())
