@@ -357,12 +357,8 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
     }
     else if(event.type == SDL_MOUSEMOTION)
     {
-        if(guimousecapture == true)
-        {
-            cout << "mouse moved" << endl;
-            Input->pushInput(event);
-            return true;
-        }
+        Input->pushInput(event);
+        return guimousecapture;
     }
 
     return false; // Default not consumed

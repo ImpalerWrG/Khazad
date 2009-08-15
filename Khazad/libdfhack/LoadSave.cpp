@@ -19,16 +19,17 @@ bool DfMap::write(string FilePath)
         // gather information to fill dfmapheader
         strcpy(df_map_header.identifier, dmh_id);
         df_map_header.version = dmh_ver;
+        /*
         df_map_header.tile_block_count = blocks_allocated;
         df_map_header.x_block_count = getXBlocks();
         df_map_header.y_block_count = getYBlocks();
-        df_map_header.z_block_count = getZBlocks();
-        df_map_header.map_data_location = sizeof(DfMapHeader);
+        df_map_header.z_block_count = getZBlocks();*/
+        df_map_header.reserved = 0/*sizeof(DfMapHeader)*/;
 
         // save map header
         fwrite(&df_map_header, sizeof(DfMapHeader), 1, SaveFile);
         // save map
-        writeVersion2(SaveFile);
+        writeVersion1(SaveFile);
     }
 
 
@@ -77,6 +78,7 @@ bool DfMap::load(string FilePath)
     FILE *ToDecompress;
     FILE *Decompressed;
     DfMapHeader df_map_header;
+    bool isok = false;
 
     // open target file for writing
     Decompressed = fopen(DecompressedFilePath.c_str(), "wb");
@@ -142,14 +144,15 @@ bool DfMap::load(string FilePath)
          * Saved from version 0.0.5
          */
         case 1:
-            loadVersion1(Decompressed, df_map_header);
+            isok = loadVersion1(Decompressed, df_map_header);
             break;
         /*
          * Newer format
          * Saved from version 0.0.6
          */
         case 2:
-            loadVersion2(Decompressed, df_map_header);
+            //isok = loadVersion2(Decompressed, df_map_header);
+            isok = false;
             break;
         default:
             printf("Unknown Khazad map file version(%3d).\n", df_map_header.version);
@@ -158,6 +161,6 @@ bool DfMap::load(string FilePath)
     // close reopened file
     fclose(Decompressed);
     // and delete it
-    remove(DecompressedFilePath.c_str());
-    return true;
+    //remove(DecompressedFilePath.c_str());
+    return isok;
 }

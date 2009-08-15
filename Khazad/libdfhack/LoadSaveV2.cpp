@@ -2,7 +2,7 @@
 #include "DfMap.h"
 #include "DfMapHeader.h"
 #include "ZlibHelper.h"
-
+/*
 bool DfMap::loadMatgloss2(FILE * Decompressed)
 {
     char buffer [256];
@@ -24,7 +24,7 @@ bool DfMap::loadBlocks2(FILE * Decompressed,DfMapHeader & h)
     uint32_t numveins;
     t_vein vein;
 
-    for (uint32_t tile_block = 0U; tile_block < h.tile_block_count; ++tile_block)
+//    for (uint32_t tile_block = 0U; tile_block < h.tile_block_count; ++tile_block)
     {
         fread(&x, sizeof(uint32_t), 1, Decompressed);
         fread(&y, sizeof(uint32_t), 1, Decompressed);
@@ -66,16 +66,27 @@ bool DfMap::loadRegion2(FILE * Decompressed)
 }
 bool DfMap::loadVersion2(FILE * Decompressed,DfMapHeader & h)
 {
+    return false;
+
+    uint32_t tile_block_count; // how many tile blocks to read from the data location
+
+    //uint32_t x_block_count, y_block_count, z_block_count; // DF's map block count
+
+    fread(&tile_block_count, sizeof(uint32_t), 1, Decompressed);
+    fread(&x_block_count, sizeof(uint32_t), 1, Decompressed);
+    fread(&y_block_count, sizeof(uint32_t), 1, Decompressed);
+    fread(&z_block_count, sizeof(uint32_t), 1, Decompressed);
+
     // load new size information
-    x_block_count = h.x_block_count;
-    y_block_count = h.y_block_count;
-    z_block_count = h.z_block_count;
+    //x_block_count = h.x_block_count;
+    //y_block_count = h.y_block_count;
+    //z_block_count = h.z_block_count;
     // make sure those size variables are in sync
     updateCellCount();
     // alloc new space for our new size
     allocBlockArray(x_block_count,y_block_count,z_block_count);
 
-    fseek(Decompressed, h.map_data_location, SEEK_SET);
+//    fseek(Decompressed, h.map_data_location, SEEK_SET);
 
     // read matgloss vector
     loadMatgloss2(Decompressed);
@@ -158,3 +169,4 @@ bool DfMap::writeVersion2(FILE * SaveFile)
     writeBlocks2(SaveFile);
     return true;
 }
+*/

@@ -255,7 +255,7 @@ private:
     void updateCellCount();
 
     bool loadVersion1(FILE * Decompressed,DfMapHeader & h);
-//    bool writeVersion1(FILE * SaveFile);
+    bool writeVersion1(FILE * SaveFile);
 
     bool loadMatgloss2(FILE * Decompressed);
     bool loadBlocks2(FILE * Decompressed,DfMapHeader & h);

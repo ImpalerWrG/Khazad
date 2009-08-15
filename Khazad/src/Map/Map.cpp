@@ -497,9 +497,9 @@ Uint32 Map::PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ)
     static Uint16 Layer2 = DATA->getLabelIndex("MATERIAL_SMOOTH_LAYER_STONE");
     static Uint16 Layer3 = DATA->getLabelIndex("MATERIAL_ROUGH_STONE");
 
+    Uint16 TileTexture = TilePicker[TileType];
     if(mat.type == Mat_Stone)
     {
-        Uint16 TileTexture = TilePicker[TileType];
         Uint16 MatGlossTexture = StoneMatGloss[mat.index];
     //    bool IsFloor = df_map->isFloorTerrain(TileType);
         //bool IsWall = df_map->isWallTerrain(TileType);
@@ -525,14 +525,22 @@ Uint32 Map::PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ)
             }
         }
         // use tile texture otherwise
-        if(TileType != -1)
+        if(TileType != 65535)
         {
             return TileTexture;
         }
         // fallback for undefined values of tile types and matgloss
-
+        return Unknown;
     }
-    return Unknown;
+    // matgloss not loaded -> use tile texture
+    else if(mat.type == 65535)
+    {
+        return TileTexture;
+    }
+    else
+    {
+        return Unknown;
+    }
 }
 
 void Map::BuildVertexArray()

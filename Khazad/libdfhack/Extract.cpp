@@ -79,7 +79,7 @@ bool Extractor::dumpMemory( string path_to_xml)
     int constructions = offset_descriptor->getAddress("constructions");
     // buildings
     int buildings = offset_descriptor->getAddress("buildings");
-    /// TODO: what about stockpiles and other designated areas?
+    /// TODO: what about building shape and orientation?
 
     // matgloss
     int matgloss_address = offset_descriptor->getAddress("matgloss");

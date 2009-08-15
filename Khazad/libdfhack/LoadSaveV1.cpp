@@ -6,18 +6,22 @@
 bool DfMap::loadVersion1(FILE * Decompressed,DfMapHeader & h)
 {
     uint32_t x, y, z;
+
+    uint32_t tile_block_count; // how many tile blocks to read from the data location
+
+    /// LOAD v1 BLOCKS
+
+    fread(&tile_block_count, sizeof(uint32_t), 1, Decompressed);
+    fread(&x_block_count, sizeof(uint32_t), 1, Decompressed);
+    fread(&y_block_count, sizeof(uint32_t), 1, Decompressed);
+    fread(&z_block_count, sizeof(uint32_t), 1, Decompressed);
     // load new size information
-    x_block_count = h.x_block_count;
-    y_block_count = h.y_block_count;
-    z_block_count = h.z_block_count;
     // make sure those size variables are in sync
     updateCellCount();
     // alloc new space for our new size
     allocBlockArray(x_block_count,y_block_count,z_block_count);
 
-    fseek(Decompressed, h.map_data_location, SEEK_SET);
-
-    for (uint32_t tile_block = 0U; tile_block < h.tile_block_count; ++tile_block)
+    for (uint32_t tile_block = 0U; tile_block < tile_block_count; ++tile_block)
     {
         fread(&x, sizeof(uint32_t), 1, Decompressed);
         fread(&y, sizeof(uint32_t), 1, Decompressed);
@@ -33,16 +37,20 @@ bool DfMap::loadVersion1(FILE * Decompressed,DfMapHeader & h)
         memset(b->RegionOffsets,eHere,sizeof(b->RegionOffsets));
     }
 
-    printf("Blocks read into memory: %d\n", h.tile_block_count);
+    printf("Blocks read into memory: %d\n", tile_block_count);
     return true;
 }
 
 // DEPRECATED
-/*
+
 bool DfMap::writeVersion1(FILE * SaveFile)
 {
     uint32_t x, y, z;
-
+    /// SAVE v1 BLOCKS
+    fwrite(&blocks_allocated, sizeof(uint32_t), 1, SaveFile);
+    fwrite(&x_block_count, sizeof(uint32_t), 1, SaveFile);
+    fwrite(&y_block_count, sizeof(uint32_t), 1, SaveFile);
+    fwrite(&z_block_count, sizeof(uint32_t), 1, SaveFile);
     for (x = 0; x < x_block_count; x++ )
     {
         for (y = 0; y < y_block_count; y++ )
@@ -66,4 +74,4 @@ bool DfMap::writeVersion1(FILE * SaveFile)
     }
     return true;
 }
-*/
+
