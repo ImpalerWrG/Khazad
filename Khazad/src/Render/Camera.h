@@ -185,7 +185,8 @@ public:
 	* on the mouse's motion (if need be)
 	* @param pEvent - the SDL_Event structure containing the mouse events
 	*/
-	virtual void onMouseEvent(SDL_Event* pEvent, Sint32 RelativeX, Sint32 RelativeY);
+	//virtual void onMouseEvent(SDL_Event* pEvent, Sint32 RelativeX, Sint32 RelativeY);
+	void onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY, Uint8 *Keystate, Uint8 MouseButtonState, int RealX, int RealY);
 
 	/**
 	* This method every time events are polled to do the screen edge scroll

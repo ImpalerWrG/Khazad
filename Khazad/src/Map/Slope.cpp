@@ -283,13 +283,68 @@ bool Slope::Draw(float xTranslate, float yTranslate)
 
         // assign high center only to slopes with one strong corner
 
+        // ugly, faster
+        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
+        glVertex3f( xTranslate,  yTranslate, heights[8]);
+        TEXTURE->BindTexturePoint(Texture, 0,0);
+        glVertex3f(-0.5f + xTranslate, -0.5f+ yTranslate, heights[0]);
+        TEXTURE->BindTexturePoint(Texture, 0,0.5);
+        glVertex3f(-0.5f + xTranslate,  0.0f+ yTranslate, heights[7]);
 
+        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
+        glVertex3f( xTranslate,  yTranslate, heights[8]);
+        TEXTURE->BindTexturePoint(Texture, 0,0.5);
+        glVertex3f(-0.5f + xTranslate,  0.0f+ yTranslate, heights[7]);
+        TEXTURE->BindTexturePoint(Texture, 0,1);
+        glVertex3f(-0.5f + xTranslate,  0.5f+ yTranslate, heights[6]);
 
+        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
+        glVertex3f( xTranslate,  yTranslate, heights[8]);
+        TEXTURE->BindTexturePoint(Texture, 0,1);
+        glVertex3f(-0.5f + xTranslate,  0.5f+ yTranslate, heights[6]);
+        TEXTURE->BindTexturePoint(Texture, 0.5,1);
+        glVertex3f( 0.0f + xTranslate,  0.5f+ yTranslate, heights[5]);
+
+        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
+        glVertex3f( xTranslate,  yTranslate, heights[8]);
+        TEXTURE->BindTexturePoint(Texture, 0.5,1);
+        glVertex3f( 0.0f + xTranslate,  0.5f+ yTranslate, heights[5]);
+        TEXTURE->BindTexturePoint(Texture, 1,1);
+        glVertex3f( 0.5f + xTranslate,  0.5f+ yTranslate, heights[4]);
+
+        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
+        glVertex3f( xTranslate,  yTranslate, heights[8]);
+        TEXTURE->BindTexturePoint(Texture, 1,1);
+        glVertex3f( 0.5f + xTranslate,  0.5f+ yTranslate, heights[4]);
+        TEXTURE->BindTexturePoint(Texture, 1,0.5);
+        glVertex3f( 0.5f + xTranslate,  0.0f+ yTranslate, heights[3]);
+
+        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
+        glVertex3f( xTranslate,  yTranslate, heights[8]);
+        TEXTURE->BindTexturePoint(Texture, 1,0.5);
+        glVertex3f( 0.5f + xTranslate,  0.0f+ yTranslate, heights[3]);
+        TEXTURE->BindTexturePoint(Texture, 1,0);
+        glVertex3f( 0.5f + xTranslate, -0.5f+ yTranslate, heights[2]);
+
+        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
+        glVertex3f( xTranslate,  yTranslate, heights[8]);
+        TEXTURE->BindTexturePoint(Texture, 1,0);
+        glVertex3f( 0.5f + xTranslate, -0.5f+ yTranslate, heights[2]);
+        TEXTURE->BindTexturePoint(Texture, 0.5,0);
+        glVertex3f( 0.0f + xTranslate, -0.5f+ yTranslate, heights[1]);
+
+        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
+        glVertex3f( xTranslate,  yTranslate, heights[8]);
+        TEXTURE->BindTexturePoint(Texture, 0.5,0);
+        glVertex3f( 0.0f + xTranslate, -0.5f+ yTranslate, heights[1]);
+        TEXTURE->BindTexturePoint(Texture, 0,0);
+        glVertex3f(-0.5f + xTranslate, -0.5f+ yTranslate, heights[0]);
+/// this bad boy eats FPS like the Ravenous Bugblatter Beast of Traal
+/*
         glEnd(); // end GL_TRIANGLES
         glBegin(GL_TRIANGLE_FAN);     	// draw a fan of triangles
         TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
         glVertex3f( xTranslate,  yTranslate, heights[8]);
-
         TEXTURE->BindTexturePoint(Texture, 0,0);
         glVertex3f(-0.5f + xTranslate, -0.5f+ yTranslate, heights[0]);
         TEXTURE->BindTexturePoint(Texture, 0,0.5);
@@ -311,7 +366,7 @@ bool Slope::Draw(float xTranslate, float yTranslate)
 
         glEnd();
         glBegin(GL_TRIANGLES);
-
+*/
         // fill in empty spaces if any. another ugly hack :D
         ///TODO: use matrix manipulation to reduce code multiplication
         if(!NorthSolid && !NorthSlope)

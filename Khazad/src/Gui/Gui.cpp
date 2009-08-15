@@ -315,7 +315,6 @@ Ui::~Ui()
     delete GraphicsImplementation;
 }
 
-/// FIXME: this doesn't work right because mouse input events are somehow dropped. kinda sucks. FIX IT!
 bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
 {
     // does the GUI hold the mouse?

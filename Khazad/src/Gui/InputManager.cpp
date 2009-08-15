@@ -36,8 +36,12 @@ bool InputManager::HandleInput()
     {
         return true;  // End Program
     }
-
 	SDL_Event event;
+
+	// moved from camera input handler to avoid excess calls to those things
+    Uint8* Keystate = SDL_GetKeyState(NULL);
+    int RealX, RealY;
+    Uint8 MouseButtonState = SDL_GetMouseState(&RealX, &RealY);
 
 	while(SDL_PollEvent(&event)) // Poll events
 	{
@@ -68,7 +72,7 @@ bool InputManager::HandleInput()
                     //}
                     case SDLK_F1:
                     {
-                        SCREEN->ToggleFullScreen();  //TODO dose not work??
+                        SCREEN->ToggleFullScreen();
                         break;
                     }
                     case SDLK_RIGHT:
@@ -173,15 +177,20 @@ bool InputManager::HandleInput()
 				break;
 			}
 		}
-
-		if (true) // check if the camera has focus??
-		{
+		//if (SCREEN->MainCamera->hasFocus())
+		//{
 			if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)
 			{
-				SCREEN->MainCamera->onMouseEvent(&event, RelativeX, RelativeY);
-				break;
+				SCREEN->MainCamera->onMouseEvent(&event, RelativeX, RelativeY,Keystate, MouseButtonState,RealX,RealY);
 			}
-		}
+		//}
+		/*else
+		{
+		    if (event.type == SDL_MOUSEBUTTONDOWN)
+		    {
+		        SCREEN->MainCamera->onMouseEvent(&event, RelativeX, RelativeY,Keystate, MouseButtonState,RealX,RealY);
+		    }
+		}*/
 	}
 
 	//SCREEN->MainCamera->onMousePoll(); // Check for edge scrolling even without events

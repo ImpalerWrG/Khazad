@@ -216,13 +216,8 @@ bool Camera::DetermineCursorIntersection()
     return false;
 }
 
-void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY)
+void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY, Uint8 *Keystate, Uint8 MouseButtonState, int RealX, int RealY)
 {
-    Uint8* Keystate = SDL_GetKeyState(NULL);
-
-    int RealX, RealY;
-    Uint8 MouseButtonState = SDL_GetMouseState(&RealX, &RealY);
-
     float DeltaX = (float)RelativeX;
     float DeltaY = (float)RelativeY;
 
