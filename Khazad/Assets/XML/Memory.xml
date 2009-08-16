@@ -306,7 +306,7 @@
 		<Address name="matgloss">0x015FCE3C</Address>
 		<HexValue name="matgloss_skip">0x18</HexValue>
     </Entry>
-    <Entry version="v0.28.181.40d13" os="windows">
+    <Entry version="v0.28.181.40d13" os="windows" id="40d13win">
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x4A51C26E</HexValue>
 		<String name="md5">04a8d8ce311d8ac75e4241bef68d3147</String>
@@ -351,6 +351,11 @@
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x01601ECC</Address>
 		<HexValue name="matgloss_skip">0x18</HexValue>
+    </Entry>
+    <Entry version="v0.28.181.40d14" os="windows" base="40d13win" rebase="0x2010">
+		<!-- identification -->
+		<HexValue name="pe_timestamp">0x4A8623D2</HexValue>
+		<String name="md5">781a2e51be4056a7320108f8f0df8a13</String>
     </Entry>
     <!-- Linux 40d## versions -->
     <Entry version="v0.28.181.40d9" os="linux">
@@ -592,7 +597,7 @@
 		<Address name="matgloss">0x08F97A84</Address>
 		<HexValue name="matgloss_skip">0xC</HexValue>
     </Entry>
-    <Entry version="v0.28.181.40d13" os="linux">
+    <Entry version="v0.28.181.40d13" os="linux" id="40d13lin">
 		<!-- identification -->
 		<String name="md5">2f3cb9d720e9fe8844c02c72a2b20bbd</String>
 		
@@ -640,6 +645,10 @@
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x08F9CAA4</Address>
 		<HexValue name="matgloss_skip">0xC</HexValue>
+    </Entry>
+    <Entry version="v0.28.181.40d14" os="linux" base="40d13lin">
+		<!-- identification -->
+		<String name="md5">dab3ce6bc074529706a1e5fe1273108c</String>
     </Entry>
   </MemoryDescriptors>
 </DFExtractor>

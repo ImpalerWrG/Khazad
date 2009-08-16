@@ -700,6 +700,9 @@ void ScreenManager::PrintDebugging()
                 case 19:
                 typestr = "potash";
                 break;
+                case 20:
+                typestr = "ashes";
+                break;
                 case 21:
                 typestr = "pearlash";
                 break;
@@ -759,6 +762,9 @@ void ScreenManager::PrintDebugging()
                 break;
                 case 19:
                 typestr = "potash";
+                break;
+                case 20:
+                typestr = "ashes";
                 break;
                 case 21:
                 typestr = "pearlash";

@@ -273,6 +273,7 @@ void ProcessManager::ParseEntry (TiXmlElement* entry, memory_info& mem, map <str
     const char *cstr_version = entry->Attribute("version");
     const char *cstr_os = entry->Attribute("os");
     const char *cstr_base = entry->Attribute("base");
+    const char *cstr_rebase = entry->Attribute("rebase");
     if(cstr_base)
     {
         string base = cstr_base;
@@ -353,6 +354,12 @@ void ProcessManager::ParseEntry (TiXmlElement* entry, memory_info& mem, map <str
             cerr << "Unknown MemInfo type: " << type << endl;
         }
     } // for
+    int32_t rebase = 0;
+    if(cstr_rebase)
+    {
+        rebase = mem.getBase() + strtol(cstr_rebase, NULL, 16);
+        mem.Rebase(rebase);
+    }
 } // method
 
 
