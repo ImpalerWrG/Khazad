@@ -64,12 +64,14 @@ bool ScreenManager::Init()
 
     //SDL_Surface* Icon = SDL_LoadBMP("Assets\\Textures\\Khazad_Icon.bmp");
     SDL_Surface* Icon = NULL;
-    Icon = SDL_LoadBMP(Path("Assets\\Textures\\KIcon.bmp"));
+    //Icon = SDL_LoadBMP(Path("Assets\\Textures\\KIcon.bmp"));
+    Icon = IMAGE->loadSurface(Path("Assets\\Textures\\KIcon.png"));
 
     if(Icon)
     {
-        Uint32 colorkey = SDL_MapRGB(Icon->format, 255, 0, 255);
-        SDL_SetColorKey(Icon, SDL_SRCCOLORKEY, colorkey);
+        //Uint32 colorkey = SDL_MapRGB(Icon->format, 255, 0, 255);
+        //SDL_SetColorKey(Icon, SDL_SRCCOLORKEY, colorkey);
+        //SDL_SetAlpha(Icon, SDL_SRCALPHA, 255);
         SDL_WM_SetIcon(Icon, NULL);
     }
 
@@ -96,12 +98,12 @@ bool ScreenManager::Init()
 	glEnable(GL_LINE_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
 
-    //glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE); // force proper vertex ordering or suffer holes in geometry ;)
 
     glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-	glDepthFunc(GL_LEQUAL);
+	glDepthFunc(/*GL_LEQUAL*/ GL_LESS); // show me those walls under floors. yes.
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
     imageLoader = new gcn::OpenGLSDLImageLoader();
