@@ -39,7 +39,12 @@ bool Camera::Init(bool Isometric)
 	}
 	else
 	{
+	    /*
 		setPerspectiveProj(45.0, 1.0, 10000000.0);
+		*/
+		IsoMode = false;
+		Orientation = CAMERA_NORTH_WEST;
+		setPerspectiveProj(SCREEN->getWidth() / SCREEN->getHeight(), 0.01, 1000);
 	}
 	return true;
 }
@@ -54,7 +59,7 @@ void Camera::setPerspectiveProj( float fAspect, float Zmin, float Zmax )
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	gluPerspective(45.0f, fAspect, Zmin, Zmax);
+	gluPerspective(90.0f, fAspect, Zmin, Zmax);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -286,7 +291,7 @@ void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY, 
 		{
 			if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_MIDDLE))
 			{
-				TiltView(DeltaY *  (CONFIG->TiltSpeed() / 1000.0), (float)0.01, (float)10.0);
+				TiltView(DeltaY *  (CONFIG->TiltSpeed() / 1000.0), 0.01f, 10.0f);
 				OrbitView(DeltaX * (CONFIG->OrbitSpeed() / 10000.0));
 
 				generateViewFrustum();

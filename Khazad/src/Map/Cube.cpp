@@ -723,10 +723,58 @@ void Cube::Dig()
             }
         }
     }
-
-    if(Slopage)
+    else if(Slopage)
     {
         RemoveSlope();
         InitFace(FACET_BOTTOM);
+        for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+        {
+            if(DirectionType != DIRECTION_DOWN)
+            {
+                Cube* NeiborCube = getNeiborCube(DirectionType);
+                NeiborCube->getCellOwner()->setDirtyDrawList(true);
+            }
+        }
+    }
+    else if(!Solid && !Slopage)
+    {
+        DeleteFace(FACET_BOTTOM);
+        Cube * LowerCube = getNeiborCube(DIRECTION_DOWN);
+        getCellOwner()->setDirtyDrawList(true);
+        if(LowerCube)
+        {
+            for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+            {
+                Cube* NeiborCube = LowerCube->getNeiborCube(DirectionType);
+
+                if(NeiborCube != NULL && NeiborCube->isHidden())
+                {
+                    NeiborCube->setHidden(false);
+                    NeiborCube->getCellOwner()->setDirtyDrawList(true);
+                }
+
+                if(NeiborCube != NULL && NeiborCube->isSolid())
+                {
+                    NeiborCube->InitFacesSolid();
+                    NeiborCube->getCellOwner()->setDirtyDrawList(true);
+                }
+            }
+        }
+        for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+        {
+            Cube* NeiborCube = getNeiborCube(DirectionType);
+
+            if(NeiborCube != NULL && NeiborCube->isHidden())
+            {
+                NeiborCube->setHidden(false);
+                NeiborCube->getCellOwner()->setDirtyDrawList(true);
+            }
+
+            if(NeiborCube != NULL && NeiborCube->isSolid())
+            {
+                NeiborCube->InitFacesSolid();
+                NeiborCube->getCellOwner()->setDirtyDrawList(true);
+            }
+        }
     }
 }

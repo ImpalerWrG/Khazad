@@ -323,7 +323,7 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
     {
         return false; // Not consumed in the UI
     }
-    if(event.type == SDL_MOUSEBUTTONDOWN)
+    if(event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
     {
         Sint32 RealX;
         Sint32 RealY;
@@ -344,7 +344,7 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
             return true;
         }
     }
-    else if(event.type == SDL_MOUSEBUTTONUP)
+    else if(event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT)
     {
         if(guimousecapture == true)
         {
@@ -356,6 +356,7 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
     }
     else if(event.type == SDL_MOUSEMOTION)
     {
+        // guichan internal mouse position has to be always updated no matter what.
         Input->pushInput(event);
         return guimousecapture;
     }

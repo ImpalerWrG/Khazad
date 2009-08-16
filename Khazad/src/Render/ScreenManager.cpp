@@ -510,9 +510,9 @@ void ScreenManager::IncrementTriangles(Uint32 Triangles)
 
 void ScreenManager::ToggleFullScreen()
 {
+//    if(SDL_WM_ToggleFullScreen(ScreenSurface))
     FullScreen = !FullScreen;
-    SDL_WM_ToggleFullScreen(ScreenSurface);
-    /*if(FullScreen)
+    if(FullScreen)
     {
         ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_FULLSCREEN);
         glViewport(0, 0, ScreenWidth, ScreenHight);
@@ -522,7 +522,7 @@ void ScreenManager::ToggleFullScreen()
         // resizing is broken
         ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE);
         glViewport(0, 0, ScreenWidth, ScreenHight);
-    }*/
+    }
     // keeping this around fucks up textures for some reason
     /*TEXTURE->FreeInstance();
 	TEXTURE->CreateInstance();
@@ -754,7 +754,7 @@ void ScreenManager::PrintDebugging()
                 case 15: // crystal glass
                 typestr = "crystal glass";
                 break;
-                case 17: // crystal glass
+                case 17:
                 typestr = "ice";
                 break;
                 case 18:
