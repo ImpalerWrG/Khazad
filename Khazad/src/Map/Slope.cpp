@@ -191,10 +191,11 @@ bool Slope::Update()
 
 /// TODO: normal vectors. these are required for lighting
 /// TODO: separate this from khazad, use for mesh generation
+/// FIXME: waste of CPU cycles
 bool Slope::Draw(float xTranslate, float yTranslate)
 {
     if(!Visible) return false;
-    /*
+    /**
      * heightmap. order is from nort-west to north-west, clockwise. hm[9] is the center
      *  0=8--1---2
      *  |   |   |

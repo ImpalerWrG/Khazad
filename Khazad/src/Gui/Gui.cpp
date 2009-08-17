@@ -323,7 +323,7 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
     {
         return false; // Not consumed in the UI
     }
-    if(event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
+    if(event.type == SDL_MOUSEBUTTONDOWN)
     {
         Sint32 RealX;
         Sint32 RealY;
@@ -331,17 +331,37 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
 
         Sint32 OriginX = RealX - RelativeX;
         Sint32 OriginY = RealY - RelativeY;
-
-        if(  isWidgetCollision(DepthSlider, OriginX, OriginY)
-           ||isWidgetCollision(DepthSlider2, OriginX, OriginY)
-           ||isWidgetCollision(MainMenuWindow, OriginX, OriginY)
-           ||isWidgetCollision(CameraControlWindow, OriginX, OriginY)
-           ||isWidgetCollision(ConfirmationWindow, OriginX, OriginY) )
+        if( event.button.button == SDL_BUTTON_LEFT )
         {
-            cout << "mouse down" << endl;
-            Input->pushInput(event);
-            guimousecapture = true;
-            return true;
+            if(  isWidgetCollision(DepthSlider, OriginX, OriginY)
+               ||isWidgetCollision(DepthSlider2, OriginX, OriginY)
+               ||isWidgetCollision(MainMenuWindow, OriginX, OriginY)
+               ||isWidgetCollision(CameraControlWindow, OriginX, OriginY)
+               ||isWidgetCollision(ConfirmationWindow, OriginX, OriginY) )
+            {
+                cout << "mouse down" << endl;
+                Input->pushInput(event);
+                guimousecapture = true;
+                return true;
+            }
+        }
+        else if(event.button.button == SDL_BUTTON_WHEELDOWN)
+        {
+             if(  isWidgetCollision(DepthSlider, OriginX, OriginY)
+               ||isWidgetCollision(DepthSlider2, OriginX, OriginY))
+               {
+                    SCREEN->MainCamera->ChangeViewLevel(-1);
+                    return true;
+               }
+        }
+        else if(event.button.button == SDL_BUTTON_WHEELUP)
+        {
+            if(  isWidgetCollision(DepthSlider, OriginX, OriginY)
+               ||isWidgetCollision(DepthSlider2, OriginX, OriginY))
+               {
+                    SCREEN->MainCamera->ChangeViewLevel(1);
+                    return true;
+               }
         }
     }
     else if(event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT)

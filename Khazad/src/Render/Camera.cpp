@@ -738,7 +738,6 @@ void Camera::ChangeViewLevel(Sint32 Change)
         }
         SliceA += Change;
         SliceB += Change;
-        ///FIXME: reflect change in GUI
         SliceTop = max(SliceA, SliceB);
         SliceBottom = min(SliceA, SliceB);
         ViewLevels = abs(SliceA - SliceB) + 1;
