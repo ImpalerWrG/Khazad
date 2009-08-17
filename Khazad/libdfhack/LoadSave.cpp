@@ -161,6 +161,6 @@ bool DfMap::load(string FilePath)
     // close reopened file
     fclose(Decompressed);
     // and delete it
-    //remove(DecompressedFilePath.c_str());
+    remove(DecompressedFilePath.c_str());
     return isok;
 }

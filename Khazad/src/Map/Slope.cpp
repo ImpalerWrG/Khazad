@@ -187,285 +187,174 @@ bool Slope::Update()
     return true;
 }
 
-/// TODO: terrible... just terrible. needs better algo and refactor of the surrounding classes. but it works. best to move it out of the way somewhere and make it create an instantiated VBO
+
+
 /// TODO: normal vectors. these are required for lighting
-/// TODO: document, scan and clean up notes
+/// TODO: separate this from khazad, use for mesh generation
 bool Slope::Draw(float xTranslate, float yTranslate)
 {
-    if(Visible)
+    if(!Visible) return false;
+    /*
+     * heightmap. order is from nort-west to north-west, clockwise. hm[9] is the center
+     *  0=8--1---2
+     *  |   |   |
+     *  7---9---3
+     *  |   |   |
+     *  6---5---4
+     */
+    uint8_t hm[10] = {0,0,0,0,0,0,0,0,0,1};
+    float hmf[10];// same in float
+
+    uint8_t covered[4] = {0,0,0,0}; // view of a side blocked by geometry?
+
+    // coordinates of the directions... fixed for spillover at the end of the loop
+    const float dc[9][2] =
     {
-        // how many strong corners?
-        int numStrong = 0;
-        bool NorthEastSolid = Owner->getNeiborCube(DIRECTION_NORTHEAST) != NULL && Owner->getNeiborCube(DIRECTION_NORTHEAST)->isSolid();
-        bool SouthEastSolid = Owner->getNeiborCube(DIRECTION_SOUTHEAST) != NULL && Owner->getNeiborCube(DIRECTION_SOUTHEAST)->isSolid();
-        bool NorthWestSolid = Owner->getNeiborCube(DIRECTION_NORTHWEST) != NULL && Owner->getNeiborCube(DIRECTION_NORTHWEST)->isSolid();
-        bool SouthWestSolid = Owner->getNeiborCube(DIRECTION_SOUTHWEST) != NULL && Owner->getNeiborCube(DIRECTION_SOUTHWEST)->isSolid();
-        bool NorthSolid = Owner->getNeiborCube(DIRECTION_NORTH) != NULL && Owner->getNeiborCube(DIRECTION_NORTH)->isSolid();
-        bool SouthSolid = Owner->getNeiborCube(DIRECTION_SOUTH) != NULL && Owner->getNeiborCube(DIRECTION_SOUTH)->isSolid();
-        bool WestSolid = Owner->getNeiborCube(DIRECTION_WEST) != NULL && Owner->getNeiborCube(DIRECTION_WEST)->isSolid();
-        bool EastSolid = Owner->getNeiborCube(DIRECTION_EAST) != NULL && Owner->getNeiborCube(DIRECTION_EAST)->isSolid();
-        // number of solids - only if slope has one adjacent solid tile it has a weak center point
-        int numSolids = NorthEastSolid + SouthEastSolid + NorthWestSolid + SouthWestSolid + NorthSolid + SouthSolid + WestSolid + EastSolid;
+        {-0.5,-0.5},
+        {0   ,-0.5},
+        {0.5 ,-0.5},
+        {0.5 ,0},
+        {0.5 ,0.5},
+        {0   ,0.5},
+        {-0.5,0.5},
+        {-0.5,0},
+        {-0.5,-0.5}
+    };
+    uint8_t strong, weak, numsolids = 0;
 
-        bool NorthEastSlope = Owner->getNeiborCube(DIRECTION_NORTHEAST) != NULL && Owner->getNeiborCube(DIRECTION_NORTHEAST)->getSlope();
-        bool SouthEastSlope = Owner->getNeiborCube(DIRECTION_SOUTHEAST) != NULL && Owner->getNeiborCube(DIRECTION_SOUTHEAST)->getSlope();
-        bool NorthWestSlope = Owner->getNeiborCube(DIRECTION_NORTHWEST) != NULL && Owner->getNeiborCube(DIRECTION_NORTHWEST)->getSlope();
-        bool SouthWestSlope = Owner->getNeiborCube(DIRECTION_SOUTHWEST) != NULL && Owner->getNeiborCube(DIRECTION_SOUTHWEST)->getSlope();
-        bool NorthSlope = Owner->getNeiborCube(DIRECTION_NORTH) != NULL && Owner->getNeiborCube(DIRECTION_NORTH)->getSlope();
-        bool SouthSlope = Owner->getNeiborCube(DIRECTION_SOUTH) != NULL && Owner->getNeiborCube(DIRECTION_SOUTH)->getSlope();
-        bool WestSlope = Owner->getNeiborCube(DIRECTION_WEST) != NULL && Owner->getNeiborCube(DIRECTION_WEST)->getSlope();
-        bool EastSlope = Owner->getNeiborCube(DIRECTION_EAST) != NULL && Owner->getNeiborCube(DIRECTION_EAST)->getSlope();
+    // copy surroundings
+    for(Direction i = DIRECTION_NORTHWEST; i <= DIRECTION_WEST; ++i)
+    {
+        bool solid = Owner->getNeiborCube(i) != NULL && Owner->getNeiborCube(i)->isSolid();
+        hm[i] = solid << 1;
+        numsolids += solid;
+    }
 
-        float heights[9];
-        heights[0] = -0.5; // top left
-        heights[1] = -0.5; // top
-        heights[2] = -0.5; // top right
-        heights[3] = -0.5; // right
-        heights[4] = -0.5; // bottom right
-        heights[5] = -0.5; // bottom
-        heights[6] = -0.5; // bottom left
-        heights[7] = -0.5; // left
+    // test for covered and uncovered sides
+    covered[0] = hm[1] || Owner->getNeiborCube(DIRECTION_NORTH) != NULL && Owner->getNeiborCube(DIRECTION_NORTH)->getSlope();
+    covered[1] = hm[3] || Owner->getNeiborCube(DIRECTION_EAST) != NULL && Owner->getNeiborCube(DIRECTION_EAST)->getSlope();
+    covered[2] = hm[5] || Owner->getNeiborCube(DIRECTION_SOUTH) != NULL && Owner->getNeiborCube(DIRECTION_SOUTH)->getSlope();
+    covered[3] = hm[7] || Owner->getNeiborCube(DIRECTION_WEST) != NULL && Owner->getNeiborCube(DIRECTION_WEST)->getSlope();
 
-        // corner points
-        if(NorthWestSolid || NorthSolid || WestSolid) heights[0] = 0.5;
-        else if(NorthWestSlope && NorthSlope && WestSlope) heights[0] = 0;
-        if(NorthEastSolid || NorthSolid || EastSolid) heights[2] = 0.5;
-        else if(NorthEastSlope && NorthSlope && EastSlope) heights[2] = 0;
-        if(SouthEastSolid || SouthSolid || EastSolid) heights[4] = 0.5;
-        else if(SouthEastSlope && SouthSlope && EastSlope) heights[4] = 0;
-        if(SouthWestSolid || SouthSolid || WestSolid) heights[6] = 0.5;
-        else if(SouthWestSlope && SouthSlope && WestSlope) heights[6] = 0;
-
-        // side points
-        if(NorthSolid) heights[1] = 0.5;
-        else if(NorthSlope) heights[1] = 0;
-        if(EastSolid) heights[3] = 0.5;
-        else if(EastSlope) heights[3] = 0;
-        if(SouthSolid) heights[5] = 0.5;
-        else if(SouthSlope) heights[5] = 0;
-        if(WestSolid) heights[7] = 0.5;
-        else if(WestSlope) heights[7] = 0;
-
-        // strong point check
-        if(NorthSolid && WestSolid && !SouthEastSlope && !SouthEastSolid) numStrong ++;
-        if(NorthSolid && EastSolid && !SouthWestSlope && !SouthWestSolid) numStrong ++;
-        if(SouthSolid && WestSolid && !NorthEastSlope && !NorthEastSolid) numStrong ++;
-        if(SouthSolid && EastSolid && !NorthWestSlope && !NorthWestSolid) numStrong ++;
-/*
-        if(NorthSolid && WestSolid && !SouthEastSolid) numStrong ++;
-        if(NorthSolid && EastSolid && !SouthWestSolid) numStrong ++;
-        if(SouthSolid && WestSolid && !NorthEastSolid) numStrong ++;
-        if(SouthSolid && EastSolid && !NorthWestSolid) numStrong ++;
-*/
-
-        // weak/strong point processing
-        if(numSolids == 1)// maybe weak point
+    // determine center
+    strong = (hm[7] && hm[1] && !hm[3] && !hm[4] && !hm[5])
+           + (hm[1] && hm[3] && !hm[5] && !hm[6] && !hm[7])
+           + (hm[3] && hm[5] && !hm[7] && !hm[0] && !hm[1])
+           + (hm[5] && hm[7] && !hm[1] && !hm[2] && !hm[3]);
+    if(numsolids == 1)
+    {
+        if (hm[0] || hm[2] || hm[4] || hm[6] )
         {
-            // valid weak point?
-           if(  (NorthWestSolid && !SouthSlope && !SouthEastSlope && !EastSlope)
-              ||(NorthEastSolid && !SouthSlope && !SouthWestSlope && !WestSlope)
-              ||(SouthEastSolid && !NorthSlope && !NorthWestSlope && !WestSlope)
-              ||(SouthWestSolid && !NorthSlope && !NorthEastSlope && !EastSlope)
-             )
-           {
-               heights[8] =  -0.5;
-           }
-           else
-           {
-               heights[8] =  0.0;// just slope
-           }
-        }
-        else if(numStrong == 1)// valid strong point?
-        {
-            heights[8] =  0.5;
-        }
-        else heights[8] =  0.0;// just slope
-
-        // assign high center only to slopes with one strong corner
-
-        // ugly, faster
-        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
-        glVertex3f( xTranslate,  yTranslate, heights[8]);
-        TEXTURE->BindTexturePoint(Texture, 0,0);
-        glVertex3f(-0.5f + xTranslate, -0.5f+ yTranslate, heights[0]);
-        TEXTURE->BindTexturePoint(Texture, 0,0.5);
-        glVertex3f(-0.5f + xTranslate,  0.0f+ yTranslate, heights[7]);
-
-        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
-        glVertex3f( xTranslate,  yTranslate, heights[8]);
-        TEXTURE->BindTexturePoint(Texture, 0,0.5);
-        glVertex3f(-0.5f + xTranslate,  0.0f+ yTranslate, heights[7]);
-        TEXTURE->BindTexturePoint(Texture, 0,1);
-        glVertex3f(-0.5f + xTranslate,  0.5f+ yTranslate, heights[6]);
-
-        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
-        glVertex3f( xTranslate,  yTranslate, heights[8]);
-        TEXTURE->BindTexturePoint(Texture, 0,1);
-        glVertex3f(-0.5f + xTranslate,  0.5f+ yTranslate, heights[6]);
-        TEXTURE->BindTexturePoint(Texture, 0.5,1);
-        glVertex3f( 0.0f + xTranslate,  0.5f+ yTranslate, heights[5]);
-
-        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
-        glVertex3f( xTranslate,  yTranslate, heights[8]);
-        TEXTURE->BindTexturePoint(Texture, 0.5,1);
-        glVertex3f( 0.0f + xTranslate,  0.5f+ yTranslate, heights[5]);
-        TEXTURE->BindTexturePoint(Texture, 1,1);
-        glVertex3f( 0.5f + xTranslate,  0.5f+ yTranslate, heights[4]);
-
-        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
-        glVertex3f( xTranslate,  yTranslate, heights[8]);
-        TEXTURE->BindTexturePoint(Texture, 1,1);
-        glVertex3f( 0.5f + xTranslate,  0.5f+ yTranslate, heights[4]);
-        TEXTURE->BindTexturePoint(Texture, 1,0.5);
-        glVertex3f( 0.5f + xTranslate,  0.0f+ yTranslate, heights[3]);
-
-        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
-        glVertex3f( xTranslate,  yTranslate, heights[8]);
-        TEXTURE->BindTexturePoint(Texture, 1,0.5);
-        glVertex3f( 0.5f + xTranslate,  0.0f+ yTranslate, heights[3]);
-        TEXTURE->BindTexturePoint(Texture, 1,0);
-        glVertex3f( 0.5f + xTranslate, -0.5f+ yTranslate, heights[2]);
-
-        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
-        glVertex3f( xTranslate,  yTranslate, heights[8]);
-        TEXTURE->BindTexturePoint(Texture, 1,0);
-        glVertex3f( 0.5f + xTranslate, -0.5f+ yTranslate, heights[2]);
-        TEXTURE->BindTexturePoint(Texture, 0.5,0);
-        glVertex3f( 0.0f + xTranslate, -0.5f+ yTranslate, heights[1]);
-
-        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
-        glVertex3f( xTranslate,  yTranslate, heights[8]);
-        TEXTURE->BindTexturePoint(Texture, 0.5,0);
-        glVertex3f( 0.0f + xTranslate, -0.5f+ yTranslate, heights[1]);
-        TEXTURE->BindTexturePoint(Texture, 0,0);
-        glVertex3f(-0.5f + xTranslate, -0.5f+ yTranslate, heights[0]);
-/// this bad boy eats FPS like the Ravenous Bugblatter Beast of Traal
-/*
-        glEnd(); // end GL_TRIANGLES
-        glBegin(GL_TRIANGLE_FAN);     	// draw a fan of triangles
-        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
-        glVertex3f( xTranslate,  yTranslate, heights[8]);
-        TEXTURE->BindTexturePoint(Texture, 0,0);
-        glVertex3f(-0.5f + xTranslate, -0.5f+ yTranslate, heights[0]);
-        TEXTURE->BindTexturePoint(Texture, 0,0.5);
-        glVertex3f(-0.5f + xTranslate,  0.0f+ yTranslate, heights[7]);
-        TEXTURE->BindTexturePoint(Texture, 0,1);
-        glVertex3f(-0.5f + xTranslate,  0.5f+ yTranslate, heights[6]);
-        TEXTURE->BindTexturePoint(Texture, 0.5,1);
-        glVertex3f( 0.0f + xTranslate,  0.5f+ yTranslate, heights[5]);
-        TEXTURE->BindTexturePoint(Texture, 1,1);
-        glVertex3f( 0.5f + xTranslate,  0.5f+ yTranslate, heights[4]);
-        TEXTURE->BindTexturePoint(Texture, 1,0.5);
-        glVertex3f( 0.5f + xTranslate,  0.0f+ yTranslate, heights[3]);
-        TEXTURE->BindTexturePoint(Texture, 1,0);
-        glVertex3f( 0.5f + xTranslate, -0.5f+ yTranslate, heights[2]);
-        TEXTURE->BindTexturePoint(Texture, 0.5,0);
-        glVertex3f( 0.0f + xTranslate, -0.5f+ yTranslate, heights[1]);
-        TEXTURE->BindTexturePoint(Texture, 0,0);
-        glVertex3f(-0.5f + xTranslate, -0.5f+ yTranslate, heights[0]);
-
-        glEnd();
-        glBegin(GL_TRIANGLES);
-*/
-        // fill in empty spaces if any. another ugly hack :D
-        ///TODO: use matrix manipulation to reduce code multiplication
-        if(!NorthSolid && !NorthSlope)
-        {
-            if(heights[0] > 0.0)
-            {
-                TEXTURE->BindTexturePoint(Texture, 0,0);
-                glVertex3f(-0.5f + xTranslate, -0.5f+ yTranslate, -0.5);
-                TEXTURE->BindTexturePoint(Texture, 0,heights[0] + 0.5);
-                glVertex3f(-0.5f + xTranslate, -0.5f+ yTranslate, heights[0]);
-                TEXTURE->BindTexturePoint(Texture, 0.5,0);
-                glVertex3f(xTranslate, -0.5f+ yTranslate, -0.5);
-            }
-            if(heights[2] > 0.0)
-            {
-                TEXTURE->BindTexturePoint(Texture, 0.5,0);
-                glVertex3f(xTranslate, -0.5f+ yTranslate, -0.5);
-                TEXTURE->BindTexturePoint(Texture, 1,heights[2] + 0.5);
-                glVertex3f(0.5f + xTranslate, -0.5f+ yTranslate, heights[2]);
-                TEXTURE->BindTexturePoint(Texture, 1,0);
-                glVertex3f(0.5f + xTranslate, -0.5f+ yTranslate, -0.5);
-
-            }
-        }
-        if(!SouthSolid && !SouthSlope)
-        {
-            if(heights[4] > 0.0)
-            {
-                TEXTURE->BindTexturePoint(Texture, 1,0);
-                glVertex3f(0.5f + xTranslate, 0.5f+ yTranslate, -0.5);
-                TEXTURE->BindTexturePoint(Texture, 1,heights[4] + 0.5);
-                glVertex3f(0.5f + xTranslate, 0.5f+ yTranslate, heights[4]);
-                TEXTURE->BindTexturePoint(Texture, 0.5,0);
-                glVertex3f(xTranslate, 0.5f+ yTranslate, -0.5);
-
-
-            }
-            if(heights[6] > 0.0)
-            {
-                TEXTURE->BindTexturePoint(Texture, 0.5,0);
-                glVertex3f(xTranslate, 0.5f+ yTranslate, -0.5);
-
-                TEXTURE->BindTexturePoint(Texture, 0,heights[6] + 0.5);
-                glVertex3f(-0.5f + xTranslate, 0.5f+ yTranslate, heights[6]);
-
-                TEXTURE->BindTexturePoint(Texture, 0,0);
-                glVertex3f(-0.5f + xTranslate, 0.5f+ yTranslate, -0.5);
-
-            }
-        }
-        if(!EastSolid && !EastSlope)
-        {
-            if(heights[4] > 0.0)
-            {
-                TEXTURE->BindTexturePoint(Texture, 0,0);
-                glVertex3f(0.5f + xTranslate, 0.5f+ yTranslate, -0.5);
-
-                TEXTURE->BindTexturePoint(Texture, 0.5,0);
-                glVertex3f(0.5f + xTranslate, yTranslate, -0.5);
-
-                TEXTURE->BindTexturePoint(Texture, 0,heights[4] + 0.5);
-                glVertex3f(0.5f + xTranslate, 0.5f+ yTranslate, heights[4]);
-            }
-            if(heights[2] > 0.0)
-            {
-                TEXTURE->BindTexturePoint(Texture, 1,0);
-                glVertex3f(0.5f + xTranslate, -0.5f+ yTranslate, -0.5);
-
-                TEXTURE->BindTexturePoint(Texture, 1,heights[2] + 0.5);
-                glVertex3f(0.5f + xTranslate, -0.5f+ yTranslate, heights[2]);
-
-                TEXTURE->BindTexturePoint(Texture, 0.5,0);
-                glVertex3f(0.5f + xTranslate, yTranslate, -0.5);
-            }
-        }
-        if(!WestSolid && !WestSlope)
-        {
-            if(heights[0] > 0.0)
-            {
-                TEXTURE->BindTexturePoint(Texture, 0,0);
-                glVertex3f(-0.5f + xTranslate, -0.5f+ yTranslate, -0.5);
-                TEXTURE->BindTexturePoint(Texture, 0.5,0);
-                glVertex3f(-0.5f + xTranslate, yTranslate, -0.5);
-                TEXTURE->BindTexturePoint(Texture, 0,heights[0] + 0.5);
-                glVertex3f(-0.5f + xTranslate, -0.5f+ yTranslate, heights[0]);
-            }
-            if(heights[6] > 0.0)
-            {
-                TEXTURE->BindTexturePoint(Texture, 1,0);
-                glVertex3f(-0.5f + xTranslate, 0.5f+ yTranslate, -0.5);
-
-                TEXTURE->BindTexturePoint(Texture, 1,heights[6] + 0.5);
-                glVertex3f(-0.5f + xTranslate, 0.5f+ yTranslate, heights[6]);
-
-                TEXTURE->BindTexturePoint(Texture, 0.5,0);
-                glVertex3f(-0.5f + xTranslate, yTranslate, -0.5);
-            }
+            hm[9] = 0;
         }
     }
+    else if(strong == 1) hm[9] = 2;
+    else hm[9] = 1;
+
+    // fix corners
+    hm[0] = hm[7] | hm[0] | hm[1];
+    hm[2] = hm[1] | hm[2] | hm[3];
+    hm[4] = hm[3] | hm[4] | hm[5];
+    hm[6] = hm[5] | hm[6] | hm[7];
+
+    // fix sides so that slopes aren't jaggy.
+    hm[1] = (hm[1] >> 1) + (hm[0] || hm[2]);
+    hm[3] = (hm[3] >> 1) + (hm[2] || hm[4]);
+    hm[5] = (hm[5] >> 1) + (hm[4] || hm[6]);
+    hm[7] = (hm[7] >> 1) + (hm[6] || hm[0]);
+
+    hm[8] = hm[0]; // copy first point so we can safely use algorithms that go to N+1
+
+    // convert int heights to floats
+    for(int i = 0; i < 10; ++i)
+    {
+        hmf[i] = ((float)hm[i]) / 2 - 0.5;
+    }
+
+    // draw triangles
+    for(Direction i = DIRECTION_NORTHWEST; i <= DIRECTION_WEST; ++i)
+    {
+        /**
+         *  P--P+1--*
+         *  | \ | / |
+         *  *---C---*
+         *  | / | \ |
+         *  *---*---*
+         */
+        // point C
+        TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
+        glVertex3f( xTranslate,  yTranslate, hmf[9]);
+        //point P+1
+        TEXTURE->BindTexturePoint(Texture, dc[i+1][0] + 0.5,dc[i+1][1] + 0.5);
+        glVertex3f(dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, hmf[i+1]);
+        //point P
+        TEXTURE->BindTexturePoint(Texture, dc[i][0] + 0.5,dc[i][1] + 0.5);
+        glVertex3f(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i]);
+    }
+    // just drawn 8 tris
     SCREEN->IncrementTriangles(8);
+
+    //patch holes
+    for(int i = 0; i< 8;i+=2)
+    {
+        // already covered by wall or nearby slope, don't draw side
+        if (covered[i/2])
+            continue;
+
+        // zero center can be ignored
+        if (hm[i+1] == 0)
+            continue;
+
+        // determine how many triangles are needed an in what configuration
+        if(hm[i] == 0)// one tri, hm[i+2] is high
+        {
+            // second upper
+            TEXTURE->BindTexturePoint(Texture, 1.0,0.0);
+            glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, hmf[i+2]);
+            // second lower
+            TEXTURE->BindTexturePoint(Texture, 0.0,0.0);
+            glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5);
+            // first
+            TEXTURE->BindTexturePoint(Texture, 0.0,1.0);
+            glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i]);
+            SCREEN->IncrementTriangles(1);
+        }
+        else if(hm[i+2] == 0)// one tri, hm[i] is high
+        {
+            // first lower
+            TEXTURE->BindTexturePoint(Texture, 0.0,0.0);
+            glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, -0.5);
+            // first upper
+            TEXTURE->BindTexturePoint(Texture, 1.0,0.0);
+            glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, hmf[i]);
+            // second
+            TEXTURE->BindTexturePoint(Texture, 0.0,1.0);
+            glVertex3f( dc[i+2][0] + xTranslate, dc[i+2][1]+ yTranslate, hmf[i+2]);
+            SCREEN->IncrementTriangles(1);
+        }
+        else // two tris, both corners high
+        {
+            // second upper
+            TEXTURE->BindTexturePoint(Texture, 1.0,0.0);
+            glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, hmf[i+2]);
+            // second lower
+            TEXTURE->BindTexturePoint(Texture, 0.0,0.0);
+            glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5);
+            // first lower 1
+            TEXTURE->BindTexturePoint(Texture, 0.0,1.0);
+            glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5);
+
+            // first lower 2
+            TEXTURE->BindTexturePoint(Texture, 0.0,0.0);
+            glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, -0.5);
+            // first upper
+            TEXTURE->BindTexturePoint(Texture, 1.0,0.0);
+            glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, hmf[i]);
+            // center
+            TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
+            glVertex3f( dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, 0.0);
+            SCREEN->IncrementTriangles(2);
+        }
+    }
     return true;
 }

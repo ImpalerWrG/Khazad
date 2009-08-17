@@ -103,7 +103,7 @@ bool ScreenManager::Init()
     glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-	glDepthFunc(/*GL_LEQUAL*/ GL_LESS); // show me those walls under floors. yes.
+	glDepthFunc(GL_LEQUAL /*GL_LESS*/); // show me those walls under floors. yes.
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
     imageLoader = new gcn::OpenGLSDLImageLoader();
