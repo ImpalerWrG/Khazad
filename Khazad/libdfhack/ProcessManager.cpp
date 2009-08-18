@@ -197,7 +197,7 @@ bool ProcessManager::findProcessess()
                     uint32_t pe_timestamp = (*it).getHexValue("pe_timestamp");
                     if (pe_timestamp == pe_header.FileHeader.TimeDateStamp)
                     {
-                        printf("Match found! Using version %s.\n", (*it).getString("version").c_str());
+                        printf("Match found! Using version %s.\n", (*it).getVersion().c_str());
                         // give the process a data model and memory layout fixed to the base of first module
                         memory_info *m = new memory_info(*it);
                         m->Rebase(base);

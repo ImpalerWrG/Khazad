@@ -26,6 +26,21 @@ Camera::Camera()
 	MinScalar = CONFIG->ZoomMin();
 }
 
+bool Camera::ReInit(bool Isometric)
+{
+	if (Isometric)
+	{
+		setIsometricProj(SCREEN->getWidth(), SCREEN->getHeight(), 1000000.0);
+		IsoMode = true;
+	}
+	else
+	{
+		IsoMode = false;
+		setPerspectiveProj(SCREEN->getWidth() / SCREEN->getHeight(), 0.01, 1000);
+	}
+	return true;
+}
+
 bool Camera::Init(bool Isometric)
 {
 	SetDefaultView();

@@ -13,7 +13,6 @@
 #ifdef LINUX_BUILD
     #include <GL/glext.h>
 #else
-    ///FIXME: use an up-to-date version of opengl headers? This is terribly old.
     #include <SDL_opengl.h>
 #endif
 

@@ -68,7 +68,15 @@ void DfMap::clear()
     {
         v_matgloss[counter].clear();
     }
+    for(uint32_t i = 0; i < v_buildings.size(); i++)
+    {
+        delete v_buildings[i];
+    }
     v_buildings.clear();
+    for(uint32_t i = 0; i < v_trees.size(); i++)
+    {
+        delete v_trees[i];
+    }
     v_constructions.clear();
     blocks_allocated = 0;
     ///FIXME: destroy all the extracted data here

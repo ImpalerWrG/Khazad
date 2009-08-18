@@ -136,9 +136,34 @@ bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Hight)
         setDrawingFlat();
     }
 
-    // Will need full texture rebuild to work
+    /// FIXME: VISTA HACK!!!
+    SDL_FreeSurface(ScreenSurface);
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);  //TODO make this a Config option
+
     ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
     glViewport(0, 0, ScreenWidth, ScreenHight);
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+
+    SDL_EnableUNICODE(1);
+    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+
+	glEnable(GL_TEXTURE_2D);
+	glShadeModel(GL_SMOOTH);
+	glEnable(GL_LINE_SMOOTH);
+	glEnable(GL_DEPTH_TEST);
+
+    glEnable(GL_CULL_FACE); // force proper vertex ordering or suffer holes in geometry ;)
+
+    glEnable(GL_BLEND);
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
+	glDepthFunc(GL_LEQUAL /*GL_LESS*/); // show me those walls under floors. yes.
+	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    MainCamera->ReInit(true);
+    /// END OF VISTA HACK
     UI->updateSizing();
 
 	return true;
@@ -510,18 +535,70 @@ void ScreenManager::IncrementTriangles(Uint32 Triangles)
 
 void ScreenManager::ToggleFullScreen()
 {
+    /// FIXME: QUERY THE SCREEN RESOLUTION, KEEP AROUND WINDOW SIZE, USE THOSE TO SWITCH FULLSCREEN
 //    if(SDL_WM_ToggleFullScreen(ScreenSurface))
     FullScreen = !FullScreen;
     if(FullScreen)
     {
+        /// FIXME: VISTA HACK!!!
+        SDL_FreeSurface(ScreenSurface);
+        SDL_Init(SDL_INIT_VIDEO);
+        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+        SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);  //TODO make this a Config option
+
         ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_FULLSCREEN);
         glViewport(0, 0, ScreenWidth, ScreenHight);
+        glClearColor(0.0, 0.0, 0.0, 0.0);
+
+        SDL_EnableUNICODE(1);
+        SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+
+        glEnable(GL_TEXTURE_2D);
+        glShadeModel(GL_SMOOTH);
+        glEnable(GL_LINE_SMOOTH);
+        glEnable(GL_DEPTH_TEST);
+
+        glEnable(GL_CULL_FACE); // force proper vertex ordering or suffer holes in geometry ;)
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
+        glDepthFunc(GL_LEQUAL /*GL_LESS*/); // show me those walls under floors. yes.
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        MainCamera->ReInit(true);
+        /// END OF VISTA HACK
     }
     else
     {
-        // resizing is broken
+        /// FIXME: VISTA HACK!!!
+        SDL_FreeSurface(ScreenSurface);
+        SDL_Init(SDL_INIT_VIDEO);
+        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+        SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);  //TODO make this a Config option
+
         ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE);
         glViewport(0, 0, ScreenWidth, ScreenHight);
+        glClearColor(0.0, 0.0, 0.0, 0.0);
+
+        SDL_EnableUNICODE(1);
+        SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+
+        glEnable(GL_TEXTURE_2D);
+        glShadeModel(GL_SMOOTH);
+        glEnable(GL_LINE_SMOOTH);
+        glEnable(GL_DEPTH_TEST);
+
+        glEnable(GL_CULL_FACE); // force proper vertex ordering or suffer holes in geometry ;)
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
+        glDepthFunc(GL_LEQUAL /*GL_LESS*/); // show me those walls under floors. yes.
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        MainCamera->ReInit(true);
+        /// END OF VISTA HACK
     }
     // keeping this around fucks up textures for some reason
     /*TEXTURE->FreeInstance();

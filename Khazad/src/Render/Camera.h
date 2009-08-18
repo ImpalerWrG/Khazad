@@ -50,6 +50,7 @@ public:
 
 	Camera();
 	bool Init(bool IsoMetric);
+	bool ReInit(bool IsoMetric);
 	~Camera();
 
 	float EyeX()    { return EyePosition.x; }

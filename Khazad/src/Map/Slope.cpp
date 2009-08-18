@@ -197,7 +197,7 @@ bool Slope::Draw(float xTranslate, float yTranslate)
     if(!Visible) return false;
     /**
      * heightmap. order is from nort-west to north-west, clockwise. hm[9] is the center
-     *  0=8--1---2
+     * 0=8--1---2
      *  |   |   |
      *  7---9---3
      *  |   |   |
