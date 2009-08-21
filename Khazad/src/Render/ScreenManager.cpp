@@ -41,6 +41,7 @@ ScreenManager::ScreenManager()
 	DebuggingDraw = true;
 
     ScreenShotCounter = 0;
+    TotalTriangles = 0;
 
 	LogoSurface = NULL;
 }

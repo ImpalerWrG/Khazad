@@ -24,6 +24,8 @@ Camera::Camera()
 	IsoScalar = CONFIG->ZoomStart();
     MaxScalar = CONFIG->ZoomMax();
 	MinScalar = CONFIG->ZoomMin();
+	SliceA = 0;
+	SliceB = 0;
 }
 
 bool Camera::ReInit(bool Isometric)

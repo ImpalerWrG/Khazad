@@ -26,10 +26,10 @@ Slope::~Slope()
 {
     MAP->ChangeSlopeCount(-1);
     //GAME->RemoveActor(ID);
-    if(Initalized)
-    {
+//    if(Initalized)
+//    {
         MAP->ChangeInitedSlopeCount(-1);
-    }
+//    }
 }
 
 bool Slope::Init(Cube* NewOwner, Slopping Type)
