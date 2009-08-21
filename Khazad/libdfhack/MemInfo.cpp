@@ -235,6 +235,17 @@ void memory_info::Rebase(int32_t new_base)
   }
 }
 
+// change all vtable entries by offset
+void memory_info::RebaseVTable(int32_t offset)
+{
+  vector<t_class>::iterator iter;
+
+  for(iter = classes.begin(); iter != classes.end(); iter++)
+  {
+      iter->vtable += offset;
+  }
+}
+
 uint32_t memory_info::getAddress (string key)
 {
     if(addresses.count(key))

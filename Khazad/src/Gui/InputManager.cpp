@@ -70,7 +70,7 @@ bool InputManager::HandleInput()
                     //{
                     //    return true;  // exit program
                     //}
-                    case SDLK_F1:
+                    case SDLK_F11:
                     {
                         SCREEN->ToggleFullScreen();
                         break;
@@ -173,7 +173,7 @@ bool InputManager::HandleInput()
 
             case SDL_VIDEORESIZE: //User resized window
 			{
-				SCREEN->ReSizeScreen(event.resize.w, event.resize.h);
+				SCREEN->ReSizeScreen(event.resize.w, event.resize.h, 0);
 				break;
 			}
 		}

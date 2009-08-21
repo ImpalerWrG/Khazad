@@ -61,6 +61,7 @@ public:
     void setHexValue (string, string);
     void setString (string, string);
 
+    void RebaseVTable(int32_t offset);
     void setClass (string, string);
     uint32_t setMultiClass (string, string, string);
     void setMultiClassChild (uint32_t, string, string);

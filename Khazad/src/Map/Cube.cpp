@@ -271,6 +271,13 @@ Cube* Cube::getNeiborCube(Direction Type)
             y -= 1;
             x -= 1;
             break;
+
+        case DIRECTION_UP:
+            z += 1;
+            break;
+        case DIRECTION_DOWN:
+            z -= 1;
+            break;
     }
 
     return MAP->getCube(x, y, z);

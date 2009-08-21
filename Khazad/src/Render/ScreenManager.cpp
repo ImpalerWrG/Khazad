@@ -28,9 +28,6 @@ DECLARE_SINGLETON(ScreenManager)
 
 ScreenManager::ScreenManager()
 {
-	ScreenWidth = CONFIG->getXResolution();
-	ScreenHight = CONFIG->getYResolution();
-	ScreenBPP = 32;
 	FullScreen = false;
 
 	FrameDraw = true;
@@ -77,17 +74,32 @@ bool ScreenManager::Init()
 
     LogoSurface = IMAGE->loadSurface(Path("Assets\\Textures\\KhazadLogo.png"));
 
+	WindowWidth = CONFIG->getXResolution();
+	WindowHeight = CONFIG->getYResolution();
+    const SDL_VideoInfo* info = SDL_GetVideoInfo();
+    ScreenWidth = info->current_w;
+    ScreenHeight = info->current_h;
+
+	CurrentBPP = ScreenBPP = WindowBPP = 32;
+
     if(CONFIG->FullScreen())
     {
-        ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_FULLSCREEN );
+        FullScreen = true;
+        CurrentWidth = ScreenWidth;
+        CurrentHeight = ScreenHeight;
+        CurrentBPP = ScreenBPP;
+        ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_FULLSCREEN );
     }
     else
     {
-        // resizing is broken
-        ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
+        FullScreen = false;
+        CurrentWidth = WindowWidth;
+        CurrentHeight = WindowHeight;
+        CurrentBPP = WindowBPP;
+        ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
     }
 
-    glViewport(0, 0, ScreenWidth, ScreenHight);
+    glViewport(0, 0, CurrentWidth, CurrentHeight);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 
     SDL_EnableUNICODE(1);
@@ -118,18 +130,21 @@ bool ScreenManager::Init()
     return true;
 }
 
-bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Hight)
+bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Height, bool fullscreen)
 {
-    // disabled until fixed.
-    //return true;
-
-    ScreenWidth = Width;
-    ScreenHight = Hight;
+    CurrentWidth = Width;
+    CurrentHeight = Height;
+    FullScreen = fullscreen;
+    if(!fullscreen)
+    {
+        WindowWidth = Width;
+        WindowHeight = Height;
+    }
 
     setDrawing3D(); // Dispose of any Flat Projection
 
-    MainCamera->setIsometricProj(ScreenWidth, ScreenHight, 1000000.0);
-    glViewport(0, 0, ScreenWidth, ScreenHight);
+    MainCamera->setIsometricProj(CurrentWidth, CurrentHeight, 1000000.0);
+    glViewport(0, 0, CurrentWidth, CurrentHeight);
 
     if(FlatDraw) // Reset Flat drawing if thats what we were in
     {
@@ -141,9 +156,15 @@ bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Hight)
     SDL_Init(SDL_INIT_VIDEO);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);  //TODO make this a Config option
-
-    ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
-    glViewport(0, 0, ScreenWidth, ScreenHight);
+    if(fullscreen)
+    {
+        ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_FULLSCREEN );
+    }
+    else
+    {
+        ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
+    }
+    glViewport(0, 0, CurrentWidth, CurrentHeight);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 
     SDL_EnableUNICODE(1);
@@ -169,6 +190,25 @@ bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Hight)
 	return true;
 }
 
+void ScreenManager::ToggleFullScreen()
+{
+    /// FIXME: QUERY THE SCREEN RESOLUTION, KEEP AROUND WINDOW SIZE, USE THOSE TO SWITCH FULLSCREEN
+//    if(SDL_WM_ToggleFullScreen(ScreenSurface))
+    FullScreen = !FullScreen;
+    if(FullScreen)
+    {
+        ReSizeScreen(ScreenWidth,ScreenHeight,1);
+    }
+    else
+    {
+        ReSizeScreen(WindowWidth,WindowHeight,0);
+    }
+    // keeping this around fucks up textures for some reason
+    /*TEXTURE->FreeInstance();
+	TEXTURE->CreateInstance();
+	TEXTURE->Init();*/
+}
+
 void ScreenManager::RenderText(const char *text, Sint8 FontIndex, SDL_Color Color, SDL_Rect *location)
 {
     SDL_Surface* FontSurface = FONT->makeFontSurface(text, Color, FontIndex);
@@ -181,8 +221,8 @@ void ScreenManager::RenderTextCentered(const char *text, Sint8 FontIndex, SDL_Co
     SDL_Surface* FontSurface = FONT->makeFontSurface(text, Color, FontIndex);
 
     SDL_Rect location;
-    location.x = (ScreenWidth / 2) - (FontSurface->clip_rect.w / 2);
-    location.y = (ScreenHight / 2) - (FontSurface->clip_rect.h / 2) + Verticaladjust;
+    location.x = (CurrentWidth / 2) - (FontSurface->clip_rect.w / 2);
+    location.y = (CurrentHeight / 2) - (FontSurface->clip_rect.h / 2) + Verticaladjust;
     location.w = FontSurface->clip_rect.w;
     location.h = FontSurface->clip_rect.h;
 
@@ -241,8 +281,8 @@ void ScreenManager::RenderLogo()
 {
     SDL_Rect location;
 
-    location.x = (ScreenWidth / 2) - (LogoSurface->clip_rect.w / 2);
-    location.y = (ScreenHight * 2 / 3) - (LogoSurface->clip_rect.h / 2);
+    location.x = (CurrentWidth / 2) - (LogoSurface->clip_rect.w / 2);
+    location.y = (CurrentHeight * 2 / 3) - (LogoSurface->clip_rect.h / 2);
 
     location.w = LogoSurface->clip_rect.w;
     location.h = LogoSurface->clip_rect.h;
@@ -531,79 +571,6 @@ void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, CameraO
 void ScreenManager::IncrementTriangles(Uint32 Triangles)
 {
     TriangleCounter += Triangles;
-}
-
-void ScreenManager::ToggleFullScreen()
-{
-    /// FIXME: QUERY THE SCREEN RESOLUTION, KEEP AROUND WINDOW SIZE, USE THOSE TO SWITCH FULLSCREEN
-//    if(SDL_WM_ToggleFullScreen(ScreenSurface))
-    FullScreen = !FullScreen;
-    if(FullScreen)
-    {
-        /// FIXME: VISTA HACK!!!
-        SDL_FreeSurface(ScreenSurface);
-        SDL_Init(SDL_INIT_VIDEO);
-        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-        SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);  //TODO make this a Config option
-
-        ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_FULLSCREEN);
-        glViewport(0, 0, ScreenWidth, ScreenHight);
-        glClearColor(0.0, 0.0, 0.0, 0.0);
-
-        SDL_EnableUNICODE(1);
-        SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-
-        glEnable(GL_TEXTURE_2D);
-        glShadeModel(GL_SMOOTH);
-        glEnable(GL_LINE_SMOOTH);
-        glEnable(GL_DEPTH_TEST);
-
-        glEnable(GL_CULL_FACE); // force proper vertex ordering or suffer holes in geometry ;)
-
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-
-        glDepthFunc(GL_LEQUAL /*GL_LESS*/); // show me those walls under floors. yes.
-        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        MainCamera->ReInit(true);
-        /// END OF VISTA HACK
-    }
-    else
-    {
-        /// FIXME: VISTA HACK!!!
-        SDL_FreeSurface(ScreenSurface);
-        SDL_Init(SDL_INIT_VIDEO);
-        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-        SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);  //TODO make this a Config option
-
-        ScreenSurface = SDL_SetVideoMode(ScreenWidth, ScreenHight, ScreenBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE);
-        glViewport(0, 0, ScreenWidth, ScreenHight);
-        glClearColor(0.0, 0.0, 0.0, 0.0);
-
-        SDL_EnableUNICODE(1);
-        SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-
-        glEnable(GL_TEXTURE_2D);
-        glShadeModel(GL_SMOOTH);
-        glEnable(GL_LINE_SMOOTH);
-        glEnable(GL_DEPTH_TEST);
-
-        glEnable(GL_CULL_FACE); // force proper vertex ordering or suffer holes in geometry ;)
-
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-
-        glDepthFunc(GL_LEQUAL /*GL_LESS*/); // show me those walls under floors. yes.
-        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        MainCamera->ReInit(true);
-        /// END OF VISTA HACK
-    }
-    // keeping this around fucks up textures for some reason
-    /*TEXTURE->FreeInstance();
-	TEXTURE->CreateInstance();
-	TEXTURE->Init();*/
 }
 
 void ScreenManager::setDrawingFlat()

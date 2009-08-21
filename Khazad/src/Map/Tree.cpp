@@ -14,16 +14,20 @@ bool Tree::Draw(CameraOrientation Orientation)
     float xa,ya;
     xa = x %16 - 0.5;
     ya = y %16 - 0.5;
-    glEnd();
-    glBindTexture(GL_TEXTURE_2D, 0); // unbind
-    glBegin(GL_QUADS);
-        glColor3f(0, 0.3, 0);
-        glVertex3f(xa    , ya, -0.3);
-        glVertex3f(xa    , ya + 1, -0.3);
-        glVertex3f(xa + 1, ya + 1, -0.3);
-        glVertex3f(xa + 1, ya    , -0.3);
-    glEnd();
-    glBindTexture(GL_TEXTURE_2D, TEXTURE->getAggragateTexture()); // rebind
-    glBegin(GL_TRIANGLES);
+
+    glNormal3f(0.0,0.0,1.0);
+    TEXTURE->BindTexturePoint(1, 0,0);
+    glVertex3f(xa     ,ya    ,-0.3);
+    TEXTURE->BindTexturePoint(1, 0,1);
+    glVertex3f(xa     ,ya + 1,-0.3);
+    TEXTURE->BindTexturePoint(1, 1,1);
+    glVertex3f(xa + 1 ,ya + 1,-0.3);
+
+    TEXTURE->BindTexturePoint(1, 1,1);
+    glVertex3f(xa + 1 ,ya + 1 ,-0.3);
+    TEXTURE->BindTexturePoint(1, 1,0);
+    glVertex3f(xa + 1 ,ya     ,-0.3);
+    TEXTURE->BindTexturePoint(1, 0,0);
+    glVertex3f(xa     ,ya     ,-0.3);
     return true;
 }

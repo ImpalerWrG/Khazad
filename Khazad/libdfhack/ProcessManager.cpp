@@ -229,6 +229,12 @@ void ProcessManager::ParseVTable(TiXmlElement* vtable, memory_info& mem)
 {
     TiXmlElement* pClassEntry;
     TiXmlElement* pClassSubEntry;
+    const char * rebase = vtable->Attribute("rebase");
+    if(rebase)
+    {
+        int32_t rebase_offset = strtol(rebase, NULL, 16);
+        mem.RebaseVTable(rebase_offset);
+    }
     pClassEntry = vtable->FirstChildElement();
     for(;pClassEntry;pClassEntry=pClassEntry->NextSiblingElement())
     {
@@ -289,19 +295,25 @@ void ProcessManager::ParseEntry (TiXmlElement* entry, memory_info& mem, map <str
     string os = cstr_os;
     mem.setVersion(cstr_version);
     mem.setOS(cstr_os);
-    //set base to default when undefined (0x400000 for windows 0x0 for linux), check os type
+
+    // offset inherited addresses by 'rebase'.
+    int32_t rebase = 0;
+    if(cstr_rebase)
+    {
+        rebase = mem.getBase() + strtol(cstr_rebase, NULL, 16);
+        mem.Rebase(rebase);
+    }
+
+    //set base to default, we're overwriting this because the previous rebase could cause havoc on Vista/7
     if(os == "windows")
     {
-/*        if(cstr_base)
-            mem.setBase(cstr_base);
-        else*/
+        // set default image base. this is fixed for base relocation later
         mem.setBase(0x400000);
     }
     else if(os == "linux")
     {
-        /*if(cstr_base)
-            mem.setBase(cstr_base);
-        else*/
+        // this is wrong... I'm not going to do base image relocation on linux though.
+        // users are free to use a sane kernel that doesn't do this kind of ****
         mem.setBase(0x0);
     }
     else
@@ -354,12 +366,6 @@ void ProcessManager::ParseEntry (TiXmlElement* entry, memory_info& mem, map <str
             cerr << "Unknown MemInfo type: " << type << endl;
         }
     } // for
-    int32_t rebase = 0;
-    if(cstr_rebase)
-    {
-        rebase = mem.getBase() + strtol(cstr_rebase, NULL, 16);
-        mem.Rebase(rebase);
-    }
 } // method
 
 

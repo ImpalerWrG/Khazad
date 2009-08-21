@@ -47,7 +47,7 @@ public:
 	bool isSunLitDraw()                         { return SunLitDraw; }
 	void setSunLitDraw(bool NewValue);
 
-	bool ReSizeScreen(Uint16 Width, Uint16 Hight);
+	bool ReSizeScreen(Uint16 Width, Uint16 Hight, bool fullscreen);
 
     void RenderText(const char* text, Sint8 FontIndex, SDL_Color color, SDL_Rect *location);
     void RenderTextCentered(const char* text, Sint8 FontIndex, SDL_Color color, Sint16 Verticaladjust);
@@ -71,11 +71,11 @@ public:
 
 	inline Uint16 getWidth()
 	{
-        return ScreenWidth;
+        return CurrentWidth;
     };
 	inline Uint16 getHeight()
 	{
-        return 	ScreenHight;
+        return 	CurrentHeight;
     };
 
 	void DirtyAllLists();
@@ -115,9 +115,17 @@ public:
 
 protected:
 
+	Uint16 CurrentWidth;
+	Uint16 CurrentHeight;
+	Uint8 CurrentBPP;
+
 	Uint16 ScreenWidth;
-	Uint16 ScreenHight;
+	Uint16 ScreenHeight;
 	Uint8 ScreenBPP;
+
+	Uint16 WindowWidth;
+	Uint16 WindowHeight;
+	Uint8 WindowBPP;
 
 	SDL_Surface* ScreenSurface;
 
