@@ -713,8 +713,8 @@ void Camera::ConfineLookPosition()
 
 void Camera::MoveViewVertical(float Z)
 {
-	EyePosition.z += Z;
-	LookPosition.z += Z;
+	EyePosition.z += Z * LevelSeperation;
+	LookPosition.z += Z * LevelSeperation;
 
 	Cursor.z += Z;
     CursorLevel += Z;

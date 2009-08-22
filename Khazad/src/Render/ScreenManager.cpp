@@ -97,7 +97,15 @@ bool ScreenManager::Init()
         CurrentWidth = WindowWidth;
         CurrentHeight = WindowHeight;
         CurrentBPP = WindowBPP;
-        ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
+
+        ///FIXME: no resizing on windows
+        #ifndef LINUX_BUILD
+            ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL );
+        #else
+            ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
+        #endif
+
+
     }
 
     glViewport(0, 0, CurrentWidth, CurrentHeight);
@@ -133,6 +141,9 @@ bool ScreenManager::Init()
 
 bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Height, bool fullscreen)
 {
+    #ifndef LINUX_BUILD
+        return false;
+    #endif
     CurrentWidth = Width;
     CurrentHeight = Height;
     FullScreen = fullscreen;
@@ -152,11 +163,11 @@ bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Height, bool fullscreen)
         setDrawingFlat();
     }
 
-    /// FIXME: VISTA HACK!!!
-    SDL_FreeSurface(ScreenSurface);
+    // FIXME: VISTA HACK!!!
+    /*SDL_FreeSurface(ScreenSurface);
     SDL_Init(SDL_INIT_VIDEO);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);  //TODO make this a Config option
+    SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);  //TODO make this a Config option*/
     if(fullscreen)
     {
         ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_FULLSCREEN );
@@ -166,7 +177,7 @@ bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Height, bool fullscreen)
         ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
     }
     glViewport(0, 0, CurrentWidth, CurrentHeight);
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	/*glClearColor(0.0, 0.0, 0.0, 0.0);
 
     SDL_EnableUNICODE(1);
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
@@ -181,9 +192,9 @@ bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Height, bool fullscreen)
     glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-	glDepthFunc(GL_LEQUAL /*GL_LESS*/); // show me those walls under floors. yes.
-	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glDepthFunc(GL_LEQUAL /*GL_LESS*//*); // show me those walls under floors. yes.*/
+	/*glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
     MainCamera->ReInit(true);
     /// END OF VISTA HACK
     UI->updateSizing();
@@ -193,8 +204,9 @@ bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Height, bool fullscreen)
 
 void ScreenManager::ToggleFullScreen()
 {
-    /// FIXME: QUERY THE SCREEN RESOLUTION, KEEP AROUND WINDOW SIZE, USE THOSE TO SWITCH FULLSCREEN
-//    if(SDL_WM_ToggleFullScreen(ScreenSurface))
+    #ifndef LINUX_BUILD
+        return;
+    #endif
     FullScreen = !FullScreen;
     if(FullScreen)
     {
@@ -204,10 +216,8 @@ void ScreenManager::ToggleFullScreen()
     {
         ReSizeScreen(WindowWidth,WindowHeight,0);
     }
-    // keeping this around fucks up textures for some reason
-    /*TEXTURE->FreeInstance();
-	TEXTURE->CreateInstance();
-	TEXTURE->Init();*/
+//    if(SDL_WM_ToggleFullScreen(ScreenSurface))
+
 }
 
 void ScreenManager::RenderText(const char *text, Sint8 FontIndex, SDL_Color Color, SDL_Rect *location)
