@@ -440,7 +440,7 @@ bool ScreenManager::Render()
     if(FrameDraw)
     {
         Vector3 Point(0, 0, 0);
-        Point.z = MainCamera->LookZ() - (MainCamera->LookZ() * MainCamera->getLevelSeperation());
+        //Point.z = MainCamera->LookZ() - (MainCamera->LookZ() * MainCamera->getLevelSeperation());
         DrawCage(Point, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ() * MainCamera->getLevelSeperation(), false,0,1,0);
 
         Vector3 Cursor = MainCamera->getCursor();

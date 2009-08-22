@@ -16,6 +16,7 @@
 				<Compiler>
 					<Add option="-Wall" />
 					<Add option="-g" />
+					<Add option="-lefence" />
 				</Compiler>
 			</Target>
 			<Target title="Release">

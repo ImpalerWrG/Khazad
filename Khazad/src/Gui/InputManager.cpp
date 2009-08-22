@@ -117,7 +117,10 @@ bool InputManager::HandleInput()
 					}
                     case SDLK_c:
                     {
-                        SCREEN->MainCamera->CenterView(SCREEN->MainCamera->getCursor());
+                        Vector3 adjustedCursor = SCREEN->MainCamera->getCursor();
+                        adjustedCursor.z = SCREEN->MainCamera->ZlevelSeperationAdjustment(adjustedCursor.z);
+
+                        SCREEN->MainCamera->CenterView(adjustedCursor);
                         break;
                     }
                     case SDLK_r:

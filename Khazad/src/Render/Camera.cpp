@@ -192,17 +192,17 @@ bool Camera::DetermineCursorIntersection()
         MouseIntersection.x = (int) (MouseIntersection.x + 0.5);
         MouseIntersection.y = (int) (MouseIntersection.y + 0.5);
         MouseIntersection.z = i;
-
+        cout << "hitscandebug: " << ZlevelSeperationAdjustment(i) + 0.5 << " " << MouseIntersection.x << " " << MouseIntersection.y << " " << MouseIntersection.z << endl;
         Cube* TopCube = MAP->getCube((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i);
         if(TopCube != NULL && SCREEN->isCubeDrawn(TopCube))
         {
             Face* TopFace = MAP->getFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_TOP);
             if(TopFace != NULL)
             {
-                if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
-                {
+//                if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
+//                {
                     return true;
-                }
+//                }
             }
         }
 
@@ -217,10 +217,10 @@ bool Camera::DetermineCursorIntersection()
             Face* BottomFace = MAP->getFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_BOTTOM);
             if(BottomFace != NULL)
             {
-                if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
-                {
+//                if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
+//                {
                     return true;
-                }
+//                }
             }
         }
 
@@ -228,10 +228,10 @@ bool Camera::DetermineCursorIntersection()
         Cube* TargetCube = MAP->getCube((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i);
         if(TargetCube != NULL && SCREEN->isCubeDrawn(TargetCube) && ((TargetCube->isSolid() && TargetCube->isFaceted()) || TargetCube->getSlope() != NULL))
         {
-            if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
-            {
+//            if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
+//            {
                 return true;
-            }
+//            }
         }
 
     }
@@ -291,7 +291,10 @@ void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY, 
                 {
                     if(MouseIntersection.x == Cursor.x && MouseIntersection.y == Cursor.y && MouseIntersection.z == Cursor.z)
                     {
-                        CenterView(Cursor);
+                        // adjust the lookAt for level separation
+                        Vector3 adjustedCursor = Cursor;
+                        adjustedCursor.z = ZlevelSeperationAdjustment(adjustedCursor.z);
+                        CenterView(adjustedCursor);
                     }
                     Cursor = MouseIntersection;
                 }
@@ -343,7 +346,8 @@ void Camera::UnProjectPoint(int XPosition, int YPosition)
 
 Sint32 Camera::ZlevelSeperationAdjustment(Sint32 Zlevel)
 {
-    return LookZ() - ((LookZ() - Zlevel) * getLevelSeperation());
+    //return LookZ() - ((LookZ() - Zlevel) * getLevelSeperation());
+    return Zlevel * getLevelSeperation();
 }
 
 void Camera::setCameraOrientation(CameraOrientation NewOrientation)
@@ -547,6 +551,7 @@ void Camera::TiltView(float Movement, float Min, float Max)
     }
 }
 
+/// FIXME: this is wrong - it only allows sliding in one level. Y should map to Z axis and X to a line perpendicular to the view
 void Camera::SlideView(float X, float Y)
 {
 //    float DifferenceX = LookPosition.x - EyePosition.x;
@@ -557,10 +562,10 @@ void Camera::SlideView(float X, float Y)
 		Vector3 LookVector = EyePosition - LookPosition;
 		Vector3 TempUpVector;
 		TempUpVector = UpVector;
-		TempUpVector.z = 0;
+		//TempUpVector.z = 0;
 
 		Vector3 CrossProduct = UpVector.crossProduct(LookVector);
-		CrossProduct.z = 0;
+		//CrossProduct.z = 0;
 
 		EyePosition += TempUpVector * Y * (1 / IsoScalar);
 		LookPosition += TempUpVector * Y * (1 / IsoScalar);
@@ -569,7 +574,7 @@ void Camera::SlideView(float X, float Y)
 		EyePosition += CrossProduct * X * (1 / IsoScalar);
 		LookPosition += CrossProduct * X * (1 / IsoScalar);
         //Cursor += CrossProduct * X * (1 / IsoScalar);
-
+        cout << "lookpos " << LookPosition.x << " " << LookPosition.y << " " << LookPosition.z << endl;
         ConfineLookPosition();
 		generateViewFrustum();
 	}
@@ -691,7 +696,7 @@ void Camera::ConfineLookPosition()
     }
 
     // Z Axis
-    int MaxZ = MAP->getMapSizeZ() - 1;
+    int MaxZ = LevelSeperation * (MAP->getMapSizeZ() - 1);
 //    int MinZ = 0;
 
     if(LookPosition.z < 0)
@@ -779,12 +784,16 @@ void Camera::setViewLevels(Uint8 NewValue)
 */
 void Camera::changeLevelSeperation(Sint8 Change)
 {
+    Vector3 adjustedLookAt = LookPosition;
+    adjustedLookAt.z /= LevelSeperation;
     LevelSeperation += Change;
 
     if(LevelSeperation < 1)
     {
         LevelSeperation = 1;
     }
+    adjustedLookAt.z *= LevelSeperation;
+    CenterView(adjustedLookAt);
 }
 
 void Camera::setLevelSeperation(Sint8 NewValue)
@@ -795,6 +804,7 @@ void Camera::setLevelSeperation(Sint8 NewValue)
     {
         LevelSeperation = 1;
     }
+
 }
 
 void Camera::SetSliceA(int newValue)
