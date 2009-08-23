@@ -30,7 +30,9 @@ public:
 
     void setTriangleCount(CameraOrientation Orientation, Uint16 Triangles) { TriangleCount[Orientation] = Triangles; }
 
-	bool Draw(CameraOrientation Orientation);
+	//bool Draw(CameraOrientation Orientation);
+	bool DrawSolids(CameraOrientation Orientation);
+	bool DrawLiquids();
 
 	bool Update();
 
@@ -43,6 +45,9 @@ public:
 
     inline bool isActive()                     { return Active; }
     void setActive(bool NewValue)       { Active = NewValue; }
+
+    inline bool isLiquidActive()                     { return ActiveLiquid; }
+    void setLiquidActive(bool NewValue)       { ActiveLiquid = NewValue; }
 
     GLuint getDrawListID()                  { return DrawListID; }
     bool isDirtyDrawList()                  { return DirtyDrawlist; }
@@ -75,6 +80,7 @@ protected:
     vector <Building *> buildings;
     vector <Tree *> trees;
 	bool Active;
+	bool ActiveLiquid;
 };
 
 #endif // CELL__HEADER

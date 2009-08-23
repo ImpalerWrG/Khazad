@@ -100,9 +100,7 @@ void cleanup()
 	IMAGE->FreeInstance();
     GAME->FreeInstance();
 	INPUT->FreeInstance();
-//	EXTRACT->FreeInstance();
 	MAP->FreeInstance();
-//	PROCESS->FreeInstance();
 	UI->FreeInstance();
 
 	TTF_Quit();

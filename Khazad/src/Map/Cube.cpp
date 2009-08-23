@@ -6,6 +6,8 @@
 #include <Face.h>
 #include <Slope.h>
 #include <Random.h>
+#include <TextureManager.h>
+#include <DataManager.h>
 
 Cube::Cube()
 {
@@ -137,6 +139,52 @@ bool Cube::InitFace(Facet FaceType)
     Faceted = true;
 
     return true;
+}
+
+bool Cube::DrawLiquid(float xTranslate, float yTranslate)
+{
+    Uint16 texture;
+    if(Liquid > 0)
+    {
+        // bind the right texture
+        if(LiquidType == 1) // magma
+        {
+            texture = DATA->getLabelIndex("MATERIAL_LAVA");
+        }
+        else
+        {
+            texture = DATA->getLabelIndex("MATERIAL_WATER");
+        }
+        // draw quad in the appropriate height
+        {
+            xTranslate -= 0.5;
+            yTranslate -= 0.5;
+            float z = 0.142857142857 * Liquid - 0.5;
+            glNormal3f(0.0,0.0,1.0);
+            TEXTURE->BindTexturePoint(texture, 0,0);
+            glVertex3f(xTranslate     ,yTranslate    ,z);
+            TEXTURE->BindTexturePoint(texture, 0,1);
+            glVertex3f(xTranslate     ,yTranslate + 1,z);
+            TEXTURE->BindTexturePoint(texture, 1,1);
+            glVertex3f(xTranslate + 1 ,yTranslate + 1,z);
+
+            TEXTURE->BindTexturePoint(texture, 1,1);
+            glVertex3f(xTranslate + 1 ,yTranslate + 1 ,z);
+            TEXTURE->BindTexturePoint(texture, 1,0);
+            glVertex3f(xTranslate + 1 ,yTranslate     ,z);
+            TEXTURE->BindTexturePoint(texture, 0,0);
+            glVertex3f(xTranslate     ,yTranslate     ,z);
+        }
+    }
+}
+
+
+void Cube::setLiquid(Uint8 liquidtype,Uint8 NewValue)
+{
+    LiquidType=liquidtype;
+    Liquid = NewValue;
+    if(NewValue > 0)
+    Owner->setLiquidActive(true);
 }
 
 bool Cube::setMaterial(Uint16 MaterialType)

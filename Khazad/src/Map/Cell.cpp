@@ -8,13 +8,14 @@
 #include <Building.h>
 #include <Tree.h>
 
-/*
+
 Cell::Cell()
 {
 	Active = false;
+	ActiveLiquid = false;
 	setType(CELL_ACTOR);
     Initalized = false;
-}*/
+}
 
 Cell::~Cell()
 {
@@ -68,7 +69,7 @@ Cell::Cell(Sint32 X, Sint32 Y, Sint32 Z)
 	Active = false;
     Initalized = false;
 
-    DrawListID = glGenLists(5);
+    DrawListID = glGenLists(6);
 
 	setType(CELL_ACTOR);
 
@@ -171,7 +172,26 @@ void Cell::addTree(Tree * t)
     trees.push_back(t);
 }
 
-bool Cell::Draw(CameraOrientation Orientation)
+bool Cell::DrawLiquids()
+{
+    Cube* LoopCube = NULL;
+    if(Initalized)
+    {
+        for (Uint16 x = 0; x < CELLEDGESIZE; x++)
+        {
+            for (Uint16 y = 0; y < CELLEDGESIZE; y++)
+            {
+                LoopCube = getCube(x, y);
+                if (LoopCube != NULL && SCREEN->isCubeDrawn(LoopCube))
+                {
+                    LoopCube->DrawLiquid(x,y);
+                }
+            }
+        }
+    }
+}
+
+bool Cell::DrawSolids(CameraOrientation Orientation)
 {
     Cube* LoopCube = NULL;
 

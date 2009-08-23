@@ -319,19 +319,27 @@ void Map::ReparseExtract()
             {
                 Cell* LoopCell = getCell(SizeX, SizeY, Zlevel);
 
-                if(LoopCell != NULL && LoopCell->isActive())
+                if(LoopCell != NULL)
                 {
-                    if(LoopCell->isDirtyDrawList())
+                    GLuint DrawListID = LoopCell->getDrawListID();
+                    if(LoopCell->isActive())
                     {
-                        // Rebuild the new Drawlist
-                        GLuint DrawListID = LoopCell->getDrawListID();
-                        glDeleteLists(DrawListID, 5);
-
-                        for(CameraOrientation Orientation = CAMERA_DOWN; Orientation < NUM_ORIENTATIONS; ++Orientation)
+                        if(LoopCell->isDirtyDrawList())
                         {
-                            SCREEN->RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation);
+                            // Rebuild the new Drawlist
+                            glDeleteLists(DrawListID, 5);
+
+                            for(CameraOrientation Orientation = CAMERA_DOWN; Orientation < NUM_ORIENTATIONS; ++Orientation)
+                            {
+                                SCREEN->RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation);
+                            }
+                            LoopCell->setDirtyDrawList(false);
                         }
-                        LoopCell->setDirtyDrawList(false);
+                    }
+                    if(LoopCell->isLiquidActive())
+                    {
+                        glDeleteLists(DrawListID + 5, 1);
+                        SCREEN->RefreshTransparentDrawlist(LoopCell, DrawListID + 5);
                     }
                 }
             }
@@ -424,8 +432,8 @@ void Map::LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 Cell
         if(Liquid)
         {
             //TargetCube->Open();
-            TargetCube->setLiquid((Uint8) Liquid);
-
+            TargetCube->setLiquid(df_map->isMagma( MapX, MapY, MapZ),(Uint8) Liquid);
+/*
             if(df_map->isMagma( MapX, MapY, MapZ))
             {
                 TargetCube->InitConstructedFace(FACET_TOP, DATA->getLabelIndex("MATERIAL_LAVA"));
@@ -433,7 +441,7 @@ void Map::LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 Cell
             else
             {
                 TargetCube->InitConstructedFace(FACET_TOP, DATA->getLabelIndex("MATERIAL_WATER"));
-            }
+            }*/
         }
         TargetCube->setVisible(true);
     }

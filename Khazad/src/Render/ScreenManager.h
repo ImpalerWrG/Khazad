@@ -80,8 +80,10 @@ public:
 
 	void DirtyAllLists();
 	bool Render();
+	void RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading, CameraOrientation CurrentOrientation);
 
 	void RefreshDrawlist(Cell* TargetCell, GLuint DrawlistID, CameraOrientation Orientation);
+	void RefreshTransparentDrawlist(Cell* TargetCell, GLuint DrawListID);
 
 	void IncrementTriangles(Uint32 Triangles);
 

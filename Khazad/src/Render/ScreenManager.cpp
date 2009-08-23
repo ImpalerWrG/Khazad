@@ -424,6 +424,54 @@ SDL_Color ScreenManager::getPickingColor()
 	return BLACK;
 }
 
+void ScreenManager::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading, CameraOrientation CurrentOrientation)
+{
+    Cell* LoopCell = MAP->getCell(SizeX, SizeY, Zlevel);
+
+    if(LoopCell != NULL && (LoopCell->isActive() || LoopCell->isLiquidActive()))
+    {
+        Vector3 RenderingPosition = LoopCell->getPosition();
+        RenderingPosition.z = ZTranslate;
+
+        if(MainCamera->sphereInFrustum(RenderingPosition, CELLEDGESIZE))
+        {
+            //glColor3f(1.0, 1.0, 1.0);
+            //LoopCell->DrawCellCage();
+
+            glPushMatrix();
+            glTranslatef(SizeX * CELLEDGESIZE, SizeY * CELLEDGESIZE, ZTranslate);
+
+            if(LoopCell->isDirtyDrawList())
+            {
+                // Rebuild the new Drawlist
+                GLuint DrawListID = LoopCell->getDrawListID();
+                glDeleteLists(DrawListID, 5);
+
+                for(CameraOrientation Orientation = CAMERA_DOWN; Orientation < NUM_ORIENTATIONS; ++Orientation)
+                {
+                    RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation);
+                }
+                LoopCell->setDirtyDrawList(false);
+            }
+            if(LoopCell->isActive())
+            {
+                glColor3f(Shading, Shading, Shading);
+                glCallList(LoopCell->getDrawListID() + (GLuint) CurrentOrientation);
+            }
+            if(LoopCell->isLiquidActive())
+            {
+                /// FIXME: add tunable liquid transparency, liquid render switch
+                glColor4f(Shading, Shading, Shading, 0.3);
+                glCallList(LoopCell->getDrawListID() + 5);// draw liquids
+            }
+
+            TotalTriangles += LoopCell->getTriangleCount(CurrentOrientation);  // Use stored Triangle Count
+
+            glPopMatrix();
+        }
+    }
+}
+
 bool ScreenManager::Render()
 {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -480,67 +528,39 @@ bool ScreenManager::Render()
     CameraOrientation CurrentOrientation = MainCamera->getOrientation();
 
 
+    Sint16 Start = MainCamera->getSliceBottom();
+    Sint16 Stop = MainCamera->getSliceTop();
 
-    for(Uint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
+    // z-levels first - this is a requirement for drawing transparencies
+    for(Sint16 Zlevel = Start; Zlevel <= Stop ; Zlevel++)
     {
-        for(Uint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
+        float Shading = 1.0;
+        if(ShadedDraw)
         {
-            Sint16 Start = MainCamera->getSliceBottom();
-            Sint16 Stop = MainCamera->getSliceTop();
+            Shading = MainCamera->getShading(Zlevel);
+        }
+        float ZTranslate = MainCamera->ZlevelSeperationAdjustment(Zlevel);
+        // we need to switch between 4 different orderings for drawing transparent cells
 
-            for(Sint16 Zlevel = Start; Zlevel <= Stop ; Zlevel++)
-            {
-                float Shading = 1.0;
-                if(ShadedDraw)
-                {
-                    Shading = MainCamera->getShading(Zlevel);
-                }
+        if (CurrentOrientation == CAMERA_NORTH_WEST || CurrentOrientation == CAMERA_DOWN)
+            for(Sint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
+                for(Sint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
+                    RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, CurrentOrientation);
 
-                float ZTranslate = MainCamera->ZlevelSeperationAdjustment(Zlevel);
+        else if(CurrentOrientation == CAMERA_SOUTH_WEST)
+            for(Sint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
+                for(Sint32 SizeY = MAP->getCellSizeY() - 1; SizeY >=0 ; SizeY--)
+                    RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, CurrentOrientation);
 
-			    //if(SizeX == 0 && SizeY == (MAP->getCellSizeY() - 1) && Zlevel == 25)
-			    //{
-			        //bool Debug = true;
-			    //}
+        else if (CurrentOrientation == CAMERA_NORTH_EAST)
+            for(Sint32 SizeX = MAP->getCellSizeX() - 1; SizeX >=0 ; SizeX--)
+                for(Sint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
+                    RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, CurrentOrientation);
 
-                Cell* LoopCell = MAP->getCell(SizeX, SizeY, Zlevel);
-
-                if(LoopCell != NULL && LoopCell->isActive())
-                {
-                    Vector3 RenderingPosition = LoopCell->getPosition();
-                    RenderingPosition.z = ZTranslate;
-
-                    if(MainCamera->sphereInFrustum(RenderingPosition, CELLEDGESIZE))
-                    {
-                        //glColor3f(1.0, 1.0, 1.0);
-                        //LoopCell->DrawCellCage();
-
-                        glPushMatrix();
-                        glTranslatef(SizeX * CELLEDGESIZE, SizeY * CELLEDGESIZE, ZTranslate);
-
-                        if(LoopCell->isDirtyDrawList())
-                        {
-                            // Rebuild the new Drawlist
-                            GLuint DrawListID = LoopCell->getDrawListID();
-                            glDeleteLists(DrawListID, 5);
-
-                            for(CameraOrientation Orientation = CAMERA_DOWN; Orientation < NUM_ORIENTATIONS; ++Orientation)
-                            {
-                                RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation);
-                            }
-                            LoopCell->setDirtyDrawList(false);
-                        }
-
-                        glColor3f(Shading, Shading, Shading);
-                        glCallList(LoopCell->getDrawListID() + (GLuint) CurrentOrientation);
-
-                        TotalTriangles += LoopCell->getTriangleCount(CurrentOrientation);  // Use stored Triangle Count
-
-                        glPopMatrix();
-                    }
-                }
-            }
-		}
+        else if(CurrentOrientation == CAMERA_SOUTH_EAST)
+            for(Sint32 SizeX = MAP->getCellSizeX() - 1; SizeX >=0 ; SizeX--)
+                for(Sint32 SizeY = MAP->getCellSizeY() - 1; SizeY >=0 ; SizeY--)
+                    RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, CurrentOrientation);
 	}
 
 /*
@@ -563,20 +583,31 @@ bool ScreenManager::Render()
 void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, CameraOrientation Orientation)
 {
     glNewList(DrawListID, GL_COMPILE);
-
+    {
         TriangleCounter = 0;  // Reset Counter and Track Triangle count
-
         glBegin(GL_TRIANGLES);
-
-            TargetCell->Draw(Orientation);
-
+        {
+            TargetCell->DrawSolids(Orientation);
             glColor3f(1.0, 1.0, 1.0);
-
-        glEnd();
-
-    glEndList();
+        } glEnd();
+    } glEndList();
 
     TargetCell->setTriangleCount(Orientation, TriangleCounter);
+}
+
+void ScreenManager::RefreshTransparentDrawlist(Cell* TargetCell, GLuint DrawListID)
+{
+    glNewList(DrawListID, GL_COMPILE);
+    {
+        TriangleCounter = 0;  // Reset Counter and Track Triangle count
+        glBegin(GL_TRIANGLES);
+        {
+            TargetCell->DrawLiquids();
+            glColor3f(1.0, 1.0, 1.0);
+        }glEnd();
+    } glEndList();
+    ///FIXME: needs addTriangleCount?
+    //TargetCell->setTriangleCount(Orientation, TriangleCounter);
 }
 
 void ScreenManager::IncrementTriangles(Uint32 Triangles)

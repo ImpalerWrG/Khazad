@@ -26,7 +26,7 @@ public:
     void setSolid(bool NewValue)    { Solid = NewValue; }
 
 	Uint8 getLiquid()                   { return Liquid; }
-	void setLiquid(Uint8 NewValue)      { Liquid = NewValue; }
+	void setLiquid(Uint8 liquidtype,Uint8 NewValue);
 
     Slope* getSlope()               { return Slopage; }
 	void SetSlope(Slopping Type);
@@ -62,6 +62,7 @@ public:
 
 	bool Update();
 	bool Draw(CameraOrientation Orientation, float xTranslate, float yTranslate);
+	bool DrawLiquid(float xTranslate, float yTranslate);
 
 	bool isSubTerranean()                 { return SubTerranian; }
 	void setSubTerranean(bool NewValue)   { SubTerranian = NewValue; }
@@ -82,6 +83,7 @@ protected:
 
 	bool Solid;
 	Uint8 Liquid;
+	bool LiquidType; // 1= magma
 	Uint16 Material;
 
     bool SubTerranian;
