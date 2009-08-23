@@ -106,7 +106,7 @@ void memory_info::setString (string key, string value)
 /// FIXME: next three methods should use some kind of custom container so it doesn't have to search so much.
 void memory_info::setClass (string name, string vtable)
 {
-    for (int i=0; i<classes.size(); i++)
+    for (uint32_t i=0; i<classes.size(); i++)
     {
         if(classes[i].classname == name)
         {
@@ -128,7 +128,7 @@ void memory_info::setClass (string name, string vtable)
 /// find old entry by name, rewrite, return its multi index. otherwise make a new one, append an empty vector of t_type to classtypes,  return its index.
 uint32_t memory_info::setMultiClass (string name, string vtable, string typeoffset)
 {
-    for (int i=0; i<classes.size(); i++)
+    for (uint32_t i=0; i<classes.size(); i++)
     {
         if(classes[i].classname == name)
         {
@@ -155,7 +155,7 @@ uint32_t memory_info::setMultiClass (string name, string vtable, string typeoffs
 void memory_info::setMultiClassChild (uint32_t multi_index, string name, string type)
 {
     vector <t_type>& vec = classsubtypes[multi_index];
-    for (int i=0; i<vec.size(); i++)
+    for (uint32_t i=0; i<vec.size(); i++)
     {
         if(vec[i].classname == name)
         {
@@ -177,7 +177,7 @@ bool memory_info::resolveClassId(uint32_t address, uint32_t & classid)
 {
     uint32_t vtable = MreadDWord(address);
     /// FIXME: stupid search. we need a better container
-    for(int i = 0;i< classes.size();i++)
+    for(uint32_t i = 0;i< classes.size();i++)
     {
         if(classes[i].vtable == vtable) // got class
         {
@@ -188,7 +188,7 @@ bool memory_info::resolveClassId(uint32_t address, uint32_t & classid)
                 uint32_t type = MreadWord(address + classes[i].type_offset);
                 //printf ("class %d:%s offset 0x%x\n", i , classes[i].classname.c_str(), classes[i].type_offset);
                 // return typed building if successful
-                for (int k = 0; k < vec.size();k++)
+                for (uint32_t k = 0; k < vec.size();k++)
                 {
                     if(vec[k].type == type)
                     {
@@ -209,13 +209,13 @@ bool memory_info::resolveClassId(uint32_t address, uint32_t & classid)
 
 void memory_info::copyBuildings(vector<string> & v_buildingtypes)
 {
-    for(int i = 0;i< classes.size();i++)
+    for(uint32_t i = 0;i< classes.size();i++)
     {
         v_buildingtypes.push_back(classes[i].classname);
         if(classes[i].is_multiclass)
         {
             vector <t_type>& vec = classsubtypes[classes[i].multi_index];
-            for (int k = 0; k < vec.size();k++)
+            for (uint32_t k = 0; k < vec.size();k++)
             {
                 v_buildingtypes.push_back(vec[k].classname);
             }

@@ -218,7 +218,7 @@ int main(int argv, char** argc)
         }
 
         SCREEN->Flip();
-        //glFinish();
+        glFinish();
 		FPSTimer->Pause(); // FrameRate Captures whole loop
 
         FrameRate = (Uint32) FrameRateControl(FPSTimer);

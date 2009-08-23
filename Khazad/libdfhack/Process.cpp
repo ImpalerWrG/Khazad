@@ -3,7 +3,7 @@
 #include <sys/wait.h>
 #endif
 
-Process::Process(DataModel * dm, memory_info* mi, ProcessHandle ph)
+ProcessManager::Process::Process(DataModel * dm, memory_info* mi, ProcessHandle ph)
 {
     my_datamodel = dm;
     my_descriptor = mi;
@@ -12,24 +12,25 @@ Process::Process(DataModel * dm, memory_info* mi, ProcessHandle ph)
 }
 
 // destroy data model. this is assigned by processmanager
-Process::~Process()
+ProcessManager::Process::~Process()
 {
     if(attached)
         detach();
     delete my_datamodel;
+    freeResources();
 }
 
 
-DataModel *Process::getDataModel()
+DataModel *ProcessManager::Process::getDataModel()
 {
     return my_datamodel;
 }
-memory_info * Process::getDescriptor()
+memory_info * ProcessManager::Process::getDescriptor()
 {
     return my_descriptor;
 }
 
-bool Process::isAttached()
+bool ProcessManager::Process::isAttached()
 {
     ///TODO: check for weird states here - like crashed DF and similar crap
     return attached; // valid when attached
@@ -40,7 +41,7 @@ bool Process::isAttached()
  *     LINUX PART
  */
 
-bool Process::attach()
+bool ProcessManager::Process::attach()
 {
     /// TODO: check for errors!
     if(g_pProcess != NULL)
@@ -54,7 +55,7 @@ bool Process::attach()
     g_ProcessHandle = my_handle;
     return true; // we are attached
 }
-bool Process::detach()
+bool ProcessManager::Process::detach()
 {
     /// TODO: check for errors.
     ptrace(PTRACE_DETACH, my_handle, NULL, NULL);
@@ -64,7 +65,7 @@ bool Process::detach()
     return true;
 }
 
-void Process::freeResources()
+void ProcessManager::Process::freeResources()
 {
     // nil
 };
@@ -73,14 +74,14 @@ void Process::freeResources()
 /**
  *     WINDOWS PART
  */
-bool Process::attach()
+bool ProcessManager::Process::attach()
 {
     attached = true;
     g_pProcess = this;
     g_ProcessHandle = my_handle;
     return true;
 }
-bool Process::detach()
+bool ProcessManager::Process::detach()
 {
     attached = false;
     g_pProcess = NULL;
@@ -88,7 +89,7 @@ bool Process::detach()
     // nothing to do here, we are not a debbuger on Windows
     return true;
 }
-void Process::freeResources()
+void ProcessManager::Process::freeResources()
 {
     // opened by process manager
     CloseHandle(my_handle);

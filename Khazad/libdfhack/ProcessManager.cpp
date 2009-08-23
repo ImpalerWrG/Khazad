@@ -7,14 +7,14 @@
 #include <iostream>
 
 /// HACK: global variables (only one process can be attached at the same time.)
-Process * g_pProcess; ///< current process. non-NULL when picked
+ProcessManager::Process * g_pProcess; ///< current process. non-NULL when picked
 ProcessHandle g_ProcessHandle; ///< cache of handle to current process. used for speed reasons
 
 #ifdef LINUX_BUILD
 /// LINUX version of the process finder.
 #include <md5.h>
 
-Process* ProcessManager::addProcess(string & exe,ProcessHandle PH)
+ProcessManager::Process* ProcessManager::addProcess(string & exe,ProcessHandle PH)
 {
     string hash = MD5Sum((char *)exe.c_str());// get hash of the running DF process
     // iterate over the list of memory locations
@@ -417,7 +417,7 @@ bool ProcessManager::loadDescriptors(string path_to_xml)
                     map_pNamedEntries[str_id] = pMemInfo;
                 }
             }
-            for(int i = 0; i< v_pEntries.size();i++)
+            for(uint32_t i = 0; i< v_pEntries.size();i++)
             {
                 memory_info mem;
                 ///FIXME: add a set of entries processed in a step of this cycle, use it to check for infinite loops
@@ -488,7 +488,7 @@ uint32_t ProcessManager::size()
 {
     return processes.size();
 };
-Process * ProcessManager::operator[](uint32_t index)
+ProcessManager::Process * ProcessManager::operator[](uint32_t index)
 {
     assert(index < processes.size());
     return processes[index];

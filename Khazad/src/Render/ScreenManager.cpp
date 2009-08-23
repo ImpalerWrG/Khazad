@@ -374,7 +374,7 @@ bool ScreenManager::ClearDevice()
 
 bool ScreenManager::Flip()
 {
-	glFlush();
+//	glFlush();
 	SDL_GL_SwapBuffers();
 
 	return true;

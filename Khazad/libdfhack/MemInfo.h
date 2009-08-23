@@ -28,6 +28,7 @@ public:
     memory_info();
     memory_info(const memory_info&);
 
+
     void Rebase(int32_t new_base);
     uint32_t getBase ();
     void setBase (string);
@@ -76,12 +77,6 @@ private:
     map <string, uint32_t> offsets;
     map <string, uint32_t> hexvals;
     map <string, string> strings;
-    // classname -> vtable
-    //map <string, uint32_t> classnames;
-    // vtable -> class data
-    //map <uint32_t, t_class> classes;
-    // index = multiclass vtable, key = class type id, value = class
-    //map <uint32_t, map <uint32_t, t_class> > typeclasses;
     vector<t_class> classes;
     vector<vector<t_type> > classsubtypes;
     int32_t base;

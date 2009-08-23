@@ -31,7 +31,7 @@ bool Extractor::dumpMemory( string path_to_xml)
     // attach to process
     printf("Attempting to Attach Process\n");
     ///FIXME: this won't do.
-    Process * p = pm[0];
+    ProcessManager::Process * p = pm[0];
     DataModel * dm = p->getDataModel();
     if(!p->attach())
     {
@@ -357,7 +357,6 @@ bool Extractor::dumpMemory( string path_to_xml)
             if(tree->mat_type == 2) tree->mat_type = 3;
             // store for save/load. will need more processing.
             df_map->v_trees.push_back(tree);
-            ///FIXME: delete created tree structs
             // save buildings in a block for later display
             Block * b = df_map->getBlock(tree->x/16,tree->y/16,tree->z);
             b->v_trees.push_back(tree);

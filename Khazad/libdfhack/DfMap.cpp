@@ -161,7 +161,7 @@ vector<t_tree_desc *> *  DfMap::getBlockVegetationVector(uint32_t x,uint32_t y,u
 
 t_tree_desc *DfMap::getTree (uint32_t x, uint32_t y, uint32_t z)
 {
-    for(int i = 0; i< v_trees.size();i++)
+    for(uint32_t i = 0; i< v_trees.size();i++)
     {
         if(x == v_trees[i]->x && y == v_trees[i]->y && z == v_trees[i]->z)
             return v_trees[i];
@@ -171,7 +171,7 @@ t_tree_desc *DfMap::getTree (uint32_t x, uint32_t y, uint32_t z)
 
 t_building *DfMap::getBuilding (uint32_t x, uint32_t y, uint32_t z)
 {
-    for(int i = 0; i< v_buildings.size();i++)
+    for(uint32_t i = 0; i< v_buildings.size();i++)
     {
         if(x >= v_buildings[i]->x1 && x <= v_buildings[i]->x2 && y >= v_buildings[i]->y1 && y <= v_buildings[i]->y2 && z == v_buildings[i]->z)
             return v_buildings[i];

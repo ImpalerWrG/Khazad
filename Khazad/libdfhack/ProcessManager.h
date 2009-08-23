@@ -7,17 +7,42 @@ typedef pid_t ProcessHandle;
 typedef HANDLE ProcessHandle;
 #endif
 
-class Process;
 class memory_info;
+class DataModel;
 class TiXmlElement;
 
-/// HACK: global variables (only one process can be attached at the same time.)
-extern Process * g_pProcess; ///< current process. non-NULL when picked
-extern ProcessHandle g_ProcessHandle; ///< cache of handle to current process. used for speed reasons
-
+/*
+ * Process manager
+ */
 class ProcessManager
 {
-    private:
+public:
+    class Process
+    {
+    protected:
+        DataModel* my_datamodel;
+        memory_info * my_descriptor;
+        ProcessHandle my_handle;
+        bool attached;
+        void freeResources();
+    public:
+        Process(DataModel * dm, memory_info* mi, ProcessHandle ph);
+        ~Process();
+        // Set up stuff so we can read memory
+        bool attach();
+        bool detach();
+        // is the process still there?
+        bool isAttached();
+        memory_info *getDescriptor();
+        DataModel *getDataModel();
+    };
+
+    ProcessManager( string path_to_xml);
+    ~ProcessManager();
+    bool findProcessess();
+    uint32_t size();
+    Process * operator[](uint32_t index);
+private:
     // memory info entries loaded from a file
     std::vector<memory_info> meminfo;
     // vector to keep track of dynamically created memory_info entries
@@ -31,13 +56,12 @@ class ProcessManager
 #ifdef LINUX_BUILD
     Process* addProcess(string & exe,ProcessHandle PH);
 #endif
-    public:
-    ProcessManager( string path_to_xml);
-    ~ProcessManager();
-    bool findProcessess();
-    uint32_t size();
-    Process * operator[](uint32_t index);
 };
 
+/*
+ * Currently attached process and its handle
+ */
+extern ProcessManager::Process * g_pProcess; ///< current process. non-NULL when picked
+extern ProcessHandle g_ProcessHandle; ///< cache of handle to current process. used for speed reasons
 
 #endif // PROCESSMANAGER_H_INCLUDED
