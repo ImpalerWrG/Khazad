@@ -25,7 +25,7 @@ bool Attach(const string path_to_xml)
     // process is attached, everything went just fine
     return true;
 }
-
+/*
 void ReadMatgloss()
 {
     // set up some stuff, determine order
@@ -48,3 +48,4 @@ void ReadPlantMatgloss()
 {
 
 }
+*/

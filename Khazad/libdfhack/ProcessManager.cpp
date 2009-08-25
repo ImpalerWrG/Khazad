@@ -9,12 +9,13 @@
 /// HACK: global variables (only one process can be attached at the same time.)
 ProcessManager::Process * g_pProcess; ///< current process. non-NULL when picked
 ProcessHandle g_ProcessHandle; ///< cache of handle to current process. used for speed reasons
+FILE * g_ProcessMemFile; ///< opened /proc/PID/mem, valid when attached
 
 #ifdef LINUX_BUILD
 /// LINUX version of the process finder.
 #include <md5.h>
 
-ProcessManager::Process* ProcessManager::addProcess(string & exe,ProcessHandle PH)
+ProcessManager::Process* ProcessManager::addProcess(const string & exe,ProcessHandle PH, const string & memFile)
 {
     string hash = MD5Sum((char *)exe.c_str());// get hash of the running DF process
     // iterate over the list of memory locations
@@ -38,6 +39,7 @@ ProcessManager::Process* ProcessManager::addProcess(string & exe,ProcessHandle P
                 // some error happened, continue with next process
                 continue;
             }
+            ret->setMemFile(memFile);
             processes.push_back(ret);
             return ret;
         }
@@ -69,9 +71,10 @@ bool ProcessManager::findProcessess()
 		if (strspn(dir_entry_p->d_name, "0123456789") == strlen(dir_entry_p->d_name))
 		{
 		    dir_name = "/proc/";
-		    dir_name +=  + dir_entry_p->d_name;
+		    dir_name += dir_entry_p->d_name;
 		    dir_name += "/";
 		    exe_link = dir_name + "exe";
+		    string mem_name = dir_name + "mem";
 			// Getting the target of the exe ie to which binary it points to
 			target_result = readlink(exe_link.c_str(), target_name, sizeof(target_name)-1);
 			if (target_result > 0)
@@ -85,7 +88,7 @@ bool ProcessManager::findProcessess()
 				    // get PID
 					result = atoi(dir_entry_p->d_name);
 					/// create linux process, add it to the vector
-					addProcess(exe_link,result);
+					addProcess(exe_link,result,mem_name);
 				}
 				// a wine process, we need to do more checking and this may break is the future
 				/// FIXME: this fails when the wine process isn't started from the 'current working directory'. strip path data from cmdline
@@ -108,7 +111,7 @@ bool ProcessManager::findProcessess()
 				        // get PID
 				        result = atoi(dir_entry_p->d_name);
 				        /// create wine process, add it to the vector
-				        addProcess(exe_link,result);
+				        addProcess(exe_link,result,mem_name);
 				    }
 				}
 			}

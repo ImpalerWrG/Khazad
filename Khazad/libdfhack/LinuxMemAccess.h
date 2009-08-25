@@ -5,64 +5,41 @@
 inline
 uint8_t MreadByte (uint32_t offset)
 {
-    uint32_t val = ptrace(PTRACE_PEEKDATA,g_ProcessHandle, offset, NULL);
-    uint8_t cropped;
-    memcpy(&cropped, &val,sizeof(uint8_t));
-    return cropped;
+    uint8_t val;
+    fseek(g_ProcessMemFile, offset,SEEK_SET);
+    fread ( &val, sizeof(uint8_t), 1, g_ProcessMemFile );
+    return val;
 }
 inline
 uint16_t MreadWord (uint32_t offset)
 {
-    uint32_t val = ptrace(PTRACE_PEEKDATA,g_ProcessHandle, offset, NULL);
-    uint16_t cropped;
-    memcpy(&cropped, &val,sizeof(uint16_t));
-    return cropped;
+    uint16_t val;
+    fseek(g_ProcessMemFile, offset,SEEK_SET);
+    fread ( &val, sizeof(uint16_t), 1, g_ProcessMemFile );
+    return val;
 }
 inline
 uint32_t MreadDWord (uint32_t offset)
 {
-    uint32_t val = ptrace(PTRACE_PEEKDATA,g_ProcessHandle, offset, NULL);
+    uint32_t val;
+    fseek(g_ProcessMemFile, offset,SEEK_SET);
+    fread ( &val, sizeof(uint32_t), 1, g_ProcessMemFile );
     return val;
 }
 inline
 uint64_t MreadQuad (uint32_t offset)
 {
-    uint32_t val1 = ptrace(PTRACE_PEEKDATA,g_ProcessHandle, offset, NULL);
-    uint32_t val2 = ptrace(PTRACE_PEEKDATA,g_ProcessHandle, offset+4, NULL);
-    uint64_t ret;
-    memcpy(&ret,&val1,sizeof(uint32_t));
-    memcpy((&ret) + 4,&val2,sizeof(uint32_t));
-    return ret;
+    uint64_t val;
+    fseek(g_ProcessMemFile, offset,SEEK_SET);
+    fread ( &val, sizeof(uint32_t), 1, g_ProcessMemFile );
+    return val;
 }
 inline
 bool Mread (uint32_t offset, uint32_t size, uint8_t *target)
 {
-    uint8_t *mover = target;
-    uint32_t offseter = offset;
-    while (size)
-    {
-        if(size >= 4)
-        {
-            * (uint32_t *)mover = MreadDWord(offseter);
-            mover+=4;
-            offseter +=4;
-            size -=4;
-        }
-        else if(size >= 2)
-        {
-            * (uint16_t *)mover = MreadWord(offseter);
-            mover+=2;
-            offseter +=2;
-            size -=2;
-        }
-        else if(size == 1)
-        {
-            * (uint8_t *)mover = MreadByte(offseter);
-            mover+=1;
-            offseter ++;
-            size --;
-        }
-    }
+
+    fseek(g_ProcessMemFile, offset,SEEK_SET);
+    fread ( target, 1, size, g_ProcessMemFile );
     return true;
 }
 inline

@@ -19,12 +19,15 @@ class ProcessManager
 public:
     class Process
     {
+        friend class ProcessManager;
     protected:
         DataModel* my_datamodel;
         memory_info * my_descriptor;
         ProcessHandle my_handle;
+        string memFile;
         bool attached;
         void freeResources();
+        void setMemFile(const string & memf);
     public:
         Process(DataModel * dm, memory_info* mi, ProcessHandle ph);
         ~Process();
@@ -54,7 +57,7 @@ private:
     void ParseVTable(TiXmlElement* vtable, memory_info& mem);
     void ParseEntry (TiXmlElement* entry, memory_info& mem, map <string ,TiXmlElement *>& knownEntries);
 #ifdef LINUX_BUILD
-    Process* addProcess(string & exe,ProcessHandle PH);
+    Process* addProcess(const string & exe,ProcessHandle PH,const string & memFile);
 #endif
 };
 
@@ -63,5 +66,6 @@ private:
  */
 extern ProcessManager::Process * g_pProcess; ///< current process. non-NULL when picked
 extern ProcessHandle g_ProcessHandle; ///< cache of handle to current process. used for speed reasons
+extern FILE * g_ProcessMemFile; ///< opened /proc/PID/mem, valid when attached
 
 #endif // PROCESSMANAGER_H_INCLUDED

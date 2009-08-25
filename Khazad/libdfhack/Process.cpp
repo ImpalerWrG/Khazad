@@ -36,6 +36,12 @@ bool ProcessManager::Process::isAttached()
     return attached; // valid when attached
 }
 
+void ProcessManager::Process::setMemFile(const string & memf)
+{
+    assert(!attached);
+    memFile = memf;
+}
+
 #ifdef LINUX_BUILD
 /**
  *     LINUX PART
@@ -53,6 +59,7 @@ bool ProcessManager::Process::attach()
     /// Set the global process variables
     g_pProcess = this;
     g_ProcessHandle = my_handle;
+    g_ProcessMemFile = fopen(memFile.c_str(),"rb");
     return true; // we are attached
 }
 bool ProcessManager::Process::detach()
@@ -62,6 +69,8 @@ bool ProcessManager::Process::detach()
     attached = false;
     g_pProcess = NULL;
     g_ProcessHandle = 0;
+    fclose(g_ProcessMemFile);
+    g_ProcessMemFile = NULL;
     return true;
 }
 
