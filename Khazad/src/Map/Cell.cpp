@@ -210,13 +210,13 @@ bool Cell::DrawSolids(CameraOrientation Orientation)
                     {
                         LoopCube->getSlope()->Draw(x, y);
                     }
-                    if(LoopCube->getLiquid())
+                    /*if(LoopCube->getLiquid())
                     {
                         if(Facets[x][y][FACET_TOP])
                         {
                             Facets[x][y][FACET_TOP]->Draw(x, y);
                         }
-                    }
+                    }*/
 
                     switch(Orientation)
                     {

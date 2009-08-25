@@ -338,7 +338,7 @@ void Map::ReparseExtract()
                     }
                     if(LoopCell->isLiquidActive())
                     {
-                        glDeleteLists(DrawListID + 5, 1);
+                        glDeleteLists(DrawListID + 5,1);
                         SCREEN->RefreshTransparentDrawlist(LoopCell, DrawListID + 5);
                     }
                 }

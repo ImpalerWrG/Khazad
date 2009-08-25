@@ -149,35 +149,166 @@ bool Cube::DrawLiquid(float xTranslate, float yTranslate)
         // bind the right texture
         if(LiquidType == 1) // magma
         {
+            glColor4f(1, 1, 1, 0.3);
             texture = DATA->getLabelIndex("MATERIAL_LAVA");
         }
         else
         {
+            glColor4f(0.5, 0.5, 0.5, 0.7);
             texture = DATA->getLabelIndex("MATERIAL_WATER");
         }
+        float xx= xTranslate - 0.5;
+        float yy = yTranslate - 0.5;
+        float z = 0.141 * Liquid - 0.5;
+        float zt = 0.141 * Liquid;
         // draw quad in the appropriate height
         {
-            xTranslate -= 0.5;
-            yTranslate -= 0.5;
-            float z = 0.142857142857 * Liquid - 0.5;
             glNormal3f(0.0,0.0,1.0);
             TEXTURE->BindTexturePoint(texture, 0,0);
-            glVertex3f(xTranslate     ,yTranslate    ,z);
+            glVertex3f(xx     ,yy    ,z);
             TEXTURE->BindTexturePoint(texture, 0,1);
-            glVertex3f(xTranslate     ,yTranslate + 1,z);
+            glVertex3f(xx     ,yy + 1,z);
             TEXTURE->BindTexturePoint(texture, 1,1);
-            glVertex3f(xTranslate + 1 ,yTranslate + 1,z);
+            glVertex3f(xx + 1 ,yy + 1,z);
 
             TEXTURE->BindTexturePoint(texture, 1,1);
-            glVertex3f(xTranslate + 1 ,yTranslate + 1 ,z);
+            glVertex3f(xx + 1 ,yy + 1 ,z);
             TEXTURE->BindTexturePoint(texture, 1,0);
-            glVertex3f(xTranslate + 1 ,yTranslate     ,z);
+            glVertex3f(xx + 1 ,yy     ,z);
             TEXTURE->BindTexturePoint(texture, 0,0);
-            glVertex3f(xTranslate     ,yTranslate     ,z);
+            glVertex3f(xx     ,yy     ,z);
+        }
+        Cube * north = getAdjacentCube(FACET_NORTH);
+        Cube * east = getAdjacentCube(FACET_EAST);
+        Cube * west = getAdjacentCube(FACET_WEST);
+        Cube * south = getAdjacentCube(FACET_SOUTH);
+        float nl = 0;
+        if(north)
+        {
+            nl = north->getLiquid();
+        }
+        if (nl < Liquid)
+        {
+            float z2 =  (0.141 * nl) - 0.5;
+            float zt2 =  (0.141 * nl);
+            // draw a quad to patch hole north
+            TEXTURE->BindTexturePoint(texture, 0,zt2);
+            glVertex3f(xx +1     ,yy    ,z2);
+            TEXTURE->BindTexturePoint(texture, 1,zt2);
+            glVertex3f(xx     ,yy     ,z2);
+            TEXTURE->BindTexturePoint(texture, 1,zt);
+            glVertex3f(xx    ,yy    ,z);
+
+            TEXTURE->BindTexturePoint(texture, 0,zt2);
+            glVertex3f(xx +1     ,yy    ,z2);
+            TEXTURE->BindTexturePoint(texture, 1,zt);
+            glVertex3f(xx    ,yy    ,z);
+            TEXTURE->BindTexturePoint(texture, 0,zt);
+            glVertex3f(xx +1 ,yy    ,z);
+
+        }
+
+        nl = 0;
+        if(east)
+        {
+            nl = east->getLiquid();
+        }
+        if (nl < Liquid)
+        {
+            float z2 =  0.141 * nl - 0.5;
+            float zt2 =  (0.141 * nl);
+            // draw a quad to patch hole east
+            TEXTURE->BindTexturePoint(texture, 0,zt2);
+            glVertex3f(xx +1     ,yy +1    ,z2);
+            TEXTURE->BindTexturePoint(texture, 1,zt2);
+            glVertex3f(xx +1     ,yy    ,z2);
+            TEXTURE->BindTexturePoint(texture, 1,zt);
+            glVertex3f(xx +1     ,yy     ,z);
+
+            TEXTURE->BindTexturePoint(texture, 0,zt2);
+            glVertex3f(xx +1     ,yy +1    ,z2);
+            TEXTURE->BindTexturePoint(texture, 1,zt);
+            glVertex3f(xx +1     ,yy     ,z);
+            TEXTURE->BindTexturePoint(texture, 0,zt);
+            glVertex3f(xx +1     ,yy +1    ,z);
+        }
+        if(south)
+        {
+            nl = south->getLiquid();
+        }
+        if (nl < Liquid)
+        {
+            float z2 =  0.141 * nl - 0.5;
+            float zt2 =  (0.141 * nl);
+            // draw a quad to patch hole south
+            TEXTURE->BindTexturePoint(texture, 0,zt2);
+            glVertex3f(xx      ,yy +1    ,z2);
+            TEXTURE->BindTexturePoint(texture, 1,zt2);
+            glVertex3f(xx +1     ,yy +1    ,z2);
+            TEXTURE->BindTexturePoint(texture, 1,zt);
+            glVertex3f(xx +1   ,yy +1     ,z);
+
+            TEXTURE->BindTexturePoint(texture, 0,zt2);
+            glVertex3f(xx      ,yy +1    ,z2);
+            TEXTURE->BindTexturePoint(texture, 1,zt);
+            glVertex3f(xx +1     ,yy +1     ,z);
+            TEXTURE->BindTexturePoint(texture, 0,zt);
+            glVertex3f(xx      ,yy +1    ,z);
+        }
+        if(west)
+        {
+            nl = west->getLiquid();
+        }
+        if (nl < Liquid)
+        {
+            float z2 =  0.141 * nl - 0.5;
+            float zt2 =  (0.141 * nl);
+            // draw a quad to patch hole west
+            TEXTURE->BindTexturePoint(texture, 0,zt2);
+            glVertex3f(xx      ,yy    ,z2);
+            TEXTURE->BindTexturePoint(texture, 1,zt2);
+            glVertex3f(xx      ,yy +1    ,z2);
+            TEXTURE->BindTexturePoint(texture, 1,zt);
+            glVertex3f(xx   ,yy +1     ,z);
+
+            TEXTURE->BindTexturePoint(texture, 0,zt2);
+            glVertex3f(xx      ,yy     ,z2);
+            TEXTURE->BindTexturePoint(texture, 1,zt);
+            glVertex3f(xx      ,yy +1     ,z);
+            TEXTURE->BindTexturePoint(texture, 0,zt);
+            glVertex3f(xx      ,yy     ,z);
         }
     }
 }
 
+/*
+Cube* Cube::getAdjacentCube(Facet Type)
+{
+    Sint32 x = Position.x;
+    Sint32 y = Position.y;
+    Sint32 z = Position.z;
+
+    switch(Type)
+    {
+        case FACET_TOP:
+            z += 1;
+            break;
+        case FACET_BOTTOM:
+            z -= 1;
+            break;
+        case FACET_NORTH:
+            y -= 1;
+            break;
+        case FACET_EAST:
+            x += 1;
+            break;
+        case FACET_SOUTH:
+            y += 1;
+            break;
+        case FACET_WEST:
+            x -= 1;
+            break;
+*/
 
 void Cube::setLiquid(Uint8 liquidtype,Uint8 NewValue)
 {

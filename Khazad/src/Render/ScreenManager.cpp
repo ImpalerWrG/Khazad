@@ -445,12 +445,15 @@ void ScreenManager::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float 
             {
                 // Rebuild the new Drawlist
                 GLuint DrawListID = LoopCell->getDrawListID();
-                glDeleteLists(DrawListID, 5);
+                glDeleteLists(DrawListID, 6);
 
                 for(CameraOrientation Orientation = CAMERA_DOWN; Orientation < NUM_ORIENTATIONS; ++Orientation)
                 {
                     RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation);
                 }
+                if(LoopCell->isLiquidActive())
+                    SCREEN->RefreshTransparentDrawlist(LoopCell, DrawListID + 5);
+
                 LoopCell->setDirtyDrawList(false);
             }
             if(LoopCell->isActive())
@@ -461,7 +464,7 @@ void ScreenManager::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float 
             if(LoopCell->isLiquidActive())
             {
                 /// FIXME: add tunable liquid transparency, liquid render switch
-                glColor4f(Shading, Shading, Shading, 0.3);
+                glColor4f(Shading, Shading, Shading,0.3);
                 glCallList(LoopCell->getDrawListID() + 5);// draw liquids
             }
 
