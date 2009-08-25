@@ -320,7 +320,7 @@ void DfMap::getGeoRegion (uint32_t x, uint32_t y, uint32_t z, int32_t& geoX, int
     }
 }
 
-MatglossPair DfMap::getMaterialPair (uint32_t x, uint32_t y, uint32_t z)
+t_matglossPair DfMap::getMaterialPair (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
 
@@ -331,7 +331,7 @@ MatglossPair DfMap::getMaterialPair (uint32_t x, uint32_t y, uint32_t z)
     {
         return b->material[x2][y2];
     }
-    MatglossPair fail = {-1,-1};
+    t_matglossPair fail = {-1,-1};
     return fail;
 };
 
@@ -352,7 +352,66 @@ string DfMap::getGeoMaterialString (uint32_t x, uint32_t y, uint32_t z)
     return fallback;
 }
 
-// this is what the vein structures say it is
+string DfMap::getMaterialTypeString (uint32_t type)
+{
+    string ret = "";
+    switch (type)
+    {
+        case 0:
+        ret += "wood";
+        break;
+        case 1:
+        ret += "stone/soil";
+        break;
+        case 2:
+        ret += "metal";
+        break;
+        case 3:
+        ret += "plant";
+        break;
+        case 10:
+        ret += "leather";
+        break;
+        case 11:
+        ret += "silk cloth";
+        break;
+        case 12:
+        ret += "plant thread cloth";
+        break;
+        case 13: // green glass
+        ret += "green glass";
+        break;
+        case 14: // clear glass
+        ret += "clear glass";
+        break;
+        case 15: // crystal glass
+        ret += "crystal glass";
+        break;
+        case 17:
+        ret += "ice";
+        break;
+        case 18:
+        ret += "charcoal";
+        break;
+        case 19:
+        ret += "potash";
+        break;
+        case 20:
+        ret += "ashes";
+        break;
+        case 21:
+        ret += "pearlash";
+        break;
+        case 24:
+        ret += "soap";
+        break;
+        default:
+        ret += "unknown";
+        break;
+    }
+    return ret;
+}
+
 string DfMap::getMaterialString (uint32_t type, uint32_t index)
 {
     if(index != 65535 && type >= 0 && type < NUM_MATGLOSS_TYPES)

@@ -9,14 +9,15 @@ class Building : public Actor
 {
     public:
         /** Default constructor */
-        Building(int x1, int y1, int x2, int y2, int z, int mat_type, int mat_idx, int type);
+        Building(int x1, int y1, int x2, int y2, int z, t_matglossPair material, int type);
         /** Default destructor */
         virtual ~Building();
         bool Init();
         bool Draw(CameraOrientation Orientation);
     protected:
     private:
-        int x1, y1, x2, y2, z, mat_type, mat_idx, type;
+        int x1, y1, x2, y2, z, type;
+        t_matglossPair material;
 };
 
 #endif // BUILDING_H

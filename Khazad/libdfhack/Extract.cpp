@@ -297,14 +297,13 @@ bool Extractor::dumpMemory( string path_to_xml)
             Mread(temp, sizeof(t_construction_df40d), (uint8_t *)&c_40d);
             // stupid apply. this will probably be removed later
             Block * b = df_map->getBlock(c_40d.x/16,c_40d.y/16,c_40d.z);
-            b->material[c_40d.x%16][c_40d.y%16].type = c_40d.mat_type;
-            b->material[c_40d.x%16][c_40d.y%16].index = c_40d.mat_idx;
+            b->material[c_40d.x%16][c_40d.y%16] = c_40d.material;
+            //b->material[c_40d.x%16][c_40d.y%16].index = c_40d.material.index;
             // transform
             c.x = c_40d.x;
             c.y = c_40d.y;
             c.z = c_40d.z;
-            c.mat_type = c_40d.mat_type;
-            c.mat_idx = c_40d.mat_idx;
+            c.material = c_40d.material;
             // store for save/load
             df_map->v_constructions.push_back(c);
         }
@@ -332,8 +331,7 @@ bool Extractor::dumpMemory( string path_to_xml)
             bld->y1 = bld_40d.y1;
             bld->y2 = bld_40d.y2;
             bld->z = bld_40d.z;
-            bld->mat_type = bld_40d.mat_type;
-            bld->mat_idx = bld_40d.mat_idx;
+            bld->material = bld_40d.material;
             // store for save/load. will need more processing.
             df_map->v_buildings.push_back(bld);
             ///FIXME: delete created building structs
@@ -354,7 +352,7 @@ bool Extractor::dumpMemory( string path_to_xml)
             //read construction from memory
             Mread(temp + tree_desc_offset, sizeof(t_tree_desc), (uint8_t *)tree);
             // fix bad stuff
-            if(tree->mat_type == 2) tree->mat_type = 3;
+            if(tree->material.type == 2) tree->material.type = 3;
             // store for save/load. will need more processing.
             df_map->v_trees.push_back(tree);
             // save buildings in a block for later display

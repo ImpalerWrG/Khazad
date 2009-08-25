@@ -1,8 +1,13 @@
-#include "Tree.h"
 #include <TextureManager.h>
+/// FIXME: dfhack paths
+#include <stdint.h>
+#include <string>
+using namespace std;
+#include <Types.h>
+#include "Tree.h"
 
-Tree::Tree(int mat_type, int mat_idx, int x, int y, int z)
-: x( x ),y( y ),z( z ),mat_type( mat_type ),mat_idx( mat_idx ) { }
+Tree::Tree(t_matglossPair material, int x, int y, int z)
+: x( x ),y( y ),z( z ),material( material ) { }
 
 Tree::~Tree()
 {

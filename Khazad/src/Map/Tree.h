@@ -8,7 +8,7 @@ class Tree : public Actor
 {
     public:
         /** Default constructor */
-        Tree(int mat_type, int mat_idx, int x, int y, int z);
+        Tree(t_matglossPair material, int x, int y, int z);
         /** Default destructor */
         virtual ~Tree();
         bool Init();
@@ -16,7 +16,8 @@ class Tree : public Actor
 
     protected:
     private:
-    int x, y, z, mat_type, mat_idx;
+    int x, y, z;
+    t_matglossPair material;
 };
 
 #endif // TREE_H

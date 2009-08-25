@@ -1,6 +1,8 @@
 #ifndef DFCOMMON_H_INCLUDED
 #define DFCOMMON_H_INCLUDED
 
+///TODO: separate into extrenal and internal
+
 #include <string>
 #include <vector>
 #include <map>
@@ -25,6 +27,7 @@ using namespace std;
 #include <psapi.h>
 #endif
 
+#include "Types.h"
 #include "DataModel.h"
 #include "ProcessManager.h"
 #include "MemAccess.h"

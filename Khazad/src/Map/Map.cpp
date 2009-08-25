@@ -4,8 +4,9 @@
 #include <Singleton.h>
 #include <TextureManager.h>
 #include <DataManager.h>
-
+///FIXME: dfhack paths
 #include <Extract.h>
+#include <Types.h>
 #include <DfMap.h>
 
 #include <Column.h>
@@ -251,7 +252,7 @@ void Map::ReparseExtract()
                     for(int i = 0; i< bldvect->size(); i++)
                     {
                         t_building * b = (*bldvect)[i];
-                        Building *bld = new Building(b->x1,b->y1,b->x2,b->y2,b->z,b->mat_type,b->mat_idx,b->type);
+                        Building *bld = new Building(b->x1,b->y1,b->x2,b->y2,b->z,b->material,b->type);
                         ///FIXME: destroy buildings when destroying map
                         NewCell->addBuilding(bld);
                     }
@@ -259,7 +260,7 @@ void Map::ReparseExtract()
                     for(int i = 0; i< treevect->size(); i++)
                     {
                         t_tree_desc* t = (*treevect)[i];
-                        Tree *tree = new Tree(t->mat_type,t->mat_idx,t->x,t->y,t->z);
+                        Tree *tree = new Tree(t->material,t->x,t->y,t->z);
                         ///FIXME: destroy trees when destroying map
                         NewCell->addTree(tree);
                     }
@@ -489,7 +490,7 @@ void Map::InitilizeTilePicker()
 Uint32 Map::PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ)
 {
     DfMap *df_map = DFExtractor->getMap();
-    MatglossPair mat = df_map->getMaterialPair(MapX, MapY, MapZ);
+    t_matglossPair mat = df_map->getMaterialPair(MapX, MapY, MapZ);
     //Sint16 StoneType = df_map->getMaterialIndex(MapX, MapY, MapZ);
     Sint16 TileType = df_map->getTileType(MapX, MapY, MapZ);
 

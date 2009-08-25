@@ -3,194 +3,7 @@
 
 #define BLOCK_SIZE 16
 
-struct t_vein
-{
-    uint32_t vtable;
-    int16_t type;
-    int16_t assignment[16];
-    int16_t unknown;
-    uint32_t flags;
-};
-
-struct MatglossPair
-{
-    uint16_t type;
-    uint16_t index;
-};
-
-// raw
-struct t_construction_df40d
-{
-    int16_t x;
-    int16_t y;
-    int16_t z;
-    int16_t unk1;
-    int16_t unk2;
-    int16_t mat_type;
-    int16_t mat_idx;
-    // not complete
-};
-
-// cooked
-struct t_construction
-{
-    uint16_t x;
-    uint16_t y;
-    uint16_t z;
-    int16_t mat_type;
-    int16_t mat_idx;
-};
-
-//raw
-struct t_building_df40d
-{
-    uint32_t vtable;
-    uint32_t x1;
-    uint32_t y1;
-    uint32_t unk1;
-    uint32_t x2;
-    uint32_t y2;
-    uint32_t unk2;
-    uint32_t z;
-    uint32_t some_flag;
-    int16_t mat_type;
-    int16_t mat_idx;
-    // not complete
-};
-
-//cooked
-struct t_building
-{
-    uint32_t type;
-    uint32_t x1;
-    uint32_t y1;
-    uint32_t x2;
-    uint32_t y2;
-    uint32_t z;
-    int16_t mat_type;
-    int16_t mat_idx;
-    // not complete
-};
-
-struct t_tree_desc
-{
-    int16_t mat_type;
-    int16_t mat_idx;
-    uint16_t x;
-    uint16_t y;
-    uint16_t z;
-};
-
-// in order in which the raw vectors appear in df memory
-enum RawType
-{
-    Mat_Wood,
-    Mat_Stone,
-    Mat_Plant,
-    Mat_Metal,
-    NUM_MATGLOSS_TYPES
-};
-
-enum BiomeOffset
-{
-    eNorthWest,
-    eNorth,
-    eNorthEast,
-    eWest,
-    eHere,
-    eEast,
-    eSouthWest,
-    eSouth,
-    eSouthEast,
-    eBiomeCount
-};
-
 class DfMapHeader;
-
-/// TODO: research this further? consult DF hacker wizards?
-union t_designation
-{
-    uint32_t whole;
-    struct {
-    unsigned int flow_size : 3; // how much liquid is here?
-    unsigned int pile : 1; // stockpile?
-/*
- * All the different dig designations... needs more info, probably an enum
- */
-    unsigned int dig : 3;
-    unsigned int detail : 1;///<- wtf
-    unsigned int detail_event : 1;///<- more wtf
-    unsigned int hidden :1;
-
-/*
- * This one is rather involved, but necessary to retrieve the base layer matgloss index
- * see http://www.bay12games.com/forum/index.php?topic=608.msg253284#msg253284 for details
- */
-    unsigned int geolayer_index :4;
-    unsigned int light : 1;
-    unsigned int subterranean : 1; // never seen the light of day?
-    unsigned int skyview : 1; // sky is visible now, it rains in here when it rains
-
-/*
- * Probably similar to the geolayer_index. Only with a different set of offsets and different data.
- * we don't use this yet
- */
-    unsigned int biome : 4;
-/*
-0 = water
-1 = magma
-*/
-    unsigned int liquid_type : 1;
-    unsigned int water_table : 1; // srsly. wtf?
-    unsigned int rained : 1; // does this mean actual rain (as in the blue blocks) or a wet tile?
-    unsigned int traffic : 2; // needs enum
-    unsigned int flow_forbid : 1; // idk wtf bbq
-    unsigned int liquid_static : 1;
-    unsigned int moss : 1;// I LOVE MOSS
-    unsigned int feature_present : 1; // another wtf... is this required for magma pipes to work?
-    unsigned int liquid_character : 2; // those ripples on streams?
-    } bits;
-};
-
-// occupancy flags (rat,dwarf,horse,built wall,not build wall,etc)
-union t_occupancy
-{
-    uint32_t whole;
-    struct {
-    unsigned int building : 3;// building type... should be an enum?
-    // 7 = door
-    unsigned int unit : 1;
-    unsigned int unit_grounded : 1;
-    unsigned int item : 1;
-    // splatter. everyone loves splatter.
-    unsigned int mud : 1;
-    unsigned int vomit :1;
-    unsigned int debris1 :1;
-    unsigned int debris2 :1;
-    unsigned int debris3 :1;
-    unsigned int debris4 :1;
-    unsigned int blood_g : 1;
-    unsigned int blood_g2 : 1;
-    unsigned int blood_b : 1;
-    unsigned int blood_b2 : 1;
-    unsigned int blood_y : 1;
-    unsigned int blood_y2 : 1;
-    unsigned int blood_m : 1;
-    unsigned int blood_m2 : 1;
-    unsigned int blood_c : 1;
-    unsigned int blood_c2 : 1;
-    unsigned int blood_w : 1;
-    unsigned int blood_w2 : 1;
-    unsigned int blood_o : 1;
-    unsigned int blood_o2 : 1;
-    unsigned int slime : 1;
-    unsigned int slime2 : 1;
-    unsigned int blood : 1;
-    unsigned int blood2 : 1;
-    unsigned int debris5 : 1;
-    unsigned int snow : 1;
-    } bits;
-};
 
 class Block
 {
@@ -203,7 +16,7 @@ public:
     t_occupancy occupancy[BLOCK_SIZE][BLOCK_SIZE];
     // veins
     vector <t_vein> veins;
-    MatglossPair material[BLOCK_SIZE][BLOCK_SIZE];
+    t_matglossPair material[BLOCK_SIZE][BLOCK_SIZE];
     vector<t_building*> v_buildings;
     vector<t_tree_desc*> v_trees;
     void collapseVeins();
@@ -295,6 +108,7 @@ public:
     void applyGeoMatgloss(Block * b);
     // accessing vectors of materials
     uint16_t getNumMatGloss(uint16_t type);
+    string getMaterialTypeString (uint32_t type);
     string getMatGlossString(uint16_t type, uint16_t index);
     // accessing vectors of building types
     uint32_t getNumBuildingTypes();
@@ -324,7 +138,7 @@ public:
     uint32_t getOccupancies(uint32_t x, uint32_t y, uint32_t z);
 
     // get tile material
-    MatglossPair getMaterialPair (uint32_t x, uint32_t y, uint32_t z);
+    t_matglossPair getMaterialPair (uint32_t x, uint32_t y, uint32_t z);
     string getGeoMaterialString (uint32_t x, uint32_t y, uint32_t z);
     string getMaterialString (uint32_t type, uint32_t index);
 

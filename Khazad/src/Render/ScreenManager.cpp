@@ -12,6 +12,8 @@
 #include <TextureManager.h>
 #include <ImageManager.h>
 #include <DataManager.h>
+
+#include <Types.h>
 #include <Extract.h>
 #include <DfMap.h>
 #include <Game.h>
@@ -22,6 +24,9 @@
 #include <Paths.h>
 
 #include <IL/ilut.h>
+
+#include <iostream>
+#include <sstream>
 
 
 DECLARE_SINGLETON(ScreenManager)
@@ -703,7 +708,8 @@ void ScreenManager::PrintDebugging()
         int Geolayer = 0;
         int veinMatgloss = 0;
         string matgloss;
-        MatglossPair matglossdesc;
+        string matglosstype;
+        t_matglossPair matglossdesc;
         t_building *building;
         t_tree_desc *tree;
         uint32_t region_x = 0;
@@ -747,60 +753,13 @@ void ScreenManager::PrintDebugging()
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 
-        string typestr = "unknown";
-        switch (matglossdesc.type)
-        {
-                case 0:
-                typestr = "wood";
-                break;
-                case 1:
-                typestr = "stone/soil";
-                break;
-                case 2:
-                typestr = "metal";
-                break;
-                case 3:
-                typestr = "plant";
-                break;
-                case 10:
-                typestr = "leather";
-                break;
-                case 11:
-                typestr = "silk cloth";
-                break;
-                case 12:
-                typestr = "plant thread cloth";
-                break;
-                case 13: // green glass
-                typestr = "green glass";
-                break;
-                case 14: // clear glass
-                typestr = "clear glass";
-                break;
-                case 15: // crystal glass
-                typestr = "crystal glass";
-                break;
-                case 17: // crystal glass
-                typestr = "ice";
-                break;
-                case 18:
-                typestr = "charcoal";
-                break;
-                case 19:
-                typestr = "potash";
-                break;
-                case 20:
-                typestr = "ashes";
-                break;
-                case 21:
-                typestr = "pearlash";
-                break;
-                case 24:
-                typestr = "soap";
-                break;
-        }
-        sprintf (buffer, "material: %d:%d = %s:%s ",matglossdesc.type, matglossdesc.index,typestr.c_str(), matgloss.c_str());
-        SCREEN->RenderText(buffer, 0, WHITE, &position);
+        // display tile material
+        stringstream acc (stringstream::in | stringstream::out);
+        matglosstype = df_map->getMaterialTypeString(matglossdesc.type);
+        matgloss = df_map->getMaterialString(matglossdesc.type,matglossdesc.index);
+        acc << "material: " << matglossdesc.type << ":" << matglossdesc.index << " = " <<
+               matglosstype << ":" << matgloss;
+        SCREEN->RenderText(acc.str().c_str(), 0, WHITE, &position);
         position.y -= 40;
 /*
         sprintf (buffer, "biome %i, layer %i, vein: %s #%i", Biome, Geolayer, matgloss.c_str(), veinMatgloss);
@@ -810,77 +769,17 @@ void ScreenManager::PrintDebugging()
 */
         if(building)
         {
-            typestr = "unknown";
-            switch (building->mat_type)
-            {
-                case 0:
-                typestr = "wood";
-                break;
-                case 1:
-                typestr = "stone/soil";
-                break;
-                case 2:
-                typestr = "metal";
-                break;
-                case 3:
-                typestr = "plant";
-                break;
-                case 10:
-                typestr = "leather";
-                break;
-                case 11:
-                typestr = "silk cloth";
-                break;
-                case 12:
-                typestr = "plant thread cloth";
-                break;
-                case 13: // green glass
-                typestr = "green glass";
-                break;
-                case 14: // clear glass
-                typestr = "clear glass";
-                break;
-                case 15: // crystal glass
-                typestr = "crystal glass";
-                break;
-                case 17:
-                typestr = "ice";
-                break;
-                case 18:
-                typestr = "charcoal";
-                break;
-                case 19:
-                typestr = "potash";
-                break;
-                case 20:
-                typestr = "ashes";
-                break;
-                case 21:
-                typestr = "pearlash";
-                break;
-                case 24:
-                typestr = "soap";
-                break;
-            }
-            matgloss = df_map->getMaterialString(building->mat_type,building->mat_idx);
-            sprintf (buffer, "building: 0x%x:%s, material: %d:%d = %s:%s ", building->type, df_map->getBuildingTypeName(building->type).c_str(),building->mat_type, building->mat_idx,typestr.c_str(), matgloss.c_str());
+            matglosstype = df_map->getMaterialTypeString(building->material.type);
+            matgloss = df_map->getMaterialString(building->material.type,building->material.index);
+            sprintf (buffer, "building: 0x%x:%s, material: %d:%d = %s:%s ", building->type, df_map->getBuildingTypeName(building->type).c_str(),building->material.type, building->material.index,matglosstype.c_str(), matgloss.c_str());
             SCREEN->RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
         }
         if (tree)
         {
-            typestr = "unknown";
-            switch (tree->mat_type)
-            {
-                case 0:
-                typestr = "tree";
-                break;
-                case 3:
-                typestr = "shrub";
-                break;
-            }
-            matgloss = df_map->getMaterialString(tree->mat_type,tree->mat_idx);
-            sprintf (buffer, "plant: %d:%d = %s:%s ",tree->mat_type, tree->mat_idx,typestr.c_str(), matgloss.c_str());
+            matglosstype = df_map->getMaterialTypeString(tree->material.type);
+            matgloss = df_map->getMaterialString(tree->material.type,tree->material.index);
+            sprintf (buffer, "plant: %d:%d = %s:%s ",tree->material.type, tree->material.index,matglosstype.c_str(), matgloss.c_str());
             SCREEN->RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
         }

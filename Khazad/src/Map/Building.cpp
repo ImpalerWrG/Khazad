@@ -1,8 +1,13 @@
+/// FIXME: fix dfhack paths and how khazad links to it once it's a library
+#include <string>
+using namespace std;
+#include <stdint.h>
+#include <Types.h>
 #include "Building.h"
 #include <TextureManager.h>
 
-Building::Building(int x1, int y1, int x2, int y2, int z, int mat_type, int mat_idx, int type)
-: x1( x1 ),y1( y1 ),x2( x2 ),y2( y2 ),z( z ),mat_type( mat_type ),mat_idx( mat_idx ),type( type ) { }
+Building::Building(int x1, int y1, int x2, int y2, int z, t_matglossPair material, int type)
+: x1( x1 ),y1( y1 ),x2( x2 ),y2( y2 ),z( z ),material( material ),type( type ) { }
 
 Building::~Building()
 {

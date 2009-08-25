@@ -5,6 +5,8 @@
 #include <Face.h>
 #include <Cube.h>
 #include <Map.h>
+/// FIXME: dfhack paths
+#include <Types.h>
 #include <Building.h>
 #include <Tree.h>
 
