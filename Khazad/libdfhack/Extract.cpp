@@ -73,6 +73,7 @@ bool Extractor::dumpMemory( string path_to_xml)
     // veins
     int veinvector = offset_descriptor->getOffset("v_vein");
     int veinsize = offset_descriptor->getHexValue("v_vein_size");
+
     int vegetation = offset_descriptor->getAddress("vegetation");
     int tree_desc_offset = offset_descriptor->getOffset("tree_desc_offset");
     // constructions

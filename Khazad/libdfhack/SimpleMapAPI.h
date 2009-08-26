@@ -1,11 +1,6 @@
 #ifndef SIMPLEAPI_H_INCLUDED
 #define SIMPLEAPI_H_INCLUDED
 
-/**
- * This is a canned initialization. It hides a lot of the process search and attach specifics from you.
- * It can be done better, but this is really easy to use.
- */
-
 class memory_info;
 
 class SimpleAPI
@@ -21,6 +16,7 @@ private:
     ProcessManager::Process* p;
     DataModel* dm;
     memory_info* offset_descriptor;
+    vector<uint16_t> v_geology[eBiomeCount];
     string xml;
 public:
     SimpleAPI(const string path_to_xml);
@@ -29,11 +25,11 @@ public:
     bool Detach();
     bool isAttached();
     // read all known matgloss
-    bool ReadMatgloss(uint32_t &count, vector< vector <t_matgloss> > &Matgloss);
+    bool ReadMatgloss(vector< vector <t_matgloss> > &Matgloss);
 
-    // read region surroundings, get their vectors of geolayers
-
-    // TBD
+    // read region surroundings, get their vectors of geolayers so we can do translation (or just hand the translation table to the client)
+    // returns an array of 9 vectors of indices into stone matgloss
+    bool ReadGeology( vector <uint16_t>*& assign);
 
     /*
      * BLOCK DATA
@@ -49,14 +45,13 @@ public:
     bool ReadTileTypes(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint16_t *buffer); // 256 * sizeof(uint16_t)
     bool ReadDesignations(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint32_t *buffer); // 256 * sizeof(uint32_t)
     bool ReadOccupancy(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint32_t *buffer); // 256 * sizeof(uint32_t)
-    //16 of them? IDK... there's probably just 7. Reading more doesn't cause errors
+    //16 of them? IDK... there's probably just 7. Reading more doesn't cause errors as it's an array nested inside a block
     bool ReadRegionOffsets(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint32_t *buffer); // 16 * sizeof(uint8_t)
     // aggregated veins of a block
-    t_vein *ReadVeins(unsigned int blockx, unsigned int blocky, unsigned int &count);
+    bool ReadVeins(uint32_t blockx, uint32_t blocky, uint32_t blockz, vector <t_vein> & veins);
     /*
      * Buildings, constructions, plants
      */
-
     // TBD
 };
 #endif // SIMPLEAPI_H_INCLUDED
