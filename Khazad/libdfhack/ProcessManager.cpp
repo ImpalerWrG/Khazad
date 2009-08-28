@@ -1,9 +1,9 @@
 #include "DFCommon.h"
 
-#include <DataModel.h>
-#include <MemInfo.h>
+#include "DataModel.h"
+#include "MemInfo.h"
 
-#include <tinyxml.h>
+#include "tinyxml/tinyxml.h"
 #include <iostream>
 
 /// HACK: global variables (only one process can be attached at the same time.)
@@ -13,7 +13,7 @@ FILE * g_ProcessMemFile; ///< opened /proc/PID/mem, valid when attached
 
 #ifdef LINUX_BUILD
 /// LINUX version of the process finder.
-#include <md5.h>
+#include "md5.h"
 
 ProcessManager::Process* ProcessManager::addProcess(const string & exe,ProcessHandle PH, const string & memFile)
 {

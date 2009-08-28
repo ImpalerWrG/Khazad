@@ -2,9 +2,9 @@
 #include "DFCommon.h"
 using namespace std;
 
-#include <Extract.h>
-#include <DataModel.h>
-#include <MemInfo.h>
+#include "Extract.h"
+#include "DataModel.h"
+#include "MemInfo.h"
 
 Extractor::Extractor()
 {
