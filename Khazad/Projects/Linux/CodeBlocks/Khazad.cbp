@@ -122,9 +122,7 @@
 		<Unit filename="../../../libdfhack/Types.h" />
 		<Unit filename="../../../libdfhack/WindowsMemAccess.h" />
 		<Unit filename="../../../libdfhack/ZlibHelper.h" />
-		<Unit filename="../../../libdfhack/md5.c">
-			<Option compilerVar="CPP" />
-		</Unit>
+		<Unit filename="../../../libdfhack/md5.cpp" />
 		<Unit filename="../../../libdfhack/md5.h" />
 		<Unit filename="../../../src/Core/Enum.h" />
 		<Unit filename="../../../src/Core/Random.cpp" />
