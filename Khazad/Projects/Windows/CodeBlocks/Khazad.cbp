@@ -227,7 +227,10 @@
 		<Unit filename="..\..\..\libdfhack\Process.cpp" />
 		<Unit filename="..\..\..\libdfhack\ProcessManager.cpp" />
 		<Unit filename="..\..\..\libdfhack\ProcessManager.h" />
+		<Unit filename="..\..\..\libdfhack\SimpleMapAPI.cpp" />
+		<Unit filename="..\..\..\libdfhack\SimpleMapAPI.h" />
 		<Unit filename="..\..\..\libdfhack\TileTypes.h" />
+		<Unit filename="..\..\..\libdfhack\Types.h" />
 		<Unit filename="..\..\..\libdfhack\WindowsMemAccess.h" />
 		<Unit filename="..\..\..\libdfhack\ZlibHelper.h" />
 		<Unit filename="..\..\..\src\Core\Enum.h" />

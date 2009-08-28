@@ -47,18 +47,33 @@ struct t_construction
 //    int16_t mat_idx;
 };
 
+/*
+		dword vtable;
+		int minx;
+		int miny;
+		int centerx;
+		int maxx;
+		int maxy;
+		int centery;
+		int z;
+		dword height_not_used;
+		word  mattype;
+		word  matgloss;
+		word  type; // NOTE: the actual field is in a different place
+*/
+
 //raw
 struct t_building_df40d
 {
     uint32_t vtable;
     uint32_t x1;
     uint32_t y1;
-    uint32_t unk1;
+    uint32_t centerx;
     uint32_t x2;
     uint32_t y2;
-    uint32_t unk2;
+    uint32_t centery;
     uint32_t z;
-    uint32_t some_flag;
+    uint32_t height;
     t_matglossPair material;
     // not complete
 };
@@ -66,13 +81,19 @@ struct t_building_df40d
 //cooked
 struct t_building
 {
-    uint32_t type;
+    uint32_t vtable;
+
     uint32_t x1;
     uint32_t y1;
+
     uint32_t x2;
     uint32_t y2;
+
     uint32_t z;
+
     t_matglossPair material;
+
+    uint32_t type;
     /// FIXME: not complete, we need building presence bitmaps for stuff like farm plots and stockpiles, orientation (N,E,S,W) and state (open/closed)
 };
 

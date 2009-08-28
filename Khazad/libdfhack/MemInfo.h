@@ -68,7 +68,7 @@ public:
     void setMultiClassChild (uint32_t, string, string);
 
     /// !! uses memory reading directly
-    bool resolveClassId(uint32_t address, uint32_t & classid);
+    bool resolveClassId(uint32_t address, int32_t & classid);
     void copyBuildings(vector<string> & v_buildingtypes);
 
     void flush();

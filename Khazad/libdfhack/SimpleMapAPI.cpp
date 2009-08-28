@@ -1,4 +1,5 @@
 #include "DFCommon.h"
+#include "DfVector.h"
 #include "SimpleMapAPI.h"
 #include "MemInfo.h"
 /*
@@ -47,6 +48,9 @@ I just need the quickest way possible to convert between the DESIGNATION_MATGLOS
 SimpleAPI::SimpleAPI(const string path_to_xml)
 {
     xml = path_to_xml;
+    constructionsInited = false;
+    buildingsInited = false;
+    vegetationInited = false;
 }
 
 /*-----------------------------------*
@@ -93,15 +97,15 @@ bool SimpleAPI::InitMap()
             {
                 temp_loc = MreadDWord(temp_locz);
                 temp_locz += 4;
-                if (temp_loc)
-                {
+/*                if (temp_loc)
+                {*/
                     //temp_loc is the address of the block
                     block[x*y_block_count*z_block_count + y*z_block_count + z] = temp_loc;
-                }
+                /*}
                 else
                 {
-                    block[x*y_block_count*z_block_count + y*z_block_count + z] = NULL;
-                }
+                    block[x*y_block_count*z_block_count + y*z_block_count + z] = 0;
+                }*/
             }
         }
     }
@@ -193,41 +197,99 @@ void SimpleAPI::getSize(uint32_t& x, uint32_t& y, uint32_t& z)
     z = z_block_count;
 }
 
-/// TODO: turn next line into an XML entry, add more matgloss here (creature types for soap/leather/meat, etc.)
-RawType matglossRawMapping[] = {Mat_Wood, Mat_Stone, Mat_Metal, Mat_Plant};
+//RawType matglossRawMapping[] = {Mat_Wood, Mat_Stone, Mat_Metal, Mat_Plant};
 
-/// Matgloss
-bool SimpleAPI::ReadMatgloss(vector< vector <t_matgloss> > &Matgloss)
+bool SimpleAPI::ReadStoneMatgloss(vector<t_matgloss> & stones)
 {
-    // matgloss
     int matgloss_address = offset_descriptor->getAddress("matgloss");
-    int matgloss_skip = offset_descriptor->getHexValue("matgloss_skip");
-    // read matgloss data from df if we can
-    if(matgloss_address && matgloss_skip)
+    int matgloss_offset = offset_descriptor->getAddress("matgloss_skip");
+    int matgloss_colors = offset_descriptor->getOffset("matgloss_stone_color");
+    DfVector p_matgloss = dm->readVector(matgloss_address + matgloss_offset, 4);
+    stones.clear();
+    for (uint32_t i = 0; i< p_matgloss.getSize();i++)
     {
-        uint32_t addr = matgloss_address;
-        for(uint32_t counter = Mat_Wood; counter < NUM_MATGLOSS_TYPES; addr += matgloss_skip, counter++)
-        {
-            DfVector p_matgloss = dm->readVector(addr, 4);
-            // iterate over it
-            for (uint32_t i = 0; i< p_matgloss.getSize();i++)
-            {
-                uint32_t temp;
-                string tmpstr;
-                // read the matgloss pointer from the vector into temp
-                p_matgloss.read((uint32_t)i,(uint8_t *)&temp);
-                // read the string pointed at by
-                t_matgloss mat;
-                mat.id = dm->readSTLString(temp); // reads a C string given an address
-                /// FIXME: needs more offsets, all the tile/color/brightness stuff
-                /// FIXME: we have to add vectors to the vector depending on if they are there or not...
-                /// FIXME: unfinished
-                Matgloss[matglossRawMapping[counter]].push_back(mat);
-            }
-        }
-        return true;
+        uint32_t temp;
+        // read the matgloss pointer from the vector into temp
+        p_matgloss.read((uint32_t)i,(uint8_t *)&temp);
+        // read the string pointed at by
+        t_matgloss mat;
+        mat.id = dm->readSTLString(temp); // reads a C string given an address
+        mat.fore = MreadWord(temp + matgloss_colors);
+        mat.back = MreadWord(temp + matgloss_colors + 2);
+        mat.bright = MreadWord(temp + matgloss_colors + 4);
+        stones.push_back(mat);
     }
-    return false;
+    return true;
+}
+bool SimpleAPI::ReadMetalMatgloss(vector<t_matgloss> & metals)
+{
+    int matgloss_address = offset_descriptor->getAddress("matgloss");
+    int matgloss_offset = offset_descriptor->getAddress("matgloss_skip");
+    int matgloss_colors = offset_descriptor->getOffset("matgloss_metal_color");
+    DfVector p_matgloss = dm->readVector(matgloss_address + matgloss_offset*2, 4);
+    metals.clear();
+    for (uint32_t i = 0; i< p_matgloss.getSize();i++)
+    {
+        uint32_t temp;
+        // read the matgloss pointer from the vector into temp
+        p_matgloss.read((uint32_t)i,(uint8_t *)&temp);
+        // read the string pointed at by
+        t_matgloss mat;
+        mat.id = dm->readSTLString(temp); // reads a C string given an address
+        mat.fore = MreadWord(temp + matgloss_colors);
+        mat.back = MreadWord(temp + matgloss_colors + 2);
+        mat.bright = MreadWord(temp + matgloss_colors + 4);
+        metals.push_back(mat);
+    }
+    return true;
+}
+bool SimpleAPI::ReadWoodMatgloss(vector<t_matgloss> & woods)
+{
+    int matgloss_address = offset_descriptor->getAddress("matgloss");
+    ///TODO: find flag for autumnal coloring?
+    DfVector p_matgloss = dm->readVector(matgloss_address, 4);
+    woods.clear();
+    t_matgloss mat;
+    // TODO: use brown?
+    mat.fore = 7;
+    mat.back = 0;
+    mat.bright = 0;
+    for (uint32_t i = 0; i< p_matgloss.getSize();i++)
+    {
+        uint32_t temp;
+        // read the matgloss pointer from the vector into temp
+        p_matgloss.read((uint32_t)i,(uint8_t *)&temp);
+        // read the string pointed at by
+        mat.id = dm->readSTLString(temp); // reads a C string given an address
+        woods.push_back(mat);
+    }
+    return true;
+}
+bool SimpleAPI::ReadPlantMatgloss(vector<t_matgloss> & plants)
+{
+    int matgloss_address = offset_descriptor->getAddress("matgloss");
+    int matgloss_offset = offset_descriptor->getAddress("matgloss_skip");
+    ///TODO: coloring for plant matter, booze, seeds, etc?
+    DfVector p_matgloss = dm->readVector(matgloss_address + matgloss_offset*3, 4);
+    plants.clear();
+
+    t_matgloss mat;
+    // TODO: use green?
+    mat.fore = 7;
+    mat.back = 0;
+    mat.bright = 0;
+    for (uint32_t i = 0; i< p_matgloss.getSize();i++)
+    {
+        uint32_t temp;
+        // read the matgloss pointer from the vector into temp
+        p_matgloss.read((uint32_t)i,(uint8_t *)&temp);
+        // read the string pointed at by
+
+        mat.id = dm->readSTLString(temp); // reads a C string given an address
+
+        plants.push_back(mat);
+    }
+    return true;
 }
 
 bool SimpleAPI::ReadGeology( vector <uint16_t>*& assign)
@@ -248,27 +310,26 @@ bool SimpleAPI::ReadGeology( vector <uint16_t>*& assign)
     uint32_t regionY;
     uint32_t regionZ;
 
-    ///FIXME: these belong to some world structure
-    uint32_t worldSizeX;
-    uint32_t worldSizeY;
+    uint16_t worldSizeX;
+    uint16_t worldSizeY;
 
     if(region_x_offset && region_y_offset && region_z_offset)
     {
-        regionX = MreadDWord(region_x_offset);
-        regionY = MreadDWord(region_y_offset);
-        regionZ = MreadDWord(region_z_offset);
+        MreadDWord(region_x_offset, regionX);
+        MreadDWord(region_y_offset, regionY);
+        MreadDWord(region_z_offset, regionZ);
         //df_map->setRegionCoords(,MreadDWord(region_y_offset),MreadDWord(region_z_offset));
         // we have region offset
         // extract layer geology data. we need all these to do that
         if(world_size_x && world_size_y && world_offset && world_regions_offset && world_geoblocks_offset && region_size && region_geo_index_offset && geolayer_geoblock_offset)
         {
             // get world size
-            int worldSizeX = MreadWord(world_offset + world_size_x);
-            int worldSizeY = MreadWord(world_offset + world_size_y);
-            printf("World size. X=%d Y=%d\n",worldSizeX,worldSizeY);
+            MreadWord(world_offset + world_size_x, worldSizeX);
+            MreadWord(world_offset + world_size_y, worldSizeY);
+            //printf("World size. X=%d Y=%d\n",worldSizeX,worldSizeY);
             // get pointer to first part of 2d array of regions
             uint32_t regions = MreadDWord(world_offset + world_regions_offset);
-            printf("regions. Offset=%d\n",regions);
+            //printf("regions. Offset=%d\n",regions);
             // read the 9 surrounding regions
             DfVector geoblocks = dm->readVector(world_offset + world_geoblocks_offset,4);
             // iterate over surrounding biomes. make sure we don't fall off the world
@@ -283,12 +344,14 @@ bool SimpleAPI::ReadGeology( vector <uint16_t>*& assign)
                 if( bioRY >= worldSizeY) bioRY = worldSizeY - 1;
                 /// TODO: encapsulate access to multidimensional arrays.
                 // load region stuff here
-                uint32_t geoX = MreadDWord(regions + bioRX*4);// get pointer to column of regions
+                uint32_t geoX;
+                MreadDWord(regions + bioRX*4, geoX);// get pointer to column of regions
                 // geoX = base
                 // bioRY = index
                 // region_size = size of array objects
                 // region_geo_index_off = offset into the array object
-                uint16_t geoindex = MreadWord(geoX + bioRY*region_size + region_geo_index_offset);
+                uint16_t geoindex;
+                MreadWord(geoX + bioRY*region_size + region_geo_index_offset);
                 uint32_t geoblock_off;
                 // get the geoblock from the geoblock vector using the geoindex
                 geoblocks.read(geoindex,(uint8_t *) &geoblock_off);
@@ -313,6 +376,102 @@ bool SimpleAPI::ReadGeology( vector <uint16_t>*& assign)
     return false;
 }
 
+/// returns number of buildings, expects v_buildingtypes that will later map t_building.type to its name (types can change between versions, names don't. and I'm lazy)
+uint32_t SimpleAPI::InitReadBuildings(vector <string> &v_buildingtypes)
+{
+    buildingsInited = true;
+    int buildings = offset_descriptor->getAddress("buildings");
+    assert(buildings);
+    p_bld = dm->readVector(buildings,4);
+    offset_descriptor->copyBuildings(v_buildingtypes);
+    return p_bld.getSize();
+}
+
+bool SimpleAPI::ReadBuilding(const uint32_t &index, t_building & building)
+{
+    assert(buildingsInited);
+    uint32_t temp;
+    t_building_df40d bld_40d;
+    // read pointer from vector at position
+    p_bld.read(index,(uint8_t *)&temp);
+    //read building from memory
+    Mread(temp, sizeof(t_building_df40d), (uint8_t *)&bld_40d);
+    // transform
+    int32_t type = -1;
+    offset_descriptor->resolveClassId(temp, type);
+    building.vtable = bld_40d.vtable;
+    building.x1 = bld_40d.x1;
+    building.x2 = bld_40d.x2;
+    building.y1 = bld_40d.y1;
+    building.y2 = bld_40d.y2;
+    building.z = bld_40d.z;
+    building.material = bld_40d.material;
+    building.type = type;
+}
+
+void SimpleAPI::FinishReadBuildings()
+{
+    buildingsInited = false;
+}
+
+///TODO: maybe do construction reading diferently - this could go slow with many of them.
+/// returns number of constructions, prepares a vector, returns total number of constructions
+uint32_t SimpleAPI::InitReadConstructions()
+{
+    constructionsInited = true;
+    int constructions = offset_descriptor->getAddress("buildings");
+    assert(constructions);
+    p_cons = dm->readVector(constructions,4);
+    return p_cons.getSize();
+}
+
+bool SimpleAPI::ReadConstruction(const uint32_t &index, t_construction & construction)
+{
+    assert(constructionsInited);
+
+    t_construction_df40d c_40d;
+    uint32_t temp;
+    // read pointer from vector at position
+    p_cons.read((uint32_t)index,(uint8_t *)&temp);
+    //read construction from memory
+    Mread(temp, sizeof(t_construction_df40d), (uint8_t *)&c_40d);
+    // transform
+    construction.x = c_40d.x;
+    construction.y = c_40d.y;
+    construction.z = c_40d.z;
+    construction.material = c_40d.material;
+}
+
+void SimpleAPI::FinishReadConstructions()
+{
+    constructionsInited = false;
+}
+
+uint32_t SimpleAPI::InitReadVegetation()
+{
+    vegetationInited = true;
+    int vegetation = offset_descriptor->getAddress("vegetation");
+    treeoffset = offset_descriptor->getOffset("tree_desc_offset");
+    assert(vegetation && treeoffset);
+    p_veg = dm->readVector(vegetation,4);
+    return p_veg.getSize();
+}
+bool SimpleAPI::ReadVegetation(const uint32_t &index, t_tree_desc & shrubbery)
+{
+    assert(vegetationInited);
+    uint32_t temp;
+    // read pointer from vector at position
+    p_veg.read(index,(uint8_t *)&temp);
+    //read construction from memory
+    Mread(temp + treeoffset, sizeof(t_tree_desc), (uint8_t *) &shrubbery);
+    // fix matgloss nonsense
+    if(shrubbery.material.type == 2) shrubbery.material.type = 3;
+}
+void SimpleAPI::FinishReadVegetation()
+{
+    vegetationInited = false;
+}
+
 bool SimpleAPI::Attach()
 {
     // detach all processes, destroy manager
@@ -326,7 +485,7 @@ bool SimpleAPI::Attach()
     if(!p->attach())
         return false; // couldn't attach to process, no go
     offset_descriptor = p->getDescriptor();
-    // process is attached, everything went just fine
+    // process is attached, everything went just fine... hopefully
     return true;
 }
 
@@ -339,4 +498,5 @@ bool SimpleAPI::Detach()
     offset_descriptor = NULL;
     dm = NULL;
 //    DestroyCache();
+    return true;
 }

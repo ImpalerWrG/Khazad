@@ -173,7 +173,7 @@ void memory_info::setMultiClassChild (uint32_t multi_index, string name, string 
     //cout << "    classtype " << name << ", assign " << mcc.assign << ", vtable  " << mcc.type << endl;
 }
 
-bool memory_info::resolveClassId(uint32_t address, uint32_t & classid)
+bool memory_info::resolveClassId(uint32_t address, int32_t & classid)
 {
     uint32_t vtable = MreadDWord(address);
     /// FIXME: stupid search. we need a better container

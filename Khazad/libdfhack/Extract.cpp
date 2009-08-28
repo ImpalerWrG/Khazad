@@ -324,8 +324,9 @@ bool Extractor::dumpMemory( string path_to_xml)
             //read construction from memory
             Mread(temp, sizeof(t_building_df40d), (uint8_t *)&bld_40d);
             // transform
-            uint32_t type = bld_40d.vtable;
+            int32_t type = -1;
             offset_descriptor->resolveClassId(temp, type);
+            bld->vtable = bld_40d.vtable;
             bld->type = type;
             bld->x1 = bld_40d.x1;
             bld->x2 = bld_40d.x2;

@@ -1,5 +1,5 @@
 /**
- * DO NOT USE THIS FILE DIRECTLY!
+ * DO NOT USE THIS FILE DIRECTLY! USE MemAccess.h INSTEAD!
  */
 
     /*
@@ -14,41 +14,68 @@
 
 
 inline
-uint8_t MreadByte (uint32_t offset)
+uint8_t MreadByte (const uint32_t &offset)
 {
     uint8_t result;
     ReadProcessMemory(g_ProcessHandle, (int*) offset, &result, sizeof(uint8_t), NULL);
     return result;
 }
 inline
-uint16_t MreadWord (uint32_t offset)
+void MreadByte (const uint32_t &offset,uint8_t &result)
+{
+    ReadProcessMemory(g_ProcessHandle, (int*) offset, &result, sizeof(uint8_t), NULL);
+}
+
+inline
+uint16_t MreadWord (const uint32_t &offset)
 {
     uint16_t result;
     ReadProcessMemory(g_ProcessHandle, (int*) offset, &result, sizeof(uint16_t), NULL);
     return result;
 }
+
 inline
-uint32_t MreadDWord (uint32_t offset)
+void MreadWord (const uint32_t &offset, uint16_t &result)
+{
+    ReadProcessMemory(g_ProcessHandle, (int*) offset, &result, sizeof(uint16_t), NULL);
+}
+
+inline
+uint32_t MreadDWord (const uint32_t &offset)
 {
     uint32_t result;
     ReadProcessMemory(g_ProcessHandle, (int*) offset, &result, sizeof(uint32_t), NULL);
     return result;
 }
 inline
-uint64_t MreadQuad (uint32_t offset)
+void MreadDWord (const uint32_t &offset, uint32_t &result)
+{
+    ReadProcessMemory(g_ProcessHandle, (int*) offset, &result, sizeof(uint32_t), NULL);
+}
+
+
+inline
+uint64_t MreadQuad (const uint32_t &offset)
 {
     uint64_t result;
     ReadProcessMemory(g_ProcessHandle, (int*) offset, &result, sizeof(uint64_t), NULL);
     return result;
 }
 inline
-bool Mread (uint32_t offset, uint32_t size, uint8_t *target)
+void MreadQuad (const uint32_t &offset, uint64_t &result)
+{
+    ReadProcessMemory(g_ProcessHandle, (int*) offset, &result, sizeof(uint64_t), NULL);
+}
+
+inline
+void Mread (const uint32_t &offset, uint32_t size, uint8_t *target)
 {
     ReadProcessMemory(g_ProcessHandle, (int*) offset, target, size, NULL);
-    return true;
 }
+
+///FIXME: reduce use of temporary objects
 inline
-const string MreadCString (uint32_t offset)
+const string MreadCString (const uint32_t &offset)
 {
     string temp;
     char temp_c[256];

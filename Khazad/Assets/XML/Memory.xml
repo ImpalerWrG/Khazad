@@ -63,6 +63,9 @@
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x015C6D70</Address>
 		<HexValue name="matgloss_skip">0x10</HexValue>
+		<!-- only stone and metal have color loaded... -->
+		<Offset name="matgloss_stone_color">0x84</Offset>
+		<Offset name="matgloss_metal_color">0x60</Offset>
 		<VTable>
 			<class vtable="0x00979fe4" name="stockpile" />
 			<class vtable="0x00979d34" name="zone" />
