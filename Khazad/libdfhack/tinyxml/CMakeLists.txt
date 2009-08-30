@@ -7,4 +7,4 @@ SET(TINYXML_SRCS
   tinyxmlparser.cpp
 )
 
-ADD_LIBRARY(tinyxml STATIC ${TINYXML_SRCS}) 
+ADD_LIBRARY(tinyxml SHARED ${TINYXML_SRCS}) 

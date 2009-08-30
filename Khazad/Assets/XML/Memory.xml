@@ -264,11 +264,19 @@
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x4A51C26E</HexValue>
 		<String name="md5">04a8d8ce311d8ac75e4241bef68d3147</String>
+		<!-- map_data = 0x015FFD5C -->
     </Entry>
-    <Entry version="v0.28.181.40d14" os="windows" base="40d13win" rebase="0x2010">
+    <Entry version="v0.28.181.40d14" os="windows" id="40d14win" base="40d13win" rebase="0x2010">
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x4A8623D2</HexValue>
 		<String name="md5">781a2e51be4056a7320108f8f0df8a13</String>
+		<!-- map_data = 0x01601D6C -->
+    </Entry>
+    <Entry version="v0.28.181.40d15" os="windows" base="40d14win" rebase="0x18">
+		<!-- identification -->
+		<HexValue name="pe_timestamp">0</HexValue>
+		<String name="md5">12cc4a3dbb6e6dfd7bc7aee458b9471a</String>
+		<!-- map_data = 0x01601D6C -->
     </Entry>
     <!-- Linux 40d## versions -->
     <Entry version="v0.28.181.40d9" os="linux" id="40d9lin">
@@ -445,16 +453,30 @@
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x08F97A84</Address>
 		<VTable rebase="-0xd6f00" />
+		<!--<class vtable="0x086C3968" name="door"/>-->
     </Entry>
     <Entry version="v0.28.181.40d13" os="linux" id="40d13lin" base="40d12lin" rebase="0x5020">
 		<!-- identification -->
 		<String name="md5">2f3cb9d720e9fe8844c02c72a2b20bbd</String>
+		<!-- map_data = 0x8F9ABDC -->
 		<VTable rebase="0x3A00" />
+		<!--<class vtable="0x086C7368" name="door"/>-->
     </Entry>
-    <Entry version="v0.28.181.40d14" os="linux" base="40d13lin">
+    <Entry version="v0.28.181.40d14" os="linux" id="40d14lin" base="40d13lin">
 		<!-- identification -->
 		<String name="md5">dab3ce6bc074529706a1e5fe1273108c</String>
+		<!-- map_data = 0x8F9ABDC -->
 		<VTable rebase="0x300" />
+		<!--<class vtable="0x086C7668" name="door"/>-->
+
     </Entry>
+    <Entry version="v0.28.181.40d15" os="linux" base="40d14lin">
+		<!-- identification -->
+		<String name="md5">4f55a1dcc326786271f221de23c425b5</String>
+		<!-- map_data = 0x8F9ABDC -->
+		<VTable rebase="0x260" />
+		<!--<class vtable="0x086c78c8" name="door"/>-->
+    </Entry>
+
   </MemoryDescriptors>
 </DFExtractor>

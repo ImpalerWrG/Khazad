@@ -771,7 +771,7 @@ void ScreenManager::PrintDebugging()
         {
             matglosstype = df_map->getMaterialTypeString(building->material.type);
             matgloss = df_map->getMaterialString(building->material.type,building->material.index);
-            sprintf (buffer, "building: 0x%x:%s, material: %d:%d = %s:%s ", building->type, df_map->getBuildingTypeName(building->type).c_str(),building->material.type, building->material.index,matglosstype.c_str(), matgloss.c_str());
+            sprintf (buffer, "building: 0x%x:%s, material: %d:%d = %s:%s ", building->vtable, df_map->getBuildingTypeName(building->type).c_str(),building->material.type, building->material.index,matglosstype.c_str(), matgloss.c_str());
             SCREEN->RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
         }
