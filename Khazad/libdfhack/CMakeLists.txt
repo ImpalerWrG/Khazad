@@ -1,6 +1,12 @@
 PROJECT (dfhack) 
+cmake_minimum_required(VERSION 2.6)
 
 SUBDIRS (tinyxml)
+
+# disable warning, autosearch for libraries
+if(COMMAND cmake_policy)
+  cmake_policy(SET CMP0003 NEW)
+endif(COMMAND cmake_policy)
 
 SET(PROJECT_SRCS
 DataModel.cpp
@@ -29,9 +35,9 @@ ENDIF(UNIX)
 
 
 ADD_LIBRARY(dfhack SHARED ${PROJECT_SRCS})
-ADD_LIBRARY(dfhack-static STATIC ${PROJECT_SRCS})
-TARGET_LINK_LIBRARIES(dfhack-static ${PROJECT_LIBS})
 TARGET_LINK_LIBRARIES(dfhack ${PROJECT_LIBS})
 
-SET_TARGET_PROPERTIES(dfhack-static PROPERTIES OUTPUT_NAME "dfhack")
+ADD_LIBRARY(dfhack-static STATIC ${PROJECT_SRCS})
+TARGET_LINK_LIBRARIES(dfhack-static ${PROJECT_LIBS})
+
 
