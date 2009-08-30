@@ -274,7 +274,7 @@
     </Entry>
     <Entry version="v0.28.181.40d15" os="windows" base="40d14win" rebase="0x18">
 		<!-- identification -->
-		<HexValue name="pe_timestamp">0</HexValue>
+		<HexValue name="pe_timestamp">0x4A9A6090</HexValue>
 		<String name="md5">12cc4a3dbb6e6dfd7bc7aee458b9471a</String>
 		<!-- map_data = 0x01601D6C -->
     </Entry>
