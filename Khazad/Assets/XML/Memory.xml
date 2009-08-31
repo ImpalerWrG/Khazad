@@ -272,12 +272,19 @@
 		<String name="md5">781a2e51be4056a7320108f8f0df8a13</String>
 		<!-- map_data = 0x01601D6C -->
     </Entry>
-    <Entry version="v0.28.181.40d15" os="windows" base="40d14win" rebase="0x18">
+    <Entry version="v0.28.181.40d15" os="windows" id="40d15win" base="40d14win" rebase="0x18">
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x4A9A6090</HexValue>
 		<String name="md5">12cc4a3dbb6e6dfd7bc7aee458b9471a</String>
-		<!-- map_data = 0x01601D6C -->
+		<!-- map_data = 0x01601D84 -->
     </Entry>
+    <Entry version="v0.28.181.40d16" os="windows" base="40d15win">
+		<!-- identification -->
+		<HexValue name="pe_timestamp">0x4A9B1A72</HexValue>
+		<String name="md5">59ab29021aca9f3c66b1ab102fb3ceea</String>
+		<!-- map_data = 0x01601D84 -->
+    </Entry>
+    59ab29021aca9f3c66b1ab102fb3ceea
     <!-- Linux 40d## versions -->
     <Entry version="v0.28.181.40d9" os="linux" id="40d9lin">
 		<!-- identification -->
@@ -470,13 +477,18 @@
 		<!--<class vtable="0x086C7668" name="door"/>-->
 
     </Entry>
-    <Entry version="v0.28.181.40d15" os="linux" base="40d14lin">
+    <Entry version="v0.28.181.40d15" os="linux" id="40d15lin" base="40d14lin">
 		<!-- identification -->
 		<String name="md5">4f55a1dcc326786271f221de23c425b5</String>
 		<!-- map_data = 0x8F9ABDC -->
 		<VTable rebase="0x260" />
 		<!--<class vtable="0x086c78c8" name="door"/>-->
     </Entry>
-
+    <Entry version="v0.28.181.40d16" os="linux" base="40d15lin">
+		<!-- identification -->
+		<String name="md5">022b933926e08da49c6df8649295f2b7</String>
+		<!-- map_data = 0x8F9ABDC -->
+		<!--<class vtable="0x086c78c8" name="door"/>-->
+    </Entry>
   </MemoryDescriptors>
 </DFExtractor>
