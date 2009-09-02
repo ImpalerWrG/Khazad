@@ -63,9 +63,9 @@ public:
     void setString (string, string);
 
     void RebaseVTable(int32_t offset);
-    void setClass (string, string);
-    uint32_t setMultiClass (string, string, string);
-    void setMultiClassChild (uint32_t, string, string);
+    void setClass (const char * name, const char * vtable);
+    uint32_t setMultiClass (const char * name, const char * vtable, const char * typeoffset);
+    void setMultiClassChild (uint32_t multi_index, const char * name, const char * type);
 
     /// !! uses memory reading directly
     bool resolveClassId(uint32_t address, int32_t & classid);

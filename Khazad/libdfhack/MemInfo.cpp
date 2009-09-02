@@ -104,13 +104,13 @@ void memory_info::setString (string key, string value)
 }
 
 /// FIXME: next three methods should use some kind of custom container so it doesn't have to search so much.
-void memory_info::setClass (string name, string vtable)
+void memory_info::setClass (const char * name, const char * vtable)
 {
     for (uint32_t i=0; i<classes.size(); i++)
     {
         if(classes[i].classname == name)
         {
-            classes[i].vtable = strtol(vtable.c_str(), NULL, 16);
+            classes[i].vtable = strtol(vtable, NULL, 16);
             return;
         }
     }
@@ -120,30 +120,34 @@ void memory_info::setClass (string name, string vtable)
     cls.is_multiclass = false;
     cls.type_offset = 0;
     classindex++;
-    cls.vtable = strtol(vtable.c_str(), NULL, 16);
+    cls.vtable = strtol(vtable, NULL, 16);
     classes.push_back(cls);
     cout << "class " << name << ", assign " << cls.assign << ", vtable  " << cls.vtable << endl;
 }
 
 /// find old entry by name, rewrite, return its multi index. otherwise make a new one, append an empty vector of t_type to classtypes,  return its index.
-uint32_t memory_info::setMultiClass (string name, string vtable, string typeoffset)
+uint32_t memory_info::setMultiClass (const char * name, const char * vtable, const char * typeoffset)
 {
     for (uint32_t i=0; i<classes.size(); i++)
     {
         if(classes[i].classname == name)
         {
-            classes[i].vtable = strtol(vtable.c_str(), NULL, 16);
-            classes[i].type_offset = strtol(typeoffset.c_str(), NULL, 16);
+            // vtable and typeoffset can be left out from the xml definition when there's already a named multiclass
+            if(vtable != NULL)
+                classes[i].vtable = strtol(vtable, NULL, 16);
+            if(typeoffset != NULL)
+                classes[i].type_offset = strtol(typeoffset, NULL, 16);
             return classes[i].multi_index;
         }
     }
+    ///FIXME: add checking for vtable and typeoffset here. they HAVE to be valid
     t_class cls;
-    cls.assign = classindex;
-    cls.classname = name;
-    cls.is_multiclass = true;
-    cls.type_offset = strtol(typeoffset.c_str(), NULL, 16);
-    cls.vtable = strtol(vtable.c_str(), NULL, 16);
-    cls.multi_index = classsubtypes.size();
+        cls.assign = classindex;
+        cls.classname = name;
+        cls.is_multiclass = true;
+        cls.type_offset = strtol(typeoffset, NULL, 16);
+        cls.vtable = strtol(vtable, NULL, 16);
+        cls.multi_index = classsubtypes.size();
     classes.push_back(cls);
     classindex++;
 
@@ -152,14 +156,14 @@ uint32_t memory_info::setMultiClass (string name, string vtable, string typeoffs
     //cout << "multiclass " << name << ", assign " << cls.assign << ", vtable  " << cls.vtable << endl;
     return classsubtypes.size() - 1;
 }
-void memory_info::setMultiClassChild (uint32_t multi_index, string name, string type)
+void memory_info::setMultiClassChild (uint32_t multi_index, const char * name, const char * type)
 {
     vector <t_type>& vec = classsubtypes[multi_index];
     for (uint32_t i=0; i<vec.size(); i++)
     {
         if(vec[i].classname == name)
         {
-            vec[i].type = strtol(type.c_str(), NULL, 16);
+            vec[i].type = strtol(type, NULL, 16);
             return;
         }
     }
@@ -168,7 +172,7 @@ void memory_info::setMultiClassChild (uint32_t multi_index, string name, string 
     mcc.assign = classindex;
     classindex++;
     mcc.classname = name;
-    mcc.type = strtol(type.c_str(), NULL, 16);
+    mcc.type = strtol(type, NULL, 16);
     vec.push_back(mcc);
     //cout << "    classtype " << name << ", assign " << mcc.assign << ", vtable  " << mcc.type << endl;
 }

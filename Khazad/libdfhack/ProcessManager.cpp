@@ -241,33 +241,26 @@ void ProcessManager::ParseVTable(TiXmlElement* vtable, memory_info& mem)
     pClassEntry = vtable->FirstChildElement();
     for(;pClassEntry;pClassEntry=pClassEntry->NextSiblingElement())
     {
-        const char *cstr_type = pClassEntry->Value();
+        string type = pClassEntry->Value();
         const char *cstr_name = pClassEntry->Attribute("name");
         const char *cstr_vtable = pClassEntry->Attribute("vtable");
-        string type = cstr_type;
-        string name = cstr_name;
-        string vtable = cstr_vtable;
         if(type== "class")
         {
-            mem.setClass(name, vtable);
+            mem.setClass(cstr_name, cstr_vtable);
         }
         else if (type == "multiclass")
         {
             const char *cstr_typeoffset = pClassEntry->Attribute("typeoffset");
-            string typeoffset = cstr_typeoffset;
-            int mclass = mem.setMultiClass(name, vtable, typeoffset);
+            int mclass = mem.setMultiClass(cstr_name, cstr_vtable, cstr_typeoffset);
             pClassSubEntry = pClassEntry->FirstChildElement();
             for(;pClassSubEntry;pClassSubEntry=pClassSubEntry->NextSiblingElement())
             {
-                cstr_type = pClassSubEntry->Value();
-                type = cstr_type;
+                type = pClassSubEntry->Value();
                 if(type== "class")
                 {
                     cstr_name = pClassSubEntry->Attribute("name");
                     const char *cstr_value = pClassSubEntry->Attribute("type");
-                    name = cstr_name;
-                    string value = cstr_value;
-                    mem.setMultiClassChild(mclass,name,value);
+                    mem.setMultiClassChild(mclass,cstr_name,cstr_value);
                 }
             }
         }
