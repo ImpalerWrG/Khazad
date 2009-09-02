@@ -115,14 +115,14 @@ void memory_info::setClass (const char * name, const char * vtable)
         }
     }
     t_class cls;
-    cls.assign = classindex;
-    cls.classname = name;
-    cls.is_multiclass = false;
-    cls.type_offset = 0;
-    classindex++;
-    cls.vtable = strtol(vtable, NULL, 16);
+        cls.assign = classindex;
+        cls.classname = name;
+        cls.is_multiclass = false;
+        cls.type_offset = 0;
+        classindex++;
+        cls.vtable = strtol(vtable, NULL, 16);
     classes.push_back(cls);
-    cout << "class " << name << ", assign " << cls.assign << ", vtable  " << cls.vtable << endl;
+    //cout << "class " << name << ", assign " << cls.assign << ", vtable  " << cls.vtable << endl;
 }
 
 /// find old entry by name, rewrite, return its multi index. otherwise make a new one, append an empty vector of t_type to classtypes,  return its index.
@@ -140,7 +140,7 @@ uint32_t memory_info::setMultiClass (const char * name, const char * vtable, con
             return classes[i].multi_index;
         }
     }
-    ///FIXME: add checking for vtable and typeoffset here. they HAVE to be valid
+    ///FIXME: add checking for vtable and typeoffset here. they HAVE to be valid. maybe change the return value into a bool and pass in multi index by reference?
     t_class cls;
         cls.assign = classindex;
         cls.classname = name;
@@ -169,11 +169,11 @@ void memory_info::setMultiClassChild (uint32_t multi_index, const char * name, c
     }
     // new multiclass child
     t_type mcc;
-    mcc.assign = classindex;
-    classindex++;
-    mcc.classname = name;
-    mcc.type = strtol(type, NULL, 16);
+        mcc.assign = classindex;
+        mcc.classname = name;
+        mcc.type = strtol(type, NULL, 16);
     vec.push_back(mcc);
+    classindex++;
     //cout << "    classtype " << name << ", assign " << mcc.assign << ", vtable  " << mcc.type << endl;
 }
 
@@ -287,4 +287,9 @@ void memory_info::flush()
     offsets.clear();
     strings.clear();
     hexvals.clear();
+    classes.clear();
+    classsubtypes.clear();
+    classindex = 0;
+    version = "";
+    OS = OS_BAD;
 }
