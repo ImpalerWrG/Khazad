@@ -1,7 +1,19 @@
 <?xml version="1.0" ?>
 <DFExtractor>
+<!-- USE A FIXED WIDTH FONT! -->
   <MemoryDescriptors>
-    <!-- Old Windows DF versions -->
+       _____________________________________________
+       |\'-._(   /                                 |
+       | \  .'-._\                            ,   ,|
+       |-.\'    .-;                         .'\`-' |
+       |   \  .' (                       _.'   \   |
+       |.--.\'   _)                   ;-;       \._|
+       |    ` _\(_)/_                  \ `'-,_,-'\ |
+       jgs____ /(O)\  _________________/____)_`-._\|
+       |                                           |
+       |         Old unsupported versions          |
+       |------------------------------------------->
+
     <!--<Entry version="v0.27.176.38a" os="windows">
 		<HexValue name="pe_timestamp">0x47B6FAC2</HexValue>
 		<Address name="map_data">0x014A4EAC</Address>
@@ -22,24 +34,48 @@
 		<Offset name="designation">0x0264</Offset>
 		<Offset name="occupancy">0x0664</Offset>
     </Entry>-->
-    <!-- Current Windows stable version -->
+
+                    .,:rsr,
+                  :2;,;r2A@@5
+                  @2::s5A#@@@ @r        .
+                 sd;:riXA#@@ :@@@Gir;;AS9
+                 Bs::sS3A#@2 @@#AhXirsS#;
+                iHrLr5d#@@@ .@#95sr;;rie
+                i,      ,@3 @@A2sr;:;r#5
+                :..:rll:    @@A5sr::r3@
+               @Hr;iZ#@@@@    :rr;;;;:
+              S@r.;i2#@@@  @s        r
+              @2::ri2A@@# B@G2ir:...5i
+             :@r,r3X##@@  @G5sr:..,:A
+            .@Ar;;rSB@@# H#2sr;,..,is
+            .         * ,@ASs;:..,:B
+                         ;rr;:,..,:.
+
+                  W I N D O W S
+                       and
+                     W I N E
+
     <Entry version="v0.28.181.40d" os="windows" id="40dwin">
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x48C330DF</HexValue>
 		<String name="md5">2c686c26307dcccd7c36cc79737ebe4f</String>
+
 		<!-- map data -->
 		<Address name="map_data">0x015C4D58</Address>
 		<Address name="constructions">0x0156F8B0</Address>
 		<Address name="buildings">0x015838a0</Address>
 		<Address name="vegetation">0x01587A24</Address>
+
 		<!-- size of the map -->
 		<Address name="x_count">0x015C4D70</Address>
 		<Address name="y_count">0x015C4D74</Address>
 		<Address name="z_count">0x015C4D78</Address>
+
 		<!-- position of the map in world coords -->
 		<Address name="region_x">0x015C4D88</Address>
 		<Address name="region_y">0x015C4D8C</Address>
 		<Address name="region_z">0x015C4D90</Address>
+
 		<!-- map block offsets -->
 		<Offset name="v_vein">0x08</Offset>
 		<HexValue name="v_vein_size">0x2C</HexValue>
@@ -47,25 +83,32 @@
 		<Offset name="designation">0x0264</Offset>
 		<Offset name="occupancy">0x0664</Offset>
 		<Offset name="biome_stuffs">0x1D64</Offset>
+
 		<!-- tree and shrub offsets -->
 		<Offset name="tree_desc_offset">0x70</Offset>
+
 		<!-- the world and its offsets -->
 		<Address name="world">0x015C6388</Address>
 		<Offset name="world_size_x">0x84</Offset>
 		<Offset name="world_size_y">0x86</Offset>
 		<Offset name="w_geoblocks">0x684</Offset>
 		<Offset name="w_regions_arr">0x6B4</Offset>
+
 		<!-- values for the region structure -->
 		<HexValue name="region_size">0x5C</HexValue>
 		<Offset name="region_geo_index_off">0x58</Offset>
+
 		<!-- geoblock offset(s?) -->
 		<Offset name="geolayer_geoblock_offset">0x4</Offset>
+
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x015C6D70</Address>
 		<HexValue name="matgloss_skip">0x10</HexValue>
+
 		<!-- only stone and metal have color loaded... -->
 		<Offset name="matgloss_stone_color">0x84</Offset>
 		<Offset name="matgloss_metal_color">0x60</Offset>
+
 		<VTable>
 			<class vtable="0x00979fe4" name="stockpile" />
 			<class vtable="0x00979d34" name="zone" />
@@ -169,7 +212,6 @@
 		<!-- tree and shrub offsets -->
 		<Offset name="tree_desc_offset">0x70</Offset>
 
-
 		<!-- size of the map -->
 		<Address name="x_count">0x01531EE0</Address>
 		<Address name="y_count">0x01531EE4</Address>
@@ -205,9 +247,11 @@
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x01534030</Address>
 		<HexValue name="matgloss_skip">0x18</HexValue>
+
 		<!-- door: 0x8ea1e4 -->
 		<VTable rebase="-0x91328">
-            <!-- Isn't it just /lovely/ how simple things become? -->
+            <!-- Isn't it just /lovely/ how simple things become?
+                 When you specify only typeoffset, nothing else is touched. Same for vtable. -->
 			<multiclass name="workshop" typeoffset="0x100" />
 			<multiclass name="siege engine" typeoffset="0x100" />
 			<multiclass name="furnace" typeoffset="0x11A" />
@@ -280,8 +324,26 @@
 		<!-- map_data = 0x01601D84 -->
 		<!-- door: 0x8e15d4, no VTable rebase needed -->
     </Entry>
-    59ab29021aca9f3c66b1ab102fb3ceea
-    <!-- Linux 40d## versions -->
+
+                           a8888b.
+                         d888888b.
+                         8P"YP"Y88
+                         8|o||o|88
+                         8'    .88
+                         8`._.' Y8.
+                        d/      `8b.
+                      .dP   .     Y8b.
+                     d8:'   "   `::88b.
+                    d8"           `Y88b
+                   :8P     '       :888
+                    8a.    :      _a88P
+                  ._/"Yaa_ :    .| 88P|
+             jgs  \    YP"      `| 8P  `.
+             a:f  /     \._____.d|    .'
+                  `--..__)888888P`._.'
+
+                         L I N U X
+
     <Entry version="v0.28.181.40d9" os="linux" id="40d9lin">
 		<!-- identification -->
 		<String name="md5">992afd73855e787860277f53d18afcbb</String>
@@ -471,7 +533,6 @@
 		<!-- map_data = 0x8F9ABDC -->
 		<VTable rebase="0x300" />
 		<!--<class vtable="0x086C7668" name="door"/>-->
-
     </Entry>
     <Entry version="v0.28.181.40d15" os="linux" id="40d15lin" base="40d14lin">
 		<!-- identification -->
@@ -487,4 +548,5 @@
 		<!--<class vtable="0x086c78c8" name="door"/>-->
     </Entry>
   </MemoryDescriptors>
+  <!-- Windows logo by M$, TUX logo and spiderweb by jgs -->
 </DFExtractor>
