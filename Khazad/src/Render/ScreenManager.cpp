@@ -256,6 +256,12 @@ void ScreenManager::RenderSurface(SDL_Surface* RenderSurface, SDL_Rect *location
 	rect.h = nextpoweroftwo(RenderSurface->h);
 
 	intermediary = SDL_CreateRGBSurface(0, rect.w, rect.h, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+    if(intermediary == NULL)
+    {
+        cerr << "RenderSurface:SDL_CreateRGBSurface failed: " << rect.w << " " << rect.h << endl;
+        return;
+    }
+
 
 	SDL_BlitSurface(RenderSurface, 0, intermediary, 0);
 

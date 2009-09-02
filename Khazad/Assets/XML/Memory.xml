@@ -23,7 +23,7 @@
 		<Offset name="occupancy">0x0664</Offset>
     </Entry>-->
     <!-- Current Windows stable version -->
-    <Entry version="v0.28.181.40d" os="windows">
+    <Entry version="v0.28.181.40d" os="windows" id="40dwin">
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x48C330DF</HexValue>
 		<String name="md5">2c686c26307dcccd7c36cc79737ebe4f</String>
@@ -155,8 +155,8 @@
 			<class vtable="0x0097cdcc" name="restraint"/>
 		</VTable>
     </Entry>
-    <!-- Windows 40d## sub-versions -->
-    <Entry version="v0.28.181.40d9" os="windows" id="40d9win">
+    <!-- Windows 40d## sub-versions, should inherit only vtable from 40d -->
+    <Entry version="v0.28.181.40d9" os="windows" id="40d9win" base="40dwin">
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x4967C2E0</HexValue>
 		<String name="md5">aea5a207b8b1cda942502f97a429f6c3</String>
@@ -205,6 +205,9 @@
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x01534030</Address>
 		<HexValue name="matgloss_skip">0x18</HexValue>
+		<!-- FIXME: typeoffsets changed between versions -->
+		<!-- door: 0x8ea1e4 -->
+		<VTable rebase="-0x91328" />
     </Entry>
     <Entry version="v0.28.181.40d11" os="windows" rebase="0x2d388" base="40d9win">
 		<!-- identification -->
