@@ -214,12 +214,14 @@
 			<multiclass name="mechanism" typeoffset="0x100" />
 		</VTable>
     </Entry>
-    <Entry version="v0.28.181.40d11" os="windows" rebase="0x2d388" base="40d9win">
+    <Entry version="v0.28.181.40d11" os="windows" rebase="0x2d388" id="40d11win" base="40d9win">
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x49C82D3F</HexValue>
 		<String name="md5">6f81231b845e9c9dc29aaf57705ccc7c</String>
+		<!-- door: 0x8e91e4 -->
+		<VTable rebase="-0x1000" />
     </Entry>
-    <Entry version="v0.28.181.40d12" os="windows" id="40d12win">
+    <Entry version="v0.28.181.40d12" os="windows" id="40d12win" base="40d11win">
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x4A3CCB7F</HexValue>
 		<String name="md5">6ea1de36af8e1666bd6478736e298c4c</String>
@@ -229,8 +231,6 @@
 		<Address name="constructions">0x015A33B8</Address>
 		<Address name="buildings">0x015B7750</Address>
 		<Address name="vegetation">0x015BD924</Address>
-		<!-- tree and shrub offsets -->
-		<Offset name="tree_desc_offset">0x70</Offset>
 
 		<!-- size of the map -->
 		<Address name="x_count">0x015FACEC</Address>
@@ -242,55 +242,43 @@
 		<Address name="region_y">0x015FAD08</Address>
 		<Address name="region_z">0x015FAD0C</Address>
 
-		<!-- map block offsets -->
-		<Offset name="v_vein">0x10</Offset>
-		<HexValue name="v_vein_size">0x2C</HexValue>
-		<Offset name="type">0x0082</Offset>
-		<Offset name="designation">0x0284</Offset>
-		<Offset name="occupancy">0x0684</Offset>
-		<Offset name="biome_stuffs">0x1D84</Offset>
-
 		<!-- the world and its offsets -->
 		<Address name="world">0x015FC304</Address>
-		<Offset name="world_size_x">0x84</Offset>
-		<Offset name="world_size_y">0x86</Offset>
-		<Offset name="w_geoblocks">0x75C</Offset>
-		<Offset name="w_regions_arr">0x79C</Offset>
-
-		<!-- values for the region structure -->
-		<HexValue name="region_size">0x64</HexValue>
-		<Offset name="region_geo_index_off">0x60</Offset>
-
-		<!-- geoblock offset(s?) -->
-		<Offset name="geolayer_geoblock_offset">0xC</Offset>
-
 		<!-- matgloss vectors -->
 		<Address name="matgloss">0x015FCE3C</Address>
-		<HexValue name="matgloss_skip">0x18</HexValue>
+		<!-- door: 0x8db5e4 -->
+		<VTable rebase="-0xDC00" />
     </Entry>
     <Entry version="v0.28.181.40d13" os="windows" id="40d13win" base="40d12win" rebase="0x5090">
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x4A51C26E</HexValue>
 		<String name="md5">04a8d8ce311d8ac75e4241bef68d3147</String>
 		<!-- map_data = 0x015FFD5C -->
+		<!-- door: 0x8df5ec -->
+		<VTable rebase="0x4008" />
     </Entry>
     <Entry version="v0.28.181.40d14" os="windows" id="40d14win" base="40d13win" rebase="0x2010">
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x4A8623D2</HexValue>
 		<String name="md5">781a2e51be4056a7320108f8f0df8a13</String>
 		<!-- map_data = 0x01601D6C -->
+		<!-- door: 0x8e15dc -->
+		<VTable rebase="0x1FF0" />
     </Entry>
     <Entry version="v0.28.181.40d15" os="windows" id="40d15win" base="40d14win" rebase="0x18">
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x4A9A6090</HexValue>
 		<String name="md5">12cc4a3dbb6e6dfd7bc7aee458b9471a</String>
 		<!-- map_data = 0x01601D84 -->
+		<!-- door: 0x8e15d4 -->
+		<VTable rebase="-0x8" />
     </Entry>
     <Entry version="v0.28.181.40d16" os="windows" base="40d15win">
 		<!-- identification -->
 		<HexValue name="pe_timestamp">0x4A9B1A72</HexValue>
 		<String name="md5">59ab29021aca9f3c66b1ab102fb3ceea</String>
 		<!-- map_data = 0x01601D84 -->
+		<!-- door: 0x8e15d4, no VTable rebase needed -->
     </Entry>
     59ab29021aca9f3c66b1ab102fb3ceea
     <!-- Linux 40d## versions -->
