@@ -203,7 +203,7 @@ bool ProcessManager::findProcessess()
                         printf("Match found! Using version %s.\n", (*it).getVersion().c_str());
                         // give the process a data model and memory layout fixed to the base of first module
                         memory_info *m = new memory_info(*it);
-                        m->Rebase(base);
+                        m->RebaseAll(base);
                         // keep track of created memory_info objects so we can destroy them later
                         destroy_meminfo.push_back(m);
                         // process is responsible for destroying its data model
@@ -297,7 +297,7 @@ void ProcessManager::ParseEntry (TiXmlElement* entry, memory_info& mem, map <str
     if(cstr_rebase)
     {
         rebase = mem.getBase() + strtol(cstr_rebase, NULL, 16);
-        mem.Rebase(rebase);
+        mem.RebaseAddresses(rebase);
     }
 
     //set base to default, we're overwriting this because the previous rebase could cause havoc on Vista/7

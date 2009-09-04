@@ -227,18 +227,42 @@ void memory_info::copyBuildings(vector<string> & v_buildingtypes)
     }
 }
 
-// change base of all addresses
-void memory_info::Rebase(int32_t new_base)
+// change base of all addresses/vtable entries
+void memory_info::RebaseAddresses(int32_t new_base)
 {
   map<string, uint32_t>::iterator iter;
-
+  int32_t rebase = - (int32_t)base + new_base;
   for(iter = addresses.begin(); iter != addresses.end(); iter++)
   {
-      int32_t rebase = - (int32_t)base + new_base;
       addresses[iter->first] = iter->second + rebase;
   }
 }
 
+// change base of all addresses/vtable entries
+void memory_info::RebaseAll(int32_t new_base)
+{
+  map<string, uint32_t>::iterator iter;
+  int32_t rebase = - (int32_t)base + new_base;
+  for(iter = addresses.begin(); iter != addresses.end(); iter++)
+  {
+      addresses[iter->first] = iter->second + rebase;
+  }
+  RebaseVTable(rebase);
+}
+
+/*
+// change base of all addresses/vtable entries
+void memory_info::Rebase(int32_t new_base)
+{
+  map<string, uint32_t>::iterator iter;
+  int32_t rebase = - (int32_t)base + new_base;
+  for(iter = addresses.begin(); iter != addresses.end(); iter++)
+  {
+      addresses[iter->first] = iter->second + rebase;
+  }
+  RebaseVTable(rebase);
+}
+*/
 // change all vtable entries by offset
 void memory_info::RebaseVTable(int32_t offset)
 {
@@ -246,6 +270,8 @@ void memory_info::RebaseVTable(int32_t offset)
 
   for(iter = classes.begin(); iter != classes.end(); iter++)
   {
+      //cout << iter->classname << ": " << iter->vtable << " + " << offset << " = " << iter->vtable + offset << endl;
+      printf("%s: %x + %x = %x\n",iter->classname.c_str(),  iter->vtable, offset,iter->vtable+offset );
       iter->vtable += offset;
   }
 }

@@ -37,18 +37,18 @@
 
                     .,:rsr,
                   :2;,;r2A@@5
-                  @2::s5A#@@@ @r        .
+                  @2::s5A#@@@ @r.       .
                  sd;:riXA#@@ :@@@Gir;;AS9
                  Bs::sS3A#@2 @@#AhXirsS#;
                 iHrLr5d#@@@ .@#95sr;;rie
-                i,      ,@3 @@A2sr;:;r#5
+                i*`    '*@3 @@A2sr;:;r#5
                 :..:rll:    @@A5sr::r3@
-               @Hr;iZ#@@@@    :rr;;;;:
-              S@r.;i2#@@@  @s        r
+               @Hr;iZ#@@@@   ':rr;;;;:
+              S@r.;i2#@@@  @s.      .r
               @2::ri2A@@# B@G2ir:...5i
              :@r,r3X##@@  @G5sr:..,:A
             .@Ar;;rSB@@# H#2sr;,..,is
-            .         * ,@ASs;:..,:B
+            .'       '* ,@ASs;:..,:B
                          ;rr;:,..,:.
 
                   W I N D O W S
@@ -101,7 +101,7 @@
 		<!-- geoblock offset(s?) -->
 		<Offset name="geolayer_geoblock_offset">0x4</Offset>
 
-		<!-- matgloss vectors -->
+        <!-- matgloss vectors -->
 		<Address name="matgloss">0x015C6D70</Address>
 		<HexValue name="matgloss_skip">0x10</HexValue>
 

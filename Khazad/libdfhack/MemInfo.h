@@ -29,7 +29,8 @@ public:
     memory_info(const memory_info&);
 
 
-    void Rebase(int32_t new_base);
+    void RebaseAddresses(int32_t new_base);
+    void RebaseAll(int32_t new_base);
     uint32_t getBase ();
     void setBase (string);
     void setBase (uint32_t);
