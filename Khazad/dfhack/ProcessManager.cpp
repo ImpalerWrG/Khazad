@@ -24,7 +24,6 @@ ProcessManager::Process* ProcessManager::addProcess(const string & exe,ProcessHa
     md5wrapper md5;
     // get hash of the running DF process
     string hash = md5.getHashFromFile(exe);
-    //string hash = MD5Sum((char *)exe.c_str());
     vector<memory_info>::iterator it;
 
     // iterate over the list of memory locations
@@ -35,7 +34,7 @@ ProcessManager::Process* ProcessManager::addProcess(const string & exe,ProcessHa
             memory_info * m = &*it;
             Process * ret;
             cout <<"Found process " << PH <<  ". It's DF version " << m->getVersion() << "." << endl;
-
+            
             // df can run under wine on Linux
             if(memory_info::OS_WINDOWS == (*it).getOS())
             {
@@ -87,14 +86,14 @@ bool ProcessManager::findProcessess()
         {
             continue;
         }
-
+        
         // string manipulation - get /proc/PID/exe link and /proc/PID/mem names
         dir_name = "/proc/";
         dir_name += dir_entry_p->d_name;
         dir_name += "/";
         exe_link = dir_name + "exe";
         string mem_name = dir_name + "mem";
-
+        
         // resolve /proc/PID/exe link
         target_result = readlink(exe_link.c_str(), target_name, sizeof(target_name)-1);
         if (target_result == -1)
@@ -104,7 +103,7 @@ bool ProcessManager::findProcessess()
         }
         // make sure we have a null terminated string...
         target_name[target_result] = 0;
-
+        
         // is this the regular linux DF?
         if (strstr(target_name, "dwarfort.exe") != NULL)
         {
@@ -116,7 +115,7 @@ bool ProcessManager::findProcessess()
             // continue with next process
             continue;
         }
-
+        
         // FIXME: this fails when the wine process isn't started from the 'current working directory'. strip path data from cmdline
         // DF in wine?
         if(strstr(target_name, "wine-preloader")!= NULL)
@@ -125,7 +124,7 @@ bool ProcessManager::findProcessess()
             cwd_link = dir_name + "cwd";
             target_result = readlink(cwd_link.c_str(), target_name, sizeof(target_name)-1);
             target_name[target_result] = 0;
-
+            
             // got path to executable, do the same for its name
             cmdline_path = dir_name + "cmdline";
             ifstream ifs ( cmdline_path.c_str() , ifstream::in );
@@ -136,10 +135,10 @@ bool ProcessManager::findProcessess()
                 exe_link = target_name;
                 exe_link += "/";
                 exe_link += cmdline;
-
+                
                 // get PID
                 result = atoi(dir_entry_p->d_name);
-
+                
                 // create wine process, add it to the vector
                 addProcess(exe_link,result,mem_name);
             }
@@ -156,35 +155,37 @@ bool ProcessManager::findProcessess()
 
 #else
 
-/// some black magic
+// some magic - will come in handy when we start doing debugger stuff on Windows
 bool EnableDebugPriv()
 {
-   bool               bRET = FALSE;
-   TOKEN_PRIVILEGES   tp;
-   HANDLE             hToken;
+    bool               bRET = FALSE;
+    TOKEN_PRIVILEGES   tp;
+    HANDLE             hToken;
 
-   if (LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &tp.Privileges[0].Luid))
-   {
-      if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &hToken))
-      {
-         if (hToken != INVALID_HANDLE_VALUE)
-         {
-            tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-            tp.PrivilegeCount = 1;
-            if (AdjustTokenPrivileges(hToken, FALSE, &tp, 0, 0, 0))
-               bRET = TRUE;
-            CloseHandle(hToken);
-         }
-      }
-   }
-   return bRET;
+    if (LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &tp.Privileges[0].Luid))
+    {
+        if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &hToken))
+        {
+            if (hToken != INVALID_HANDLE_VALUE)
+            {
+                tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+                tp.PrivilegeCount = 1;
+                if (AdjustTokenPrivileges(hToken, FALSE, &tp, 0, 0, 0))
+                {
+                    bRET = TRUE;
+                }
+                CloseHandle(hToken);
+            }
+        }
+    }
+    return bRET;
 }
 
-/// WINDOWS version of the process finder
+// WINDOWS version of the process finder
 bool ProcessManager::findProcessess()
 {
     // Get the list of process identifiers.
-    ///TODO: make this dynamic. (call first to get the array size and second to really get process handles)
+    //TODO: make this dynamic. (call first to get the array size and second to really get process handles)
     DWORD ProcArray[512], memoryNeeded, numProccesses;
     HMODULE hmod = NULL;
     DWORD junk;
@@ -192,11 +193,13 @@ bool ProcessManager::findProcessess()
     bool found = false;
 
     IMAGE_NT_HEADERS32 pe_header;
-	IMAGE_SECTION_HEADER sections[16];
+    IMAGE_SECTION_HEADER sections[16];
 
     EnableDebugPriv();
     if ( !EnumProcesses( ProcArray, sizeof(ProcArray), &memoryNeeded ) )
+    {
         return false;
+    }
 
     // Calculate how many process identifiers were returned.
     numProccesses = memoryNeeded / sizeof(DWORD);
@@ -212,7 +215,7 @@ bool ProcessManager::findProcessess()
         // we've got some process, look at its first module
         if(EnumProcessModules(hProcess, &hmod, 1 * sizeof(HMODULE), &junk))
         {
-            /// TODO: check module filename to verify that it's DF!
+            // TODO: check module filename to verify that it's DF!
             // got base ;)
             uint32_t base = (uint32_t)hmod;
             // read from this process
@@ -231,7 +234,7 @@ bool ProcessManager::findProcessess()
                     if (pe_timestamp == pe_header.FileHeader.TimeDateStamp)
                     {
                         printf("Match found! Using version %s.\n", (*it).getVersion().c_str());
-                        // give the process a data model and memory layout fixed to the base of first module
+                        // give the process a data model and memory layout fixed for the base of first module
                         memory_info *m = new memory_info(*it);
                         m->RebaseAll(base);
                         // keep track of created memory_info objects so we can destroy them later
@@ -395,7 +398,7 @@ void ProcessManager::ParseEntry (TiXmlElement* entry, memory_info& mem, map <str
 } // method
 
 
-/// OS independent part
+// OS independent part
 bool ProcessManager::loadDescriptors(string path_to_xml)
 {
     TiXmlDocument doc( path_to_xml.c_str() );
@@ -428,8 +431,8 @@ bool ProcessManager::loadDescriptors(string path_to_xml)
         }
         // transform elements
         {
-            meminfo.clear(); // trash existing list
-
+            // trash existing list
+            meminfo.clear();
             TiXmlElement* pMemInfo=hRoot.FirstChild( "MemoryDescriptors" ).FirstChild( "Entry" ).Element();
             map <string ,TiXmlElement *> map_pNamedEntries;
             vector <TiXmlElement *> v_pEntries;
@@ -446,7 +449,7 @@ bool ProcessManager::loadDescriptors(string path_to_xml)
             for(uint32_t i = 0; i< v_pEntries.size();i++)
             {
                 memory_info mem;
-                ///FIXME: add a set of entries processed in a step of this cycle, use it to check for infinite loops
+                //FIXME: add a set of entries processed in a step of this cycle, use it to check for infinite loops
                 /* recursive */ParseEntry( v_pEntries[i] , mem , map_pNamedEntries);
                 meminfo.push_back(mem);
             }

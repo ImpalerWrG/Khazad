@@ -32,7 +32,6 @@ You should get these dependencies first:
   libgl (mesa+libgl or working proprietary 3d drivers)
   freeglut
   guichan
-  libmhash/mhash
   zlib/libz
   codeblocks (for building it)
 You'll also need the -dev packages for all this with the exception of codeblocks if you use a distro that separates them. 
