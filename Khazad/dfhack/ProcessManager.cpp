@@ -17,12 +17,14 @@ FILE * g_ProcessMemFile; ///< opened /proc/PID/mem, valid when attached
  *  LINUX version of the process finder.
  */
 
-#include "md5.h"
+#include "md5wrapper.h"
 
 ProcessManager::Process* ProcessManager::addProcess(const string & exe,ProcessHandle PH, const string & memFile)
 {
+    md5wrapper md5;
     // get hash of the running DF process
-    string hash = MD5Sum((char *)exe.c_str());
+    string hash = md5.getHashFromFile(exe);
+    //string hash = MD5Sum((char *)exe.c_str());
     vector<memory_info>::iterator it;
 
     // iterate over the list of memory locations
@@ -33,7 +35,7 @@ ProcessManager::Process* ProcessManager::addProcess(const string & exe,ProcessHa
             memory_info * m = &*it;
             Process * ret;
             cout <<"Found process " << PH <<  ". It's DF version " << m->getVersion() << "." << endl;
-            
+
             // df can run under wine on Linux
             if(memory_info::OS_WINDOWS == (*it).getOS())
             {
@@ -66,7 +68,7 @@ bool ProcessManager::findProcessess()
     string cwd_link;
     string cmdline_path;
     string cmdline;
-    
+
     // ALERT: buffer overrun potential
     char target_name[1024];
     int target_result;
@@ -92,7 +94,7 @@ bool ProcessManager::findProcessess()
         dir_name += "/";
         exe_link = dir_name + "exe";
         string mem_name = dir_name + "mem";
-        
+
         // resolve /proc/PID/exe link
         target_result = readlink(exe_link.c_str(), target_name, sizeof(target_name)-1);
         if (target_result == -1)
@@ -102,7 +104,7 @@ bool ProcessManager::findProcessess()
         }
         // make sure we have a null terminated string...
         target_name[target_result] = 0;
-        
+
         // is this the regular linux DF?
         if (strstr(target_name, "dwarfort.exe") != NULL)
         {
@@ -114,7 +116,7 @@ bool ProcessManager::findProcessess()
             // continue with next process
             continue;
         }
-        
+
         // FIXME: this fails when the wine process isn't started from the 'current working directory'. strip path data from cmdline
         // DF in wine?
         if(strstr(target_name, "wine-preloader")!= NULL)
@@ -458,71 +460,30 @@ bool ProcessManager::loadDescriptors(string path_to_xml)
         cerr << "Can't load memory offsets from memory.xml" << endl;
         return false;
     }
-/*
-    meminfo.clear();
-    Path file = "Assets\\Maps\\memory.ini";
-    string line;
-    ifstream inFile;
-    inFile.open(file);
-    if (!inFile)
-    {
-        cerr << "Unable to open file " << file << endl;
-        return false;
-    }
-    memory_info mem;
-    while(std::getline(inFile, line))
-    {
-        vector<string> tokens; // tokens go here
-        // trim crap
-        string t1 = trim(line);
-        // ignore comments
-        if(t1[0] == ';') continue;
-        // we got data
-        tokenize(t1,tokens,"=");
-        if(tokens.size() != 2)
-        {
-//            cerr << "malformed line: " << line << endl;
-            continue;
-        }
-        // assume two tokens
-        string ta = trim(tokens[0]);
-        string tb = trim(tokens[1]);
-        if(ta == "version")// we got a version line, this means a new entry
-        {
-            if(mem.hasToken("version"))// we have one already
-            {
-                // push the sucker on the vector
-                meminfo.push_back(mem);
-            }
-            //make a clean new mem
-            mem.flush();
-            mem.setToken(ta,tb);// set its version
-        }
-        else
-        {
-            mem.setToken(ta,tb);// ordinary line with a '=', add
-        }
-    }
-    if(mem.hasToken("version")) // one last entry remaining
-        meminfo.push_back(mem); // add it to the vector
-    return true;*/
 }
+
 
 uint32_t ProcessManager::size()
 {
     return processes.size();
 };
+
+
 ProcessManager::Process * ProcessManager::operator[](uint32_t index)
 {
     assert(index < processes.size());
     return processes[index];
 };
+
+
 ProcessManager::ProcessManager( string path_to_xml )
 {
     currentProcess = NULL;
     currentProcessHandle = 0;
     loadDescriptors( path_to_xml );
 }
+
+
 ProcessManager::~ProcessManager()
 {
     // delete all processes

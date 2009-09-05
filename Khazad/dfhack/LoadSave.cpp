@@ -50,7 +50,6 @@ bool DfMap::write(string FilePath)
     // compress
     printf("Compressing... ");
     int ret = def(SaveFile, SaveCompressedFile, Z_BEST_COMPRESSION);
-
     if (ret != Z_OK)
     {
         zerr(ret);
