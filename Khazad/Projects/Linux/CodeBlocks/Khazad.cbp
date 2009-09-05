@@ -50,6 +50,7 @@
 			<Add option="-DILUT_USE_OPENGL" />
 			<Add option="-DLINUX_BUILD" />
 			<Add directory="../../../dfhack/" />
+			<Add directory="../../../dfhack/md5/" />
 			<Add directory="../../../src/Core" />
 			<Add directory="../../../src/Data" />
 			<Add directory="../../../src/Game" />
@@ -81,7 +82,6 @@
 			<Add library="guichan" />
 			<Add library="guichan_opengl" />
 			<Add library="guichan_sdl" />
-			<Add library="mhash" />
 			<Add library="libz" />
 			<Add directory="../../../lib" />
 			<Add directory="../../../DevIL/lib" />
@@ -122,8 +122,10 @@
 		<Unit filename="../../../dfhack/Types.h" />
 		<Unit filename="../../../dfhack/WindowsMemAccess.h" />
 		<Unit filename="../../../dfhack/ZlibHelper.h" />
-		<Unit filename="../../../dfhack/md5.cpp" />
-		<Unit filename="../../../dfhack/md5.h" />
+		<Unit filename="../../../dfhack/md5/md5wrapper.cpp" />
+		<Unit filename="../../../dfhack/md5/md5wrapper.h" />
+		<Unit filename="../../../dfhack/md5/md5.cpp" />
+		<Unit filename="../../../dfhack/md5/md5.h" />
 		<Unit filename="../../../src/Core/Enum.h" />
 		<Unit filename="../../../src/Core/Random.cpp" />
 		<Unit filename="../../../src/Core/Random.h" />

@@ -17,7 +17,7 @@ FILE * g_ProcessMemFile; ///< opened /proc/PID/mem, valid when attached
  *  LINUX version of the process finder.
  */
 
-#include "md5wrapper.h"
+#include "md5/md5wrapper.h"
 
 ProcessManager::Process* ProcessManager::addProcess(const string & exe,ProcessHandle PH, const string & memFile)
 {
