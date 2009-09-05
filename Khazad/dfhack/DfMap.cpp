@@ -36,10 +36,12 @@ void Block::collapseVeins()
     }
 }
 
+
 DfMap::~DfMap()
 {
     clear();
 }
+
 
 /// TODO: make this sync
 void DfMap::clear()
@@ -87,6 +89,7 @@ void DfMap::clear()
     ///FIXME: destroy all the extracted data here
 }
 
+
 void DfMap::getRegionCoords (uint32_t &x,uint32_t &y,uint32_t &z)
 {
     x= regionX;
@@ -94,12 +97,14 @@ void DfMap::getRegionCoords (uint32_t &x,uint32_t &y,uint32_t &z)
     z= regionZ;
 }
 
+
 void DfMap::setRegionCoords (uint32_t x,uint32_t y,uint32_t z)
 {
     regionX = x;
     regionY = y;
     regionZ = z;
 }
+
 
 void DfMap::allocBlockArray(uint32_t x,uint32_t y, uint32_t z)
 {
@@ -117,11 +122,13 @@ void DfMap::allocBlockArray(uint32_t x,uint32_t y, uint32_t z)
     valid = true;
 }
 
+
 DfMap::DfMap(uint32_t x, uint32_t y, uint32_t z)
 {
     valid = false;
     allocBlockArray(x,y,z);
 }
+
 
 DfMap::DfMap(string FileName)
 {
@@ -129,10 +136,12 @@ DfMap::DfMap(string FileName)
     valid = load( FileName);
 }
 
+
 bool DfMap::isValid ()
 {
     return valid;
 }
+
 
 Block * DfMap::getBlock (uint32_t x,uint32_t y,uint32_t z)
 {
@@ -143,41 +152,58 @@ Block * DfMap::getBlock (uint32_t x,uint32_t y,uint32_t z)
     return NULL;
 }
 
+
 vector<t_building *> * DfMap::getBlockBuildingsVector(uint32_t x,uint32_t y,uint32_t z)
 {
     Block * b = getBlock(x,y,z);
     if(b)
+    {
         return &b->v_buildings;
+    }
     return NULL;
 }
+
 
 vector<t_tree_desc *> *  DfMap::getBlockVegetationVector(uint32_t x,uint32_t y,uint32_t z)
 {
     Block * b = getBlock(x,y,z);
     if(b)
+    {
         return &b->v_trees;
+    }
     return NULL;
 }
+
 
 t_tree_desc *DfMap::getTree (uint32_t x, uint32_t y, uint32_t z)
 {
     for(uint32_t i = 0; i< v_trees.size();i++)
     {
-        if(x == v_trees[i]->x && y == v_trees[i]->y && z == v_trees[i]->z)
+        if(x == v_trees[i]->x
+        && y == v_trees[i]->y
+        && z == v_trees[i]->z)
+        {
             return v_trees[i];
+        }
     }
     return 0;
 }
+
 
 t_building *DfMap::getBuilding (uint32_t x, uint32_t y, uint32_t z)
 {
     for(uint32_t i = 0; i< v_buildings.size();i++)
     {
-        if(x >= v_buildings[i]->x1 && x <= v_buildings[i]->x2 && y >= v_buildings[i]->y1 && y <= v_buildings[i]->y2 && z == v_buildings[i]->z)
+        if(x >= v_buildings[i]->x1 && x <= v_buildings[i]->x2
+        && y >= v_buildings[i]->y1 && y <= v_buildings[i]->y2
+        && z == v_buildings[i]->z)
+        {
             return v_buildings[i];
+        }
     }
     return 0;
 }
+
 
 Block * DfMap::allocBlock (uint32_t x,uint32_t y,uint32_t z)
 {
@@ -195,12 +221,14 @@ Block * DfMap::allocBlock (uint32_t x,uint32_t y,uint32_t z)
     return NULL;
 }
 
+
 void DfMap::updateCellCount()
 {
     x_cell_count = x_block_count * BLOCK_SIZE;
     y_cell_count = y_block_count * BLOCK_SIZE;
     z_cell_count = z_block_count;
 }
+
 
 void DfMap::applyGeoMatgloss(Block * b)
 {
@@ -217,6 +245,7 @@ void DfMap::applyGeoMatgloss(Block * b)
     }
 }
 
+
 uint8_t DfMap::getLiquidLevel(uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
@@ -231,6 +260,7 @@ uint8_t DfMap::getLiquidLevel(uint32_t x, uint32_t y, uint32_t z)
     return 0;
 }
 
+
 uint16_t DfMap::getTileType(uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
@@ -243,9 +273,12 @@ uint16_t DfMap::getTileType(uint32_t x, uint32_t y, uint32_t z)
         return b->tile_type[x2][y2];
     }
     if(isTileSky(x,y,z,x2,y2))
+    {
         return 32;
+    }
     return -1;
 }
+
 
 uint16_t DfMap::getTileType(uint32_t x, uint32_t y, uint32_t z, uint32_t blockX, uint32_t blockY)
 {
@@ -256,9 +289,12 @@ uint16_t DfMap::getTileType(uint32_t x, uint32_t y, uint32_t z, uint32_t blockX,
         return b->tile_type[blockX][blockY];
     }
     if(isTileSky(x,y,z,blockX,blockY))
+    {
         return 32;
+    }
     return -1;
 }
+
 
 uint32_t DfMap::getDesignations(uint32_t x, uint32_t y, uint32_t z)
 {
@@ -272,11 +308,14 @@ uint32_t DfMap::getDesignations(uint32_t x, uint32_t y, uint32_t z)
     }
     return -1;
 }
+
+
 bool DfMap::isBlockInitialized(uint32_t x, uint32_t y, uint32_t z)
 {
     // because of the way DfMap is done, more than one check must be made.
     return getBlock(x,y,z) != NULL;
 }
+
 
 uint32_t DfMap::getOccupancies(uint32_t x, uint32_t y, uint32_t z)
 {
@@ -291,6 +330,7 @@ uint32_t DfMap::getOccupancies(uint32_t x, uint32_t y, uint32_t z)
     }
     return -1;
 }
+
 
 void DfMap::getGeoRegion (uint32_t x, uint32_t y, uint32_t z, int32_t& geoX, int32_t& geoY)
 {
@@ -307,9 +347,13 @@ void DfMap::getGeoRegion (uint32_t x, uint32_t y, uint32_t z, int32_t& geoX, int
         if(X_biomeB < 0) X_biomeB = 0;
         if(Y_biomeB < 0) Y_biomeB = 0;
         if( (uint32_t)X_biomeB >= worldSizeX)
+        {
             X_biomeB = worldSizeX - 1;
+        }
         if( (uint32_t)Y_biomeB >= worldSizeY)
+        {
             Y_biomeB = worldSizeY - 1;
+        }
         geoX = X_biomeB;
         geoY = Y_biomeB;
     }
@@ -319,6 +363,7 @@ void DfMap::getGeoRegion (uint32_t x, uint32_t y, uint32_t z, int32_t& geoX, int
         geoY = regionY / 16;
     }
 }
+
 
 t_matglossPair DfMap::getMaterialPair (uint32_t x, uint32_t y, uint32_t z)
 {
@@ -351,6 +396,7 @@ string DfMap::getGeoMaterialString (uint32_t x, uint32_t y, uint32_t z)
     string fallback = "UNKNOWN";
     return fallback;
 }
+
 
 string DfMap::getMaterialTypeString (uint32_t type)
 {
@@ -412,6 +458,7 @@ string DfMap::getMaterialTypeString (uint32_t type)
     return ret;
 }
 
+
 string DfMap::getMaterialString (uint32_t type, uint32_t index)
 {
     if(index != 65535 && type >= 0 && type < NUM_MATGLOSS_TYPES)
@@ -430,10 +477,12 @@ string DfMap::getMaterialString (uint32_t type, uint32_t index)
     return fallback;
 }
 
+
 uint16_t DfMap::getNumMatGloss(uint16_t type)
 {
     return v_matgloss[type].size();
 }
+
 
 string DfMap::getBuildingTypeName(uint32_t index)
 {
@@ -444,6 +493,7 @@ string DfMap::getBuildingTypeName(uint32_t index)
     return string("error");
 }
 
+
 string DfMap::getMatGlossString(uint16_t type,uint16_t index)
 {
     if(index < v_matgloss[type].size())
@@ -452,6 +502,7 @@ string DfMap::getMatGlossString(uint16_t type,uint16_t index)
     }
     return string("error");
 }
+
 
 // matgloss part of the designation
 unsigned int DfMap::getGeolayerIndex (uint32_t x, uint32_t y, uint32_t z)
@@ -467,6 +518,8 @@ unsigned int DfMap::getGeolayerIndex (uint32_t x, uint32_t y, uint32_t z)
     }
     return -1;
 }
+
+
 // matgloss part of the designation
 unsigned int DfMap::getBiome (uint32_t x, uint32_t y, uint32_t z)
 {
@@ -481,6 +534,8 @@ unsigned int DfMap::getBiome (uint32_t x, uint32_t y, uint32_t z)
     }
     return -1;
 }
+
+
 bool DfMap::isHidden (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
@@ -494,6 +549,7 @@ bool DfMap::isHidden (uint32_t x, uint32_t y, uint32_t z)
     return false;
 }
 
+
 bool DfMap::isSubterranean (uint32_t x, uint32_t y, uint32_t z)
 {
     assert(CheckBounds);
@@ -505,9 +561,12 @@ bool DfMap::isSubterranean (uint32_t x, uint32_t y, uint32_t z)
         return (b->designation[x2][y2].bits.subterranean);
     }
     if(isTileSky( x, y, z, x2, y2))
+    {
         return false;
+    }
     return true;
 }
+
 
 // x,y,z - coords of block
 // blockX,blockY - coords of tile inside block
@@ -529,6 +588,7 @@ bool DfMap::isTileSky(uint32_t x, uint32_t y, uint32_t z, uint32_t blockX, uint3
     return false;
 }
 
+
 // is the sky above this tile visible?
 bool DfMap::isSkyView (uint32_t x, uint32_t y, uint32_t z)
 {
@@ -541,9 +601,12 @@ bool DfMap::isSkyView (uint32_t x, uint32_t y, uint32_t z)
         return (b->designation[x2][y2].bits.skyview);
     }
     if(isTileSky(x,y,z,x2,y2))
+    {
         return true;
+    }
     return false;
 }
+
 
 // is there light in this tile?
 bool DfMap::isSunLit (uint32_t x, uint32_t y, uint32_t z)
@@ -558,6 +621,7 @@ bool DfMap::isSunLit (uint32_t x, uint32_t y, uint32_t z)
     }
     return false;
 }
+
 
 bool DfMap::isMagma (uint32_t x, uint32_t y, uint32_t z)
 {

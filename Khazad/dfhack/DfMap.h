@@ -98,7 +98,6 @@ private:
     unsigned x_cell_count, y_cell_count, z_cell_count;    // cell count
 
 public:
-
     DfMap();
     DfMap(uint32_t x, uint32_t y, uint32_t z);
     DfMap(string file_name);

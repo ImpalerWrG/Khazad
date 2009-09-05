@@ -3,10 +3,10 @@
 
 class memory_info;
 
-///FIXME: better control over state, creation and destruction
+//FIXME: better control over state, creation and destruction
+//TODO: give this the pimpl treatment?
 class SimpleAPI
 {
-    ///TODO: give this the pimpl treatment?
 private:
     // internals
     uint32_t * block;
@@ -27,6 +27,7 @@ private:
     DfVector p_cons;
     DfVector p_bld;
     DfVector p_veg;
+    
 public:
     SimpleAPI(const string path_to_xml);
 
@@ -42,7 +43,7 @@ public:
     bool ReadWoodMatgloss (vector<t_matgloss> & output);
     bool ReadMetalMatgloss(vector<t_matgloss> & output);
     bool ReadPlantMatgloss(vector<t_matgloss> & output);
-    // missing: creatures for all the creature products
+    // FIXME: add creatures for all the creature products
 
     // read region surroundings, get their vectors of geolayers so we can do translation (or just hand the translation table to the client)
     // returns an array of 9 vectors of indices into stone matgloss
@@ -93,10 +94,13 @@ public:
     bool ReadTileTypes(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint16_t *buffer); // 256 * sizeof(uint16_t)
     bool ReadDesignations(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint32_t *buffer); // 256 * sizeof(uint32_t)
     bool ReadOccupancy(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint32_t *buffer); // 256 * sizeof(uint32_t)
-    //16 of them? IDK... there's probably just 7. Reading more doesn't cause errors as it's an array nested inside a block
+    
+    /// read region offsets of a block
     bool ReadRegionOffsets(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint32_t *buffer); // 16 * sizeof(uint8_t)
-    // aggregated veins of a block
+    
+    /// read aggregated veins of a block
     bool ReadVeins(uint32_t blockx, uint32_t blocky, uint32_t blockz, vector <t_vein> & veins);
+    
     /**
      * Buildings, constructions, plants, all pretty straighforward. InitReadBuildings returns all the building types as a mapping between a numeric values and strings
      */

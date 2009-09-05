@@ -1,7 +1,7 @@
 #ifndef TILETYPES_H_INCLUDED
 #define TILETYPES_H_INCLUDED
 
-/// TODO: compact those into a single array and a few lookup functions
+/// TODO: turn into XML
 
 bool DfMap::isWallTerrain(int in)
 {

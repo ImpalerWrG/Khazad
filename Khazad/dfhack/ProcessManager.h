@@ -45,6 +45,7 @@ public:
     bool findProcessess();
     uint32_t size();
     Process * operator[](uint32_t index);
+    
 private:
     // memory info entries loaded from a file
     std::vector<memory_info> meminfo;

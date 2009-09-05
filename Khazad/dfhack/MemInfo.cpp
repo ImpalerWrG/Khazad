@@ -2,20 +2,26 @@
 #include "MemInfo.h"
 #include <stdlib.h>
 #include <iostream>
+
 memory_info::memory_info()
 {
     base = 0;
     classindex = 0;
 }
 
+
 void memory_info::setVersion(const char * v)
 {
     version = v;
 }
+
+
 void memory_info::setVersion(string v)
 {
     version = v;
 }
+
+
 string memory_info::getVersion()
 {
     return version;
@@ -32,6 +38,8 @@ void memory_info::setOS(const char *os)
     else
         OS = OS_BAD;
 }
+
+
 void memory_info::setOS(string os)
 {
     if(os == "windows")
@@ -41,6 +49,8 @@ void memory_info::setOS(string os)
     else
         OS = OS_BAD;
 }
+
+
 void memory_info::setOS(OSType os)
 {
     if(os >= OS_WINDOWS && os < OS_BAD)
@@ -50,10 +60,13 @@ void memory_info::setOS(OSType os)
     }
     OS = OS_BAD;
 }
+
+
 memory_info::OSType memory_info::getOS()
 {
     return OS;
 }
+
 
 // copy constructor
 memory_info::memory_info(const memory_info &old)
@@ -70,40 +83,53 @@ memory_info::memory_info(const memory_info &old)
     classindex = old.classindex;
 }
 
+
 uint32_t memory_info::getBase ()
 {
     return base;
 }
+
+
 void memory_info::setBase (string s)
 {
     base = strtol(s.c_str(), NULL, 16);
 }
+
+
 void memory_info::setBase (uint32_t b)
 {
     base = b;
 }
+
 
 void memory_info::setOffset (string key, string value)
 {
     uint32_t offset = strtol(value.c_str(), NULL, 16);
     offsets[key] = offset;
 }
+
+
 void memory_info::setAddress (string key, string value)
 {
     uint32_t address = strtol(value.c_str(), NULL, 16);
     addresses[key] = address;
 }
+
+
 void memory_info::setHexValue (string key, string value)
 {
     uint32_t hexval = strtol(value.c_str(), NULL, 16);
     hexvals[key] = hexval;
 }
+
+
 void memory_info::setString (string key, string value)
 {
     strings[key] = value;
 }
 
-/// FIXME: next three methods should use some kind of custom container so it doesn't have to search so much.
+
+// FIXME: next three methods should use some kind of custom container so it doesn't have to search so much.
 void memory_info::setClass (const char * name, const char * vtable)
 {
     for (uint32_t i=0; i<classes.size(); i++)
@@ -114,6 +140,7 @@ void memory_info::setClass (const char * name, const char * vtable)
             return;
         }
     }
+    
     t_class cls;
         cls.assign = classindex;
         cls.classname = name;
@@ -125,7 +152,8 @@ void memory_info::setClass (const char * name, const char * vtable)
     //cout << "class " << name << ", assign " << cls.assign << ", vtable  " << cls.vtable << endl;
 }
 
-/// find old entry by name, rewrite, return its multi index. otherwise make a new one, append an empty vector of t_type to classtypes,  return its index.
+
+// find old entry by name, rewrite, return its multi index. otherwise make a new one, append an empty vector of t_type to classtypes,  return its index.
 uint32_t memory_info::setMultiClass (const char * name, const char * vtable, const char * typeoffset)
 {
     for (uint32_t i=0; i<classes.size(); i++)
@@ -140,7 +168,8 @@ uint32_t memory_info::setMultiClass (const char * name, const char * vtable, con
             return classes[i].multi_index;
         }
     }
-    ///FIXME: add checking for vtable and typeoffset here. they HAVE to be valid. maybe change the return value into a bool and pass in multi index by reference?
+    
+    //FIXME: add checking for vtable and typeoffset here. they HAVE to be valid. maybe change the return value into a bool and pass in multi index by reference?
     t_class cls;
         cls.assign = classindex;
         cls.classname = name;
@@ -156,6 +185,8 @@ uint32_t memory_info::setMultiClass (const char * name, const char * vtable, con
     //cout << "multiclass " << name << ", assign " << cls.assign << ", vtable  " << cls.vtable << endl;
     return classsubtypes.size() - 1;
 }
+
+
 void memory_info::setMultiClassChild (uint32_t multi_index, const char * name, const char * type)
 {
     vector <t_type>& vec = classsubtypes[multi_index];
@@ -177,10 +208,11 @@ void memory_info::setMultiClassChild (uint32_t multi_index, const char * name, c
     //cout << "    classtype " << name << ", assign " << mcc.assign << ", vtable  " << mcc.type << endl;
 }
 
+
 bool memory_info::resolveClassId(uint32_t address, int32_t & classid)
 {
     uint32_t vtable = MreadDWord(address);
-    /// FIXME: stupid search. we need a better container
+    // FIXME: stupid search. we need a better container
     for(uint32_t i = 0;i< classes.size();i++)
     {
         if(classes[i].vtable == vtable) // got class
@@ -211,71 +243,62 @@ bool memory_info::resolveClassId(uint32_t address, int32_t & classid)
     return false;
 }
 
+// Flatten vtables into a index<->name mapping
 void memory_info::copyBuildings(vector<string> & v_buildingtypes)
 {
     for(uint32_t i = 0;i< classes.size();i++)
     {
         v_buildingtypes.push_back(classes[i].classname);
-        if(classes[i].is_multiclass)
+        if(!classes[i].is_multiclass)
         {
-            vector <t_type>& vec = classsubtypes[classes[i].multi_index];
-            for (uint32_t k = 0; k < vec.size();k++)
-            {
-                v_buildingtypes.push_back(vec[k].classname);
-            }
+            continue;
+        }
+        vector <t_type>& vec = classsubtypes[classes[i].multi_index];
+        for (uint32_t k = 0; k < vec.size();k++)
+        {
+            v_buildingtypes.push_back(vec[k].classname);
         }
     }
 }
 
+
 // change base of all addresses/vtable entries
 void memory_info::RebaseAddresses(int32_t new_base)
 {
-  map<string, uint32_t>::iterator iter;
-  int32_t rebase = - (int32_t)base + new_base;
-  for(iter = addresses.begin(); iter != addresses.end(); iter++)
-  {
-      addresses[iter->first] = iter->second + rebase;
-  }
+    map<string, uint32_t>::iterator iter;
+    int32_t rebase = - (int32_t)base + new_base;
+    for(iter = addresses.begin(); iter != addresses.end(); iter++)
+    {
+        addresses[iter->first] = iter->second + rebase;
+    }
 }
+
 
 // change base of all addresses/vtable entries
 void memory_info::RebaseAll(int32_t new_base)
 {
-  map<string, uint32_t>::iterator iter;
-  int32_t rebase = - (int32_t)base + new_base;
-  for(iter = addresses.begin(); iter != addresses.end(); iter++)
-  {
-      addresses[iter->first] = iter->second + rebase;
-  }
-  RebaseVTable(rebase);
+    map<string, uint32_t>::iterator iter;
+    int32_t rebase = - (int32_t)base + new_base;
+    for(iter = addresses.begin(); iter != addresses.end(); iter++)
+    {
+        addresses[iter->first] = iter->second + rebase;
+    }
+    RebaseVTable(rebase);
 }
 
-/*
-// change base of all addresses/vtable entries
-void memory_info::Rebase(int32_t new_base)
-{
-  map<string, uint32_t>::iterator iter;
-  int32_t rebase = - (int32_t)base + new_base;
-  for(iter = addresses.begin(); iter != addresses.end(); iter++)
-  {
-      addresses[iter->first] = iter->second + rebase;
-  }
-  RebaseVTable(rebase);
-}
-*/
+
 // change all vtable entries by offset
 void memory_info::RebaseVTable(int32_t offset)
 {
-  vector<t_class>::iterator iter;
-
-  for(iter = classes.begin(); iter != classes.end(); iter++)
-  {
-      //cout << iter->classname << ": " << iter->vtable << " + " << offset << " = " << iter->vtable + offset << endl;
-      printf("%s: %x + %x = %x\n",iter->classname.c_str(),  iter->vtable, offset,iter->vtable+offset );
-      iter->vtable += offset;
-  }
+    vector<t_class>::iterator iter;
+    for(iter = classes.begin(); iter != classes.end(); iter++)
+    {
+        iter->vtable += offset;
+    }
 }
 
+
+// Get named address
 uint32_t memory_info::getAddress (string key)
 {
     if(addresses.count(key))
@@ -285,6 +308,8 @@ uint32_t memory_info::getAddress (string key)
     return 0;
 }
 
+
+// Get named offset
 uint32_t memory_info::getOffset (string key)
 {
     if(offsets.count(key))
@@ -293,19 +318,31 @@ uint32_t memory_info::getOffset (string key)
     }
     return 0;
 }
+
+
+// Get named string
 std::string memory_info::getString (string key)
 {
     if(strings.count(key))
+    {
         return strings[key];
+    }
     else return string("");
 }
 
+
+// Get named numerical value
 uint32_t memory_info::getHexValue (string key)
 {
     if(hexvals.count(key))
+    {
         return hexvals[key];
+    }
     return 0;
 }
+
+
+// Reset everything
 void memory_info::flush()
 {
     base = 0;

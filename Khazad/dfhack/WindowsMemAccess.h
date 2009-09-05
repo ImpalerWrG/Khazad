@@ -20,11 +20,14 @@ uint8_t MreadByte (const uint32_t &offset)
     ReadProcessMemory(g_ProcessHandle, (int*) offset, &result, sizeof(uint8_t), NULL);
     return result;
 }
+
+
 inline
 void MreadByte (const uint32_t &offset,uint8_t &result)
 {
     ReadProcessMemory(g_ProcessHandle, (int*) offset, &result, sizeof(uint8_t), NULL);
 }
+
 
 inline
 uint16_t MreadWord (const uint32_t &offset)
@@ -34,11 +37,13 @@ uint16_t MreadWord (const uint32_t &offset)
     return result;
 }
 
+
 inline
 void MreadWord (const uint32_t &offset, uint16_t &result)
 {
     ReadProcessMemory(g_ProcessHandle, (int*) offset, &result, sizeof(uint16_t), NULL);
 }
+
 
 inline
 uint32_t MreadDWord (const uint32_t &offset)
@@ -47,6 +52,8 @@ uint32_t MreadDWord (const uint32_t &offset)
     ReadProcessMemory(g_ProcessHandle, (int*) offset, &result, sizeof(uint32_t), NULL);
     return result;
 }
+
+
 inline
 void MreadDWord (const uint32_t &offset, uint32_t &result)
 {
@@ -61,17 +68,21 @@ uint64_t MreadQuad (const uint32_t &offset)
     ReadProcessMemory(g_ProcessHandle, (int*) offset, &result, sizeof(uint64_t), NULL);
     return result;
 }
+
+
 inline
 void MreadQuad (const uint32_t &offset, uint64_t &result)
 {
     ReadProcessMemory(g_ProcessHandle, (int*) offset, &result, sizeof(uint64_t), NULL);
 }
 
+
 inline
 void Mread (const uint32_t &offset, uint32_t size, uint8_t *target)
 {
     ReadProcessMemory(g_ProcessHandle, (int*) offset, target, size, NULL);
 }
+
 
 ///FIXME: reduce use of temporary objects
 inline

@@ -94,7 +94,7 @@ struct t_building
     t_matglossPair material;
 
     uint32_t type;
-    /// FIXME: not complete, we need building presence bitmaps for stuff like farm plots and stockpiles, orientation (N,E,S,W) and state (open/closed)
+    // FIXME: not complete, we need building presence bitmaps for stuff like farm plots and stockpiles, orientation (N,E,S,W) and state (open/closed)
 };
 
 struct t_tree_desc
@@ -105,7 +105,7 @@ struct t_tree_desc
     uint16_t z;
 };
 
-/// FIXME: in order in which the raw vectors appear in df memory, move to XML
+// FIXME: in order in which the raw vectors appear in df memory, move to XML
 enum RawType
 {
     Mat_Wood,
@@ -129,7 +129,7 @@ enum BiomeOffset
     eBiomeCount
 };
 
-/// TODO: research this further? consult DF hacker wizards?
+// TODO: research this further? consult DF hacker wizards?
 union t_designation
 {
     uint32_t whole;

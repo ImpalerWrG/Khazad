@@ -5,11 +5,11 @@ class memory_info
 {
 public:
     enum OSType
-	{
-		OS_WINDOWS,
-		OS_LINUX,
-		OS_BAD
-	};
+    {
+        OS_WINDOWS,
+        OS_LINUX,
+        OS_BAD
+    };
     struct t_class
     {
         string classname;
@@ -68,11 +68,12 @@ public:
     uint32_t setMultiClass (const char * name, const char * vtable, const char * typeoffset);
     void setMultiClassChild (uint32_t multi_index, const char * name, const char * type);
 
-    /// !! uses memory reading directly
+    // ALERT: uses memory reading directly
     bool resolveClassId(uint32_t address, int32_t & classid);
     void copyBuildings(vector<string> & v_buildingtypes);
 
     void flush();
+    
 private:
     map <string, uint32_t> addresses;
     map <string, uint32_t> offsets;

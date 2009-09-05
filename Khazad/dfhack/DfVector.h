@@ -10,6 +10,7 @@ private:
     uint32_t size;
     // vector item size
     uint32_t item_size;
+    
 public:
     DfVector(uint32_t _start, uint32_t _size, uint32_t _item_size):
         start(_start),size(_size),item_size(_item_size) {};

@@ -11,21 +11,30 @@ ProcessManager::Process * g_pProcess; ///< current process. non-NULL when picked
 ProcessHandle g_ProcessHandle; ///< cache of handle to current process. used for speed reasons
 FILE * g_ProcessMemFile; ///< opened /proc/PID/mem, valid when attached
 
+
 #ifdef LINUX_BUILD
-/// LINUX version of the process finder.
+/*
+ *  LINUX version of the process finder.
+ */
+
 #include "md5.h"
 
 ProcessManager::Process* ProcessManager::addProcess(const string & exe,ProcessHandle PH, const string & memFile)
 {
-    string hash = MD5Sum((char *)exe.c_str());// get hash of the running DF process
-    // iterate over the list of memory locations
+    // get hash of the running DF process
+    string hash = MD5Sum((char *)exe.c_str());
     vector<memory_info>::iterator it;
+
+    // iterate over the list of memory locations
     for ( it=meminfo.begin() ; it < meminfo.end(); it++ )
+    {
         if(hash == (*it).getString("md5")) // are the md5 hashes the same?
         {
             memory_info * m = &*it;
             Process * ret;
             cout <<"Found process " << PH <<  ". It's DF version " << m->getVersion() << "." << endl;
+            
+            // df can run under wine on Linux
             if(memory_info::OS_WINDOWS == (*it).getOS())
             {
                 ret= new Process(new DMWindows40d(),m,PH);
@@ -39,88 +48,107 @@ ProcessManager::Process* ProcessManager::addProcess(const string & exe,ProcessHa
                 // some error happened, continue with next process
                 continue;
             }
+            // tell Process about the /proc/PID/mem file
             ret->setMemFile(memFile);
             processes.push_back(ret);
             return ret;
         }
+    }
     return NULL;
 }
 
 bool ProcessManager::findProcessess()
 {
     DIR *dir_p;
-	struct dirent *dir_entry_p;
-	string dir_name;
+    struct dirent *dir_entry_p;
+    string dir_name;
     string exe_link;
     string cwd_link;
     string cmdline_path;
     string cmdline;
-	char target_name[1024];									// ??? buffer overrun potential
-	int target_result;
-	int errorcount;
-	int result;
+    
+    // ALERT: buffer overrun potential
+    char target_name[1024];
+    int target_result;
+    int errorcount;
+    int result;
 
-	errorcount=0;
-	result=0;
-	// Open /proc/ directory
-	dir_p = opendir("/proc/");
-	// Reading /proc/ entries
-	while(NULL != (dir_entry_p = readdir(dir_p)))
-	{
-	    // Checking for numbered directories
-		if (strspn(dir_entry_p->d_name, "0123456789") == strlen(dir_entry_p->d_name))
-		{
-		    dir_name = "/proc/";
-		    dir_name += dir_entry_p->d_name;
-		    dir_name += "/";
-		    exe_link = dir_name + "exe";
-		    string mem_name = dir_name + "mem";
-			// Getting the target of the exe ie to which binary it points to
-			target_result = readlink(exe_link.c_str(), target_name, sizeof(target_name)-1);
-			if (target_result > 0)
-			{
-			    // make sure we have a null terminated string...
-				target_name[target_result] = 0;
-				// is this the regular linux DF?
-				if (strstr(target_name, "dwarfort.exe") != NULL)
-				{
-				    exe_link = target_name;
-				    // get PID
-					result = atoi(dir_entry_p->d_name);
-					/// create linux process, add it to the vector
-					addProcess(exe_link,result,mem_name);
-				}
-				// a wine process, we need to do more checking and this may break is the future
-				/// FIXME: this fails when the wine process isn't started from the 'current working directory'. strip path data from cmdline
-				else if(strstr(target_name, "wine-preloader")!= NULL)
-				{
-				    cwd_link = dir_name + "cwd";
-				    // get working directory
-				    target_result = readlink(cwd_link.c_str(), target_name, sizeof(target_name)-1);
-				    target_name[target_result] = 0;
-				    // got path to executable, do the same for its name
-				    cmdline_path = dir_name + "cmdline";
-				    ifstream ifs ( cmdline_path.c_str() , ifstream::in );
-				    getline(ifs,cmdline);
-				    if (cmdline.find("dwarfort.exe") != string::npos || cmdline.find("Dwarf Fortress.exe") != string::npos)
-				    {
-				        // put executable name and path together
-				        exe_link = target_name;
-				        exe_link += "/";
-				        exe_link += cmdline;
-				        // get PID
-				        result = atoi(dir_entry_p->d_name);
-				        /// create wine process, add it to the vector
-				        addProcess(exe_link,result,mem_name);
-				    }
-				}
-			}
-		}
-	}
-	closedir(dir_p);
-	// we have some precesses stored. nice.
-	if(processes.size())
+    errorcount=0;
+    result=0;
+    // Open /proc/ directory
+    dir_p = opendir("/proc/");
+    // Reading /proc/ entries
+    while(NULL != (dir_entry_p = readdir(dir_p)))
+    {
+        // Only PID folders (numbers)
+        if (strspn(dir_entry_p->d_name, "0123456789") != strlen(dir_entry_p->d_name))
+        {
+            continue;
+        }
+
+        // string manipulation - get /proc/PID/exe link and /proc/PID/mem names
+        dir_name = "/proc/";
+        dir_name += dir_entry_p->d_name;
+        dir_name += "/";
+        exe_link = dir_name + "exe";
+        string mem_name = dir_name + "mem";
+        
+        // resolve /proc/PID/exe link
+        target_result = readlink(exe_link.c_str(), target_name, sizeof(target_name)-1);
+        if (target_result == -1)
+        {
+            // bad result from link resolution, continue with another processed
+            continue;
+        }
+        // make sure we have a null terminated string...
+        target_name[target_result] = 0;
+        
+        // is this the regular linux DF?
+        if (strstr(target_name, "dwarfort.exe") != NULL)
+        {
+            exe_link = target_name;
+            // get PID
+            result = atoi(dir_entry_p->d_name);
+            // create linux process, add it to the vector
+            addProcess(exe_link,result,mem_name);
+            // continue with next process
+            continue;
+        }
+        
+        // FIXME: this fails when the wine process isn't started from the 'current working directory'. strip path data from cmdline
+        // DF in wine?
+        if(strstr(target_name, "wine-preloader")!= NULL)
+        {
+            // get working directory
+            cwd_link = dir_name + "cwd";
+            target_result = readlink(cwd_link.c_str(), target_name, sizeof(target_name)-1);
+            target_name[target_result] = 0;
+
+            // got path to executable, do the same for its name
+            cmdline_path = dir_name + "cmdline";
+            ifstream ifs ( cmdline_path.c_str() , ifstream::in );
+            getline(ifs,cmdline);
+            if (cmdline.find("dwarfort.exe") != string::npos || cmdline.find("Dwarf Fortress.exe") != string::npos)
+            {
+                // put executable name and path together
+                exe_link = target_name;
+                exe_link += "/";
+                exe_link += cmdline;
+
+                // get PID
+                result = atoi(dir_entry_p->d_name);
+
+                // create wine process, add it to the vector
+                addProcess(exe_link,result,mem_name);
+            }
+        }
+    }
+    closedir(dir_p);
+    // return value depends on if we found some DF processes
+    if(processes.size())
+    {
         return true;
+    }
     return false;
 }
 

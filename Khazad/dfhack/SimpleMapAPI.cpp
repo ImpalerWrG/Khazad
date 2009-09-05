@@ -45,6 +45,10 @@ Not sure about this, you do it a slight different (and superior) way to me.
 I just need the quickest way possible to convert between the DESIGNATION_MATGLOSS_BITS and the stone matgloss index.
     simple indexed table
 */
+
+// TODO: templating for vectors, simple copy constructor for stl vectors
+// TODO: encapsulate access to multidimensional arrays.
+
 SimpleAPI::SimpleAPI(const string path_to_xml)
 {
     xml = path_to_xml;
@@ -53,13 +57,14 @@ SimpleAPI::SimpleAPI(const string path_to_xml)
     vegetationInited = false;
 }
 
+
 /*-----------------------------------*
- *  Init the mapblock pointer array  *
+ *  Init the mapblock pointer array   *
  *-----------------------------------*/
 bool SimpleAPI::InitMap()
 {
-    uint32_t    map_loc, // location of the X array
-                temp_loc, // block location
+    uint32_t    map_loc,   // location of the X array
+                temp_loc,  // block location
                 temp_locx, // iterator for the X array
                 temp_locy, // iterator for the Y array
                 temp_locz; // iterator for the Z array
@@ -68,49 +73,46 @@ bool SimpleAPI::InitMap()
     uint32_t y_count_offset = offset_descriptor->getAddress("y_count");
     uint32_t z_count_offset = offset_descriptor->getAddress("z_count");
 
+    // get the map pointer
     map_loc = MreadDWord(map_offset);
     if (!map_loc)
     {
         // bad stuffz happend
         return false;
     }
+    
     // get the size
     x_block_count = MreadDWord(x_count_offset);
     y_block_count = MreadDWord(y_count_offset);
     z_block_count = MreadDWord(z_count_offset);
+    
     // alloc array for pinters to all blocks
     block = new uint32_t[x_block_count*y_block_count*z_block_count];
 
-    //read the memory from the map blocks
-    // x -> slice
+    //read the memory from the map blocks - x -> map slice
     for(uint32_t x = 0; x < x_block_count; x++)
     {
         temp_locx = map_loc + ( 4 * x );
         temp_locy = MreadDWord(temp_locx);
-        // y -> column
+        
+        // y -> map column
         for(uint32_t y = 0; y < y_block_count; y++)
         {
             temp_locz = MreadDWord(temp_locy);
             temp_locy += 4;
-            // z -> block
+            
+            // z -> map block (16x16)
             for(uint32_t z = 0; z < z_block_count; z++)
             {
                 temp_loc = MreadDWord(temp_locz);
                 temp_locz += 4;
-/*                if (temp_loc)
-                {*/
-                    //temp_loc is the address of the block
-                    block[x*y_block_count*z_block_count + y*z_block_count + z] = temp_loc;
-                /*}
-                else
-                {
-                    block[x*y_block_count*z_block_count + y*z_block_count + z] = 0;
-                }*/
+                block[x*y_block_count*z_block_count + y*z_block_count + z] = temp_loc;
             }
         }
     }
     return true;
 }
+
 
 // 256 * sizeof(uint16_t)
 bool SimpleAPI::ReadTileTypes(uint32_t x, uint32_t y, uint32_t z, uint16_t *buffer)
@@ -124,6 +126,7 @@ bool SimpleAPI::ReadTileTypes(uint32_t x, uint32_t y, uint32_t z, uint16_t *buff
     return true;
 }
 
+
 // 256 * sizeof(uint32_t)
 bool SimpleAPI::ReadDesignations(uint32_t x, uint32_t y, uint32_t z, uint32_t *buffer)
 {
@@ -136,6 +139,7 @@ bool SimpleAPI::ReadDesignations(uint32_t x, uint32_t y, uint32_t z, uint32_t *b
     return true;
 }
 
+
 // 256 * sizeof(uint32_t)
 bool SimpleAPI::ReadOccupancy(uint32_t x, uint32_t y, uint32_t z, uint32_t *buffer)
 {
@@ -147,6 +151,7 @@ bool SimpleAPI::ReadOccupancy(uint32_t x, uint32_t y, uint32_t z, uint32_t *buff
     }
     return true;
 }
+
 
 //16 of them? IDK... there's probably just 7. Reading more doesn't cause errors as it's an array nested inside a block
 // 16 * sizeof(uint8_t)
@@ -161,19 +166,21 @@ bool SimpleAPI::ReadRegionOffsets(uint32_t x, uint32_t y, uint32_t z, uint32_t *
     return true;
 }
 
+
 // veins of a block, expects empty vein vector
 bool SimpleAPI::ReadVeins(uint32_t x, uint32_t y, uint32_t z, vector <t_vein> & veins)
 {
     uint32_t addr = block[x*y_block_count*z_block_count + y*z_block_count + z];
     int veinvector = offset_descriptor->getOffset("v_vein");
     int veinsize = offset_descriptor->getHexValue("v_vein_size");
+    
     if(addr!=NULL && veinvector && veinsize)
     {
         assert(sizeof(t_vein) == veinsize);
         // veins are stored as a vector of pointers to veins
         /*pointer is 4 bytes! we work with a 32bit program here, no matter what architecture we compile khazad for*/
-        /// FIXME: templating for vectors, simple copy constructor for stl vectors
         DfVector p_veins = dm->readVector(addr + veinvector, 4);
+        
         // read all veins
         for (uint32_t i = 0; i< p_veins.getSize();i++)
         {
@@ -190,6 +197,8 @@ bool SimpleAPI::ReadVeins(uint32_t x, uint32_t y, uint32_t z, vector <t_vein> & 
     return false;
 }
 
+
+// getter for map size
 void SimpleAPI::getSize(uint32_t& x, uint32_t& y, uint32_t& z)
 {
     x = x_block_count;
@@ -197,15 +206,15 @@ void SimpleAPI::getSize(uint32_t& x, uint32_t& y, uint32_t& z)
     z = z_block_count;
 }
 
-//RawType matglossRawMapping[] = {Mat_Wood, Mat_Stone, Mat_Metal, Mat_Plant};
-
 bool SimpleAPI::ReadStoneMatgloss(vector<t_matgloss> & stones)
 {
     int matgloss_address = offset_descriptor->getAddress("matgloss");
     int matgloss_offset = offset_descriptor->getAddress("matgloss_skip");
     int matgloss_colors = offset_descriptor->getOffset("matgloss_stone_color");
     DfVector p_matgloss = dm->readVector(matgloss_address + matgloss_offset, 4);
+    
     stones.clear();
+    
     for (uint32_t i = 0; i< p_matgloss.getSize();i++)
     {
         uint32_t temp;
@@ -221,18 +230,24 @@ bool SimpleAPI::ReadStoneMatgloss(vector<t_matgloss> & stones)
     }
     return true;
 }
+
+
 bool SimpleAPI::ReadMetalMatgloss(vector<t_matgloss> & metals)
 {
     int matgloss_address = offset_descriptor->getAddress("matgloss");
     int matgloss_offset = offset_descriptor->getAddress("matgloss_skip");
     int matgloss_colors = offset_descriptor->getOffset("matgloss_metal_color");
     DfVector p_matgloss = dm->readVector(matgloss_address + matgloss_offset*2, 4);
+    
     metals.clear();
+    
     for (uint32_t i = 0; i< p_matgloss.getSize();i++)
     {
         uint32_t temp;
+        
         // read the matgloss pointer from the vector into temp
         p_matgloss.read((uint32_t)i,(uint8_t *)&temp);
+        
         // read the string pointed at by
         t_matgloss mat;
         mat.id = dm->readSTLString(temp); // reads a C string given an address
@@ -243,12 +258,16 @@ bool SimpleAPI::ReadMetalMatgloss(vector<t_matgloss> & metals)
     }
     return true;
 }
+
+
 bool SimpleAPI::ReadWoodMatgloss(vector<t_matgloss> & woods)
 {
     int matgloss_address = offset_descriptor->getAddress("matgloss");
-    ///TODO: find flag for autumnal coloring?
+    // TODO: find flag for autumnal coloring?
     DfVector p_matgloss = dm->readVector(matgloss_address, 4);
+    
     woods.clear();
+    
     t_matgloss mat;
     // TODO: use brown?
     mat.fore = 7;
@@ -257,36 +276,40 @@ bool SimpleAPI::ReadWoodMatgloss(vector<t_matgloss> & woods)
     for (uint32_t i = 0; i< p_matgloss.getSize();i++)
     {
         uint32_t temp;
+        
         // read the matgloss pointer from the vector into temp
         p_matgloss.read((uint32_t)i,(uint8_t *)&temp);
+        
         // read the string pointed at by
         mat.id = dm->readSTLString(temp); // reads a C string given an address
         woods.push_back(mat);
     }
     return true;
 }
+
+
 bool SimpleAPI::ReadPlantMatgloss(vector<t_matgloss> & plants)
 {
     int matgloss_address = offset_descriptor->getAddress("matgloss");
     int matgloss_offset = offset_descriptor->getAddress("matgloss_skip");
-    ///TODO: coloring for plant matter, booze, seeds, etc?
     DfVector p_matgloss = dm->readVector(matgloss_address + matgloss_offset*3, 4);
+    
     plants.clear();
 
-    t_matgloss mat;
     // TODO: use green?
+    t_matgloss mat;
     mat.fore = 7;
     mat.back = 0;
     mat.bright = 0;
     for (uint32_t i = 0; i< p_matgloss.getSize();i++)
     {
         uint32_t temp;
+        
         // read the matgloss pointer from the vector into temp
         p_matgloss.read((uint32_t)i,(uint8_t *)&temp);
+        
         // read the string pointed at by
-
         mat.id = dm->readSTLString(temp); // reads a C string given an address
-
         plants.push_back(mat);
     }
     return true;
@@ -294,6 +317,7 @@ bool SimpleAPI::ReadPlantMatgloss(vector<t_matgloss> & plants)
 
 bool SimpleAPI::ReadGeology( vector <uint16_t>*& assign)
 {
+    // get needed addresses and offsets
     int region_x_offset = offset_descriptor->getAddress("region_x");
     int region_y_offset = offset_descriptor->getAddress("region_y");
     int region_z_offset =  offset_descriptor->getAddress("region_z");
@@ -306,77 +330,79 @@ bool SimpleAPI::ReadGeology( vector <uint16_t>*& assign)
     int world_size_y = offset_descriptor->getOffset("world_size_y");
     int geolayer_geoblock_offset = offset_descriptor->getOffset("geolayer_geoblock_offset");
 
-    uint32_t regionX;
-    uint32_t regionY;
-    uint32_t regionZ;
+    uint32_t regionX, regionY, regionZ;
+    uint16_t worldSizeX, worldSizeY;
 
-    uint16_t worldSizeX;
-    uint16_t worldSizeY;
-
-    if(region_x_offset && region_y_offset && region_z_offset)
+    // check if we have 'em all
+    if(!(
+        region_x_offset && region_y_offset && region_z_offset && world_size_x && world_size_y
+        && world_offset && world_regions_offset && world_geoblocks_offset && region_size
+        && region_geo_index_offset && geolayer_geoblock_offset
+    ))
     {
-        MreadDWord(region_x_offset, regionX);
-        MreadDWord(region_y_offset, regionY);
-        MreadDWord(region_z_offset, regionZ);
-        //df_map->setRegionCoords(,MreadDWord(region_y_offset),MreadDWord(region_z_offset));
-        // we have region offset
-        // extract layer geology data. we need all these to do that
-        if(world_size_x && world_size_y && world_offset && world_regions_offset && world_geoblocks_offset && region_size && region_geo_index_offset && geolayer_geoblock_offset)
+        // fail if we don't have them
+        return false;
+    }
+
+    // read position of the region inside DF world
+    MreadDWord(region_x_offset, regionX);
+    MreadDWord(region_y_offset, regionY);
+    MreadDWord(region_z_offset, regionZ);
+
+    // get world size
+    MreadWord(world_offset + world_size_x, worldSizeX);
+    MreadWord(world_offset + world_size_y, worldSizeY);
+
+    // get pointer to first part of 2d array of regions
+    uint32_t regions = MreadDWord(world_offset + world_regions_offset);
+
+    // read the geoblock vector
+    DfVector geoblocks = dm->readVector(world_offset + world_geoblocks_offset,4);
+
+    // iterate over 8 surrounding regions + local region
+    for(int i = eNorthWest; i< eBiomeCount; i++)
+    {
+        // check bounds, fix them if needed
+        int bioRX = regionX / 16 + (i%3) - 1;
+        if( bioRX < 0) bioRX = 0;
+        if( bioRX >= worldSizeX) bioRX = worldSizeX - 1;
+        int bioRY = regionY / 16 + (i/3) - 1;
+        if( bioRY < 0) bioRY = 0;
+        if( bioRY >= worldSizeY) bioRY = worldSizeY - 1;
+        
+        // get pointer to column of regions
+        uint32_t geoX;
+        MreadDWord(regions + bioRX*4, geoX);
+        
+        // get index into geoblock vector
+        uint16_t geoindex;
+        MreadWord(geoX + bioRY*region_size + region_geo_index_offset, geoindex);
+        
+        // get the geoblock from the geoblock vector using the geoindex
+        uint32_t geoblock_off;
+        geoblocks.read(geoindex,(uint8_t *) &geoblock_off);
+        
+        // get the vector with pointer to layers
+        DfVector geolayers = dm->readVector(geoblock_off + geolayer_geoblock_offset , 4); // let's hope
+        // make sure we don't load crap
+        assert(geolayers.getSize() > 0 && geolayers.getSize() <= 16);
+        
+        // finally, read the layer matgloss
+        for(uint32_t j = 0;j< geolayers.getSize();j++)
         {
-            // get world size
-            MreadWord(world_offset + world_size_x, worldSizeX);
-            MreadWord(world_offset + world_size_y, worldSizeY);
-            //printf("World size. X=%d Y=%d\n",worldSizeX,worldSizeY);
-            // get pointer to first part of 2d array of regions
-            uint32_t regions = MreadDWord(world_offset + world_regions_offset);
-            //printf("regions. Offset=%d\n",regions);
-            // read the 9 surrounding regions
-            DfVector geoblocks = dm->readVector(world_offset + world_geoblocks_offset,4);
-            // iterate over surrounding biomes. make sure we don't fall off the world
-            for(int i = eNorthWest; i< eBiomeCount; i++)
-            {
-                // check bounds, fix them if needed
-                int bioRX = regionX / 16 + (i%3) - 1;
-                if( bioRX < 0) bioRX = 0;
-                if( bioRX >= worldSizeX) bioRX = worldSizeX - 1;
-                int bioRY = regionY / 16 + (i/3) - 1;
-                if( bioRY < 0) bioRY = 0;
-                if( bioRY >= worldSizeY) bioRY = worldSizeY - 1;
-                /// TODO: encapsulate access to multidimensional arrays.
-                // load region stuff here
-                uint32_t geoX;
-                MreadDWord(regions + bioRX*4, geoX);// get pointer to column of regions
-                // geoX = base
-                // bioRY = index
-                // region_size = size of array objects
-                // region_geo_index_off = offset into the array object
-                uint16_t geoindex;
-                MreadWord(geoX + bioRY*region_size + region_geo_index_offset);
-                uint32_t geoblock_off;
-                // get the geoblock from the geoblock vector using the geoindex
-                geoblocks.read(geoindex,(uint8_t *) &geoblock_off);
-                // get the layer pointer vector :D
-                DfVector geolayers = dm->readVector(geoblock_off + geolayer_geoblock_offset , 4); // let's hope
-                // make sure we don't load crap
-                assert(geolayers.getSize() > 0 && geolayers.getSize() <= 16);
-                for(uint32_t j = 0;j< geolayers.getSize();j++)
-                {
-                    int geol_offset;
-                    // read pointer to a layer
-                    geolayers.read(j, (uint8_t *) & geol_offset);
-                    // read word at pointer + 2, store in our geology vectors
-                    v_geology[i].push_back(MreadWord(geol_offset + 2));
-                }
-            }
-//            have_geology = true;
-            assign = v_geology;
-            return true;
+            int geol_offset;
+            // read pointer to a layer
+            geolayers.read(j, (uint8_t *) & geol_offset);
+            // read word at pointer + 2, store in our geology vectors
+            v_geology[i].push_back(MreadWord(geol_offset + 2));
         }
     }
-    return false;
+    assign = v_geology;
+    return true;
 }
 
-/// returns number of buildings, expects v_buildingtypes that will later map t_building.type to its name (types can change between versions, names don't. and I'm lazy)
+
+// returns number of buildings, expects v_buildingtypes that will later map t_building.type to its name
 uint32_t SimpleAPI::InitReadBuildings(vector <string> &v_buildingtypes)
 {
     buildingsInited = true;
@@ -387,15 +413,20 @@ uint32_t SimpleAPI::InitReadBuildings(vector <string> &v_buildingtypes)
     return p_bld.getSize();
 }
 
+
+// read one building
 bool SimpleAPI::ReadBuilding(const uint32_t &index, t_building & building)
 {
     assert(buildingsInited);
     uint32_t temp;
     t_building_df40d bld_40d;
+    
     // read pointer from vector at position
     p_bld.read(index,(uint8_t *)&temp);
+    
     //read building from memory
     Mread(temp, sizeof(t_building_df40d), (uint8_t *)&bld_40d);
+    
     // transform
     int32_t type = -1;
     offset_descriptor->resolveClassId(temp, type);
@@ -409,32 +440,38 @@ bool SimpleAPI::ReadBuilding(const uint32_t &index, t_building & building)
     building.type = type;
 }
 
+
 void SimpleAPI::FinishReadBuildings()
 {
     buildingsInited = false;
 }
 
-///TODO: maybe do construction reading diferently - this could go slow with many of them.
-/// returns number of constructions, prepares a vector, returns total number of constructions
+
+//TODO: maybe do construction reading differently - this could go slow with many of them.
+// returns number of constructions, prepares a vector, returns total number of constructions
 uint32_t SimpleAPI::InitReadConstructions()
 {
     constructionsInited = true;
     int constructions = offset_descriptor->getAddress("buildings");
     assert(constructions);
+    
     p_cons = dm->readVector(constructions,4);
     return p_cons.getSize();
 }
 
+
 bool SimpleAPI::ReadConstruction(const uint32_t &index, t_construction & construction)
 {
     assert(constructionsInited);
-
     t_construction_df40d c_40d;
     uint32_t temp;
+    
     // read pointer from vector at position
     p_cons.read((uint32_t)index,(uint8_t *)&temp);
+    
     //read construction from memory
     Mread(temp, sizeof(t_construction_df40d), (uint8_t *)&c_40d);
+    
     // transform
     construction.x = c_40d.x;
     construction.y = c_40d.y;
@@ -442,10 +479,12 @@ bool SimpleAPI::ReadConstruction(const uint32_t &index, t_construction & constru
     construction.material = c_40d.material;
 }
 
+
 void SimpleAPI::FinishReadConstructions()
 {
     constructionsInited = false;
 }
+
 
 uint32_t SimpleAPI::InitReadVegetation()
 {
@@ -456,6 +495,8 @@ uint32_t SimpleAPI::InitReadVegetation()
     p_veg = dm->readVector(vegetation,4);
     return p_veg.getSize();
 }
+
+
 bool SimpleAPI::ReadVegetation(const uint32_t &index, t_tree_desc & shrubbery)
 {
     assert(vegetationInited);
@@ -467,10 +508,13 @@ bool SimpleAPI::ReadVegetation(const uint32_t &index, t_tree_desc & shrubbery)
     // fix matgloss nonsense
     if(shrubbery.material.type == 2) shrubbery.material.type = 3;
 }
+
+
 void SimpleAPI::FinishReadVegetation()
 {
     vegetationInited = false;
 }
+
 
 bool SimpleAPI::Attach()
 {
@@ -489,6 +533,7 @@ bool SimpleAPI::Attach()
     return true;
 }
 
+
 bool SimpleAPI::Detach()
 {
     p->detach();
@@ -497,6 +542,5 @@ bool SimpleAPI::Detach()
     p = NULL;
     offset_descriptor = NULL;
     dm = NULL;
-//    DestroyCache();
     return true;
 }

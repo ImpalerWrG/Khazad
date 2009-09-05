@@ -13,6 +13,7 @@ class Extractor
 {
 protected:
     DfMap *df_map;   // DF extracted map structure
+    
 public:
     bool Init();
     Extractor();

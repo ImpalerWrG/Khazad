@@ -3,6 +3,7 @@
 #include "DfMapHeader.h"
 #include "ZlibHelper.h"
 
+
 bool DfMap::write(string FilePath)
 {
     FILE *SaveFile;
@@ -19,19 +20,14 @@ bool DfMap::write(string FilePath)
         // gather information to fill dfmapheader
         strcpy(df_map_header.identifier, dmh_id);
         df_map_header.version = dmh_ver;
-        /*
-        df_map_header.tile_block_count = blocks_allocated;
-        df_map_header.x_block_count = getXBlocks();
-        df_map_header.y_block_count = getYBlocks();
-        df_map_header.z_block_count = getZBlocks();*/
         df_map_header.reserved = 0/*sizeof(DfMapHeader)*/;
-
+        
         // save map header
         fwrite(&df_map_header, sizeof(DfMapHeader), 1, SaveFile);
+        
         // save map
         writeVersion1(SaveFile);
     }
-
 
     // reopen file for reading
     freopen (FilePath.c_str(),"rb",SaveFile);
@@ -40,7 +36,6 @@ bool DfMap::write(string FilePath)
         printf("Can\'t create file for read.\n");
         return false;
     }
-
 
     FILE *SaveCompressedFile;
     string CompressedFilePath = FilePath + ".comp";
@@ -56,19 +51,16 @@ bool DfMap::write(string FilePath)
     printf("Compressing... ");
     int ret = def(SaveFile, SaveCompressedFile, Z_BEST_COMPRESSION);
 
-    printf("DONE\n");
-
     if (ret != Z_OK)
     {
         zerr(ret);
     }
+    printf("DONE\n");
 
     fclose(SaveFile);
     fclose(SaveCompressedFile);
-
     remove(FilePath.c_str());
     rename(CompressedFilePath.c_str(), FilePath.c_str());
-
     return true;
 }
 
@@ -80,14 +72,15 @@ bool DfMap::load(string FilePath)
     DfMapHeader df_map_header;
     bool isok = false;
 
-    // open target file for writing
+    // open file for writing decompressed data
     Decompressed = fopen(DecompressedFilePath.c_str(), "wb");
     if  (Decompressed == NULL)
     {
         printf("Can\'t open a decompressed file for write.\n");
         return false;
     }
-    //decompress
+    
+    // open compressed file
     ToDecompress = fopen(FilePath.c_str(),"rb");
     if  (ToDecompress == NULL)
     {
@@ -95,7 +88,7 @@ bool DfMap::load(string FilePath)
         return false;
     }
 
-    // Decompress
+    // decompress
     printf("Decompressing... ");
     int ret = inf(/*source*/ToDecompress,/*destination*/Decompressed);
 
@@ -106,7 +99,9 @@ bool DfMap::load(string FilePath)
         zerr(ret);
     }
 
+    // OK, close file with compressed data
     fclose(ToDecompress);
+    
     // reopen decompressed file for reading
     freopen(DecompressedFilePath.c_str(), "rb", Decompressed);
     if  (Decompressed == NULL)
@@ -114,8 +109,6 @@ bool DfMap::load(string FilePath)
         printf("Can\'t create decompressed file for read.\n");
         return false;
     }
-    // delete all stuff before we change size
-    clear();
 
     // check, if the file is big enough to contain the header
     fseek(Decompressed, 0, SEEK_END);
@@ -136,31 +129,37 @@ bool DfMap::load(string FilePath)
     	printf("This file is not a Khazad map file.\n");
     	return false;
     }
-
+    
+    // ALERT: flush all map data. This is very important.
+    clear();
+    
     switch(df_map_header.version)
     {
         /*
-         * Basic format without matgloss. Kept for compatibility reasons.
-         * Saved from version 0.0.5
-         */
+            Basic format without matgloss. Kept for compatibility reasons.
+            Saved from version 0.0.5
+        */
         case 1:
             isok = loadVersion1(Decompressed, df_map_header);
             break;
+        
         /*
-         * Newer format
-         * Saved from version 0.0.6
-         */
+            v2 format
+            Saved from some SVN version. this format is dead
+        */
         case 2:
             //isok = loadVersion2(Decompressed, df_map_header);
             isok = false;
             break;
+        
         default:
             printf("Unknown Khazad map file version(%3d).\n", df_map_header.version);
-            return false;
+            isok = false;
+            break;
     }
-    // close reopened file
+    
+    // close decompressed file and delete it
     fclose(Decompressed);
-    // and delete it
     remove(DecompressedFilePath.c_str());
     return isok;
 }
