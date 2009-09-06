@@ -325,24 +325,25 @@
         <!-- door: 0x8e15d4, no VTable rebase needed -->
     </Entry>
 
-                           a8888b.
-                         d888888b.
-                         8P"YP"Y88
-                         8|o||o|88
-                         8'    .88
-                         8`._.' Y8.
-                        d/      `8b.
-                      .dP   .     Y8b.
-                     d8:'   "   `::88b.
-                    d8"           `Y88b
-                   :8P     '       :888
-                    8a.    :      _a88P
-                  ._/"Yaa_ :    .| 88P|
-             jgs  \    YP"      `| 8P  `.
-             a:f  /     \._____.d|    .'
-                  `--..__)888888P`._.'
+                            .-"""-.
+                           '       \
+                          |,.  ,-.  |
+                          |()L( ()| |
+                          |,'  `".| |
+                          |.___.',| `
+                         .j `--"' `  `.
+                        / '        '   \
+                       / /          `   `.
+                      / /            `    .
+                     / /              l   |
+                    . ,   L I N U X   |   |
+                    ,"`.             .|   |
+                 _.'   ``.          | `..-'l
+                |       `.`,        |      `.
+                |         `.    __.j         )
+                |__        |--""___|      ,-'
+                   `"--...,+""""   `._,.-' 
 
-                         L I N U X
 
     <Entry version="v0.28.181.40d9" os="linux" id="40d9lin">
         <!-- identification -->
@@ -548,5 +549,5 @@
         <!--<class vtable="0x086c78c8" name="door"/>-->
     </Entry>
 </MemoryDescriptors>
-<!-- Windows logo by M$, TUX logo and spiderweb by jgs -->
+<!-- Windows logo by M$, spiderweb by jgs -->
 </DFExtractor>

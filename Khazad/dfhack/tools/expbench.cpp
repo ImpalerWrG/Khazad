@@ -1,12 +1,11 @@
-// This program exports the entire map from DF. Takes roughly 6.6 seconds for 1000 cycles on my Linux machine.
+// This program exports the entire map from DF. Takes roughly 6.6 seconds for 1000 cycles on my Linux machine. ~px
 
 #include <iostream>
 #include <stdint.h>
 #include <vector>
-#include <map>
 using namespace std;
+
 #include <Types.h>
-#include <ProcessManager.h>
 #include <SimpleMapAPI.h>
 
 int main (void)
@@ -27,7 +26,6 @@ int main (void)
     DF.InitMap();
     DF.getSize(x_max,y_max,z_max);
     
-    //for(int i = 0;i < 100;i++)
     for(uint32_t x = 0; x< x_max;x++)
     {
         for(uint32_t y = 0; y< y_max;y++)

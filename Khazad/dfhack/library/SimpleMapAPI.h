@@ -3,6 +3,9 @@
 
 class memory_info;
 class DfVector;
+class ProcessManager;
+class Process;
+class DataModel;
 
 //FIXME: better control over state, creation and destruction
 //TODO: give this the pimpl treatment?
@@ -20,7 +23,7 @@ private:
     uint32_t occupancy_offset;
     
     ProcessManager* pm;
-    ProcessManager::Process* p;
+    Process* p;
     DataModel* dm;
     memory_info* offset_descriptor;
     vector<uint16_t> v_geology[eBiomeCount];

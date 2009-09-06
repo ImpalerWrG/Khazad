@@ -4,7 +4,7 @@
 #endif
 
 
-ProcessManager::Process::Process(DataModel * dm, memory_info* mi, ProcessHandle ph)
+Process::Process(DataModel * dm, memory_info* mi, ProcessHandle ph)
 {
     my_datamodel = dm;
     my_descriptor = mi;
@@ -13,7 +13,7 @@ ProcessManager::Process::Process(DataModel * dm, memory_info* mi, ProcessHandle 
 }
 
 
-ProcessManager::Process::~Process()
+Process::~Process()
 {
     if(attached)
     {
@@ -25,26 +25,26 @@ ProcessManager::Process::~Process()
 }
 
 
-DataModel *ProcessManager::Process::getDataModel()
+DataModel *Process::getDataModel()
 {
     return my_datamodel;
 }
 
 
-memory_info * ProcessManager::Process::getDescriptor()
+memory_info * Process::getDescriptor()
 {
     return my_descriptor;
 }
 
 
-bool ProcessManager::Process::isAttached()
+bool Process::isAttached()
 {
     ///TODO: check for weird states here - like crashed DF and similar crap
     return attached; // valid when attached
 }
 
 
-void ProcessManager::Process::setMemFile(const string & memf)
+void Process::setMemFile(const string & memf)
 {
     assert(!attached);
     memFile = memf;
@@ -55,7 +55,7 @@ void ProcessManager::Process::setMemFile(const string & memf)
 /*
  *     LINUX PART
  */
-bool ProcessManager::Process::attach()
+bool Process::attach()
 {
     // TODO: check for errors!
     if(g_pProcess != NULL)
@@ -75,7 +75,7 @@ bool ProcessManager::Process::attach()
 }
 
 
-bool ProcessManager::Process::detach()
+bool Process::detach()
 {
     // TODO: check for errors.
     ptrace(PTRACE_DETACH, my_handle, NULL, NULL);
@@ -89,7 +89,7 @@ bool ProcessManager::Process::detach()
 }
 
 
-void ProcessManager::Process::freeResources()
+void Process::freeResources()
 {
     // nil
 };
@@ -102,7 +102,7 @@ void ProcessManager::Process::freeResources()
 
 //FIXME: should support stopping and resuming the process
 
-bool ProcessManager::Process::attach()
+bool Process::attach()
 {
     attached = true;
     g_pProcess = this;
@@ -111,7 +111,7 @@ bool ProcessManager::Process::attach()
 }
 
 
-bool ProcessManager::Process::detach()
+bool Process::detach()
 {
     attached = false;
     g_pProcess = NULL;
@@ -121,7 +121,7 @@ bool ProcessManager::Process::detach()
 }
 
 
-void ProcessManager::Process::freeResources()
+void Process::freeResources()
 {
     // opened by process manager
     CloseHandle(my_handle);

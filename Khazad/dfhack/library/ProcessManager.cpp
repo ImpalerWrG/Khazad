@@ -7,7 +7,7 @@
 #include <iostream>
 
 /// HACK: global variables (only one process can be attached at the same time.)
-ProcessManager::Process * g_pProcess; ///< current process. non-NULL when picked
+Process * g_pProcess; ///< current process. non-NULL when picked
 ProcessHandle g_ProcessHandle; ///< cache of handle to current process. used for speed reasons
 FILE * g_ProcessMemFile; ///< opened /proc/PID/mem, valid when attached
 
@@ -19,7 +19,7 @@ FILE * g_ProcessMemFile; ///< opened /proc/PID/mem, valid when attached
 
 #include "md5/md5wrapper.h"
 
-ProcessManager::Process* ProcessManager::addProcess(const string & exe,ProcessHandle PH, const string & memFile)
+Process* ProcessManager::addProcess(const string & exe,ProcessHandle PH, const string & memFile)
 {
     md5wrapper md5;
     // get hash of the running DF process
@@ -472,7 +472,7 @@ uint32_t ProcessManager::size()
 };
 
 
-ProcessManager::Process * ProcessManager::operator[](uint32_t index)
+Process * ProcessManager::operator[](uint32_t index)
 {
     assert(index < processes.size());
     return processes[index];

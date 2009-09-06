@@ -20,7 +20,7 @@ SET(SO_BUILD_VERSION "1")
 SET(SO_VERSION "${SO_MAJOR_VERSION}.${SO_MINOR_VERSION}.${SO_BUILD_VERSION}")
 
 
-SET( LIBRARY_OUTPUT_PATH ${dfhack_SOURCE_DIR}/output/lib CACHE PATH "Output directory for the dfhack library" )
+SET( LIBRARY_OUTPUT_PATH ${dfhack_SOURCE_DIR}/output CACHE PATH "Output directory for the dfhack library" )
 SET( EXECUTABLE_OUTPUT_PATH ${dfhack_SOURCE_DIR}/output CACHE PATH "Output directory for the dfhack tools" )
 
 include_directories (${CMAKE_SOURCE_DIR}/library/)

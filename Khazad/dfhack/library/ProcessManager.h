@@ -11,15 +11,9 @@ class memory_info;
 class DataModel;
 class TiXmlElement;
 
-/*
- * Process manager
- */
-class ProcessManager
+class Process
 {
-public:
-    class Process
-    {
-        friend class ProcessManager;
+    friend class ProcessManager;
     protected:
         DataModel* my_datamodel;
         memory_info * my_descriptor;
@@ -38,8 +32,14 @@ public:
         bool isAttached();
         memory_info *getDescriptor();
         DataModel *getDataModel();
-    };
+};
 
+/*
+ * Process manager
+ */
+class ProcessManager
+{
+public:
     ProcessManager( string path_to_xml);
     ~ProcessManager();
     bool findProcessess();
@@ -65,7 +65,7 @@ private:
 /*
  * Currently attached process and its handle
  */
-extern ProcessManager::Process * g_pProcess; ///< current process. non-NULL when picked
+extern Process * g_pProcess; ///< current process. non-NULL when picked
 extern ProcessHandle g_ProcessHandle; ///< cache of handle to current process. used for speed reasons
 extern FILE * g_ProcessMemFile; ///< opened /proc/PID/mem, valid when attached
 
