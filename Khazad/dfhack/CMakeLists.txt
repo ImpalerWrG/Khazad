@@ -25,6 +25,7 @@ IF( NOT EXECUTABLE_OUTPUT_PATH )
   SET( EXECUTABLE_OUTPUT_PATH "." )
 ENDIF( NOT EXECUTABLE_OUTPUT_PATH )
 
+include_directories (${CMAKE_SOURCE_DIR}/library/)
 
 add_subdirectory (library)
 add_subdirectory (tools)
