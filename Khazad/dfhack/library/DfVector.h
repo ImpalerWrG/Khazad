@@ -14,6 +14,12 @@ private:
 public:
     DfVector(uint32_t _start, uint32_t _size, uint32_t _item_size):
         start(_start),size(_size),item_size(_item_size) {};
+    DfVector(const DfVector & vec)
+    {
+        start = vec.start;
+        size = vec.size;
+        item_size = vec.item_size;
+    };
     DfVector(){};
     // get offset of the specified index
     inline uint32_t operator[](uint32_t index)

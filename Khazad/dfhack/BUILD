@@ -1,13 +1,15 @@
 Here's how you build dfhack!
 
-First, there are some dependencies:
+First, there is one dependency:
   cmake - it's the build system
-  zlib - you should have zlib installed
 
-building the library is simple. Enter the build folder and invoke these commands:
+building the library is simple. Enter the build folder, run 'cmake ..' and 'make'. Like this:
+  cd build
   cmake ..
   make
 
 This will build the library and its tools and place them in /output.
+
+You can also use a cmake-friendly IDE like KDevelop 4.
 
 Have fun.

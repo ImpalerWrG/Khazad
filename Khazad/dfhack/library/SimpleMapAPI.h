@@ -2,6 +2,7 @@
 #define SIMPLEAPI_H_INCLUDED
 
 class memory_info;
+class DfVector;
 
 //FIXME: better control over state, creation and destruction
 //TODO: give this the pimpl treatment?
@@ -13,6 +14,11 @@ private:
     uint32_t x_block_count, y_block_count, z_block_count;
     uint32_t regionX, regionY, regionZ;
     uint32_t worldSizeX, worldSizeY;
+    
+    uint32_t tile_type_offset;
+    uint32_t designation_offset;
+    uint32_t occupancy_offset;
+    
     ProcessManager* pm;
     ProcessManager::Process* p;
     DataModel* dm;
@@ -24,9 +30,10 @@ private:
     bool buildingsInited;
     bool vegetationInited;
     uint32_t treeoffset;
-    DfVector p_cons;
-    DfVector p_bld;
-    DfVector p_veg;
+    DfVector *p_cons;
+    DfVector *p_bld;
+    DfVector *p_veg;
+    
     
 public:
     SimpleAPI(const string path_to_xml);
@@ -91,6 +98,7 @@ public:
     /**
      * Return false/0 on failure, buffer allocated by client app, 256 items long
      */
+    bool isValidBlock(uint32_t blockx, uint32_t blocky, uint32_t blockz);
     bool ReadTileTypes(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint16_t *buffer); // 256 * sizeof(uint16_t)
     bool ReadDesignations(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint32_t *buffer); // 256 * sizeof(uint32_t)
     bool ReadOccupancy(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint32_t *buffer); // 256 * sizeof(uint32_t)

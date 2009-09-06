@@ -55,6 +55,7 @@ SimpleAPI::SimpleAPI(const string path_to_xml)
     constructionsInited = false;
     buildingsInited = false;
     vegetationInited = false;
+    pm = NULL;
 }
 
 
@@ -72,7 +73,12 @@ bool SimpleAPI::InitMap()
     uint32_t x_count_offset = offset_descriptor->getAddress("x_count");
     uint32_t y_count_offset = offset_descriptor->getAddress("y_count");
     uint32_t z_count_offset = offset_descriptor->getAddress("z_count");
-
+    
+    // get the offsets once here
+    tile_type_offset = offset_descriptor->getOffset("type");
+    designation_offset = offset_descriptor->getOffset("designation");
+    occupancy_offset = offset_descriptor->getOffset("occupancy");
+    
     // get the map pointer
     map_loc = MreadDWord(map_offset);
     if (!map_loc)
@@ -113,11 +119,14 @@ bool SimpleAPI::InitMap()
     return true;
 }
 
+bool SimpleAPI::isValidBlock(uint32_t x, uint32_t y, uint32_t z)
+{
+    return block[x*y_block_count*z_block_count + y*z_block_count + z] != NULL;
+}
 
 // 256 * sizeof(uint16_t)
 bool SimpleAPI::ReadTileTypes(uint32_t x, uint32_t y, uint32_t z, uint16_t *buffer)
 {
-    uint32_t tile_type_offset = offset_descriptor->getOffset("type");
     uint32_t addr = block[x*y_block_count*z_block_count + y*z_block_count + z];
     if (addr!=NULL)
     {
@@ -130,7 +139,6 @@ bool SimpleAPI::ReadTileTypes(uint32_t x, uint32_t y, uint32_t z, uint16_t *buff
 // 256 * sizeof(uint32_t)
 bool SimpleAPI::ReadDesignations(uint32_t x, uint32_t y, uint32_t z, uint32_t *buffer)
 {
-    uint32_t designation_offset = offset_descriptor->getOffset("designation");
     uint32_t addr = block[x*y_block_count*z_block_count + y*z_block_count + z];
     if (addr!=NULL)
     {
@@ -143,7 +151,6 @@ bool SimpleAPI::ReadDesignations(uint32_t x, uint32_t y, uint32_t z, uint32_t *b
 // 256 * sizeof(uint32_t)
 bool SimpleAPI::ReadOccupancy(uint32_t x, uint32_t y, uint32_t z, uint32_t *buffer)
 {
-    uint32_t occupancy_offset = offset_descriptor->getOffset("occupancy");
     uint32_t addr = block[x*y_block_count*z_block_count + y*z_block_count + z];
     if (addr!=NULL)
     {
@@ -408,9 +415,9 @@ uint32_t SimpleAPI::InitReadBuildings(vector <string> &v_buildingtypes)
     buildingsInited = true;
     int buildings = offset_descriptor->getAddress("buildings");
     assert(buildings);
-    p_bld = dm->readVector(buildings,4);
+    p_bld = new DfVector( dm->readVector(buildings,4));
     offset_descriptor->copyBuildings(v_buildingtypes);
-    return p_bld.getSize();
+    return p_bld->getSize();
 }
 
 
@@ -422,7 +429,7 @@ bool SimpleAPI::ReadBuilding(const uint32_t &index, t_building & building)
     t_building_df40d bld_40d;
     
     // read pointer from vector at position
-    p_bld.read(index,(uint8_t *)&temp);
+    p_bld->read(index,(uint8_t *)&temp);
     
     //read building from memory
     Mread(temp, sizeof(t_building_df40d), (uint8_t *)&bld_40d);
@@ -455,8 +462,8 @@ uint32_t SimpleAPI::InitReadConstructions()
     int constructions = offset_descriptor->getAddress("buildings");
     assert(constructions);
     
-    p_cons = dm->readVector(constructions,4);
-    return p_cons.getSize();
+    p_cons = new DfVector(dm->readVector(constructions,4));
+    return p_cons->getSize();
 }
 
 
@@ -467,7 +474,7 @@ bool SimpleAPI::ReadConstruction(const uint32_t &index, t_construction & constru
     uint32_t temp;
     
     // read pointer from vector at position
-    p_cons.read((uint32_t)index,(uint8_t *)&temp);
+    p_cons->read((uint32_t)index,(uint8_t *)&temp);
     
     //read construction from memory
     Mread(temp, sizeof(t_construction_df40d), (uint8_t *)&c_40d);
@@ -492,8 +499,8 @@ uint32_t SimpleAPI::InitReadVegetation()
     int vegetation = offset_descriptor->getAddress("vegetation");
     treeoffset = offset_descriptor->getOffset("tree_desc_offset");
     assert(vegetation && treeoffset);
-    p_veg = dm->readVector(vegetation,4);
-    return p_veg.getSize();
+    p_veg = new DfVector(dm->readVector(vegetation,4));
+    return p_veg->getSize();
 }
 
 
@@ -502,7 +509,7 @@ bool SimpleAPI::ReadVegetation(const uint32_t &index, t_tree_desc & shrubbery)
     assert(vegetationInited);
     uint32_t temp;
     // read pointer from vector at position
-    p_veg.read(index,(uint8_t *)&temp);
+    p_veg->read(index,(uint8_t *)&temp);
     //read construction from memory
     Mread(temp + treeoffset, sizeof(t_tree_desc), (uint8_t *) &shrubbery);
     // fix matgloss nonsense
