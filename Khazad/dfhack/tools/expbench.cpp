@@ -13,9 +13,9 @@ int main (void)
     uint32_t x_max,y_max,z_max;
     uint32_t num_blocks = 0;
     uint32_t bytes_read = 0;
-    uint16_t tiletypes[256];
-    t_designation designations[256];
-    t_occupancy occupancies[256];
+    uint16_t tiletypes[16][16];
+    t_designation designations[16][16];
+    t_occupancy occupancies[16][16];
     
     SimpleAPI DF("Memory.xml");
     if(!DF.Attach())
@@ -34,7 +34,7 @@ int main (void)
             {
                 if(DF.isValidBlock(x,y,z))
                 {
-                    DF.ReadTileTypes(x,y,z, tiletypes);
+                    DF.ReadTileTypes(x,y,z, (uint16_t *) tiletypes);
                     DF.ReadDesignations(x,y,z, (uint32_t *) designations);
                     DF.ReadOccupancy(x,y,z, (uint32_t *) occupancies);
                     num_blocks ++;
