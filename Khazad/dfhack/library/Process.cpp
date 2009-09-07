@@ -37,13 +37,6 @@ memory_info * Process::getDescriptor()
 }
 
 
-bool Process::isAttached()
-{
-    ///TODO: check for weird states here - like crashed DF and similar crap
-    return attached; // valid when attached
-}
-
-
 void Process::setMemFile(const string & memf)
 {
     assert(!attached);

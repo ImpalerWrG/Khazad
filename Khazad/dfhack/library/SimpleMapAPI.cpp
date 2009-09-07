@@ -536,6 +536,7 @@ bool SimpleAPI::Attach()
     if(!p->attach())
         return false; // couldn't attach to process, no go
     offset_descriptor = p->getDescriptor();
+    dm = p->getDataModel();
     // process is attached, everything went just fine... hopefully
     return true;
 }

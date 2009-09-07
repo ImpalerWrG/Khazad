@@ -10,11 +10,21 @@ typedef HANDLE ProcessHandle;
 class memory_info;
 class DataModel;
 class TiXmlElement;
+class Process;
+
+/*
+* Currently attached process and its handle
+*/
+extern Process * g_pProcess; ///< current process. non-NULL when picked
+extern ProcessHandle g_ProcessHandle; ///< cache of handle to current process. used for speed reasons
+extern FILE * g_ProcessMemFile; ///< opened /proc/PID/mem, valid when attached
 
 class Process
 {
     friend class ProcessManager;
     protected:
+        Process(DataModel * dm, memory_info* mi, ProcessHandle ph);
+        ~Process();
         DataModel* my_datamodel;
         memory_info * my_descriptor;
         ProcessHandle my_handle;
@@ -23,13 +33,10 @@ class Process
         void freeResources();
         void setMemFile(const string & memf);
     public:
-        Process(DataModel * dm, memory_info* mi, ProcessHandle ph);
-        ~Process();
         // Set up stuff so we can read memory
         bool attach();
         bool detach();
         // is the process still there?
-        bool isAttached();
         memory_info *getDescriptor();
         DataModel *getDataModel();
 };
@@ -61,12 +68,5 @@ private:
     Process* addProcess(const string & exe,ProcessHandle PH,const string & memFile);
 #endif
 };
-
-/*
- * Currently attached process and its handle
- */
-extern Process * g_pProcess; ///< current process. non-NULL when picked
-extern ProcessHandle g_ProcessHandle; ///< cache of handle to current process. used for speed reasons
-extern FILE * g_ProcessMemFile; ///< opened /proc/PID/mem, valid when attached
 
 #endif // PROCESSMANAGER_H_INCLUDED
