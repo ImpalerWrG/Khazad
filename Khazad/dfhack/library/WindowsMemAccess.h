@@ -2,6 +2,7 @@
  * DO NOT USE THIS FILE DIRECTLY! USE MemAccess.h INSTEAD!
  */
 
+// let's hope this commented crap is never needed
     /*
     char buffer[256];
     DWORD oldProtect = 0;
@@ -11,7 +12,7 @@
     VirtualProtectEx( hProc, (LPVOID)0x77810F34, 256, oldProtect, NULL ); //restore the original protection when you're done
     */
 
-
+// it would be possible to replace all this by macros
 
 inline
 uint8_t MreadByte (const uint32_t &offset)
@@ -82,6 +83,33 @@ void Mread (const uint32_t &offset, uint32_t size, uint8_t *target)
 {
     ReadProcessMemory(g_ProcessHandle, (int*) offset, target, size, NULL);
 }
+
+// WRITING
+inline
+void MwriteDWord (const uint32_t offset, uint32_t data)
+{
+    WriteProcessMemory(g_ProcessHandle, (int*) offset, &data, sizeof(uint32_t), NULL);
+}
+
+// using these is expensive.
+inline
+void MwriteWord (uint32_t offset, uint16_t data)
+{
+    WriteProcessMemory(g_ProcessHandle, (int*) offset, &data, sizeof(uint16_t), NULL);
+}
+
+inline
+void MwriteByte (uint32_t offset, uint8_t data)
+{
+    WriteProcessMemory(g_ProcessHandle, (int*) offset, &data, sizeof(uint8_t), NULL);
+}
+
+inline
+bool Mwrite (uint32_t offset, uint32_t size, uint8_t *source)
+{
+    WriteProcessMemory(g_ProcessHandle, (int*) offset, source, size, NULL);
+}
+
 
 
 ///FIXME: reduce use of temporary objects

@@ -160,6 +160,42 @@ bool SimpleAPI::ReadOccupancy(uint32_t x, uint32_t y, uint32_t z, uint32_t *buff
 }
 
 
+// 256 * sizeof(uint16_t)
+bool SimpleAPI::WriteTileTypes(uint32_t x, uint32_t y, uint32_t z, uint16_t *buffer)
+{
+    uint32_t addr = block[x*y_block_count*z_block_count + y*z_block_count + z];
+    if (addr!=NULL)
+    {
+        Mwrite(addr+tile_type_offset, 256 * sizeof(uint16_t), (uint8_t *)buffer);
+    }
+    return true;
+}
+
+
+// 256 * sizeof(uint32_t)
+bool SimpleAPI::WriteDesignations(uint32_t x, uint32_t y, uint32_t z, uint32_t *buffer)
+{
+    uint32_t addr = block[x*y_block_count*z_block_count + y*z_block_count + z];
+    if (addr!=NULL)
+    {
+        Mwrite(addr+designation_offset, 256 * sizeof(uint32_t), (uint8_t *)buffer);
+    }
+    return true;
+}
+
+
+// 256 * sizeof(uint32_t)
+bool SimpleAPI::WriteOccupancy(uint32_t x, uint32_t y, uint32_t z, uint32_t *buffer)
+{
+    uint32_t addr = block[x*y_block_count*z_block_count + y*z_block_count + z];
+    if (addr!=NULL)
+    {
+        Mwrite(addr+occupancy_offset, 256 * sizeof(uint32_t), (uint8_t *)buffer);
+    }
+    return true;
+}
+
+
 //16 of them? IDK... there's probably just 7. Reading more doesn't cause errors as it's an array nested inside a block
 // 16 * sizeof(uint8_t)
 bool SimpleAPI::ReadRegionOffsets(uint32_t x, uint32_t y, uint32_t z, uint32_t *buffer)

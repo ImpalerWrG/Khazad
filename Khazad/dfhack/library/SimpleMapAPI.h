@@ -102,9 +102,15 @@ public:
      * Return false/0 on failure, buffer allocated by client app, 256 items long
      */
     bool isValidBlock(uint32_t blockx, uint32_t blocky, uint32_t blockz);
+    
     bool ReadTileTypes(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint16_t *buffer); // 256 * sizeof(uint16_t)
+    bool WriteTileTypes(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint16_t *buffer); // 256 * sizeof(uint16_t)
+    
     bool ReadDesignations(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint32_t *buffer); // 256 * sizeof(uint32_t)
+    bool WriteDesignations (uint32_t blockx, uint32_t blocky, uint32_t blockz, uint32_t *buffer);
+    
     bool ReadOccupancy(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint32_t *buffer); // 256 * sizeof(uint32_t)
+    bool WriteOccupancy(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint32_t *buffer); // 256 * sizeof(uint32_t)
     
     /// read region offsets of a block
     bool ReadRegionOffsets(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint32_t *buffer); // 16 * sizeof(uint8_t)

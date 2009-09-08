@@ -7,3 +7,6 @@ ENDIF(UNIX)
 
 ADD_EXECUTABLE(expbench expbench.cpp)
 TARGET_LINK_LIBRARIES(expbench dfhack)
+
+ADD_EXECUTABLE(reveal reveal.cpp)
+TARGET_LINK_LIBRARIES(reveal dfhack)
