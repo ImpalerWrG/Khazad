@@ -158,13 +158,13 @@ public:
     unsigned int getBiome (uint32_t x, uint32_t y, uint32_t z);
 
     int picktexture(int);
-
+/*
     bool isOpenTerrain(int);
     bool isStairTerrain(int);
     bool isRampTerrain(int);
     bool isFloorTerrain(int);
     bool isWallTerrain(int);
-
+*/
     bool isBlockInitialized(uint32_t x, uint32_t y, uint32_t z);
 
     bool isHidden (uint32_t x, uint32_t y, uint32_t z);

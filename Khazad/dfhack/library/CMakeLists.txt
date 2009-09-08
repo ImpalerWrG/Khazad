@@ -5,6 +5,7 @@ MemInfo.cpp
 Process.cpp
 ProcessManager.cpp
 SimpleMapAPI.cpp
+TileTypes.cpp
 md5/md5.cpp
 md5/md5wrapper.cpp
 tinyxml/tinystr.cpp

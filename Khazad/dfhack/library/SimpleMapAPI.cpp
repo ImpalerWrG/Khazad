@@ -216,7 +216,7 @@ bool SimpleAPI::ReadVeins(uint32_t x, uint32_t y, uint32_t z, vector <t_vein> & 
     uint32_t addr = block[x*y_block_count*z_block_count + y*z_block_count + z];
     int veinvector = offset_descriptor->getOffset("v_vein");
     int veinsize = offset_descriptor->getHexValue("v_vein_size");
-    
+    veins.clear();
     if(addr!=NULL && veinvector && veinsize)
     {
         assert(sizeof(t_vein) == veinsize);
@@ -252,7 +252,7 @@ void SimpleAPI::getSize(uint32_t& x, uint32_t& y, uint32_t& z)
 bool SimpleAPI::ReadStoneMatgloss(vector<t_matgloss> & stones)
 {
     int matgloss_address = offset_descriptor->getAddress("matgloss");
-    int matgloss_offset = offset_descriptor->getAddress("matgloss_skip");
+    int matgloss_offset = offset_descriptor->getHexValue("matgloss_skip");
     int matgloss_colors = offset_descriptor->getOffset("matgloss_stone_color");
     DfVector p_matgloss = dm->readVector(matgloss_address + matgloss_offset, 4);
     
@@ -278,7 +278,7 @@ bool SimpleAPI::ReadStoneMatgloss(vector<t_matgloss> & stones)
 bool SimpleAPI::ReadMetalMatgloss(vector<t_matgloss> & metals)
 {
     int matgloss_address = offset_descriptor->getAddress("matgloss");
-    int matgloss_offset = offset_descriptor->getAddress("matgloss_skip");
+    int matgloss_offset = offset_descriptor->getHexValue("matgloss_skip");
     int matgloss_colors = offset_descriptor->getOffset("matgloss_metal_color");
     DfVector p_matgloss = dm->readVector(matgloss_address + matgloss_offset*2, 4);
     
@@ -334,7 +334,7 @@ bool SimpleAPI::ReadWoodMatgloss(vector<t_matgloss> & woods)
 bool SimpleAPI::ReadPlantMatgloss(vector<t_matgloss> & plants)
 {
     int matgloss_address = offset_descriptor->getAddress("matgloss");
-    int matgloss_offset = offset_descriptor->getAddress("matgloss_skip");
+    int matgloss_offset = offset_descriptor->getHexValue("matgloss_skip");
     DfVector p_matgloss = dm->readVector(matgloss_address + matgloss_offset*3, 4);
     
     plants.clear();

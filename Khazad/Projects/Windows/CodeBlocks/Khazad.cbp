@@ -229,6 +229,7 @@
 		<Unit filename="..\..\..\dfhack\library\ProcessManager.h" />
 		<Unit filename="..\..\..\dfhack\library\SimpleMapAPI.cpp" />
 		<Unit filename="..\..\..\dfhack\library\SimpleMapAPI.h" />
+		<Unit filename="..\..\..\dfhack\library\TileTypes.cpp" />
 		<Unit filename="..\..\..\dfhack\library\TileTypes.h" />
 		<Unit filename="..\..\..\dfhack\library\Types.h" />
 		<Unit filename="..\..\..\dfhack\library\WindowsMemAccess.h" />

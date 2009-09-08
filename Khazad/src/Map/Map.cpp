@@ -8,6 +8,7 @@
 #include <Extract.h>
 #include <Types.h>
 #include <DfMap.h>
+#include <TileTypes.h>
 
 #include <Column.h>
 #include <Cube.h>
@@ -380,11 +381,11 @@ void Map::LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 Cell
 
     int TileType = df_map->getTileType(CellX, CellY, CellZ, CubeX, CubeY);
 
-    bool IsFloor = df_map->isFloorTerrain(TileType);
-    bool IsWall = df_map->isWallTerrain(TileType);
-    bool IsOpen = df_map->isOpenTerrain(TileType);
-    bool IsRamp = df_map->isRampTerrain(TileType);
-    bool IsStairs = df_map->isStairTerrain(TileType);
+    bool IsFloor = isFloorTerrain(TileType);
+    bool IsWall = isWallTerrain(TileType);
+    bool IsOpen = isOpenTerrain(TileType);
+    bool IsRamp = isRampTerrain(TileType);
+    bool IsStairs = isStairTerrain(TileType);
 
     int Liquid = df_map->getLiquidLevel(MapX, MapY, MapZ);
 

@@ -33,7 +33,7 @@ Process* ProcessManager::addProcess(const string & exe,ProcessHandle PH, const s
         {
             memory_info * m = &*it;
             Process * ret;
-            cout <<"Found process " << PH <<  ". It's DF version " << m->getVersion() << "." << endl;
+            //cout <<"Found process " << PH <<  ". It's DF version " << m->getVersion() << "." << endl;
             
             // df can run under wine on Linux
             if(memory_info::OS_WINDOWS == (*it).getOS())
@@ -351,7 +351,7 @@ void ProcessManager::ParseEntry (TiXmlElement* entry, memory_info& mem, map <str
         return;
     }
     // process additional entries
-    cout << "Entry " << cstr_version << " " <<  cstr_os << endl;
+    //cout << "Entry " << cstr_version << " " <<  cstr_os << endl;
     pMemEntry = entry->FirstChildElement()->ToElement();
     for(;pMemEntry;pMemEntry=pMemEntry->NextSiblingElement())
     {
@@ -425,7 +425,7 @@ bool ProcessManager::loadDescriptors(string path_to_xml)
                 cerr << "DFExtractor != " << m_name << endl;
                 return false;
             }
-            cout << "got DFExtractor XML!" << endl;
+            //cout << "got DFExtractor XML!" << endl;
             // save this for later
             hRoot=TiXmlHandle(pElem);
         }
