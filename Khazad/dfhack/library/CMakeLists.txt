@@ -1,17 +1,15 @@
 # source files not included here are only used by khazad
 SET(PROJECT_SRCS
-DataModel.cpp
-MemInfo.cpp
-Process.cpp
-ProcessManager.cpp
-SimpleMapAPI.cpp
-TileTypes.cpp
+DFDataModel.cpp
+DFMemInfo.cpp
+DFProcess.cpp
+DFProcessManager.cpp
+DFHackAPI.cpp
+DFTileTypes.cpp
 md5/md5.cpp
 md5/md5wrapper.cpp
 tinyxml/tinystr.cpp
-tinyxml/tinystr.h
 tinyxml/tinyxml.cpp
-tinyxml/tinyxml.h
 tinyxml/tinyxmlerror.cpp
 tinyxml/tinyxmlparser.cpp
 )

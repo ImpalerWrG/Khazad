@@ -5,8 +5,8 @@
 #include <vector>
 using namespace std;
 
-#include <Types.h>
-#include <SimpleMapAPI.h>
+#include <DFTypes.h>
+#include <DFHackAPI.h>
 
 int main (void)
 {
@@ -17,7 +17,7 @@ int main (void)
     t_designation designations[16][16];
     t_occupancy occupancies[16][16];
     
-    SimpleAPI DF("Memory.xml");
+    DFHackAPI DF("Memory.xml");
     if(!DF.Attach())
     {
         cerr << "DF not found" << endl;
@@ -26,6 +26,7 @@ int main (void)
     DF.InitMap();
     DF.getSize(x_max,y_max,z_max);
     
+    for(uint32_t i = 0; i< 1000;i++)
     for(uint32_t x = 0; x< x_max;x++)
     {
         for(uint32_t y = 0; y< y_max;y++)

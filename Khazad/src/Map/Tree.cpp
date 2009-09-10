@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <string>
 using namespace std;
-#include <Types.h>
+#include <DFTypes.h>
 #include "Tree.h"
 
 Tree::Tree(t_matglossPair material, int x, int y, int z)

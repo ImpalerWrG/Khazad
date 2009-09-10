@@ -14,9 +14,9 @@
 #include <map>
 using namespace std;
 
-#include <Types.h>
-#include <TileTypes.h>
-#include <SimpleMapAPI.h>
+#include <DFTypes.h>
+#include <DFTileTypes.h>
+#include <DFHackAPI.h>
 
 int main (int argc, const char* argv[])
 {
@@ -50,7 +50,7 @@ int main (int argc, const char* argv[])
     vector< vector <uint16_t> > layerassign;
     
     // init the API
-    SimpleAPI DF("Memory.xml");
+    DFHackAPI DF("Memory.xml");
     
     // attach
     if(!DF.Attach())

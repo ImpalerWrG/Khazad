@@ -13,7 +13,7 @@
 #include <ImageManager.h>
 #include <DataManager.h>
 
-#include <Types.h>
+#include <DFTypes.h>
 #include <Extract.h>
 #include <DfMap.h>
 #include <Game.h>

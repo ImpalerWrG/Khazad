@@ -6,7 +6,7 @@
 #include <Cube.h>
 #include <Map.h>
 /// FIXME: dfhack paths
-#include <Types.h>
+#include <DFTypes.h>
 #include <Building.h>
 #include <Tree.h>
 

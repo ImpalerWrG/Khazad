@@ -5,8 +5,8 @@
 #include <vector>
 using namespace std;
 
-#include <Types.h>
-#include <SimpleMapAPI.h>
+#include <DFTypes.h>
+#include <DFHackAPI.h>
 
 int main (void)
 {
@@ -15,7 +15,7 @@ int main (void)
     uint32_t bytes_read = 0;
     t_designation designations[256];
     
-    SimpleAPI DF("Memory.xml");
+    DFHackAPI DF("Memory.xml");
     if(!DF.Attach())
     {
         cerr << "DF not found" << endl;

@@ -6,9 +6,9 @@
 #include <DataManager.h>
 ///FIXME: dfhack paths
 #include <Extract.h>
-#include <Types.h>
+#include <DFTypes.h>
 #include <DfMap.h>
-#include <TileTypes.h>
+#include <DFTileTypes.h>
 
 #include <Column.h>
 #include <Cube.h>

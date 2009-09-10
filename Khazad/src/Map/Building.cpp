@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 #include <stdint.h>
-#include <Types.h>
+#include <DFTypes.h>
 #include "Building.h"
 #include <TextureManager.h>
 

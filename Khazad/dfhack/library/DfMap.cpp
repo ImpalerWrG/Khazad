@@ -9,7 +9,7 @@
 #define CheckBlockBounds x < x_block_count && x >= 0 && y < y_block_count && y >= 0 && z < z_block_count && z >= 0
 
 // this expands into lots of ugly switch statement functions. some of them unused?, but kept for reference
-#include "TileTypes.h"
+#include "DFTileTypes.h"
 
 // process vein vector into matgloss values...
 void Block::collapseVeins()

@@ -3,8 +3,8 @@
 using namespace std;
 
 #include "Extract.h"
-#include "DataModel.h"
-#include "MemInfo.h"
+#include "DFDataModel.h"
+#include "DFMemInfo.h"
 
 Extractor::Extractor()
 {

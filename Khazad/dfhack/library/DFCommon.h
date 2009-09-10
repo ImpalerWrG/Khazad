@@ -27,11 +27,11 @@ using namespace std;
 #include <psapi.h>
 #endif
 
-#include "Types.h"
-#include "DataModel.h"
-#include "ProcessManager.h"
-#include "MemAccess.h"
-#include "DfVector.h"
+#include "DFTypes.h"
+#include "DFDataModel.h"
+#include "DFProcessManager.h"
+#include "DFMemAccess.h"
+#include "DFVector.h"
 #include "DfMap.h"
 
 
