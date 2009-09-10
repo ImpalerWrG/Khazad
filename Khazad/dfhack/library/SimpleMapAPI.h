@@ -86,7 +86,7 @@ public:
             }
         }
      */
-    bool ReadGeology( vector <uint16_t>*& assign);
+    bool ReadGeology( vector < vector <uint16_t> >& assign );
 
     /*
      * BLOCK DATA
@@ -113,7 +113,7 @@ public:
     bool WriteOccupancy(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint32_t *buffer); // 256 * sizeof(uint32_t)
     
     /// read region offsets of a block
-    bool ReadRegionOffsets(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint32_t *buffer); // 16 * sizeof(uint8_t)
+    bool ReadRegionOffsets(uint32_t blockx, uint32_t blocky, uint32_t blockz, uint8_t *buffer); // 16 * sizeof(uint8_t)
     
     /// read aggregated veins of a block
     bool ReadVeins(uint32_t blockx, uint32_t blocky, uint32_t blockz, vector <t_vein> & veins);

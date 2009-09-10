@@ -198,13 +198,13 @@ bool SimpleAPI::WriteOccupancy(uint32_t x, uint32_t y, uint32_t z, uint32_t *buf
 
 //16 of them? IDK... there's probably just 7. Reading more doesn't cause errors as it's an array nested inside a block
 // 16 * sizeof(uint8_t)
-bool SimpleAPI::ReadRegionOffsets(uint32_t x, uint32_t y, uint32_t z, uint32_t *buffer)
+bool SimpleAPI::ReadRegionOffsets(uint32_t x, uint32_t y, uint32_t z, uint8_t *buffer)
 {
     uint32_t biome_stuffs = offset_descriptor->getOffset("biome_stuffs");
     uint32_t addr = block[x*y_block_count*z_block_count + y*z_block_count + z];
     if (addr!=NULL)
     {
-        Mread(addr+biome_stuffs, 16 * sizeof(uint8_t), (uint8_t *)buffer);
+        Mread(addr+biome_stuffs, 16 * sizeof(uint8_t), buffer);
     }
     return true;
 }
@@ -358,7 +358,8 @@ bool SimpleAPI::ReadPlantMatgloss(vector<t_matgloss> & plants)
     return true;
 }
 
-bool SimpleAPI::ReadGeology( vector <uint16_t>*& assign)
+//vector<uint16_t> v_geology[eBiomeCount];
+bool SimpleAPI::ReadGeology( vector < vector <uint16_t> >& assign )
 {
     // get needed addresses and offsets
     int region_x_offset = offset_descriptor->getAddress("region_x");
@@ -372,16 +373,18 @@ bool SimpleAPI::ReadGeology( vector <uint16_t>*& assign)
     int world_size_x = offset_descriptor->getOffset("world_size_x");
     int world_size_y = offset_descriptor->getOffset("world_size_y");
     int geolayer_geoblock_offset = offset_descriptor->getOffset("geolayer_geoblock_offset");
-
+    
     uint32_t regionX, regionY, regionZ;
     uint16_t worldSizeX, worldSizeY;
 
     // check if we have 'em all
-    if(!(
+    if(
+        !(
         region_x_offset && region_y_offset && region_z_offset && world_size_x && world_size_y
         && world_offset && world_regions_offset && world_geoblocks_offset && region_size
         && region_geo_index_offset && geolayer_geoblock_offset
-    ))
+        )
+    )
     {
         // fail if we don't have them
         return false;
@@ -440,7 +443,12 @@ bool SimpleAPI::ReadGeology( vector <uint16_t>*& assign)
             v_geology[i].push_back(MreadWord(geol_offset + 2));
         }
     }
-    assign = v_geology;
+    assign.clear();
+    // TODO: clean this up
+    for(int i = 0; i< eBiomeCount;i++)
+    {
+        assign.push_back(v_geology[i]);
+    }
     return true;
 }
 

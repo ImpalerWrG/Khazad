@@ -1,6 +1,11 @@
-// produces a list of materials available on the map.
+// produces a list of vein materials available on the map. can be run with '-a' modifier to show even unrevealed minerals deep underground
+// with -b modifier, it will show base layer materials too
+
 // TODO: use material colors to make the output prettier
 // TODO: needs the tiletype filter!
+// TODO: tile override materials
+// TODO: material types, trees, ice, constructions
+// TODO: GUI
 
 #include <iostream>
 #include <stdint.h>
@@ -15,22 +20,34 @@ using namespace std;
 
 int main (int argc, const char* argv[])
 {
+    
     bool showhidden = false;
+    bool showbaselayers = false;
     for(int i = 0; i < argc; i++)
     {
         string test = argv[i];
         if(test == "-a")
         {
             showhidden = true;
-            break;
+        }
+        else if(test == "-b")
+        {
+            showbaselayers = true;
+        }
+        else if(test == "-ab" || test == "-ba")
+        {
+            showhidden = true;
+            showbaselayers = true;
         }
     }
     uint32_t x_max,y_max,z_max;
     uint16_t tiletypes[16][16];
     t_designation designations[16][16];
+    uint8_t regionoffsets[16];
     map <int16_t, uint32_t> materials;
     materials.clear();
     vector<t_matgloss> stonetypes;
+    vector< vector <uint16_t> > layerassign;
     
     // init the API
     SimpleAPI DF("Memory.xml");
@@ -53,6 +70,14 @@ int main (int argc, const char* argv[])
         cerr << "Can't get the materials." << endl;
         return 1; 
     }
+    
+    // get region geology
+    if(!DF.ReadGeology( layerassign ))
+    {
+        cerr << "Can't get region geology." << endl;
+        return 1; 
+    }
+    
     int16_t tempvein [16][16];
     vector <t_vein> veins;
     // walk the map!
@@ -69,19 +94,30 @@ int main (int argc, const char* argv[])
                 DF.ReadTileTypes(x,y,z, (uint16_t *) tiletypes);
                 DF.ReadDesignations(x,y,z, (uint32_t *) designations);
                 
-                // get veins, collapse them
                 memset(tempvein, -1, sizeof(tempvein));
-                
                 veins.clear();
                 DF.ReadVeins(x,y,z,veins);
                 
+                if(showbaselayers)
+                {
+                    DF.ReadRegionOffsets(x,y,z, regionoffsets);
+                    // get the layer materials
+                    for(uint32_t xx = 0;xx<16;xx++)
+                    {
+                        for (uint32_t yy = 0; yy< 16;yy++)
+                        {
+                            tempvein[xx][yy] =
+                            layerassign
+                            [regionoffsets[designations[xx][yy].bits.biome]]
+                            [designations[xx][yy].bits.geolayer_index];
+                        }
+                    }
+                }
+                
+                // for each vein
                 for(int i = 0; i < veins.size();i++)
                 {
-                    if(veins[i].type >= stonetypes.size() || veins[i].type < 0)
-                    {
-                        cerr << "weird vein " << veins[i].type << endl;
-                        continue;
-                    }
+                    //iterate through vein rows
                     for(uint32_t j = 0;j<16;j++)
                     {
                         //iterate through the bits
@@ -91,16 +127,19 @@ int main (int argc, const char* argv[])
                             bool set = ((1 << k) & veins[i].assignment[j]) >> k;
                             if(set)
                             {
+                                // store matgloss
                                 tempvein[k][j] = veins[i].type;
                             }
                         }
                     }
                 }
-                // process stuff
+                // count the material types
                 for(uint32_t xi = 0 ; xi< 16 ; xi++)
                 {
                     for(uint32_t yi = 0 ; yi< 16 ; yi++)
                     {
+                        // hidden tiles are ignored unless '-a' is provided on the command line
+                        // non-wall tiles are ignored
                         if(designations[xi][yi].bits.hidden && !showhidden || !isWallTerrain(tiletypes[xi][yi]))
                             continue;
                         if(tempvein[xi][yi] < 0)
@@ -109,7 +148,6 @@ int main (int argc, const char* argv[])
                         if(materials.count(tempvein[xi][yi]))
                         {
                             materials[tempvein[xi][yi]] += 1;
-                            
                         }
                         else
                         {
