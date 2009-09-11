@@ -528,7 +528,6 @@ bool DFHackAPI::ReadVegetation(const uint32_t &index, t_tree_desc & shrubbery)
     p_veg->read(index,(uint8_t *)&temp);
     //read construction from memory
     Mread(temp + treeoffset, sizeof(t_tree_desc), (uint8_t *) &shrubbery);
-    // fix matgloss nonsense
     // FIXME: this is completely wrong. type isn't just tree/shrub but also different kinds of trees. stuff that grows around ponds has its own type ID
     if(shrubbery.material.type == 3) shrubbery.material.type = 2;
 }

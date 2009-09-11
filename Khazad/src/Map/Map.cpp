@@ -393,14 +393,18 @@ void Map::LoadCellData(DFHackAPI & DF,
     t_designation designations[16][16];
     t_occupancy occupancies[16][16];
     uint8_t regionoffsets[16];
-    int16_t tempmat [16][16];
+    int16_t basemat [16][16];
+    int16_t veinmat [16][16];
+    t_matglossPair constmat [16][16];
     vector <t_vein> veins;
 
     DF.ReadTileTypes(CellX, CellY, CellZ, (uint16_t *) tiletypes);
     DF.ReadDesignations(CellX, CellY, CellZ, (uint32_t *) designations);
     DF.ReadOccupancy(CellX, CellY, CellZ, (uint32_t *) occupancies);
     DF.ReadRegionOffsets(CellX,CellY,CellZ, regionoffsets);
-    memset(tempmat, -1, sizeof(tempmat));
+    memset(basemat, -1, sizeof(basemat));
+    memset(veinmat, -1, sizeof(veinmat));
+    memset(constmat, -1, sizeof(constmat));
     veins.clear();
     DF.ReadVeins(CellX,CellY,CellZ,veins);
 
@@ -409,11 +413,13 @@ void Map::LoadCellData(DFHackAPI & DF,
     {
         for (uint32_t yy = 0; yy< 16;yy++)
         {
-            tempmat[xx][yy] =
+            // base rock layers
+            basemat[xx][yy] =
             layerassign
             [regionoffsets[designations[xx][yy].bits.biome]]
             [designations[xx][yy].bits.geolayer_index];
-            // for each vein
+
+            // veins
             for(int i = 0; i < veins.size();i++)
             {
                 // and the bit array with a one-bit mask, check if the bit is set
@@ -421,30 +427,28 @@ void Map::LoadCellData(DFHackAPI & DF,
                 if(set)
                 {
                     // store matgloss
-                    tempmat[xx][yy] = veins[i].type;
+                    veinmat[xx][yy] = veins[i].type;
                 }
             }
+
+            // constructions
             uint64_t coord =  (uint64_t)CellZ + ((uint64_t)(CellY*16 + yy) << 16) + ((uint64_t)(CellX*16 + xx) << 32);
             //uint64_t coord =  (uint64_t)tempcon.z + ((uint64_t)tempcon.y << 16) + ((uint64_t)tempcon.x << 32);
             if(constructions.count(coord))
             {
-                if(constructions[coord].material.type == Mat_Stone)
-                {
-                    // store matgloss
-                    tempmat[xx][yy] = constructions[coord].material.index;
-                }
-                else
-                {
-                    //cout << "construction type " << constructions[coord].material.type;
-                    tempmat[xx][yy] = -1;
-                }
+                // store matgloss
+                constmat[xx][yy] = constructions[coord].material;
             }
+
+            // plants
             if(vegetation.count(coord))
             {
                 t_tree_desc t = vegetation[coord];
                 Tree *tree = new Tree(t.material,t.x,t.y,t.z);
                 TargetCell->addTree(tree);
             }
+
+            // buildings, FIXME: doesn't work with overlapping buildings
             if(buildings.count(coord))
             {
                 t_building b = buildings[coord];
@@ -478,7 +482,7 @@ void Map::LoadCellData(DFHackAPI & DF,
                 TargetCell->setCube(TargetCube, CubeX, CubeY);
                 TargetCube->setPosition((float) MapX, (float) MapY, (float) MapZ);
 
-                Uint16 Material = PickTexture(t, tempmat[CubeX][CubeY],o);
+                Uint16 Material = PickTexture(t, basemat[CubeX][CubeY],veinmat[CubeX][CubeY],constmat[CubeX][CubeY],o);
                 TargetCube->setHidden(d.bits.hidden);
 
                 TargetCube->setSubTerranean(d.bits.subterranean);
@@ -559,7 +563,7 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
     }
 
 }
-Uint32 Map::PickTexture(Sint16 TileType, Sint16 material,t_occupancy occupancy)
+Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial,t_matglossPair constructionmaterial, t_occupancy occupancy)
 {
     static Uint16 Sand = DATA->getLabelIndex("MATERIAL_SAND");
     //static Uint16 Stone = DATA->getLabelIndex("MATERIAL_ROUGH_STONE");
@@ -580,32 +584,52 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 material,t_occupancy occupancy)
     if(occupancy.bits.snow) return Snow;
     if(occupancy.bits.mud) return Soil;
 
-    if(material == -1)
+//    if(material == -1)
+//    {
+//        return TileTexture;
+//    }
+//    else
     {
-        return TileTexture;
-    }
-    else
-    {
-        Uint16 MatGlossTexture = StoneMatGloss[material];
+        Uint16 BaseMatGlossTexture = StoneMatGloss[basematerial];
+        Uint16 VeinMatGlossTexture = StoneMatGloss[veinmaterial];
+        // FIXME: add more material types so that we can use non-stone constructions
+        Uint16 ContructionMatGlossTexture = -1;
+        if(constructionmaterial.type == Mat_Stone)
+        {
+            ContructionMatGlossTexture = StoneMatGloss[constructionmaterial.index];
+        }
         // use matgloss for textures on some *very* specific tile types
         if(TileTexture == Vein ||
-           TileTexture == VeinFloor ||
-           TileTexture == Soil ||
+           TileTexture == VeinFloor)
+        {
+            if(VeinMatGlossTexture != Unknown)
+            {
+                return VeinMatGlossTexture;
+            }
+        }
+        else if(TileTexture == Soil ||
            TileTexture == Sand ||
            TileTexture == Layer1 ||
            TileTexture == Layer2 ||
            TileTexture == Layer3 ||
-           TileTexture == Ramp ||
-           TileTexture == ConstructedWall ||
-           TileTexture == ConstructedFloor
-           )
+           TileTexture == Ramp) // this is wrong, has to be broken into parts
         {
             // and only if it's properly defined
-            if(MatGlossTexture != Unknown)
+            if(BaseMatGlossTexture != Unknown)
             {
-                return MatGlossTexture;
+                return BaseMatGlossTexture;
             }
         }
+        else if(TileTexture == ConstructedWall ||
+                TileTexture == ConstructedFloor) // ConstructedRamp, etc...
+        {
+            // and only if it's properly defined
+            if(ContructionMatGlossTexture != Unknown)
+            {
+                return ContructionMatGlossTexture;
+            }
+        }
+
         // use tile texture otherwise
         if(TileType != 65535)
         {

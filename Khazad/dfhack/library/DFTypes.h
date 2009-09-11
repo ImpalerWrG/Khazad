@@ -19,8 +19,8 @@ struct t_vein
 
 struct t_matglossPair
 {
-    uint16_t type;
-    uint16_t index;
+    int16_t type;
+    int16_t index;
 };
 
 // raw
