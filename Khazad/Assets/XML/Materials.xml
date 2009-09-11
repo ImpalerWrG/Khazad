@@ -10,6 +10,12 @@
 		</TileValues>
 	</Material>
 	<Material>
+		<Name Label="MATERIAL_BUILDING"/>
+		<Texture label="TEXTURE_NEHE"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_GREY"/>
+	</Material>
+	<Material>
 		<Name Label="MATERIAL_GRASS1"/>
 		<Texture label="TEXTURE_GRASS"/>
 		<PrimaryColor label="COLOR_GREEN"/>

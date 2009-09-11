@@ -223,6 +223,49 @@ bool Map::Extract()
     // Initialize Cells and Cubes
     DF.getSize(CellSizeX,CellSizeY,CellSizeZ);
 
+    // read constructions
+    map<uint64_t, t_construction> constructionAssigner;
+    uint32_t numconstructions = DF.InitReadConstructions();
+    t_construction tempcon;
+    uint32_t index = 0;
+    while(index < numconstructions)
+    {
+        DF.ReadConstruction(index, tempcon);
+        uint64_t coord =  ((uint64_t)tempcon.z) + (((uint64_t)tempcon.y) << 16) + (((uint64_t)tempcon.x) << 32);
+        constructionAssigner[coord] = tempcon;
+        index ++;
+    }
+    DF.FinishReadConstructions();
+
+    // read trees
+    map<uint64_t, t_tree_desc> plantAssigner;
+    uint32_t numtrees = DF.InitReadVegetation();
+    t_tree_desc temptree;
+    index = 0;
+    while(index < numtrees)
+    {
+        DF.ReadVegetation(index, temptree);
+        uint64_t coord =  ((uint64_t)temptree.z) + (((uint64_t)temptree.y) << 16) + (((uint64_t)temptree.x) << 32);
+        plantAssigner[coord] = temptree;
+        index ++;
+    }
+    DF.FinishReadVegetation();
+
+    // read buildings
+    map<uint64_t, t_building> buildingAssigner;
+    vector <string> v_buildingtypes;// FIXME: this is currently unused
+    uint32_t numbuildings = DF.InitReadBuildings(v_buildingtypes);
+    t_building tempbld;
+    index = 0;
+    while(index < numbuildings)
+    {
+        DF.ReadBuilding(index, tempbld);
+        uint64_t coord =  ((uint64_t)tempbld.z) + (((uint64_t)tempbld.y1) << 16) + (((uint64_t)tempbld.x1) << 32);
+        buildingAssigner[coord] = tempbld;
+        index ++;
+    }
+    DF.FinishReadBuildings();
+
     ColumnMatrix = new Column**[CellSizeX];
 
     for (Uint16 x = 0; x < CellSizeX; x++)
@@ -238,33 +281,7 @@ bool Map::Extract()
                 {
                     Cell* NewCell = new Cell(x * CELLEDGESIZE, y * CELLEDGESIZE, z);
                     NewCell->Init();
-                    LoadCellData(DF,layerassign,NewCell,x,y,z);
-                    /*
-                    for(Uint32 l = 0; l < CELLEDGESIZE; l++)
-                    {
-                        for(Uint32 m = 0; m < CELLEDGESIZE; m++)
-                        {
-                            LoadCubeData(NewCell, x, y, z, l, m);
-                        }
-                    }*/
-                    /*
-                    vector<t_building *> * bldvect = ExtractedMap->getBlockBuildingsVector(x,y,z);
-                    for(int i = 0; i< bldvect->size(); i++)
-                    {
-                        t_building * b = (*bldvect)[i];
-                        Building *bld = new Building(b->x1,b->y1,b->x2,b->y2,b->z,b->material,b->type);
-                        ///FIXME: destroy buildings when destroying map
-                        NewCell->addBuilding(bld);
-                    }
-                    vector<t_tree_desc *> * treevect = ExtractedMap->getBlockVegetationVector(x,y,z);
-                    for(int i = 0; i< treevect->size(); i++)
-                    {
-                        t_tree_desc* t = (*treevect)[i];
-                        Tree *tree = new Tree(t->material,t->x,t->y,t->z);
-                        ///FIXME: destroy trees when destroying map
-                        NewCell->addTree(tree);
-                    }
-*/
+                    LoadCellData(DF,layerassign,NewCell,constructionAssigner,plantAssigner,buildingAssigner,x,y,z);
                     ColumnMatrix[x][y]->PushCell(NewCell, z);
 			    }
 			}
@@ -364,7 +381,13 @@ void Map::Save(string filename)
     //DFExtractor->writeMap(filename);
     return;
 }
-void Map::LoadCellData(DFHackAPI & DF, vector< vector <uint16_t> >& layerassign, Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 CellZ)
+void Map::LoadCellData(DFHackAPI & DF,
+                       vector< vector <uint16_t> >& layerassign,
+                       Cell* TargetCell,
+                       map<uint64_t, t_construction> & constructions,
+                       map<uint64_t, t_tree_desc> & vegetation,
+                       map<uint64_t, t_building> & buildings, // FIXME: this is wrong for buildings. they can overlap
+                       Uint32 CellX, Uint32 CellY, Uint32 CellZ)
 {
     uint16_t tiletypes[16][16];
     t_designation designations[16][16];
@@ -381,7 +404,7 @@ void Map::LoadCellData(DFHackAPI & DF, vector< vector <uint16_t> >& layerassign,
     veins.clear();
     DF.ReadVeins(CellX,CellY,CellZ,veins);
 
-    // get the materials
+    // get the materials, buildings, trees
     for(uint32_t xx = 0;xx<16;xx++)
     {
         for (uint32_t yy = 0; yy< 16;yy++)
@@ -401,7 +424,33 @@ void Map::LoadCellData(DFHackAPI & DF, vector< vector <uint16_t> >& layerassign,
                     tempmat[xx][yy] = veins[i].type;
                 }
             }
-            //TODO: add override for constructions here
+            uint64_t coord =  (uint64_t)CellZ + ((uint64_t)(CellY*16 + yy) << 16) + ((uint64_t)(CellX*16 + xx) << 32);
+            //uint64_t coord =  (uint64_t)tempcon.z + ((uint64_t)tempcon.y << 16) + ((uint64_t)tempcon.x << 32);
+            if(constructions.count(coord))
+            {
+                if(constructions[coord].material.type == Mat_Stone)
+                {
+                    // store matgloss
+                    tempmat[xx][yy] = constructions[coord].material.index;
+                }
+                else
+                {
+                    //cout << "construction type " << constructions[coord].material.type;
+                    tempmat[xx][yy] = -1;
+                }
+            }
+            if(vegetation.count(coord))
+            {
+                t_tree_desc t = vegetation[coord];
+                Tree *tree = new Tree(t.material,t.x,t.y,t.z);
+                TargetCell->addTree(tree);
+            }
+            if(buildings.count(coord))
+            {
+                t_building b = buildings[coord];
+                Building *bld = new Building(b.x1,b.y1,b.x2,b.y2,b.z,b.material,b.type);
+                TargetCell->addBuilding(bld);
+            }
         }
     }
 
@@ -524,6 +573,8 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 material,t_occupancy occupancy)
     static Uint16 Layer1 = DATA->getLabelIndex("MATERIAL_ROUGH_LAYER_STONE");
     static Uint16 Layer2 = DATA->getLabelIndex("MATERIAL_SMOOTH_LAYER_STONE");
     static Uint16 Layer3 = DATA->getLabelIndex("MATERIAL_ROUGH_STONE");
+    static Uint16 ConstructedWall = DATA->getLabelIndex("MATERIAL_CONSTRUCTED_WALL");
+    static Uint16 ConstructedFloor = DATA->getLabelIndex("MATERIAL_SMOOTH_FLOOR");
 
     Uint16 TileTexture = TilePicker[TileType];
     if(occupancy.bits.snow) return Snow;
@@ -544,7 +595,9 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 material,t_occupancy occupancy)
            TileTexture == Layer1 ||
            TileTexture == Layer2 ||
            TileTexture == Layer3 ||
-           TileTexture == Ramp
+           TileTexture == Ramp ||
+           TileTexture == ConstructedWall ||
+           TileTexture == ConstructedFloor
            )
         {
             // and only if it's properly defined

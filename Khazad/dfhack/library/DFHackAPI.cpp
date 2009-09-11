@@ -37,12 +37,12 @@ bool DFHackAPI::InitMap()
     uint32_t x_count_offset = offset_descriptor->getAddress("x_count");
     uint32_t y_count_offset = offset_descriptor->getAddress("y_count");
     uint32_t z_count_offset = offset_descriptor->getAddress("z_count");
-    
+
     // get the offsets once here
     tile_type_offset = offset_descriptor->getOffset("type");
     designation_offset = offset_descriptor->getOffset("designation");
     occupancy_offset = offset_descriptor->getOffset("occupancy");
-    
+
     // get the map pointer
     map_loc = MreadDWord(map_offset);
     if (!map_loc)
@@ -50,12 +50,12 @@ bool DFHackAPI::InitMap()
         // bad stuffz happend
         return false;
     }
-    
+
     // get the size
     x_block_count = MreadDWord(x_count_offset);
     y_block_count = MreadDWord(y_count_offset);
     z_block_count = MreadDWord(z_count_offset);
-    
+
     // alloc array for pinters to all blocks
     block = new uint32_t[x_block_count*y_block_count*z_block_count];
 
@@ -64,13 +64,13 @@ bool DFHackAPI::InitMap()
     {
         temp_locx = map_loc + ( 4 * x );
         temp_locy = MreadDWord(temp_locx);
-        
+
         // y -> map column
         for(uint32_t y = 0; y < y_block_count; y++)
         {
             temp_locz = MreadDWord(temp_locy);
             temp_locy += 4;
-            
+
             // z -> map block (16x16)
             for(uint32_t z = 0; z < z_block_count; z++)
             {
@@ -194,7 +194,7 @@ bool DFHackAPI::ReadVeins(uint32_t x, uint32_t y, uint32_t z, vector <t_vein> & 
         // veins are stored as a vector of pointers to veins
         /*pointer is 4 bytes! we work with a 32bit program here, no matter what architecture we compile khazad for*/
         DfVector p_veins = dm->readVector(addr + veinvector, 4);
-        
+
         // read all veins
         for (uint32_t i = 0; i< p_veins.getSize();i++)
         {
@@ -227,9 +227,9 @@ bool DFHackAPI::ReadStoneMatgloss(vector<t_matgloss> & stones)
     int matgloss_offset = offset_descriptor->getHexValue("matgloss_skip");
     int matgloss_colors = offset_descriptor->getOffset("matgloss_stone_color");
     DfVector p_matgloss = dm->readVector(matgloss_address + matgloss_offset, 4);
-    
+
     stones.clear();
-    
+
     for (uint32_t i = 0; i< p_matgloss.getSize();i++)
     {
         uint32_t temp;
@@ -253,16 +253,16 @@ bool DFHackAPI::ReadMetalMatgloss(vector<t_matgloss> & metals)
     int matgloss_offset = offset_descriptor->getHexValue("matgloss_skip");
     int matgloss_colors = offset_descriptor->getOffset("matgloss_metal_color");
     DfVector p_matgloss = dm->readVector(matgloss_address + matgloss_offset*2, 4);
-    
+
     metals.clear();
-    
+
     for (uint32_t i = 0; i< p_matgloss.getSize();i++)
     {
         uint32_t temp;
-        
+
         // read the matgloss pointer from the vector into temp
         p_matgloss.read((uint32_t)i,(uint8_t *)&temp);
-        
+
         // read the string pointed at by
         t_matgloss mat;
         mat.id = dm->readSTLString(temp); // reads a C string given an address
@@ -280,9 +280,9 @@ bool DFHackAPI::ReadWoodMatgloss(vector<t_matgloss> & woods)
     int matgloss_address = offset_descriptor->getAddress("matgloss");
     // TODO: find flag for autumnal coloring?
     DfVector p_matgloss = dm->readVector(matgloss_address, 4);
-    
+
     woods.clear();
-    
+
     t_matgloss mat;
     // TODO: use brown?
     mat.fore = 7;
@@ -291,10 +291,10 @@ bool DFHackAPI::ReadWoodMatgloss(vector<t_matgloss> & woods)
     for (uint32_t i = 0; i< p_matgloss.getSize();i++)
     {
         uint32_t temp;
-        
+
         // read the matgloss pointer from the vector into temp
         p_matgloss.read((uint32_t)i,(uint8_t *)&temp);
-        
+
         // read the string pointed at by
         mat.id = dm->readSTLString(temp); // reads a C string given an address
         woods.push_back(mat);
@@ -308,7 +308,7 @@ bool DFHackAPI::ReadPlantMatgloss(vector<t_matgloss> & plants)
     int matgloss_address = offset_descriptor->getAddress("matgloss");
     int matgloss_offset = offset_descriptor->getHexValue("matgloss_skip");
     DfVector p_matgloss = dm->readVector(matgloss_address + matgloss_offset*3, 4);
-    
+
     plants.clear();
 
     // TODO: use green?
@@ -319,10 +319,10 @@ bool DFHackAPI::ReadPlantMatgloss(vector<t_matgloss> & plants)
     for (uint32_t i = 0; i< p_matgloss.getSize();i++)
     {
         uint32_t temp;
-        
+
         // read the matgloss pointer from the vector into temp
         p_matgloss.read((uint32_t)i,(uint8_t *)&temp);
-        
+
         // read the string pointed at by
         mat.id = dm->readSTLString(temp); // reads a C string given an address
         plants.push_back(mat);
@@ -345,7 +345,7 @@ bool DFHackAPI::ReadGeology( vector < vector <uint16_t> >& assign )
     int world_size_x = offset_descriptor->getOffset("world_size_x");
     int world_size_y = offset_descriptor->getOffset("world_size_y");
     int geolayer_geoblock_offset = offset_descriptor->getOffset("geolayer_geoblock_offset");
-    
+
     uint32_t regionX, regionY, regionZ;
     uint16_t worldSizeX, worldSizeY;
 
@@ -387,24 +387,24 @@ bool DFHackAPI::ReadGeology( vector < vector <uint16_t> >& assign )
         int bioRY = regionY / 16 + (i/3) - 1;
         if( bioRY < 0) bioRY = 0;
         if( bioRY >= worldSizeY) bioRY = worldSizeY - 1;
-        
+
         // get pointer to column of regions
         uint32_t geoX;
         MreadDWord(regions + bioRX*4, geoX);
-        
+
         // get index into geoblock vector
         uint16_t geoindex;
         MreadWord(geoX + bioRY*region_size + region_geo_index_offset, geoindex);
-        
+
         // get the geoblock from the geoblock vector using the geoindex
         uint32_t geoblock_off;
         geoblocks.read(geoindex,(uint8_t *) &geoblock_off);
-        
+
         // get the vector with pointer to layers
         DfVector geolayers = dm->readVector(geoblock_off + geolayer_geoblock_offset , 4); // let's hope
         // make sure we don't load crap
         assert(geolayers.getSize() > 0 && geolayers.getSize() <= 16);
-        
+
         // finally, read the layer matgloss
         for(uint32_t j = 0;j< geolayers.getSize();j++)
         {
@@ -443,13 +443,13 @@ bool DFHackAPI::ReadBuilding(const uint32_t &index, t_building & building)
     assert(buildingsInited);
     uint32_t temp;
     t_building_df40d bld_40d;
-    
+
     // read pointer from vector at position
     p_bld->read(index,(uint8_t *)&temp);
-    
+
     //read building from memory
     Mread(temp, sizeof(t_building_df40d), (uint8_t *)&bld_40d);
-    
+
     // transform
     int32_t type = -1;
     offset_descriptor->resolveClassId(temp, type);
@@ -475,9 +475,9 @@ void DFHackAPI::FinishReadBuildings()
 uint32_t DFHackAPI::InitReadConstructions()
 {
     constructionsInited = true;
-    int constructions = offset_descriptor->getAddress("buildings");
+    int constructions = offset_descriptor->getAddress("constructions");
     assert(constructions);
-    
+
     p_cons = new DfVector(dm->readVector(constructions,4));
     return p_cons->getSize();
 }
@@ -488,13 +488,13 @@ bool DFHackAPI::ReadConstruction(const uint32_t &index, t_construction & constru
     assert(constructionsInited);
     t_construction_df40d c_40d;
     uint32_t temp;
-    
+
     // read pointer from vector at position
     p_cons->read((uint32_t)index,(uint8_t *)&temp);
-    
+
     //read construction from memory
     Mread(temp, sizeof(t_construction_df40d), (uint8_t *)&c_40d);
-    
+
     // transform
     construction.x = c_40d.x;
     construction.y = c_40d.y;
@@ -529,7 +529,8 @@ bool DFHackAPI::ReadVegetation(const uint32_t &index, t_tree_desc & shrubbery)
     //read construction from memory
     Mread(temp + treeoffset, sizeof(t_tree_desc), (uint8_t *) &shrubbery);
     // fix matgloss nonsense
-    if(shrubbery.material.type == 2) shrubbery.material.type = 3;
+    // FIXME: this is completely wrong. type isn't just tree/shrub but also different kinds of trees. stuff that grows around ponds has its own type ID
+    if(shrubbery.material.type == 3) shrubbery.material.type = 2;
 }
 
 

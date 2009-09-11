@@ -12,6 +12,9 @@ class Cube;
 class Actor;
 class Face;
 union t_occupancy;
+struct t_construction;
+struct t_tree_desc;
+struct t_building;
 class DFHackAPI;
 //class Extractor;
 //class DfMap;
@@ -56,7 +59,13 @@ public:
     void ReleaseMap();
 
     //void LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 CellZ, Uint32 CubeX, Uint32 CubeY);
-    void LoadCellData(DFHackAPI & context, vector< vector <uint16_t> >& layerassign, Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 CellZ);
+    void LoadCellData(DFHackAPI & context,
+                      vector< vector <uint16_t> >& layerassign,
+                      Cell* TargetCell,
+                      map<uint64_t, t_construction> & constuctions,
+                      map<uint64_t, t_tree_desc> & vegetation,
+                      map<uint64_t, t_building> & buildings,
+                      Uint32 CellX, Uint32 CellY, Uint32 CellZ);
 
     void ChangeCellCount(Sint8 Change)      { CellCount += Change; }
     Uint32 getCellCount()                   { return CellCount; }
