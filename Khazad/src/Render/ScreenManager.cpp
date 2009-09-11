@@ -14,8 +14,10 @@
 #include <DataManager.h>
 
 #include <DFTypes.h>
-#include <Extract.h>
-#include <DfMap.h>
+//#include <Extract.h>
+//#include <DfMap.h>
+#include <DFHackAPI.h>
+
 #include <Game.h>
 #include <Map.h>
 #include <Cell.h>
@@ -725,7 +727,7 @@ void ScreenManager::PrintDebugging()
         //int gblockAddress = 0;
         //int regionAddress = 0;
 
-        DfMap * df_map = MAP->getDFMap();
+/*        DfMap * df_map = MAP->getDFMap();
         TileType = df_map->getTileType(x, y, z);
         Designation = df_map->getDesignations(x, y, z);
         Ocupancy = df_map->getOccupancies(x, y, z);
@@ -737,7 +739,7 @@ void ScreenManager::PrintDebugging()
         tree = df_map->getTree(x, y, z);
 
         df_map->getRegionCoords (region_x,region_y,region_z);
-
+*/
         SDL_Rect position;
         position.x = 10;
         position.y = 160;
@@ -754,7 +756,7 @@ void ScreenManager::PrintDebugging()
             SCREEN->RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
         }*/
-
+/*
         sprintf (buffer, "Tile: %i", TileType);
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
@@ -766,13 +768,14 @@ void ScreenManager::PrintDebugging()
         acc << "material: " << matglossdesc.type << ":" << matglossdesc.index << " = " <<
                matglosstype << ":" << matgloss;
         SCREEN->RenderText(acc.str().c_str(), 0, WHITE, &position);
-        position.y -= 40;
+        position.y -= 40;*/
 /*
         sprintf (buffer, "biome %i, layer %i, vein: %s #%i", Biome, Geolayer, matgloss.c_str(), veinMatgloss);
 
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 */
+/*
         if(building)
         {
             matglosstype = df_map->getMaterialTypeString(building->material.type);
@@ -788,7 +791,7 @@ void ScreenManager::PrintDebugging()
             sprintf (buffer, "plant: %d:%d = %s:%s ",tree->material.type, tree->material.index,matglosstype.c_str(), matgloss.c_str());
             SCREEN->RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
-        }
+        }*/
 /*
         char binarybuffer[33];
         binarysprintf(binarybuffer, Designation);

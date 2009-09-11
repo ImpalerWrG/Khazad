@@ -32,7 +32,7 @@ using namespace std;
 #include "DFProcessManager.h"
 #include "DFMemAccess.h"
 #include "DFVector.h"
-#include "DfMap.h"
+//#include "DfMap.h"
 
 
 #endif // DFCOMMON_H_INCLUDED

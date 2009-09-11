@@ -33,7 +33,7 @@ bool DFHackAPI::InitMap()
                 temp_locx, // iterator for the X array
                 temp_locy, // iterator for the Y array
                 temp_locz; // iterator for the Z array
-    uint32_t map_offset = offset_descriptor->getAddress("map_data");;
+    uint32_t map_offset = offset_descriptor->getAddress("map_data");
     uint32_t x_count_offset = offset_descriptor->getAddress("x_count");
     uint32_t y_count_offset = offset_descriptor->getAddress("y_count");
     uint32_t z_count_offset = offset_descriptor->getAddress("z_count");
@@ -558,11 +558,12 @@ bool DFHackAPI::Attach()
 }
 
 
+// TODO: clean inited stuff here
 bool DFHackAPI::Detach()
 {
     p->detach();
-    // TODO: write cleanup stuff
-    delete pm;
+    if(pm != NULL)
+        delete pm;
     pm = NULL;
     p = NULL;
     offset_descriptor = NULL;

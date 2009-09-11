@@ -4,11 +4,12 @@
 #include <Singleton.h>
 #include <TextureManager.h>
 #include <DataManager.h>
+
 ///FIXME: dfhack paths
-#include <Extract.h>
-#include <DFTypes.h>
-#include <DfMap.h>
-#include <DFTileTypes.h>
+#include "../../dfhack/library/DFTypes.h"
+#include "../../dfhack/library/DFTileTypes.h"
+#include "../../dfhack/library/DFHackAPI.h"
+#include <string.h> // for memset
 
 #include <Column.h>
 #include <Cube.h>
@@ -43,7 +44,7 @@ Map::Map()
     InitedSlopeCount = 0;
 
     ColumnMatrix = NULL;
-    DFExtractor = new Extractor();
+//    DFExtractor = new Extractor();
 }
 
 Map::~Map()
@@ -52,7 +53,7 @@ Map::~Map()
     {
         ReleaseMap();
     }
-    delete DFExtractor;
+//    delete DFExtractor;
 }
 
 bool Map::Init()
@@ -192,63 +193,61 @@ Face* Map::getFace(Sint32 X, Sint32 Y, Sint32 Z, Facet FaceType)
     return NULL;
 }
 
-DfMap *Map::getDFMap()
+bool Map::Extract()
 {
-    return DFExtractor->getMap();
-}
+    Path path_to_xml("Assets/XML/Memory.xml");
+    DFHackAPI DF(path_to_xml);
 
-void Map::ReparseExtract()
-{
-    if(!DFExtractor->isMapLoaded())
+    if(!DF.Attach())
     {
-        return;
+        return false;
     }
-
+    if(!DF.InitMap())
+    {
+        return false;
+    }
     if(MapLoaded)
     {
         ReleaseMap();
     }
+    vector< vector <uint16_t> > layerassign;
+    // get region geology
+    if(!DF.ReadGeology( layerassign ))
+    {
+        cerr << "Can't get region geology." << endl;
+        return 1;
+    }
 
-    InitilizeTilePicker();
-
-    DfMap* ExtractedMap = DFExtractor->getMap();
+    InitilizeTilePicker(DF);
 
     // Initialize Cells and Cubes
-    CellSizeX = ExtractedMap->getXBlocks();
-	CellSizeY = ExtractedMap->getYBlocks();
-	CellSizeZ = ExtractedMap->getZBlocks();
-
+    DF.getSize(CellSizeX,CellSizeY,CellSizeZ);
 
     ColumnMatrix = new Column**[CellSizeX];
 
-	for (Uint16 x = 0; x < CellSizeX; x++)
-	{
-		ColumnMatrix[x] = new Column*[CellSizeY];
-
-		for (Uint16 y = 0; y < CellSizeY; y++)
-		{
-			ColumnMatrix[x][y] = new Column();
-			ColumnMatrix[x][y]->Init(x, y);
-
-			for (Uint32 z = 0; z < CellSizeZ; z++)
-			{
-/*			    if(x == 0 && y == (CellSizeY - 1) && z == 25)
-			    {
-			        bool Debug = true;
-			    }*/
-
-			    if(ExtractedMap->isBlockInitialized(x, y, z))
-			    {
+    for (Uint16 x = 0; x < CellSizeX; x++)
+    {
+        ColumnMatrix[x] = new Column*[CellSizeY];
+        for (Uint16 y = 0; y < CellSizeY; y++)
+        {
+            ColumnMatrix[x][y] = new Column();
+            ColumnMatrix[x][y]->Init(x, y);
+            for (Uint32 z = 0; z < CellSizeZ; z++)
+            {
+                if(DF.isValidBlock(x, y, z))
+                {
                     Cell* NewCell = new Cell(x * CELLEDGESIZE, y * CELLEDGESIZE, z);
                     NewCell->Init();
-
+                    LoadCellData(DF,layerassign,NewCell,x,y,z);
+                    /*
                     for(Uint32 l = 0; l < CELLEDGESIZE; l++)
                     {
                         for(Uint32 m = 0; m < CELLEDGESIZE; m++)
                         {
                             LoadCubeData(NewCell, x, y, z, l, m);
                         }
-                    }
+                    }*/
+                    /*
                     vector<t_building *> * bldvect = ExtractedMap->getBlockBuildingsVector(x,y,z);
                     for(int i = 0; i< bldvect->size(); i++)
                     {
@@ -265,12 +264,13 @@ void Map::ReparseExtract()
                         ///FIXME: destroy trees when destroying map
                         NewCell->addTree(tree);
                     }
-
+*/
                     ColumnMatrix[x][y]->PushCell(NewCell, z);
 			    }
 			}
 		}
 	}
+    DF.Detach();
 
     MapSizeX = CellSizeX * CELLEDGESIZE;
 	MapSizeY = CellSizeY * CELLEDGESIZE;
@@ -350,106 +350,128 @@ void Map::ReparseExtract()
     MapLoaded = true;
 }
 
-// extract from DF
-void Map::Load()
-{
-    Path path_to_xml("Assets/XML/Memory.xml");
-    DFExtractor->dumpMemory(path_to_xml);
-    ReparseExtract();
-}
-
 // load from file
-void Map::Load(string filename)
+bool Map::Load(string filename)
 {
-    DFExtractor->loadMap(filename);
-    ReparseExtract();
+    //DFExtractor->loadMap(filename);
+    //ReparseExtract();
+    return false;
 }
 
 // save to file
 void Map::Save(string filename)
 {
-    DFExtractor->writeMap(filename);
+    //DFExtractor->writeMap(filename);
+    return;
 }
-
-void Map::LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 CellZ, Uint32 CubeX, Uint32 CubeY)
+void Map::LoadCellData(DFHackAPI & DF, vector< vector <uint16_t> >& layerassign, Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 CellZ)
 {
-    Uint32 MapX = (CellX * CELLEDGESIZE) + CubeX;
-	Uint32 MapY = (CellY * CELLEDGESIZE) + CubeY;
-	Uint32 MapZ = CellZ;
+    uint16_t tiletypes[16][16];
+    t_designation designations[16][16];
+    t_occupancy occupancies[16][16];
+    uint8_t regionoffsets[16];
+    int16_t tempmat [16][16];
+    vector <t_vein> veins;
 
-    DfMap *df_map = DFExtractor->getMap();
+    DF.ReadTileTypes(CellX, CellY, CellZ, (uint16_t *) tiletypes);
+    DF.ReadDesignations(CellX, CellY, CellZ, (uint32_t *) designations);
+    DF.ReadOccupancy(CellX, CellY, CellZ, (uint32_t *) occupancies);
+    DF.ReadRegionOffsets(CellX,CellY,CellZ, regionoffsets);
+    memset(tempmat, -1, sizeof(tempmat));
+    veins.clear();
+    DF.ReadVeins(CellX,CellY,CellZ,veins);
 
-    int TileType = df_map->getTileType(CellX, CellY, CellZ, CubeX, CubeY);
-
-    bool IsFloor = isFloorTerrain(TileType);
-    bool IsWall = isWallTerrain(TileType);
-    bool IsOpen = isOpenTerrain(TileType);
-    bool IsRamp = isRampTerrain(TileType);
-    bool IsStairs = isStairTerrain(TileType);
-
-    int Liquid = df_map->getLiquidLevel(MapX, MapY, MapZ);
-
-    if(IsFloor || IsWall || IsOpen || IsRamp || IsStairs)
+    // get the materials
+    for(uint32_t xx = 0;xx<16;xx++)
     {
-        Cube* TargetCube = TargetCell->getCube(CubeX, CubeY);
-
-        TargetCube = new Cube();
-        TargetCell->setCube(TargetCube, CubeX, CubeY);
-        TargetCube->setPosition((float) MapX, (float) MapY, (float) MapZ);
-
-        Uint16 Material = PickTexture(MapX, MapY, MapZ);
-
-        bool Hidden = df_map->isHidden(MapX, MapY, MapZ);
-        TargetCube->setHidden(Hidden);
-
-        TargetCube->setSubTerranean(df_map->isSubterranean( MapX, MapY, MapZ));
-        TargetCube->setSkyView(df_map->isSkyView( MapX, MapY, MapZ));
-        TargetCube->setSunLit(df_map->isSunLit( MapX, MapY, MapZ));
-
-        if(IsWall)
+        for (uint32_t yy = 0; yy< 16;yy++)
         {
-            TargetCube->Init(Material);
-        }
-        if(IsOpen)
-        {
-            TargetCube->Open();
-        }
-        if(IsRamp)
-        {
-            TargetCube->Init(Material);
-            TargetCube->Open();
-            TargetCube->SetSlope(SLOPE_FLAT);  // Prime the Slope, the type can not yet be determined
-        }
-        if(IsFloor)
-        {
-            TargetCube->InitConstructedFace(FACET_BOTTOM, Material);
-        }
-        if(IsStairs)
-        {
-            TargetCube->Init(Material);
-            TargetCube->Open();
-            TargetCube->SetSlope(SLOPE_FLAT);
-            //TODO render stairs differently
-        }
-        if(Liquid)
-        {
-            //TargetCube->Open();
-            TargetCube->setLiquid(df_map->isMagma( MapX, MapY, MapZ),(Uint8) Liquid);
-/*
-            if(df_map->isMagma( MapX, MapY, MapZ))
+            tempmat[xx][yy] =
+            layerassign
+            [regionoffsets[designations[xx][yy].bits.biome]]
+            [designations[xx][yy].bits.geolayer_index];
+            // for each vein
+            for(int i = 0; i < veins.size();i++)
             {
-                TargetCube->InitConstructedFace(FACET_TOP, DATA->getLabelIndex("MATERIAL_LAVA"));
+                // and the bit array with a one-bit mask, check if the bit is set
+                bool set = ((1 << xx) & veins[i].assignment[yy]) >> xx;
+                if(set)
+                {
+                    // store matgloss
+                    tempmat[xx][yy] = veins[i].type;
+                }
             }
-            else
-            {
-                TargetCube->InitConstructedFace(FACET_TOP, DATA->getLabelIndex("MATERIAL_WATER"));
-            }*/
+            //TODO: add override for constructions here
         }
-        TargetCube->setVisible(true);
+    }
+
+    for(Uint32 CubeX = 0; CubeX < CELLEDGESIZE; CubeX++)
+    {
+        for(Uint32 CubeY = 0; CubeY < CELLEDGESIZE; CubeY++)
+        {
+            Uint32 MapX = (CellX * CELLEDGESIZE) + CubeX;
+            Uint32 MapY = (CellY * CELLEDGESIZE) + CubeY;
+            Uint32 MapZ = CellZ;
+            t_designation d = designations[CubeX][CubeY];
+            uint16_t t = tiletypes[CubeX][CubeY];
+            t_occupancy o = occupancies[CubeX][CubeY];
+            // merge?
+            bool IsFloor = isFloorTerrain(t);
+            bool IsWall = isWallTerrain(t);
+            bool IsOpen = isOpenTerrain(t);
+            bool IsRamp = isRampTerrain(t);
+            bool IsStairs = isStairTerrain(t);
+            if(IsFloor || IsWall || IsOpen || IsRamp || IsStairs)
+            {
+                Cube* TargetCube = TargetCell->getCube(CubeX, CubeY);
+
+                TargetCube = new Cube();
+                TargetCell->setCube(TargetCube, CubeX, CubeY);
+                TargetCube->setPosition((float) MapX, (float) MapY, (float) MapZ);
+
+                Uint16 Material = PickTexture(t, tempmat[CubeX][CubeY],o);
+                TargetCube->setHidden(d.bits.hidden);
+
+                TargetCube->setSubTerranean(d.bits.subterranean);
+                TargetCube->setSkyView(d.bits.skyview);
+                TargetCube->setSunLit(d.bits.light);
+
+                if(IsWall)
+                {
+                    TargetCube->Init(Material);
+                }
+                if(IsOpen)
+                {
+                    TargetCube->Open();
+                }
+                if(IsRamp)
+                {
+                    TargetCube->Init(Material);
+                    TargetCube->Open();
+                    TargetCube->SetSlope(SLOPE_FLAT);  // Prime the Slope, the type can not yet be determined
+                }
+                if(IsFloor)
+                {
+                    TargetCube->InitConstructedFace(FACET_BOTTOM, Material);
+                }
+                if(IsStairs)
+                {
+                    TargetCube->Init(Material);
+                    TargetCube->Open();
+                    TargetCube->SetSlope(SLOPE_FLAT);
+                    //TODO render stairs differently
+                }
+                if(d.bits.flow_size)
+                {
+                    TargetCube->setLiquid(d.bits.liquid_type,d.bits.flow_size);
+                }
+                TargetCube->setVisible(true);
+            }
+        }
     }
 }
 
-void Map::InitilizeTilePicker()
+void Map::InitilizeTilePicker(DFHackAPI & DF)
 {
     for(int i = 0; i < 600; ++i)
     {
@@ -464,10 +486,11 @@ void Map::InitilizeTilePicker()
             TilePicker[Tile] = i;
         }
     }
+    // FIXME: move to .h, so that it can be saved/loaded
+    vector<t_matgloss> stonetypes;
+    DF.ReadStoneMatgloss(stonetypes);
 
-    DfMap* df_map = DFExtractor->getMap();
-
-    Uint32 NumStoneMats = df_map->getNumMatGloss(Mat_Stone);
+    Uint32 NumStoneMats = stonetypes.size();
     StoneMatGloss = new Sint16[NumStoneMats];
 
     for(Uint32 i = 0; i < NumStoneMats; i++)
@@ -479,7 +502,7 @@ void Map::InitilizeTilePicker()
     {
         for(Uint32 j = 0; j < DATA->getNumMaterials(); ++j)
         {
-            if(strcmp(DATA->getMaterialData(j)->getMatGloss().c_str(), df_map->getMatGlossString(Mat_Stone,i).c_str()) == 0)
+            if(DATA->getMaterialData(j)->getMatGloss() == stonetypes[i].id)
             {
                 StoneMatGloss[i] = j;
             }
@@ -487,14 +510,8 @@ void Map::InitilizeTilePicker()
     }
 
 }
-
-Uint32 Map::PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ)
+Uint32 Map::PickTexture(Sint16 TileType, Sint16 material,t_occupancy occupancy)
 {
-    DfMap *df_map = DFExtractor->getMap();
-    t_matglossPair mat = df_map->getMaterialPair(MapX, MapY, MapZ);
-    //Sint16 StoneType = df_map->getMaterialIndex(MapX, MapY, MapZ);
-    Sint16 TileType = df_map->getTileType(MapX, MapY, MapZ);
-
     static Uint16 Sand = DATA->getLabelIndex("MATERIAL_SAND");
     //static Uint16 Stone = DATA->getLabelIndex("MATERIAL_ROUGH_STONE");
     static Uint16 Ramp = DATA->getLabelIndex("MATERIAL_RAMP_STONE");
@@ -503,20 +520,22 @@ Uint32 Map::PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ)
     static Uint16 Vein = DATA->getLabelIndex("MATERIAL_VEIN_STONE");
     static Uint16 VeinFloor = DATA->getLabelIndex("MATERIAL_VEIN_STONE_FLOOR");
     static Uint16 Soil = DATA->getLabelIndex("MATERIAL_SOIL");
+    static Uint16 Snow = DATA->getLabelIndex("MATERIAL_SNOW");
     static Uint16 Layer1 = DATA->getLabelIndex("MATERIAL_ROUGH_LAYER_STONE");
     static Uint16 Layer2 = DATA->getLabelIndex("MATERIAL_SMOOTH_LAYER_STONE");
     static Uint16 Layer3 = DATA->getLabelIndex("MATERIAL_ROUGH_STONE");
 
     Uint16 TileTexture = TilePicker[TileType];
-    if(mat.type == Mat_Stone)
-    {
-        Uint16 MatGlossTexture = StoneMatGloss[mat.index];
-    //    bool IsFloor = df_map->isFloorTerrain(TileType);
-        //bool IsWall = df_map->isWallTerrain(TileType);
-        //bool IsOpen = df_map->isOpenTerrain(TileType);
-        //bool IsRamp = df_map->isRampTerrain(TileType);
-        //bool IsStairs = df_map->isStairTerrain(TileType);
+    if(occupancy.bits.snow) return Snow;
+    if(occupancy.bits.mud) return Soil;
 
+    if(material == -1)
+    {
+        return TileTexture;
+    }
+    else
+    {
+        Uint16 MatGlossTexture = StoneMatGloss[material];
         // use matgloss for textures on some *very* specific tile types
         if(TileTexture == Vein ||
            TileTexture == VeinFloor ||
@@ -540,15 +559,6 @@ Uint32 Map::PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ)
             return TileTexture;
         }
         // fallback for undefined values of tile types and matgloss
-        return Unknown;
-    }
-    // matgloss not loaded -> use tile texture
-    else if(mat.type == 65535)
-    {
-        return TileTexture;
-    }
-    else
-    {
         return Unknown;
     }
 }

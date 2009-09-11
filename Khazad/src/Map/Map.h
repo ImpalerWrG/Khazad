@@ -11,8 +11,10 @@ class Cell;
 class Cube;
 class Actor;
 class Face;
-class Extractor;
-class DfMap;
+union t_occupancy;
+class DFHackAPI;
+//class Extractor;
+//class DfMap;
 
 class Map
 {
@@ -31,8 +33,8 @@ public:
 	Cube* getCube(Sint32 X, Sint32 Y, Sint32 Z);
     Face* getFace(Sint32 X, Sint32 Y, Sint32 Z, Facet FaceType);
 
-    void InitilizeTilePicker();
-    Uint32 PickTexture(Uint16 MapX, Uint16 MapY, Uint16 MapZ);
+    void InitilizeTilePicker(DFHackAPI & DF);
+    Uint32 PickTexture(Sint16 TileType, Sint16 material, t_occupancy occupancy);
 
     void BuildVertexArray();
 
@@ -46,14 +48,15 @@ public:
 	Uint32 getCellSizeY() { return CellSizeY; }
 	Uint32 getCellSizeZ() { return CellSizeZ; }
 
-    void Load();
-    void Load(string filename);
+    bool Extract();
+    bool Load(string filename);
     void Save(string filename);
-    DfMap *getDFMap();
+//    DfMap *getDFMap();
 
     void ReleaseMap();
 
-    void LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 CellZ, Uint32 CubeX, Uint32 CubeY);
+    //void LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 CellZ, Uint32 CubeX, Uint32 CubeY);
+    void LoadCellData(DFHackAPI & context, vector< vector <uint16_t> >& layerassign, Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 CellZ);
 
     void ChangeCellCount(Sint8 Change)      { CellCount += Change; }
     Uint32 getCellCount()                   { return CellCount; }
@@ -83,8 +86,8 @@ public:
 
 protected:
     /// this is the main class of DF extractor.
-    Extractor * DFExtractor;
-    void ReparseExtract();
+//    Extractor * DFExtractor;
+    //void ReparseExtract();
     bool Initialized;
     bool MapLoaded;
 

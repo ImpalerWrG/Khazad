@@ -212,6 +212,15 @@ union t_occupancy
     unsigned int debris5 : 1;
     unsigned int snow : 1;
     } bits;
+    struct {
+        unsigned int building : 3;// building type... should be an enum?
+        // 7 = door
+        unsigned int unit : 1;
+        unsigned int unit_grounded : 1;
+        unsigned int item : 1;
+        // splatter. everyone loves splatter.
+        unsigned int splatter : 26;
+    } unibits;
 };
 
 #endif // TYPES_H_INCLUDED

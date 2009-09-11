@@ -16,3 +16,7 @@ TARGET_LINK_LIBRARIES(reveal dfhack)
 # prospector - produces a list of available materials and their quantities
 ADD_EXECUTABLE(prospector prospector.cpp)
 TARGET_LINK_LIBRARIES(prospector dfhack)
+
+# cleanmap - removes mud, snow, blood and similar stuff from a map. farmers beware
+ADD_EXECUTABLE(cleanmap cleanmap.cpp)
+TARGET_LINK_LIBRARIES(cleanmap dfhack)

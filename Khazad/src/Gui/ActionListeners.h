@@ -250,7 +250,7 @@ class MapDumpActionListener: public gcn::ActionListener
         SCREEN->RenderTextCentered("Dumping Memory", 0, WHITE, 0);
         SCREEN->Flip();
 
-        MAP->Load();
+        MAP->Extract();
 
         SCREEN->MainCamera->CenterView(MAP->getMapCenter());
         SCREEN->MainCamera->SetSliceA(MAP->getMapSizeZ());
