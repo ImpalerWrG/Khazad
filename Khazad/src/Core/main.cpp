@@ -11,7 +11,6 @@
 #include <ConfigManager.h>
 #include <DataManager.h>
 #include <InputManager.h>
-#include <Extract.h>
 #include <Game.h>
 #include <Map.h>
 #include <Gui.h>

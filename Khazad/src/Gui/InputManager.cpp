@@ -3,7 +3,6 @@
 #include <Game.h>
 #include <InputManager.h>
 #include <ScreenManager.h>
-#include <Extract.h>
 #include <Map.h>
 #include <Camera.h>
 #include <Singleton.h>

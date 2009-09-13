@@ -1,3 +1,27 @@
+/*
+www.sourceforge.net/projects/dfhack
+Copyright (c) 2009 Petr Mrázek (peterix), Kenneth Ferland (Impaler[WrG]), dorf
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any
+damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any
+purpose, including commercial applications, and to alter it and
+redistribute it freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must
+not claim that you wrote the original software. If you use this
+software in a product, an acknowledgment in the product documentation
+would be appreciated but is not required.
+
+2. Altered source versions must be plainly marked as such, and
+must not be misrepresented as being the original software.
+
+3. This notice may not be removed or altered from any source
+distribution.
+*/
+
 #include "DFCommon.h"
 
 #include "DFDataModel.h"
@@ -34,15 +58,15 @@ Process* ProcessManager::addProcess(const string & exe,ProcessHandle PH, const s
             memory_info * m = &*it;
             Process * ret;
             //cout <<"Found process " << PH <<  ". It's DF version " << m->getVersion() << "." << endl;
-            
+
             // df can run under wine on Linux
             if(memory_info::OS_WINDOWS == (*it).getOS())
             {
-                ret= new Process(new DMWindows40d(),m,PH);
+                ret= new Process(new DMWindows40d(),m,PH, PH);
             }
             else if (memory_info::OS_LINUX == (*it).getOS())
             {
-                ret= new Process(new DMLinux40d(),m,PH);
+                ret= new Process(new DMLinux40d(),m,PH, PH);
             }
             else
             {
@@ -86,14 +110,14 @@ bool ProcessManager::findProcessess()
         {
             continue;
         }
-        
+
         // string manipulation - get /proc/PID/exe link and /proc/PID/mem names
         dir_name = "/proc/";
         dir_name += dir_entry_p->d_name;
         dir_name += "/";
         exe_link = dir_name + "exe";
         string mem_name = dir_name + "mem";
-        
+
         // resolve /proc/PID/exe link
         target_result = readlink(exe_link.c_str(), target_name, sizeof(target_name)-1);
         if (target_result == -1)
@@ -103,7 +127,7 @@ bool ProcessManager::findProcessess()
         }
         // make sure we have a null terminated string...
         target_name[target_result] = 0;
-        
+
         // is this the regular linux DF?
         if (strstr(target_name, "dwarfort.exe") != NULL)
         {
@@ -115,7 +139,7 @@ bool ProcessManager::findProcessess()
             // continue with next process
             continue;
         }
-        
+
         // FIXME: this fails when the wine process isn't started from the 'current working directory'. strip path data from cmdline
         // DF in wine?
         if(strstr(target_name, "wine-preloader")!= NULL)
@@ -124,7 +148,7 @@ bool ProcessManager::findProcessess()
             cwd_link = dir_name + "cwd";
             target_result = readlink(cwd_link.c_str(), target_name, sizeof(target_name)-1);
             target_name[target_result] = 0;
-            
+
             // got path to executable, do the same for its name
             cmdline_path = dir_name + "cmdline";
             ifstream ifs ( cmdline_path.c_str() , ifstream::in );
@@ -135,10 +159,10 @@ bool ProcessManager::findProcessess()
                 exe_link = target_name;
                 exe_link += "/";
                 exe_link += cmdline;
-                
+
                 // get PID
                 result = atoi(dir_entry_p->d_name);
-                
+
                 // create wine process, add it to the vector
                 addProcess(exe_link,result,mem_name);
             }
@@ -240,7 +264,7 @@ bool ProcessManager::findProcessess()
                         // keep track of created memory_info objects so we can destroy them later
                         destroy_meminfo.push_back(m);
                         // process is responsible for destroying its data model
-                        Process *ret= new Process(new DMWindows40d(),m,hProcess);
+                        Process *ret= new Process(new DMWindows40d(),m,hProcess, ProcArray[i]);
                         processes.push_back(ret);
                         found = true;
                         break; // break the iterator loop
@@ -342,7 +366,7 @@ void ProcessManager::ParseEntry (TiXmlElement* entry, memory_info& mem, map <str
     else if(os == "linux")
     {
         // this is wrong... I'm not going to do base image relocation on linux though.
-        // users are free to use a sane kernel that doesn't do this kind of ****
+        // users are free to use a sane kernel that doesn't do this kind of **** by default
         mem.setBase(0x0);
     }
     else
@@ -398,7 +422,7 @@ void ProcessManager::ParseEntry (TiXmlElement* entry, memory_info& mem, map <str
 } // method
 
 
-// OS independent part
+// load the XML file with offsets
 bool ProcessManager::loadDescriptors(string path_to_xml)
 {
     TiXmlDocument doc( path_to_xml.c_str() );

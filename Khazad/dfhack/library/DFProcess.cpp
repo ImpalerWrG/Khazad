@@ -1,14 +1,39 @@
+/*
+www.sourceforge.net/projects/dfhack
+Copyright (c) 2009 Petr Mrázek (peterix), Kenneth Ferland (Impaler[WrG]), dorf
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any
+damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any
+purpose, including commercial applications, and to alter it and
+redistribute it freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must
+not claim that you wrote the original software. If you use this
+software in a product, an acknowledgment in the product documentation
+would be appreciated but is not required.
+
+2. Altered source versions must be plainly marked as such, and
+must not be misrepresented as being the original software.
+
+3. This notice may not be removed or altered from any source
+distribution.
+*/
+
 #include "DFCommon.h"
 #ifdef LINUX_BUILD
 #include <sys/wait.h>
 #endif
 
 
-Process::Process(DataModel * dm, memory_info* mi, ProcessHandle ph)
+Process::Process(DataModel * dm, memory_info* mi, ProcessHandle ph, uint32_t pid)
 {
     my_datamodel = dm;
     my_descriptor = mi;
     my_handle = ph;
+    my_pid = pid;
     attached = false;
 }
 
@@ -55,11 +80,11 @@ bool Process::attach()
     {
         return false;
     }
-    
+
     ptrace(PTRACE_ATTACH , my_handle, NULL, NULL);
     wait(NULL); // wait for DF to be stopped.
     attached = true;
-    
+
     // HACK: Set the global process variables
     g_pProcess = this;
     g_ProcessHandle = my_handle;
@@ -73,7 +98,7 @@ bool Process::detach()
     // TODO: check for errors.
     ptrace(PTRACE_DETACH, my_handle, NULL, NULL);
     attached = false;
-    
+
     g_pProcess = NULL;
     g_ProcessHandle = 0;
     fclose(g_ProcessMemFile);// close /proc/PID/mem
@@ -97,20 +122,32 @@ void Process::freeResources()
 
 bool Process::attach()
 {
-    attached = true;
-    g_pProcess = this;
-    g_ProcessHandle = my_handle;
-    return true;
+    if(DebugActiveProcess(my_pid))
+    {
+        attached = true;
+        g_pProcess = this;
+        g_ProcessHandle = my_handle;
+
+        return true;
+    }
+    return false;
 }
 
 
 bool Process::detach()
 {
-    attached = false;
-    g_pProcess = NULL;
-    g_ProcessHandle = 0;
-    // nothing to do here, we are not a debbuger on Windows
-    return true;
+    if(!attached)
+    {
+        return false;
+    }
+    if(DebugActiveProcessStop(my_pid))
+    {
+        attached = false;
+        g_pProcess = NULL;
+        g_ProcessHandle = 0;
+        return true;
+    }
+    return false;
 }
 
 

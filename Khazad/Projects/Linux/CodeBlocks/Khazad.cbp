@@ -29,6 +29,9 @@
 					<Add option="-O3" />
 					<Add option="-DNDEBUG" />
 				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
 			</Target>
 			<Target title="Profile">
 				<Option output="../../../Khazad" prefix_auto="1" extension_auto="1" />
@@ -111,32 +114,8 @@
 		<Unit filename="../../../dfhack/library/DFTileTypes.h" />
 		<Unit filename="../../../dfhack/library/DFTypes.h" />
 		<Unit filename="../../../dfhack/library/DFVector.h" />
-		<Unit filename="../../../dfhack/library/DfMap.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../../dfhack/library/DfMap.h" />
-		<Unit filename="../../../dfhack/library/DfMapHeader.h" />
-		<Unit filename="../../../dfhack/library/Extract.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../../dfhack/library/Extract.h" />
 		<Unit filename="../../../dfhack/library/LinuxMemAccess.h" />
-		<Unit filename="../../../dfhack/library/LoadSave.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../../dfhack/library/LoadSaveV1.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../../dfhack/library/LoadSaveV2.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
 		<Unit filename="../../../dfhack/library/WindowsMemAccess.h" />
-		<Unit filename="../../../dfhack/library/ZlibHelper.h" />
 		<Unit filename="../../../dfhack/library/md5/md5.cpp" />
 		<Unit filename="../../../dfhack/library/md5/md5.h" />
 		<Unit filename="../../../dfhack/library/md5/md5wrapper.cpp" />

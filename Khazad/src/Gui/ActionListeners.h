@@ -5,7 +5,6 @@
 #include <ScreenManager.h>
 #include <Map.h>
 #include <Camera.h>
-#include <Extract.h>
 #include <Cube.h>
 #include <ColorManager.h>
 #include <ConfigManager.h>

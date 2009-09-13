@@ -110,33 +110,9 @@
 		<Unit filename="..\..\..\dfhack\library\DFTileTypes.h" />
 		<Unit filename="..\..\..\dfhack\library\DFTypes.h" />
 		<Unit filename="..\..\..\dfhack\library\DFVector.h" />
-		<Unit filename="..\..\..\dfhack\library\DfMap.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="..\..\..\dfhack\library\DfMap.h" />
-		<Unit filename="..\..\..\dfhack\library\DfMapHeader.h" />
 		<Unit filename="..\..\..\dfhack\library\DfVector.h" />
-		<Unit filename="..\..\..\dfhack\library\Extract.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="..\..\..\dfhack\library\Extract.h" />
 		<Unit filename="..\..\..\dfhack\library\LinuxMemAccess.h" />
-		<Unit filename="..\..\..\dfhack\library\LoadSave.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="..\..\..\dfhack\library\LoadSaveV1.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="..\..\..\dfhack\library\LoadSaveV2.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
 		<Unit filename="..\..\..\dfhack\library\WindowsMemAccess.h" />
-		<Unit filename="..\..\..\dfhack\library\ZlibHelper.h" />
 		<Unit filename="..\..\..\guichan\include\guichan.hpp" />
 		<Unit filename="..\..\..\guichan\include\guichan\actionevent.hpp" />
 		<Unit filename="..\..\..\guichan\include\guichan\actionlistener.hpp" />

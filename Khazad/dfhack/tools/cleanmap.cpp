@@ -1,4 +1,4 @@
-// This is a reveal program. It reveals the map.
+// Map cleaner. Removes all the snow, mud spills, blood and vomit from map tiles.
 
 #include <iostream>
 #include <stdint.h>

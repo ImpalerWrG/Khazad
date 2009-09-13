@@ -22,6 +22,12 @@ Types.h      - defines many of the used data structures
 TileTypes.h  - functions for translating map tile type values to useful properties
                (wall, flooer, etc.)
 
+Memory offset definitions
+-------------------------
+
+The file with memory offset definitions used by dfhack can be found in the output folder. 
+TODO: write format explanation
+
 Tools
 -----
 All the DFHack tools are terminal programs. This might seem strange to Windows users,

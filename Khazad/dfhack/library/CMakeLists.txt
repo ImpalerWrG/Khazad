@@ -1,4 +1,5 @@
-# source files not included here are only used by khazad
+# don't use this file directly. use the one in the root folder of the project
+
 SET(PROJECT_SRCS
 DFDataModel.cpp
 DFMemInfo.cpp

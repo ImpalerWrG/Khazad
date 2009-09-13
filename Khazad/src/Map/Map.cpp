@@ -584,60 +584,53 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
     if(occupancy.bits.snow) return Snow;
     if(occupancy.bits.mud) return Soil;
 
-//    if(material == -1)
-//    {
-//        return TileTexture;
-//    }
-//    else
+    Uint16 BaseMatGlossTexture = StoneMatGloss[basematerial];
+    Uint16 VeinMatGlossTexture = StoneMatGloss[veinmaterial];
+    // FIXME: add more material types so that we can use non-stone constructions
+    Uint16 ContructionMatGlossTexture = -1;
+    if(constructionmaterial.type == Mat_Stone)
     {
-        Uint16 BaseMatGlossTexture = StoneMatGloss[basematerial];
-        Uint16 VeinMatGlossTexture = StoneMatGloss[veinmaterial];
-        // FIXME: add more material types so that we can use non-stone constructions
-        Uint16 ContructionMatGlossTexture = -1;
-        if(constructionmaterial.type == Mat_Stone)
-        {
-            ContructionMatGlossTexture = StoneMatGloss[constructionmaterial.index];
-        }
-        // use matgloss for textures on some *very* specific tile types
-        if(TileTexture == Vein ||
-           TileTexture == VeinFloor)
-        {
-            if(VeinMatGlossTexture != Unknown)
-            {
-                return VeinMatGlossTexture;
-            }
-        }
-        else if(TileTexture == Soil ||
-           TileTexture == Sand ||
-           TileTexture == Layer1 ||
-           TileTexture == Layer2 ||
-           TileTexture == Layer3 ||
-           TileTexture == Ramp) // this is wrong, has to be broken into parts
-        {
-            // and only if it's properly defined
-            if(BaseMatGlossTexture != Unknown)
-            {
-                return BaseMatGlossTexture;
-            }
-        }
-        else if(TileTexture == ConstructedWall ||
-                TileTexture == ConstructedFloor) // ConstructedRamp, etc...
-        {
-            // and only if it's properly defined
-            if(ContructionMatGlossTexture != Unknown)
-            {
-                return ContructionMatGlossTexture;
-            }
-        }
-
-        // use tile texture otherwise
-        if(TileType != 65535)
-        {
-            return TileTexture;
-        }
-        // fallback for undefined values of tile types and matgloss
-        return Unknown;
+        ContructionMatGlossTexture = StoneMatGloss[constructionmaterial.index];
     }
+    // use matgloss for veins
+    if(TileTexture == Vein ||
+       TileTexture == VeinFloor)
+    {
+        if(VeinMatGlossTexture != Unknown)
+        {
+            return VeinMatGlossTexture;
+        }
+    }
+    // use base layer matgloss
+    else if(TileTexture == Soil ||
+       TileTexture == Sand ||
+       TileTexture == Layer1 ||
+       TileTexture == Layer2 ||
+       TileTexture == Layer3 ||
+       TileTexture == Ramp)
+    {
+        if(BaseMatGlossTexture != Unknown)
+        {
+            return BaseMatGlossTexture;
+        }
+    }
+    // use construction matgloss
+    else if(TileTexture == ConstructedWall ||
+            TileTexture == ConstructedFloor) // ConstructedRamp, etc...
+    {
+        // and only if it's properly defined
+        if(ContructionMatGlossTexture != Unknown)
+        {
+            return ContructionMatGlossTexture;
+        }
+    }
+    // use tile texture otherwise
+    else if(TileType != -1)
+    {
+        return TileTexture;
+    }
+    // fallback for undefined values of tile types and matgloss
+    return Unknown;
 }
 
 void Map::BuildVertexArray()
