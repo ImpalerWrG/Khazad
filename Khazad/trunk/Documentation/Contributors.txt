@@ -1,0 +1,25 @@
+People and things that contributed to the creation of Khazad
+------------------------------------------------------------
+
+Project Lead:           Kenneth "Impaler[WrG]" Ferland
+
+Programmers:            Jan "Dorf" Bezget (DF Extractor speedup, file compression)
+                        Petr "Peterix" MrÃ¡zek  (Linux port, DF Extractor refinement)
+
+Advisors:               Will Miller (Firaxis)
+                        Domicic Cerquetti (Firaxis)
+                        Sinothdither (3Dwarf author)
+                        0x517A5D (DwarfManager author)
+
+Special Thanks:         Mithaldu (Lifevis / Extractor author)
+
+Artists:                Davion (Main Logo)
+
+Testers:                
+
+Libraries:              OpenGL - Copyright Silicon Graphics, Inc.
+                        SDL - Copyright (GNU LESSER GENERAL PUBLIC LICENSE Version 2.1)
+                        GLUT - Copyright 1997 by Nate Robins & Mark Kilgard
+                        Guichan - BSD Copyright (Berkeley Software Distribution) 2004, 2005, 2006, 2007 Olof Naessén and Per Larsson
+                        TinyXML - Coppyright (zlib/libpng License) 2000-2006 Lee Thomason (www.grinninglizard.com), https://sourceforge.net/projects/tinyxml/
+                        DevIL - Copyright (GNU LESSER GENERAL PUBLIC LICENSE Version 2.1) 2000-2009 Denton Woods

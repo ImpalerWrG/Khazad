@@ -23,148 +23,157 @@ char buffer[256];
 
 bool initManagers()
 {
-    printf("-=XML INITIALIZING=-\n");
-	XML->CreateInstance();
-	XML->Init();
+    printf("-=XML INITIALIZING=- ... ");
+    XML->CreateInstance();
+    XML->Init();
+    printf("DONE\n");
 
-    printf("-=CONFIG INITIALIZING=-\n");
-	CONFIG->CreateInstance();
-	CONFIG->Init();
+    printf("-=CONFIG INITIALIZING=- ... ");
+    CONFIG->CreateInstance();
+    CONFIG->Init();
+    printf("DONE\n");
 
-    printf("-=RANDOM INITIALIZING=-\n");
-	RANDOM->CreateInstance();
-	RANDOM->Init();
+    printf("-=RANDOM INITIALIZING=- ... ");
+    RANDOM->CreateInstance();
+    RANDOM->Init();
+    printf("DONE\n");
 
-    printf("-=COLOR INITIALIZING=-\n");
-	COLOR->CreateInstance();
-	COLOR->Init();
+    printf("-=COLOR INITIALIZING=- ... ");
+    COLOR->CreateInstance();
+    COLOR->Init();
+    printf("DONE\n");
 
-    printf("-=DATA INITIALIZING=-\n");
-	DATA->CreateInstance();
-	DATA->Init();
+    printf("-=DATA INITIALIZING=- ... ");
+    DATA->CreateInstance();
+    DATA->Init();
+    printf("DONE\n");
 
-    printf("-=SCREEN INITIALIZING=-\n");
-	SCREEN->CreateInstance();
-	SCREEN->Init();
+    printf("-=SCREEN INITIALIZING=- ... ");
+    SCREEN->CreateInstance();
+    SCREEN->Init();
+    printf("DONE\n");
 
-    printf("-=IMAGE INITIALIZING=-\n");
-	IMAGE->CreateInstance();
-	IMAGE->Init();
+    printf("-=IMAGE INITIALIZING=- ... ");
+    IMAGE->CreateInstance();
+    IMAGE->Init();
+    printf("DONE\n");
 
-    printf("-=TEXTURE INITIALIZING=-\n");
-	TEXTURE->CreateInstance();
-	TEXTURE->Init();
+    printf("-=TEXTURE INITIALIZING=- ... ");
+    TEXTURE->CreateInstance();
+    TEXTURE->Init();
+    printf("DONE\n");
 
-    printf("-=UI INITIALIZING=-\n");
+    printf("-=UI INITIALIZING=- ... ");
     UI->CreateInstance();
     UI->Init();
+    printf("DONE\n");
 
-    printf("-=GAME INITIALIZING=-\n");
-	GAME->CreateInstance();
-	GAME->Init();
+    printf("-=GAME INITIALIZING=- ... ");
+    GAME->CreateInstance();
+    GAME->Init();
+    printf("DONE\n");
 
-/*    printf("-=PROCESS INITIALIZING=-\n");
-    PROCESS->CreateInstance();
-	PROCESS->Init();*/
+    printf("-=MAP INITIALIZING=- ... ");
+    MAP->CreateInstance();
+    MAP->Init();
+    printf("DONE\n");
 
-/*    printf("-=EXTRACTOR INITIALIZING=-\n");
-	EXTRACT->CreateInstance();
-	EXTRACT->Init();*/
+    printf("-=INPUT INITIALIZING=- ... ");
+    INPUT->CreateInstance();
+    INPUT->Init();
+    printf("DONE\n");
 
-    printf("-=MAP INITIALIZING=-\n");
-	MAP->CreateInstance();
-	MAP->Init();
-
-    printf("-=INPUT INITIALIZING=-\n");
-	INPUT->CreateInstance();
-	INPUT->Init();
-
-    printf("-=FONT INITIALIZING=-\n");
+    printf("-=FONT INITIALIZING=- ... ");
     FONT->CreateInstance();
-	FONT->Init();
+    FONT->Init();
+    printf("DONE\n");
 
-	return true;
+    return true;
 }
 
 void cleanup()
 {
     XML->FreeInstance();
-	CONFIG->FreeInstance();
-	RANDOM->FreeInstance();
-	COLOR->FreeInstance();
-	FONT->FreeInstance();
-	DATA->FreeInstance();
-	SCREEN->FreeInstance();
-	TEXTURE->FreeInstance();
-	IMAGE->FreeInstance();
+    CONFIG->FreeInstance();
+    RANDOM->FreeInstance();
+    COLOR->FreeInstance();
+    FONT->FreeInstance();
+    DATA->FreeInstance();
+    SCREEN->FreeInstance();
+    TEXTURE->FreeInstance();
+    IMAGE->FreeInstance();
     GAME->FreeInstance();
-	INPUT->FreeInstance();
-	MAP->FreeInstance();
-	UI->FreeInstance();
+    INPUT->FreeInstance();
+    MAP->FreeInstance();
+    UI->FreeInstance();
 
-	TTF_Quit();
-	SDL_Quit();
+    TTF_Quit();
+    SDL_Quit();
 }
 
 float FrameRateControl(Timer* FPSTimer)
 {
-	//The frames per second and regulators
-	const Uint16 FRAMES_PER_SECOND = 60;
-	static Uint8 FrameCounter = 0;
-	float AverageFrameTime = 0;
-	float ActualFramesPerSecond = 0;
-	static float LastFrameValue = 0;
-	static float FrameRateAcumulator = 0;
-	const Uint8 FrameRateSampleSize = 30;
+    //The frames per second and regulators
+    const Uint16 FRAMES_PER_SECOND = 60;
+    static Uint8 FrameCounter = 0;
+    float AverageFrameTime = 0;
+    float ActualFramesPerSecond = 0;
+    static float LastFrameValue = 0;
+    static float FrameRateAcumulator = 0;
+    const Uint8 FrameRateSampleSize = 30;
 
-	if (FrameCounter >= FrameRateSampleSize)
-	{
-		AverageFrameTime = FrameRateAcumulator / FrameRateSampleSize;
-		if (AverageFrameTime > 0)
-		{
-			ActualFramesPerSecond = 1000.0 / AverageFrameTime;
-			FrameRateAcumulator = 0;
-			FrameCounter = 0;
-			LastFrameValue = ActualFramesPerSecond;
-		}
-	}
+    if (FrameCounter >= FrameRateSampleSize)
+    {
+        AverageFrameTime = FrameRateAcumulator / FrameRateSampleSize;
+        if (AverageFrameTime > 0)
+        {
+            ActualFramesPerSecond = 1000.0 / AverageFrameTime;
+            FrameRateAcumulator = 0;
+            FrameCounter = 0;
+            LastFrameValue = ActualFramesPerSecond;
+        }
+    }
 
-	FrameCounter++;
-	if (FPSTimer->getElapsed() < (1000 / FRAMES_PER_SECOND))
-	{
-	    float delay = (1000 / FRAMES_PER_SECOND) - FPSTimer->getElapsed();
-		SDL_Delay(delay);
-		if(delay > 100)
+    FrameCounter++;
+    if (FPSTimer->getElapsed() < (1000 / FRAMES_PER_SECOND))
+    {
+        float delay = (1000 / FRAMES_PER_SECOND) - FPSTimer->getElapsed();
+        SDL_Delay(delay);
+        if(delay > 100)
             printf("DELAY %f > 100 !\n", delay);
-	}
+    }
 
-	FrameRateAcumulator += FPSTimer->getElapsed();
+    FrameRateAcumulator += FPSTimer->getElapsed();
 
-	return LastFrameValue;
+    return LastFrameValue;
 }
 
 int main(int argv, char** argc)
 {
-	if (!initManagers())
-	{
-		return 0;
-	}
+    if (!initManagers())
+    {
+        return 0;
+    }
 
-	bool done = false;
+    bool done = false;
+    printf("Starting timers ...");
+    Timer* FPSTimer = new Timer(20);
+    Timer* GameTimer = new Timer(20);
+    //Timer* UITimer = new Timer(20);
+    Timer* RenderTimer = new Timer(20);
 
-	Timer* FPSTimer = new Timer(20);
-	Timer* GameTimer = new Timer(20);
-//	Timer* UITimer = new Timer(20);
-	Timer* RenderTimer = new Timer(20);
-
-//	Uint8 FrameCounter = 0;
-	Uint32 FrameRate = 0;
+    //Uint8 FrameCounter = 0;
+    Uint32 FrameRate = 0;
 
     GameTimer->Start();
     RenderTimer->Start();
+    printf("DONE\n");
+    
+    printf("Wiping the screen ...");
+    SCREEN->WipeScreen();
+    printf("DONE\n");
 
-	SCREEN->WipeScreen();
-
+    printf("Init done. Entering main loop.\n");
 	while(!done) // While program isn't done
 	{
 		FPSTimer->Start();
@@ -199,7 +208,7 @@ int main(int argv, char** argc)
                 sprintf (buffer, "Triangles %i", SCREEN->getTriangleCount());
                 SCREEN->RenderText(buffer, 0, WHITE, &position);
 
-                SCREEN->PrintDebugging();
+                //SCREEN->PrintDebugging();
             }
             else
             {

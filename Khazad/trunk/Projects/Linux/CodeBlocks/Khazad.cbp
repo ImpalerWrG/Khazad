@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Khazad" />
+		<Option platforms="Unix;" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../../../Khazad" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../../../Khazad" />
+				<Option object_output="../../../obj/Linux/Debug/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-lefence" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../../../Khazad" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../../../Khazad" />
+				<Option object_output="../../../obj/Linux/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-DNDEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+			<Target title="Profile">
+				<Option output="../../../Khazad" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../../../Khazad" />
+				<Option object_output="../../../obj/Linux/Profile/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-pg" />
+					<Add option="-DNDEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-DILUT_USE_OPENGL" />
+			<Add option="-DLINUX_BUILD" />
+			<Add directory="../../../dfhack/library/" />
+			<Add directory="../../../dfhack/library/md5/" />
+			<Add directory="../../../src/Core" />
+			<Add directory="../../../src/Data" />
+			<Add directory="../../../src/Game" />
+			<Add directory="../../../src/Geometry" />
+			<Add directory="../../../src/Gui" />
+			<Add directory="../../../src/Map" />
+			<Add directory="../../../src/Render" />
+			<Add directory="/usr/include/guichan" />
+			<Add directory="/usr/include/IL/" />
+			<Add directory="../../../src/Linux" />
+			<Add directory="../../../TinyXML" />
+			<Add directory="/usr/include/SDL/" />
+			<Add directory="../../../src/MD5" />
+			<Add directory="../../../src/Process" />
+		</Compiler>
+		<Linker>
+			<Add library="SDL" />
+			<Add library="SDLmain" />
+			<Add library="SDL_ttf" />
+			<Add library="SDL_image" />
+			<Add library="SDL_mixer" />
+			<Add library="SDL_net" />
+			<Add library="GL" />
+			<Add library="GLU" />
+			<Add library="glut" />
+			<Add library="IL" />
+			<Add library="ILU" />
+			<Add library="ILUT" />
+			<Add library="guichan" />
+			<Add library="guichan_opengl" />
+			<Add library="guichan_sdl" />
+			<Add library="libz" />
+			<Add directory="../../../lib" />
+			<Add directory="../../../DevIL/lib" />
+		</Linker>
+		<ExtraCommands>
+			<Add before="#rm ../../../Khazad" />
+		</ExtraCommands>
+		<Unit filename="../../../Assets/XML/Memory.xml" />
+		<Unit filename="../../../TinyXML/tinystr.cpp" />
+		<Unit filename="../../../TinyXML/tinystr.h" />
+		<Unit filename="../../../TinyXML/tinyxml.cpp" />
+		<Unit filename="../../../TinyXML/tinyxml.h" />
+		<Unit filename="../../../TinyXML/tinyxmlerror.cpp" />
+		<Unit filename="../../../TinyXML/tinyxmlparser.cpp" />
+		<Unit filename="../../../dfhack/library/DFCommon.h" />
+		<Unit filename="../../../dfhack/library/DFDataModel.cpp" />
+		<Unit filename="../../../dfhack/library/DFDataModel.h" />
+		<Unit filename="../../../dfhack/library/DFHackAPI.cpp" />
+		<Unit filename="../../../dfhack/library/DFHackAPI.h" />
+		<Unit filename="../../../dfhack/library/DFMemAccess.h" />
+		<Unit filename="../../../dfhack/library/DFMemInfo.cpp" />
+		<Unit filename="../../../dfhack/library/DFMemInfo.h" />
+		<Unit filename="../../../dfhack/library/DFProcess.cpp" />
+		<Unit filename="../../../dfhack/library/DFProcessManager.cpp" />
+		<Unit filename="../../../dfhack/library/DFProcessManager.h" />
+		<Unit filename="../../../dfhack/library/DFTileTypes.cpp" />
+		<Unit filename="../../../dfhack/library/DFTileTypes.h" />
+		<Unit filename="../../../dfhack/library/DFTypes.h" />
+		<Unit filename="../../../dfhack/library/DFVector.h" />
+		<Unit filename="../../../dfhack/library/LinuxMemAccess.h" />
+		<Unit filename="../../../dfhack/library/WindowsMemAccess.h" />
+		<Unit filename="../../../dfhack/library/md5/md5.cpp" />
+		<Unit filename="../../../dfhack/library/md5/md5.h" />
+		<Unit filename="../../../dfhack/library/md5/md5wrapper.cpp" />
+		<Unit filename="../../../dfhack/library/md5/md5wrapper.h" />
+		<Unit filename="../../../src/Core/Enum.h" />
+		<Unit filename="../../../src/Core/Random.cpp" />
+		<Unit filename="../../../src/Core/Random.h" />
+		<Unit filename="../../../src/Core/Singleton.h" />
+		<Unit filename="../../../src/Core/Timer.cpp" />
+		<Unit filename="../../../src/Core/Timer.h" />
+		<Unit filename="../../../src/Core/main.cpp" />
+		<Unit filename="../../../src/Core/stdafx.h" />
+		<Unit filename="../../../src/Data/ConfigManager.cpp" />
+		<Unit filename="../../../src/Data/ConfigManager.h" />
+		<Unit filename="../../../src/Data/DataManager.cpp" />
+		<Unit filename="../../../src/Data/DataManager.h" />
+		<Unit filename="../../../src/Data/DataTypes.cpp" />
+		<Unit filename="../../../src/Data/DataTypes.h" />
+		<Unit filename="../../../src/Data/Paths.cpp" />
+		<Unit filename="../../../src/Data/Paths.h" />
+		<Unit filename="../../../src/Data/XMLManager.cpp" />
+		<Unit filename="../../../src/Data/XMLManager.h" />
+		<Unit filename="../../../src/Game/Actor.cpp" />
+		<Unit filename="../../../src/Game/Actor.h" />
+		<Unit filename="../../../src/Game/Game.cpp" />
+		<Unit filename="../../../src/Game/Game.h" />
+		<Unit filename="../../../src/Game/Pawn.cpp" />
+		<Unit filename="../../../src/Game/Pawn.h" />
+		<Unit filename="../../../src/Geometry/Plane.cpp" />
+		<Unit filename="../../../src/Geometry/Plane.h" />
+		<Unit filename="../../../src/Geometry/Vector2.cpp" />
+		<Unit filename="../../../src/Geometry/Vector3.cpp" />
+		<Unit filename="../../../src/Geometry/Vector3.h" />
+		<Unit filename="../../../src/Gui/ActionListeners.h" />
+		<Unit filename="../../../src/Gui/FontManager.cpp" />
+		<Unit filename="../../../src/Gui/FontManager.h" />
+		<Unit filename="../../../src/Gui/Gui.cpp" />
+		<Unit filename="../../../src/Gui/Gui.h" />
+		<Unit filename="../../../src/Gui/InputManager.cpp" />
+		<Unit filename="../../../src/Gui/InputManager.h" />
+		<Unit filename="../../../src/Map/Building.cpp" />
+		<Unit filename="../../../src/Map/Building.h" />
+		<Unit filename="../../../src/Map/Cell.cpp" />
+		<Unit filename="../../../src/Map/Cell.h" />
+		<Unit filename="../../../src/Map/Column.cpp" />
+		<Unit filename="../../../src/Map/Column.h" />
+		<Unit filename="../../../src/Map/Cube.cpp" />
+		<Unit filename="../../../src/Map/Cube.h" />
+		<Unit filename="../../../src/Map/Face.cpp" />
+		<Unit filename="../../../src/Map/Face.h" />
+		<Unit filename="../../../src/Map/Map.cpp" />
+		<Unit filename="../../../src/Map/Map.h" />
+		<Unit filename="../../../src/Map/Slope.cpp" />
+		<Unit filename="../../../src/Map/Slope.h" />
+		<Unit filename="../../../src/Map/Tree.cpp" />
+		<Unit filename="../../../src/Map/Tree.h" />
+		<Unit filename="../../../src/Render/Camera.cpp" />
+		<Unit filename="../../../src/Render/Camera.h" />
+		<Unit filename="../../../src/Render/ClipImage.cpp" />
+		<Unit filename="../../../src/Render/ClipImage.h" />
+		<Unit filename="../../../src/Render/ColorManager.cpp" />
+		<Unit filename="../../../src/Render/ColorManager.h" />
+		<Unit filename="../../../src/Render/ImageManager.cpp" />
+		<Unit filename="../../../src/Render/ImageManager.h" />
+		<Unit filename="../../../src/Render/ImagePage.cpp" />
+		<Unit filename="../../../src/Render/ImagePage.h" />
+		<Unit filename="../../../src/Render/ScreenManager.cpp" />
+		<Unit filename="../../../src/Render/ScreenManager.h" />
+		<Unit filename="../../../src/Render/TextureManager.cpp" />
+		<Unit filename="../../../src/Render/TextureManager.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

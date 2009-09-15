@@ -260,6 +260,12 @@ bool Map::Extract()
     while(index < numbuildings)
     {
         DF.ReadBuilding(index, tempbld);
+        string strtype = v_buildingtypes[tempbld.type];
+        if( strtype == "stockpile" || strtype == "zone" ||strtype == "construction_blueprint" )
+        {
+            index++;
+            continue;
+        }
         uint64_t coord =  ((uint64_t)tempbld.z) + (((uint64_t)tempbld.y1) << 16) + (((uint64_t)tempbld.x1) << 32);
         buildingAssigner[coord] = tempbld;
         index ++;
