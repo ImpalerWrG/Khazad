@@ -8,7 +8,7 @@
 		<Build>
 			<Target title="Debug">
 				<Option output="..\..\..\Khazad" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\..\..\Khazad" />
+				<Option working_dir="..\..\..\" />
 				<Option object_output="..\..\..\obj\Debug\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -19,7 +19,7 @@
 			</Target>
 			<Target title="Release">
 				<Option output="..\..\..\Khazad" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\..\..\Khazad" />
+				<Option working_dir="..\..\..\" />
 				<Option object_output="..\..\..\obj\Release\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -33,7 +33,7 @@
 			</Target>
 			<Target title="Profile">
 				<Option output="..\..\..\Khazad" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\..\..\Khazad" />
+				<Option working_dir="..\..\..\" />
 				<Option object_output="..\..\..\obj\Profile\" />
 				<Option type="0" />
 				<Option compiler="gcc" />

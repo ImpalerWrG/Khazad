@@ -65,6 +65,10 @@
 		<Channels Red="0" Green="128" Blue="0"/>
 	</Color>
 	<Color>
+		<Name Label="COLOR_GREEN_DARKER"/>
+		<Channels Red="0" Green="112" Blue="0"/>
+	</Color>
+	<Color>
 		<Name Label="COLOR_MAROON"/>
 		<Channels Red="128" Green="0" Blue="0"/>
 	</Color>

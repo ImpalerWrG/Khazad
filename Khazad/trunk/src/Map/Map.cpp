@@ -569,6 +569,67 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
     }
 
 }
+/*
+string DfMap::getMaterialTypeString (uint32_t type)
+{
+    string ret = "";
+    switch (type)
+    {
+        case 0:
+            ret += "wood";
+            break;
+        case 1:
+            ret += "stone/soil";
+            break;
+        case 2:
+            ret += "metal";
+            break;
+        case 3:
+            ret += "plant";
+            break;
+        case 10:
+            ret += "leather";
+            break;
+        case 11:
+            ret += "silk cloth";
+            break;
+        case 12:
+            ret += "plant thread cloth";
+            break;
+        case 13: // green glass
+            ret += "green glass";
+            break;
+        case 14: // clear glass
+            ret += "clear glass";
+            break;
+        case 15: // crystal glass
+            ret += "crystal glass";
+            break;
+        case 17:
+            ret += "ice";
+            break;
+        case 18:
+            ret += "charcoal";
+            break;
+        case 19:
+            ret += "potash";
+            break;
+        case 20:
+            ret += "ashes";
+            break;
+        case 21:
+            ret += "pearlash";
+            break;
+        case 24:
+            ret += "soap";
+            break;
+        default:
+            ret += "unknown";
+            break;
+    }
+    return ret;
+}*/
+
 Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial,t_matglossPair constructionmaterial, t_occupancy occupancy)
 {
     static Uint16 Sand = DATA->getLabelIndex("MATERIAL_SAND");
@@ -585,18 +646,55 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
     static Uint16 Layer3 = DATA->getLabelIndex("MATERIAL_ROUGH_STONE");
     static Uint16 ConstructedWall = DATA->getLabelIndex("MATERIAL_CONSTRUCTED_WALL");
     static Uint16 ConstructedFloor = DATA->getLabelIndex("MATERIAL_SMOOTH_FLOOR");
-
+    
+    static Uint16 GreenGlass = DATA->getLabelIndex("MATERIAL_GREEN_GLASS");
+    static Uint16 ClearGlass = DATA->getLabelIndex("MATERIAL_CLEAR_GLASS");
+    static Uint16 CrystalGlass = DATA->getLabelIndex("MATERIAL_CRYSTAL_GLASS");
+    static Uint16 Ice = DATA->getLabelIndex("MATERIAL_ICE");
+    static Uint16 Wood = DATA->getLabelIndex("MATERIAL_WOOD");
+    // TODO: missing constructed ramps
+    
+    /*
+    Mat_GreenGlass = 13,
+    Mat_ClearGlass = 14,
+    Mat_CrystalGlass = 15,
+    Mat_Ice = 17,
+    Mat_Charcoal =18,
+    Mat_Potash = 20,
+    Mat_Ashes = 20,
+    Mat_PearlAsh = 21,
+    Mat_Soap = 24,
+    */
     Uint16 TileTexture = TilePicker[TileType];
     if(occupancy.bits.snow) return Snow;
     if(occupancy.bits.mud) return Soil;
 
     Uint16 BaseMatGlossTexture = StoneMatGloss[basematerial];
     Uint16 VeinMatGlossTexture = StoneMatGloss[veinmaterial];
-    // FIXME: add more material types so that we can use non-stone constructions
+    // FIXME: add more material types so that we can use soap and other such terrible things
     Uint16 ContructionMatGlossTexture = -1;
-    if(constructionmaterial.type == Mat_Stone)
+    switch(constructionmaterial.type)
     {
-        ContructionMatGlossTexture = StoneMatGloss[constructionmaterial.index];
+        case Mat_Wood:
+            ContructionMatGlossTexture = Wood;
+            break;
+        case Mat_Stone:
+            ContructionMatGlossTexture = StoneMatGloss[constructionmaterial.index];
+            break;
+        case Mat_GreenGlass:
+            ContructionMatGlossTexture = GreenGlass;
+            break;
+        case Mat_ClearGlass:
+            ContructionMatGlossTexture = ClearGlass;
+            break;
+        case Mat_CrystalGlass:
+            ContructionMatGlossTexture = CrystalGlass;
+            break;
+        case Mat_Ice:
+            ContructionMatGlossTexture = Ice;
+            break;
+        default:
+            ContructionMatGlossTexture = Unknown;
     }
     // use matgloss for veins
     if(TileTexture == Vein ||

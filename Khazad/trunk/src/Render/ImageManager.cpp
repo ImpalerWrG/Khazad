@@ -51,7 +51,7 @@ ILuint ImageManager::loadImage(char* filepath, bool ColorKey)
     */
 
 
-    ilConvertImage(IL_LUMINANCE, IL_UNSIGNED_BYTE);
+    ilConvertImage(IL_BGRA, IL_UNSIGNED_BYTE);
 
     if(ColorKey)
     {

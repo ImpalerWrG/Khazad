@@ -21,6 +21,7 @@ bool Tree::Draw(CameraOrientation Orientation)
     xa = x %16 - 0.5;
     ya = y %16 - 0.5;
     int32_t texture;
+    // this is wrong. it should use Plant, Tree, Water-Tree, Sapling, etc.
     if(material.type == Mat_Wood)
     {
          texture = DATA->getLabelIndex("MATERIAL_GRASS1");

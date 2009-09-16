@@ -104,7 +104,13 @@ public:
             }
         }
     };
-
+    bool QueryExists(TiXmlElement* Entry, const char* Element)
+    {
+        TiXmlElement* child = Entry->FirstChildElement(Element);
+        if(child)
+            return true;
+        return false;
+    }
 	const char * getIndentAlt( unsigned int numIndents );
 	const char * getIndent( unsigned int numIndents );
 

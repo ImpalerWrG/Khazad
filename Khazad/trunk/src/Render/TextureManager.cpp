@@ -49,56 +49,131 @@ bool TextureManager::Init()
 
 ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
 {
+    //TODO: implement caching?
+    //TODO: investigate possible memory leaks
     ILuint TextureID = IMAGE->loadImage(DATA->getTextureData(DATA->getMaterialData(MaterialID)->getTexture())->getPath(), false);
+    // the source image is bound now, its format is BGRA
+    string colormode = DATA->getMaterialData(MaterialID)->getColorMode();
+    if(colormode.empty())
+        colormode = "blend";
 
-    Uint8* TextureData = ilGetData();
-
-    Uint32 width = ilGetInteger(IL_IMAGE_WIDTH);
-    Uint32 height = ilGetInteger(IL_IMAGE_HEIGHT);
-
-    ILuint MaskID;
-    ilGenImages(1, &MaskID);
-    ilBindImage(MaskID);
-    ilTexImage(width, height, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
-    Uint8* MaskData = ilGetData();
-
-    ColorData* PrimaryColor = DATA->getColorData(DATA->getMaterialData(MaterialID)->getPrimaryColor());
-    ColorData* SecondaryColor = DATA->getColorData(DATA->getMaterialData(MaterialID)->getSecondaryColor());
-
-    Uint32 bpp = ilGetInteger(IL_IMAGE_BYTES_PER_PIXEL);
-
-    for(Uint32 i = 0; i < width; i++)
+    if(colormode == "blend")
     {
-        for(Uint32 j = 0; j < height; j++)
+        ilConvertImage(IL_LUMINANCE, IL_UNSIGNED_BYTE);
+        Uint8* TextureData = ilGetData();
+        Uint32 width = ilGetInteger(IL_IMAGE_WIDTH);
+        Uint32 height = ilGetInteger(IL_IMAGE_HEIGHT);
+
+        ILuint MaskID;
+        ilGenImages(1, &MaskID);
+        ilBindImage(MaskID);
+        ilTexImage(width, height, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
+        Uint8* MaskData = ilGetData();
+
+        ColorData* PrimaryColor = DATA->getColorData(DATA->getMaterialData(MaterialID)->getPrimaryColor());
+        ColorData* SecondaryColor = DATA->getColorData(DATA->getMaterialData(MaterialID)->getSecondaryColor());
+
+        Uint32 bpp = ilGetInteger(IL_IMAGE_BYTES_PER_PIXEL);
+        for(Uint32 i = 0; i < width; i++)
         {
-            MaskData[(i * width * bpp) + (j * bpp) + 0] = SecondaryColor->getBlue(); // Blue
-            MaskData[(i * width * bpp) + (j * bpp) + 1] = SecondaryColor->getGreen(); // Green
-            MaskData[(i * width * bpp) + (j * bpp) + 2] = SecondaryColor->getRed(); // Red
-            MaskData[(i * width * bpp) + (j * bpp) + 3] = 255 - TextureData[(i * width) + j]; // Alpha
+            for(Uint32 j = 0; j < height; j++)
+            {
+                MaskData[(i * width * bpp) + (j * bpp) + 0] = SecondaryColor->getBlue(); // Blue
+                MaskData[(i * width * bpp) + (j * bpp) + 1] = SecondaryColor->getGreen(); // Green
+                MaskData[(i * width * bpp) + (j * bpp) + 2] = SecondaryColor->getRed(); // Red
+                MaskData[(i * width * bpp) + (j * bpp) + 3] = 255 - TextureData[(i * width) + j]; // Alpha
+            }
         }
+
+        ILuint BaseID;
+        ilGenImages(1, &BaseID);
+        ilBindImage(BaseID);
+        ilTexImage(width, height, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
+        Uint8* BaseData = ilGetData();
+
+        for(Uint32 i = 0; i < width; i++)
+        {
+            for(Uint32 j = 0; j < height; j++)
+            {
+                BaseData[(i * width * bpp) + (j * bpp) + 0] = PrimaryColor->getBlue(); // Blue
+                BaseData[(i * width * bpp) + (j * bpp) + 1] = PrimaryColor->getGreen(); // Green
+                BaseData[(i * width * bpp) + (j * bpp) + 2] = PrimaryColor->getRed(); // Red
+                BaseData[(i * width * bpp) + (j * bpp) + 3] = 255; // Alpha
+            }
+        }
+
+        ilOverlayImage(MaskID, 0, 0, 0);
+        if (DATA->getMaterialData(MaterialID)->getBorder())
+            ApplyBorder(BaseData, width, height, bpp, 0, 0, 0); // Add Black borders
+
+        return BaseID;
     }
-
-    ILuint BaseID;
-    ilGenImages(1, &BaseID);
-    ilBindImage(BaseID);
-    ilTexImage(width, height, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
-    Uint8* BaseData = ilGetData();
-
-    for(Uint32 i = 0; i < width; i++)
+    else if(colormode == "overlay")
     {
-        for(Uint32 j = 0; j < height; j++)
+        ilConvertImage(IL_LUMINANCE, IL_UNSIGNED_BYTE);
+        Uint8* TextureData = ilGetData();
+        Uint32 width = ilGetInteger(IL_IMAGE_WIDTH);
+        Uint32 height = ilGetInteger(IL_IMAGE_HEIGHT);
+
+        ColorData* PrimaryColor = DATA->getColorData(DATA->getMaterialData(MaterialID)->getPrimaryColor());
+        ColorData* SecondaryColor = DATA->getColorData(DATA->getMaterialData(MaterialID)->getSecondaryColor());
+
+        ILuint BaseID;
+        ilGenImages(1, &BaseID);
+        ilBindImage(BaseID);
+        ilTexImage(width, height, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
+        Uint8* BaseData = ilGetData();
+
+        Uint32 bpp = ilGetInteger(IL_IMAGE_BYTES_PER_PIXEL);
+
+        for(Uint32 i = 0; i < width; i++)
         {
-            BaseData[(i * width * bpp) + (j * bpp) + 0] = PrimaryColor->getBlue(); // Blue
-            BaseData[(i * width * bpp) + (j * bpp) + 1] = PrimaryColor->getGreen(); // Green
-            BaseData[(i * width * bpp) + (j * bpp) + 2] = PrimaryColor->getRed(); // Red
-            BaseData[(i * width * bpp) + (j * bpp) + 3] = 255; // Alpha
+            for(Uint32 j = 0; j < height; j++)
+            {
+                float Base = TextureData[(i * width) + j];
+                Base /= 255.0;
+                float OB = PrimaryColor->getBlue();
+                OB /= 255.0;
+
+                float OG = PrimaryColor->getGreen();
+                OG /= 255.0;
+
+                float OR = PrimaryColor->getRed();
+                OR /= 255.0;
+
+                // coloring using overlay mode
+                if(Base >= 0.5)
+                {
+                    BaseData[(i * width * bpp) + (j * bpp) + 0] = (1.0 - 2.0 * (1.0 - OB) * (1.0 - Base)) * 255;
+                    BaseData[(i * width * bpp) + (j * bpp) + 1] = (1.0 - 2.0 * (1.0 - OG) * (1.0 - Base)) * 255;
+                    BaseData[(i * width * bpp) + (j * bpp) + 2] = (1.0 - 2.0 * (1.0 - OR) * (1.0 - Base)) * 255;
+                    BaseData[(i * width * bpp) + (j * bpp) + 3] = 255; // Alpha
+                }
+                else
+                {
+                    BaseData[(i * width * bpp) + (j * bpp) + 0] = (2.0* OB * Base) * 255; // Blue
+                    BaseData[(i * width * bpp) + (j * bpp) + 1] = (2.0* OG * Base) * 255; // Green
+                    BaseData[(i * width * bpp) + (j * bpp) + 2] = (2.0* OR * Base) * 255; // Red
+                    BaseData[(i * width * bpp) + (j * bpp) + 3] = 255; // Alpha
+                }
+            }
         }
+        if (DATA->getMaterialData(MaterialID)->getBorder())
+            ApplyBorder(BaseData, width, height, bpp, 0, 0, 0); // Add Black borders
+        return BaseID;
     }
-
-    ilOverlayImage(MaskID, 0, 0, 0);
-    ApplyBorder(BaseData, width, height, bpp, 0, 0, 0); // Add Black borders
-
-    return BaseID;
+    else
+    {
+        if (DATA->getMaterialData(MaterialID)->getBorder())
+        {
+            Uint32 bpp = ilGetInteger(IL_IMAGE_BYTES_PER_PIXEL);
+            Uint32 width = ilGetInteger(IL_IMAGE_WIDTH);
+            Uint32 height = ilGetInteger(IL_IMAGE_HEIGHT);
+            Uint8* TextureData = ilGetData();
+            ApplyBorder(TextureData, width, height, bpp, 0, 0, 0); // Add Black borders
+        }
+        return TextureID;
+    }
 }
 
 void TextureManager::ApplyBorder(Uint8* ImageData, Uint32 width, Uint32 height, Uint32 bpp, Uint8 Red, Uint8 Green, Uint8 Blue)

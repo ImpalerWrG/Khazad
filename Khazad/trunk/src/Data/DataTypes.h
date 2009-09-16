@@ -76,6 +76,8 @@ public:
     Uint16 getHardness() { return Hardness; }
 
     string getMatGloss() { return MatGloss; }
+    string getColorMode() { return ColorMode; }
+    bool getBorder() { return Border; }
 
     std::vector<Uint16> TileTypes;
 
@@ -85,7 +87,9 @@ protected:
     string PrimaryColorLabel;
     string SecondaryColorLabel;
     string MatGloss;
+    string ColorMode;
 
+    bool Border;
     Uint32 TextureID;
     Uint32 PrimaryColorID;
     Uint32 SecondaryColorID;

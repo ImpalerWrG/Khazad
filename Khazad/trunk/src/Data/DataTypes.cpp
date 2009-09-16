@@ -41,7 +41,9 @@ bool ColorData::Load(TiXmlElement* Entry, Uint32 Index)
 }
 
 MaterialData::MaterialData()
-{}
+{
+    Border = 1;
+}
 
 MaterialData::~MaterialData()
 {}
@@ -55,7 +57,9 @@ bool MaterialData::Load(TiXmlElement* Entry, Uint32 Index)
         XML->QueryTextValue(Entry, "SecondaryColor", "label", &SecondaryColorLabel);
 
         XML->QueryUIntValue(Entry, "Hardness", "Int", Hardness);
+        Border = !XML->QueryExists(Entry, "NoBorder");
         XML->QueryTextValue(Entry, "MatGloss", "label", &MatGloss);
+        XML->QueryTextValue(Entry, "ColorMode", "mode", &ColorMode);
         XML->QueryUIntArray(Entry, "TileValues", "Tile", "Int", &TileTypes);
 
         DataBase::Load(Entry, Index);

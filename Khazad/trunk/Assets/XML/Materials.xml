@@ -16,19 +16,6 @@
 		<SecondaryColor label="COLOR_GREY"/>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_GRASS1"/>
-		<Texture label="TEXTURE_GRASS"/>
-		<PrimaryColor label="COLOR_GREEN"/>
-		<SecondaryColor label="COLOR_FOREST_GREEN"/>
-		<TileValues>
-			<Tile Int="235"/>
-			<Tile Int="348"/>
-			<Tile Int="349"/>
-			<Tile Int="350"/>
-			<Tile Int="351"/>
-		</TileValues>
-	</Material>
-	<Material>
 		<Name Label="MATERIAL_ASHES"/>
 		<Texture label="TEXTURE_ASHES"/>
 		<PrimaryColor label="COLOR_BLACK"/>
@@ -39,19 +26,7 @@
 			<Tile Int="244"/>
 		</TileValues>
 	</Material>
-	<Material>
-		<Name Label="MATERIAL_GRASS2"/>
-		<Texture label="TEXTURE_GRASS"/>
-		<PrimaryColor label="COLOR_GREEN"/>
-		<SecondaryColor label="COLOR_DARKER_GREEN"/>
-		<TileValues>
-			<Tile Int="236"/>
-			<Tile Int="398"/>
-			<Tile Int="399"/>
-			<Tile Int="400"/>
-			<Tile Int="401"/>
-		</TileValues>
-	</Material>
+
 	<Material>
 		<Name Label="MATERIAL_BOULDER"/>
 		<Texture label="TEXTURE_BOULDER"/>
@@ -392,10 +367,40 @@
 		</TileValues>
 	</Material>
 	<Material>
+		<Name Label="MATERIAL_GRASS1"/>
+		<Texture label="TEXTURE_GRASS"/>
+		<PrimaryColor label="COLOR_GREEN_DARKER"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="235"/>
+			<Tile Int="348"/>
+			<Tile Int="349"/>
+			<Tile Int="350"/>
+			<Tile Int="351"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRASS2"/>
+		<Texture label="TEXTURE_GRASS"/>
+		<PrimaryColor label="COLOR_GREEN"/>
+		<SecondaryColor label="COLOR_FOREST_GREEN"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="236"/>
+			<Tile Int="398"/>
+			<Tile Int="399"/>
+			<Tile Int="400"/>
+			<Tile Int="401"/>
+		</TileValues>
+	</Material>
+	<Material>
 		<Name Label="MATERIAL_DEAD_GRASS"/>
 		<Texture label="TEXTURE_GRASS"/>
 		<PrimaryColor label="COLOR_BROWN"/>
-		<SecondaryColor label="COLOR_YELLOW"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
 		<TileValues>
 			<Tile Int="234"/>
 			<Tile Int="394"/>
@@ -408,7 +413,8 @@
 		<Name Label="MATERIAL_DRY_GRASS"/>
 		<Texture label="TEXTURE_GRASS"/>
 		<PrimaryColor label="COLOR_YELLOW"/>
-		<SecondaryColor label="COLOR_BROWN"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
 		<TileValues>
 			<Tile Int="233"/>
 			<Tile Int="387"/>
@@ -420,8 +426,9 @@
 	<Material>
 		<Name Label="MATERIAL_SHRUB"/>
 		<Texture label="TEXTURE_SHRUB"/>
-		<PrimaryColor label="COLOR_GREEN"/>
+		<PrimaryColor label="COLOR_FOREST_GREEN"/>
 		<SecondaryColor label="COLOR_BLACK"/>
+		<ColorMode mode="overlay"/>
 		<TileValues>
 			<Tile Int="34"/>
 		</TileValues>
@@ -449,6 +456,7 @@
 		<Texture label="TEXTURE_SHRUB"/>
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_BLACK"/>
+		<ColorMode mode="overlay"/>
 		<TileValues>
 			<Tile Int="393"/>
 		</TileValues>
@@ -565,6 +573,31 @@
 			<Tile Int="35"/>
 			<Tile Int="42"/>
 		</TileValues>
+	</Material>
+	<!--
+	    static Uint16 GreenGlass = DATA->getLabelIndex("MATERIAL_GREEN_GLASS");
+    static Uint16 ClearGlass = DATA->getLabelIndex("MATERIAL_CLEAR_GLASS");
+    static Uint16 CrystalGlass = DATA->getLabelIndex("MATERIAL_CRYSTAL_GLASS");
+    static Uint16 Ice = DATA->getLabelIndex("MATERIAL_ICE");
+    static Uint16 Wood = DATA->getLabelIndex("MATERIAL_WOOD");
+    -->
+	<Material>
+		<Name Label="MATERIAL_GREEN_GLASS"/>
+		<Texture label="TEXTURE_PIT"/>
+		<PrimaryColor label="COLOR_GREEN"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CLEAR_GLASS"/>
+		<Texture label="TEXTURE_PIT"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CRYSTAL_GLASS"/>
+		<Texture label="TEXTURE_PIT"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_HEMATITE"/>
