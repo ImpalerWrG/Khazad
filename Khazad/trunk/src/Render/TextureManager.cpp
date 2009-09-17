@@ -123,7 +123,7 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
         ilGenImages(1, &BaseID);
         ilBindImage(BaseID);
         ilTexImage(width, height, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
-        Uint8* BaseData = ilGetData();
+        uint8_t* BaseData = ilGetData();
 
         Uint32 bpp = ilGetInteger(IL_IMAGE_BYTES_PER_PIXEL);
 
@@ -165,6 +165,7 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
     }
     else if(colormode == "keepimage")
     {
+        iluFlipImage();
         if (DATA->getMaterialData(MaterialID)->getBorder())
         {
             Uint32 bpp = ilGetInteger(IL_IMAGE_BYTES_PER_PIXEL);
@@ -292,9 +293,9 @@ void TextureManager::MergeTextures()
 
     //glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 
-    //char buffer[256];
-    //sprintf(buffer, "ScreenShots\\TexturePalete.png");
-    //ilSaveImage(Path(buffer));
+    char buffer[256];
+    sprintf(buffer, "ScreenShots\\TexturePalete.png");
+    ilSaveImage(Path(buffer));
 
     if(true) // Mip Mapping, dosn't seem to look good but better then without
     {

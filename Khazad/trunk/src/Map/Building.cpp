@@ -25,18 +25,18 @@ bool Building::Draw(CameraOrientation Orientation)
     int32_t texture;
     texture = DATA->getLabelIndex("MATERIAL_BUILDING");
     glNormal3f(0.0,0.0,1.0);
-    TEXTURE->BindTexturePoint(texture, 0,0);
-    glVertex3f(xa     ,ya     ,-0.4);
     TEXTURE->BindTexturePoint(texture, 0,1);
+    glVertex3f(xa     ,ya     ,-0.4);
+    TEXTURE->BindTexturePoint(texture, 0,0);
     glVertex3f(xa     ,ya + yb,-0.4);
-    TEXTURE->BindTexturePoint(texture, 1,1);
+    TEXTURE->BindTexturePoint(texture, 1,0);
     glVertex3f(xa + xb,ya + yb,-0.4);
 
-    TEXTURE->BindTexturePoint(texture, 1,1);
-    glVertex3f(xa + xb,ya + yb,-0.4);
     TEXTURE->BindTexturePoint(texture, 1,0);
+    glVertex3f(xa + xb,ya + yb,-0.4);
+    TEXTURE->BindTexturePoint(texture, 1,1);
     glVertex3f(xa + xb,ya     ,-0.4);
-    TEXTURE->BindTexturePoint(texture, 0,0);
+    TEXTURE->BindTexturePoint(texture, 0,1);
     glVertex3f(xa     ,ya     ,-0.4);
     return true;
 }

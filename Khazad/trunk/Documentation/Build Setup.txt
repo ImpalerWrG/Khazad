@@ -36,8 +36,11 @@ You should get these dependencies first:
   codeblocks (for building it)
 You'll also need the -dev packages for all this with the exception of codeblocks if you use a distro that separates them. 
 
-You can build it using codeblocks from the command line:
+check out the code from subversion:
+svn co https://khazad.svn.sourceforge.net/svnroot/khazad/Khazad/trunk khazad 
+
+Now you can build it using codeblocks from the command line:
   codeblocks --build Projects/Linux/CodeBlocks/Khazad.cbp
 Or open the project file in the codeblocks GUI and build it from there.
 
-If all goes well, you'll have a Khazad binary.
+If all goes well, you'll have a Khazad binary that you can run in the current folder.

@@ -58,18 +58,18 @@ bool Tree::Draw(CameraOrientation Orientation)
             break;
     }
     glNormal3f(0.0,0.0,1.0);
-    TEXTURE->BindTexturePoint(texture, 0,0);
-    glVertex3f(xa     ,ya    ,-0.3);
     TEXTURE->BindTexturePoint(texture, 0,1);
+    glVertex3f(xa     ,ya    ,-0.3);
+    TEXTURE->BindTexturePoint(texture, 0,0);
     glVertex3f(xa     ,ya + 1,-0.3);
-    TEXTURE->BindTexturePoint(texture, 1,1);
+    TEXTURE->BindTexturePoint(texture, 1,0);
     glVertex3f(xa + 1 ,ya + 1,-0.3);
 
-    TEXTURE->BindTexturePoint(texture, 1,1);
-    glVertex3f(xa + 1 ,ya + 1 ,-0.3);
     TEXTURE->BindTexturePoint(texture, 1,0);
+    glVertex3f(xa + 1 ,ya + 1 ,-0.3);
+    TEXTURE->BindTexturePoint(texture, 1,1);
     glVertex3f(xa + 1 ,ya     ,-0.3);
-    TEXTURE->BindTexturePoint(texture, 0,0);
+    TEXTURE->BindTexturePoint(texture, 0,1);
     glVertex3f(xa     ,ya     ,-0.3);
     return true;
 }

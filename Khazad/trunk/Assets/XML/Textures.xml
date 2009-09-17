@@ -25,6 +25,10 @@
 		<Name Label="TEXTURE_NORTHWEST"/>
 		<File Path="Assets\\Testing\\NorthWest.png"/>
 	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_UP"/>
+		<File Path="Assets\\Testing\\Up.png"/>
+	</Texture>
 	
 	<!-- GRASS -->
 	<Texture>

@@ -10,6 +10,11 @@
 		</TileValues>
 	</Material>
 	<Material>
+		<Name Label="MATERIAL_UP"/>
+		<Texture label="TEXTURE_UP"/>
+		<ColorMode mode="keepimage" />
+	</Material>
+	<Material>
 		<Name Label="MATERIAL_BUILDING"/>
 		<Texture label="TEXTURE_NEHE"/>
 		<PrimaryColor label="COLOR_BLACK"/>
@@ -18,8 +23,7 @@
 	<Material>
 		<Name Label="MATERIAL_ASHES"/>
 		<Texture label="TEXTURE_ASHES"/>
-		<PrimaryColor label="COLOR_BLACK"/>
-		<SecondaryColor label="COLOR_WHITE"/>
+        <ColorMode mode="keepimage" />
 		<TileValues>
 			<Tile Int="242"/>
 			<Tile Int="243"/>

@@ -221,6 +221,19 @@ bool Slope::Draw(float xTranslate, float yTranslate)
         {-0.5,0},
         {-0.5,-0.5}
     };
+    // same for texture coords
+    const float tc[9][2] =
+    {
+        {0,1},
+        {0.5   ,1},
+        {1 ,1},
+        {1 ,0.5},
+        {1 ,0},
+        {0.5   ,0},
+        {0,0},
+        {0,0.5},
+        {0,1}
+    };
     uint8_t strong, weak, numsolids = 0;
 
     // copy surroundings
@@ -286,10 +299,10 @@ bool Slope::Draw(float xTranslate, float yTranslate)
         TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
         glVertex3f( xTranslate,  yTranslate, hmf[9]);
         //point P+1
-        TEXTURE->BindTexturePoint(Texture, dc[i+1][0] + 0.5,dc[i+1][1] + 0.5);
+        TEXTURE->BindTexturePoint(Texture, tc[i+1][0],tc[i+1][1]);
         glVertex3f(dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, hmf[i+1]);
         //point P
-        TEXTURE->BindTexturePoint(Texture, dc[i][0] + 0.5,dc[i][1] + 0.5);
+        TEXTURE->BindTexturePoint(Texture, tc[i][0],tc[i][1]);
         glVertex3f(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i]);
     }
     // just drawn 8 tris
@@ -310,47 +323,47 @@ bool Slope::Draw(float xTranslate, float yTranslate)
         if(hm[i] == 0)// one tri, hm[i+2] is high
         {
             // second upper
-            TEXTURE->BindTexturePoint(Texture, 1.0,0.0);
+            TEXTURE->BindTexturePoint(Texture, 0.0,1.0);
             glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, hmf[i+2]);
             // second lower
             TEXTURE->BindTexturePoint(Texture, 0.0,0.0);
             glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5);
-            // first
-            TEXTURE->BindTexturePoint(Texture, 0.0,1.0);
+            // first lower
+            TEXTURE->BindTexturePoint(Texture, 1.0,0.0);
             glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i]);
             SCREEN->IncrementTriangles(1);
         }
         else if(hm[i+2] == 0)// one tri, hm[i] is high
         {
             // first lower
-            TEXTURE->BindTexturePoint(Texture, 0.0,0.0);
+            TEXTURE->BindTexturePoint(Texture, 1.0,0.0);
             glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, -0.5);
             // first upper
-            TEXTURE->BindTexturePoint(Texture, 1.0,0.0);
+            TEXTURE->BindTexturePoint(Texture, 1.0,1.0);
             glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, hmf[i]);
             // second
-            TEXTURE->BindTexturePoint(Texture, 0.0,1.0);
+            TEXTURE->BindTexturePoint(Texture, 0.0,0.0);
             glVertex3f( dc[i+2][0] + xTranslate, dc[i+2][1]+ yTranslate, hmf[i+2]);
             SCREEN->IncrementTriangles(1);
         }
         else // two tris, both corners high
         {
             // second upper
-            TEXTURE->BindTexturePoint(Texture, 1.0,0.0);
-            glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, hmf[i+2]);
+            TEXTURE->BindTexturePoint(Texture, 0.0,1.0);
+            glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, 0.5);
             // second lower
             TEXTURE->BindTexturePoint(Texture, 0.0,0.0);
             glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5);
-            // first lower 1
-            TEXTURE->BindTexturePoint(Texture, 0.0,1.0);
-            glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5);
-
-            // first lower 2
-            TEXTURE->BindTexturePoint(Texture, 0.0,0.0);
-            glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, -0.5);
-            // first upper
+            // first lower
             TEXTURE->BindTexturePoint(Texture, 1.0,0.0);
-            glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, hmf[i]);
+            glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5);
+            
+            // first lower
+            TEXTURE->BindTexturePoint(Texture, 1.0,0.0);
+            glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5);
+            // first upper
+            TEXTURE->BindTexturePoint(Texture, 1.0,1.0);
+            glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, 0.5);
             // center
             TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
             glVertex3f( dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, 0.0);

@@ -632,6 +632,10 @@ string DfMap::getMaterialTypeString (uint32_t type)
 
 Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial,t_matglossPair constructionmaterial, t_occupancy occupancy)
 {
+    /*
+    // debug texture orientation on terrain
+    return DATA->getLabelIndex("MATERIAL_UP");
+    */
     static Uint16 Sand = DATA->getLabelIndex("MATERIAL_SAND");
     //static Uint16 Stone = DATA->getLabelIndex("MATERIAL_ROUGH_STONE");
     static Uint16 Ramp = DATA->getLabelIndex("MATERIAL_RAMP_STONE");
