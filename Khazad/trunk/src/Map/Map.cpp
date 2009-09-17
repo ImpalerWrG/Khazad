@@ -450,7 +450,7 @@ void Map::LoadCellData(DFHackAPI & DF,
             if(vegetation.count(coord))
             {
                 t_tree_desc t = vegetation[coord];
-                Tree *tree = new Tree(t.material,t.x,t.y,t.z);
+                Tree *tree = new Tree(t.material,t.x,t.y,t.z, tiletypes[xx][yy]);
                 TargetCell->addTree(tree);
             }
 

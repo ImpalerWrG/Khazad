@@ -3,12 +3,11 @@
 
 #include <Actor.h>
 
-
 class Tree : public Actor
 {
     public:
         /** Default constructor */
-        Tree(t_matglossPair material, int x, int y, int z);
+        Tree(t_matglossPair material, int x, int y, int z, int tiletype);
         /** Default destructor */
         virtual ~Tree();
         bool Init();
@@ -18,6 +17,7 @@ class Tree : public Actor
     private:
     int x, y, z;
     t_matglossPair material;
+    int type;
 };
 
 #endif // TREE_H

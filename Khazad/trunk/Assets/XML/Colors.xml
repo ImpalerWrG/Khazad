@@ -69,6 +69,14 @@
 		<Channels Red="0" Green="112" Blue="0"/>
 	</Color>
 	<Color>
+		<Name Label="GRASS_BRIGHT"/>
+		<Channels Red="0" Green="128" Blue="0"/>
+	</Color>
+	<Color>
+		<Name Label="GRASS_DARK"/>
+		<Channels Red="0" Green="108" Blue="0"/>
+	</Color>
+	<Color>
 		<Name Label="COLOR_MAROON"/>
 		<Channels Red="128" Green="0" Blue="0"/>
 	</Color>

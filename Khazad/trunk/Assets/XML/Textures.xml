@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Textures xmlns="namespace">	
+<Textures xmlns="namespace">
+	<!-- Testing -->
 	<Texture>
 		<Name Label="TEXTURE_TOP"/>
 		<File Path="Assets\\Testing\\Top.png"/>
@@ -24,10 +25,25 @@
 		<Name Label="TEXTURE_NORTHWEST"/>
 		<File Path="Assets\\Testing\\NorthWest.png"/>
 	</Texture>
+	
+	<!-- GRASS -->
 	<Texture>
-		<Name Label="TEXTURE_GRASS"/>
-		<File Path="Assets\\Textures\\grass.png"/>
+		<Name Label="TEXTURE_GRASS1"/>
+		<File Path="Assets\\Textures\\grass1.png"/>
 	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_GRASS2"/>
+		<File Path="Assets\\Textures\\grass2.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_GRASS3"/>
+		<File Path="Assets\\Textures\\grass3.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_GRASS4"/>
+		<File Path="Assets\\Textures\\grass4.png"/>
+	</Texture>
+	
 	<Texture>
 		<Name Label="TEXTURE_BRICK"/>
 		<File Path="Assets\\Textures\\Brick.png"/>
@@ -51,6 +67,10 @@
 	<Texture>
 		<Name Label="TEXTURE_BARK"/>
 		<File Path="Assets\\Textures\\Bark.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_TREE"/>
+		<File Path="Assets\\Textures\\treeicon.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_BOULDER"/>

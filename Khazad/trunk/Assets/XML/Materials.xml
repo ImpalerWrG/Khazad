@@ -366,67 +366,228 @@
 			<Tile Int="46"/>
 		</TileValues>
 	</Material>
+	<!--
+	Grass types
+	
+        236: ramp grass A
+	51:  up stair grass A
+        348: grass floor A 1 (raw)
+        349: grass floor A 2 (raw)
+        350: grass floor A 3 (raw)
+        351: grass floor A 4 (raw)
+	
+	233: ramp grass dry
+        387: dry grass floor 1
+        388: dry grass floor 2
+        389: dry grass floor 3
+        390: dry grass floor 4
+	
+	234: ramp grass dead
+        394: dead grass floor 1
+        395: dead grass floor 2
+        396: dead grass floor 3
+        397: dead grass floor 4
+	
+	235: ramp grass B
+	54:  up stair grass B
+        398: grass floor B 1
+        399: grass floor B 2
+        400: grass floor B 3
+        401: grass floor B 4
+	-->
+	
+	
+	
+	<!-- darker grass -->
 	<Material>
-		<Name Label="MATERIAL_GRASS1"/>
-		<Texture label="TEXTURE_GRASS"/>
-		<PrimaryColor label="COLOR_GREEN_DARKER"/>
-		<ColorMode mode="overlay"/>
-		<NoBorder />
-		<TileValues>
-			<Tile Int="235"/>
-			<Tile Int="348"/>
-			<Tile Int="349"/>
-			<Tile Int="350"/>
-			<Tile Int="351"/>
-		</TileValues>
-	</Material>
-	<Material>
-		<Name Label="MATERIAL_GRASS2"/>
-		<Texture label="TEXTURE_GRASS"/>
-		<PrimaryColor label="COLOR_GREEN"/>
-		<SecondaryColor label="COLOR_FOREST_GREEN"/>
+		<Name Label="MATERIAL_GRASS_A1"/>
+		<Texture label="TEXTURE_GRASS1"/>
+		<PrimaryColor label="GRASS_DARK"/>
+		<!--<PrimaryColor value="rgb(0,112,0)"/>-->
 		<ColorMode mode="overlay"/>
 		<NoBorder />
 		<TileValues>
 			<Tile Int="236"/>
-			<Tile Int="398"/>
-			<Tile Int="399"/>
-			<Tile Int="400"/>
-			<Tile Int="401"/>
+			<Tile Int="51"/>
+			<Tile Int="348"/>
 		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_DEAD_GRASS"/>
-		<Texture label="TEXTURE_GRASS"/>
-		<PrimaryColor label="COLOR_BROWN"/>
+		<Name Label="MATERIAL_GRASS_A2"/>
+		<Texture label="TEXTURE_GRASS2"/>
+		<PrimaryColor label="GRASS_DARK"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="349"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRASS_A3"/>
+		<Texture label="TEXTURE_GRASS3"/>
+		<PrimaryColor label="GRASS_DARK"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="350"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRASS_A4"/>
+		<Texture label="TEXTURE_GRASS4"/>
+		<PrimaryColor label="GRASS_DARK"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="351"/>
+		</TileValues>
+	</Material>
+	
+	
+	
+	<!-- brighter grass -->
+		<Material>
+		<Name Label="MATERIAL_GRASS_B1"/>
+		<Texture label="TEXTURE_GRASS1"/>
+		<PrimaryColor label="GRASS_BRIGHT"/>
+		<!--<PrimaryColor value="rgb(0,112,0)"/>-->
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="235"/>
+			<Tile Int="54"/>
+			<Tile Int="398"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRASS_B2"/>
+		<Texture label="TEXTURE_GRASS2"/>
+		<PrimaryColor label="GRASS_BRIGHT"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="399"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRASS_B3"/>
+		<Texture label="TEXTURE_GRASS3"/>
+		<PrimaryColor label="GRASS_BRIGHT"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="400"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRASS_B4"/>
+		<Texture label="TEXTURE_GRASS4"/>
+		<PrimaryColor label="GRASS_BRIGHT"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="401"/>
+		</TileValues>
+	</Material>
+	
+	
+	
+	
+	
+	<!-- dead grass -->
+	<Material>
+		<Name Label="MATERIAL_DEAD_GRASS1"/>
+		<Texture label="TEXTURE_GRASS1"/>
+		<PrimaryColor value="#514728"/>
 		<ColorMode mode="overlay"/>
 		<NoBorder />
 		<TileValues>
 			<Tile Int="234"/>
 			<Tile Int="394"/>
-			<Tile Int="395"/>
-			<Tile Int="396"/>
-			<Tile Int="397"/>
 		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_DRY_GRASS"/>
-		<Texture label="TEXTURE_GRASS"/>
-		<PrimaryColor label="COLOR_YELLOW"/>
+		<Name Label="MATERIAL_DEAD_GRASS2"/>
+		<Texture label="TEXTURE_GRASS2"/>
+		<PrimaryColor value="#514728"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="395"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DEAD_GRASS3"/>
+		<Texture label="TEXTURE_GRASS3"/>
+		<PrimaryColor value="#514728"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="396"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DEAD_GRASS4"/>
+		<Texture label="TEXTURE_GRASS4"/>
+		<PrimaryColor value="#514728"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="397"/>
+		</TileValues>
+	</Material>
+	
+	
+	<!-- DRY grass -->
+	<Material>
+		<Name Label="MATERIAL_DRY_GRASS1"/>
+		<Texture label="TEXTURE_GRASS1"/>
+		<PrimaryColor value="#C7A73D"/>
 		<ColorMode mode="overlay"/>
 		<NoBorder />
 		<TileValues>
 			<Tile Int="233"/>
 			<Tile Int="387"/>
-			<Tile Int="388"/>
-			<Tile Int="389"/>
-			<Tile Int="390"/>
 		</TileValues>
 	</Material>
 	<Material>
+		<Name Label="MATERIAL_DRY_GRASS2"/>
+		<Texture label="TEXTURE_GRASS2"/>
+		<PrimaryColor value="#C7A73D"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="388"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DRY_GRASS3"/>
+		<Texture label="TEXTURE_GRASS3"/>
+		<PrimaryColor value="#C7A73D"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="389"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DRY_GRASS4"/>
+		<Texture label="TEXTURE_GRASS4"/>
+		<PrimaryColor value="#C7A73D"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="390"/>
+		</TileValues>
+	</Material>
+	
+	
+	
+	<!-- VEGETATION -->
+	<Material>
 		<Name Label="MATERIAL_SHRUB"/>
 		<Texture label="TEXTURE_SHRUB"/>
-		<PrimaryColor label="COLOR_FOREST_GREEN"/>
+		<PrimaryColor label="COLOR_GREEN_DARKER"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<ColorMode mode="overlay"/>
 		<TileValues>
@@ -435,18 +596,16 @@
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TREE"/>
-		<Texture label="TEXTURE_BARK"/>
-		<PrimaryColor label="COLOR_BROWN"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<Texture label="TEXTURE_TREE"/>
+		<ColorMode mode="keepimage"/>
 		<TileValues>
 			<Tile Int="24"/>
 		</TileValues>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SAPPLING"/>
-		<Texture label="TEXTURE_BARK"/>
-		<PrimaryColor label="COLOR_BROWN"/>
-		<SecondaryColor label="COLOR_DARK_GREEN"/>
+		<Texture label="TEXTURE_TREE"/>
+		<ColorMode mode="keepimage"/>
 		<TileValues>
 			<Tile Int="231"/>
 		</TileValues>
@@ -455,7 +614,6 @@
 		<Name Label="MATERIAL_DEAD_SHRUB"/>
 		<Texture label="TEXTURE_SHRUB"/>
 		<PrimaryColor label="COLOR_BROWN"/>
-		<SecondaryColor label="COLOR_BLACK"/>
 		<ColorMode mode="overlay"/>
 		<TileValues>
 			<Tile Int="393"/>
@@ -463,18 +621,18 @@
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DEAD_TREE"/>
-		<Texture label="TEXTURE_BARK"/>
+		<Texture label="TEXTURE_TREE"/>
 		<PrimaryColor label="COLOR_BROWN"/>
-		<SecondaryColor label="COLOR_SILVER"/>
+		<ColorMode mode="overlay"/>
 		<TileValues>
 			<Tile Int="391"/>
 		</TileValues>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DEAD_SAPPLING"/>
-		<Texture label="TEXTURE_BARK"/>
+		<Texture label="TEXTURE_TREE"/>
 		<PrimaryColor label="COLOR_BROWN"/>
-		<SecondaryColor label="COLOR_SILVER"/>
+		<ColorMode mode="overlay"/>
 		<TileValues>
 			<Tile Int="392"/>
 		</TileValues>
@@ -581,6 +739,7 @@
     static Uint16 Ice = DATA->getLabelIndex("MATERIAL_ICE");
     static Uint16 Wood = DATA->getLabelIndex("MATERIAL_WOOD");
     -->
+	<!-- GLASS -->
 	<Material>
 		<Name Label="MATERIAL_GREEN_GLASS"/>
 		<Texture label="TEXTURE_PIT"/>
@@ -599,6 +758,11 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 	</Material>
+	
+	
+	
+	
+	<!-- STONE/SOIL materials -->
 	<Material>
 		<Name Label="MATERIAL_HEMATITE"/>
 		<Texture label="TEXTURE_ROUGH"/>

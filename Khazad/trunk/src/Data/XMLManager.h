@@ -52,26 +52,23 @@ public:
         }
     };
 
-    void QueryTextValue(TiXmlElement* Entry, const char* Element, const char* Attribute, string* String)
+    bool QueryTextValue(TiXmlElement* Entry, const char* Element, const char* Attribute, string& String)
     {
         TiXmlElement* child = Entry->FirstChildElement(Element);
         if (child)
         {
-/*            const char* temp;
-            temp = child->Attribute(Attribute);
-            int i;
-            for(i = 0; temp[i] != NULL; i++)
+            const char * attr = child->Attribute(Attribute);
+            if(attr != NULL)
             {
-                String[i] = temp[i];
+                String = attr;
+                return true;
             }
-            String[i] = NULL;*/
-            String->clear();
-            String->append(child->Attribute(Attribute));
         }
+        return false;
     };
 
     template <class T>
-    void QuerySIntArray(TiXmlElement* Entry, const char* Element, const char* SubElement, const char* Attribute, std::vector<T>* StorageVector)
+    void QuerySIntArray(TiXmlElement* Entry, const char* Element, const char* SubElement, const char* Attribute, std::vector<T>& StorageVector)
     {
         TiXmlElement* child = Entry->FirstChildElement(Element);
         if (child)
@@ -81,13 +78,13 @@ public:
             {
                 int temp;
                 Iterator->QueryIntAttribute(Attribute, &temp);
-                StorageVector->push_back(temp);
+                StorageVector.push_back(temp);
             }
         }
     };
 
     template <class T>
-    void QueryUIntArray(TiXmlElement* Entry, const char* Element, const char* SubElement, const char* Attribute, std::vector<T>* StorageVector)
+    void QueryUIntArray(TiXmlElement* Entry, const char* Element, const char* SubElement, const char* Attribute, std::vector<T>& StorageVector)
     {
         TiXmlElement* child = Entry->FirstChildElement(Element);
         if (child)
@@ -99,7 +96,7 @@ public:
                 Iterator->QueryIntAttribute(Attribute, &temp);
                 if (temp >= 0)
                 {
-                    StorageVector->push_back(temp);
+                    StorageVector.push_back(temp);
                 }
             }
         }

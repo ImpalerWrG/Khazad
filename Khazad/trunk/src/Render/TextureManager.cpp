@@ -51,13 +51,14 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
 {
     //TODO: implement caching?
     //TODO: investigate possible memory leaks
+    //FIXME: all the coloring modes turn textures upside-down
     ILuint TextureID = IMAGE->loadImage(DATA->getTextureData(DATA->getMaterialData(MaterialID)->getTexture())->getPath(), false);
     // the source image is bound now, its format is BGRA
     string colormode = DATA->getMaterialData(MaterialID)->getColorMode();
     if(colormode.empty())
-        colormode = "blend";
+        colormode = "gradientmap";
 
-    if(colormode == "blend")
+    if(colormode == "gradientmap")
     {
         ilConvertImage(IL_LUMINANCE, IL_UNSIGNED_BYTE);
         Uint8* TextureData = ilGetData();
@@ -70,17 +71,17 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
         ilTexImage(width, height, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
         Uint8* MaskData = ilGetData();
 
-        ColorData* PrimaryColor = DATA->getColorData(DATA->getMaterialData(MaterialID)->getPrimaryColor());
-        ColorData* SecondaryColor = DATA->getColorData(DATA->getMaterialData(MaterialID)->getSecondaryColor());
+        ColorData PrimaryColor = DATA->getMaterialData(MaterialID)->getPrimaryColor();
+        ColorData SecondaryColor = DATA->getMaterialData(MaterialID)->getSecondaryColor();
 
         Uint32 bpp = ilGetInteger(IL_IMAGE_BYTES_PER_PIXEL);
         for(Uint32 i = 0; i < width; i++)
         {
             for(Uint32 j = 0; j < height; j++)
             {
-                MaskData[(i * width * bpp) + (j * bpp) + 0] = SecondaryColor->getBlue(); // Blue
-                MaskData[(i * width * bpp) + (j * bpp) + 1] = SecondaryColor->getGreen(); // Green
-                MaskData[(i * width * bpp) + (j * bpp) + 2] = SecondaryColor->getRed(); // Red
+                MaskData[(i * width * bpp) + (j * bpp) + 0] = SecondaryColor.getBlue(); // Blue
+                MaskData[(i * width * bpp) + (j * bpp) + 1] = SecondaryColor.getGreen(); // Green
+                MaskData[(i * width * bpp) + (j * bpp) + 2] = SecondaryColor.getRed(); // Red
                 MaskData[(i * width * bpp) + (j * bpp) + 3] = 255 - TextureData[(i * width) + j]; // Alpha
             }
         }
@@ -95,9 +96,9 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
         {
             for(Uint32 j = 0; j < height; j++)
             {
-                BaseData[(i * width * bpp) + (j * bpp) + 0] = PrimaryColor->getBlue(); // Blue
-                BaseData[(i * width * bpp) + (j * bpp) + 1] = PrimaryColor->getGreen(); // Green
-                BaseData[(i * width * bpp) + (j * bpp) + 2] = PrimaryColor->getRed(); // Red
+                BaseData[(i * width * bpp) + (j * bpp) + 0] = PrimaryColor.getBlue(); // Blue
+                BaseData[(i * width * bpp) + (j * bpp) + 1] = PrimaryColor.getGreen(); // Green
+                BaseData[(i * width * bpp) + (j * bpp) + 2] = PrimaryColor.getRed(); // Red
                 BaseData[(i * width * bpp) + (j * bpp) + 3] = 255; // Alpha
             }
         }
@@ -115,8 +116,8 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
         Uint32 width = ilGetInteger(IL_IMAGE_WIDTH);
         Uint32 height = ilGetInteger(IL_IMAGE_HEIGHT);
 
-        ColorData* PrimaryColor = DATA->getColorData(DATA->getMaterialData(MaterialID)->getPrimaryColor());
-        ColorData* SecondaryColor = DATA->getColorData(DATA->getMaterialData(MaterialID)->getSecondaryColor());
+        ColorData PrimaryColor = DATA->getMaterialData(MaterialID)->getPrimaryColor();
+        ColorData SecondaryColor = DATA->getMaterialData(MaterialID)->getSecondaryColor();
 
         ILuint BaseID;
         ilGenImages(1, &BaseID);
@@ -132,13 +133,13 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
             {
                 float Base = TextureData[(i * width) + j];
                 Base /= 255.0;
-                float OB = PrimaryColor->getBlue();
+                float OB = PrimaryColor.getBlue();
                 OB /= 255.0;
 
-                float OG = PrimaryColor->getGreen();
+                float OG = PrimaryColor.getGreen();
                 OG /= 255.0;
 
-                float OR = PrimaryColor->getRed();
+                float OR = PrimaryColor.getRed();
                 OR /= 255.0;
 
                 // coloring using overlay mode
@@ -162,7 +163,7 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
             ApplyBorder(BaseData, width, height, bpp, 0, 0, 0); // Add Black borders
         return BaseID;
     }
-    else
+    else if(colormode == "keepimage")
     {
         if (DATA->getMaterialData(MaterialID)->getBorder())
         {

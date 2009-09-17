@@ -48,8 +48,8 @@ bool ConfigManager::Init()
     XML->QueryUIntValue(Root, "InterfaceSpeed", "Slide", Slide);
     XML->QueryUIntValue(Root, "InterfaceSpeed", "Zoom", Zoom);
 
-    XML->QueryTextValue(Root, "MapLoading", "Path", &Loading);
-    XML->QueryTextValue(Root, "MapSaving", "Path", &Saveing);
+    XML->QueryTextValue(Root, "MapLoading", "Path", Loading);
+    XML->QueryTextValue(Root, "MapSaving", "Path", Saveing);
 
 	return true;
 }

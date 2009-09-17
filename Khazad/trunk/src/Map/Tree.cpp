@@ -4,11 +4,29 @@
 #include <stdint.h>
 #include <string>
 using namespace std;
-#include <DFTypes.h>
+#include "../../dfhack/library/DFTypes.h"
+#include "../../dfhack/library/DFTileTypes.h"
 #include "Tree.h"
 
-Tree::Tree(t_matglossPair material, int x, int y, int z)
-: x( x ),y( y ),z( z ),material( material ) { }
+Tree::Tree(t_matglossPair material, int x, int y, int z, int tiletype)
+: x( x ),y( y ),z( z ),material( material )
+{
+    type = getVegetationType(tiletype);
+    switch(type)
+    {
+        case TREE_DEAD:
+        case TREE_OK:
+        case SAPLING_DEAD:
+        case SAPLING_OK:
+            material.type = Mat_Wood;
+            break;
+        case SHRUB_DEAD:
+        case SHRUB_OK:
+            material.type = Mat_Plant;
+            break;
+    }
+}
+
 
 Tree::~Tree()
 {
@@ -21,17 +39,24 @@ bool Tree::Draw(CameraOrientation Orientation)
     xa = x %16 - 0.5;
     ya = y %16 - 0.5;
     int32_t texture;
-    // this is wrong. it should use Plant, Tree, Water-Tree, Sapling, etc.
-    if(material.type == Mat_Wood)
+    switch(type)
     {
-         texture = DATA->getLabelIndex("MATERIAL_GRASS1");
+        case TREE_DEAD:
+        case SAPLING_DEAD:
+            texture = DATA->getLabelIndex("MATERIAL_DEAD_TREE");
+            break;
+        case TREE_OK:
+        case SAPLING_OK:
+        default:
+            texture = DATA->getLabelIndex("MATERIAL_TREE");
+            break;
+        case SHRUB_DEAD:
+            texture = DATA->getLabelIndex("MATERIAL_DEAD_SHRUB");
+            break;
+        case SHRUB_OK:
+            texture = DATA->getLabelIndex("MATERIAL_SHRUB");
+            break;
     }
-    else if(material.type == Mat_Plant)
-    {
-         texture = DATA->getLabelIndex("MATERIAL_SHRUB");
-    }
-    else
-        texture = 0;
     glNormal3f(0.0,0.0,1.0);
     TEXTURE->BindTexturePoint(texture, 0,0);
     glVertex3f(xa     ,ya    ,-0.3);

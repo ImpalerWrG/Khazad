@@ -34,6 +34,8 @@ public:
     Uint8 getRed()      { return Red; }
     Uint8 getGreen()    { return Green; }
     Uint8 getBlue()     { return Blue; }
+    // parse a value string
+    void setValue (string & value);
 
 protected:
 
@@ -70,8 +72,10 @@ public:
     bool PostProcessing();
 
     Uint16 getTexture()         { return TextureID; }
-    Uint16 getPrimaryColor()    { return PrimaryColorID; }
-    Uint16 getSecondaryColor()  { return SecondaryColorID; }
+    Uint16 getPrimaryColorID()    { return PrimaryColorID; }
+    Uint16 getSecondaryColorID()  { return SecondaryColorID; }
+    ColorData getPrimaryColor();
+    ColorData getSecondaryColor();
 
     Uint16 getHardness() { return Hardness; }
 
@@ -90,6 +94,10 @@ protected:
     string ColorMode;
 
     bool Border;
+    bool PrimaryColorIsLabel;
+    bool SecondaryColorIsLabel;
+    ColorData MyPrimary;
+    ColorData MySecondary;
     Uint32 TextureID;
     Uint32 PrimaryColorID;
     Uint32 SecondaryColorID;
