@@ -194,8 +194,7 @@
 	<Material>
 		<Name Label="MATERIAL_DRIFTWOOD"/>
 		<Texture label="TEXTURE_DRIFTWOOD"/>
-		<PrimaryColor label="COLOR_BLACK"/>
-		<SecondaryColor label="COLOR_TAN"/>
+		<ColorMode mode="keepimage" />
 		<TileValues>
 			<Tile Int="19"/>
 		</TileValues>
@@ -842,11 +841,7 @@
 	<Material>
 		<Name Label="MATERIAL_SNOW"/>
 		<Texture label="TEXTURE_SNOW"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_LIGHT_GREY"/>
-		<TileValues>
-			<Tile Int="-1"/>
-		</TileValues>
+		<ColorMode mode="keepimage" />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_ICE"/>
