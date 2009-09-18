@@ -708,6 +708,7 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
         {
             return VeinMatGlossTexture;
         }
+        return TileTexture;
     }
     // use base layer matgloss
     else if(TileTexture == Soil ||
@@ -721,6 +722,7 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
         {
             return BaseMatGlossTexture;
         }
+        return TileTexture;
     }
     // use construction matgloss
     else if(TileTexture == ConstructedWall ||
@@ -731,6 +733,7 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
         {
             return ContructionMatGlossTexture;
         }
+        return TileTexture;
     }
     // use tile texture otherwise
     else if(TileType != -1)

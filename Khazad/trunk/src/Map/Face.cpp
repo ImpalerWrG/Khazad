@@ -13,10 +13,10 @@
 
 Face::Face()
 {
-	setType(FACE_ACTOR);
+    setType(FACE_ACTOR);
 
-	Initalized = false;
-	Visible = false;
+    Initalized = false;
+    Visible = false;
 
     Constructed = false;
     Decorated = false;
@@ -26,8 +26,8 @@ Face::Face()
     Rotation = RANDOM->Roll(0, 255);
 
     MAP->ChangeFaceCount(1);
-	//GAME->ActorList.push_back(this);
-	//ID = (Uint32) GAME->ActorList.size();
+    //GAME->ActorList.push_back(this);
+    //ID = (Uint32) GAME->ActorList.size();
 }
 
 Face::~Face()
@@ -44,19 +44,19 @@ bool Face::Init(Facet Type, Uint16 MaterialType)
 {
     Initalized = true;
 
-	FacetType = Type;
-	Visible = true;
-	Material = MaterialType;
-	Texture = Material; //DATA->getMaterialData(Material)->getTexture();
+    FacetType = Type;
+    Visible = true;
+    Material = MaterialType;
+    Texture = Material; //DATA->getMaterialData(Material)->getTexture();
 
     MAP->ChangeInitedFaceCount(1);
 
-	return true;
+    return true;
 }
 
 bool Face::Update()
 {
-	return true;
+    return true;
 }
 
 bool Face::Draw(float xTranslate, float yTranslate)
@@ -135,5 +135,5 @@ bool Face::Draw(float xTranslate, float yTranslate)
         SCREEN->IncrementTriangles(2);
     }
 
-	return true;
+    return true;
 }

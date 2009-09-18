@@ -37,9 +37,12 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_DARK_GREEN"/>
 		<TileValues>
+			<!-- stone boulder -->
 			<Tile Int="402"/>
+			<!-- obsidian boulder -->
 			<Tile Int="403"/>
-			<Tile Int="404"/>
+			<!-- featstone boulder, 404 NOT FOUND -->
+			<!--<Tile Int="404"/>-->
 		</TileValues>
 	</Material>
 	<Material>
@@ -48,6 +51,7 @@
 		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<TileValues>
+		<!-- stone floors, belong to the rest of the ordinary stones -->
 			<Tile Int="336"/>
 			<Tile Int="337"/>
 			<Tile Int="338"/>
@@ -78,11 +82,18 @@
 		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<TileValues>
+			<!-- stone floor detailed -->
 			<Tile Int="43"/>
+			<!-- stone updown stair -->
 			<Tile Int="55"/>
+			<!-- stone down stair -->
 			<Tile Int="56"/>
+			<!-- up stair stone -->
 			<Tile Int="57"/>
+			<!-- stone pillar -->
 			<Tile Int="79"/>
+			
+			<!-- stone walls -->
 			<Tile Int="307"/>
 			<Tile Int="308"/>
 			<Tile Int="309"/>
@@ -102,6 +113,14 @@
 			<Tile Int="323"/>
 			<Tile Int="324"/>
 			<Tile Int="325"/>
+			
+			<!-- stone floors -->
+			<!--
+			<Tile Int="336"/>
+			<Tile Int="337"/>
+			<Tile Int="338"/>
+			<Tile Int="339"/>
+			-->
 		</TileValues>
 	</Material>
 	<Material>
@@ -110,6 +129,7 @@
 		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<TileValues>
+			<!-- worn stone -->
 			<Tile Int="176"/>
 			<Tile Int="177"/>
 			<Tile Int="178"/>
@@ -122,8 +142,13 @@
 		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<TileValues>
+			<!-- constructed fortification -->
 			<Tile Int="494"/>
+			
+			<!-- constructed pillar -->
 			<Tile Int="495"/>
+			
+			<!-- constructed wall -->
 			<Tile Int="496"/>
 			<Tile Int="497"/>
 			<Tile Int="498"/>
@@ -143,9 +168,17 @@
 			<Tile Int="512"/>
 			<Tile Int="513"/>
 			<Tile Int="514"/>
+			
+			<!-- constructed stair up-down -->
 			<Tile Int="515"/>
+			
+			<!-- stair down constructed -->
 			<Tile Int="516"/>
+			
+			<!-- stair up constructed -->
 			<Tile Int="517"/>
+			
+			<!-- ramp constructed -->
 			<Tile Int="518"/>
 		</TileValues>
 	</Material>
@@ -182,6 +215,7 @@
 		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<TileValues>
+			<!--constructed floor detailed -->
 			<Tile Int="493"/>
 		</TileValues>
 	</Material>
@@ -200,48 +234,110 @@
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<TileValues>
+			<!-- up-down stair soil -->
 			<Tile Int="39"/>
+			
+			<!-- down stair soil -->
 			<Tile Int="40"/>
+			
+			<!-- up stair soil -->
 			<Tile Int="41"/>
+			
+			<!-- furrowed soil - farms and base of roads -->
 			<Tile Int="261"/>
+			
+			<!-- soil wall -->
 			<Tile Int="265"/>
+			
+			<!-- soil ramp? -->
+			<Tile Int="241"/>
+			
+			<!-- soil floors? -->
+			<Tile Int="352"/>
+			<Tile Int="353"/>
+			<Tile Int="354"/>
+			<Tile Int="355"/>
+			
+			<!-- wet soil floors -->
+			<Tile Int="356"/>
+			<Tile Int="357"/>
+			<Tile Int="358"/>
+			<Tile Int="359"/>
+
 		</TileValues>
 	</Material>
+	<!-- there's no sand, only soil. sand is defined by matgloss -->
+	<!--
 	<Material>
 		<Name Label="MATERIAL_SAND"/>
 		<Texture label="TEXTURE_SAND"/>
 		<PrimaryColor label="COLOR_YELLOW"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<TileValues>
-			<Tile Int="241"/>
-			<Tile Int="352"/>
-			<Tile Int="353"/>
-			<Tile Int="354"/>
-			<Tile Int="355"/>
-			<Tile Int="356"/>
-			<Tile Int="357"/>
-			<Tile Int="358"/>
-			<Tile Int="359"/>
 		</TileValues>
 	</Material>
+	-->
+	<Material>
+		<Name Label="MATERIAL_SAND_TAN"/>
+		<Texture label="TEXTURE_SAND"/>
+		<PrimaryColor label="COLOR_COLOR_TAN"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="SAND_TAN"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAND_YELLOW"/>
+		<Texture label="TEXTURE_SAND"/>
+		<PrimaryColor label="COLOR_YELLOW"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="SAND_YELLOW"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAND_WHITE"/>
+		<Texture label="TEXTURE_SAND"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<MatGloss label="SAND_WHITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAND_RED"/>
+		<Texture label="TEXTURE_SAND"/>
+		<PrimaryColor label="COLOR_RED"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="SAND_RED"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAND_BLACK"/>
+		<Texture label="TEXTURE_SAND"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<MatGloss label="SAND_BLACK"/>
+	</Material>
+	
 	<Material>
 		<Name Label="MATERIAL_PEBBLES"/>
 		<Texture label="TEXTURE_CONGLOMERATE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<TileValues>
+			<!-- stone pebbles -->
 			<Tile Int="405"/>
 			<Tile Int="406"/>
 			<Tile Int="407"/>
 			<Tile Int="408"/>
+			
+			<!-- obsidian shards -->
 			<Tile Int="409"/>
 			<Tile Int="410"/>
 			<Tile Int="411"/>
 			<Tile Int="412"/>
+			
+			<!-- featstone pebbles, probably unused? -->
+			<!--
 			<Tile Int="413"/>
 			<Tile Int="414"/>
 			<Tile Int="415"/>
 			<Tile Int="416"/>
+			-->
 		</TileValues>
 	</Material>
 	<Material>
@@ -250,11 +346,22 @@
 		<PrimaryColor label="COLOR_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<TileValues>
+			<!-- vein up-down stair -->
 			<Tile Int="58"/>
+			
+			<!-- vein down stair -->
 			<Tile Int="59"/>
+			
+			<!-- vein up stair -->
 			<Tile Int="60"/>
+			
+			<!-- vein pillar -->
 			<Tile Int="82"/>
+			
+			<!-- vein ramp -->
 			<Tile Int="240"/>
+			
+			<!-- vein walls -->
 			<Tile Int="417"/>
 			<Tile Int="418"/>
 			<Tile Int="419"/>
@@ -274,22 +381,30 @@
 			<Tile Int="433"/>
 			<Tile Int="434"/>
 			<Tile Int="435"/>
+			
+			<!-- vein fortification -->
 			<Tile Int="436"/>
+			
+			<!-- vein worn wall -->
 			<Tile Int="437"/>
 			<Tile Int="438"/>
 			<Tile Int="439"/>
 			<Tile Int="440"/>
+			
+			<!-- vein floor -->
 			<Tile Int="441"/>
 			<Tile Int="442"/>
 			<Tile Int="443"/>
 			<Tile Int="444"/>
 			</TileValues>
 	</Material>
+	<!-- possibly unused? -->
+	<!--
 	<Material>
 		<Name Label="MATERIAL_FEATURE_STONE"/>
 		<Texture label="TEXTURE_ROUGH"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<PrimaryColor label="COLOR_PINK"/>
+		<SecondaryColor label="COLOR_GREEN"/>
 		<TileValues>
 			<Tile Int="61"/>
 			<Tile Int="62"/>
@@ -320,18 +435,29 @@
 			<Tile Int="334"/>
 			<Tile Int="335"/>
 		</TileValues>
-	</Material>
+	</Material>-->
 	<Material>
 		<Name Label="MATERIAL_OBSIDIAN"/>
 		<Texture label="TEXTURE_ROUGH"/>
 		<PrimaryColor label="COLOR_BLACK"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 		<TileValues>
+			<!-- obsidian up-down stair -->
 			<Tile Int="36"/>
+			
+			<!-- obsidian down stair -->
 			<Tile Int="37"/>
+			
+			<!-- obsidian up stair -->
 			<Tile Int="38"/>
+			
+			<!-- obsidian pillar -->
 			<Tile Int="80"/>
+			
+			<!-- obsidian ramp -->
 			<Tile Int="238"/>
+			
+			<!-- obsidian walls -->
 			<Tile Int="269"/>
 			<Tile Int="270"/>
 			<Tile Int="271"/>
@@ -351,10 +477,22 @@
 			<Tile Int="285"/>
 			<Tile Int="286"/>
 			<Tile Int="287"/>
+			
+			<!-- obsidian fortification -->
+			<Tile Int="326"/>
+			
+			<!--
+			case 328: //lavastone wall worn1 (most worn)
+			case 329: //lavastone wall worn2 (middle worn)
+			case 330: //lavastone wall worn3 (least worn)
+			case 331: //lavastone wall
+			-->
 			<Tile Int="328"/>
 			<Tile Int="329"/>
 			<Tile Int="330"/>
 			<Tile Int="331"/>
+			
+			<!-- obsidian floors -->
 			<Tile Int="340"/>
 			<Tile Int="341"/>
 			<Tile Int="342"/>
@@ -367,6 +505,7 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<TileValues>
+		<!-- detailed vein stone floor -->
 			<Tile Int="46"/>
 		</TileValues>
 	</Material>
@@ -641,6 +780,18 @@
 			<Tile Int="392"/>
 		</TileValues>
 	</Material>
+	<!--
+	basically muddy riverbed
+	tile type maybe determines flow direction?
+	case 365: //river n
+        case 366: //river s
+        case 367: //river e
+        case 368: //river w
+        case 369: //river nw
+        case 370: //river ne
+        case 371: //river sw
+        case 372: //river se
+	-->
 	<Material>
 		<Name Label="MATERIAL_RIVER"/>
 		<Texture label="TEXTURE_CONGLOMERATE"/>
@@ -657,6 +808,19 @@
 			<Tile Int="372"/>
 		</TileValues>
 	</Material>
+	<!--
+	brook - a river filled with stone
+	top should look like a shallow stream with stones in it.
+	case 373: //stream wall n (below)
+        case 374: //stream wall s (below)
+        case 375: //stream wall e (below)
+        case 376: //stream wall w (below)
+        case 377: //stream wall nw (below)
+        case 378: //stream wall ne (below)
+        case 379: //stream wall sw (below)
+        case 380: //stream wall se (below)
+        case 381: //stream top (above)
+	-->
 	<Material>
 		<Name Label="MATERIAL_STREAM"/>
 		<Texture label="TEXTURE_CONGLOMERATE"/>
@@ -674,6 +838,7 @@
 			<Tile Int="381"/>
 		</TileValues>
 	</Material>
+	<!-- this is hard - snow can be applied to just about any tile, same applies to moss, mud and all the bloodstains -->
 	<Material>
 		<Name Label="MATERIAL_SNOW"/>
 		<Texture label="TEXTURE_SNOW"/>
@@ -689,22 +854,35 @@
 		<PrimaryColor label="COLOR_NAVY"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 		<TileValues>
+			<!-- up-down stair frozen liquid -->
 			<Tile Int="25"/>
+			<!-- down stair frozen liquid -->
 			<Tile Int="26"/>
+			<!-- up stair frozen liquid -->
 			<Tile Int="27"/>
-			<Tile Int="47"/><!-- smoothed ice floor -->
+			<!-- smoothed ice floor (SHINY, DONT SLIP!) -->
+			<Tile Int="47"/>
+			<!-- ice pillar -->
 			<Tile Int="83"/>
+			<!-- ice ramp -->
 			<Tile Int="245"/>
+			
+			<!-- four kinds of ice floors -->
 			<Tile Int="258"/>
 			<Tile Int="259"/>
 			<Tile Int="260"/>
 			<Tile Int="262"/>
-			<Tile Int="262"/>
+			
+			<!-- ice fortification -->
 			<Tile Int="360"/>
+			
+			<!-- worn ice walls -->
 			<Tile Int="361"/>
 			<Tile Int="362"/>
 			<Tile Int="363"/>
 			<Tile Int="364"/>
+			
+			<!-- ice walls -->
 			<Tile Int="450"/>
 			<Tile Int="451"/>
 			<Tile Int="452"/>
@@ -762,11 +940,18 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 	</Material>
+	<!-- ugly placeholder for wood -->
+	<Material>
+		<Name Label="MATERIAL_WOOD"/>
+		<Texture label="TEXTURE_BARK"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+	</Material>
 	
 	
 	
-	
-	<!-- STONE/SOIL materials -->
+	<!-- STONE/SOIL materials, disabled to show regular textures better -->
+	<!--
 	<Material>
 		<Name Label="MATERIAL_HEMATITE"/>
 		<Texture label="TEXTURE_ROUGH"/>
@@ -1244,41 +1429,6 @@
 		<MatGloss label="SILT"/>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_SAND_TAN"/>
-		<Texture label="TEXTURE_SAND"/>
-		<PrimaryColor label="COLOR_COLOR_TAN"/>
-		<SecondaryColor label="COLOR_BROWN"/>
-		<MatGloss label="SAND_TAN"/>
-	</Material>
-	<Material>
-		<Name Label="MATERIAL_SAND_YELLOW"/>
-		<Texture label="TEXTURE_SAND"/>
-		<PrimaryColor label="COLOR_YELLOW"/>
-		<SecondaryColor label="COLOR_BROWN"/>
-		<MatGloss label="SAND_YELLOW"/>
-	</Material>
-	<Material>
-		<Name Label="MATERIAL_SAND_WHITE"/>
-		<Texture label="TEXTURE_SAND"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_DARK_GREY"/>
-		<MatGloss label="SAND_WHITE"/>
-	</Material>
-	<Material>
-		<Name Label="MATERIAL_SAND_RED"/>
-		<Texture label="TEXTURE_SAND"/>
-		<PrimaryColor label="COLOR_RED"/>
-		<SecondaryColor label="COLOR_BROWN"/>
-		<MatGloss label="SAND_RED"/>
-	</Material>
-	<Material>
-		<Name Label="MATERIAL_SAND_BLACK"/>
-		<Texture label="TEXTURE_SAND"/>
-		<PrimaryColor label="COLOR_DARK_GREY"/>
-		<SecondaryColor label="COLOR_BLACK"/>
-		<MatGloss label="SAND_BLACK"/>
-	</Material>
-	<Material>
 		<Name Label="MATERIAL_PEAT"/>
 		<Texture label="TEXTURE_DIRT"/>
 		<PrimaryColor label="COLOR_FOREST_GREEN"/>
@@ -1488,4 +1638,5 @@
 		<SecondaryColor label="COLOR_BLACK"/>
 		<MatGloss label="MARBLE"/>
 	</Material>
+	-->
 </Materials>

@@ -69,7 +69,7 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
         ilGenImages(1, &MaskID);
         ilBindImage(MaskID);
         ilTexImage(width, height, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
-        Uint8* MaskData = ilGetData();
+        uint8_t* MaskData = ilGetData();
 
         ColorData PrimaryColor = DATA->getMaterialData(MaterialID)->getPrimaryColor();
         ColorData SecondaryColor = DATA->getMaterialData(MaterialID)->getSecondaryColor();
@@ -90,7 +90,7 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
         ilGenImages(1, &BaseID);
         ilBindImage(BaseID);
         ilTexImage(width, height, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
-        Uint8* BaseData = ilGetData();
+        uint8_t* BaseData = ilGetData();
 
         for(Uint32 i = 0; i < width; i++)
         {

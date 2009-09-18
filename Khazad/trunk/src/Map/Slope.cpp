@@ -38,7 +38,7 @@ bool Slope::Init(Cube* NewOwner, Slopping Type)
     SetSlopeType(Type);
 
     Material = Owner->getMaterial();
-	Texture = Material; //DATA->getMaterialData(Material)->getTexture();
+    Texture = Material;
 
     MAP->ChangeInitedSlopeCount(1);
     return true;
@@ -48,138 +48,6 @@ void Slope::SetSlopeType(Slopping Type)
 {
     SlopeType = Type;
     Visible = true;
-/*
-    switch(SlopeType)
-    {
-        case SLOPE_NORTH_EAST:
-        {
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
-            break;
-        }
-        case SLOPE_SOUTH_EAST:
-        {
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-            break;
-        }
-        case SLOPE_SOUTH_WEST:
-        {
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
-            break;
-        }
-        case SLOPE_NORTH_WEST:
-        {
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-            break;
-        }
-        case SLOPE_LARGE_NORTH:
-        {
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
-            break;
-        }
-        case SLOPE_LARGE_EAST:
-        {
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-            break;
-        }
-        case SLOPE_LARGE_SOUTH:
-        {
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
-            break;
-        }
-        case SLOPE_LARGE_WEST:
-        {
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-            break;
-        }
-        case SLOPE_SMALL_NORTH:
-        {
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-            break;
-        }
-        case SLOPE_SMALL_EAST:
-        {
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
-            break;
-        }
-        case SLOPE_SMALL_SOUTH:
-        {
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-            break;
-        }
-       case SLOPE_SMALL_WEST:
-        {
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
-            break;
-        }
-       case SLOPE_CRESS_NORTH_SOUTH:
-        {
-
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-            break;
-        }
-       case SLOPE_CRESS_EAST_WEST:
-        {
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-            break;
-        }
-
-       case SLOPE_FLAT:
-        {
-            Points[0] = Owner->ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-            Points[1] = Owner->ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
-            Points[2] = Owner->ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
-            Points[3] = Owner->ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-            break;
-        }
-
-
-        default:
-        {
-            break;
-        }
-    }*/
 }
 
 bool Slope::Update()

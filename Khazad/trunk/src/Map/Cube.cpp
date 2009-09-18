@@ -11,18 +11,18 @@
 
 Cube::Cube()
 {
-	setType(CUBE_ACTOR);
+    setType(CUBE_ACTOR);
 
-	Visible = false;
-	Initalized = false;
-	Slopage = NULL;
-	Liquid = false;
-	Solid = false;
+    Visible = false;
+    Initalized = false;
+    Slopage = NULL;
+    Liquid = false;
+    Solid = false;
     Faceted = false;
 
-	Material = 0;
+    Material = 0;
 
-	setPosition(0.0, 0.0, 0.0);
+    setPosition(0.0, 0.0, 0.0);
     MAP->ChangeCubeCount(1);
 }
 
@@ -55,14 +55,14 @@ Cube::~Cube()
 
 bool Cube::Init(Uint16 MaterialType)
 {
-	Initalized = true;
+    Initalized = true;
 
     Solid = true;
     Material = MaterialType;
 
     MAP->ChangeInitedCubeCount(1);
 
-	return true;
+    return true;
 }
 
 bool Cube::InitFacesOpen()
@@ -114,18 +114,21 @@ bool Cube::InitFaces()
 
     for(Facet FaceType = FACETS_START; FaceType < NUM_FACETS; ++FaceType)
     {
-        /*
+        
         Cube* NeiborCube = getAdjacentCube(FaceType);
 
         if(NeiborCube != NULL && !NeiborCube->isSolid())
         {
-            InitFace(FaceType);
+            if(getFacet(FaceType) == NULL)
+            {
+                InitFace(FaceType);
+            }
         }
-        */
-        if(getFacet(FaceType) == NULL)
+        
+        /*if(getFacet(FaceType) == NULL)
         {
             InitFace(FaceType);
-        }
+        }*/
     }
 }
 
