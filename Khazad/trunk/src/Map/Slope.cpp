@@ -1,13 +1,13 @@
 #include <stdafx.h>
 
-#include <Slope.h>
+//#include <Slope.h>
 #include <Cube.h>
 #include <Game.h>
 #include <TextureManager.h>
 #include <ScreenManager.h>
 #include <DataManager.h>
 #include <Map.h>
-
+/*
 Slope::Slope()
 {
 //	setType(SLOPE_ACTOR);
@@ -63,14 +63,14 @@ bool Slope::Update()
 bool Slope::Draw(float xTranslate, float yTranslate)
 {
     if(!Visible) return false;
-    /**
-     * heightmap. order is from nort-west to north-west, clockwise. hm[9] is the center
-     * 0=8--1---2
-     *  |   |   |
-     *  7---9---3
-     *  |   |   |
-     *  6---5---4
-     */
+    //*
+    //* heightmap. order is from nort-west to north-west, clockwise. hm[9] is the center
+    //* 0=8--1---2
+    //*  |   |   |
+    //*  7---9---3
+    //*  |   |   |
+    //*  6---5---4
+    //*
     uint8_t hm[10] = {0,0,0,0,0,0,0,0,0,1};
     float hmf[10];// same in float
 
@@ -156,13 +156,13 @@ bool Slope::Draw(float xTranslate, float yTranslate)
     // draw triangles
     for(Direction i = DIRECTION_NORTHWEST; i <= DIRECTION_WEST; ++i)
     {
-        /**
-         *  P--P+1--*
-         *  | \ | / |
-         *  *---C---*
-         *  | / | \ |
-         *  *---*---*
-         */
+         //*
+         //*  P--P+1--*
+         //*  | \ | / |
+         //*  *---C---*
+         //*  | / | \ |
+         //*  *---*---*
+         //*
         // point C
         TEXTURE->BindTexturePoint(Texture, 0.5,0.5);
         glVertex3f( xTranslate,  yTranslate, hmf[9]);
@@ -225,7 +225,7 @@ bool Slope::Draw(float xTranslate, float yTranslate)
             // first lower
             TEXTURE->BindTexturePoint(Texture, 1.0,0.0);
             glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5);
-            
+
             // first lower
             TEXTURE->BindTexturePoint(Texture, 1.0,0.0);
             glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5);
@@ -240,3 +240,4 @@ bool Slope::Draw(float xTranslate, float yTranslate)
     }
     return true;
 }
+*/

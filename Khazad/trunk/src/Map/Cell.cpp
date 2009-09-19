@@ -1,8 +1,8 @@
 #include <stdafx.h>
 
 #include <Cell.h>
-#include <Slope.h>
-#include <Face.h>
+//#include <Slope.h>
+//#include <Face.h>
 #include <Cube.h>
 #include <Map.h>
 /// FIXME: dfhack paths
@@ -15,6 +15,7 @@ Cell::Cell()
 {
 	Active = false;
 	ActiveLiquid = false;
+    ActiveTop = false;
 	setType(CELL_ACTOR);
     Initalized = false;
 }
@@ -35,10 +36,10 @@ Cell::~Cell()
 		    if(Cubes[i][j] != NULL)
 		    {
                 delete Cubes[i][j];
-                for(Facet Face = FACETS_START; Face < NUM_FACETS; ++Face)
+/*                for(Facet Face = FACETS_START; Face < NUM_FACETS; ++Face)
                 {
                     if(Facets[i][j][Face] != NULL) delete Facets[i][j][Face];
-                }
+                }*/
 		    }
 		}
 	}
@@ -54,10 +55,10 @@ bool Cell::Init()
 		for(Uint8 j = 0; j < CELLEDGESIZE; j++)
 		{
 		    Cubes[i][j] = NULL;
-            for(Facet Face = FACETS_START; Face < NUM_FACETS; ++Face)
+/*            for(Facet Face = FACETS_START; Face < NUM_FACETS; ++Face)
             {
                 Facets[i][j][Face] = NULL;
-            }
+            }*/
 		}
 	}
 
@@ -71,7 +72,7 @@ Cell::Cell(Sint32 X, Sint32 Y, Sint32 Z)
 	Active = false;
     Initalized = false;
 
-    DrawListID = glGenLists(6);
+    DrawListID = glGenLists(7);
 
 	setType(CELL_ACTOR);
 
@@ -105,18 +106,16 @@ void Cell::setCube(Cube* NewCube, Uint8 x, Uint8 y)
     Cubes[x][y]->SetOwner(this, x, y);
 }
 
-Face* Cell::getFace(Uint8 x, Uint8 y, Facet FaceType)
+bool Cell::hasFace(Uint8 x, Uint8 y, Facet FaceType)
 {
+    assert(x < CELLEDGESIZE && y < CELLEDGESIZE );
     if(Initalized)
     {
-        if(x < CELLEDGESIZE && y < CELLEDGESIZE && FaceType < NUM_FACETS)
-        {
-            return Facets[x][y][FaceType];
-        }
+        return Cubes[x][y]->hasFace(FaceType);
     }
-    return NULL;
+    return false;
 }
-
+/*
 void Cell::setFace(Face* NewFace, Uint8 x, Uint8 y, Facet FaceType)
 {
     if(x < CELLEDGESIZE && y < CELLEDGESIZE && FaceType < NUM_FACETS)
@@ -129,12 +128,12 @@ void Cell::setFace(Face* NewFace, Uint8 x, Uint8 y, Facet FaceType)
         Facets[x][y][FaceType] = NewFace;
     }
 }
-
+*/
 bool Cell::Update()
 {
 	return true;
 }
-
+/*
 void Cell::CreateIndices()
 {
     // INCOMPLETE
@@ -163,7 +162,7 @@ void Cell::CreateIndices()
         }
     }
 }
-
+*/
 void Cell::addBuilding(Building * b)
 {
     buildings.push_back(b);
@@ -197,8 +196,6 @@ bool Cell::DrawSolids(CameraOrientation Orientation)
 {
     Cube* LoopCube = NULL;
 
-    //float HalfCell = CELLEDGESIZE / 2;
-
     if(Initalized)
     {
         for (Uint16 x = 0; x < CELLEDGESIZE; x++)
@@ -206,60 +203,33 @@ bool Cell::DrawSolids(CameraOrientation Orientation)
             for (Uint16 y = 0; y < CELLEDGESIZE; y++)
             {
                 LoopCube = getCube(x, y);
-                if (SCREEN->isCubeDrawn(LoopCube))
+                if (LoopCube != NULL && SCREEN->isCubeDrawn(LoopCube))
                 {
-                    if(LoopCube->getSlope())
+                    if(LoopCube->isSlope())
                     {
-                        LoopCube->getSlope()->Draw(x, y);
+                        LoopCube->DrawSlope(x, y);
                     }
-                    /*if(LoopCube->getLiquid())
-                    {
-                        if(Facets[x][y][FACET_TOP])
-                        {
-                            Facets[x][y][FACET_TOP]->Draw(x, y);
-                        }
-                    }*/
-
                     switch(Orientation)
                     {
                         case CAMERA_DOWN:
                         {
-                            if(Facets[x][y][FACET_TOP])
-                            {
-                                Facets[x][y][FACET_TOP]->Draw(x, y);
-                            }
-                            else
-                            {
-                                if(Facets[x][y][FACET_BOTTOM])
-                                {
-                                    Facets[x][y][FACET_BOTTOM]->Draw(x, y);
-                                }
-                            }
+                            //LoopCube->DrawFace(x,y,FACET_TOP);
+                            LoopCube->DrawFace(x,y,FACET_BOTTOM);
                             break;
                         }
                         case CAMERA_NORTH_WEST:
                         {
                             if(LoopCube->isSolid())
                             {
-                                if(Facets[x][y][FACET_TOP])
-                                    Facets[x][y][FACET_TOP]->Draw(x, y);
-
-                                if(Facets[x][y][FACET_EAST])
-                                    Facets[x][y][FACET_EAST]->Draw(x, y);
-
-                                if(Facets[x][y][FACET_SOUTH])
-                                    Facets[x][y][FACET_SOUTH]->Draw(x, y);
+                                //LoopCube->DrawFace(x,y,FACET_TOP);
+                                LoopCube->DrawFace(x,y,FACET_EAST);
+                                LoopCube->DrawFace(x,y,FACET_SOUTH);
                             }
                             else
                             {
-                                if(Facets[x][y][FACET_BOTTOM])
-                                    Facets[x][y][FACET_BOTTOM]->Draw(x, y);
-
-                                if(Facets[x][y][FACET_NORTH])
-                                    Facets[x][y][FACET_NORTH]->Draw(x, y);
-
-                                if(Facets[x][y][FACET_WEST])
-                                    Facets[x][y][FACET_WEST]->Draw(x, y);
+                                LoopCube->DrawFace(x,y,FACET_BOTTOM);
+                                LoopCube->DrawFace(x,y,FACET_WEST);
+                                LoopCube->DrawFace(x,y,FACET_NORTH);
                             }
                             break;
                         }
@@ -267,25 +237,15 @@ bool Cell::DrawSolids(CameraOrientation Orientation)
                         {
                             if(LoopCube->isSolid())
                             {
-                                if(Facets[x][y][FACET_TOP])
-                                    Facets[x][y][FACET_TOP]->Draw(x, y);
-
-                                if(Facets[x][y][FACET_NORTH])
-                                    Facets[x][y][FACET_NORTH]->Draw(x, y);
-
-                                if(Facets[x][y][FACET_EAST])
-                                    Facets[x][y][FACET_EAST]->Draw(x, y);
+                                //LoopCube->DrawFace(x,y,FACET_TOP);
+                                LoopCube->DrawFace(x,y,FACET_EAST);
+                                LoopCube->DrawFace(x,y,FACET_NORTH);
                             }
                             else
                             {
-                                if(Facets[x][y][FACET_BOTTOM])
-                                    Facets[x][y][FACET_BOTTOM]->Draw(x, y);
-
-                                if(Facets[x][y][FACET_WEST])
-                                    Facets[x][y][FACET_WEST]->Draw(x, y);
-
-                                if(Facets[x][y][FACET_SOUTH])
-                                    Facets[x][y][FACET_SOUTH]->Draw(x, y);
+                                LoopCube->DrawFace(x,y,FACET_BOTTOM);
+                                LoopCube->DrawFace(x,y,FACET_WEST);
+                                LoopCube->DrawFace(x,y,FACET_SOUTH);
                             }
                             break;
                         }
@@ -293,25 +253,15 @@ bool Cell::DrawSolids(CameraOrientation Orientation)
                         {
                             if(LoopCube->isSolid())
                             {
-                                if(Facets[x][y][FACET_TOP])
-                                    Facets[x][y][FACET_TOP]->Draw(x, y);
-
-                                if(Facets[x][y][FACET_WEST])
-                                    Facets[x][y][FACET_WEST]->Draw(x, y);
-
-                                if(Facets[x][y][FACET_SOUTH])
-                                    Facets[x][y][FACET_SOUTH]->Draw(x, y);
+                                //LoopCube->DrawFace(x,y,FACET_TOP);
+                                LoopCube->DrawFace(x,y,FACET_WEST);
+                                LoopCube->DrawFace(x,y,FACET_SOUTH);
                             }
                             else
                             {
-                                if(Facets[x][y][FACET_BOTTOM])
-                                    Facets[x][y][FACET_BOTTOM]->Draw(x, y);
-
-                                if(Facets[x][y][FACET_EAST])
-                                    Facets[x][y][FACET_EAST]->Draw(x, y);
-
-                                if(Facets[x][y][FACET_NORTH])
-                                    Facets[x][y][FACET_NORTH]->Draw(x, y);
+                                LoopCube->DrawFace(x,y,FACET_BOTTOM);
+                                LoopCube->DrawFace(x,y,FACET_EAST);
+                                LoopCube->DrawFace(x,y,FACET_NORTH);
                             }
                             break;
                         }
@@ -319,25 +269,15 @@ bool Cell::DrawSolids(CameraOrientation Orientation)
                         {
                             if(LoopCube->isSolid())
                             {
-                                if(Facets[x][y][FACET_TOP])
-                                    Facets[x][y][FACET_TOP]->Draw(x, y);
-
-                                if(Facets[x][y][FACET_NORTH])
-                                    Facets[x][y][FACET_NORTH]->Draw(x, y);
-
-                                if(Facets[x][y][FACET_WEST])
-                                    Facets[x][y][FACET_WEST]->Draw(x, y);
+                                //LoopCube->DrawFace(x,y,FACET_TOP);
+                                LoopCube->DrawFace(x,y,FACET_NORTH);
+                                LoopCube->DrawFace(x,y,FACET_WEST);
                             }
                             else
                             {
-                                if(Facets[x][y][FACET_BOTTOM])
-                                    Facets[x][y][FACET_BOTTOM]->Draw(x, y);
-
-                                if(Facets[x][y][FACET_SOUTH])
-                                    Facets[x][y][FACET_SOUTH]->Draw(x, y);
-
-                                if(Facets[x][y][FACET_EAST])
-                                    Facets[x][y][FACET_EAST]->Draw(x, y);
+                                LoopCube->DrawFace(x,y,FACET_BOTTOM);
+                                LoopCube->DrawFace(x,y,FACET_EAST);
+                                LoopCube->DrawFace(x,y,FACET_SOUTH);
                             }
                             break;
                         }
@@ -357,6 +297,29 @@ bool Cell::DrawSolids(CameraOrientation Orientation)
 
 	return true;
 }
+
+bool Cell::DrawTops()
+{
+    Cube* LoopCube = NULL;
+
+    if(Initalized)
+    {
+        for (Uint16 x = 0; x < CELLEDGESIZE; x++)
+        {
+            for (Uint16 y = 0; y < CELLEDGESIZE; y++)
+            {
+                LoopCube = getCube(x, y);
+                if (LoopCube != NULL && SCREEN->isCubeDrawn(LoopCube))
+                {
+                    LoopCube->DrawFace(x,y,FACET_TOP);
+                }
+            }
+        }
+    }
+    return true;
+}
+
+
 
 void Cell::DrawCellCage()
 {

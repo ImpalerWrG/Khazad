@@ -23,8 +23,9 @@ public:
 	void setCube(Cube* NewCube, Uint8 x, Uint8 y);
 
 
-    Face* getFace(Uint8 x, Uint8 y, Facet FaceType);
-	void setFace(Face* NewFace, Uint8 x, Uint8 y, Facet FaceType);
+    //Face* getFace(Uint8 x, Uint8 y, Facet FaceType);
+    bool hasFace(Uint8 x, Uint8 y, Facet FaceType);
+    //void setFace(Face* NewFace, Uint8 x, Uint8 y, Facet FaceType);
 
     Uint16 getTriangleCount(CameraOrientation Orientation) { return TriangleCount[Orientation]; }
 
@@ -33,10 +34,11 @@ public:
 	//bool Draw(CameraOrientation Orientation);
 	bool DrawSolids(CameraOrientation Orientation);
 	bool DrawLiquids();
+    bool DrawTops();
 
 	bool Update();
 
-    void CreateIndices();
+    //void CreateIndices();
 
 	//void SetBasment(bool Value)         { Basment = Value; }
 	//bool isBasment()                    { return Basment; }
@@ -49,6 +51,9 @@ public:
     inline bool isLiquidActive()                     { return ActiveLiquid; }
     void setLiquidActive(bool NewValue)       { ActiveLiquid = NewValue; }
 
+    inline bool isTopActive()                     { return ActiveTop; }
+    void setTopActive(bool NewValue)       { ActiveTop = NewValue; }
+
     GLuint getDrawListID()                  { return DrawListID; }
     bool isDirtyDrawList()                  { return DirtyDrawlist; }
     void setDirtyDrawList(bool NewValue)    { DirtyDrawlist = NewValue; }
@@ -59,10 +64,10 @@ protected:
 
 	bool DirtyDrawlist;
 	GLuint DrawListID;
-
+/*
     Uint16* VertIndices[5];
     Uint16* TextIndices[5];
-
+*/
 	//bool Sky;
 	//bool Basment;
 	//bool Rock;
@@ -75,12 +80,13 @@ protected:
     Uint16 TriangleCount[5];
 
 	Cube* Cubes[CELLEDGESIZE][CELLEDGESIZE];
-	Face* Facets[CELLEDGESIZE][CELLEDGESIZE][NUM_FACETS];
+//	Face* Facets[CELLEDGESIZE][CELLEDGESIZE][NUM_FACETS];
 
     vector <Building *> buildings;
     vector <Tree *> trees;
 	bool Active;
 	bool ActiveLiquid;
+    bool ActiveTop;
 };
 
 #endif // CELL__HEADER

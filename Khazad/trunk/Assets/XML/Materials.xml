@@ -280,36 +280,41 @@
 		<Name Label="MATERIAL_SAND_TAN"/>
 		<Texture label="TEXTURE_SAND"/>
 		<PrimaryColor label="COLOR_COLOR_TAN"/>
-		<SecondaryColor label="COLOR_BROWN"/>
 		<MatGloss label="SAND_TAN"/>
+		<ColorMode mode="overlay" />
+		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SAND_YELLOW"/>
 		<Texture label="TEXTURE_SAND"/>
 		<PrimaryColor label="COLOR_YELLOW"/>
-		<SecondaryColor label="COLOR_BROWN"/>
 		<MatGloss label="SAND_YELLOW"/>
+		<ColorMode mode="overlay" />
+		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SAND_WHITE"/>
 		<Texture label="TEXTURE_SAND"/>
 		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<MatGloss label="SAND_WHITE"/>
+		<ColorMode mode="overlay" />
+		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SAND_RED"/>
 		<Texture label="TEXTURE_SAND"/>
 		<PrimaryColor label="COLOR_RED"/>
-		<SecondaryColor label="COLOR_BROWN"/>
 		<MatGloss label="SAND_RED"/>
+		<ColorMode mode="overlay" />
+		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SAND_BLACK"/>
 		<Texture label="TEXTURE_SAND"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
-		<SecondaryColor label="COLOR_BLACK"/>
 		<MatGloss label="SAND_BLACK"/>
+		<ColorMode mode="overlay" />
+		<NoBorder />
 	</Material>
 	
 	<Material>
@@ -727,57 +732,65 @@
 	
 	<!-- VEGETATION -->
 	<Material>
+		<Name Label="MATERIAL_UNDERGROWTH"/>
+		<Texture label="TEXTURE_GRASS1"/>
+		<PrimaryColor value="#C7A73D"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<!-- shrub -->
+			<Tile Int="34"/>
+		        <!-- tree -->
+			<Tile Int="24"/>
+			 <!-- sapling -->
+			<Tile Int="231"/>
+		        <!-- dead shrub -->
+			<Tile Int="393"/>
+			<!-- dead tree -->
+			<Tile Int="391"/>
+			<!-- dead sapling -->
+			<Tile Int="392"/>
+		</TileValues>
+	</Material>
+	<Material>
 		<Name Label="MATERIAL_SHRUB"/>
 		<Texture label="TEXTURE_SHRUB"/>
 		<PrimaryColor label="COLOR_GREEN_DARKER"/>
-		<SecondaryColor label="COLOR_BLACK"/>
 		<ColorMode mode="overlay"/>
-		<TileValues>
-			<Tile Int="34"/>
-		</TileValues>
+		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TREE"/>
 		<Texture label="TEXTURE_TREE"/>
 		<ColorMode mode="keepimage"/>
-		<TileValues>
-			<Tile Int="24"/>
-		</TileValues>
+		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SAPPLING"/>
 		<Texture label="TEXTURE_TREE"/>
 		<ColorMode mode="keepimage"/>
-		<TileValues>
-			<Tile Int="231"/>
-		</TileValues>
+		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DEAD_SHRUB"/>
 		<Texture label="TEXTURE_SHRUB"/>
 		<PrimaryColor label="COLOR_BROWN"/>
 		<ColorMode mode="overlay"/>
-		<TileValues>
-			<Tile Int="393"/>
-		</TileValues>
+		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DEAD_TREE"/>
 		<Texture label="TEXTURE_TREE"/>
 		<PrimaryColor label="COLOR_BROWN"/>
 		<ColorMode mode="overlay"/>
-		<TileValues>
-			<Tile Int="391"/>
-		</TileValues>
+		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DEAD_SAPPLING"/>
 		<Texture label="TEXTURE_TREE"/>
 		<PrimaryColor label="COLOR_BROWN"/>
 		<ColorMode mode="overlay"/>
-		<TileValues>
-			<Tile Int="392"/>
-		</TileValues>
+		<NoBorder />
 	</Material>
 	<!--
 	basically muddy riverbed

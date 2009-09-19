@@ -11,7 +11,7 @@ class ImagePage;
 class Camera;
 class Vector3;
 class Plane;
-class Face;
+//class Face;
 class Cube;
 class Cell;
 
@@ -80,9 +80,10 @@ public:
 
 	void DirtyAllLists();
 	bool Render();
-	void RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading, CameraOrientation CurrentOrientation);
+	void RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading, CameraOrientation CurrentOrientation, bool drawtops);
 
 	void RefreshDrawlist(Cell* TargetCell, GLuint DrawlistID, CameraOrientation Orientation);
+    void RefreshTopDrawlist(Cell* TargetCell, GLuint DrawListID);
 	void RefreshTransparentDrawlist(Cell* TargetCell, GLuint DrawListID);
 
 	void IncrementTriangles(Uint32 Triangles);

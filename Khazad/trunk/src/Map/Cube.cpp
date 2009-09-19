@@ -3,8 +3,6 @@
 #include <Cube.h>
 #include <Cell.h>
 #include <Map.h>
-#include <Face.h>
-#include <Slope.h>
 #include <Random.h>
 #include <TextureManager.h>
 #include <DataManager.h>
@@ -15,12 +13,7 @@ Cube::Cube()
 
     Visible = false;
     Initalized = false;
-    Slopage = NULL;
-    Liquid = false;
-    Solid = false;
-    Faceted = false;
-
-    Material = 0;
+    data.whole = 0;
 
     setPosition(0.0, 0.0, 0.0);
     MAP->ChangeCubeCount(1);
@@ -47,17 +40,12 @@ Cube::~Cube()
     {
         MAP->ChangeInitedCubeCount(-1);
     }
-    if(Slopage != NULL)
-    {
-        RemoveSlope();
-    }
 }
 
 bool Cube::Init(Uint16 MaterialType)
 {
     Initalized = true;
 
-    Solid = true;
     Material = MaterialType;
 
     MAP->ChangeInitedCubeCount(1);
@@ -65,88 +53,11 @@ bool Cube::Init(Uint16 MaterialType)
     return true;
 }
 
-bool Cube::InitFacesOpen()
-{
-    for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
-    {
-        Cube* NeiborCube = getNeiborCube(DirectionType);
-
-        if(NeiborCube != NULL && NeiborCube->isSolid())
-        {
-            NeiborCube->InitFaces();
-        }
-    }
-}
-
-bool Cube::InitFacesSolid()
-{
-    if(!Hidden)
-    {
-        for(Facet FaceType = FACETS_START; FaceType < NUM_FACETS; ++FaceType)
-        {
-            if(getFacet(FaceType) == NULL)
-            {
-                if(FaceType == FACET_TOP)
-                {
-                    InitFace(FaceType);
-                    continue;
-                }
-
-                if(getAdjacentCube(FaceType) != NULL)
-                {
-                    if(!getAdjacentCube(FaceType)->isSolid() || getAdjacentCube(FaceType)->isHidden())
-                    {
-                        InitFace(FaceType);
-                    }
-                }
-                else
-                {
-                    InitFace(FaceType);
-                }
-            }
-        }
-    }
-}
-
-bool Cube::InitFaces()
-{
-    Initalized = true;
-
-    for(Facet FaceType = FACETS_START; FaceType < NUM_FACETS; ++FaceType)
-    {
-        
-        Cube* NeiborCube = getAdjacentCube(FaceType);
-
-        if(NeiborCube != NULL && !NeiborCube->isSolid())
-        {
-            if(getFacet(FaceType) == NULL)
-            {
-                InitFace(FaceType);
-            }
-        }
-        
-        /*if(getFacet(FaceType) == NULL)
-        {
-            InitFace(FaceType);
-        }*/
-    }
-}
-
-bool Cube::InitFace(Facet FaceType)
-{
-    Face* TemporaryPointer = new Face;
-    TemporaryPointer->Init(FaceType, Material);
-    setFacet(TemporaryPointer, FaceType);
-    getCellOwner()->setActive(true);
-
-    Faceted = true;
-
-    return true;
-}
-
 bool Cube::DrawLiquid(float xTranslate, float yTranslate)
 {
     Uint16 texture;
+    Uint16 Liquid= data.liquid;
+    Uint16 LiquidType= data.liquidtype;
     if(Liquid > 0)
     {
         // bind the right texture
@@ -284,107 +195,19 @@ bool Cube::DrawLiquid(float xTranslate, float yTranslate)
     }
 }
 
-/*
-Cube* Cube::getAdjacentCube(Facet Type)
-{
-    Sint32 x = Position.x;
-    Sint32 y = Position.y;
-    Sint32 z = Position.z;
-
-    switch(Type)
-    {
-        case FACET_TOP:
-            z += 1;
-            break;
-        case FACET_BOTTOM:
-            z -= 1;
-            break;
-        case FACET_NORTH:
-            y -= 1;
-            break;
-        case FACET_EAST:
-            x += 1;
-            break;
-        case FACET_SOUTH:
-            y += 1;
-            break;
-        case FACET_WEST:
-            x -= 1;
-            break;
-*/
-
 void Cube::setLiquid(Uint8 liquidtype,Uint8 NewValue)
 {
-    LiquidType=liquidtype;
-    Liquid = NewValue;
+    data.liquidtype=liquidtype;
+    data.liquid = NewValue;
     if(NewValue > 0)
-    Owner->setLiquidActive(true);
+        Owner->setLiquidActive(true);
 }
 
 bool Cube::setMaterial(Uint16 MaterialType)
 {
     Initalized = true;
     Material = MaterialType;
-
-    for(Facet Face = FACETS_START; Face < NUM_FACETS; ++Face)
-    {
-        if (!getFacet(Face)->isConstructed())
-        {
-            getFacet(Face)->setMaterial(Material);
-        }
-    }
 }
-
-bool Cube::Open()
-{
-    Initalized = true;
-    Solid = false;
-
-    RemoveSlope();
-}
-
-Face* Cube::getFacet(Facet FacetType)
-{
-    return Owner->getFace(CellX, CellY, FacetType);
-}
-
-void Cube::setFacet(Face* NewFace, Facet FacetType)
-{
-    Owner->setFace(NewFace, CellX, CellY, FacetType);
-    if(NewFace != NULL)
-    {
-        Faceted = true;
-    }
-    else
-    {
-        CheckFaceted();
-    }
-}
-
-void Cube::InitConstructedFace(Facet FacetType, Uint16 MaterialType)
-{
-    Face* ConstructionFace = getFacet(FacetType);
-    Initalized = true;
-
-    if(ConstructionFace != NULL)  // Change the existing face rather then creating a new one
-    {
-        ConstructionFace->setConstructed(true);
-        ConstructionFace->setMaterial(MaterialType);
-        ConstructionFace->setVisible(true);
-    }
-    else // Face Material is independent of Cube Material
-    {
-        ConstructionFace = new Face;
-        ConstructionFace->setConstructed(true);
-        ConstructionFace->Init(FacetType, MaterialType);
-        ConstructionFace->setVisible(true);
-        Owner->setFace(ConstructionFace, CellX, CellY, FacetType);
-    }
-
-    Faceted = true;
-    Owner->setActive(true);
-}
-
 Cube* Cube::getAdjacentCube(Facet Type)
 {
     Sint32 x = Position.x;
@@ -416,7 +239,7 @@ Cube* Cube::getAdjacentCube(Facet Type)
     return MAP->getCube(x, y, z);
 }
 
-Cube* Cube::getNeiborCube(Direction Type)
+Cube* Cube::getNeighborCube(Direction Type)
 {
     Sint32 x = Position.x;
     Sint32 y = Position.y;
@@ -495,172 +318,6 @@ Cell* Cube::getAdjacentCell(Facet Type)
 
     return MAP->getCubeOwner(x, y, z);
 }
-
-Facet Cube::OpositeFace(Facet Type)
-{
-    switch(Type)
-    {
-        case FACET_TOP:
-            return FACET_BOTTOM;
-
-        case FACET_BOTTOM:
-            return FACET_TOP;
-
-        case FACET_NORTH:
-            return FACET_SOUTH;
-
-        case FACET_SOUTH:
-            return FACET_NORTH;
-
-        case FACET_WEST:
-            return FACET_EAST;
-
-        case FACET_EAST:
-            return FACET_WEST;
-    }
-}
-
-void Cube::CheckFaceted()
-{
-    Faceted = false;
-    for(Facet Face = FACETS_START; Face < NUM_FACETS; ++Face)
-    {
-        if(getFacet(Face))
-        {
-            Faceted = true;
-        }
-    }
-}
-
-void Cube::DeleteFace(Facet FaceType)
-{
-    Face* Target = NULL;
-    Target = getFacet(FaceType);
-
-    if (Target != NULL)
-    {
-        setFacet(NULL, FaceType);
-        delete Target;
-    }
-}
-
-void Cube::SetSlope(Slopping Type)
-{
-    Solid = false;
-    Initalized = true;
-
-    if (Slopage == NULL)
-    {
-        Slopage = new Slope;
-        Slopage->Init(this, Type);
-    }
-    else
-    {
-        Slopage->SetSlopeType(Type);
-    }
-}
-
-void Cube::RemoveSlope()
-{
-    if (Slopage != NULL)
-    {
-        delete Slopage;
-        Slopage = NULL;
-    }
-}
-
-void Cube::setAllFacesVisiblity(bool NewValue)
-{
-    for(Facet Face = FACETS_START; Face < NUM_FACETS; ++Face)
-    {
-        if(getFacet(Face))
-        {
-            getFacet(Face)->setVisible(NewValue);
-        }
-    }
-}
-
-void Cube::DetermineSlope()
-{
-    Slopping SlopeType = SLOPE_FLAT;
-
-/*    bool NorthEastSolid = getAdjacentCube(FACET_NORTH_EAST) != NULL && getAdjacentCube(FACET_NORTH_EAST)->isSolid();
-    bool SouthEastSolid = getAdjacentCube(FACET_SOUTH_EAST) != NULL && getAdjacentCube(FACET_SOUTH_EAST)->isSolid();
-    bool NorthWestSolid = getAdjacentCube(FACET_NORTH_WEST) != NULL && getAdjacentCube(FACET_NORTH_WEST)->isSolid();
-    bool SouthWestSolid = getAdjacentCube(FACET_SOUTH_WEST) != NULL && getAdjacentCube(FACET_SOUTH_WEST)->isSolid();
-
-    bool NorthSolid = getNeiborCube(DIRECTION_NORTH) != NULL && getNeiborCube(DIRECTION_NORTH)->isSolid();
-    bool SouthSolid = getNeiborCube(DIRECTION_SOUTH) != NULL && getNeiborCube(DIRECTION_SOUTH)->isSolid();
-    bool WestSolid = getNeiborCube(DIRECTION_WEST) != NULL && getNeiborCube(DIRECTION_WEST)->isSolid();
-    bool EastSolid = getNeiborCube(DIRECTION_EAST) != NULL && getNeiborCube(DIRECTION_EAST)->isSolid();*/
-/*
-    if(NorthEastSolid)
-    {
-        SlopeType = SLOPE_SOUTH_WEST;
-    }
-    if(SouthEastSolid)
-    {
-        SlopeType = SLOPE_NORTH_WEST;
-    }
-    if(NorthWestSolid)
-    {
-        SlopeType = SLOPE_SOUTH_EAST;
-    }
-    if(SouthWestSolid)
-    {
-        SlopeType = SLOPE_NORTH_EAST;
-    }
-
-
-    if(NorthEastSolid && SouthEastSolid)
-    {
-        SlopeType = SLOPE_LARGE_WEST;
-    }
-    if(SouthEastSolid && SouthWestSolid)
-    {
-        SlopeType = SLOPE_LARGE_NORTH;
-    }
-    if(NorthWestSolid && SouthWestSolid)
-    {
-        SlopeType = SLOPE_LARGE_EAST;
-    }
-    if(NorthEastSolid && NorthWestSolid)
-    {
-        SlopeType = SLOPE_LARGE_SOUTH;
-    }
-
-
-    if(SlopeType == SLOPE_FLAT) // No slope yet found, try corners
-    {
-        if(SouthSolid)
-        {
-            SlopeType = SLOPE_SMALL_NORTH;
-        }
-        if(NorthSolid)
-        {
-            SlopeType = SLOPE_SMALL_SOUTH;
-        }
-        if(EastSolid)
-        {
-            SlopeType = SLOPE_SMALL_WEST;
-        }
-        if(WestSolid)
-        {
-            SlopeType = SLOPE_SMALL_EAST;
-        }
-    }
-
-    if(SlopeType != SLOPE_FLAT)
-    {
-        SetSlope(SlopeType);
-    }
-    else
-    {
-        SetSlope(SLOPE_SOUTH_WEST);  // Default slope for isolated slopes, possibly replace with something better??
-    }*/
-    SetSlope(SLOPE_SOUTH_WEST);
-}
-
 bool Cube::Update()
 {
 	return true;
@@ -670,7 +327,7 @@ Vector3 Cube::ConvertSpacialPoint(SpacialPoint Point)
 {
     switch(Point)
     {
-        case SCACIAL_POINT_CENTER:
+        case SPACIAL_POINT_CENTER:
             return Vector3(0.0, 0.0, 0.0);
 
         case SPACIAL_POINT_NORTH_TOP:
@@ -707,263 +364,364 @@ Vector3 Cube::ConvertSpacialPoint(SpacialPoint Point)
 bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslate)
 {
     return false;
-
-/*
-	if (isInitalized())
-	{
-        if(Hidden && !DrawHidden)
-        {
-            return true;
-        }
-        if(SubTerranian && !DrawSubTerranian)
-        {
-            return true;
-        }
-        if(SkyView && !DrawSkyView)
-        {
-            return true;
-        }
-        if(SunLit && !DrawSunLit)
-        {
-            return true;
-        }
-
-	    if(Slopage != NULL)
-	    {
-	        Slopage->Draw(xTranslate, yTranslate);
-
-	        return true;
-	    }
-	    else
-	    {
-            if(getFacet(FACET_BOTTOM) != NULL)
-            {
-                getFacet(FACET_BOTTOM)->Draw(xTranslate, yTranslate);
-            }
-
-            if(getFacet(FACET_TOP) != NULL)
-            {
-                getFacet(FACET_TOP)->Draw(xTranslate, yTranslate);
-            }
-	    }
-
-        if(Solid)
-        {
-            switch(Orientation)
-            {
-                case CAMERA_SOUTH:
-                {
-                    if(getFacet(FACET_NORTH_EAST) != NULL)
-                    {
-                        getFacet(FACET_NORTH_EAST)->Draw(xTranslate, yTranslate);
-                    }
-                    if(getFacet(FACET_NORTH_WEST) != NULL)
-                    {
-                        getFacet(FACET_NORTH_WEST)->Draw(xTranslate, yTranslate);
-                    }
-                    break;
-                }
-                case CAMERA_WEST:
-                {
-                    if(getFacet(FACET_SOUTH_EAST) != NULL)
-                    {
-                        getFacet(FACET_SOUTH_EAST)->Draw(xTranslate, yTranslate);
-                    }
-                    if(getFacet(FACET_NORTH_EAST) != NULL)
-                    {
-                        getFacet(FACET_NORTH_EAST)->Draw(xTranslate, yTranslate);
-                    }
-                    break;
-                }
-                case CAMERA_NORTH:
-                {
-                    if(getFacet(FACET_SOUTH_EAST) != NULL)
-                    {
-                        getFacet(FACET_SOUTH_EAST)->Draw(xTranslate, yTranslate);
-                    }
-                    if(getFacet(FACET_SOUTH_WEST) != NULL)
-                    {
-                        getFacet(FACET_SOUTH_WEST)->Draw(xTranslate, yTranslate);
-                    }
-                    break;
-                }
-                case CAMERA_EAST:
-                {
-                    if(getFacet(FACET_NORTH_WEST) != NULL)
-                    {
-                        getFacet(FACET_NORTH_WEST)->Draw(xTranslate, yTranslate);
-                    }
-                    if(getFacet(FACET_SOUTH_WEST) != NULL)
-                    {
-                        getFacet(FACET_SOUTH_WEST)->Draw(xTranslate, yTranslate);
-                    }
-                    break;
-                }
-            }
-        }
-        else //Draw the oposite sides to enclose rooms
-        {
-            switch(Orientation)
-            {
-                case CAMERA_NORTH:
-                {
-                    if(getFacet(FACET_NORTH_EAST) != NULL)
-                    {
-                        getFacet(FACET_NORTH_EAST)->Draw(xTranslate, yTranslate);
-                    }
-                    if(getFacet(FACET_NORTH_WEST) != NULL)
-                    {
-                        getFacet(FACET_NORTH_WEST)->Draw(xTranslate, yTranslate);
-                    }
-                    break;
-                }
-                case CAMERA_EAST:
-                {
-                    if(getFacet(FACET_SOUTH_EAST) != NULL)
-                    {
-                        getFacet(FACET_SOUTH_EAST)->Draw(xTranslate, yTranslate);
-                    }
-                    if(getFacet(FACET_NORTH_EAST) != NULL)
-                    {
-                        getFacet(FACET_NORTH_EAST)->Draw(xTranslate, yTranslate);
-                    }
-                    break;
-                }
-                case CAMERA_SOUTH:
-                {
-                    if(getFacet(FACET_SOUTH_EAST) != NULL)
-                    {
-                        getFacet(FACET_SOUTH_EAST)->Draw(xTranslate, yTranslate);
-                    }
-                    if(getFacet(FACET_SOUTH_WEST) != NULL)
-                    {
-                        getFacet(FACET_SOUTH_WEST)->Draw(xTranslate, yTranslate);
-                    }
-                    break;
-                }
-                case CAMERA_WEST:
-                {
-                    if(getFacet(FACET_NORTH_WEST) != NULL)
-                    {
-                        getFacet(FACET_NORTH_WEST)->Draw(xTranslate, yTranslate);
-                    }
-                    if(getFacet(FACET_SOUTH_WEST) != NULL)
-                    {
-                        getFacet(FACET_SOUTH_WEST)->Draw(xTranslate, yTranslate);
-                    }
-                    break;
-                }
-            }
-        }
-	}
-
-	return true;
-	*/
 }
 
 void Cube::Dig()
 {
-    if(Solid)
+    setHidden(false);
+    if(isSolid())
     {
-        Solid = false;
-        Faceted = false;
-        setHidden(false);
-
-        Cell* TargetCell = getCellOwner();
-        TargetCell->setDirtyDrawList(true);
-
+        // set to floor
+        setGeometry(GEOM_SLOPE);
+        // reveal tiles around
         for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
         {
             if(DirectionType != DIRECTION_DOWN)
             {
-                Cube* NeiborCube = getNeiborCube(DirectionType);
-
-                if(NeiborCube != NULL && NeiborCube->isHidden())
+                Cube* NeighborCube = getNeighborCube(DirectionType);
+                if(NeighborCube != NULL && NeighborCube->isHidden())
                 {
-                    NeiborCube->setHidden(false);
-                    NeiborCube->getCellOwner()->setDirtyDrawList(true);
+                    NeighborCube->setHidden(false);
                 }
-
-                if(NeiborCube != NULL && NeiborCube->isSolid())
-                {
-                    NeiborCube->InitFacesSolid();
-                    NeiborCube->getCellOwner()->setDirtyDrawList(true);
-                }
-            }
-        }
-
-        for(Facet FaceType = FACETS_START; FaceType < NUM_FACETS; ++FaceType)
-        {
-            if(FaceType != FACET_TOP && FaceType != FACET_BOTTOM)
-            {
-                DeleteFace(FaceType);
-            }
-        }
-
-        if(getFacet(FACET_BOTTOM) == NULL)
-        {
-            InitFace(FACET_BOTTOM);
-        }
-        else
-        {
-            if(!getFacet(FACET_BOTTOM)->isConstructed())
-            {
-                InitFace(FACET_BOTTOM);
             }
         }
     }
-    else if(Slopage)
+    else if(isSlope())
     {
-        RemoveSlope();
-        InitFace(FACET_BOTTOM);
+        // set to floor
+        setGeometry(GEOM_FLOOR);
+        // done
         for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
         {
-            if(DirectionType != DIRECTION_DOWN)
+            Cube* NeighborCube = getNeighborCube(DirectionType);
+            if(NeighborCube != NULL && NeighborCube->isHidden())
             {
-                Cube* NeiborCube = getNeiborCube(DirectionType);
-                NeiborCube->getCellOwner()->setDirtyDrawList(true);
+                NeighborCube->setHidden(false);
             }
         }
     }
-    else if(!Solid && !Slopage)
+    else if(isFloor())
     {
-        DeleteFace(FACET_BOTTOM);
-        Cube * LowerCube = getNeiborCube(DIRECTION_DOWN);
-        getCellOwner()->setDirtyDrawList(true);
+        // set empty (deleting cube would be ideal)
+        setGeometry(GEOM_EMPTY);
+        // reveal one tile under
+        Cube * LowerCube = getNeighborCube(DIRECTION_DOWN);
         if(LowerCube)
         {
-            for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
-            {
-                Cube* NeiborCube = LowerCube->getNeiborCube(DirectionType);
-
-                if(NeiborCube != NULL && NeiborCube->isHidden())
-                {
-                    NeiborCube->setHidden(false);
-                    NeiborCube->getCellOwner()->setDirtyDrawList(true);
-                }
-
-                if(NeiborCube != NULL && NeiborCube->isSolid())
-                {
-                    NeiborCube->InitFacesSolid();
-                    NeiborCube->getCellOwner()->setDirtyDrawList(true);
-                }
-            }
-        }
-        for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
-        {
-            Cube* NeiborCube = getNeiborCube(DirectionType);
-
-            if(NeiborCube != NULL && NeiborCube->isHidden())
-            {
-                NeiborCube->setHidden(false);
-                NeiborCube->getCellOwner()->setDirtyDrawList(true);
-            }
-
-            if(NeiborCube != NULL && NeiborCube->isSolid())
-            {
-                NeiborCube->InitFacesSolid();
-                NeiborCube->getCellOwner()->setDirtyDrawList(true);
-            }
+            LowerCube->setHidden(false);
+            LowerCube->getCellOwner()->setDirtyDrawList(true);
         }
     }
+    // update draw list of parent cell
+    getCellOwner()->setDirtyDrawList(true);
+    for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+    {
+        Cube* NeighborCube = getNeighborCube(DirectionType);
+
+        if(NeighborCube != NULL && NeighborCube->isHidden())
+        {
+            getCellOwner()->setDirtyDrawList(true);
+        }
+    }
+}
+void Cube::setGeometry(geometry_type NewValue)
+{
+    data.geometry = NewValue;
+    // update faces
+    switch (data.geometry)
+    {
+        case GEOM_SLOPE:
+            data.facets = FACET_BOTTOM;
+            data.facets = 0;
+            Owner->setActive(true);
+        case GEOM_EMPTY:
+            data.facets = 0;
+            Owner->setActive(true);
+            break;
+        case GEOM_FLOOR:
+            data.facets = FACET_BOTTOM;
+            Owner->setActive(true);
+            break;
+        case GEOM_WALL:
+            data.facets = FACET_TOP | FACET_NORTH | FACET_SOUTH | FACET_EAST | FACET_WEST;
+            Owner->setActive(true);
+            Owner->setTopActive(true);
+            break;
+    }
+}
+
+bool Cube::hasFace(Facet FacetType)
+{
+    return data.facets & FacetType;
+}
+// DRAW FACE
+bool Cube::DrawFace(float xTranslate, float yTranslate, Facet FacetType)
+{
+    Vector3 Points[4];
+    if(Visible && hasFace(FacetType))
+    {
+        if(FacetType != FACET_BOTTOM && FacetType != FACET_TOP)
+        {
+            Cube * c = getAdjacentCube(FacetType);
+            if(c && !c->isHidden() && c->hasFace(OppositeFacet(FacetType)))
+                return false;
+        }
+        switch(FacetType)
+        {
+            case FACET_TOP:
+            {
+                glNormal3f( 0.0f, 0.0f, 1.0f);
+                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
+                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
+                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
+                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
+                break;
+            }
+            case FACET_BOTTOM:
+            {
+                glNormal3f( 0.0f, 0.0f, 1.0f);
+                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
+                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
+                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
+                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
+                break;
+            }
+            case FACET_NORTH:
+            {
+                glNormal3f( 0.0f, -1.0f, 0.0f);
+                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
+                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
+                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
+                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
+                break;
+            }
+            case FACET_EAST:
+            {
+                glNormal3f( 1.0f, 0.0f, 0.0f);
+                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
+                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
+                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
+                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
+                break;
+            }
+            case FACET_SOUTH:
+            {
+                glNormal3f( 0.0f, 1.0f, 0.0f);
+                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
+                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
+                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
+                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
+                break;
+            }
+            case FACET_WEST:
+            {
+                glNormal3f( -1.0f, 0.0f, 0.0f);
+                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
+                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
+                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
+                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
+                break;
+            }
+        }
+
+
+        TEXTURE->BindTexturePoint(Material, 0,0);         glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
+        TEXTURE->BindTexturePoint(Material, 1,1);         glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+        TEXTURE->BindTexturePoint(Material, 0,1);         glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+
+        TEXTURE->BindTexturePoint(Material, 0,0);         glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
+        TEXTURE->BindTexturePoint(Material, 1,0);         glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
+        TEXTURE->BindTexturePoint(Material, 1,1);         glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+
+        SCREEN->IncrementTriangles(2);
+    }
+
+    return true;
+}
+
+
+// DRAW SLOPE
+
+/// TODO: normal vectors. these are required for lighting
+/// TODO: separate this from khazad, use for mesh generation
+/// FIXME: waste of CPU cycles
+bool Cube::DrawSlope(float xTranslate, float yTranslate)
+{
+    if(!Visible) return false;
+    /**
+    * heightmap. order is from nort-west to north-west, clockwise. hm[9] is the center
+    * 0=8--1---2
+    *  |   |   |
+    *  7---9---3
+    *  |   |   |
+    *  6---5---4
+    */
+    uint8_t hm[10] = {0,0,0,0,0,0,0,0,0,1};
+    float hmf[10];// same in float
+
+    uint8_t covered[4] = {0,0,0,0}; // view of a side blocked by geometry?
+
+    // coordinates of the directions... fixed for spillover at the end of the loop
+    const float dc[9][2] =
+    {
+        {-0.5,-0.5},
+        {0   ,-0.5},
+        {0.5 ,-0.5},
+        {0.5 ,0},
+        {0.5 ,0.5},
+        {0   ,0.5},
+        {-0.5,0.5},
+        {-0.5,0},
+        {-0.5,-0.5}
+    };
+    // same for texture coords
+    const float tc[9][2] =
+    {
+        {0,1},
+        {0.5   ,1},
+        {1 ,1},
+        {1 ,0.5},
+        {1 ,0},
+        {0.5   ,0},
+        {0,0},
+        {0,0.5},
+        {0,1}
+    };
+    uint8_t strong, weak, numsolids = 0;
+
+    // copy surroundings
+    for(Direction i = DIRECTION_NORTHWEST; i <= DIRECTION_WEST; ++i)
+    {
+        bool solid = getNeighborCube(i) != NULL && getNeighborCube(i)->isSolid();
+        hm[i] = solid << 1;
+        numsolids += solid;
+    }
+
+    // test for covered and uncovered sides
+    covered[0] = hm[1] || getNeighborCube(DIRECTION_NORTH) != NULL && getNeighborCube(DIRECTION_NORTH)->isSlope();
+    covered[1] = hm[3] || getNeighborCube(DIRECTION_EAST) != NULL && getNeighborCube(DIRECTION_EAST)->isSlope();
+    covered[2] = hm[5] || getNeighborCube(DIRECTION_SOUTH) != NULL && getNeighborCube(DIRECTION_SOUTH)->isSlope();
+    covered[3] = hm[7] || getNeighborCube(DIRECTION_WEST) != NULL && getNeighborCube(DIRECTION_WEST)->isSlope();
+
+    // determine center
+    strong = (hm[7] && hm[1] && !hm[3] && !hm[4] && !hm[5])
+    + (hm[1] && hm[3] && !hm[5] && !hm[6] && !hm[7])
+    + (hm[3] && hm[5] && !hm[7] && !hm[0] && !hm[1])
+    + (hm[5] && hm[7] && !hm[1] && !hm[2] && !hm[3]);
+    if(numsolids == 1)
+    {
+        if (hm[0] || hm[2] || hm[4] || hm[6] )
+        {
+            hm[9] = 0;
+        }
+    }
+    else if(strong == 1) hm[9] = 2;
+    else hm[9] = 1;
+
+    // fix corners
+    hm[0] = hm[7] | hm[0] | hm[1];
+    hm[2] = hm[1] | hm[2] | hm[3];
+    hm[4] = hm[3] | hm[4] | hm[5];
+    hm[6] = hm[5] | hm[6] | hm[7];
+
+    // fix sides so that slopes aren't jaggy.
+    hm[1] = (hm[1] >> 1) + (hm[0] || hm[2]);
+    hm[3] = (hm[3] >> 1) + (hm[2] || hm[4]);
+    hm[5] = (hm[5] >> 1) + (hm[4] || hm[6]);
+    hm[7] = (hm[7] >> 1) + (hm[6] || hm[0]);
+
+    hm[8] = hm[0]; // copy first point so we can safely use algorithms that go to N+1
+
+    // convert int heights to floats
+    for(int i = 0; i < 10; ++i)
+    {
+        hmf[i] = ((float)hm[i]) / 2 - 0.5;
+    }
+
+    // draw triangles
+    for(Direction i = DIRECTION_NORTHWEST; i <= DIRECTION_WEST; ++i)
+    {
+        /**
+        *  P--P+1--*
+        *  | \ | / |
+        *  *---C---*
+        *  | / | \ |
+        *  *---*---*
+        */
+        // point C
+        TEXTURE->BindTexturePoint(Material, 0.5,0.5);
+        glVertex3f( xTranslate,  yTranslate, hmf[9]);
+        //point P+1
+        TEXTURE->BindTexturePoint(Material, tc[i+1][0],tc[i+1][1]);
+        glVertex3f(dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, hmf[i+1]);
+        //point P
+        TEXTURE->BindTexturePoint(Material, tc[i][0],tc[i][1]);
+        glVertex3f(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i]);
+    }
+    // just drawn 8 tris
+    SCREEN->IncrementTriangles(8);
+
+    //patch holes
+    for(int i = 0; i< 8;i+=2)
+    {
+        // already covered by wall or nearby slope, don't draw side
+        if (covered[i/2])
+            continue;
+
+        // zero center can be ignored
+        if (hm[i+1] == 0)
+            continue;
+
+        // determine how many triangles are needed an in what configuration
+        if(hm[i] == 0)// one tri, hm[i+2] is high
+        {
+            // second upper
+            TEXTURE->BindTexturePoint(Material, 0.0,1.0);
+            glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, hmf[i+2]);
+            // second lower
+            TEXTURE->BindTexturePoint(Material, 0.0,0.0);
+            glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5);
+            // first lower
+            TEXTURE->BindTexturePoint(Material, 1.0,0.0);
+            glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i]);
+            SCREEN->IncrementTriangles(1);
+        }
+        else if(hm[i+2] == 0)// one tri, hm[i] is high
+        {
+            // first lower
+            TEXTURE->BindTexturePoint(Material, 1.0,0.0);
+            glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, -0.5);
+            // first upper
+            TEXTURE->BindTexturePoint(Material, 1.0,1.0);
+            glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, hmf[i]);
+            // second
+            TEXTURE->BindTexturePoint(Material, 0.0,0.0);
+            glVertex3f( dc[i+2][0] + xTranslate, dc[i+2][1]+ yTranslate, hmf[i+2]);
+            SCREEN->IncrementTriangles(1);
+        }
+        else // two tris, both corners high
+        {
+            // second upper
+            TEXTURE->BindTexturePoint(Material, 0.0,1.0);
+            glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, 0.5);
+            // second lower
+            TEXTURE->BindTexturePoint(Material, 0.0,0.0);
+            glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5);
+            // first lower
+            TEXTURE->BindTexturePoint(Material, 1.0,0.0);
+            glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5);
+
+            // first lower
+            TEXTURE->BindTexturePoint(Material, 1.0,0.0);
+            glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5);
+            // first upper
+            TEXTURE->BindTexturePoint(Material, 1.0,1.0);
+            glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, 0.5);
+            // center
+            TEXTURE->BindTexturePoint(Material, 0.5,0.5);
+            glVertex3f( dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, 0.0);
+            SCREEN->IncrementTriangles(2);
+        }
+    }
+    return true;
 }

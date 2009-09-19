@@ -86,8 +86,6 @@ bool Map::Generate(Uint32 Seed)
         }
     }
 
-    Slopping Type = SLOPE_FLAT;
-
     Cube* NewCube = NULL;
     Cell* TargetCell = NULL;
 
@@ -111,10 +109,7 @@ bool Map::Generate(Uint32 Seed)
                     if (NewCube->isInitalized() != true)
                     {
                         NewCube->Init(0);
-                        if (Type != SLOPE_FLAT)
-                        {
-                            NewCube->SetSlope(Type);
-                        }
+                        NewCube->setGeometry(GEOM_WALL);
                         NewCube->setVisible(true);
                     }
                 }
@@ -175,7 +170,7 @@ Cube* Map::getCube(Sint32 X, Sint32 Y, Sint32 Z)
     return NULL;
 }
 
-Face* Map::getFace(Sint32 X, Sint32 Y, Sint32 Z, Facet FaceType)
+bool Map::hasFace(Sint32 X, Sint32 Y, Sint32 Z, Facet FaceType)
 {
     Cell* TargetCell = getCubeOwner(X, Y, Z);
 
@@ -186,11 +181,11 @@ Face* Map::getFace(Sint32 X, Sint32 Y, Sint32 Z, Facet FaceType)
             Sint32 CubeX = X % CELLEDGESIZE;
             Sint32 CubeY = Y % CELLEDGESIZE;
 
-            return TargetCell->getFace(CubeX, CubeY, FaceType);
+            return TargetCell->hasFace(CubeX, CubeY, FaceType);
         }
-        return NULL;
+        return false;
     }
-    return NULL;
+    return false;
 }
 
 bool Map::Extract()
@@ -298,7 +293,7 @@ bool Map::Extract()
     MapSizeX = CellSizeX * CELLEDGESIZE;
 	MapSizeY = CellSizeY * CELLEDGESIZE;
 	MapSizeZ = CellSizeZ;
-
+/*
 	for (Uint32 i = 0; i < CellSizeX; i++)
 	{
 		for (Uint32 j = 0; j < CellSizeY; j++)
@@ -334,7 +329,7 @@ bool Map::Extract()
 			}
 		}
 	}
-
+*/
     // Initialize Drawlists
 	for(Uint16 Zlevel = 0; Zlevel < getCellSizeZ(); Zlevel++)
 	{
@@ -358,6 +353,8 @@ bool Map::Extract()
                             {
                                 SCREEN->RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation);
                             }
+                            glDeleteLists(DrawListID + 6,1);
+                            SCREEN->RefreshTopDrawlist(LoopCell, DrawListID + 6);
                             LoopCell->setDirtyDrawList(false);
                         }
                     }
@@ -480,7 +477,10 @@ void Map::LoadCellData(DFHackAPI & DF,
             bool IsOpen = isOpenTerrain(t);
             bool IsRamp = isRampTerrain(t);
             bool IsStairs = isStairTerrain(t);
-            if(IsFloor || IsWall || IsOpen || IsRamp || IsStairs)
+            int Liquid = d.bits.flow_size;
+
+            // initialize cubes. skip empty cubes unless they have liquid in them
+            if(IsFloor || IsWall || (Liquid && IsOpen) || IsRamp || IsStairs)
             {
                 Cube* TargetCube = TargetCell->getCube(CubeX, CubeY);
 
@@ -498,26 +498,27 @@ void Map::LoadCellData(DFHackAPI & DF,
                 if(IsWall)
                 {
                     TargetCube->Init(Material);
+                    TargetCube->setGeometry(GEOM_WALL);
                 }
-                if(IsOpen)
-                {
-                    TargetCube->Open();
-                }
-                if(IsRamp)
+                else if(IsOpen)
                 {
                     TargetCube->Init(Material);
-                    TargetCube->Open();
-                    TargetCube->SetSlope(SLOPE_FLAT);  // Prime the Slope, the type can not yet be determined
+                    TargetCube->setGeometry(GEOM_EMPTY);
                 }
-                if(IsFloor)
-                {
-                    TargetCube->InitConstructedFace(FACET_BOTTOM, Material);
-                }
-                if(IsStairs)
+                else if(IsRamp)
                 {
                     TargetCube->Init(Material);
-                    TargetCube->Open();
-                    TargetCube->SetSlope(SLOPE_FLAT);
+                    TargetCube->setGeometry(GEOM_SLOPE);
+                }
+                else if(IsFloor)
+                {
+                    TargetCube->Init(Material);
+                    TargetCube->setGeometry(GEOM_FLOOR);
+                }
+                else if(IsStairs)
+                {
+                    TargetCube->Init(Material);
+                    TargetCube->setGeometry(GEOM_SLOPE);
                     //TODO render stairs differently
                 }
                 if(d.bits.flow_size)
@@ -650,14 +651,14 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
     static Uint16 Layer3 = DATA->getLabelIndex("MATERIAL_ROUGH_STONE");
     static Uint16 ConstructedWall = DATA->getLabelIndex("MATERIAL_CONSTRUCTED_WALL");
     static Uint16 ConstructedFloor = DATA->getLabelIndex("MATERIAL_SMOOTH_FLOOR");
-    
+
     static Uint16 GreenGlass = DATA->getLabelIndex("MATERIAL_GREEN_GLASS");
     static Uint16 ClearGlass = DATA->getLabelIndex("MATERIAL_CLEAR_GLASS");
     static Uint16 CrystalGlass = DATA->getLabelIndex("MATERIAL_CRYSTAL_GLASS");
     static Uint16 Ice = DATA->getLabelIndex("MATERIAL_ICE");
     static Uint16 Wood = DATA->getLabelIndex("MATERIAL_WOOD");
     // TODO: missing constructed ramps
-    
+
     /*
     Mat_GreenGlass = 13,
     Mat_ClearGlass = 14,

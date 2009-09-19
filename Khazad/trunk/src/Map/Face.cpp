@@ -10,7 +10,7 @@
 #include <Random.h>
 #include <Map.h>
 
-
+/*
 Face::Face()
 {
     setType(FACE_ACTOR);
@@ -123,7 +123,7 @@ bool Face::Draw(float xTranslate, float yTranslate)
             }
         }
 
-        
+
         TEXTURE->BindTexturePoint(Texture, 0,0);         glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
         TEXTURE->BindTexturePoint(Texture, 1,1);         glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
         TEXTURE->BindTexturePoint(Texture, 0,1);         glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
@@ -137,3 +137,4 @@ bool Face::Draw(float xTranslate, float yTranslate)
 
     return true;
 }
+*/

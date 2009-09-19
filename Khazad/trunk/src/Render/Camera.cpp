@@ -196,13 +196,9 @@ bool Camera::DetermineCursorIntersection()
         Cube* TopCube = MAP->getCube((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i);
         if(TopCube != NULL && SCREEN->isCubeDrawn(TopCube))
         {
-            Face* TopFace = MAP->getFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_TOP);
-            if(TopFace != NULL)
+            if(MAP->hasFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_TOP))
             {
-//                if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
-//                {
-                    return true;
-//                }
+                return true;
             }
         }
 
@@ -214,24 +210,17 @@ bool Camera::DetermineCursorIntersection()
         Cube* BottomCube = MAP->getCube((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i);
         if(BottomCube != NULL && SCREEN->isCubeDrawn(BottomCube))
         {
-            Face* BottomFace = MAP->getFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_BOTTOM);
-            if(BottomFace != NULL)
+            if(MAP->hasFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_BOTTOM))
             {
-//                if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
-//                {
-                    return true;
-//                }
+                return true;
             }
         }
 
         // Find Slopes while not picking Cubes that lack facets or arnt being drawn
         Cube* TargetCube = MAP->getCube((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i);
-        if(TargetCube != NULL && SCREEN->isCubeDrawn(TargetCube) && ((TargetCube->isSolid() && TargetCube->isFaceted()) || TargetCube->getSlope() != NULL))
+        if(TargetCube != NULL && SCREEN->isCubeDrawn(TargetCube) && (TargetCube->isSolid() || TargetCube->isSlope()))
         {
-//            if(Cursor.x >= 0 && Cursor.x < MAP->getMapSizeX() && Cursor.y >= 0 && Cursor.y < MAP->getMapSizeY() && Cursor.z >= 0 && Cursor.z < MAP->getMapSizeZ())
-//            {
-                return true;
-//            }
+            return true;
         }
 
     }

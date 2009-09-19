@@ -110,7 +110,7 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
     }
     else if(colormode == "overlay")
     {
-        ilConvertImage(IL_LUMINANCE, IL_UNSIGNED_BYTE);
+        ilConvertImage(IL_LUMINANCE_ALPHA, IL_UNSIGNED_BYTE);
         Uint8* TextureData = ilGetData();
         Uint32 width = ilGetInteger(IL_IMAGE_WIDTH);
         Uint32 height = ilGetInteger(IL_IMAGE_HEIGHT);
@@ -130,7 +130,8 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
         {
             for(Uint32 j = 0; j < height; j++)
             {
-                float Base = TextureData[(i * width) + j];
+                float Base  = TextureData[(i * width * 2) + (j * 2) + 0];
+                float Alpha = TextureData[(i * width * 2) + (j * 2) + 1];
                 Base /= 255.0;
                 float OB = PrimaryColor.getBlue();
                 OB /= 255.0;
@@ -147,14 +148,14 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
                     BaseData[(i * width * bpp) + (j * bpp) + 0] = (1.0 - 2.0 * (1.0 - OB) * (1.0 - Base)) * 255;
                     BaseData[(i * width * bpp) + (j * bpp) + 1] = (1.0 - 2.0 * (1.0 - OG) * (1.0 - Base)) * 255;
                     BaseData[(i * width * bpp) + (j * bpp) + 2] = (1.0 - 2.0 * (1.0 - OR) * (1.0 - Base)) * 255;
-                    BaseData[(i * width * bpp) + (j * bpp) + 3] = 255; // Alpha
+                    BaseData[(i * width * bpp) + (j * bpp) + 3] = Alpha; // Alpha
                 }
                 else
                 {
                     BaseData[(i * width * bpp) + (j * bpp) + 0] = (2.0* OB * Base) * 255; // Blue
                     BaseData[(i * width * bpp) + (j * bpp) + 1] = (2.0* OG * Base) * 255; // Green
                     BaseData[(i * width * bpp) + (j * bpp) + 2] = (2.0* OR * Base) * 255; // Red
-                    BaseData[(i * width * bpp) + (j * bpp) + 3] = 255; // Alpha
+                    BaseData[(i * width * bpp) + (j * bpp) + 3] = Alpha; // Alpha
                 }
             }
         }
