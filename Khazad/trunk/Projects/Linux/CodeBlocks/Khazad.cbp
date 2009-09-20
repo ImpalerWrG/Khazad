@@ -164,12 +164,8 @@
 		<Unit filename="../../../src/Map/Column.h" />
 		<Unit filename="../../../src/Map/Cube.cpp" />
 		<Unit filename="../../../src/Map/Cube.h" />
-		<Unit filename="../../../src/Map/Face.cpp" />
-		<Unit filename="../../../src/Map/Face.h" />
 		<Unit filename="../../../src/Map/Map.cpp" />
 		<Unit filename="../../../src/Map/Map.h" />
-		<Unit filename="../../../src/Map/Slope.cpp" />
-		<Unit filename="../../../src/Map/Slope.h" />
 		<Unit filename="../../../src/Map/Tree.cpp" />
 		<Unit filename="../../../src/Map/Tree.h" />
 		<Unit filename="../../../src/Render/Camera.cpp" />

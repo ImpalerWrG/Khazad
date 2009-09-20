@@ -23,7 +23,7 @@
 	<Material>
 		<Name Label="MATERIAL_ASHES"/>
 		<Texture label="TEXTURE_ASHES"/>
-        <ColorMode mode="keepimage" />
+		<ColorMode mode="keepimage" />
 		<TileValues>
 			<Tile Int="242"/>
 			<Tile Int="243"/>
@@ -46,19 +46,6 @@
 		</TileValues>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_ROUGH_STONE"/>
-		<Texture label="TEXTURE_ROUGH"/>
-		<PrimaryColor label="COLOR_SILVER"/>
-		<SecondaryColor label="COLOR_DARK_GREY"/>
-		<TileValues>
-		<!-- stone floors, belong to the rest of the ordinary stones -->
-			<Tile Int="336"/>
-			<Tile Int="337"/>
-			<Tile Int="338"/>
-			<Tile Int="339"/>
-		</TileValues>
-	</Material>
-	<Material>
 		<Name Label="MATERIAL_WATER"/>
 		<Texture label="TEXTURE_LIQUID"/>
 		<PrimaryColor label="COLOR_TEAL"/>
@@ -67,23 +54,14 @@
 			<Tile Int="-1"/>
 		</TileValues>
 	</Material>
-	<Material>
-		<Name Label="MATERIAL_RAMP_STONE"/>
-		<Texture label="TEXTURE_ROUGH"/>
-		<PrimaryColor label="COLOR_SILVER"/>
-		<SecondaryColor label="COLOR_DARK_GREY"/>
-		<TileValues>
-			<Tile Int="237"/>
-		</TileValues>
-	</Material>
+	
+	<!-- STONE -->
 	<Material>
 		<Name Label="MATERIAL_SMOOTH_LAYER_STONE"/>
 		<Texture label="TEXTURE_SMOOTH"/>
+		<ColorMode mode="overlay"/>
 		<PrimaryColor label="COLOR_SILVER"/>
-		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<TileValues>
-			<!-- stone floor detailed -->
-			<Tile Int="43"/>
 			<!-- stone updown stair -->
 			<Tile Int="55"/>
 			<!-- stone down stair -->
@@ -92,8 +70,9 @@
 			<Tile Int="57"/>
 			<!-- stone pillar -->
 			<Tile Int="79"/>
-			
-			<!-- stone walls -->
+			<!-- stone floor detailed -->
+			<Tile Int="43"/>
+			<!-- smoothed or engraved stone walls -->
 			<Tile Int="307"/>
 			<Tile Int="308"/>
 			<Tile Int="309"/>
@@ -114,33 +93,74 @@
 			<Tile Int="324"/>
 			<Tile Int="325"/>
 			
-			<!-- stone floors -->
-			<!--
-			<Tile Int="336"/>
-			<Tile Int="337"/>
-			<Tile Int="338"/>
-			<Tile Int="339"/>
-			-->
 		</TileValues>
 	</Material>
+	<Material>
+		<Name Label="MATERIAL_STONE_FLOOR1"/>
+		<Texture label="TEXTURE_STONE1"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<ColorMode mode="overlay"/>
+		<TileValues>
+			<!-- stone ramp -->
+			<Tile Int="237"/>
+			<!-- stone floor 1 -->
+			<Tile Int="336"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_STONE_FLOOR2"/>
+		<Texture label="TEXTURE_STONE2"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<ColorMode mode="overlay"/>
+		<TileValues>
+			<!-- stone floor 2 -->
+			<Tile Int="337"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_STONE_FLOOR3"/>
+		<Texture label="TEXTURE_STONE3"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<ColorMode mode="overlay"/>
+		<TileValues>
+			<!-- stone floor 3 -->
+			<Tile Int="338"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_STONE_FLOOR4"/>
+		<Texture label="TEXTURE_STONE4"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<ColorMode mode="overlay"/>
+		<TileValues>
+			<!-- stone floor 4 -->
+			<Tile Int="339"/>
+		</TileValues>
+	</Material>
+	<!-- stone walls -->
 	<Material>
 		<Name Label="MATERIAL_ROUGH_LAYER_STONE"/>
 		<Texture label="TEXTURE_ROUGH"/>
 		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<TileValues>
-			<!-- worn stone -->
+			<!-- worn stone 1,2,3, needs research -->
 			<Tile Int="176"/>
 			<Tile Int="177"/>
 			<Tile Int="178"/>
+			<!-- stone wall (not worn) - used everywhere for solid rock -->
 			<Tile Int="219"/>
 		</TileValues>
 	</Material>
+	
+	
+	
+	
 	<Material>
 		<Name Label="MATERIAL_CONSTRUCTED_WALL"/>
 		<Texture label="TEXTURE_BRICK"/>
 		<PrimaryColor label="COLOR_SILVER"/>
-		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<ColorMode mode="overlay" />
 		<TileValues>
 			<!-- constructed fortification -->
 			<Tile Int="494"/>
@@ -229,9 +249,11 @@
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SOIL"/>
-		<Texture label="TEXTURE_DIRT"/>
-		<PrimaryColor label="COLOR_BROWN"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<Texture label="TEXTURE_GROUND"/>
+		<PrimaryColor label="COLOR_BROWN_DARK"/>
+		<ColorMode mode="overlay"/>
+		<!--<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_BLACK"/>-->
 		<TileValues>
 			<!-- up-down stair soil -->
 			<Tile Int="39"/>
@@ -279,7 +301,7 @@
 	<Material>
 		<Name Label="MATERIAL_SAND_TAN"/>
 		<Texture label="TEXTURE_SAND"/>
-		<PrimaryColor label="COLOR_COLOR_TAN"/>
+		<PrimaryColor value="#80502F"/>
 		<MatGloss label="SAND_TAN"/>
 		<ColorMode mode="overlay" />
 		<NoBorder />
@@ -287,7 +309,7 @@
 	<Material>
 		<Name Label="MATERIAL_SAND_YELLOW"/>
 		<Texture label="TEXTURE_SAND"/>
-		<PrimaryColor label="COLOR_YELLOW"/>
+		<PrimaryColor value="#C5A92A"/>
 		<MatGloss label="SAND_YELLOW"/>
 		<ColorMode mode="overlay" />
 		<NoBorder />
@@ -295,7 +317,7 @@
 	<Material>
 		<Name Label="MATERIAL_SAND_WHITE"/>
 		<Texture label="TEXTURE_SAND"/>
-		<PrimaryColor label="COLOR_WHITE"/>
+		<PrimaryColor value="#BBBBBB"/>
 		<MatGloss label="SAND_WHITE"/>
 		<ColorMode mode="overlay" />
 		<NoBorder />
@@ -303,7 +325,7 @@
 	<Material>
 		<Name Label="MATERIAL_SAND_RED"/>
 		<Texture label="TEXTURE_SAND"/>
-		<PrimaryColor label="COLOR_RED"/>
+		<PrimaryColor value="#E31E00"/>
 		<MatGloss label="SAND_RED"/>
 		<ColorMode mode="overlay" />
 		<NoBorder />
@@ -319,22 +341,15 @@
 	
 	<Material>
 		<Name Label="MATERIAL_PEBBLES"/>
-		<Texture label="TEXTURE_CONGLOMERATE"/>
-		<PrimaryColor label="COLOR_DARK_GREY"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<Texture label="TEXTURE_PEBBLES"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<ColorMode mode="overlay"/>
 		<TileValues>
 			<!-- stone pebbles -->
 			<Tile Int="405"/>
 			<Tile Int="406"/>
 			<Tile Int="407"/>
 			<Tile Int="408"/>
-			
-			<!-- obsidian shards -->
-			<Tile Int="409"/>
-			<Tile Int="410"/>
-			<Tile Int="411"/>
-			<Tile Int="412"/>
-			
 			<!-- featstone pebbles, probably unused? -->
 			<!--
 			<Tile Int="413"/>
@@ -344,6 +359,20 @@
 			-->
 		</TileValues>
 	</Material>
+	<Material>
+		<Name Label="MATERIAL_OBSIDIAN_SHARDS"/>
+		<Texture label="TEXTURE_PEBBLES"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<ColorMode mode="overlay"/>
+		<TileValues>
+			<!-- obsidian shards -->
+			<Tile Int="409"/>
+			<Tile Int="410"/>
+			<Tile Int="411"/>
+			<Tile Int="412"/>
+		</TileValues>
+	</Material>
+
 	<Material>
 		<Name Label="MATERIAL_VEIN_STONE"/>
 		<Texture label="TEXTURE_MATT"/>
@@ -932,30 +961,37 @@
 	<!-- GLASS -->
 	<Material>
 		<Name Label="MATERIAL_GREEN_GLASS"/>
-		<Texture label="TEXTURE_PIT"/>
+		<Texture label="TEXTURE_BRICK"/>
 		<PrimaryColor label="COLOR_GREEN"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CLEAR_GLASS"/>
-		<Texture label="TEXTURE_PIT"/>
+		<Texture label="TEXTURE_BRICK"/>
 		<PrimaryColor label="COLOR_LIGHT_GREY"/>
-		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CRYSTAL_GLASS"/>
-		<Texture label="TEXTURE_PIT"/>
+		<Texture label="TEXTURE_BRICK"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 	</Material>
-	<!-- ugly placeholder for wood -->
 	<Material>
-		<Name Label="MATERIAL_WOOD"/>
-		<Texture label="TEXTURE_BARK"/>
+		<Name Label="MATERIAL_WOOD_WALL"/>
+		<Texture label="TEXTURE_WOOD_WALL"/>
 		<PrimaryColor label="COLOR_BROWN"/>
-		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<ColorMode mode="overlay" />
+		<NoBorder />
 	</Material>
-	
+	<Material>
+		<Name Label="MATERIAL_WOOD_FLOOR"/>
+		<Texture label="TEXTURE_WOOD_FLOOR"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<ColorMode mode="overlay" />
+		<NoBorder />
+	</Material>
+
 	
 	
 	<!-- STONE/SOIL materials, disabled to show regular textures better -->

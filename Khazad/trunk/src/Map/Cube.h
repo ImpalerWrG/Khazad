@@ -34,8 +34,9 @@ public:
     bool isSlope()                  { return data.geometry == GEOM_SLOPE; }
     bool isFloor()                  { return data.geometry == GEOM_FLOOR; }
     void setGeometry(geometry_type NewValue);
+    geometry_type getGeometry() {return data.geometry;};
     bool hasFace(Facet FacetType);
-    
+
     Uint8 getLiquid()                   { return data.liquid; }
     void setLiquid(Uint8 liquidtype,Uint8 NewValue);
 
@@ -75,7 +76,7 @@ public:
 
 	bool Update();
     bool Draw(CameraOrientation Orientation, float xTranslate, float yTranslate);
-    bool DrawFace(float xTranslate, float yTranslate,Facet FacetType);
+    bool DrawFace(float xTranslate, float yTranslate,Facet FacetType, bool draw_vis_invis);
     bool DrawSlope(float xTranslate, float yTranslate);
     bool DrawLiquid(float xTranslate, float yTranslate);
 
@@ -100,12 +101,12 @@ protected:
         bool SkyView : 1;
         bool SunLit : 1;
         bool snow : 1;
-        uint facets : 6;
-        uint facets_visible : 6;
-        uint liquid : 3;
+        unsigned int facets : 6;
+        unsigned int facets_visible : 6;
+        unsigned int liquid : 3;
         bool liquidtype :1;
         geometry_type geometry : 3;
-        uint empty : 8;
+        unsigned int empty : 8;
         };
         uint32_t whole;
     }data;

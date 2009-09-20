@@ -9,9 +9,10 @@
 
 Cube::Cube()
 {
-    setType(CUBE_ACTOR);
+    //setType(CUBE_ACTOR);
 
     Visible = false;
+    Hidden = true;
     Initalized = false;
     data.whole = 0;
 
@@ -318,11 +319,13 @@ Cell* Cube::getAdjacentCell(Facet Type)
 
     return MAP->getCubeOwner(x, y, z);
 }
+
 bool Cube::Update()
 {
 	return true;
 }
 
+//fixme: !!total!! waste of CPU cycles
 Vector3 Cube::ConvertSpacialPoint(SpacialPoint Point)
 {
     switch(Point)
@@ -409,30 +412,30 @@ void Cube::Dig()
         if(LowerCube)
         {
             LowerCube->setHidden(false);
-            LowerCube->getCellOwner()->setDirtyDrawList(true);
         }
     }
-    // update draw list of parent cell
+    // update draw list of parent cell(s)
     getCellOwner()->setDirtyDrawList(true);
     for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
     {
         Cube* NeighborCube = getNeighborCube(DirectionType);
 
-        if(NeighborCube != NULL && NeighborCube->isHidden())
+        if(NeighborCube != NULL)
         {
-            getCellOwner()->setDirtyDrawList(true);
+            NeighborCube->getCellOwner()->setDirtyDrawList(true);
         }
     }
 }
 void Cube::setGeometry(geometry_type NewValue)
 {
     data.geometry = NewValue;
+    //TODO: track and change tile type
     // update faces
     switch (data.geometry)
     {
         case GEOM_SLOPE:
+            // block bottom so that we don't see the wall-tops below the slope
             data.facets = FACET_BOTTOM;
-            data.facets = 0;
             Owner->setActive(true);
         case GEOM_EMPTY:
             data.facets = 0;
@@ -455,16 +458,30 @@ bool Cube::hasFace(Facet FacetType)
     return data.facets & FacetType;
 }
 // DRAW FACE
-bool Cube::DrawFace(float xTranslate, float yTranslate, Facet FacetType)
+// tops_vis_invis =  draw visible or invisible tops? true = visible
+//FIXME: waste of CPU cycles
+bool Cube::DrawFace(float xTranslate, float yTranslate, Facet FacetType, bool tops_vis_invis)
 {
+    //glColor4f(1,1,1,0.2);
     Vector3 Points[4];
     if(Visible && hasFace(FacetType))
     {
-        if(FacetType != FACET_BOTTOM && FacetType != FACET_TOP)
+        if(FacetType != FACET_BOTTOM)
         {
             Cube * c = getAdjacentCube(FacetType);
-            if(c && !c->isHidden() && c->hasFace(OppositeFacet(FacetType)))
-                return false;
+            if(FacetType == FACET_TOP)
+            {
+                bool nodraw = c && (!c->isHidden() || c->isHidden() && Hidden) && (c->hasFace(OppositeFacet(FacetType)) || c->getGeometry() == GEOM_WALL);
+                if(tops_vis_invis && nodraw || !tops_vis_invis && !nodraw)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if(c && (!c->isHidden() || c->isHidden() && Hidden) && c->hasFace(OppositeFacet(FacetType)))
+                    return false;
+            }
         }
         switch(FacetType)
         {

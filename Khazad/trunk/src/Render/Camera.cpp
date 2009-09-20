@@ -895,7 +895,7 @@ float Camera::getShading(float Zlevel)
 			float Shading = 1.0;
 			if (Depth > 0) // Below look level
 			{
-				Shading -= (float) Depth / (float) ViewLevels;
+				Shading -= Depth / (float) ViewLevels;
 				float Minimum = 0.4;
 				Shading = ((1.0 - Minimum) * Shading) + (Minimum);
 				return Shading;

@@ -69,7 +69,7 @@ bool Pawn::Move(Vector3 Direction)
     }
 
     Cube* NewCube = MAP->getCube((Uint32) Position.x, (Uint32) Position.y, (Uint32) Position.z);
-
+/*
     if (NewCube)
     {
         if (NewCube->isInitalized() != true)
@@ -78,7 +78,7 @@ bool Pawn::Move(Vector3 Direction)
             //NewCube->setVisible(true);
         }
     }
-
+*/
     return true;
 }
 

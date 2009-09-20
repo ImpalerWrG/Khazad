@@ -25,13 +25,13 @@ Map::Map()
 {
     Initialized = false;
 
-	MapSizeX = 0;
-	MapSizeY = 0;
-	MapSizeZ = 0;
+    MapSizeX = 0;
+    MapSizeY = 0;
+    MapSizeZ = 0;
 
-	CellSizeX = 0;
-	CellSizeY = 0;
-	CellSizeZ = 0;
+    CellSizeX = 0;
+    CellSizeY = 0;
+    CellSizeZ = 0;
 
     CellCount = 0;
     CubeCount = 0;
@@ -44,7 +44,6 @@ Map::Map()
     InitedSlopeCount = 0;
 
     ColumnMatrix = NULL;
-//    DFExtractor = new Extractor();
 }
 
 Map::~Map()
@@ -53,7 +52,6 @@ Map::~Map()
     {
         ReleaseMap();
     }
-//    delete DFExtractor;
 }
 
 bool Map::Init()
@@ -293,43 +291,6 @@ bool Map::Extract()
     MapSizeX = CellSizeX * CELLEDGESIZE;
 	MapSizeY = CellSizeY * CELLEDGESIZE;
 	MapSizeZ = CellSizeZ;
-/*
-	for (Uint32 i = 0; i < CellSizeX; i++)
-	{
-		for (Uint32 j = 0; j < CellSizeY; j++)
-		{
-			for (Sint32 k = ColumnMatrix[i][j]->BottomLevel(); k < ColumnMatrix[i][j]->TopLevel(); k++)
-			{
-			    if(getCell(i, j, k) != NULL)
-			    {
-                    for(Uint32 l = 0; l < CELLEDGESIZE; l++)
-                    {
-                        for(Uint32 m = 0; m < CELLEDGESIZE; m++)
-                        {
-                            Cube* TargetCube = getCube((i * CELLEDGESIZE) + l, (j * CELLEDGESIZE) + m, k);
-                            if(TargetCube != NULL && TargetCube->isInitalized())
-                            {
-                                if(TargetCube->isSolid())
-                                {
-                                    TargetCube->InitFacesSolid();
-                                }
-                                else
-                                {
-                                    TargetCube->InitFacesOpen();
-                                }
-
-                                if(TargetCube->getSlope() != NULL)
-                                {
-                                    TargetCube->DetermineSlope();
-                                }
-                            }
-                        }
-                    }
-			    }
-			}
-		}
-	}
-*/
     // Initialize Drawlists
 	for(Uint16 Zlevel = 0; Zlevel < getCellSizeZ(); Zlevel++)
 	{
@@ -338,7 +299,6 @@ bool Map::Extract()
             for (Uint32 SizeY = 0; SizeY < getCellSizeY(); SizeY++)
             {
                 Cell* LoopCell = getCell(SizeX, SizeY, Zlevel);
-
                 if(LoopCell != NULL)
                 {
                     GLuint DrawListID = LoopCell->getDrawListID();
@@ -348,7 +308,6 @@ bool Map::Extract()
                         {
                             // Rebuild the new Drawlist
                             glDeleteLists(DrawListID, 5);
-
                             for(CameraOrientation Orientation = CAMERA_DOWN; Orientation < NUM_ORIENTATIONS; ++Orientation)
                             {
                                 SCREEN->RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation);
@@ -490,7 +449,6 @@ void Map::LoadCellData(DFHackAPI & DF,
 
                 Uint16 Material = PickTexture(t, basemat[CubeX][CubeY],veinmat[CubeX][CubeY],constmat[CubeX][CubeY],o);
                 TargetCube->setHidden(d.bits.hidden);
-
                 TargetCube->setSubTerranean(d.bits.subterranean);
                 TargetCube->setSkyView(d.bits.skyview);
                 TargetCube->setSunLit(d.bits.light);
@@ -525,6 +483,8 @@ void Map::LoadCellData(DFHackAPI & DF,
                 {
                     TargetCube->setLiquid(d.bits.liquid_type,d.bits.flow_size);
                 }
+                // we set visible to equal hidden at first
+                //TargetCube->setVisible(!d.bits.hidden);
                 TargetCube->setVisible(true);
             }
         }
@@ -631,6 +591,7 @@ string DfMap::getMaterialTypeString (uint32_t type)
     return ret;
 }*/
 
+//FIXME: the ugly hack
 Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial,t_matglossPair constructionmaterial, t_occupancy occupancy)
 {
     /*
@@ -656,7 +617,8 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
     static Uint16 ClearGlass = DATA->getLabelIndex("MATERIAL_CLEAR_GLASS");
     static Uint16 CrystalGlass = DATA->getLabelIndex("MATERIAL_CRYSTAL_GLASS");
     static Uint16 Ice = DATA->getLabelIndex("MATERIAL_ICE");
-    static Uint16 Wood = DATA->getLabelIndex("MATERIAL_WOOD");
+    static Uint16 WoodW = DATA->getLabelIndex("MATERIAL_WOOD_WALL");
+    static Uint16 WoodF = DATA->getLabelIndex("MATERIAL_WOOD_FLOOR");
     // TODO: missing constructed ramps
 
     /*
@@ -681,7 +643,10 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
     switch(constructionmaterial.type)
     {
         case Mat_Wood:
-            ContructionMatGlossTexture = Wood;
+            if(isWallTerrain(TileType))
+                ContructionMatGlossTexture = WoodW;
+            else
+                ContructionMatGlossTexture = WoodF;
             break;
         case Mat_Stone:
             ContructionMatGlossTexture = StoneMatGloss[constructionmaterial.index];

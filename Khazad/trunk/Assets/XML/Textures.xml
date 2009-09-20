@@ -47,6 +47,41 @@
 		<Name Label="TEXTURE_GRASS4"/>
 		<File Path="Assets\\Textures\\grass4.png"/>
 	</Texture>
+	<!-- STONE -->
+	<Texture>
+		<Name Label="TEXTURE_STONE1"/>
+		<File Path="Assets\\Textures\\stone1.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_STONE2"/>
+		<File Path="Assets\\Textures\\stone2.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_STONE3"/>
+		<File Path="Assets\\Textures\\stone3.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_STONE4"/>
+		<File Path="Assets\\Textures\\stone4.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_PEBBLES"/>
+		<File Path="Assets\\Textures\\pebble.png"/>
+	</Texture>
+
+	<!-- DIRT -->
+	<Texture>
+		<Name Label="TEXTURE_DIRT"/>
+		<File Path="Assets\\Textures\\Dirt.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_GROUND"/>
+		<File Path="Assets\\Textures\\ground.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_CLAY"/>
+		<File Path="Assets\\Textures\\Clay.png"/>
+	</Texture>
 	
 	<Texture>
 		<Name Label="TEXTURE_BRICK"/>
@@ -83,10 +118,6 @@
 	<Texture>
 		<Name Label="TEXTURE_MATT"/>
 		<File Path="Assets\\Textures\\Matt.png"/>
-	</Texture>
-	<Texture>
-		<Name Label="TEXTURE_DIRT"/>
-		<File Path="Assets\\Textures\\Dirt.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_ICE"/>
@@ -133,10 +164,6 @@
 		<File Path="Assets\\Textures\\Swirly.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_CLAY"/>
-		<File Path="Assets\\Textures\\Clay.png"/>
-	</Texture>
-	<Texture>
 		<Name Label="TEXTURE_BANDED"/>
 		<File Path="Assets\\Textures\\Banded.png"/>
 	</Texture>
@@ -176,4 +203,13 @@
 		<Name Label="TEXTURE_ASHES"/>
 		<File Path="Assets\\Textures\\ashes.png"/>
 	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_WOOD_WALL"/>
+		<File Path="Assets\\Textures\\wood_side.png"/>
+	</Texture>
+	<Texture>
+		<Name Label="TEXTURE_WOOD_FLOOR"/>
+		<File Path="Assets\\Textures\\wood_floor.png"/>
+	</Texture>
+
 </Textures>

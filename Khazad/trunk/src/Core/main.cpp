@@ -168,7 +168,7 @@ int main(int argv, char** argc)
     GameTimer->Start();
     RenderTimer->Start();
     printf("DONE\n");
-    
+
     printf("Wiping the screen ...");
     SCREEN->WipeScreen();
     printf("DONE\n");
@@ -208,7 +208,7 @@ int main(int argv, char** argc)
                 sprintf (buffer, "Triangles %i", SCREEN->getTriangleCount());
                 SCREEN->RenderText(buffer, 0, WHITE, &position);
 
-                //SCREEN->PrintDebugging();
+                SCREEN->PrintDebugging();
             }
             else
             {

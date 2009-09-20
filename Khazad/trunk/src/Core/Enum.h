@@ -37,7 +37,7 @@ enum Facet
     FACET_WEST = 0x20,
 };
 
-inline Facet &operator++ (Facet &OldFace)      { return OldFace = Facet(OldFace + 1); }
+inline Facet &operator++ (Facet &OldFace)      { return OldFace = Facet(OldFace << 1); }
 inline Facet OppositeFacet(Facet source)
 {
     Facet opposite[] =

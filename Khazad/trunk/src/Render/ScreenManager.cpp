@@ -129,9 +129,10 @@ bool ScreenManager::Init()
     glEnable(GL_CULL_FACE); // force proper vertex ordering or suffer holes in geometry ;)
 
     glEnable(GL_BLEND);
-	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+//	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glDepthFunc(GL_LEQUAL /*GL_LESS*/); // show me those walls under floors. yes.
+	glDepthFunc(GL_LEQUAL/* GL_LESS*/); // show me those walls under floors. yes.
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
     imageLoader = new gcn::OpenGLSDLImageLoader();
@@ -479,8 +480,10 @@ void ScreenManager::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float 
             if(LoopCell->isLiquidActive())
             {
                 /// FIXME: add tunable liquid transparency, liquid render switch
+                glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
                 glColor4f(Shading, Shading, Shading,0.3);
                 glCallList(LoopCell->getDrawListID() + 5);// draw liquids
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             }
             if(LoopCell->isTopActive() && drawtop)
             {
@@ -771,6 +774,13 @@ void ScreenManager::PrintDebugging()
         SCREEN->RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 
+        Cube *c  = MAP->getCube(x,y,z);
+        if(c)
+        {
+            sprintf (buffer, "visible: %d, hidden: %d", c->isVisible(), c->isHidden());
+            SCREEN->RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+        }
 
 /*        Block* TargetBlock = df_map->getBlock(x / 16, y / 16, z);
         if(TargetBlock != NULL)
@@ -976,13 +986,13 @@ void ScreenManager::DrawCage(Vector3 RawPoint, float x, float y, float z, bool I
 
     if(Inflated)
     {
-        X = x + 0.04;
-        Y = y + 0.04;
-        Z = z + 0.04;
+        X = x + 0.08;
+        Y = y + 0.08;
+        Z = z + 0.08;
 
-        Point.x -= 0.52;
-        Point.y -= 0.52;
-        Point.z -= 0.52;
+        Point.x -= 0.54;
+        Point.y -= 0.54;
+        Point.z -= 0.54;
     }
     else
     {
@@ -993,6 +1003,12 @@ void ScreenManager::DrawCage(Vector3 RawPoint, float x, float y, float z, bool I
         Point.x -= 0.48;
         Point.y -= 0.48;
         Point.z -= 0.48;
+        /*X = x;
+        Y = y;
+        Z = z;
+        Point.x -= 0.5;
+        Point.y -= 0.5;
+        Point.z -= 0.5;*/
     }
     glBegin(GL_LINES);
         glColor3f (red, green, blue);

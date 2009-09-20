@@ -213,23 +213,23 @@ bool Cell::DrawSolids(CameraOrientation Orientation)
                     {
                         case CAMERA_DOWN:
                         {
-                            //LoopCube->DrawFace(x,y,FACET_TOP);
-                            LoopCube->DrawFace(x,y,FACET_BOTTOM);
+                            LoopCube->DrawFace(x,y,FACET_TOP,true);
+                            LoopCube->DrawFace(x,y,FACET_BOTTOM,true);
                             break;
                         }
                         case CAMERA_NORTH_WEST:
                         {
                             if(LoopCube->isSolid())
                             {
-                                //LoopCube->DrawFace(x,y,FACET_TOP);
-                                LoopCube->DrawFace(x,y,FACET_EAST);
-                                LoopCube->DrawFace(x,y,FACET_SOUTH);
+                                LoopCube->DrawFace(x,y,FACET_TOP,true);
+                                LoopCube->DrawFace(x,y,FACET_EAST,true);
+                                LoopCube->DrawFace(x,y,FACET_SOUTH,true);
                             }
                             else
                             {
-                                LoopCube->DrawFace(x,y,FACET_BOTTOM);
-                                LoopCube->DrawFace(x,y,FACET_WEST);
-                                LoopCube->DrawFace(x,y,FACET_NORTH);
+                                LoopCube->DrawFace(x,y,FACET_BOTTOM,true);
+                                LoopCube->DrawFace(x,y,FACET_WEST,true);
+                                LoopCube->DrawFace(x,y,FACET_NORTH,true);
                             }
                             break;
                         }
@@ -237,15 +237,15 @@ bool Cell::DrawSolids(CameraOrientation Orientation)
                         {
                             if(LoopCube->isSolid())
                             {
-                                //LoopCube->DrawFace(x,y,FACET_TOP);
-                                LoopCube->DrawFace(x,y,FACET_EAST);
-                                LoopCube->DrawFace(x,y,FACET_NORTH);
+                                LoopCube->DrawFace(x,y,FACET_TOP,true);
+                                LoopCube->DrawFace(x,y,FACET_EAST,true);
+                                LoopCube->DrawFace(x,y,FACET_NORTH,true);
                             }
                             else
                             {
-                                LoopCube->DrawFace(x,y,FACET_BOTTOM);
-                                LoopCube->DrawFace(x,y,FACET_WEST);
-                                LoopCube->DrawFace(x,y,FACET_SOUTH);
+                                LoopCube->DrawFace(x,y,FACET_BOTTOM,true);
+                                LoopCube->DrawFace(x,y,FACET_WEST,true);
+                                LoopCube->DrawFace(x,y,FACET_SOUTH,true);
                             }
                             break;
                         }
@@ -253,15 +253,15 @@ bool Cell::DrawSolids(CameraOrientation Orientation)
                         {
                             if(LoopCube->isSolid())
                             {
-                                //LoopCube->DrawFace(x,y,FACET_TOP);
-                                LoopCube->DrawFace(x,y,FACET_WEST);
-                                LoopCube->DrawFace(x,y,FACET_SOUTH);
+                                LoopCube->DrawFace(x,y,FACET_TOP,true);
+                                LoopCube->DrawFace(x,y,FACET_WEST,true);
+                                LoopCube->DrawFace(x,y,FACET_SOUTH,true);
                             }
                             else
                             {
-                                LoopCube->DrawFace(x,y,FACET_BOTTOM);
-                                LoopCube->DrawFace(x,y,FACET_EAST);
-                                LoopCube->DrawFace(x,y,FACET_NORTH);
+                                LoopCube->DrawFace(x,y,FACET_BOTTOM,true);
+                                LoopCube->DrawFace(x,y,FACET_EAST,true);
+                                LoopCube->DrawFace(x,y,FACET_NORTH,true);
                             }
                             break;
                         }
@@ -269,15 +269,15 @@ bool Cell::DrawSolids(CameraOrientation Orientation)
                         {
                             if(LoopCube->isSolid())
                             {
-                                //LoopCube->DrawFace(x,y,FACET_TOP);
-                                LoopCube->DrawFace(x,y,FACET_NORTH);
-                                LoopCube->DrawFace(x,y,FACET_WEST);
+                                LoopCube->DrawFace(x,y,FACET_TOP,true);
+                                LoopCube->DrawFace(x,y,FACET_NORTH,true);
+                                LoopCube->DrawFace(x,y,FACET_WEST,true);
                             }
                             else
                             {
-                                LoopCube->DrawFace(x,y,FACET_BOTTOM);
-                                LoopCube->DrawFace(x,y,FACET_EAST);
-                                LoopCube->DrawFace(x,y,FACET_SOUTH);
+                                LoopCube->DrawFace(x,y,FACET_BOTTOM,true);
+                                LoopCube->DrawFace(x,y,FACET_EAST,true);
+                                LoopCube->DrawFace(x,y,FACET_SOUTH,true);
                             }
                             break;
                         }
@@ -311,7 +311,7 @@ bool Cell::DrawTops()
                 LoopCube = getCube(x, y);
                 if (LoopCube != NULL && SCREEN->isCubeDrawn(LoopCube))
                 {
-                    LoopCube->DrawFace(x,y,FACET_TOP);
+                    LoopCube->DrawFace(x,y,FACET_TOP,false);
                 }
             }
         }

@@ -105,6 +105,10 @@
 		<Channels Red="102" Green="61" Blue="41"/>
 	</Color>
 	<Color>
+		<Name Label="COLOR_BROWN_DARK"/>
+		<Channels Red="56" Green="37" Blue="9"/>
+	</Color>
+	<Color>
 		<Name Label="COLOR_ROYAL_BLUE"/>
 		<Channels Red="0" Green="0" Blue="192"/>
 	</Color>
