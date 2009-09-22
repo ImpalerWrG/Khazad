@@ -93,7 +93,7 @@ bool MaterialData::Load(TiXmlElement* Entry, Uint32 Index)
             MySecondary.setValue(SecondaryColorValue);
         }
         XML->QueryUIntValue(Entry, "Hardness", "Int", Hardness);
-        Border = !XML->QueryExists(Entry, "NoBorder");
+        Border = XML->QueryExists(Entry, "Border");
         XML->QueryTextValue(Entry, "MatGloss", "label", MatGloss);
         XML->QueryTextValue(Entry, "ColorMode", "mode", ColorMode);
         XML->QueryUIntArray(Entry, "TileValues", "Tile", "Int", TileTypes);
