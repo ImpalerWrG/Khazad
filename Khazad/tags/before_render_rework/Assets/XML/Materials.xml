@@ -1,0 +1,1686 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Materials xmlns="namespace">
+	<Material>
+		<Name Label="MATERIAL_UNINITIALIZED"/>
+		<Texture label="TEXTURE_NEHE"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_BLUE"/>
+		<TileValues>
+			<Tile Int="-1"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_UP"/>
+		<Texture label="TEXTURE_UP"/>
+		<ColorMode mode="keepimage" />
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BUILDING"/>
+		<Texture label="TEXTURE_NEHE"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_GREY"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ASHES"/>
+		<Texture label="TEXTURE_ASHES"/>
+		<ColorMode mode="keepimage" />
+		<TileValues>
+			<Tile Int="242"/>
+			<Tile Int="243"/>
+			<Tile Int="244"/>
+		</TileValues>
+	</Material>
+
+	<Material>
+		<Name Label="MATERIAL_BOULDER"/>
+		<Texture label="TEXTURE_BOULDER"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_DARK_GREEN"/>
+		<TileValues>
+			<!-- stone boulder -->
+			<Tile Int="402"/>
+			<!-- obsidian boulder -->
+			<Tile Int="403"/>
+			<!-- featstone boulder, 404 NOT FOUND -->
+			<!--<Tile Int="404"/>-->
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_WATER"/>
+		<Texture label="TEXTURE_LIQUID"/>
+		<PrimaryColor label="COLOR_TEAL"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<TileValues>
+			<Tile Int="-1"/>
+		</TileValues>
+	</Material>
+	
+	<!-- STONE -->
+	<Material>
+		<Name Label="MATERIAL_SMOOTH_LAYER_STONE"/>
+		<Texture label="TEXTURE_SMOOTH"/>
+		<ColorMode mode="overlay"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<TileValues>
+			<!-- stone updown stair -->
+			<Tile Int="55"/>
+			<!-- stone down stair -->
+			<Tile Int="56"/>
+			<!-- up stair stone -->
+			<Tile Int="57"/>
+			<!-- stone pillar -->
+			<Tile Int="79"/>
+			<!-- stone floor detailed -->
+			<Tile Int="43"/>
+			<!-- smoothed or engraved stone walls -->
+			<Tile Int="307"/>
+			<Tile Int="308"/>
+			<Tile Int="309"/>
+			<Tile Int="310"/>
+			<Tile Int="311"/>
+			<Tile Int="312"/>
+			<Tile Int="313"/>
+			<Tile Int="314"/>
+			<Tile Int="315"/>
+			<Tile Int="316"/>
+			<Tile Int="317"/>
+			<Tile Int="318"/>
+			<Tile Int="319"/>
+			<Tile Int="320"/>
+			<Tile Int="321"/>
+			<Tile Int="322"/>
+			<Tile Int="323"/>
+			<Tile Int="324"/>
+			<Tile Int="325"/>
+			
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_STONE_FLOOR1"/>
+		<Texture label="TEXTURE_STONE1"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<ColorMode mode="overlay"/>
+		<TileValues>
+			<!-- stone ramp -->
+			<Tile Int="237"/>
+			<!-- stone floor 1 -->
+			<Tile Int="336"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_STONE_FLOOR2"/>
+		<Texture label="TEXTURE_STONE2"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<ColorMode mode="overlay"/>
+		<TileValues>
+			<!-- stone floor 2 -->
+			<Tile Int="337"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_STONE_FLOOR3"/>
+		<Texture label="TEXTURE_STONE3"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<ColorMode mode="overlay"/>
+		<TileValues>
+			<!-- stone floor 3 -->
+			<Tile Int="338"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_STONE_FLOOR4"/>
+		<Texture label="TEXTURE_STONE4"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<ColorMode mode="overlay"/>
+		<TileValues>
+			<!-- stone floor 4 -->
+			<Tile Int="339"/>
+		</TileValues>
+	</Material>
+	<!-- stone walls -->
+	<Material>
+		<Name Label="MATERIAL_ROUGH_LAYER_STONE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<TileValues>
+			<!-- worn stone 1,2,3, needs research -->
+			<Tile Int="176"/>
+			<Tile Int="177"/>
+			<Tile Int="178"/>
+			<!-- stone wall (not worn) - used everywhere for solid rock -->
+			<Tile Int="219"/>
+		</TileValues>
+	</Material>
+	
+	
+	
+	
+	<Material>
+		<Name Label="MATERIAL_CONSTRUCTED_WALL"/>
+		<Texture label="TEXTURE_BRICK"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<ColorMode mode="overlay" />
+		<TileValues>
+			<!-- constructed fortification -->
+			<Tile Int="494"/>
+			
+			<!-- constructed pillar -->
+			<Tile Int="495"/>
+			
+			<!-- constructed wall -->
+			<Tile Int="496"/>
+			<Tile Int="497"/>
+			<Tile Int="498"/>
+			<Tile Int="499"/>
+			<Tile Int="500"/>
+			<Tile Int="501"/>
+			<Tile Int="502"/>
+			<Tile Int="503"/>
+			<Tile Int="504"/>
+			<Tile Int="505"/>
+			<Tile Int="506"/>
+			<Tile Int="507"/>
+			<Tile Int="508"/>
+			<Tile Int="509"/>
+			<Tile Int="510"/>
+			<Tile Int="511"/>
+			<Tile Int="512"/>
+			<Tile Int="513"/>
+			<Tile Int="514"/>
+			
+			<!-- constructed stair up-down -->
+			<Tile Int="515"/>
+			
+			<!-- stair down constructed -->
+			<Tile Int="516"/>
+			
+			<!-- stair up constructed -->
+			<Tile Int="517"/>
+			
+			<!-- ramp constructed -->
+			<Tile Int="518"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_EMPTYSPACE"/>
+		<Texture label="TEXTURE_AIR"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<TileValues>
+			<Tile Int="32"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DRIFTWOOD"/>
+		<Texture label="TEXTURE_DRIFTWOOD"/>
+		<ColorMode mode="keepimage" />
+		<TileValues>
+			<Tile Int="19"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_LAVA"/>
+		<Texture label="TEXTURE_LIQUID"/>
+		<PrimaryColor label="COLOR_RED"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<TileValues>
+			<Tile Int="264"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SMOOTH_FLOOR"/>
+		<Texture label="TEXTURE_TILES"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<TileValues>
+			<!--constructed floor detailed -->
+			<Tile Int="493"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MURKY_POOL"/>
+		<Texture label="TEXTURE_DIRT"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<TileValues>
+			<Tile Int="2"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SOIL"/>
+		<Texture label="TEXTURE_GROUND"/>
+		<PrimaryColor label="COLOR_BROWN_DARK"/>
+		<ColorMode mode="overlay"/>
+		<!--<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_BLACK"/>-->
+		<TileValues>
+			<!-- up-down stair soil -->
+			<Tile Int="39"/>
+			
+			<!-- down stair soil -->
+			<Tile Int="40"/>
+			
+			<!-- up stair soil -->
+			<Tile Int="41"/>
+			
+			<!-- furrowed soil - farms and base of roads -->
+			<Tile Int="261"/>
+			
+			<!-- soil wall -->
+			<Tile Int="265"/>
+			
+			<!-- soil ramp? -->
+			<Tile Int="241"/>
+			
+			<!-- soil floors? -->
+			<Tile Int="352"/>
+			<Tile Int="353"/>
+			<Tile Int="354"/>
+			<Tile Int="355"/>
+			
+			<!-- wet soil floors -->
+			<Tile Int="356"/>
+			<Tile Int="357"/>
+			<Tile Int="358"/>
+			<Tile Int="359"/>
+
+		</TileValues>
+	</Material>
+	<!-- there's no sand, only soil. sand is defined by matgloss -->
+	<!--
+	<Material>
+		<Name Label="MATERIAL_SAND"/>
+		<Texture label="TEXTURE_SAND"/>
+		<PrimaryColor label="COLOR_YELLOW"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<TileValues>
+		</TileValues>
+	</Material>
+	-->
+	<Material>
+		<Name Label="MATERIAL_SAND_TAN"/>
+		<Texture label="TEXTURE_SAND"/>
+		<PrimaryColor value="#80502F"/>
+		<MatGloss label="SAND_TAN"/>
+		<ColorMode mode="overlay" />
+		<NoBorder />
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAND_YELLOW"/>
+		<Texture label="TEXTURE_SAND"/>
+		<PrimaryColor value="#C5A92A"/>
+		<MatGloss label="SAND_YELLOW"/>
+		<ColorMode mode="overlay" />
+		<NoBorder />
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAND_WHITE"/>
+		<Texture label="TEXTURE_SAND"/>
+		<PrimaryColor value="#BBBBBB"/>
+		<MatGloss label="SAND_WHITE"/>
+		<ColorMode mode="overlay" />
+		<NoBorder />
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAND_RED"/>
+		<Texture label="TEXTURE_SAND"/>
+		<PrimaryColor value="#E31E00"/>
+		<MatGloss label="SAND_RED"/>
+		<ColorMode mode="overlay" />
+		<NoBorder />
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAND_BLACK"/>
+		<Texture label="TEXTURE_SAND"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<MatGloss label="SAND_BLACK"/>
+		<ColorMode mode="overlay" />
+		<NoBorder />
+	</Material>
+	
+	<Material>
+		<Name Label="MATERIAL_PEBBLES"/>
+		<Texture label="TEXTURE_PEBBLES"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<ColorMode mode="overlay"/>
+		<TileValues>
+			<!-- stone pebbles -->
+			<Tile Int="405"/>
+			<Tile Int="406"/>
+			<Tile Int="407"/>
+			<Tile Int="408"/>
+			<!-- featstone pebbles, probably unused? -->
+			<!--
+			<Tile Int="413"/>
+			<Tile Int="414"/>
+			<Tile Int="415"/>
+			<Tile Int="416"/>
+			-->
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_OBSIDIAN_SHARDS"/>
+		<Texture label="TEXTURE_PEBBLES"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<ColorMode mode="overlay"/>
+		<TileValues>
+			<!-- obsidian shards -->
+			<Tile Int="409"/>
+			<Tile Int="410"/>
+			<Tile Int="411"/>
+			<Tile Int="412"/>
+		</TileValues>
+	</Material>
+
+	<Material>
+		<Name Label="MATERIAL_VEIN_STONE"/>
+		<Texture label="TEXTURE_MATT"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<TileValues>
+			<!-- vein up-down stair -->
+			<Tile Int="58"/>
+			
+			<!-- vein down stair -->
+			<Tile Int="59"/>
+			
+			<!-- vein up stair -->
+			<Tile Int="60"/>
+			
+			<!-- vein pillar -->
+			<Tile Int="82"/>
+			
+			<!-- vein ramp -->
+			<Tile Int="240"/>
+			
+			<!-- vein walls -->
+			<Tile Int="417"/>
+			<Tile Int="418"/>
+			<Tile Int="419"/>
+			<Tile Int="420"/>
+			<Tile Int="421"/>
+			<Tile Int="422"/>
+			<Tile Int="423"/>
+			<Tile Int="424"/>
+			<Tile Int="425"/>
+			<Tile Int="426"/>
+			<Tile Int="427"/>
+			<Tile Int="428"/>
+			<Tile Int="429"/>
+			<Tile Int="430"/>
+			<Tile Int="431"/>
+			<Tile Int="432"/>
+			<Tile Int="433"/>
+			<Tile Int="434"/>
+			<Tile Int="435"/>
+			
+			<!-- vein fortification -->
+			<Tile Int="436"/>
+			
+			<!-- vein worn wall -->
+			<Tile Int="437"/>
+			<Tile Int="438"/>
+			<Tile Int="439"/>
+			<Tile Int="440"/>
+			
+			<!-- vein floor -->
+			<Tile Int="441"/>
+			<Tile Int="442"/>
+			<Tile Int="443"/>
+			<Tile Int="444"/>
+			</TileValues>
+	</Material>
+	<!-- possibly unused? -->
+	<!--
+	<Material>
+		<Name Label="MATERIAL_FEATURE_STONE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_PINK"/>
+		<SecondaryColor label="COLOR_GREEN"/>
+		<TileValues>
+			<Tile Int="61"/>
+			<Tile Int="62"/>
+			<Tile Int="63"/>
+			<Tile Int="81"/>
+			<Tile Int="288"/>
+			<Tile Int="289"/>
+			<Tile Int="290"/>
+			<Tile Int="291"/>
+			<Tile Int="292"/>
+			<Tile Int="293"/>
+			<Tile Int="294"/>
+			<Tile Int="295"/>
+			<Tile Int="296"/>
+			<Tile Int="297"/>
+			<Tile Int="298"/>
+			<Tile Int="299"/>
+			<Tile Int="300"/>
+			<Tile Int="301"/>
+			<Tile Int="302"/>
+			<Tile Int="303"/>
+			<Tile Int="304"/>
+			<Tile Int="305"/>
+			<Tile Int="306"/>
+			<Tile Int="327"/>
+			<Tile Int="332"/>
+			<Tile Int="333"/>
+			<Tile Int="334"/>
+			<Tile Int="335"/>
+		</TileValues>
+	</Material>-->
+	<Material>
+		<Name Label="MATERIAL_OBSIDIAN"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<TileValues>
+			<!-- obsidian up-down stair -->
+			<Tile Int="36"/>
+			
+			<!-- obsidian down stair -->
+			<Tile Int="37"/>
+			
+			<!-- obsidian up stair -->
+			<Tile Int="38"/>
+			
+			<!-- obsidian pillar -->
+			<Tile Int="80"/>
+			
+			<!-- obsidian ramp -->
+			<Tile Int="238"/>
+			
+			<!-- obsidian walls -->
+			<Tile Int="269"/>
+			<Tile Int="270"/>
+			<Tile Int="271"/>
+			<Tile Int="272"/>
+			<Tile Int="273"/>
+			<Tile Int="274"/>
+			<Tile Int="275"/>
+			<Tile Int="276"/>
+			<Tile Int="277"/>
+			<Tile Int="278"/>
+			<Tile Int="279"/>
+			<Tile Int="280"/>
+			<Tile Int="281"/>
+			<Tile Int="282"/>
+			<Tile Int="283"/>
+			<Tile Int="284"/>
+			<Tile Int="285"/>
+			<Tile Int="286"/>
+			<Tile Int="287"/>
+			
+			<!-- obsidian fortification -->
+			<Tile Int="326"/>
+			
+			<!--
+			case 328: //lavastone wall worn1 (most worn)
+			case 329: //lavastone wall worn2 (middle worn)
+			case 330: //lavastone wall worn3 (least worn)
+			case 331: //lavastone wall
+			-->
+			<Tile Int="328"/>
+			<Tile Int="329"/>
+			<Tile Int="330"/>
+			<Tile Int="331"/>
+			
+			<!-- obsidian floors -->
+			<Tile Int="340"/>
+			<Tile Int="341"/>
+			<Tile Int="342"/>
+			<Tile Int="343"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_VEIN_STONE_FLOOR"/>
+		<Texture label="TEXTURE_MATT"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<TileValues>
+		<!-- detailed vein stone floor -->
+			<Tile Int="46"/>
+		</TileValues>
+	</Material>
+	<!--
+	Grass types
+	
+        236: ramp grass A
+	51:  up stair grass A
+        348: grass floor A 1 (raw)
+        349: grass floor A 2 (raw)
+        350: grass floor A 3 (raw)
+        351: grass floor A 4 (raw)
+	
+	233: ramp grass dry
+        387: dry grass floor 1
+        388: dry grass floor 2
+        389: dry grass floor 3
+        390: dry grass floor 4
+	
+	234: ramp grass dead
+        394: dead grass floor 1
+        395: dead grass floor 2
+        396: dead grass floor 3
+        397: dead grass floor 4
+	
+	235: ramp grass B
+	54:  up stair grass B
+        398: grass floor B 1
+        399: grass floor B 2
+        400: grass floor B 3
+        401: grass floor B 4
+	-->
+	
+	
+	
+	<!-- darker grass -->
+	<Material>
+		<Name Label="MATERIAL_GRASS_A1"/>
+		<Texture label="TEXTURE_GRASS1"/>
+		<PrimaryColor label="GRASS_DARK"/>
+		<!--<PrimaryColor value="rgb(0,112,0)"/>-->
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="236"/>
+			<Tile Int="51"/>
+			<Tile Int="348"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRASS_A2"/>
+		<Texture label="TEXTURE_GRASS2"/>
+		<PrimaryColor label="GRASS_DARK"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="349"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRASS_A3"/>
+		<Texture label="TEXTURE_GRASS3"/>
+		<PrimaryColor label="GRASS_DARK"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="350"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRASS_A4"/>
+		<Texture label="TEXTURE_GRASS4"/>
+		<PrimaryColor label="GRASS_DARK"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="351"/>
+		</TileValues>
+	</Material>
+	
+	
+	
+	<!-- brighter grass -->
+		<Material>
+		<Name Label="MATERIAL_GRASS_B1"/>
+		<Texture label="TEXTURE_GRASS1"/>
+		<PrimaryColor label="GRASS_BRIGHT"/>
+		<!--<PrimaryColor value="rgb(0,112,0)"/>-->
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="235"/>
+			<Tile Int="54"/>
+			<Tile Int="398"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRASS_B2"/>
+		<Texture label="TEXTURE_GRASS2"/>
+		<PrimaryColor label="GRASS_BRIGHT"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="399"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRASS_B3"/>
+		<Texture label="TEXTURE_GRASS3"/>
+		<PrimaryColor label="GRASS_BRIGHT"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="400"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRASS_B4"/>
+		<Texture label="TEXTURE_GRASS4"/>
+		<PrimaryColor label="GRASS_BRIGHT"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="401"/>
+		</TileValues>
+	</Material>
+	
+	
+	
+	
+	
+	<!-- dead grass -->
+	<Material>
+		<Name Label="MATERIAL_DEAD_GRASS1"/>
+		<Texture label="TEXTURE_GRASS1"/>
+		<PrimaryColor value="#514728"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="234"/>
+			<Tile Int="394"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DEAD_GRASS2"/>
+		<Texture label="TEXTURE_GRASS2"/>
+		<PrimaryColor value="#514728"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="395"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DEAD_GRASS3"/>
+		<Texture label="TEXTURE_GRASS3"/>
+		<PrimaryColor value="#514728"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="396"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DEAD_GRASS4"/>
+		<Texture label="TEXTURE_GRASS4"/>
+		<PrimaryColor value="#514728"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="397"/>
+		</TileValues>
+	</Material>
+	
+	
+	<!-- DRY grass -->
+	<Material>
+		<Name Label="MATERIAL_DRY_GRASS1"/>
+		<Texture label="TEXTURE_GRASS1"/>
+		<PrimaryColor value="#C7A73D"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="233"/>
+			<Tile Int="387"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DRY_GRASS2"/>
+		<Texture label="TEXTURE_GRASS2"/>
+		<PrimaryColor value="#C7A73D"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="388"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DRY_GRASS3"/>
+		<Texture label="TEXTURE_GRASS3"/>
+		<PrimaryColor value="#C7A73D"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="389"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DRY_GRASS4"/>
+		<Texture label="TEXTURE_GRASS4"/>
+		<PrimaryColor value="#C7A73D"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<Tile Int="390"/>
+		</TileValues>
+	</Material>
+	
+	
+	
+	<!-- VEGETATION -->
+	<Material>
+		<Name Label="MATERIAL_UNDERGROWTH"/>
+		<Texture label="TEXTURE_GRASS1"/>
+		<PrimaryColor value="#C7A73D"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+		<TileValues>
+			<!-- shrub -->
+			<Tile Int="34"/>
+		        <!-- tree -->
+			<Tile Int="24"/>
+			 <!-- sapling -->
+			<Tile Int="231"/>
+		        <!-- dead shrub -->
+			<Tile Int="393"/>
+			<!-- dead tree -->
+			<Tile Int="391"/>
+			<!-- dead sapling -->
+			<Tile Int="392"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SHRUB"/>
+		<Texture label="TEXTURE_SHRUB"/>
+		<PrimaryColor label="COLOR_GREEN_DARKER"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_TREE"/>
+		<Texture label="TEXTURE_TREE"/>
+		<ColorMode mode="keepimage"/>
+		<NoBorder />
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAPPLING"/>
+		<Texture label="TEXTURE_TREE"/>
+		<ColorMode mode="keepimage"/>
+		<NoBorder />
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DEAD_SHRUB"/>
+		<Texture label="TEXTURE_SHRUB"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DEAD_TREE"/>
+		<Texture label="TEXTURE_TREE"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DEAD_SAPPLING"/>
+		<Texture label="TEXTURE_TREE"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<ColorMode mode="overlay"/>
+		<NoBorder />
+	</Material>
+	<!--
+	basically muddy riverbed
+	tile type maybe determines flow direction?
+	case 365: //river n
+        case 366: //river s
+        case 367: //river e
+        case 368: //river w
+        case 369: //river nw
+        case 370: //river ne
+        case 371: //river sw
+        case 372: //river se
+	-->
+	<Material>
+		<Name Label="MATERIAL_RIVER"/>
+		<Texture label="TEXTURE_CONGLOMERATE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<TileValues>
+			<Tile Int="365"/>
+			<Tile Int="366"/>
+			<Tile Int="367"/>
+			<Tile Int="368"/>
+			<Tile Int="369"/>
+			<Tile Int="370"/>
+			<Tile Int="371"/>
+			<Tile Int="372"/>
+		</TileValues>
+	</Material>
+	<!--
+	brook - a river filled with stone
+	top should look like a shallow stream with stones in it.
+	case 373: //stream wall n (below)
+        case 374: //stream wall s (below)
+        case 375: //stream wall e (below)
+        case 376: //stream wall w (below)
+        case 377: //stream wall nw (below)
+        case 378: //stream wall ne (below)
+        case 379: //stream wall sw (below)
+        case 380: //stream wall se (below)
+        case 381: //stream top (above)
+	-->
+	<Material>
+		<Name Label="MATERIAL_STREAM"/>
+		<Texture label="TEXTURE_CONGLOMERATE"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<TileValues>
+			<Tile Int="373"/>
+			<Tile Int="374"/>
+			<Tile Int="375"/>
+			<Tile Int="376"/>
+			<Tile Int="377"/>
+			<Tile Int="378"/>
+			<Tile Int="379"/>
+			<Tile Int="380"/>
+			<Tile Int="381"/>
+		</TileValues>
+	</Material>
+	<!-- this is hard - snow can be applied to just about any tile, same applies to moss, mud and all the bloodstains -->
+	<Material>
+		<Name Label="MATERIAL_SNOW"/>
+		<Texture label="TEXTURE_SNOW"/>
+		<ColorMode mode="keepimage" />
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ICE"/>
+		<Texture label="TEXTURE_ICE"/>
+		<PrimaryColor label="COLOR_NAVY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<TileValues>
+			<!-- up-down stair frozen liquid -->
+			<Tile Int="25"/>
+			<!-- down stair frozen liquid -->
+			<Tile Int="26"/>
+			<!-- up stair frozen liquid -->
+			<Tile Int="27"/>
+			<!-- smoothed ice floor (SHINY, DONT SLIP!) -->
+			<Tile Int="47"/>
+			<!-- ice pillar -->
+			<Tile Int="83"/>
+			<!-- ice ramp -->
+			<Tile Int="245"/>
+			
+			<!-- four kinds of ice floors -->
+			<Tile Int="258"/>
+			<Tile Int="259"/>
+			<Tile Int="260"/>
+			<Tile Int="262"/>
+			
+			<!-- ice fortification -->
+			<Tile Int="360"/>
+			
+			<!-- worn ice walls -->
+			<Tile Int="361"/>
+			<Tile Int="362"/>
+			<Tile Int="363"/>
+			<Tile Int="364"/>
+			
+			<!-- ice walls -->
+			<Tile Int="450"/>
+			<Tile Int="451"/>
+			<Tile Int="452"/>
+			<Tile Int="453"/>
+			<Tile Int="454"/>
+			<Tile Int="455"/>
+			<Tile Int="456"/>
+			<Tile Int="457"/>
+			<Tile Int="458"/>
+			<Tile Int="459"/>
+			<Tile Int="460"/>
+			<Tile Int="461"/>
+			<Tile Int="462"/>
+			<Tile Int="463"/>
+			<Tile Int="464"/>
+			<Tile Int="465"/>
+			<Tile Int="466"/>
+			<Tile Int="467"/>
+			<Tile Int="468"/>
+		</TileValues>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PIT"/>
+		<Texture label="TEXTURE_PIT"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<TileValues>
+			<Tile Int="35"/>
+			<Tile Int="42"/>
+		</TileValues>
+	</Material>
+	<!--
+	    static Uint16 GreenGlass = DATA->getLabelIndex("MATERIAL_GREEN_GLASS");
+    static Uint16 ClearGlass = DATA->getLabelIndex("MATERIAL_CLEAR_GLASS");
+    static Uint16 CrystalGlass = DATA->getLabelIndex("MATERIAL_CRYSTAL_GLASS");
+    static Uint16 Ice = DATA->getLabelIndex("MATERIAL_ICE");
+    static Uint16 Wood = DATA->getLabelIndex("MATERIAL_WOOD");
+    -->
+	<!-- GLASS -->
+	<Material>
+		<Name Label="MATERIAL_GREEN_GLASS"/>
+		<Texture label="TEXTURE_BRICK"/>
+		<PrimaryColor label="COLOR_GREEN"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CLEAR_GLASS"/>
+		<Texture label="TEXTURE_BRICK"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CRYSTAL_GLASS"/>
+		<Texture label="TEXTURE_BRICK"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_WOOD_WALL"/>
+		<Texture label="TEXTURE_WOOD_WALL"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<ColorMode mode="overlay" />
+		<NoBorder />
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_WOOD_FLOOR"/>
+		<Texture label="TEXTURE_WOOD_FLOOR"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<ColorMode mode="overlay" />
+		<NoBorder />
+	</Material>
+
+	
+	
+	<!-- STONE/SOIL materials, disabled to show regular textures better -->
+	<!--
+	<Material>
+		<Name Label="MATERIAL_HEMATITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<MatGloss label="HEMATITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_LIMONITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<MatGloss label="LIMONITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GARNIERITE"/>
+		<Texture label="TEXTURE_VEINS"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_GREEN"/>
+		<MatGloss label="GARNIERITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GOLD"/>
+		<Texture label="TEXTURE_VEINS"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<MatGloss label="GOLD"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SILVER"/>
+		<Texture label="TEXTURE_VEINS"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="SILVER"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_COPPER"/>
+		<Texture label="TEXTURE_VEINS"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="COPPER"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MALACHITE"/>
+		<Texture label="TEXTURE_SWIRLY"/>
+		<PrimaryColor label="COLOR_GREEN"/>
+		<SecondaryColor label="COLOR_FOREST_GREEN"/>
+		<MatGloss label="MALACHITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GALENA"/>
+		<Texture label="TEXTURE_VEINS"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="GALENA"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SPHALERITE"/>
+		<Texture label="TEXTURE_VEINS"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<MatGloss label="SPHALERITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CASSITERITE"/>
+		<Texture label="TEXTURE_VEINS"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="CASSITERITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_COAL_BITUMINOUS"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="COAL_BITUMINOUS"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_LIGNITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<MatGloss label="LIGNITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PLATINUM"/>
+		<Texture label="TEXTURE_VEINS"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="PLATINUM"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CINNABAR"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_RED"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<MatGloss label="CINNABAR"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_COBALTITE"/>
+		<Texture label="TEXTURE_VEINS"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BLUE"/>
+		<MatGloss label="COBALTITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_TETRAHEDRITE"/>
+		<Texture label="TEXTURE_VEINS"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<MatGloss label="TETRAHEDRITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_HORN_SILVER"/>
+		<Texture label="TEXTURE_VEINS"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<MatGloss label="HORN_SILVER"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GYPSUM"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<MatGloss label="GYPSUM"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_TALC"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_LIGH_GREY"/>
+		<MatGloss label="TALC"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_JET"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<MatGloss label="JET"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PUDDINGSTONE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="PUDDINGSTONE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PETRIFIED_WOOD"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_MAROON"/>
+		<MatGloss label="PETRIFIED_WOOD"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRAPHITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<MatGloss label="GRAPHITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BRIMSTONE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<MatGloss label="BRIMSTONE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_KIMBERLITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_NAVY"/>
+		<MatGloss label="KIMBERLITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BISMUTHINITE"/>
+		<Texture label="TEXTURE_VEINS"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<MatGloss label="BISMUTHINITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_REALGAR"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_DARK_RED"/>
+		<SecondaryColor label="COLOR_RED"/>
+		<MatGloss label="REALGAR"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ORPIMENT"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_YELLOW"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="ORPIMENT"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_STIBNITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<MatGloss label="STIBNITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MARCASITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<MatGloss label="MARCASITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SYLVITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_RED"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<MatGloss label="SYLVITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CRYOLITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_RED"/>
+		<MatGloss label="CRYOLITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PERICLASE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<MatGloss label="PERICLASE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ILMENITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<MatGloss label="ILMENITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_RUTILE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_MAROON"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="RUTILE"/>
+	</Material>	
+	<Material>
+		<Name Label="MATERIAL_MAGNETITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<MatGloss label="MAGNETITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CHROMITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="CHROMITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PYROLUSITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_NAVY"/>
+		<MatGloss label="PYROLUSITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PITCHBLENDE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="PITCHBLENDE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BAUXITE"/>
+		<Texture label="TEXTURE_SWIRLY"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_SALMON"/>
+		<MatGloss label="BAUXITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ALUMINUM"/>
+		<Texture label="TEXTURE_VEINS"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="ALUMINUM"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BORAX"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="BORAX"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_OLIVINE"/>
+		<Texture label="TEXTURE_IGNEOUS_INTRUSIVE"/>
+		<PrimaryColor label="COLOR_OLIVE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<MatGloss label="OLIVINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_HORNBLENDE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<MatGloss label="HORNBLENDE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_KAOLINITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_PINK"/>
+		<MatGloss label="KAOLINITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SERPENTINE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_DARK_GREEN"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<MatGloss label="SERPENTINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ORTHOCLASE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_PINK"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<MatGloss label="ORTHOCLASE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MICROCLINE"/>
+		<Texture label="TEXTURE_CRYSTALLIC"/>
+		<PrimaryColor label="COLOR_TEAL"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<MatGloss label="MICROCLINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MICA"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="MICA"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CALCITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<MatGloss label="CALCITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SALTPETER"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<MatGloss label="SALTPETER"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ALABASTER"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<MatGloss label="ALABASTER"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SELENITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<MatGloss label="SELENITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SATINSPAR"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<MatGloss label="SATINSPAR"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ANHYDRITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLUE"/>
+		<MatGloss label="ANHYDRITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ALUNITE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<MatGloss label="ALUNITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_RAW_ADAMANTINE"/>
+		<Texture label="TEXTURE_VEINS"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_AQUA"/>
+		<MatGloss label="RAW_ADAMANTINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CLAY"/>
+		<Texture label="TEXTURE_CLAY"/>
+		<PrimaryColor label="COLOR_RED"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="CLAY"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SILTY_CLAY"/>
+		<Texture label="TEXTURE_CLAY"/>
+		<PrimaryColor label="COLOR_RED"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<MatGloss label="SILTY_CLAY"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SANDY_CLAY"/>
+		<Texture label="TEXTURE_CLAY"/>
+		<PrimaryColor label="COLOR_MAROON"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="SANDY_CLAY"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CLAY_LOAM"/>
+		<Texture label="TEXTURE_CLAY"/>
+		<PrimaryColor label="COLOR_YELLOW"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="CLAY_LOAM"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SANDY_CLAY_LOAM"/>
+		<Texture label="TEXTURE_DIRT"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<MatGloss label="SANDY_CLAY_LOAM"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SILTY_CLAY_LOAM"/>
+		<Texture label="TEXTURE_DIRT"/>
+		<PrimaryColor label="COLOR_YELLOW"/>
+		<SecondaryColor label="COLOR_LEATHER"/>
+		<MatGloss label="SILTY_CLAY_LOAM"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_LOAM"/>
+		<Texture label="TEXTURE_DIRT"/>
+		<PrimaryColor label="COLOR_LEATHER"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="LOAM"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SANDY_LOAM"/>
+		<Texture label="TEXTURE_DIRT"/>
+		<PrimaryColor label="COLOR_ORANGE"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="SANDY_LOAM"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SILT_LOAM"/>
+		<Texture label="TEXTURE_DIRT"/>
+		<PrimaryColor label="COLOR_YELLOW"/>
+		<SecondaryColor label="COLOR_DARK_ORANGE"/>
+		<MatGloss label="SILT_LOAM"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_LOAMY_SAND"/>
+		<Texture label="TEXTURE_DIRT"/>
+		<PrimaryColor label="COLOR_YELLOW"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<MatGloss label="LOAMY_SAND"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SILT"/>
+		<Texture label="TEXTURE_DIRT"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="SILT"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PEAT"/>
+		<Texture label="TEXTURE_DIRT"/>
+		<PrimaryColor label="COLOR_FOREST_GREEN"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="PEAT"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PELAGIC_CLAY"/>
+		<Texture label="TEXTURE_CLAY"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<MatGloss label="PELAGIC_CLAY"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CALCAREOUS_OOZE"/>
+		<Texture label="TEXTURE_CLAY"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<MatGloss label="CALCAREOUS_OOZE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SILICEOUS_OOZE"/>
+		<Texture label="TEXTURE_CLAY"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="SILICEOUS_OOZE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SANDSTONE"/>
+		<Texture label="TEXTURE_LAYERED"/>
+		<PrimaryColor label="COLOR_TAN"/>
+		<SecondaryColor label="COLOR_PINK"/>
+		<MatGloss label="SANDSTONE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SILTSTONE"/>
+		<Texture label="TEXTURE_LAYERED"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<MatGloss label="SILTSTONE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MUDSTONE"/>
+		<Texture label="TEXTURE_LAYERED"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<MatGloss label="MUDSTONE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SHALE"/>
+		<Texture label="TEXTURE_LAYERED"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="SHALE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CLAYSTONE"/>
+		<Texture label="TEXTURE_LAYERED"/>
+		<PrimaryColor label="COLOR_TAN"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<MatGloss label="CLAYSTONE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ROCK_SALT"/>
+		<Texture label="TEXTURE_CUBIC"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<MatGloss label="ROCK_SALT"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_LIMESTONE"/>
+		<Texture label="TEXTURE_CARBONATE"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<MatGloss label="LIMESTONE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CONGLOMERATE"/>
+		<Texture label="TEXTURE_CONGLOMERATE"/>
+		<PrimaryColor label="COLOR_DARK_ORANGE"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<MatGloss label="CONGLOMERATE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DOLOMITE"/>
+		<Texture label="TEXTURE_CARBONATE"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="DOLOMITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_FLINT"/>
+		<Texture label="TEXTURE_DIRT"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="FLINT"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CHERT"/>
+		<Texture label="TEXTURE_DIRT"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<MatGloss label="CHERT"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CHALK"/>
+		<Texture label="TEXTURE_CARBONATE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="CHALK"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRANITE"/>
+		<Texture label="TEXTURE_IGNEOUS_INTRUSIVE"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="GRANITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DIORITE"/>
+		<Texture label="TEXTURE_IGNEOUS_INTRUSIVE"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<MatGloss label="DIORITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GABBRO"/>
+		<Texture label="TEXTURE_IGNEOUS_INTRUSIVE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="GABBRO"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_RHYOLITE"/>
+		<Texture label="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<MatGloss label="RHYOLITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BASALT"/>
+		<Texture label="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="BASALT"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ANDESITE"/>
+		<Texture label="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<MatGloss label="ANDESITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_FELSITE"/>
+		<Texture label="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<MatGloss label="FELSITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_OBSIDIAN"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<MatGloss label="OBSIDIAN"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_QUARTZITE"/>
+		<Texture label="TEXTURE_DIRT"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="QUARTZITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SLATE"/>
+		<Texture label="TEXTURE_LAYERED"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_NAVY"/>
+		<MatGloss label="SLATE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PHYLLITE"/>
+		<Texture label="TEXTURE_LAYERED"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="PHYLLITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SCHIST"/>
+		<Texture label="TEXTURE_FOLIATED"/>
+		<PrimaryColor label="COLOR_TAN"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="SCHIST"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GNEISS"/>
+		<Texture label="TEXTURE_FOLIATED"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<MatGloss label="GNEISS"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MARBLE"/>
+		<Texture label="TEXTURE_CARBONATE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<MatGloss label="MARBLE"/>
+	</Material>
+	-->
+</Materials>
