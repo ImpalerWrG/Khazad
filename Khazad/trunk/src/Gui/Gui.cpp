@@ -137,7 +137,15 @@ void Ui::InitCameraControlMenu()
     FrameToggleButton->addActionListener(FrameToggleListener);
     CameraControlWindow->add(FrameToggleButton, ButtonSize * 4, ButtonSize * 0);
 
-    gcn::ImageButton* HiddenToggleButton = new gcn::ImageButton(Path("Assets\\Buttons\\Hidden.png"));
+
+//    gcn::Image::load(filename)
+
+    HiddenOff = gcn::Image::load(Path("Assets\\Buttons\\Hidden2.png"));
+    HiddenOn = gcn::Image::load(Path("Assets\\Buttons\\Hidden.png"));
+
+    //HiddenOff = loader.load(Path("Assets\\Buttons\\Hidden2.png"));
+    //HiddenOn = loader.load(Path("Assets\\Buttons\\Hidden.png"));
+    HiddenToggleButton = new gcn::ImageButton(HiddenOff);
     HiddenToggleButton->setSize(32, 32);
     gcn::ActionListener* HiddenToggleListener = new HiddenToggleActionListener();
     HiddenToggleButton->addActionListener(HiddenToggleListener);

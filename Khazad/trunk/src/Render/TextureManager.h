@@ -13,6 +13,13 @@
 class ImagePage;
 class ClipImage;
 
+struct TextureDescriptor
+{
+    bool used;
+    GLuint GLtexture;
+    ILuint ILtexture;
+};
+
 class TextureManager
 {
 	DECLARE_SINGLETON_CLASS(TextureManager)
@@ -30,10 +37,11 @@ public:
 
     ILuint GenerateMaterialTexture(Uint16 MaterialID);
 
-    GLuint getAggragateTexture()        { return MainTexture; }
-    Uint16 getTextureCount()            { return TextureCordinates.size(); }
-    int getAggragateTextureSize()       { return MainTextureSize; }
-
+    //GLuint getAggragateTexture()        { return MainTexture; }
+    //Uint16 getTextureCount()            { return TextureCordinates.size(); }
+    //int getAggragateTextureSize()       { return MainTextureSize; }
+    void BindAggregate();
+    void BindTexture(Uint32 TextureID);
     void BindTexturePoint(Uint32 TextureID, float u, float v);
 
     void ReportDevILErrors();
@@ -45,11 +53,15 @@ protected:
 	std::vector<GLuint> SingularTextureLibrary;
 	std::vector<GLuint**> PagedTextureLibrary;
 
+
+    std::vector<TextureDescriptor> TextureCache;
+
 	std::vector<ILuint> DevilImageVector;
 	std::vector<SDL_Rect> TextureCordinates;
 
     bool isFileEnding(const char* FilePath, const char* Ending);
 
+    unsigned int currentTexture;
     SDL_Surface* AgragateSurface;
 	GLuint MainTexture;
 	int MainTextureSize;

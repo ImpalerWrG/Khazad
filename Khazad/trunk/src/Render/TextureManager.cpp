@@ -25,19 +25,48 @@ bool TextureManager::Init()
     ilutEnable(ILUT_OPENGL_CONV);
 
     ilEnable (IL_CONV_PAL);
-
+    // set invalid texture
+    currentTexture = 0;
 
     ilClearColour(0, 0, 0, 0);
 
-
+    TextureDescriptor deadbeef;
     // Load the terrain Textures
-    ILuint TextureID;
+    ILuint ILtex;
+    glEnable(GL_TEXTURE_2D);
     for(Uint32 i = 0; i < DATA->getNumMaterials(); ++i)
     {
-        TextureID = GenerateMaterialTexture(i);
-        if(TextureID != 0)
+        ILtex = GenerateMaterialTexture(i);
+        if(ILtex != 0)
         {
-            DevilImageVector.push_back(TextureID);
+            DevilImageVector.push_back(ILtex);
+
+            GLuint GLtex;
+            glGenTextures(1, &GLtex);
+            printf ("GLGENTEXTURES: %d\n");
+            glBindTexture(GL_TEXTURE_2D, GLtex);
+            glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST );
+            // when texture area is large, bilinear filter the original
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
+            // the texture wraps over at the edges (repeat)
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+            glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+            gluBuild2DMipmaps(GL_TEXTURE_2D, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+
+            deadbeef.used = 1;
+            deadbeef.GLtexture = GLtex;
+            deadbeef.ILtexture = ILtex;
+            TextureCache.push_back(deadbeef);
+
+/*
+            char buffer[256];
+            sprintf(buffer, "ScreenShots\\TexturePalete.png");
+            ilSaveImage(Path(buffer));
+*/
+
+
         }
     }
 
@@ -323,8 +352,29 @@ int TextureManager::nextpoweroftwo(int x)
 
 void TextureManager::BindTexturePoint(Uint32 TextureID, float u, float v)
 {
-    glTexCoord2i(TextureCordinates[TextureID].x + u * (TextureCordinates[TextureID].w - TextureCordinates[TextureID].x),
-                 TextureCordinates[TextureID].y + v * (TextureCordinates[TextureID].h - TextureCordinates[TextureID].y));
+    /*glTexCoord2f((TextureCordinates[TextureID].x + u * (TextureCordinates[TextureID].w - TextureCordinates[TextureID].x)) / MainTextureSize,
+                 (TextureCordinates[TextureID].y + v * (TextureCordinates[TextureID].h - TextureCordinates[TextureID].y)) / MainTextureSize
+                );*/
+    glTexCoord2f(u,v);
+}
+
+// bind the texture aggregate
+void TextureManager::BindAggregate( void )
+{/*
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+    glScalef(1.0 / (float) MainTextureSize, 1.0 / (float) MainTextureSize, 1.0);*/
+    glBindTexture(GL_TEXTURE_2D, MainTexture);
+}
+// bind separate texture
+void TextureManager::BindTexture(Uint32 TextureID)
+{
+    GLuint tex = TextureCache[TextureID].GLtexture;
+    if( tex == currentTexture ) return;
+    currentTexture = tex;
+    glEnd();
+    glBindTexture(GL_TEXTURE_2D, TextureCache[TextureID].GLtexture);
+    glBegin(GL_TRIANGLES);
 }
 
 void TextureManager::ReportDevILErrors()

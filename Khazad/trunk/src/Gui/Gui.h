@@ -37,8 +37,11 @@ public:
 
     gcn::ActionListener* getExitListener()      { return ExitListener; }
 
-protected:
+    gcn::Image* HiddenOn;
+    gcn::Image* HiddenOff;
+    gcn::ImageButton* HiddenToggleButton;
 
+protected:
     void InitMainMenu();
     void InitCameraControlMenu();
     void InitConfirmationWindow();

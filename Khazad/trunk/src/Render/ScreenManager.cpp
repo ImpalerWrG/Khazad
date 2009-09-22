@@ -545,10 +545,7 @@ bool ScreenManager::Render()
 	GreenPickingValue = 0;
 	BluePickingValue = 0;
 
-    glMatrixMode(GL_TEXTURE);
-    glLoadIdentity();
-    glScalef(1.0 / (float) TEXTURE->getAggragateTextureSize(), 1.0 / (float) TEXTURE->getAggragateTextureSize(), 1.0);
-    glBindTexture(GL_TEXTURE_2D, TEXTURE->getAggragateTexture());
+//    TEXTURE->BindAggregate();
 
 	glMatrixMode(GL_MODELVIEW);
     CameraOrientation CurrentOrientation = MainCamera->getOrientation();
@@ -600,9 +597,9 @@ bool ScreenManager::Render()
 	}
 */
 
-    glMatrixMode(GL_TEXTURE);  //return to normal Texturing for UI
-    glPopMatrix();
-    glLoadIdentity();
+    //glMatrixMode(GL_TEXTURE);  //return to normal Texturing for UI
+    //glPopMatrix();
+    //glLoadIdentity();
 
 	return true;
 }

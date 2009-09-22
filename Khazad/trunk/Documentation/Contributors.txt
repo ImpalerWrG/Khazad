@@ -14,7 +14,7 @@ Advisors:               Will Miller (Firaxis)
 Special Thanks:         Mithaldu (Lifevis / Extractor author)
 
 Artists:                Davion (Main Logo)
-                        Chubacca (Grass textures and menu icons)
+                        Chubacca (Many textures and menu icons)
 
 Testers:                
 

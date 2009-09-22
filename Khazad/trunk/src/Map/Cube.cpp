@@ -72,6 +72,7 @@ bool Cube::DrawLiquid(float xTranslate, float yTranslate)
             glColor4f(0.5, 0.5, 0.5, 0.7);
             texture = DATA->getLabelIndex("MATERIAL_WATER");
         }
+        TEXTURE->BindTexture(texture);
         float xx= xTranslate - 0.5;
         float yy = yTranslate - 0.5;
         float z = 0.141 * Liquid - 0.5;
@@ -79,18 +80,24 @@ bool Cube::DrawLiquid(float xTranslate, float yTranslate)
         // draw quad in the appropriate height
         {
             glNormal3f(0.0,0.0,1.0);
-            TEXTURE->BindTexturePoint(texture, 0,0);
+            glTexCoord2f(0,0);
+            //TEXTURE->BindTexturePoint(texture, 0,0);
             glVertex3f(xx     ,yy    ,z);
-            TEXTURE->BindTexturePoint(texture, 0,1);
+            glTexCoord2f(0,1);
+            //TEXTURE->BindTexturePoint(texture, 0,1);
             glVertex3f(xx     ,yy + 1,z);
-            TEXTURE->BindTexturePoint(texture, 1,1);
+            glTexCoord2f(1,1);
+            //TEXTURE->BindTexturePoint(texture, 1,1);
             glVertex3f(xx + 1 ,yy + 1,z);
 
-            TEXTURE->BindTexturePoint(texture, 1,1);
+            glTexCoord2f(1,1);
+            //TEXTURE->BindTexturePoint(texture, 1,1);
             glVertex3f(xx + 1 ,yy + 1 ,z);
-            TEXTURE->BindTexturePoint(texture, 1,0);
+            glTexCoord2f(1,0);
+            //TEXTURE->BindTexturePoint(texture, 1,0);
             glVertex3f(xx + 1 ,yy     ,z);
-            TEXTURE->BindTexturePoint(texture, 0,0);
+            glTexCoord2f(0,0);
+            //TEXTURE->BindTexturePoint(texture, 0,0);
             glVertex3f(xx     ,yy     ,z);
         }
         Cube * north = getAdjacentCube(FACET_NORTH);
@@ -107,18 +114,24 @@ bool Cube::DrawLiquid(float xTranslate, float yTranslate)
             float z2 =  (0.141 * nl) - 0.5;
             float zt2 =  (0.141 * nl);
             // draw a quad to patch hole north
-            TEXTURE->BindTexturePoint(texture, 0,zt2);
+            glTexCoord2f(0,zt2);
+            //TEXTURE->BindTexturePoint(texture, 0,zt2);
             glVertex3f(xx +1     ,yy    ,z2);
-            TEXTURE->BindTexturePoint(texture, 1,zt2);
+            glTexCoord2f(1,zt2);
+            //TEXTURE->BindTexturePoint(texture, 1,zt2);
             glVertex3f(xx     ,yy     ,z2);
-            TEXTURE->BindTexturePoint(texture, 1,zt);
+            glTexCoord2f(1,zt);
+            //TEXTURE->BindTexturePoint(texture, 1,zt);
             glVertex3f(xx    ,yy    ,z);
 
-            TEXTURE->BindTexturePoint(texture, 0,zt2);
+            glTexCoord2f(0,zt2);
+            //TEXTURE->BindTexturePoint(texture, 0,zt2);
             glVertex3f(xx +1     ,yy    ,z2);
-            TEXTURE->BindTexturePoint(texture, 1,zt);
+            glTexCoord2f(1,zt);
+            //TEXTURE->BindTexturePoint(texture, 1,zt);
             glVertex3f(xx    ,yy    ,z);
-            TEXTURE->BindTexturePoint(texture, 0,zt);
+            glTexCoord2f(0,zt);
+            //TEXTURE->BindTexturePoint(texture, 0,zt);
             glVertex3f(xx +1 ,yy    ,z);
 
         }
@@ -133,18 +146,24 @@ bool Cube::DrawLiquid(float xTranslate, float yTranslate)
             float z2 =  0.141 * nl - 0.5;
             float zt2 =  (0.141 * nl);
             // draw a quad to patch hole east
-            TEXTURE->BindTexturePoint(texture, 0,zt2);
+            glTexCoord2f(0,zt2);
+            //TEXTURE->BindTexturePoint(texture, 0,zt2);
             glVertex3f(xx +1     ,yy +1    ,z2);
-            TEXTURE->BindTexturePoint(texture, 1,zt2);
+            glTexCoord2f(1,zt2);
+            //TEXTURE->BindTexturePoint(texture, 1,zt2);
             glVertex3f(xx +1     ,yy    ,z2);
-            TEXTURE->BindTexturePoint(texture, 1,zt);
+            glTexCoord2f(1,zt);
+            //TEXTURE->BindTexturePoint(texture, 1,zt);
             glVertex3f(xx +1     ,yy     ,z);
 
-            TEXTURE->BindTexturePoint(texture, 0,zt2);
+            glTexCoord2f(0,zt2);
+            //TEXTURE->BindTexturePoint(texture, 0,zt2);
             glVertex3f(xx +1     ,yy +1    ,z2);
-            TEXTURE->BindTexturePoint(texture, 1,zt);
+            glTexCoord2f(1,zt);
+            //TEXTURE->BindTexturePoint(texture, 1,zt);
             glVertex3f(xx +1     ,yy     ,z);
-            TEXTURE->BindTexturePoint(texture, 0,zt);
+            glTexCoord2f(0,zt);
+            //TEXTURE->BindTexturePoint(texture, 0,zt);
             glVertex3f(xx +1     ,yy +1    ,z);
         }
         if(south)
@@ -156,18 +175,24 @@ bool Cube::DrawLiquid(float xTranslate, float yTranslate)
             float z2 =  0.141 * nl - 0.5;
             float zt2 =  (0.141 * nl);
             // draw a quad to patch hole south
-            TEXTURE->BindTexturePoint(texture, 0,zt2);
+            glTexCoord2f(0,zt2);
+            //TEXTURE->BindTexturePoint(texture, 0,zt2);
             glVertex3f(xx      ,yy +1    ,z2);
-            TEXTURE->BindTexturePoint(texture, 1,zt2);
+            glTexCoord2f(1,zt2);
+            //TEXTURE->BindTexturePoint(texture, 1,zt2);
             glVertex3f(xx +1     ,yy +1    ,z2);
-            TEXTURE->BindTexturePoint(texture, 1,zt);
+            glTexCoord2f(1,zt);
+            //TEXTURE->BindTexturePoint(texture, 1,zt);
             glVertex3f(xx +1   ,yy +1     ,z);
 
-            TEXTURE->BindTexturePoint(texture, 0,zt2);
+            glTexCoord2f(0,zt2);
+            //TEXTURE->BindTexturePoint(texture, 0,zt2);
             glVertex3f(xx      ,yy +1    ,z2);
-            TEXTURE->BindTexturePoint(texture, 1,zt);
+            glTexCoord2f(1,zt);
+            //TEXTURE->BindTexturePoint(texture, 1,zt);
             glVertex3f(xx +1     ,yy +1     ,z);
-            TEXTURE->BindTexturePoint(texture, 0,zt);
+            glTexCoord2f(0,zt);
+            //TEXTURE->BindTexturePoint(texture, 0,zt);
             glVertex3f(xx      ,yy +1    ,z);
         }
         if(west)
@@ -179,18 +204,24 @@ bool Cube::DrawLiquid(float xTranslate, float yTranslate)
             float z2 =  0.141 * nl - 0.5;
             float zt2 =  (0.141 * nl);
             // draw a quad to patch hole west
-            TEXTURE->BindTexturePoint(texture, 0,zt2);
+            glTexCoord2f(0,zt2);
+            //TEXTURE->BindTexturePoint(texture, 0,zt2);
             glVertex3f(xx      ,yy    ,z2);
-            TEXTURE->BindTexturePoint(texture, 1,zt2);
+            glTexCoord2f(1,zt2);
+            //TEXTURE->BindTexturePoint(texture, 1,zt2);
             glVertex3f(xx      ,yy +1    ,z2);
-            TEXTURE->BindTexturePoint(texture, 1,zt);
+            glTexCoord2f(1,zt);
+            //TEXTURE->BindTexturePoint(texture, 1,zt);
             glVertex3f(xx   ,yy +1     ,z);
 
-            TEXTURE->BindTexturePoint(texture, 0,zt2);
+            glTexCoord2f(0,zt2);
+            //TEXTURE->BindTexturePoint(texture, 0,zt2);
             glVertex3f(xx      ,yy     ,z2);
-            TEXTURE->BindTexturePoint(texture, 1,zt);
+            glTexCoord2f(1,zt);
+            //TEXTURE->BindTexturePoint(texture, 1,zt);
             glVertex3f(xx      ,yy +1     ,z);
-            TEXTURE->BindTexturePoint(texture, 0,zt);
+            glTexCoord2f(0,zt);
+            //TEXTURE->BindTexturePoint(texture, 0,zt);
             glVertex3f(xx      ,yy     ,z);
         }
     }
@@ -540,16 +571,25 @@ bool Cube::DrawFace(float xTranslate, float yTranslate, Facet FacetType, bool to
                 break;
             }
         }
+        TEXTURE->BindTexture(Material);
+        glTexCoord2f(0,0);
+        glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
+
+        glTexCoord2f(1,1);
+        glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+
+        glTexCoord2f(0,1);
+        glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
 
 
-        TEXTURE->BindTexturePoint(Material, 0,0);         glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
-        TEXTURE->BindTexturePoint(Material, 1,1);         glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
-        TEXTURE->BindTexturePoint(Material, 0,1);         glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
+        glTexCoord2f(0,0);
+        glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
 
-        TEXTURE->BindTexturePoint(Material, 0,0);         glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
-        TEXTURE->BindTexturePoint(Material, 1,0);         glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
-        TEXTURE->BindTexturePoint(Material, 1,1);         glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
+        glTexCoord2f(1,0);
+        glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
 
+        glTexCoord2f(1,1);
+        glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
         SCREEN->IncrementTriangles(2);
     }
 
@@ -655,6 +695,8 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate)
         hmf[i] = ((float)hm[i]) / 2 - 0.5;
     }
 
+    TEXTURE->BindTexture(Material);
+
     // draw triangles
     for(Direction i = DIRECTION_NORTHWEST; i <= DIRECTION_WEST; ++i)
     {
@@ -666,13 +708,16 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate)
         *  *---*---*
         */
         // point C
-        TEXTURE->BindTexturePoint(Material, 0.5,0.5);
+        //TEXTURE->BindTexturePoint(Material, 0.5,0.5);
+        glTexCoord2f(0.5,0.5);
         glVertex3f( xTranslate,  yTranslate, hmf[9]);
         //point P+1
-        TEXTURE->BindTexturePoint(Material, tc[i+1][0],tc[i+1][1]);
+        //TEXTURE->BindTexturePoint(Material, tc[i+1][0],tc[i+1][1]);
+        glTexCoord2f(tc[i+1][0],tc[i+1][1]);
         glVertex3f(dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, hmf[i+1]);
         //point P
-        TEXTURE->BindTexturePoint(Material, tc[i][0],tc[i][1]);
+        //TEXTURE->BindTexturePoint(Material, tc[i][0],tc[i][1]);
+        glTexCoord2f(tc[i][0],tc[i][1]);
         glVertex3f(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i]);
     }
     // just drawn 8 tris
@@ -693,49 +738,61 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate)
         if(hm[i] == 0)// one tri, hm[i+2] is high
         {
             // second upper
-            TEXTURE->BindTexturePoint(Material, 0.0,1.0);
+            glTexCoord2f(0.0,1.0);
+            //TEXTURE->BindTexturePoint(Material, 0.0,1.0);
             glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, hmf[i+2]);
             // second lower
-            TEXTURE->BindTexturePoint(Material, 0.0,0.0);
+            glTexCoord2f(0.0,0.0);
+            //TEXTURE->BindTexturePoint(Material, 0.0,0.0);
             glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5);
             // first lower
-            TEXTURE->BindTexturePoint(Material, 1.0,0.0);
+            glTexCoord2f(1.0,0.0);
+            //TEXTURE->BindTexturePoint(Material, 1.0,0.0);
             glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i]);
             SCREEN->IncrementTriangles(1);
         }
         else if(hm[i+2] == 0)// one tri, hm[i] is high
         {
             // first lower
-            TEXTURE->BindTexturePoint(Material, 1.0,0.0);
+            glTexCoord2f(1.0,0.0);
+            //TEXTURE->BindTexturePoint(Material, 1.0,0.0);
             glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, -0.5);
             // first upper
-            TEXTURE->BindTexturePoint(Material, 1.0,1.0);
+            glTexCoord2f(1.0,1.0);
+            //TEXTURE->BindTexturePoint(Material, 1.0,1.0);
             glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, hmf[i]);
             // second
-            TEXTURE->BindTexturePoint(Material, 0.0,0.0);
+            glTexCoord2f(0.0,0.0);
+            //TEXTURE->BindTexturePoint(Material, 0.0,0.0);
             glVertex3f( dc[i+2][0] + xTranslate, dc[i+2][1]+ yTranslate, hmf[i+2]);
             SCREEN->IncrementTriangles(1);
         }
         else // two tris, both corners high
         {
             // second upper
-            TEXTURE->BindTexturePoint(Material, 0.0,1.0);
+            glTexCoord2f(0.0,1.0);
+            //TEXTURE->BindTexturePoint(Material, 0.0,1.0);
             glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, 0.5);
             // second lower
-            TEXTURE->BindTexturePoint(Material, 0.0,0.0);
+            glTexCoord2f(0.0,0.0);
+            //TEXTURE->BindTexturePoint(Material, 0.0,0.0);
             glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5);
             // first lower
-            TEXTURE->BindTexturePoint(Material, 1.0,0.0);
+            glTexCoord2f(1.0,0.0);
+            //TEXTURE->BindTexturePoint(Material, 1.0,0.0);
             glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5);
 
             // first lower
-            TEXTURE->BindTexturePoint(Material, 1.0,0.0);
+            glTexCoord2f(1.0,0.0);
+            //TEXTURE->BindTexturePoint(Material, 1.0,0.0);
             glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5);
             // first upper
-            TEXTURE->BindTexturePoint(Material, 1.0,1.0);
+            glTexCoord2f(1.0,1.0);
+            //TEXTURE->BindTexturePoint(Material, 1.0,1.0);
             glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, 0.5);
             // center
-            TEXTURE->BindTexturePoint(Material, 0.5,0.5);
+            glTexCoord2f(0.5,0.5);
+            //TEXTURE->BindTexturePoint(Material, 0.5,0.5);
             glVertex3f( dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, 0.0);
             SCREEN->IncrementTriangles(2);
         }

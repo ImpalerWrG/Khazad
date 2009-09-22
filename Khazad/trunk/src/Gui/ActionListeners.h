@@ -126,6 +126,14 @@ class HiddenToggleActionListener: public gcn::ActionListener
     void action(const gcn::ActionEvent& actionEvent)
     {
         SCREEN->setHiddenDraw(!SCREEN->isHiddenDraw());
+        if(SCREEN->isHiddenDraw())
+        {
+            UI->HiddenToggleButton->setImage(UI->HiddenOn);
+        }
+        else
+        {
+            UI->HiddenToggleButton->setImage(UI->HiddenOff);
+        }
     }
 };
 
@@ -181,7 +189,7 @@ class OrbitClockwiseActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->MainCamera->OrbitView(CONFIG->OrbitSpeed() / -1000.0);
+        SCREEN->MainCamera->OrbitView(CONFIG->OrbitSpeed() / 1000.0);
     }
 };
 
@@ -189,7 +197,7 @@ class OrbitCounterClockwiseActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->MainCamera->OrbitView(CONFIG->OrbitSpeed() / 1000.0);
+        SCREEN->MainCamera->OrbitView(CONFIG->OrbitSpeed() / -1000.0);
     }
 };
 

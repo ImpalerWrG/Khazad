@@ -298,16 +298,16 @@ void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY, 
 	{
 		if (Event->type == SDL_MOUSEMOTION )
 		{
-			if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_MIDDLE))
+			if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_RIGHT))
 			{
 				TiltView(DeltaY *  (CONFIG->TiltSpeed() / 1000.0), 0.01f, 10.0f);
 				OrbitView(DeltaX * (CONFIG->OrbitSpeed() / 10000.0));
 
 				generateViewFrustum();
 			}
-            if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_RIGHT))
+            if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_MIDDLE))
             {
-                SlideView(DeltaX * CONFIG->SlideSpeed() / 50, DeltaY * CONFIG->SlideSpeed() / 50);
+                SlideView(-DeltaX * CONFIG->SlideSpeed() / 50, -DeltaY * CONFIG->SlideSpeed() / 50);
             }
 		}
 	}
