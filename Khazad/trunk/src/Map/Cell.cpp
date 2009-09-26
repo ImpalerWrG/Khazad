@@ -180,55 +180,55 @@ void Cell::UpdateLists()
         for( map<int16_t, vector < vertex > * >::iterator it = normal.begin(); it != normal.end(); ++it)
         {
             int16_t material = it->first;
-            vector < vertex > * vertices = it->second;
+            vector < vertex > & vertices = *it->second;
 
             // generate VBOs out of vertex arrays
-            GLuint VBO = BuildVBO(vertices->data(),vertices->size()*sizeof(vertex));
+            GLuint VBO = BuildVBO(&vertices[0],vertices.size()*sizeof(vertex));
 
             // create descriptor
             VBOStruct tempVBO;
             if(VBOs.count(material))
             {
                 tempVBO = VBOs[material];
-                tempVBO.countNormal = vertices->size();
+                tempVBO.countNormal = vertices.size();
                 tempVBO.normal = VBO;
                 tempVBO.hasNormal = 1;
             }
             else
             {
-                tempVBO= VBOStruct{true,VBO,vertices->size(),   false,0,0};
+                tempVBO= VBOStruct(true,VBO,vertices.size(),   false,0,0);
             }
             VBOs[material] = tempVBO;
 
             // delete the original arrays
-            delete(vertices);
+            delete(&vertices);
         }
         // for each material in top geometry
         for( map<int16_t, vector < vertex > * >::iterator it = tops.begin(); it != tops.end(); ++it)
         {
             int16_t material = it->first;
-            vector < vertex > * vertices = it->second;
+            vector < vertex > & vertices = *it->second;
             // build vbo
-            GLuint VBO = BuildVBO(vertices->data(),vertices->size()*sizeof(vertex));
+            GLuint VBO = BuildVBO(&vertices[0],vertices.size()*sizeof(vertex));
 
             // assign vbo to descriptor
             VBOStruct tempVBO;
             if(VBOs.count(material))
             {
                 tempVBO = VBOs[material];
-                tempVBO.countTop = vertices->size();
+                tempVBO.countTop = vertices.size();
                 tempVBO.top = VBO;
                 tempVBO.hasTop = 1;
             }
             else
             {
-                tempVBO= VBOStruct{false,0,0, true,VBO,it->second->size()};
+                tempVBO= VBOStruct(false,0,0, true,VBO,vertices.size());
             }
 
             // store descriptor
             VBOs[material] = tempVBO;
             // delete the original arrays
-            delete(it->second);
+            delete(&vertices);
         }
     }
 }

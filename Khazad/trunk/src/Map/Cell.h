@@ -12,6 +12,10 @@ class Tree;
 
 struct VBOStruct
 {
+    inline VBOStruct( bool hn, GLuint n, uint32_t cn, bool ht, GLuint t, uint32_t ct ):
+    hasNormal(hn),normal(n),countNormal(cn),hasTop(ht),top(t),countTop(ct){};
+    inline VBOStruct(){};
+
     bool hasNormal;
     GLuint normal;
     uint32_t countNormal;
