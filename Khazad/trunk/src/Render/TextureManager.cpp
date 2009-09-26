@@ -134,7 +134,7 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
         ilOverlayImage(MaskID, 0, 0, 0);
         if (DATA->getMaterialData(MaterialID)->getBorder())
             ApplyBorder(BaseData, width, height, bpp, 0, 0, 0); // Add Black borders
-
+        iluFlipImage();
         return BaseID;
     }
     else if(colormode == "overlay")
@@ -193,11 +193,12 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
         }
         if (DATA->getMaterialData(MaterialID)->getBorder())
             ApplyBorder(BaseData, width, height, bpp, 0, 0, 0); // Add Black borders
+        iluFlipImage();
         return BaseID;
     }
     else if(colormode == "keepimage")
     {
-        iluFlipImage();
+        //iluFlipImage();
         if (DATA->getMaterialData(MaterialID)->getBorder())
         {
             Uint32 bpp = ilGetInteger(IL_IMAGE_BYTES_PER_PIXEL);
