@@ -169,7 +169,7 @@ void Cell::UpdateLists()
                 LoopCube = getCube(x, y);
                 if (LoopCube != NULL && RENDERER->isCubeDrawn(LoopCube))
                 {
-                    LoopCube->DrawFaces(x, y, normal, tops);
+                    LoopCube->Draw(x, y, normal, tops);
                 }
             }
         }

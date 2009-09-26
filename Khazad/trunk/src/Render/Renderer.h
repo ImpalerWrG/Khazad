@@ -39,6 +39,8 @@ void glVertexPointer(   GLint   size,
 #pragma pack(push, 1)
 struct vertex
 {
+    inline vertex (float x_, float y_, float z_, float u_, float v_, float nx_, float ny_, float nz_ ):
+    x(x_),y(y_),z(z_),u(u_),v(v_),nx(nx_),ny(ny_),nz(nz_){};
     // 3x float for vertex
     float x;
     float y;
@@ -52,12 +54,6 @@ struct vertex
     float nz;
 };
 #pragma pack(pop)
-
-inline vertex mkvert (float x_, float y_, float z_, float u_, float v_, float nx_, float ny_, float nz_ )
-{
-    return {x_, y_, z_, u_, v_, nx_, ny_, nz_};
-};
-
 
 class Renderer
 {

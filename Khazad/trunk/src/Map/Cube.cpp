@@ -53,7 +53,7 @@ bool Cube::Init(Uint16 MaterialType)
 
     return true;
 }
-
+/*
 bool Cube::DrawLiquid(float xTranslate, float yTranslate)
 {
     Uint16 texture;
@@ -81,23 +81,17 @@ bool Cube::DrawLiquid(float xTranslate, float yTranslate)
         {
             glNormal3f(0.0,0.0,1.0);
             glTexCoord2f(0,0);
-            //TEXTURE->BindTexturePoint(texture, 0,0);
             glVertex3f(xx     ,yy    ,z);
             glTexCoord2f(0,1);
-            //TEXTURE->BindTexturePoint(texture, 0,1);
             glVertex3f(xx     ,yy + 1,z);
             glTexCoord2f(1,1);
-            //TEXTURE->BindTexturePoint(texture, 1,1);
             glVertex3f(xx + 1 ,yy + 1,z);
 
             glTexCoord2f(1,1);
-            //TEXTURE->BindTexturePoint(texture, 1,1);
             glVertex3f(xx + 1 ,yy + 1 ,z);
             glTexCoord2f(1,0);
-            //TEXTURE->BindTexturePoint(texture, 1,0);
             glVertex3f(xx + 1 ,yy     ,z);
             glTexCoord2f(0,0);
-            //TEXTURE->BindTexturePoint(texture, 0,0);
             glVertex3f(xx     ,yy     ,z);
         }
         Cube * north = getAdjacentCube(FACET_NORTH);
@@ -115,23 +109,17 @@ bool Cube::DrawLiquid(float xTranslate, float yTranslate)
             float zt2 =  (0.141 * nl);
             // draw a quad to patch hole north
             glTexCoord2f(0,zt2);
-            //TEXTURE->BindTexturePoint(texture, 0,zt2);
             glVertex3f(xx +1     ,yy    ,z2);
             glTexCoord2f(1,zt2);
-            //TEXTURE->BindTexturePoint(texture, 1,zt2);
             glVertex3f(xx     ,yy     ,z2);
             glTexCoord2f(1,zt);
-            //TEXTURE->BindTexturePoint(texture, 1,zt);
             glVertex3f(xx    ,yy    ,z);
 
             glTexCoord2f(0,zt2);
-            //TEXTURE->BindTexturePoint(texture, 0,zt2);
             glVertex3f(xx +1     ,yy    ,z2);
             glTexCoord2f(1,zt);
-            //TEXTURE->BindTexturePoint(texture, 1,zt);
             glVertex3f(xx    ,yy    ,z);
             glTexCoord2f(0,zt);
-            //TEXTURE->BindTexturePoint(texture, 0,zt);
             glVertex3f(xx +1 ,yy    ,z);
 
         }
@@ -147,23 +135,17 @@ bool Cube::DrawLiquid(float xTranslate, float yTranslate)
             float zt2 =  (0.141 * nl);
             // draw a quad to patch hole east
             glTexCoord2f(0,zt2);
-            //TEXTURE->BindTexturePoint(texture, 0,zt2);
             glVertex3f(xx +1     ,yy +1    ,z2);
             glTexCoord2f(1,zt2);
-            //TEXTURE->BindTexturePoint(texture, 1,zt2);
             glVertex3f(xx +1     ,yy    ,z2);
             glTexCoord2f(1,zt);
-            //TEXTURE->BindTexturePoint(texture, 1,zt);
             glVertex3f(xx +1     ,yy     ,z);
 
             glTexCoord2f(0,zt2);
-            //TEXTURE->BindTexturePoint(texture, 0,zt2);
             glVertex3f(xx +1     ,yy +1    ,z2);
             glTexCoord2f(1,zt);
-            //TEXTURE->BindTexturePoint(texture, 1,zt);
             glVertex3f(xx +1     ,yy     ,z);
             glTexCoord2f(0,zt);
-            //TEXTURE->BindTexturePoint(texture, 0,zt);
             glVertex3f(xx +1     ,yy +1    ,z);
         }
         if(south)
@@ -176,23 +158,17 @@ bool Cube::DrawLiquid(float xTranslate, float yTranslate)
             float zt2 =  (0.141 * nl);
             // draw a quad to patch hole south
             glTexCoord2f(0,zt2);
-            //TEXTURE->BindTexturePoint(texture, 0,zt2);
             glVertex3f(xx      ,yy +1    ,z2);
             glTexCoord2f(1,zt2);
-            //TEXTURE->BindTexturePoint(texture, 1,zt2);
             glVertex3f(xx +1     ,yy +1    ,z2);
             glTexCoord2f(1,zt);
-            //TEXTURE->BindTexturePoint(texture, 1,zt);
             glVertex3f(xx +1   ,yy +1     ,z);
 
             glTexCoord2f(0,zt2);
-            //TEXTURE->BindTexturePoint(texture, 0,zt2);
             glVertex3f(xx      ,yy +1    ,z2);
             glTexCoord2f(1,zt);
-            //TEXTURE->BindTexturePoint(texture, 1,zt);
             glVertex3f(xx +1     ,yy +1     ,z);
             glTexCoord2f(0,zt);
-            //TEXTURE->BindTexturePoint(texture, 0,zt);
             glVertex3f(xx      ,yy +1    ,z);
         }
         if(west)
@@ -205,28 +181,22 @@ bool Cube::DrawLiquid(float xTranslate, float yTranslate)
             float zt2 =  (0.141 * nl);
             // draw a quad to patch hole west
             glTexCoord2f(0,zt2);
-            //TEXTURE->BindTexturePoint(texture, 0,zt2);
             glVertex3f(xx      ,yy    ,z2);
             glTexCoord2f(1,zt2);
-            //TEXTURE->BindTexturePoint(texture, 1,zt2);
             glVertex3f(xx      ,yy +1    ,z2);
             glTexCoord2f(1,zt);
-            //TEXTURE->BindTexturePoint(texture, 1,zt);
             glVertex3f(xx   ,yy +1     ,z);
 
             glTexCoord2f(0,zt2);
-            //TEXTURE->BindTexturePoint(texture, 0,zt2);
             glVertex3f(xx      ,yy     ,z2);
             glTexCoord2f(1,zt);
-            //TEXTURE->BindTexturePoint(texture, 1,zt);
             glVertex3f(xx      ,yy +1     ,z);
             glTexCoord2f(0,zt);
-            //TEXTURE->BindTexturePoint(texture, 0,zt);
             glVertex3f(xx      ,yy     ,z);
         }
     }
 }
-
+*/
 void Cube::setLiquid(Uint8 liquidtype,Uint8 NewValue)
 {
     data.liquidtype=liquidtype;
@@ -395,10 +365,10 @@ Vector3 Cube::ConvertSpacialPoint(SpacialPoint Point)
     return Vector3(0.0, 0.0, 0.0);
 }
 */
-bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslate)
+/*bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslate)
 {
     return false;
-}
+}*/
 
 void Cube::Dig()
 {
@@ -488,47 +458,63 @@ bool Cube::hasFace(Facet FacetType)
 {
     return data.facets & FacetType;
 }
+bool Cube::Draw(float xTranslate, float yTranslate,
+                     std::map< int16_t, vector< vertex >* >& normal,
+                     std::map< int16_t, vector< vertex >* >& tops)
+{
+    if(data.geometry == GEOM_SLOPE)
+    {
+        return DrawSlope(xTranslate,yTranslate,normal,tops);
+    }
+    else if (data.geometry == GEOM_EMPTY)
+    {
+        return false;
+    }
+    else
+    {
+        return DrawFaces(xTranslate,yTranslate, normal, tops);
+    }
+}
 
 //TODO: pre-generating all possible configs and using them as templates would be faster. deferred
 bool Cube::DrawFaces(float xTranslate, float yTranslate,
                      std::map< int16_t, vector< vertex >* >& normal,
-                     std::map< int16_t, vector< vertex >* >& tops
-                     )
+                     std::map< int16_t, vector< vertex >* >& tops)
 {
     // cached quads
     static const vertex vertices[6][4] =
     {
         // position, uv texture coords, normal vector - see vertex in Renderer.h
         // FACET_TOP
-        mkvert(-0.5f,-0.5f, 0.5f,  0.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
-        mkvert( 0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
-        mkvert( 0.5f, 0.5f, 0.5f,  1.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
-        mkvert(-0.5f, 0.5f, 0.5f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
+        vertex(-0.5f,-0.5f, 0.5f,  0.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
+        vertex( 0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
+        vertex( 0.5f, 0.5f, 0.5f,  1.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
+        vertex(-0.5f, 0.5f, 0.5f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
         // FACET_BOTTOM
-        mkvert(-0.5f,-0.5f,-0.5f,  0.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
-        mkvert( 0.5f,-0.5f,-0.5f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
-        mkvert( 0.5f, 0.5f,-0.5f,  1.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
-        mkvert(-0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
+        vertex(-0.5f,-0.5f,-0.5f,  0.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
+        vertex( 0.5f,-0.5f,-0.5f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
+        vertex( 0.5f, 0.5f,-0.5f,  1.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
+        vertex(-0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
         // FACET_NORTH
-        mkvert( 0.5f,-0.5f, 0.5f,  0.0f, 1.0f,  0.0f,-1.0f, 0.0f ),
-        mkvert(-0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  0.0f,-1.0f, 0.0f ),
-        mkvert(-0.5f,-0.5f,-0.5f,  1.0f, 0.0f,  0.0f,-1.0f, 0.0f ),
-        mkvert( 0.5f,-0.5f,-0.5f,  0.0f, 0.0f,  0.0f,-1.0f, 0.0f ),
+        vertex( 0.5f,-0.5f, 0.5f,  0.0f, 1.0f,  0.0f,-1.0f, 0.0f ),
+        vertex(-0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  0.0f,-1.0f, 0.0f ),
+        vertex(-0.5f,-0.5f,-0.5f,  1.0f, 0.0f,  0.0f,-1.0f, 0.0f ),
+        vertex( 0.5f,-0.5f,-0.5f,  0.0f, 0.0f,  0.0f,-1.0f, 0.0f ),
         // FACET_SOUTH
-        mkvert(-0.5f, 0.5f, 0.5f,  0.0f, 1.0f,  0.0f, 1.0f, 0.0f ),
-        mkvert( 0.5f, 0.5f, 0.5f,  1.0f, 1.0f,  0.0f, 1.0f, 0.0f ),
-        mkvert( 0.5f, 0.5f,-0.5f,  1.0f, 0.0f,  0.0f, 1.0f, 0.0f ),
-        mkvert(-0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  0.0f, 1.0f, 0.0f ),
+        vertex(-0.5f, 0.5f, 0.5f,  0.0f, 1.0f,  0.0f, 1.0f, 0.0f ),
+        vertex( 0.5f, 0.5f, 0.5f,  1.0f, 1.0f,  0.0f, 1.0f, 0.0f ),
+        vertex( 0.5f, 0.5f,-0.5f,  1.0f, 0.0f,  0.0f, 1.0f, 0.0f ),
+        vertex(-0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  0.0f, 1.0f, 0.0f ),
         // FACET_EAST
-        mkvert( 0.5f, 0.5f, 0.5f,  0.0f, 1.0f,  1.0f, 0.0f, 0.0f ),
-        mkvert( 0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  1.0f, 0.0f, 0.0f ),
-        mkvert( 0.5f,-0.5f,-0.5f,  1.0f, 0.0f,  1.0f, 0.0f, 0.0f ),
-        mkvert( 0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  1.0f, 0.0f, 0.0f ),
+        vertex( 0.5f, 0.5f, 0.5f,  0.0f, 1.0f,  1.0f, 0.0f, 0.0f ),
+        vertex( 0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  1.0f, 0.0f, 0.0f ),
+        vertex( 0.5f,-0.5f,-0.5f,  1.0f, 0.0f,  1.0f, 0.0f, 0.0f ),
+        vertex( 0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  1.0f, 0.0f, 0.0f ),
         // FACET_WEST
-        mkvert(-0.5f,-0.5f, 0.5f,  0.0f, 1.0f, -1.0f, 0.0f, 0.0f ),
-        mkvert(-0.5f, 0.5f, 0.5f,  1.0f, 1.0f, -1.0f, 0.0f, 0.0f ),
-        mkvert(-0.5f, 0.5f,-0.5f,  1.0f, 0.0f, -1.0f, 0.0f, 0.0f ),
-        mkvert(-0.5f,-0.5f,-0.5f,  0.0f, 0.0f, -1.0f, 0.0f, 0.0f )
+        vertex(-0.5f,-0.5f, 0.5f,  0.0f, 1.0f, -1.0f, 0.0f, 0.0f ),
+        vertex(-0.5f, 0.5f, 0.5f,  1.0f, 1.0f, -1.0f, 0.0f, 0.0f ),
+        vertex(-0.5f, 0.5f,-0.5f,  1.0f, 0.0f, -1.0f, 0.0f, 0.0f ),
+        vertex(-0.5f,-0.5f,-0.5f,  0.0f, 0.0f, -1.0f, 0.0f, 0.0f )
     };
     // work vector ptr
     vector< vertex >* vec;
@@ -738,7 +724,9 @@ bool Cube::DrawFace(float xTranslate, float yTranslate, Facet FacetType, bool to
 /// TODO: normal vectors. these are required for lighting
 /// TODO: separate this from khazad, use for mesh generation
 /// FIXME: waste of CPU cycles
-bool Cube::DrawSlope(float xTranslate, float yTranslate)
+bool Cube::DrawSlope(float xTranslate, float yTranslate,
+                     std::map< int16_t, vector< vertex >* >& normal,
+                     std::map< int16_t, vector< vertex >* >& tops)
 {
     if(!Visible) return false;
     /**
@@ -830,8 +818,16 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate)
     {
         hmf[i] = ((float)hm[i]) / 2 - 0.5;
     }
-
-    TEXTURE->BindTexture(Material);
+    vector <vertex>* vec;
+    if(!normal.count(Material))
+    {
+        vec = new vector< vertex >;
+        normal[Material] = vec;
+    }
+    else
+    {
+        vec = normal[Material];
+    }
 
     // draw triangles
     for(Direction i = DIRECTION_NORTHWEST; i <= DIRECTION_WEST; ++i)
@@ -843,22 +839,39 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate)
         *  | / | \ |
         *  *---*---*
         */
-        // point C
-        //TEXTURE->BindTexturePoint(Material, 0.5,0.5);
-        glTexCoord2f(0.5,0.5);
-        glVertex3f( xTranslate,  yTranslate, hmf[9]);
-        //point P+1
-        //TEXTURE->BindTexturePoint(Material, tc[i+1][0],tc[i+1][1]);
-        glTexCoord2f(tc[i+1][0],tc[i+1][1]);
-        glVertex3f(dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, hmf[i+1]);
-        //point P
-        //TEXTURE->BindTexturePoint(Material, tc[i][0],tc[i][1]);
-        glTexCoord2f(tc[i][0],tc[i][1]);
-        glVertex3f(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i]);
-    }
-    // just drawn 8 tris
-    RENDERER->IncrementTriangles(8);
 
+        // point C
+        vertex v0 = vertex(xTranslate, yTranslate, hmf[9],0.5,0.5, 0,0,1);
+        //point P+1
+        vertex v1 = vertex(dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, hmf[i+1],tc[i+1][0],tc[i+1][1], 0,0,1);
+        //point P
+        vertex v2 = vertex(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i],tc[i][0],tc[i][1], 0,0,1);
+        if(v0.z == v1.z == v2.z == 0.5) // top
+        {
+            vector <vertex>* vect;
+            Cube *c = getAdjacentCube(FACET_TOP);
+            if(c && !c->getGeometry() == GEOM_EMPTY)
+            {
+                if(!tops.count(Material))
+                {
+                    vect = new vector< vertex >;
+                    tops[Material] = vect;
+                }
+                else
+                {
+                    vect = tops[Material];
+                }
+                vect->push_back(v0);
+                vect->push_back(v1);
+                vect->push_back(v2);
+                // next triangle
+                continue;
+            }
+        }
+        vec->push_back(v0);
+        vec->push_back(v1);
+        vec->push_back(v2);
+    }
     //patch holes
     for(int i = 0; i< 8;i+=2)
     {
@@ -874,63 +887,36 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate)
         if(hm[i] == 0)// one tri, hm[i+2] is high
         {
             // second upper
-            glTexCoord2f(0.0,1.0);
-            //TEXTURE->BindTexturePoint(Material, 0.0,1.0);
-            glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, hmf[i+2]);
+            vec->push_back(vertex(dc[i+2][0] + xTranslate, dc[i+2][1] + yTranslate, hmf[i+2], 0.0,1.0, 0,0,1));
             // second lower
-            glTexCoord2f(0.0,0.0);
-            //TEXTURE->BindTexturePoint(Material, 0.0,0.0);
-            glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5);
+            vec->push_back(vertex(dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5, 0.0,0.0, 0,0,1));
             // first lower
-            glTexCoord2f(1.0,0.0);
-            //TEXTURE->BindTexturePoint(Material, 1.0,0.0);
-            glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i]);
-            RENDERER->IncrementTriangles(1);
+            vec->push_back(vertex(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i], 1.0,0.0,0,0,1));
         }
         else if(hm[i+2] == 0)// one tri, hm[i] is high
         {
             // first lower
-            glTexCoord2f(1.0,0.0);
-            //TEXTURE->BindTexturePoint(Material, 1.0,0.0);
-            glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, -0.5);
+            vec->push_back(vertex(dc[i][0] + xTranslate,  dc[i][1] + yTranslate, -0.5,    1.0,0.0,   0,0,1 ));
             // first upper
-            glTexCoord2f(1.0,1.0);
-            //TEXTURE->BindTexturePoint(Material, 1.0,1.0);
-            glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, hmf[i]);
+            vec->push_back(vertex(dc[i][0] + xTranslate,  dc[i][1] + yTranslate, hmf[i],   1.0,1.0,   0,0,1 ));
             // second
-            glTexCoord2f(0.0,0.0);
-            //TEXTURE->BindTexturePoint(Material, 0.0,0.0);
-            glVertex3f( dc[i+2][0] + xTranslate, dc[i+2][1]+ yTranslate, hmf[i+2]);
-            RENDERER->IncrementTriangles(1);
+            vec->push_back(vertex(dc[i+2][0] + xTranslate, dc[i+2][1]+ yTranslate, hmf[i+2],   0.0,0.0,   0,0,1 ));
         }
         else // two tris, both corners high
         {
             // second upper
-            glTexCoord2f(0.0,1.0);
-            //TEXTURE->BindTexturePoint(Material, 0.0,1.0);
-            glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, 0.5);
+            vec->push_back(vertex(dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, 0.5,    0.0,1.0,   0,0,1 ));
             // second lower
-            glTexCoord2f(0.0,0.0);
-            //TEXTURE->BindTexturePoint(Material, 0.0,0.0);
-            glVertex3f( dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5);
+            vec->push_back(vertex(dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5,    0.0,0.0,   0,0,1 ));
             // first lower
-            glTexCoord2f(1.0,0.0);
-            //TEXTURE->BindTexturePoint(Material, 1.0,0.0);
-            glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5);
+            vec->push_back(vertex(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5,    1.0,0.0,   0,0,1 ));
 
             // first lower
-            glTexCoord2f(1.0,0.0);
-            //TEXTURE->BindTexturePoint(Material, 1.0,0.0);
-            glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5);
+            vec->push_back(vertex(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5,    1.0,0.0,   0,0,1 ));
             // first upper
-            glTexCoord2f(1.0,1.0);
-            //TEXTURE->BindTexturePoint(Material, 1.0,1.0);
-            glVertex3f( dc[i][0] + xTranslate,  dc[i][1] + yTranslate, 0.5);
+            vec->push_back(vertex(dc[i][0] + xTranslate,  dc[i][1] + yTranslate, 0.5,    1.0,1.0,   0,0,1 ));
             // center
-            glTexCoord2f(0.5,0.5);
-            //TEXTURE->BindTexturePoint(Material, 0.5,0.5);
-            glVertex3f( dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, 0.0);
-            RENDERER->IncrementTriangles(2);
+            vec->push_back(vertex(dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, 0.0,    0.5,0.5,   0,0,1 ));
         }
     }
     return true;
