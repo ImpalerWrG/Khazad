@@ -63,9 +63,10 @@ bool Map::Init()
 
 	return true;
 }
-
+/*
 bool Map::Generate(Uint32 Seed)
 {
+
     RANDOM->Seed(Seed);
 
     Uint32 TerrainX = MapSizeX + 1;
@@ -123,7 +124,7 @@ bool Map::Generate(Uint32 Seed)
     delete TerrainArray;
 
     return true;
-}
+}*/
 
 Cell* Map::getCell(Sint32 X, Sint32 Y, Sint32 Z)
 {
@@ -156,14 +157,9 @@ Cube* Map::getCube(Sint32 X, Sint32 Y, Sint32 Z)
 
     if(TargetCell != NULL)
     {
-        if(TargetCell->isInitalized())
-        {
-            Sint32 CubeX = X % CELLEDGESIZE;
-            Sint32 CubeY = Y % CELLEDGESIZE;
-
-            return TargetCell->getCube(CubeX, CubeY);
-        }
-        return NULL;
+        Sint32 CubeX = X % CELLEDGESIZE;
+        Sint32 CubeY = Y % CELLEDGESIZE;
+        return TargetCell->getCube(CubeX, CubeY);
     }
     return NULL;
 }
@@ -174,7 +170,7 @@ bool Map::hasFace(Sint32 X, Sint32 Y, Sint32 Z, Facet FaceType)
 
     if(TargetCell)
     {
-        if(TargetCell->isInitalized())
+//        if(TargetCell->isInitalized())
         {
             Sint32 CubeX = X % CELLEDGESIZE;
             Sint32 CubeY = Y % CELLEDGESIZE;
@@ -291,7 +287,8 @@ bool Map::Extract()
     MapSizeX = CellSizeX * CELLEDGESIZE;
 	MapSizeY = CellSizeY * CELLEDGESIZE;
 	MapSizeZ = CellSizeZ;
-    // Initialize Drawlists
+    // Initialize VBOs
+
 	for(Uint16 Zlevel = 0; Zlevel < getCellSizeZ(); Zlevel++)
 	{
         for (Uint32 SizeX = 0; SizeX < getCellSizeX(); SizeX++)
@@ -299,29 +296,11 @@ bool Map::Extract()
             for (Uint32 SizeY = 0; SizeY < getCellSizeY(); SizeY++)
             {
                 Cell* LoopCell = getCell(SizeX, SizeY, Zlevel);
-                if(LoopCell != NULL)
+                if(LoopCell != NULL && LoopCell->isActive() && LoopCell->getNeedsRedraw())
                 {
-                    GLuint DrawListID = LoopCell->getDrawListID();
-                    if(LoopCell->isActive())
-                    {
-                        if(LoopCell->isDirtyDrawList())
-                        {
-                            // Rebuild the new Drawlist
-                            glDeleteLists(DrawListID, 5);
-                            for(CameraOrientation Orientation = CAMERA_DOWN; Orientation < NUM_ORIENTATIONS; ++Orientation)
-                            {
-                                SCREEN->RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation);
-                            }
-                            glDeleteLists(DrawListID + 6,1);
-                            SCREEN->RefreshTopDrawlist(LoopCell, DrawListID + 6);
-                            LoopCell->setDirtyDrawList(false);
-                        }
-                    }
-                    if(LoopCell->isLiquidActive())
-                    {
-                        glDeleteLists(DrawListID + 5,1);
-                        SCREEN->RefreshTransparentDrawlist(LoopCell, DrawListID + 5);
-                    }
+                    // Rebuild the new Drawlist
+                    LoopCell->UpdateLists();
+                    LoopCell->setNeedsRedraw(false);
                 }
             }
         }
@@ -637,7 +616,9 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
     if(occupancy.bits.mud) return Soil;
 
     Uint16 BaseMatGlossTexture = StoneMatGloss[basematerial];
-    Uint16 VeinMatGlossTexture = StoneMatGloss[veinmaterial];
+    Uint16 VeinMatGlossTexture = 0;
+    if(veinmaterial)
+        VeinMatGlossTexture = StoneMatGloss[veinmaterial];
     // FIXME: add more material types so that we can use soap and other such terrible things
     Uint16 ContructionMatGlossTexture = -1;
     switch(constructionmaterial.type)

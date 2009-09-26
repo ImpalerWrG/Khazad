@@ -11,7 +11,7 @@ class Tree : public Actor
         /** Default destructor */
         virtual ~Tree();
         bool Init();
-        bool Draw(CameraOrientation Orientation);
+        bool Draw();
 
     protected:
     private:

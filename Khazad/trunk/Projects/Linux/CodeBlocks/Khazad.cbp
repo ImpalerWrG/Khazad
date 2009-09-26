@@ -178,8 +178,8 @@
 		<Unit filename="../../../src/Render/ImageManager.h" />
 		<Unit filename="../../../src/Render/ImagePage.cpp" />
 		<Unit filename="../../../src/Render/ImagePage.h" />
-		<Unit filename="../../../src/Render/ScreenManager.cpp" />
-		<Unit filename="../../../src/Render/ScreenManager.h" />
+		<Unit filename="../../../src/Render/Renderer.cpp" />
+		<Unit filename="../../../src/Render/Renderer.h" />
 		<Unit filename="../../../src/Render/TextureManager.cpp" />
 		<Unit filename="../../../src/Render/TextureManager.h" />
 		<Extensions>

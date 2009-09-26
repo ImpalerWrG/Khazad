@@ -2,7 +2,7 @@
 
 #include <Pawn.h>
 #include <Random.h>
-#include <ScreenManager.h>
+#include <Renderer.h>
 #include <Game.h>
 #include <Map.h>
 #include <Cube.h>

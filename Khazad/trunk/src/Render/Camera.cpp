@@ -2,7 +2,7 @@
 
 #include <Camera.h>
 #include <Plane.h>
-#include <ScreenManager.h>
+#include <Renderer.h>
 #include <ConfigManager.h>
 #include <Map.h>
 #include <Cube.h>
@@ -32,13 +32,13 @@ bool Camera::ReInit(bool Isometric)
 {
 	if (Isometric)
 	{
-		setIsometricProj(SCREEN->getWidth(), SCREEN->getHeight(), 1000000.0);
+		setIsometricProj(RENDERER->getWidth(), RENDERER->getHeight(), 1000000.0);
 		IsoMode = true;
 	}
 	else
 	{
 		IsoMode = false;
-		setPerspectiveProj(SCREEN->getWidth() / SCREEN->getHeight(), 0.01, 1000);
+		setPerspectiveProj(RENDERER->getWidth() / RENDERER->getHeight(), 0.01, 1000);
 	}
 	return true;
 }
@@ -49,19 +49,17 @@ bool Camera::Init(bool Isometric)
 
 	if (Isometric)
 	{
-		setIsometricProj(SCREEN->getWidth(), SCREEN->getHeight(), 1000000.0);
+		setIsometricProj(RENDERER->getWidth(), RENDERER->getHeight(), 1000000.0);
 		IsoMode = true;
 		Orientation = CAMERA_NORTH_WEST;
 //		ViewLevels = 1;
 	}
 	else
 	{
-	    /*
 		setPerspectiveProj(45.0, 1.0, 10000000.0);
-		*/
 		IsoMode = false;
 		Orientation = CAMERA_NORTH_WEST;
-		setPerspectiveProj(SCREEN->getWidth() / SCREEN->getHeight(), 0.01, 1000);
+		setPerspectiveProj(RENDERER->getWidth() / RENDERER->getHeight(), 0.01, 1000);
 	}
 	return true;
 }
@@ -194,7 +192,7 @@ bool Camera::DetermineCursorIntersection()
         MouseIntersection.z = i;
         cout << "hitscandebug: " << ZlevelSeperationAdjustment(i) + 0.5 << " " << MouseIntersection.x << " " << MouseIntersection.y << " " << MouseIntersection.z << endl;
         Cube* TopCube = MAP->getCube((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i);
-        if(TopCube != NULL && SCREEN->isCubeDrawn(TopCube))
+        if(TopCube != NULL && RENDERER->isCubeDrawn(TopCube))
         {
             if(MAP->hasFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_TOP))
             {
@@ -208,7 +206,7 @@ bool Camera::DetermineCursorIntersection()
         MouseIntersection.z = i;
 
         Cube* BottomCube = MAP->getCube((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i);
-        if(BottomCube != NULL && SCREEN->isCubeDrawn(BottomCube))
+        if(BottomCube != NULL && RENDERER->isCubeDrawn(BottomCube))
         {
             if(MAP->hasFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_BOTTOM))
             {
@@ -218,7 +216,7 @@ bool Camera::DetermineCursorIntersection()
 
         // Find Slopes while not picking Cubes that lack facets or arnt being drawn
         Cube* TargetCube = MAP->getCube((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i);
-        if(TargetCube != NULL && SCREEN->isCubeDrawn(TargetCube) && (TargetCube->isSolid() || TargetCube->isSlope()))
+        if(TargetCube != NULL && RENDERER->isCubeDrawn(TargetCube) && (TargetCube->isSolid() || TargetCube->isSlope()))
         {
             return true;
         }

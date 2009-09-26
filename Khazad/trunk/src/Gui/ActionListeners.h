@@ -2,7 +2,7 @@
 #define ACTION__HEADER
 
 #include <stdafx.h>
-#include <ScreenManager.h>
+#include <Renderer.h>
 #include <Map.h>
 #include <Camera.h>
 #include <Cube.h>
@@ -54,7 +54,7 @@ class DepthChangeActionListener: public gcn::ActionListener
 
         float NewLevel = Source->getValue() * MAP->getMapSizeZ();
 
-        SCREEN->MainCamera->SetSliceA((Sint16) NewLevel);
+        RENDERER->MainCamera->SetSliceA((Sint16) NewLevel);
     }
 };
 
@@ -66,7 +66,7 @@ class DepthChange2ActionListener: public gcn::ActionListener
 
         float NewLevel = Source->getValue() * MAP->getMapSizeZ();
 
-        SCREEN->MainCamera->SetSliceB((Sint16) NewLevel);
+        RENDERER->MainCamera->SetSliceB((Sint16) NewLevel);
     }
 };
 
@@ -76,7 +76,7 @@ class CenteringActionListener: public gcn::ActionListener
     void action(const gcn::ActionEvent& actionEvent)
     {
         gcn::Button* Source = (gcn::Button*) actionEvent.getSource();
-        SCREEN->MainCamera->CenterView(MAP->getMapCenter());
+        RENDERER->MainCamera->CenterView(MAP->getMapCenter());
     }
 };
 
@@ -85,7 +85,7 @@ class VerticalActionListener: public gcn::ActionListener
     void action(const gcn::ActionEvent& actionEvent)
     {
         gcn::Button* Source = (gcn::Button*) actionEvent.getSource();
-        SCREEN->MainCamera->setVerticalMode(!SCREEN->MainCamera->isVerticalMode());
+        RENDERER->MainCamera->setVerticalMode(!RENDERER->MainCamera->isVerticalMode());
     }
 };
 
@@ -93,7 +93,7 @@ class DebuggingToggleActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->setDebuggingDraw(!SCREEN->isDebuggingDraw());
+        RENDERER->setDebuggingDraw(!RENDERER->isDebuggingDraw());
     }
 };
 
@@ -101,7 +101,7 @@ class ShadingToggleActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->setShadedDraw(!SCREEN->isShadedDraw());
+        RENDERER->setShadedDraw(!RENDERER->isShadedDraw());
     }
 };
 
@@ -109,7 +109,7 @@ class TakeScreenShotActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->CaptureScreenShot();
+        RENDERER->CaptureScreenShot();
     }
 };
 
@@ -117,7 +117,7 @@ class FrameToggleActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->setFrameDraw(!SCREEN->isFrameDraw());
+        RENDERER->setFrameDraw(!RENDERER->isFrameDraw());
     }
 };
 
@@ -125,8 +125,8 @@ class HiddenToggleActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->setHiddenDraw(!SCREEN->isHiddenDraw());
-        if(SCREEN->isHiddenDraw())
+        RENDERER->setHiddenDraw(!RENDERER->isHiddenDraw());
+        if(RENDERER->isHiddenDraw())
         {
             UI->HiddenToggleButton->setImage(UI->HiddenOn);
         }
@@ -141,7 +141,7 @@ class IncresseLevelSeperationActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-		SCREEN->MainCamera->changeLevelSeperation(1);
+		RENDERER->MainCamera->changeLevelSeperation(1);
     }
 };
 
@@ -149,7 +149,7 @@ class DecresseLevelSeperationActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-		SCREEN->MainCamera->changeLevelSeperation(-1);
+		RENDERER->MainCamera->changeLevelSeperation(-1);
     }
 };
 
@@ -157,7 +157,7 @@ class IncreseViewLevelsActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->MainCamera->ChangeViewLevel(1);
+        RENDERER->MainCamera->ChangeViewLevel(1);
     }
 };
 
@@ -165,7 +165,7 @@ class DecreseViewLevelsActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->MainCamera->ChangeViewLevel(-1);
+        RENDERER->MainCamera->ChangeViewLevel(-1);
     }
 };
 
@@ -173,7 +173,7 @@ class MoveViewUpActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->MainCamera->MoveViewVertical(1.0);
+        RENDERER->MainCamera->MoveViewVertical(1.0);
     }
 };
 
@@ -181,7 +181,7 @@ class MoveViewDownActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->MainCamera->MoveViewVertical(-1.0);
+        RENDERER->MainCamera->MoveViewVertical(-1.0);
     }
 };
 
@@ -189,7 +189,7 @@ class OrbitClockwiseActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->MainCamera->OrbitView(CONFIG->OrbitSpeed() / 1000.0);
+        RENDERER->MainCamera->OrbitView(CONFIG->OrbitSpeed() / 1000.0);
     }
 };
 
@@ -197,7 +197,7 @@ class OrbitCounterClockwiseActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->MainCamera->OrbitView(CONFIG->OrbitSpeed() / -1000.0);
+        RENDERER->MainCamera->OrbitView(CONFIG->OrbitSpeed() / -1000.0);
     }
 };
 
@@ -205,7 +205,7 @@ class ZoomInActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-         SCREEN->MainCamera->ZoomView(1.0 / (CONFIG->ZoomSpeed() / (50.0 + CONFIG->ZoomSpeed())));
+        RENDERER->MainCamera->ZoomView(1.0 / (CONFIG->ZoomSpeed() / (50.0 + CONFIG->ZoomSpeed())));
     }
 };
 
@@ -213,7 +213,7 @@ class ZoomOutActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->MainCamera->ZoomView((CONFIG->ZoomSpeed() / (50.0 + CONFIG->ZoomSpeed())) / 1.0);
+        RENDERER->MainCamera->ZoomView((CONFIG->ZoomSpeed() / (50.0 + CONFIG->ZoomSpeed())) / 1.0);
     }
 };
 
@@ -221,7 +221,7 @@ class TiltUpActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->MainCamera->TiltView(-10 *  (CONFIG->TiltSpeed() / 1000.0), (float)0.01, (float)10.0);
+        RENDERER->MainCamera->TiltView(-10 *  (CONFIG->TiltSpeed() / 1000.0), (float)0.01, (float)10.0);
     }
 };
 
@@ -229,7 +229,7 @@ class TiltDownActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->MainCamera->TiltView(10 *  (CONFIG->TiltSpeed() / 1000.0), (float)0.01, (float)10.0);
+        RENDERER->MainCamera->TiltView(10 *  (CONFIG->TiltSpeed() / 1000.0), (float)0.01, (float)10.0);
     }
 };
 
@@ -237,7 +237,7 @@ class DigActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        Vector3 CubePosition = SCREEN->MainCamera->getCursor();
+        Vector3 CubePosition = RENDERER->MainCamera->getCursor();
         Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
         if(TargetCube != NULL)
         {
@@ -250,19 +250,19 @@ class MapDumpActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->WipeScreen();
-        SCREEN->setDrawingFlat();
-        SCREEN->RenderLogo();
+        RENDERER->WipeScreen();
+        RENDERER->setDrawingFlat();
+        RENDERER->RenderLogo();
 
-        SCREEN->RenderTextCentered("Dumping Memory", 0, WHITE, 0);
-        SCREEN->Flip();
+        RENDERER->RenderTextCentered("Dumping Memory", 0, WHITE, 0);
+        RENDERER->Flip();
 
         MAP->Extract();
 
-        SCREEN->MainCamera->CenterView(MAP->getMapCenter());
-        SCREEN->MainCamera->SetSliceA(MAP->getMapSizeZ());
-        SCREEN->MainCamera->SetSliceB(0);
-        SCREEN->MainCamera->ConfineCursor();
+        RENDERER->MainCamera->CenterView(MAP->getMapCenter());
+        RENDERER->MainCamera->SetSliceA(MAP->getMapSizeZ());
+        RENDERER->MainCamera->SetSliceB(0);
+        RENDERER->MainCamera->ConfineCursor();
         UI->setMapViewState();
     }
 };
@@ -271,21 +271,21 @@ class MapLoadActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        SCREEN->WipeScreen();
-        SCREEN->setDrawingFlat();
-        SCREEN->RenderLogo();
+        RENDERER->WipeScreen();
+        RENDERER->setDrawingFlat();
+        RENDERER->RenderLogo();
 
         char buffer[256];
         sprintf(buffer, "Loading from File:  %s", CONFIG->LoadPath());
-        SCREEN->RenderTextCentered(buffer, 0, WHITE, 0);
-        SCREEN->Flip();
+        RENDERER->RenderTextCentered(buffer, 0, WHITE, 0);
+        RENDERER->Flip();
 
         MAP->Load(Path(CONFIG->LoadPath()));
 
-        SCREEN->MainCamera->CenterView(MAP->getMapCenter());
-        SCREEN->MainCamera->SetSliceA(MAP->getMapSizeZ());
-        SCREEN->MainCamera->SetSliceB(0);
-        SCREEN->MainCamera->ConfineCursor();
+        RENDERER->MainCamera->CenterView(MAP->getMapCenter());
+        RENDERER->MainCamera->SetSliceA(MAP->getMapSizeZ());
+        RENDERER->MainCamera->SetSliceB(0);
+        RENDERER->MainCamera->ConfineCursor();
 
         UI->setMapViewState();
     }
@@ -301,14 +301,14 @@ class MapSaveActionListener: public gcn::ActionListener
         	return;
         }
 
-        SCREEN->WipeScreen();
-        SCREEN->setDrawingFlat();
-        SCREEN->RenderLogo();
+        RENDERER->WipeScreen();
+        RENDERER->setDrawingFlat();
+        RENDERER->RenderLogo();
 
         char buffer[256];
         sprintf(buffer, "Writing to File:  %s", CONFIG->SavePath());
-        SCREEN->RenderTextCentered(buffer, 0, WHITE, 0);
-        SCREEN->Flip();
+        RENDERER->RenderTextCentered(buffer, 0, WHITE, 0);
+        RENDERER->Flip();
 
         MAP->Save(CONFIG->SavePath());
     }

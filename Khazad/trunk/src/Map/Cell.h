@@ -3,45 +3,53 @@
 #include <stdafx.h>
 
 #include <Actor.h>
-
+//#include <GL/gl.h>
 #define CELLEDGESIZE 16
 
 class Cube;
 class Building;
 class Tree;
 
-class Cell: public Actor
+struct VBOStruct
+{
+    bool hasNormal;
+    GLuint normal;
+    uint32_t countNormal;
+    bool hasTop;
+    GLuint top;
+    uint32_t countTop;
+};
+
+class Cell/*: public Actor*/
 {
 public:
 
-	Cell();
-	Cell(Sint32 X, Sint32 Y, Sint32 Z);
-	~Cell();
-	bool Init();
+    Cell();
+    Cell(Sint32 X, Sint32 Y, Sint32 Z);
+    ~Cell();
+    bool Init();
 
-	Cube* getCube(Uint8 x, Uint8 y);
-	void setCube(Cube* NewCube, Uint8 x, Uint8 y);
+    Cube* getCube(Uint8 x, Uint8 y);
+    void setCube(Cube* NewCube, Uint8 x, Uint8 y);
 
-
-    //Face* getFace(Uint8 x, Uint8 y, Facet FaceType);
     bool hasFace(Uint8 x, Uint8 y, Facet FaceType);
-    //void setFace(Face* NewFace, Uint8 x, Uint8 y, Facet FaceType);
 
-    Uint16 getTriangleCount(CameraOrientation Orientation) { return TriangleCount[Orientation]; }
+    Uint16 getTriangleCount() { return TriangleCount; }
 
-    void setTriangleCount(CameraOrientation Orientation, Uint16 Triangles) { TriangleCount[Orientation] = Triangles; }
+    void setTriangleCount(Uint16 Triangles) { TriangleCount = Triangles; }
+    void addTriangleCount(Uint16 Triangles) { TriangleCount += Triangles; }
 
-	//bool Draw(CameraOrientation Orientation);
-	bool DrawSolids(CameraOrientation Orientation);
-	bool DrawLiquids();
-    bool DrawTops();
+    // FIXME: temporary, inefficient
+    // render VBOs
+    void CallVBO(GLuint vbo, uint32_t count);
+    void Render(bool drawtop);
+    void ClearVBOs();
 
-	bool Update();
+    // update VBOs
+    void UpdateLists();
 
-    //void CreateIndices();
-
-	//void SetBasment(bool Value)         { Basment = Value; }
-	//bool isBasment()                    { return Basment; }
+    // sync with DF if applicable
+    bool Update();
 
     void DrawCellCage();
 
@@ -54,39 +62,38 @@ public:
     inline bool isTopActive()                     { return ActiveTop; }
     void setTopActive(bool NewValue)       { ActiveTop = NewValue; }
 
-    GLuint getDrawListID()                  { return DrawListID; }
-    bool isDirtyDrawList()                  { return DirtyDrawlist; }
-    void setDirtyDrawList(bool NewValue)    { DirtyDrawlist = NewValue; }
+    //GLuint getDrawListID()                  { return DrawListID; }
+    bool getNeedsRedraw()                  { return NeedsRedraw; }
+    void setNeedsRedraw(bool NewValue)    { NeedsRedraw = NewValue; }
 
     void addBuilding(Building *);
     void addTree(Tree *);
+    Vector3 getPosition(){return Position;};
 protected:
+    //TODO maintain a vector of cells that need redraw instead
+    bool NeedsRedraw;
 
-	bool DirtyDrawlist;
-	GLuint DrawListID;
-/*
-    Uint16* VertIndices[5];
-    Uint16* TextIndices[5];
-*/
-	//bool Sky;
-	//bool Basment;
-	//bool Rock;
-	//bool Air;
+    // VBOs by texture and target
+    map<int16_t, VBOStruct > VBOs;
 
-	Sint16 XOffset;
-	Sint16 YOffset;
-	Sint16 ZOffset;
+    Sint16 XOffset;
+    Sint16 YOffset;
+    Sint16 ZOffset;
 
-    Uint16 TriangleCount[5];
+    Uint16 TriangleCount;
 
-	Cube* Cubes[CELLEDGESIZE][CELLEDGESIZE];
-//	Face* Facets[CELLEDGESIZE][CELLEDGESIZE][NUM_FACETS];
+    Cube* Cubes[CELLEDGESIZE][CELLEDGESIZE];
 
     vector <Building *> buildings;
     vector <Tree *> trees;
-	bool Active;
-	bool ActiveLiquid;
+    bool Active;
+    bool ActiveLiquid;
     bool ActiveTop;
+    bool Initialized;
+    Vector3 Position;
+private:
+    // move to renderer
+    GLuint BuildVBO (vertex * data, uint32_t size);
 };
 
 #endif // CELL__HEADER

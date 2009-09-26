@@ -40,7 +40,7 @@ enum Facet
 inline Facet &operator++ (Facet &OldFace)      { return OldFace = Facet(OldFace << 1); }
 inline Facet OppositeFacet(Facet source)
 {
-    Facet opposite[] =
+    static const Facet opposite[] =
     {
         FACET_INVALID,
         FACET_BOTTOM,
@@ -78,6 +78,48 @@ inline Facet OppositeFacet(Facet source)
     };
     return opposite[source];
 }
+
+inline uint8_t FacetToArrayIndex(Facet source)
+{
+    static const uint8_t index[] =
+    {
+        0,
+        1,//FACET_TOP,
+        2,//FACET_BOTTOM
+        0,
+        3,//FACET_NORTH,
+        0,
+        0,
+        0,
+        4,//FACET_SOUTH
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        5,//FACET_EAST
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6//FACET_WEST
+    };
+    return index[source];
+}
+
 /*
 enum Slopping
 {

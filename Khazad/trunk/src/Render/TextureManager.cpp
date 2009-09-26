@@ -352,18 +352,12 @@ int TextureManager::nextpoweroftwo(int x)
 
 void TextureManager::BindTexturePoint(Uint32 TextureID, float u, float v)
 {
-    /*glTexCoord2f((TextureCordinates[TextureID].x + u * (TextureCordinates[TextureID].w - TextureCordinates[TextureID].x)) / MainTextureSize,
-                 (TextureCordinates[TextureID].y + v * (TextureCordinates[TextureID].h - TextureCordinates[TextureID].y)) / MainTextureSize
-                );*/
     glTexCoord2f(u,v);
 }
 
 // bind the texture aggregate
 void TextureManager::BindAggregate( void )
-{/*
-    glMatrixMode(GL_TEXTURE);
-    glLoadIdentity();
-    glScalef(1.0 / (float) MainTextureSize, 1.0 / (float) MainTextureSize, 1.0);*/
+{
     glBindTexture(GL_TEXTURE_2D, MainTexture);
 }
 // bind separate texture
@@ -372,9 +366,7 @@ void TextureManager::BindTexture(Uint32 TextureID)
     GLuint tex = TextureCache[TextureID].GLtexture;
     if( tex == currentTexture ) return;
     currentTexture = tex;
-    glEnd();
     glBindTexture(GL_TEXTURE_2D, TextureCache[TextureID].GLtexture);
-    glBegin(GL_TRIANGLES);
 }
 
 void TextureManager::ReportDevILErrors()

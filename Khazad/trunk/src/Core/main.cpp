@@ -6,7 +6,7 @@
 #include <ColorManager.h>
 #include <XMLManager.h>
 #include <Random.h>
-#include <ScreenManager.h>
+#include <Renderer.h>
 #include <ImageManager.h>
 #include <ConfigManager.h>
 #include <DataManager.h>
@@ -48,9 +48,9 @@ bool initManagers()
     DATA->Init();
     printf("DONE\n");
 
-    printf("-=SCREEN INITIALIZING=- ... ");
-    SCREEN->CreateInstance();
-    SCREEN->Init();
+    printf("-=RENDERER INITIALIZING=- ... ");
+    RENDERER->CreateInstance();
+    RENDERER->Init();
     printf("DONE\n");
 
     printf("-=IMAGE INITIALIZING=- ... ");
@@ -99,13 +99,14 @@ void cleanup()
     COLOR->FreeInstance();
     FONT->FreeInstance();
     DATA->FreeInstance();
-    SCREEN->FreeInstance();
+
     TEXTURE->FreeInstance();
     IMAGE->FreeInstance();
     GAME->FreeInstance();
     INPUT->FreeInstance();
     MAP->FreeInstance();
     UI->FreeInstance();
+    RENDERER->FreeInstance();
 
     TTF_Quit();
     SDL_Quit();
@@ -170,7 +171,7 @@ int main(int argv, char** argc)
     printf("DONE\n");
 
     printf("Wiping the screen ...");
-    SCREEN->WipeScreen();
+    RENDERER->WipeScreen();
     printf("DONE\n");
 
     printf("Init done. Entering main loop.\n");
@@ -185,46 +186,45 @@ int main(int argv, char** argc)
         GameTimer->Pause();
 
         RenderTimer->Unpause();
-            SCREEN->Render();
+            RENDERER->Render();
         RenderTimer->Pause();
 
         UI->Draw();
 
         if(MAP->isMapLoaded())
         {
-            SCREEN->setDrawingFlat();  // Go into HUD-drawing mode
+            RENDERER->setDrawingFlat();  // Go into HUD-drawing mode
 
-            if(SCREEN->isDebuggingDraw())
+            if(RENDERER->isDebuggingDraw())
             {
                 SDL_Rect position;
                 position.x = 10;
-                position.y = SCREEN->getHeight() - 40;
+                position.y = RENDERER->getHeight() - 40;
 
                 sprintf (buffer, "FrameRate %i", FrameRate);
-                SCREEN->RenderText(buffer, 0, WHITE, &position);
+                RENDERER->RenderText(buffer, 0, WHITE, &position);
 
                 position.y -= 40;
 
-                sprintf (buffer, "Triangles %i", SCREEN->getTriangleCount());
-                SCREEN->RenderText(buffer, 0, WHITE, &position);
+                sprintf (buffer, "Triangles %i", RENDERER->getTriangleCount());
+                RENDERER->RenderText(buffer, 0, WHITE, &position);
 
-                SCREEN->PrintDebugging();
+                RENDERER->PrintDebugging();
             }
             else
             {
                 SDL_Rect position;
                 position.x = 10;
-                position.y = SCREEN->getHeight() - 40;
+                position.y = RENDERER->getHeight() - 40;
 
                 sprintf (buffer, "KHAZAD");
-                SCREEN->RenderText(buffer, 0, WHITE, &position);
+                RENDERER->RenderText(buffer, 0, WHITE, &position);
             }
 
-            SCREEN->setDrawing3D(); // Come out of HUD mode
+            RENDERER->setDrawing3D(); // Come out of HUD mode
         }
 
-        SCREEN->Flip();
-        glFinish();
+        RENDERER->Flip();
 		FPSTimer->Pause(); // FrameRate Captures whole loop
 
         FrameRate = (Uint32) FrameRateControl(FPSTimer);

@@ -2,7 +2,7 @@
 
 #include <Game.h>
 #include <InputManager.h>
-#include <ScreenManager.h>
+#include <Renderer.h>
 #include <Map.h>
 #include <Camera.h>
 #include <Singleton.h>
@@ -71,55 +71,55 @@ bool InputManager::HandleInput()
                     //}
                     case SDLK_F11:
                     {
-                        SCREEN->ToggleFullScreen();
+                        RENDERER->ToggleFullScreen();
                         break;
                     }
                     case SDLK_RIGHT:
                     {
-                        SCREEN->MainCamera->OrbitView(CONFIG->OrbitSpeed() / 1000.0);
+                        RENDERER->MainCamera->OrbitView(CONFIG->OrbitSpeed() / 1000.0);
                         break;
                     }
                     case SDLK_LEFT:
                     {
-                        SCREEN->MainCamera->OrbitView(CONFIG->OrbitSpeed() / -1000.0);
+                        RENDERER->MainCamera->OrbitView(CONFIG->OrbitSpeed() / -1000.0);
                         break;
                     }
                     case SDLK_UP:
                     {
-                        SCREEN->MainCamera->MoveViewVertical(1.0);
+                        RENDERER->MainCamera->MoveViewVertical(1.0);
                         break;
                     }
                     case SDLK_DOWN:
                     {
-                        SCREEN->MainCamera->MoveViewVertical(-1.0);
+                        RENDERER->MainCamera->MoveViewVertical(-1.0);
                         break;
                     }
                     case SDLK_INSERT:
                     {
-                        SCREEN->MainCamera->ChangeViewLevel(1);
+                        RENDERER->MainCamera->ChangeViewLevel(1);
                         break;
                     }
                     case SDLK_DELETE:
                     {
-                        SCREEN->MainCamera->ChangeViewLevel(-1);
+                        RENDERER->MainCamera->ChangeViewLevel(-1);
                         break;
                     }
                     case SDLK_PAGEDOWN:
 					{
-					    SCREEN->MainCamera->changeLevelSeperation(1);
+					    RENDERER->MainCamera->changeLevelSeperation(1);
 					    break;
 					}
                     case SDLK_PAGEUP:
 					{
-					    SCREEN->MainCamera->changeLevelSeperation(-1);
+					    RENDERER->MainCamera->changeLevelSeperation(-1);
 					    break;
 					}
                     case SDLK_c:
                     {
-                        Vector3 adjustedCursor = SCREEN->MainCamera->getCursor();
-                        adjustedCursor.z = SCREEN->MainCamera->ZlevelSeperationAdjustment(adjustedCursor.z);
+                        Vector3 adjustedCursor = RENDERER->MainCamera->getCursor();
+                        adjustedCursor.z = RENDERER->MainCamera->ZlevelSeperationAdjustment(adjustedCursor.z);
 
-                        SCREEN->MainCamera->CenterView(adjustedCursor);
+                        RENDERER->MainCamera->CenterView(adjustedCursor);
                         break;
                     }
                     case SDLK_r:
@@ -129,12 +129,12 @@ bool InputManager::HandleInput()
                     }
                     case SDLK_PRINT:
                     {
-                        SCREEN->CaptureScreenShot();
+                        RENDERER->CaptureScreenShot();
                         break;
                     }
                     case SDLK_d:
                     {
-                        Vector3 CubePosition = SCREEN->MainCamera->getCursor();
+                        Vector3 CubePosition = RENDERER->MainCamera->getCursor();
                         Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
                         if(TargetCube != NULL)
                         {
@@ -144,27 +144,27 @@ bool InputManager::HandleInput()
                     }
                     case SDLK_u:
 					{
-					    SCREEN->setSubTerranianDraw(!SCREEN->isSubTerranianDraw());
+					    RENDERER->setSubTerranianDraw(!RENDERER->isSubTerranianDraw());
 					    break;
 					}
                     case SDLK_i:
 					{
-					    SCREEN->setSkyViewDraw(!SCREEN->isSkyViewDraw());
+					    RENDERER->setSkyViewDraw(!RENDERER->isSkyViewDraw());
 					    break;
 					}
                     case SDLK_o:
 					{
-					    SCREEN->setSunLitDraw(!SCREEN->isSunLitDraw());
+					    RENDERER->setSunLitDraw(!RENDERER->isSunLitDraw());
 					    break;
 					}
                     case SDLK_v:
 					{
-					    SCREEN->MainCamera->setVerticalMode(!SCREEN->MainCamera->isVerticalMode());
+					    RENDERER->MainCamera->setVerticalMode(!RENDERER->MainCamera->isVerticalMode());
 					    break;
 					}
                     case SDLK_b:
 					{
-					    SCREEN->setDebuggingDraw(!SCREEN->isDebuggingDraw());
+					    RENDERER->setDebuggingDraw(!RENDERER->isDebuggingDraw());
 					    break;
 					}
 					default:
@@ -175,15 +175,15 @@ bool InputManager::HandleInput()
 
             case SDL_VIDEORESIZE: //User resized window
 			{
-				SCREEN->ReSizeScreen(event.resize.w, event.resize.h, 0);
+				RENDERER->ReSizeScreen(event.resize.w, event.resize.h, 0);
 				break;
 			}
 		}
-		//if (SCREEN->MainCamera->hasFocus())
+		//if (RENDERER->MainCamera->hasFocus())
 		//{
 			if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)
 			{
-				SCREEN->MainCamera->onMouseEvent(&event, RelativeX, RelativeY,Keystate, MouseButtonState,RealX,RealY);
+				RENDERER->MainCamera->onMouseEvent(&event, RelativeX, RelativeY,Keystate, MouseButtonState,RealX,RealY);
 			}
 		//}
 		/*else

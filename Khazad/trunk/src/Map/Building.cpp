@@ -14,7 +14,7 @@ Building::~Building()
     // NOP
 }
 
-bool Building::Draw(CameraOrientation Orientation)
+bool Building::Draw()
 {
     float xa,xb,ya,yb;
     xa = x1 %16 - 0.5;

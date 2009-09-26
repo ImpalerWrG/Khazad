@@ -33,7 +33,7 @@ Tree::~Tree()
     // NOP
 }
 
-bool Tree::Draw(CameraOrientation Orientation)
+bool Tree::Draw()
 {
     float xa,ya;
     xa = x %16 - 0.5;

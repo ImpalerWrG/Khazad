@@ -13,7 +13,7 @@ class Building : public Actor
         /** Default destructor */
         virtual ~Building();
         bool Init();
-        bool Draw(CameraOrientation Orientation);
+        bool Draw();
     protected:
     private:
         int x1, y1, x2, y2, z, type;

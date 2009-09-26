@@ -1,6 +1,6 @@
 #include <stdafx.h>
 
-#include <ScreenManager.h>
+#include <Renderer.h>
 #include <Singleton.h>
 #include <ImagePage.h>
 #include <ClipImage.h>
@@ -14,8 +14,6 @@
 #include <DataManager.h>
 
 #include <DFTypes.h>
-//#include <Extract.h>
-//#include <DfMap.h>
 #include <DFHackAPI.h>
 
 #include <Game.h>
@@ -31,41 +29,45 @@
 #include <sstream>
 
 
-DECLARE_SINGLETON(ScreenManager)
+DECLARE_SINGLETON(Renderer)
 
-ScreenManager::ScreenManager()
+Renderer::Renderer()
 {
-	FullScreen = false;
+    FullScreen = false;
 
-	FrameDraw = true;
-	ShadedDraw = true;
-	HiddenDraw = false;
+    FrameDraw = true;
+    ShadedDraw = true;
+    HiddenDraw = false;
     SubTerranianDraw = true;
     SkyViewDraw = true;
     SunLitDraw = true;
 
-	FlatDraw = false;
-	DebuggingDraw = true;
+    FlatDraw = false;
+    DebuggingDraw = true;
 
     ScreenShotCounter = 0;
     TotalTriangles = 0;
 
-	LogoSurface = NULL;
+    LogoSurface = NULL;
 }
 
-ScreenManager::~ScreenManager()
+Renderer::~Renderer()
 {
     if (imageLoader != NULL)
         delete imageLoader;
 }
 
-bool ScreenManager::Init()
+bool Renderer::Init()
 {
     SDL_Init(SDL_INIT_VIDEO);
+    /* Request an opengl 3.2 context.
+     * SDL doesn't have the ability to choose which profile at this time of writing,
+     * but it should default to the core profile */
+
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);  //TODO make this a Config option
 
-	SDL_WM_SetCaption("Khazad", "Khazad");
+    SDL_WM_SetCaption("Khazad", "Khazad");
 
     //SDL_Surface* Icon = SDL_LoadBMP("Assets\\Textures\\Khazad_Icon.bmp");
     SDL_Surface* Icon = NULL;
@@ -82,8 +84,8 @@ bool ScreenManager::Init()
 
     LogoSurface = IMAGE->loadSurface(Path("Assets\\Textures\\KhazadLogo.png"));
 
-	WindowWidth = CONFIG->getXResolution();
-	WindowHeight = CONFIG->getYResolution();
+    WindowWidth = CONFIG->getXResolution();
+    WindowHeight = CONFIG->getYResolution();
     const SDL_VideoInfo* info = SDL_GetVideoInfo();
     ScreenWidth = info->current_w;
     ScreenHeight = info->current_h;
@@ -111,35 +113,50 @@ bool ScreenManager::Init()
         #else
             ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
         #endif
-
-
     }
+    // let's try searching for VBO extension
+    if(!IsExtensionSupported("GL_ARB_vertex_buffer_object"))
+    {
+        //TODO: really exit and do cleanup when VBOs aren't supported
+        cerr << "GL_vertex_buffer_object OpenGL extension not supported, exiting.\n";
+        return false;
+    }
+    // we have VBO ext, set up VBO functions
+    glGenBuffers = (GL_GenBuffers_Func) SDL_GL_GetProcAddress("glGenBuffersARB");
+    glBindBuffer =  (GL_BindBuffer_Func) SDL_GL_GetProcAddress("glBindBufferARB");
+    glBufferData = (GL_BufferData_Func) SDL_GL_GetProcAddress("glBufferDataARB");
+    glDeleteBuffers = (GL_DeleteBuffer_Func) SDL_GL_GetProcAddress("glDeleteBuffersARB");
+    glMapBuffer = (GL_MapBuffer_Func) SDL_GL_GetProcAddress("glMapBufferARB");
+    glUnmapBuffer = (GL_UnmapBuffer_Func) SDL_GL_GetProcAddress("glUnmapBufferARB");
+    // we use vertices, normals and texture coords
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
     glViewport(0, 0, CurrentWidth, CurrentHeight);
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
 
     SDL_EnableUNICODE(1);
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
-	glEnable(GL_TEXTURE_2D);
-	glShadeModel(GL_SMOOTH);
-	glEnable(GL_LINE_SMOOTH);
-	glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
+    glShadeModel(GL_SMOOTH);
+    glEnable(GL_LINE_SMOOTH);
+    glEnable(GL_DEPTH_TEST);
 
     glEnable(GL_CULL_FACE); // force proper vertex ordering or suffer holes in geometry ;)
 
     glEnable(GL_BLEND);
-//	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glDepthFunc(GL_LEQUAL/* GL_LESS*/); // show me those walls under floors. yes.
-	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    glDepthFunc(GL_LEQUAL/* GL_LESS*/); // show me those walls under floors, glitch style. yes.
+    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
     imageLoader = new gcn::OpenGLSDLImageLoader();
     gcn::Image::setImageLoader(imageLoader);
 
     MainCamera = new Camera();
-	MainCamera->Init(true);
+    MainCamera->Init(true);
 
     //SDL_ShowCursor(false); //Use alternative cursor?
 
@@ -147,7 +164,37 @@ bool ScreenManager::Init()
     return true;
 }
 
-bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Height, bool fullscreen)
+bool Renderer::IsExtensionSupported( char* extesion )
+{
+    const unsigned char *extensions = NULL;
+    const unsigned char *start;
+    unsigned char *position, *terminator;
+
+    // Extension names should not have spaces
+    position = (unsigned char *) strchr( extesion, ' ' );
+    if( position || *extesion == '\0' )
+        return false;
+
+    // Get Extensions String
+    extensions = glGetString( GL_EXTENSIONS );
+
+    // Search The Extensions String For An Exact Copy
+    start = extensions;
+    for(;;)
+    {
+        position = (unsigned char *) strstr( (const char *) start, extesion );
+        if( !position )
+            break;
+        terminator = position + strlen( extesion );
+        if( position == start || *( position - 1 ) == ' ' )
+            if( *terminator == ' ' || *terminator == '\0' )
+                return true;
+            start = terminator;
+    }
+    return false;
+}
+
+bool Renderer::ReSizeScreen(Uint16 Width, Uint16 Height, bool fullscreen)
 {
     #ifndef LINUX_BUILD
         return false;
@@ -171,11 +218,6 @@ bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Height, bool fullscreen)
         setDrawingFlat();
     }
 
-    // FIXME: VISTA HACK!!!
-    /*SDL_FreeSurface(ScreenSurface);
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0);  //TODO make this a Config option*/
     if(fullscreen)
     {
         ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_FULLSCREEN );
@@ -185,32 +227,12 @@ bool ScreenManager::ReSizeScreen(Uint16 Width, Uint16 Height, bool fullscreen)
         ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
     }
     glViewport(0, 0, CurrentWidth, CurrentHeight);
-	/*glClearColor(0.0, 0.0, 0.0, 0.0);
-
-    SDL_EnableUNICODE(1);
-    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-
-	glEnable(GL_TEXTURE_2D);
-	glShadeModel(GL_SMOOTH);
-	glEnable(GL_LINE_SMOOTH);
-	glEnable(GL_DEPTH_TEST);
-
-    glEnable(GL_CULL_FACE); // force proper vertex ordering or suffer holes in geometry ;)
-
-    glEnable(GL_BLEND);
-	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-
-	glDepthFunc(GL_LEQUAL /*GL_LESS*//*); // show me those walls under floors. yes.*/
-	/*glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
     MainCamera->ReInit(true);
-    /// END OF VISTA HACK
     UI->updateSizing();
-
-	return true;
+    return true;
 }
 
-void ScreenManager::ToggleFullScreen()
+void Renderer::ToggleFullScreen()
 {
     #ifndef LINUX_BUILD
         return;
@@ -224,18 +246,16 @@ void ScreenManager::ToggleFullScreen()
     {
         ReSizeScreen(WindowWidth,WindowHeight,0);
     }
-//    if(SDL_WM_ToggleFullScreen(ScreenSurface))
-
 }
 
-void ScreenManager::RenderText(const char *text, Sint8 FontIndex, SDL_Color Color, SDL_Rect *location)
+void Renderer::RenderText(const char *text, Sint8 FontIndex, SDL_Color Color, SDL_Rect *location)
 {
     SDL_Surface* FontSurface = FONT->makeFontSurface(text, Color, FontIndex);
     RenderSurface(FontSurface, location);
     SDL_FreeSurface(FontSurface);
 }
 
-void ScreenManager::RenderTextCentered(const char *text, Sint8 FontIndex, SDL_Color Color, Sint16 Verticaladjust)
+void Renderer::RenderTextCentered(const char *text, Sint8 FontIndex, SDL_Color Color, Sint16 Verticaladjust)
 {
     SDL_Surface* FontSurface = FONT->makeFontSurface(text, Color, FontIndex);
 
@@ -249,7 +269,7 @@ void ScreenManager::RenderTextCentered(const char *text, Sint8 FontIndex, SDL_Co
     SDL_FreeSurface(FontSurface);
 }
 
-void ScreenManager::RenderSurface(SDL_Surface* RenderSurface, SDL_Rect *location)
+void Renderer::RenderSurface(SDL_Surface* RenderSurface, SDL_Rect *location)
 {
 	SDL_Surface *intermediary;
 	SDL_Rect rect;
@@ -286,7 +306,7 @@ void ScreenManager::RenderSurface(SDL_Surface* RenderSurface, SDL_Rect *location
 	glDeleteTextures(1, &texture);
 }
 
-void ScreenManager::RenderTexture(GLuint texture, SDL_Rect *Size, SDL_Rect *location)
+void Renderer::RenderTexture(GLuint texture, SDL_Rect *Size, SDL_Rect *location)
 {
  	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -302,7 +322,7 @@ void ScreenManager::RenderTexture(GLuint texture, SDL_Rect *Size, SDL_Rect *loca
 	glFinish();
 }
 
-void ScreenManager::RenderLogo()
+void Renderer::RenderLogo()
 {
     SDL_Rect location;
 
@@ -315,7 +335,7 @@ void ScreenManager::RenderLogo()
     RenderSurface(LogoSurface, &location);
 }
 
-void ScreenManager::CaptureScreenShot()
+void Renderer::CaptureScreenShot()
 {
     if(ilutGLScreen())
     {
@@ -332,18 +352,18 @@ void ScreenManager::CaptureScreenShot()
     }
 }
 
-int ScreenManager::round(double x)
+int Renderer::round(double x)
 {
 	return (int)(x + 0.5);
 }
 
-int ScreenManager::nextpoweroftwo(int x)
+int Renderer::nextpoweroftwo(int x)
 {
 	double logbase2 = log(x) / log(2);
 	return round(pow(2, ceil(logbase2)));
 }
 
-void ScreenManager::applyClipAt(SDL_Rect Offset, ClipImage* Clip)
+void Renderer::applyClipAt(SDL_Rect Offset, ClipImage* Clip)
 {
 	if (Clip != NULL)
 	{
@@ -358,7 +378,7 @@ void ScreenManager::applyClipAt(SDL_Rect Offset, ClipImage* Clip)
 	}
 }
 
-void ScreenManager::applyClipCentered(SDL_Rect Offset, ClipImage* Clip)
+void Renderer::applyClipCentered(SDL_Rect Offset, ClipImage* Clip)
 {
     setDrawingFlat();
 
@@ -371,7 +391,7 @@ void ScreenManager::applyClipCentered(SDL_Rect Offset, ClipImage* Clip)
 	}
 }
 
-bool ScreenManager::WipeScreen()
+bool Renderer::WipeScreen()
 {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	SDL_GL_SwapBuffers();
@@ -379,22 +399,21 @@ bool ScreenManager::WipeScreen()
 	return true;
 }
 
-bool ScreenManager::ClearDevice()
+bool Renderer::ClearDevice()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	return true;
 }
 
-bool ScreenManager::Flip()
+bool Renderer::Flip()
 {
-//	glFlush();
 	SDL_GL_SwapBuffers();
 
 	return true;
 }
 
-void ScreenManager::DirtyAllLists()
+void Renderer::DirtyAllLists()
 {
     if(MAP == NULL || !MAP->isInitialized())
     {
@@ -410,14 +429,14 @@ void ScreenManager::DirtyAllLists()
 			    Cell* TargetCell = MAP->getCell(SizeX, SizeY, SizeZ);
 			    if (TargetCell != NULL)
 			    {
-                    TargetCell->setDirtyDrawList(true);
+                    TargetCell->setNeedsRedraw(true);
 			    }
 			}
 		}
 	}
 }
 
-SDL_Color ScreenManager::getPickingColor()
+SDL_Color Renderer::getPickingColor()
 {
     // produce color
 
@@ -436,72 +455,37 @@ SDL_Color ScreenManager::getPickingColor()
 
     return BLACK;
     }
-
-void ScreenManager::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading, CameraOrientation CurrentOrientation, bool drawtop)
+// FIXME: move to cell
+void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading, bool drawtop)
 {
     Cell* LoopCell = MAP->getCell(SizeX, SizeY, Zlevel);
 
-    if(LoopCell != NULL && (LoopCell->isActive() || LoopCell->isLiquidActive()))
+    if(LoopCell != NULL && LoopCell->isActive() )
     {
         Vector3 RenderingPosition = LoopCell->getPosition();
         RenderingPosition.z = ZTranslate;
 
         if(MainCamera->sphereInFrustum(RenderingPosition, CELLEDGESIZE))
         {
-            //glColor3f(1.0, 1.0, 1.0);
-            //LoopCell->DrawCellCage();
-
             glPushMatrix();
-            glTranslatef(SizeX * CELLEDGESIZE, SizeY * CELLEDGESIZE, ZTranslate);
-
-            if(LoopCell->isDirtyDrawList())
-            {
-                // Rebuild the new Drawlist
-                GLuint DrawListID = LoopCell->getDrawListID();
-                glDeleteLists(DrawListID, 7);
-
-                for(CameraOrientation Orientation = CAMERA_DOWN; Orientation < NUM_ORIENTATIONS; ++Orientation)
+                glTranslatef(SizeX * CELLEDGESIZE, SizeY * CELLEDGESIZE, ZTranslate);
+                if(LoopCell->getNeedsRedraw())
                 {
-                    RefreshDrawlist(LoopCell, DrawListID + (GLuint) Orientation, Orientation);
+                    // Rebuild the VBOs
+                    LoopCell->UpdateLists();
+                    LoopCell->setNeedsRedraw(false);
                 }
-                if(LoopCell->isLiquidActive())
-                    SCREEN->RefreshTransparentDrawlist(LoopCell, DrawListID + 5);
-
-                if(LoopCell->isTopActive())
-                    RefreshTopDrawlist(LoopCell, DrawListID + 6);
-
-                LoopCell->setDirtyDrawList(false);
-            }
-            if(LoopCell->isActive())
-            {
                 glColor3f(Shading, Shading, Shading);
-                glCallList(LoopCell->getDrawListID() + (GLuint) CurrentOrientation);
-            }
-            if(LoopCell->isLiquidActive())
-            {
-                /// FIXME: add tunable liquid transparency, liquid render switch
-                glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-                glColor4f(Shading, Shading, Shading,0.3);
-                glCallList(LoopCell->getDrawListID() + 5);// draw liquids
-                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            }
-            if(LoopCell->isTopActive() && drawtop)
-            {
-                glColor3f(Shading, Shading, Shading);
-                glCallList(LoopCell->getDrawListID() + 6);
-            }
-
-            TotalTriangles += LoopCell->getTriangleCount(CurrentOrientation);  // Use stored Triangle Count
-
+                LoopCell->Render(drawtop);
+                TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
             glPopMatrix();
         }
     }
 }
 
-bool ScreenManager::Render()
+bool Renderer::Render()
 {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     if(MAP == NULL || !MAP->isMapLoaded())
     {
         setDrawingFlat();
@@ -519,7 +503,7 @@ bool ScreenManager::Render()
         setDrawing3D();
     }
 
-	MainCamera->UpdateView();
+    MainCamera->UpdateView();
 
     if(FrameDraw)
     {
@@ -541,19 +525,57 @@ bool ScreenManager::Render()
         }
     }
 
-	RedPickingValue = 0;
-	GreenPickingValue = 0;
-	BluePickingValue = 0;
+    RedPickingValue = 0;
+    GreenPickingValue = 0;
+    BluePickingValue = 0;
 
-//    TEXTURE->BindAggregate();
-
-	glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW);
     CameraOrientation CurrentOrientation = MainCamera->getOrientation();
 
 
     Sint16 Start = MainCamera->getSliceBottom();
     Sint16 Stop = MainCamera->getSliceTop();
 
+    /// turn on z-buffer accumulation
+    glDepthMask(GL_TRUE);
+
+    /// turn of blending
+    glDisable(GL_BLEND);
+
+    /// enable stuff
+
+    /// render non-transparent stuff in any order
+
+    for(Sint16 Zlevel = Start; Zlevel <= Stop ; Zlevel++)
+    {
+        float Shading = 1.0;
+        bool drawtops = (MainCamera->getLevelSeperation() != 1) || (Zlevel == Stop);
+        if(ShadedDraw)
+        {
+            Shading = MainCamera->getShading(Zlevel);
+        }
+        float ZTranslate = MainCamera->ZlevelSeperationAdjustment(Zlevel);
+        for(Sint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
+            for(Sint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
+                RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, drawtops);
+    }
+    /// bind normal stuff
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    /// turn off z-buffer accumulation
+    glDepthMask(GL_FALSE);
+
+    /// turn on blending
+    glEnable(GL_BLEND);
+
+    /// sort transparent stuff by distance from camera, do nothing if there's no change
+
+    /// render semi-transparent stuff back to front
+
+    /// turn depth mask on again
+    glDepthMask(GL_TRUE);
+    /// deprecated
+    /*
     // z-levels first - this is a requirement for drawing transparencies
     for(Sint16 Zlevel = Start; Zlevel <= Stop ; Zlevel++)
     {
@@ -569,24 +591,24 @@ bool ScreenManager::Render()
         if (CurrentOrientation == CAMERA_NORTH_WEST || CurrentOrientation == CAMERA_DOWN)
             for(Sint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
                 for(Sint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
-                    RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, CurrentOrientation, drawtops);
+                    RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, drawtops);
 
         else if(CurrentOrientation == CAMERA_SOUTH_WEST)
             for(Sint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
                 for(Sint32 SizeY = MAP->getCellSizeY() - 1; SizeY >=0 ; SizeY--)
-                    RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, CurrentOrientation, drawtops);
+                    RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, drawtops);
 
         else if (CurrentOrientation == CAMERA_NORTH_EAST)
             for(Sint32 SizeX = MAP->getCellSizeX() - 1; SizeX >=0 ; SizeX--)
                 for(Sint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
-                    RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, CurrentOrientation, drawtops );
+                    RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, drawtops );
 
         else if(CurrentOrientation == CAMERA_SOUTH_EAST)
             for(Sint32 SizeX = MAP->getCellSizeX() - 1; SizeX >=0 ; SizeX--)
                 for(Sint32 SizeY = MAP->getCellSizeY() - 1; SizeY >=0 ; SizeY--)
-                    RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, CurrentOrientation, drawtops);
+                    RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, drawtops);
 	}
-
+*/
 /*
 	for (Uint32 i = 0; i < GAME->ActorList.size(); i++)
 	{
@@ -596,30 +618,30 @@ bool ScreenManager::Render()
 	    }
 	}
 */
-
-    //glMatrixMode(GL_TEXTURE);  //return to normal Texturing for UI
-    //glPopMatrix();
-    //glLoadIdentity();
-
+/*
+    glMatrixMode(GL_TEXTURE);  //return to normal Texturing for UI
+    glPopMatrix();
+    glLoadIdentity();
+*/
 	return true;
 }
 
-void ScreenManager::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID, CameraOrientation Orientation)
+/*void Renderer::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID)
 {
     glNewList(DrawListID, GL_COMPILE);
     {
         TriangleCounter = 0;  // Reset Counter and Track Triangle count
         glBegin(GL_TRIANGLES);
         {
-            TargetCell->DrawSolids(Orientation);
+            TargetCell->DrawSolids();
             glColor3f(1.0, 1.0, 1.0);
         } glEnd();
     } glEndList();
 
-    TargetCell->setTriangleCount(Orientation, TriangleCounter);
+    TargetCell->setTriangleCount(TriangleCounter);
 }
 
-void ScreenManager::RefreshTransparentDrawlist(Cell* TargetCell, GLuint DrawListID)
+void Renderer::RefreshTransparentDrawlist(Cell* TargetCell, GLuint DrawListID)
 {
     glNewList(DrawListID, GL_COMPILE);
     {
@@ -630,11 +652,10 @@ void ScreenManager::RefreshTransparentDrawlist(Cell* TargetCell, GLuint DrawList
             glColor3f(1.0, 1.0, 1.0);
         }glEnd();
     } glEndList();
-    ///FIXME: needs addTriangleCount?
-    //TargetCell->setTriangleCount(Orientation, TriangleCounter);
+    TargetCell->addTriangleCount(TriangleCounter);
 }
 
-void ScreenManager::RefreshTopDrawlist(Cell* TargetCell, GLuint DrawListID)
+void Renderer::RefreshTopDrawlist(Cell* TargetCell, GLuint DrawListID)
 {
     glNewList(DrawListID, GL_COMPILE);
     {
@@ -645,16 +666,15 @@ void ScreenManager::RefreshTopDrawlist(Cell* TargetCell, GLuint DrawListID)
             glColor3f(1.0, 1.0, 1.0);
         }glEnd();
     } glEndList();
-    ///FIXME: needs addTriangleCount?
-    //TargetCell->setTriangleCount(Orientation, TriangleCounter);
-}
+    TargetCell->addTriangleCount(TriangleCounter);
+}*/
 
-void ScreenManager::IncrementTriangles(Uint32 Triangles)
+void Renderer::IncrementTriangles(Uint32 Triangles)
 {
     TriangleCounter += Triangles;
 }
 
-void ScreenManager::setDrawingFlat()
+void Renderer::setDrawingFlat()
 {
     if(!FlatDraw)
     {
@@ -678,7 +698,7 @@ void ScreenManager::setDrawingFlat()
     }
 }
 
-void ScreenManager::setDrawing3D()
+void Renderer::setDrawing3D()
 {
     if(FlatDraw)  // Discard the FlatProjection Matrices
     {
@@ -693,7 +713,7 @@ void ScreenManager::setDrawing3D()
     }
 }
 
-bool ScreenManager::isCubeDrawn(Cube* TestCube)
+bool Renderer::isCubeDrawn(Cube* TestCube)
 {
     if (TestCube->isVisible())
     {
@@ -718,7 +738,7 @@ bool ScreenManager::isCubeDrawn(Cube* TestCube)
     return false;
 }
 
-void ScreenManager::PrintDebugging()
+void Renderer::PrintDebugging()
 {
     if (MAP->isMapLoaded())
     {
@@ -768,16 +788,16 @@ void ScreenManager::PrintDebugging()
         position.y = 160;
 
         sprintf (buffer, "Cordinates: x%i y%i z%i", x, y, z);
-        SCREEN->RenderText(buffer, 0, WHITE, &position);
+        RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 
-        Cube *c  = MAP->getCube(x,y,z);
+/*        Cube *c  = MAP->getCube(x,y,z);
         if(c)
         {
             sprintf (buffer, "visible: %d, hidden: %d", c->isVisible(), c->isHidden());
             SCREEN->RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
-        }
+        }*/
 
 /*        Block* TargetBlock = df_map->getBlock(x / 16, y / 16, z);
         if(TargetBlock != NULL)
@@ -857,7 +877,7 @@ void ScreenManager::PrintDebugging()
     }
 }
 
-void ScreenManager::binarysprintf(char* buffer, int Input)
+void Renderer::binarysprintf(char* buffer, int Input)
 {
     for (int i = 31; i > -1; i--)
     {
@@ -873,76 +893,76 @@ void ScreenManager::binarysprintf(char* buffer, int Input)
     buffer[32] = NULL;
 }
 
-void ScreenManager::ShowAxis(void)
+void Renderer::ShowAxis(void)
 {
     Vector3 Point;
 
     DrawPoint(Point, 100);
 }
 
-void ScreenManager::setHiddenDraw(bool NewValue)
+void Renderer::setHiddenDraw(bool NewValue)
 {
     HiddenDraw = NewValue;
     DirtyAllLists();
 }
 
-void ScreenManager::setSubTerranianDraw(bool NewValue)
+void Renderer::setSubTerranianDraw(bool NewValue)
 {
     SubTerranianDraw = NewValue;
     DirtyAllLists();
 }
 
-void ScreenManager::setSkyViewDraw(bool NewValue)
+void Renderer::setSkyViewDraw(bool NewValue)
 {
     SkyViewDraw = NewValue;
     DirtyAllLists();
 }
 
-void ScreenManager::setSunLitDraw(bool NewValue)
+void Renderer::setSunLitDraw(bool NewValue)
 {
     SunLitDraw = NewValue;
     DirtyAllLists();
 }
 
-void ScreenManager::DrawPoint(Vector3 Point, float Length)
+void Renderer::DrawPoint(Vector3 Point, float Length)
 {
-	// Draw the positive side of the lines x,y,z
-	glBegin(GL_LINES);
-		glColor3f (0.0, 1.0, 0.0); // Green for x axis
-		glVertex3f(Point.x, Point.y, Point.z);
-		glVertex3f(Point.x + Length, Point.y, Point.z);
+    // Draw the positive side of the lines x,y,z
+    glBegin(GL_LINES);
+        glColor3f (0.0, 1.0, 0.0); // Green for x axis
+        glVertex3f(Point.x, Point.y, Point.z);
+        glVertex3f(Point.x + Length, Point.y, Point.z);
 
-		glColor3f(1.0, 0.0, 0.0); // Red for y axis
-		glVertex3f(Point.x, Point.y, Point.z);
-		glVertex3f(Point.x, Point.y + Length, Point.z);
+        glColor3f(1.0, 0.0, 0.0); // Red for y axis
+        glVertex3f(Point.x, Point.y, Point.z);
+        glVertex3f(Point.x, Point.y + Length, Point.z);
 
-		glColor3f(0.0, 0.0, 1.0); // Blue for z axis
-		glVertex3f(Point.x, Point.y, Point.z);
-		glVertex3f(Point.x, Point.y, Point.z + Length);
-	glEnd();
+        glColor3f(0.0, 0.0, 1.0); // Blue for z axis
+        glVertex3f(Point.x, Point.y, Point.z);
+        glVertex3f(Point.x, Point.y, Point.z + Length);
+    glEnd();
 
-	// Dotted lines for the negative sides of x,y,z
-	glEnable(GL_LINE_STIPPLE); // Enable line stipple to use a dotted pattern for the lines
-	glLineStipple(1, 0x0101); // Dotted stipple pattern for the lines
+    // Dotted lines for the negative sides of x,y,z
+    glEnable(GL_LINE_STIPPLE); // Enable line stipple to use a dotted pattern for the lines
+    glLineStipple(1, 0x0101); // Dotted stipple pattern for the lines
 
-	glBegin(GL_LINES);
-		glColor3f (0.0, 1.0, 0.0); // Green for x axis
-		glVertex3f(Point.x, Point.y, Point.z);
-		glVertex3f(Point.x - Length, Point.y, Point.z);
+    glBegin(GL_LINES);
+        glColor3f (0.0, 1.0, 0.0); // Green for x axis
+        glVertex3f(Point.x, Point.y, Point.z);
+        glVertex3f(Point.x - Length, Point.y, Point.z);
 
-		glColor3f(1.0, 0.0, 0.0); // Red for y axis
-		glVertex3f(Point.x, Point.y, Point.z);
-		glVertex3f(Point.x, Point.y - Length, Point.z);
+        glColor3f(1.0, 0.0, 0.0); // Red for y axis
+        glVertex3f(Point.x, Point.y, Point.z);
+        glVertex3f(Point.x, Point.y - Length, Point.z);
 
-		glColor3f(0.0, 0.0, 1.0); // Blue for z axis
-		glVertex3f(Point.x, Point.y, Point.z);
-		glVertex3f(Point.x, Point.y, Point.z - Length);
-	glEnd();
+        glColor3f(0.0, 0.0, 1.0); // Blue for z axis
+        glVertex3f(Point.x, Point.y, Point.z);
+        glVertex3f(Point.x, Point.y, Point.z - Length);
+    glEnd();
 
-	glDisable(GL_LINE_STIPPLE); // Disable the line stipple
+    glDisable(GL_LINE_STIPPLE); // Disable the line stipple
 }
 
-void ScreenManager::DrawPlane(Plane ArgumentPlane, float Length)
+void Renderer::DrawPlane(Plane ArgumentPlane, float Length)
 {
     // Draws a square line grid in the plane
     Vector3 CenterPoint = ArgumentPlane.Point;
@@ -953,30 +973,30 @@ void ScreenManager::DrawPlane(Plane ArgumentPlane, float Length)
     float D = ArgumentPlane.D;
 
     glBegin(GL_LINES);
-		glColor3f (0.0, 1.0, 0.0); // Green for x axis
-		glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
-		glVertex3f(CenterPoint.x + 1, CenterPoint.y, CenterPoint.z);
+        glColor3f (0.0, 1.0, 0.0); // Green for x axis
+        glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
+        glVertex3f(CenterPoint.x + 1, CenterPoint.y, CenterPoint.z);
 
-		glColor3f(1.0, 0.0, 0.0); // Red for y axis
-		glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
-		glVertex3f(CenterPoint.x, CenterPoint.y + 1, CenterPoint.z);
+        glColor3f(1.0, 0.0, 0.0); // Red for y axis
+        glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
+        glVertex3f(CenterPoint.x, CenterPoint.y + 1, CenterPoint.z);
 
-		glColor3f(0.0, 0.0, 1.0); // Blue for z axis
-		glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
-		glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z + 1);
+        glColor3f(0.0, 0.0, 1.0); // Blue for z axis
+        glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
+        glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z + 1);
 
-		glColor3f(1.0, 1.0, 1.0); // White for D
-		glVertex3f(0, 0, 0);
-		glVertex3f(NoramlVector.x * D, NoramlVector.y * D, NoramlVector.z * D);
-	glEnd();
+        glColor3f(1.0, 1.0, 1.0); // White for D
+        glVertex3f(0, 0, 0);
+        glVertex3f(NoramlVector.x * D, NoramlVector.y * D, NoramlVector.z * D);
+    glEnd();
 }
 
-void ScreenManager::DrawCage(Vector3 RawPoint, float x, float y, float z, bool Inflated)
+void Renderer::DrawCage(Vector3 RawPoint, float x, float y, float z, bool Inflated)
 {
     DrawCage(RawPoint, x, y, z, Inflated, 1,1,1);
 }
 
-void ScreenManager::DrawCage(Vector3 RawPoint, float x, float y, float z, bool Inflated, float red, float green, float blue)
+void Renderer::DrawCage(Vector3 RawPoint, float x, float y, float z, bool Inflated, float red, float green, float blue)
 {
     Vector3 Point = RawPoint;
     float X, Y, Z;
@@ -996,7 +1016,6 @@ void ScreenManager::DrawCage(Vector3 RawPoint, float x, float y, float z, bool I
         X = x - 0.04;
         Y = y - 0.04;
         Z = z - 0.04;
-
         Point.x -= 0.48;
         Point.y -= 0.48;
         Point.z -= 0.48;
@@ -1009,84 +1028,70 @@ void ScreenManager::DrawCage(Vector3 RawPoint, float x, float y, float z, bool I
     }
     glBegin(GL_LINES);
         glColor3f (red, green, blue);
-//        glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x, Point.y, Point.z);
-		glVertex3f(Point.x + X, Point.y, Point.z);
 
-//        glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x, Point.y, Point.z);
-		glVertex3f(Point.x, Point.y + Y, Point.z);
+        glVertex3f(Point.x, Point.y, Point.z);
+        glVertex3f(Point.x + X, Point.y, Point.z);
 
-//        glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x + X, Point.y, Point.z);
-		glVertex3f(Point.x + X, Point.y + Y, Point.z);
+        glVertex3f(Point.x, Point.y, Point.z);
+        glVertex3f(Point.x, Point.y + Y, Point.z);
 
-//        glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x, Point.y + Y, Point.z);
-		glVertex3f(Point.x + X, Point.y + Y, Point.z);
+        glVertex3f(Point.x + X, Point.y, Point.z);
+        glVertex3f(Point.x + X, Point.y + Y, Point.z);
 
+        glVertex3f(Point.x, Point.y + Y, Point.z);
+        glVertex3f(Point.x + X, Point.y + Y, Point.z);
 
-//        glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x, Point.y, Point.z);
-		glVertex3f(Point.x, Point.y, Point.z + Z);
+        glVertex3f(Point.x, Point.y, Point.z);
+        glVertex3f(Point.x, Point.y, Point.z + Z);
 
-//        glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x + X, Point.y, Point.z);
-		glVertex3f(Point.x + X, Point.y, Point.z + Z);
+        glVertex3f(Point.x + X, Point.y, Point.z);
+        glVertex3f(Point.x + X, Point.y, Point.z + Z);
 
-//        glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x, Point.y + Y, Point.z);
-		glVertex3f(Point.x, Point.y + Y, Point.z + Z);
+        glVertex3f(Point.x, Point.y + Y, Point.z);
+        glVertex3f(Point.x, Point.y + Y, Point.z + Z);
 
-//        glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x + X, Point.y + Y, Point.z);
-		glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
+        glVertex3f(Point.x + X, Point.y + Y, Point.z);
+        glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
 
 
-//        glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x, Point.y, Point.z + Z);
-		glVertex3f(Point.x + X, Point.y, Point.z + Z);
+        glVertex3f(Point.x, Point.y, Point.z + Z);
+        glVertex3f(Point.x + X, Point.y, Point.z + Z);
 
-//        glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x, Point.y, Point.z + Z);
-		glVertex3f(Point.x, Point.y + Y, Point.z + Z);
+        glVertex3f(Point.x, Point.y, Point.z + Z);
+        glVertex3f(Point.x, Point.y + Y, Point.z + Z);
 
-//        glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x + X, Point.y, Point.z + Z);
-		glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
+        glVertex3f(Point.x + X, Point.y, Point.z + Z);
+        glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
 
-//        glColor3f (1.0, 1.0, 1.0);
-		glVertex3f(Point.x, Point.y + Y, Point.z + Z);
-		glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
-	glEnd();
+        glVertex3f(Point.x, Point.y + Y, Point.z + Z);
+        glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
+    glEnd();
 }
 
-void ScreenManager::DrawStreamers(Vector3 Point, float x, float y, float z, float Length)
+void Renderer::DrawStreamers(Vector3 Point, float x, float y, float z, float Length)
 {
     DrawStreamers(Point,x,y,z,Length,1,1,1);
 }
 
-void ScreenManager::DrawStreamers(Vector3 Point, float x, float y, float z, float Length, float red, float green, float blue)
+void Renderer::DrawStreamers(Vector3 Point, float x, float y, float z, float Length, float red, float green, float blue)
 {
     glEnable(GL_LINE_STIPPLE);  // Enable line stipple to use a dotted pattern for the lines
-	glLineStipple(1, 0x0101);   // Dotted stipple pattern for the lines
+    glLineStipple(1, 0x0101);   // Dotted stipple pattern for the lines
 
     glBegin(GL_LINES);
-
         glColor3f (red, green, blue);
-		glVertex3f(Point.x + x, Point.y, Point.z);
-		glVertex3f(Point.x + x, Point.y, Point.z - Length);
+        glVertex3f(Point.x + x, Point.y, Point.z);
+        glVertex3f(Point.x + x, Point.y, Point.z - Length);
 
-		glVertex3f(Point.x, Point.y + y, Point.z);
-		glVertex3f(Point.x, Point.y + y, Point.z - Length);
+        glVertex3f(Point.x, Point.y + y, Point.z);
+        glVertex3f(Point.x, Point.y + y, Point.z - Length);
 
-		glVertex3f(Point.x + x, Point.y + y, Point.z);
-		glVertex3f(Point.x + x, Point.y + y, Point.z - Length);
+        glVertex3f(Point.x + x, Point.y + y, Point.z);
+        glVertex3f(Point.x + x, Point.y + y, Point.z - Length);
 
-		glVertex3f(Point.x, Point.y, Point.z);
-		glVertex3f(Point.x, Point.y, Point.z - Length);
-
-	glEnd();
+        glVertex3f(Point.x, Point.y, Point.z);
+        glVertex3f(Point.x, Point.y, Point.z - Length);
+    glEnd();
 
     glDisable(GL_LINE_STIPPLE); // Disable the line stipple
 }

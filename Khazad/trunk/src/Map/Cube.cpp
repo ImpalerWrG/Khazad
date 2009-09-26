@@ -355,7 +355,7 @@ bool Cube::Update()
 {
 	return true;
 }
-
+/*
 //fixme: !!total!! waste of CPU cycles
 Vector3 Cube::ConvertSpacialPoint(SpacialPoint Point)
 {
@@ -394,7 +394,7 @@ Vector3 Cube::ConvertSpacialPoint(SpacialPoint Point)
 
     return Vector3(0.0, 0.0, 0.0);
 }
-
+*/
 bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslate)
 {
     return false;
@@ -446,14 +446,14 @@ void Cube::Dig()
         }
     }
     // update draw list of parent cell(s)
-    getCellOwner()->setDirtyDrawList(true);
+    getCellOwner()->setNeedsRedraw(true);
     for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
     {
         Cube* NeighborCube = getNeighborCube(DirectionType);
 
         if(NeighborCube != NULL)
         {
-            NeighborCube->getCellOwner()->setDirtyDrawList(true);
+            NeighborCube->getCellOwner()->setNeedsRedraw(true);
         }
     }
 }
@@ -488,9 +488,145 @@ bool Cube::hasFace(Facet FacetType)
 {
     return data.facets & FacetType;
 }
+
+//TODO: pre-generating all possible configs and using them as templates would be faster. deferred
+bool Cube::DrawFaces(float xTranslate, float yTranslate,
+                     std::map< int16_t, vector< vertex >* >& normal,
+                     std::map< int16_t, vector< vertex >* >& tops
+                     )
+{
+    // cached quads
+    static const vertex vertices[6][4] =
+    {
+        // position, uv texture coords, normal vector - see vertex in Renderer.h
+        // FACET_TOP
+        mkvert(-0.5f,-0.5f, 0.5f,  0.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
+        mkvert( 0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
+        mkvert( 0.5f, 0.5f, 0.5f,  1.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
+        mkvert(-0.5f, 0.5f, 0.5f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
+        // FACET_BOTTOM
+        mkvert(-0.5f,-0.5f,-0.5f,  0.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
+        mkvert( 0.5f,-0.5f,-0.5f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
+        mkvert( 0.5f, 0.5f,-0.5f,  1.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
+        mkvert(-0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
+        // FACET_NORTH
+        mkvert( 0.5f,-0.5f, 0.5f,  0.0f, 1.0f,  0.0f,-1.0f, 0.0f ),
+        mkvert(-0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  0.0f,-1.0f, 0.0f ),
+        mkvert(-0.5f,-0.5f,-0.5f,  1.0f, 0.0f,  0.0f,-1.0f, 0.0f ),
+        mkvert( 0.5f,-0.5f,-0.5f,  0.0f, 0.0f,  0.0f,-1.0f, 0.0f ),
+        // FACET_SOUTH
+        mkvert(-0.5f, 0.5f, 0.5f,  0.0f, 1.0f,  0.0f, 1.0f, 0.0f ),
+        mkvert( 0.5f, 0.5f, 0.5f,  1.0f, 1.0f,  0.0f, 1.0f, 0.0f ),
+        mkvert( 0.5f, 0.5f,-0.5f,  1.0f, 0.0f,  0.0f, 1.0f, 0.0f ),
+        mkvert(-0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  0.0f, 1.0f, 0.0f ),
+        // FACET_EAST
+        mkvert( 0.5f, 0.5f, 0.5f,  0.0f, 1.0f,  1.0f, 0.0f, 0.0f ),
+        mkvert( 0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  1.0f, 0.0f, 0.0f ),
+        mkvert( 0.5f,-0.5f,-0.5f,  1.0f, 0.0f,  1.0f, 0.0f, 0.0f ),
+        mkvert( 0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  1.0f, 0.0f, 0.0f ),
+        // FACET_WEST
+        mkvert(-0.5f,-0.5f, 0.5f,  0.0f, 1.0f, -1.0f, 0.0f, 0.0f ),
+        mkvert(-0.5f, 0.5f, 0.5f,  1.0f, 1.0f, -1.0f, 0.0f, 0.0f ),
+        mkvert(-0.5f, 0.5f,-0.5f,  1.0f, 0.0f, -1.0f, 0.0f, 0.0f ),
+        mkvert(-0.5f,-0.5f,-0.5f,  0.0f, 0.0f, -1.0f, 0.0f, 0.0f )
+    };
+    // work vector ptr
+    vector< vertex >* vec;
+    vertex test = vertices[3][3];
+    if(!Visible)
+    {
+        return false;
+    }
+    for(Facet f = FACET_TOP; f <= FACET_WEST;++f)
+    {
+        if(!hasFace(f))
+        {
+            continue; // skip faces we don't have here
+        }
+        Cube * c = getAdjacentCube(f);
+        // floors are always generated in the normal way, they face the opposite direction!
+        uint8_t idx = FacetToArrayIndex(f) - 1;
+        if(f != FACET_BOTTOM)
+        {
+            // blocked top facets are sent to the top vertex vector
+            bool blocked =
+            c &&
+            (!c->isHidden() || c->isHidden() && Hidden) &&
+            (c->hasFace(OppositeFacet(f)) || c->getGeometry() == GEOM_WALL);
+
+            if(blocked)
+            {
+                if(f== FACET_TOP)
+                {
+                    if(!tops.count(Material))
+                    {
+                        vec = new vector< vertex >;
+                        tops[Material] = vec;
+                    }
+                    else
+                    {
+                        vec = tops[Material];
+                    }
+                    vertex v3 = vertices[idx][3];
+                    v3.x +=xTranslate;
+                    v3.y +=yTranslate;
+                    vertex v2 = vertices[idx][2];
+                    v2.x +=xTranslate;
+                    v2.y +=yTranslate;
+                    vertex v1 = vertices[idx][1];
+                    v1.x +=xTranslate;
+                    v1.y +=yTranslate;
+                    vertex v0 = vertices[idx][0];
+                    v0.x +=xTranslate;
+                    v0.y +=yTranslate;
+
+                    vec->push_back(v3);
+                    vec->push_back(v1);
+                    vec->push_back(v0);
+
+                    vec->push_back(v3);
+                    vec->push_back(v2);
+                    vec->push_back(v1);
+                }
+                continue; // skip blocked face
+            }
+        }
+        // normal visible geometry
+        vector< vertex >* vec;
+        if(!normal.count(Material))
+        {
+            vec = new vector< vertex >;
+            normal[Material] = vec;
+        }
+        else
+        {
+            vec = normal[Material];
+        }
+        vertex v3 = vertices[idx][3];
+        v3.x +=xTranslate;
+        v3.y +=yTranslate;
+        vertex v2 = vertices[idx][2];
+        v2.x +=xTranslate;
+        v2.y +=yTranslate;
+        vertex v1 = vertices[idx][1];
+        v1.x +=xTranslate;
+        v1.y +=yTranslate;
+        vertex v0 = vertices[idx][0];
+        v0.x +=xTranslate;
+        v0.y +=yTranslate;
+        vec->push_back(v3);
+        vec->push_back(v1);
+        vec->push_back(v0);
+
+        vec->push_back(v3);
+        vec->push_back(v2);
+        vec->push_back(v1);
+    }
+}
 // DRAW FACE
 // tops_vis_invis =  draw visible or invisible tops? true = visible
 //FIXME: waste of CPU cycles
+/*
 bool Cube::DrawFace(float xTranslate, float yTranslate, Facet FacetType, bool tops_vis_invis)
 {
     //glColor4f(1,1,1,0.2);
@@ -590,13 +726,13 @@ bool Cube::DrawFace(float xTranslate, float yTranslate, Facet FacetType, bool to
 
         glTexCoord2f(1,1);
         glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
-        SCREEN->IncrementTriangles(2);
+        RENDERER->IncrementTriangles(2);
     }
 
     return true;
 }
 
-
+*/
 // DRAW SLOPE
 
 /// TODO: normal vectors. these are required for lighting
@@ -721,7 +857,7 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate)
         glVertex3f(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i]);
     }
     // just drawn 8 tris
-    SCREEN->IncrementTriangles(8);
+    RENDERER->IncrementTriangles(8);
 
     //patch holes
     for(int i = 0; i< 8;i+=2)
@@ -749,7 +885,7 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate)
             glTexCoord2f(1.0,0.0);
             //TEXTURE->BindTexturePoint(Material, 1.0,0.0);
             glVertex3f( dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i]);
-            SCREEN->IncrementTriangles(1);
+            RENDERER->IncrementTriangles(1);
         }
         else if(hm[i+2] == 0)// one tri, hm[i] is high
         {
@@ -765,7 +901,7 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate)
             glTexCoord2f(0.0,0.0);
             //TEXTURE->BindTexturePoint(Material, 0.0,0.0);
             glVertex3f( dc[i+2][0] + xTranslate, dc[i+2][1]+ yTranslate, hmf[i+2]);
-            SCREEN->IncrementTriangles(1);
+            RENDERER->IncrementTriangles(1);
         }
         else // two tris, both corners high
         {
@@ -794,7 +930,7 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate)
             glTexCoord2f(0.5,0.5);
             //TEXTURE->BindTexturePoint(Material, 0.5,0.5);
             glVertex3f( dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, 0.0);
-            SCREEN->IncrementTriangles(2);
+            RENDERER->IncrementTriangles(2);
         }
     }
     return true;

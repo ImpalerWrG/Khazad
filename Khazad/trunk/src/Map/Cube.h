@@ -76,7 +76,8 @@ public:
 
 	bool Update();
     bool Draw(CameraOrientation Orientation, float xTranslate, float yTranslate);
-    bool DrawFace(float xTranslate, float yTranslate,Facet FacetType, bool draw_vis_invis);
+    //bool DrawFace(float xTranslate, float yTranslate,Facet FacetType, bool draw_vis_invis);
+    bool DrawFaces(float xTranslate, float yTranslate, map<int16_t, vector < vertex > * >& normal, map<int16_t, vector < vertex > * > & tops);
     bool DrawSlope(float xTranslate, float yTranslate);
     bool DrawLiquid(float xTranslate, float yTranslate);
 
