@@ -179,39 +179,44 @@ void Cell::UpdateLists()
         // for each material in normal geometry
         for( map<int16_t, vector < vertex > * >::iterator it = normal.begin(); it != normal.end(); ++it)
         {
+            int16_t material = it->first;
+            vector < vertex > * vertices = it->second;
+
             // generate VBOs out of vertex arrays
-            GLuint VBO = BuildVBO(it->second->data(),it->second->size()*sizeof(vertex));
-//            DumpData(VBO, it->first, it->second->data(), it->second->size());
+            GLuint VBO = BuildVBO(vertices->data(),vertices->size()*sizeof(vertex));
+
             // create descriptor
             VBOStruct tempVBO;
-            if(VBOs.count(it->first))
+            if(VBOs.count(material))
             {
-                tempVBO = VBOs[it->first];
-                tempVBO.countNormal = it->second->size();
+                tempVBO = VBOs[material];
+                tempVBO.countNormal = vertices->size();
                 tempVBO.normal = VBO;
                 tempVBO.hasNormal = 1;
             }
             else
             {
-                tempVBO= VBOStruct{true,VBO,it->second->size(),   false,0,0};
+                tempVBO= VBOStruct{true,VBO,vertices->size(),   false,0,0};
             }
-            VBOs[it->first] = tempVBO;
+            VBOs[material] = tempVBO;
 
             // delete the original arrays
-            delete(it->second);
+            delete(vertices);
         }
         // for each material in top geometry
         for( map<int16_t, vector < vertex > * >::iterator it = tops.begin(); it != tops.end(); ++it)
         {
+            int16_t material = it->first;
+            vector < vertex > * vertices = it->second;
             // build vbo
-            GLuint VBO = BuildVBO(it->second->data(),it->second->size()*sizeof(vertex));
+            GLuint VBO = BuildVBO(vertices->data(),vertices->size()*sizeof(vertex));
 
             // assign vbo to descriptor
             VBOStruct tempVBO;
-            if(VBOs.count(it->first))
+            if(VBOs.count(material))
             {
-                tempVBO = VBOs[it->first];
-                tempVBO.countTop = it->second->size();
+                tempVBO = VBOs[material];
+                tempVBO.countTop = vertices->size();
                 tempVBO.top = VBO;
                 tempVBO.hasTop = 1;
             }
@@ -221,7 +226,7 @@ void Cell::UpdateLists()
             }
 
             // store descriptor
-            VBOs[it->first] = tempVBO;
+            VBOs[material] = tempVBO;
             // delete the original arrays
             delete(it->second);
         }
