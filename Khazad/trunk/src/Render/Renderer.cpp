@@ -273,11 +273,11 @@ RenderObject *Renderer::CreateRenderObject (vector <vertex> * source)
     {
         // init display list
         ret->gfxHandle = glGenLists(1);
-        void * handle = &work[0];
+        char * handle = (char *) &work[0];
         // draw into display list
         glNewList(ret->gfxHandle,GL_COMPILE);
-            glTexCoordPointer(2, GL_FLOAT, 32, (const GLvoid*) handle + 12); // texture coords
-            glNormalPointer(GL_FLOAT, 32, (const GLvoid*) handle + 20); // normal vectors
+            glTexCoordPointer(2, GL_FLOAT, 32, (const GLvoid*) (handle + 12)); // texture coords
+            glNormalPointer(GL_FLOAT, 32, (const GLvoid*) (handle + 20)); // normal vectors
             glVertexPointer(3, GL_FLOAT, 32 , (const GLvoid*) handle);
             glDrawArrays(GL_TRIANGLES,0,ret->count);
         glEndList();
@@ -609,7 +609,7 @@ bool Renderer::Render()
     glDepthMask(GL_TRUE);
 
     /// turn of blending
-    //glDisable(GL_BLEND);
+    glDisable(GL_BLEND);
 
     /// enable stuff
 
