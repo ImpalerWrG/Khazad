@@ -10,18 +10,12 @@ class Cube;
 class Building;
 class Tree;
 
-struct VBOStruct
+struct ROstore
 {
-    inline VBOStruct( bool hn, GLuint n, uint32_t cn, bool ht, GLuint t, uint32_t ct ):
-    hasNormal(hn),normal(n),countNormal(cn),hasTop(ht),top(t),countTop(ct){};
-    inline VBOStruct(){};
-
-    bool hasNormal;
-    GLuint normal;
-    uint32_t countNormal;
-    bool hasTop;
-    GLuint top;
-    uint32_t countTop;
+    inline ROstore(  RenderObject * n, RenderObject * t ): normal(n),top(t){};
+    inline ROstore(){};
+    RenderObject * normal;
+    RenderObject * top;
 };
 
 class Cell/*: public Actor*/
@@ -38,16 +32,8 @@ public:
 
     bool hasFace(Uint8 x, Uint8 y, Facet FaceType);
 
-    Uint16 getTriangleCount() { return TriangleCount; }
-
-    void setTriangleCount(Uint16 Triangles) { TriangleCount = Triangles; }
-    void addTriangleCount(Uint16 Triangles) { TriangleCount += Triangles; }
-
-    // FIXME: temporary, inefficient
-    // render VBOs
-    void CallVBO(GLuint vbo, uint32_t count);
     void Render(bool drawtop);
-    void ClearVBOs();
+    void ClearROs();
 
     // update VBOs
     void UpdateLists();
@@ -66,7 +52,6 @@ public:
     inline bool isTopActive()                     { return ActiveTop; }
     void setTopActive(bool NewValue)       { ActiveTop = NewValue; }
 
-    //GLuint getDrawListID()                  { return DrawListID; }
     bool getNeedsRedraw()                  { return NeedsRedraw; }
     void setNeedsRedraw(bool NewValue)    { NeedsRedraw = NewValue; }
 
@@ -78,7 +63,7 @@ protected:
     bool NeedsRedraw;
 
     // VBOs by texture and target
-    map<int16_t, VBOStruct > VBOs;
+    map<int16_t, ROstore > ROs;
 
     Sint16 XOffset;
     Sint16 YOffset;
@@ -95,9 +80,6 @@ protected:
     bool ActiveTop;
     bool Initialized;
     Vector3 Position;
-private:
-    // move to renderer
-    GLuint BuildVBO (vertex * data, uint32_t size);
 };
 
 #endif // CELL__HEADER

@@ -35,7 +35,12 @@ void glVertexPointer(   GLint   size,
     #define GL_STATIC_DRAW_ARB 0x88E4
 #endif
 
-/// one mean fscker
+struct RenderObject
+{
+    GLuint gfxHandle;
+    GLuint count; // stores number of vertices if applicable
+};
+
 #pragma pack(push, 1)
 struct vertex
 {
@@ -134,6 +139,10 @@ public:
     void DirtyAllLists();
     bool Render();
     void RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading, bool drawtops);
+    
+    RenderObject *CreateRenderObject (vector <vertex> * source);
+    void CallRenderObject(RenderObject * obj);
+    void DeleteRenderObject(RenderObject * obj);
 
 /*    void RefreshDrawlist(Cell* TargetCell, GLuint DrawlistID);
     void RefreshTopDrawlist(Cell* TargetCell, GLuint DrawListID);

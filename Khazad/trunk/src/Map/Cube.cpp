@@ -538,7 +538,7 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate,
             bool blocked =
             c &&
             (!c->isHidden() || c->isHidden() && Hidden) &&
-            (c->hasFace(OppositeFacet(f)) /*|| c->getGeometry() == GEOM_WALL*/);
+            (c->hasFace(OppositeFacet(f)) || c->getGeometry() == GEOM_WALL || c->getGeometry() == GEOM_SLOPE);
 
             if(blocked)
             {

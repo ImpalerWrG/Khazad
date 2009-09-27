@@ -37,7 +37,7 @@ Cell::~Cell()
             }
         }
     }
-    ClearVBOs();
+    ClearROs();
 }
 
 bool Cell::Init()
@@ -115,41 +115,19 @@ void Cell::addTree(Tree * t)
     trees.push_back(t);
 }
 
-GLuint Cell::BuildVBO(vertex * data, uint32_t size)
-{
-    GLuint vbo = 0;
-    // Generate And Bind The Vertex Buffer
-    RENDERER->glGenBuffers( 1, &vbo ); // Get A Valid Name
-    RENDERER->glBindBuffer( GL_ARRAY_BUFFER, vbo ); // Bind The Buffer
-    // Load The Data
-    RENDERER->glBufferData( GL_ARRAY_BUFFER_ARB, size, data, GL_STATIC_DRAW_ARB );
-    // unbind
-    RENDERER->glBindBuffer(GL_ARRAY_BUFFER, 0);
-    return vbo;
-}
-
-void Cell::CallVBO(GLuint vbo, uint32_t count)
-{
-    RENDERER->glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glTexCoordPointer(2, GL_FLOAT, 32, (const GLvoid*) 12); // texture coords
-    glNormalPointer(GL_FLOAT, 32, (const GLvoid*) 20); // normal vectors
-    glVertexPointer(3, GL_FLOAT, 32 , 0);
-    glDrawArrays(GL_TRIANGLES,0,count);
-    RENDERER->glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
 
 void Cell::Render(bool drawtop)
 {
-    for( map<int16_t, VBOStruct >::iterator it = VBOs.begin(); it != VBOs.end(); ++it)
+    for( map<int16_t, ROstore >::iterator it = ROs.begin(); it != ROs.end(); ++it)
     {
         TEXTURE->BindTexture(it->first);
-        if(it->second.hasNormal)
+        if(it->second.normal)
         {
-            CallVBO(it->second.normal, it->second.countNormal);
+            RENDERER->CallRenderObject(it->second.normal);
         }
-        if(drawtop && it->second.hasTop)
+        if(drawtop && it->second.top)
         {
-            CallVBO(it->second.top, it->second.countTop);
+            RENDERER->CallRenderObject(it->second.top);
         }
     }
 }
@@ -175,74 +153,64 @@ void Cell::UpdateLists()
         }
         //TODO: only regenerate changed ones
         // destroy old
-        ClearVBOs();
+        ClearROs();
         // for each material in normal geometry
         for( map<int16_t, vector < vertex > * >::iterator it = normal.begin(); it != normal.end(); ++it)
         {
             int16_t material = it->first;
-            vector < vertex > & vertices = *it->second;
+            vector < vertex > * vertices = it->second;
 
             // generate VBOs out of vertex arrays
-            GLuint VBO = BuildVBO(&vertices[0],vertices.size()*sizeof(vertex));
+            RenderObject * RO = RENDERER->CreateRenderObject(vertices);
 
             // create descriptor
-            VBOStruct tempVBO;
-            if(VBOs.count(material))
+            ROstore tempRO;
+            if(ROs.count(material))
             {
-                tempVBO = VBOs[material];
-                tempVBO.countNormal = vertices.size();
-                tempVBO.normal = VBO;
-                tempVBO.hasNormal = 1;
+                tempRO = ROs[material];
+                tempRO.normal = RO;
             }
             else
             {
-                tempVBO= VBOStruct(true,VBO,vertices.size(),   false,0,0);
+                tempRO= ROstore(RO,NULL);
             }
-            VBOs[material] = tempVBO;
-
-            // delete the original arrays
-            delete(&vertices);
+            ROs[material] = tempRO;
         }
         // for each material in top geometry
         for( map<int16_t, vector < vertex > * >::iterator it = tops.begin(); it != tops.end(); ++it)
         {
             int16_t material = it->first;
-            vector < vertex > & vertices = *it->second;
+            vector < vertex > * vertices = it->second;
             // build vbo
-            GLuint VBO = BuildVBO(&vertices[0],vertices.size()*sizeof(vertex));
+            RenderObject * RO = RENDERER->CreateRenderObject(vertices);
 
             // assign vbo to descriptor
-            VBOStruct tempVBO;
-            if(VBOs.count(material))
+            ROstore tempRO;
+            if(ROs.count(material))
             {
-                tempVBO = VBOs[material];
-                tempVBO.countTop = vertices.size();
-                tempVBO.top = VBO;
-                tempVBO.hasTop = 1;
+                tempRO = ROs[material];
+                tempRO.top = RO;
             }
             else
             {
-                tempVBO= VBOStruct(false,0,0, true,VBO,vertices.size());
+                tempRO= ROstore(NULL,RO);
             }
-
             // store descriptor
-            VBOs[material] = tempVBO;
-            // delete the original arrays
-            delete(&vertices);
+            ROs[material] = tempRO;
         }
     }
 }
-void Cell::ClearVBOs()
+void Cell::ClearROs()
 {
-    for( map<int16_t, VBOStruct >::iterator it = VBOs.begin(); it != VBOs.end(); ++it)
+    for( map<int16_t, ROstore >::iterator it = ROs.begin(); it != ROs.end(); ++it)
     {
-        VBOStruct tmp = it->second;
-        if(tmp.hasNormal)
-            RENDERER->glDeleteBuffers(1, &tmp.normal);
-        if(it->second.hasTop)
-            RENDERER->glDeleteBuffers(1, &tmp.top);
+        ROstore tmp = it->second;
+        if(tmp.normal)
+            RENDERER->DeleteRenderObject( tmp.normal );
+        if(tmp.top)
+            RENDERER->DeleteRenderObject( tmp.top );
     }
-    VBOs.clear();
+    ROs.clear();
 }
 void Cell::DrawCellCage()
 {

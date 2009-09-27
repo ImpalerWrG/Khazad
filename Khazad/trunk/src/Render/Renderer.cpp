@@ -248,6 +248,42 @@ void Renderer::ToggleFullScreen()
     }
 }
 
+RenderObject *Renderer::CreateRenderObject (vector <vertex> * source)
+{
+    vector <vertex> & work = * source;
+    // create descriptor
+    RenderObject *ret = new RenderObject;
+    ret->count = source->size();
+    ret->gfxHandle = 0;
+
+    // Generate And Bind The Vertex Buffer
+    RENDERER->glGenBuffers( 1, &ret->gfxHandle ); // Get A Valid Name
+    RENDERER->glBindBuffer( GL_ARRAY_BUFFER, ret->gfxHandle ); // Bind The Buffer
+    // Load The Data
+    RENDERER->glBufferData( GL_ARRAY_BUFFER_ARB, ret->count * sizeof(vertex), &work[0], GL_STATIC_DRAW_ARB );
+    // unbind
+    RENDERER->glBindBuffer(GL_ARRAY_BUFFER, 0);
+    // delete source vertex array
+    delete(source);
+    return ret;
+}
+
+void Renderer::CallRenderObject(RenderObject * obj)
+{
+    glBindBuffer(GL_ARRAY_BUFFER, obj->gfxHandle);
+    glTexCoordPointer(2, GL_FLOAT, 32, (const GLvoid*) 12); // texture coords
+    glNormalPointer(GL_FLOAT, 32, (const GLvoid*) 20); // normal vectors
+    glVertexPointer(3, GL_FLOAT, 32 , 0);
+    glDrawArrays(GL_TRIANGLES,0,obj->count);
+    RENDERER->glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+void Renderer::DeleteRenderObject(RenderObject * obj)
+{
+    glDeleteBuffers(1, &obj->gfxHandle);
+}
+
+
+
 void Renderer::RenderText(const char *text, Sint8 FontIndex, SDL_Color Color, SDL_Rect *location)
 {
     SDL_Surface* FontSurface = FONT->makeFontSurface(text, Color, FontIndex);
@@ -477,7 +513,6 @@ void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTran
                 }
                 glColor3f(Shading, Shading, Shading);
                 LoopCell->Render(drawtop);
-                TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
             glPopMatrix();
         }
     }
