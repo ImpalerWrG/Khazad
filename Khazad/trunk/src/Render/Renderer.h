@@ -70,8 +70,8 @@ public:
     bool Init();
 
     // check for OpenGL extension
-    bool IsExtensionSupported( char* extesion );    
-    
+    bool IsExtensionSupported( char* extesion );
+
     /// VBOs
     // VBO Name Generation Procedure
     GL_BindBuffer_Func glBindBuffer;
@@ -81,7 +81,7 @@ public:
     GL_GenBuffers_Func glGenBuffers;
     // VBO Deletion Procedure
     GL_BufferData_Func glBufferData;
-    
+
     // map/unmap VBO to system memory
     GL_MapBuffer_Func glMapBuffer;
     GL_UnmapBuffer_Func glUnmapBuffer;
@@ -135,18 +135,16 @@ public:
     };
     inline Uint16 getHeight()
     {
-        return 	CurrentHeight;
+        return CurrentHeight;
     };
 
     void DirtyAllLists();
     bool Render();
     void RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading, bool drawtops);
-    
+
     RenderObject *CreateRenderObject (vector <vertex> * source);
     void CallRenderObject(RenderObject * obj);
     void DeleteRenderObject(RenderObject * obj);
-
-    void IncrementTriangles(Uint32 Triangles);
 
     void PrintDebugging();
 
@@ -159,7 +157,9 @@ public:
     void DrawStreamers(Vector3 Point, float x, float y, float z, float Length, float red,float green,float blue);
     void DrawStreamers(Vector3 Point, float x, float y, float z, float Length);
 
+    void IncrementTriangles(Uint32 Triangles);
     Uint32 getTriangleCount() { return TotalTriangles; }
+
     void ToggleFullScreen();
 
     void setDrawing3D();
@@ -173,12 +173,12 @@ public:
 
     Camera* MainCamera;
 
-
+    uint32_t TotalTriangles;
     void binarysprintf(char* buffer, int Input); // TODO move this to some global place;
 
 protected:
     bool haveVBO;
-    
+
     Uint16 CurrentWidth;
     Uint16 CurrentHeight;
     Uint8 CurrentBPP;
@@ -215,9 +215,6 @@ protected:
     Uint8 RedPickingValue;
     Uint8 GreenPickingValue;
     Uint8 BluePickingValue;
-
-    Uint32 TriangleCounter;
-    Uint32 TotalTriangles;
 
     gcn::OpenGLSDLImageLoader* imageLoader;
 

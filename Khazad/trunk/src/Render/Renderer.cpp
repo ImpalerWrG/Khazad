@@ -289,6 +289,7 @@ RenderObject *Renderer::CreateRenderObject (vector <vertex> * source)
 
 void Renderer::CallRenderObject(RenderObject * obj)
 {
+    IncrementTriangles(obj->count / 3);
     if(haveVBO)
     {
         glBindBuffer(GL_ARRAY_BUFFER, obj->gfxHandle);
@@ -544,7 +545,7 @@ void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTran
                     LoopCell->UpdateLists();
                     LoopCell->setNeedsRedraw(false);
                 }
-                glColor3f(Shading, Shading, Shading);
+                glColor4f(Shading, Shading, Shading, 0.5);
                 LoopCell->Render(drawtop);
                 //TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
             glPopMatrix();
@@ -565,7 +566,6 @@ bool Renderer::Render()
     }
 
 	TotalTriangles = 0;
-    TriangleCounter = 0;
 
     if(FlatDraw)
     {
@@ -609,7 +609,7 @@ bool Renderer::Render()
     glDepthMask(GL_TRUE);
 
     /// turn of blending
-    glDisable(GL_BLEND);
+    //glDisable(GL_BLEND);
 
     /// enable stuff
 
@@ -740,7 +740,7 @@ void Renderer::RefreshTopDrawlist(Cell* TargetCell, GLuint DrawListID)
 
 void Renderer::IncrementTriangles(Uint32 Triangles)
 {
-    TriangleCounter += Triangles;
+    TotalTriangles += Triangles;
 }
 
 void Renderer::setDrawingFlat()
