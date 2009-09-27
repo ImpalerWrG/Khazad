@@ -70,7 +70,9 @@ public:
     bool Init();
 
     // check for OpenGL extension
-    bool IsExtensionSupported( char* extesion );
+    bool IsExtensionSupported( char* extesion );    
+    
+    /// VBOs
     // VBO Name Generation Procedure
     GL_BindBuffer_Func glBindBuffer;
     // VBO Bind Procedure
@@ -144,10 +146,6 @@ public:
     void CallRenderObject(RenderObject * obj);
     void DeleteRenderObject(RenderObject * obj);
 
-/*    void RefreshDrawlist(Cell* TargetCell, GLuint DrawlistID);
-    void RefreshTopDrawlist(Cell* TargetCell, GLuint DrawListID);
-    void RefreshTransparentDrawlist(Cell* TargetCell, GLuint DrawListID);
-*/
     void IncrementTriangles(Uint32 Triangles);
 
     void PrintDebugging();
@@ -179,7 +177,8 @@ public:
     void binarysprintf(char* buffer, int Input); // TODO move this to some global place;
 
 protected:
-
+    bool haveVBO;
+    
     Uint16 CurrentWidth;
     Uint16 CurrentHeight;
     Uint8 CurrentBPP;

@@ -117,18 +117,22 @@ bool Renderer::Init()
     // let's try searching for VBO extension
     if(!IsExtensionSupported("GL_ARB_vertex_buffer_object"))
     {
+        haveVBO = false;
         //TODO: really exit and do cleanup when VBOs aren't supported
-        cerr << "GL_vertex_buffer_object OpenGL extension not supported, exiting.\n";
-        return false;
+        cerr << "GL_vertex_buffer_object OpenGL extension not supported, using fallback rendering method.\n";
     }
-    // we have VBO ext, set up VBO functions
-    glGenBuffers = (GL_GenBuffers_Func) SDL_GL_GetProcAddress("glGenBuffersARB");
-    glBindBuffer =  (GL_BindBuffer_Func) SDL_GL_GetProcAddress("glBindBufferARB");
-    glBufferData = (GL_BufferData_Func) SDL_GL_GetProcAddress("glBufferDataARB");
-    glDeleteBuffers = (GL_DeleteBuffer_Func) SDL_GL_GetProcAddress("glDeleteBuffersARB");
-    glMapBuffer = (GL_MapBuffer_Func) SDL_GL_GetProcAddress("glMapBufferARB");
-    glUnmapBuffer = (GL_UnmapBuffer_Func) SDL_GL_GetProcAddress("glUnmapBufferARB");
-    // we use vertices, normals and texture coords
+    else
+    {
+        haveVBO = true;
+        // we have VBO ext, set up VBO functions
+        glGenBuffers = (GL_GenBuffers_Func) SDL_GL_GetProcAddress("glGenBuffersARB");
+        glBindBuffer =  (GL_BindBuffer_Func) SDL_GL_GetProcAddress("glBindBufferARB");
+        glBufferData = (GL_BufferData_Func) SDL_GL_GetProcAddress("glBufferDataARB");
+        glDeleteBuffers = (GL_DeleteBuffer_Func) SDL_GL_GetProcAddress("glDeleteBuffersARB");
+        glMapBuffer = (GL_MapBuffer_Func) SDL_GL_GetProcAddress("glMapBufferARB");
+        glUnmapBuffer = (GL_UnmapBuffer_Func) SDL_GL_GetProcAddress("glUnmapBufferARB");
+    }
+    // we use vertices, normals and texture coords in VAs/VBOs
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -253,16 +257,31 @@ RenderObject *Renderer::CreateRenderObject (vector <vertex> * source)
     vector <vertex> & work = * source;
     // create descriptor
     RenderObject *ret = new RenderObject;
-    ret->count = source->size();
+    ret->count = work.size();
     ret->gfxHandle = 0;
-
-    // Generate And Bind The Vertex Buffer
-    RENDERER->glGenBuffers( 1, &ret->gfxHandle ); // Get A Valid Name
-    RENDERER->glBindBuffer( GL_ARRAY_BUFFER, ret->gfxHandle ); // Bind The Buffer
-    // Load The Data
-    RENDERER->glBufferData( GL_ARRAY_BUFFER_ARB, ret->count * sizeof(vertex), &work[0], GL_STATIC_DRAW_ARB );
-    // unbind
-    RENDERER->glBindBuffer(GL_ARRAY_BUFFER, 0);
+    if(haveVBO)
+    {
+        // Generate And Bind The Vertex Buffer
+        RENDERER->glGenBuffers( 1, &ret->gfxHandle ); // Get A Valid Name
+        RENDERER->glBindBuffer( GL_ARRAY_BUFFER, ret->gfxHandle ); // Bind The Buffer
+        // Load The Data
+        RENDERER->glBufferData( GL_ARRAY_BUFFER_ARB, ret->count * sizeof(vertex), &work[0], GL_STATIC_DRAW_ARB );
+        // unbind
+        RENDERER->glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+    else
+    {
+        // init display list
+        ret->gfxHandle = glGenLists(1);
+        void * handle = &work[0];
+        // draw into display list
+        glNewList(ret->gfxHandle,GL_COMPILE);
+            glTexCoordPointer(2, GL_FLOAT, 32, (const GLvoid*) handle + 12); // texture coords
+            glNormalPointer(GL_FLOAT, 32, (const GLvoid*) handle + 20); // normal vectors
+            glVertexPointer(3, GL_FLOAT, 32 , (const GLvoid*) handle);
+            glDrawArrays(GL_TRIANGLES,0,ret->count);
+        glEndList();
+    }
     // delete source vertex array
     delete(source);
     return ret;
@@ -270,16 +289,30 @@ RenderObject *Renderer::CreateRenderObject (vector <vertex> * source)
 
 void Renderer::CallRenderObject(RenderObject * obj)
 {
-    glBindBuffer(GL_ARRAY_BUFFER, obj->gfxHandle);
-    glTexCoordPointer(2, GL_FLOAT, 32, (const GLvoid*) 12); // texture coords
-    glNormalPointer(GL_FLOAT, 32, (const GLvoid*) 20); // normal vectors
-    glVertexPointer(3, GL_FLOAT, 32 , 0);
-    glDrawArrays(GL_TRIANGLES,0,obj->count);
-    RENDERER->glBindBuffer(GL_ARRAY_BUFFER, 0);
+    if(haveVBO)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, obj->gfxHandle);
+        glTexCoordPointer(2, GL_FLOAT, 32, (const GLvoid*) 12); // texture coords
+        glNormalPointer(GL_FLOAT, 32, (const GLvoid*) 20); // normal vectors
+        glVertexPointer(3, GL_FLOAT, 32 , 0);
+        glDrawArrays(GL_TRIANGLES,0,obj->count);
+        RENDERER->glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+    else
+    {
+        glCallList(obj->gfxHandle);
+    }
 }
 void Renderer::DeleteRenderObject(RenderObject * obj)
 {
-    glDeleteBuffers(1, &obj->gfxHandle);
+    if(haveVBO)
+    {
+        glDeleteBuffers(1, &obj->gfxHandle);
+    }
+    else
+    {
+        glDeleteLists(obj->gfxHandle,1);
+    }
 }
 
 
@@ -513,6 +546,7 @@ void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTran
                 }
                 glColor3f(Shading, Shading, Shading);
                 LoopCell->Render(drawtop);
+                //TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
             glPopMatrix();
         }
     }
