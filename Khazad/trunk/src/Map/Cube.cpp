@@ -538,7 +538,7 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate,
             bool blocked =
             c &&
             (!c->isHidden() || c->isHidden() && Hidden) &&
-            (c->hasFace(OppositeFacet(f)) || c->getGeometry() == GEOM_WALL);
+            (c->hasFace(OppositeFacet(f)) /*|| c->getGeometry() == GEOM_WALL*/);
 
             if(blocked)
             {
@@ -823,6 +823,7 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate,
     {
         vec = new vector< vertex >;
         normal[Material] = vec;
+        vec->reserve(256);
     }
     else
     {
@@ -856,6 +857,7 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate,
                 {
                     vect = new vector< vertex >;
                     tops[Material] = vect;
+                    vect->reserve(256);
                 }
                 else
                 {
@@ -896,7 +898,7 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate,
         else if(hm[i+2] == 0)// one tri, hm[i] is high
         {
             // first lower
-            vec->push_back(vertex(dc[i][0] + xTranslate,  dc[i][1] + yTranslate, -0.5,    1.0,0.0,   0,0,1 ));
+            vec->push_back(vertex(dc[i][0] + xTranslate,  dc[i][1] + yTranslate, -0.5,1.0,0.0,   0,0,1 ));
             // first upper
             vec->push_back(vertex(dc[i][0] + xTranslate,  dc[i][1] + yTranslate, hmf[i],   1.0,1.0,   0,0,1 ));
             // second
