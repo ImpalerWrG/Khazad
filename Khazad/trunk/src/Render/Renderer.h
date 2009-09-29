@@ -13,6 +13,7 @@ class Vector3;
 class Plane;
 class Cube;
 class Cell;
+class ModelManager;
 
 // typedefs for VBO GL functions
 typedef void (APIENTRY * GL_BindBuffer_Func) (GLenum target, GLuint buffer);
@@ -41,6 +42,47 @@ struct RenderObject
     GLuint count; // stores number of vertices if applicable
 };
 
+struct s3f
+{
+    float x;
+    float y;
+    float z;
+};
+
+inline s3f CalculateNormal(const s3f &v1, const s3f &v2, const s3f &v3)
+{
+    s3f va, vb, n;
+    float modulo;
+    // Normal N=(v2-v1)x(v3-v1)
+    va.x = v2.x - v1.x;  // va = (v2-v1)
+    va.y = v2.y - v1.y;
+    va.z = v2.z - v1.z;
+
+    vb.x = v3.x - v1.x;  // vb = (v3-v1)
+    vb.y = v3.y - v1.y;
+    vb.z = v3.z - v1.z;
+
+    n.x = (va.y * vb.z) - (va.z * vb.y);
+    n.y = (va.z * vb.x) - (va.x * vb.z);
+    n.z = (va.x * vb.y) - (va.y * vb.x);
+    modulo = sqrt(n.x*n.x + n.y*n.y + n.z*n.z);
+    n.x = n.x / modulo;
+    n.y = n.y / modulo;
+    n.z = n.z / modulo;
+    return n;
+}
+
+typedef s3f normal3f;
+typedef s3f vertex3f;
+
+struct s2f
+{
+    float u;
+    float v;
+};
+
+typedef s2f texcoord2f;
+
 #pragma pack(push, 1)
 struct vertex
 {
@@ -51,6 +93,22 @@ struct vertex
         x += tx;
         y += ty;
         z += tz;
+    };
+    inline void translate (float tx, float ty)
+    {
+        x += tx;
+        y += ty;
+    };
+    inline vertex (vertex3f vert, texcoord2f t, normal3f n)
+    {
+        x = vert.x;
+        y = vert.y;
+        z = vert.z;
+        u = t.u;
+        v = t.v;
+        nx = n.x;
+        ny = n.y;
+        nz = n.z;
     };
     // 3x float for vertex
     float x;
@@ -74,6 +132,7 @@ public:
 
     ~Renderer();
     bool Init();
+    ModelManager* ModelMan;
 
     // check for OpenGL extension
     bool IsExtensionSupported( char* extesion );

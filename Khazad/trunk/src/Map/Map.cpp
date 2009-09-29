@@ -630,7 +630,8 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
                 ContructionMatGlossTexture = WoodF;
             break;
         case Mat_Stone:
-            ContructionMatGlossTexture = StoneMatGloss[constructionmaterial.index];
+            // ignore stone types for constructions for now
+            ContructionMatGlossTexture = TileTexture;//StoneMatGloss[constructionmaterial.index];
             break;
         case Mat_GreenGlass:
             ContructionMatGlossTexture = GreenGlass;
@@ -671,7 +672,6 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
         }
         return TileTexture;
     }
-    // use construction matgloss
     else if(TileTexture == ConstructedWall ||
             TileTexture == ConstructedFloor) // ConstructedRamp, etc...
     {

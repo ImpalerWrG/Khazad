@@ -961,19 +961,19 @@
 	<!-- GLASS -->
 	<Material>
 		<Name Label="MATERIAL_GREEN_GLASS"/>
-		<Texture label="TEXTURE_BRICK"/>
+		<Texture label="TEXTURE_BRICK2"/>
 		<PrimaryColor label="COLOR_GREEN"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CLEAR_GLASS"/>
-		<Texture label="TEXTURE_BRICK"/>
+		<Texture label="TEXTURE_BRICK2"/>
 		<PrimaryColor label="COLOR_LIGHT_GREY"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CRYSTAL_GLASS"/>
-		<Texture label="TEXTURE_BRICK"/>
+		<Texture label="TEXTURE_BRICK2"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 	</Material>
@@ -989,13 +989,17 @@
 		<Texture label="TEXTURE_WOOD_FLOOR"/>
 		<PrimaryColor label="COLOR_BROWN"/>
 		<ColorMode mode="overlay" />
-		<NoBorder />
 	</Material>
 
+    <Material>
+        <Name Label="MATERIAL_SAGUARO"/>
+        <Texture label="TEXTURE_SAGUARO"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
 	
 	
 	<!-- STONE/SOIL materials, disabled to show regular textures better -->
-	<!--
+    <!--
 	<Material>
 		<Name Label="MATERIAL_HEMATITE"/>
 		<Texture label="TEXTURE_ROUGH"/>
@@ -1681,6 +1685,5 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<MatGloss label="MARBLE"/>
-	</Material>
-	-->
+	</Material>-->
 </Materials>

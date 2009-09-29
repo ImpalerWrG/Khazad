@@ -554,13 +554,13 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate,
                         vec = tops[Material];
                     }
                     vertex v3 = vertices[idx][3];
-                    v3.translate(xTranslate,yTranslate,0);
+                    v3.translate(xTranslate,yTranslate);
                     vertex v2 = vertices[idx][2];
-                    v2.translate(xTranslate,yTranslate,0);
+                    v2.translate(xTranslate,yTranslate);
                     vertex v1 = vertices[idx][1];
-                    v1.translate(xTranslate,yTranslate,0);
+                    v1.translate(xTranslate,yTranslate);
                     vertex v0 = vertices[idx][0];
-                    v0.translate(xTranslate,yTranslate,0);
+                    v0.translate(xTranslate,yTranslate);
                     vec->push_back(v3);
                     vec->push_back(v1);
                     vec->push_back(v0);
@@ -584,13 +584,13 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate,
             vec = normal[Material];
         }
         vertex v3 = vertices[idx][3];
-        v3.translate(xTranslate,yTranslate,0);
+        v3.translate(xTranslate,yTranslate);
         vertex v2 = vertices[idx][2];
-        v2.translate(xTranslate,yTranslate,0);
+        v2.translate(xTranslate,yTranslate);
         vertex v1 = vertices[idx][1];
-        v1.translate(xTranslate,yTranslate,0);
+        v1.translate(xTranslate,yTranslate);
         vertex v0 = vertices[idx][0];
-        v0.translate(xTranslate,yTranslate,0);
+        v0.translate(xTranslate,yTranslate);
         vec->push_back(v3);
         vec->push_back(v1);
         vec->push_back(v0);

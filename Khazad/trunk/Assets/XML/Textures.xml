@@ -29,7 +29,12 @@
 		<Name Label="TEXTURE_UP"/>
 		<File Path="Assets\\Testing\\Up.png"/>
 	</Texture>
-	
+
+    <Texture>
+        <Name Label="TEXTURE_SAGUARO"/>
+        <File Path="Assets\\Models\\Saguaro2.png"/>
+    </Texture>
+
 	<!-- GRASS -->
 	<Texture>
 		<Name Label="TEXTURE_GRASS1"/>
@@ -85,8 +90,14 @@
 	
 	<Texture>
 		<Name Label="TEXTURE_BRICK"/>
-		<File Path="Assets\\Textures\\Brick.png"/>
+		<File Path="Assets\\Textures\\Brick1.png"/>
 	</Texture>
+
+    <Texture>
+        <Name Label="TEXTURE_BRICK2"/>
+        <File Path="Assets\\Textures\\Brick2.png"/>
+    </Texture>
+
 	<Texture>
 		<Name Label="TEXTURE_AIR"/>
 		<File Path="Assets\\Textures\\Air.png"/>

@@ -3,6 +3,8 @@
 
 #include <Actor.h>
 
+class Model;
+
 class Tree : public Actor
 {
     public:
@@ -17,6 +19,7 @@ class Tree : public Actor
     private:
     int x, y, z;
     t_matglossPair material;
+    Model * model;
     int type;
 };
 

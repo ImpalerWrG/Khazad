@@ -130,6 +130,10 @@ void Cell::Render(bool drawtop)
             RENDERER->CallRenderObject(it->second.top);
         }
     }
+    for(uint32_t idx = 0; idx< trees.size(); idx++)
+    {
+        trees[idx]->Draw();
+    }
 }
 
 void Cell::UpdateLists()
@@ -162,7 +166,7 @@ void Cell::UpdateLists()
 
             // generate VBOs out of vertex arrays
             RenderObject * RO = RENDERER->CreateRenderObject(vertices);
-
+            delete vertices;
             // create descriptor
             ROstore tempRO;
             if(ROs.count(material))
@@ -183,7 +187,7 @@ void Cell::UpdateLists()
             vector < vertex > * vertices = it->second;
             // build vbo
             RenderObject * RO = RENDERER->CreateRenderObject(vertices);
-
+            delete vertices;
             // assign vbo to descriptor
             ROstore tempRO;
             if(ROs.count(material))

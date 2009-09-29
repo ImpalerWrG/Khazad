@@ -1,5 +1,7 @@
 #include <TextureManager.h>
 #include <DataManager.h>
+#include <ModelManager.h>
+#include <Model.h>
 /// FIXME: dfhack paths
 #include <stdint.h>
 #include <string>
@@ -25,6 +27,8 @@ Tree::Tree(t_matglossPair material, int x, int y, int z, int tiletype)
             material.type = Mat_Plant;
             break;
     }
+    model = RENDERER->ModelMan->LoadOBJModel(Path("Assets/Models/Saguaro_normal_size_3.obj"), DATA->getLabelIndex("MATERIAL_SAGUARO"));
+    //printf("zlo");
 }
 
 
@@ -36,8 +40,8 @@ Tree::~Tree()
 bool Tree::Draw()
 {
     float xa,ya;
-    xa = x %16 - 0.5;
-    ya = y %16 - 0.5;
+    xa = x %16;
+    ya = y %16;
     int32_t texture;
     switch(type)
     {
@@ -58,8 +62,8 @@ bool Tree::Draw()
             break;
     }
 
+    /*
     TEXTURE->BindTexture(texture);
-    /** DRAW **/
     {
         glNormal3f(0.0,0.0,1.0);
         glTexCoord2i(0,1);
@@ -75,6 +79,10 @@ bool Tree::Draw()
         glVertex3f(xa + 1 ,ya     ,-0.3);
         glTexCoord2i(0,1);
         glVertex3f(xa     ,ya     ,-0.3);
-    }
+    }*/
+    glPushMatrix();
+        glTranslatef(xa, ya, -0.5);
+        model->Render(1);
+    glPopMatrix();
     return true;
 }

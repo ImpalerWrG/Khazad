@@ -12,6 +12,7 @@
 #include <TextureManager.h>
 #include <ImageManager.h>
 #include <DataManager.h>
+#include "ModelManager.h"
 
 #include <DFTypes.h>
 #include <DFHackAPI.h>
@@ -49,12 +50,14 @@ Renderer::Renderer()
     TotalTriangles = 0;
 
     LogoSurface = NULL;
+    ModelMan = new ModelManager();
 }
 
 Renderer::~Renderer()
 {
     if (imageLoader != NULL)
         delete imageLoader;
+    delete ModelMan;
 }
 
 bool Renderer::Init()
@@ -282,8 +285,6 @@ RenderObject *Renderer::CreateRenderObject (vector <vertex> * source)
             glDrawArrays(GL_TRIANGLES,0,ret->count);
         glEndList();
     }
-    // delete source vertex array
-    delete(source);
     return ret;
 }
 
@@ -315,8 +316,6 @@ void Renderer::DeleteRenderObject(RenderObject * obj)
         glDeleteLists(obj->gfxHandle,1);
     }
 }
-
-
 
 void Renderer::RenderText(const char *text, Sint8 FontIndex, SDL_Color Color, SDL_Rect *location)
 {
