@@ -13,6 +13,10 @@
 		<Channels Red="128" Green="128" Blue="128"/>
 	</Color>
 	<Color>
+		<Name Label="COLOR_GREY"/>
+		<Channels Red="92" Green="92" Blue="92"/>
+	</Color>
+	<Color>
 		<Name Label="COLOR_DARK_GREY"/>
 		<Channels Red="64" Green="64" Blue="64"/>
 	</Color>
@@ -65,10 +69,6 @@
 		<Channels Red="0" Green="128" Blue="0"/>
 	</Color>
 	<Color>
-		<Name Label="COLOR_GREEN_DARKER"/>
-		<Channels Red="0" Green="112" Blue="0"/>
-	</Color>
-	<Color>
 		<Name Label="GRASS_BRIGHT"/>
 		<Channels Red="0" Green="128" Blue="0"/>
 	</Color>
@@ -97,7 +97,7 @@
 		<Channels Red="0" Green="128" Blue="128"/>
 	</Color>
 	<Color>
-		<Name Label="COLOR_DARKER_GREEN"/>
+		<Name Label="COLOR_DARK_GREEN"/>
 		<Channels Red="0" Green="30" Blue="0"/>
 	</Color>
 	<Color>
@@ -147,5 +147,21 @@
 	<Color>
 		<Name Label="COLOR_TAN"/>
 		<Channels Red="210" Green="180" Blue="140"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_BROWN2"/>
+		<Channels Red="128" Green="80" Blue="47"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_KHAKI"/>
+		<Channels Red="197" Green="169" Blue="42"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_BLOOD_RED"/>
+		<Channels Red="227" Green="30" Blue="0"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_DARK_BROWN"/>
+		<Channels Red="81" Green="71" Blue="40"/>
 	</Color>
 </Colors>

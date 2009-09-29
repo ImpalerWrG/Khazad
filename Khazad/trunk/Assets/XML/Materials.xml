@@ -30,7 +30,6 @@
 			<Tile Int="244"/>
 		</TileValues>
 	</Material>
-
 	<Material>
 		<Name Label="MATERIAL_BOULDER"/>
 		<Texture label="TEXTURE_BOULDER"/>
@@ -54,7 +53,6 @@
 			<Tile Int="-1"/>
 		</TileValues>
 	</Material>
-	
 	<!-- STONE -->
 	<Material>
 		<Name Label="MATERIAL_SMOOTH_LAYER_STONE"/>
@@ -152,10 +150,6 @@
 			<Tile Int="219"/>
 		</TileValues>
 	</Material>
-	
-	
-	
-	
 	<Material>
 		<Name Label="MATERIAL_CONSTRUCTED_WALL"/>
 		<Texture label="TEXTURE_BRICK"/>
@@ -252,8 +246,6 @@
 		<Texture label="TEXTURE_GROUND"/>
 		<PrimaryColor label="COLOR_BROWN_DARK"/>
 		<ColorMode mode="overlay"/>
-		<!--<PrimaryColor label="COLOR_BROWN"/>
-		<SecondaryColor label="COLOR_BLACK"/>-->
 		<TileValues>
 			<!-- up-down stair soil -->
 			<Tile Int="39"/>
@@ -301,7 +293,7 @@
 	<Material>
 		<Name Label="MATERIAL_SAND_TAN"/>
 		<Texture label="TEXTURE_SAND"/>
-		<PrimaryColor value="#80502F"/>
+		<PrimaryColor label="COLOR_BROWN"/>
 		<MatGloss label="SAND_TAN"/>
 		<ColorMode mode="overlay" />
 		<NoBorder />
@@ -309,7 +301,7 @@
 	<Material>
 		<Name Label="MATERIAL_SAND_YELLOW"/>
 		<Texture label="TEXTURE_SAND"/>
-		<PrimaryColor value="#C5A92A"/>
+		<PrimaryColor label="COLOR_KHAKI"/>
 		<MatGloss label="SAND_YELLOW"/>
 		<ColorMode mode="overlay" />
 		<NoBorder />
@@ -317,7 +309,7 @@
 	<Material>
 		<Name Label="MATERIAL_SAND_WHITE"/>
 		<Texture label="TEXTURE_SAND"/>
-		<PrimaryColor value="#BBBBBB"/>
+		<PrimaryColor label="COLOR_SILVER"/>
 		<MatGloss label="SAND_WHITE"/>
 		<ColorMode mode="overlay" />
 		<NoBorder />
@@ -325,7 +317,7 @@
 	<Material>
 		<Name Label="MATERIAL_SAND_RED"/>
 		<Texture label="TEXTURE_SAND"/>
-		<PrimaryColor value="#E31E00"/>
+		<PrimaryColor label="COLOR_BLOOD_RED"/>
 		<MatGloss label="SAND_RED"/>
 		<ColorMode mode="overlay" />
 		<NoBorder />
@@ -338,7 +330,6 @@
 		<ColorMode mode="overlay" />
 		<NoBorder />
 	</Material>
-	
 	<Material>
 		<Name Label="MATERIAL_PEBBLES"/>
 		<Texture label="TEXTURE_PEBBLES"/>
@@ -372,7 +363,6 @@
 			<Tile Int="412"/>
 		</TileValues>
 	</Material>
-
 	<Material>
 		<Name Label="MATERIAL_VEIN_STONE"/>
 		<Texture label="TEXTURE_MATT"/>
@@ -429,7 +419,7 @@
 			<Tile Int="442"/>
 			<Tile Int="443"/>
 			<Tile Int="444"/>
-			</TileValues>
+		</TileValues>
 	</Material>
 	<!-- possibly unused? -->
 	<!--
@@ -674,7 +664,7 @@
 	<Material>
 		<Name Label="MATERIAL_DEAD_GRASS1"/>
 		<Texture label="TEXTURE_GRASS1"/>
-		<PrimaryColor value="#514728"/>
+		<PrimaryColor label="COLOR_DARK_BROWN"/>
 		<ColorMode mode="overlay"/>
 		<NoBorder />
 		<TileValues>
@@ -685,7 +675,7 @@
 	<Material>
 		<Name Label="MATERIAL_DEAD_GRASS2"/>
 		<Texture label="TEXTURE_GRASS2"/>
-		<PrimaryColor value="#514728"/>
+		<PrimaryColor label="COLOR_DARK_BROWN"/>
 		<ColorMode mode="overlay"/>
 		<NoBorder />
 		<TileValues>
@@ -695,7 +685,7 @@
 	<Material>
 		<Name Label="MATERIAL_DEAD_GRASS3"/>
 		<Texture label="TEXTURE_GRASS3"/>
-		<PrimaryColor value="#514728"/>
+		<PrimaryColor label="COLOR_DARK_BROWN"/>
 		<ColorMode mode="overlay"/>
 		<NoBorder />
 		<TileValues>
@@ -705,7 +695,7 @@
 	<Material>
 		<Name Label="MATERIAL_DEAD_GRASS4"/>
 		<Texture label="TEXTURE_GRASS4"/>
-		<PrimaryColor value="#514728"/>
+		<PrimaryColor label="COLOR_DARK_BROWN"/>
 		<ColorMode mode="overlay"/>
 		<NoBorder />
 		<TileValues>
@@ -718,7 +708,7 @@
 	<Material>
 		<Name Label="MATERIAL_DRY_GRASS1"/>
 		<Texture label="TEXTURE_GRASS1"/>
-		<PrimaryColor value="#C7A73D"/>
+		<PrimaryColor label="COLOR_KHAKI"/>
 		<ColorMode mode="overlay"/>
 		<NoBorder />
 		<TileValues>
@@ -729,7 +719,7 @@
 	<Material>
 		<Name Label="MATERIAL_DRY_GRASS2"/>
 		<Texture label="TEXTURE_GRASS2"/>
-		<PrimaryColor value="#C7A73D"/>
+		<PrimaryColor label="COLOR_KHAKI"/>
 		<ColorMode mode="overlay"/>
 		<NoBorder />
 		<TileValues>
@@ -739,7 +729,7 @@
 	<Material>
 		<Name Label="MATERIAL_DRY_GRASS3"/>
 		<Texture label="TEXTURE_GRASS3"/>
-		<PrimaryColor value="#C7A73D"/>
+		<PrimaryColor label="COLOR_KHAKI"/>
 		<ColorMode mode="overlay"/>
 		<NoBorder />
 		<TileValues>
@@ -749,7 +739,7 @@
 	<Material>
 		<Name Label="MATERIAL_DRY_GRASS4"/>
 		<Texture label="TEXTURE_GRASS4"/>
-		<PrimaryColor value="#C7A73D"/>
+		<PrimaryColor label="COLOR_KHAKI"/>
 		<ColorMode mode="overlay"/>
 		<NoBorder />
 		<TileValues>
@@ -763,7 +753,7 @@
 	<Material>
 		<Name Label="MATERIAL_UNDERGROWTH"/>
 		<Texture label="TEXTURE_GRASS1"/>
-		<PrimaryColor value="#C7A73D"/>
+		<PrimaryColor label="COLOR_KHAKI"/>
 		<ColorMode mode="overlay"/>
 		<NoBorder />
 		<TileValues>
@@ -784,7 +774,7 @@
 	<Material>
 		<Name Label="MATERIAL_SHRUB"/>
 		<Texture label="TEXTURE_SHRUB"/>
-		<PrimaryColor label="COLOR_GREEN_DARKER"/>
+		<PrimaryColor label="COLOR_DARK_GREEN"/>
 		<ColorMode mode="overlay"/>
 		<NoBorder />
 	</Material>
