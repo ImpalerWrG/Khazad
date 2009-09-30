@@ -26,6 +26,8 @@ public:
 	template <class T>
 	bool LoadDataClass(std::vector<T*>* DataVector, const char* Path, const char* Entry)
     {
+		cout << "Loading " << Path << endl;
+
         TiXmlDocument* Document = XML->loadFile(Path);
         TiXmlElement* Parent = Document->RootElement();
         TiXmlElement* Iterator = Parent->FirstChildElement(Entry);
@@ -71,7 +73,7 @@ public:
     MaterialData* getMaterialData(Uint32 Index)         { return Materials[Index]; }
     Uint32 getNumMaterials()                            { return Materials.size(); }
 
-    Uint32 getLabelIndex(string Label);
+    Sint32 getLabelIndex(string Label);
     void addLabel(string Label, Uint32 Index);
 
 protected:

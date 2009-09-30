@@ -118,13 +118,7 @@ bool Renderer::Init()
         #endif
     }
     // let's try searching for VBO extension
-    if(!IsExtensionSupported("GL_ARB_vertex_buffer_object"))
-    {
-        haveVBO = false;
-        //TODO: really exit and do cleanup when VBOs aren't supported
-        cerr << "GL_vertex_buffer_object OpenGL extension not supported, using fallback rendering method.\n";
-    }
-    else
+    if(IsExtensionSupported("GL_ARB_vertex_buffer_object"))
     {
         haveVBO = true;
         // we have VBO ext, set up VBO functions
@@ -134,6 +128,12 @@ bool Renderer::Init()
         glDeleteBuffers = (GL_DeleteBuffer_Func) SDL_GL_GetProcAddress("glDeleteBuffersARB");
         glMapBuffer = (GL_MapBuffer_Func) SDL_GL_GetProcAddress("glMapBufferARB");
         glUnmapBuffer = (GL_UnmapBuffer_Func) SDL_GL_GetProcAddress("glUnmapBufferARB");
+    }
+    else
+    {
+        haveVBO = false;
+        //TODO: really exit and do cleanup when VBOs aren't supported
+        cerr << "GL_vertex_buffer_object OpenGL extension not supported, using fallback rendering method.\n";
     }
     // we use vertices, normals and texture coords in VAs/VBOs
     glEnableClientState(GL_VERTEX_ARRAY);
