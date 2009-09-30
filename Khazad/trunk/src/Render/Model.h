@@ -21,14 +21,40 @@
 #define MODEL_H
 
 struct RenderObject;
-
 class Model
 {
+    friend class ModelManager;
     public:
-        Model(RenderObject *RO, uint16_t material);
-        void Render( float scale );
-        RenderObject *RO;
-        uint16_t material;
+        inline void Render()
+        {
+            RENDERER->CallRenderObject(submodels[0]);
+        };
+        inline void Render( string submodel )
+        {
+            RENDERER->CallRenderObject(submodels[getSubmodelIndex(submodel)]);
+        };
+        inline void Render( uint32_t submodel )
+        {
+            RENDERER->CallRenderObject(submodels[submodel]);
+        };
+
+        inline uint32_t getSubmodelIndex (string submodel)
+        {
+            return submodel_names[submodel];
+        }
+    private:
+        Model(map <string, RenderObject *> & _submodels)
+        {
+            uint32_t i = 0;
+            for(map <string, RenderObject *>::iterator it = _submodels.begin(); it != _submodels.end(); ++it)
+            {
+                submodel_names[it->first] = i;
+                i++;
+                submodels.push_back(it->second);
+            }
+        }
+        map <string, uint32_t> submodel_names;
+        vector <RenderObject *> submodels;
 };
 
 #endif // MODEL_H

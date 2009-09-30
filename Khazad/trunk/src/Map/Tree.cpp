@@ -1,14 +1,19 @@
 #include <TextureManager.h>
 #include <DataManager.h>
-#include <ModelManager.h>
-#include <Model.h>
+
+
 /// FIXME: dfhack paths
 #include <stdint.h>
 #include <string>
 using namespace std;
 #include "../../dfhack/library/DFTypes.h"
 #include "../../dfhack/library/DFTileTypes.h"
+
+#include <ModelManager.h>
+#include "Renderer.h"
+#include <Model.h>
 #include "Tree.h"
+
 
 Tree::Tree(t_matglossPair material, int x, int y, int z, int tiletype)
 : x( x ),y( y ),z( z ),material( material )
@@ -27,7 +32,7 @@ Tree::Tree(t_matglossPair material, int x, int y, int z, int tiletype)
             material.type = Mat_Plant;
             break;
     }
-    model = RENDERER->ModelMan->LoadOBJModel(Path("Assets/Models/Saguaro_normal_size_3.obj"), DATA->getLabelIndex("MATERIAL_SAGUARO"));
+    model = RENDERER->ModelMan->LoadOBJModel(Path("Assets/Models/Saguaro_normal_size_3.obj"));
     //printf("zlo");
 }
 
@@ -81,8 +86,13 @@ bool Tree::Draw()
         glVertex3f(xa     ,ya     ,-0.3);
     }*/
     glPushMatrix();
+        TEXTURE->BindTexture(DATA->getLabelIndex("MATERIAL_SAGUARO"));
+        int64_t rand = x * 1000 + y * 413 + z* 11;
         glTranslatef(xa, ya, -0.5);
-        model->Render(1);
+
+        glScalef(1,1,1.3 + ((float)(rand % 100 - 50)) * 0.002);
+        glRotatef( rand , 0,0,1);
+        model->Render();
     glPopMatrix();
     return true;
 }

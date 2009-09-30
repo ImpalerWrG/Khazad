@@ -27,7 +27,7 @@ class ModelManager
     public:
         ModelManager();
         ~ModelManager();
-        Model * LoadOBJModel(string filename, uint16_t material);
+        Model * LoadOBJModel(string filename);
         void clear();
 
     private:

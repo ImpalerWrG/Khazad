@@ -207,6 +207,8 @@
 			<TileValue Int="372" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
 		</TileValues>
 	</TileGroup>
+	<!-- all brook tiles are walkable -->
+	<!--
 	<TileGroup>
 		<Name Label="TILEGROUP_STREAM_BOTTOM"/>
 		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
@@ -225,6 +227,27 @@
 			<TileValue Int="381" TileShape="TILESHAPE_WALL" SurfaceType="SURFACETYPE_ROUGH_WALL"/>
 		</TileValues>
 	</TileGroup>
+	-->
+	<TileGroup>
+		<Name Label="TILEGROUP_STREAM_BOTTOM"/>
+		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
+		<Texture label="TEXTURE_CONGLOMERATE"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<TileValues>
+			<TileValue Int="373" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
+			<TileValue Int="374" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
+			<TileValue Int="375" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
+			<TileValue Int="376" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
+			<TileValue Int="377" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
+			<TileValue Int="378" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
+			<TileValue Int="379" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
+			<TileValue Int="380" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
+			<!-- top of brook, should use some different texture -->
+			<!--<TileValue Int="381" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>-->
+		</TileValues>
+	</TileGroup>
+
 	<TileGroup>
 		<Name Label="TILEGROUP_PIT"/>
 		<MaterialClass label="MATERIALCLASS_EXOTIC"/>

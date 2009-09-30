@@ -23,16 +23,10 @@
 #include "Renderer.h"
 #include "TextureManager.h"
 
-Model::Model(RenderObject *_RO, uint16_t _material)
+
+// this is just a model with submodels, 
+Model::Model()
 {
-    assert(_RO !=NULL);
-    RO = _RO;
-    material = _material;
+    
 }
 
-// TODO: don't ignore scale
-void Model::Render( float scale )
-{
-    TEXTURE->BindTexture(material);
-    RENDERER->CallRenderObject(RO);
-}

@@ -1,0 +1,27 @@
+<Trees xmlns="namespace">
+	<Tree>
+		<Name Label="TREE_SAGUARO"/>
+		<MatGloss value="WOOD_SAGUARO" />
+		<Model file="Assets/Models/Saguaro/Saguaro_normal_size_3.obj" />
+		<Variant>
+		  <Trunk value="trunk" material="MATERIAL_SAGUARO" />
+		</Variant>
+	</Tree>
+	<Tree>
+		<Name Label="TREE_OAK"/>
+		<MatGloss value="WOOD_OAK" />
+		<Model file="Assets/Models/oak_snow/oak_snow.obj" />
+		<Variant>
+		  <Trunk value="trunk" material="MATERIAL_OAK_TRUNK" />
+		  <Snow value="snow" material="MATERIAL_OAK_SNOW" />
+		</Variant>
+	</Tree>
+	<Tree>
+		<Name Label="TREE_DEFAULT"/>
+		<Model file="Assets/Models/oak_snow/oak_snow.obj" />
+		<Variant>
+		  <Trunk value="trunk" material="MATERIAL_OAK_TRUNK" />
+		  <Snow value="snow" material="MATERIAL_OAK_SNOW" />
+		</Variant>
+	</Tree>
+</Trees>

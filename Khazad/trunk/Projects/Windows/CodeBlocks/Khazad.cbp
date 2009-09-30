@@ -283,7 +283,6 @@
 		<Unit filename="..\..\..\src\Render\ImageManager.h" />
 		<Unit filename="..\..\..\src\Render\ImagePage.cpp" />
 		<Unit filename="..\..\..\src\Render\ImagePage.h" />
-		<Unit filename="..\..\..\src\Render\Model.cpp" />
 		<Unit filename="..\..\..\src\Render\Model.h" />
 		<Unit filename="..\..\..\src\Render\ModelManager.cpp" />
 		<Unit filename="..\..\..\src\Render\ModelManager.h" />
