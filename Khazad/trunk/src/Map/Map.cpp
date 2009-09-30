@@ -322,6 +322,7 @@ void Map::Save(string filename)
     //DFExtractor->writeMap(filename);
     return;
 }
+
 void Map::LoadCellData(DFHackAPI & DF,
                        vector< vector <uint16_t> >& layerassign,
                        Cell* TargetCell,
@@ -399,6 +400,13 @@ void Map::LoadCellData(DFHackAPI & DF,
         }
     }
 
+    static Sint16 FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
+    static Sint16 WallID = DATA->getLabelIndex("TILESHAPE_WALL");
+    static Sint16 RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
+    static Sint16 StairID = DATA->getLabelIndex("TILESHAPE_STAIR");
+    static Sint16 FortificationID = DATA->getLabelIndex("TILESHAPE_FORTIFICATION");
+    static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
+
     for(Uint32 CubeX = 0; CubeX < CELLEDGESIZE; CubeX++)
     {
         for(Uint32 CubeY = 0; CubeY < CELLEDGESIZE; CubeY++)
@@ -406,19 +414,22 @@ void Map::LoadCellData(DFHackAPI & DF,
             Uint32 MapX = (CellX * CELLEDGESIZE) + CubeX;
             Uint32 MapY = (CellY * CELLEDGESIZE) + CubeY;
             Uint32 MapZ = CellZ;
-            t_designation d = designations[CubeX][CubeY];
-            uint16_t t = tiletypes[CubeX][CubeY];
-            t_occupancy o = occupancies[CubeX][CubeY];
-            // merge?
-            bool IsFloor = isFloorTerrain(t);
-            bool IsWall = isWallTerrain(t);
-            bool IsOpen = isOpenTerrain(t);
-            bool IsRamp = isRampTerrain(t);
-            bool IsStairs = isStairTerrain(t);
-            int Liquid = d.bits.flow_size;
+
+            t_designation Designations = designations[CubeX][CubeY];
+            uint16_t TileType = tiletypes[CubeX][CubeY];
+            t_occupancy Ocupancies = occupancies[CubeX][CubeY];
+            Sint16 TileShapeID = TileShapePicker[TileType];
+
+            bool IsFloor = (TileShapeID == FloorID);
+            bool IsWall = (TileShapeID == WallID) || (TileShapeID == FortificationID);
+            bool IsEmpty = (TileShapeID == EmptyID);
+            bool IsRamp = (TileShapeID == RampID);
+            bool IsStairs = (TileShapeID == StairID);
+
+            int Liquid = Designations.bits.flow_size;
 
             // initialize cubes. skip empty cubes unless they have liquid in them
-            if(IsFloor || IsWall || (Liquid && IsOpen) || IsRamp || IsStairs)
+            if(IsFloor || IsWall || (Liquid && IsEmpty) || IsRamp || IsStairs)
             {
                 Cube* TargetCube = TargetCell->getCube(CubeX, CubeY);
 
@@ -426,18 +437,19 @@ void Map::LoadCellData(DFHackAPI & DF,
                 TargetCell->setCube(TargetCube, CubeX, CubeY);
                 TargetCube->setPosition((float) MapX, (float) MapY, (float) MapZ);
 
-                Uint16 Material = PickTexture(t, basemat[CubeX][CubeY],veinmat[CubeX][CubeY],constmat[CubeX][CubeY],o);
-                TargetCube->setHidden(d.bits.hidden);
-                TargetCube->setSubTerranean(d.bits.subterranean);
-                TargetCube->setSkyView(d.bits.skyview);
-                TargetCube->setSunLit(d.bits.light);
+                Uint16 Material = PickTexture(TileType, basemat[CubeX][CubeY], veinmat[CubeX][CubeY], constmat[CubeX][CubeY], Ocupancies);
+
+                TargetCube->setHidden(Designations.bits.hidden);
+                TargetCube->setSubTerranean(Designations.bits.subterranean);
+                TargetCube->setSkyView(Designations.bits.skyview);
+                TargetCube->setSunLit(Designations.bits.light);
 
                 if(IsWall)
                 {
                     TargetCube->Init(Material);
                     TargetCube->setGeometry(GEOM_WALL);
                 }
-                else if(IsOpen)
+                else if(IsEmpty)
                 {
                     TargetCube->Init(Material);
                     TargetCube->setGeometry(GEOM_EMPTY);
@@ -458,12 +470,11 @@ void Map::LoadCellData(DFHackAPI & DF,
                     TargetCube->setGeometry(GEOM_SLOPE);
                     //TODO render stairs differently
                 }
-                if(d.bits.flow_size)
+                if(Designations.bits.flow_size)
                 {
-                    TargetCube->setLiquid(d.bits.liquid_type,d.bits.flow_size);
+                    TargetCube->setLiquid(Designations.bits.liquid_type, Designations.bits.flow_size);
                 }
-                // we set visible to equal hidden at first
-                //TargetCube->setVisible(!d.bits.hidden);
+
                 TargetCube->setVisible(true);
             }
         }
@@ -485,6 +496,19 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
             TilePicker[Tile] = i;
         }
     }
+
+    // Index the Shape of each tile for determining Render Geometry
+    for(Uint32 i = 0; i < DATA->getNumTileGroups(); ++i)
+    {
+        for(Uint32 j = 0; j < DATA->getTileGroupData(i)->TileValues.size(); ++j)
+        {
+            int Tile = DATA->getTileGroupData(i)->TileValues[j];
+            TileShapePicker[Tile] = i;
+
+            TileShapePicker[Tile] = DATA->getTileGroupData(i)->TileShapeID[j];
+        }
+    }
+
     // FIXME: move to .h, so that it can be saved/loaded
     vector<t_matgloss> stonetypes;
     DF.ReadStoneMatgloss(stonetypes);

@@ -110,6 +110,15 @@ bool TileGroupData::PostProcessing()
     SecondaryColorID = DATA->getLabelIndex(SecondaryColorLabel);
     MaterialClassID = DATA->getLabelIndex(MaterialClassLabel);
 
+    for(int i = 0; i < TileShapeLabels.size(); i++)
+    {
+        TileShapeID.push_back(DATA->getLabelIndex(TileShapeLabels[i]));
+    }
+    for(int i = 0; i < SurfaceTypeLabels.size(); i++)
+    {
+        SurfaceTypeID.push_back(DATA->getLabelIndex(SurfaceTypeLabels[i]));
+    }
+
     return true;
 }
 

@@ -112,6 +112,8 @@ protected:
 	Column*** ColumnMatrix;
 
 	Uint16 TilePicker[600];
+	Uint16 TileShapePicker[600];
+
 	Sint16* StoneMatGloss;
 
 	Uint32 CellCount;
