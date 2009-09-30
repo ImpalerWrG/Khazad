@@ -26,27 +26,6 @@ ColorData::ColorData()
 ColorData::~ColorData()
 {}
 
-void ColorData::setValue (string & value)
-{
-    const char * cvalue = value.c_str();
-    int red;
-    int green;
-    int blue;
-    if(sscanf(cvalue,"#%2x%2x%2x", &red, &green, &blue ))
-    {
-        Red = red;
-        Green = green;
-        Blue = blue;
-    }
-    else if(sscanf(cvalue,"rgb ( %d , %d , %d )", &red, &green, &blue ))
-    {
-        Red = red;
-        Green = green;
-        Blue = blue;
-    }
-    // FIXME: silently fail? really?
-}
-
 bool ColorData::Load(TiXmlElement* Entry, Uint32 Index)
 {
     if(Entry)
@@ -55,16 +34,111 @@ bool ColorData::Load(TiXmlElement* Entry, Uint32 Index)
         XML->QueryUIntValue(Entry, "Channels", "Green", Green);
         XML->QueryUIntValue(Entry, "Channels", "Blue", Blue);
 
+        string HexString;
+
+        if(XML->QueryTextValue(Entry, "HexValue", "value", HexString))
+        {
+            int red, green, blue;
+            const char* ConvertedHexString = HexString.c_str();
+
+            sscanf(ConvertedHexString,"%2x%2x%2x", &red, &green, &blue);
+            Red = red; Green = green; Blue = blue;
+        }
+
         DataBase::Load(Entry, Index);
         return true;
     }
     return false;
 }
 
-MaterialData::MaterialData()
+SurfaceTypeData::SurfaceTypeData()
+{}
+
+SurfaceTypeData::~SurfaceTypeData()
+{}
+
+bool SurfaceTypeData::Load(TiXmlElement* Entry, Uint32 Index)
 {
-    Border = true;
+    if(Entry)
+    {
+        XML->QueryTextValue(Entry, "TextureUsed", "label", TextureLabel);
+
+        DataBase::Load(Entry, Index);
+        return true;
+    }
+    return false;
 }
+
+bool SurfaceTypeData::PostProcessing()
+{
+    TextureID = DATA->getLabelIndex(TextureLabel);
+
+    return true;
+}
+
+TileGroupData::TileGroupData()
+{}
+
+TileGroupData::~TileGroupData()
+{}
+
+bool TileGroupData::Load(TiXmlElement* Entry, Uint32 Index)
+{
+    if(Entry)
+    {
+        XML->QueryTextValue(Entry, "Texture", "label", TextureLabel);
+        XML->QueryTextValue(Entry, "PrimaryColor", "label", PrimaryColorLabel);
+        XML->QueryTextValue(Entry, "SecondaryColor", "label", SecondaryColorLabel);
+        XML->QueryTextValue(Entry, "MaterialClass", "label", MaterialClassLabel);
+
+        XML->QueryTextArray(Entry, "TileValues", "TileValue", "TileShape", &TileShapeLabels);
+        XML->QueryTextArray(Entry, "TileValues", "TileValue", "SurfaceType", &SurfaceTypeLabels);
+
+        XML->QueryUIntArray(Entry, "TileValues", "TileValue", "Int", TileValues);
+
+        DataBase::Load(Entry, Index);
+
+        return true;
+    }
+    return false;
+}
+
+bool TileGroupData::PostProcessing()
+{
+    TextureID = DATA->getLabelIndex(TextureLabel);
+    PrimaryColorID = DATA->getLabelIndex(PrimaryColorLabel);
+    SecondaryColorID = DATA->getLabelIndex(SecondaryColorLabel);
+    MaterialClassID = DATA->getLabelIndex(MaterialClassLabel);
+
+    return true;
+}
+
+MaterialClassData::MaterialClassData()
+{}
+
+MaterialClassData::~MaterialClassData()
+{}
+
+bool MaterialClassData::Load(TiXmlElement* Entry, Uint32 Index)
+{
+    if(Entry)
+    {
+        DataBase::Load(Entry, Index);
+
+        XML->QueryBoolValue(Entry, "OverRidesMatGloss", "bool", OverRidesMatGloss);
+
+        return true;
+    }
+    return false;
+}
+
+bool MaterialClassData::PostProcessing()
+{
+    return true;
+}
+
+MaterialData::MaterialData()
+{}
 
 MaterialData::~MaterialData()
 {}
@@ -78,22 +152,6 @@ bool MaterialData::Load(TiXmlElement* Entry, Uint32 Index)
         XML->QueryTextValue(Entry, "PrimaryColor", "label", PrimaryColorLabel);
         XML->QueryTextValue(Entry, "SecondaryColor", "label", SecondaryColorLabel);
         XML->QueryTextValue(Entry, "BorderColor", "label", BorderColorLabel);
-
-        /*  move into ColorData
-        string PrimaryColorValue;
-        if(XML->QueryTextValue(Entry, "PrimaryColor", "value", PrimaryColorValue))
-        {
-            MyPrimary.setValue(PrimaryColorValue);
-        }
-        string SecondaryColorValue;
-        if(XML->QueryTextValue(Entry, "PrimaryColor", "value", SecondaryColorValue))
-        {
-            MySecondary.setValue(SecondaryColorValue);
-        }
-        */
-
-        //XML->QueryUIntValue(Entry, "Hardness", "Int", Hardness);
-        //Border = XML->QueryExists(Entry, "Border");
 
         XML->QueryTextValue(Entry, "MatGloss", "label", MatGloss);
         XML->QueryTextValue(Entry, "ColorMode", "mode", ColorMode);
@@ -110,7 +168,9 @@ bool MaterialData::PostProcessing()
     TextureID = DATA->getLabelIndex(TextureLabel);
     PrimaryColorID = DATA->getLabelIndex(PrimaryColorLabel);
     SecondaryColorID = DATA->getLabelIndex(SecondaryColorLabel);
-    BorderColorID = DATA->getLabelIndex(BorderColorLabel);
+	BorderColorID = DATA->getLabelIndex(BorderColorLabel);
+
+    MaterialClassID = DATA->getLabelIndex(MaterialClassLabel);
 
     return true;
 }
@@ -155,3 +215,20 @@ bool TextureData::Load(TiXmlElement* Entry, Uint32 Index)
     return false;
 }
 
+TileShapeData::TileShapeData()
+{}
+
+TileShapeData::~TileShapeData()
+{}
+
+bool TileShapeData::Load(TiXmlElement* Entry, Uint32 Index)
+{
+    if(Entry)
+    {
+        XML->QueryBoolValue(Entry, "Open", "bool", Open);
+
+        DataBase::Load(Entry, Index);
+        return true;
+    }
+    return false;
+}

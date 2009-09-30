@@ -61,17 +61,33 @@ public:
         return true;
     }
 
-    ColorData* getColorData(Uint32 Index)               { return Colors[Index]; }
-    Uint32 getNumColors()                               { return Colors.size(); }
+    ColorData* getColorData(Uint32 Index)                    { return Colors[Index]; }
+    Uint32 getNumColors()                                    { return Colors.size(); }
 
-    TextureData* getTextureData(Uint32 Index)           { return Textures[Index]; }
-    Uint32 getNumTextures()                             { return Textures.size(); }
+    TextureData* getTextureData(Uint32 Index)                { return Textures[Index]; }
+    Uint32 getNumTextures()                                  { return Textures.size(); }
 
-    FontData* getFontData(Uint32 Index)                 { return Fonts[Index]; }
-    Uint32 getNumFonts()                                { return Fonts.size(); }
+    FontData* getFontData(Uint32 Index)                      { return Fonts[Index]; }
+    Uint32 getNumFonts()                                     { return Fonts.size(); }
 
-    MaterialData* getMaterialData(Uint32 Index)         { return Materials[Index]; }
-    Uint32 getNumMaterials()                            { return Materials.size(); }
+    MaterialData* getMaterialData(Uint32 Index)              { return Materials[Index]; }
+    Uint32 getNumMaterials()                                 { return Materials.size(); }
+
+    TileGroupData* getTileGroupData(Uint32 Index)            { return TileGroups[Index]; }
+    Uint32 getNumTileGroups()                                { return TileGroups.size(); }
+
+    MaterialClassData* getMaterialClassData(Uint32 Index)    { return MaterialClasses[Index]; }
+    Uint32 getNumMaterialClasses()                           { return MaterialClasses.size(); }
+
+    //TileClassData* getTileClassData(Uint32 Index)            { return TileClasses[Index]; }
+    //Uint32 getNumTileClasses()                               { return TileClasses.size(); }
+
+    SurfaceTypeData* getSurfaceTypeData(Uint32 Index)        { return SurfaceTypes[Index]; }
+    Uint32 getNumSurfaceTypes()                              { return SurfaceTypes.size(); }
+
+    TileShapeData* getTileShapeData(Uint32 Index)            { return TileShapes[Index]; }
+    Uint32 getNumTileShape()                                 { return TileShapes.size(); }
+
 
     Sint32 getLabelIndex(string Label);
     void addLabel(string Label, Uint32 Index);
@@ -86,7 +102,11 @@ protected:
     std::vector<TextureData*> Textures;
     std::vector<FontData*> Fonts;
     std::vector<MaterialData*> Materials;
-
+    std::vector<TileGroupData*> TileGroups;
+    std::vector<MaterialClassData*> MaterialClasses;
+    //std::vector<TileClassData*> TileClasses;
+    std::vector<SurfaceTypeData*> SurfaceTypes;
+    std::vector<TileShapeData*> TileShapes;
 };
 
 

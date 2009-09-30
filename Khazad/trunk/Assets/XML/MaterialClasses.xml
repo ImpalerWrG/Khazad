@@ -30,55 +30,55 @@
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_WOOD"/>
-		<OverRidesMatGloss bool=""/>
+		<OverRidesMatGloss bool="0"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_METAL"/>
-		<OverRidesMatGloss bool=""/>
+		<OverRidesMatGloss bool="0"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_LEATHER"/>
-		<OverRidesMatGloss bool=""/>
+		<OverRidesMatGloss bool="0"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_SILK_CLOTH"/>
-		<OverRidesMatGloss bool=""/>
+		<OverRidesMatGloss bool="0"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_PLANT_THREAD_CLOTH"/>
-		<OverRidesMatGloss bool=""/>
+		<OverRidesMatGloss bool="0"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_GREEN_GLASS"/>
-		<OverRidesMatGloss bool=""/>
+		<OverRidesMatGloss bool="0"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_CLEAR_GLASS"/>
-		<OverRidesMatGloss bool=""/>
+		<OverRidesMatGloss bool="0"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_CRYSTAL_GLASS"/>
-		<OverRidesMatGloss bool=""/>
+		<OverRidesMatGloss bool="0"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_CHARCOAL"/>
-		<OverRidesMatGloss bool=""/>
+		<OverRidesMatGloss bool="0"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_POTASH"/>
-		<OverRidesMatGloss bool=""/>
+		<OverRidesMatGloss bool="0"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_ASHES"/>
-		<OverRidesMatGloss bool=""/>
+		<OverRidesMatGloss bool="0"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_PEARLASH"/>
-		<OverRidesMatGloss bool=""/>
+		<OverRidesMatGloss bool="0"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_SOAP"/>
-		<OverRidesMatGloss bool=""/>
+		<OverRidesMatGloss bool="0"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_EXOTIC"/>

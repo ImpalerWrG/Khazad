@@ -24,6 +24,25 @@ public:
 
 	TiXmlDocument* loadFile(const char* Filename);
 
+    void QueryBoolValue(TiXmlElement* Entry, const char* Element, const char* Attribute, bool& defaultvalue)
+    {
+        TiXmlElement* child = Entry->FirstChildElement(Element);
+        if (child)
+        {
+            int temp;
+            child->QueryIntAttribute(Attribute, &temp);
+            if (temp > 0)
+            {
+                //Error
+                defaultvalue = true;
+            }
+            else
+            {
+                defaultvalue = false;
+            }
+        }
+    };
+
 	template <class T>
     void QueryUIntValue(TiXmlElement* Entry, const char* Element, const char* Attribute, T& defaultvalue)
     {
@@ -101,6 +120,30 @@ public:
             }
         }
     };
+
+    void QueryTextArray(TiXmlElement* Entry, const char* Element, const char* SubElement, const char* Attribute, std::vector<string>* StorageVector)
+    {
+        TiXmlElement* child = Entry->FirstChildElement(Element);
+        if (child)
+        {
+            TiXmlElement* Iterator = child->FirstChildElement(SubElement);
+            for(; Iterator != NULL; Iterator = Iterator->NextSiblingElement(SubElement))
+            {
+                if(Iterator->Attribute(Attribute))
+                {
+                    string temp;
+                    temp.clear();
+                    temp.append(Iterator->Attribute(Attribute));
+                    StorageVector->push_back(temp);
+                }
+                else
+                {
+                    StorageVector->push_back(NULL);
+                }
+            }
+        }
+    };
+
     bool QueryExists(TiXmlElement* Entry, const char* Element)
     {
         TiXmlElement* child = Entry->FirstChildElement(Element);

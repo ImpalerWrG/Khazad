@@ -162,6 +162,6 @@
 	</Color>
 	<Color>
 		<Name Label="COLOR_DARK_BROWN"/>
-		<Channels Red="81" Green="71" Blue="40"/>
+		<HexValue value="514728"/>
 	</Color>
 </Colors>

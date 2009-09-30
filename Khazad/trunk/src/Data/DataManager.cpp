@@ -28,7 +28,6 @@ bool DataManager::Init()
     Path material_xml = "Assets\\XML\\Materials.xml";
     Path tilegroup_xml = "Assets\\XML\\TileGroups.xml";
     Path materialclass_xml = "Assets\\XML\\MaterialClasses.xml";
-    Path tileclass_xml = "Assets\\XML\\TileClasses.xml";
     Path surfacetype_xml = "Assets\\XML\\SurfaceTypes.xml";
     Path tileshape_xml = "Assets\\XML\\TileShapes.xml";
 
@@ -37,17 +36,15 @@ bool DataManager::Init()
     LoadDataClass(&Textures, texture_xml, "Texture");
     LoadDataClass(&Fonts, font_xml, "Font");
     LoadDataClass(&Materials, material_xml, "Material");
-    //LoadDataClass(&TileGroups, tilegroup_xml, "TileGroup");
-    //LoadDataClass(&MaterialClasses, materialclass_xml, "MaterialClass");
-    //LoadDataClass(&TileClasses, tileclass_xml, "TileClass");
-    //LoadDataClass(&SurfaceTypes, surfacetype_xml, "SurfaceType");
-    //LoadDataClass(&TileShapes, tileshape_xml, "TileShape");
+    LoadDataClass(&TileGroups, tilegroup_xml, "TileGroup");
+    LoadDataClass(&MaterialClasses, materialclass_xml, "MaterialClass");
+    LoadDataClass(&SurfaceTypes, surfacetype_xml, "SurfaceType");
+    LoadDataClass(&TileShapes, tileshape_xml, "TileShape");
 
     // Post process all data and dynamicly link references, not order dependent
 	PostProcessDataClass(&Materials);
-	//PostProcessDataClass(&TileGroups);
-	//PostProcessDataClass(&TileClasses);
-	//PostProcessDataClass(&SurfaceTypes);
+	PostProcessDataClass(&TileGroups);
+	PostProcessDataClass(&SurfaceTypes);
 
     return true;
 }

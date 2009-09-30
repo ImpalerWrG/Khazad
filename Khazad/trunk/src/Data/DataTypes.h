@@ -34,8 +34,6 @@ public:
     Uint8 getRed()      { return Red; }
     Uint8 getGreen()    { return Green; }
     Uint8 getBlue()     { return Blue; }
-    // parse a value string
-    void setValue (string & value);
 
 protected:
 
@@ -55,9 +53,109 @@ public:
 
     Path getPath() { return sPath; }
 
+    void setDevILID(Uint32 ID)      { DevILID = ID; }
+    Uint32 getDevILID()             { return DevILID; }
+
 protected:
 
     Path sPath;
+    Uint32 DevILID;
+};
+
+/*
+class TileClassData: public DataBase
+{
+
+public:
+
+    TileClassData();
+    ~TileClassData();
+    bool Load(TiXmlElement* Element, Uint32 Index);
+    bool PostProcessing();
+
+    Uint16 getSurfaceType()     { return SurfaceTypeID; }
+    Uint16 getTileShape()       { return TileShapeID; }
+
+protected:
+
+    Uint16 SurfaceTypeID;
+    string SurfaceTypeLabel;
+
+    Uint16 TileShapeID;
+    string TileShapeLabel;
+};
+*/
+
+class SurfaceTypeData: public DataBase
+{
+
+public:
+
+    SurfaceTypeData();
+    ~SurfaceTypeData();
+    bool Load(TiXmlElement* Element, Uint32 Index);
+    bool PostProcessing();
+
+    Sint16 getTextureID()         { return TextureID; }
+
+protected:
+
+    string TextureLabel;
+    Sint16 TextureID;
+};
+
+class TileGroupData: public DataBase
+{
+
+public:
+
+    TileGroupData();
+    ~TileGroupData();
+
+    bool Load(TiXmlElement* Element, Uint32 Index);
+    bool PostProcessing();
+
+    Sint16 getTextureID()       { return TextureID; }
+    Sint16 getPrimaryColor()    { return PrimaryColorID; }
+    Sint16 getSecondaryColor()  { return SecondaryColorID; }
+    Sint16 getMaterialClass()   { return MaterialClassID; }
+
+    std::vector<Uint16> TileValues;
+    std::vector<Uint16> TileShapeID;
+    std::vector<Uint16> SurfaceTypeID;
+
+protected:
+
+    string TextureLabel;
+    string PrimaryColorLabel;
+    string SecondaryColorLabel;
+    string MaterialClassLabel;
+
+    std::vector<string> TileShapeLabels;
+    std::vector<string> SurfaceTypeLabels;
+
+    Sint16 TextureID;
+    Sint16 PrimaryColorID;
+    Sint16 SecondaryColorID;
+    Sint16 MaterialClassID;
+};
+
+class MaterialClassData: public DataBase
+{
+
+public:
+
+    MaterialClassData();
+    ~MaterialClassData();
+
+    bool Load(TiXmlElement* Element, Uint32 Index);
+    bool PostProcessing();
+
+    bool isOverRidesMatGloss()    { return OverRidesMatGloss; }
+
+protected:
+
+    bool OverRidesMatGloss;
 };
 
 class MaterialData: public DataBase
@@ -91,6 +189,8 @@ protected:
     string SecondaryColorLabel;
     string BorderColorLabel;
 
+    string MaterialClassLabel;
+
     string MatGloss;
     string ColorMode;
 
@@ -101,7 +201,7 @@ protected:
     Sint16 SecondaryColorID;
     Sint16 BorderColorID;
 
-    //Uint16 Hardness;
+    Sint16 MaterialClassID;
 };
 
 class FontData: public DataBase
@@ -111,7 +211,6 @@ public:
 
     FontData();
     ~FontData();
-
     bool Load(TiXmlElement* Element, Uint32 Index);
 
     Path getPath()    { return sPath; }
@@ -121,6 +220,23 @@ protected:
 
     Path sPath;
     Uint16 Size;
+};
+
+class TileShapeData: public DataBase
+{
+
+public:
+
+    TileShapeData();
+    ~TileShapeData();
+    bool Load(TiXmlElement* Element, Uint32 Index);
+
+    bool isOpen()               { return Open; }
+
+protected:
+
+    bool Open;
+
 };
 
 #endif // DATATYPE__HEADER
