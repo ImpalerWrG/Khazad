@@ -29,7 +29,7 @@ public:
 	~TextureManager();
 	bool Init();
 
-    void ApplyBorder(Uint8* ImageData, Uint32 width, Uint32 height, Uint32 bpp, Uint8 Red, Uint8 Green, Uint8 Blue);
+    void ApplyBorder(Uint8* ImageData, Uint32 width, Uint32 height, Uint32 bpp, Sint32 ColorID);
     void MergeTextures();
 
     int round(double x);

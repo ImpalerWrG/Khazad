@@ -71,17 +71,16 @@ public:
     bool Load(TiXmlElement* Element, Uint32 Index);
     bool PostProcessing();
 
-    Uint16 getTexture()         { return TextureID; }
-    Uint16 getPrimaryColorID()    { return PrimaryColorID; }
-    Uint16 getSecondaryColorID()  { return SecondaryColorID; }
-    ColorData getPrimaryColor();
-    ColorData getSecondaryColor();
+    Sint16 getTextureID()               { return TextureID; }
+    Sint16 getPrimaryColorID()          { return PrimaryColorID; }
+    Sint16 getSecondaryColorID()        { return SecondaryColorID; }
+    Sint16 getBorderColorID()           { return BorderColorID; }
 
-    Uint16 getHardness() { return Hardness; }
+    //Uint16 getHardness()                { return Hardness; }  // Use this someday for mining speed
 
-    string getMatGloss() { return MatGloss; }
-    string getColorMode() { return ColorMode; }
-    bool getBorder() { return Border; }
+    string getMatGloss()                { return MatGloss; }
+    string getColorMode()               { return ColorMode; }
+    bool getBorder()                    { return Border; }
 
     std::vector<Uint16> TileTypes;
 
@@ -90,19 +89,19 @@ protected:
     string TextureLabel;
     string PrimaryColorLabel;
     string SecondaryColorLabel;
+    string BorderColorLabel;
+
     string MatGloss;
     string ColorMode;
 
     bool Border;
-    bool PrimaryColorIsLabel;
-    bool SecondaryColorIsLabel;
-    ColorData MyPrimary;
-    ColorData MySecondary;
-    Uint32 TextureID;
-    Uint32 PrimaryColorID;
-    Uint32 SecondaryColorID;
 
-    Uint16 Hardness;
+    Sint16 TextureID;
+    Sint16 PrimaryColorID;
+    Sint16 SecondaryColorID;
+    Sint16 BorderColorID;
+
+    //Uint16 Hardness;
 };
 
 class FontData: public DataBase
@@ -112,6 +111,7 @@ public:
 
     FontData();
     ~FontData();
+
     bool Load(TiXmlElement* Element, Uint32 Index);
 
     Path getPath()    { return sPath; }

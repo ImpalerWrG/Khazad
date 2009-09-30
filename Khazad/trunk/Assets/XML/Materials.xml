@@ -296,7 +296,6 @@
 		<PrimaryColor label="COLOR_BROWN"/>
 		<MatGloss label="SAND_TAN"/>
 		<ColorMode mode="overlay" />
-		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SAND_YELLOW"/>
@@ -304,7 +303,6 @@
 		<PrimaryColor label="COLOR_KHAKI"/>
 		<MatGloss label="SAND_YELLOW"/>
 		<ColorMode mode="overlay" />
-		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SAND_WHITE"/>
@@ -312,7 +310,6 @@
 		<PrimaryColor label="COLOR_SILVER"/>
 		<MatGloss label="SAND_WHITE"/>
 		<ColorMode mode="overlay" />
-		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SAND_RED"/>
@@ -320,7 +317,6 @@
 		<PrimaryColor label="COLOR_BLOOD_RED"/>
 		<MatGloss label="SAND_RED"/>
 		<ColorMode mode="overlay" />
-		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SAND_BLACK"/>
@@ -328,7 +324,6 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<MatGloss label="SAND_BLACK"/>
 		<ColorMode mode="overlay" />
-		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PEBBLES"/>
@@ -569,9 +564,9 @@
 		<Name Label="MATERIAL_GRASS_A1"/>
 		<Texture label="TEXTURE_GRASS1"/>
 		<PrimaryColor label="GRASS_DARK"/>
+		<BorderColor label="COLOR_FOREST_GREEN"/>
 		<!--<PrimaryColor value="rgb(0,112,0)"/>-->
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<Tile Int="236"/>
 			<Tile Int="51"/>
@@ -582,8 +577,8 @@
 		<Name Label="MATERIAL_GRASS_A2"/>
 		<Texture label="TEXTURE_GRASS2"/>
 		<PrimaryColor label="GRASS_DARK"/>
+		<BorderColor label="COLOR_FOREST_GREEN"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<Tile Int="349"/>
 		</TileValues>
@@ -592,8 +587,8 @@
 		<Name Label="MATERIAL_GRASS_A3"/>
 		<Texture label="TEXTURE_GRASS3"/>
 		<PrimaryColor label="GRASS_DARK"/>
+		<BorderColor label="COLOR_FOREST_GREEN"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<Tile Int="350"/>
 		</TileValues>
@@ -602,8 +597,8 @@
 		<Name Label="MATERIAL_GRASS_A4"/>
 		<Texture label="TEXTURE_GRASS4"/>
 		<PrimaryColor label="GRASS_DARK"/>
+		<BorderColor label="COLOR_FOREST_GREEN"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<Tile Int="351"/>
 		</TileValues>
@@ -616,9 +611,9 @@
 		<Name Label="MATERIAL_GRASS_B1"/>
 		<Texture label="TEXTURE_GRASS1"/>
 		<PrimaryColor label="GRASS_BRIGHT"/>
+		<BorderColor label="COLOR_FOREST_GREEN"/>
 		<!--<PrimaryColor value="rgb(0,112,0)"/>-->
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<Tile Int="235"/>
 			<Tile Int="54"/>
@@ -629,8 +624,8 @@
 		<Name Label="MATERIAL_GRASS_B2"/>
 		<Texture label="TEXTURE_GRASS2"/>
 		<PrimaryColor label="GRASS_BRIGHT"/>
+		<BorderColor label="COLOR_FOREST_GREEN"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<Tile Int="399"/>
 		</TileValues>
@@ -639,8 +634,8 @@
 		<Name Label="MATERIAL_GRASS_B3"/>
 		<Texture label="TEXTURE_GRASS3"/>
 		<PrimaryColor label="GRASS_BRIGHT"/>
+		<BorderColor label="COLOR_FOREST_GREEN"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<Tile Int="400"/>
 		</TileValues>
@@ -649,8 +644,8 @@
 		<Name Label="MATERIAL_GRASS_B4"/>
 		<Texture label="TEXTURE_GRASS4"/>
 		<PrimaryColor label="GRASS_BRIGHT"/>
+		<BorderColor label="COLOR_FOREST_GREEN"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<Tile Int="401"/>
 		</TileValues>
@@ -666,7 +661,6 @@
 		<Texture label="TEXTURE_GRASS1"/>
 		<PrimaryColor label="COLOR_DARK_BROWN"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<Tile Int="234"/>
 			<Tile Int="394"/>
@@ -677,7 +671,6 @@
 		<Texture label="TEXTURE_GRASS2"/>
 		<PrimaryColor label="COLOR_DARK_BROWN"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<Tile Int="395"/>
 		</TileValues>
@@ -687,7 +680,6 @@
 		<Texture label="TEXTURE_GRASS3"/>
 		<PrimaryColor label="COLOR_DARK_BROWN"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<Tile Int="396"/>
 		</TileValues>
@@ -697,7 +689,6 @@
 		<Texture label="TEXTURE_GRASS4"/>
 		<PrimaryColor label="COLOR_DARK_BROWN"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<Tile Int="397"/>
 		</TileValues>
@@ -710,7 +701,6 @@
 		<Texture label="TEXTURE_GRASS1"/>
 		<PrimaryColor label="COLOR_KHAKI"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<Tile Int="233"/>
 			<Tile Int="387"/>
@@ -721,7 +711,6 @@
 		<Texture label="TEXTURE_GRASS2"/>
 		<PrimaryColor label="COLOR_KHAKI"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<Tile Int="388"/>
 		</TileValues>
@@ -731,7 +720,6 @@
 		<Texture label="TEXTURE_GRASS3"/>
 		<PrimaryColor label="COLOR_KHAKI"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<Tile Int="389"/>
 		</TileValues>
@@ -741,7 +729,6 @@
 		<Texture label="TEXTURE_GRASS4"/>
 		<PrimaryColor label="COLOR_KHAKI"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<Tile Int="390"/>
 		</TileValues>
@@ -755,7 +742,6 @@
 		<Texture label="TEXTURE_GRASS1"/>
 		<PrimaryColor label="COLOR_KHAKI"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 		<TileValues>
 			<!-- shrub -->
 			<Tile Int="34"/>
@@ -776,40 +762,34 @@
 		<Texture label="TEXTURE_SHRUB"/>
 		<PrimaryColor label="COLOR_DARK_GREEN"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TREE"/>
 		<Texture label="TEXTURE_TREE"/>
 		<ColorMode mode="keepimage"/>
-		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SAPPLING"/>
 		<Texture label="TEXTURE_TREE"/>
 		<ColorMode mode="keepimage"/>
-		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DEAD_SHRUB"/>
 		<Texture label="TEXTURE_SHRUB"/>
 		<PrimaryColor label="COLOR_BROWN"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DEAD_TREE"/>
 		<Texture label="TEXTURE_TREE"/>
 		<PrimaryColor label="COLOR_BROWN"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DEAD_SAPPLING"/>
 		<Texture label="TEXTURE_TREE"/>
 		<PrimaryColor label="COLOR_BROWN"/>
 		<ColorMode mode="overlay"/>
-		<NoBorder />
 	</Material>
 	<!--
 	basically muddy riverbed
@@ -972,7 +952,6 @@
 		<Texture label="TEXTURE_WOOD_WALL"/>
 		<PrimaryColor label="COLOR_BROWN"/>
 		<ColorMode mode="overlay" />
-		<NoBorder />
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_WOOD_FLOOR"/>

@@ -64,8 +64,6 @@ bool ColorData::Load(TiXmlElement* Entry, Uint32 Index)
 MaterialData::MaterialData()
 {
     Border = true;
-    PrimaryColorIsLabel = false;
-    SecondaryColorIsLabel = false;
 }
 
 MaterialData::~MaterialData()
@@ -76,12 +74,12 @@ bool MaterialData::Load(TiXmlElement* Entry, Uint32 Index)
     if(Entry)
     {
         XML->QueryTextValue(Entry, "Texture", "label", TextureLabel);
-        // first we check for by-label colors
-        if(XML->QueryTextValue(Entry, "PrimaryColor", "label", PrimaryColorLabel))
-            PrimaryColorIsLabel = true;
-        if(XML->QueryTextValue(Entry, "SecondaryColor", "label", SecondaryColorLabel))
-            SecondaryColorIsLabel = true;
-        // then we check if we have by-value colors
+
+        XML->QueryTextValue(Entry, "PrimaryColor", "label", PrimaryColorLabel);
+        XML->QueryTextValue(Entry, "SecondaryColor", "label", SecondaryColorLabel);
+        XML->QueryTextValue(Entry, "BorderColor", "label", BorderColorLabel);
+
+        /*  move into ColorData
         string PrimaryColorValue;
         if(XML->QueryTextValue(Entry, "PrimaryColor", "value", PrimaryColorValue))
         {
@@ -92,8 +90,11 @@ bool MaterialData::Load(TiXmlElement* Entry, Uint32 Index)
         {
             MySecondary.setValue(SecondaryColorValue);
         }
-        XML->QueryUIntValue(Entry, "Hardness", "Int", Hardness);
-        Border = XML->QueryExists(Entry, "Border");
+        */
+
+        //XML->QueryUIntValue(Entry, "Hardness", "Int", Hardness);
+        //Border = XML->QueryExists(Entry, "Border");
+
         XML->QueryTextValue(Entry, "MatGloss", "label", MatGloss);
         XML->QueryTextValue(Entry, "ColorMode", "mode", ColorMode);
         XML->QueryUIntArray(Entry, "TileValues", "Tile", "Int", TileTypes);
@@ -109,20 +110,11 @@ bool MaterialData::PostProcessing()
     TextureID = DATA->getLabelIndex(TextureLabel);
     PrimaryColorID = DATA->getLabelIndex(PrimaryColorLabel);
     SecondaryColorID = DATA->getLabelIndex(SecondaryColorLabel);
+    BorderColorID = DATA->getLabelIndex(BorderColorLabel);
+
     return true;
 }
-ColorData MaterialData::getPrimaryColor()
-{
-    if(PrimaryColorIsLabel == true)
-        return *DATA->getColorData(PrimaryColorID);
-    return MyPrimary;
-};
-ColorData MaterialData::getSecondaryColor()
-{
-    if(SecondaryColorIsLabel == true)
-        return *DATA->getColorData(SecondaryColorID);
-    return MySecondary;
-};
+
 FontData::FontData()
 {}
 

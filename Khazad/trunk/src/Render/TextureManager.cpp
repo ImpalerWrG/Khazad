@@ -78,7 +78,7 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
 {
     //TODO: implement caching?
     //TODO: investigate possible memory leaks
-    ILuint TextureID = IMAGE->loadImage(DATA->getTextureData(DATA->getMaterialData(MaterialID)->getTexture())->getPath(), false);
+    ILuint TextureID = IMAGE->loadImage(DATA->getTextureData(DATA->getMaterialData(MaterialID)->getTextureID())->getPath(), false);
     // the source image is bound now, its format is BGRA
     string colormode = DATA->getMaterialData(MaterialID)->getColorMode();
     if(colormode.empty())
@@ -97,17 +97,17 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
         ilTexImage(width, height, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
         uint8_t* MaskData = ilGetData();
 
-        ColorData PrimaryColor = DATA->getMaterialData(MaterialID)->getPrimaryColor();
-        ColorData SecondaryColor = DATA->getMaterialData(MaterialID)->getSecondaryColor();
+        ColorData* PrimaryColor = DATA->getColorData(DATA->getMaterialData(MaterialID)->getPrimaryColorID());
+        ColorData* SecondaryColor = DATA->getColorData(DATA->getMaterialData(MaterialID)->getSecondaryColorID());
 
         Uint32 bpp = ilGetInteger(IL_IMAGE_BYTES_PER_PIXEL);
         for(Uint32 i = 0; i < width; i++)
         {
             for(Uint32 j = 0; j < height; j++)
             {
-                MaskData[(i * width * bpp) + (j * bpp) + 0] = SecondaryColor.getBlue(); // Blue
-                MaskData[(i * width * bpp) + (j * bpp) + 1] = SecondaryColor.getGreen(); // Green
-                MaskData[(i * width * bpp) + (j * bpp) + 2] = SecondaryColor.getRed(); // Red
+                MaskData[(i * width * bpp) + (j * bpp) + 0] = SecondaryColor->getBlue(); // Blue
+                MaskData[(i * width * bpp) + (j * bpp) + 1] = SecondaryColor->getGreen(); // Green
+                MaskData[(i * width * bpp) + (j * bpp) + 2] = SecondaryColor->getRed(); // Red
                 MaskData[(i * width * bpp) + (j * bpp) + 3] = 255 - TextureData[(i * width) + j]; // Alpha
             }
         }
@@ -122,16 +122,20 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
         {
             for(Uint32 j = 0; j < height; j++)
             {
-                BaseData[(i * width * bpp) + (j * bpp) + 0] = PrimaryColor.getBlue(); // Blue
-                BaseData[(i * width * bpp) + (j * bpp) + 1] = PrimaryColor.getGreen(); // Green
-                BaseData[(i * width * bpp) + (j * bpp) + 2] = PrimaryColor.getRed(); // Red
+                BaseData[(i * width * bpp) + (j * bpp) + 0] = PrimaryColor->getBlue(); // Blue
+                BaseData[(i * width * bpp) + (j * bpp) + 1] = PrimaryColor->getGreen(); // Green
+                BaseData[(i * width * bpp) + (j * bpp) + 2] = PrimaryColor->getRed(); // Red
                 BaseData[(i * width * bpp) + (j * bpp) + 3] = 255; // Alpha
             }
         }
 
         ilOverlayImage(MaskID, 0, 0, 0);
-        if (DATA->getMaterialData(MaterialID)->getBorder())
-            ApplyBorder(BaseData, width, height, bpp, 0, 0, 0); // Add Black borders
+
+        if (DATA->getMaterialData(MaterialID)->getBorderColorID() != -1)
+        {
+            ApplyBorder(BaseData, width, height, bpp, DATA->getMaterialData(MaterialID)->getBorderColorID());
+        }
+
         iluFlipImage();
         return BaseID;
     }
@@ -142,8 +146,8 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
         Uint32 width = ilGetInteger(IL_IMAGE_WIDTH);
         Uint32 height = ilGetInteger(IL_IMAGE_HEIGHT);
 
-        ColorData PrimaryColor = DATA->getMaterialData(MaterialID)->getPrimaryColor();
-        ColorData SecondaryColor = DATA->getMaterialData(MaterialID)->getSecondaryColor();
+        ColorData* PrimaryColor = DATA->getColorData(DATA->getMaterialData(MaterialID)->getPrimaryColorID());
+        //ColorData SecondaryColor = DATA->getMaterialData(MaterialID)->getSecondaryColorID();
 
         ILuint BaseID;
         ilGenImages(1, &BaseID);
@@ -163,13 +167,13 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
                 if(Alpha == 0) Alpha = 1;
                 float fAlpha = Alpha;
                 Base /= 255.0;
-                float OB = PrimaryColor.getBlue();
+                float OB = PrimaryColor->getBlue();
                 OB /= 255.0;
 
-                float OG = PrimaryColor.getGreen();
+                float OG = PrimaryColor->getGreen();
                 OG /= 255.0;
 
-                float OR = PrimaryColor.getRed();
+                float OR = PrimaryColor->getRed();
                 OR /= 255.0;
 
                 // coloring using overlay mode
@@ -189,54 +193,68 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
                 }
             }
         }
-        if (DATA->getMaterialData(MaterialID)->getBorder())
-            ApplyBorder(BaseData, width, height, bpp, 0, 0, 0); // Add Black borders
+
+        if (DATA->getMaterialData(MaterialID)->getBorderColorID() != -1)
+        {
+            ApplyBorder(BaseData, width, height, bpp, DATA->getMaterialData(MaterialID)->getBorderColorID());
+        }
+
         iluFlipImage();
         return BaseID;
     }
     else if(colormode == "keepimage")
     {
-        //iluFlipImage();
-        if (DATA->getMaterialData(MaterialID)->getBorder())
+        if (DATA->getMaterialData(MaterialID)->getBorderColorID() != -1)
         {
             Uint32 bpp = ilGetInteger(IL_IMAGE_BYTES_PER_PIXEL);
             Uint32 width = ilGetInteger(IL_IMAGE_WIDTH);
             Uint32 height = ilGetInteger(IL_IMAGE_HEIGHT);
             Uint8* TextureData = ilGetData();
-            ApplyBorder(TextureData, width, height, bpp, 0, 0, 0); // Add Black borders
+
+            ApplyBorder(TextureData, width, height, bpp, DATA->getMaterialData(MaterialID)->getBorderColorID());
         }
         return TextureID;
     }
 }
 
-void TextureManager::ApplyBorder(Uint8* ImageData, Uint32 width, Uint32 height, Uint32 bpp, Uint8 Red, Uint8 Green, Uint8 Blue)
+void TextureManager::ApplyBorder(Uint8* ImageData, Uint32 width, Uint32 height, Uint32 bpp, Sint32 BorderColorID)
 {
-    if(ImageData != NULL)
+    Uint8 Red, Green, Blue;
+    ColorData* BorderColor = DATA->getColorData(BorderColorID);
+
+    if(BorderColor != NULL)
     {
-        for(Uint32 i = 0; i < width; i++)
+        Red = BorderColor->getRed();
+        Green = BorderColor->getGreen();
+        Blue = BorderColor->getBlue();
+
+        if(ImageData != NULL)
         {
-            ImageData[(i * width * bpp) +  0] = Red; // Red
-            ImageData[(i * width * bpp) +  1] = Green; // Green
-            ImageData[(i * width * bpp) +  2] = Blue; // Blue
-            ImageData[(i * width * bpp) +  3] = 255; // Alpha
+            for(Uint32 i = 0; i < width; i++)
+            {
+                ImageData[(i * width * bpp) +  0] = Red;    // Red
+                ImageData[(i * width * bpp) +  1] = Green;  // Green
+                ImageData[(i * width * bpp) +  2] = Blue;   // Blue
+                ImageData[(i * width * bpp) +  3] = 255;    // Alpha
 
-            ImageData[(i * width * bpp) + ((height - 1) * bpp) + 0] = Red; // Red
-            ImageData[(i * width * bpp) + ((height - 1) * bpp) + 1] = Green; // Green
-            ImageData[(i * width * bpp) + ((height - 1) * bpp) + 2] = Blue; // Blue
-            ImageData[(i * width * bpp) + ((height - 1) * bpp) + 3] = 255; // Alpha
-        }
+                ImageData[(i * width * bpp) + ((height - 1) * bpp) + 0] = Red;      // Red
+                ImageData[(i * width * bpp) + ((height - 1) * bpp) + 1] = Green;    // Green
+                ImageData[(i * width * bpp) + ((height - 1) * bpp) + 2] = Blue;     // Blue
+                ImageData[(i * width * bpp) + ((height - 1) * bpp) + 3] = 255;      // Alpha
+            }
 
-        for(Uint32 j = 0; j < height; j++)
-        {
-            ImageData[((width - 1) * height * bpp) + (j * bpp) + 0] = Red; // Red
-            ImageData[((width - 1) * height * bpp) + (j * bpp) + 1] = Green; // Green
-            ImageData[((width - 1) * height * bpp) + (j * bpp) + 2] = Blue; // Blue
-            ImageData[((width - 1) * height * bpp) + (j * bpp) + 3] = 255; // Alpha
+            for(Uint32 j = 0; j < height; j++)
+            {
+                ImageData[((width - 1) * height * bpp) + (j * bpp) + 0] = Red;      // Red
+                ImageData[((width - 1) * height * bpp) + (j * bpp) + 1] = Green;    // Green
+                ImageData[((width - 1) * height * bpp) + (j * bpp) + 2] = Blue;     // Blue
+                ImageData[((width - 1) * height * bpp) + (j * bpp) + 3] = 255;      // Alpha
 
-            ImageData[(j * bpp) + 0] = Red; // Red
-            ImageData[(j * bpp) + 1] = Green; // Green
-            ImageData[(j * bpp) + 2] = Blue; // Blue
-            ImageData[(j * bpp) + 3] = 255; // Alpha
+                ImageData[(j * bpp) + 0] = Red;     // Red
+                ImageData[(j * bpp) + 1] = Green;   // Green
+                ImageData[(j * bpp) + 2] = Blue;    // Blue
+                ImageData[(j * bpp) + 3] = 255;     // Alpha
+            }
         }
     }
 }
