@@ -290,6 +290,8 @@
 		<Unit filename="..\..\..\src\Render\Renderer.h" />
 		<Unit filename="..\..\..\src\Render\TextureManager.cpp" />
 		<Unit filename="..\..\..\src\Render\TextureManager.h" />
+		<Unit filename="..\..\..\src\Render\TreeManager.cpp" />
+		<Unit filename="..\..\..\src\Render\TreeManager.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
