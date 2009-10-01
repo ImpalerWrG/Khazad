@@ -243,6 +243,7 @@ public:
 
 protected:
     bool haveVBO;
+    bool haveSHADOW;
 
     Uint16 CurrentWidth;
     Uint16 CurrentHeight;
