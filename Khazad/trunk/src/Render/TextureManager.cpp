@@ -163,9 +163,6 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
             {
                 float Base  = TextureData[(i * width * 2) + (j * 2) + 0];
                 uint8_t Alpha =  TextureData[(i * width * 2) + (j * 2) + 1];
-                // HACK: fix issues with transparency weirdness
-                if(Alpha == 0) Alpha = 1;
-                float fAlpha = Alpha;
                 Base /= 255.0;
                 float OB = PrimaryColor->getBlue();
                 OB /= 255.0;
@@ -182,14 +179,14 @@ ILuint TextureManager::GenerateMaterialTexture(Uint16 MaterialID)
                     BaseData[(i * width * bpp) + (j * bpp) + 0] = (1.0 - 2.0 * (1.0 - OB) * (1.0 - Base)) * 255;
                     BaseData[(i * width * bpp) + (j * bpp) + 1] = (1.0 - 2.0 * (1.0 - OG) * (1.0 - Base)) * 255;
                     BaseData[(i * width * bpp) + (j * bpp) + 2] = (1.0 - 2.0 * (1.0 - OR) * (1.0 - Base)) * 255;
-                    BaseData[(i * width * bpp) + (j * bpp) + 3] = fAlpha; // Alpha
+                    BaseData[(i * width * bpp) + (j * bpp) + 3] = Alpha;
                 }
                 else
                 {
                     BaseData[(i * width * bpp) + (j * bpp) + 0] = (2.0* OB * Base) * 255; // Blue
                     BaseData[(i * width * bpp) + (j * bpp) + 1] = (2.0* OG * Base) * 255; // Green
                     BaseData[(i * width * bpp) + (j * bpp) + 2] = (2.0* OR * Base) * 255; // Red
-                    BaseData[(i * width * bpp) + (j * bpp) + 3] = fAlpha; // Alpha
+                    BaseData[(i * width * bpp) + (j * bpp) + 3] = Alpha;
                 }
             }
         }

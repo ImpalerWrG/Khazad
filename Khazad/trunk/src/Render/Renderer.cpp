@@ -136,7 +136,7 @@ bool Renderer::Init()
         cerr << "GL_vertex_buffer_object OpenGL extension not supported, using fallback rendering method.\n";
     }
     haveSHADOW = true;
-    if(IsExtensionSupported("ARB_depth_texture") && IsExtensionSupported("ARB_shadow"))
+    if(IsExtensionSupported("GL_ARB_depth_texture") && IsExtensionSupported("GL_ARB_shadow"))
     {
         cout << "Nice, we can do shadows." << endl;
         haveSHADOW = true;
@@ -156,6 +156,7 @@ bool Renderer::Init()
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LINE_SMOOTH);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_COLOR_MATERIAL);
 
     // magic
     glEnable(GL_MULTISAMPLE_ARB);
@@ -615,10 +616,11 @@ bool Renderer::Render()
     glMatrixMode(GL_MODELVIEW);
     glEnable(GL_LIGHT0);
     GLfloat specular[] = {1.0f, 1.0f, 1.0f , 1.0f};
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, specular);
     glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
     GLfloat ambient[] = { 1.0f, 1.0f, 1.0f };
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-    GLfloat position[] = { 1.0f, 1.5f, 1.0f, 0.0f };
+    GLfloat position[] = { 1.0f, 1.5f, 2.0f, 0.0f };
     //GLfloat dir[] = {0.0, -3.0, 3.0};
     //glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
     glLightfv(GL_LIGHT0, GL_POSITION, position);

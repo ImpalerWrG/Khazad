@@ -1,5 +1,4 @@
 <Trees xmlns="namespace">
-	<!-- ALL trees that can be assigned require a matgloss field. tree without matgloss acts as a default -->
 	<Tree>
 		<Name Label="TREE_SAGUARO"/>
 		<MatGloss value="SAGUARO" />
@@ -10,7 +9,7 @@
 	</Tree>
 	<Tree>
 		<Name Label="TREE_OAK"/>
-		<MatGloss value="ALDER" />
+		<MatGloss value="OAK" />
 		<Model file="Assets/Models/oak/oak_leaves_snow.obj" />
 		<Variant>
 		  <Trunk material="MATERIAL_OAK_TRUNK" />

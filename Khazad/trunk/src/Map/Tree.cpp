@@ -35,19 +35,22 @@ Tree::Tree(t_matglossPair material, int x, int y, int z, int tiletype)
             break;
     }
     model = NULL;
-    TreeData * tr = MAP->TreeMan->getTreeDesc( material.index );
-    if(tr)
+    if( material.type == Mat_Wood)
     {
-        model = RENDERER->ModelMan->LoadOBJModel(Path(tr->getModel()));
-        if(model)
+        TreeData * tr = MAP->TreeMan->getTreeDesc( material.index );
+        if(tr)
         {
-            TreeVariant var = tr->getVariant(0);
-            trunkid = model->getSubmodelIndex("trunk");
-            leavesid  = model->getSubmodelIndex("leaves");
-            snowid = model->getSubmodelIndex("snow");
-            trunkmat = var.TrunkMaterialID;
-            leavesmat_normal = leavesmat_autumn = var.LeavesMaterialID;
-            snowmat = var.SnowMaterialID;
+            model = RENDERER->ModelMan->LoadOBJModel(Path(tr->getModel()));
+            if(model)
+            {
+                TreeVariant var = tr->getVariant(0);
+                trunkid = model->getSubmodelIndex("trunk");
+                leavesid  = model->getSubmodelIndex("leaves");
+                snowid = model->getSubmodelIndex("snow");
+                trunkmat = var.TrunkMaterialID;
+                leavesmat_normal = leavesmat_autumn = var.LeavesMaterialID;
+                snowmat = var.SnowMaterialID;
+            }
         }
     }
 }
@@ -112,8 +115,6 @@ bool Tree::Draw()
     // some real stuff
     else
     {
-        glEnable(GL_BLEND);
-        glDisable(GL_CULL_FACE);
         glPushMatrix();
 
           //  int64_t rand = x * 1000 + y * 413 + z* 11;
@@ -142,8 +143,6 @@ bool Tree::Draw()
             }
 */
         glPopMatrix();
-        glDisable(GL_BLEND);
-        glEnable(GL_CULL_FACE);
     }
     return true;
 }

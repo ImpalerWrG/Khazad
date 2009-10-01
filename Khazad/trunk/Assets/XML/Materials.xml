@@ -361,8 +361,8 @@
 	<Material>
 		<Name Label="MATERIAL_VEIN_STONE"/>
 		<Texture label="TEXTURE_MATT"/>
+		<ColorMode mode="overlay"/>
 		<PrimaryColor label="COLOR_GREY"/>
-		<SecondaryColor label="COLOR_BLACK"/>
 		<TileValues>
 			<!-- vein up-down stair -->
 			<Tile Int="58"/>
