@@ -4,6 +4,7 @@
 #include <Singleton.h>
 #include <TextureManager.h>
 #include <DataManager.h>
+#include <TreeManager.h>
 
 ///FIXME: dfhack paths
 #include "../../dfhack/library/DFTypes.h"
@@ -44,6 +45,7 @@ Map::Map()
     InitedSlopeCount = 0;
 
     ColumnMatrix = NULL;
+    TreeMan = NULL;
 }
 
 Map::~Map()
@@ -511,7 +513,9 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
 
     // FIXME: move to .h, so that it can be saved/loaded
     vector<t_matgloss> stonetypes;
+    vector<t_matgloss> woodtypes;
     DF.ReadStoneMatgloss(stonetypes);
+    DF.ReadWoodMatgloss(woodtypes);
 
     Uint32 NumStoneMats = stonetypes.size();
     StoneMatGloss = new Sint16[NumStoneMats];
@@ -519,10 +523,6 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
     for(Uint32 i = 0; i < NumStoneMats; i++)
     {
         StoneMatGloss[i] = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
-    }
-
-    for(Uint32 i = 0; i < NumStoneMats; i++)
-    {
         for(Uint32 j = 0; j < DATA->getNumMaterials(); ++j)
         {
             if(DATA->getMaterialData(j)->getMatGloss() == stonetypes[i].id)
@@ -531,7 +531,8 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
             }
         }
     }
-
+    if(TreeMan) delete TreeMan;
+    TreeMan = new TreeManager(woodtypes);
 }
 /*
 string DfMap::getMaterialTypeString (uint32_t type)
@@ -623,7 +624,6 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
     static Uint16 WoodW = DATA->getLabelIndex("MATERIAL_WOOD_WALL");
     static Uint16 WoodF = DATA->getLabelIndex("MATERIAL_WOOD_FLOOR");
     // TODO: missing constructed ramps
-
     /*
     Mat_GreenGlass = 13,
     Mat_ClearGlass = 14,

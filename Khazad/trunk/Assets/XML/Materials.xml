@@ -760,7 +760,7 @@
 	<Material>
 		<Name Label="MATERIAL_SHRUB"/>
 		<Texture label="TEXTURE_SHRUB"/>
-		<PrimaryColor label="COLOR_DARK_GREEN"/>
+		<PrimaryColor label="GRASS_DARK"/>
 		<ColorMode mode="overlay"/>
 	</Material>
 	<Material>
@@ -960,12 +960,30 @@
 		<ColorMode mode="overlay" />
 	</Material>
 
+<!-- model materials, shold really be textures only... temporaty -->
     <Material>
         <Name Label="MATERIAL_SAGUARO"/>
         <Texture label="TEXTURE_SAGUARO"/>
         <ColorMode mode="keepimage"/>
     </Material>
-	
+
+    <Material>
+        <Name Label="MATERIAL_OAK_TRUNK"/>
+        <Texture label="TEXTURE_OAK_TRUNK"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
+
+    <Material>
+        <Name Label="MATERIAL_OAK_SNOW"/>
+        <Texture label="TEXTURE_OAK_SNOW"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_OAK_LEAVES"/>
+        <Texture label="TEXTURE_OAK_LEAVES"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
+
 	
 	<!-- STONE/SOIL materials, disabled to show regular textures better -->
     <!--

@@ -38,9 +38,11 @@ class Model
             RENDERER->CallRenderObject(submodels[submodel]);
         };
 
-        inline uint32_t getSubmodelIndex (string submodel)
+        inline int32_t getSubmodelIndex (string submodel)
         {
-            return submodel_names[submodel];
+            if(submodel_names.count(submodel))
+                return submodel_names[submodel];
+            return -1;
         }
     private:
         Model(map <string, RenderObject *> & _submodels)

@@ -1,7 +1,7 @@
 #include <DataTypes.h>
 #include <XMLManager.h>
 #include <DataManager.h>
-
+#include "../../TinyXML/tinyxml.h"
 
 DataBase::DataBase()
 {}
@@ -240,4 +240,45 @@ bool TileShapeData::Load(TiXmlElement* Entry, Uint32 Index)
         return true;
     }
     return false;
+}
+
+TreeData::TreeData()
+{}
+
+TreeData::~TreeData()
+{}
+
+bool TreeData::Load(TiXmlElement* Entry, Uint32 Index)
+{
+    if(Entry)
+    {
+        XML->QueryTextValue(Entry,"MatGloss","value", Matgloss);
+        XML->QueryTextValue(Entry,"Model","file", ModelFile);
+
+        TiXmlElement *Variant = Entry->FirstChildElement("Variant");
+        do
+        {
+            TreeVariant var;
+            XML->QueryTextValue(Variant,"Trunk","material", var.TrunkMaterial);
+            XML->QueryTextValue(Variant,"Leaves","material", var.LeavesMaterial);
+            XML->QueryTextValue(Variant,"Snow","material", var.SnowMaterial);
+            variants.push_back(var);
+            Variant= Variant->NextSiblingElement("Variant");
+        }
+        while(Variant);
+
+        DataBase::Load(Entry, Index);
+        return true;
+    }
+    return false;
+}
+bool TreeData::PostProcessing()
+{
+    for(int i = 0; i < variants.size();i++)
+    {
+        variants[i].LeavesMaterialID = DATA->getLabelIndex(variants[i].LeavesMaterial);
+        variants[i].TrunkMaterialID = DATA->getLabelIndex(variants[i].TrunkMaterial);
+        variants[i].SnowMaterialID = DATA->getLabelIndex(variants[i].SnowMaterial);
+    }
+    return true;
 }

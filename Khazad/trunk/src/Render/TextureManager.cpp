@@ -383,6 +383,8 @@ void TextureManager::BindAggregate( void )
 // bind separate texture
 void TextureManager::BindTexture(Uint32 TextureID)
 {
+    //glBindTexture(GL_TEXTURE_2D, 7);
+    //return;
     GLuint tex = TextureCache[TextureID].GLtexture;
     if( tex == currentTexture ) return;
     currentTexture = tex;

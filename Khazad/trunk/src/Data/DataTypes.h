@@ -239,4 +239,33 @@ protected:
 
 };
 
+struct TreeVariant
+{
+    string TrunkMaterial;
+    string LeavesMaterial;
+    string SnowMaterial;
+    Sint16 TrunkMaterialID;
+    Sint16 LeavesMaterialID;
+    Sint16 SnowMaterialID;
+};
+
+class TreeData: public DataBase
+{
+    public:
+        TreeData();
+        ~TreeData();
+        bool Load(TiXmlElement* Element, Uint32 Index);
+        bool PostProcessing();
+        TreeVariant getVariant(Uint32 idx)
+        {
+            return variants[idx];
+        };
+        string getModel() {return ModelFile;};
+        string getMatgloss() {return Matgloss;};
+    protected:
+        vector <TreeVariant> variants;
+        string ModelFile;
+        string Matgloss;
+};
+
 #endif // DATATYPE__HEADER

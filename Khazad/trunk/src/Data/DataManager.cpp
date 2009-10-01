@@ -30,6 +30,7 @@ bool DataManager::Init()
     Path materialclass_xml = "Assets\\XML\\MaterialClasses.xml";
     Path surfacetype_xml = "Assets\\XML\\SurfaceTypes.xml";
     Path tileshape_xml = "Assets\\XML\\TileShapes.xml";
+    Path tree_xml = "Assets\\XML\\Trees.xml";
 
     // Initial loading of all XML files
     LoadDataClass(&Colors, color_xml, "Color");
@@ -40,12 +41,13 @@ bool DataManager::Init()
     LoadDataClass(&MaterialClasses, materialclass_xml, "MaterialClass");
     LoadDataClass(&SurfaceTypes, surfacetype_xml, "SurfaceType");
     LoadDataClass(&TileShapes, tileshape_xml, "TileShape");
+    LoadDataClass(&Trees, tree_xml, "Tree");
 
     // Post process all data and dynamicly link references, not order dependent
-	PostProcessDataClass(&Materials);
-	PostProcessDataClass(&TileGroups);
-	PostProcessDataClass(&SurfaceTypes);
-
+    PostProcessDataClass(&Materials);
+    PostProcessDataClass(&TileGroups);
+    PostProcessDataClass(&SurfaceTypes);
+    PostProcessDataClass(&Trees);
     return true;
 }
 
@@ -59,15 +61,15 @@ Sint32 DataManager::getLabelIndex(string Label)
     std::map<string, Uint32, ltstr>::iterator iter;
     iter = GlobalLabelMap.find(Label);
 
-	if(iter != GlobalLabelMap.end())
-	{
-		return iter->second;
-	}
-	else
-	{
-		cout << Label << " is not in GlobalLabelMap" << endl;
-		return -1;
-	}
+    if(iter != GlobalLabelMap.end())
+    {
+        return iter->second;
+    }
+    else
+    {
+        cout << Label << " is not in GlobalLabelMap" << endl;
+        return -1;
+    }
 }
 
 void DataManager::addLabel(string Label, Uint32 Index)

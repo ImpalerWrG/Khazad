@@ -179,5 +179,6 @@ Model * ModelManager::LoadOBJModel(string filename)
     }
     Model *ret = new Model(submodels);
     models[filename] = ret;
+    submodels.clear();
     return ret;
 }

@@ -20,18 +20,18 @@ class DataManager
 
 public:
 
-	~DataManager();
-	bool Init();
+    ~DataManager();
+    bool Init();
 
-	template <class T>
-	bool LoadDataClass(std::vector<T*>* DataVector, const char* Path, const char* Entry)
+    template <class T>
+    bool LoadDataClass(std::vector<T*>* DataVector, const char* Path, const char* Entry)
     {
-		cout << "Loading " << Path << endl;
-
+        cout << "Loading " << Path << endl;
+        
         TiXmlDocument* Document = XML->loadFile(Path);
         TiXmlElement* Parent = Document->RootElement();
         TiXmlElement* Iterator = Parent->FirstChildElement(Entry);
-
+        
         for(; Iterator != NULL; Iterator = Iterator->NextSiblingElement(Entry))
         {
             //TODO allow the type of Element to fork to different loading types so mixed files are possible
@@ -46,7 +46,7 @@ public:
                 NewData->~T();
             }
         }
-
+        
         Document->~TiXmlDocument();  // Free the Document
         return true;
     }
@@ -88,6 +88,9 @@ public:
     TileShapeData* getTileShapeData(Uint32 Index)            { return TileShapes[Index]; }
     Uint32 getNumTileShape()                                 { return TileShapes.size(); }
 
+    TreeData* getTreeData(Uint32 Index)            { return Trees[Index]; }
+    Uint32 getNumTree()                                 { return Trees.size(); }
+
 
     Sint32 getLabelIndex(string Label);
     void addLabel(string Label, Uint32 Index);
@@ -107,6 +110,7 @@ protected:
     //std::vector<TileClassData*> TileClasses;
     std::vector<SurfaceTypeData*> SurfaceTypes;
     std::vector<TileShapeData*> TileShapes;
+    std::vector<TreeData*> Trees;
 };
 
 

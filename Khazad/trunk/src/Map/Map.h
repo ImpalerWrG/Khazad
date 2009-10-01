@@ -12,6 +12,7 @@ class Cell;
 class Cube;
 class Actor;
 class Face;
+class TreeManager;
 union t_occupancy;
 struct t_construction;
 struct t_tree_desc;
@@ -55,11 +56,9 @@ public:
     bool Extract();
     bool Load(string filename);
     void Save(string filename);
-//    DfMap *getDFMap();
 
     void ReleaseMap();
 
-    //void LoadCubeData(Cell* TargetCell, Uint32 CellX, Uint32 CellY, Uint32 CellZ, Uint32 CubeX, Uint32 CubeY);
     void LoadCellData(DFHackAPI & context,
                       vector< vector <uint16_t> >& layerassign,
                       Cell* TargetCell,
@@ -94,34 +93,32 @@ public:
 
     Vector3 getMapCenter();
 
+    TreeManager * TreeMan;
 protected:
-    /// this is the main class of DF extractor.
-//    Extractor * DFExtractor;
-    //void ReparseExtract();
     bool Initialized;
     bool MapLoaded;
 
-	Uint32 MapSizeX;
-	Uint32 MapSizeY;
-	Uint32 MapSizeZ;
+    Uint32 MapSizeX;
+    Uint32 MapSizeY;
+    Uint32 MapSizeZ;
 
-	Uint32 CellSizeX;
-	Uint32 CellSizeY;
-	Uint32 CellSizeZ;
+    Uint32 CellSizeX;
+    Uint32 CellSizeY;
+    Uint32 CellSizeZ;
 
-	Column*** ColumnMatrix;
+    Column*** ColumnMatrix;
 
-	Uint16 TilePicker[600];
-	Uint16 TileShapePicker[600];
+    Uint16 TilePicker[600];
+    Uint16 TileShapePicker[600];
 
-	Sint16* StoneMatGloss;
+    Sint16* StoneMatGloss;
 
-	Uint32 CellCount;
+    Uint32 CellCount;
     Uint32 CubeCount;
     Uint32 FaceCount;
     Uint32 SlopeCount;
 
-	Uint32 InitedCellCount;
+    Uint32 InitedCellCount;
     Uint32 InitedCubeCount;
     Uint32 InitedFaceCount;
     Uint32 InitedSlopeCount;

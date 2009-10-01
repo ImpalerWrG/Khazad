@@ -20,6 +20,17 @@ class Tree : public Actor
     int x, y, z;
     t_matglossPair material;
     Model * model;
+    // submodels
+    int32_t trunkid;
+    int32_t leavesid;
+    int32_t snowid;
+    
+    // submodel materials
+    int32_t trunkmat;
+    int32_t leavesmat_normal;
+    int32_t leavesmat_autumn;
+    int32_t snowmat;
+    
     int type;
 };
 

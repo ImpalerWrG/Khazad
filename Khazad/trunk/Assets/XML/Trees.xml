@@ -1,27 +1,21 @@
 <Trees xmlns="namespace">
+	<!-- ALL trees that can be assigned require a matgloss field. tree without matgloss acts as a default -->
 	<Tree>
 		<Name Label="TREE_SAGUARO"/>
-		<MatGloss value="WOOD_SAGUARO" />
-		<Model file="Assets/Models/Saguaro/Saguaro_normal_size_3.obj" />
+		<MatGloss value="SAGUARO" />
+		<Model file="Assets/Models/Saguaro/Saguaro.obj" />
 		<Variant>
-		  <Trunk value="trunk" material="MATERIAL_SAGUARO" />
+		  <Trunk material="MATERIAL_SAGUARO" />
 		</Variant>
 	</Tree>
 	<Tree>
 		<Name Label="TREE_OAK"/>
-		<MatGloss value="WOOD_OAK" />
-		<Model file="Assets/Models/oak_snow/oak_snow.obj" />
+		<MatGloss value="ALDER" />
+		<Model file="Assets/Models/oak/oak_leaves_snow.obj" />
 		<Variant>
-		  <Trunk value="trunk" material="MATERIAL_OAK_TRUNK" />
-		  <Snow value="snow" material="MATERIAL_OAK_SNOW" />
-		</Variant>
-	</Tree>
-	<Tree>
-		<Name Label="TREE_DEFAULT"/>
-		<Model file="Assets/Models/oak_snow/oak_snow.obj" />
-		<Variant>
-		  <Trunk value="trunk" material="MATERIAL_OAK_TRUNK" />
-		  <Snow value="snow" material="MATERIAL_OAK_SNOW" />
+		  <Trunk material="MATERIAL_OAK_TRUNK" />
+		  <Snow material="MATERIAL_OAK_SNOW" />
+		  <Leaves material="MATERIAL_OAK_LEAVES" />
 		</Variant>
 	</Tree>
 </Trees>

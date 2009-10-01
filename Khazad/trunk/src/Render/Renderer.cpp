@@ -151,7 +151,15 @@ bool Renderer::Init()
     glEnable(GL_LINE_SMOOTH);
     glEnable(GL_DEPTH_TEST);
 
+    // magic
+    glEnable(GL_MULTISAMPLE_ARB);
+    glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE_ARB);
+
     glEnable(GL_CULL_FACE); // force proper vertex ordering or suffer holes in geometry ;)
+    glEnable(GL_LIGHTING);
+    glEnable(GL_NORMALIZE);
+    glShadeModel(GL_SMOOTH);
+
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -544,7 +552,7 @@ void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTran
                     LoopCell->UpdateLists();
                     LoopCell->setNeedsRedraw(false);
                 }
-                glColor4f(Shading, Shading, Shading, 0.5);
+                glColor3f(Shading, Shading, Shading);
                 LoopCell->Render(drawtop);
                 //TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
             glPopMatrix();
@@ -597,7 +605,19 @@ bool Renderer::Render()
     GreenPickingValue = 0;
     BluePickingValue = 0;
 
+    
     glMatrixMode(GL_MODELVIEW);
+    glEnable(GL_LIGHT0);
+    GLfloat specular[] = {1.0f, 1.0f, 1.0f , 1.0f};
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+    GLfloat ambient[] = { 1.0f, 1.0f, 1.0f };
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+    GLfloat position[] = { 1.0f, 1.0f, 1.0f, 0.0f };
+    //GLfloat dir[] = {0.0, -3.0, 3.0};
+    //glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
+    glLightfv(GL_LIGHT0, GL_POSITION, position);
+    
+
     CameraOrientation CurrentOrientation = MainCamera->getOrientation();
 
 
@@ -693,49 +713,6 @@ bool Renderer::Render()
 */
 	return true;
 }
-
-/*void Renderer::RefreshDrawlist(Cell* TargetCell, GLuint DrawListID)
-{
-    glNewList(DrawListID, GL_COMPILE);
-    {
-        TriangleCounter = 0;  // Reset Counter and Track Triangle count
-        glBegin(GL_TRIANGLES);
-        {
-            TargetCell->DrawSolids();
-            glColor3f(1.0, 1.0, 1.0);
-        } glEnd();
-    } glEndList();
-
-    TargetCell->setTriangleCount(TriangleCounter);
-}
-
-void Renderer::RefreshTransparentDrawlist(Cell* TargetCell, GLuint DrawListID)
-{
-    glNewList(DrawListID, GL_COMPILE);
-    {
-        TriangleCounter = 0;  // Reset Counter and Track Triangle count
-        glBegin(GL_TRIANGLES);
-        {
-            TargetCell->DrawLiquids();
-            glColor3f(1.0, 1.0, 1.0);
-        }glEnd();
-    } glEndList();
-    TargetCell->addTriangleCount(TriangleCounter);
-}
-
-void Renderer::RefreshTopDrawlist(Cell* TargetCell, GLuint DrawListID)
-{
-    glNewList(DrawListID, GL_COMPILE);
-    {
-        TriangleCounter = 0;  // Reset Counter and Track Triangle count
-        glBegin(GL_TRIANGLES);
-        {
-            TargetCell->DrawTops();
-            glColor3f(1.0, 1.0, 1.0);
-        }glEnd();
-    } glEndList();
-    TargetCell->addTriangleCount(TriangleCounter);
-}*/
 
 void Renderer::IncrementTriangles(Uint32 Triangles)
 {
@@ -834,23 +811,7 @@ void Renderer::PrintDebugging()
         uint32_t region_x = 0;
         uint32_t region_y = 0;
         uint32_t region_z = 0;
-        //int layerAddress = 0;
-        //int gblockAddress = 0;
-        //int regionAddress = 0;
 
-/*        DfMap * df_map = MAP->getDFMap();
-        TileType = df_map->getTileType(x, y, z);
-        Designation = df_map->getDesignations(x, y, z);
-        Ocupancy = df_map->getOccupancies(x, y, z);
-        BiomeOffset = df_map->getBiome(x, y, z);
-        matgloss = df_map->getGeoMaterialString(x, y, z);
-        matglossdesc = df_map->getMaterialPair(x, y, z);
-        Geolayer = df_map->getGeolayerIndex(x, y, z);
-        building = df_map->getBuilding(x, y, z);
-        tree = df_map->getTree(x, y, z);
-
-        df_map->getRegionCoords (region_x,region_y,region_z);
-*/
         SDL_Rect position;
         position.x = 10;
         position.y = 160;
