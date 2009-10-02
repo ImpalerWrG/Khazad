@@ -26,8 +26,6 @@ protected:
 
 	CameraOrientation Orientation;
 
-	Uint16 SliceA;
-	Uint16 SliceB;
 	Uint16 SliceTop;
 	Uint16 SliceBottom;
 	Uint16 ViewLevels;
@@ -72,8 +70,8 @@ public:
 
     Uint16 getSliceTop()                        { return SliceTop; }
     Uint16 getSliceBottom()                        { return SliceBottom; }
-    void SetSliceA(int newValue);
-    void SetSliceB(int newValue);
+    void SetSliceTop(int newValue);
+    void SetSliceBottom(int newValue);
     //void changeSliceTop(Sint16 Change);
     //void setSliceTop(Sint16 NewValue);
 

@@ -5,6 +5,7 @@
 #include <TextureManager.h>
 #include <DataManager.h>
 #include <TreeManager.h>
+#include <Gui.h>
 
 ///FIXME: dfhack paths
 #include "../../dfhack/library/DFTypes.h"
@@ -213,6 +214,9 @@ bool Map::Extract()
 
     // Initialize Cells and Cubes
     DF.getSize(CellSizeX,CellSizeY,CellSizeZ);
+    // update depth slider
+    //UI->setZSliderRange(CellSizeZ);
+    //UI->setZSliders(0, CellSizeZ);
 
     // read constructions
     map<uint64_t, t_construction> constructionAssigner;

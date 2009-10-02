@@ -45,7 +45,7 @@ public:
     void BindTexturePoint(Uint32 TextureID, float u, float v);
 
     void ReportDevILErrors();
-
+    void ResetTextureBinding();
 protected:
 
 	std::vector<ImagePage*> ImageLibrary;

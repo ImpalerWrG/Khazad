@@ -377,6 +377,13 @@ void TextureManager::BindAggregate( void )
 {
     glBindTexture(GL_TEXTURE_2D, MainTexture);
 }
+
+void TextureManager::ResetTextureBinding()
+{
+    currentTexture = 0;
+}
+
+
 // bind separate texture
 void TextureManager::BindTexture(Uint32 TextureID)
 {

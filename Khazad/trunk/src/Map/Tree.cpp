@@ -70,7 +70,7 @@ bool Tree::Draw()
     // some fake stuff
     if(!model)
     {
-
+/*
         switch(type)
         {
             case TREE_DEAD:
@@ -110,7 +110,7 @@ bool Tree::Draw()
         }
         glEnd();
         glDisable(GL_BLEND);
-
+*/
     }
     // some real stuff
     else

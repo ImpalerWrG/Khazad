@@ -50,26 +50,12 @@ class DepthChangeActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        gcn::Slider* Source = (gcn::Slider*) actionEvent.getSource();
-
-        float NewLevel = Source->getValue() * MAP->getMapSizeZ();
-
-        RENDERER->MainCamera->SetSliceA((Sint16) NewLevel);
+        gcn::KhazSlider* Source = (gcn::KhazSlider*) actionEvent.getSource();
+        RENDERER->MainCamera->SetSliceTop( Source->getTopSlice());
+        RENDERER->MainCamera->SetSliceBottom(Source->getBottomSlice());
+        //cout << "TOP: " << Source->getTopSlice() << " BOTTOM: " <<  Source->getBottomSlice() << endl;
     }
 };
-
-class DepthChange2ActionListener: public gcn::ActionListener
-{
-    void action(const gcn::ActionEvent& actionEvent)
-    {
-        gcn::Slider* Source = (gcn::Slider*) actionEvent.getSource();
-
-        float NewLevel = Source->getValue() * MAP->getMapSizeZ();
-
-        RENDERER->MainCamera->SetSliceB((Sint16) NewLevel);
-    }
-};
-
 
 class CenteringActionListener: public gcn::ActionListener
 {
@@ -260,8 +246,10 @@ class MapDumpActionListener: public gcn::ActionListener
         MAP->Extract();
 
         RENDERER->MainCamera->CenterView(MAP->getMapCenter());
-        RENDERER->MainCamera->SetSliceA(MAP->getMapSizeZ());
-        RENDERER->MainCamera->SetSliceB(0);
+        UI->setZSliderRange(MAP->getMapSizeZ());
+        UI->setZSliders(MAP->getMapSizeZ(),0 );
+        RENDERER->MainCamera->SetSliceTop(MAP->getMapSizeZ());
+        RENDERER->MainCamera->SetSliceBottom(0);
         RENDERER->MainCamera->ConfineCursor();
         UI->setMapViewState();
     }
@@ -283,8 +271,10 @@ class MapLoadActionListener: public gcn::ActionListener
         MAP->Load(Path(CONFIG->LoadPath()));
 
         RENDERER->MainCamera->CenterView(MAP->getMapCenter());
-        RENDERER->MainCamera->SetSliceA(MAP->getMapSizeZ());
-        RENDERER->MainCamera->SetSliceB(0);
+        UI->setZSliderRange(MAP->getMapSizeZ());
+        UI->setZSliders(0,MAP->getMapSizeZ() );
+        RENDERER->MainCamera->SetSliceTop(MAP->getMapSizeZ());
+        RENDERER->MainCamera->SetSliceBottom(0);
         RENDERER->MainCamera->ConfineCursor();
 
         UI->setMapViewState();

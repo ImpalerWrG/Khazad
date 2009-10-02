@@ -25,6 +25,7 @@
 #include <stdarg.h>
 
 #include <guichan.hpp>
+#include <KhazSlider.hpp>
 #include <guichan/sdl.hpp>
 #include <guichan/opengl.hpp>
 #include <guichan/opengl/openglsdlimageloader.hpp>

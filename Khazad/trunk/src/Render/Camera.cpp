@@ -24,8 +24,8 @@ Camera::Camera()
 	IsoScalar = CONFIG->ZoomStart();
     MaxScalar = CONFIG->ZoomMax();
 	MinScalar = CONFIG->ZoomMin();
-	SliceA = 0;
-	SliceB = 0;
+	SliceTop = 1;
+	SliceBottom = 0;
 }
 
 bool Camera::ReInit(bool Isometric)
@@ -184,7 +184,7 @@ Vector3 Camera::DetermineMouseIntersection(float MapZ)
 bool Camera::DetermineCursorIntersection()
 {
     Vector3 Intersection;
-    for(int i = SliceTop; i >= SliceBottom && i >= 0; i--)
+    for(int i = SliceTop - 1; i >= SliceBottom && i >= 0; i--)
     {
         MouseIntersection = DetermineMouseIntersection(ZlevelSeperationAdjustment(i) + 0.5);
         MouseIntersection.x = (int) (MouseIntersection.x + 0.5);
@@ -745,12 +745,10 @@ void Camera::ChangeViewLevel(Sint32 Change)
         {
             Change = -SliceBottom;
         }
-        SliceA += Change;
-        SliceB += Change;
-        SliceTop = max(SliceA, SliceB);
-        SliceBottom = min(SliceA, SliceB);
-        ViewLevels = abs(SliceA - SliceB) + 1;
-        UI->setZSliders(SliceA,SliceB);
+        SliceTop += Change;
+        SliceBottom += Change;
+        ViewLevels = SliceTop - SliceBottom;
+        UI->setZSliders(SliceTop,SliceBottom);
         generateViewFrustum();
     }
 }
@@ -794,20 +792,20 @@ void Camera::setLevelSeperation(Sint8 NewValue)
 
 }
 
-void Camera::SetSliceA(int newValue)
+void Camera::SetSliceTop(int newValue)
 {
-    SliceA = newValue;
-    SliceTop = max(SliceA, SliceB);
-    SliceBottom = min(SliceA, SliceB);
-    ViewLevels = abs(SliceA - SliceB) + 1;
+    SliceTop = newValue;
+    if(SliceBottom >= SliceTop)
+        SliceBottom = SliceTop - 1;
+    ViewLevels = SliceTop - SliceBottom;
     generateViewFrustum();
 }
-void Camera::SetSliceB(int newValue)
+void Camera::SetSliceBottom(int newValue)
 {
-    SliceB = newValue;
-    SliceTop = max(SliceA, SliceB);
-    SliceBottom = min(SliceA, SliceB);
-    ViewLevels = abs(SliceA - SliceB) + 1;
+    SliceBottom = newValue;
+    if(SliceTop <= SliceBottom)
+        SliceTop = SliceBottom + 1;
+    ViewLevels = SliceTop - SliceBottom;
     generateViewFrustum();
 }
 

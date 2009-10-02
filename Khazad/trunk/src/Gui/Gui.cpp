@@ -30,7 +30,6 @@ bool Ui::Init()
     InitCameraControlMenu();
     InitConfirmationWindow();
     InitDepthSlider();
-    InitDepthSlider2();
 
 	return true;
 }
@@ -52,7 +51,8 @@ Ui::Ui()
 
     GuiChanMainObject->setGraphics(GraphicsImplementation);
     GuiChanMainObject->setInput(Input);
-    glGetError(); // needed on linux to not crash
+    // FIXME: why is next line needed on linux to not crash?
+    glGetError();
 }
 
 void Ui::InitMainMenu()
@@ -275,44 +275,31 @@ void Ui::GetConfirmation(const char* Question, gcn::ActionListener* Listener)
 
 void Ui::InitDepthSlider()
 {
-    DepthSlider = new gcn::Slider(0.0, 1.0);
-    DepthSlider->setOrientation(gcn::Slider::VERTICAL);
+    DepthSlider = new gcn::KhazSlider(Path("Assets\\Buttons\\gemmed_handle2.png"),Path("Assets\\Buttons\\gemmed_handle.png"),30);
     TopWidget->add(DepthSlider);
 
-    DepthSlider->setSize(15, RENDERER->getHeight());
-    DepthSlider->setPosition(RENDERER->getWidth() - 15, 0);
-    DepthSlider->setValue(1.0);
+    DepthSlider->setSize(32, RENDERER->getHeight());
+    DepthSlider->setPosition(RENDERER->getWidth() - 32, 0);
 
     gcn::ActionListener* actionListener = new DepthChangeActionListener();
     DepthSlider->addActionListener(actionListener);
     DepthSlider->setVisible(false);
 }
 
-void Ui::InitDepthSlider2()
+void Ui::setZSliders(int16_t A, int16_t B)
 {
-    DepthSlider2 = new gcn::Slider(0.0, 1.0);
-    DepthSlider2->setOrientation(gcn::Slider::VERTICAL);
-    TopWidget->add(DepthSlider2);
-
-    DepthSlider2->setSize(15, RENDERER->getHeight());
-    DepthSlider2->setPosition(RENDERER->getWidth() - 30, 0);
-    DepthSlider2->setValue(0.0);
-
-    gcn::ActionListener* actionListener = new DepthChange2ActionListener();
-    DepthSlider2->addActionListener(actionListener);
-    DepthSlider2->setVisible(false);
+    DepthSlider->setTopSlice(A);
+    DepthSlider->setBottomSlice(B);
 }
 
-void Ui::setZSliders(float A, float B)
+void Ui::setZSliderRange(int16_t Z)
 {
-    DepthSlider->setValue(A / MAP->getMapSizeZ());
-    DepthSlider2->setValue(B / MAP->getMapSizeZ());
+    DepthSlider->setMaxZ(Z);
 }
 
 void Ui::setMapViewState()
 {
     DepthSlider->setVisible(true);
-    DepthSlider2->setVisible(true);
     CameraControlWindow->setVisible(true);
 }
 
@@ -342,7 +329,6 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
         if( event.button.button == SDL_BUTTON_LEFT )
         {
             if(  isWidgetCollision(DepthSlider, OriginX, OriginY)
-               ||isWidgetCollision(DepthSlider2, OriginX, OriginY)
                ||isWidgetCollision(MainMenuWindow, OriginX, OriginY)
                ||isWidgetCollision(CameraControlWindow, OriginX, OriginY)
                ||isWidgetCollision(ConfirmationWindow, OriginX, OriginY) )
@@ -355,21 +341,19 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
         }
         else if(event.button.button == SDL_BUTTON_WHEELDOWN)
         {
-             if(  isWidgetCollision(DepthSlider, OriginX, OriginY)
-               ||isWidgetCollision(DepthSlider2, OriginX, OriginY))
-               {
-                    RENDERER->MainCamera->ChangeViewLevel(-1);
-                    return true;
-               }
+            if(isWidgetCollision(DepthSlider, OriginX, OriginY))
+            {
+                RENDERER->MainCamera->ChangeViewLevel(-1);
+                return true;
+            }
         }
         else if(event.button.button == SDL_BUTTON_WHEELUP)
         {
-            if(  isWidgetCollision(DepthSlider, OriginX, OriginY)
-               ||isWidgetCollision(DepthSlider2, OriginX, OriginY))
-               {
-                    RENDERER->MainCamera->ChangeViewLevel(1);
-                    return true;
-               }
+            if(isWidgetCollision(DepthSlider, OriginX, OriginY))
+            {
+                RENDERER->MainCamera->ChangeViewLevel(1);
+                return true;
+            }
         }
     }
     else if(event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT)
@@ -396,10 +380,8 @@ void Ui::updateSizing()
 {
     TopWidget->setDimension(gcn::Rectangle(0, 0, RENDERER->getWidth(), RENDERER->getHeight()));
     GraphicsImplementation->setTargetPlane(RENDERER->getWidth(), RENDERER->getHeight());
-    DepthSlider2->setSize(15, RENDERER->getHeight());
-    DepthSlider2->setPosition(RENDERER->getWidth() - 30, 0);
-    DepthSlider->setSize(15, RENDERER->getHeight());
-    DepthSlider->setPosition(RENDERER->getWidth() - 15, 0);
+    DepthSlider->setSize(32, RENDERER->getHeight());
+    DepthSlider->setPosition(RENDERER->getWidth() - 32, 0);
     ///FIXME: move windows when viewport shrinks? Maybe make their position scale with the main window...
 }
 

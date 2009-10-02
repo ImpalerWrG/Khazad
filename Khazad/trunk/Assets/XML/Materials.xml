@@ -972,10 +972,9 @@
         <Texture label="TEXTURE_OAK_TRUNK"/>
         <ColorMode mode="keepimage"/>
     </Material>
-
     <Material>
-        <Name Label="MATERIAL_OAK_SNOW"/>
-        <Texture label="TEXTURE_OAK_SNOW"/>
+        <Name Label="MATERIAL_TREE_SNOW"/>
+        <Texture label="TEXTURE_TREE_SNOW"/>
         <ColorMode mode="keepimage"/>
     </Material>
     <Material>
@@ -984,6 +983,16 @@
         <ColorMode mode="keepimage"/>
     </Material>
 
+    <Material>
+        <Name Label="MATERIAL_MAPLE_TRUNK"/>
+        <Texture label="TEXTURE_MAPLE_TRUNK"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_MAPLE_LEAVES"/>
+        <Texture label="TEXTURE_MAPLE_LEAVES"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
 	
 	<!-- STONE/SOIL materials, disabled to show regular textures better -->
     <!--

@@ -154,16 +154,21 @@ bool Renderer::Init()
 
     glEnable(GL_TEXTURE_2D);
     glShadeModel(GL_SMOOTH);
-    glEnable(GL_LINE_SMOOTH);
+    
+    // FIXME: smoothed lines look terrible on modern hardware, the GUI breaks
+    /*glEnable(GL_LINE_SMOOTH);
+    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);*/
+    
+    
     glEnable(GL_DEPTH_TEST);
+    // disabled for fun and profit
     glEnable(GL_COLOR_MATERIAL);
 
     // magic
-    glEnable(GL_MULTISAMPLE_ARB);
-    glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE_ARB);
+    //glEnable(GL_MULTISAMPLE_ARB);
+    //glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE_ARB);
 
     glEnable(GL_CULL_FACE); // force proper vertex ordering or suffer holes in geometry ;)
-    glEnable(GL_LIGHTING);
     glEnable(GL_NORMALIZE);
     glShadeModel(GL_SMOOTH);
 
@@ -172,7 +177,7 @@ bool Renderer::Init()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glDepthFunc(GL_LEQUAL/* GL_LESS*/); // show me those walls under floors, glitch style. yes.
-    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    
 
     imageLoader = new gcn::OpenGLSDLImageLoader();
     gcn::Image::setImageLoader(imageLoader);
@@ -612,7 +617,8 @@ bool Renderer::Render()
     GreenPickingValue = 0;
     BluePickingValue = 0;
 
-
+    TEXTURE->ResetTextureBinding();
+    glEnable(GL_LIGHTING);
     glMatrixMode(GL_MODELVIEW);
     glEnable(GL_LIGHT0);
     GLfloat specular[] = {1.0f, 1.0f, 1.0f , 1.0f};
@@ -642,10 +648,10 @@ bool Renderer::Render()
 
     /// render non-transparent stuff in any order
 
-    for(Sint16 Zlevel = Start; Zlevel <= Stop ; Zlevel++)
+    for(Sint16 Zlevel = Start; Zlevel < Stop ; Zlevel++)
     {
         float Shading = 1.0;
-        bool drawtops = (MainCamera->getLevelSeperation() != 1) || (Zlevel == Stop);
+        bool drawtops = (MainCamera->getLevelSeperation() != 1) || (Zlevel == Stop - 1);
         if(ShadedDraw)
         {
             Shading = MainCamera->getShading(Zlevel);
@@ -670,6 +676,8 @@ bool Renderer::Render()
 
     /// turn depth mask on again
     glDepthMask(GL_TRUE);
+    glDisable(GL_LIGHT0);
+    glDisable(GL_LIGHTING);
     /// deprecated
     /*
     // z-levels first - this is a requirement for drawing transparencies

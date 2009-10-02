@@ -43,15 +43,25 @@
         <Name Label="TEXTURE_OAK_LEAVES"/>
         <File Path="Assets/Models/oak/leavesnt.png"/>
     </Texture>
+    
+ 
     <Texture>
         <Name Label="TEXTURE_OAK_LEAVES_AUTUMN"/>
         <File Path="Assets/Models/oak/leaves_autumn.png"/>
     </Texture>
     <Texture>
-        <Name Label="TEXTURE_OAK_SNOW"/>
+        <Name Label="TEXTURE_TREE_SNOW"/>
 	<File Path="Assets/Models/oak/snow.png"/>
     </Texture>
 
+    <Texture>
+        <Name Label="TEXTURE_MAPLE_TRUNK"/>
+        <File Path="Assets/Models/maple/bark.png"/>
+    </Texture>
+    <Texture>
+        <Name Label="TEXTURE_MAPLE_LEAVES"/>
+        <File Path="Assets/Models/maple/leavesntp.png"/>
+    </Texture>
 
 	<!-- GRASS -->
 	<Texture>
