@@ -75,6 +75,11 @@ public:
         DRAG_CENTER,
         DRAG_BOTTOM
     };
+    
+    // HACK!
+    int * steps;
+    
+    
     /**
      * Constructor. The default start value of the slider scale is zero.
      *

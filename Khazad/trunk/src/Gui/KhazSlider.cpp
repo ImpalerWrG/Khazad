@@ -140,8 +140,9 @@ void KhazSlider::draw (gcn::Graphics* graphics)
     int bottom = getBottomMarkerPosition();
     int height = bottom - top;
     int numslices = getTopSlice() - getBottomSlice();
-    int step = height / numslices;
-    int leftover = height % numslices;
+    
+    // don't touch this
+    float softstep = (float)(getHeight() - 2 * getMarkerLength()) /(float) getMaxZ();
     for(int i = 0;i < numslices;i++)
     {
         gcn::Color faceColor = MixColors(topColor,bottomColor, numslices, i);
@@ -152,16 +153,18 @@ void KhazSlider::draw (gcn::Graphics* graphics)
         shadowColor = faceColor - 0x303030;
         shadowColor.a = alpha;
         
+        int current = getMarkerLength()+ softstep * (i + (getMaxZ() - getTopSlice()));
+        int next = getMarkerLength()+ softstep * (1+ i + (getMaxZ() - getTopSlice()));
+        
         graphics->setColor (faceColor);
-        graphics->fillRectangle (gcn::Rectangle (12, top + i * step, 8, step));
+        graphics->fillRectangle (gcn::Rectangle (12,current , 8, next-current));
         graphics->setColor (highlightColor);
-        graphics->drawLine (12, top + i * step, 12, top + (i + 1) * step - 1);
-        graphics->drawLine (12, top + i * step, 20, top + i * step);
+        graphics->drawLine (12, current, 12, next - 1);
+        graphics->drawLine (12, current, 20, current);
         graphics->setColor (shadowColor);
-        graphics->drawLine (13, top + (i + 1) * step -1 , 20, top + (i + 1) * step -1);
-        graphics->drawLine (20, top + i * step, 20, top + (i + 1) * step - 1);
+        graphics->drawLine (13, next - 1 , 20, next -1);
+        graphics->drawLine (20, current, 20, next - 1);
     }
-    
     
     drawTopMarker (graphics);
     drawBottomMarker (graphics);
