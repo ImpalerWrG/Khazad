@@ -40,6 +40,11 @@ public:
     //GLuint getAggragateTexture()        { return MainTexture; }
     //Uint16 getTextureCount()            { return TextureCordinates.size(); }
     //int getAggragateTextureSize()       { return MainTextureSize; }
+
+    ILuint GenerateGradientTexture(ILuint TextureDevILID, Sint16 PrimaryColorID, Sint16 SecondaryColorID, Sint16 BorderColorID);
+    ILuint GeneratedOverLayTexture(ILuint TextureDevILID, Sint16 PrimaryColorID, Sint16 BorderColorID);
+    ILuint GenerateKeeperTexture(ILuint TextureDevILID, Sint16 BorderColorID);
+
     void BindAggregate();
     void BindTexture(Uint32 TextureID);
     void BindTexturePoint(Uint32 TextureID, float u, float v);
@@ -53,10 +58,8 @@ protected:
 	std::vector<GLuint> SingularTextureLibrary;
 	std::vector<GLuint**> PagedTextureLibrary;
 
-
+	//std::vector<ILuint> DevilImageVector;
     std::vector<TextureDescriptor> TextureCache;
-
-	std::vector<ILuint> DevilImageVector;
 	std::vector<SDL_Rect> TextureCordinates;
 
     bool isFileEnding(const char* FilePath, const char* Ending);

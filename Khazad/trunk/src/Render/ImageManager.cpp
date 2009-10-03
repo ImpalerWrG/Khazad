@@ -3,6 +3,7 @@
 #include <ImagePage.h>
 #include <ClipImage.h>
 #include <ImageManager.h>
+#include <DataManager.h>
 
 
 DECLARE_SINGLETON(ImageManager)
@@ -19,6 +20,30 @@ ImageManager::~ImageManager()
 
 bool ImageManager::Init()
 {
+    // Version Check of DevIL
+    if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION || iluGetInteger(ILU_VERSION_NUM) < ILU_VERSION || ilutGetInteger(ILUT_VERSION_NUM) < ILUT_VERSION)
+    {
+		printf ("DevIL library is out of date! Please upgrade\n");
+		return false;
+	}
+
+    // Initilize Devil with OpenGL rendering support
+    ilInit();
+    iluInit();
+    ilutInit();
+    ilutRenderer(ILUT_OPENGL);
+    ilutEnable(ILUT_OPENGL_CONV);
+    ilEnable (IL_CONV_PAL);
+    ilClearColour(0, 0, 0, 0);
+
+    // set invalid texture
+    //currentTexture = 0;
+
+    for(Uint32 i = 0; i < DATA->getNumTextures(); ++i)
+    {
+        ILuint DevilID = loadImage(DATA->getTextureData(i)->getPath(), false);
+        DATA->getTextureData(i)->setDevILID(DevilID);
+    }
     return true;
 }
 
@@ -39,7 +64,6 @@ ILuint ImageManager::loadImage(char* filepath, bool ColorKey)
     IL_LUMINANCE
     IL_COLOUR_INDEX
 
-
     IL_BYTE
     IL_UNSIGNED_BYTE
     IL_SHORT
@@ -50,13 +74,13 @@ ILuint ImageManager::loadImage(char* filepath, bool ColorKey)
     IL_DOUBLE
     */
 
-
     ilConvertImage(IL_BGRA, IL_UNSIGNED_BYTE);
 
     if(ColorKey)
     {
         //convert color key
     }
+    DevilImageVector.push_back(ImageID);
 
     ReportDevILErrors();
     return ImageID;

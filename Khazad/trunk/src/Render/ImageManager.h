@@ -23,6 +23,7 @@ public:
 
 	std::vector<ImagePage*> ImageLibrary;
 	std::vector<ClipImage*> ClipLibrary;
+	std::vector<ILuint> DevilImageVector;
 
 	void loadClippedSurface(char* filepath, int cliphight, int clipwidth, int rows, int columns, bool ColorKey = false);
 	ClipImage* loadSingleSurface(char* filepath, bool ColorKey = false);
