@@ -28,6 +28,14 @@ public:
 	void loadClippedSurface(char* filepath, int cliphight, int clipwidth, int rows, int columns, bool ColorKey = false);
 	ClipImage* loadSingleSurface(char* filepath, bool ColorKey = false);
 
+    ILuint GenerateMaterialImage(Uint16 MaterialID);
+
+    ILuint GenerateGradientImage(ILuint TextureDevILID, Sint16 PrimaryColorID, Sint16 SecondaryColorID, Sint16 BorderColorID);
+    ILuint GeneratedOverLayImage(ILuint TextureDevILID, Sint16 PrimaryColorID, Sint16 BorderColorID);
+    ILuint GenerateKeeperImage(ILuint TextureDevILID, Sint16 BorderColorID);
+
+    void ApplyBorder(ILuint DevilImageID, Sint32 BorderColorID);
+
     void ReportDevILErrors();
     SDL_Surface* loadSurface(char* filepath, bool ColorKey = false);
 
