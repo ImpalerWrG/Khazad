@@ -1,0 +1,35 @@
+This is a list of tasks I'll be working on, most of these items will be adressed in the next version unless technical problems get in the way
+
+ANOYING ISSUES:  Resolve when we can
+
+- Resolve Mouse clamp when incressing screen size
+- Loss of OpenGL context on resize
+- Get textures under Creative Commons licence
+- Show Water/Lava depth accuratly
+- Fix transparent rendering of water, render water last?
+
+SPECULATIVE FEATURES:  Explore the feasability and desirability of these features
+
+- Hotkey save/load view package (includes location, zoom, rotation, slice thickness ect ect)
+- determine underground/above ground rendering independently of DF extract data
+- Explore elimination of Cube from map structure, rolling material data into the Cell
+
+NEXT RELEASE FEATURES:  Things the user will experience as new features
+
+- Pixel perfect mouse selection on all surfaces (Impaler)
+- Volumetric mouse drag areas (Impaler)
+- Persistent 'zone' creation with mouse (Impaler)
+- Vein/Gem/Cluster identification (Peterix)
+- StoneLayer indentification (Peterix)
+
+NEXT RELEASE NON FEATURE:  Key improvements to existing functionality
+
+- Vertex Array based Renderer (Dorf & Impaler)
+- Shade walls and floors differently by 1/2 level (Impaler)
+
+NEXT RELEASE BUG FIXES:  Bugs in current functionality
+
+- ScreenShots lack UI elements (Impaler)
+- Improve slope picking to fill holes in map with more triangles (Impaler)
+- Memory leaking when reloading maps (Dorf & Peterix)
+- Crash durring texture loading on Forceware video drivers (Dorf)
