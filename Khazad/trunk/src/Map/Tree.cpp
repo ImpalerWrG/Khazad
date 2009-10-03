@@ -115,6 +115,7 @@ bool Tree::Draw()
     // some real stuff
     else
     {
+        glDisable(GL_CULL_FACE);
         glPushMatrix();
 
           //  int64_t rand = x * 1000 + y * 413 + z* 11;
@@ -143,6 +144,7 @@ bool Tree::Draw()
             }
 */
         glPopMatrix();
+        glEnable(GL_CULL_FACE);
     }
     return true;
 }

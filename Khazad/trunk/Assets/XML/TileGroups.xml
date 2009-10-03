@@ -42,6 +42,7 @@
 		<SecondaryColor label="COLOR_BLACK"/>
 		<TileValues>
 			<TileValue Int="32" TileShape="TILESHAPE_EMPTY" SurfaceType="NONE"/>
+			<TileValue Int="1" TileShape="TILESHAPE_EMPTY" SurfaceType="NONE"/>
 		</TileValues>
 	</TileGroup>
 	<TileGroup>

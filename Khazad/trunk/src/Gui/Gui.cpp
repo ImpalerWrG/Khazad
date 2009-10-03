@@ -52,7 +52,7 @@ Ui::Ui()
     GuiChanMainObject->setGraphics(GraphicsImplementation);
     GuiChanMainObject->setInput(Input);
     // FIXME: why is next line needed on linux to not crash?
-    glGetError();
+    printf("Mystery GL Error in GUI: %d\n",glGetError());
 }
 
 void Ui::InitMainMenu()
@@ -164,7 +164,7 @@ void Ui::InitCameraControlMenu()
     ViewDownButton->addActionListener(MoveViewDownListener);
     CameraControlWindow->add(ViewDownButton, ButtonSize * 0, ButtonSize * 2);
 
-
+/*
     gcn::ImageButton* IncresseLevelsButton = new gcn::ImageButton(Path("Assets\\Buttons\\IncresseLevels.png"));
     IncresseLevelsButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* IncresseViewLevelsListener = new IncreseViewLevelsActionListener();
@@ -176,7 +176,7 @@ void Ui::InitCameraControlMenu()
     gcn::ActionListener* DecreseLevelsListener = new DecreseViewLevelsActionListener();
     DecreseLevelsButton->addActionListener(DecreseLevelsListener);
     CameraControlWindow->add(DecreseLevelsButton, ButtonSize * 1, ButtonSize * 2);
-
+*/
 
     gcn::ImageButton* OrbitClockwiseButton = new gcn::ImageButton(Path("Assets\\Buttons\\Clockwise.png"));
     OrbitClockwiseButton->setSize(ButtonSize, ButtonSize);

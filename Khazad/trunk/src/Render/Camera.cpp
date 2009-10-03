@@ -190,7 +190,6 @@ bool Camera::DetermineCursorIntersection()
         MouseIntersection.x = (int) (MouseIntersection.x + 0.5);
         MouseIntersection.y = (int) (MouseIntersection.y + 0.5);
         MouseIntersection.z = i;
-        cout << "hitscandebug: " << ZlevelSeperationAdjustment(i) + 0.5 << " " << MouseIntersection.x << " " << MouseIntersection.y << " " << MouseIntersection.z << endl;
         Cube* TopCube = MAP->getCube((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i);
         if(TopCube != NULL && RENDERER->isCubeDrawn(TopCube))
         {
