@@ -167,10 +167,6 @@
 		<File Path="Assets\\Textures\\Snow.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_CONSTRUCTED_WALL"/>
-		<File Path="Assets\\Textures\\Construction.png"/>
-	</Texture>
-	<Texture>
 		<Name Label="TEXTURE_PIT"/>
 		<File Path="Assets\\Textures\\Pit.png"/>
 	</Texture>
