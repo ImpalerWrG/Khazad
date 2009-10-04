@@ -11,7 +11,7 @@ enum ActorType
 
 	NUM_ACTORS
 };
-/*
+
 enum Facet
 {
 	FACET_TOP,
@@ -24,100 +24,20 @@ enum Facet
 	NUM_FACETS,
 	FACETS_START = 0
 };
-*/
 
-enum Facet
-{
-    FACET_INVALID = 0x0,
-    FACET_TOP = 0x1,
-    FACET_BOTTOM = 0x2,
-    FACET_NORTH = 0x4,
-    FACET_SOUTH = 0x8,
-    FACET_EAST = 0x10,
-    FACET_WEST = 0x20,
-};
+inline Facet &operator++ (Facet &OldFacet)      { return OldFacet = Facet(OldFacet + 1); }
+inline Facet &operator-- (Facet &OldFacet)      { return OldFacet = Facet(OldFacet - 1); }
 
-inline Facet &operator++ (Facet &OldFace)      { return OldFace = Facet(OldFace << 1); }
-inline Facet OppositeFacet(Facet source)
+inline Facet OppositeFacet(Facet FacetType)
 {
-    static const Facet opposite[] =
+    if(FacetType % 2)
     {
-        FACET_INVALID,
-        FACET_BOTTOM,
-        FACET_TOP,
-        FACET_INVALID,
-        FACET_SOUTH,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_NORTH,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_WEST,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_INVALID,
-        FACET_EAST
-    };
-    return opposite[source];
-}
-
-inline uint8_t FacetToArrayIndex(Facet source)
-{
-    static const uint8_t index[] =
+        return --FacetType;
+    }
+    else
     {
-        0,
-        1,//FACET_TOP,
-        2,//FACET_BOTTOM
-        0,
-        3,//FACET_NORTH,
-        0,
-        0,
-        0,
-        4,//FACET_SOUTH
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        5,//FACET_EAST
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        6//FACET_WEST
-    };
-    return index[source];
+        return ++FacetType;
+    }
 }
 
 /*
@@ -167,6 +87,7 @@ enum Direction
 };
 
 inline Direction &operator++ (Direction &OldDirection)      { return OldDirection = Direction(OldDirection + 1); }
+inline Direction &operator-- (Direction &OldDirection)      { return OldDirection = Direction(OldDirection - 1); }
 
 enum CameraOrientation
 {
@@ -181,6 +102,7 @@ enum CameraOrientation
 };
 
 inline CameraOrientation &operator++ (CameraOrientation &Orientation)      { return Orientation = CameraOrientation(Orientation + 1); }
+inline CameraOrientation &operator-- (CameraOrientation &Orientation)      { return Orientation = CameraOrientation(Orientation - 1); }
 
 enum SpacialPoint
 {

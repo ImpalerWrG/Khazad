@@ -16,6 +16,13 @@ Cube::Cube()
     Initalized = false;
     data.whole = 0;
 
+    Facets[FACET_TOP] = false;
+    Facets[FACET_BOTTOM] = false;
+    Facets[FACET_NORTH] = false;
+    Facets[FACET_SOUTH] = false;
+    Facets[FACET_EAST] = false;
+    Facets[FACET_WEST] = false;
+
     setPosition(0.0, 0.0, 0.0);
     MAP->ChangeCubeCount(1);
 }
@@ -30,6 +37,7 @@ void Cube::SetOwner(Cell* NewOwner, Uint8 X, Uint8 Y)
 
     float RealX = OwnerPosition.x - (float)(CELLEDGESIZE / 2) + (float)X + (float)HALFCUBE;
     float RealY = OwnerPosition.y - (float)(CELLEDGESIZE / 2) + (float)Y + (float)HALFCUBE;
+
 	setPosition(RealX, RealY, OwnerPosition.z);
 }
 
@@ -210,6 +218,7 @@ bool Cube::setMaterial(Uint16 MaterialType)
     Initalized = true;
     Material = MaterialType;
 }
+
 Cube* Cube::getAdjacentCube(Facet Type)
 {
     Sint32 x = Position.x;
@@ -427,6 +436,7 @@ void Cube::Dig()
         }
     }
 }
+
 void Cube::setGeometry(geometry_type NewValue)
 {
     data.geometry = NewValue;
@@ -436,18 +446,25 @@ void Cube::setGeometry(geometry_type NewValue)
     {
         case GEOM_SLOPE:
             // block bottom so that we don't see the wall-tops below the slope
-            data.facets = FACET_BOTTOM;
+            Facets[FACET_BOTTOM] = true;
             Owner->setActive(true);
+
         case GEOM_EMPTY:
-            data.facets = 0;
             Owner->setActive(true);
             break;
+
         case GEOM_FLOOR:
-            data.facets = FACET_BOTTOM;
+            Facets[FACET_BOTTOM] = true;
             Owner->setActive(true);
             break;
+
         case GEOM_WALL:
-            data.facets = FACET_TOP | FACET_NORTH | FACET_SOUTH | FACET_EAST | FACET_WEST;
+            Facets[FACET_TOP] = true;
+            Facets[FACET_NORTH] = true;
+            Facets[FACET_SOUTH] = true;
+            Facets[FACET_EAST] = true;
+            Facets[FACET_WEST] = true;
+
             Owner->setActive(true);
             Owner->setTopActive(true);
             break;
@@ -456,8 +473,9 @@ void Cube::setGeometry(geometry_type NewValue)
 
 bool Cube::hasFace(Facet FacetType)
 {
-    return data.facets & FacetType;
+    return Facets[FacetType];
 }
+
 bool Cube::Draw(float xTranslate, float yTranslate,
                      std::map< int16_t, vector< vertex >* >& normal,
                      std::map< int16_t, vector< vertex >* >& tops)
@@ -472,7 +490,7 @@ bool Cube::Draw(float xTranslate, float yTranslate,
     }
     else
     {
-        return DrawFaces(xTranslate,yTranslate, normal, tops);
+        return DrawFaces(xTranslate, yTranslate, normal, tops);
     }
 }
 
@@ -495,6 +513,7 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate,
         vertex( 0.5f,-0.5f,-0.5f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
         vertex( 0.5f, 0.5f,-0.5f,  1.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
         vertex(-0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
+
         // FACET_NORTH
         vertex( 0.5f,-0.5f, 0.5f,  0.0f, 1.0f,  0.0f,-1.0f, 0.0f ),
         vertex(-0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  0.0f,-1.0f, 0.0f ),
@@ -505,6 +524,7 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate,
         vertex( 0.5f, 0.5f, 0.5f,  1.0f, 1.0f,  0.0f, 1.0f, 0.0f ),
         vertex( 0.5f, 0.5f,-0.5f,  1.0f, 0.0f,  0.0f, 1.0f, 0.0f ),
         vertex(-0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  0.0f, 1.0f, 0.0f ),
+
         // FACET_EAST
         vertex( 0.5f, 0.5f, 0.5f,  0.0f, 1.0f,  1.0f, 0.0f, 0.0f ),
         vertex( 0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  1.0f, 0.0f, 0.0f ),
@@ -516,33 +536,36 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate,
         vertex(-0.5f, 0.5f,-0.5f,  1.0f, 0.0f, -1.0f, 0.0f, 0.0f ),
         vertex(-0.5f,-0.5f,-0.5f,  0.0f, 0.0f, -1.0f, 0.0f, 0.0f )
     };
+
     // work vector ptr
     vector< vertex >* vec;
     vertex test = vertices[3][3];
+
     if(!Visible)
     {
         return false;
     }
-    for(Facet f = FACET_TOP; f <= FACET_WEST;++f)
+
+    for(Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
     {
-        if(!hasFace(f))
+        if(!hasFace(FacetType))
         {
             continue; // skip faces we don't have here
         }
-        Cube * c = getAdjacentCube(f);
+        Cube* c = getAdjacentCube(FacetType);
+
         // floors are always generated in the normal way, they face the opposite direction!
-        uint8_t idx = FacetToArrayIndex(f) - 1;
-        if(f != FACET_BOTTOM)
+        if(FacetType != FACET_BOTTOM)
         {
             // blocked top facets are sent to the top vertex vector
             bool blocked =
             c &&
             (!c->isHidden() || c->isHidden() && Hidden) &&
-            (c->hasFace(OppositeFacet(f)) || c->getGeometry() == GEOM_WALL || c->getGeometry() == GEOM_SLOPE);
+            (c->hasFace(OppositeFacet(FacetType)) || c->getGeometry() == GEOM_WALL || c->getGeometry() == GEOM_SLOPE);
 
             if(blocked)
             {
-                if(f== FACET_TOP)
+                if(FacetType == FACET_TOP)
                 {
                     if(!tops.count(Material))
                     {
@@ -553,14 +576,15 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate,
                     {
                         vec = tops[Material];
                     }
-                    vertex v3 = vertices[idx][3];
-                    v3.translate(xTranslate,yTranslate);
-                    vertex v2 = vertices[idx][2];
-                    v2.translate(xTranslate,yTranslate);
-                    vertex v1 = vertices[idx][1];
-                    v1.translate(xTranslate,yTranslate);
-                    vertex v0 = vertices[idx][0];
-                    v0.translate(xTranslate,yTranslate);
+                    vertex v3 = vertices[FacetType][3];
+                    v3.translate(xTranslate, yTranslate);
+                    vertex v2 = vertices[FacetType][2];
+                    v2.translate(xTranslate, yTranslate);
+                    vertex v1 = vertices[FacetType][1];
+                    v1.translate(xTranslate, yTranslate);
+                    vertex v0 = vertices[FacetType][0];
+                    v0.translate(xTranslate, yTranslate);
+
                     vec->push_back(v3);
                     vec->push_back(v1);
                     vec->push_back(v0);
@@ -583,14 +607,15 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate,
         {
             vec = normal[Material];
         }
-        vertex v3 = vertices[idx][3];
-        v3.translate(xTranslate,yTranslate);
-        vertex v2 = vertices[idx][2];
-        v2.translate(xTranslate,yTranslate);
-        vertex v1 = vertices[idx][1];
-        v1.translate(xTranslate,yTranslate);
-        vertex v0 = vertices[idx][0];
-        v0.translate(xTranslate,yTranslate);
+        vertex v3 = vertices[FacetType][3];
+        v3.translate(xTranslate, yTranslate);
+        vertex v2 = vertices[FacetType][2];
+        v2.translate(xTranslate, yTranslate);
+        vertex v1 = vertices[FacetType][1];
+        v1.translate(xTranslate, yTranslate);
+        vertex v0 = vertices[FacetType][0];
+        v0.translate(xTranslate, yTranslate);
+
         vec->push_back(v3);
         vec->push_back(v1);
         vec->push_back(v0);

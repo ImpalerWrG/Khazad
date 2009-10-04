@@ -23,70 +23,70 @@ char buffer[256];
 
 bool initManagers()
 {
-    printf("-=XML INITIALIZING=- ... ");
+    printf("-=XML INITIALIZING=- ... \n");
     XML->CreateInstance();
     XML->Init();
-    printf("DONE\n");
+    printf("XML DONE\n");
 
-    printf("-=CONFIG INITIALIZING=- ... ");
+    printf("-=CONFIG INITIALIZING=- ... \n");
     CONFIG->CreateInstance();
     CONFIG->Init();
-    printf("DONE\n");
+    printf("CONFIG DONE\n");
 
-    printf("-=RANDOM INITIALIZING=- ... ");
-    RANDOM->CreateInstance();
-    RANDOM->Init();
-    printf("DONE\n");
-
-    printf("-=COLOR INITIALIZING=- ... ");
-    COLOR->CreateInstance();
-    COLOR->Init();
-    printf("DONE\n");
-
-    printf("-=DATA INITIALIZING=- ... ");
+    printf("-=DATA INITIALIZING=- ... \n");
     DATA->CreateInstance();
     DATA->Init();
-    printf("DONE\n");
+    printf("DATA DONE\n");
 
-    printf("-=RENDERER INITIALIZING=- ... ");
+    printf("-=RANDOM INITIALIZING=- ... \n");
+    RANDOM->CreateInstance();
+    RANDOM->Init();
+    printf("RANDOM DONE\n");
+
+    printf("-=COLOR INITIALIZING=- ... \n");
+    COLOR->CreateInstance();
+    COLOR->Init();
+    printf("COLOR DONE\n");
+
+    printf("-=RENDERER INITIALIZING=- ... \n");
     RENDERER->CreateInstance();
     RENDERER->Init();
-    printf("DONE\n");
+    printf("RENDERER DONE\n");
 
-    printf("-=IMAGE INITIALIZING=- ... ");
+    printf("-=IMAGE INITIALIZING=- ... \n");
     IMAGE->CreateInstance();
     IMAGE->Init();
-    printf("DONE\n");
+    printf("IMAGE DONE\n");
 
-    printf("-=TEXTURE INITIALIZING=- ... ");
+    printf("-=TEXTURE INITIALIZING=- ... \n");
     TEXTURE->CreateInstance();
     TEXTURE->Init();
-    printf("DONE\n");
+    printf("TEXTURE DONE\n");
 
-    printf("-=UI INITIALIZING=- ... ");
+    printf("-=UI INITIALIZING=- ... \n");
     UI->CreateInstance();
     UI->Init();
-    printf("DONE\n");
+    printf("UI DONE\n");
 
-    printf("-=GAME INITIALIZING=- ... ");
+    printf("-=GAME INITIALIZING=- ... \n");
     GAME->CreateInstance();
     GAME->Init();
-    printf("DONE\n");
+    printf("GAME DONE\n");
 
-    printf("-=MAP INITIALIZING=- ... ");
+    printf("-=MAP INITIALIZING=- ... \n");
     MAP->CreateInstance();
     MAP->Init();
-    printf("DONE\n");
+    printf("MAP DONE\n");
 
-    printf("-=INPUT INITIALIZING=- ... ");
+    printf("-=INPUT INITIALIZING=- ... \n");
     INPUT->CreateInstance();
     INPUT->Init();
-    printf("DONE\n");
+    printf("INPUT DONE\n");
 
-    printf("-=FONT INITIALIZING=- ... ");
+    printf("-=FONT INITIALIZING=- ... \n");
     FONT->CreateInstance();
     FONT->Init();
-    printf("DONE\n");
+    printf("FONT DONE\n");
 
     return true;
 }

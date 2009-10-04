@@ -51,6 +51,7 @@
 			<Add option="-DPSAPI_VERSION=1" />
 			<Add directory="src\Core" />
 			<Add directory="include" />
+			<Add directory="DevIL" />
 			<Add directory="src\Data" />
 			<Add directory="src\Game" />
 			<Add directory="src\Geometry" />
@@ -77,14 +78,14 @@
 			<Add library="psapi" />
 			<Add directory="lib" />
 		</Linker>
-		<Unit filename="DevIL\include\IL\config.h" />
-		<Unit filename="DevIL\include\IL\devil_internal_exports.h" />
-		<Unit filename="DevIL\include\IL\il.h" />
-		<Unit filename="DevIL\include\IL\il_wrap.h" />
-		<Unit filename="DevIL\include\IL\ilu.h" />
-		<Unit filename="DevIL\include\IL\ilu_region.h" />
-		<Unit filename="DevIL\include\IL\ilut.h" />
-		<Unit filename="DevIL\include\IL\ilut_config.h" />
+		<Unit filename="DevIL\config.h" />
+		<Unit filename="DevIL\devil_internal_exports.h" />
+		<Unit filename="DevIL\il.h" />
+		<Unit filename="DevIL\il_wrap.h" />
+		<Unit filename="DevIL\ilu.h" />
+		<Unit filename="DevIL\ilu_region.h" />
+		<Unit filename="DevIL\ilut.h" />
+		<Unit filename="DevIL\ilut_config.h" />
 		<Unit filename="TinyXML\tinystr.cpp" />
 		<Unit filename="TinyXML\tinystr.h" />
 		<Unit filename="TinyXML\tinyxml.cpp" />

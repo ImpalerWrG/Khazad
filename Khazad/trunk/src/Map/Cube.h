@@ -11,7 +11,8 @@
 class Slope;*/
 class Cell;
 
-enum geometry_type{
+enum geometry_type
+{
     GEOM_EMPTY,
     GEOM_WALL,
     GEOM_SLOPE,
@@ -33,6 +34,7 @@ public:
     bool isEmpty()                  { return data.geometry == GEOM_EMPTY; }
     bool isSlope()                  { return data.geometry == GEOM_SLOPE; }
     bool isFloor()                  { return data.geometry == GEOM_FLOOR; }
+
     void setGeometry(geometry_type NewValue);
     geometry_type getGeometry() {return data.geometry;};
     bool hasFace(Facet FacetType);
@@ -101,8 +103,8 @@ protected:
         bool SkyView : 1;
         bool SunLit : 1;
         bool snow : 1;
-        unsigned int facets : 6;
-        unsigned int facets_visible : 6;
+        //unsigned int facets : 6;
+        //unsigned int facets_visible : 6;
         unsigned int liquid : 3;
         bool liquidtype :1;
         geometry_type geometry : 3;
@@ -110,6 +112,8 @@ protected:
         };
         uint32_t whole;
     }data;
+
+    bool Facets[NUM_FACETS];
 
     Cell* Owner;
     Uint16 Material;

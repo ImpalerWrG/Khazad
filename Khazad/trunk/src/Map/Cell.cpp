@@ -115,7 +115,6 @@ void Cell::addTree(Tree * t)
     trees.push_back(t);
 }
 
-
 void Cell::Render(bool drawtop)
 {
     for( map<int16_t, ROstore >::iterator it = ROs.begin(); it != ROs.end(); ++it)
@@ -130,9 +129,9 @@ void Cell::Render(bool drawtop)
             RENDERER->CallRenderObject(it->second.top);
         }
     }
-    for(uint32_t idx = 0; idx< trees.size(); idx++)
+    for(Uint32 i = 0; i< trees.size(); i++)
     {
-        trees[idx]->Draw();
+        trees[i]->Draw();
     }
 }
 
@@ -210,12 +209,17 @@ void Cell::ClearROs()
     {
         ROstore tmp = it->second;
         if(tmp.normal)
+        {
             RENDERER->DeleteRenderObject( tmp.normal );
+        }
         if(tmp.top)
+        {
             RENDERER->DeleteRenderObject( tmp.top );
+        }
     }
     ROs.clear();
 }
+
 void Cell::DrawCellCage()
 {
     Vector3 AdjustedPoint = Position;
@@ -223,5 +227,5 @@ void Cell::DrawCellCage()
     AdjustedPoint.x -= (CELLEDGESIZE / 2) - 0.5;
     AdjustedPoint.y -= (CELLEDGESIZE / 2) - 0.5;
 
-    RENDERER->DrawCage(AdjustedPoint, CELLEDGESIZE, CELLEDGESIZE, 1.0, true,1,1,1);
+    RENDERER->DrawCage(AdjustedPoint, CELLEDGESIZE, CELLEDGESIZE, 1.0, true, 1, 1, 1);
 }

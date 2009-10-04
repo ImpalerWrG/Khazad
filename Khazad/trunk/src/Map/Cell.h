@@ -43,24 +43,26 @@ public:
 
     void DrawCellCage();
 
-    inline bool isActive()                     { return Active; }
-    void setActive(bool NewValue)       { Active = NewValue; }
+    inline bool isActive()                      { return Active; }
+    void setActive(bool NewValue)               { Active = NewValue; }
 
-    inline bool isLiquidActive()                     { return ActiveLiquid; }
-    void setLiquidActive(bool NewValue)       { ActiveLiquid = NewValue; }
+    inline bool isLiquidActive()                { return ActiveLiquid; }
+    void setLiquidActive(bool NewValue)         { ActiveLiquid = NewValue; }
 
-    inline bool isTopActive()                     { return ActiveTop; }
-    void setTopActive(bool NewValue)       { ActiveTop = NewValue; }
+    inline bool isTopActive()                   { return ActiveTop; }
+    void setTopActive(bool NewValue)            { ActiveTop = NewValue; }
 
-    bool getNeedsRedraw()                  { return NeedsRedraw; }
-    void setNeedsRedraw(bool NewValue)    { NeedsRedraw = NewValue; }
+    bool getNeedsRedraw()                       { return NeedsRedraw; }
+    void setNeedsRedraw(bool NewValue)          { NeedsRedraw = NewValue; }
 
     void addBuilding(Building *);
     void addTree(Tree *);
+
     Vector3 getPosition(){return Position;};
+
 protected:
-    //TODO maintain a vector of cells that need redraw instead
-    bool NeedsRedraw;
+
+    bool NeedsRedraw; //TODO maintain a vector of cells that need redraw instead
 
     // VBOs by texture and target
     map<int16_t, ROstore > ROs;
@@ -73,12 +75,21 @@ protected:
 
     Cube* Cubes[CELLEDGESIZE][CELLEDGESIZE];
 
+    Sint16 CubeShapeTypes[CELLEDGESIZE][CELLEDGESIZE];
+    Sint16 CubeSurfaceTypes[CELLEDGESIZE][CELLEDGESIZE];
+    Sint16 CubeMaterialTypes[CELLEDGESIZE][CELLEDGESIZE];
+
+    Sint16 FacetSurfaceTypes[CELLEDGESIZE][CELLEDGESIZE][NUM_FACETS];
+    Sint16 FacetMaterialTypes[CELLEDGESIZE][CELLEDGESIZE][3];
+
     vector <Building *> buildings;
     vector <Tree *> trees;
+
     bool Active;
     bool ActiveLiquid;
     bool ActiveTop;
     bool Initialized;
+
     Vector3 Position;
 };
 
