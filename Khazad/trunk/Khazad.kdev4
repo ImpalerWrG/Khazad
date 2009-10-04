@@ -1,3 +1,3 @@
 [Project]
-Manager=KDevGenericManager
+Manager=KDevCMakeManager
 Name=Khazad
