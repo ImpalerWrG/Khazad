@@ -333,7 +333,7 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
                ||isWidgetCollision(CameraControlWindow, OriginX, OriginY)
                ||isWidgetCollision(ConfirmationWindow, OriginX, OriginY) )
             {
-                cout << "mouse down" << endl;
+                //cout << "mouse down" << endl;
                 Input->pushInput(event);
                 guimousecapture = true;
                 return true;
@@ -360,7 +360,7 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
     {
         if(guimousecapture == true)
         {
-            cout << "mouse up" << endl;
+            //cout << "mouse up" << endl;
             guimousecapture = false;
             Input->pushInput(event);
             return true;

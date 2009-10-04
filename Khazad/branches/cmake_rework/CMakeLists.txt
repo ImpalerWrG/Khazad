@@ -1,5 +1,5 @@
 # main project file. use it from a build sub-folder, see COMPILE for details
-PROJECT (dfhack) 
+PROJECT (khazad) 
 cmake_minimum_required(VERSION 2.6)
 
 # disable warning, autosearch
@@ -20,8 +20,8 @@ SET(SO_MINOR_VERSION "0")
 SET(SO_BUILD_VERSION "1")
 SET(SO_VERSION "${SO_MAJOR_VERSION}.${SO_MINOR_VERSION}.${SO_BUILD_VERSION}")
 
-
-SET( EXECUTABLE_OUTPUT_PATH ${dfhack_SOURCE_DIR}/output CACHE PATH "Output directory for khazad" )
+#SET( EXECUTABLE_OUTPUT_PATH ${khazad_SOURCE_DIR}/output CACHE PATH "Output directory for khazad" )
+SET( EXECUTABLE_OUTPUT_PATH ${khazad_SOURCE_DIR}/output CACHE PATH "Output directory for khazad" )
 
 include_directories (
 ${CMAKE_SOURCE_DIR}/include/
@@ -47,6 +47,7 @@ TinyXML/tinystr.cpp
 TinyXML/tinyxml.cpp
 TinyXML/tinyxmlerror.cpp
 TinyXML/tinyxmlparser.cpp
+
 dfhack/library/DFDataModel.cpp
 dfhack/library/DFHackAPI.cpp
 dfhack/library/DFMemInfo.cpp
@@ -55,6 +56,7 @@ dfhack/library/DFProcessManager.cpp
 dfhack/library/DFTileTypes.cpp
 dfhack/library/md5/md5.cpp
 dfhack/library/md5/md5wrapper.cpp
+
 guichan/src/actionevent.cpp
 guichan/src/basiccontainer.cpp
 guichan/src/cliprectangle.cpp
@@ -103,30 +105,37 @@ guichan/src/widgets/tabbedarea.cpp
 guichan/src/widgets/textbox.cpp
 guichan/src/widgets/textfield.cpp
 guichan/src/widgets/window.cpp
+
 src/Core/Random.cpp
 src/Core/Timer.cpp
 src/Core/main.cpp
+
 src/Data/ConfigManager.cpp
 src/Data/DataManager.cpp
 src/Data/DataTypes.cpp
 src/Data/Paths.cpp
 src/Data/XMLManager.cpp
+
 src/Game/Actor.cpp
 src/Game/Game.cpp
 src/Game/Pawn.cpp
+
 src/Geometry/Plane.cpp
 src/Geometry/Vector2.cpp
 src/Geometry/Vector3.cpp
+
 src/Gui/FontManager.cpp
 src/Gui/Gui.cpp
 src/Gui/InputManager.cpp
 src/Gui/KhazSlider.cpp
+
 src/Map/Building.cpp
 src/Map/Cell.cpp
 src/Map/Column.cpp
 src/Map/Cube.cpp
 src/Map/Map.cpp
 src/Map/Tree.cpp
+
 src/Render/Camera.cpp
 src/Render/ClipImage.cpp
 src/Render/ColorManager.cpp
@@ -141,21 +150,7 @@ src/Render/TreeManager.cpp
 IF(UNIX)
 add_definitions(-DLINUX_BUILD)
 add_definitions(-DILUT_USE_OPENGL)
-SET(PROJECT_LIBS
-SDL
-SDLmain
-SDL_ttf
-SDL_image
-SDL_mixer
-SDL_net
-GL
-GLU
-glut
-IL
-ILU
-ILUT
-z
-)
+SET(PROJECT_LIBS SDL SDLmain SDL_ttf SDL_image SDL_mixer SDL_net GL GLU glut IL ILU ILUT z )
 ELSE(UNIX)
 add_definitions(-DILUT_USE_OPENGL)
 SET(PROJECT_LIBS

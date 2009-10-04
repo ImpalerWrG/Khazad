@@ -560,7 +560,6 @@ void Camera::SlideView(float X, float Y)
 		EyePosition += CrossProduct * X * (1 / IsoScalar);
 		LookPosition += CrossProduct * X * (1 / IsoScalar);
         //Cursor += CrossProduct * X * (1 / IsoScalar);
-        cout << "lookpos " << LookPosition.x << " " << LookPosition.y << " " << LookPosition.z << endl;
         ConfineLookPosition();
 		generateViewFrustum();
 	}
