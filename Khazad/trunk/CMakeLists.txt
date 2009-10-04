@@ -150,8 +150,10 @@ src/Render/TreeManager.cpp
 IF(UNIX)
 add_definitions(-DLINUX_BUILD)
 add_definitions(-DILUT_USE_OPENGL)
+add_definitions(-DBUILD_DFHACK_LIB)
 SET(PROJECT_LIBS SDL SDLmain SDL_ttf SDL_image SDL_mixer SDL_net GL GLU glut IL ILU ILUT z )
 ELSE(UNIX)
+add_definitions(-DBUILD_DFHACK_LIB)
 add_definitions(-DILUT_USE_OPENGL)
 SET(PROJECT_LIBS
 psapi

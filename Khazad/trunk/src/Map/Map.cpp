@@ -312,6 +312,7 @@ bool Map::Extract()
             }
         }
 	}
+    delete pDF;
     MapLoaded = true;
 }
 
