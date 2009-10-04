@@ -188,7 +188,8 @@ bool Map::hasFace(Sint32 X, Sint32 Y, Sint32 Z, Facet FaceType)
 bool Map::Extract()
 {
     Path path_to_xml("Assets/XML/Memory.xml");
-    DFHackAPI DF(path_to_xml);
+    DFHackAPI *pDF = CreateDFHackAPI(path_to_xml);
+    DFHackAPI &DF = *pDF;
 
     if(!DF.Attach())
     {
