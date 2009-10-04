@@ -8,9 +8,9 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="output/Khazad" prefix_auto="1" extension_auto="1" />
+				<Option output="output/khazad" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="output/" />
-				<Option object_output="obj/Linux/Debug/" />
+				<Option object_output="build/CBLDebug/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -20,9 +20,9 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="output/Khazad" prefix_auto="1" extension_auto="1" />
+				<Option output="output/khazad" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="output/" />
-				<Option object_output="obj/Linux/Release/" />
+				<Option object_output="build/CBLRelease/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -34,9 +34,9 @@
 				</Linker>
 			</Target>
 			<Target title="Profile">
-				<Option output="output/Khazad" prefix_auto="1" extension_auto="1" />
+				<Option output="output/khazad" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="output/" />
-				<Option object_output="obj/Linux/Profile/" />
+				<Option object_output="build/CBLProfile/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -64,11 +64,8 @@
 			<Add directory="guichan/include" />
 			<Add directory="guichan/src" />
 			<Add directory="/usr/include/IL/" />
-			<Add directory="src/Linux" />
 			<Add directory="TinyXML" />
 			<Add directory="/usr/include/SDL/" />
-			<Add directory="src/MD5" />
-			<Add directory="src/Process" />
 		</Compiler>
 		<Linker>
 			<Add library="SDL" />
@@ -86,8 +83,6 @@
 			<Add library="libz" />
 			<Add directory="lib" />
 		</Linker>
-		<ExtraCommands>
-		</ExtraCommands>
 		<Unit filename="TinyXML/tinystr.cpp" />
 		<Unit filename="TinyXML/tinystr.h" />
 		<Unit filename="TinyXML/tinyxml.cpp" />
