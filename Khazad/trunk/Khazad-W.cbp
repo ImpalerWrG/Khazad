@@ -49,6 +49,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-DPSAPI_VERSION=1" />
+			<Add option="-DBUILD_DFHACK_LIB" />
 			<Add directory="src\Core" />
 			<Add directory="include" />
 			<Add directory="DevIL" />
