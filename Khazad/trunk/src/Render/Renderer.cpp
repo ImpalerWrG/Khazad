@@ -162,7 +162,7 @@ bool Renderer::Init()
     
     glEnable(GL_DEPTH_TEST);
     // disabled for fun and profit
-    //glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_COLOR_MATERIAL);
 
     // magic
     //glEnable(GL_MULTISAMPLE_ARB);
@@ -564,7 +564,8 @@ void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTran
                     LoopCell->UpdateLists();
                     LoopCell->setNeedsRedraw(false);
                 }
-                glColor3f(Shading, Shading, Shading);
+                //glColor3f(Shading, Shading, Shading);
+                glColor3f(0.5, 0.5, 0.5);
                 LoopCell->Render(drawtop);
                 //TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
             glPopMatrix();
