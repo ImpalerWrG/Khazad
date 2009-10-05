@@ -162,7 +162,7 @@ bool Renderer::Init()
     
     glEnable(GL_DEPTH_TEST);
     // disabled for fun and profit
-    glEnable(GL_COLOR_MATERIAL);
+    //glEnable(GL_COLOR_MATERIAL);
 
     // magic
     //glEnable(GL_MULTISAMPLE_ARB);

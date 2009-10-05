@@ -784,6 +784,17 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate,
         {0,0.5},
         {0,1}
     };
+    const float norms[8][3] =
+    {
+        {0,-1,0},
+        {0,0,0},
+        {1,0,0},
+        {0,0,0},
+        {0,1,0},
+        {0,0,0},
+        {-1,0,0},
+        {0,0,0}
+    };
     uint8_t strong, weak, numsolids = 0;
 
     // copy surroundings
@@ -918,36 +929,36 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate,
         if(hm[i] == 0)// one tri, hm[i+2] is high
         {
             // second upper
-            vec->push_back(vertex(dc[i+2][0] + xTranslate, dc[i+2][1] + yTranslate, hmf[i+2], 0.0,1.0, 0,0,1));
+            vec->push_back(vertex(dc[i+2][0] + xTranslate, dc[i+2][1] + yTranslate, hmf[i+2], 0.0,1.0, norms[i][0],norms[i][1],norms[i][2]));
             // second lower
-            vec->push_back(vertex(dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5, 0.0,0.0, 0,0,1));
+            vec->push_back(vertex(dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5, 0.0,0.0, norms[i][0],norms[i][1],norms[i][2]));
             // first lower
-            vec->push_back(vertex(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i], 1.0,0.0,0,0,1));
+            vec->push_back(vertex(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i], 1.0,0.0,norms[i][0],norms[i][1],norms[i][2]));
         }
         else if(hm[i+2] == 0)// one tri, hm[i] is high
         {
             // first lower
-            vec->push_back(vertex(dc[i][0] + xTranslate,  dc[i][1] + yTranslate, -0.5,1.0,0.0,   0,0,1 ));
+            vec->push_back(vertex(dc[i][0] + xTranslate,  dc[i][1] + yTranslate, -0.5,1.0,0.0,   norms[i][0],norms[i][1],norms[i][2] ));
             // first upper
-            vec->push_back(vertex(dc[i][0] + xTranslate,  dc[i][1] + yTranslate, hmf[i],   1.0,1.0,   0,0,1 ));
+            vec->push_back(vertex(dc[i][0] + xTranslate,  dc[i][1] + yTranslate, hmf[i],   1.0,1.0,   norms[i][0],norms[i][1],norms[i][2] ));
             // second
-            vec->push_back(vertex(dc[i+2][0] + xTranslate, dc[i+2][1]+ yTranslate, hmf[i+2],   0.0,0.0,   0,0,1 ));
+            vec->push_back(vertex(dc[i+2][0] + xTranslate, dc[i+2][1]+ yTranslate, hmf[i+2],   0.0,0.0,   norms[i][0],norms[i][1],norms[i][2] ));
         }
         else // two tris, both corners high
         {
             // second upper
-            vec->push_back(vertex(dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, 0.5,    0.0,1.0,   0,0,1 ));
+            vec->push_back(vertex(dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, 0.5,    0.0,1.0,   norms[i][0],norms[i][1],norms[i][2] ));
             // second lower
-            vec->push_back(vertex(dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5,    0.0,0.0,   0,0,1 ));
+            vec->push_back(vertex(dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5,    0.0,0.0,   norms[i][0],norms[i][1],norms[i][2] ));
             // first lower
-            vec->push_back(vertex(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5,    1.0,0.0,   0,0,1 ));
+            vec->push_back(vertex(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5,    1.0,0.0,   norms[i][0],norms[i][1],norms[i][2] ));
 
             // first lower
-            vec->push_back(vertex(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5,    1.0,0.0,   0,0,1 ));
+            vec->push_back(vertex(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5,    1.0,0.0,   norms[i][0],norms[i][1],norms[i][2] ));
             // first upper
-            vec->push_back(vertex(dc[i][0] + xTranslate,  dc[i][1] + yTranslate, 0.5,    1.0,1.0,   0,0,1 ));
+            vec->push_back(vertex(dc[i][0] + xTranslate,  dc[i][1] + yTranslate, 0.5,    1.0,1.0,   norms[i][0],norms[i][1],norms[i][2] ));
             // center
-            vec->push_back(vertex(dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, 0.0,    0.5,0.5,   0,0,1 ));
+            vec->push_back(vertex(dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, 0.0,    0.5,0.5,   norms[i][0],norms[i][1],norms[i][2] ));
         }
     }
     return true;
