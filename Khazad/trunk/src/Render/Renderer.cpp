@@ -162,7 +162,7 @@ bool Renderer::Init()
     
     glEnable(GL_DEPTH_TEST);
     // disabled for fun and profit
-    glEnable(GL_COLOR_MATERIAL);
+    //glEnable(GL_COLOR_MATERIAL);
 
     // magic
     //glEnable(GL_MULTISAMPLE_ARB);
@@ -623,16 +623,8 @@ bool Renderer::Render()
     glEnable(GL_LIGHTING);
     glMatrixMode(GL_MODELVIEW);
     glEnable(GL_LIGHT0);
-    GLfloat specular[] = {1.0f, 1.0f, 1.0f , 1.0f};
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, specular);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
-    GLfloat ambient[] = { 1.0f, 1.0f, 1.0f };
-    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-    GLfloat position[] = { 1.0f, 1.5f, 2.0f, 0.0f };
-    //GLfloat dir[] = {0.0, -3.0, 3.0};
-    //glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
-    glLightfv(GL_LIGHT0, GL_POSITION, position);
-
+    glEnable(GL_LIGHT1);
+    
 
     CameraOrientation CurrentOrientation = MainCamera->getOrientation();
 
@@ -661,7 +653,29 @@ bool Renderer::Render()
         float ZTranslate = MainCamera->ZlevelSeperationAdjustment(Zlevel);
         for(Sint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
             for(Sint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
+            {
+                GLfloat specular[] = {1.0f * Shading, 1.0f * Shading, 1.0f *Shading , 1.0f};
+                glLightfv(GL_LIGHT0, GL_DIFFUSE, specular);
+                glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+                GLfloat ambient[] = { 1.0f * Shading, 1.0f * Shading, 1.0f * Shading };
+                glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+                GLfloat position[] = { 1.0f, 1.5f, 2.0f, 0.0f };
+                //GLfloat dir[] = {0.0, -3.0, 3.0};
+                //glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
+                glLightfv(GL_LIGHT0, GL_POSITION, position);
+                
+                
+                GLfloat specular2[] = {0.15f, 0.15f, 0.3f , 1.0f};
+                glLightfv(GL_LIGHT1, GL_DIFFUSE, specular2);
+                GLfloat ambient2[] = { 0.15f, 0.15f, 0.3f };
+                glLightfv(GL_LIGHT1, GL_AMBIENT, ambient2);
+                GLfloat position2[] = { -1.0f, -1.5f, 2.0f, 0.0f };
+                //GLfloat dir[] = {0.0, -3.0, 3.0};
+                //glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
+                glLightfv(GL_LIGHT1, GL_POSITION, position2);
                 RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, drawtops);
+            }
+                
     }
     /// bind normal stuff
     glBindBuffer(GL_ARRAY_BUFFER, 0);

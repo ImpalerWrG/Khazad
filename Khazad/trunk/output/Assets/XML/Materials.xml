@@ -1005,6 +1005,16 @@
         <ColorMode mode="keepimage"/>
     </Material>
 
+    <Material>
+        <Name Label="MATERIAL_CHESTNUT_TRUNK"/>
+        <Texture label="TEXTURE_CHESTNUT_TRUNK"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_CHESTNUT_LEAVES"/>
+        <Texture label="TEXTURE_CHESTNUT_LEAVES"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
 
 	<!-- STONE/SOIL materials, disabled to show regular textures better -->
     <!--

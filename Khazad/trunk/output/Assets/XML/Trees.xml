@@ -37,4 +37,14 @@
 		  <Leaves material="MATERIAL_BIRCH_LEAVES" />
 		</Variant>
 	</Tree>
+	<Tree>
+		<Name Label="TREE_CHESTNUT"/>
+		<MatGloss value="CHESTNUT" />
+		<Model file="Assets/Models/chestnut/chestnut.obj" />
+		<Variant>
+		  <Trunk material="MATERIAL_CHESTNUT_TRUNK" />
+		  <Snow material="MATERIAL_TREE_SNOW" />
+		  <Leaves material="MATERIAL_CHESTNUT_LEAVES" />
+		</Variant>
+	</Tree>
 </Trees>

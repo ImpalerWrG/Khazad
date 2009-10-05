@@ -72,6 +72,15 @@
         <File Path="Assets/Models/birch/leavesntp.png"/>
     </Texture>
 
+    <Texture>
+        <Name Label="TEXTURE_CHESTNUT_TRUNK"/>
+        <File Path="Assets/Models/chestnut/bark.png"/>
+    </Texture>
+    <Texture>
+        <Name Label="TEXTURE_CHESTNUT_LEAVES"/>
+        <File Path="Assets/Models/chestnut/leavesntp.png"/>
+    </Texture>
+
 	<!-- GRASS -->
 	<Texture>
 		<Name Label="TEXTURE_GRASS1"/>

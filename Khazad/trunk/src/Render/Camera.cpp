@@ -881,6 +881,7 @@ bool Camera::InSlice(float Zlevel)
 
 float Camera::getShading(float Zlevel)
 {
+    float Minimum = 0.2;
 	if (Zlevel <= SliceTop)
 	{
 		float Depth = SliceTop - Zlevel;
@@ -890,15 +891,15 @@ float Camera::getShading(float Zlevel)
 			if (Depth > 0) // Below look level
 			{
 				Shading -= Depth / (float) ViewLevels;
-				float Minimum = 0.4;
+
 				Shading = ((1.0 - Minimum) * Shading) + (Minimum);
 				return Shading;
 			}
 			return Shading;
 		}
-		return 0.0;
+        return Minimum;
 	}
-    return 0.0;
+    return Minimum;
 }
 
 bool Camera::sphereInFrustum(Vector3 Point, float Radius)
