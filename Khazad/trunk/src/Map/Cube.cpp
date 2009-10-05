@@ -856,13 +856,26 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate,
         *  | / | \ |
         *  *---*---*
         */
-
+        s3f center = {xTranslate, yTranslate,hmf[9]};
+        s3f pt1 = {dc[i+1][0] + xTranslate,dc[i+1][1]+  yTranslate,hmf[i+1]};
+        s3f pt2 = {dc[i][0] + xTranslate, dc[i][1]+  yTranslate,hmf[i]};
+        s3f norm = CalculateNormal(center, pt2, pt1 );
+        s2f tx0 = {0.5,0.5};
+        s2f tx1 = {tc[i+1][0],tc[i+1][1]};
+        s2f tx2 = {tc[i][0],tc[i][1]};
+        /*
         // point C
         vertex v0 = vertex(xTranslate, yTranslate, hmf[9],0.5,0.5, 0,0,1);
         //point P+1
         vertex v1 = vertex(dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, hmf[i+1],tc[i+1][0],tc[i+1][1], 0,0,1);
         //point P
         vertex v2 = vertex(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i],tc[i][0],tc[i][1], 0,0,1);
+        */
+        vertex v0 = vertex(center,tx0, norm);
+        //point P+1
+        vertex v1 = vertex(pt1,tx1, norm);
+        //point P
+        vertex v2 = vertex(pt2,tx2, norm);
         if(v0.z == v1.z == v2.z == 0.5) // top
         {
             vector <vertex>* vect;
