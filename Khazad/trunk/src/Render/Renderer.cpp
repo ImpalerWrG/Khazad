@@ -541,9 +541,10 @@ SDL_Color Renderer::getPickingColor()
             GreenPickingValue = 0;
         }
     }
-
     return BLACK;
-    }
+}
+
+
 // FIXME: move to cell
 void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading, bool drawtop)
 {

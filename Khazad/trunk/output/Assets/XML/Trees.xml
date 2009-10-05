@@ -27,4 +27,14 @@
 		  <Leaves material="MATERIAL_MAPLE_LEAVES" />
 		</Variant>
 	</Tree>
+	<Tree>
+		<Name Label="TREE_BIRCH"/>
+		<MatGloss value="BIRCH" />
+		<Model file="Assets/Models/birch/birch.obj" />
+		<Variant>
+		  <Trunk material="MATERIAL_BIRCH_TRUNK" />
+		  <Snow material="MATERIAL_TREE_SNOW" />
+		  <Leaves material="MATERIAL_BIRCH_LEAVES" />
+		</Variant>
+	</Tree>
 </Trees>

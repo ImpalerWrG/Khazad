@@ -63,6 +63,15 @@
         <File Path="Assets/Models/maple/leavesntp.png"/>
     </Texture>
 
+    <Texture>
+        <Name Label="TEXTURE_BIRCH_TRUNK"/>
+        <File Path="Assets/Models/birch/bark.png"/>
+    </Texture>
+    <Texture>
+        <Name Label="TEXTURE_BIRCH_LEAVES"/>
+        <File Path="Assets/Models/birch/leavesntp.png"/>
+    </Texture>
+
 	<!-- GRASS -->
 	<Texture>
 		<Name Label="TEXTURE_GRASS1"/>
