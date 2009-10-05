@@ -320,18 +320,19 @@ ILuint ImageManager::GeneratedOverLayImage(ILuint TextureDevILID, Sint16 Primary
 ILuint ImageManager::GenerateKeeperImage(ILuint TextureDevILID, Sint16 BorderColorID)
 {
     ILuint NewImageID;
-    ilGenImages(1, &NewImageID);
-    ilBindImage(NewImageID);
-
-    ilCopyImage(TextureDevILID);
-    Uint32 width = ilGetInteger(IL_IMAGE_WIDTH);
-    Uint32 height = ilGetInteger(IL_IMAGE_HEIGHT);
-
-    ilTexImage(width, height, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
-
     if (BorderColorID != -1)
     {
+        ilGenImages(1, &NewImageID);
+        ilBindImage(NewImageID);
+        
+        ilCopyImage(TextureDevILID);
+        
         ApplyBorder(NewImageID, BorderColorID);
+    }
+    else
+    {
+        // no reason to copy large amounts of data without changes
+        NewImageID = TextureDevILID;
     }
     return NewImageID;
 }
