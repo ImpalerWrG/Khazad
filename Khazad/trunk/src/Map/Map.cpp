@@ -256,14 +256,21 @@ bool Map::Extract()
     while(index < numbuildings)
     {
         DF.ReadBuilding(index, tempbld);
-        string strtype = v_buildingtypes[tempbld.type];
-        if( strtype == "stockpile" || strtype == "zone" ||strtype == "construction_blueprint" )
+        if(tempbld.type < v_buildingtypes.size())
         {
-            index++;
-            continue;
+            string strtype = v_buildingtypes[tempbld.type];
+            if( strtype == "stockpile" || strtype == "zone" ||strtype == "construction_blueprint" )
+            {
+                index++;
+                continue;
+            }
+            uint64_t coord =  ((uint64_t)tempbld.z) + (((uint64_t)tempbld.y1) << 16) + (((uint64_t)tempbld.x1) << 32);
+            buildingAssigner[coord] = tempbld;
         }
-        uint64_t coord =  ((uint64_t)tempbld.z) + (((uint64_t)tempbld.y1) << 16) + (((uint64_t)tempbld.x1) << 32);
-        buildingAssigner[coord] = tempbld;
+        else
+        {
+            printf ("building at %d %d %d, unknown type %d, vtable %x\n",tempbld.x1,tempbld.y1,tempbld.z,tempbld.type, tempbld.vtable);
+        }
         index ++;
     }
     DF.FinishReadBuildings();

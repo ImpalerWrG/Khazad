@@ -41,9 +41,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// derived from guichan slider by peterix
+
 /*
  * For comments regarding functions please see the header file.
  */
+
+//TODO: error check on image load
 
 #include "KhazSlider.hpp"
 
@@ -59,15 +63,36 @@ namespace gcn
 {
 
     
-KhazSlider::KhazSlider (const std::string& tophandle, const std::string& bottomhandle,int16_t maxZ = 1)
+KhazSlider::KhazSlider
+(
+const std::string& tophandle,
+const std::string& bottomhandle,
+const std::string& topbutton,
+const std::string& bottombutton,
+const std::string& topbutton_hover,
+const std::string& bottombutton_hover,
+const std::string& topbutton_click,
+const std::string& bottombutton_click,
+const std::string& background,
+int16_t maxZ = 1
+)
 {
-    mDragged = NO_DRAG;
     mImageTop = Image::load(tophandle);
     mImageBottom = Image::load(bottomhandle);
+    mImageTopB = Image::load(topbutton);
+    mImageBottomB = Image::load(bottombutton);
+    mImageTopBH = Image::load(topbutton_hover);
+    mImageBottomBH = Image::load(bottombutton_hover);
+    mImageTopBC = Image::load(topbutton_click);
+    mImageBottomBC = Image::load(bottombutton_click);
+    mImageBackground = Image::load(background);
     mMaxZ = maxZ;
-
-    setFocusable (true);
-    setFrameSize (1);
+    
+    mHighlighted = NO_HIGHLIGHT;
+    mDragged = NO_DRAG;
+    
+    setFocusable (false);
+    setFrameSize (0);
     setBottomSlice (0);
     setTopSlice (mMaxZ);
     setMarkerLength (32);
@@ -80,6 +105,13 @@ KhazSlider::~KhazSlider()
 {
     delete(mImageTop);
     delete(mImageBottom);
+    delete(mImageTopB);
+    delete(mImageBottomB);
+    delete(mImageTopBC);
+    delete(mImageBottomBC);
+    delete(mImageTopBH);
+    delete(mImageBottomBH);
+    delete(mImageBackground);
 }
 
 void KhazSlider::setMaxZ (int16_t maxZ)
@@ -117,6 +149,8 @@ gcn::Color MixColors(gcn::Color first,gcn::Color second, int steps, int index)
 
 void KhazSlider::draw (gcn::Graphics* graphics)
 {
+    // draw background
+    /*
     Color shadowColor = getBaseColor() - 0x101010;
     int alpha = getBaseColor().a;
     shadowColor.a = alpha;
@@ -131,9 +165,13 @@ void KhazSlider::draw (gcn::Graphics* graphics)
     graphics->fillRectangle (gcn::Rectangle (14, 14, 4, getHeight() - 28));
     graphics->setColor (shadowColor - 0x808080);
     graphics->fillRectangle (gcn::Rectangle (15, 15, 2, getHeight() - 30));
-
+*/
+    int step = mImageBackground->getHeight();
+    for(int i = 0; i <= getHeight(); i+=step)
+    {
+        graphics->drawImage(mImageBackground, 0, i);
+    }
     // draw 'chain'
-    //TODO: use theming, error check on image load
     gcn::Color topColor = 0xE3E3E3;
     gcn::Color bottomColor = 0xEB8D00;
     int top = getTopMarkerPosition();
@@ -142,7 +180,7 @@ void KhazSlider::draw (gcn::Graphics* graphics)
     int numslices = getTopSlice() - getBottomSlice();
     
     // don't touch this
-    float softstep = (float)(getHeight() - 2 * getMarkerLength()) /(float) getMaxZ();
+    float softstep = (float)(getHeight() - 2 * getMarkerLength() - 2 * 16) /(float) getMaxZ();
     for(int i = 0;i < numslices;i++)
     {
         gcn::Color faceColor = MixColors(topColor,bottomColor, numslices, i);
@@ -153,8 +191,8 @@ void KhazSlider::draw (gcn::Graphics* graphics)
         shadowColor = faceColor - 0x303030;
         shadowColor.a = alpha;
         
-        int current = getMarkerLength()+ softstep * (i + (getMaxZ() - getTopSlice()));
-        int next = getMarkerLength()+ softstep * (1+ i + (getMaxZ() - getTopSlice()));
+        int current = getMarkerLength() + 16 + softstep * (i + (getMaxZ() - getTopSlice()));
+        int next = getMarkerLength() + 16 + softstep * (1+ i + (getMaxZ() - getTopSlice()));
         
         graphics->setColor (faceColor);
         graphics->fillRectangle (gcn::Rectangle (12,current , 8, next-current));
@@ -165,72 +203,23 @@ void KhazSlider::draw (gcn::Graphics* graphics)
         graphics->drawLine (13, next - 1 , 20, next -1);
         graphics->drawLine (20, current, 20, next - 1);
     }
-    
-    drawTopMarker (graphics);
-    drawBottomMarker (graphics);
-}
-
-void KhazSlider::drawTopMarker (gcn::Graphics* graphics)
-{
-    /*
-    gcn::Color faceColor = getBaseColor();
-    faceColor = 0x338833;
-    Color highlightColor, shadowColor;
-    int alpha = getBaseColor().a;
-    highlightColor = faceColor + 0x303030;
-    highlightColor.a = alpha;
-    shadowColor = faceColor - 0x303030;
-    shadowColor.a = alpha;
-
-    graphics->setColor (faceColor);
-
-    int v = getTopMarkerPosition() - getMarkerLength();
-    graphics->fillRectangle (gcn::Rectangle (1, v + 1, getWidth() - 2, getMarkerLength() - 2));
-    graphics->setColor (highlightColor);
-    graphics->drawLine (0, v, 0, v + getMarkerLength() - 1);
-    graphics->drawLine (0, v, getWidth() - 1, v);
-    graphics->setColor (shadowColor);
-    graphics->drawLine (1, v + getMarkerLength() - 1, getWidth() - 1, v + getMarkerLength() - 1);
-    graphics->drawLine (getWidth() - 1, v + 1, getWidth() - 1, v + getMarkerLength() - 1);
-
-    if (isFocused())
-    {
-        graphics->setColor (getForegroundColor());
-        graphics->drawRectangle (Rectangle (2, v + 2, getWidth() - 4, getMarkerLength() - 4));
-    }*/
+    if(mHighlighted == CLICK_TOP)
+        graphics->drawImage(mImageTopBC, 0, 0);
+    else if(mHighlighted == HOVER_TOP)
+        graphics->drawImage(mImageTopBH, 0, 0);
+    else
+        graphics->drawImage(mImageTopB, 0, 0);
     graphics->drawImage(mImageTop, 0, getTopMarkerPosition() - getMarkerLength());
+    
+    graphics->drawImage(mImageBottom, 0, getBottomMarkerPosition());
+    if(mHighlighted == CLICK_BOTTOM)
+        graphics->drawImage(mImageBottomBC, 0, getHeight() - mImageBottomB->getHeight());
+    else if(mHighlighted == HOVER_BOTTOM)
+        graphics->drawImage(mImageBottomBH, 0, getHeight() - mImageBottomB->getHeight());
+    else
+        graphics->drawImage(mImageBottomB, 0, getHeight() - mImageBottomB->getHeight());
 }
 
-void KhazSlider::drawBottomMarker (gcn::Graphics* graphics)
-{
-    /*
-    gcn::Color faceColor = getBaseColor();
-    Color highlightColor, shadowColor;
-    int alpha = getBaseColor().a;
-    highlightColor = faceColor + 0x303030;
-    highlightColor.a = alpha;
-    shadowColor = faceColor - 0x303030;
-    shadowColor.a = alpha;
-    
-    graphics->setColor (faceColor);
-    
-    int v = getBottomMarkerPosition();
-    graphics->fillRectangle (gcn::Rectangle (1, v + 1, getWidth() - 2, getMarkerLength() - 2));
-    graphics->setColor (highlightColor);
-    graphics->drawLine (0, v, 0, v + getMarkerLength() - 1);
-    graphics->drawLine (0, v, getWidth() - 1, v);
-    graphics->setColor (shadowColor);
-    graphics->drawLine (1, v + getMarkerLength() - 1, getWidth() - 1, v + getMarkerLength() - 1);
-    graphics->drawLine (getWidth() - 1, v + 1, getWidth() - 1, v + getMarkerLength() - 1);
-    
-    if (isFocused())
-    {
-        graphics->setColor (getForegroundColor());
-        graphics->drawRectangle (Rectangle (2, v + 2, getWidth() - 4, getMarkerLength() - 4));
-    }
-    */
-    graphics->drawImage(mImageBottom, 0, getBottomMarkerPosition());
-}
 
 void KhazSlider::mousePressed (MouseEvent& mouseEvent)
 {
@@ -247,8 +236,15 @@ void KhazSlider::mousePressed (MouseEvent& mouseEvent)
         int bottommarker = valueToMarkerPosition(getBottomSlice());
         
         // TODO: clicking inside handles is different form outside handles
+        
+        // on top button
+        if(y < 16)
+        {
+            SlideUp();
+            mHighlighted = CLICK_TOP;
+        }
         // on top of top handle
-        if(y < topmarker - getMarkerLength())
+        else if(y < topmarker - getMarkerLength())
         {
             int zy = markerPositionToValue (y + getMarkerLength()/2);
             setTopSlice (zy);
@@ -274,12 +270,18 @@ void KhazSlider::mousePressed (MouseEvent& mouseEvent)
             mDragOffset = bottommarker - y;
         }
         // under bottom handle
-        else
+        else if (y < getHeight() - 16)
         {
             int zy = markerPositionToValue (y - getMarkerLength()/2);
             setBottomSlice (zy);
             mDragged = DRAG_BOTTOM;
             mDragOffset = - getMarkerLength()/2;
+        }
+        // bottom button
+        else
+        {
+            SlideDown();
+            mHighlighted = CLICK_BOTTOM;
         }
         distributeActionEvent();
     }
@@ -290,7 +292,46 @@ void KhazSlider::mouseReleased(MouseEvent& mouseEvent)
     if (mouseEvent.getButton() == gcn::MouseEvent::LEFT)
     {
         mDragged = NO_DRAG;
+        //TODO: determine based on mouse position if there should be highlight
+        updateHighlight(mouseEvent);
     }
+}
+void KhazSlider::updateHighlight(MouseEvent& mouseEvent)
+{
+    if(mouseEvent.getX() >= 0
+        && mouseEvent.getX() <= getWidth()
+        && mouseEvent.getY() >= 0
+        && mouseEvent.getY() <= getHeight())
+    {
+        int y = mouseEvent.getY();
+        if(y < 16)
+        {
+            mHighlighted = HOVER_TOP;
+        }
+        else if(y >= getHeight() - 16)
+        {
+            mHighlighted = HOVER_BOTTOM;
+        }
+        else
+        {
+            mHighlighted = NO_HIGHLIGHT;
+        }
+    }
+}
+void KhazSlider::mouseMoved(MouseEvent& mouseEvent)
+{
+    updateHighlight(mouseEvent);
+}
+
+void KhazSlider::mouseExited(MouseEvent& mouseEvent)
+{
+    if(mHighlighted == HOVER_BOTTOM || mHighlighted == HOVER_TOP)
+        mHighlighted = NO_HIGHLIGHT;
+}
+
+void KhazSlider::mouseEntered(MouseEvent& mouseEvent)
+{
+    mouseMoved(mouseEvent);
 }
 
 void KhazSlider::mouseDragged (MouseEvent& mouseEvent)
@@ -424,10 +465,15 @@ void KhazSlider::keyPressed (KeyEvent& keyEvent)
 int16_t KhazSlider::markerPositionToValue (int v) const
 {
     // v = 0 -- v is on bottom
-    int w = getHeight(); // height of the bar
-    int w2 = w - 2 * getMarkerLength(); // height of the active scale
+    // move things a bit to center the focus point
+    v -= getMarkerLength() / 4;
+    
+    // total height of the widget
+    int w = getHeight(); 
+    // height of the active scale
+    int w2 = w - 2 * getMarkerLength() - 2 * 16; 
     v = w - v;
-    v= max(v, getMarkerLength()) - getMarkerLength();
+    v= max(v, getMarkerLength() + 16) - (getMarkerLength() + 16);
     v= min(v, w2);
     // v is now in range of valid values
     double pos = v / ( (double) w2 );
@@ -437,9 +483,9 @@ int16_t KhazSlider::markerPositionToValue (int v) const
 int KhazSlider::valueToMarkerPosition (int16_t value) const
 {
     // real scale is between the handles, limited by bottom of top one in extreme position and top of bottom one in ex.p.
-    double v = getHeight() - 2 * getMarkerLength();
+    double v = getHeight() - 2 * getMarkerLength() - 2* 16;
     double scale = ((double) value) / ((double) getMaxZ());
-    return getHeight() - (getMarkerLength() + v * scale);
+    return getHeight() - (getMarkerLength() + 16 + v * scale);
 }
 
 int KhazSlider::getTopMarkerPosition() const

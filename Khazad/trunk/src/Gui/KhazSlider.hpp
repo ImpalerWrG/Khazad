@@ -75,10 +75,15 @@ public:
         DRAG_CENTER,
         DRAG_BOTTOM
     };
-    
-    // HACK!
-    int * steps;
-    
+   
+    enum HighlightType
+    {
+        NO_HIGHLIGHT,
+        HOVER_TOP,
+        CLICK_TOP,
+        HOVER_BOTTOM,
+        CLICK_BOTTOM
+    };
     
     /**
      * Constructor. The default start value of the slider scale is zero.
@@ -87,7 +92,15 @@ public:
      * @param bottomhandle Filename for the bottom handle image
      * @param maxZ The end value of the slider scale.
      */
-    KhazSlider (const std::string& tophandle, const std::string& bottomhandle,int16_t maxZ);
+    KhazSlider (const std::string& tophandle,
+                const std::string& bottomhandle,
+                const std::string& topbutton,
+                const std::string& bottombutton,
+                const std::string& topbutton_hover,
+                const std::string& bottombutton_hover,
+                const std::string& topbutton_click,
+                const std::string& bottombutton_click,
+                const std::string& background,int16_t maxZ);
 
     /**
      * Destructor - kills the images
@@ -187,26 +200,23 @@ public:
 
     virtual void mouseWheelMovedDown (MouseEvent& mouseEvent);
 
-
+    virtual void mouseMoved(MouseEvent& mouseEvent);
+    
+    virtual void mouseExited(MouseEvent& mouseEvent);
+    
+    virtual void mouseEntered(MouseEvent& mouseEvent);
+    
     // Inherited from KeyListener
 
     virtual void keyPressed (KeyEvent& keyEvent);
+        
 
 protected:
     /**
-     * Draws the top marker.
-     *
-     * @param graphics A graphics object to draw with.
+     * Updates highlight state
      */
-    virtual void drawTopMarker (gcn::Graphics* graphics);
-
-    /**
-    * Draws the bottom marker.
-    *
-    * @param graphics A graphics object to draw with.
-    */
-    virtual void drawBottomMarker (gcn::Graphics* graphics);
-
+    virtual void updateHighlight(MouseEvent& mouseEvent);
+    
     /**
      * Converts a marker position to a value in the scale.
      *
@@ -245,6 +255,11 @@ protected:
     DragType mDragged;
 
     /**
+    * Current highlight state
+    */
+    HighlightType mHighlighted;
+    
+    /**
     * Offset to use for drag y value
     */
     int mDragOffset;
@@ -269,15 +284,28 @@ protected:
      */
     int16_t mMaxZ;
 
-    /**
-     * Image for the top handle
-     */
+    /// Image for the top handle
     const Image* mImageTop;
-
-    /**
-    * Image for the bottom handle
-    */
+    /// Image for the bottom handle
     const Image* mImageBottom;
+    
+    /// Image for the top button
+    const Image* mImageTopB;
+    ///Image for the bottom button
+    const Image* mImageBottomB;
+    
+    /// Image for the top button
+    const Image* mImageTopBH;
+    ///Image for the bottom button
+    const Image* mImageBottomBH;
+    
+    /// Image for the top button
+    const Image* mImageTopBC;
+    ///Image for the bottom button
+    const Image* mImageBottomBC;
+    
+    /// Image for the background
+    const Image* mImageBackground;
 };
 }
 

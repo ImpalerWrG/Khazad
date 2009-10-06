@@ -262,6 +262,8 @@
 		<Unit filename="src\Gui\InputManager.h" />
 		<Unit filename="src\Gui\KhazSlider.cpp" />
 		<Unit filename="src\Gui\KhazSlider.hpp" />
+		<Unit filename="src\Gui\toggleimagebutton.cpp" />
+		<Unit filename="src\Gui\toggleimagebutton.hpp" />
 		<Unit filename="src\Map\Building.cpp" />
 		<Unit filename="src\Map\Building.h" />
 		<Unit filename="src\Map\Cell.cpp" />

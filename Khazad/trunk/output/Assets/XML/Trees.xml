@@ -47,4 +47,14 @@
 		  <Leaves material="MATERIAL_CHESTNUT_LEAVES" />
 		</Variant>
 	</Tree>
+	<Tree>
+		<Name Label="TREE_PALM"/>
+		<MatGloss value="PALM" />
+		<Model file="Assets/Models/palm/palm.obj" />
+		<Variant>
+		  <Trunk material="MATERIAL_PALM_TRUNK" />
+		  <!--<Snow material="MATERIAL_TREE_SNOW" />-->
+		  <Leaves material="MATERIAL_PALM_LEAVES" />
+		</Variant>
+	</Tree>
 </Trees>

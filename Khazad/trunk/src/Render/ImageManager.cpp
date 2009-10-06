@@ -72,7 +72,7 @@ ILuint ImageManager::loadImage(char* filepath, bool ColorKey)
     */
 
     ilConvertImage(IL_BGRA, IL_UNSIGNED_BYTE);
-
+    iluFlipImage();
     if(ColorKey)
     {
         //convert color key
@@ -80,6 +80,7 @@ ILuint ImageManager::loadImage(char* filepath, bool ColorKey)
     DevilImageVector.push_back(ImageID);
 
     ReportDevILErrors();
+    
     return ImageID;
 }
 
@@ -244,7 +245,6 @@ ILuint ImageManager::GenerateGradientImage(ILuint TextureDevILID, Sint16 Primary
         ApplyBorder(NewImageID, BorderColorID);
     }
 
-    iluFlipImage();
     return NewImageID;
 }
 
@@ -313,7 +313,6 @@ ILuint ImageManager::GeneratedOverLayImage(ILuint TextureDevILID, Sint16 Primary
         ApplyBorder(NewImageID, BorderColorID);
     }
 
-    iluFlipImage();
     return NewImageID;
 }
 

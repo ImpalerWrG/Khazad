@@ -128,6 +128,7 @@ src/Gui/FontManager.cpp
 src/Gui/Gui.cpp
 src/Gui/InputManager.cpp
 src/Gui/KhazSlider.cpp
+src/Gui/toggleimagebutton.cpp
 
 src/Map/Building.cpp
 src/Map/Cell.cpp
