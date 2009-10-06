@@ -38,8 +38,6 @@ public:
 
     gcn::ActionListener* getExitListener()      { return ExitListener; }
 
-    gcn::Image* HiddenOn;
-    gcn::Image* HiddenOff;
     gcn::ImageButton* HiddenToggleButton;
 
 protected:

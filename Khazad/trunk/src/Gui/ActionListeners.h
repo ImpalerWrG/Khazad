@@ -112,14 +112,6 @@ class HiddenToggleActionListener: public gcn::ActionListener
     void action(const gcn::ActionEvent& actionEvent)
     {
         RENDERER->setHiddenDraw(!RENDERER->isHiddenDraw());
-        if(RENDERER->isHiddenDraw())
-        {
-            UI->HiddenToggleButton->setImage(UI->HiddenOn);
-        }
-        else
-        {
-            UI->HiddenToggleButton->setImage(UI->HiddenOff);
-        }
     }
 };
 

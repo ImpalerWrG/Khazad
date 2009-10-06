@@ -5,7 +5,7 @@
 #include <Singleton.h>
 #include <ActionListeners.h>
 #include <Paths.h>
-
+#include "toggleimagebutton.hpp"
 /**
 FIXME: This leaks some bytes. None of those gcn:: things is free'd.
 */
@@ -119,7 +119,7 @@ void Ui::InitCameraControlMenu()
     DebuggingToggleButton->addActionListener(DebuggingToggleListener);
     CameraControlWindow->add(DebuggingToggleButton, ButtonSize * 1, ButtonSize * 0);
 
-    gcn::ImageButton* ShadingToggleButton = new gcn::ImageButton(Path("Assets/UI/Buttons/Shading.png"));
+    gcn::ToggleImageButton* ShadingToggleButton = new gcn::ToggleImageButton( Path("Assets/UI/Buttons/light_uniform.png"), Path("Assets/UI/Buttons/light_gradient.png"));
     ShadingToggleButton->setSize(32, 32);
     gcn::ActionListener* ShadingTobbleListener = new ShadingToggleActionListener();
     ShadingToggleButton->addActionListener(ShadingTobbleListener);
@@ -140,10 +140,7 @@ void Ui::InitCameraControlMenu()
 
 //    gcn::Image::load(filename)
 
-    HiddenOff = gcn::Image::load(Path("Assets/UI/Buttons/Hidden2.png"));
-    HiddenOn = gcn::Image::load(Path("Assets/UI/Buttons/Hidden.png"));
-
-    HiddenToggleButton = new gcn::ImageButton(HiddenOff);
+    gcn::ToggleImageButton* HiddenToggleButton = new gcn::ToggleImageButton( Path("Assets/UI/Buttons/Hidden.png"), Path("Assets/UI/Buttons/Hidden2.png"));
     HiddenToggleButton->setSize(32, 32);
     gcn::ActionListener* HiddenToggleListener = new HiddenToggleActionListener();
     HiddenToggleButton->addActionListener(HiddenToggleListener);
