@@ -6,6 +6,7 @@
 #include <DataTypes.h>
 #include <XMLManager.h>
 
+
 struct ltstr
 {
     bool operator()(string s1, string s2) const
@@ -27,11 +28,11 @@ public:
     bool LoadDataClass(std::vector<T*>* DataVector, const char* Path, const char* Entry)
     {
         cout << "Loading " << Path << endl;
-        
+
         TiXmlDocument* Document = XML->loadFile(Path);
         TiXmlElement* Parent = Document->RootElement();
         TiXmlElement* Iterator = Parent->FirstChildElement(Entry);
-        
+
         for(; Iterator != NULL; Iterator = Iterator->NextSiblingElement(Entry))
         {
             //TODO allow the type of Element to fork to different loading types so mixed files are possible
@@ -46,7 +47,7 @@ public:
                 NewData->~T();
             }
         }
-        
+
         Document->~TiXmlDocument();  // Free the Document
         return true;
     }
@@ -79,17 +80,14 @@ public:
     MaterialClassData* getMaterialClassData(Uint32 Index)    { return MaterialClasses[Index]; }
     Uint32 getNumMaterialClasses()                           { return MaterialClasses.size(); }
 
-    //TileClassData* getTileClassData(Uint32 Index)            { return TileClasses[Index]; }
-    //Uint32 getNumTileClasses()                               { return TileClasses.size(); }
-
     SurfaceTypeData* getSurfaceTypeData(Uint32 Index)        { return SurfaceTypes[Index]; }
     Uint32 getNumSurfaceTypes()                              { return SurfaceTypes.size(); }
 
     TileShapeData* getTileShapeData(Uint32 Index)            { return TileShapes[Index]; }
     Uint32 getNumTileShape()                                 { return TileShapes.size(); }
 
-    TreeData* getTreeData(Uint32 Index)            { return Trees[Index]; }
-    Uint32 getNumTree()                                 { return Trees.size(); }
+    TreeData* getTreeData(Uint32 Index)                      { return Trees[Index]; }
+    Uint32 getNumTree()                                      { return Trees.size(); }
 
 
     Sint32 getLabelIndex(string Label);
@@ -107,7 +105,6 @@ protected:
     std::vector<MaterialData*> Materials;
     std::vector<TileGroupData*> TileGroups;
     std::vector<MaterialClassData*> MaterialClasses;
-    //std::vector<TileClassData*> TileClasses;
     std::vector<SurfaceTypeData*> SurfaceTypes;
     std::vector<TileShapeData*> TileShapes;
     std::vector<TreeData*> Trees;

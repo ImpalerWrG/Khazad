@@ -121,4 +121,18 @@ enum SpacialPoint
     NUM_SPACIAL_POINTS
 };
 
+enum WallDisplayMode
+{
+    DISPLAY_MODE_FLOOR_ONLY,
+    DISPLAY_MODE_BACK_FACET,
+    DISPLAY_MODE_BOTH_FACETS,
+    DISPLAY_MODE_THICK_WALLS,
+
+    NUM_DISPLAY_MODES,
+    DISPLAY_MODES_START = 0
+};
+
+inline WallDisplayMode &operator++ (WallDisplayMode &DisplayMode)      { return DisplayMode = WallDisplayMode(DisplayMode + 1); }
+inline WallDisplayMode &operator-- (WallDisplayMode &DisplayMode)      { return DisplayMode = WallDisplayMode(DisplayMode - 1); }
+
 #endif // ENUM_HEADER

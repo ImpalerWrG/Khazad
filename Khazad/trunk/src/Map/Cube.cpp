@@ -16,12 +16,17 @@ Cube::Cube()
     Initalized = false;
     data.whole = 0;
 
-    Facets[FACET_TOP] = false;
-    Facets[FACET_BOTTOM] = false;
-    Facets[FACET_NORTH] = false;
-    Facets[FACET_SOUTH] = false;
-    Facets[FACET_EAST] = false;
-    Facets[FACET_WEST] = false;
+    CubeShapeType = -1;
+    CubeMaterialType = -1;
+    SlopeSurfaceType = -1;
+
+    for(Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
+    {
+        FacetSurfaceTypes[FacetType] = -1;
+    }
+    FacetMaterialTypes[0] = -1;
+    FacetMaterialTypes[1] = -1;
+    FacetMaterialTypes[2] = -1;
 
     setPosition(0.0, 0.0, 0.0);
     MAP->ChangeCubeCount(1);
@@ -51,16 +56,6 @@ Cube::~Cube()
     }
 }
 
-bool Cube::Init(Uint16 MaterialType)
-{
-    Initalized = true;
-
-    Material = MaterialType;
-
-    MAP->ChangeInitedCubeCount(1);
-
-    return true;
-}
 /*
 bool Cube::DrawLiquid(float xTranslate, float yTranslate)
 {
@@ -205,27 +200,30 @@ bool Cube::DrawLiquid(float xTranslate, float yTranslate)
     }
 }
 */
-void Cube::setLiquid(Uint8 liquidtype,Uint8 NewValue)
+void Cube::setLiquid(Uint8 liquidtype, Uint8 NewValue)
 {
-    data.liquidtype=liquidtype;
+    data.liquidtype = liquidtype;
     data.liquid = NewValue;
+
     if(NewValue > 0)
+    {
         Owner->setLiquidActive(true);
+    }
 }
 
-bool Cube::setMaterial(Uint16 MaterialType)
+void Cube::setMaterial(Sint16 MaterialType)
 {
     Initalized = true;
-    Material = MaterialType;
+    CubeMaterialType = MaterialType;
 }
 
-Cube* Cube::getAdjacentCube(Facet Type)
+Cube* Cube::getAdjacentCube(Facet FacetType)
 {
     Sint32 x = Position.x;
     Sint32 y = Position.y;
     Sint32 z = Position.z;
 
-    switch(Type)
+    switch(FacetType)
     {
         case FACET_TOP:
             z += 1;
@@ -334,53 +332,10 @@ bool Cube::Update()
 {
 	return true;
 }
-/*
-//fixme: !!total!! waste of CPU cycles
-Vector3 Cube::ConvertSpacialPoint(SpacialPoint Point)
-{
-    switch(Point)
-    {
-        case SPACIAL_POINT_CENTER:
-            return Vector3(0.0, 0.0, 0.0);
-
-        case SPACIAL_POINT_NORTH_TOP:
-            return Vector3(-0.5, -0.5, 0.5);
-
-        case SPACIAL_POINT_EAST_TOP:
-            return Vector3(0.5, -0.5, 0.5);
-
-        case SPACIAL_POINT_SOUTH_TOP:
-            return Vector3(0.5, 0.5 , 0.5);
-
-        case SPACIAL_POINT_WEST_TOP:
-            return Vector3(-0.5, 0.5, 0.5);
-
-        case SPACIAL_POINT_NORTH_BOTTOM:
-            return Vector3(-0.5, -0.5, -0.5);
-
-        case SPACIAL_POINT_EAST_BOTTOM:
-            return Vector3(0.5, -0.5, -0.5);
-
-        case SPACIAL_POINT_SOUTH_BOTTOM:
-            return Vector3(0.5, 0.5, -0.5);
-
-        case SPACIAL_POINT_WEST_BOTTOM:
-            return Vector3(-0.5, 0.5, -0.5);
-
-        Default:
-            return Vector3(0.5, 0.5  -0.5);
-    }
-
-    return Vector3(0.0, 0.0, 0.0);
-}
-*/
-/*bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslate)
-{
-    return false;
-}*/
 
 void Cube::Dig()
 {
+    /*
     setHidden(false);
     if(isSolid())
     {
@@ -435,69 +390,146 @@ void Cube::Dig()
             NeighborCube->getCellOwner()->setNeedsRedraw(true);
         }
     }
+    */
 }
 
-void Cube::setGeometry(geometry_type NewValue)
+void Cube::setFacetSurfaceType(Facet FacetType, Sint16 SurfaceType)
 {
-    data.geometry = NewValue;
-    //TODO: track and change tile type
-    // update faces
-    switch (data.geometry)
+    FacetSurfaceTypes[FacetType] = SurfaceType;
+}
+
+Sint16 Cube::getFacetSurfaceType(Facet FacetType)
+{
+    return FacetSurfaceTypes[FacetType];
+}
+
+void Cube::setFacetMaterialType(Facet FacetType, Sint16 MaterialType)
+{
+    if(FacetType % 2)
     {
-        case GEOM_SLOPE:
-            // block bottom so that we don't see the wall-tops below the slope
-            Facets[FACET_BOTTOM] = true;
-            Owner->setActive(true);
+       FacetMaterialTypes[FacetType / 2] = MaterialType;
+    }
+    else
+    {
+        Cube* AdjacentCube = getAdjacentCube(FacetType);
+        if(AdjacentCube != NULL)
+        {
+            AdjacentCube->setFacetMaterialType(OppositeFacet(FacetType), MaterialType);
+        }
+    }
+}
 
-        case GEOM_EMPTY:
-            Owner->setActive(true);
-            break;
+Sint16 Cube::getFacetMaterialType(Facet FacetType)
+{
+    if(FacetType % 2)
+    {
+        return FacetMaterialTypes[FacetType / 2];
+    }
+    else
+    {
+        Cube* AdjacentCube = getAdjacentCube(FacetType);
+        if(AdjacentCube != NULL)
+        {
+            return AdjacentCube->getFacetMaterialType(OppositeFacet(FacetType));
+        }
+        return -1;
+    }
+}
 
-        case GEOM_FLOOR:
-            Facets[FACET_BOTTOM] = true;
-            Owner->setActive(true);
-            break;
+void Cube::setShape(Sint16 TileShape)
+{
+    CubeShapeType = TileShape;
+}
 
-        case GEOM_WALL:
-            Facets[FACET_TOP] = true;
-            Facets[FACET_NORTH] = true;
-            Facets[FACET_SOUTH] = true;
-            Facets[FACET_EAST] = true;
-            Facets[FACET_WEST] = true;
+bool Cube::Init()
+{
+    static Sint16 FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
+    static Sint16 WallID = DATA->getLabelIndex("TILESHAPE_WALL");
+    static Sint16 RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
+    static Sint16 StairID = DATA->getLabelIndex("TILESHAPE_STAIR");
+    static Sint16 FortificationID = DATA->getLabelIndex("TILESHAPE_FORTIFICATION");
+    static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
 
-            Owner->setActive(true);
-            Owner->setTopActive(true);
-            break;
+    if(CubeShapeType == RampID || CubeShapeType == StairID)
+    {
+        setFacetMaterialType(FACET_BOTTOM, CubeMaterialType);
+        Owner->setActive(true);
+    }
+
+    if(CubeShapeType == EmptyID)
+    {
+        if(getAdjacentCube(FACET_SOUTH) != NULL && getAdjacentCube(FACET_SOUTH)->isSolid())
+        {
+            setFacetMaterialType(FACET_SOUTH, CubeMaterialType);
+        }
+        if(getAdjacentCube(FACET_NORTH) != NULL && getAdjacentCube(FACET_NORTH)->isSolid())
+        {
+            setFacetMaterialType(FACET_NORTH, CubeMaterialType);
+        }
+        if(getAdjacentCube(FACET_WEST) != NULL && getAdjacentCube(FACET_WEST)->isSolid())
+        {
+            setFacetMaterialType(FACET_WEST, CubeMaterialType);
+        }
+        if(getAdjacentCube(FACET_EAST) != NULL && getAdjacentCube(FACET_EAST)->isSolid())
+        {
+            setFacetMaterialType(FACET_EAST, CubeMaterialType);
+        }
+        Owner->setActive(true);
+    }
+
+    if(CubeShapeType == FloorID)
+    {
+        setFacetMaterialType(FACET_BOTTOM, CubeMaterialType);
+        Owner->setActive(true);
+    }
+
+    if(isSolid())
+    {
+        if(getAdjacentCube(FACET_TOP) != NULL && getAdjacentCube(FACET_TOP)->isSolid())
+        {
+            //setFacetMaterialType(FACET_TOP, CubeMaterialType);
+        }
+
+        if(getAdjacentCube(FACET_SOUTH) != NULL && !getAdjacentCube(FACET_SOUTH)->isSolid())
+        {
+            setFacetMaterialType(FACET_SOUTH, CubeMaterialType);
+        }
+        if(getAdjacentCube(FACET_NORTH) != NULL && !getAdjacentCube(FACET_NORTH)->isSolid())
+        {
+            setFacetMaterialType(FACET_NORTH, CubeMaterialType);
+        }
+        if(getAdjacentCube(FACET_WEST) != NULL && !getAdjacentCube(FACET_WEST)->isSolid())
+        {
+            setFacetMaterialType(FACET_WEST, CubeMaterialType);
+        }
+        if(getAdjacentCube(FACET_EAST) != NULL && !getAdjacentCube(FACET_EAST)->isSolid())
+        {
+            setFacetMaterialType(FACET_EAST, CubeMaterialType);
+        }
+
+        Owner->setActive(true);
+        Owner->setTopActive(true);
     }
 }
 
 bool Cube::hasFace(Facet FacetType)
 {
-    return Facets[FacetType];
+    return getFacetMaterialType(FacetType) != -1;
 }
 
-bool Cube::Draw(float xTranslate, float yTranslate,
-                     std::map< int16_t, vector< vertex >* >& normal,
-                     std::map< int16_t, vector< vertex >* >& tops)
+bool Cube::Draw(float xTranslate, float yTranslate)
 {
-    if(data.geometry == GEOM_SLOPE)
+    if(isSlope())
     {
-        return DrawSlope(xTranslate,yTranslate,normal,tops);
+        DrawFaces(xTranslate, yTranslate);
+        return DrawSlope(xTranslate, yTranslate);
     }
-    else if (data.geometry == GEOM_EMPTY)
-    {
-        return false;
-    }
-    else
-    {
-        return DrawFaces(xTranslate, yTranslate, normal, tops);
-    }
+
+    return DrawFaces(xTranslate, yTranslate);
 }
 
 //TODO: pre-generating all possible configs and using them as templates would be faster. deferred
-bool Cube::DrawFaces(float xTranslate, float yTranslate,
-                     std::map< int16_t, vector< vertex >* >& normal,
-                     std::map< int16_t, vector< vertex >* >& tops)
+bool Cube::DrawFaces(float xTranslate, float yTranslate)
 {
     // cached quads
     static const vertex vertices[6][4] =
@@ -538,8 +570,7 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate,
     };
 
     // work vector ptr
-    vector< vertex >* vec;
-    vertex test = vertices[3][3];
+    vector<vertex>* vec;
 
     if(!Visible)
     {
@@ -548,203 +579,74 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate,
 
     for(Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
     {
-        if(!hasFace(FacetType))
+        if(FacetType == FACET_TOP)
         {
-            continue; // skip faces we don't have here
+            continue;
         }
-        Cube* c = getAdjacentCube(FacetType);
 
-        // floors are always generated in the normal way, they face the opposite direction!
-        if(FacetType != FACET_BOTTOM)
+        if(hasFace(FacetType))
         {
-            // blocked top facets are sent to the top vertex vector
-            bool blocked =
-            c &&
-            (!c->isHidden() || c->isHidden() && Hidden) &&
-            (c->hasFace(OppositeFacet(FacetType)) || c->getGeometry() == GEOM_WALL || c->getGeometry() == GEOM_SLOPE);
+            Cube* c = getAdjacentCube(FacetType);
+            vector< vertex >* vec;
 
-            if(blocked)
+            if(!Owner->Geometry.count(CubeMaterialType))
             {
-                if(FacetType == FACET_TOP)
-                {
-                    if(!tops.count(Material))
-                    {
-                        vec = new vector< vertex >;
-                        tops[Material] = vec;
-                    }
-                    else
-                    {
-                        vec = tops[Material];
-                    }
-                    vertex v3 = vertices[FacetType][3];
-                    v3.translate(xTranslate, yTranslate);
-                    vertex v2 = vertices[FacetType][2];
-                    v2.translate(xTranslate, yTranslate);
-                    vertex v1 = vertices[FacetType][1];
-                    v1.translate(xTranslate, yTranslate);
-                    vertex v0 = vertices[FacetType][0];
-                    v0.translate(xTranslate, yTranslate);
-
-                    vec->push_back(v3);
-                    vec->push_back(v1);
-                    vec->push_back(v0);
-
-                    vec->push_back(v3);
-                    vec->push_back(v2);
-                    vec->push_back(v1);
-                }
-                continue; // skip blocked face
-            }
-        }
-        // normal visible geometry
-        vector< vertex >* vec;
-        if(!normal.count(Material))
-        {
-            vec = new vector< vertex >;
-            normal[Material] = vec;
-        }
-        else
-        {
-            vec = normal[Material];
-        }
-        vertex v3 = vertices[FacetType][3];
-        v3.translate(xTranslate, yTranslate);
-        vertex v2 = vertices[FacetType][2];
-        v2.translate(xTranslate, yTranslate);
-        vertex v1 = vertices[FacetType][1];
-        v1.translate(xTranslate, yTranslate);
-        vertex v0 = vertices[FacetType][0];
-        v0.translate(xTranslate, yTranslate);
-
-        vec->push_back(v3);
-        vec->push_back(v1);
-        vec->push_back(v0);
-
-        vec->push_back(v3);
-        vec->push_back(v2);
-        vec->push_back(v1);
-    }
-}
-// DRAW FACE
-// tops_vis_invis =  draw visible or invisible tops? true = visible
-//FIXME: waste of CPU cycles
-/*
-bool Cube::DrawFace(float xTranslate, float yTranslate, Facet FacetType, bool tops_vis_invis)
-{
-    //glColor4f(1,1,1,0.2);
-    Vector3 Points[4];
-    if(Visible && hasFace(FacetType))
-    {
-        if(FacetType != FACET_BOTTOM)
-        {
-            Cube * c = getAdjacentCube(FacetType);
-            if(FacetType == FACET_TOP)
-            {
-                bool nodraw = c && (!c->isHidden() || c->isHidden() && Hidden) && (c->hasFace(OppositeFacet(FacetType)) || c->getGeometry() == GEOM_WALL);
-                if(tops_vis_invis && nodraw || !tops_vis_invis && !nodraw)
-                {
-                    return false;
-                }
+                vec = new vector< vertex >;
+                Owner->Geometry[CubeMaterialType] = vec;
             }
             else
             {
-                if(c && (!c->isHidden() || c->isHidden() && Hidden) && c->hasFace(OppositeFacet(FacetType)))
-                    return false;
+                vec = Owner->Geometry[CubeMaterialType];
             }
+
+            vertex v3 = vertices[FacetType][3];
+            v3.translate(xTranslate, yTranslate);
+            vertex v2 = vertices[FacetType][2];
+            v2.translate(xTranslate, yTranslate);
+            vertex v1 = vertices[FacetType][1];
+            v1.translate(xTranslate, yTranslate);
+            vertex v0 = vertices[FacetType][0];
+            v0.translate(xTranslate, yTranslate);
+
+            vec->push_back(v3);
+            vec->push_back(v1);
+            vec->push_back(v0);
+
+            vec->push_back(v3);
+            vec->push_back(v2);
+            vec->push_back(v1);
         }
-        switch(FacetType)
-        {
-            case FACET_TOP:
-            {
-                glNormal3f( 0.0f, 0.0f, 1.0f);
-                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
-                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
-                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-                break;
-            }
-            case FACET_BOTTOM:
-            {
-                glNormal3f( 0.0f, 0.0f, 1.0f);
-                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
-                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
-                break;
-            }
-            case FACET_NORTH:
-            {
-                glNormal3f( 0.0f, -1.0f, 0.0f);
-                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
-                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
-                break;
-            }
-            case FACET_EAST:
-            {
-                glNormal3f( 1.0f, 0.0f, 0.0f);
-                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
-                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
-                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-                break;
-            }
-            case FACET_SOUTH:
-            {
-                glNormal3f( 0.0f, 1.0f, 0.0f);
-                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
-                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
-                break;
-            }
-            case FACET_WEST:
-            {
-                glNormal3f( -1.0f, 0.0f, 0.0f);
-                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
-                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
-                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-                break;
-            }
-        }
-        TEXTURE->BindTexture(Material);
-        glTexCoord2f(0,0);
-        glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
-
-        glTexCoord2f(1,1);
-        glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
-
-        glTexCoord2f(0,1);
-        glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
-
-
-        glTexCoord2f(0,0);
-        glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
-
-        glTexCoord2f(1,0);
-        glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
-
-        glTexCoord2f(1,1);
-        glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
-        RENDERER->IncrementTriangles(2);
     }
-
-    return true;
 }
 
-*/
-// DRAW SLOPE
+bool Cube::isSolid()
+{
+    static Sint16 WallID = DATA->getLabelIndex("TILESHAPE_WALL");
+    static Sint16 FortificationID = DATA->getLabelIndex("TILESHAPE_FORTIFICATION");
+
+   return (CubeShapeType == WallID || CubeShapeType == FortificationID);
+}
+
+bool Cube::isSlope()
+{
+    static Sint16 RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
+    static Sint16 StairID = DATA->getLabelIndex("TILESHAPE_STAIR");
+
+   return (CubeShapeType == RampID || CubeShapeType == StairID);
+}
 
 /// TODO: normal vectors. these are required for lighting
 /// TODO: separate this from khazad, use for mesh generation
 /// FIXME: waste of CPU cycles
-bool Cube::DrawSlope(float xTranslate, float yTranslate,
-                     std::map< int16_t, vector< vertex >* >& normal,
-                     std::map< int16_t, vector< vertex >* >& tops)
+bool Cube::DrawSlope(float xTranslate, float yTranslate)
 {
-    if(!Visible) return false;
+    if(!Visible)
+    {
+        return false;
+    }
+
+    //map<int16_t, vector <vertex>* > Geometry = Owner->Geometry;
+
     /**
     * heightmap. order is from nort-west to north-west, clockwise. hm[9] is the center
     * 0=8--1---2
@@ -798,7 +700,7 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate,
     uint8_t strong, weak, numsolids = 0;
 
     // copy surroundings
-    for(Direction i = DIRECTION_NORTHWEST; i <= DIRECTION_WEST; ++i)
+    for(Direction i = DIRECTIONS_START; i <= DIRECTION_WEST; ++i)
     {
         bool solid = getNeighborCube(i) != NULL && getNeighborCube(i)->isSolid();
         hm[i] = solid << 1;
@@ -846,19 +748,19 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate,
         hmf[i] = ((float)hm[i]) / 2 - 0.5;
     }
     vector <vertex>* vec;
-    if(!normal.count(Material))
+    if(!Owner->Geometry.count(CubeMaterialType))
     {
         vec = new vector< vertex >;
-        normal[Material] = vec;
+        Owner->Geometry[CubeMaterialType] = vec;
         vec->reserve(256);
     }
     else
     {
-        vec = normal[Material];
+        vec = Owner->Geometry[CubeMaterialType];
     }
 
     // draw triangles
-    for(Direction i = DIRECTION_NORTHWEST; i <= DIRECTION_WEST; ++i)
+    for(Direction i = DIRECTIONS_START; i <= DIRECTION_WEST; ++i)
     {
         /**
         *  P--P+1--*
@@ -874,56 +776,29 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate,
         s2f tx0 = {0.5,0.5};
         s2f tx1 = {tc[i+1][0],tc[i+1][1]};
         s2f tx2 = {tc[i][0],tc[i][1]};
-        /*
-        // point C
-        vertex v0 = vertex(xTranslate, yTranslate, hmf[9],0.5,0.5, 0,0,1);
-        //point P+1
-        vertex v1 = vertex(dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, hmf[i+1],tc[i+1][0],tc[i+1][1], 0,0,1);
-        //point P
-        vertex v2 = vertex(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i],tc[i][0],tc[i][1], 0,0,1);
-        */
-        vertex v0 = vertex(center,tx0, norm);
-        //point P+1
-        vertex v1 = vertex(pt1,tx1, norm);
-        //point P
-        vertex v2 = vertex(pt2,tx2, norm);
-        if(v0.z == v1.z == v2.z == 0.5) // top
-        {
-            vector <vertex>* vect;
-            Cube *c = getAdjacentCube(FACET_TOP);
-            if(c && !c->getGeometry() == GEOM_EMPTY)
-            {
-                if(!tops.count(Material))
-                {
-                    vect = new vector< vertex >;
-                    tops[Material] = vect;
-                    vect->reserve(256);
-                }
-                else
-                {
-                    vect = tops[Material];
-                }
-                vect->push_back(v0);
-                vect->push_back(v1);
-                vect->push_back(v2);
-                // next triangle
-                continue;
-            }
-        }
+
+        vertex v0 = vertex(center, tx0, norm);
+        vertex v1 = vertex(pt1, tx1, norm);
+        vertex v2 = vertex(pt2, tx2, norm);
+
         vec->push_back(v0);
         vec->push_back(v1);
         vec->push_back(v2);
     }
     //patch holes
-    for(int i = 0; i< 8;i+=2)
+    for(int i = 0; i < 8; i += 2)
     {
         // already covered by wall or nearby slope, don't draw side
         if (covered[i/2])
+        {
             continue;
+        }
 
         // zero center can be ignored
         if (hm[i+1] == 0)
+        {
             continue;
+        }
 
         // determine how many triangles are needed an in what configuration
         if(hm[i] == 0)// one tri, hm[i+2] is high

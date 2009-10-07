@@ -10,6 +10,8 @@ class Camera
 {
 protected:
 
+    WallDisplayMode DisplayMode;
+
 	Vector3 EyePosition;
 	Vector3 UpVector;
 	Vector3 LookPosition;
@@ -242,9 +244,9 @@ public:
 	bool sphereInFrustum(Vector3 Point, float Radius);
 
 
-	void setAllFacesDrawing(bool NewValue);
+	WallDisplayMode getWallDisplayMode()            { return DisplayMode; }
 
-	bool isAllFacesDrawing();
+	void setWallDisplayMode(WallDisplayMode NewValue)   { DisplayMode == NewValue; }
 };
 
 #endif // CAMERA__HEADER

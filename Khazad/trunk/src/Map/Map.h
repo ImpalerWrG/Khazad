@@ -36,6 +36,7 @@ public:
 	Cell* getCell(Sint32 X, Sint32 Y, Sint32 Z);
 	Cell* getCubeOwner(Sint32 X, Sint32 Y, Sint32 Z);
 	Cube* getCube(Sint32 X, Sint32 Y, Sint32 Z);
+
     bool hasFace(Sint32 X, Sint32 Y, Sint32 Z, Facet FaceType);
 
     void InitilizeTilePicker(DFHackAPI & DF);
@@ -94,7 +95,9 @@ public:
     Vector3 getMapCenter();
 
     TreeManager * TreeMan;
+
 protected:
+
     bool Initialized;
     bool MapLoaded;
 

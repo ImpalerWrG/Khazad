@@ -14,12 +14,14 @@ struct ROstore
 {
     inline ROstore(  RenderObject * n, RenderObject * t ): normal(n),top(t){};
     inline ROstore(){};
+
     RenderObject * normal;
     RenderObject * top;
 };
 
 class Cell/*: public Actor*/
 {
+
 public:
 
     Cell();
@@ -43,6 +45,21 @@ public:
 
     void DrawCellCage();
 
+
+    void setCubeShape(Uint8 CubeX, Uint8 CubeY, Sint16 TileShape);
+    Sint16 getCubeShape(Uint8 CubeX, Uint8 CubeY)             { return CubeShapeTypes[CubeX][CubeY]; }
+
+    void setCubeMaterial(Uint8 CubeX, Uint8 CubeY, Sint16 MaterialID);
+    Sint16 getCubeMaterial(Uint8 CubeX, Uint8 CubeY)          { return CubeMaterialTypes[CubeX][CubeY]; }
+
+
+    //void setFacetSurfaceType(Uint8 CubeX, Uint8 CubeY, Facet FacetType, Sint16 SurfaceType);
+    //Sint16 getFacetSurfaceType(Uint8 CubeX, Uint8 CubeY, Facet FacetType);
+
+    //void setFacetMaterialType(Uint8 CubeX, Uint8 CubeY, Facet FacetType, Sint16 MaterialType);
+    //Sint16 getFacetMaterialType(Uint8 CubeX, Uint8 CubeY, Facet FacetType);
+
+
     inline bool isActive()                      { return Active; }
     void setActive(bool NewValue)               { Active = NewValue; }
 
@@ -60,6 +77,8 @@ public:
 
     Vector3 getPosition(){return Position;};
 
+    map<int16_t, vector <vertex>* > Geometry;
+
 protected:
 
     bool NeedsRedraw; //TODO maintain a vector of cells that need redraw instead
@@ -76,14 +95,10 @@ protected:
     Cube* Cubes[CELLEDGESIZE][CELLEDGESIZE];
 
     Sint16 CubeShapeTypes[CELLEDGESIZE][CELLEDGESIZE];
-    Sint16 CubeSurfaceTypes[CELLEDGESIZE][CELLEDGESIZE];
     Sint16 CubeMaterialTypes[CELLEDGESIZE][CELLEDGESIZE];
 
-    Sint16 FacetSurfaceTypes[CELLEDGESIZE][CELLEDGESIZE][NUM_FACETS];
-    Sint16 FacetMaterialTypes[CELLEDGESIZE][CELLEDGESIZE][3];
-
-    vector <Building *> buildings;
-    vector <Tree *> trees;
+    vector <Building*> buildings;
+    vector <Tree*> trees;
 
     bool Active;
     bool ActiveLiquid;

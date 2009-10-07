@@ -154,12 +154,12 @@ bool Renderer::Init()
 
     glEnable(GL_TEXTURE_2D);
     glShadeModel(GL_SMOOTH);
-    
+
     // FIXME: smoothed lines look terrible on modern hardware, the GUI breaks
     /*glEnable(GL_LINE_SMOOTH);
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);*/
-    
-    
+
+
     glEnable(GL_DEPTH_TEST);
     // disabled for fun and profit
     //glEnable(GL_COLOR_MATERIAL);
@@ -177,7 +177,7 @@ bool Renderer::Init()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glDepthFunc(GL_LEQUAL/* GL_LESS*/); // show me those walls under floors, glitch style. yes.
-    
+
 
     imageLoader = new gcn::OpenGLSDLImageLoader();
     gcn::Image::setImageLoader(imageLoader);
@@ -624,7 +624,7 @@ bool Renderer::Render()
     glMatrixMode(GL_MODELVIEW);
     glEnable(GL_LIGHT0);
     glEnable(GL_LIGHT1);
-    
+
 
     CameraOrientation CurrentOrientation = MainCamera->getOrientation();
 
@@ -652,6 +652,7 @@ bool Renderer::Render()
         }
         float ZTranslate = MainCamera->ZlevelSeperationAdjustment(Zlevel);
         for(Sint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
+        {
             for(Sint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
             {
                 GLfloat specular[] = {1.0f * Shading, 1.0f * Shading, 1.0f *Shading , 1.0f};
@@ -663,11 +664,11 @@ bool Renderer::Render()
                 //GLfloat dir[] = {0.0, -3.0, 3.0};
                 //glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
                 glLightfv(GL_LIGHT0, GL_POSITION, position);
-                
-                
-                GLfloat specular2[] = {0.15f, 0.15f, 0.3f , 1.0f};
+
+
+                GLfloat specular2[] = {0.15f, 0.15f, 0.25f , 1.0f};
                 glLightfv(GL_LIGHT1, GL_DIFFUSE, specular2);
-                GLfloat ambient2[] = { 0.15f, 0.15f, 0.3f };
+                GLfloat ambient2[] = { 0.15f, 0.15f, 0.25f };
                 glLightfv(GL_LIGHT1, GL_AMBIENT, ambient2);
                 GLfloat position2[] = { -1.0f, -1.5f, 2.0f, 0.0f };
                 //GLfloat dir[] = {0.0, -3.0, 3.0};
@@ -675,7 +676,7 @@ bool Renderer::Render()
                 glLightfv(GL_LIGHT1, GL_POSITION, position2);
                 RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, drawtops);
             }
-                
+        }
     }
     /// bind normal stuff
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -852,13 +853,13 @@ void Renderer::PrintDebugging()
         RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 
-/*        Cube *c  = MAP->getCube(x,y,z);
-        if(c)
+        Cube* SelectedCube  = MAP->getCube(x,y,z);
+        if(SelectedCube != NULL)
         {
-            sprintf (buffer, "visible: %d, hidden: %d", c->isVisible(), c->isHidden());
-            SCREEN->RenderText(buffer, 0, WHITE, &position);
+            sprintf (buffer, "NorthFacet: %d  SouthFacet: %d  EastFacet: %d  WestFacet: % d", SelectedCube->getFacetMaterialType(FACET_NORTH), SelectedCube->getFacetMaterialType(FACET_SOUTH), SelectedCube->getFacetMaterialType(FACET_EAST), SelectedCube->getFacetMaterialType(FACET_WEST));
+            RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
-        }*/
+        }
 
 /*        Block* TargetBlock = df_map->getBlock(x / 16, y / 16, z);
         if(TargetBlock != NULL)

@@ -50,17 +50,17 @@
 		<Compiler>
 			<Add option="-DPSAPI_VERSION=1" />
 			<Add option="-DBUILD_DFHACK_LIB" />
-			<Add directory="src\Core" />
 			<Add directory="include" />
-			<Add directory="DevIL" />
+			<Add directory="DevIL\include" />
+			<Add directory="guichan\include" />
+			<Add directory="guichan\src" />
+			<Add directory="src\Core" />
 			<Add directory="src\Data" />
 			<Add directory="src\Game" />
 			<Add directory="src\Geometry" />
 			<Add directory="src\Gui" />
 			<Add directory="src\Map" />
 			<Add directory="src\Render" />
-			<Add directory="guichan\include" />
-			<Add directory="guichan\src" />
 			<Add directory="TinyXML" />
 			<Add directory="dfhack\library" />
 		</Compiler>
@@ -78,15 +78,16 @@
 			<Add library="ILUT" />
 			<Add library="psapi" />
 			<Add directory="lib" />
+			<Add directory="DevIL\lib" />
 		</Linker>
-		<Unit filename="DevIL\config.h" />
-		<Unit filename="DevIL\devil_internal_exports.h" />
-		<Unit filename="DevIL\il.h" />
-		<Unit filename="DevIL\il_wrap.h" />
-		<Unit filename="DevIL\ilu.h" />
-		<Unit filename="DevIL\ilu_region.h" />
-		<Unit filename="DevIL\ilut.h" />
-		<Unit filename="DevIL\ilut_config.h" />
+		<Unit filename="DevIL\include\config.h" />
+		<Unit filename="DevIL\include\devil_internal_exports.h" />
+		<Unit filename="DevIL\include\il.h" />
+		<Unit filename="DevIL\include\il_wrap.h" />
+		<Unit filename="DevIL\include\ilu.h" />
+		<Unit filename="DevIL\include\ilu_region.h" />
+		<Unit filename="DevIL\include\ilut.h" />
+		<Unit filename="DevIL\include\ilut_config.h" />
 		<Unit filename="TinyXML\tinystr.cpp" />
 		<Unit filename="TinyXML\tinystr.h" />
 		<Unit filename="TinyXML\tinyxml.cpp" />
@@ -262,7 +263,6 @@
 		<Unit filename="src\Gui\InputManager.h" />
 		<Unit filename="src\Gui\KhazSlider.cpp" />
 		<Unit filename="src\Gui\KhazSlider.hpp" />
-		<Unit filename="src\Gui\toggleimagebutton.cpp" />
 		<Unit filename="src\Gui\toggleimagebutton.hpp" />
 		<Unit filename="src\Map\Building.cpp" />
 		<Unit filename="src\Map\Building.h" />

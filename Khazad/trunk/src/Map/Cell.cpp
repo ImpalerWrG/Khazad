@@ -50,6 +50,8 @@ bool Cell::Init()
         for(Uint8 j = 0; j < CELLEDGESIZE; j++)
         {
             Cubes[i][j] = NULL;
+            CubeShapeTypes[i][j] = -1;
+            CubeMaterialTypes[i][j] = -1;
         }
     }
 
@@ -105,12 +107,12 @@ bool Cell::Update()
     return true;
 }
 
-void Cell::addBuilding(Building * b)
+void Cell::addBuilding(Building* b)
 {
     buildings.push_back(b);
 }
 
-void Cell::addTree(Tree * t)
+void Cell::addTree(Tree* t)
 {
     trees.push_back(t);
 }
@@ -138,8 +140,8 @@ void Cell::Render(bool drawtop)
 void Cell::UpdateLists()
 {
     //maps between texture and vertex vectors
-    map<int16_t, vector < vertex > * > normal; // normal geometry
-    map<int16_t, vector < vertex > * > tops; // tops blocked by geometry above
+    Geometry.clear();
+
     Cube* LoopCube = NULL;
     if(Initialized)
     {
@@ -150,15 +152,16 @@ void Cell::UpdateLists()
                 LoopCube = getCube(x, y);
                 if (LoopCube != NULL && RENDERER->isCubeDrawn(LoopCube))
                 {
-                    LoopCube->Draw(x, y, normal, tops);
+                    LoopCube->Draw(x, y);
                 }
             }
         }
+
         //TODO: only regenerate changed ones
         // destroy old
         ClearROs();
         // for each material in normal geometry
-        for( map<int16_t, vector < vertex > * >::iterator it = normal.begin(); it != normal.end(); ++it)
+        for( map<int16_t, vector < vertex > * >::iterator it = Geometry.begin(); it != Geometry.end(); ++it)
         {
             int16_t material = it->first;
             vector < vertex > * vertices = it->second;
@@ -179,30 +182,9 @@ void Cell::UpdateLists()
             }
             ROs[material] = tempRO;
         }
-        // for each material in top geometry
-        for( map<int16_t, vector < vertex > * >::iterator it = tops.begin(); it != tops.end(); ++it)
-        {
-            int16_t material = it->first;
-            vector < vertex > * vertices = it->second;
-            // build vbo
-            RenderObject * RO = RENDERER->CreateRenderObject(vertices);
-            delete vertices;
-            // assign vbo to descriptor
-            ROstore tempRO;
-            if(ROs.count(material))
-            {
-                tempRO = ROs[material];
-                tempRO.top = RO;
-            }
-            else
-            {
-                tempRO= ROstore(NULL,RO);
-            }
-            // store descriptor
-            ROs[material] = tempRO;
-        }
     }
 }
+
 void Cell::ClearROs()
 {
     for( map<int16_t, ROstore >::iterator it = ROs.begin(); it != ROs.end(); ++it)

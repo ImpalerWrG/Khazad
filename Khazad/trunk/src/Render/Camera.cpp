@@ -11,6 +11,8 @@
 
 Camera::Camera()
 {
+    DisplayMode = DISPLAY_MODE_THICK_WALLS;
+
     SlidingMode = false;
     ZoomingMode = false;
     VerticalMode = false;
@@ -24,6 +26,7 @@ Camera::Camera()
     IsoScalar = CONFIG->ZoomStart();
     MaxScalar = CONFIG->ZoomMax();
     MinScalar = CONFIG->ZoomMin();
+
     SliceTop = 1;
     SliceBottom = 0;
 }
@@ -974,14 +977,4 @@ void Camera::PrintDebugging()
     printf("Look Position X: %f\n", LookPosition.x);
     printf("Look Position Y: %f\n", LookPosition.y);
     printf("Look Position Z: %f\n", LookPosition.z);
-}
-
-bool Camera::isAllFacesDrawing()
-{
-    return AllFacesDrawing;
-}
-
-void Camera::setAllFacesDrawing(bool NewValue)
-{
-    AllFacesDrawing = NewValue;
 }

@@ -15,7 +15,6 @@
 
 #include <Column.h>
 #include <Cube.h>
-//#include <Face.h>
 #include <Cell.h>
 #include <Random.h>
 #include <Building.h>
@@ -275,6 +274,10 @@ bool Map::Extract()
     }
     DF.FinishReadBuildings();
 
+    MapSizeX = CellSizeX * CELLEDGESIZE;
+	MapSizeY = CellSizeY * CELLEDGESIZE;
+	MapSizeZ = CellSizeZ;
+
     ColumnMatrix = new Column**[CellSizeX];
 
     for (Uint16 x = 0; x < CellSizeX; x++)
@@ -290,17 +293,40 @@ bool Map::Extract()
                 {
                     Cell* NewCell = new Cell(x * CELLEDGESIZE, y * CELLEDGESIZE, z);
                     NewCell->Init();
-                    LoadCellData(DF,layerassign,NewCell,constructionAssigner,plantAssigner,buildingAssigner,x,y,z);
+                    LoadCellData(DF, layerassign, NewCell, constructionAssigner, plantAssigner, buildingAssigner, x, y, z);
                     ColumnMatrix[x][y]->PushCell(NewCell, z);
 			    }
 			}
 		}
 	}
+
+	for (Uint32 i = 0; i < CellSizeX; i++)
+	{
+		for (Uint32 j = 0; j < CellSizeY; j++)
+		{
+			for (Sint32 k = ColumnMatrix[i][j]->BottomLevel(); k <= ColumnMatrix[i][j]->TopLevel(); k++)
+			{
+			    Cell* LoopCell = getCell(i, j, k);
+			    if(LoopCell != NULL)
+			    {
+                    for(Uint32 CubeX = 0; CubeX < CELLEDGESIZE; CubeX++)
+                    {
+                        for(Uint32 CubeY = 0; CubeY < CELLEDGESIZE; CubeY++)
+                        {
+                            Cube* TargetCube = LoopCell->getCube(CubeX, CubeY);
+                            if(TargetCube != NULL)
+                            {
+                                TargetCube->Init();
+                            }
+                        }
+                    }
+			    }
+			}
+		}
+	}
+
     DF.Detach();
 
-    MapSizeX = CellSizeX * CELLEDGESIZE;
-	MapSizeY = CellSizeY * CELLEDGESIZE;
-	MapSizeZ = CellSizeZ;
     // Initialize VBOs
 
 	for(Uint16 Zlevel = 0; Zlevel < getCellSizeZ(); Zlevel++)
@@ -366,9 +392,9 @@ void Map::LoadCellData(DFHackAPI & DF,
     DF.ReadVeins(CellX,CellY,CellZ,veins);
 
     // get the materials, buildings, trees
-    for(uint32_t xx = 0;xx<16;xx++)
+    for(uint32_t xx = 0; xx < 16; xx++)
     {
-        for (uint32_t yy = 0; yy< 16;yy++)
+        for (uint32_t yy = 0; yy < 16; yy++)
         {
             // base rock layers
             basemat[xx][yy] =
@@ -415,13 +441,6 @@ void Map::LoadCellData(DFHackAPI & DF,
         }
     }
 
-    static Sint16 FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
-    static Sint16 WallID = DATA->getLabelIndex("TILESHAPE_WALL");
-    static Sint16 RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
-    static Sint16 StairID = DATA->getLabelIndex("TILESHAPE_STAIR");
-    static Sint16 FortificationID = DATA->getLabelIndex("TILESHAPE_FORTIFICATION");
-    static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
-
     for(Uint32 CubeX = 0; CubeX < CELLEDGESIZE; CubeX++)
     {
         for(Uint32 CubeY = 0; CubeY < CELLEDGESIZE; CubeY++)
@@ -435,20 +454,14 @@ void Map::LoadCellData(DFHackAPI & DF,
             t_occupancy Ocupancies = occupancies[CubeX][CubeY];
             Sint16 TileShapeID = TileShapePicker[TileType];
 
-            bool IsFloor = (TileShapeID == FloorID);
-            bool IsWall = (TileShapeID == WallID) || (TileShapeID == FortificationID);
+            static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
             bool IsEmpty = (TileShapeID == EmptyID);
-            bool IsRamp = (TileShapeID == RampID);
-            bool IsStairs = (TileShapeID == StairID);
-
             int Liquid = Designations.bits.flow_size;
 
-            // initialize cubes. skip empty cubes unless they have liquid in them
-            if(IsFloor || IsWall || (Liquid && IsEmpty) || IsRamp || IsStairs)
+            // Create Cubes and load data, skip empty cubes unless they have liquid in them
+            if(!IsEmpty && !Liquid)
             {
-                Cube* TargetCube = TargetCell->getCube(CubeX, CubeY);
-
-                TargetCube = new Cube();
+                Cube* TargetCube = new Cube();
                 TargetCell->setCube(TargetCube, CubeX, CubeY);
                 TargetCube->setPosition((float) MapX, (float) MapY, (float) MapZ);
 
@@ -459,32 +472,9 @@ void Map::LoadCellData(DFHackAPI & DF,
                 TargetCube->setSkyView(Designations.bits.skyview);
                 TargetCube->setSunLit(Designations.bits.light);
 
-                if(IsWall)
-                {
-                    TargetCube->Init(Material);
-                    TargetCube->setGeometry(GEOM_WALL);
-                }
-                else if(IsEmpty)
-                {
-                    TargetCube->Init(Material);
-                    TargetCube->setGeometry(GEOM_EMPTY);
-                }
-                else if(IsRamp)
-                {
-                    TargetCube->Init(Material);
-                    TargetCube->setGeometry(GEOM_SLOPE);
-                }
-                else if(IsFloor)
-                {
-                    TargetCube->Init(Material);
-                    TargetCube->setGeometry(GEOM_FLOOR);
-                }
-                else if(IsStairs)
-                {
-                    TargetCube->Init(Material);
-                    TargetCube->setGeometry(GEOM_SLOPE);
-                    //TODO render stairs differently
-                }
+                TargetCube->setMaterial(Material);
+                TargetCube->setShape(TileShapeID);
+
                 if(Designations.bits.flow_size)
                 {
                     TargetCube->setLiquid(Designations.bits.liquid_type, Designations.bits.flow_size);
