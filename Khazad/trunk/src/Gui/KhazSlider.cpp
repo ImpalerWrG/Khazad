@@ -336,7 +336,6 @@ void KhazSlider::mouseEntered(MouseEvent& mouseEvent)
 
 void KhazSlider::mouseDragged (MouseEvent& mouseEvent)
 {
-    // TODO: use drag offset so things don't jump
     switch (mDragged)
     {
         case DRAG_TOP:

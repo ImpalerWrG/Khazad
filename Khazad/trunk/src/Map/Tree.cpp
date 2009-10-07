@@ -131,7 +131,7 @@ bool Tree::Draw()
                 model->Render(trunkid);
             }
 
-            if(leavesid != -1)
+            if(leavesid != -1 && type !=TREE_DEAD && type != SAPLING_DEAD)
             {
                 TEXTURE->BindTexture(leavesmat_normal);
                 model->Render(leavesid);
