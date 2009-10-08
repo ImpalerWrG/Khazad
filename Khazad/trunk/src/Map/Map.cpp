@@ -524,16 +524,18 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
     int16_t uninitialized = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
     for(Uint32 i = 0; i < NumStoneMats; i++)
     {
+        bool hit = 0;
         for(Uint32 j = 0; j < DATA->getNumMaterials(); ++j)
         {
             if(DATA->getMaterialData(j)->getMatGloss() == stonetypes[i].id)
             {
                 StoneMatGloss.push_back(j);
+                hit = 1;
             }
-            else
-            {
-                StoneMatGloss.push_back(uninitialized);
-            }
+        }
+        if(!hit)
+        {
+            StoneMatGloss.push_back(uninitialized);
         }
     }
     if(TreeMan) delete TreeMan;

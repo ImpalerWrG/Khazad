@@ -235,15 +235,16 @@ class MapDumpActionListener: public gcn::ActionListener
         RENDERER->RenderTextCentered("Dumping Memory", 0, WHITE, 0);
         RENDERER->Flip();
 
-        MAP->Extract();
-
-        RENDERER->MainCamera->CenterView(MAP->getMapCenter());
-        UI->setZSliderRange(MAP->getMapSizeZ());
-        UI->setZSliders(MAP->getMapSizeZ(),0 );
-        RENDERER->MainCamera->SetSliceTop(MAP->getMapSizeZ());
-        RENDERER->MainCamera->SetSliceBottom(0);
-        RENDERER->MainCamera->ConfineCursor();
-        UI->setMapViewState();
+        if(MAP->Extract())
+        {
+            RENDERER->MainCamera->CenterView(MAP->getMapCenter());
+            UI->setZSliderRange(MAP->getMapSizeZ());
+            UI->setZSliders(MAP->getMapSizeZ(),0 );
+            RENDERER->MainCamera->SetSliceTop(MAP->getMapSizeZ());
+            RENDERER->MainCamera->SetSliceBottom(0);
+            RENDERER->MainCamera->ConfineCursor();
+            UI->setMapViewState();
+        }
     }
 };
 
@@ -260,16 +261,17 @@ class MapLoadActionListener: public gcn::ActionListener
         RENDERER->RenderTextCentered(buffer, 0, WHITE, 0);
         RENDERER->Flip();
 
-        MAP->Load(Path(CONFIG->LoadPath()));
-
-        RENDERER->MainCamera->CenterView(MAP->getMapCenter());
-        UI->setZSliderRange(MAP->getMapSizeZ());
-        UI->setZSliders(0,MAP->getMapSizeZ() );
-        RENDERER->MainCamera->SetSliceTop(MAP->getMapSizeZ());
-        RENDERER->MainCamera->SetSliceBottom(0);
-        RENDERER->MainCamera->ConfineCursor();
-
-        UI->setMapViewState();
+        if(MAP->Load(Path(CONFIG->LoadPath())))
+        {
+            RENDERER->MainCamera->CenterView(MAP->getMapCenter());
+            UI->setZSliderRange(MAP->getMapSizeZ());
+            UI->setZSliders(0,MAP->getMapSizeZ() );
+            RENDERER->MainCamera->SetSliceTop(MAP->getMapSizeZ());
+            RENDERER->MainCamera->SetSliceBottom(0);
+            RENDERER->MainCamera->ConfineCursor();
+            
+            UI->setMapViewState();
+        }
     }
 };
 
