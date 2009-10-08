@@ -27,17 +27,27 @@ class Model
     public:
         inline void Render()
         {
-            RENDERER->CallRenderObject(submodels[0]);
+            RENDERER->CallRenderObject(submodels[0].first);
         };
         inline void Render( string submodel )
         {
-            RENDERER->CallRenderObject(submodels[getSubmodelIndex(submodel)]);
+            RENDERER->CallRenderObject(submodels[getSubmodelIndex(submodel)].first);
         };
         inline void Render( uint32_t submodel )
         {
-            RENDERER->CallRenderObject(submodels[submodel]);
+            RENDERER->CallRenderObject(submodels[submodel].first);
         };
-
+        
+        inline vector <vertex> * getSubmodelVertices ( uint32_t submodel )
+        {
+            return submodels[submodel].second;
+        }
+        
+        inline vector <vertex> * getVertices ()
+        {
+            return submodels[0].second;
+        }
+        
         inline int32_t getSubmodelIndex (string submodel)
         {
             if(submodel_names.count(submodel))
@@ -45,18 +55,27 @@ class Model
             return -1;
         }
     private:
-        Model(map <string, RenderObject *> & _submodels)
+        
+        Model(map <string, pair <RenderObject *, vector <vertex> *> > & _submodels)
         {
             uint32_t i = 0;
-            for(map <string, RenderObject *>::iterator it = _submodels.begin(); it != _submodels.end(); ++it)
+            for(map <string, pair <RenderObject *, vector <vertex> *> >::iterator it = _submodels.begin(); it != _submodels.end(); ++it)
             {
                 submodel_names[it->first] = i;
                 i++;
                 submodels.push_back(it->second);
             }
         }
+        ~Model()
+        {
+            for(int i = 0; i < submodels.size(); i++ )
+            {
+                RENDERER->DeleteRenderObject(submodels[i].first);
+                delete submodels[i].second;
+            }
+        }
         map <string, uint32_t> submodel_names;
-        vector <RenderObject *> submodels;
+        vector < pair <RenderObject *, vector <vertex> *> > submodels;
 };
 
 #endif // MODEL_H

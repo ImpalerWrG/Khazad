@@ -655,10 +655,10 @@ bool Renderer::Render()
         {
             for(Sint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
             {
-                GLfloat specular[] = {1.0f * Shading, 1.0f * Shading, 1.0f *Shading , 1.0f};
+                GLfloat specular[] = {Shading, Shading, Shading , 1.0f};
                 glLightfv(GL_LIGHT0, GL_DIFFUSE, specular);
                 glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
-                GLfloat ambient[] = { 1.0f * Shading, 1.0f * Shading, 1.0f * Shading };
+                GLfloat ambient[] = { Shading, Shading, Shading };
                 glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
                 GLfloat position[] = { 1.0f, 1.5f, 2.0f, 0.0f };
                 //GLfloat dir[] = {0.0, -3.0, 3.0};

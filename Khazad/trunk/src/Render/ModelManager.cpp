@@ -51,10 +51,10 @@ Model * ModelManager::LoadOBJModel(string filename)
     vector < vertex3f > verts;
     vector < normal3f > normals;
     vector < texcoord2f > texcoords;
-    map <string, RenderObject *> submodels;
+    map <string, pair <RenderObject *, vector <vertex> *> > submodels;
     string currentgroup = "main";
 
-    vector <vertex> finished_verts;
+    vector <vertex> *finished_verts = new vector<vertex>;
 
     int v1,v2,v3,v4,v5,n1,n2,n3,n4,n5,t1,t2,t3,t4,t5;
     FILE * modelfile = fopen (filename.c_str(), "r");
@@ -96,19 +96,19 @@ Model * ModelManager::LoadOBJModel(string filename)
             {
                 // a pentagon, subdivide
                 // tri 1
-                finished_verts.push_back(vertex(verts[v1-1],texcoords[t1-1],normals[n1-1]));
-                finished_verts.push_back(vertex(verts[v2-1],texcoords[t2-1],normals[n2-1]));
-                finished_verts.push_back(vertex(verts[v3-1],texcoords[t3-1],normals[n3-1]));
+                finished_verts->push_back(vertex(verts[v1-1],texcoords[t1-1],normals[n1-1]));
+                finished_verts->push_back(vertex(verts[v2-1],texcoords[t2-1],normals[n2-1]));
+                finished_verts->push_back(vertex(verts[v3-1],texcoords[t3-1],normals[n3-1]));
 
                 // tri 2
-                finished_verts.push_back(vertex(verts[v1-1],texcoords[t1-1],normals[n1-1]));
-                finished_verts.push_back(vertex(verts[v3-1],texcoords[t3-1],normals[n3-1]));
-                finished_verts.push_back(vertex(verts[v4-1],texcoords[t4-1],normals[n4-1]));
+                finished_verts->push_back(vertex(verts[v1-1],texcoords[t1-1],normals[n1-1]));
+                finished_verts->push_back(vertex(verts[v3-1],texcoords[t3-1],normals[n3-1]));
+                finished_verts->push_back(vertex(verts[v4-1],texcoords[t4-1],normals[n4-1]));
 
                 // tri 3
-                finished_verts.push_back(vertex(verts[v1-1],texcoords[t1-1],normals[n1-1]));
-                finished_verts.push_back(vertex(verts[v4-1],texcoords[t4-1],normals[n4-1]));
-                finished_verts.push_back(vertex(verts[v5-1],texcoords[t5-1],normals[n5-1]));
+                finished_verts->push_back(vertex(verts[v1-1],texcoords[t1-1],normals[n1-1]));
+                finished_verts->push_back(vertex(verts[v4-1],texcoords[t4-1],normals[n4-1]));
+                finished_verts->push_back(vertex(verts[v5-1],texcoords[t5-1],normals[n5-1]));
             }
 
             if(sscanf(buffer , "f %d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d",
@@ -116,22 +116,22 @@ Model * ModelManager::LoadOBJModel(string filename)
             {
                 // a quad, subdivide
                 // tri 1
-                finished_verts.push_back(vertex(verts[v1-1],texcoords[t1-1],normals[n1-1]));
-                finished_verts.push_back(vertex(verts[v2-1],texcoords[t2-1],normals[n2-1]));
-                finished_verts.push_back(vertex(verts[v3-1],texcoords[t3-1],normals[n3-1]));
+                finished_verts->push_back(vertex(verts[v1-1],texcoords[t1-1],normals[n1-1]));
+                finished_verts->push_back(vertex(verts[v2-1],texcoords[t2-1],normals[n2-1]));
+                finished_verts->push_back(vertex(verts[v3-1],texcoords[t3-1],normals[n3-1]));
 
                 // tri 2
-                finished_verts.push_back(vertex(verts[v1-1],texcoords[t1-1],normals[n1-1]));
-                finished_verts.push_back(vertex(verts[v3-1],texcoords[t3-1],normals[n3-1]));
-                finished_verts.push_back(vertex(verts[v4-1],texcoords[t4-1],normals[n4-1]));
+                finished_verts->push_back(vertex(verts[v1-1],texcoords[t1-1],normals[n1-1]));
+                finished_verts->push_back(vertex(verts[v3-1],texcoords[t3-1],normals[n3-1]));
+                finished_verts->push_back(vertex(verts[v4-1],texcoords[t4-1],normals[n4-1]));
             }
             else if(sscanf(buffer , "f %d/%d/%d %d/%d/%d %d/%d/%d",
                 &v1, &t1, &n1, &v2, &t2, &n2, &v3, &t3, &n3) == 9)
             {
                 // a triangle
-                finished_verts.push_back(vertex(verts[v1-1],texcoords[t1-1],normals[n1-1]));
-                finished_verts.push_back(vertex(verts[v2-1],texcoords[t2-1],normals[n2-1]));
-                finished_verts.push_back(vertex(verts[v3-1],texcoords[t3-1],normals[n3-1]));
+                finished_verts->push_back(vertex(verts[v1-1],texcoords[t1-1],normals[n1-1]));
+                finished_verts->push_back(vertex(verts[v2-1],texcoords[t2-1],normals[n2-1]));
+                finished_verts->push_back(vertex(verts[v3-1],texcoords[t3-1],normals[n3-1]));
             }
             else
             {
@@ -146,16 +146,19 @@ Model * ModelManager::LoadOBJModel(string filename)
         {
             char buf2[64];
             // process current group into named render object
-            if(finished_verts.size())
+            if(finished_verts->size())
             {
-                RenderObject *RO = RENDERER->CreateRenderObject( &finished_verts );
+                RenderObject *RO = RENDERER->CreateRenderObject( finished_verts );
                 if(RO == NULL)
                 {
                     cerr << "failed to create renderobject for model " << filename << " submodel " << currentgroup << endl;
                     return NULL;
                 }
-                submodels[currentgroup] = RO;
-                finished_verts.clear();
+                pair <RenderObject *, vector <vertex> *> RO_VERT;
+                RO_VERT.first = RO;
+                RO_VERT.second = finished_verts;
+                submodels[currentgroup] = RO_VERT;
+                finished_verts = new vector <vertex>;
             }
             // start with new group
             sscanf(buffer,"g %s", buf2);
@@ -166,16 +169,25 @@ Model * ModelManager::LoadOBJModel(string filename)
     // got em all
 
     // finalize, process current group into named render object
-    if(finished_verts.size())
+    if(finished_verts->size())
     {
-        RenderObject *RO = RENDERER->CreateRenderObject( &finished_verts );
+        RenderObject *RO = RENDERER->CreateRenderObject( finished_verts );
+
+        
         if(RO == NULL)
         {
             cerr << "failed to create renderobject for model " << filename << " submodel " << currentgroup << endl;
             return NULL;
         }
-        submodels[currentgroup] = RO;
-        finished_verts.clear();
+        pair <RenderObject *, vector <vertex> *> RO_VERT;
+        RO_VERT.first = RO;
+        RO_VERT.second = finished_verts;
+        submodels[currentgroup] = RO_VERT;
+        finished_verts = new vector <vertex>;
+    }
+    else
+    {
+        delete finished_verts;
     }
     Model *ret = new Model(submodels);
     models[filename] = ret;
