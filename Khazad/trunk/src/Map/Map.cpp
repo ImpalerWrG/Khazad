@@ -459,7 +459,7 @@ void Map::LoadCellData(DFHackAPI & DF,
             int Liquid = Designations.bits.flow_size;
 
             // Create Cubes and load data, skip empty cubes unless they have liquid in them
-            if(!IsEmpty && !Liquid)
+            if(!IsEmpty || IsEmpty && Liquid)
             {
                 Cube* TargetCube = new Cube();
                 TargetCell->setCube(TargetCube, CubeX, CubeY);
@@ -521,16 +521,18 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
     DF.ReadWoodMatgloss(woodtypes);
 
     Uint32 NumStoneMats = stonetypes.size();
-    StoneMatGloss = new Sint16[NumStoneMats];
-
+    int16_t uninitialized = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
     for(Uint32 i = 0; i < NumStoneMats; i++)
     {
-        StoneMatGloss[i] = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
         for(Uint32 j = 0; j < DATA->getNumMaterials(); ++j)
         {
             if(DATA->getMaterialData(j)->getMatGloss() == stonetypes[i].id)
             {
-                StoneMatGloss[i] = j;
+                StoneMatGloss.push_back(j);
+            }
+            else
+            {
+                StoneMatGloss.push_back(uninitialized);
             }
         }
     }
@@ -644,8 +646,15 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
 
     Uint16 BaseMatGlossTexture = StoneMatGloss[basematerial];
     Uint16 VeinMatGlossTexture = 0;
-    if(veinmaterial)
+    //
+    if( veinmaterial > 0 && veinmaterial < StoneMatGloss.size())
+    {
         VeinMatGlossTexture = StoneMatGloss[veinmaterial];
+    }
+    else if( veinmaterial > 0 && veinmaterial >= StoneMatGloss.size())
+    {
+        cout << "invalid vein? " << veinmaterial << endl;
+    }
     // FIXME: add more material types so that we can use soap and other such terrible things
     Uint16 ContructionMatGlossTexture = -1;
     switch(constructionmaterial.type)
@@ -776,8 +785,5 @@ void Map::ReleaseMap()
         delete[] ColumnMatrix;
         ColumnMatrix = NULL;
     }
-
-    delete[] StoneMatGloss;
-    StoneMatGloss = NULL;
 }
 

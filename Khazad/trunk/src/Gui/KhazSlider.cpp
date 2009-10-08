@@ -87,14 +87,13 @@ int16_t maxZ = 1
     mImageBottomBC = Image::load(bottombutton_click);
     mImageBackground = Image::load(background);
     mMaxZ = maxZ;
-    
+    mTopSlice = mMaxZ-1;
+    mBottomSlice = 0;
     mHighlighted = NO_HIGHLIGHT;
     mDragged = NO_DRAG;
     
     setFocusable (false);
     setFrameSize (0);
-    setBottomSlice (0);
-    setTopSlice (mMaxZ);
     setMarkerLength (32);
 
     addMouseListener (this);
