@@ -148,14 +148,8 @@ Model * ModelManager::LoadOBJModel(string filename)
             // process current group into named render object
             if(finished_verts->size())
             {
-                RenderObject *RO = RENDERER->CreateRenderObject( finished_verts );
-                if(RO == NULL)
-                {
-                    cerr << "failed to create renderobject for model " << filename << " submodel " << currentgroup << endl;
-                    return NULL;
-                }
                 pair <RenderObject *, vector <vertex> *> RO_VERT;
-                RO_VERT.first = RO;
+                RO_VERT.first = NULL;
                 RO_VERT.second = finished_verts;
                 submodels[currentgroup] = RO_VERT;
                 finished_verts = new vector <vertex>;
@@ -171,16 +165,8 @@ Model * ModelManager::LoadOBJModel(string filename)
     // finalize, process current group into named render object
     if(finished_verts->size())
     {
-        RenderObject *RO = RENDERER->CreateRenderObject( finished_verts );
-
-        
-        if(RO == NULL)
-        {
-            cerr << "failed to create renderobject for model " << filename << " submodel " << currentgroup << endl;
-            return NULL;
-        }
         pair <RenderObject *, vector <vertex> *> RO_VERT;
-        RO_VERT.first = RO;
+        RO_VERT.first = NULL;
         RO_VERT.second = finished_verts;
         submodels[currentgroup] = RO_VERT;
         finished_verts = new vector <vertex>;

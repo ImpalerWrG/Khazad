@@ -27,14 +27,27 @@ class Model
     public:
         inline void Render()
         {
+            if(submodels[0].first == NULL)
+            {
+                submodels[0].first = RENDERER->CreateRenderObject( submodels[0].second );
+            }
             RENDERER->CallRenderObject(submodels[0].first);
         };
         inline void Render( string submodel )
         {
-            RENDERER->CallRenderObject(submodels[getSubmodelIndex(submodel)].first);
+            int idx = getSubmodelIndex(submodel);
+            if(submodels[idx].first == NULL)
+            {
+                submodels[idx].first = RENDERER->CreateRenderObject( submodels[idx].second );
+            }
+            RENDERER->CallRenderObject(submodels[idx].first);
         };
         inline void Render( uint32_t submodel )
         {
+            if(submodels[submodel].first == NULL)
+            {
+                submodels[submodel].first = RENDERER->CreateRenderObject( submodels[submodel].second );
+            }
             RENDERER->CallRenderObject(submodels[submodel].first);
         };
         
@@ -70,7 +83,10 @@ class Model
         {
             for(int i = 0; i < submodels.size(); i++ )
             {
-                RENDERER->DeleteRenderObject(submodels[i].first);
+                if(submodels[i].first != NULL)
+                {
+                    RENDERER->DeleteRenderObject(submodels[i].first);
+                }
                 delete submodels[i].second;
             }
         }
