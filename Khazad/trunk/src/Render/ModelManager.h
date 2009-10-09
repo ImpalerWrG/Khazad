@@ -26,14 +26,14 @@ union SlopeIndex
 {
     struct
     {
-        uint nw : 2;
-        uint n : 2;
-        uint ne : 2;
-        uint e : 2;
-        uint se : 2;
-        uint s : 2;
-        uint sw : 2;
-        uint w : 2;
+        unsigned int nw : 2;
+        unsigned int n : 2;
+        unsigned int ne : 2;
+        unsigned int e : 2;
+        unsigned int se : 2;
+        unsigned int s : 2;
+        unsigned int sw : 2;
+        unsigned int w : 2;
     } directions;
     uint16_t value;
 };

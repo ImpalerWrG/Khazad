@@ -133,7 +133,7 @@ inline void MixVertexVectorsOffset (vector <vertex> * input, vector <vertex> * o
 {
     uint32_t size = input->size();
     output->reserve(size + output->size());
-    for(uint32_t i; i < size; i++)
+    for(uint32_t i = 0; i < size; i++)
     {
         vertex temp = input->at(i);
         temp.x += xoffset;

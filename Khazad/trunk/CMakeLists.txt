@@ -130,6 +130,8 @@ src/Gui/Gui.cpp
 src/Gui/InputManager.cpp
 src/Gui/CustomWidgets/KhazSlider.cpp
 src/Gui/CustomWidgets/toggleimagebutton.cpp
+src/Gui/CustomWidgets/KhazWindow.cpp
+src/Gui/CustomWidgets/KhazImageButton.cpp
 
 src/Map/Building.cpp
 src/Map/Cell.cpp

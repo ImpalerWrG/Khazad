@@ -57,6 +57,7 @@ ToggleImageButton::ToggleImageButton()
 {
     setWidth (0);
     setHeight (0);
+    setFrameSize(0);
 }
 
 ToggleImageButton::ToggleImageButton (const std::string& onfilename, const std::string& offfilename)
@@ -67,7 +68,7 @@ ToggleImageButton::ToggleImageButton (const std::string& onfilename, const std::
 
     mImageOff = Image::load (offfilename);
     mInternalImageOff = true;
-
+    setFrameSize(0);
     setWidth (mImageOn->getWidth() + mImageOn->getWidth() / 2);
     setHeight (mImageOn->getHeight() + mImageOn->getHeight() / 2);
 }
@@ -75,6 +76,7 @@ ToggleImageButton::ToggleImageButton (const std::string& onfilename, const std::
 ToggleImageButton::ToggleImageButton (const Image* onimage, const Image* offimage)
 : mImageOn (onimage), mImageOff (offimage), mInternalImageOn (false), mInternalImageOff (false),State(false)
 {
+    setFrameSize(0);
     setWidth (mImageOn->getWidth() + mImageOn->getWidth() / 2);
     setHeight (mImageOn->getHeight() + mImageOn->getHeight() / 2);
 }
@@ -142,73 +144,62 @@ const Image* ToggleImageButton::getOnImage() const
 
 void ToggleImageButton::draw (Graphics* graphics)
 {
+    int alpha = 128;
     gcn::Color faceColor = getBaseColor();
-    gcn::Color highlightColor, shadowColor;
-    int alpha = getBaseColor().a;
-
-    if (isPressed())
+    gcn::Color highlightColor = 0xffffff;
+    highlightColor.a = alpha;
+    gcn::Color shadowColor = 0x000000;
+    shadowColor.a = alpha;
+    graphics->setColor(getForegroundColor());
+    
+    const int textX = (getWidth() - (mImageOn ? mImageOn->getWidth() : 0) ) / 2;
+    const int textY = (getHeight() - (mImageOn ? mImageOn->getHeight() : 0) ) / 2;
+    
+    if(isPressed())
     {
-        faceColor = faceColor - 0x303030;
-        faceColor.a = alpha;
-        highlightColor = faceColor - 0x303030;
-        highlightColor.a = alpha;
-        shadowColor = faceColor + 0x303030;
-        shadowColor.a = alpha;
+        if(State)
+        {
+            graphics->drawImage (mImageOn, textX, textY);
+        }
+        else
+        {
+            graphics->drawImage (mImageOff, textX, textY);
+        }
+        faceColor = 0x000000;
+        faceColor.a = alpha / 2;
+        graphics->setColor(faceColor);
+        graphics->fillRectangle(Rectangle(1,1,getDimension().width - 1,getHeight() - 1));
+        graphics->setColor(shadowColor);
+        graphics->drawLine(0, 0, getWidth() - 1, 0);
+        graphics->drawLine(0, 1, 0, getHeight() - 1);
+        
+        graphics->setColor(highlightColor);
+        graphics->drawLine(getWidth() - 1, 1, getWidth() - 1, getHeight() - 1);
+        graphics->drawLine(1, getHeight() - 1, getWidth() - 1, getHeight() - 1);
     }
     else
     {
-        highlightColor = faceColor + 0x303030;
-        highlightColor.a = alpha;
-        shadowColor = faceColor - 0x303030;
-        shadowColor.a = alpha;
-    }
-
-    graphics->setColor (faceColor);
-    graphics->fillRectangle (Rectangle (1,
-                                        1,
-                                        getDimension().width - 1,
-                                        getHeight() - 1));
-
-    graphics->setColor (highlightColor);
-    graphics->drawLine (0, 0, getWidth() - 1, 0);
-    graphics->drawLine (0, 1, 0, getHeight() - 1);
-
-    graphics->setColor (shadowColor);
-    graphics->drawLine (getWidth() - 1, 1, getWidth() - 1, getHeight() - 1);
-    graphics->drawLine (1, getHeight() - 1, getWidth() - 1, getHeight() - 1);
-
-    graphics->setColor (getForegroundColor());
-
-    const int textX = (getWidth() - (mImageOff ? mImageOff->getWidth() : 0)) / 2;
-    const int textY = (getHeight() - (mImageOff ? mImageOff->getHeight() : 0)) / 2;
-
-    if (isPressed())
-    {
-        if (mImageOff)
+        faceColor = 0xFFFFFF;
+        faceColor.a = alpha / 3;
+        graphics->setColor(faceColor);
+        graphics->fillRectangle(Rectangle(1,1,getDimension().width - 1,getHeight() - 1));
+        
+        if(State)
         {
-            if(State)
-                graphics->drawImage (mImageOn, textX + 1, textY + 1);
-            else
-                graphics->drawImage (mImageOff, textX + 1, textY + 1);
+            graphics->drawImage (mImageOn, textX, textY);
         }
-    }
-    else
-    {
-        if (mImageOn)
+        else
         {
-            if(State)
-                graphics->drawImage (mImageOn, textX, textY);
-            else
-                graphics->drawImage (mImageOff, textX, textY);
+            graphics->drawImage (mImageOff, textX, textY);
         }
-
-        if (isFocused())
-        {
-            graphics->drawRectangle (Rectangle (2,
-                                                2,
-                                                getWidth() - 4,
-                                                getHeight() - 4));
-        }
+        
+        graphics->setColor(highlightColor);
+        graphics->drawLine(0, 0, getWidth() - 1, 0);
+        graphics->drawLine(0, 1, 0, getHeight() - 1);
+        
+        graphics->setColor(shadowColor);
+        graphics->drawLine(getWidth() - 1, 1, getWidth() - 1, getHeight() - 1);
+        graphics->drawLine(1, getHeight() - 1, getWidth() - 1, getHeight() - 1);
     }
 }
 }

@@ -3,7 +3,8 @@
 
 #include <stdafx.h>
 #include <Singleton.h>
-
+#include "KhazWindow.hpp"
+#include "KhazImageButton.hpp"
 
 class Ui
 {
@@ -46,12 +47,12 @@ protected:
     void InitConfirmationWindow();
     void InitDepthSlider();
 
-    gcn::Window* CameraControlWindow;
-    gcn::Window* MainMenuWindow;
-    gcn::Window* ConfirmationWindow;
+    gcn::KhazWindow* CameraControlWindow;
+    gcn::KhazWindow* MainMenuWindow;
+    gcn::KhazWindow* ConfirmationWindow;
 
-    gcn::ImageButton* YesButton;
-    gcn::ImageButton* NoButton;
+    gcn::KhazImageButton* YesButton;
+    gcn::KhazImageButton* NoButton;
     gcn::ActionListener* ConfirmationAction;
     gcn::ActionListener* ExitListener;
 

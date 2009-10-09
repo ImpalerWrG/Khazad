@@ -207,7 +207,7 @@ bool Map::Extract()
     if(!DF.ReadGeology( layerassign ))
     {
         cerr << "Can't get region geology." << endl;
-        return 1;
+        return false;
     }
 
     InitilizeTilePicker(DF);
@@ -347,6 +347,7 @@ bool Map::Extract()
 	}
     delete pDF;
     MapLoaded = true;
+    return true;
 }
 
 // load from file
