@@ -107,7 +107,7 @@ void Ui::InitCameraControlMenu()
     CameraControlWindow->setVisible(false);
 
 
-    gcn::ImageButton* VerticalToggleButton = new gcn::ImageButton(Path("Assets/UI/Buttons/Vertical.png"));
+    gcn::ToggleImageButton* VerticalToggleButton = new gcn::ToggleImageButton(Path("Assets/UI/Buttons/lockview.png"),Path("Assets/UI/Buttons/releaseview.png"));
     VerticalToggleButton->setSize(32, 32);
     gcn::ActionListener* VerticalListener = new VerticalActionListener();
     VerticalToggleButton->addActionListener(VerticalListener);
