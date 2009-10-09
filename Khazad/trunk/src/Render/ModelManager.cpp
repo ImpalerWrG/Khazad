@@ -180,3 +180,220 @@ Model * ModelManager::LoadOBJModel(string filename)
     submodels.clear();
     return ret;
 }
+
+/// TODO: separate this from khazad, use for mesh generation
+vector < vertex > * ModelManager::getSlope(SlopeIndex surroundings)
+{
+    if(slopes.count(surroundings.value))
+    {
+        return slopes[surroundings.value];
+    }
+    vector <vertex> * ret = new vector <vertex>;
+    /**
+    * heightmap. order is from nort-west to north-west, clockwise. hm[9] is the center
+    * 0=8--1---2
+    *  |   |   |
+    *  7---9---3
+    *  |   |   |
+    *  6---5---4
+    */
+    uint8_t hm[10] = {0,0,0,0,0,0,0,0,0,1};
+    float hmf[10];// same in float
+    
+    uint8_t covered[4] = {0,0,0,0}; // view of a side blocked by geometry?
+    
+    // coordinates of the directions... fixed for spillover at the end of the loop
+    const float dc[9][2] =
+    {
+        {-0.5,-0.5},
+        {0   ,-0.5},
+        {0.5 ,-0.5},
+        {0.5 ,0},
+        {0.5 ,0.5},
+        {0   ,0.5},
+        {-0.5,0.5},
+        {-0.5,0},
+        {-0.5,-0.5}
+    };
+    // same for texture coords
+    const float tc[9][2] =
+    {
+        {0,1},
+        {0.5   ,1},
+        {1 ,1},
+        {1 ,0.5},
+        {1 ,0},
+        {0.5   ,0},
+        {0,0},
+        {0,0.5},
+        {0,1}
+    };
+    const float norms[8][3] =
+    {
+        {0,-1,0},
+        {0,0,0},
+        {1,0,0},
+        {0,0,0},
+        {0,1,0},
+        {0,0,0},
+        {-1,0,0},
+        {0,0,0}
+    };
+    uint8_t strong, weak, numsolids = 0;
+    
+    // copy surroundings
+    bool solid = 0;
+    
+    solid = surroundings.directions.nw == 2;
+    hm[0] = solid << 1;
+    numsolids += solid;
+
+    solid = surroundings.directions.n == 2;
+    hm[1] = solid << 1;
+    numsolids += solid;
+    
+    solid = surroundings.directions.ne == 2;
+    hm[2] = solid << 1;
+    numsolids += solid;
+    
+    solid = surroundings.directions.e == 2;
+    hm[3] = solid << 1;
+    numsolids += solid;
+    
+    solid = surroundings.directions.se == 2;
+    hm[4] = solid << 1;
+    numsolids += solid;
+    
+    solid = surroundings.directions.s == 2;
+    hm[5] = solid << 1;
+    numsolids += solid;
+    
+    solid = surroundings.directions.sw == 2;
+    hm[6] = solid << 1;
+    numsolids += solid;
+    
+    solid = surroundings.directions.w == 2;
+    hm[7] = solid << 1;
+    numsolids += solid;
+    
+    // test for covered and uncovered sides
+    covered[0] = hm[1] || surroundings.directions.n == 1;
+    covered[1] = hm[3] || surroundings.directions.e == 1;
+    covered[2] = hm[5] || surroundings.directions.s == 1;
+    covered[3] = hm[7] || surroundings.directions.w == 1;
+    
+    // determine center
+    strong = (hm[7] && hm[1] && !hm[3] && !hm[4] && !hm[5])
+    + (hm[1] && hm[3] && !hm[5] && !hm[6] && !hm[7])
+    + (hm[3] && hm[5] && !hm[7] && !hm[0] && !hm[1])
+    + (hm[5] && hm[7] && !hm[1] && !hm[2] && !hm[3]);
+    if(numsolids == 1)
+    {
+        if (hm[0] || hm[2] || hm[4] || hm[6] )
+        {
+            hm[9] = 0;
+        }
+    }
+    else if(strong == 1) hm[9] = 2;
+    else hm[9] = 1;
+    
+    // fix corners
+    hm[0] = hm[7] | hm[0] | hm[1];
+    hm[2] = hm[1] | hm[2] | hm[3];
+    hm[4] = hm[3] | hm[4] | hm[5];
+    hm[6] = hm[5] | hm[6] | hm[7];
+    
+    // fix sides so that slopes aren't jaggy.
+    hm[1] = (hm[1] >> 1) + (hm[0] || hm[2]);
+    hm[3] = (hm[3] >> 1) + (hm[2] || hm[4]);
+    hm[5] = (hm[5] >> 1) + (hm[4] || hm[6]);
+    hm[7] = (hm[7] >> 1) + (hm[6] || hm[0]);
+    
+    hm[8] = hm[0]; // copy first point so we can safely use algorithms that go to N+1
+    
+    // convert int heights to floats
+    for(int i = 0; i < 10; ++i)
+    {
+        hmf[i] = ((float)hm[i]) / 2 - 0.5;
+    }
+    
+    // draw triangles
+    for(Direction i = DIRECTIONS_START; i <= DIRECTION_WEST; ++i)
+    {
+        /**
+        *  P--P+1--*
+        *  | \ | / |
+        *  *---C---*
+        *  | / | \ |
+        *  *---*---*
+        */
+        s3f center = {0, 0,hmf[9]};
+        s3f pt1 = {dc[i+1][0],dc[i+1][1],hmf[i+1]};
+        s3f pt2 = {dc[i][0], dc[i][1],hmf[i]};
+        s3f norm = CalculateNormal(center, pt2, pt1 );
+        s2f tx0 = {0.5,0.5};
+        s2f tx1 = {tc[i+1][0],tc[i+1][1]};
+        s2f tx2 = {tc[i][0],tc[i][1]};
+        
+        vertex v0 = vertex(center, tx0, norm);
+        vertex v1 = vertex(pt1, tx1, norm);
+        vertex v2 = vertex(pt2, tx2, norm);
+        
+        ret->push_back(v0);
+        ret->push_back(v1);
+        ret->push_back(v2);
+    }
+    //patch holes
+    for(int i = 0; i < 8; i += 2)
+    {
+        // already covered by wall or nearby slope, don't draw side
+        if (covered[i/2])
+        {
+            continue;
+        }
+        
+        // zero center can be ignored
+        if (hm[i+1] == 0)
+        {
+            continue;
+        }
+        
+        // determine how many triangles are needed an in what configuration
+        if(hm[i] == 0)// one tri, hm[i+2] is high
+        {
+            // second upper
+            ret->push_back(vertex(dc[i+2][0], dc[i+2][1], hmf[i+2], 0.0,1.0, norms[i][0],norms[i][1],norms[i][2]));
+            // second lower
+            ret->push_back(vertex(dc[i+2][0],  dc[i+2][1], -0.5, 0.0,0.0, norms[i][0],norms[i][1],norms[i][2]));
+            // first lower
+            ret->push_back(vertex(dc[i][0], dc[i][1], hmf[i], 1.0,0.0,norms[i][0],norms[i][1],norms[i][2]));
+        }
+        else if(hm[i+2] == 0)// one tri, hm[i] is high
+        {
+            // first lower
+            ret->push_back(vertex(dc[i][0],  dc[i][1], -0.5,1.0,0.0,   norms[i][0],norms[i][1],norms[i][2] ));
+            // first upper
+            ret->push_back(vertex(dc[i][0],  dc[i][1], hmf[i],   1.0,1.0,   norms[i][0],norms[i][1],norms[i][2] ));
+            // second
+            ret->push_back(vertex(dc[i+2][0], dc[i+2][1], hmf[i+2],   0.0,0.0,   norms[i][0],norms[i][1],norms[i][2] ));
+        }
+        else // two tris, both corners high
+        {
+            // second upper
+            ret->push_back(vertex(dc[i+2][0],  dc[i+2][1], 0.5,    0.0,1.0,   norms[i][0],norms[i][1],norms[i][2] ));
+            // second lower
+            ret->push_back(vertex(dc[i+2][0],  dc[i+2][1], -0.5,    0.0,0.0,   norms[i][0],norms[i][1],norms[i][2] ));
+            // first lower
+            ret->push_back(vertex(dc[i][0], dc[i][1], -0.5,    1.0,0.0,   norms[i][0],norms[i][1],norms[i][2] ));
+            
+            // first lower
+            ret->push_back(vertex(dc[i][0], dc[i][1], -0.5,    1.0,0.0,   norms[i][0],norms[i][1],norms[i][2] ));
+            // first upper
+            ret->push_back(vertex(dc[i][0],  dc[i][1], 0.5,    1.0,1.0,   norms[i][0],norms[i][1],norms[i][2] ));
+            // center
+            ret->push_back(vertex(dc[i+1][0], dc[i+1][1], 0.0,    0.5,0.5,   norms[i][0],norms[i][1],norms[i][2] ));
+        }
+    }
+    slopes[surroundings.value] = ret;
+    return ret;
+}

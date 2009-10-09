@@ -44,11 +44,12 @@ class ModelManager
         ModelManager();
         ~ModelManager();
         Model * LoadOBJModel(string filename);
-        vector <vertex> * getSlope(uint16_t surroundings);
+        vector < vertex > * getSlope(SlopeIndex surroundings);
         void clear();
 
     private:
-        map <string, Model *> models;
+        map < string, Model * > models;
+        map < uint16_t, vector < vertex > * > slopes;
 };
 
 #endif // MODELMANAGER_H
