@@ -199,7 +199,7 @@ class TiltUpActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        RENDERER->MainCamera->TiltView(-10 *  (CONFIG->TiltSpeed() / 1000.0), (float)0.01, (float)10.0);
+        RENDERER->MainCamera->TiltView(10 *  (CONFIG->TiltSpeed() / 1000.0), (float)0.01, (float)10.0);
     }
 };
 
@@ -207,7 +207,7 @@ class TiltDownActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        RENDERER->MainCamera->TiltView(10 *  (CONFIG->TiltSpeed() / 1000.0), (float)0.01, (float)10.0);
+        RENDERER->MainCamera->TiltView(-10 *  (CONFIG->TiltSpeed() / 1000.0), (float)0.01, (float)10.0);
     }
 };
 

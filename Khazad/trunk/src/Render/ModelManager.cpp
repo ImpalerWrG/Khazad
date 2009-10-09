@@ -203,7 +203,7 @@ vector < vertex > * ModelManager::getSlope(SlopeIndex surroundings)
     uint8_t covered[4] = {0,0,0,0}; // view of a side blocked by geometry?
     
     // coordinates of the directions... fixed for spillover at the end of the loop
-    const float dc[9][2] =
+    static const float dc[9][2] =
     {
         {-0.5,-0.5},
         {0   ,-0.5},
@@ -216,7 +216,7 @@ vector < vertex > * ModelManager::getSlope(SlopeIndex surroundings)
         {-0.5,-0.5}
     };
     // same for texture coords
-    const float tc[9][2] =
+    static const float tc[9][2] =
     {
         {0,1},
         {0.5   ,1},
@@ -228,7 +228,7 @@ vector < vertex > * ModelManager::getSlope(SlopeIndex surroundings)
         {0,0.5},
         {0,1}
     };
-    const float norms[8][3] =
+    static const float norms[8][3] =
     {
         {0,-1,0},
         {0,0,0},

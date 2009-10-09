@@ -124,6 +124,24 @@ struct vertex
 };
 #pragma pack(pop)
 
+inline void MixVertexVectors (vector <vertex> * input, vector <vertex> * output)
+{
+    output->insert( output->end(), input->begin(), input->end());
+};
+
+inline void MixVertexVectorsOffset (vector <vertex> * input, vector <vertex> * output, float xoffset, float yoffset)
+{
+    uint32_t size = input->size();
+    output->reserve(size + output->size());
+    for(uint32_t i; i < size; i++)
+    {
+        vertex temp = input->at(i);
+        temp.x += xoffset;
+        temp.y += yoffset;
+        output->push_back(temp);
+    }
+};
+
 class Renderer
 {
 DECLARE_SINGLETON_CLASS(Renderer)
