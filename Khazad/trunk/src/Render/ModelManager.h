@@ -22,12 +22,29 @@
 
 class Model;
 
+union SlopeIndex
+{
+    struct
+    {
+        uint nw : 2;
+        uint n : 2;
+        uint ne : 2;
+        uint e : 2;
+        uint se : 2;
+        uint s : 2;
+        uint sw : 2;
+        uint w : 2;
+    } directions;
+    uint16_t value;
+};
+
 class ModelManager
 {
     public:
         ModelManager();
         ~ModelManager();
         Model * LoadOBJModel(string filename);
+        vector <vertex> * getSlope(uint16_t surroundings);
         void clear();
 
     private:

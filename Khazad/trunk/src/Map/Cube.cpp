@@ -646,7 +646,6 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate)
     }
 
     //map<int16_t, vector <vertex>* > Geometry = Owner->Geometry;
-
     /**
     * heightmap. order is from nort-west to north-west, clockwise. hm[9] is the center
     * 0=8--1---2

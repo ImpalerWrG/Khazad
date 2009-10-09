@@ -11,8 +11,9 @@ using namespace std;
 #include "../../dfhack/library/DFTypes.h"
 #include "../../dfhack/library/DFTileTypes.h"
 
-#include <ModelManager.h>
+
 #include "Renderer.h"
+#include <ModelManager.h>
 #include <Model.h>
 #include "Tree.h"
 

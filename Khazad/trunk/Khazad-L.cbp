@@ -59,6 +59,7 @@
 			<Add directory="src/Game" />
 			<Add directory="src/Geometry" />
 			<Add directory="src/Gui" />
+            <Add directory="src/Gui/CustomWidgets" />
 			<Add directory="src/Map" />
 			<Add directory="src/Render" />
 			<Add directory="guichan/include" />
@@ -259,10 +260,10 @@
 		<Unit filename="src/Gui/Gui.h" />
 		<Unit filename="src/Gui/InputManager.cpp" />
 		<Unit filename="src/Gui/InputManager.h" />
-		<Unit filename="src/Gui/KhazSlider.cpp" />
-		<Unit filename="src/Gui/KhazSlider.hpp" />
-		<Unit filename="src/Gui/toggleimagebutton.cpp" />
-		<Unit filename="src/Gui/toggleimagebutton.hpp" />
+        <Unit filename="src/Gui/CustomWidgets/KhazSlider.cpp" />
+        <Unit filename="src/Gui/CustomWidgets/KhazSlider.hpp" />
+        <Unit filename="src/Gui/CustomWidgets/toggleimagebutton.cpp" />
+        <Unit filename="src/Gui/CustomWidgets/toggleimagebutton.hpp" />
 		<Unit filename="src/Map/Building.cpp" />
 		<Unit filename="src/Map/Building.h" />
 		<Unit filename="src/Map/Cell.cpp" />
