@@ -3,7 +3,6 @@
 #include <stdafx.h>
 
 #include <Actor.h>
-//#include <GL/gl.h>
 #define CELLEDGESIZE 16
 
 class Cube;
@@ -30,9 +29,10 @@ public:
     bool Init();
 
     Cube* getCube(Uint8 x, Uint8 y);
-    void setCube(Cube* NewCube, Uint8 x, Uint8 y);
+    Cube* GenerateCube(Uint8 CubeX, Uint8 CubeY);
+    void setCube(Cube* NewCube, Uint8 CubeX, Uint8 CubeY);
 
-    bool hasFace(Uint8 x, Uint8 y, Facet FaceType);
+    bool hasFace(Uint8 CubeX, Uint8 CubeY, Facet FaceType);
 
     void Render(bool drawtop);
     void ClearROs();

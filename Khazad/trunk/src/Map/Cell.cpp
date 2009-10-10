@@ -16,6 +16,16 @@ Cell::Cell()
     ActiveLiquid = false;
     ActiveTop = false;
     Initialized = false;
+
+    for(Uint8 i = 0; i < CELLEDGESIZE; i++)
+    {
+        for(Uint8 j = 0; j < CELLEDGESIZE; j++)
+        {
+            Cubes[i][j] = NULL;
+            CubeShapeTypes[i][j] = -1;
+            CubeMaterialTypes[i][j] = -1;
+        }
+    }
 }
 
 Cell::~Cell()
@@ -45,6 +55,28 @@ bool Cell::Init()
     Initialized = true;
     NeedsRedraw = true;
 
+    MAP->ChangeInitedCellCount(1);
+
+    for(Uint32 CubeX = 0; CubeX < CELLEDGESIZE; CubeX++)
+    {
+        for(Uint32 CubeY = 0; CubeY < CELLEDGESIZE; CubeY++)
+        {
+            Cube* TargetCube = Cubes[CubeX][CubeY];
+            if(TargetCube != NULL)
+            {
+                TargetCube->Init();
+            }
+        }
+    }
+
+    return true;
+}
+
+Cell::Cell(Sint32 X, Sint32 Y, Sint32 Z)
+{
+    Active = false;
+    Initialized = false;
+
     for(Uint8 i = 0; i < CELLEDGESIZE; i++)
     {
         for(Uint8 j = 0; j < CELLEDGESIZE; j++)
@@ -55,41 +87,41 @@ bool Cell::Init()
         }
     }
 
-    MAP->ChangeInitedCellCount(1);
-
-    return true;
-}
-
-Cell::Cell(Sint32 X, Sint32 Y, Sint32 Z)
-{
-    Active = false;
-    Initialized = false;
     Position.x = (float) X + (CELLEDGESIZE / 2) - HALFCUBE;
     Position.y = (float) Y + (CELLEDGESIZE / 2) - HALFCUBE;
     Position.z = (float) Z;
+
     MAP->ChangeCellCount(1);
 }
 
-Cube* Cell::getCube(Uint8 x, Uint8 y)
+Cube* Cell::getCube(Uint8 X, Uint8 Y)
 {
-    if(Initialized)
-    {
-        if(x < CELLEDGESIZE && y < CELLEDGESIZE)
-        {
-            return Cubes[x][y];
-        }
-    }
+	if(X < CELLEDGESIZE && Y < CELLEDGESIZE)
+	{
+	    return Cubes[X][Y];
+	}
+
+    return NULL;
+}
+
+Cube* Cell::GenerateCube(Uint8 CubeX, Uint8 CubeY)
+{
+	if (Cubes[CubeX][CubeY] == NULL)
+	{
+	    Cube* NewCube = new Cube();
+	    Cubes[CubeX][CubeY] = NewCube;
+        NewCube->setOwner(this, CubeX, CubeY);
+
+        return NewCube;
+	}
+
     return NULL;
 }
 
 void Cell::setCube(Cube* NewCube, Uint8 x, Uint8 y)
 {
-    if(!Initialized)
-    {
-        Init();
-    }
     Cubes[x][y] = NewCube;
-    Cubes[x][y]->SetOwner(this, x, y);
+    Cubes[x][y]->setOwner(this, x, y);
 }
 
 bool Cell::hasFace(Uint8 x, Uint8 y, Facet FaceType)

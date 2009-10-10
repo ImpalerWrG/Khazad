@@ -30,7 +30,7 @@ inline Facet &operator-- (Facet &OldFacet)      { return OldFacet = Facet(OldFac
 
 inline Facet OppositeFacet(Facet FacetType)
 {
-    if(FacetType % 2)
+    if(FacetType & 1)  // if an odd number, Bottom, South or West
     {
         return --FacetType;
     }

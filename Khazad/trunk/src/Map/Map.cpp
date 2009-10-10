@@ -161,7 +161,22 @@ Cube* Map::getCube(Sint32 X, Sint32 Y, Sint32 Z)
     {
         Sint32 CubeX = X % CELLEDGESIZE;
         Sint32 CubeY = Y % CELLEDGESIZE;
+
         return TargetCell->getCube(CubeX, CubeY);
+    }
+    return NULL;
+}
+
+Cube* Map::GenerateCube(Sint32 X, Sint32 Y, Sint32 Z)
+{
+    Cell* TargetCell = getCubeOwner(X, Y, Z);
+
+    if(TargetCell != NULL)
+    {
+        Sint32 CubeX = X % CELLEDGESIZE;
+        Sint32 CubeY = Y % CELLEDGESIZE;
+
+        return TargetCell->GenerateCube(CubeX, CubeY);
     }
     return NULL;
 }
@@ -172,14 +187,10 @@ bool Map::hasFace(Sint32 X, Sint32 Y, Sint32 Z, Facet FaceType)
 
     if(TargetCell)
     {
-//        if(TargetCell->isInitalized())
-        {
-            Sint32 CubeX = X % CELLEDGESIZE;
-            Sint32 CubeY = Y % CELLEDGESIZE;
+        Sint32 CubeX = X % CELLEDGESIZE;
+        Sint32 CubeY = Y % CELLEDGESIZE;
 
-            return TargetCell->hasFace(CubeX, CubeY, FaceType);
-        }
-        return false;
+        return TargetCell->hasFace(CubeX, CubeY, FaceType);
     }
     return false;
 }
@@ -292,7 +303,6 @@ bool Map::Extract()
                 if(DF.isValidBlock(x, y, z))
                 {
                     Cell* NewCell = new Cell(x * CELLEDGESIZE, y * CELLEDGESIZE, z);
-                    NewCell->Init();
                     LoadCellData(DF, layerassign, NewCell, constructionAssigner, plantAssigner, buildingAssigner, x, y, z);
                     ColumnMatrix[x][y]->PushCell(NewCell, z);
 			    }
@@ -300,26 +310,16 @@ bool Map::Extract()
 		}
 	}
 
-	for (Uint32 i = 0; i < CellSizeX; i++)
+	for(Uint16 Zlevel = 0; Zlevel < getCellSizeZ(); Zlevel++)
 	{
-		for (Uint32 j = 0; j < CellSizeY; j++)
-		{
-			for (Sint32 k = ColumnMatrix[i][j]->BottomLevel(); k <= ColumnMatrix[i][j]->TopLevel(); k++)
-			{
-			    Cell* LoopCell = getCell(i, j, k);
-			    if(LoopCell != NULL)
-			    {
-                    for(Uint32 CubeX = 0; CubeX < CELLEDGESIZE; CubeX++)
-                    {
-                        for(Uint32 CubeY = 0; CubeY < CELLEDGESIZE; CubeY++)
-                        {
-                            Cube* TargetCube = LoopCell->getCube(CubeX, CubeY);
-                            if(TargetCube != NULL)
-                            {
-                                TargetCube->Init();
-                            }
-                        }
-                    }
+        for (Uint32 SizeX = 0; SizeX < getCellSizeX(); SizeX++)
+        {
+            for (Uint32 SizeY = 0; SizeY < getCellSizeY(); SizeY++)
+            {
+                Cell* LoopCell = getCell(SizeX, SizeY, Zlevel);
+                if(LoopCell != NULL)
+                {
+                    LoopCell->Init();
 			    }
 			}
 		}

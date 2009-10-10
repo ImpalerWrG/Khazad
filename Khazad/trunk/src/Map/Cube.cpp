@@ -33,7 +33,7 @@ Cube::Cube()
     MAP->ChangeCubeCount(1);
 }
 
-void Cube::SetOwner(Cell* NewOwner, Uint8 X, Uint8 Y)
+void Cube::setOwner(Cell* NewOwner, Uint8 X, Uint8 Y)
 {
     Owner = NewOwner;
     CellX = X % CELLEDGESIZE;
@@ -214,7 +214,6 @@ void Cube::setLiquid(Uint8 liquidtype, Uint8 NewValue)
 
 void Cube::setMaterial(Sint16 MaterialType)
 {
-    Initalized = true;
     CubeMaterialType = MaterialType;
 }
 
@@ -298,13 +297,13 @@ Cube* Cube::getNeighborCube(Direction Type)
     return MAP->getCube(x, y, z);
 }
 
-Cell* Cube::getAdjacentCell(Facet Type)
+Vector3 Cube::getAdjacentCubePosition(Facet FacetType)
 {
     Sint32 x = Position.x;
     Sint32 y = Position.y;
     Sint32 z = Position.z;
 
-    switch(Type)
+    switch(FacetType)
     {
         case FACET_TOP:
             z += 1;
@@ -325,8 +324,14 @@ Cell* Cube::getAdjacentCell(Facet Type)
             x -= 1;
             break;
     }
+    return Vector3(x, y, z);
+}
 
-    return MAP->getCubeOwner(x, y, z);
+Cell* Cube::getAdjacentCell(Facet FacetType)
+{
+    Vector3 Postion = getAdjacentCubePosition(FacetType);
+
+    return MAP->getCubeOwner(Postion.x, Postion.y, Postion.z);
 }
 
 bool Cube::Update()
@@ -445,40 +450,11 @@ void Cube::setShape(Sint16 TileShape)
 bool Cube::Init()
 {
     static Sint16 FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
-    static Sint16 WallID = DATA->getLabelIndex("TILESHAPE_WALL");
     static Sint16 RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
     static Sint16 StairID = DATA->getLabelIndex("TILESHAPE_STAIR");
-    static Sint16 FortificationID = DATA->getLabelIndex("TILESHAPE_FORTIFICATION");
     static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
 
-    if(CubeShapeType == RampID || CubeShapeType == StairID)
-    {
-        setFacetMaterialType(FACET_BOTTOM, CubeMaterialType);
-        Owner->setActive(true);
-    }
-
-    if(CubeShapeType == EmptyID)
-    {
-        if(getAdjacentCube(FACET_SOUTH) != NULL && getAdjacentCube(FACET_SOUTH)->isSolid())
-        {
-            setFacetMaterialType(FACET_SOUTH, CubeMaterialType);
-        }
-        if(getAdjacentCube(FACET_NORTH) != NULL && getAdjacentCube(FACET_NORTH)->isSolid())
-        {
-            setFacetMaterialType(FACET_NORTH, CubeMaterialType);
-        }
-        if(getAdjacentCube(FACET_WEST) != NULL && getAdjacentCube(FACET_WEST)->isSolid())
-        {
-            setFacetMaterialType(FACET_WEST, CubeMaterialType);
-        }
-        if(getAdjacentCube(FACET_EAST) != NULL && getAdjacentCube(FACET_EAST)->isSolid())
-        {
-            setFacetMaterialType(FACET_EAST, CubeMaterialType);
-        }
-        Owner->setActive(true);
-    }
-
-    if(CubeShapeType == FloorID)
+    if(CubeShapeType == RampID || CubeShapeType == StairID || CubeShapeType == FloorID)
     {
         setFacetMaterialType(FACET_BOTTOM, CubeMaterialType);
         Owner->setActive(true);
@@ -486,30 +462,25 @@ bool Cube::Init()
 
     if(isSolid())
     {
-        if(getAdjacentCube(FACET_TOP) != NULL && getAdjacentCube(FACET_TOP)->isSolid())
+        for(Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
         {
-            //setFacetMaterialType(FACET_TOP, CubeMaterialType);
-        }
+            if(getAdjacentCube(FacetType) != NULL)
+            {
+                if(!getAdjacentCube(FacetType)->isSolid())
+                {
+                    setFacetMaterialType(FacetType, CubeMaterialType);
+                    Owner->setActive(true);
+                }
+            }
+            else
+            {
+                Vector3 NewCubePosition = getAdjacentCubePosition(FacetType);
+                MAP->GenerateCube(NewCubePosition.x, NewCubePosition.y, NewCubePosition.z);
 
-        if(getAdjacentCube(FACET_SOUTH) != NULL && !getAdjacentCube(FACET_SOUTH)->isSolid())
-        {
-            setFacetMaterialType(FACET_SOUTH, CubeMaterialType);
+                setFacetMaterialType(FacetType, CubeMaterialType);
+                Owner->setActive(true);
+            }
         }
-        if(getAdjacentCube(FACET_NORTH) != NULL && !getAdjacentCube(FACET_NORTH)->isSolid())
-        {
-            setFacetMaterialType(FACET_NORTH, CubeMaterialType);
-        }
-        if(getAdjacentCube(FACET_WEST) != NULL && !getAdjacentCube(FACET_WEST)->isSolid())
-        {
-            setFacetMaterialType(FACET_WEST, CubeMaterialType);
-        }
-        if(getAdjacentCube(FACET_EAST) != NULL && !getAdjacentCube(FACET_EAST)->isSolid())
-        {
-            setFacetMaterialType(FACET_EAST, CubeMaterialType);
-        }
-
-        Owner->setActive(true);
-        Owner->setTopActive(true);
     }
 }
 
@@ -580,15 +551,30 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate)
 
     for(Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
     {
-        if(FacetType == FACET_TOP)
+        if(isSolid())
         {
-            continue;
+            if(FacetType == FACET_BOTTOM)
+            {
+                continue;
+            }
+            if(FacetType == FACET_TOP)
+            {
+                continue;
+            }
+        }
+        else
+        {
+            if(FacetType == FACET_TOP)
+            {
+                continue;
+            }
         }
 
-        if(hasFace(FacetType))
+        Sint16 CubeMaterialType = getFacetMaterialType(FacetType);
+
+        if(CubeMaterialType != -1) //(hasFace(FacetType))
         {
-            Cube* c = getAdjacentCube(FacetType);
-            vector< vertex >* vec;
+            vector<vertex>* vec;
 
             if(!Owner->Geometry.count(CubeMaterialType))
             {
@@ -644,7 +630,7 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate)
     }
     SlopeIndex surroundings;
     surroundings.value = 0;
-    
+
     uint8_t solid;
     // copy surroundings
     for(Direction i = DIRECTION_NORTHWEST; i <= DIRECTION_WEST; ++i)
@@ -664,7 +650,7 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate)
         }
         surroundings.value |= solid << (2 * i);
     }
-    
+
     // create output vector if needed
     // FIXME: should be part of cell?
     vector <vertex>* vec;

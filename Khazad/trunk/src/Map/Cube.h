@@ -20,7 +20,7 @@ public:
 	~Cube();
 	bool Init();
 
-    void SetOwner(Cell* NewOwner, Uint8 X, Uint8 Y);
+    void setOwner(Cell* NewOwner, Uint8 X, Uint8 Y);
 
     bool isSolid();
     bool isSlope();
@@ -42,6 +42,7 @@ public:
     void InitConstructedFace(Facet FacetType, Uint16 MaterialType);
     bool Open();
 */
+    Vector3 getAdjacentCubePosition(Facet FacetType);
     Cube* getAdjacentCube(Facet Type);
     Cube* getNeighborCube(Direction Type);
 
@@ -95,6 +96,7 @@ protected:
             bool snow : 1;
             unsigned int liquid : 3;
             bool liquidtype :1;
+            bool wall:1;        // True if this is Solid AND adjacent to a none solid tile
         };
         uint16_t whole;
     }data;
