@@ -611,7 +611,7 @@ bool Cube::isSolid()
     static Sint16 WallID = DATA->getLabelIndex("TILESHAPE_WALL");
     static Sint16 FortificationID = DATA->getLabelIndex("TILESHAPE_FORTIFICATION");
 
-   return (CubeShapeType == WallID || CubeShapeType == FortificationID);
+    return (CubeShapeType == WallID || CubeShapeType == FortificationID);
 }
 
 bool Cube::isSlope()
@@ -619,7 +619,7 @@ bool Cube::isSlope()
     static Sint16 RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
     static Sint16 StairID = DATA->getLabelIndex("TILESHAPE_STAIR");
 
-   return (CubeShapeType == RampID || CubeShapeType == StairID);
+    return (CubeShapeType == RampID || CubeShapeType == StairID);
 }
 
 bool Cube::DrawSlope(float xTranslate, float yTranslate)

@@ -56,274 +56,300 @@
 
 namespace gcn
 {
-    KhazWindow::KhazWindow()
-            :mMoved(false)
-    {
-        //setFrameSize(1);
-        setPadding(4);
-        setTitleBarHeight(16);
-        setAlignment(Graphics::CENTER);
-        addMouseListener(this);
-        setMovable(true);
-        setOpaque(true);
-        mBackground = Image::load(Path("Assets/UI/stoneslab.png"));
-    }
+KhazWindow::KhazWindow() :mMoved(false)
+{
+    //setFrameSize(1);
+    setPadding(4);
+    setTitleBarHeight(16);
+    setAlignment(Graphics::CENTER);
+    addMouseListener(this);
+    setMovable(true);
+    setOpaque(true);
+    mBackground = Image::load(Path("Assets/UI/stoneslab.png"));
+}
 
-    KhazWindow::KhazWindow(const std::string& caption)
-            :mMoved(false)
-    {
-        setCaption(caption);
-        //setFrameSize(1);
-        setPadding(4);
-        setTitleBarHeight(16);
-        setAlignment(Graphics::CENTER);
-        addMouseListener(this);
-        setMovable(true);
-        setOpaque(true);
-        mBackground = Image::load(Path("Assets/UI/stoneslab.png"));
-    }
+KhazWindow::KhazWindow(const std::string& caption) :mMoved(false)
+{
+    setCaption(caption);
+    //setFrameSize(1);
+    setPadding(4);
+    setTitleBarHeight(16);
+    setAlignment(Graphics::CENTER);
+    addMouseListener(this);
+    setMovable(true);
+    setOpaque(true);
+    mBackground = Image::load(Path("Assets/UI/stoneslab.png"));
+}
 
-    KhazWindow::~KhazWindow()
-    {
-        delete mBackground;
-    }
+KhazWindow::~KhazWindow()
+{
+    delete mBackground;
+}
 
-    void KhazWindow::setPadding(unsigned int padding)
-    {
-        mPadding = padding;
-    }
+void KhazWindow::setPadding(unsigned int padding)
+{
+    mPadding = padding;
+}
 
-    unsigned int KhazWindow::getPadding() const
-    {
-        return mPadding;
-    }
+unsigned int KhazWindow::getPadding() const
+{
+    return mPadding;
+}
 
-    void KhazWindow::setTitleBarHeight(unsigned int height)
-    {
-        mTitleBarHeight = height;
-    }
+void KhazWindow::setTitleBarHeight(unsigned int height)
+{
+    mTitleBarHeight = height;
+}
 
-    unsigned int KhazWindow::getTitleBarHeight()
-    {
-        return mTitleBarHeight;
-    }
+unsigned int KhazWindow::getTitleBarHeight()
+{
+    return mTitleBarHeight;
+}
 
-    void KhazWindow::setCaption(const std::string& caption)
-    {
-        mCaption = caption;
-    }
+void KhazWindow::setCaption(const std::string& caption)
+{
+    mCaption = caption;
+}
 
-    const std::string& KhazWindow::getCaption() const
-    {
-        return mCaption;
-    }
+const std::string& KhazWindow::getCaption() const
+{
+    return mCaption;
+}
 
-    void KhazWindow::setAlignment(Graphics::Alignment alignment)
-    {
-        mAlignment = alignment;
-    }
+void KhazWindow::setAlignment(Graphics::Alignment alignment)
+{
+    mAlignment = alignment;
+}
 
-    Graphics::Alignment KhazWindow::getAlignment() const
-    {
-        return mAlignment;
-    }
+Graphics::Alignment KhazWindow::getAlignment() const
+{
+    return mAlignment;
+}
 
-    void KhazWindow::draw(Graphics* graphics)
-    {
-        const int alpha = 128;
-        Color faceColor = 0x000000;
-        faceColor.a = alpha/2;
-        Color highlightColor, shadowColor;
-        
-        int width = getWidth() + getFrameSize() * 2 - 1;
-        int height = getHeight() + getFrameSize() * 2 - 1;
-        highlightColor = 0xFFFFFF;
-        highlightColor.a = alpha;
-        shadowColor = 0x000000;
-        shadowColor.a = alpha;
-        graphics->setColor(faceColor);
-        Rectangle d = getChildrenArea();
+void KhazWindow::draw(Graphics* graphics)
+{
+    const int alpha = 128;
+    Color faceColor = 0x000000;
+    faceColor.a = alpha/2;
+    Color highlightColor, shadowColor;
+    
+    int width = getWidth() + getFrameSize() * 2 - 1;
+    int height = getHeight() + getFrameSize() * 2 - 1;
+    highlightColor = 0xFFFFFF;
+    highlightColor.a = alpha;
+    shadowColor = 0x000000;
+    shadowColor.a = alpha;
+    graphics->setColor(faceColor);
+    Rectangle d = getChildrenArea();
 /*
-        // Fill the background around the content
-        graphics->setColor(faceColor);
-        // Fill top
-        graphics->fillRectangle(Rectangle(0,0,getWidth(),d.y - 1));
-        // Fill left
-        graphics->fillRectangle(Rectangle(0,d.y - 1, d.x - 1, getHeight() - d.y + 1));
-        // Fill right
-        graphics->fillRectangle(Rectangle(d.x + d.width + 1,
-                                          d.y - 1,
-                                          getWidth() - d.x - d.width - 1,
-                                          getHeight() - d.y + 1));
-        // Fill bottom
-        graphics->fillRectangle(Rectangle(d.x - 1,
-                                          d.y + d.height + 1,
-                                          d.width + 2,
-                                          getHeight() - d.height - d.y - 1));
+    // Fill the background around the content
+    graphics->setColor(faceColor);
+    // Fill top
+    graphics->fillRectangle(Rectangle(0,0,getWidth(),d.y - 1));
+    // Fill left
+    graphics->fillRectangle(Rectangle(0,d.y - 1, d.x - 1, getHeight() - d.y + 1));
+    // Fill right
+    graphics->fillRectangle(Rectangle(d.x + d.width + 1,
+                                      d.y - 1,
+                                      getWidth() - d.x - d.width - 1,
+                                      getHeight() - d.y + 1));
+    // Fill bottom
+    graphics->fillRectangle(Rectangle(d.x - 1,
+                                      d.y + d.height + 1,
+                                      d.width + 2,
+                                      getHeight() - d.height - d.y - 1));
 */
-        
-        int step = mBackground->getHeight();
-        for(int i = 0; i <= getHeight(); i+=step)
+    
+    int step = mBackground->getHeight();
+    for(int i = 0; i <= getHeight(); i+=step)
+    {
+        graphics->drawImage(mBackground, 0, i);
+    }
+    
+    //graphics->fillRectangle(d);
+    
+    // draw outline of the menu
+    graphics->setColor(highlightColor);
+    graphics->drawLine(0,0,getWidth(),0);
+    graphics->drawLine(0,0,0,getHeight());                   
+    graphics->setColor(shadowColor);
+    graphics->drawLine(0,getHeight()-1,getWidth(),getHeight()-1);
+    graphics->drawLine(getWidth()-1,0,getWidth()-1,getHeight());
+                       
+    // Construct a rectangle one pixel bigger than the content
+    d.x -= 1;
+    d.y -= 1;
+    d.width += 2;
+    d.height += 2;
+
+    // Draw a border around the content
+    graphics->setColor(shadowColor);
+    // Top line
+    graphics->drawLine(d.x,
+                       d.y,
+                       d.x + d.width - 2,
+                       d.y);
+
+    // Left line
+    graphics->drawLine(d.x,
+                       d.y + 1,
+                       d.x,
+                       d.y + d.height - 1);
+
+    graphics->setColor(highlightColor);
+    // Right line
+    graphics->drawLine(d.x + d.width - 1,
+                       d.y,
+                       d.x + d.width - 1,
+                       d.y + d.height - 2);
+    // Bottom line
+    graphics->drawLine(d.x + 1,
+                       d.y + d.height - 1,
+                       d.x + d.width - 1,
+                       d.y + d.height - 1);
+
+    drawChildren(graphics);
+
+    int textX;
+    int textY;
+
+    textY = ((int)getTitleBarHeight() - getFont()->getHeight()) / 2;
+
+    switch (getAlignment())
+    {
+      case Graphics::LEFT:
+          textX = 4;
+          break;
+      case Graphics::CENTER:
+          textX = getWidth() / 2;
+          break;
+      case Graphics::RIGHT:
+          textX = getWidth() - 4;
+          break;
+      default:
+          throw GCN_EXCEPTION("Unknown alignment.");
+    }
+
+    graphics->setColor(getForegroundColor());
+    graphics->setFont(getFont());
+    graphics->pushClipArea(Rectangle(0, 0, getWidth(), getTitleBarHeight() - 1));
+    graphics->drawText(getCaption(), textX, textY, getAlignment());
+    graphics->popClipArea();
+}
+
+void KhazWindow::touch()
+{
+    setPosition(getX(),getY());
+}
+
+
+void KhazWindow::mousePressed(MouseEvent& mouseEvent)
+{
+    if (mouseEvent.getSource() != this)
+    {
+        return;
+    }
+    
+    if (getParent() != NULL)
+    {
+        getParent()->moveToTop(this);
+    }
+
+    mDragOffsetX = mouseEvent.getX();
+    mDragOffsetY = mouseEvent.getY();
+    
+    mMoved = mouseEvent.getY() <= (int)mTitleBarHeight;
+}
+
+void KhazWindow::mouseReleased(MouseEvent& mouseEvent)
+{
+    mMoved = false;
+}
+
+
+
+void KhazWindow::setPosition(int x, int y)
+{
+    Widget * w = getParent();
+    if (w != NULL)
+    {
+        if(x >= w->getWidth() - getWidth())
         {
-            graphics->drawImage(mBackground, 0, i);
+            x = w->getWidth() - getWidth();
         }
-        
-        //graphics->fillRectangle(d);
-        
-        // draw outline of the menu
-        graphics->setColor(highlightColor);
-        graphics->drawLine(0,0,getWidth(),0);
-        graphics->drawLine(0,0,0,getHeight());                   
-        graphics->setColor(shadowColor);
-        graphics->drawLine(0,getHeight()-1,getWidth(),getHeight()-1);
-        graphics->drawLine(getWidth()-1,0,getWidth()-1,getHeight());
-                           
-        // Construct a rectangle one pixel bigger than the content
-        d.x -= 1;
-        d.y -= 1;
-        d.width += 2;
-        d.height += 2;
-
-        // Draw a border around the content
-        graphics->setColor(shadowColor);
-        // Top line
-        graphics->drawLine(d.x,
-                           d.y,
-                           d.x + d.width - 2,
-                           d.y);
-
-        // Left line
-        graphics->drawLine(d.x,
-                           d.y + 1,
-                           d.x,
-                           d.y + d.height - 1);
-
-        graphics->setColor(highlightColor);
-        // Right line
-        graphics->drawLine(d.x + d.width - 1,
-                           d.y,
-                           d.x + d.width - 1,
-                           d.y + d.height - 2);
-        // Bottom line
-        graphics->drawLine(d.x + 1,
-                           d.y + d.height - 1,
-                           d.x + d.width - 1,
-                           d.y + d.height - 1);
-
-        drawChildren(graphics);
-
-        int textX;
-        int textY;
-
-        textY = ((int)getTitleBarHeight() - getFont()->getHeight()) / 2;
-
-        switch (getAlignment())
+        if(y >= w->getHeight() - getHeight())
         {
-          case Graphics::LEFT:
-              textX = 4;
-              break;
-          case Graphics::CENTER:
-              textX = getWidth() / 2;
-              break;
-          case Graphics::RIGHT:
-              textX = getWidth() - 4;
-              break;
-          default:
-              throw GCN_EXCEPTION("Unknown alignment.");
+            y = w->getHeight() - getHeight();
         }
+    }
+    if(x < 0) x = 0;
+    if(y < 0) y = 0;
+    Widget::setPosition(x,y);
+}
 
-        graphics->setColor(getForegroundColor());
-        graphics->setFont(getFont());
-        graphics->pushClipArea(Rectangle(0, 0, getWidth(), getTitleBarHeight() - 1));
-        graphics->drawText(getCaption(), textX, textY, getAlignment());
-        graphics->popClipArea();
+void KhazWindow::mouseDragged(MouseEvent& mouseEvent)
+{
+    if (mouseEvent.isConsumed() || mouseEvent.getSource() != this)
+    {
+        return;
+    }
+    
+    if (isMovable() && mMoved)
+    {
+        int newX = mouseEvent.getX() - mDragOffsetX + getX();
+        int newY = mouseEvent.getY() - mDragOffsetY + getY();
+        setPosition(newX, newY);
     }
 
-    void KhazWindow::mousePressed(MouseEvent& mouseEvent)
+    mouseEvent.consume();
+}
+
+Rectangle KhazWindow::getChildrenArea()
+{
+    return Rectangle(getPadding(),
+                     getTitleBarHeight(),
+                     getWidth() - getPadding() * 2,
+                     getHeight() - getPadding() - getTitleBarHeight());
+}
+
+void KhazWindow::setMovable(bool movable)
+{
+    mMovable = movable;
+}
+
+bool KhazWindow::isMovable() const
+{
+    return mMovable;
+}
+
+void KhazWindow::setOpaque(bool opaque)
+{
+    mOpaque = opaque;
+}
+
+bool KhazWindow::isOpaque()
+{
+    return mOpaque;
+}
+
+void KhazWindow::resizeToContent()
+{
+    WidgetListIterator it;
+
+    int w = 0, h = 0;
+    for (it = mWidgets.begin(); it != mWidgets.end(); it++)
     {
-        if (mouseEvent.getSource() != this)
+        if ((*it)->getX() + (*it)->getWidth() > w)
         {
-            return;
+            w = (*it)->getX() + (*it)->getWidth();
         }
-        
-        if (getParent() != NULL)
+
+        if ((*it)->getY() + (*it)->getHeight() > h)
         {
-            getParent()->moveToTop(this);
+            h = (*it)->getY() + (*it)->getHeight();
         }
-
-        mDragOffsetX = mouseEvent.getX();
-        mDragOffsetY = mouseEvent.getY();
-        
-        mMoved = mouseEvent.getY() <= (int)mTitleBarHeight;
     }
 
-    void KhazWindow::mouseReleased(MouseEvent& mouseEvent)
-    {
-        mMoved = false;
-    }
-
-    void KhazWindow::mouseDragged(MouseEvent& mouseEvent)
-    {
-        if (mouseEvent.isConsumed() || mouseEvent.getSource() != this)
-        {
-            return;
-        }
-        
-        if (isMovable() && mMoved)
-        {
-            setPosition(mouseEvent.getX() - mDragOffsetX + getX(),
-                        mouseEvent.getY() - mDragOffsetY + getY());
-        }
-
-        mouseEvent.consume();
-    }
-
-    Rectangle KhazWindow::getChildrenArea()
-    {
-        return Rectangle(getPadding(),
-                         getTitleBarHeight(),
-                         getWidth() - getPadding() * 2,
-                         getHeight() - getPadding() - getTitleBarHeight());
-    }
-
-    void KhazWindow::setMovable(bool movable)
-    {
-        mMovable = movable;
-    }
-
-    bool KhazWindow::isMovable() const
-    {
-        return mMovable;
-    }
-
-    void KhazWindow::setOpaque(bool opaque)
-    {
-        mOpaque = opaque;
-    }
-
-    bool KhazWindow::isOpaque()
-    {
-        return mOpaque;
-    }
-
-    void KhazWindow::resizeToContent()
-    {
-        WidgetListIterator it;
-
-        int w = 0, h = 0;
-        for (it = mWidgets.begin(); it != mWidgets.end(); it++)
-        {
-            if ((*it)->getX() + (*it)->getWidth() > w)
-            {
-                w = (*it)->getX() + (*it)->getWidth();
-            }
-
-            if ((*it)->getY() + (*it)->getHeight() > h)
-            {
-                h = (*it)->getY() + (*it)->getHeight();
-            }
-        }
-
-        setSize(w + 2* getPadding(), h + getPadding() + getTitleBarHeight());
-    }
+    setSize(w + 2* getPadding(), h + getPadding() + getTitleBarHeight());
+}
 }

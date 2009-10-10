@@ -167,7 +167,7 @@ class OrbitClockwiseActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        RENDERER->MainCamera->OrbitView(CONFIG->OrbitSpeed() / -1000.0);
+        RENDERER->MainCamera->OrbitView(CONFIG->OrbitSpeed() / 1000.0);
     }
 };
 
@@ -175,7 +175,7 @@ class OrbitCounterClockwiseActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        RENDERER->MainCamera->OrbitView(CONFIG->OrbitSpeed() / 1000.0);
+        RENDERER->MainCamera->OrbitView(CONFIG->OrbitSpeed() / -1000.0);
     }
 };
 

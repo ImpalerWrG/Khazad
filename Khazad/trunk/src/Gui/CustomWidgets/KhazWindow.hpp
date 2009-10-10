@@ -169,6 +169,11 @@ namespace gcn
         void setOpaque(bool opaque);
 
         /**
+        * Confine position to parent widget
+        */
+        void touch( void );
+        
+        /**
          * Checks if the window is opaque.
          *
          * @return True if the window is opaque, false otherwise.
@@ -191,6 +196,7 @@ namespace gcn
 
         virtual void draw(Graphics* graphics);
 
+        virtual void setPosition( int  x, int  y);
 
         // Inherited from MouseListener
 
@@ -199,6 +205,7 @@ namespace gcn
         virtual void mouseDragged(MouseEvent& mouseEvent);
 
         virtual void mouseReleased(MouseEvent& mouseEvent);
+        
 
     protected:
         /**

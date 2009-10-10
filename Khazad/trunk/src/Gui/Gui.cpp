@@ -362,6 +362,9 @@ void Ui::updateSizing()
     GraphicsImplementation->setTargetPlane(RENDERER->getWidth(), RENDERER->getHeight());
     DepthSlider->setSize(32, RENDERER->getHeight());
     DepthSlider->setPosition(RENDERER->getWidth() - 32, 0);
+    MainMenuWindow->touch();
+    CameraControlWindow->touch();
+    ConfirmationWindow->touch();
     ///FIXME: move windows when viewport shrinks? Maybe make their position scale with the main window...
 }
 
