@@ -5,9 +5,9 @@
 #include <Singleton.h>
 #include <ActionListeners.h>
 #include <Paths.h>
-#include "toggleimagebutton.hpp"
+#include "KhazToggleButton.hpp"
 #include "KhazWindow.hpp"
-#include "KhazImageButton.hpp"
+#include "KhazButton.hpp"
 /**
 FIXME: This leaks some bytes. None of those gcn:: things is free'd.
 */

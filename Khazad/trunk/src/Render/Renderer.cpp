@@ -1,6 +1,6 @@
-#include <stdafx.h>
+#include "stdafx.h"
 
-#include <Renderer.h>
+#include "Renderer.h"
 #include <Singleton.h>
 #include <ImagePage.h>
 #include <ClipImage.h>

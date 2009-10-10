@@ -45,7 +45,7 @@
  * For comments regarding functions please see the header file.
  */
 
-#include "KhazImageButton.hpp"
+#include "KhazButton.hpp"
 
 #include "guichan/graphics.hpp"
 #include "guichan/image.hpp"

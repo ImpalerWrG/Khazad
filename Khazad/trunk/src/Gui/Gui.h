@@ -4,7 +4,7 @@
 #include <stdafx.h>
 #include <Singleton.h>
 #include "KhazWindow.hpp"
-#include "KhazImageButton.hpp"
+#include "KhazButton.hpp"
 
 class Ui
 {

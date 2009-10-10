@@ -45,7 +45,7 @@
  * For comments regarding functions please see the header file.
  */
 
-#include "toggleimagebutton.hpp"
+#include "KhazToggleButton.hpp"
 
 #include "guichan/graphics.hpp"
 #include "guichan/image.hpp"
