@@ -41,8 +41,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef GCN_KHAZIMAGEBUTTON_HPP
-#define GCN_KHAZIMAGEBUTTON_HPP
+#ifndef GCN_TOGGLEIMAGEBUTTON_HPP
+#define GCN_TOGGLEIMAGEBUTTON_HPP
 
 #include "guichan/platform.hpp"
 #include "guichan/widgets/button.hpp"
@@ -59,65 +59,100 @@ namespace gcn
      *
      * @see Button
      */
-    class GCN_CORE_DECLSPEC KhazImageButton : public gcn::Button
+    class GCN_CORE_DECLSPEC KhazToggleButton : public gcn::Button
     {
     public:
         /**
          * Default constructor.
          */
-        KhazImageButton();
+        KhazToggleButton();
 
         /**
          * Constructor.
          *
-         * @param filename The filename of the image to display.
+         * @param onfilename The filename of the image to display in on state.
+         * @param offfilename The filename of the image to display in off state.
          */
-        KhazImageButton(const std::string& filename);
+        KhazToggleButton(const std::string& onfilename,const std::string& offfilename);
 
         /**
          * Constructor.
          *
-         * @param image The image to display.
+         * @param onimage The image to display in on state.
+         * @param offimage The image to display in off state.
          */
-        KhazImageButton(const Image* image);
+        KhazToggleButton(const Image* onimage, const Image* offimage);
 
         /**
          * Destructor.
          */
-        virtual ~KhazImageButton();
+        virtual ~KhazToggleButton();
 
         /**
-         * Sets the image to display. Existing Image is freed automatically, 
+         * Sets the On image to display. Existing Image is freed automatically, 
          * if it was loaded internally.
          *
          * @param image The image to display.
          */
-        void setImage(const Image* image);
+        void setOnImage(const Image* image);
+        
+        /**
+         * Sets the Off image to display. Existing Image is freed automatically, 
+         * if it was loaded internally.
+         *
+         * @param image The image to display.
+         */
+        void setOffImage(const Image* image);
 
         /**
-         * Gets current image.
+         * Gets current On image.
          *
-         * @return The current image.
+         * @return The current On image.
          */
-        const Image* getImage() const;
+        const Image* getOnImage() const;
 
+        /**
+         * Gets current Off image.
+         *
+         * @return The current Off image.
+         */
+        const Image* getOffImage() const;
 
         // Inherited from Widget
 
         void draw(gcn::Graphics* graphics);
-
+        
+        // Inherited from Button
+        virtual void mouseReleased(MouseEvent& mouseEvent);
     protected:
         /**
-         * The image to display.
+         * The image to display in On state.
          */
-        const Image* mImage;
+        const Image* mImageOn;
+        
+        /**
+         * The image to display in Off state.
+         */
+        const Image* mImageOff;
         
         /**
          * True if the image has been loaded internally, false otherwise.
          * An image not loaded internally should not be deleted in the
          * destructor.
          */
-        bool mInternalImage;
+        bool mInternalImageOn;
+        
+        /**
+         * True if the image has been loaded internally, false otherwise.
+         * An image not loaded internally should not be deleted in the
+         * destructor.
+         */
+        bool mInternalImageOff;
+        
+        /**
+        * On or Off
+        */
+        bool State;
     };
 }
 #endif

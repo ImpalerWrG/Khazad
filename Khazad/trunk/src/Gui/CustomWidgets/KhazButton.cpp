@@ -52,7 +52,7 @@
 
 namespace gcn
 {
-    KhazImageButton::KhazImageButton()
+    KhazButton::KhazButton()
         : mImage(0), 
           mInternalImage(false)
     {
@@ -60,7 +60,7 @@ namespace gcn
         setHeight(0);
     }
 
-    KhazImageButton::KhazImageButton(const std::string& filename)
+    KhazButton::KhazButton(const std::string& filename)
         : mImage(0), 
           mInternalImage(false)
     {
@@ -71,7 +71,7 @@ namespace gcn
         setFrameSize(0);
     }
 
-    KhazImageButton::KhazImageButton(const Image* image)
+    KhazButton::KhazButton(const Image* image)
         : mImage(image), 
           mInternalImage(false)
     {
@@ -80,7 +80,7 @@ namespace gcn
         setFrameSize(0);
     }
 
-    KhazImageButton::~KhazImageButton()
+    KhazButton::~KhazButton()
     {
         if (mInternalImage)
         {
@@ -88,7 +88,7 @@ namespace gcn
         }
     }
 
-    void KhazImageButton::setImage(const Image* image)
+    void KhazButton::setImage(const Image* image)
     {
         if (mInternalImage)
         {
@@ -99,12 +99,12 @@ namespace gcn
         mInternalImage = false;
     }
 
-    const Image* KhazImageButton::getImage() const
+    const Image* KhazButton::getImage() const
     {
         return mImage;
     }
 
-    void KhazImageButton::draw(Graphics* graphics)
+    void KhazButton::draw(Graphics* graphics)
     {
         int alpha = 128;
         gcn::Color faceColor = getBaseColor();

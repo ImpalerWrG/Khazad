@@ -52,7 +52,7 @@
 
 namespace gcn
 {
-ToggleImageButton::ToggleImageButton()
+KhazToggleButton::KhazToggleButton()
 : mImageOn (0), mImageOff (0), mInternalImageOn (false), mInternalImageOff (false), State(false)
 {
     setWidth (0);
@@ -60,7 +60,7 @@ ToggleImageButton::ToggleImageButton()
     setFrameSize(0);
 }
 
-ToggleImageButton::ToggleImageButton (const std::string& onfilename, const std::string& offfilename)
+KhazToggleButton::KhazToggleButton (const std::string& onfilename, const std::string& offfilename)
 : mImageOn (0), mImageOff (0), mInternalImageOn (false), mInternalImageOff (false), State(false)
 {
     mImageOn = Image::load (onfilename);
@@ -73,7 +73,7 @@ ToggleImageButton::ToggleImageButton (const std::string& onfilename, const std::
     setHeight (mImageOn->getHeight() + mImageOn->getHeight() / 2);
 }
 
-ToggleImageButton::ToggleImageButton (const Image* onimage, const Image* offimage)
+KhazToggleButton::KhazToggleButton (const Image* onimage, const Image* offimage)
 : mImageOn (onimage), mImageOff (offimage), mInternalImageOn (false), mInternalImageOff (false),State(false)
 {
     setFrameSize(0);
@@ -81,7 +81,7 @@ ToggleImageButton::ToggleImageButton (const Image* onimage, const Image* offimag
     setHeight (mImageOn->getHeight() + mImageOn->getHeight() / 2);
 }
 
-ToggleImageButton::~ToggleImageButton()
+KhazToggleButton::~KhazToggleButton()
 {
     if (mInternalImageOn)
     {
@@ -93,7 +93,7 @@ ToggleImageButton::~ToggleImageButton()
     }
 }
 
-void ToggleImageButton::mouseReleased(MouseEvent& mouseEvent)
+void KhazToggleButton::mouseReleased(MouseEvent& mouseEvent)
 {
     if (mouseEvent.getButton() == MouseEvent::LEFT
         && mMousePressed
@@ -110,7 +110,7 @@ void ToggleImageButton::mouseReleased(MouseEvent& mouseEvent)
         mouseEvent.consume();
     }
 }
-void ToggleImageButton::setOnImage (const Image* image)
+void KhazToggleButton::setOnImage (const Image* image)
 {
     if (mInternalImageOn)
     {
@@ -121,7 +121,7 @@ void ToggleImageButton::setOnImage (const Image* image)
     mInternalImageOn = false;
 }
 
-void ToggleImageButton::setOffImage (const Image* image)
+void KhazToggleButton::setOffImage (const Image* image)
 {
     if (mInternalImageOff)
     {
@@ -132,17 +132,17 @@ void ToggleImageButton::setOffImage (const Image* image)
     mInternalImageOff = false;
 }
 
-const Image* ToggleImageButton::getOffImage() const
+const Image* KhazToggleButton::getOffImage() const
 {
     return mImageOff;
 }
 
-const Image* ToggleImageButton::getOnImage() const
+const Image* KhazToggleButton::getOnImage() const
 {
     return mImageOn;
 }
 
-void ToggleImageButton::draw (Graphics* graphics)
+void KhazToggleButton::draw (Graphics* graphics)
 {
     int alpha = 128;
     gcn::Color faceColor = getBaseColor();

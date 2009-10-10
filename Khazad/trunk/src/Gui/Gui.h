@@ -51,8 +51,8 @@ protected:
     gcn::KhazWindow* MainMenuWindow;
     gcn::KhazWindow* ConfirmationWindow;
 
-    gcn::KhazImageButton* YesButton;
-    gcn::KhazImageButton* NoButton;
+    gcn::KhazButton* YesButton;
+    gcn::KhazButton* NoButton;
     gcn::ActionListener* ConfirmationAction;
     gcn::ActionListener* ExitListener;
 

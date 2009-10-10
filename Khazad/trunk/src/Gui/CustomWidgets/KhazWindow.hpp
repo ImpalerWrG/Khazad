@@ -56,8 +56,7 @@ namespace gcn
     /**
      * An implementation of a movable window that can contain other widgets.
      */
-    class GCN_CORE_DECLSPEC KhazWindow : public Container,
-                                     public MouseListener
+    class GCN_CORE_DECLSPEC KhazWindow : public Container, public MouseListener
     {
     public:
         /**
