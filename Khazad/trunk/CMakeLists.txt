@@ -129,9 +129,9 @@ src/Gui/FontManager.cpp
 src/Gui/Gui.cpp
 src/Gui/InputManager.cpp
 src/Gui/CustomWidgets/KhazSlider.cpp
-src/Gui/CustomWidgets/toggleimagebutton.cpp
+src/Gui/CustomWidgets/KhazToggleButton.cpp
 src/Gui/CustomWidgets/KhazWindow.cpp
-src/Gui/CustomWidgets/KhazImageButton.cpp
+src/Gui/CustomWidgets/KhazButton.cpp
 
 src/Map/Building.cpp
 src/Map/Cell.cpp
