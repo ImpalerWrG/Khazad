@@ -1,5 +1,9 @@
 <TileShapes xmlns="namespace">
 	<TileShape>
+		<Name Label="TILESHAPE_UNKNOWN"/>
+		<Open bool="1"/>
+	</TileShape>
+	<TileShape>
 		<Name Label="TILESHAPE_FLOOR"/>
 		<Open bool="1"/>
 	</TileShape>
