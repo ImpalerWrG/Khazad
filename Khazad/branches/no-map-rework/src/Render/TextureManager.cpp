@@ -29,7 +29,8 @@ bool TextureManager::Init()
             TextureCache.push_back(GenerateTexture(DevILImageID));
         }
     }
-    MergeTextures();
+    // FIXME: MergeTextures causes GL errors
+    //MergeTextures();
 	return true;
 }
 

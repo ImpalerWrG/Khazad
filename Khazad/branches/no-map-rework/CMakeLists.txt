@@ -32,6 +32,7 @@ ${CMAKE_SOURCE_DIR}/src/Data
 ${CMAKE_SOURCE_DIR}/src/Game
 ${CMAKE_SOURCE_DIR}/src/Geometry
 ${CMAKE_SOURCE_DIR}/src/Gui
+${CMAKE_SOURCE_DIR}/src/Gui/CustomWidgets
 ${CMAKE_SOURCE_DIR}/src/Map
 ${CMAKE_SOURCE_DIR}/src/Render
 ${CMAKE_SOURCE_DIR}/guichan/include
@@ -127,7 +128,10 @@ src/Geometry/Vector3.cpp
 src/Gui/FontManager.cpp
 src/Gui/Gui.cpp
 src/Gui/InputManager.cpp
-src/Gui/KhazSlider.cpp
+src/Gui/CustomWidgets/KhazSlider.cpp
+src/Gui/CustomWidgets/KhazToggleButton.cpp
+src/Gui/CustomWidgets/KhazWindow.cpp
+src/Gui/CustomWidgets/KhazButton.cpp
 
 src/Map/Building.cpp
 src/Map/Cell.cpp

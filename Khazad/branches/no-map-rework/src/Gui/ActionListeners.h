@@ -112,14 +112,6 @@ class HiddenToggleActionListener: public gcn::ActionListener
     void action(const gcn::ActionEvent& actionEvent)
     {
         RENDERER->setHiddenDraw(!RENDERER->isHiddenDraw());
-        if(RENDERER->isHiddenDraw())
-        {
-            UI->HiddenToggleButton->setImage(UI->HiddenOn);
-        }
-        else
-        {
-            UI->HiddenToggleButton->setImage(UI->HiddenOff);
-        }
     }
 };
 
@@ -207,7 +199,7 @@ class TiltUpActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        RENDERER->MainCamera->TiltView(-10 *  (CONFIG->TiltSpeed() / 1000.0), (float)0.01, (float)10.0);
+        RENDERER->MainCamera->TiltView(10 *  (CONFIG->TiltSpeed() / 1000.0), (float)0.01, (float)10.0);
     }
 };
 
@@ -215,7 +207,7 @@ class TiltDownActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        RENDERER->MainCamera->TiltView(10 *  (CONFIG->TiltSpeed() / 1000.0), (float)0.01, (float)10.0);
+        RENDERER->MainCamera->TiltView(-10 *  (CONFIG->TiltSpeed() / 1000.0), (float)0.01, (float)10.0);
     }
 };
 
@@ -243,15 +235,16 @@ class MapDumpActionListener: public gcn::ActionListener
         RENDERER->RenderTextCentered("Dumping Memory", 0, WHITE, 0);
         RENDERER->Flip();
 
-        MAP->Extract();
-
-        RENDERER->MainCamera->CenterView(MAP->getMapCenter());
-        UI->setZSliderRange(MAP->getMapSizeZ());
-        UI->setZSliders(MAP->getMapSizeZ(),0 );
-        RENDERER->MainCamera->SetSliceTop(MAP->getMapSizeZ());
-        RENDERER->MainCamera->SetSliceBottom(0);
-        RENDERER->MainCamera->ConfineCursor();
-        UI->setMapViewState();
+        if(MAP->Extract())
+        {
+            RENDERER->MainCamera->CenterView(MAP->getMapCenter());
+            UI->setZSliderRange(MAP->getMapSizeZ());
+            UI->setZSliders(MAP->getMapSizeZ(),0 );
+            RENDERER->MainCamera->SetSliceTop(MAP->getMapSizeZ());
+            RENDERER->MainCamera->SetSliceBottom(0);
+            RENDERER->MainCamera->ConfineCursor();
+            UI->setMapViewState();
+        }
     }
 };
 
@@ -268,16 +261,17 @@ class MapLoadActionListener: public gcn::ActionListener
         RENDERER->RenderTextCentered(buffer, 0, WHITE, 0);
         RENDERER->Flip();
 
-        MAP->Load(Path(CONFIG->LoadPath()));
-
-        RENDERER->MainCamera->CenterView(MAP->getMapCenter());
-        UI->setZSliderRange(MAP->getMapSizeZ());
-        UI->setZSliders(0,MAP->getMapSizeZ() );
-        RENDERER->MainCamera->SetSliceTop(MAP->getMapSizeZ());
-        RENDERER->MainCamera->SetSliceBottom(0);
-        RENDERER->MainCamera->ConfineCursor();
-
-        UI->setMapViewState();
+        if(MAP->Load(Path(CONFIG->LoadPath())))
+        {
+            RENDERER->MainCamera->CenterView(MAP->getMapCenter());
+            UI->setZSliderRange(MAP->getMapSizeZ());
+            UI->setZSliders(0,MAP->getMapSizeZ() );
+            RENDERER->MainCamera->SetSliceTop(MAP->getMapSizeZ());
+            RENDERER->MainCamera->SetSliceBottom(0);
+            RENDERER->MainCamera->ConfineCursor();
+            
+            UI->setMapViewState();
+        }
     }
 };
 

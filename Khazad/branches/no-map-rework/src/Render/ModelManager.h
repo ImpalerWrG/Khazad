@@ -22,16 +22,34 @@
 
 class Model;
 
+union SlopeIndex
+{
+    struct
+    {
+        unsigned int nw : 2;
+        unsigned int n : 2;
+        unsigned int ne : 2;
+        unsigned int e : 2;
+        unsigned int se : 2;
+        unsigned int s : 2;
+        unsigned int sw : 2;
+        unsigned int w : 2;
+    } directions;
+    uint16_t value;
+};
+
 class ModelManager
 {
     public:
         ModelManager();
         ~ModelManager();
         Model * LoadOBJModel(string filename);
+        vector < vertex > * getSlope(SlopeIndex surroundings);
         void clear();
 
     private:
-        map <string, Model *> models;
+        map < string, Model * > models;
+        map < uint16_t, vector < vertex > * > slopes;
 };
 
 #endif // MODELMANAGER_H

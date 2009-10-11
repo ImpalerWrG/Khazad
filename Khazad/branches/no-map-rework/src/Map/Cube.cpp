@@ -6,6 +6,7 @@
 #include <Random.h>
 #include <TextureManager.h>
 #include <DataManager.h>
+#include <ModelManager.h>
 
 Cube::Cube()
 {
@@ -325,51 +326,6 @@ bool Cube::Update()
 {
 	return true;
 }
-/*
-//fixme: !!total!! waste of CPU cycles
-Vector3 Cube::ConvertSpacialPoint(SpacialPoint Point)
-{
-    switch(Point)
-    {
-        case SPACIAL_POINT_CENTER:
-            return Vector3(0.0, 0.0, 0.0);
-
-        case SPACIAL_POINT_NORTH_TOP:
-            return Vector3(-0.5, -0.5, 0.5);
-
-        case SPACIAL_POINT_EAST_TOP:
-            return Vector3(0.5, -0.5, 0.5);
-
-        case SPACIAL_POINT_SOUTH_TOP:
-            return Vector3(0.5, 0.5 , 0.5);
-
-        case SPACIAL_POINT_WEST_TOP:
-            return Vector3(-0.5, 0.5, 0.5);
-
-        case SPACIAL_POINT_NORTH_BOTTOM:
-            return Vector3(-0.5, -0.5, -0.5);
-
-        case SPACIAL_POINT_EAST_BOTTOM:
-            return Vector3(0.5, -0.5, -0.5);
-
-        case SPACIAL_POINT_SOUTH_BOTTOM:
-            return Vector3(0.5, 0.5, -0.5);
-
-        case SPACIAL_POINT_WEST_BOTTOM:
-            return Vector3(-0.5, 0.5, -0.5);
-
-        Default:
-            return Vector3(0.5, 0.5  -0.5);
-    }
-
-    return Vector3(0.0, 0.0, 0.0);
-}
-*/
-/*bool Cube::Draw(CameraOrientation Orientation, float xTranslate, float yTranslate)
-{
-    return false;
-}*/
-
 void Cube::Dig()
 {
     setHidden(false);
@@ -600,118 +556,7 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate,
         vec->push_back(v1);
     }
 }
-// DRAW FACE
-// tops_vis_invis =  draw visible or invisible tops? true = visible
-//FIXME: waste of CPU cycles
-/*
-bool Cube::DrawFace(float xTranslate, float yTranslate, Facet FacetType, bool tops_vis_invis)
-{
-    //glColor4f(1,1,1,0.2);
-    Vector3 Points[4];
-    if(Visible && hasFace(FacetType))
-    {
-        if(FacetType != FACET_BOTTOM)
-        {
-            Cube * c = getAdjacentCube(FacetType);
-            if(FacetType == FACET_TOP)
-            {
-                bool nodraw = c && (!c->isHidden() || c->isHidden() && Hidden) && (c->hasFace(OppositeFacet(FacetType)) || c->getGeometry() == GEOM_WALL);
-                if(tops_vis_invis && nodraw || !tops_vis_invis && !nodraw)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                if(c && (!c->isHidden() || c->isHidden() && Hidden) && c->hasFace(OppositeFacet(FacetType)))
-                    return false;
-            }
-        }
-        switch(FacetType)
-        {
-            case FACET_TOP:
-            {
-                glNormal3f( 0.0f, 0.0f, 1.0f);
-                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
-                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
-                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-                break;
-            }
-            case FACET_BOTTOM:
-            {
-                glNormal3f( 0.0f, 0.0f, 1.0f);
-                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
-                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
-                break;
-            }
-            case FACET_NORTH:
-            {
-                glNormal3f( 0.0f, -1.0f, 0.0f);
-                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
-                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
-                break;
-            }
-            case FACET_EAST:
-            {
-                glNormal3f( 1.0f, 0.0f, 0.0f);
-                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
-                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_EAST_TOP);
-                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_EAST_BOTTOM);
-                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-                break;
-            }
-            case FACET_SOUTH:
-            {
-                glNormal3f( 0.0f, 1.0f, 0.0f);
-                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_TOP);
-                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_SOUTH_BOTTOM);
-                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
-                break;
-            }
-            case FACET_WEST:
-            {
-                glNormal3f( -1.0f, 0.0f, 0.0f);
-                Points[0] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_TOP);
-                Points[1] = ConvertSpacialPoint(SPACIAL_POINT_WEST_TOP);
-                Points[2] = ConvertSpacialPoint(SPACIAL_POINT_WEST_BOTTOM);
-                Points[3] = ConvertSpacialPoint(SPACIAL_POINT_NORTH_BOTTOM);
-                break;
-            }
-        }
-        TEXTURE->BindTexture(Material);
-        glTexCoord2f(0,0);
-        glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
-
-        glTexCoord2f(1,1);
-        glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
-
-        glTexCoord2f(0,1);
-        glVertex3f(Points[0].x + xTranslate, Points[0].y + yTranslate, Points[0].z);
-
-
-        glTexCoord2f(0,0);
-        glVertex3f(Points[3].x + xTranslate, Points[3].y + yTranslate, Points[3].z);
-
-        glTexCoord2f(1,0);
-        glVertex3f(Points[2].x + xTranslate, Points[2].y + yTranslate, Points[2].z);
-
-        glTexCoord2f(1,1);
-        glVertex3f(Points[1].x + xTranslate, Points[1].y + yTranslate, Points[1].z);
-        RENDERER->IncrementTriangles(2);
-    }
-
-    return true;
-}
-
-*/
 // DRAW SLOPE
-
 /// TODO: normal vectors. these are required for lighting
 /// TODO: separate this from khazad, use for mesh generation
 /// FIXME: waste of CPU cycles
@@ -719,96 +564,35 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate,
                      std::map< int16_t, vector< vertex >* >& normal,
                      std::map< int16_t, vector< vertex >* >& tops)
 {
-    if(!Visible) return false;
-    /**
-    * heightmap. order is from nort-west to north-west, clockwise. hm[9] is the center
-    * 0=8--1---2
-    *  |   |   |
-    *  7---9---3
-    *  |   |   |
-    *  6---5---4
-    */
-    uint8_t hm[10] = {0,0,0,0,0,0,0,0,0,1};
-    float hmf[10];// same in float
-
-    uint8_t covered[4] = {0,0,0,0}; // view of a side blocked by geometry?
-
-    // coordinates of the directions... fixed for spillover at the end of the loop
-    const float dc[9][2] =
+    if(!Visible)
     {
-        {-0.5,-0.5},
-        {0   ,-0.5},
-        {0.5 ,-0.5},
-        {0.5 ,0},
-        {0.5 ,0.5},
-        {0   ,0.5},
-        {-0.5,0.5},
-        {-0.5,0},
-        {-0.5,-0.5}
-    };
-    // same for texture coords
-    const float tc[9][2] =
-    {
-        {0,1},
-        {0.5   ,1},
-        {1 ,1},
-        {1 ,0.5},
-        {1 ,0},
-        {0.5   ,0},
-        {0,0},
-        {0,0.5},
-        {0,1}
-    };
-    uint8_t strong, weak, numsolids = 0;
-
+        return false;
+    }
+    SlopeIndex surroundings;
+    surroundings.value = 0;
+    
+    uint8_t solid;
     // copy surroundings
     for(Direction i = DIRECTION_NORTHWEST; i <= DIRECTION_WEST; ++i)
     {
-        bool solid = getNeighborCube(i) != NULL && getNeighborCube(i)->isSolid();
-        hm[i] = solid << 1;
-        numsolids += solid;
-    }
-
-    // test for covered and uncovered sides
-    covered[0] = hm[1] || getNeighborCube(DIRECTION_NORTH) != NULL && getNeighborCube(DIRECTION_NORTH)->isSlope();
-    covered[1] = hm[3] || getNeighborCube(DIRECTION_EAST) != NULL && getNeighborCube(DIRECTION_EAST)->isSlope();
-    covered[2] = hm[5] || getNeighborCube(DIRECTION_SOUTH) != NULL && getNeighborCube(DIRECTION_SOUTH)->isSlope();
-    covered[3] = hm[7] || getNeighborCube(DIRECTION_WEST) != NULL && getNeighborCube(DIRECTION_WEST)->isSlope();
-
-    // determine center
-    strong = (hm[7] && hm[1] && !hm[3] && !hm[4] && !hm[5])
-    + (hm[1] && hm[3] && !hm[5] && !hm[6] && !hm[7])
-    + (hm[3] && hm[5] && !hm[7] && !hm[0] && !hm[1])
-    + (hm[5] && hm[7] && !hm[1] && !hm[2] && !hm[3]);
-    if(numsolids == 1)
-    {
-        if (hm[0] || hm[2] || hm[4] || hm[6] )
+        solid = 0;
+        Cube *neighbor = getNeighborCube(i);
+        if( neighbor != NULL)
         {
-            hm[9] = 0;
+            if(neighbor->isSolid())
+            {
+                solid = 2;
+            }
+            else if (neighbor->isSlope())
+            {
+                solid = 1;
+            }
         }
+        surroundings.value |= solid << (2 * i);
     }
-    else if(strong == 1) hm[9] = 2;
-    else hm[9] = 1;
-
-    // fix corners
-    hm[0] = hm[7] | hm[0] | hm[1];
-    hm[2] = hm[1] | hm[2] | hm[3];
-    hm[4] = hm[3] | hm[4] | hm[5];
-    hm[6] = hm[5] | hm[6] | hm[7];
-
-    // fix sides so that slopes aren't jaggy.
-    hm[1] = (hm[1] >> 1) + (hm[0] || hm[2]);
-    hm[3] = (hm[3] >> 1) + (hm[2] || hm[4]);
-    hm[5] = (hm[5] >> 1) + (hm[4] || hm[6]);
-    hm[7] = (hm[7] >> 1) + (hm[6] || hm[0]);
-
-    hm[8] = hm[0]; // copy first point so we can safely use algorithms that go to N+1
-
-    // convert int heights to floats
-    for(int i = 0; i < 10; ++i)
-    {
-        hmf[i] = ((float)hm[i]) / 2 - 0.5;
-    }
+    
+    // create output vector if needed
+    // FIXME: should be part of cell?
     vector <vertex>* vec;
     if(!normal.count(Material))
     {
@@ -820,97 +604,8 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate,
     {
         vec = normal[Material];
     }
-
-    // draw triangles
-    for(Direction i = DIRECTION_NORTHWEST; i <= DIRECTION_WEST; ++i)
-    {
-        /**
-        *  P--P+1--*
-        *  | \ | / |
-        *  *---C---*
-        *  | / | \ |
-        *  *---*---*
-        */
-
-        // point C
-        vertex v0 = vertex(xTranslate, yTranslate, hmf[9],0.5,0.5, 0,0,1);
-        //point P+1
-        vertex v1 = vertex(dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, hmf[i+1],tc[i+1][0],tc[i+1][1], 0,0,1);
-        //point P
-        vertex v2 = vertex(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i],tc[i][0],tc[i][1], 0,0,1);
-        if(v0.z == v1.z == v2.z == 0.5) // top
-        {
-            vector <vertex>* vect;
-            Cube *c = getAdjacentCube(FACET_TOP);
-            if(c && !c->getGeometry() == GEOM_EMPTY)
-            {
-                if(!tops.count(Material))
-                {
-                    vect = new vector< vertex >;
-                    tops[Material] = vect;
-                    vect->reserve(256);
-                }
-                else
-                {
-                    vect = tops[Material];
-                }
-                vect->push_back(v0);
-                vect->push_back(v1);
-                vect->push_back(v2);
-                // next triangle
-                continue;
-            }
-        }
-        vec->push_back(v0);
-        vec->push_back(v1);
-        vec->push_back(v2);
-    }
-    //patch holes
-    for(int i = 0; i< 8;i+=2)
-    {
-        // already covered by wall or nearby slope, don't draw side
-        if (covered[i/2])
-            continue;
-
-        // zero center can be ignored
-        if (hm[i+1] == 0)
-            continue;
-
-        // determine how many triangles are needed an in what configuration
-        if(hm[i] == 0)// one tri, hm[i+2] is high
-        {
-            // second upper
-            vec->push_back(vertex(dc[i+2][0] + xTranslate, dc[i+2][1] + yTranslate, hmf[i+2], 0.0,1.0, 0,0,1));
-            // second lower
-            vec->push_back(vertex(dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5, 0.0,0.0, 0,0,1));
-            // first lower
-            vec->push_back(vertex(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, hmf[i], 1.0,0.0,0,0,1));
-        }
-        else if(hm[i+2] == 0)// one tri, hm[i] is high
-        {
-            // first lower
-            vec->push_back(vertex(dc[i][0] + xTranslate,  dc[i][1] + yTranslate, -0.5,1.0,0.0,   0,0,1 ));
-            // first upper
-            vec->push_back(vertex(dc[i][0] + xTranslate,  dc[i][1] + yTranslate, hmf[i],   1.0,1.0,   0,0,1 ));
-            // second
-            vec->push_back(vertex(dc[i+2][0] + xTranslate, dc[i+2][1]+ yTranslate, hmf[i+2],   0.0,0.0,   0,0,1 ));
-        }
-        else // two tris, both corners high
-        {
-            // second upper
-            vec->push_back(vertex(dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, 0.5,    0.0,1.0,   0,0,1 ));
-            // second lower
-            vec->push_back(vertex(dc[i+2][0] + xTranslate,  dc[i+2][1] + yTranslate, -0.5,    0.0,0.0,   0,0,1 ));
-            // first lower
-            vec->push_back(vertex(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5,    1.0,0.0,   0,0,1 ));
-
-            // first lower
-            vec->push_back(vertex(dc[i][0] + xTranslate, dc[i][1]+ yTranslate, -0.5,    1.0,0.0,   0,0,1 ));
-            // first upper
-            vec->push_back(vertex(dc[i][0] + xTranslate,  dc[i][1] + yTranslate, 0.5,    1.0,1.0,   0,0,1 ));
-            // center
-            vec->push_back(vertex(dc[i+1][0] + xTranslate, dc[i+1][1]+ yTranslate, 0.0,    0.5,0.5,   0,0,1 ));
-        }
-    }
+    // get slope geometry and mix it in
+    vector <vertex> * slope = RENDERER->ModelMan->getSlope(surroundings);
+    MixVertexVectorsOffset(slope, vec, xTranslate, yTranslate);
     return true;
 }

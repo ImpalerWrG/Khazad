@@ -14,6 +14,18 @@
 		</TileValues>
 	</TileGroup>
 	<TileGroup>
+		<Name Label="TILEGROUP_ASHES"/>
+		<MaterialClass label="MATERIALCLASS_ASHES"/>
+		<Texture label="TEXTURE_ASHES"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_GREY"/>
+		<TileValues>
+			<TileValue Int="242" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
+			<TileValue Int="243" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
+			<TileValue Int="244" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
+		</TileValues>
+	</TileGroup>
+	<TileGroup>
 		<Name Label="TILEGROUP_GRASS2"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
 		<Texture label="TEXTURE_GRASS"/>

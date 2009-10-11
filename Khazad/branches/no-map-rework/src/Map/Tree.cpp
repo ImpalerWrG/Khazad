@@ -11,8 +11,9 @@ using namespace std;
 #include "../../dfhack/library/DFTypes.h"
 #include "../../dfhack/library/DFTileTypes.h"
 
-#include <ModelManager.h>
+
 #include "Renderer.h"
+#include <ModelManager.h>
 #include <Model.h>
 #include "Tree.h"
 
@@ -131,7 +132,7 @@ bool Tree::Draw()
                 model->Render(trunkid);
             }
 
-            if(leavesid != -1)
+            if(leavesid != -1 && type !=TREE_DEAD && type != SAPLING_DEAD)
             {
                 TEXTURE->BindTexture(leavesmat_normal);
                 model->Render(leavesid);

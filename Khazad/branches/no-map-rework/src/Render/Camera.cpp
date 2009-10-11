@@ -11,57 +11,57 @@
 
 Camera::Camera()
 {
-	SlidingMode = false;
-	ZoomingMode = false;
-	VerticalMode = false;
+    SlidingMode = false;
+    ZoomingMode = false;
+    VerticalMode = false;
 
-	IsoMode = false;
-	AllFacesDrawing = false;
+    IsoMode = false;
+    AllFacesDrawing = false;
 
-	LevelSeperation = 1;
-	CursorLevel = 0;
+    LevelSeperation = 1;
+    CursorLevel = 0;
 
-	IsoScalar = CONFIG->ZoomStart();
+    IsoScalar = CONFIG->ZoomStart();
     MaxScalar = CONFIG->ZoomMax();
-	MinScalar = CONFIG->ZoomMin();
-	SliceTop = 1;
-	SliceBottom = 0;
+    MinScalar = CONFIG->ZoomMin();
+    SliceTop = 1;
+    SliceBottom = 0;
 }
 
 bool Camera::ReInit(bool Isometric)
 {
-	if (Isometric)
-	{
-		setIsometricProj(RENDERER->getWidth(), RENDERER->getHeight(), 1000000.0);
-		IsoMode = true;
-	}
-	else
-	{
-		IsoMode = false;
-		setPerspectiveProj(RENDERER->getWidth() / RENDERER->getHeight(), 0.01, 1000);
-	}
-	return true;
+    if (Isometric)
+    {
+        setIsometricProj(RENDERER->getWidth(), RENDERER->getHeight(), 1000000.0);
+        IsoMode = true;
+    }
+    else
+    {
+        IsoMode = false;
+        setPerspectiveProj(RENDERER->getWidth() / RENDERER->getHeight(), 0.01, 1000);
+    }
+    return true;
 }
 
 bool Camera::Init(bool Isometric)
 {
-	SetDefaultView();
+    SetDefaultView();
 
-	if (Isometric)
-	{
-		setIsometricProj(RENDERER->getWidth(), RENDERER->getHeight(), 1000000.0);
-		IsoMode = true;
-		Orientation = CAMERA_NORTH_WEST;
-//		ViewLevels = 1;
-	}
-	else
-	{
-		setPerspectiveProj(45.0, 1.0, 10000000.0);
-		IsoMode = false;
-		Orientation = CAMERA_NORTH_WEST;
-		setPerspectiveProj(RENDERER->getWidth() / RENDERER->getHeight(), 0.01, 1000);
-	}
-	return true;
+    if (Isometric)
+    {
+        setIsometricProj(RENDERER->getWidth(), RENDERER->getHeight(), 1000000.0);
+        IsoMode = true;
+        Orientation = CAMERA_NORTH_WEST;
+    //		ViewLevels = 1;
+    }
+    else
+    {
+        setPerspectiveProj(45.0, 1.0, 10000000.0);
+        IsoMode = false;
+        Orientation = CAMERA_NORTH_WEST;
+        setPerspectiveProj(RENDERER->getWidth() / RENDERER->getHeight(), 0.01, 1000);
+    }
+    return true;
 }
 
 Camera::~Camera()
@@ -71,51 +71,51 @@ Camera::~Camera()
 
 void Camera::setPerspectiveProj( float fAspect, float Zmin, float Zmax )
 {
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 
-	gluPerspective(90.0f, fAspect, Zmin, Zmax);
+    gluPerspective(90.0f, fAspect, Zmin, Zmax);
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 void Camera::setIsometricProj( float Width, float Hight, float Depth )
 {
-	ViewWidth = Width;
-	ViewHight = Hight;
-	ViewDepth = Depth;
+    ViewWidth = Width;
+    ViewHight = Hight;
+    ViewDepth = Depth;
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 
-	glOrtho(-Width, Width, Hight, -Hight, -Depth, Depth);
+    glOrtho(-Width, Width, Hight, -Hight, -Depth, Depth);
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
-	generateViewFrustum();
+    generateViewFrustum();
 }
 
 void Camera::setViewMatrix(Vector3& vecEye, Vector3& vecLookAt, Vector3& vecUp)
 {
-	EyePosition = vecEye;
-	UpVector = vecUp;
-	LookPosition = vecLookAt;
+    EyePosition = vecEye;
+    UpVector = vecUp;
+    LookPosition = vecLookAt;
 }
 
 void Camera::UpdateView()
 {
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
-	if (IsoMode)
-	{
-		glScalef(IsoScalar, IsoScalar, IsoScalar);
-	}
+    if (IsoMode)
+    {
+        glScalef(IsoScalar, IsoScalar, IsoScalar);
+    }
 
-	gluLookAt(EyePosition.x, EyePosition.y, EyePosition.z, LookPosition.x, LookPosition.y, LookPosition.z, UpVector.x, UpVector.y, UpVector.z);
-	generateViewFrustum();
+    gluLookAt(EyePosition.x, EyePosition.y, EyePosition.z, LookPosition.x, LookPosition.y, LookPosition.z, UpVector.x, UpVector.y, UpVector.z);
+    generateViewFrustum();
 }
 
 void Camera::onMousePoll()
@@ -229,48 +229,48 @@ void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY, 
     float DeltaX = (float)RelativeX;
     float DeltaY = (float)RelativeY;
 
-	if (Event->type == SDL_MOUSEBUTTONDOWN)
-	{
-		switch(Event->button.button)
-		{
+    if (Event->type == SDL_MOUSEBUTTONDOWN)
+    {
+        switch(Event->button.button)
+        {
             case SDL_BUTTON_WHEELUP:
-			{
-			    if(Keystate[SDLK_RSHIFT] || Keystate[SDLK_LSHIFT])
-			    {
+            {
+                if(Keystate[SDLK_RSHIFT] || Keystate[SDLK_LSHIFT])
+                {
                     ChangeViewLevel(1);
                     break;
-			    }
+                }
 
-			    if(Keystate[SDLK_SPACE])
-			    {
+                if(Keystate[SDLK_SPACE])
+                {
                     MoveViewVertical(1.0);
                     break;
-			    }
+                }
 
                 ZoomView(1.0 / (CONFIG->ZoomSpeed() / (50.0 + CONFIG->ZoomSpeed())));
                 generateViewFrustum();
                 break;
-			}
+            }
             case SDL_BUTTON_WHEELDOWN:
-			{
-			    if(Keystate[SDLK_RSHIFT] || Keystate[SDLK_LSHIFT])
-			    {
+            {
+                if(Keystate[SDLK_RSHIFT] || Keystate[SDLK_LSHIFT])
+                {
                     ChangeViewLevel(-1);
                     break;
-			    }
+                }
 
-			    if(Keystate[SDLK_SPACE])
-			    {
+                if(Keystate[SDLK_SPACE])
+                {
                     MoveViewVertical(-1.0);
                     break;
-			    }
+                }
 
                 ZoomView((CONFIG->ZoomSpeed() / (50.0 + CONFIG->ZoomSpeed())) / 1.0);
                 generateViewFrustum();
-				break;
-			}
+                break;
+            }
             case SDL_BUTTON_LEFT:
-			{
+            {
                 UnProjectPoint(RealX, RealY);
 
                 if(DetermineCursorIntersection())
@@ -284,30 +284,30 @@ void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY, 
                     }
                     Cursor = MouseIntersection;
                 }
-				break;
-			}
-			default:
                 break;
-		}
-	}
+            }
+            default:
+                break;
+        }
+    }
 
-	else
-	{
-		if (Event->type == SDL_MOUSEMOTION )
-		{
-			if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_RIGHT))
-			{
-				TiltView(DeltaY *  (CONFIG->TiltSpeed() / 1000.0), 0.01f, 10.0f);
-				OrbitView(DeltaX * (CONFIG->OrbitSpeed() / 10000.0));
+    else
+    {
+        if (Event->type == SDL_MOUSEMOTION )
+        {
+            if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_RIGHT))
+            {
+                TiltView(DeltaY *  (CONFIG->TiltSpeed() / 1000.0), 0.01f, 10.0f);
+                OrbitView(DeltaX * (CONFIG->OrbitSpeed() / 10000.0));
 
-				generateViewFrustum();
-			}
+                generateViewFrustum();
+            }
             if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_MIDDLE))
             {
                 SlideView(-DeltaX * CONFIG->SlideSpeed() / 50, -DeltaY * CONFIG->SlideSpeed() / 50);
             }
-		}
-	}
+        }
+    }
 }
 
 void Camera::UnProjectPoint(int XPosition, int YPosition)
@@ -338,58 +338,58 @@ Sint32 Camera::ZlevelSeperationAdjustment(Sint32 Zlevel)
 
 void Camera::setCameraOrientation(CameraOrientation NewOrientation)
 {
-	if (NewOrientation >= NUM_ORIENTATIONS)
-	{
-		return;
-	}
+    if (NewOrientation >= NUM_ORIENTATIONS)
+    {
+        return;
+    }
 
-	if (VerticalMode && NewOrientation != CAMERA_DOWN)
-	{
-	    return;
-	}
+    if (VerticalMode && NewOrientation != CAMERA_DOWN)
+    {
+        return;
+    }
 
-	Orientation = NewOrientation;
+    Orientation = NewOrientation;
 
-	switch(Orientation)
-	{
-		case CAMERA_DOWN:
-		{
-			EyePosition.x = LookPosition.x; EyePosition.y = LookPosition.y ;
-			break;
-		}
-		case CAMERA_NORTH_WEST:
-		{
-			EyePosition.x = LookPosition.x + 1; EyePosition.y = LookPosition.y + 1;
-			UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
-			break;
-		}
-		case CAMERA_NORTH_EAST:
-		{
-			EyePosition.x = LookPosition.x + 1; EyePosition.y = LookPosition.y - 1;
-			UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
-			break;
-		}
-		case CAMERA_SOUTH_EAST:
-		{
-			EyePosition.x = LookPosition.x - 1; EyePosition.y = LookPosition.y -1;
-			UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
+    switch(Orientation)
+    {
+        case CAMERA_DOWN:
+        {
+            EyePosition.x = LookPosition.x; EyePosition.y = LookPosition.y ;
+            break;
+        }
+        case CAMERA_NORTH_WEST:
+        {
+            EyePosition.x = LookPosition.x + 1; EyePosition.y = LookPosition.y + 1;
+            UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
+            break;
+        }
+        case CAMERA_NORTH_EAST:
+        {
+            EyePosition.x = LookPosition.x + 1; EyePosition.y = LookPosition.y - 1;
+            UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
+            break;
+        }
+        case CAMERA_SOUTH_EAST:
+        {
+            EyePosition.x = LookPosition.x - 1; EyePosition.y = LookPosition.y -1;
+            UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
 
-			break;
-		}
-		case CAMERA_SOUTH_WEST:
-		{
-			EyePosition.x = LookPosition.x - 1; EyePosition.y = LookPosition.y + 1;
-			UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
-			break;
-		}
-	}
-	generateViewFrustum();
+            break;
+        }
+        case CAMERA_SOUTH_WEST:
+        {
+            EyePosition.x = LookPosition.x - 1; EyePosition.y = LookPosition.y + 1;
+            UpVector.x = EyePosition.x; UpVector.y = EyePosition.y;
+            break;
+        }
+    }
+    generateViewFrustum();
 }
 
 void Camera::UpdateDirection()
 {
-	float X = EyePosition.x - LookPosition.x;
-	float Y = EyePosition.y - LookPosition.y;
+    float X = EyePosition.x - LookPosition.x;
+    float Y = EyePosition.y - LookPosition.y;
 
     if (X == 0 && Y == 0)
     {
@@ -397,8 +397,8 @@ void Camera::UpdateDirection()
         return;
     }
 
-	if (X > 0)
-	{
+    if (X > 0)
+    {
         if (Y > 0)
         {
             Orientation = CAMERA_NORTH_WEST;
@@ -407,50 +407,50 @@ void Camera::UpdateDirection()
         {
             Orientation = CAMERA_SOUTH_WEST;
         }
-	}
-	else // X < 0
-	{
-		if (Y > 0)
-		{
+    }
+    else // X < 0
+    {
+        if (Y > 0)
+        {
             Orientation = CAMERA_NORTH_EAST;
-		}
-		else // Y < 0
-		{
-			Orientation = CAMERA_SOUTH_EAST;
-		}
-	}
+        }
+        else // Y < 0
+        {
+            Orientation = CAMERA_SOUTH_EAST;
+        }
+    }
 }
 
 void Camera::RotateView(float X, float Y, float Z)
 {
-	Vector3 vVector;
+    Vector3 vVector;
 
-	// Get our view vVector (The direction we are facing)
-	vVector.x = LookPosition.x - EyePosition.x;        // This gets the direction of the X
-	vVector.y =	LookPosition.y - EyePosition.y;        // This gets the direction of the Y
-	vVector.z = LookPosition.z - EyePosition.z;        // This gets the direction of the Z
+    // Get our view vVector (The direction we are facing)
+    vVector.x = LookPosition.x - EyePosition.x;        // This gets the direction of the X
+    vVector.y =	LookPosition.y - EyePosition.y;        // This gets the direction of the Y
+    vVector.z = LookPosition.z - EyePosition.z;        // This gets the direction of the Z
 
-	// Rotate the view along the desired axis
-	if(X)
-	{
-		// Rotate the view vVector up or down, then add it to our position
-		LookPosition.z = (float)(EyePosition.z + sin(X) * vVector.y + cos(X) * vVector.z);
-		LookPosition.y = (float)(EyePosition.y + cos(X) * vVector.y - sin(X) * vVector.z);
-	}
-	if(Y)
-	{
-		// Rotate the view vVector right or left, then add it to our position
-		LookPosition.z = (float)(EyePosition.z + sin(Y) * vVector.x + cos(Y) * vVector.z);
-		LookPosition.x = (float)(EyePosition.x + cos(Y) * vVector.x - sin(Y) * vVector.z);
-	}
-	if(Z)
-	{
-		// Rotate the view vVector diagonally right or diagonally down, then add it to our position
-		LookPosition.x = (float)(EyePosition.x + sin(Z) * vVector.y + cos(Z) * vVector.x);
-		LookPosition.y = (float)(EyePosition.y + cos(Z) * vVector.y - sin(Z) * vVector.x);
-	}
+    // Rotate the view along the desired axis
+    if(X)
+    {
+        // Rotate the view vVector up or down, then add it to our position
+        LookPosition.z = (float)(EyePosition.z + sin(X) * vVector.y + cos(X) * vVector.z);
+        LookPosition.y = (float)(EyePosition.y + cos(X) * vVector.y - sin(X) * vVector.z);
+    }
+    if(Y)
+    {
+        // Rotate the view vVector right or left, then add it to our position
+        LookPosition.z = (float)(EyePosition.z + sin(Y) * vVector.x + cos(Y) * vVector.z);
+        LookPosition.x = (float)(EyePosition.x + cos(Y) * vVector.x - sin(Y) * vVector.z);
+    }
+    if(Z)
+    {
+        // Rotate the view vVector diagonally right or diagonally down, then add it to our position
+        LookPosition.x = (float)(EyePosition.x + sin(Z) * vVector.y + cos(Z) * vVector.x);
+        LookPosition.y = (float)(EyePosition.y + cos(Z) * vVector.y - sin(Z) * vVector.x);
+    }
 
-	generateViewFrustum();
+    generateViewFrustum();
 }
 
 void Camera::OrbitView(float Rotation)
@@ -543,74 +543,74 @@ void Camera::SlideView(float X, float Y)
 //    float DifferenceX = LookPosition.x - EyePosition.x;
 //    float DifferenceY = LookPosition.y - EyePosition.y;
 
-	if (IsoMode)
-	{
-		Vector3 LookVector = EyePosition - LookPosition;
-		Vector3 TempUpVector;
-		TempUpVector = UpVector;
-		//TempUpVector.z = 0;
+    if (IsoMode)
+    {
+        Vector3 LookVector = EyePosition - LookPosition;
+        Vector3 TempUpVector;
+        TempUpVector = UpVector;
+        //TempUpVector.z = 0;
 
-		Vector3 CrossProduct = UpVector.crossProduct(LookVector);
-		//CrossProduct.z = 0;
+        Vector3 CrossProduct = UpVector.crossProduct(LookVector);
+        //CrossProduct.z = 0;
 
-		EyePosition += TempUpVector * Y * (1 / IsoScalar);
-		LookPosition += TempUpVector * Y * (1 / IsoScalar);
+        EyePosition += TempUpVector * Y * (1 / IsoScalar);
+        LookPosition += TempUpVector * Y * (1 / IsoScalar);
         //Cursor += TempUpVector * Y * (1 / IsoScalar);
 
-		EyePosition += CrossProduct * X * (1 / IsoScalar);
-		LookPosition += CrossProduct * X * (1 / IsoScalar);
+        EyePosition += CrossProduct * X * (1 / IsoScalar);
+        LookPosition += CrossProduct * X * (1 / IsoScalar);
         //Cursor += CrossProduct * X * (1 / IsoScalar);
         ConfineLookPosition();
-		generateViewFrustum();
-	}
+        generateViewFrustum();
+    }
 
-	else // Perspective Mode
-	{
-		EyePosition += UpVector * Y;
-		LookPosition += UpVector * Y;
+    else // Perspective Mode
+    {
+        EyePosition += UpVector * Y;
+        LookPosition += UpVector * Y;
 
-		Vector3 CrossProduct = UpVector.crossProduct(EyePosition);
-		EyePosition += CrossProduct * X;
-		LookPosition += CrossProduct * X;
+        Vector3 CrossProduct = UpVector.crossProduct(EyePosition);
+        EyePosition += CrossProduct * X;
+        LookPosition += CrossProduct * X;
 
-		generateViewFrustum();
-	}
+        generateViewFrustum();
+    }
 }
 
 void Camera::ZoomView(float ZoomFactor)
 {
-	if (IsoMode)
-	{
-		IsoScalar *= ZoomFactor;
-		if (IsoScalar < MinScalar)
-		{
-			IsoScalar = MinScalar;
-		}
-		if (IsoScalar > MaxScalar)
-		{
-			IsoScalar = MaxScalar;
-		}
-	}
-	else
-	{
-		// ??? move eye position away from look point
-	}
+    if (IsoMode)
+    {
+        IsoScalar *= ZoomFactor;
+        if (IsoScalar < MinScalar)
+        {
+            IsoScalar = MinScalar;
+        }
+        if (IsoScalar > MaxScalar)
+        {
+            IsoScalar = MaxScalar;
+        }
+    }
+    else
+    {
+        // ??? move eye position away from look point
+    }
 }
 
 void Camera::MoveViewHorizontal(float X, float Y)
 {
-	EyePosition.x += X;
-   	EyePosition.y += Y;
+    EyePosition.x += X;
+    EyePosition.y += Y;
 
-	LookPosition.x += X;
-	LookPosition.y += Y;
+    LookPosition.x += X;
+    LookPosition.y += Y;
 
     if(true) // confine within map toggle?
     {
         ConfineLookPosition();
     }
 
-	generateViewFrustum();
+    generateViewFrustum();
 }
 
 void Camera::ConfineCursor()
@@ -698,10 +698,10 @@ void Camera::ConfineLookPosition()
 
 void Camera::MoveViewVertical(float Z)
 {
-	EyePosition.z += Z * LevelSeperation;
-	LookPosition.z += Z * LevelSeperation;
+    EyePosition.z += Z * LevelSeperation;
+    LookPosition.z += Z * LevelSeperation;
 
-	Cursor.z += Z;
+    Cursor.z += Z;
     CursorLevel += Z;
 
     ConfineCursor();
@@ -711,7 +711,7 @@ void Camera::MoveViewVertical(float Z)
         ConfineLookPosition();
     }
 
-	generateViewFrustum();
+    generateViewFrustum();
 }
 
 /*void Camera::setViewHight(Sint32 ZLevel)
@@ -809,22 +809,22 @@ void Camera::SetSliceBottom(int newValue)
 
 void Camera::SetDefaultView()
 {
-	EyePosition.x = 1.0;
-	EyePosition.y = 1.0;
-	EyePosition.z = 1.0;
+    EyePosition.x = 1.0;
+    EyePosition.y = 1.0;
+    EyePosition.z = 1.0;
 
-	LookPosition.x = 0.0;
-	LookPosition.y = 0.0;
-	LookPosition.z = 0.0;
+    LookPosition.x = 0.0;
+    LookPosition.y = 0.0;
+    LookPosition.z = 0.0;
 
-	UpVector.x = EyePosition.x - LookPosition.x;
-	UpVector.y = EyePosition.y - LookPosition.y;
-	UpVector.z = 0.0;
+    UpVector.x = EyePosition.x - LookPosition.x;
+    UpVector.y = EyePosition.y - LookPosition.y;
+    UpVector.z = 0.0;
 
     IsoScalar = CONFIG->ZoomStart();
     ViewLevels = 5;
 
-	generateViewFrustum();
+    generateViewFrustum();
 }
 
 void Camera::setVerticalMode(bool NewValue)
@@ -868,111 +868,112 @@ void Camera::CenterView(Vector3 CenterPoint)
 bool Camera::InSlice(float Zlevel)
 {
     if (Zlevel <= SliceTop)
-	{
-		float Depth = SliceTop - Zlevel;
-		if (Depth < ViewLevels)
-		{
-			return true;
-		}
-		return false;
-	}
-	return false;
+    {
+        float Depth = SliceTop - Zlevel;
+        if (Depth < ViewLevels)
+        {
+            return true;
+        }
+        return false;
+    }
+    return false;
 }
 
 float Camera::getShading(float Zlevel)
 {
-	if (Zlevel <= SliceTop)
-	{
-		float Depth = SliceTop - Zlevel;
-		if (Depth < ViewLevels)
-		{
-			float Shading = 1.0;
-			if (Depth > 0) // Below look level
-			{
-				Shading -= Depth / (float) ViewLevels;
-				float Minimum = 0.4;
-				Shading = ((1.0 - Minimum) * Shading) + (Minimum);
-				return Shading;
-			}
-			return Shading;
-		}
-		return 0.0;
-	}
-    return 0.0;
+    float Minimum = 0.2;
+    if (Zlevel <= SliceTop)
+    {
+        float Depth = SliceTop - Zlevel;
+        if (Depth < ViewLevels)
+        {
+            float Shading = 1.0;
+            if (Depth > 0) // Below look level
+            {
+                Shading -= Depth / (float) ViewLevels;
+
+                Shading = ((1.0 - Minimum) * Shading) + (Minimum);
+                return Shading;
+            }
+            return Shading;
+        }
+        return Minimum;
+    }
+    return Minimum;
 }
 
 bool Camera::sphereInFrustum(Vector3 Point, float Radius)
 {
-	float distance;
+    float distance;
 
-	if (IsoMode)
-	{
-		for(Uint8 i = 0; i < 4; i++)
-		{
-			distance = FrustumPlanes[i].distance(Point);
-			if (distance < -Radius)
-			{
-				return false;
-			}
-		}
-		return true;
-	}
-	else
-	{
-		return true;  // TODO 6 plane frustrum usage for Perspective projection
-	}
+    if (IsoMode)
+    {
+        for(Uint8 i = 0; i < 4; i++)
+        {
+            distance = FrustumPlanes[i].distance(Point);
+            if (distance < -Radius)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    else
+    {
+        return true;  // TODO 6 plane frustrum usage for Perspective projection
+    }
 }
 
 void Camera::generateViewFrustum()
 {
-	if (IsoMode)
-	{
-		float Hight = (ViewHight) * (1 / IsoScalar);
-		float Width = (ViewWidth) * (1 / IsoScalar);
+    if (IsoMode)
+    {
+        float Hight = (ViewHight) * (1 / IsoScalar);
+        float Width = (ViewWidth) * (1 / IsoScalar);
 
-		Vector3 TempVector = UpVector;
-		TempVector.normalize();
-		Vector3 LookVector = EyePosition - LookPosition;
-		LookVector.normalize();
-		Vector3 Normal;
+        Vector3 TempVector = UpVector;
+        TempVector.normalize();
+        Vector3 LookVector = EyePosition - LookPosition;
+        LookVector.normalize();
+        Vector3 Normal;
 
-		Vector3 TempPoint = EyePosition + (TempVector * Hight);
+        Vector3 TempPoint = EyePosition + (TempVector * Hight);
 
-		TempVector = TempVector.crossProduct(LookVector);
-		TempVector.normalize();
-		TempPoint = EyePosition + (TempVector * Width);
-		Normal = -TempVector;
-		FrustumPlanes[0].set2Points( Normal, TempPoint);
+        TempVector = TempVector.crossProduct(LookVector);
+        TempVector.normalize();
+        TempPoint = EyePosition + (TempVector * Width);
+        Normal = -TempVector;
+        FrustumPlanes[0].set2Points( Normal, TempPoint);
 
-		TempVector = TempVector.crossProduct(LookVector);
-		TempVector.normalize();
-		TempPoint = EyePosition + (TempVector * Hight);
-		Normal = -TempVector;
-		FrustumPlanes[1].set2Points( Normal, TempPoint);
+        TempVector = TempVector.crossProduct(LookVector);
+        TempVector.normalize();
+        TempPoint = EyePosition + (TempVector * Hight);
+        Normal = -TempVector;
+        FrustumPlanes[1].set2Points( Normal, TempPoint);
 
-		TempVector = TempVector.crossProduct(LookVector);
-		TempVector.normalize();
-		TempPoint = EyePosition + (TempVector * Width);
- 		Normal = -TempVector;
+        TempVector = TempVector.crossProduct(LookVector);
+        TempVector.normalize();
+        TempPoint = EyePosition + (TempVector * Width);
+        Normal = -TempVector;
         FrustumPlanes[2].set2Points( Normal, TempPoint);
 
-		TempVector = TempVector.crossProduct(LookVector);
-		TempVector.normalize();
-		TempPoint = EyePosition + (TempVector * Hight);
-		Normal = -TempVector;
+        TempVector = TempVector.crossProduct(LookVector);
+        TempVector.normalize();
+        TempPoint = EyePosition + (TempVector * Hight);
+        Normal = -TempVector;
         FrustumPlanes[3].set2Points( Normal, TempPoint);
-	}
+    }
 }
 
 void Camera::PrintDebugging()
 {
-	printf("Eye Position X: %f\n", EyePosition.x);
-	printf("Eye Position Y: %f\n", EyePosition.y);
-	printf("Eye Position Z: %f\n", EyePosition.z);
+    printf("Eye Position X: %f\n", EyePosition.x);
+    printf("Eye Position Y: %f\n", EyePosition.y);
+    printf("Eye Position Z: %f\n", EyePosition.z);
 
-	printf("Look Position X: %f\n", LookPosition.x);
-	printf("Look Position Y: %f\n", LookPosition.y);
-	printf("Look Position Z: %f\n", LookPosition.z);
+    printf("Look Position X: %f\n", LookPosition.x);
+    printf("Look Position Y: %f\n", LookPosition.y);
+    printf("Look Position Z: %f\n", LookPosition.z);
 }
 
 bool Camera::isAllFacesDrawing()

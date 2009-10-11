@@ -93,6 +93,8 @@
 			
 		</TileValues>
 	</Material>
+    
+    <!-- rough stone floors -->
 	<Material>
 		<Name Label="MATERIAL_STONE_FLOOR1"/>
 		<Texture label="TEXTURE_STONE1"/>
@@ -805,7 +807,7 @@
 	-->
 	<Material>
 		<Name Label="MATERIAL_RIVER"/>
-		<Texture label="TEXTURE_CONGLOMERATE"/>
+		<Texture label="TEXTURE_PEBBLES"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<TileValues>
@@ -834,9 +836,9 @@
 	-->
 	<Material>
 		<Name Label="MATERIAL_STREAM"/>
-		<Texture label="TEXTURE_CONGLOMERATE"/>
-		<PrimaryColor label="COLOR_LIGHT_GREY"/>
-		<SecondaryColor label="COLOR_BROWN"/>
+		<Texture label="TEXTURE_PEBBLES"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+        <ColorMode mode="overlay" />
 		<TileValues>
 			<Tile Int="373"/>
 			<Tile Int="374"/>
@@ -993,9 +995,42 @@
         <Texture label="TEXTURE_MAPLE_LEAVES"/>
         <ColorMode mode="keepimage"/>
     </Material>
-	
+
+    <Material>
+        <Name Label="MATERIAL_BIRCH_TRUNK"/>
+        <Texture label="TEXTURE_BIRCH_TRUNK"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_BIRCH_LEAVES"/>
+        <Texture label="TEXTURE_BIRCH_LEAVES"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
+
+    <Material>
+        <Name Label="MATERIAL_CHESTNUT_TRUNK"/>
+        <Texture label="TEXTURE_CHESTNUT_TRUNK"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_CHESTNUT_LEAVES"/>
+        <Texture label="TEXTURE_CHESTNUT_LEAVES"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
+
+    <Material>
+        <Name Label="MATERIAL_PALM_TRUNK"/>
+        <Texture label="TEXTURE_PALM_TRUNK"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_PALM_LEAVES"/>
+        <Texture label="TEXTURE_PALM_LEAVES"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
+
 	<!-- STONE/SOIL materials, disabled to show regular textures better -->
-    <!--
+    
 	<Material>
 		<Name Label="MATERIAL_HEMATITE"/>
 		<Texture label="TEXTURE_ROUGH"/>
@@ -1105,7 +1140,7 @@
 		<Name Label="MATERIAL_TETRAHEDRITE"/>
 		<Texture label="TEXTURE_VEINS"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
-		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
 		<MatGloss label="TETRAHEDRITE"/>
 	</Material>
 	<Material>
@@ -1681,5 +1716,5 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<MatGloss label="MARBLE"/>
-	</Material>-->
+	</Material>
 </Materials>

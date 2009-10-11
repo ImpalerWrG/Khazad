@@ -208,7 +208,7 @@ bool Map::Extract()
     if(!DF.ReadGeology( layerassign ))
     {
         cerr << "Can't get region geology." << endl;
-        return 1;
+        return false;
     }
 
     InitilizeTilePicker(DF);
@@ -256,14 +256,21 @@ bool Map::Extract()
     while(index < numbuildings)
     {
         DF.ReadBuilding(index, tempbld);
-        string strtype = v_buildingtypes[tempbld.type];
-        if( strtype == "stockpile" || strtype == "zone" ||strtype == "construction_blueprint" )
+        if(tempbld.type < v_buildingtypes.size())
         {
-            index++;
-            continue;
+            string strtype = v_buildingtypes[tempbld.type];
+            if( strtype == "stockpile" || strtype == "zone" ||strtype == "construction_blueprint" )
+            {
+                index++;
+                continue;
+            }
+            uint64_t coord =  ((uint64_t)tempbld.z) + (((uint64_t)tempbld.y1) << 16) + (((uint64_t)tempbld.x1) << 32);
+            buildingAssigner[coord] = tempbld;
         }
-        uint64_t coord =  ((uint64_t)tempbld.z) + (((uint64_t)tempbld.y1) << 16) + (((uint64_t)tempbld.x1) << 32);
-        buildingAssigner[coord] = tempbld;
+        else
+        {
+            printf ("building at %d %d %d, unknown type %d, vtable %x\n",tempbld.x1,tempbld.y1,tempbld.z,tempbld.type, tempbld.vtable);
+        }
         index ++;
     }
     DF.FinishReadBuildings();
@@ -314,6 +321,7 @@ bool Map::Extract()
 	}
     delete pDF;
     MapLoaded = true;
+    return true;
 }
 
 // load from file
@@ -436,8 +444,8 @@ void Map::LoadCellData(DFHackAPI & DF,
 
             int Liquid = Designations.bits.flow_size;
 
-            // initialize cubes. skip empty cubes unless they have liquid in them
-            if(IsFloor || IsWall || (Liquid && IsEmpty) || IsRamp || IsStairs)
+            // Create Cubes and load data, skip empty cubes unless they have liquid in them
+            if(!IsEmpty || IsEmpty && Liquid)
             {
                 Cube* TargetCube = TargetCell->getCube(CubeX, CubeY);
 
@@ -524,17 +532,21 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
     DF.ReadWoodMatgloss(woodtypes);
 
     Uint32 NumStoneMats = stonetypes.size();
-    StoneMatGloss = new Sint16[NumStoneMats];
-
+    int16_t uninitialized = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
     for(Uint32 i = 0; i < NumStoneMats; i++)
     {
-        StoneMatGloss[i] = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
+        bool hit = 0;
         for(Uint32 j = 0; j < DATA->getNumMaterials(); ++j)
         {
             if(DATA->getMaterialData(j)->getMatGloss() == stonetypes[i].id)
             {
-                StoneMatGloss[i] = j;
+                StoneMatGloss.push_back(j);
+                hit = 1;
             }
+        }
+        if(!hit)
+        {
+            StoneMatGloss.push_back(uninitialized);
         }
     }
     if(TreeMan) delete TreeMan;
@@ -647,8 +659,15 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
 
     Uint16 BaseMatGlossTexture = StoneMatGloss[basematerial];
     Uint16 VeinMatGlossTexture = 0;
-    if(veinmaterial)
+    //
+    if( veinmaterial > 0 && veinmaterial < StoneMatGloss.size())
+    {
         VeinMatGlossTexture = StoneMatGloss[veinmaterial];
+    }
+    else if( veinmaterial > 0 && veinmaterial >= StoneMatGloss.size())
+    {
+        cout << "invalid vein? " << veinmaterial << endl;
+    }
     // FIXME: add more material types so that we can use soap and other such terrible things
     Uint16 ContructionMatGlossTexture = -1;
     switch(constructionmaterial.type)
@@ -676,7 +695,7 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
             ContructionMatGlossTexture = Ice;
             break;
         default:
-            ContructionMatGlossTexture = Unknown;
+            ContructionMatGlossTexture = TileTexture;
     }
     // use matgloss for veins
     if(TileTexture == Vein ||
@@ -688,13 +707,8 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
         }
         return TileTexture;
     }
-    // use base layer matgloss
-    else if(TileTexture == Soil ||
-       TileTexture == Sand ||
-       TileTexture == Layer1 ||
-       TileTexture == Layer2 ||
-       TileTexture == Layer3 ||
-       TileTexture == Ramp)
+    // soil
+    else if(TileTexture == Soil)
     {
         if(BaseMatGlossTexture != Unknown)
         {
@@ -779,8 +793,5 @@ void Map::ReleaseMap()
         delete[] ColumnMatrix;
         ColumnMatrix = NULL;
     }
-
-    delete[] StoneMatGloss;
-    StoneMatGloss = NULL;
 }
 

@@ -111,7 +111,7 @@ protected:
     Uint16 TilePicker[600];
     Uint16 TileShapePicker[600];
 
-    Sint16* StoneMatGloss;
+    vector <int16_t> StoneMatGloss;
 
     Uint32 CellCount;
     Uint32 CubeCount;

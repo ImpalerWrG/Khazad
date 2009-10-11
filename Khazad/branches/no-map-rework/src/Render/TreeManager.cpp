@@ -37,7 +37,6 @@ TreeManager::TreeManager(vector<t_matgloss> & wood)
         for(uint32_t j = 0; j < wood.size();j++)
         {
             string mat2 = wood[j].id;
-            printf("ll");
             if( mat1 == mat2)
             {
                 treemap[j]=td;
