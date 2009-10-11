@@ -339,66 +339,6 @@ bool Cube::Update()
 	return true;
 }
 
-void Cube::Dig()
-{
-    /*
-    setHidden(false);
-    if(isSolid())
-    {
-        // set to floor
-        setGeometry(GEOM_SLOPE);
-        // reveal tiles around
-        for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
-        {
-            if(DirectionType != DIRECTION_DOWN)
-            {
-                Cube* NeighborCube = getNeighborCube(DirectionType);
-                if(NeighborCube != NULL && NeighborCube->isHidden())
-                {
-                    NeighborCube->setHidden(false);
-                }
-            }
-        }
-    }
-    else if(isSlope())
-    {
-        // set to floor
-        setGeometry(GEOM_FLOOR);
-        // done
-        for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
-        {
-            Cube* NeighborCube = getNeighborCube(DirectionType);
-            if(NeighborCube != NULL && NeighborCube->isHidden())
-            {
-                NeighborCube->setHidden(false);
-            }
-        }
-    }
-    else if(isFloor())
-    {
-        // set empty (deleting cube would be ideal)
-        setGeometry(GEOM_EMPTY);
-        // reveal one tile under
-        Cube * LowerCube = getNeighborCube(DIRECTION_DOWN);
-        if(LowerCube)
-        {
-            LowerCube->setHidden(false);
-        }
-    }
-    // update draw list of parent cell(s)
-    getCellOwner()->setNeedsRedraw(true);
-    for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
-    {
-        Cube* NeighborCube = getNeighborCube(DirectionType);
-
-        if(NeighborCube != NULL)
-        {
-            NeighborCube->getCellOwner()->setNeedsRedraw(true);
-        }
-    }
-    */
-}
-
 void Cube::setFacetSurfaceType(Facet FacetType, Sint16 SurfaceType)
 {
     FacetSurfaceTypes[FacetType] = SurfaceType;
@@ -411,16 +351,30 @@ Sint16 Cube::getFacetSurfaceType(Facet FacetType)
 
 void Cube::setFacetMaterialType(Facet FacetType, Sint16 MaterialType)
 {
-    if(FacetType % 2)
+    if (FacetType & 1)
     {
        FacetMaterialTypes[FacetType / 2] = MaterialType;
+
+        // Check to tag cube as having visable faces for rendering
+       if (FacetMaterialTypes[FacetType / 2] != -1)
+       {
+            Visible = true;
+            Owner->setActive(true);
+       }
     }
     else
     {
         Cube* AdjacentCube = getAdjacentCube(FacetType);
-        if(AdjacentCube != NULL)
+        if (AdjacentCube != NULL)
         {
             AdjacentCube->setFacetMaterialType(OppositeFacet(FacetType), MaterialType);
+
+            // Check to tag cube as having visable faces for rendering
+            if (AdjacentCube->getFacetMaterialType(OppositeFacet(FacetType)) != -1)
+            {
+                Visible = true;
+                Owner->setActive(true);
+            }
         }
     }
 }
@@ -444,11 +398,75 @@ Sint16 Cube::getFacetMaterialType(Facet FacetType)
 
 void Cube::setShape(Sint16 TileShape)
 {
-    CubeShapeType = TileShape;
+    if(TileShape < 0 || TileShape >= DATA->getNumTileShape())
+    {
+        CubeShapeType = DATA->getLabelIndex("TILESHAPE_EMPTY");
+        data.solid = !DATA->getTileShapeData(CubeShapeType)->isOpen();
+    }
+
+    if(CubeShapeType != TileShape)
+    {
+        CubeShapeType = TileShape;
+        data.solid = !DATA->getTileShapeData(CubeShapeType)->isOpen();
+        Owner->setNeedsRedraw(true);
+    }
+
+    if(Initalized)
+    {
+        RefreshFacetData();
+    }
 }
 
-bool Cube::Init()
+void Cube::RefreshFacetData()
 {
+    for (Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
+    {
+        if(FacetType == FACET_TOP)
+        {
+            continue;
+        }
+
+        if (isSolid())
+        {
+            if (getAdjacentCube(FacetType) != NULL)
+            {
+                if (!getAdjacentCube(FacetType)->isSolid())
+                {
+                    setFacetMaterialType(FacetType, CubeMaterialType);
+                }
+            }
+            else
+            {
+                Vector3 NewCubePosition = getAdjacentCubePosition(FacetType);
+                if(MAP->GenerateCube(NewCubePosition.x, NewCubePosition.y, NewCubePosition.z) != NULL)
+                {
+                    setFacetMaterialType(FacetType, CubeMaterialType);
+                }
+            }
+        }
+        else
+        {
+            if (getAdjacentCube(FacetType) != NULL)
+            {
+                if (getAdjacentCube(FacetType)->isSolid())
+                {
+                    setFacetMaterialType(FacetType, getAdjacentCube(FacetType)->getMaterial());
+                    Owner->setActive(true);
+                }
+                else
+                {
+                    setFacetMaterialType(FacetType, -1);
+                }
+            }
+            else
+            {
+                Vector3 NewCubePosition = getAdjacentCubePosition(FacetType);
+                MAP->GenerateCube(NewCubePosition.x, NewCubePosition.y, NewCubePosition.z);
+                setFacetMaterialType(FacetType, -1);
+            }
+        }
+    }
+
     static Sint16 FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
     static Sint16 RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
     static Sint16 StairID = DATA->getLabelIndex("TILESHAPE_STAIR");
@@ -460,28 +478,23 @@ bool Cube::Init()
         Owner->setActive(true);
     }
 
-    if(isSolid())
+    if(CubeShapeType == EmptyID)
     {
-        for(Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
+        if (getAdjacentCube(FACET_BOTTOM) != NULL)
         {
-            if(getAdjacentCube(FacetType) != NULL)
+            if (getAdjacentCube(FACET_BOTTOM)->isSolid())
             {
-                if(!getAdjacentCube(FacetType)->isSolid())
-                {
-                    setFacetMaterialType(FacetType, CubeMaterialType);
-                    Owner->setActive(true);
-                }
+                getAdjacentCube(FACET_BOTTOM)->setShape(FloorID);
             }
-            else
-            {
-                Vector3 NewCubePosition = getAdjacentCubePosition(FacetType);
-                MAP->GenerateCube(NewCubePosition.x, NewCubePosition.y, NewCubePosition.z);
-
-                setFacetMaterialType(FacetType, CubeMaterialType);
-                Owner->setActive(true);
-            }
+            setFacetMaterialType(FACET_BOTTOM, -1);
         }
     }
+}
+
+bool Cube::Init()
+{
+    RefreshFacetData();
+    Initalized = true;
 }
 
 bool Cube::hasFace(Facet FacetType)
@@ -544,12 +557,7 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate)
     // work vector ptr
     vector<vertex>* vec;
 
-    if(!Visible)
-    {
-        return false;
-    }
-
-    for(Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
+    for (Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
     {
         if(isSolid())
         {
@@ -572,13 +580,13 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate)
 
         Sint16 CubeMaterialType = getFacetMaterialType(FacetType);
 
-        if(CubeMaterialType != -1) //(hasFace(FacetType))
+        if (CubeMaterialType != -1)
         {
             vector<vertex>* vec;
 
-            if(!Owner->Geometry.count(CubeMaterialType))
+            if (!Owner->Geometry.count(CubeMaterialType))
             {
-                vec = new vector< vertex >;
+                vec = new vector<vertex>;
                 Owner->Geometry[CubeMaterialType] = vec;
             }
             else
@@ -604,14 +612,6 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate)
             vec->push_back(v1);
         }
     }
-}
-
-bool Cube::isSolid()
-{
-    static Sint16 WallID = DATA->getLabelIndex("TILESHAPE_WALL");
-    static Sint16 FortificationID = DATA->getLabelIndex("TILESHAPE_FORTIFICATION");
-
-    return (CubeShapeType == WallID || CubeShapeType == FortificationID);
 }
 
 bool Cube::isSlope()

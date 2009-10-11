@@ -9,6 +9,7 @@
 #include <Cube.h>
 #include <ConfigManager.h>
 #include <ColorManager.h>
+#include <DataManager.h>
 #include <Gui.h>
 
 
@@ -122,24 +123,9 @@ bool InputManager::HandleInput()
                         RENDERER->MainCamera->CenterView(adjustedCursor);
                         break;
                     }
-                    case SDLK_r:
-                    {
-                        // toggle face drawing options
-                        break;
-                    }
                     case SDLK_PRINT:
                     {
                         RENDERER->CaptureScreenShot();
-                        break;
-                    }
-                    case SDLK_d:
-                    {
-                        Vector3 CubePosition = RENDERER->MainCamera->getCursor();
-                        Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
-                        if(TargetCube != NULL)
-                        {
-                            TargetCube->Dig();
-                        }
                         break;
                     }
                     case SDLK_u:

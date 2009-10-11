@@ -1,7 +1,6 @@
 #include <stdafx.h>
 
 #include <Gui.h>
-//#include <ScreenManager.h>
 #include <Singleton.h>
 #include <ActionListeners.h>
 #include <Paths.h>
@@ -32,6 +31,7 @@ bool Ui::Init()
     InitCameraControlMenu();
     InitConfirmationWindow();
     InitDepthSlider();
+    InitDigWindow();
 
 	return true;
 }
@@ -62,7 +62,7 @@ void Ui::InitMainMenu()
     Uint16 ButtonSize = 34;
 
     MainMenuWindow = new gcn::KhazWindow("MAIN MENU");
-    
+
     TopWidget->add(MainMenuWindow);
     MainMenuWindow->setPosition(250, 50);
 
@@ -93,6 +93,7 @@ void Ui::InitMainMenu()
     MainMenuWindow->add(ExitButton, ButtonSize * 3 , 0);
     gcn::ActionListener* ExitListener = new ConfirmExitActionListener();
     ExitButton->addActionListener(ExitListener);
+
     MainMenuWindow->resizeToContent();
 }
 
@@ -266,6 +267,38 @@ void Ui::InitDepthSlider()
     DepthSlider->setVisible(false);
 }
 
+void Ui::InitDigWindow()
+{
+    Uint16 ButtonSize = 34;
+
+    DigWindow = new gcn::KhazWindow("DIG MENU");
+
+    TopWidget->add(DigWindow);
+    DigWindow->setPosition(500, 50);
+
+
+    // Populate the Window with Buttons
+    gcn::KhazButton* DigButton = new gcn::KhazButton(Path("Assets/UI/Buttons/Dig.png"));
+    DigButton->setSize(ButtonSize, ButtonSize);
+    DigWindow->add(DigButton, 0, 0);
+    gcn::ActionListener* DigListener = new DigActionListener();
+    DigButton->addActionListener(DigListener);
+
+    gcn::KhazButton* RampButton = new gcn::KhazButton(Path("Assets/UI/Buttons/Ramp.png"));
+    RampButton->setSize(ButtonSize, ButtonSize);
+    DigWindow->add(RampButton, ButtonSize, 0);
+    gcn::ActionListener* RampListener = new RampActionListener();
+    RampButton->addActionListener(RampListener);
+
+    gcn::KhazButton* ChannelButton = new gcn::KhazButton(Path("Assets/UI/Buttons/Channel.png"));
+    ChannelButton->setSize(ButtonSize, ButtonSize);
+    DigWindow->add(ChannelButton, ButtonSize * 2, 0);
+    gcn::ActionListener* ChannelListener = new ChannelActionListener();
+    ChannelButton->addActionListener(ChannelListener);
+
+    DigWindow->resizeToContent();
+}
+
 void Ui::setZSliders(int16_t A, int16_t B)
 {
     DepthSlider->setTopSlice(A);
@@ -309,9 +342,10 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
         if( event.button.button == SDL_BUTTON_LEFT )
         {
             if(  isWidgetCollision(DepthSlider, OriginX, OriginY)
-               ||isWidgetCollision(MainMenuWindow, OriginX, OriginY)
-               ||isWidgetCollision(CameraControlWindow, OriginX, OriginY)
-               ||isWidgetCollision(ConfirmationWindow, OriginX, OriginY) )
+               || isWidgetCollision(MainMenuWindow, OriginX, OriginY)
+               || isWidgetCollision(CameraControlWindow, OriginX, OriginY)
+               || isWidgetCollision(ConfirmationWindow, OriginX, OriginY)
+               || isWidgetCollision(DigWindow, OriginX, OriginY))
             {
                 //cout << "mouse down" << endl;
                 Input->pushInput(event);
@@ -367,7 +401,6 @@ void Ui::updateSizing()
     ConfirmationWindow->touch();
     ///FIXME: move windows when viewport shrinks? Maybe make their position scale with the main window...
 }
-
 
 bool Ui::isWidgetCollision(gcn::Widget* TestWidget, Uint16 RealX, Uint16 RealY)
 {

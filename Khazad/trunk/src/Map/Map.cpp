@@ -460,29 +460,27 @@ void Map::LoadCellData(DFHackAPI & DF,
             int Liquid = Designations.bits.flow_size;
 
             // Create Cubes and load data, skip empty cubes unless they have liquid in them
-            if(!IsEmpty || IsEmpty && Liquid)
+
+            Cube* TargetCube = new Cube();
+            TargetCell->setCube(TargetCube, CubeX, CubeY);
+            TargetCube->setPosition((float) MapX, (float) MapY, (float) MapZ);
+
+            Uint16 Material = PickTexture(TileType, basemat[CubeX][CubeY], veinmat[CubeX][CubeY], constmat[CubeX][CubeY], Ocupancies);
+
+            TargetCube->setHidden(Designations.bits.hidden);
+            TargetCube->setSubTerranean(Designations.bits.subterranean);
+            TargetCube->setSkyView(Designations.bits.skyview);
+            TargetCube->setSunLit(Designations.bits.light);
+
+            TargetCube->setMaterial(Material);
+            TargetCube->setShape(TileShapeID);
+
+            if(Designations.bits.flow_size)
             {
-                Cube* TargetCube = new Cube();
-                TargetCell->setCube(TargetCube, CubeX, CubeY);
-                TargetCube->setPosition((float) MapX, (float) MapY, (float) MapZ);
-
-                Uint16 Material = PickTexture(TileType, basemat[CubeX][CubeY], veinmat[CubeX][CubeY], constmat[CubeX][CubeY], Ocupancies);
-
-                TargetCube->setHidden(Designations.bits.hidden);
-                TargetCube->setSubTerranean(Designations.bits.subterranean);
-                TargetCube->setSkyView(Designations.bits.skyview);
-                TargetCube->setSunLit(Designations.bits.light);
-
-                TargetCube->setMaterial(Material);
-                TargetCube->setShape(TileShapeID);
-
-                if(Designations.bits.flow_size)
-                {
-                    TargetCube->setLiquid(Designations.bits.liquid_type, Designations.bits.flow_size);
-                }
-
-                TargetCube->setVisible(true);
+                TargetCube->setLiquid(Designations.bits.liquid_type, Designations.bits.flow_size);
             }
+
+            TargetCube->setVisible(true);
         }
     }
 }

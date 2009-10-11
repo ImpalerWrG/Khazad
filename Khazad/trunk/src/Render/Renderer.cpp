@@ -546,7 +546,7 @@ SDL_Color Renderer::getPickingColor()
 
 
 // FIXME: move to cell
-void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading, bool drawtop)
+void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading)
 {
     Cell* LoopCell = MAP->getCell(SizeX, SizeY, Zlevel);
 
@@ -567,7 +567,7 @@ void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTran
                 }
                 //glColor3f(Shading, Shading, Shading);
                 glColor3f(0.5, 0.5, 0.5);
-                LoopCell->Render(drawtop);
+                LoopCell->Render();
                 //TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
             glPopMatrix();
         }
@@ -674,7 +674,7 @@ bool Renderer::Render()
                 //GLfloat dir[] = {0.0, -3.0, 3.0};
                 //glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
                 glLightfv(GL_LIGHT1, GL_POSITION, position2);
-                RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, drawtops);
+                RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading);
             }
         }
     }
@@ -857,6 +857,10 @@ void Renderer::PrintDebugging()
         if(SelectedCube != NULL)
         {
             sprintf (buffer, "NorthFacet: %d  SouthFacet: %d  EastFacet: %d  WestFacet: % d", SelectedCube->getFacetMaterialType(FACET_NORTH), SelectedCube->getFacetMaterialType(FACET_SOUTH), SelectedCube->getFacetMaterialType(FACET_EAST), SelectedCube->getFacetMaterialType(FACET_WEST));
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+
+            sprintf (buffer, "Shape: %d:  Visible: %d   Hidden: %d", SelectedCube->getShape(), SelectedCube->isVisible(), SelectedCube->isHidden());
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
         }

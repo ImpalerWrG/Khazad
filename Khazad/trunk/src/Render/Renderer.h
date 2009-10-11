@@ -223,7 +223,7 @@ public:
 
     void DirtyAllLists();
     bool Render();
-    void RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading, bool drawtops);
+    void RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading);
 
     RenderObject *CreateRenderObject (vector <vertex> * source);
     void CallRenderObject(RenderObject * obj);

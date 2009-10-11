@@ -149,7 +149,7 @@ void Cell::addTree(Tree* t)
     trees.push_back(t);
 }
 
-void Cell::Render(bool drawtop)
+void Cell::Render()
 {
     for( map<int16_t, ROstore >::iterator it = ROs.begin(); it != ROs.end(); ++it)
     {
@@ -157,10 +157,6 @@ void Cell::Render(bool drawtop)
         if(it->second.normal)
         {
             RENDERER->CallRenderObject(it->second.normal);
-        }
-        if(drawtop && it->second.top)
-        {
-            RENDERER->CallRenderObject(it->second.top);
         }
     }
     for(Uint32 i = 0; i< trees.size(); i++)

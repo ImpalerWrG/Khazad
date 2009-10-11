@@ -113,7 +113,7 @@ protected:
     Column*** ColumnMatrix;
 
     Uint16 TilePicker[600];
-    Uint16 TileShapePicker[600];
+    Sint16 TileShapePicker[600];
 
     vector <int16_t> StoneMatGloss;
 

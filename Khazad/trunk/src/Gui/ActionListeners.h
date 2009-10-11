@@ -8,6 +8,7 @@
 #include <Cube.h>
 #include <ColorManager.h>
 #include <ConfigManager.h>
+#include <DataManager.h>
 
 class MainKeyListener : public gcn::KeyListener
 {
@@ -219,7 +220,36 @@ class DigActionListener: public gcn::ActionListener
         Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
         if(TargetCube != NULL)
         {
-            TargetCube->Dig();
+            static Sint16 FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
+            TargetCube->setShape(FloorID);
+        }
+    }
+};
+
+class RampActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        Vector3 CubePosition = RENDERER->MainCamera->getCursor();
+        Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
+        if(TargetCube != NULL)
+        {
+            static Sint16 RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
+            TargetCube->setShape(RampID);
+        }
+    }
+};
+
+class ChannelActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        Vector3 CubePosition = RENDERER->MainCamera->getCursor();
+        Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
+        if(TargetCube != NULL)
+        {
+            static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
+            TargetCube->setShape(EmptyID);
         }
     }
 };

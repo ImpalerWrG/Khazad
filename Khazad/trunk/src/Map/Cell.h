@@ -34,7 +34,7 @@ public:
 
     bool hasFace(Uint8 CubeX, Uint8 CubeY, Facet FaceType);
 
-    void Render(bool drawtop);
+    void Render();
     void ClearROs();
 
     // update VBOs
