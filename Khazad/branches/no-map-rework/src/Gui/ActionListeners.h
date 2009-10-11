@@ -224,6 +224,32 @@ class DigActionListener: public gcn::ActionListener
     }
 };
 
+class RampActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        Vector3 CubePosition = RENDERER->MainCamera->getCursor();
+        Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
+        if(TargetCube != NULL)
+        {
+            TargetCube->DigSlope();
+        }
+    }
+};
+
+class ChannelActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        Vector3 CubePosition = RENDERER->MainCamera->getCursor();
+        Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
+        if(TargetCube != NULL)
+        {
+            TargetCube->DigChannel();
+        }
+    }
+};
+
 class MapDumpActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)

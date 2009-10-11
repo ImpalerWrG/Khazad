@@ -32,6 +32,7 @@ bool Ui::Init()
     InitCameraControlMenu();
     InitConfirmationWindow();
     InitDepthSlider();
+    InitDigWindow();
 
 	return true;
 }
@@ -266,6 +267,38 @@ void Ui::InitDepthSlider()
     DepthSlider->setVisible(false);
 }
 
+void Ui::InitDigWindow()
+{
+    Uint16 ButtonSize = 34;
+    
+    DigWindow = new gcn::KhazWindow("DIG MENU");
+    
+    TopWidget->add(DigWindow);
+    DigWindow->setPosition(500, 50);
+    
+    
+    // Populate the Window with Buttons
+    gcn::KhazButton* DigButton = new gcn::KhazButton(Path("Assets/UI/Buttons/Dig.png"));
+    DigButton->setSize(ButtonSize, ButtonSize);
+    DigWindow->add(DigButton, 0, 0);
+    gcn::ActionListener* DigListener = new DigActionListener();
+    DigButton->addActionListener(DigListener);
+    
+    gcn::KhazButton* RampButton = new gcn::KhazButton(Path("Assets/UI/Buttons/Ramp.png"));
+    RampButton->setSize(ButtonSize, ButtonSize);
+    DigWindow->add(RampButton, ButtonSize, 0);
+    gcn::ActionListener* RampListener = new RampActionListener();
+    RampButton->addActionListener(RampListener);
+    
+    gcn::KhazButton* ChannelButton = new gcn::KhazButton(Path("Assets/UI/Buttons/Channel.png"));
+    ChannelButton->setSize(ButtonSize, ButtonSize);
+    DigWindow->add(ChannelButton, ButtonSize * 2, 0);
+    gcn::ActionListener* ChannelListener = new ChannelActionListener();
+    ChannelButton->addActionListener(ChannelListener);
+    
+    DigWindow->resizeToContent();
+}
+
 void Ui::setZSliders(int16_t A, int16_t B)
 {
     DepthSlider->setTopSlice(A);
@@ -311,7 +344,9 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
             if(  isWidgetCollision(DepthSlider, OriginX, OriginY)
                ||isWidgetCollision(MainMenuWindow, OriginX, OriginY)
                ||isWidgetCollision(CameraControlWindow, OriginX, OriginY)
-               ||isWidgetCollision(ConfirmationWindow, OriginX, OriginY) )
+               ||isWidgetCollision(ConfirmationWindow, OriginX, OriginY)
+               ||isWidgetCollision(DigWindow, OriginX, OriginY)
+               )
             {
                 //cout << "mouse down" << endl;
                 Input->pushInput(event);

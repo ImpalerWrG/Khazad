@@ -46,10 +46,12 @@ protected:
     void InitCameraControlMenu();
     void InitConfirmationWindow();
     void InitDepthSlider();
+    void InitDigWindow();
 
     gcn::KhazWindow* CameraControlWindow;
     gcn::KhazWindow* MainMenuWindow;
     gcn::KhazWindow* ConfirmationWindow;
+    gcn::KhazWindow* DigWindow;
 
     gcn::KhazButton* YesButton;
     gcn::KhazButton* NoButton;

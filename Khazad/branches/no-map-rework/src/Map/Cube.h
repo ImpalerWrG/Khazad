@@ -23,9 +23,9 @@ class Cube: public Actor
 
 public:
 
-	Cube();
-	~Cube();
-	bool Init(Uint16 MaterialType);
+    Cube();
+    ~Cube();
+    bool Init(Uint16 MaterialType);
 
     void SetOwner(Cell* NewOwner, Uint8 X, Uint8 Y);
 
@@ -40,41 +40,23 @@ public:
     Uint8 getLiquid()                   { return data.liquid; }
     void setLiquid(Uint8 liquidtype,Uint8 NewValue);
 
-//    Slope* getSlope()               { return Slopage; }
-//	void SetSlope(Slopping Type);
-//	void RemoveSlope();
-    //void DetermineSlope();
-
-	Uint16 getMaterial()            { return Material; }
+    Uint16 getMaterial()            { return Material; }
     bool setMaterial(Uint16 MaterialType);
 
-   /*
-    bool isFaceted()                { return Faceted; }
-
-    Face* getFacet(Facet Type);
-    void setFacet(Face* NewFace, Facet Type);
-    void setAllFacesVisiblity(bool NewValue);
-    void DeleteFace(Facet Type);
-    void CheckFaceted();
-    */
-
-    /*bool InitFacesOpen();
-    bool InitFacesSolid();
-    bool InitFaces();
-
-    void InitConstructedFace(Facet FacetType, Uint16 MaterialType);
-    bool Open();
-*/
     Cube* getAdjacentCube(Facet Type);
+    bool getAdjacentCubeOutOfBounds(Facet Type);
     Cube* getNeighborCube(Direction Type);
     Cell* getCellOwner()                    { return Owner; }
 
     Cell* getAdjacentCell(Facet Type);
-    //static Facet OpositeFace(Facet Type);
 
-   // bool InitFace(Facet FaceType);
-
-	bool Update();
+    //void setFacetSurfaceType(Facet FacetType, Sint16 SurfaceType);
+    Sint16 getFacetSurfaceType(Facet FacetType);
+    
+    //void setFacetMaterialType(Facet FacetType, Sint16 MaterialType);
+    Sint16 getFacetMaterialType(Facet FacetType);
+    
+    bool Update();
     bool Draw(float xTranslate, float yTranslate, map<int16_t, vector < vertex > * >& normal, map<int16_t, vector < vertex > * > & tops);
     bool DrawFaces(float xTranslate, float yTranslate, map<int16_t, vector < vertex > * >& normal, map<int16_t, vector < vertex > * > & tops);
     bool DrawSlope(float xTranslate, float yTranslate, map<int16_t, vector < vertex > * >& normal, map<int16_t, vector < vertex > * > & tops);
@@ -92,6 +74,8 @@ public:
     static Vector3 ConvertSpacialPoint(SpacialPoint Point);
 
     void Dig();
+    void DigChannel();
+    void DigSlope();
 
 protected:
     union

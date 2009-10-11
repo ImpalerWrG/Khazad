@@ -242,6 +242,37 @@ Cube* Cube::getAdjacentCube(Facet Type)
     return MAP->getCube(x, y, z);
 }
 
+bool Cube::getAdjacentCubeOutOfBounds(Facet Type)
+{
+    Sint32 x = Position.x;
+    Sint32 y = Position.y;
+    Sint32 z = Position.z;
+    
+    switch(Type)
+    {
+        case FACET_TOP:
+            z += 1;
+            break;
+        case FACET_BOTTOM:
+            z -= 1;
+            break;
+        case FACET_NORTH:
+            y -= 1;
+            break;
+        case FACET_EAST:
+            x += 1;
+            break;
+        case FACET_SOUTH:
+            y += 1;
+            break;
+        case FACET_WEST:
+            x -= 1;
+            break;
+    }
+    
+    return MAP->getIsInBounds(x, y, z);
+}
+
 Cube* Cube::getNeighborCube(Direction Type)
 {
     Sint32 x = Position.x;
@@ -326,61 +357,86 @@ bool Cube::Update()
 {
 	return true;
 }
-void Cube::Dig()
+
+void Cube::DigChannel()
 {
     setHidden(false);
-    if(isSolid())
-    {
-        // set to floor
-        setGeometry(GEOM_SLOPE);
-        // reveal tiles around
-        for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
-        {
-            if(DirectionType != DIRECTION_DOWN)
-            {
-                Cube* NeighborCube = getNeighborCube(DirectionType);
-                if(NeighborCube != NULL && NeighborCube->isHidden())
-                {
-                    NeighborCube->setHidden(false);
-                }
-            }
-        }
-    }
-    else if(isSlope())
-    {
-        // set to floor
-        setGeometry(GEOM_FLOOR);
-        // done
-        for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
-        {
-            Cube* NeighborCube = getNeighborCube(DirectionType);
-            if(NeighborCube != NULL && NeighborCube->isHidden())
-            {
-                NeighborCube->setHidden(false);
-            }
-        }
-    }
-    else if(isFloor())
-    {
-        // set empty (deleting cube would be ideal)
-        setGeometry(GEOM_EMPTY);
-        // reveal one tile under
-        Cube * LowerCube = getNeighborCube(DIRECTION_DOWN);
-        if(LowerCube)
-        {
-            LowerCube->setHidden(false);
-        }
-    }
-    // update draw list of parent cell(s)
-    getCellOwner()->setNeedsRedraw(true);
+    setGeometry(GEOM_EMPTY);
+    // reveal tiles around, deig below
     for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
     {
         Cube* NeighborCube = getNeighborCube(DirectionType);
-
+        
         if(NeighborCube != NULL)
         {
-            NeighborCube->getCellOwner()->setNeedsRedraw(true);
+            if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
+            {
+                NeighborCube->setHidden(false);
+                NeighborCube->getCellOwner()->setNeedsRedraw(true);
+            }
+            else if(DirectionType == DIRECTION_DOWN)
+            {
+                NeighborCube->Dig();
+                NeighborCube->getCellOwner()->setNeedsRedraw(true);
+            }
         }
+    }
+}
+
+void Cube::DigSlope()
+{    
+    if(isSolid())
+    {
+        setHidden(false);
+        // set to floor
+        
+        // reveal tiles around
+        for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+        {
+            Cube* NeighborCube = getNeighborCube(DirectionType);
+            if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
+            {
+                
+                if(NeighborCube != NULL)
+                {
+                    NeighborCube->setHidden(false);
+                    NeighborCube->getCellOwner()->setNeedsRedraw(true);
+                }
+            }
+            if(DirectionType == DIRECTION_UP)
+            {
+                NeighborCube->DigChannel();
+                NeighborCube->getCellOwner()->setNeedsRedraw(true);
+            }
+        }
+        setGeometry(GEOM_SLOPE);
+        // update draw list of parent cell(s)
+        getCellOwner()->setNeedsRedraw(true);
+    }
+}
+
+void Cube::Dig()
+{    
+    if(isSolid() || isSlope())
+    {
+        setHidden(false);
+        // set to floor
+        setGeometry(GEOM_FLOOR);
+        // reveal tiles around
+        for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+        {
+            if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
+            {
+                Cube* NeighborCube = getNeighborCube(DirectionType);
+                if(NeighborCube != NULL)
+                {
+                    NeighborCube->setHidden(false);
+                    NeighborCube->getCellOwner()->setNeedsRedraw(true);
+                }
+            }
+        }
+        // update draw list of parent cell(s)
+        getCellOwner()->setNeedsRedraw(true);
     }
 }
 void Cube::setGeometry(geometry_type NewValue)
@@ -495,7 +551,21 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate,
             c &&
             (!c->isHidden() || c->isHidden() && Hidden) &&
             (c->hasFace(OppositeFacet(f)) || c->getGeometry() == GEOM_WALL || c->getGeometry() == GEOM_SLOPE);
-
+            
+            bool totallyblocked = false;
+            if(f == FACET_TOP)
+            {
+                totallyblocked = c && Hidden  && getGeometry() == GEOM_WALL && c->getGeometry() != GEOM_EMPTY;
+            }
+            else
+            {
+                totallyblocked = !getAdjacentCubeOutOfBounds(f);
+            }
+            if (totallyblocked)
+            {
+                continue;
+            }
+            
             if(blocked)
             {
                 if(f== FACET_TOP)
@@ -608,4 +678,14 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate,
     vector <vertex> * slope = RENDERER->ModelMan->getSlope(surroundings);
     MixVertexVectorsOffset(slope, vec, xTranslate, yTranslate);
     return true;
+}
+
+//FIXME: stubs
+Sint16 Cube::getFacetMaterialType(Facet FacetType)
+{
+    return Material;
+}
+Sint16 Cube::getFacetSurfaceType(Facet FacetType)
+{
+    return 0;
 }

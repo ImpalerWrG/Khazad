@@ -167,6 +167,21 @@ Cube* Map::getCube(Sint32 X, Sint32 Y, Sint32 Z)
     return NULL;
 }
 
+bool Map::getIsInBounds(Sint32 x, Sint32 y, Sint32 z)
+{
+    if (x > 0 && x < MapSizeX)
+    {
+        if (y > 0 && y < MapSizeY)
+        {
+            if (z > 0 && z < MapSizeZ)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 bool Map::hasFace(Sint32 X, Sint32 Y, Sint32 Z, Facet FaceType)
 {
     Cell* TargetCell = getCubeOwner(X, Y, Z);
