@@ -685,7 +685,7 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
             ContructionMatGlossTexture = Ice;
             break;
         default:
-            ContructionMatGlossTexture = Unknown;
+            ContructionMatGlossTexture = TileTexture;
     }
     // use matgloss for veins
     if(TileTexture == Vein ||
@@ -697,13 +697,8 @@ Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmateria
         }
         return TileTexture;
     }
-    // use base layer matgloss
-    else if(TileTexture == Soil ||
-       TileTexture == Sand ||
-       TileTexture == Layer1 ||
-       TileTexture == Layer2 ||
-       TileTexture == Layer3 ||
-       TileTexture == Ramp)
+    // soil
+    else if(TileTexture == Soil)
     {
         if(BaseMatGlossTexture != Unknown)
         {

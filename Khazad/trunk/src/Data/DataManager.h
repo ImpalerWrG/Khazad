@@ -62,7 +62,12 @@ public:
         return true;
     }
 
-    ColorData* getColorData(Uint32 Index)                    { return Colors[Index]; }
+    ColorData* getColorData(Uint32 Index)                    
+    {
+        if (Index != -1)
+            return Colors[Index];
+        return Colors[0];
+    }
     Uint32 getNumColors()                                    { return Colors.size(); }
 
     TextureData* getTextureData(Uint32 Index)                { return Textures[Index]; }
