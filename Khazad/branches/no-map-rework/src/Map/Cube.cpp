@@ -54,6 +54,23 @@ bool Cube::Init(Uint16 MaterialType)
 
     return true;
 }
+
+
+bool Cube::isSolid()
+{
+    return data.solid;
+}
+bool Cube::isEmpty()
+{
+    return TileShape == DATA->getLabelIndex("TILESHAPE_EMPTY");
+}
+bool Cube::isSlope()
+{
+    return TileShape == DATA->getLabelIndex("TILESHAPE_RAMP") || TileShape == DATA->getLabelIndex("TILESHAPE_STAIR");
+}
+
+
+
 /*
 bool Cube::DrawLiquid(float xTranslate, float yTranslate)
 {
@@ -361,7 +378,7 @@ bool Cube::Update()
 void Cube::DigChannel()
 {
     setHidden(false);
-    setGeometry(GEOM_EMPTY);
+    setShape(DATA->getLabelIndex("TILESHAPE_EMPTY"));
     // reveal tiles around, deig below
     for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
     {
@@ -409,7 +426,7 @@ void Cube::DigSlope()
                 NeighborCube->getCellOwner()->setNeedsRedraw(true);
             }
         }
-        setGeometry(GEOM_SLOPE);
+        setShape(DATA->getLabelIndex("TILESHAPE_RAMP"));
         // update draw list of parent cell(s)
         getCellOwner()->setNeedsRedraw(true);
     }
@@ -421,7 +438,7 @@ void Cube::Dig()
     {
         setHidden(false);
         // set to floor
-        setGeometry(GEOM_FLOOR);
+        setShape(DATA->getLabelIndex("TILESHAPE_FLOOR"));
         // reveal tiles around
         for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
         {
@@ -439,32 +456,6 @@ void Cube::Dig()
         getCellOwner()->setNeedsRedraw(true);
     }
 }
-void Cube::setGeometry(geometry_type NewValue)
-{
-    data.geometry = NewValue;
-    //TODO: track and change tile type
-    // update faces
-    switch (data.geometry)
-    {
-        case GEOM_SLOPE:
-            // block bottom so that we don't see the wall-tops below the slope
-            data.facets = FACET_BOTTOM;
-            Owner->setActive(true);
-        case GEOM_EMPTY:
-            data.facets = 0;
-            Owner->setActive(true);
-            break;
-        case GEOM_FLOOR:
-            data.facets = FACET_BOTTOM;
-            Owner->setActive(true);
-            break;
-        case GEOM_WALL:
-            data.facets = FACET_TOP | FACET_NORTH | FACET_SOUTH | FACET_EAST | FACET_WEST;
-            Owner->setActive(true);
-            Owner->setTopActive(true);
-            break;
-    }
-}
 
 bool Cube::hasFace(Facet FacetType)
 {
@@ -474,11 +465,11 @@ bool Cube::Draw(float xTranslate, float yTranslate,
                      std::map< int16_t, vector< vertex >* >& normal,
                      std::map< int16_t, vector< vertex >* >& tops)
 {
-    if(data.geometry == GEOM_SLOPE)
+    if(isSlope())
     {
         return DrawSlope(xTranslate,yTranslate,normal,tops);
     }
-    else if (data.geometry == GEOM_EMPTY)
+    else if (isEmpty())
     {
         return false;
     }
@@ -550,12 +541,12 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate,
             bool blocked =
             c &&
             (!c->isHidden() || c->isHidden() && Hidden) &&
-            (c->hasFace(OppositeFacet(f)) || c->getGeometry() == GEOM_WALL || c->getGeometry() == GEOM_SLOPE);
+            (c->hasFace(OppositeFacet(f)) || c->isSolid() || c->isSlope());
             
             bool totallyblocked = false;
             if(f == FACET_TOP)
             {
-                totallyblocked = c && Hidden  && getGeometry() == GEOM_WALL && c->getGeometry() != GEOM_EMPTY;
+                totallyblocked = c && Hidden  && isSolid() && !c->isEmpty();
             }
             else
             {
@@ -679,6 +670,55 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate,
     MixVertexVectorsOffset(slope, vec, xTranslate, yTranslate);
     return true;
 }
+
+// ugly hack is ugly
+void Cube::setShape(Sint16 TileShape)
+{
+    static Sint16 FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
+    static Sint16 WallID = DATA->getLabelIndex("TILESHAPE_WALL");
+    static Sint16 SlopeID = DATA->getLabelIndex("TILESHAPE_RAMP");
+    static Sint16 StairID = DATA->getLabelIndex("TILESHAPE_STAIR");
+    static Sint16 FortificationID = DATA->getLabelIndex("TILESHAPE_FORTIFICATION");
+    bool IsFloor = (TileShape == FloorID);
+    bool IsWall = (TileShape == WallID) || (TileShape == FortificationID);
+    bool IsSlope = (TileShape == SlopeID);
+    bool IsStairs = (TileShape == StairID);
+    
+    if(IsWall)
+    {
+        data.facets = FACET_TOP | FACET_NORTH | FACET_SOUTH | FACET_EAST | FACET_WEST;
+        data.solid = true;
+        Owner->setActive(true);
+        Owner->setTopActive(true);
+    }
+    else if(IsSlope)
+    {
+        data.facets = FACET_BOTTOM;
+        Owner->setActive(true);
+        data.solid = false;
+    }
+    else if(IsFloor)
+    {
+        data.facets = FACET_BOTTOM;
+        Owner->setActive(true);
+        data.solid = false;
+    }
+    else if(IsStairs)
+    {
+        data.facets = 0;
+        Owner->setActive(true);
+        data.solid = false;
+    }
+    else // empty
+    {
+        data.facets = 0;
+        data.solid = false;
+        //Owner->setActive(true);
+    }
+    
+    this->TileShape =  TileShape;
+}
+
 
 //FIXME: stubs
 Sint16 Cube::getFacetMaterialType(Facet FacetType)

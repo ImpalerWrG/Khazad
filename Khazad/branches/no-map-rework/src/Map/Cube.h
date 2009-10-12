@@ -11,13 +11,6 @@
 class Slope;*/
 class Cell;
 
-enum geometry_type{
-    GEOM_EMPTY,
-    GEOM_WALL,
-    GEOM_SLOPE,
-    GEOM_FLOOR
-};
-
 class Cube: public Actor
 {
 
@@ -29,17 +22,20 @@ public:
 
     void SetOwner(Cell* NewOwner, Uint8 X, Uint8 Y);
 
-    bool isSolid()                  { return data.geometry == GEOM_WALL; }
-    bool isEmpty()                  { return data.geometry == GEOM_EMPTY; }
-    bool isSlope()                  { return data.geometry == GEOM_SLOPE; }
-    bool isFloor()                  { return data.geometry == GEOM_FLOOR; }
-    void setGeometry(geometry_type NewValue);
-    geometry_type getGeometry() {return data.geometry;};
+    bool isSolid();
+    bool isEmpty();
+    bool isSlope();
+    
+/*    void setGeometry(geometry_type NewValue);
+    geometry_type getGeometry() {return data.geometry;};*/
     bool hasFace(Facet FacetType);
 
     Uint8 getLiquid()                   { return data.liquid; }
     void setLiquid(Uint8 liquidtype,Uint8 NewValue);
 
+    void setShape(Sint16 TileShape);
+    Sint16 getShape()                       { return TileShape; }
+    
     Uint16 getMaterial()            { return Material; }
     bool setMaterial(Uint16 MaterialType);
 
@@ -86,16 +82,15 @@ protected:
         bool SunLit : 1;
         bool snow : 1;
         unsigned int facets : 6;
-        unsigned int facets_visible : 6;
         unsigned int liquid : 3;
         bool liquidtype :1;
-        geometry_type geometry : 3;
-        unsigned int empty : 8;
+        bool solid :1;
         };
         uint32_t whole;
     }data;
 
     Cell* Owner;
+    Sint16 TileShape;
     Uint16 Material;
     // packed and ready to go
     Uint8 CellX;

@@ -456,7 +456,7 @@ void Map::LoadCellData(DFHackAPI & DF,
             bool IsEmpty = (TileShapeID == EmptyID);
             bool IsRamp = (TileShapeID == RampID);
             bool IsStairs = (TileShapeID == StairID);
-
+            
             int Liquid = Designations.bits.flow_size;
 
             // Create Cubes and load data, skip empty cubes unless they have liquid in them
@@ -474,33 +474,10 @@ void Map::LoadCellData(DFHackAPI & DF,
                 TargetCube->setSubTerranean(Designations.bits.subterranean);
                 TargetCube->setSkyView(Designations.bits.skyview);
                 TargetCube->setSunLit(Designations.bits.light);
+                
+                TargetCube->setMaterial(Material);
+                TargetCube->setShape(TileShapeID);
 
-                if(IsWall)
-                {
-                    TargetCube->Init(Material);
-                    TargetCube->setGeometry(GEOM_WALL);
-                }
-                else if(IsEmpty)
-                {
-                    TargetCube->Init(Material);
-                    TargetCube->setGeometry(GEOM_EMPTY);
-                }
-                else if(IsRamp)
-                {
-                    TargetCube->Init(Material);
-                    TargetCube->setGeometry(GEOM_SLOPE);
-                }
-                else if(IsFloor)
-                {
-                    TargetCube->Init(Material);
-                    TargetCube->setGeometry(GEOM_FLOOR);
-                }
-                else if(IsStairs)
-                {
-                    TargetCube->Init(Material);
-                    TargetCube->setGeometry(GEOM_SLOPE);
-                    //TODO render stairs differently
-                }
                 if(Designations.bits.flow_size)
                 {
                     TargetCube->setLiquid(Designations.bits.liquid_type, Designations.bits.flow_size);
