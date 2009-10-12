@@ -463,7 +463,6 @@ void Map::LoadCellData(DFHackAPI & DF,
             if(!IsEmpty || IsEmpty && Liquid)
             {
                 Cube* TargetCube = TargetCell->getCube(CubeX, CubeY);
-
                 TargetCube = new Cube();
                 TargetCell->setCube(TargetCube, CubeX, CubeY);
                 TargetCube->setPosition((float) MapX, (float) MapY, (float) MapZ);

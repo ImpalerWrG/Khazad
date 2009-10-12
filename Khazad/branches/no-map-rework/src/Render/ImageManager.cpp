@@ -41,6 +41,7 @@ bool ImageManager::Init()
         ILuint DevilID = loadImage(DATA->getTextureData(i)->getPath(), false);
         DATA->getTextureData(i)->setDevILID(DevilID);
     }
+
     return true;
 }
 
@@ -72,7 +73,7 @@ ILuint ImageManager::loadImage(char* filepath, bool ColorKey)
     */
 
     ilConvertImage(IL_BGRA, IL_UNSIGNED_BYTE);
-    iluFlipImage();
+
     if(ColorKey)
     {
         //convert color key
@@ -80,7 +81,7 @@ ILuint ImageManager::loadImage(char* filepath, bool ColorKey)
     DevilImageVector.push_back(ImageID);
 
     ReportDevILErrors();
-    
+
     return ImageID;
 }
 
@@ -323,9 +324,9 @@ ILuint ImageManager::GenerateKeeperImage(ILuint TextureDevILID, Sint16 BorderCol
     {
         ilGenImages(1, &NewImageID);
         ilBindImage(NewImageID);
-        
+
         ilCopyImage(TextureDevILID);
-        
+
         ApplyBorder(NewImageID, BorderColorID);
     }
     else

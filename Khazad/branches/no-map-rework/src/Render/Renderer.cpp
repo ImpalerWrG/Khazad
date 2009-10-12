@@ -49,7 +49,6 @@ Renderer::Renderer()
     ScreenShotCounter = 0;
     TotalTriangles = 0;
 
-    LogoSurface = NULL;
     ModelMan = new ModelManager();
 }
 
@@ -84,8 +83,6 @@ bool Renderer::Init()
         //SDL_SetAlpha(Icon, SDL_SRCALPHA, 255);
         SDL_WM_SetIcon(Icon, NULL);
     }
-
-    LogoSurface = IMAGE->loadSurface(Path("Assets\\Textures\\KhazadLogo.png"));
 
     WindowWidth = CONFIG->getXResolution();
     WindowHeight = CONFIG->getYResolution();
@@ -413,15 +410,19 @@ void Renderer::RenderTexture(GLuint texture, SDL_Rect *Size, SDL_Rect *location)
 
 void Renderer::RenderLogo()
 {
+    SDL_Rect size;
     SDL_Rect location;
 
-    location.x = (CurrentWidth / 2) - (LogoSurface->clip_rect.w / 2);
-    location.y = (CurrentHeight * 2 / 3) - (LogoSurface->clip_rect.h / 2);
+    size.h = 200;
+    size.w = 200;
 
-    location.w = LogoSurface->clip_rect.w;
-    location.h = LogoSurface->clip_rect.h;
+    location.x = (CurrentWidth / 2) - (size.w / 2);
+    location.y = (CurrentHeight * 2 / 3) - (size.h / 2);
 
-    RenderSurface(LogoSurface, &location);
+    location.w = size.w;
+    location.h = size.h;
+
+    RenderTexture(TEXTURE->getLogoTexture(), &size, &location);
 }
 
 void Renderer::CaptureScreenShot()
@@ -525,32 +526,12 @@ void Renderer::DirtyAllLists()
 	}
 }
 
-SDL_Color Renderer::getPickingColor()
-{
-    // produce color
-
-    RedPickingValue++;
-    if (RedPickingValue == 255)
-    {
-        GreenPickingValue++;
-        RedPickingValue = 0;
-
-        if (GreenPickingValue == 255)
-        {
-            BluePickingValue++;
-            GreenPickingValue = 0;
-        }
-    }
-    return BLACK;
-}
-
-
 // FIXME: move to cell
 void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading, bool drawtop)
 {
     Cell* LoopCell = MAP->getCell(SizeX, SizeY, Zlevel);
 
-    if(LoopCell != NULL && LoopCell->isActive() )
+    if(LoopCell != NULL && LoopCell->isActive())
     {
         Vector3 RenderingPosition = LoopCell->getPosition();
         RenderingPosition.z = ZTranslate;
@@ -558,6 +539,7 @@ void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTran
         if(MainCamera->sphereInFrustum(RenderingPosition, CELLEDGESIZE))
         {
             glPushMatrix();
+
                 glTranslatef(SizeX * CELLEDGESIZE, SizeY * CELLEDGESIZE, ZTranslate);
                 if(LoopCell->getNeedsRedraw())
                 {
@@ -565,10 +547,13 @@ void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTran
                     LoopCell->UpdateLists();
                     LoopCell->setNeedsRedraw(false);
                 }
-                //glColor3f(Shading, Shading, Shading);
-                glColor3f(0.5, 0.5, 0.5);
+
+                //glColor3f(1.0, 1.0, 1.0);
+                //glColor3f(0.5, 0.5, 0.5);
+
                 LoopCell->Render(drawtop);
                 //TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
+
             glPopMatrix();
         }
     }
@@ -577,11 +562,12 @@ void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTran
 bool Renderer::Render()
 {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     if(MAP == NULL || !MAP->isMapLoaded())
     {
         setDrawingFlat();
         RenderLogo();
-        RenderTextCentered("KHAZAD", 0, WHITE, +40);
+        RenderTextCentered("KHAZAD", 0, WHITE, +10);
 
         return false;
     }
@@ -599,7 +585,7 @@ bool Renderer::Render()
     {
         Vector3 Point(0, 0, 0);
         //Point.z = MainCamera->LookZ() - (MainCamera->LookZ() * MainCamera->getLevelSeperation());
-        DrawCage(Point, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ() * MainCamera->getLevelSeperation(), false,0,1,0);
+        DrawCage(Point, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ() * MainCamera->getLevelSeperation(), false, 0, 1, 0);
 
         Vector3 Cursor = MainCamera->getCursor();
         Cursor.z = MainCamera->ZlevelSeperationAdjustment(Cursor.z);
@@ -607,17 +593,13 @@ bool Renderer::Render()
         Cube* CursorCube = MAP->getCube(Cursor.x, Cursor.y, Cursor.z);
         if(CursorCube != NULL && (CursorCube->isSolid() || CursorCube->getLiquid()))
         {
-            DrawCage(Cursor, 1, 1, 1, true,1,1,1);
+            DrawCage(Cursor, 1, 1, 1, true, 1, 1, 1);
         }
         else
         {
-            DrawCage(Cursor, 1, 1, 1, false,1,1,1);
+            DrawCage(Cursor, 1, 1, 1, false, 1, 1, 1);
         }
     }
-
-    RedPickingValue = 0;
-    GreenPickingValue = 0;
-    BluePickingValue = 0;
 
     TEXTURE->ResetTextureBinding();
     glEnable(GL_LIGHTING);
@@ -645,34 +627,36 @@ bool Renderer::Render()
     for(Sint16 Zlevel = Start; Zlevel < Stop ; Zlevel++)
     {
         float Shading = 1.0;
-        bool drawtops = (MainCamera->getLevelSeperation() != 1) || (Zlevel == Stop - 1);
         if(ShadedDraw)
         {
             Shading = MainCamera->getShading(Zlevel);
         }
         float ZTranslate = MainCamera->ZlevelSeperationAdjustment(Zlevel);
+        bool drawtops = (MainCamera->getLevelSeperation() != 1) || (Zlevel == Stop - 1);
+
+        GLfloat specular[] = {Shading, Shading, Shading , 1.0f};
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, specular);
+        glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+        GLfloat ambient[] = { Shading, Shading, Shading };
+        glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+        GLfloat position[] = { 1.0f, 1.5f, 2.0f, 0.0f };
+        //GLfloat dir[] = {0.0, -3.0, 3.0};
+        //glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
+        glLightfv(GL_LIGHT0, GL_POSITION, position);
+
+
+        GLfloat specular2[] = {0.15f, 0.15f, 0.25f , 1.0f};
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, specular2);
+        GLfloat ambient2[] = { 0.15f, 0.15f, 0.25f };
+        glLightfv(GL_LIGHT1, GL_AMBIENT, ambient2);
+        GLfloat position2[] = { -1.0f, -1.5f, 2.0f, 0.0f };
+        //GLfloat dir[] = {0.0, -3.0, 3.0};
+        //glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
+        glLightfv(GL_LIGHT1, GL_POSITION, position2);
+
         for(Sint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
             for(Sint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
             {
-                GLfloat specular[] = {Shading, Shading, Shading , 1.0f};
-                glLightfv(GL_LIGHT0, GL_DIFFUSE, specular);
-                glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
-                GLfloat ambient[] = { Shading, Shading, Shading };
-                glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-                GLfloat position[] = { 1.0f, 1.5f, 2.0f, 0.0f };
-                //GLfloat dir[] = {0.0, -3.0, 3.0};
-                //glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
-                glLightfv(GL_LIGHT0, GL_POSITION, position);
-                
-                
-                GLfloat specular2[] = {0.15f, 0.15f, 0.3f , 1.0f};
-                glLightfv(GL_LIGHT1, GL_DIFFUSE, specular2);
-                GLfloat ambient2[] = { 0.15f, 0.15f, 0.3f };
-                glLightfv(GL_LIGHT1, GL_AMBIENT, ambient2);
-                GLfloat position2[] = { -1.0f, -1.5f, 2.0f, 0.0f };
-                //GLfloat dir[] = {0.0, -3.0, 3.0};
-                //glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
-                glLightfv(GL_LIGHT1, GL_POSITION, position2);
                 RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, drawtops);
             }
                 

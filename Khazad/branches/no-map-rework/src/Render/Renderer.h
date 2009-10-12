@@ -1,5 +1,5 @@
-#ifndef SCREEN__HEADER
-#define SCREEN__HEADER
+#ifndef RENDERER__HEADER
+#define RENDERER__HEADER
 
 #include <stdafx.h>
 
@@ -212,20 +212,14 @@ public:
     bool WipeScreen();
     bool Flip();
 
-    inline Uint16 getWidth()
-    {
-        return CurrentWidth;
-    };
-    inline Uint16 getHeight()
-    {
-        return CurrentHeight;
-    };
+    inline Uint16 getWidth()            { return CurrentWidth; };
+    inline Uint16 getHeight()           { return CurrentHeight; };
 
     void DirtyAllLists();
     bool Render();
     void RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading, bool drawtops);
 
-    RenderObject *CreateRenderObject (vector <vertex> * source);
+    RenderObject *CreateRenderObject(vector <vertex> * source);
     void CallRenderObject(RenderObject * obj);
     void DeleteRenderObject(RenderObject * obj);
 
@@ -241,7 +235,7 @@ public:
     void DrawStreamers(Vector3 Point, float x, float y, float z, float Length);
 
     void IncrementTriangles(Uint32 Triangles);
-    Uint32 getTriangleCount() { return TotalTriangles; }
+    Uint32 getTriangleCount()                   { return TotalTriangles; }
 
     void ToggleFullScreen();
 
@@ -250,9 +244,7 @@ public:
 
     bool isCubeDrawn(Cube* TestCube);
 
-    SDL_Color getPickingColor();
-
-    SDL_Surface* MainScreen() { return ScreenSurface; }
+    SDL_Surface* MainScreen()               { return ScreenSurface; }
 
     Camera* MainCamera;
 
@@ -260,6 +252,7 @@ public:
     void binarysprintf(char* buffer, int Input); // TODO move this to some global place;
 
 protected:
+
     bool haveVBO;
     bool haveSHADOW;
 
@@ -276,8 +269,6 @@ protected:
     Uint8 WindowBPP;
 
     SDL_Surface* ScreenSurface;
-
-    SDL_Surface* LogoSurface;  //Temporary TODO remove
 
     Uint16 ScreenShotCounter;
 
@@ -296,15 +287,9 @@ protected:
 
     std::vector<GLuint*> DrawList;
 
-    Uint8 RedPickingValue;
-    Uint8 GreenPickingValue;
-    Uint8 BluePickingValue;
-
     gcn::OpenGLSDLImageLoader* imageLoader;
-
 };
 
 #define RENDERER (Renderer::GetInstance())
 
-#endif  // SCREEN__HEADER
-
+#endif  // RENDERER__HEADER
