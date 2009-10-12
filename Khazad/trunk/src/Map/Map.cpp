@@ -459,8 +459,7 @@ void Map::LoadCellData(DFHackAPI & DF,
             bool IsEmpty = (TileShapeID == EmptyID);
             int Liquid = Designations.bits.flow_size;
 
-            // Create Cubes and load data, skip empty cubes unless they have liquid in them
-
+            // Create Cubes and load data
             Cube* TargetCube = new Cube();
             TargetCell->setCube(TargetCube, CubeX, CubeY);
             TargetCube->setPosition((float) MapX, (float) MapY, (float) MapZ);

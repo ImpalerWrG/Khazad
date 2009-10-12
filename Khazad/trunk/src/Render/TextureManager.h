@@ -31,12 +31,16 @@ public:
     void ReportDevILErrors();
     void ResetTextureBinding();
 
+    GLuint getLogoTexture()                  { return LogoTexture; }
+    void setLogoTexture(GLuint NewValue)     { LogoTexture = NewValue; }
+
 protected:
 
 	//std::vector<ImagePage*> ImageLibrary;
 	//std::vector<ClipImage*> ClipLibrary;
 	//std::vector<GLuint> SingularTextureLibrary;
 	//std::vector<GLuint**> PagedTextureLibrary;
+    GLuint LogoTexture;
 
     std::vector<GLuint> TextureCache;
 

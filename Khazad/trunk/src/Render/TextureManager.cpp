@@ -29,8 +29,9 @@ bool TextureManager::Init()
             TextureCache.push_back(GenerateTexture(DevILImageID));
         }
     }
-    // FIXME: MergeTextures causes GL errors
-    //MergeTextures();
+
+    setLogoTexture(GenerateTexture(DATA->getTextureData(DATA->getLabelIndex("TEXTURE_KHAZAD_LOGO"))->getDevILID()));
+
 	return true;
 }
 
@@ -114,7 +115,6 @@ void TextureManager::MergeTextures()
         DestinationX += Width;
     }
 
-    iluFlipImage();
     ReportDevILErrors();
 
     GLuint MainTexture;
