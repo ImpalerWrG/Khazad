@@ -158,9 +158,8 @@ bool Renderer::Init()
 
 
     glEnable(GL_DEPTH_TEST);
-    // disabled for fun and profit
-    //glEnable(GL_COLOR_MATERIAL);
-
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
     // magic
     //glEnable(GL_MULTISAMPLE_ARB);
     //glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE_ARB);
@@ -550,7 +549,7 @@ void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTran
 
                 //glColor3f(1.0, 1.0, 1.0);
                 //glColor3f(0.5, 0.5, 0.5);
-
+                glColor4f(0.5, 0.5, 0.5, 0.3);
                 LoopCell->Render();
                 //TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
 
@@ -618,7 +617,7 @@ bool Renderer::Render()
     glDepthMask(GL_TRUE);
 
     /// turn of blending
-    glDisable(GL_BLEND);
+    //glDisable(GL_BLEND);
 
     /// enable stuff
 

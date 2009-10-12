@@ -275,7 +275,7 @@ void Ui::InitDigWindow()
 
     TopWidget->add(DigWindow);
     DigWindow->setPosition(500, 50);
-
+    DigWindow->setVisible(false);
 
     // Populate the Window with Buttons
     gcn::KhazButton* DigButton = new gcn::KhazButton(Path("Assets/UI/Buttons/Dig.png"));
@@ -314,6 +314,7 @@ void Ui::setMapViewState()
 {
     DepthSlider->setVisible(true);
     CameraControlWindow->setVisible(true);
+    DigWindow->setVisible(true);
 }
 
 Ui::~Ui()

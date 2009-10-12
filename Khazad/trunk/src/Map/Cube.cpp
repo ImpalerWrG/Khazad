@@ -257,7 +257,7 @@ void Cube::DigSlope()
         // update draw list of parent cell(s)
         getCellOwner()->setNeedsRedraw(true);
     }
-    else
+    else if(getShape()!=DATA->getLabelIndex("TILESHAPE_EMPTY"))
     {
         Cube* NeighborCube = getNeighborCube(DIRECTION_DOWN);
         if(NeighborCube)
