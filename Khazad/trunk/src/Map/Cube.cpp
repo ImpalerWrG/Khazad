@@ -201,6 +201,97 @@ bool Cube::DrawLiquid(float xTranslate, float yTranslate)
     }
 }
 */
+
+void Cube::DigChannel()
+{
+    setHidden(false);
+    setShape(DATA->getLabelIndex("TILESHAPE_EMPTY"));
+    // reveal tiles around, deig below
+    for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+    {
+        Cube* NeighborCube = getNeighborCube(DirectionType);
+        
+        if(NeighborCube != NULL)
+        {
+            if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
+            {
+                NeighborCube->setHidden(false);
+                NeighborCube->getCellOwner()->setNeedsRedraw(true);
+            }
+            else if(DirectionType == DIRECTION_DOWN)
+            {
+                NeighborCube->Dig();
+                NeighborCube->getCellOwner()->setNeedsRedraw(true);
+            }
+        }
+    }
+}
+
+void Cube::DigSlope()
+{    
+    if(isSolid())
+    {
+        setHidden(false);
+        // set to floor
+        
+        // reveal tiles around
+        for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+        {
+            Cube* NeighborCube = getNeighborCube(DirectionType);
+            if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
+            {
+                
+                if(NeighborCube != NULL)
+                {
+                    NeighborCube->setHidden(false);
+                    NeighborCube->getCellOwner()->setNeedsRedraw(true);
+                }
+            }
+            if(DirectionType == DIRECTION_UP)
+            {
+                NeighborCube->DigChannel();
+                NeighborCube->getCellOwner()->setNeedsRedraw(true);
+            }
+        }
+        setShape(DATA->getLabelIndex("TILESHAPE_RAMP"));
+        // update draw list of parent cell(s)
+        getCellOwner()->setNeedsRedraw(true);
+    }
+    else
+    {
+        Cube* NeighborCube = getNeighborCube(DIRECTION_DOWN);
+        if(NeighborCube)
+        {
+            NeighborCube->DigSlope();
+        }
+    }
+}
+
+void Cube::Dig()
+{    
+    if(isSolid() || isSlope())
+    {
+        setHidden(false);
+        // set to floor
+        setShape(DATA->getLabelIndex("TILESHAPE_FLOOR"));
+        // reveal tiles around
+        for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+        {
+            if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
+            {
+                Cube* NeighborCube = getNeighborCube(DirectionType);
+                if(NeighborCube != NULL)
+                {
+                    NeighborCube->setHidden(false);
+                    NeighborCube->getCellOwner()->setNeedsRedraw(true);
+                }
+            }
+        }
+        // update draw list of parent cell(s)
+        getCellOwner()->setNeedsRedraw(true);
+    }
+}
+
 void Cube::setLiquid(Uint8 liquidtype, Uint8 NewValue)
 {
     data.liquidtype = liquidtype;

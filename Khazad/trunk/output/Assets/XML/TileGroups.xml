@@ -257,7 +257,7 @@
 			<TileValue Int="379" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
 			<TileValue Int="380" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
 			<!-- top of brook, should use some different texture -->
-			<!--<TileValue Int="381" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>-->
+			<TileValue Int="381" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
 		</TileValues>
 	</TileGroup>
 

@@ -68,7 +68,11 @@ public:
 
     bool isSolid()                          { return data.solid; }
     bool isSlope();
-
+    
+    void Dig();
+    void DigChannel();
+    void DigSlope();
+    
 protected:
 
     union

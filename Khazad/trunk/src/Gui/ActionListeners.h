@@ -220,8 +220,8 @@ class DigActionListener: public gcn::ActionListener
         Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
         if(TargetCube != NULL)
         {
-            static Sint16 FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
-            TargetCube->setShape(FloorID);
+            //static Sint16 FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
+            TargetCube->Dig();//setShape(FloorID);
         }
     }
 };
@@ -234,8 +234,8 @@ class RampActionListener: public gcn::ActionListener
         Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
         if(TargetCube != NULL)
         {
-            static Sint16 RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
-            TargetCube->setShape(RampID);
+            //static Sint16 RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
+            TargetCube->DigSlope();//setShape(RampID);
         }
     }
 };
@@ -248,8 +248,8 @@ class ChannelActionListener: public gcn::ActionListener
         Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
         if(TargetCube != NULL)
         {
-            static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
-            TargetCube->setShape(EmptyID);
+            //static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
+            TargetCube->DigChannel();//setShape(EmptyID);
         }
     }
 };
