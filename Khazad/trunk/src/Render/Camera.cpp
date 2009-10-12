@@ -15,7 +15,7 @@ Camera::Camera()
 
     SlidingMode = false;
     ZoomingMode = false;
-    VerticalMode = false;
+    AngleLock = false;
 
     IsoMode = false;
     AllFacesDrawing = false;
@@ -55,7 +55,6 @@ bool Camera::Init(bool Isometric)
         setIsometricProj(RENDERER->getWidth(), RENDERER->getHeight(), 1000000.0);
         IsoMode = true;
         Orientation = CAMERA_NORTH_WEST;
-    //		ViewLevels = 1;
     }
     else
     {
@@ -345,12 +344,6 @@ void Camera::setCameraOrientation(CameraOrientation NewOrientation)
     {
         return;
     }
-
-    if (VerticalMode && NewOrientation != CAMERA_DOWN)
-    {
-        return;
-    }
-
     Orientation = NewOrientation;
 
     switch(Orientation)
@@ -493,7 +486,7 @@ void Camera::TiltView(float Movement, float Min, float Max)
     float Distance = 0;
     Vector3 LookVector;
 
-    if(VerticalMode)
+    if(AngleLock)
     {
         return;
     }
@@ -540,33 +533,25 @@ void Camera::TiltView(float Movement, float Min, float Max)
     }
 }
 
-/// FIXME: this is wrong - it only allows sliding in one level. Y should map to Z axis and X to a line perpendicular to the view
 void Camera::SlideView(float X, float Y)
 {
-//    float DifferenceX = LookPosition.x - EyePosition.x;
-//    float DifferenceY = LookPosition.y - EyePosition.y;
-
     if (IsoMode)
     {
         Vector3 LookVector = EyePosition - LookPosition;
         Vector3 TempUpVector;
         TempUpVector = UpVector;
-        //TempUpVector.z = 0;
 
         Vector3 CrossProduct = UpVector.crossProduct(LookVector);
-        //CrossProduct.z = 0;
 
         EyePosition += TempUpVector * Y * (1 / IsoScalar);
         LookPosition += TempUpVector * Y * (1 / IsoScalar);
-        //Cursor += TempUpVector * Y * (1 / IsoScalar);
 
         EyePosition += CrossProduct * X * (1 / IsoScalar);
         LookPosition += CrossProduct * X * (1 / IsoScalar);
-        //Cursor += CrossProduct * X * (1 / IsoScalar);
+
         ConfineLookPosition();
         generateViewFrustum();
     }
-
     else // Perspective Mode
     {
         EyePosition += UpVector * Y;
@@ -717,21 +702,6 @@ void Camera::MoveViewVertical(float Z)
     generateViewFrustum();
 }
 
-/*void Camera::setViewHight(Sint32 ZLevel)
-{
-    SliceTop = ZLevel;
-
-    if(CursorLevel > SliceTop)
-    {
-        CursorLevel = SliceTop;
-    }
-    if(CursorLevel < (SliceTop - ViewLevels))
-    {
-        CursorLevel = SliceTop - ViewLevels;
-    }
-    ConfineLookPosition();
-}*/
-
 void Camera::ChangeViewLevel(Sint32 Change)
 {
     if (Change != 0)
@@ -753,21 +723,7 @@ void Camera::ChangeViewLevel(Sint32 Change)
         generateViewFrustum();
     }
 }
-/*
-void Camera::setViewLevels(Uint8 NewValue)
-{
-    if (NewValue != ViewLevels)
-    {
-        ViewLevels = NewValue;
 
-        if (ViewLevels < 1)
-        {
-            ViewLevels = 1;
-        }
-        generateViewFrustum();
-    }
-}
-*/
 void Camera::changeLevelSeperation(Sint8 Change)
 {
     Vector3 adjustedLookAt = LookPosition;
@@ -790,14 +746,15 @@ void Camera::setLevelSeperation(Sint8 NewValue)
     {
         LevelSeperation = 1;
     }
-
 }
 
 void Camera::SetSliceTop(int newValue)
 {
     SliceTop = newValue;
     if(SliceBottom >= SliceTop)
+    {
         SliceBottom = SliceTop - 1;
+    }
     ViewLevels = SliceTop - SliceBottom;
     generateViewFrustum();
 }
@@ -805,7 +762,9 @@ void Camera::SetSliceBottom(int newValue)
 {
     SliceBottom = newValue;
     if(SliceTop <= SliceBottom)
+    {
         SliceTop = SliceBottom + 1;
+    }
     ViewLevels = SliceTop - SliceBottom;
     generateViewFrustum();
 }
@@ -828,16 +787,6 @@ void Camera::SetDefaultView()
     ViewLevels = 5;
 
     generateViewFrustum();
-}
-
-void Camera::setVerticalMode(bool NewValue)
-{
-    VerticalMode = NewValue;
-
-    if(VerticalMode)
-    {
-        setCameraOrientation(CAMERA_DOWN);
-    }
 }
 
 void Camera::CenterView(Vector3 CenterPoint)
@@ -884,7 +833,7 @@ bool Camera::InSlice(float Zlevel)
 
 float Camera::getShading(float Zlevel)
 {
-    float Minimum = 0.2;
+    float Minimum = 0.3;
     if (Zlevel <= SliceTop)
     {
         float Depth = SliceTop - Zlevel;

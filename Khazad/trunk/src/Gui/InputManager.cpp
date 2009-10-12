@@ -143,11 +143,6 @@ bool InputManager::HandleInput()
 					    RENDERER->setSunLitDraw(!RENDERER->isSunLitDraw());
 					    break;
 					}
-                    case SDLK_v:
-					{
-					    RENDERER->MainCamera->setVerticalMode(!RENDERER->MainCamera->isVerticalMode());
-					    break;
-					}
                     case SDLK_b:
 					{
 					    RENDERER->setDebuggingDraw(!RENDERER->isDebuggingDraw());

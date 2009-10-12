@@ -67,12 +67,12 @@ class CenteringActionListener: public gcn::ActionListener
     }
 };
 
-class VerticalActionListener: public gcn::ActionListener
+class AngleLockToggleActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
         gcn::Button* Source = (gcn::Button*) actionEvent.getSource();
-        RENDERER->MainCamera->setVerticalMode(!RENDERER->MainCamera->isVerticalMode());
+        RENDERER->MainCamera->setAngleLock(!RENDERER->MainCamera->isAngleLock());
     }
 };
 

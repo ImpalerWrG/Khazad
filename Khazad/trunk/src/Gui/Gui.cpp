@@ -108,35 +108,35 @@ void Ui::InitCameraControlMenu()
     CameraControlWindow->setVisible(false);
 
 
-    gcn::KhazToggleButton* VerticalToggleButton = new gcn::KhazToggleButton(Path("Assets/UI/Buttons/lockview.png"),Path("Assets/UI/Buttons/releaseview.png"));
-    VerticalToggleButton->setSize(ButtonSize, ButtonSize);
-    gcn::ActionListener* VerticalListener = new VerticalActionListener();
-    VerticalToggleButton->addActionListener(VerticalListener);
-    CameraControlWindow->add(VerticalToggleButton, ButtonSize * 0, ButtonSize * 0);
-
     gcn::KhazToggleButton* ShadingToggleButton = new gcn::KhazToggleButton( Path("Assets/UI/Buttons/light_uniform.png"), Path("Assets/UI/Buttons/light_gradient.png"));
     ShadingToggleButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* ShadingTobbleListener = new ShadingToggleActionListener();
     ShadingToggleButton->addActionListener(ShadingTobbleListener);
-    CameraControlWindow->add(ShadingToggleButton, ButtonSize * 1, ButtonSize * 0);
+    CameraControlWindow->add(ShadingToggleButton, ButtonSize * 0, ButtonSize * 0);
 
     gcn::KhazButton* TakeScreenShotButton = new gcn::KhazButton(Path("Assets/UI/Buttons/TakeScreenShot.png"));
     TakeScreenShotButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* TakeScreenShotListener = new TakeScreenShotActionListener();
     TakeScreenShotButton->addActionListener(TakeScreenShotListener);
-    CameraControlWindow->add(TakeScreenShotButton, ButtonSize * 2, ButtonSize * 0);
+    CameraControlWindow->add(TakeScreenShotButton, ButtonSize * 1, ButtonSize * 0);
 
     gcn::KhazButton* FrameToggleButton = new gcn::KhazButton(Path("Assets/UI/Buttons/Frame.png"));
     FrameToggleButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* FrameToggleListener = new FrameToggleActionListener();
     FrameToggleButton->addActionListener(FrameToggleListener);
-    CameraControlWindow->add(FrameToggleButton, ButtonSize * 3, ButtonSize * 0);
+    CameraControlWindow->add(FrameToggleButton, ButtonSize * 2, ButtonSize * 0);
 
     gcn::KhazToggleButton* HiddenToggleButton = new gcn::KhazToggleButton( Path("Assets/UI/Buttons/Hidden.png"), Path("Assets/UI/Buttons/Hidden2.png"));
     HiddenToggleButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* HiddenToggleListener = new HiddenToggleActionListener();
     HiddenToggleButton->addActionListener(HiddenToggleListener);
-    CameraControlWindow->add(HiddenToggleButton, ButtonSize * 4, ButtonSize * 0);
+    CameraControlWindow->add(HiddenToggleButton, ButtonSize * 3, ButtonSize * 0);
+
+    gcn::KhazToggleButton* AngleLockToggleButton = new gcn::KhazToggleButton(Path("Assets/UI/Buttons/lockview.png"), Path("Assets/UI/Buttons/releaseview.png"));
+    AngleLockToggleButton->setSize(ButtonSize, ButtonSize);
+    gcn::ActionListener* AngleLockToggleListener = new AngleLockToggleActionListener();
+    AngleLockToggleButton->addActionListener(AngleLockToggleListener);
+    CameraControlWindow->add(AngleLockToggleButton, ButtonSize * 4, ButtonSize * 0);
 
 
     gcn::KhazButton* ViewUpButton = new gcn::KhazButton(Path("Assets/UI/Buttons/UpArrow.png"));

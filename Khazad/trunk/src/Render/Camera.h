@@ -24,7 +24,7 @@ protected:
 
 	bool SlidingMode;
 	bool ZoomingMode;
-	bool VerticalMode;
+	bool AngleLock;
 
 	CameraOrientation Orientation;
 
@@ -101,8 +101,8 @@ public:
 
     Vector3 getMouseIntersection()          { return MouseIntersection; }
 
-	bool isVerticalMode()                   { return VerticalMode;}
-    void setVerticalMode(bool NewValue);
+	bool isAngleLock()                      { return AngleLock;}
+    void setAngleLock(bool NewValue)        { AngleLock = NewValue; }
 
     Sint32 ZlevelSeperationAdjustment(Sint32);
 
