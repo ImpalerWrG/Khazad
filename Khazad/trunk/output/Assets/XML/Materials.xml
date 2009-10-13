@@ -1029,6 +1029,28 @@
         <ColorMode mode="keepimage"/>
     </Material>
 
+    <Material>
+        <Name Label="MATERIAL_PINE_TRUNK"/>
+        <Texture label="TEXTURE_PINE_TRUNK"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_PINE_LEAVES"/>
+        <Texture label="TEXTURE_PINE_LEAVES"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
+    
+    <Material>
+        <Name Label="MATERIAL_LARCH_TRUNK"/>
+        <Texture label="TEXTURE_LARCH_TRUNK"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_LARCH_LEAVES"/>
+        <Texture label="TEXTURE_LARCH_LEAVES"/>
+        <ColorMode mode="keepimage"/>
+    </Material>
+
 	<!-- STONE/SOIL materials, disabled to show regular textures better -->
     
 	<Material>

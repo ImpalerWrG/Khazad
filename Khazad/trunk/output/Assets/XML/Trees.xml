@@ -57,4 +57,22 @@
 		  <Leaves material="MATERIAL_PALM_LEAVES" />
 		</Variant>
 	</Tree>
+        <Tree>
+        <Name Label="TREE_PINE"/>
+        <MatGloss value="PINE" />
+        <Model file="Assets/Models/pine/pine.obj" />
+        <Variant>
+          <Trunk material="MATERIAL_PINE_TRUNK" />
+          <Leaves material="MATERIAL_PINE_LEAVES" />
+        </Variant>
+    </Tree>
+    <Tree>
+        <Name Label="TREE_LARCH"/>
+        <MatGloss value="LARCH" />
+        <Model file="Assets/Models/larch/larch.obj" />
+        <Variant>
+          <Trunk material="MATERIAL_LARCH_TRUNK" />
+          <Leaves material="MATERIAL_LARCH_LEAVES" />
+        </Variant>
+    </Tree>
 </Trees>

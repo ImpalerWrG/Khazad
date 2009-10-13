@@ -90,6 +90,24 @@
         <File Path="Assets/Models/palm/leavesntp.png"/>
     </Texture>
 
+    <Texture>
+        <Name Label="TEXTURE_PINE_TRUNK"/>
+        <File Path="Assets/Models/pine/bark.png"/>
+    </Texture>
+    <Texture>
+        <Name Label="TEXTURE_PINE_LEAVES"/>
+        <File Path="Assets/Models/pine/leavesnt.png"/>
+    </Texture>
+    
+    <Texture>
+        <Name Label="TEXTURE_LARCH_TRUNK"/>
+        <File Path="Assets/Models/larch/bark.png"/>
+    </Texture>
+    <Texture>
+        <Name Label="TEXTURE_LARCH_LEAVES"/>
+        <File Path="Assets/Models/larch/leavesnt.png"/>
+    </Texture>
+
 	<!-- GRASS -->
 	<Texture>
 		<Name Label="TEXTURE_GRASS1"/>
