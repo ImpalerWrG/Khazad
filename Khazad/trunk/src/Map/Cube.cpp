@@ -210,7 +210,7 @@ void Cube::DigChannel()
     for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
     {
         Cube* NeighborCube = getNeighborCube(DirectionType);
-        
+
         if(NeighborCube != NULL)
         {
             if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
@@ -228,19 +228,19 @@ void Cube::DigChannel()
 }
 
 void Cube::DigSlope()
-{    
+{
     if(isSolid())
     {
         setHidden(false);
         // set to floor
-        
+
         // reveal tiles around
         for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
         {
             Cube* NeighborCube = getNeighborCube(DirectionType);
             if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
             {
-                
+
                 if(NeighborCube != NULL)
                 {
                     NeighborCube->setHidden(false);
@@ -268,7 +268,7 @@ void Cube::DigSlope()
 }
 
 void Cube::Dig()
-{    
+{
     if(isSolid() || isSlope())
     {
         setHidden(false);
@@ -563,9 +563,15 @@ void Cube::RefreshFacetData()
     static Sint16 StairID = DATA->getLabelIndex("TILESHAPE_STAIR");
     static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
 
-    if(CubeShapeType == RampID || CubeShapeType == StairID || CubeShapeType == FloorID)
+    if(CubeShapeType == FloorID)
     {
         setFacetMaterialType(FACET_BOTTOM, CubeMaterialType);
+        Owner->setActive(true);
+    }
+
+    if(CubeShapeType == RampID || CubeShapeType == StairID)
+    {
+        setFacetMaterialType(FACET_BOTTOM, -1);
         Owner->setActive(true);
     }
 

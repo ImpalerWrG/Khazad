@@ -149,7 +149,7 @@ void Cell::addTree(Tree* t)
     trees.push_back(t);
 }
 
-void Cell::Render()
+void Cell::Render(CameraOrientation CurrentOrientation)
 {
     for( map<int16_t, ROstore >::iterator it = ROs.begin(); it != ROs.end(); ++it)
     {

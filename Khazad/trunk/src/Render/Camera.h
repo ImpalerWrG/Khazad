@@ -8,50 +8,14 @@
 
 class Camera
 {
-protected:
-
-    WallDisplayMode DisplayMode;
-
-	Vector3 EyePosition;
-	Vector3 UpVector;
-	Vector3 LookPosition;
-
-    bool AllFacesDrawing;
-	bool IsoMode;
-	float IsoScalar;
-	Uint16 MaxScalar;
-	Uint16 MinScalar;
-
-	bool SlidingMode;
-	bool ZoomingMode;
-	bool AngleLock;
-
-	CameraOrientation Orientation;
-
-	Uint16 SliceTop;
-	Uint16 SliceBottom;
-	Uint16 ViewLevels;
-
-	Uint8 LevelSeperation;
-
-	float ViewWidth, ViewHight, ViewDepth;
-
-	Plane FrustumPlanes[4];
-
-    Vector3 Cursor;
-    Vector3 MouseIntersection;
-
-    float CursorLevel;
-
-    Vector3 NearMouseClickPoint;
-    Vector3 FarMouseClickPoint;
 
 public:
 
 	Camera();
+	~Camera();
+
 	bool Init(bool IsoMetric);
 	bool ReInit(bool IsoMetric);
-	~Camera();
 
 	float EyeX()    { return EyePosition.x; }
 	float EyeY()    { return EyePosition.y; }
@@ -63,9 +27,6 @@ public:
 	float LookZ()   { return LookPosition.z; }
 	Vector3 Look()  { return LookPosition; }
 
-	//Uint8 getViewLevels()                       { return abs(SliceA - SliceB)/*ViewLevels*/; }
-	//void setViewLevels(Uint8 NewValue);
-
 	Uint8 getLevelSeperation()                  { return LevelSeperation; }
 	void changeLevelSeperation(Sint8 Change);
 	void setLevelSeperation(Sint8 NewValue);
@@ -74,8 +35,6 @@ public:
     Uint16 getSliceBottom()                        { return SliceBottom; }
     void SetSliceTop(int newValue);
     void SetSliceBottom(int newValue);
-    //void changeSliceTop(Sint16 Change);
-    //void setSliceTop(Sint16 NewValue);
 
 	CameraOrientation getOrientation()  { return Orientation; }
 	void UpdateDirection();
@@ -107,15 +66,13 @@ public:
     Sint32 ZlevelSeperationAdjustment(Sint32);
 
 	/**
-	* This method is responsible for capturing our current view
-	* frustum matrix and dumping the data into 4 planes that
-	* we can query
+	* generateViewFrustum - captures our current view frustum matrix
+	* and dumping the data into 4 planes that we can query
 	*/
 	void generateViewFrustum();
 
 	/**
-	* This method is responsible for setting the perspective
-	* matrix for our camera
+	* This method is responsible for setting the perspective matrix for our camera
 	* @param fAspect - the aspect ratio of the view
 	* @param z_min - the minimum z-plane
 	* @param z_max - the maximum z-plane
@@ -127,7 +84,7 @@ public:
 	* matrix for our camera
 	* @param Width - the view windows Width
 	* @param Hight - the view Windows Hight
-	* @Param Depth - the view Windows Depth
+	* @param Depth - the view Windows Depth
 	*/
 	void setIsometricProj( float Width, float Hight, float Depth );
 
@@ -178,15 +135,23 @@ public:
 	void SlideView(float X, float Y);
 
 
-
+	/**
+	* This method can be used to update the view matrix based
+	* on the mouse's motion (if need be)
+	*/
 	virtual void UpdateView();
 
 	/**
 	* This method can be used to update the view matrix based
 	* on the mouse's motion (if need be)
 	* @param pEvent - the SDL_Event structure containing the mouse events
+	* @param RelativeX
+	* @param RelativeY
+	* @param Uint8*
+	* @param Uint8
+	* @param int
+	* @param int
 	*/
-	//virtual void onMouseEvent(SDL_Event* pEvent, Sint32 RelativeX, Sint32 RelativeY);
 	void onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY, Uint8 *Keystate, Uint8 MouseButtonState, int RealX, int RealY);
 
 	/**
@@ -195,16 +160,26 @@ public:
 	*/
     void onMousePoll();
 
+	/**
+	* MoveViewHorizontal - Moves the Look point horizontally within the same z plane
+	*/
 	void MoveViewHorizontal(float X, float Y);
 
+	/**
+	* ConfineCursor - Shifts the Cursor inside the Map boundaries on all axis
+	*/
     void ConfineCursor();
 
+	/**
+	* ConfineLookPosition - Shifts the Look Point inside the Map boundaries on all axis
+	*/
     void ConfineLookPosition();
 
-
+	/**
+	* MoveViewVertical -
+	* @param float -
+	*/
 	void MoveViewVertical(float Z);
-
-//    void setViewHight(Sint32 Change);
 
 	/**
 	* ChangeViewLevels modifies the number of z levels that will be rendered
@@ -224,7 +199,8 @@ public:
 	*/
     void CenterView(Vector3 CenterPoint);
 
-    // get rid of?
+
+
 	void PrintDebugging();
 
 	/**
@@ -243,10 +219,55 @@ public:
 	*/
 	bool sphereInFrustum(Vector3 Point, float Radius);
 
-
+    /**
+	* getWallDisplayMode - Returns the current Mode for the Camera for walls
+	* @return enum WallDisplayMode -
+	*/
 	WallDisplayMode getWallDisplayMode()            { return DisplayMode; }
 
-	void setWallDisplayMode(WallDisplayMode NewValue)   { DisplayMode == NewValue; }
+    /**
+	* setWallDisplayMode - Sets the Camera's Mode for walls, this will trigger refleshing in the Renderer
+	* @param enum WallDisplayMode - desired WallDisplayMode enum
+	*/
+	void setWallDisplayMode(WallDisplayMode NewValue)       { DisplayMode = NewValue; }
+
+protected:
+
+    WallDisplayMode DisplayMode;
+
+	Vector3 EyePosition;
+	Vector3 UpVector;
+	Vector3 LookPosition;
+
+    bool AllFacesDrawing;
+	bool IsoMode;
+	float IsoScalar;
+	Uint16 MaxScalar;
+	Uint16 MinScalar;
+
+	bool SlidingMode;
+	bool ZoomingMode;
+	bool AngleLock;
+
+	CameraOrientation Orientation;
+
+	Uint16 SliceTop;
+	Uint16 SliceBottom;
+	Uint16 ViewLevels;
+
+	Uint8 LevelSeperation;
+
+	float ViewWidth, ViewHight, ViewDepth;
+
+	Plane FrustumPlanes[4];
+
+    Vector3 Cursor;
+    Vector3 MouseIntersection;
+
+    float CursorLevel;
+
+    Vector3 NearMouseClickPoint;
+    Vector3 FarMouseClickPoint;
 };
 
 #endif // CAMERA__HEADER

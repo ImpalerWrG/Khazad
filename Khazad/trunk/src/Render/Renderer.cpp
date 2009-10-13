@@ -550,7 +550,7 @@ void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTran
                 //glColor3f(1.0, 1.0, 1.0);
                 //glColor3f(0.5, 0.5, 0.5);
                 glColor4f(0.5, 0.5, 0.5, 0.3);
-                LoopCell->Render();
+                LoopCell->Render(MainCamera->getOrientation());
                 //TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
 
             glPopMatrix();
