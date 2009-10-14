@@ -454,8 +454,15 @@ void Map::LoadCellData(DFHackAPI & DF,
             uint16_t TileType = tiletypes[CubeX][CubeY];
             t_occupancy Ocupancies = occupancies[CubeX][CubeY];
             Sint16 TileShapeID = TileShapePicker[TileType];
-
+            
+            // avoid ugly errors by handling unknown tiles
             static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
+            if(TileShapeID == -1)
+            {
+                cerr << "unknown tile type/shape: " << TileType << endl;
+                TileShapeID = EmptyID;
+            }
+            
             bool IsEmpty = (TileShapeID == EmptyID);
             int Liquid = Designations.bits.flow_size;
 
@@ -499,15 +506,18 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
             TilePicker[Tile] = i;
         }
     }
-
+    
+    for(int i = 0; i < 600; ++i)
+    {
+        TileShapePicker[i] = -1;
+    }
+    
     // Index the Shape of each tile for determining Render Geometry
     for(Uint32 i = 0; i < DATA->getNumTileGroups(); ++i)
     {
         for(Uint32 j = 0; j < DATA->getTileGroupData(i)->TileValues.size(); ++j)
         {
             int Tile = DATA->getTileGroupData(i)->TileValues[j];
-            TileShapePicker[Tile] = i;
-
             TileShapePicker[Tile] = DATA->getTileGroupData(i)->TileShapeID[j];
         }
     }
