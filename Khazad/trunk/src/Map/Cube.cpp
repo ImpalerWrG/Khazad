@@ -679,16 +679,18 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate)
 
         if (CubeMaterialType != -1)
         {
+            Uint32 Texture = TEXTURE->MapTexture(getFacetMaterialType(FacetType), 0 /*SurfaceType*/);
+
             vector<vertex>* vec;
 
-            if (!Owner->Geometry.count(CubeMaterialType))
+            if (!Owner->Geometry.count(Texture))
             {
                 vec = new vector<vertex>;
-                Owner->Geometry[CubeMaterialType] = vec;
+                Owner->Geometry[Texture] = vec;
             }
             else
             {
-                vec = Owner->Geometry[CubeMaterialType];
+                vec = Owner->Geometry[Texture];
             }
 
             vertex v3 = vertices[FacetType][3];
@@ -748,18 +750,21 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate)
         surroundings.value |= solid << (2 * i);
     }
 
+    Uint32 Texture = TEXTURE->MapTexture(CubeMaterialType, 0 /*SurfaceType*/);
+
+
     // create output vector if needed
     // FIXME: should be part of cell?
     vector <vertex>* vec;
-    if(!Owner->Geometry.count(CubeMaterialType))
+    if(!Owner->Geometry.count(Texture))
     {
         vec = new vector< vertex >;
-        Owner->Geometry[CubeMaterialType] = vec;
+        Owner->Geometry[Texture] = vec;
         vec->reserve(256);
     }
     else
     {
-        vec = Owner->Geometry[CubeMaterialType];
+        vec = Owner->Geometry[Texture];
     }
     // get slope geometry and mix it in
     vector <vertex> * slope = RENDERER->ModelMan->getSlope(surroundings);

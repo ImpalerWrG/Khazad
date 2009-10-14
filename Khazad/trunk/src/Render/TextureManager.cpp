@@ -21,15 +21,6 @@ bool TextureManager::Init()
 {
     glEnable(GL_TEXTURE_2D);
 
-    for(Uint32 i = 0; i < DATA->getNumMaterials(); ++i)
-    {
-        ILuint DevILImageID = IMAGE->GenerateMaterialImage(i);
-        if(DevILImageID != 0)
-        {
-            TextureCache.push_back(GenerateTexture(DevILImageID));
-        }
-    }
-
     setLogoTexture(GenerateTexture(DATA->getTextureData(DATA->getLabelIndex("TEXTURE_KHAZAD_LOGO"))->getDevILID()));
 
 	return true;
@@ -176,14 +167,29 @@ GLuint TextureManager::MapTexture(Sint16 MaterialID, Sint16 SurfaceTypeID)
 {
     if(MaterialID != -1 && SurfaceTypeID != -1)
     {
-        Uint32 Key1 = MaterialID;
-        Uint32 Key2 = SurfaceTypeID << 16;
+        Uint32 Key = MaterialID;
+        Key = Key << 16;
+        Key += SurfaceTypeID;
 
-        Uint32 Key = Key1 + Key2;
-        return Key;
-        //map<Uint32, GLuint> TextureMap;
+        if(TextureMap.find(Key) != TextureMap.end())
+        {
+            return TextureMap.find(Key)->second;
+        }
+        else
+        {
+            ILuint DevILImageID = IMAGE->GenerateMaterialImage(MaterialID, SurfaceTypeID);
+            if(DevILImageID != 0)
+            {
+                GLuint NewTexture = GenerateTexture(DevILImageID);
+                TextureCache.push_back(NewTexture);
+                TextureMap[Key] = TextureCache.size() - 1;
+
+                return TextureCache.size() - 1;
+            }
+            return 0;
+        }
     }
-    return -1;
+    return 0;
 }
 
 void TextureManager::ReportDevILErrors()

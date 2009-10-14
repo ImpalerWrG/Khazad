@@ -547,9 +547,9 @@ void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTran
                     LoopCell->setNeedsRedraw(false);
                 }
 
-                //glColor3f(1.0, 1.0, 1.0);
-                //glColor3f(0.5, 0.5, 0.5);
-                glColor4f(0.5, 0.5, 0.5, 0.3);
+                glColor4f(0.5, 0.5, 0.5, 1.0);
+                //glColor4f(0.5, 0.5, 0.5, 0.3);
+
                 LoopCell->Render(MainCamera->getOrientation());
                 //TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
 
@@ -678,40 +678,6 @@ bool Renderer::Render()
     glDisable(GL_LIGHT0);
     glDisable(GL_LIGHTING);
     /// deprecated
-    /*
-    // z-levels first - this is a requirement for drawing transparencies
-    for(Sint16 Zlevel = Start; Zlevel <= Stop ; Zlevel++)
-    {
-        float Shading = 1.0;
-        bool drawtops = (MainCamera->getLevelSeperation() != 1) || (Zlevel == Stop);
-        if(ShadedDraw)
-        {
-            Shading = MainCamera->getShading(Zlevel);
-        }
-        float ZTranslate = MainCamera->ZlevelSeperationAdjustment(Zlevel);
-        // we need to switch between 4 different orderings for drawing transparent cells
-
-        if (CurrentOrientation == CAMERA_NORTH_WEST || CurrentOrientation == CAMERA_DOWN)
-            for(Sint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
-                for(Sint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
-                    RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, drawtops);
-
-        else if(CurrentOrientation == CAMERA_SOUTH_WEST)
-            for(Sint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
-                for(Sint32 SizeY = MAP->getCellSizeY() - 1; SizeY >=0 ; SizeY--)
-                    RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, drawtops);
-
-        else if (CurrentOrientation == CAMERA_NORTH_EAST)
-            for(Sint32 SizeX = MAP->getCellSizeX() - 1; SizeX >=0 ; SizeX--)
-                for(Sint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
-                    RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, drawtops );
-
-        else if(CurrentOrientation == CAMERA_SOUTH_EAST)
-            for(Sint32 SizeX = MAP->getCellSizeX() - 1; SizeX >=0 ; SizeX--)
-                for(Sint32 SizeY = MAP->getCellSizeY() - 1; SizeY >=0 ; SizeY--)
-                    RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading, drawtops);
-	}
-*/
 /*
 	for (Uint32 i = 0; i < GAME->ActorList.size(); i++)
 	{
@@ -720,11 +686,6 @@ bool Renderer::Render()
             GAME->ActorList[i]->Draw();
 	    }
 	}
-*/
-/*
-    glMatrixMode(GL_TEXTURE);  //return to normal Texturing for UI
-    glPopMatrix();
-    glLoadIdentity();
 */
 	return true;
 }

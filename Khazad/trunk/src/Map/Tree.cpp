@@ -133,13 +133,13 @@ bool Tree::Draw()
 
             if(trunkid != -1)
             {
-                TEXTURE->BindTexture(trunkmat);
+                TEXTURE->BindTexture(TEXTURE->MapTexture(trunkmat, 0));
                 model->Render(trunkid);
             }
 
             if(leavesid != -1 && type !=TREE_DEAD && type != SAPLING_DEAD)
             {
-                TEXTURE->BindTexture(leavesmat_normal);
+                TEXTURE->BindTexture(TEXTURE->MapTexture(leavesmat_normal, 0));
                 model->Render(leavesid);
             }
 /*

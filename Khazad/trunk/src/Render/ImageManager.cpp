@@ -158,7 +158,7 @@ SDL_Surface* ImageManager::loadSurface(char* filepath, bool ColorKey)
 	return NULL;
 }
 
-ILuint ImageManager::GenerateMaterialImage(Uint16 MaterialID)
+ILuint ImageManager::GenerateMaterialImage(Sint16 MaterialID, Sint16 SurfaceTypeID)
 {
     ILuint TextureDevILID = DATA->getTextureData(DATA->getMaterialData(MaterialID)->getTextureID())->getDevILID();
 
