@@ -220,8 +220,6 @@
 			<TileValue Int="372" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
 		</TileValues>
 	</TileGroup>
-	<!-- all brook tiles are walkable -->
-	<!--
 	<TileGroup>
 		<Name Label="TILEGROUP_STREAM_BOTTOM"/>
 		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
@@ -237,30 +235,10 @@
 			<TileValue Int="378" TileShape="TILESHAPE_WALL" SurfaceType="SURFACETYPE_ROUGH_WALL"/>
 			<TileValue Int="379" TileShape="TILESHAPE_WALL" SurfaceType="SURFACETYPE_ROUGH_WALL"/>
 			<TileValue Int="380" TileShape="TILESHAPE_WALL" SurfaceType="SURFACETYPE_ROUGH_WALL"/>
-			<TileValue Int="381" TileShape="TILESHAPE_WALL" SurfaceType="SURFACETYPE_ROUGH_WALL"/>
-		</TileValues>
-	</TileGroup>
-	-->
-	<TileGroup>
-		<Name Label="TILEGROUP_STREAM_BOTTOM"/>
-		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
-		<Texture label="TEXTURE_CONGLOMERATE"/>
-		<PrimaryColor label="COLOR_LIGHT_GREY"/>
-		<SecondaryColor label="COLOR_BROWN"/>
-		<TileValues>
-			<TileValue Int="373" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
-			<TileValue Int="374" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
-			<TileValue Int="375" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
-			<TileValue Int="376" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
-			<TileValue Int="377" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
-			<TileValue Int="378" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
-			<TileValue Int="379" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
-			<TileValue Int="380" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
 			<!-- top of brook, should use some different texture -->
 			<TileValue Int="381" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
 		</TileValues>
 	</TileGroup>
-
 	<TileGroup>
 		<Name Label="TILEGROUP_PIT"/>
 		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
@@ -313,7 +291,7 @@
 			<TileValue Int="337" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
 			<TileValue Int="338" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
 			<TileValue Int="339" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
-			<TileValue Int="402" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_BOULDER"/>
+			<TileValue Int="402" TileShape="TILESHAPE_BOULDER" SurfaceType="SURFACETYPE_BOULDER"/>
 			<TileValue Int="405" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
 			<TileValue Int="406" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
 			<TileValue Int="407" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
@@ -397,7 +375,7 @@
 			<TileValue Int="442" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
 			<TileValue Int="443" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
 			<TileValue Int="444" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
-			<TileValue Int="436" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_BOULDER"/>
+			<TileValue Int="436" TileShape="TILESHAPE_BOULDER" SurfaceType="SURFACETYPE_BOULDER"/>
 			<TileValue Int="446" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
 			<TileValue Int="447" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
 			<TileValue Int="448" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>				
@@ -444,7 +422,7 @@
 			<TileValue Int="345" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
 			<TileValue Int="346" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
 			<TileValue Int="347" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
-			<TileValue Int="404" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_BOULDER"/>
+			<TileValue Int="404" TileShape="TILESHAPE_BOULDER" SurfaceType="SURFACETYPE_BOULDER"/>
 			<TileValue Int="413" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
 			<TileValue Int="414" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
 			<TileValue Int="415" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
@@ -492,7 +470,7 @@
 			<TileValue Int="341" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
 			<TileValue Int="342" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
 			<TileValue Int="343" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR"/>
-			<TileValue Int="403" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_BOULDER"/>
+			<TileValue Int="403" TileShape="TILESHAPE_BOULDER" SurfaceType="SURFACETYPE_BOULDER"/>
 			<TileValue Int="409" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
 			<TileValue Int="410" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
 			<TileValue Int="411" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>

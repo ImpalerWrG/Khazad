@@ -184,16 +184,8 @@
 		<File Path="Assets\\Textures\\Sand.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_SHRUB"/>
-		<File Path="Assets\\Textures\\Shrub.png"/>
-	</Texture>
-	<Texture>
 		<Name Label="TEXTURE_BARK"/>
 		<File Path="Assets\\Textures\\Bark.png"/>
-	</Texture>
-	<Texture>
-		<Name Label="TEXTURE_TREE"/>
-		<File Path="Assets\\Textures\\treeicon.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_BOULDER"/>

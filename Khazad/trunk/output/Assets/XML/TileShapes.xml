@@ -27,4 +27,9 @@
 		<Name Label="TILESHAPE_EMPTY"/>
 		<Open bool="1"/>
 	</TileShape>
+	<TileShape>
+		<Name Label="TILESHAPE_BOULDER"/>
+		<Open bool="1"/>
+		<Model file=""/>
+	</TileShape>
 </TileShapes>

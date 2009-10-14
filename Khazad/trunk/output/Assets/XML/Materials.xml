@@ -99,6 +99,7 @@
 		<Name Label="MATERIAL_STONE_FLOOR1"/>
 		<Texture label="TEXTURE_STONE1"/>
 		<PrimaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_DARK_GREY"/>
 		<ColorMode mode="overlay"/>
 		<TileValues>
 			<!-- stone ramp -->
@@ -111,6 +112,7 @@
 		<Name Label="MATERIAL_STONE_FLOOR2"/>
 		<Texture label="TEXTURE_STONE2"/>
 		<PrimaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_DARK_GREY"/>
 		<ColorMode mode="overlay"/>
 		<TileValues>
 			<!-- stone floor 2 -->
@@ -121,6 +123,7 @@
 		<Name Label="MATERIAL_STONE_FLOOR3"/>
 		<Texture label="TEXTURE_STONE3"/>
 		<PrimaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_DARK_GREY"/>
 		<ColorMode mode="overlay"/>
 		<TileValues>
 			<!-- stone floor 3 -->
@@ -131,6 +134,7 @@
 		<Name Label="MATERIAL_STONE_FLOOR4"/>
 		<Texture label="TEXTURE_STONE4"/>
 		<PrimaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_DARK_GREY"/>
 		<ColorMode mode="overlay"/>
 		<TileValues>
 			<!-- stone floor 4 -->
@@ -156,6 +160,7 @@
 		<Name Label="MATERIAL_CONSTRUCTED_WALL"/>
 		<Texture label="TEXTURE_BRICK"/>
 		<PrimaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="overlay" />
 		<TileValues>
 			<!-- constructed fortification -->
@@ -607,9 +612,8 @@
 	</Material>
 	
 	
-	
 	<!-- brighter grass -->
-		<Material>
+	<Material>
 		<Name Label="MATERIAL_GRASS_B1"/>
 		<Texture label="TEXTURE_GRASS1"/>
 		<PrimaryColor label="GRASS_BRIGHT"/>
@@ -652,9 +656,6 @@
 			<Tile Int="401"/>
 		</TileValues>
 	</Material>
-	
-	
-	
 	
 	
 	<!-- dead grass -->
@@ -737,7 +738,6 @@
 	</Material>
 	
 	
-	
 	<!-- VEGETATION -->
 	<Material>
 		<Name Label="MATERIAL_UNDERGROWTH"/>
@@ -747,51 +747,17 @@
 		<TileValues>
 			<!-- shrub -->
 			<Tile Int="34"/>
-		        <!-- tree -->
+		    <!-- tree -->
 			<Tile Int="24"/>
 			 <!-- sapling -->
 			<Tile Int="231"/>
-		        <!-- dead shrub -->
+		    <!-- dead shrub -->
 			<Tile Int="393"/>
 			<!-- dead tree -->
 			<Tile Int="391"/>
 			<!-- dead sapling -->
 			<Tile Int="392"/>
 		</TileValues>
-	</Material>
-	<Material>
-		<Name Label="MATERIAL_SHRUB"/>
-		<Texture label="TEXTURE_SHRUB"/>
-		<PrimaryColor label="GRASS_DARK"/>
-		<ColorMode mode="overlay"/>
-	</Material>
-	<Material>
-		<Name Label="MATERIAL_TREE"/>
-		<Texture label="TEXTURE_TREE"/>
-		<ColorMode mode="keepimage"/>
-	</Material>
-	<Material>
-		<Name Label="MATERIAL_SAPPLING"/>
-		<Texture label="TEXTURE_TREE"/>
-		<ColorMode mode="keepimage"/>
-	</Material>
-	<Material>
-		<Name Label="MATERIAL_DEAD_SHRUB"/>
-		<Texture label="TEXTURE_SHRUB"/>
-		<PrimaryColor label="COLOR_BROWN"/>
-		<ColorMode mode="overlay"/>
-	</Material>
-	<Material>
-		<Name Label="MATERIAL_DEAD_TREE"/>
-		<Texture label="TEXTURE_TREE"/>
-		<PrimaryColor label="COLOR_BROWN"/>
-		<ColorMode mode="overlay"/>
-	</Material>
-	<Material>
-		<Name Label="MATERIAL_DEAD_SAPPLING"/>
-		<Texture label="TEXTURE_TREE"/>
-		<PrimaryColor label="COLOR_BROWN"/>
-		<ColorMode mode="overlay"/>
 	</Material>
 	<!--
 	basically muddy riverbed

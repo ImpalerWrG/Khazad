@@ -172,6 +172,20 @@ void TextureManager::BindTexture(Uint32 TextureID)
     }
 }
 
+GLuint TextureManager::MapTexture(Sint16 MaterialID, Sint16 SurfaceTypeID)
+{
+    if(MaterialID != -1 && SurfaceTypeID != -1)
+    {
+        Uint32 Key1 = MaterialID;
+        Uint32 Key2 = SurfaceTypeID << 16;
+
+        Uint32 Key = Key1 + Key2;
+        return Key;
+        //map<Uint32, GLuint> TextureMap;
+    }
+    return -1;
+}
+
 void TextureManager::ReportDevILErrors()
 {
     ILenum Error;

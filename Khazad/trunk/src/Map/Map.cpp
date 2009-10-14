@@ -453,32 +453,32 @@ void Map::LoadCellData(DFHackAPI & DF,
             t_designation Designations = designations[CubeX][CubeY];
             uint16_t TileType = tiletypes[CubeX][CubeY];
             t_occupancy Ocupancies = occupancies[CubeX][CubeY];
+
             Sint16 TileShapeID = TileShapePicker[TileType];
-            
+
             // avoid ugly errors by handling unknown tiles
             static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
             if(TileShapeID == -1)
             {
-                cerr << "unknown tile type/shape: " << TileType << endl;
+                cerr << "Unknown tile type/shape: " << TileType << endl;
                 TileShapeID = EmptyID;
             }
-            
-            bool IsEmpty = (TileShapeID == EmptyID);
-            int Liquid = Designations.bits.flow_size;
 
             // Create Cubes and load data
             Cube* TargetCube = new Cube();
             TargetCell->setCube(TargetCube, CubeX, CubeY);
             TargetCube->setPosition((float) MapX, (float) MapY, (float) MapZ);
 
-            Uint16 Material = PickTexture(TileType, basemat[CubeX][CubeY], veinmat[CubeX][CubeY], constmat[CubeX][CubeY], Ocupancies);
+            Uint16 MaterialID = PickMaterial(TileType, basemat[CubeX][CubeY], veinmat[CubeX][CubeY], constmat[CubeX][CubeY], Ocupancies);
+
+            Uint16 SurfaceTypeID = 0;
 
             TargetCube->setHidden(Designations.bits.hidden);
             TargetCube->setSubTerranean(Designations.bits.subterranean);
             TargetCube->setSkyView(Designations.bits.skyview);
             TargetCube->setSunLit(Designations.bits.light);
 
-            TargetCube->setMaterial(Material);
+            TargetCube->setMaterial(MaterialID);
             TargetCube->setShape(TileShapeID);
 
             if(Designations.bits.flow_size)
@@ -506,12 +506,12 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
             TilePicker[Tile] = i;
         }
     }
-    
+
     for(int i = 0; i < 600; ++i)
     {
         TileShapePicker[i] = -1;
     }
-    
+
     // Index the Shape of each tile for determining Render Geometry
     for(Uint32 i = 0; i < DATA->getNumTileGroups(); ++i)
     {
@@ -611,7 +611,7 @@ string DfMap::getMaterialTypeString (uint32_t type)
 }*/
 
 //FIXME: the ugly hack
-Uint32 Map::PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial,t_matglossPair constructionmaterial, t_occupancy occupancy)
+Uint32 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial,t_matglossPair constructionmaterial, t_occupancy occupancy)
 {
     /*
     // debug texture orientation on terrain

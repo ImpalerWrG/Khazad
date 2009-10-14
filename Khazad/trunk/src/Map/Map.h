@@ -41,7 +41,7 @@ public:
     bool hasFace(Sint32 X, Sint32 Y, Sint32 Z, Facet FaceType);
 
     void InitilizeTilePicker(DFHackAPI & DF);
-    Uint32 PickTexture(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial,t_matglossPair constructionmaterial, t_occupancy occupancy);
+    Uint32 PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial,t_matglossPair constructionmaterial, t_occupancy occupancy);
 
     void BuildVertexArray();
 

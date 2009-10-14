@@ -136,6 +136,13 @@ bool MaterialClassData::Load(TiXmlElement* Entry, Uint32 Index)
 
         XML->QueryBoolValue(Entry, "OverRidesMatGloss", "bool", OverRidesMatGloss);
 
+        XML->QueryTextValue(Entry, "Texture", "label", TextureLabel);
+        XML->QueryTextValue(Entry, "PrimaryColor", "label", PrimaryColorLabel);
+        XML->QueryTextValue(Entry, "SecondaryColor", "label", SecondaryColorLabel);
+        XML->QueryTextValue(Entry, "BorderColor", "label", BorderColorLabel);
+
+        XML->QueryUIntValue(Entry, "MatGlossIndex", "Int", MatGlossIndex);
+
         return true;
     }
     return false;
@@ -143,6 +150,11 @@ bool MaterialClassData::Load(TiXmlElement* Entry, Uint32 Index)
 
 bool MaterialClassData::PostProcessing()
 {
+    TextureID = DATA->getLabelIndex(TextureLabel);
+    PrimaryColorID = DATA->getLabelIndex(PrimaryColorLabel);
+    SecondaryColorID = DATA->getLabelIndex(SecondaryColorLabel);
+	BorderColorID = DATA->getLabelIndex(BorderColorLabel);
+
     return true;
 }
 

@@ -34,15 +34,15 @@ public:
     GLuint getLogoTexture()                  { return LogoTexture; }
     void setLogoTexture(GLuint NewValue)     { LogoTexture = NewValue; }
 
+    GLuint MapTexture(Sint16 MaterialID, Sint16 SurfaceTypeID);
+
 protected:
 
-	//std::vector<ImagePage*> ImageLibrary;
-	//std::vector<ClipImage*> ClipLibrary;
-	//std::vector<GLuint> SingularTextureLibrary;
-	//std::vector<GLuint**> PagedTextureLibrary;
     GLuint LogoTexture;
 
-    std::vector<GLuint> TextureCache;
+    vector<GLuint> TextureCache;
+
+    map<Uint32, GLuint> TextureMap;
 
     bool isFileEnding(const char* FilePath, const char* Ending);
 

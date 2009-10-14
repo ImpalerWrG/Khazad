@@ -153,9 +153,28 @@ public:
 
     bool isOverRidesMatGloss()    { return OverRidesMatGloss; }
 
+    Sint16 getTextureID()       { return TextureID; }
+    Sint16 getPrimaryColor()    { return PrimaryColorID; }
+    Sint16 getSecondaryColor()  { return SecondaryColorID; }
+    Sint16 getBorderColor()     { return BorderColorID; }
+
+    Sint16 getMatGloosIndex()   { return MatGlossIndex; }
+
 protected:
 
+    string TextureLabel;
+    string PrimaryColorLabel;
+    string SecondaryColorLabel;
+    string BorderColorLabel;
+
     bool OverRidesMatGloss;
+
+    Sint16 TextureID;
+    Sint16 PrimaryColorID;
+    Sint16 SecondaryColorID;
+    Sint16 BorderColorID;
+
+    Sint16 MatGlossIndex;
 };
 
 class MaterialData: public DataBase
@@ -173,8 +192,6 @@ public:
     Sint16 getPrimaryColorID()          { return PrimaryColorID; }
     Sint16 getSecondaryColorID()        { return SecondaryColorID; }
     Sint16 getBorderColorID()           { return BorderColorID; }
-
-    //Uint16 getHardness()                { return Hardness; }  // Use this someday for mining speed
 
     string getMatGloss()                { return MatGloss; }
     string getColorMode()               { return ColorMode; }

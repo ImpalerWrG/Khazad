@@ -2,86 +2,135 @@
 <MaterialClasses xmlns="namespace">
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_LAYER_STONE"/>
+		<Texture label="TEXTURE_STONE1"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_DARK_GREY"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="1"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_VEIN_STONE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="1"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_FEAT_STONE"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="1"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_LAVA_STONE"/>
+		<Texture label="TEXTURE_ROUGH"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 		<OverRidesMatGloss bool="1"/>
-	</MaterialClass>
-	<MaterialClass>
-		<Name Label="MATERIALCLASS_ICE"/>
-		<OverRidesMatGloss bool="1"/>
+		<MatGloss int="1"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_SOIL"/>
+		<Texture label="TEXTURE_GROUND"/>
+		<PrimaryColor label="COLOR_BROWN_DARK"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="1"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_VEGATATION"/>
 		<OverRidesMatGloss bool="1"/>
+		<MatGloss int="2"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_WOOD"/>
+		<Texture label="TEXTURE_WOOD_WALL"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<ColorMode mode="overlay"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="0"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_METAL"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="3"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_LEATHER"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="10"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_SILK_CLOTH"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="11"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_PLANT_THREAD_CLOTH"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="12"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_GREEN_GLASS"/>
+		<Texture label="TEXTURE_BRICK2"/>
+		<PrimaryColor label="COLOR_GREEN"/>
+		<SecondaryColor label="COLOR_BLACK"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="13"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_CLEAR_GLASS"/>
+		<Texture label="TEXTURE_BRICK2"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="14"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_CRYSTAL_GLASS"/>
+		<Texture label="TEXTURE_BRICK2"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="15"/>
+	</MaterialClass>
+	<MaterialClass>
+		<Name Label="MATERIALCLASS_ICE"/>
+		<Texture label="TEXTURE_ICE"/>
+		<PrimaryColor label="COLOR_NAVY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<OverRidesMatGloss bool="1"/>
+		<MatGloss int="17"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_CHARCOAL"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="18"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_POTASH"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="19"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_ASHES"/>
+		<Texture label="TEXTURE_ASHES"/>
+		<ColorMode mode="keepimage"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="20"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_PEARLASH"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="21"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_SOAP"/>
 		<OverRidesMatGloss bool="0"/>
+		<MatGloss int="24"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_EXOTIC"/>
 		<OverRidesMatGloss bool="1"/>
+		<MatGloss int="-1"/>
 	</MaterialClass>
 </MaterialClasses>
