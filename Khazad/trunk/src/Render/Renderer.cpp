@@ -158,8 +158,8 @@ bool Renderer::Init()
 
 
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_COLOR_MATERIAL);
-    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+    //glEnable(GL_COLOR_MATERIAL);
+    //glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
     // magic
     //glEnable(GL_MULTISAMPLE_ARB);
     //glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE_ARB);
@@ -547,7 +547,7 @@ void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTran
                     LoopCell->setNeedsRedraw(false);
                 }
 
-                glColor4f(0.5, 0.5, 0.5, 1.0);
+                //glColor4f(0.5, 0.5, 0.5, 1.0);
                 //glColor4f(0.5, 0.5, 0.5, 0.3);
 
                 LoopCell->Render(MainCamera->getOrientation());
