@@ -45,6 +45,8 @@ public:
     void setMaterial(Sint16 MaterialID);
     Sint16 getMaterial()                    { return CubeMaterialType; }
 
+    void setCubeSurface(Sint16 SurfaceID)   { CubeSurfaceType = SurfaceID; }
+    Sint16 getCubeSurfaceType()             { return CubeSurfaceType; }
 
     void setFacetSurfaceType(Facet FacetType, Sint16 SurfaceType);
     Sint16 getFacetSurfaceType(Facet FacetType);
@@ -68,11 +70,11 @@ public:
 
     bool isSolid()                          { return data.solid; }
     bool isSlope();
-    
+
     void Dig();
     void DigChannel();
     void DigSlope();
-    
+
 protected:
 
     union
@@ -85,7 +87,6 @@ protected:
             bool snow : 1;
             unsigned int liquid : 3;
             bool liquidtype :1;
-            //bool wall:1;
             bool solid:1;
         };
         uint16_t whole;
@@ -95,6 +96,7 @@ protected:
 
     Sint16 CubeMaterialType;
     Sint16 CubeShapeType;
+    Sint16 CubeSurfaceType;
     Sint16 SlopeSurfaceType;
 
     Sint16 FacetSurfaceTypes[NUM_FACETS];

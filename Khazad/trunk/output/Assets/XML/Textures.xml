@@ -29,12 +29,10 @@
 		<Name Label="TEXTURE_UP"/>
 		<File Path="Assets\\Testing\\Up.png"/>
 	</Texture>
-
     <Texture>
         <Name Label="TEXTURE_SAGUARO"/>
         <File Path="Assets/Models/Saguaro/Saguaro2.png"/>
     </Texture>
-
     <Texture>
         <Name Label="TEXTURE_OAK_TRUNK"/>
         <File Path="Assets/Models/oak/bark.png"/>
@@ -43,8 +41,6 @@
         <Name Label="TEXTURE_OAK_LEAVES"/>
         <File Path="Assets/Models/oak/leavesnt.png"/>
     </Texture>
-    
- 
     <Texture>
         <Name Label="TEXTURE_OAK_LEAVES_AUTUMN"/>
         <File Path="Assets/Models/oak/leaves_autumn.png"/>
@@ -53,7 +49,6 @@
         <Name Label="TEXTURE_TREE_SNOW"/>
 	<File Path="Assets/Models/oak/snow.png"/>
     </Texture>
-
     <Texture>
         <Name Label="TEXTURE_MAPLE_TRUNK"/>
         <File Path="Assets/Models/maple/bark.png"/>
@@ -62,7 +57,6 @@
         <Name Label="TEXTURE_MAPLE_LEAVES"/>
         <File Path="Assets/Models/maple/leavesntp.png"/>
     </Texture>
-
     <Texture>
         <Name Label="TEXTURE_BIRCH_TRUNK"/>
         <File Path="Assets/Models/birch/bark.png"/>
@@ -71,7 +65,6 @@
         <Name Label="TEXTURE_BIRCH_LEAVES"/>
         <File Path="Assets/Models/birch/leavesntp.png"/>
     </Texture>
-
     <Texture>
         <Name Label="TEXTURE_CHESTNUT_TRUNK"/>
         <File Path="Assets/Models/chestnut/bark.png"/>
@@ -80,7 +73,6 @@
         <Name Label="TEXTURE_CHESTNUT_LEAVES"/>
         <File Path="Assets/Models/chestnut/leavesntp.png"/>
     </Texture>
-
     <Texture>
         <Name Label="TEXTURE_PALM_TRUNK"/>
         <File Path="Assets/Models/palm/bark.png"/>
@@ -89,7 +81,6 @@
         <Name Label="TEXTURE_PALM_LEAVES"/>
         <File Path="Assets/Models/palm/leavesntp.png"/>
     </Texture>
-
     <Texture>
         <Name Label="TEXTURE_PINE_TRUNK"/>
         <File Path="Assets/Models/pine/bark.png"/>
@@ -98,7 +89,6 @@
         <Name Label="TEXTURE_PINE_LEAVES"/>
         <File Path="Assets/Models/pine/leavesnt.png"/>
     </Texture>
-    
     <Texture>
         <Name Label="TEXTURE_LARCH_TRUNK"/>
         <File Path="Assets/Models/larch/bark.png"/>
@@ -107,47 +97,42 @@
         <Name Label="TEXTURE_LARCH_LEAVES"/>
         <File Path="Assets/Models/larch/leavesnt.png"/>
     </Texture>
-
-	<!-- GRASS -->
 	<Texture>
-		<Name Label="TEXTURE_GRASS1"/>
+		<Name Label="TEXTURE_GRASS_1"/>
 		<File Path="Assets\\Textures\\grass1.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_GRASS2"/>
+		<Name Label="TEXTURE_GRASS_2"/>
 		<File Path="Assets\\Textures\\grass2.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_GRASS3"/>
+		<Name Label="TEXTURE_GRASS_3"/>
 		<File Path="Assets\\Textures\\grass3.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_GRASS4"/>
+		<Name Label="TEXTURE_GRASS_4"/>
 		<File Path="Assets\\Textures\\grass4.png"/>
 	</Texture>
-	<!-- STONE -->
 	<Texture>
-		<Name Label="TEXTURE_STONE1"/>
+		<Name Label="TEXTURE_STONE_1"/>
 		<File Path="Assets\\Textures\\stone1.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_STONE2"/>
+		<Name Label="TEXTURE_STONE_2"/>
 		<File Path="Assets\\Textures\\stone2.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_STONE3"/>
+		<Name Label="TEXTURE_STONE_3"/>
 		<File Path="Assets\\Textures\\stone3.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_STONE4"/>
+		<Name Label="TEXTURE_STONE_4"/>
 		<File Path="Assets\\Textures\\stone4.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_PEBBLES"/>
 		<File Path="Assets\\Textures\\pebble.png"/>
 	</Texture>
-
-	<!-- DIRT -->
 	<Texture>
 		<Name Label="TEXTURE_DIRT"/>
 		<File Path="Assets\\Textures\\Dirt.png"/>
@@ -158,19 +143,16 @@
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_CLAY"/>
-		<File Path="Assets\\Textures\\Clay.png"/>
+		<File Path="Assets\\Textures\\Clay1.png"/>
 	</Texture>
-	
 	<Texture>
 		<Name Label="TEXTURE_BRICK"/>
 		<File Path="Assets\\Textures\\Brick1.png"/>
 	</Texture>
-
     <Texture>
         <Name Label="TEXTURE_BRICK2"/>
         <File Path="Assets\\Textures\\Brick2.png"/>
     </Texture>
-
 	<Texture>
 		<Name Label="TEXTURE_AIR"/>
 		<File Path="Assets\\Textures\\Air.png"/>
@@ -221,14 +203,14 @@
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_TILES"/>
-		<File Path="Assets\\Textures\\Tiles.png"/>
+		<File Path="Assets\\Textures\\Tile.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_VEINS"/>
 		<File Path="Assets\\Textures\\Veins.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_CRYSTALLIC"/>
+		<Name Label="TEXTURE_CRYSTALLINE"/>
 		<File Path="Assets\\Textures\\crystallic.png"/>
 	</Texture>
 	<Texture>
@@ -246,10 +228,6 @@
 	<Texture>
 		<Name Label="TEXTURE_FOLIATED"/>
 		<File Path="Assets\\Textures\\Foliated.png"/>
-	</Texture>
-	<Texture>
-		<Name Label="TEXTURE_CONGLOMERATE"/>
-		<File Path="Assets\\Textures\\Conglomerate.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_CARBONATE"/>

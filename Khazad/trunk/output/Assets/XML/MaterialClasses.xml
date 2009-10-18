@@ -1,136 +1,238 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <MaterialClasses xmlns="namespace">
 	<MaterialClass>
+		<Name Label="MATERIALCLASS_WOOD"/>
+		<DefaultMaterial label="MATERIAL_WOOD"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_WOOD_WALL"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_WOOD_FLOOR"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="0"/>
+	</MaterialClass>
+	<MaterialClass>
 		<Name Label="MATERIALCLASS_LAYER_STONE"/>
-		<Texture label="TEXTURE_STONE1"/>
-		<PrimaryColor label="COLOR_SILVER"/>
-		<BorderColor label="COLOR_DARK_GREY"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="1"/>
+		<DefaultMaterial label="MATERIAL_LAYER_STONE"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_STONE_1"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_STONE_2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_STONE_3"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_STONE_4"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_WALL" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_FLOOR" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_PEBBLES" Texture="TEXTURE_PEBBLES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_BOULDER" Texture="TEXTURE_BOULDER"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="1"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_VEIN_STONE"/>
-		<Texture label="TEXTURE_ROUGH"/>
-		<PrimaryColor label="COLOR_SILVER"/>
-		<SecondaryColor label="COLOR_DARK_GREY"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="1"/>
+		<DefaultMaterial label="MATERIAL_VEIN_STONE"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_STONE_1"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_STONE_2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_STONE_3"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_STONE_4"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_WALL" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_FLOOR" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_PEBBLES" Texture="TEXTURE_PEBBLES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_BOULDER" Texture="TEXTURE_BOULDER"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="1"/>
 	</MaterialClass>
 	<MaterialClass>
-		<Name Label="MATERIALCLASS_FEAT_STONE"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="1"/>
+		<Name Label="MATERIALCLASS_FEATURE_STONE"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_STONE_1"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_STONE_2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_STONE_3"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_STONE_4"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_WALL" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_FLOOR" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_PEBBLES" Texture="TEXTURE_PEBBLES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_BOULDER" Texture="TEXTURE_BOULDER"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="1"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_LAVA_STONE"/>
-		<Texture label="TEXTURE_ROUGH"/>
-		<PrimaryColor label="COLOR_BLACK"/>
-		<SecondaryColor label="COLOR_LIGHT_GREY"/>
-		<OverRidesMatGloss bool="1"/>
-		<MatGloss int="1"/>
+		<DefaultMaterial label="MATERIAL_OBSIDIAN"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_STONE_1"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_STONE_2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_STONE_3"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_STONE_4"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_WALL" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_FLOOR" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_PEBBLES" Texture="TEXTURE_PEBBLES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_BOULDER" Texture="TEXTURE_BOULDER"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="1"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_SOIL"/>
-		<Texture label="TEXTURE_GROUND"/>
-		<PrimaryColor label="COLOR_BROWN_DARK"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="1"/>
-	</MaterialClass>
-	<MaterialClass>
-		<Name Label="MATERIALCLASS_VEGATATION"/>
-		<OverRidesMatGloss bool="1"/>
-		<MatGloss int="2"/>
-	</MaterialClass>
-	<MaterialClass>
-		<Name Label="MATERIALCLASS_WOOD"/>
-		<Texture label="TEXTURE_WOOD_WALL"/>
-		<PrimaryColor label="COLOR_BROWN"/>
-		<ColorMode mode="overlay"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="0"/>
+		<DefaultMaterial label="MATERIAL_SOIL"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_GROUND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GROUND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_GROUND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_GROUND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_GROUND"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="1"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_METAL"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="3"/>
+		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="2"/>
+	</MaterialClass>
+	<MaterialClass>
+		<Name Label="MATERIALCLASS_VEGATATION"/>
+		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
+		<MatGlossIndex int="3"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_STONE_1"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_STONE_2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_STONE_3"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_STONE_4"/>
+		</DefaultSurfaceTextures>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_LEATHER"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="10"/>
+		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="10"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_SILK_CLOTH"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="11"/>
+		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="11"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_PLANT_THREAD_CLOTH"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="12"/>
+		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="12"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_GREEN_GLASS"/>
-		<Texture label="TEXTURE_BRICK2"/>
-		<PrimaryColor label="COLOR_GREEN"/>
-		<SecondaryColor label="COLOR_BLACK"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="13"/>
+		<DefaultMaterial label="MATERIAL_GREEN_GLASS"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_BRICK2"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="13"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_CLEAR_GLASS"/>
-		<Texture label="TEXTURE_BRICK2"/>
-		<PrimaryColor label="COLOR_LIGHT_GREY"/>
-		<SecondaryColor label="COLOR_WHITE"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="14"/>
+		<DefaultMaterial label="MATERIAL_CLEAR_GLASS"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_BRICK2"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="14"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_CRYSTAL_GLASS"/>
-		<Texture label="TEXTURE_BRICK2"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_LIGHT_GREY"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="15"/>
+		<DefaultMaterial label="MATERIAL_CRYSTAL_GLASS"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_BRICK2"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="15"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_ICE"/>
-		<Texture label="TEXTURE_ICE"/>
-		<PrimaryColor label="COLOR_NAVY"/>
-		<SecondaryColor label="COLOR_WHITE"/>
-		<OverRidesMatGloss bool="1"/>
-		<MatGloss int="17"/>
+		<DefaultMaterial label="MATERIAL_ICE"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_WALL" Texture="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_FLOOR" Texture="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_PEBBLES" Texture="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_BOULDER" Texture="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="17"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_CHARCOAL"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="18"/>
+		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="18"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_POTASH"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="19"/>
+		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="19"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_ASHES"/>
-		<Texture label="TEXTURE_ASHES"/>
-		<ColorMode mode="keepimage"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="20"/>
+		<DefaultMaterial label="MATERIAL_ASHES"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="20"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_PEARLASH"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="21"/>
+		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="21"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_SOAP"/>
-		<OverRidesMatGloss bool="0"/>
-		<MatGloss int="24"/>
+		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="24"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_EXOTIC"/>
-		<OverRidesMatGloss bool="1"/>
-		<MatGloss int="-1"/>
+		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
+		<MatGlossIndex int="-1"/>
 	</MaterialClass>
 </MaterialClasses>

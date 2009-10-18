@@ -455,31 +455,31 @@ void Map::LoadCellData(DFHackAPI & DF,
             t_occupancy Ocupancies = occupancies[CubeX][CubeY];
 
             Sint16 TileShapeID = TileShapePicker[TileType];
-
-            // avoid ugly errors by handling unknown tiles
-            static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
-            if(TileShapeID == -1)
-            {
-                cerr << "Unknown tile type/shape: " << TileType << endl;
-                TileShapeID = EmptyID;
-            }
+            Sint16 TileSurfaceID = TileSurfacePicker[TileType];
+            //Sint16 TileMaterialID = TileMaterialPicker[TileType];
 
             // Create Cubes and load data
             Cube* TargetCube = new Cube();
             TargetCell->setCube(TargetCube, CubeX, CubeY);
             TargetCube->setPosition((float) MapX, (float) MapY, (float) MapZ);
 
-            Uint16 MaterialID = PickMaterial(TileType, basemat[CubeX][CubeY], veinmat[CubeX][CubeY], constmat[CubeX][CubeY], Ocupancies);
-
-            Uint16 SurfaceTypeID = 0;
+            //if(TileMaterialID == -1)
+            //{
+                TargetCube->setMaterial(PickMaterial(TileType, basemat[CubeX][CubeY], veinmat[CubeX][CubeY], constmat[CubeX][CubeY], Ocupancies));
+            //}
+            //else
+            //{
+            //    TargetCube->setMaterial(TileMaterialID);
+            //}
 
             TargetCube->setHidden(Designations.bits.hidden);
             TargetCube->setSubTerranean(Designations.bits.subterranean);
             TargetCube->setSkyView(Designations.bits.skyview);
             TargetCube->setSunLit(Designations.bits.light);
 
-            TargetCube->setMaterial(MaterialID);
+            //TargetCube->setMaterial(MaterialID);
             TargetCube->setShape(TileShapeID);
+            TargetCube->setCubeSurface(TileSurfaceID);
 
             if(Designations.bits.flow_size)
             {
@@ -493,43 +493,39 @@ void Map::LoadCellData(DFHackAPI & DF,
 
 void Map::InitilizeTilePicker(DFHackAPI & DF)
 {
-    for(int i = 0; i < 600; ++i)
-    {
-        TilePicker[i] = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
-    }
-
-    for(Uint32 i = 0; i < DATA->getNumMaterials(); ++i)
-    {
-        for(Uint32 j = 0; j < DATA->getMaterialData(i)->TileTypes.size(); ++j)
-        {
-            int Tile = DATA->getMaterialData(i)->TileTypes[j];
-            TilePicker[Tile] = i;
-        }
-    }
-
-    for(int i = 0; i < 600; ++i)
+    for(int i = 0; i < 600; ++i)  // Exact number of possible DF tile types isn't know
     {
         TileShapePicker[i] = -1;
+        TileSurfacePicker[i] = -1;
+        TileMaterialPicker[i] = -1;
+        TileMaterialClassPicker[i] = -1;
     }
 
-    // Index the Shape of each tile for determining Render Geometry
+    // Index the Shape, Surface and Material values of each tile
     for(Uint32 i = 0; i < DATA->getNumTileGroups(); ++i)
     {
         for(Uint32 j = 0; j < DATA->getTileGroupData(i)->TileValues.size(); ++j)
         {
             int Tile = DATA->getTileGroupData(i)->TileValues[j];
+
             TileShapePicker[Tile] = DATA->getTileGroupData(i)->TileShapeID[j];
+            TileSurfacePicker[Tile] = DATA->getTileGroupData(i)->SurfaceTypeID[j];
+
+            TileMaterialPicker[Tile] = DATA->getTileGroupData(i)->getMaterialID();
+            TileMaterialClassPicker[Tile] = DATA->getTileGroupData(i)->getMaterialClassID();
         }
     }
 
     // FIXME: move to .h, so that it can be saved/loaded
     vector<t_matgloss> stonetypes;
     vector<t_matgloss> woodtypes;
+
     DF.ReadStoneMatgloss(stonetypes);
     DF.ReadWoodMatgloss(woodtypes);
 
     Uint32 NumStoneMats = stonetypes.size();
-    int16_t uninitialized = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
+    int16_t uninitialized = -1;
+
     for(Uint32 i = 0; i < NumStoneMats; i++)
     {
         bool hit = 0;
@@ -546,189 +542,73 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
             StoneMatGloss.push_back(uninitialized);
         }
     }
-    if(TreeMan) delete TreeMan;
+
+    if(TreeMan)
+    {
+        delete TreeMan;
+    }
     TreeMan = new TreeManager(woodtypes);
 }
-/*
-string DfMap::getMaterialTypeString (uint32_t type)
-{
-    string ret = "";
-    switch (type)
-    {
-        case 0:
-            ret += "wood";
-            break;
-        case 1:
-            ret += "stone/soil";
-            break;
-        case 2:
-            ret += "metal";
-            break;
-        case 3:
-            ret += "plant";
-            break;
-        case 10:
-            ret += "leather";
-            break;
-        case 11:
-            ret += "silk cloth";
-            break;
-        case 12:
-            ret += "plant thread cloth";
-            break;
-        case 13: // green glass
-            ret += "green glass";
-            break;
-        case 14: // clear glass
-            ret += "clear glass";
-            break;
-        case 15: // crystal glass
-            ret += "crystal glass";
-            break;
-        case 17:
-            ret += "ice";
-            break;
-        case 18:
-            ret += "charcoal";
-            break;
-        case 19:
-            ret += "potash";
-            break;
-        case 20:
-            ret += "ashes";
-            break;
-        case 21:
-            ret += "pearlash";
-            break;
-        case 24:
-            ret += "soap";
-            break;
-        default:
-            ret += "unknown";
-            break;
-    }
-    return ret;
-}*/
 
 //FIXME: the ugly hack
-Uint32 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial,t_matglossPair constructionmaterial, t_occupancy occupancy)
+Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial, t_matglossPair constructionmaterial, t_occupancy occupancy)
 {
-    /*
-    // debug texture orientation on terrain
-    return DATA->getLabelIndex("MATERIAL_UP");
-    */
-    static Uint16 Sand = DATA->getLabelIndex("MATERIAL_SAND");
-    //static Uint16 Stone = DATA->getLabelIndex("MATERIAL_ROUGH_STONE");
-    static Uint16 Ramp = DATA->getLabelIndex("MATERIAL_RAMP_STONE");
-    //static Uint16 LavaStone = DATA->getLabelIndex("MATERIAL_OBSIDIAN");
     static Uint16 Unknown = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
-    static Uint16 Vein = DATA->getLabelIndex("MATERIAL_VEIN_STONE");
-    static Uint16 VeinFloor = DATA->getLabelIndex("MATERIAL_VEIN_STONE_FLOOR");
-    static Uint16 Soil = DATA->getLabelIndex("MATERIAL_SOIL");
-    static Uint16 Snow = DATA->getLabelIndex("MATERIAL_SNOW");
-    static Uint16 Layer1 = DATA->getLabelIndex("MATERIAL_ROUGH_LAYER_STONE");
-    static Uint16 Layer2 = DATA->getLabelIndex("MATERIAL_SMOOTH_LAYER_STONE");
-    static Uint16 Layer3 = DATA->getLabelIndex("MATERIAL_ROUGH_STONE");
-    static Uint16 ConstructedWall = DATA->getLabelIndex("MATERIAL_CONSTRUCTED_WALL");
-    static Uint16 ConstructedFloor = DATA->getLabelIndex("MATERIAL_SMOOTH_FLOOR");
+    static Uint16 LayerStone = DATA->getLabelIndex("MATERIALCLASS_LAYER_STONE");
+    static Uint16 VeinStone = DATA->getLabelIndex("MATERIALCLASS_VEIN_STONE");
 
-    static Uint16 GreenGlass = DATA->getLabelIndex("MATERIAL_GREEN_GLASS");
-    static Uint16 ClearGlass = DATA->getLabelIndex("MATERIAL_CLEAR_GLASS");
-    static Uint16 CrystalGlass = DATA->getLabelIndex("MATERIAL_CRYSTAL_GLASS");
-    static Uint16 Ice = DATA->getLabelIndex("MATERIAL_ICE");
-    static Uint16 WoodW = DATA->getLabelIndex("MATERIAL_WOOD_WALL");
-    static Uint16 WoodF = DATA->getLabelIndex("MATERIAL_WOOD_FLOOR");
-    // TODO: missing constructed ramps
-    /*
-    Mat_GreenGlass = 13,
-    Mat_ClearGlass = 14,
-    Mat_CrystalGlass = 15,
-    Mat_Ice = 17,
-    Mat_Charcoal =18,
-    Mat_Potash = 20,
-    Mat_Ashes = 20,
-    Mat_PearlAsh = 21,
-    Mat_Soap = 24,
-    */
-    Uint16 TileTexture = TilePicker[TileType];
-    if(occupancy.bits.snow) return Snow;
-    if(occupancy.bits.mud) return Soil;
+    Sint16 TileMaterial = TileMaterialPicker[TileType];
+    if (TileMaterial != -1 && TileMaterial < DATA->getNumMaterials())
+    {
+        return TileMaterial;
+    }
 
-    Uint16 BaseMatGlossTexture = StoneMatGloss[basematerial];
-    Uint16 VeinMatGlossTexture = 0;
-    //
-    if( veinmaterial > 0 && veinmaterial < StoneMatGloss.size())
+    Sint16 TileMaterialClass = TileMaterialClassPicker[TileType];
+    Sint16 DefaultMaterial = DATA->getMaterialClassData(TileMaterialClass)->getDefaultMaterial();
+
+    if (TileMaterialClass == LayerStone)
     {
-        VeinMatGlossTexture = StoneMatGloss[veinmaterial];
+        return StoneMatGloss[basematerial];
     }
-    else if( veinmaterial > 0 && veinmaterial >= StoneMatGloss.size())
+    else if (TileMaterialClass == VeinStone)
     {
-        cout << "invalid vein? " << veinmaterial << endl;
-    }
-    // FIXME: add more material types so that we can use soap and other such terrible things
-    Uint16 ContructionMatGlossTexture = -1;
-    switch(constructionmaterial.type)
-    {
-        case Mat_Wood:
-            if(isWallTerrain(TileType))
-                ContructionMatGlossTexture = WoodW;
-            else
-                ContructionMatGlossTexture = WoodF;
-            break;
-        case Mat_Stone:
-            // ignore stone types for constructions for now
-            ContructionMatGlossTexture = TileTexture;//StoneMatGloss[constructionmaterial.index];
-            break;
-        case Mat_GreenGlass:
-            ContructionMatGlossTexture = GreenGlass;
-            break;
-        case Mat_ClearGlass:
-            ContructionMatGlossTexture = ClearGlass;
-            break;
-        case Mat_CrystalGlass:
-            ContructionMatGlossTexture = CrystalGlass;
-            break;
-        case Mat_Ice:
-            ContructionMatGlossTexture = Ice;
-            break;
-        default:
-            ContructionMatGlossTexture = TileTexture;
-    }
-    // use matgloss for veins
-    if(TileTexture == Vein ||
-       TileTexture == VeinFloor)
-    {
-        if(VeinMatGlossTexture != Unknown)
+        if (veinmaterial >= 0 && veinmaterial < StoneMatGloss.size())
         {
-            return VeinMatGlossTexture;
+            return StoneMatGloss[veinmaterial];
         }
-        return TileTexture;
-    }
-    // soil
-    else if(TileTexture == Soil)
-    {
-        if(BaseMatGlossTexture != Unknown)
+        else // Probably a Modded material
         {
-            return BaseMatGlossTexture;
+            if(DefaultMaterial != -1 && DefaultMaterial < DATA->getNumMaterials())
+            {
+                return DefaultMaterial;
+            }
         }
-        return TileTexture;
     }
-    else if(TileTexture == ConstructedWall ||
-            TileTexture == ConstructedFloor) // ConstructedRamp, etc...
+
+    if (constructionmaterial.type != -1)
     {
-        // and only if it's properly defined
-        if(ContructionMatGlossTexture != Unknown)
+        if (constructionmaterial.type == Mat_Stone)
         {
-            return ContructionMatGlossTexture;
+            if (constructionmaterial.index >= 0 && constructionmaterial.index < StoneMatGloss.size())
+            {
+                return StoneMatGloss[constructionmaterial.index];
+            }
         }
-        return TileTexture;
+
+        for (Sint16 MaterialClass = 0; MaterialClass < DATA->getNumMaterialClasses(); MaterialClass++)
+        {
+            if (constructionmaterial.type == DATA->getMaterialClassData(MaterialClass)->getMatGlossIndex())
+            {
+                return DATA->getMaterialClassData(MaterialClass)->getDefaultMaterial();
+            }
+        }
     }
-    // use tile texture otherwise
-    else if(TileType != -1)
+
+    if (DefaultMaterial != -1 && DefaultMaterial < DATA->getNumMaterials())
     {
-        return TileTexture;
+        return DefaultMaterial;
     }
-    // fallback for undefined values of tile types and matgloss
+
     return Unknown;
 }
 

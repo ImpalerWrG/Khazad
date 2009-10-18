@@ -5,7 +5,19 @@
 		<TextureUsed label="NONE"/>
 	</SurfaceType>
 	<SurfaceType>
-		<Name Label="SURFACETYPE_ROUGH_FLOOR"/>
+		<Name Label="SURFACETYPE_ROUGH_FLOOR_1"/>
+		<TextureUsed label="NONE"/>
+	</SurfaceType>
+	<SurfaceType>
+		<Name Label="SURFACETYPE_ROUGH_FLOOR_2"/>
+		<TextureUsed label="NONE"/>
+	</SurfaceType>
+	<SurfaceType>
+		<Name Label="SURFACETYPE_ROUGH_FLOOR_3"/>
+		<TextureUsed label="NONE"/>
+	</SurfaceType>
+	<SurfaceType>
+		<Name Label="SURFACETYPE_ROUGH_FLOOR_4"/>
 		<TextureUsed label="NONE"/>
 	</SurfaceType>
 	<SurfaceType>
@@ -18,14 +30,22 @@
 	</SurfaceType>
 	<SurfaceType>
 		<Name Label="SURFACETYPE_PEBBLES"/>
-		<TextureUsed label="TEXTURE_CONGLOMERATE"/>
+		<TextureUsed label="TEXTURE_PEBBLES"/>
 	</SurfaceType>
 	<SurfaceType>
 		<Name Label="SURFACETYPE_BOULDER"/>
 		<TextureUsed label="TEXTURE_BOULDER"/>
 	</SurfaceType>
 	<SurfaceType>
-		<Name Label="SURFACETYPE_CONSTRUCTION"/>
+		<Name Label="SURFACETYPE_LIQUID"/>
+		<TextureUsed label="TEXTURE_LIQUID"/>
+	</SurfaceType>
+	<SurfaceType>
+		<Name Label="SURFACETYPE_CONSTRUCTED_WALL"/>
+		<TextureUsed label=""/>
+	</SurfaceType>
+	<SurfaceType>
+		<Name Label="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 		<TextureUsed label="TEXTURE_CONSTRUCTED_WALL"/>
 	</SurfaceType>
 </SurfaceTypes>

@@ -679,7 +679,7 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate)
 
         if (CubeMaterialType != -1)
         {
-            Uint32 Texture = TEXTURE->MapTexture(getFacetMaterialType(FacetType), 0 /*SurfaceType*/);
+            Uint32 Texture = TEXTURE->MapTexture(getFacetMaterialType(FacetType), getCubeSurfaceType());
 
             vector<vertex>* vec;
 
@@ -750,7 +750,7 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate)
         surroundings.value |= solid << (2 * i);
     }
 
-    Uint32 Texture = TEXTURE->MapTexture(CubeMaterialType, 0 /*SurfaceType*/);
+    Uint32 Texture = TEXTURE->MapTexture(CubeMaterialType, getCubeSurfaceType());
 
 
     // create output vector if needed

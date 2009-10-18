@@ -160,13 +160,32 @@ SDL_Surface* ImageManager::loadSurface(char* filepath, bool ColorKey)
 
 ILuint ImageManager::GenerateMaterialImage(Sint16 MaterialID, Sint16 SurfaceTypeID)
 {
-    ILuint TextureDevILID = DATA->getTextureData(DATA->getMaterialData(MaterialID)->getTextureID())->getDevILID();
+    MaterialData* Material = DATA->getMaterialData(MaterialID);
+    SurfaceTypeData* Surface = DATA->getSurfaceTypeData(SurfaceTypeID);
 
-    Sint16 PrimaryColorID = DATA->getMaterialData(MaterialID)->getPrimaryColorID();
-    Sint16 SecondaryColorID = DATA->getMaterialData(MaterialID)->getSecondaryColorID();
-    Sint16 BorderColorID = DATA->getMaterialData(MaterialID)->getBorderColorID();
+    Sint16 MaterialClassID = Material->getMaterialClass();
 
-    // the source image is bound now, its format is BGRA
+    TextureData* Texture = NULL;
+    if (Material->getTexture(SurfaceTypeID) != -1)
+    {
+        Sint16 TextureID = Material->getTexture((Uint16) SurfaceTypeID);
+        Texture = DATA->getTextureData(TextureID);
+    }
+    else
+    {
+        if(MaterialClassID != -1)
+        {
+            Sint16 TextureID = DATA->getMaterialClassData(MaterialClassID)->getTexture(SurfaceTypeID);
+            Texture = DATA->getTextureData(TextureID);
+        }
+    }
+
+    ILuint TextureDevILID = Texture->getDevILID();
+
+    Sint16 PrimaryColorID = Material->getPrimaryColorID();
+    Sint16 SecondaryColorID = Material->getSecondaryColorID();
+    Sint16 BorderColorID = Material->getBorderColorID();
+
     string colormode = DATA->getMaterialData(MaterialID)->getColorMode();
 
     if(colormode.empty() || colormode == "gradientmap")

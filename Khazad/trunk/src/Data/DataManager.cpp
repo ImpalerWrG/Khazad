@@ -45,6 +45,7 @@ bool DataManager::Init()
 
     // Post process all data and dynamicly link references, not order dependent
     PostProcessDataClass(&Materials);
+    PostProcessDataClass(&MaterialClasses);
     PostProcessDataClass(&TileGroups);
     PostProcessDataClass(&SurfaceTypes);
     PostProcessDataClass(&Trees);

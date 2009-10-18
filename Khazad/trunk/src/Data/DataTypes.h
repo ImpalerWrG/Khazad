@@ -62,30 +62,6 @@ protected:
     Uint32 DevILID;
 };
 
-/*
-class TileClassData: public DataBase
-{
-
-public:
-
-    TileClassData();
-    ~TileClassData();
-    bool Load(TiXmlElement* Element, Uint32 Index);
-    bool PostProcessing();
-
-    Uint16 getSurfaceType()     { return SurfaceTypeID; }
-    Uint16 getTileShape()       { return TileShapeID; }
-
-protected:
-
-    Uint16 SurfaceTypeID;
-    string SurfaceTypeLabel;
-
-    Uint16 TileShapeID;
-    string TileShapeLabel;
-};
-*/
-
 class SurfaceTypeData: public DataBase
 {
 
@@ -115,10 +91,8 @@ public:
     bool Load(TiXmlElement* Element, Uint32 Index);
     bool PostProcessing();
 
-    Sint16 getTextureID()       { return TextureID; }
-    Sint16 getPrimaryColor()    { return PrimaryColorID; }
-    Sint16 getSecondaryColor()  { return SecondaryColorID; }
-    Sint16 getMaterialClass()   { return MaterialClassID; }
+    Sint16 getMaterialClassID()     { return MaterialClassID; }
+    Sint16 getMaterialID()          { return MaterialID; }
 
     std::vector<Uint16> TileValues;
     std::vector<Uint16> TileShapeID;
@@ -126,18 +100,14 @@ public:
 
 protected:
 
-    string TextureLabel;
-    string PrimaryColorLabel;
-    string SecondaryColorLabel;
     string MaterialClassLabel;
+    string MaterialLabel;
 
     std::vector<string> TileShapeLabels;
     std::vector<string> SurfaceTypeLabels;
 
-    Sint16 TextureID;
-    Sint16 PrimaryColorID;
-    Sint16 SecondaryColorID;
     Sint16 MaterialClassID;
+    Sint16 MaterialID;
 };
 
 class MaterialClassData: public DataBase
@@ -151,30 +121,22 @@ public:
     bool Load(TiXmlElement* Element, Uint32 Index);
     bool PostProcessing();
 
-    bool isOverRidesMatGloss()    { return OverRidesMatGloss; }
+    Sint16 getDefaultMaterial()     { return DefaultMaterialID; }
+    Uint16 getMatGlossIndex()       { return MatGlossIndex; }
 
-    Sint16 getTextureID()       { return TextureID; }
-    Sint16 getPrimaryColor()    { return PrimaryColorID; }
-    Sint16 getSecondaryColor()  { return SecondaryColorID; }
-    Sint16 getBorderColor()     { return BorderColorID; }
-
-    Sint16 getMatGloosIndex()   { return MatGlossIndex; }
+    Sint16 getTexture(Uint16 SurfaceID)     { return TextureArray[SurfaceID]; }
 
 protected:
 
-    string TextureLabel;
-    string PrimaryColorLabel;
-    string SecondaryColorLabel;
-    string BorderColorLabel;
+    Sint16* TextureArray;
 
-    bool OverRidesMatGloss;
+    string DefaultMaterialLabel;
 
-    Sint16 TextureID;
-    Sint16 PrimaryColorID;
-    Sint16 SecondaryColorID;
-    Sint16 BorderColorID;
+    Sint16 DefaultMaterialID;
+    Uint16 MatGlossIndex;
 
-    Sint16 MatGlossIndex;
+    std::vector<string> SurfaceTypeLabels;
+    std::vector<string> TextureLabels;
 };
 
 class MaterialData: public DataBase
@@ -188,20 +150,21 @@ public:
     bool Load(TiXmlElement* Element, Uint32 Index);
     bool PostProcessing();
 
-    Sint16 getTextureID()               { return TextureID; }
+    Sint16 getMaterialClass()           { return MaterialClassID; }
+
     Sint16 getPrimaryColorID()          { return PrimaryColorID; }
     Sint16 getSecondaryColorID()        { return SecondaryColorID; }
     Sint16 getBorderColorID()           { return BorderColorID; }
+    string getColorMode()               { return ColorMode; }
 
     string getMatGloss()                { return MatGloss; }
-    string getColorMode()               { return ColorMode; }
-    bool getBorder()                    { return Border; }
 
-    std::vector<Uint16> TileTypes;
+    Sint16 getTexture(Uint16 SurfaceID)     { return TextureArray[SurfaceID]; }
 
 protected:
 
-    string TextureLabel;
+    Sint16* TextureArray;
+
     string PrimaryColorLabel;
     string SecondaryColorLabel;
     string BorderColorLabel;
@@ -211,14 +174,14 @@ protected:
     string MatGloss;
     string ColorMode;
 
-    bool Border;
-
-    Sint16 TextureID;
     Sint16 PrimaryColorID;
     Sint16 SecondaryColorID;
     Sint16 BorderColorID;
 
     Sint16 MaterialClassID;
+
+    std::vector<string> SurfaceTypeLabels;
+    std::vector<string> TextureLabels;
 };
 
 class FontData: public DataBase

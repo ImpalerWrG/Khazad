@@ -127,19 +127,20 @@ bool Tree::Draw()
           //  int64_t rand = x * 1000 + y * 413 + z* 11;
             glTranslatef(xa + 0.5, ya + 0.5, -0.5);
 
+            static Sint16 SurfaceTypeID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
             //float scale = 1 + ((float)(rand % 100 - 50)) * 0.002;
 //            glScalef(scale,scale,scale);
             //glRotatef( rand , 0,0,1);
 
             if(trunkid != -1)
             {
-                TEXTURE->BindTexture(TEXTURE->MapTexture(trunkmat, 0));
+                TEXTURE->BindTexture(TEXTURE->MapTexture(trunkmat, SurfaceTypeID));
                 model->Render(trunkid);
             }
 
             if(leavesid != -1 && type !=TREE_DEAD && type != SAPLING_DEAD)
             {
-                TEXTURE->BindTexture(TEXTURE->MapTexture(leavesmat_normal, 0));
+                TEXTURE->BindTexture(TEXTURE->MapTexture(leavesmat_normal, SurfaceTypeID));
                 model->Render(leavesid);
             }
 /*
