@@ -176,7 +176,15 @@ ILuint ImageManager::GenerateMaterialImage(Sint16 MaterialID, Sint16 SurfaceType
         if(MaterialClassID != -1)
         {
             Sint16 TextureID = DATA->getMaterialClassData(MaterialClassID)->getTexture(SurfaceTypeID);
-            Texture = DATA->getTextureData(TextureID);
+            if(TextureID != -1)
+            {
+                Texture = DATA->getTextureData(TextureID);
+            }
+            else
+            {
+                cerr << "bad material/surface combination, no texture. MaterialClassID: " << MaterialClassID << " SurfaceTypeID: " << SurfaceTypeID << endl;
+                Texture = DATA->getTextureData(0);
+            }
         }
     }
 
