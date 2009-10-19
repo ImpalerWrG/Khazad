@@ -45,6 +45,7 @@
 		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
 		<PrimaryColor label="COLOR_TEAL"/>
 		<SecondaryColor label="COLOR_WHITE"/>
+        <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_LIQUID" Texture="TEXTURE_LIQUID"/>
 		</SurfaceTextures>
@@ -54,7 +55,7 @@
 		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
 		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
-		<BorderColor label="COLOR_DARK_GREY"/>
+		<!--<BorderColor label="COLOR_DARK_GREY"/>-->
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_STONE_1"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_STONE_2"/>
@@ -82,6 +83,7 @@
 		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
 		<PrimaryColor label="COLOR_RED"/>
 		<SecondaryColor label="COLOR_YELLOW"/>
+        <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_LIQUID" Texture="TEXTURE_LIQUID"/>
 		</SurfaceTextures>
@@ -134,7 +136,7 @@
 	<Material>
 		<Name Label="MATERIAL_OBSIDIAN"/>
 		<MaterialClass label="MATERIALCLASS_LAVA_STONE"/>
-		<PrimaryColor label="COLOR_BLACK"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_ROUGH"/>
@@ -436,6 +438,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_GREEN"/>
 		<MatGloss label="GARNIERITE"/>
+        <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
@@ -446,6 +449,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<MatGloss label="GOLD"/>
+        <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
@@ -456,6 +460,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<MatGloss label="SILVER"/>
+        <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
@@ -466,6 +471,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<MatGloss label="COPPER"/>
+        <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
@@ -486,6 +492,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<MatGloss label="GALENA"/>
+        <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
@@ -496,6 +503,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<MatGloss label="SPHALERITE"/>
+        <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
@@ -506,6 +514,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<MatGloss label="CASSITERITE"/>
+        <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
@@ -536,6 +545,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<MatGloss label="PLATINUM"/>
+        <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
@@ -556,6 +566,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BLUE"/>
 		<MatGloss label="COBALTITE"/>
+        <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
@@ -566,6 +577,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<MatGloss label="TETRAHEDRITE"/>
+        <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
@@ -576,6 +588,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 		<MatGloss label="HORN_SILVER"/>
+        <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
@@ -666,6 +679,7 @@
 		<PrimaryColor label="COLOR_LIGHT_GREY"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<MatGloss label="BISMUTHINITE"/>
+        <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
@@ -793,7 +807,7 @@
 	<Material>
 		<Name Label="MATERIAL_PITCHBLENDE"/>
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_BLACK"/>
+		<PrimaryColor label="COLOR_PURPLE"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<MatGloss label="PITCHBLENDE"/>
 		<SurfaceTextures>
@@ -816,6 +830,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<MatGloss label="ALUMINUM"/>
+        <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
@@ -976,6 +991,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_AQUA"/>
 		<MatGloss label="RAW_ADAMANTINE"/>
+        <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
@@ -1436,9 +1452,9 @@
 	<Material>
 		<Name Label="MATERIAL_OBSIDIAN"/>
 		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
-		<PrimaryColor label="COLOR_BLACK"/>
-		<SecondaryColor label="COLOR_WHITE"/>
-		<BorderColor label="COLOR_WHITE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<!--<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_WHITE"/>-->
 		<MatGloss label="OBSIDIAN"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>

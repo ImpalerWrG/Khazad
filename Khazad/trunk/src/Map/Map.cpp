@@ -555,6 +555,7 @@ Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmateri
 {
     static Uint16 Unknown = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
     static Uint16 LayerStone = DATA->getLabelIndex("MATERIALCLASS_LAYER_STONE");
+    static Uint16 Soil = DATA->getLabelIndex("MATERIALCLASS_SOIL");
     static Uint16 VeinStone = DATA->getLabelIndex("MATERIALCLASS_VEIN_STONE");
 
     Sint16 TileMaterial = TileMaterialPicker[TileType];
@@ -570,7 +571,7 @@ Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmateri
         DefaultMaterial = DATA->getMaterialClassData(TileMaterialClass)->getDefaultMaterial();
     }
 
-    if (TileMaterialClass == LayerStone)
+    if ( TileMaterialClass == LayerStone || TileMaterialClass == Soil )
     {
         return StoneMatGloss[basematerial];
     }
