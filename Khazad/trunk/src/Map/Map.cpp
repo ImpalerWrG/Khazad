@@ -564,7 +564,11 @@ Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmateri
     }
 
     Sint16 TileMaterialClass = TileMaterialClassPicker[TileType];
-    Sint16 DefaultMaterial = DATA->getMaterialClassData(TileMaterialClass)->getDefaultMaterial();
+    Sint16 DefaultMaterial = -1;
+    if(TileMaterialClass != -1)
+    {
+        DefaultMaterial = DATA->getMaterialClassData(TileMaterialClass)->getDefaultMaterial();
+    }
 
     if (TileMaterialClass == LayerStone)
     {

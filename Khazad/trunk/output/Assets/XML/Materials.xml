@@ -1223,9 +1223,10 @@
 	<Material>
 		<Name Label="MATERIAL_SANDSTONE"/>
 		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+        <ColorMode mode="overlay" />
 		<PrimaryColor label="COLOR_TAN"/>
-		<SecondaryColor label="COLOR_PINK"/>
-		<BorderColor label="COLOR_PINK"/>
+		<!--<SecondaryColor label="COLOR_PINK"/>-->
+		<BorderColor label="COLOR_TAN"/>
 		<MatGloss label="SANDSTONE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
@@ -1378,6 +1379,7 @@
 		<Name Label="MATERIAL_GABBRO"/>
 		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
+        <ColorMode mode="overlay" />
 		<SecondaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_SILVER"/>
 		<MatGloss label="GABBRO"/>
@@ -1411,6 +1413,7 @@
 		<Name Label="MATERIAL_ANDESITE"/>
 		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
+        <ColorMode mode="overlay" />
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 		<BorderColor label="COLOR_LIGHT_GREY"/>
 		<MatGloss label="ANDESITE"/>
@@ -1423,6 +1426,7 @@
 		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
 		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+        <ColorMode mode="overlay" />
 		<BorderColor label="COLOR_LIGHT_GREY"/>
 		<MatGloss label="FELSITE"/>
 		<SurfaceTextures>
@@ -1487,8 +1491,9 @@
 	<Material>
 		<Name Label="MATERIAL_GNEISS"/>
 		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+        <ColorMode mode="overlay" />
 		<PrimaryColor label="COLOR_LIGHT_GREY"/>
-		<SecondaryColor label="COLOR_SILVER"/>
+		<!--<SecondaryColor label="COLOR_SILVER"/>-->
 		<BorderColor label="COLOR_SILVER"/>
 		<MatGloss label="GNEISS"/>
 		<SurfaceTextures>

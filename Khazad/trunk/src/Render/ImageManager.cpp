@@ -196,11 +196,11 @@ ILuint ImageManager::GenerateMaterialImage(Sint16 MaterialID, Sint16 SurfaceType
 
     string colormode = DATA->getMaterialData(MaterialID)->getColorMode();
 
-    if(colormode.empty() || colormode == "gradientmap")
+    if(colormode == "gradientmap")
     {
         return GenerateGradientImage(TextureDevILID, PrimaryColorID, SecondaryColorID, BorderColorID);
     }
-    else if(colormode == "overlay")
+    else if(colormode.empty() || colormode == "overlay")
     {
         return GeneratedOverLayImage(TextureDevILID, PrimaryColorID, BorderColorID);
     }
