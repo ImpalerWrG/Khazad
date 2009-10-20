@@ -518,9 +518,11 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
 
     // FIXME: move to .h, so that it can be saved/loaded
     vector<t_matgloss> stonetypes;
+    vector<t_matgloss> metaltypes;
     vector<t_matgloss> woodtypes;
 
     DF.ReadStoneMatgloss(stonetypes);
+    DF.ReadMetalMatgloss(metaltypes);
     DF.ReadWoodMatgloss(woodtypes);
 
     Uint32 NumStoneMats = stonetypes.size();
@@ -528,18 +530,36 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
 
     for(Uint32 i = 0; i < NumStoneMats; i++)
     {
-        bool hit = 0;
+        bool hit = false;
         for(Uint32 j = 0; j < DATA->getNumMaterials(); ++j)
         {
             if(DATA->getMaterialData(j)->getMatGloss() == stonetypes[i].id)
             {
                 StoneMatGloss.push_back(j);
-                hit = 1;
+                hit = true;
             }
         }
         if(!hit)
         {
             StoneMatGloss.push_back(uninitialized);
+        }
+    }
+    
+    Uint32 NumMetalMats = metaltypes.size();
+    for(Uint32 i = 0; i < NumMetalMats; i++)
+    {
+        bool hit = false;
+        for(Uint32 j = 0; j < DATA->getNumMaterials(); ++j)
+        {
+            if(DATA->getMaterialData(j)->getMatGloss() == metaltypes[i].id)
+            {
+                MetalMatGloss.push_back(j);
+                hit = true;
+            }
+        }
+        if(!hit)
+        {
+            MetalMatGloss.push_back(uninitialized);
         }
     }
 
@@ -577,12 +597,13 @@ Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmateri
     }
     else if (TileMaterialClass == VeinStone)
     {
-        if (veinmaterial >= 0 && veinmaterial < StoneMatGloss.size())
+        if (veinmaterial >= 0 && veinmaterial < StoneMatGloss.size() && StoneMatGloss[veinmaterial] != -1)
         {
             return StoneMatGloss[veinmaterial];
         }
         else // Probably a Modded material
         {
+            cerr << "bad or unknown vein matgloss:" << veinmaterial << endl;
             if(DefaultMaterial != -1 && DefaultMaterial < DATA->getNumMaterials())
             {
                 return DefaultMaterial;
@@ -592,20 +613,57 @@ Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmateri
 
     if (constructionmaterial.type != -1)
     {
+        int16_t construction_ret = -1;
         if (constructionmaterial.type == Mat_Stone)
         {
             if (constructionmaterial.index >= 0 && constructionmaterial.index < StoneMatGloss.size())
             {
-                return StoneMatGloss[constructionmaterial.index];
+                construction_ret = StoneMatGloss[constructionmaterial.index];
+                //return StoneMatGloss[constructionmaterial.index];
             }
         }
-
+        else if (constructionmaterial.type == Mat_Metal)
+        {
+            if (constructionmaterial.index >= 0 && constructionmaterial.index < MetalMatGloss.size())
+            {
+                construction_ret = MetalMatGloss[constructionmaterial.index];
+                //return MetalMatGloss[constructionmaterial.index];
+            }
+        }
+        
+        if(construction_ret != -1)
+        {
+            return construction_ret;
+        }
+        else
+        {
+            cerr << "construction material not in Materials.xml: "
+                 << constructionmaterial.type 
+                 << "::" 
+                 << constructionmaterial.index 
+                 << endl;
+        }
+        
         for (Sint16 MaterialClass = 0; MaterialClass < DATA->getNumMaterialClasses(); MaterialClass++)
         {
             if (constructionmaterial.type == DATA->getMaterialClassData(MaterialClass)->getMatGlossIndex())
             {
-                return DATA->getMaterialClassData(MaterialClass)->getDefaultMaterial();
+                construction_ret = DATA->getMaterialClassData(MaterialClass)->getDefaultMaterial();
+                //return DATA->getMaterialClassData(MaterialClass)->getDefaultMaterial();
             }
+        }
+        
+        if(construction_ret != -1)
+        {
+            return construction_ret;
+        }
+        else
+        {
+            cerr << "construction material not in Material Classes: "
+            << constructionmaterial.type 
+            << "::" 
+            << constructionmaterial.index 
+            << endl;
         }
     }
 

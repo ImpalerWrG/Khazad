@@ -491,8 +491,10 @@ void Cube::setShape(Sint16 TileShape)
 {
     if(TileShape < 0 || TileShape >= DATA->getNumTileShape())
     {
-        CubeShapeType = DATA->getLabelIndex("TILESHAPE_EMPTY");
-        data.solid = !DATA->getTileShapeData(CubeShapeType)->isOpen();
+        //CubeShapeType = DATA->getLabelIndex("TILESHAPE_EMPTY");
+        //data.solid = !DATA->getTileShapeData(CubeShapeType)->isOpen();
+        cerr << "can't set shape to -1" << endl;
+        return;
     }
 
     if(CubeShapeType != TileShape)
@@ -673,6 +675,13 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate)
             {
                 continue;
             }
+            // don't draw wall faces for anything but walls...
+            /*
+            if(FacetType != FACET_BOTTOM)
+            {
+                continue;
+            }
+            */
         }
 
         Sint16 CubeMaterialType = getFacetMaterialType(FacetType);

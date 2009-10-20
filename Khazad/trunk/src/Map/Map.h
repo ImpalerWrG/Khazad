@@ -118,6 +118,7 @@ protected:
     Sint16 TileMaterialClassPicker[600];
 
     vector <int16_t> StoneMatGloss;
+    vector <int16_t> MetalMatGloss;
 
     Uint32 CellCount;
     Uint32 CubeCount;
