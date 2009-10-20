@@ -386,27 +386,31 @@ void ImageManager::ApplyBorder(ILuint DevilImageID, Sint32 BorderColorID)
         {
             for(Uint32 i = 0; i < width; i++)
             {
-                ImageData[(i * width * bpp) +  0] = Red;    // Red
+                ImageData[(i * width * bpp) +  0] = Blue;   // Blue
                 ImageData[(i * width * bpp) +  1] = Green;  // Green
-                ImageData[(i * width * bpp) +  2] = Blue;   // Blue
+                ImageData[(i * width * bpp) +  2] = Red;    // Red
+                
                 ImageData[(i * width * bpp) +  3] = 255;    // Alpha
 
-                ImageData[(i * width * bpp) + ((height - 1) * bpp) + 0] = Red;      // Red
+                ImageData[(i * width * bpp) + ((height - 1) * bpp) + 0] = Blue;     // Blue
                 ImageData[(i * width * bpp) + ((height - 1) * bpp) + 1] = Green;    // Green
-                ImageData[(i * width * bpp) + ((height - 1) * bpp) + 2] = Blue;     // Blue
+                ImageData[(i * width * bpp) + ((height - 1) * bpp) + 2] = Red;      // Red
+                
                 ImageData[(i * width * bpp) + ((height - 1) * bpp) + 3] = 255;      // Alpha
             }
 
             for(Uint32 j = 0; j < height; j++)
             {
-                ImageData[((width - 1) * height * bpp) + (j * bpp) + 0] = Red;      // Red
+                ImageData[((width - 1) * height * bpp) + (j * bpp) + 0] = Blue;     // Blue
                 ImageData[((width - 1) * height * bpp) + (j * bpp) + 1] = Green;    // Green
-                ImageData[((width - 1) * height * bpp) + (j * bpp) + 2] = Blue;     // Blue
+                ImageData[((width - 1) * height * bpp) + (j * bpp) + 2] = Red;      // Red
+                
                 ImageData[((width - 1) * height * bpp) + (j * bpp) + 3] = 255;      // Alpha
 
-                ImageData[(j * bpp) + 0] = Red;     // Red
+                ImageData[(j * bpp) + 0] = Blue;    // Blue
                 ImageData[(j * bpp) + 1] = Green;   // Green
-                ImageData[(j * bpp) + 2] = Blue;    // Blue
+                ImageData[(j * bpp) + 2] = Red;     // Red
+                
                 ImageData[(j * bpp) + 3] = 255;     // Alpha
             }
         }

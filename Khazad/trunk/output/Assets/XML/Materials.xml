@@ -3,8 +3,7 @@
 	<Material>
 		<Name Label="MATERIAL_UNINITIALIZED"/>
 		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
-		<PrimaryColor label="COLOR_BLACK"/>
-		<SecondaryColor label="COLOR_BLUE"/>
+		<PrimaryColor label="COLOR_BLUE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_NEHE"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_NEHE"/>
@@ -22,8 +21,7 @@
 	<Material>
 		<Name Label="MATERIAL_BUILDING"/>
 		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
-		<PrimaryColor label="COLOR_BLACK"/>
-		<SecondaryColor label="COLOR_GREY"/>
+		<PrimaryColor label="COLOR_GREY"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_NEHE"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_NEHE"/>
@@ -45,7 +43,7 @@
 		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
 		<PrimaryColor label="COLOR_TEAL"/>
 		<SecondaryColor label="COLOR_WHITE"/>
-        <ColorMode mode="gradientmap" />
+		<ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_LIQUID" Texture="TEXTURE_LIQUID"/>
 		</SurfaceTextures>
@@ -146,7 +144,7 @@
 		<Name Label="MATERIAL_DARK_GRASS"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
 		<PrimaryColor label="GRASS_DARK"/>
-		<BorderColor label="COLOR_FOREST_GREEN"/>
+		<!--<BorderColor label="COLOR_FOREST_GREEN"/>-->
 		<ColorMode mode="overlay"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GRASS_1"/>
@@ -159,7 +157,7 @@
 		<Name Label="MATERIAL_BRIGHT_GRASS"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
 		<PrimaryColor label="GRASS_BRIGHT"/>
-		<BorderColor label="COLOR_FOREST_GREEN"/>
+		<!--<BorderColor label="COLOR_FOREST_GREEN"/>-->
 		<ColorMode mode="overlay"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GRASS_1"/>
@@ -1000,7 +998,7 @@
 		<Name Label="MATERIAL_SAND_TAN"/>
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
 		<PrimaryColor label="COLOR_BROWN"/>
-		<BorderColor label="COLOR_TAN"/>
+<!-- 		<BorderColor label="COLOR_TAN"/> -->
 		<MatGloss label="SAND_TAN"/>
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
@@ -1015,7 +1013,7 @@
 		<Name Label="MATERIAL_SAND_YELLOW"/>
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
 		<PrimaryColor label="COLOR_KHAKI"/>
-		<BorderColor label="COLOR_YELLOW"/>
+<!-- 		<BorderColor label="COLOR_YELLOW"/> -->
 		<MatGloss label="SAND_YELLOW"/>
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
@@ -1030,7 +1028,7 @@
 		<Name Label="MATERIAL_SAND_WHITE"/>
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
 		<PrimaryColor label="COLOR_SILVER"/>
-		<BorderColor label="COLOR_WHITE"/>
+<!-- 		<BorderColor label="COLOR_WHITE"/> -->
 		<MatGloss label="SAND_WHITE"/>
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
@@ -1045,7 +1043,7 @@
 		<Name Label="MATERIAL_SAND_RED"/>
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
 		<PrimaryColor label="COLOR_BLOOD_RED"/>
-		<BorderColor label="COLOR_RED"/>
+<!-- 		<BorderColor label="COLOR_RED"/> -->
 		<MatGloss label="SAND_RED"/>
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
@@ -1060,7 +1058,7 @@
 		<Name Label="MATERIAL_SAND_BLACK"/>
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
-		<BorderColor label="COLOR_BLACK"/>
+<!-- 		<BorderColor label="COLOR_BLACK"/> -->
 		<MatGloss label="SAND_BLACK"/>
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
