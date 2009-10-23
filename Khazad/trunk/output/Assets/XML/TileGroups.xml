@@ -139,10 +139,19 @@
 		</TileValues>
 	</TileGroup>
 	<TileGroup>
+		<Name Label="TILEGROUP_WATERFALL_LANDING"/>
+		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
+		<Material label="MATERIAL_RIVER_PEBBLES"/>
+		<TileValues>
+			<TileValue Int="89" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
+		</TileValues>
+	</TileGroup>
+	<TileGroup>
 		<Name Label="TILEGROUP_RIVER_BOTTOM"/>
 		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
 		<Material label="MATERIAL_RIVER_PEBBLES"/>
 		<TileValues>
+			<TileValue Int="90" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
 			<TileValue Int="365" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
 			<TileValue Int="366" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_2"/>
 			<TileValue Int="367" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_3"/>
