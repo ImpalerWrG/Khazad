@@ -33,33 +33,33 @@ inline Facet OppositeFacet(Facet FacetType)
     return  (Facet) ((int) FacetType ^ 1);  // Flips the last bit
 }
 
-inline void TranslateCordinates(Sint32* X, Sint32* Y, Sint32* Z, Facet TestFacet)
+inline void TranslateCordinates(Sint32& X, Sint32& Y, Sint32& Z, Facet TestFacet)
 {
     //TOD some bit shift magic to speed this up and use less if statements
 
     if(TestFacet == FACET_WEST)
     {
-        *X -= 1;
+        X -= 1;
     }
     if (TestFacet == FACET_EAST)
     {
-        *X += 1;
+        X += 1;
     }
     if(TestFacet == FACET_NORTH)
     {
-        *Y -= 1;
+        Y -= 1;
     }
     if (TestFacet == FACET_SOUTH)
     {
-        *Y += 1;
+        Y += 1;
     }
     if(TestFacet == FACET_BOTTOM)
     {
-        *Z -= 1;
+        Z -= 1;
     }
     if (TestFacet == FACET_TOP)
     {
-        *Z += 1;
+        Z += 1;
     }
 }
 /*
@@ -108,33 +108,33 @@ enum Direction
     DIRECTIONS_START = 0
 };
 
-inline void TranslateCordinates(Sint32* X, Sint32* Y, Sint32* Z, Direction TestDirection)
+inline void TranslateCordinates(Sint32& X, Sint32& Y, Sint32& Z, Direction TestDirection)
 {
     if(TestDirection == DIRECTION_NORTHWEST ||  TestDirection == DIRECTION_NORTH || TestDirection == DIRECTION_NORTHEAST)
     {
-        *Y -= 1;
+        Y -= 1;
     }
     else if (TestDirection == DIRECTION_SOUTHEAST ||  TestDirection == DIRECTION_SOUTH || TestDirection == DIRECTION_SOUTHWEST)
     {
-        *Y += 1;
+        Y += 1;
     }
 
     if(TestDirection == DIRECTION_NORTHEAST ||  TestDirection == DIRECTION_EAST || TestDirection == DIRECTION_SOUTHEAST)
     {
-        *X += 1;
+        X += 1;
     }
     else if (TestDirection == DIRECTION_SOUTHWEST ||  TestDirection == DIRECTION_WEST || TestDirection == DIRECTION_NORTHWEST)
     {
-        *X -= 1;
+        X -= 1;
     }
 
     if(TestDirection == DIRECTION_UP)
     {
-        *Z += 1;
+        Z += 1;
     }
     else if (TestDirection == DIRECTION_DOWN)
     {
-        *Z -= 1;
+        Z -= 1;
     }
 }
 

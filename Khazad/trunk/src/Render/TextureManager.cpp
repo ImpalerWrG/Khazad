@@ -31,7 +31,7 @@ GLuint TextureManager::GenerateTexture(ILuint DevILImageID)
     printf ("Generating Texture: %i\n", (int) DevILImageID);
 
     ilBindImage(DevILImageID);
-
+    iluFlipImage();
     GLuint GLtextureID;
     glGenTextures(1, &GLtextureID);
     glBindTexture(GL_TEXTURE_2D, GLtextureID);

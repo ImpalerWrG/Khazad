@@ -222,7 +222,7 @@ bool Cell::DrawSlope(Uint8 CubeX, Uint8 CubeY)
         Y = (CellY * CELLEDGESIZE) + CubeY;
         Z = CellZ;
 
-        TranslateCordinates(&X, &Y, &Z, TestDirection);
+        TranslateCordinates(X, Y, Z, TestDirection);
 
         solid = 0;
         if(MAP->isCubeSolid(X, Y, Z))
@@ -297,7 +297,7 @@ void Cell::BuildFaceData()
                 Y = (CellY * CELLEDGESIZE) + y;
                 Z = CellZ;
 
-                TranslateCordinates(&X, &Y, &Z, FacetType);
+                TranslateCordinates(X, Y, Z, FacetType);
 
                 if (isCubeSolid(x, y))
                 {

@@ -317,12 +317,6 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate)
                 continue;
             }
             // don't draw wall faces for anything but walls...
-            /*
-            if(FacetType != FACET_BOTTOM)
-            {
-                continue;
-            }
-            */
         }
 
         Sint16 CubeMaterialType = getFacetMaterialType(FacetType);
