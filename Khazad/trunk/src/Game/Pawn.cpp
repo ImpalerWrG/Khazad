@@ -68,7 +68,7 @@ bool Pawn::Move(Vector3 Direction)
         }
     }
 
-    Cube* NewCube = MAP->getCube((Uint32) Position.x, (Uint32) Position.y, (Uint32) Position.z);
+    //Cube* NewCube = MAP->getCube((Uint32) Position.x, (Uint32) Position.y, (Uint32) Position.z);
 /*
     if (NewCube)
     {

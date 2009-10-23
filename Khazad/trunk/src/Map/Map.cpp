@@ -35,14 +35,9 @@ Map::Map()
     CellSizeZ = 0;
 
     CellCount = 0;
-    CubeCount = 0;
     FaceCount = 0;
-    SlopeCount = 0;
 
     InitedCellCount = 0;
-    InitedCubeCount = 0;
-    InitedFaceCount = 0;
-    InitedSlopeCount = 0;
 
     ColumnMatrix = NULL;
     TreeMan = NULL;
@@ -58,75 +53,18 @@ Map::~Map()
 
 bool Map::Init()
 {
-    BuildVertexArray();
-
     Initialized = true;
     MapLoaded = false;
 
 	return true;
 }
-/*
+
 bool Map::Generate(Uint32 Seed)
 {
-
     RANDOM->Seed(Seed);
 
-    Uint32 TerrainX = MapSizeX + 1;
-    Uint32 TerrainY = MapSizeY + 1;
-
-    float** TerrainArray;
-    TerrainArray = new float*[TerrainX];
-
-    for(Uint32 i = 0; i < TerrainX; i++)
-    {
-        TerrainArray[i] = new float[TerrainY];
-
-        for(Uint32 j = 0; j < TerrainY; j++)
-        {
-            TerrainArray[i][j] = RANDOM->Roll(0, 1);
-        }
-    }
-
-    Cube* NewCube = NULL;
-    Cell* TargetCell = NULL;
-
-    for(Uint32 i = 0; i < MapSizeX; i++)
-    {
-        for(Uint32 j = 0; j < MapSizeY; j++)
-        {
-            TargetCell = getCubeOwner(i, j, 0);
-
-            if(TargetCell)
-            {
-                if(!TargetCell->isInitalized())
-                {
-                    TargetCell->Init();
-                }
-
-                NewCube = getCube(i, j, 0);
-
-                if (NewCube)
-                {
-                    if (NewCube->isInitalized() != true)
-                    {
-                        NewCube->Init(0);
-                        NewCube->setGeometry(GEOM_WALL);
-                        NewCube->setVisible(true);
-                    }
-                }
-            }
-        }
-    }
-
-    for(Uint32 i = 0; i < TerrainX; i++)
-    {
-        delete TerrainArray[i];
-    }
-
-    delete TerrainArray;
-
     return true;
-}*/
+}
 
 Cell* Map::getCell(Sint32 X, Sint32 Y, Sint32 Z)
 {
@@ -147,52 +85,7 @@ Cell* Map::getCubeOwner(Sint32 X, Sint32 Y, Sint32 Z)
         return NULL;
     }
 
-    Sint32 CellX = X / CELLEDGESIZE;
-    Sint32 CellY = Y / CELLEDGESIZE;
-
-    return getCell(CellX, CellY, Z);
-}
-
-Cube* Map::getCube(Sint32 X, Sint32 Y, Sint32 Z)
-{
-    Cell* TargetCell = getCubeOwner(X, Y, Z);
-
-    if(TargetCell != NULL)
-    {
-        Sint32 CubeX = X % CELLEDGESIZE;
-        Sint32 CubeY = Y % CELLEDGESIZE;
-
-        return TargetCell->getCube(CubeX, CubeY);
-    }
-    return NULL;
-}
-
-Cube* Map::GenerateCube(Sint32 X, Sint32 Y, Sint32 Z)
-{
-    Cell* TargetCell = getCubeOwner(X, Y, Z);
-
-    if(TargetCell != NULL)
-    {
-        Sint32 CubeX = X % CELLEDGESIZE;
-        Sint32 CubeY = Y % CELLEDGESIZE;
-
-        return TargetCell->GenerateCube(CubeX, CubeY);
-    }
-    return NULL;
-}
-
-bool Map::hasFace(Sint32 X, Sint32 Y, Sint32 Z, Facet FaceType)
-{
-    Cell* TargetCell = getCubeOwner(X, Y, Z);
-
-    if(TargetCell)
-    {
-        Sint32 CubeX = X % CELLEDGESIZE;
-        Sint32 CubeY = Y % CELLEDGESIZE;
-
-        return TargetCell->hasFace(CubeX, CubeY, FaceType);
-    }
-    return false;
+    return getCell(X / CELLEDGESIZE, Y / CELLEDGESIZE, Z);
 }
 
 bool Map::Extract()
@@ -224,7 +117,7 @@ bool Map::Extract()
     InitilizeTilePicker(DF);
 
     // Initialize Cells and Cubes
-    DF.getSize(CellSizeX,CellSizeY,CellSizeZ);
+    DF.getSize(CellSizeX, CellSizeY, CellSizeZ);
     // update depth slider
     //UI->setZSliderRange(CellSizeZ);
     //UI->setZSliders(0, CellSizeZ);
@@ -302,7 +195,8 @@ bool Map::Extract()
             {
                 if(DF.isValidBlock(x, y, z))
                 {
-                    Cell* NewCell = new Cell(x * CELLEDGESIZE, y * CELLEDGESIZE, z);
+                    Cell* NewCell = new Cell();
+                    NewCell->setPosition(x * CELLEDGESIZE, y * CELLEDGESIZE, z);
                     LoadCellData(DF, layerassign, NewCell, constructionAssigner, plantAssigner, buildingAssigner, x, y, z);
                     ColumnMatrix[x][y]->PushCell(NewCell, z);
 			    }
@@ -336,10 +230,11 @@ bool Map::Extract()
             for (Uint32 SizeY = 0; SizeY < getCellSizeY(); SizeY++)
             {
                 Cell* LoopCell = getCell(SizeX, SizeY, Zlevel);
-                if(LoopCell != NULL && LoopCell->isActive() && LoopCell->getNeedsRedraw())
+                if(LoopCell != NULL && /*LoopCell->isActive() &&*/ LoopCell->getNeedsRedraw())
                 {
                     // Rebuild the new Drawlist
-                    LoopCell->UpdateLists();
+                    LoopCell->BuildFaceData();
+                    LoopCell->UpdateRenderLists();
                     LoopCell->setNeedsRedraw(false);
                 }
             }
@@ -363,6 +258,159 @@ void Map::Save(string filename)
 {
     //DFExtractor->writeMap(filename);
     return;
+}
+
+Face* Map::getFace(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType)
+{
+    return NULL;
+}
+
+bool Map::hasFace(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType)
+{
+    return false;
+}
+
+bool Map::removeFace(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType)
+{
+    return true;
+}
+
+Face* Map::addFace(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType)
+{
+    return NULL;
+}
+
+bool Map::isCubeSloped(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
+{
+    Cell* TargetCell = getCubeOwner(MapX, MapY, MapZ);
+
+    if(TargetCell != NULL)
+    {
+        return TargetCell->isCubeSloped(MapX % CELLEDGESIZE, MapY % CELLEDGESIZE);
+    }
+    return false;
+}
+
+void Map::setCubeShape(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Sint16 TileShape)
+{
+
+}
+
+inline Sint16 Map::getCubeShape(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
+{
+    return -1;
+}
+
+void Map::setCubeMaterial(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Sint16 MaterialID)
+{
+
+}
+
+inline Sint16 Map::getCubeMaterial(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
+{
+    return -1;
+}
+
+void Map::setCubeSurfaceType(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Sint16 SurfaceID)
+{
+}
+
+inline Sint16 Map::getCubeSurfaceType(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
+{
+    return -1;
+}
+
+void Map::setFaceMaterial(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType, Sint16 MaterialID)
+{
+}
+
+inline Sint16 Map::getFaceMaterial(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType)
+{
+    return -1;
+}
+
+void Map::setFaceSurfaceType(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType, Sint16 SurfaceID)
+{
+}
+
+inline Sint16 Map::getFaceSurfaceType(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType)
+{
+    return -1;
+}
+
+bool Map::isCubeHidden(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
+{
+    Cell* TargetCell = getCubeOwner(MapX, MapY, MapZ);
+
+    if(TargetCell != NULL)
+    {
+        return TargetCell->isCubeHidden(MapX % CELLEDGESIZE, MapY % CELLEDGESIZE);
+    }
+    return false;
+}
+
+void Map::setCubeHidden(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue)
+{
+}
+
+bool Map::isCubeSubTerranean(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
+{
+    Cell* TargetCell = getCubeOwner(MapX, MapY, MapZ);
+
+    if(TargetCell != NULL)
+    {
+        return TargetCell->isCubeSubTerranean(MapX % CELLEDGESIZE, MapY % CELLEDGESIZE);
+    }
+    return false;
+}
+
+void Map::setCubeSubTerranean(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue)
+{
+}
+
+bool Map::isCubeSkyView(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
+{
+    Cell* TargetCell = getCubeOwner(MapX, MapY, MapZ);
+
+    if(TargetCell != NULL)
+    {
+        return TargetCell->isCubeSkyView(MapX % CELLEDGESIZE, MapY % CELLEDGESIZE);
+    }
+    return false;
+}
+
+void Map::setCubeSkyView(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue)
+{
+}
+
+bool Map::isCubeSunLit(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
+{
+    Cell* TargetCell = getCubeOwner(MapX, MapY, MapZ);
+
+    if(TargetCell != NULL)
+    {
+        return TargetCell->isCubeSunLit(MapX % CELLEDGESIZE, MapY % CELLEDGESIZE);
+    }
+    return false;
+}
+
+void Map::setCubeSunLit(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue)
+{
+}
+
+bool Map::isCubeSolid(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
+{
+    Cell* TargetCell = getCubeOwner(MapX, MapY, MapZ);
+
+    if(TargetCell != NULL)
+    {
+        return TargetCell->isCubeSolid(MapX % CELLEDGESIZE, MapY % CELLEDGESIZE);
+    }
+    return false;
+}
+
+void Map::setCubeSolid(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue)
+{
 }
 
 void Map::LoadCellData(DFHackAPI & DF,
@@ -446,47 +494,28 @@ void Map::LoadCellData(DFHackAPI & DF,
     {
         for(Uint32 CubeY = 0; CubeY < CELLEDGESIZE; CubeY++)
         {
-            Uint32 MapX = (CellX * CELLEDGESIZE) + CubeX;
-            Uint32 MapY = (CellY * CELLEDGESIZE) + CubeY;
-            Uint32 MapZ = CellZ;
-
             t_designation Designations = designations[CubeX][CubeY];
-            uint16_t TileType = tiletypes[CubeX][CubeY];
+            Uint16 TileType = tiletypes[CubeX][CubeY];
             t_occupancy Ocupancies = occupancies[CubeX][CubeY];
 
             Sint16 TileShapeID = TileShapePicker[TileType];
             Sint16 TileSurfaceID = TileSurfacePicker[TileType];
-            //Sint16 TileMaterialID = TileMaterialPicker[TileType];
+            Sint16 TileMaterialID = PickMaterial(TileType, basemat[CubeX][CubeY], veinmat[CubeX][CubeY], constmat[CubeX][CubeY], Ocupancies);
 
-            // Create Cubes and load data
-            Cube* TargetCube = new Cube();
-            TargetCell->setCube(TargetCube, CubeX, CubeY);
-            TargetCube->setPosition((float) MapX, (float) MapY, (float) MapZ);
+            TargetCell->setCubeShape(CubeX, CubeY, TileShapeID);
+            TargetCell->setCubeSurface(CubeX, CubeY, TileSurfaceID);
+            TargetCell->setCubeMaterial(CubeX, CubeY, TileMaterialID);
 
-            //if(TileMaterialID == -1)
-            //{
-                TargetCube->setMaterial(PickMaterial(TileType, basemat[CubeX][CubeY], veinmat[CubeX][CubeY], constmat[CubeX][CubeY], Ocupancies));
-            //}
-            //else
-            //{
-            //    TargetCube->setMaterial(TileMaterialID);
-            //}
-
-            TargetCube->setHidden(Designations.bits.hidden);
-            TargetCube->setSubTerranean(Designations.bits.subterranean);
-            TargetCube->setSkyView(Designations.bits.skyview);
-            TargetCube->setSunLit(Designations.bits.light);
-
-            //TargetCube->setMaterial(MaterialID);
-            TargetCube->setShape(TileShapeID);
-            TargetCube->setCubeSurface(TileSurfaceID);
+            TargetCell->setCubeHidden(CubeX, CubeY, Designations.bits.hidden);
+            TargetCell->setCubeSubTerranean(CubeX, CubeY, Designations.bits.hidden);
+            TargetCell->setCubeSkyView(CubeX, CubeY, Designations.bits.hidden);
+            TargetCell->setCubeSunLit(CubeX, CubeY, Designations.bits.hidden);
 
             if(Designations.bits.flow_size)
             {
-                TargetCube->setLiquid(Designations.bits.liquid_type, Designations.bits.flow_size);
+                TargetCell->setLiquid(CubeX, CubeY, Designations.bits.liquid_type, Designations.bits.flow_size);
             }
-
-            TargetCube->setVisible(true);
+            //TargetCube->setVisible(true);
         }
     }
 }
@@ -577,6 +606,8 @@ Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmateri
     static Uint16 LayerStone = DATA->getLabelIndex("MATERIALCLASS_LAYER_STONE");
     static Uint16 Soil = DATA->getLabelIndex("MATERIALCLASS_SOIL");
     static Uint16 VeinStone = DATA->getLabelIndex("MATERIALCLASS_VEIN_STONE");
+
+    //return Unknown;
 
     Sint16 TileMaterial = TileMaterialPicker[TileType];
     if (TileMaterial != -1 && TileMaterial < DATA->getNumMaterials())
@@ -673,30 +704,6 @@ Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmateri
     }
 
     return Unknown;
-}
-
-void Map::BuildVertexArray()
-{
-    float XSize = CELLEDGESIZE;
-    float YSize = CELLEDGESIZE;
-    float ZSize = 1.0;
-
-    Uint16 Counter = 0;
-    Uint16 ArraySize = ((Uint16)XSize + 1) * ((Uint16)YSize + 1) * ((Uint16)ZSize + 1) * 3;
-    VertexArray = new float[ArraySize];
-
-    for(Uint16 x = 0; x <= XSize; x++)
-    {
-        for(Uint16 y = 0; y <= YSize; y++)
-        {
-            for(Uint16 z = 0; z <= ZSize; z++)
-            {
-                VertexArray[Counter++] = x - (XSize / 2);
-                VertexArray[Counter++] = y - (YSize / 2);
-                VertexArray[Counter++] = z - (ZSize / 2);
-            }
-        }
-    }
 }
 
 Vector3 Map::getMapCenter()

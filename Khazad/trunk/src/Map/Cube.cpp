@@ -8,200 +8,8 @@
 #include <DataManager.h>
 #include <ModelManager.h>
 
-Cube::Cube()
-{
-    //setType(CUBE_ACTOR);
-
-    Visible = false;
-    Hidden = true;
-    Initalized = false;
-    data.whole = 0;
-
-    CubeShapeType = -1;
-    CubeMaterialType = -1;
-    SlopeSurfaceType = -1;
-
-    for(Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
-    {
-        FacetSurfaceTypes[FacetType] = -1;
-    }
-    FacetMaterialTypes[0] = -1;
-    FacetMaterialTypes[1] = -1;
-    FacetMaterialTypes[2] = -1;
-
-    setPosition(0.0, 0.0, 0.0);
-    MAP->ChangeCubeCount(1);
-}
-
-void Cube::setOwner(Cell* NewOwner, Uint8 X, Uint8 Y)
-{
-    Owner = NewOwner;
-    CellX = X % CELLEDGESIZE;
-    CellY = Y % CELLEDGESIZE;
-
-    Vector3 OwnerPosition = Owner->getPosition();
-
-    float RealX = OwnerPosition.x - (float)(CELLEDGESIZE / 2) + (float)X + (float)HALFCUBE;
-    float RealY = OwnerPosition.y - (float)(CELLEDGESIZE / 2) + (float)Y + (float)HALFCUBE;
-
-	setPosition(RealX, RealY, OwnerPosition.z);
-}
-
-Cube::~Cube()
-{
-    MAP->ChangeCubeCount(-1);
-
-    if(Initalized)
-    {
-        MAP->ChangeInitedCubeCount(-1);
-    }
-}
 
 /*
-bool Cube::DrawLiquid(float xTranslate, float yTranslate)
-{
-    Uint16 texture;
-    Uint16 Liquid= data.liquid;
-    Uint16 LiquidType= data.liquidtype;
-    if(Liquid > 0)
-    {
-        // bind the right texture
-        if(LiquidType == 1) // magma
-        {
-            glColor4f(1, 1, 1, 0.3);
-            texture = DATA->getLabelIndex("MATERIAL_LAVA");
-        }
-        else
-        {
-            glColor4f(0.5, 0.5, 0.5, 0.7);
-            texture = DATA->getLabelIndex("MATERIAL_WATER");
-        }
-        TEXTURE->BindTexture(texture);
-        float xx= xTranslate - 0.5;
-        float yy = yTranslate - 0.5;
-        float z = 0.141 * Liquid - 0.5;
-        float zt = 0.141 * Liquid;
-        // draw quad in the appropriate height
-        {
-            glNormal3f(0.0,0.0,1.0);
-            glTexCoord2f(0,0);
-            glVertex3f(xx     ,yy    ,z);
-            glTexCoord2f(0,1);
-            glVertex3f(xx     ,yy + 1,z);
-            glTexCoord2f(1,1);
-            glVertex3f(xx + 1 ,yy + 1,z);
-
-            glTexCoord2f(1,1);
-            glVertex3f(xx + 1 ,yy + 1 ,z);
-            glTexCoord2f(1,0);
-            glVertex3f(xx + 1 ,yy     ,z);
-            glTexCoord2f(0,0);
-            glVertex3f(xx     ,yy     ,z);
-        }
-        Cube * north = getAdjacentCube(FACET_NORTH);
-        Cube * east = getAdjacentCube(FACET_EAST);
-        Cube * west = getAdjacentCube(FACET_WEST);
-        Cube * south = getAdjacentCube(FACET_SOUTH);
-        float nl = 0;
-        if(north)
-        {
-            nl = north->getLiquid();
-        }
-        if (nl < Liquid)
-        {
-            float z2 =  (0.141 * nl) - 0.5;
-            float zt2 =  (0.141 * nl);
-            // draw a quad to patch hole north
-            glTexCoord2f(0,zt2);
-            glVertex3f(xx +1     ,yy    ,z2);
-            glTexCoord2f(1,zt2);
-            glVertex3f(xx     ,yy     ,z2);
-            glTexCoord2f(1,zt);
-            glVertex3f(xx    ,yy    ,z);
-
-            glTexCoord2f(0,zt2);
-            glVertex3f(xx +1     ,yy    ,z2);
-            glTexCoord2f(1,zt);
-            glVertex3f(xx    ,yy    ,z);
-            glTexCoord2f(0,zt);
-            glVertex3f(xx +1 ,yy    ,z);
-
-        }
-
-        nl = 0;
-        if(east)
-        {
-            nl = east->getLiquid();
-        }
-        if (nl < Liquid)
-        {
-            float z2 =  0.141 * nl - 0.5;
-            float zt2 =  (0.141 * nl);
-            // draw a quad to patch hole east
-            glTexCoord2f(0,zt2);
-            glVertex3f(xx +1     ,yy +1    ,z2);
-            glTexCoord2f(1,zt2);
-            glVertex3f(xx +1     ,yy    ,z2);
-            glTexCoord2f(1,zt);
-            glVertex3f(xx +1     ,yy     ,z);
-
-            glTexCoord2f(0,zt2);
-            glVertex3f(xx +1     ,yy +1    ,z2);
-            glTexCoord2f(1,zt);
-            glVertex3f(xx +1     ,yy     ,z);
-            glTexCoord2f(0,zt);
-            glVertex3f(xx +1     ,yy +1    ,z);
-        }
-        if(south)
-        {
-            nl = south->getLiquid();
-        }
-        if (nl < Liquid)
-        {
-            float z2 =  0.141 * nl - 0.5;
-            float zt2 =  (0.141 * nl);
-            // draw a quad to patch hole south
-            glTexCoord2f(0,zt2);
-            glVertex3f(xx      ,yy +1    ,z2);
-            glTexCoord2f(1,zt2);
-            glVertex3f(xx +1     ,yy +1    ,z2);
-            glTexCoord2f(1,zt);
-            glVertex3f(xx +1   ,yy +1     ,z);
-
-            glTexCoord2f(0,zt2);
-            glVertex3f(xx      ,yy +1    ,z2);
-            glTexCoord2f(1,zt);
-            glVertex3f(xx +1     ,yy +1     ,z);
-            glTexCoord2f(0,zt);
-            glVertex3f(xx      ,yy +1    ,z);
-        }
-        if(west)
-        {
-            nl = west->getLiquid();
-        }
-        if (nl < Liquid)
-        {
-            float z2 =  0.141 * nl - 0.5;
-            float zt2 =  (0.141 * nl);
-            // draw a quad to patch hole west
-            glTexCoord2f(0,zt2);
-            glVertex3f(xx      ,yy    ,z2);
-            glTexCoord2f(1,zt2);
-            glVertex3f(xx      ,yy +1    ,z2);
-            glTexCoord2f(1,zt);
-            glVertex3f(xx   ,yy +1     ,z);
-
-            glTexCoord2f(0,zt2);
-            glVertex3f(xx      ,yy     ,z2);
-            glTexCoord2f(1,zt);
-            glVertex3f(xx      ,yy +1     ,z);
-            glTexCoord2f(0,zt);
-            glVertex3f(xx      ,yy     ,z);
-        }
-    }
-}
-*/
-
 void Cube::DigChannel()
 {
     setHidden(false);
@@ -292,153 +100,7 @@ void Cube::Dig()
     }
 }
 
-void Cube::setLiquid(Uint8 liquidtype, Uint8 NewValue)
-{
-    data.liquidtype = liquidtype;
-    data.liquid = NewValue;
 
-    if(NewValue > 0)
-    {
-        Owner->setLiquidActive(true);
-    }
-}
-
-void Cube::setMaterial(Sint16 MaterialType)
-{
-    CubeMaterialType = MaterialType;
-}
-
-Cube* Cube::getAdjacentCube(Facet FacetType)
-{
-    Sint32 x = Position.x;
-    Sint32 y = Position.y;
-    Sint32 z = Position.z;
-
-    switch(FacetType)
-    {
-        case FACET_TOP:
-            z += 1;
-            break;
-        case FACET_BOTTOM:
-            z -= 1;
-            break;
-        case FACET_NORTH:
-            y -= 1;
-            break;
-        case FACET_EAST:
-            x += 1;
-            break;
-        case FACET_SOUTH:
-            y += 1;
-            break;
-        case FACET_WEST:
-            x -= 1;
-            break;
-    }
-
-    return MAP->getCube(x, y, z);
-}
-
-Cube* Cube::getNeighborCube(Direction Type)
-{
-    Sint32 x = Position.x;
-    Sint32 y = Position.y;
-    Sint32 z = Position.z;
-
-    switch(Type)
-    {
-        case DIRECTION_NORTH:
-            y -= 1;
-            break;
-        case DIRECTION_EAST:
-            x += 1;
-            break;
-        case DIRECTION_SOUTH:
-            y += 1;
-            break;
-        case DIRECTION_WEST:
-            x -= 1;
-            break;
-
-        case DIRECTION_NORTHEAST:
-            y -= 1;
-            x += 1;
-            break;
-        case DIRECTION_SOUTHEAST:
-            y += 1;
-            x += 1;
-            break;
-        case DIRECTION_SOUTHWEST:
-            y += 1;
-            x -= 1;
-            break;
-        case DIRECTION_NORTHWEST:
-            y -= 1;
-            x -= 1;
-            break;
-
-        case DIRECTION_UP:
-            z += 1;
-            break;
-        case DIRECTION_DOWN:
-            z -= 1;
-            break;
-    }
-
-    return MAP->getCube(x, y, z);
-}
-
-Vector3 Cube::getAdjacentCubePosition(Facet FacetType)
-{
-    Sint32 x = Position.x;
-    Sint32 y = Position.y;
-    Sint32 z = Position.z;
-
-    switch(FacetType)
-    {
-        case FACET_TOP:
-            z += 1;
-            break;
-        case FACET_BOTTOM:
-            z -= 1;
-            break;
-        case FACET_NORTH:
-            y -= 1;
-            break;
-        case FACET_EAST:
-            x += 1;
-            break;
-        case FACET_SOUTH:
-            y += 1;
-            break;
-        case FACET_WEST:
-            x -= 1;
-            break;
-    }
-    return Vector3(x, y, z);
-}
-
-Cell* Cube::getAdjacentCell(Facet FacetType)
-{
-    Vector3 Postion = getAdjacentCubePosition(FacetType);
-
-    return MAP->getCubeOwner(Postion.x, Postion.y, Postion.z);
-}
-
-bool Cube::Update()
-{
-	return true;
-}
-
-void Cube::setFacetSurfaceType(Facet FacetType, Sint16 SurfaceType)
-{
-    FacetSurfaceTypes[FacetType] = SurfaceType;
-}
-
-Sint16 Cube::getFacetSurfaceType(Facet FacetType)
-{
-    return FacetSurfaceTypes[FacetType];
-}
 
 void Cube::setFacetMaterialType(Facet FacetType, Sint16 MaterialType)
 {
@@ -500,7 +162,7 @@ void Cube::setShape(Sint16 TileShape)
     if(CubeShapeType != TileShape)
     {
         CubeShapeType = TileShape;
-        data.solid = !DATA->getTileShapeData(CubeShapeType)->isOpen();
+        setSolid(!DATA->getTileShapeData(CubeShapeType)->isOpen());
         Owner->setNeedsRedraw(true);
     }
 
@@ -590,27 +252,6 @@ void Cube::RefreshFacetData()
     }
 }
 
-bool Cube::Init()
-{
-    RefreshFacetData();
-    Initalized = true;
-}
-
-bool Cube::hasFace(Facet FacetType)
-{
-    return getFacetMaterialType(FacetType) != -1;
-}
-
-bool Cube::Draw(float xTranslate, float yTranslate)
-{
-    if(isSlope())
-    {
-        DrawFaces(xTranslate, yTranslate);
-        return DrawSlope(xTranslate, yTranslate);
-    }
-
-    return DrawFaces(xTranslate, yTranslate);
-}
 
 //TODO: pre-generating all possible configs and using them as templates would be faster. deferred
 bool Cube::DrawFaces(float xTranslate, float yTranslate)
@@ -722,14 +363,6 @@ bool Cube::DrawFaces(float xTranslate, float yTranslate)
     }
 }
 
-bool Cube::isSlope()
-{
-    static Sint16 RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
-    static Sint16 StairID = DATA->getLabelIndex("TILESHAPE_STAIR");
-
-    return (CubeShapeType == RampID || CubeShapeType == StairID);
-}
-
 bool Cube::DrawSlope(float xTranslate, float yTranslate)
 {
     if(!Visible)
@@ -780,3 +413,5 @@ bool Cube::DrawSlope(float xTranslate, float yTranslate)
     MixVertexVectorsOffset(slope, vec, xTranslate, yTranslate);
     return true;
 }
+
+*/

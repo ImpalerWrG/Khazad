@@ -17,6 +17,7 @@ union t_occupancy;
 struct t_construction;
 struct t_tree_desc;
 struct t_building;
+struct Face;
 class DFHackAPI;
 //class Extractor;
 //class DfMap;
@@ -35,15 +36,53 @@ public:
 
 	Cell* getCell(Sint32 X, Sint32 Y, Sint32 Z);
 	Cell* getCubeOwner(Sint32 X, Sint32 Y, Sint32 Z);
-	Cube* getCube(Sint32 X, Sint32 Y, Sint32 Z);
-	Cube* GenerateCube(Sint32 X, Sint32 Y, Sint32 Z);
 
-    bool hasFace(Sint32 X, Sint32 Y, Sint32 Z, Facet FaceType);
+    bool isCubeSloped(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
+
+    void setCubeShape(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Sint16 TileShape);
+    inline Sint16 getCubeShape(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
+
+    void setCubeMaterial(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Sint16 MaterialID);
+    inline Sint16 getCubeMaterial(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
+
+    void setCubeSurfaceType(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Sint16 SurfaceID);
+    inline Sint16 getCubeSurfaceType(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
+
+
+
+    Face* getFace(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType);
+    bool hasFace(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType);
+
+    bool removeFace(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType);
+    Face* addFace(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType);
+
+    void setFaceMaterial(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType, Sint16 MaterialID);
+    inline Sint16 getFaceMaterial(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType);
+
+    void setFaceSurfaceType(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType, Sint16 SurfaceID);
+    inline Sint16 getFaceSurfaceType(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType);
+
+
+
+    bool isCubeHidden(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
+    void setCubeHidden(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue);
+
+    bool isCubeSubTerranean(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
+    void setCubeSubTerranean(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue);
+
+    bool isCubeSkyView(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
+    void setCubeSkyView(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue);
+
+    bool isCubeSunLit(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
+    void setCubeSunLit(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue);
+
+    bool isCubeSolid(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
+    void setCubeSolid(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue);
+
+
 
     void InitilizeTilePicker(DFHackAPI & DF);
     Sint16 PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial,t_matglossPair constructionmaterial, t_occupancy occupancy);
-
-    void BuildVertexArray();
 
     bool Generate(Uint32 Seed);
 
@@ -75,27 +114,13 @@ public:
     void ChangeInitedCellCount(Sint8 Change)      { InitedCellCount += Change; }
     Uint32 getInitedCellCount()                   { return InitedCellCount; }
 
-    void ChangeCubeCount(Sint8 Change)      { CubeCount += Change; }
-    Uint32 getCubeCount()                   { return CubeCount; }
-
-    void ChangeInitedCubeCount(Sint8 Change)      { InitedCubeCount += Change; }
-    Uint32 getInitedCubeCount()                   { return InitedCubeCount; }
-
     void ChangeFaceCount(Sint8 Change)      { FaceCount += Change; }
     Uint32 getFaceCount()                   { return FaceCount; }
 
-    void ChangeInitedFaceCount(Sint8 Change)      { InitedFaceCount += Change; }
-    Uint32 getInitedFaceCount()                   { return InitedFaceCount; }
-
-    void ChangeSlopeCount(Sint8 Change)     { SlopeCount += Change; }
-    Uint32 getSlopeCount()                  { return SlopeCount; }
-
-    void ChangeInitedSlopeCount(Sint8 Change)     { InitedSlopeCount += Change; }
-    Uint32 getInitedSlopeCount()                  { return InitedSlopeCount; }
 
     Vector3 getMapCenter();
 
-    TreeManager * TreeMan;
+    TreeManager* TreeMan;
 
 protected:
 
@@ -121,16 +146,9 @@ protected:
     vector <int16_t> MetalMatGloss;
 
     Uint32 CellCount;
-    Uint32 CubeCount;
     Uint32 FaceCount;
-    Uint32 SlopeCount;
 
     Uint32 InitedCellCount;
-    Uint32 InitedCubeCount;
-    Uint32 InitedFaceCount;
-    Uint32 InitedSlopeCount;
-
-    float* VertexArray;
 };
 
 #define MAP (Map::GetInstance())

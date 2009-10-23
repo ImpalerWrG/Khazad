@@ -192,8 +192,8 @@ bool Camera::DetermineCursorIntersection()
         MouseIntersection.x = (int) (MouseIntersection.x + 0.5);
         MouseIntersection.y = (int) (MouseIntersection.y + 0.5);
         MouseIntersection.z = i;
-        Cube* TopCube = MAP->getCube((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i);
-        if(TopCube != NULL && RENDERER->isCubeDrawn(TopCube))
+
+        if(RENDERER->isCubeDrawn((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i))
         {
             if(MAP->hasFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_TOP))
             {
@@ -206,8 +206,7 @@ bool Camera::DetermineCursorIntersection()
         MouseIntersection.y = (int) (MouseIntersection.y + 0.5);
         MouseIntersection.z = i;
 
-        Cube* BottomCube = MAP->getCube((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i);
-        if(BottomCube != NULL && RENDERER->isCubeDrawn(BottomCube))
+        if(RENDERER->isCubeDrawn((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i))
         {
             if(MAP->hasFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_BOTTOM))
             {
@@ -216,8 +215,7 @@ bool Camera::DetermineCursorIntersection()
         }
 
         // Find Slopes while not picking Cubes that lack facets or arnt being drawn
-        Cube* TargetCube = MAP->getCube((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i);
-        if(TargetCube != NULL && RENDERER->isCubeDrawn(TargetCube) && (TargetCube->isSolid() || TargetCube->isSlope()))
+        if(RENDERER->isCubeDrawn((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i)) //&& (TargetCube->isSolid() || TargetCube->isSlope()))
         {
             return true;
         }

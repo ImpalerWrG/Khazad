@@ -543,7 +543,7 @@ void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTran
                 if(LoopCell->getNeedsRedraw())
                 {
                     // Rebuild the VBOs
-                    LoopCell->UpdateLists();
+                    LoopCell->UpdateRenderLists();
                     LoopCell->setNeedsRedraw(false);
                 }
 
@@ -589,15 +589,15 @@ bool Renderer::Render()
         Vector3 Cursor = MainCamera->getCursor();
         Cursor.z = MainCamera->ZlevelSeperationAdjustment(Cursor.z);
 
-        Cube* CursorCube = MAP->getCube(Cursor.x, Cursor.y, Cursor.z);
-        if(CursorCube != NULL && (CursorCube->isSolid() || CursorCube->getLiquid()))
-        {
+        //Cube* CursorCube = MAP->getCube(Cursor.x, Cursor.y, Cursor.z);
+        //if(CursorCube != NULL && CursorCube->isSolid())
+        //{
             DrawCage(Cursor, 1, 1, 1, true, 1, 1, 1);
-        }
-        else
-        {
-            DrawCage(Cursor, 1, 1, 1, false, 1, 1, 1);
-        }
+        //}
+        //else
+        //{
+            //DrawCage(Cursor, 1, 1, 1, false, 1, 1, 1);
+        //}
     }
 
     TEXTURE->ResetTextureBinding();
@@ -734,23 +734,25 @@ void Renderer::setDrawing3D()
     }
 }
 
-bool Renderer::isCubeDrawn(Cube* TestCube)
+bool Renderer::isCubeDrawn(Sint16 X, Sint16 Y, Sint16 Z)
 {
-    if (TestCube->isVisible())
+    Cell* TargetCell = MAP->getCubeOwner(X, Y, Z);
+
+    if (TargetCell != NULL)
     {
-        if(TestCube->isHidden() && !isHiddenDraw())
+        if(TargetCell->isCubeHidden(X % CELLEDGESIZE, Y % CELLEDGESIZE) && !isHiddenDraw())
         {
             return false;
         }
-        if(TestCube->isSubTerranean() && !isSubTerranianDraw())
+        if(TargetCell->isCubeSubTerranean(X % CELLEDGESIZE, Y % CELLEDGESIZE) && !isSubTerranianDraw())
         {
             return false;
         }
-        if(TestCube->isSkyView() && !isSkyViewDraw())
+        if(TargetCell->isCubeSkyView(X % CELLEDGESIZE, Y % CELLEDGESIZE) && !isSkyViewDraw())
         {
             return false;
         }
-        if(TestCube->isSunLit() && !isSunLitDraw())
+        if(TargetCell->isCubeSunLit(X % CELLEDGESIZE, Y % CELLEDGESIZE) && !isSunLitDraw())
         {
             return false;
         }
@@ -796,6 +798,7 @@ void Renderer::PrintDebugging()
         RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 
+        /*
         Cube* SelectedCube  = MAP->getCube(x,y,z);
         if(SelectedCube != NULL)
         {
@@ -807,6 +810,7 @@ void Renderer::PrintDebugging()
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
         }
+        */
 
 /*        Block* TargetBlock = df_map->getBlock(x / 16, y / 16, z);
         if(TargetBlock != NULL)

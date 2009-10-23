@@ -14,12 +14,12 @@ enum ActorType
 
 enum Facet
 {
-	FACET_TOP,
-	FACET_BOTTOM,
-	FACET_NORTH,
-	FACET_SOUTH,
-	FACET_EAST,
-	FACET_WEST,
+	FACET_WEST,    // -X axis
+	FACET_EAST,    // +X axis
+	FACET_NORTH,   // -Y axis
+	FACET_SOUTH,   // +Y axis
+	FACET_BOTTOM,  // -Z axis
+	FACET_TOP,     // +Z axis
 
 	NUM_FACETS,
 	FACETS_START = 0
@@ -30,16 +30,38 @@ inline Facet &operator-- (Facet &OldFacet)      { return OldFacet = Facet(OldFac
 
 inline Facet OppositeFacet(Facet FacetType)
 {
-    if(FacetType & 1)  // if an odd number, Bottom, South or West
-    {
-        return --FacetType;
-    }
-    else
-    {
-        return ++FacetType;
-    }
+    return  (Facet) ((int) FacetType ^ 1);  // Flips the last bit
 }
 
+inline void TranslateCordinates(Sint32* X, Sint32* Y, Sint32* Z, Facet TestFacet)
+{
+    //TOD some bit shift magic to speed this up and use less if statements
+
+    if(TestFacet == FACET_WEST)
+    {
+        *X -= 1;
+    }
+    if (TestFacet == FACET_EAST)
+    {
+        *X += 1;
+    }
+    if(TestFacet == FACET_NORTH)
+    {
+        *Y -= 1;
+    }
+    if (TestFacet == FACET_SOUTH)
+    {
+        *Y += 1;
+    }
+    if(TestFacet == FACET_BOTTOM)
+    {
+        *Z -= 1;
+    }
+    if (TestFacet == FACET_TOP)
+    {
+        *Z += 1;
+    }
+}
 /*
 enum Slopping
 {
@@ -85,6 +107,36 @@ enum Direction
 	NUM_DIRECTIONS,
     DIRECTIONS_START = 0
 };
+
+inline void TranslateCordinates(Sint32* X, Sint32* Y, Sint32* Z, Direction TestDirection)
+{
+    if(TestDirection == DIRECTION_NORTHWEST ||  TestDirection == DIRECTION_NORTH || TestDirection == DIRECTION_NORTHEAST)
+    {
+        *Y -= 1;
+    }
+    else if (TestDirection == DIRECTION_SOUTHEAST ||  TestDirection == DIRECTION_SOUTH || TestDirection == DIRECTION_SOUTHWEST)
+    {
+        *Y += 1;
+    }
+
+    if(TestDirection == DIRECTION_NORTHEAST ||  TestDirection == DIRECTION_EAST || TestDirection == DIRECTION_SOUTHEAST)
+    {
+        *X += 1;
+    }
+    else if (TestDirection == DIRECTION_SOUTHWEST ||  TestDirection == DIRECTION_WEST || TestDirection == DIRECTION_NORTHWEST)
+    {
+        *X -= 1;
+    }
+
+    if(TestDirection == DIRECTION_UP)
+    {
+        *Z += 1;
+    }
+    else if (TestDirection == DIRECTION_DOWN)
+    {
+        *Z -= 1;
+    }
+}
 
 inline Direction &operator++ (Direction &OldDirection)      { return OldDirection = Direction(OldDirection + 1); }
 inline Direction &operator-- (Direction &OldDirection)      { return OldDirection = Direction(OldDirection - 1); }

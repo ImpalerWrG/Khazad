@@ -3,50 +3,47 @@
 
 #include <stdafx.h>
 
-#include <Actor.h>
+#include <Cell.h>
 
 #define HALFCUBE 0.5
 
-/*class Face;
-class Slope;*/
-class Cell;
 
-class Cube: public Actor
+class Cube
 {
 
 public:
 
 	Cube();
 	~Cube();
-	bool Init();
+	//bool Init();
 
-    void setOwner(Cell* NewOwner, Uint8 X, Uint8 Y);
+    //void setOwner(Cell* NewOwner, Uint8 X, Uint8 Y);
 
-    bool hasFace(Facet FacetType);
+    //bool hasFace(Facet FacetType);
 
 
-    Vector3 getAdjacentCubePosition(Facet FacetType);
-    Cube* getAdjacentCube(Facet Type);
-    Cube* getNeighborCube(Direction Type);
+    //Vector3 getAdjacentCubePosition(Facet FacetType);
+    //Cube* getAdjacentCube(Facet Type);
+    //Cube* getNeighborCube(Direction Type);
 
-    Cell* getCellOwner()                    { return Owner; }
-    Cell* getAdjacentCell(Facet Type);
+    //Cell* getCellOwner()                    { return Owner; }
+    //Cell* getAdjacentCell(Facet Type);
 
-	bool Update();
+	//bool Update();
 
-    bool Draw(float xTranslate, float yTranslate);
-    bool DrawFaces(float xTranslate, float yTranslate);
-    bool DrawSlope(float xTranslate, float yTranslate);
+    //bool Draw(float xTranslate, float yTranslate);
+    //bool DrawFaces(float xTranslate, float yTranslate);
+    //bool DrawSlope(float xTranslate, float yTranslate);
     //bool DrawLiquid(float xTranslate, float yTranslate);
 
-    void setShape(Sint16 TileShape);
-    Sint16 getShape()                       { return CubeShapeType; }
+    //void setShape(Sint16 TileShape);
+    //Sint16 getShape()                       { return CubeShapeType; }
 
-    void setMaterial(Sint16 MaterialID);
-    Sint16 getMaterial()                    { return CubeMaterialType; }
+    //void setMaterial(Sint16 MaterialID);
+    //Sint16 getMaterial()                    { return CubeMaterialType; }
 
-    void setCubeSurface(Sint16 SurfaceID)   { CubeSurfaceType = SurfaceID; }
-    Sint16 getCubeSurfaceType()             { return CubeSurfaceType; }
+    //void setCubeSurface(Sint16 SurfaceID)   { CubeSurfaceType = SurfaceID; }
+    //Sint16 getCubeSurfaceType()             { return CubeSurfaceType; }
 
     void setFacetSurfaceType(Facet FacetType, Sint16 SurfaceType);
     Sint16 getFacetSurfaceType(Facet FacetType);
@@ -56,19 +53,9 @@ public:
 
     void RefreshFacetData();
 
-    bool isSubTerranean()                   { return data.SubTerranian; }
-    void setSubTerranean(bool NewValue)     { data.SubTerranian = NewValue; }
+    //bool isSolid()                     { Owner->isCubeSolid(CellX, CellY); }
+    //bool setSolid(bool NewValue)       { Owner->setCubeSolid(CellX, CellY, NewValue); }
 
-    bool isSkyView()                        { return data.SkyView; }
-    void setSkyView(bool NewValue)          { data.SkyView = NewValue; }
-
-    bool isSunLit()                         { return data.SunLit; }
-    void setSunLit(bool NewValue)           { data.SunLit = NewValue; }
-
-    Uint8 getLiquid()                       { return data.liquid; }
-    void setLiquid(Uint8 liquidtype, Uint8 NewValue);
-
-    bool isSolid()                          { return data.solid; }
     bool isSlope();
 
     void Dig();
@@ -77,27 +64,12 @@ public:
 
 protected:
 
-    union
-    {
-       struct
-       {
-            bool SubTerranian : 1;
-            bool SkyView : 1;
-            bool SunLit : 1;
-            bool snow : 1;
-            unsigned int liquid : 3;
-            bool liquidtype :1;
-            bool solid:1;
-        };
-        uint16_t whole;
-    }data;
+    //Cell* Owner;
 
-    Cell* Owner;
-
-    Sint16 CubeMaterialType;
-    Sint16 CubeShapeType;
-    Sint16 CubeSurfaceType;
-    Sint16 SlopeSurfaceType;
+    //Sint16 CubeMaterialType;
+    //Sint16 CubeShapeType;
+    //Sint16 CubeSurfaceType;
+    //Sint16 SlopeSurfaceType;
 
     Sint16 FacetSurfaceTypes[NUM_FACETS];
     Sint16 FacetMaterialTypes[3];

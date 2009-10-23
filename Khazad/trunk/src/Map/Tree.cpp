@@ -69,8 +69,8 @@ bool Tree::Draw()
     ya = y %16 - 0.5;
     int32_t texture;
     // some fake stuff
-    Cube * testCube = MAP->getCube(x,y,z);
-    if(!testCube || !RENDERER->isCubeDrawn(testCube))
+
+    if(!RENDERER->isCubeDrawn(x, y ,z))
     {
         return false;
     }

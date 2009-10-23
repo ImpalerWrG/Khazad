@@ -242,7 +242,7 @@ public:
     void setDrawing3D();
     void setDrawingFlat();
 
-    bool isCubeDrawn(Cube* TestCube);
+    bool isCubeDrawn(Sint16 X, Sint16 Y, Sint16 Z);
 
     SDL_Surface* MainScreen()               { return ScreenSurface; }
 
