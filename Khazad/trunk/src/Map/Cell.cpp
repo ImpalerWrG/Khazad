@@ -652,7 +652,7 @@ bool Cell::removeFace(CubeCoordinates Coordinates, Facet FacetType)
         }
         else if (FacetType == FACET_SOUTH)
         {
-            if (Coordinates.Y == CELLEDGESIZE && FACET_SOUTH)  // Jump to adjacent Cells for edge Faces
+            if (Coordinates.Y == CELLEDGESIZE)  // Jump to adjacent Cells for edge Faces
             {
                 MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
                 TargetCoordinates.Y += 1;
@@ -664,7 +664,7 @@ bool Cell::removeFace(CubeCoordinates Coordinates, Facet FacetType)
                 Key <<= 8;
                 Key += Coordinates.Y + 1;  // Jump one position to the South on the Y axis
 
-                if (NorthSouthFaces.find(Key) == NorthSouthFaces.end())
+                if (NorthSouthFaces.find(Key) != NorthSouthFaces.end())
                 {
                     delete NorthSouthFaces.find(Key)->second;
                     NorthSouthFaces.erase(Key);
@@ -688,7 +688,7 @@ bool Cell::removeFace(CubeCoordinates Coordinates, Facet FacetType)
             Key <<= 8;
             Key += Coordinates.X;
 
-            if (EastWestFaces.find(Key) == EastWestFaces.end())
+            if (EastWestFaces.find(Key) != EastWestFaces.end())
             {
                 delete EastWestFaces.find(Key)->second;
                 EastWestFaces.erase(Key);
@@ -702,7 +702,7 @@ bool Cell::removeFace(CubeCoordinates Coordinates, Facet FacetType)
             Key <<= 8;
             Key += Coordinates.Y;
 
-            if (NorthSouthFaces.find(Key) == NorthSouthFaces.end())
+            if (NorthSouthFaces.find(Key) != NorthSouthFaces.end())
             {
                 delete NorthSouthFaces.find(Key)->second;
                 NorthSouthFaces.erase(Key);
@@ -716,7 +716,7 @@ bool Cell::removeFace(CubeCoordinates Coordinates, Facet FacetType)
             Key <<= 8;
             Key += Coordinates.Y;
 
-            if (BottomFaces.find(Key) == BottomFaces.end())
+            if (BottomFaces.find(Key) != BottomFaces.end())
             {
                 delete BottomFaces.find(Key)->second;
                 BottomFaces.erase(Key);

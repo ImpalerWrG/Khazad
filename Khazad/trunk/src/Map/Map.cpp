@@ -654,43 +654,28 @@ void Map::DigChannel(MapCoordinates Coordinates)
 
 void Map::DigSlope(MapCoordinates Coordinates)
 {
-    static Sint16 FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
     static Sint16 RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
-    static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
 
-    if (isCubeSolid(Coordinates))
+    Dig(Coordinates);
+
+    // reveal tiles around
+    for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
     {
-        setCubeHidden(Coordinates, false);
-        setCubeShape(Coordinates, FloorID);
+        MapCoordinates ModifiedCoordinates = Coordinates;
+        TranslateCoordinates(ModifiedCoordinates.X, ModifiedCoordinates.Y, ModifiedCoordinates.Z, DirectionType);
 
-        // reveal tiles around
-        for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+        if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
         {
-            MapCoordinates ModifiedCoordinates = Coordinates;
-            TranslateCoordinates(ModifiedCoordinates.X, ModifiedCoordinates.Y, ModifiedCoordinates.Z, DirectionType);
-
-            if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
-            {
-                setCubeHidden(ModifiedCoordinates, false);
-            }
-            if(DirectionType == DIRECTION_UP)
-            {
-                DigChannel(ModifiedCoordinates);
-            }
-            if(DirectionType == DIRECTION_DOWN)
-            {
-                DigSlope(ModifiedCoordinates);
-            }
+            setCubeHidden(ModifiedCoordinates, false);
+        }
+        if(DirectionType == DIRECTION_UP)
+        {
+            DigChannel(ModifiedCoordinates);
         }
     }
-    //else if (getCubeShape(Coordinates) != EmptyID)
-    //{
-        //Cube* NeighborCube = getNeighborCube(DIRECTION_DOWN);
-        //if(NeighborCube)
-        //{
-        //    NeighborCube->
-        //}
-    //}
+
+    setCubeHidden(Coordinates, false);
+    setCubeShape(Coordinates, RampID);
 }
 
 void Map::Dig(MapCoordinates Coordinates)
@@ -713,6 +698,32 @@ void Map::Dig(MapCoordinates Coordinates)
                 setCubeHidden(ModifiedCoordinates, false);
             }
         }
+
+        for(Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
+        {
+            MapCoordinates ModifiedCoordinates = Coordinates;
+            TranslateCoordinates(ModifiedCoordinates.X, ModifiedCoordinates.Y, ModifiedCoordinates.Z, FacetType);
+
+            if (FacetType == FACET_BOTTOM)
+            {
+                MAP->addFace(Coordinates, FacetType);
+                MAP->setFaceMaterial(Coordinates, FacetType, MAP->getCubeMaterial(Coordinates));
+            }
+            else
+            {
+                if (MAP->isCubeSolid(ModifiedCoordinates))
+                {
+                    MAP->addFace(Coordinates, FacetType);
+                    MAP->setFaceMaterial(Coordinates, FacetType, MAP->getCubeMaterial(ModifiedCoordinates));
+                }
+                else
+                {
+                    MAP->removeFace(Coordinates, FacetType);
+                }
+            }
+        }
+
+        MAP->setCubeMaterial(Coordinates, -1);
     }
 }
 

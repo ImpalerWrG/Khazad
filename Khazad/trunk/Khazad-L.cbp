@@ -274,8 +274,6 @@
 		<Unit filename="src/Map/Cell.h" />
 		<Unit filename="src/Map/Column.cpp" />
 		<Unit filename="src/Map/Column.h" />
-		<Unit filename="src/Map/Cube.cpp" />
-		<Unit filename="src/Map/Cube.h" />
 		<Unit filename="src/Map/Map.cpp" />
 		<Unit filename="src/Map/Map.h" />
 		<Unit filename="src/Map/Tree.cpp" />
