@@ -185,22 +185,8 @@ bool Camera::DetermineCursorIntersection()
     {
         MouseIntersection = DetermineMouseIntersection(ZlevelSeperationAdjustment(i) + 0.5);
 
-        TestCoordinates.X = (int) MouseIntersection.x;
-        TestCoordinates.Y = (int) MouseIntersection.y;
-        TestCoordinates.Z = i;
-
-        // Find Slopes while not picking Cubes that lack facets or arnt being drawn
-        if(RENDERER->isCubeDrawn(TestCoordinates) && MAP->isCubeSloped(TestCoordinates)) //&& (TargetCube->isSolid() || TargetCube->isSlope()))
-        {
-            MouseIntersection.x = TestCoordinates.X + 0.5;
-            MouseIntersection.y = TestCoordinates.Y + 0.5;
-            MouseIntersection.z = i;
-
-            return true;
-        }
-
-        TestCoordinates.X = (int) (MouseIntersection.x + 0.0);
-        TestCoordinates.Y = (int) (MouseIntersection.y + 0.0);
+        TestCoordinates.X = (int) (MouseIntersection.x + 0.5);
+        TestCoordinates.Y = (int) (MouseIntersection.y + 0.5);
         TestCoordinates.Z = i;
 
         if(RENDERER->isCubeDrawn(TestCoordinates) && MAP->hasFace(TestCoordinates, FACET_TOP))
@@ -217,7 +203,17 @@ bool Camera::DetermineCursorIntersection()
         TestCoordinates.X = (int) (MouseIntersection.x + 0.5);
         TestCoordinates.Y = (int) (MouseIntersection.y + 0.5);
         TestCoordinates.Z = i;
-
+        
+        // Find Slopes while not picking Cubes that lack facets or arnt being drawn
+        if(RENDERER->isCubeDrawn(TestCoordinates) && MAP->isCubeSloped(TestCoordinates)) //&& (TargetCube->isSolid() || TargetCube->isSlope()))
+        {
+            MouseIntersection.x = TestCoordinates.X + 0.5;
+            MouseIntersection.y = TestCoordinates.Y + 0.5;
+            MouseIntersection.z = i;
+            
+            return true;
+        }
+        
         if(RENDERER->isCubeDrawn(TestCoordinates) && MAP->hasFace(TestCoordinates, FACET_BOTTOM))
         {
             MouseIntersection.x = TestCoordinates.X + 0.5;
@@ -682,7 +678,9 @@ void Camera::MoveViewVertical(float Z)
     EyePosition.z += Z * LevelSeperation;
     LookPosition.z += Z * LevelSeperation;
 
-    //Cursor.Z += Z;
+    MapCoordinates Cursor = RENDERER->getCursor();
+    Cursor.Z += Z;
+    RENDERER->setCursor(Cursor);
     CursorLevel += Z;
 
     RENDERER->ConfineCursor();

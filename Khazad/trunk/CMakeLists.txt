@@ -136,7 +136,6 @@ src/Gui/CustomWidgets/KhazButton.cpp
 src/Map/Building.cpp
 src/Map/Cell.cpp
 src/Map/Column.cpp
-src/Map/Cube.cpp
 src/Map/Map.cpp
 src/Map/Tree.cpp
 
