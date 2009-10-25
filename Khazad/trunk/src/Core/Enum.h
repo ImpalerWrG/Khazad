@@ -33,31 +33,31 @@ inline Facet OppositeFacet(Facet FacetType)
     return  (Facet) ((int) FacetType ^ 1);  // Flips the last bit
 }
 
-inline void TranslateCordinates(Sint32& X, Sint32& Y, Sint32& Z, Facet TestFacet)
+inline void TranslateCoordinates(Sint32& X, Sint32& Y, Sint32& Z, Facet FacetType)
 {
     //TOD some bit shift magic to speed this up and use less if statements
 
-    if(TestFacet == FACET_WEST)
+    if(FacetType == FACET_WEST)
     {
         X -= 1;
     }
-    if (TestFacet == FACET_EAST)
+    if (FacetType == FACET_EAST)
     {
         X += 1;
     }
-    if(TestFacet == FACET_NORTH)
+    if(FacetType == FACET_NORTH)
     {
         Y -= 1;
     }
-    if (TestFacet == FACET_SOUTH)
+    if (FacetType == FACET_SOUTH)
     {
         Y += 1;
     }
-    if(TestFacet == FACET_BOTTOM)
+    if(FacetType == FACET_BOTTOM)
     {
         Z -= 1;
     }
-    if (TestFacet == FACET_TOP)
+    if (FacetType == FACET_TOP)
     {
         Z += 1;
     }
@@ -108,31 +108,31 @@ enum Direction
     DIRECTIONS_START = 0
 };
 
-inline void TranslateCordinates(Sint32& X, Sint32& Y, Sint32& Z, Direction TestDirection)
+inline void TranslateCoordinates(Sint32& X, Sint32& Y, Sint32& Z, Direction DirectionType)
 {
-    if(TestDirection == DIRECTION_NORTHWEST ||  TestDirection == DIRECTION_NORTH || TestDirection == DIRECTION_NORTHEAST)
+    if(DirectionType == DIRECTION_NORTHWEST ||  DirectionType == DIRECTION_NORTH || DirectionType == DIRECTION_NORTHEAST)
     {
         Y -= 1;
     }
-    else if (TestDirection == DIRECTION_SOUTHEAST ||  TestDirection == DIRECTION_SOUTH || TestDirection == DIRECTION_SOUTHWEST)
+    else if (DirectionType == DIRECTION_SOUTHEAST ||  DirectionType == DIRECTION_SOUTH || DirectionType == DIRECTION_SOUTHWEST)
     {
         Y += 1;
     }
 
-    if(TestDirection == DIRECTION_NORTHEAST ||  TestDirection == DIRECTION_EAST || TestDirection == DIRECTION_SOUTHEAST)
+    if(DirectionType == DIRECTION_NORTHEAST ||  DirectionType == DIRECTION_EAST || DirectionType == DIRECTION_SOUTHEAST)
     {
         X += 1;
     }
-    else if (TestDirection == DIRECTION_SOUTHWEST ||  TestDirection == DIRECTION_WEST || TestDirection == DIRECTION_NORTHWEST)
+    else if (DirectionType == DIRECTION_SOUTHWEST ||  DirectionType == DIRECTION_WEST || DirectionType == DIRECTION_NORTHWEST)
     {
         X -= 1;
     }
 
-    if(TestDirection == DIRECTION_UP)
+    if(DirectionType == DIRECTION_UP)
     {
         Z += 1;
     }
-    else if (TestDirection == DIRECTION_DOWN)
+    else if (DirectionType == DIRECTION_DOWN)
     {
         Z -= 1;
     }

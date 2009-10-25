@@ -6,6 +6,27 @@
 
 #include <Vector3.h>
 
+struct CellCoordinates
+{
+    Sint16 X;
+    Sint16 Y;
+    Sint16 Z;
+};
+
+struct MapCoordinates
+{
+    Sint32 X;
+    Sint32 Y;
+    Sint32 Z;
+};
+
+struct CubeCoordinates
+{
+    Uint8 X;
+    Uint8 Y;
+};
+
+
 struct t_matglossPair;
 class Column;
 class Cell;
@@ -34,55 +55,60 @@ public:
     bool isInitialized()        { return Initialized; }
     bool isMapLoaded()          { return MapLoaded; }
 
-	Cell* getCell(Sint32 X, Sint32 Y, Sint32 Z);
-	Cell* getCubeOwner(Sint32 X, Sint32 Y, Sint32 Z);
+	Cell* getCell(CellCoordinates);
+	Cell* getCubeOwner(MapCoordinates);
+    void setCellNeedsReDraw(CellCoordinates);
 
-    bool isCubeSloped(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
-
-    void setCubeShape(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Sint16 TileShape);
-    inline Sint16 getCubeShape(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
-
-    void setCubeMaterial(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Sint16 MaterialID);
-    inline Sint16 getCubeMaterial(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
-
-    void setCubeSurfaceType(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Sint16 SurfaceID);
-    inline Sint16 getCubeSurfaceType(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
+    CellCoordinates TranslateMapToCell(MapCoordinates Coordinates);
+    CubeCoordinates TranslateMapToCube(MapCoordinates Coordinates);
 
 
+    bool isCubeSloped(MapCoordinates Coordinates);
 
-    Face* getFace(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType);
-    bool hasFace(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType);
+    void setCubeShape(MapCoordinates Coordinates, Sint16 TileShape);
+    inline Sint16 getCubeShape(MapCoordinates Coordinates);
 
-    bool removeFace(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType);
-    Face* addFace(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType);
+    void setCubeMaterial(MapCoordinates Coordinates, Sint16 MaterialID);
+    inline Sint16 getCubeMaterial(MapCoordinates Coordinates);
 
-    void setFaceMaterial(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType, Sint16 MaterialID);
-    inline Sint16 getFaceMaterial(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType);
-
-    void setFaceSurfaceType(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType, Sint16 SurfaceID);
-    inline Sint16 getFaceSurfaceType(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType);
+    void setCubeSurfaceType(MapCoordinates Coordinates, Sint16 SurfaceID);
+    inline Sint16 getCubeSurfaceType(MapCoordinates Coordinates);
 
 
 
-    bool isCubeHidden(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
-    void setCubeHidden(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue);
+    Face* getFace(MapCoordinates Coordinates, Facet FacetType);
+    bool hasFace(MapCoordinates Coordinates, Facet FacetType);
 
-    bool isCubeSubTerranean(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
-    void setCubeSubTerranean(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue);
+    bool removeFace(MapCoordinates Coordinates, Facet FacetType);
+    Face* addFace(MapCoordinates Coordinates, Facet FacetType);
 
-    bool isCubeSkyView(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
-    void setCubeSkyView(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue);
+    void setFaceMaterial(MapCoordinates Coordinates, Facet FacetType, Sint16 MaterialID);
+    inline Sint16 getFaceMaterial(MapCoordinates Coordinates, Facet FacetType);
 
-    bool isCubeSunLit(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
-    void setCubeSunLit(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue);
+    void setFaceSurfaceType(MapCoordinates Coordinates, Facet FacetType, Sint16 SurfaceID);
+    inline Sint16 getFaceSurfaceType(MapCoordinates Coordinates, Facet FacetType);
 
-    bool isCubeSolid(Sint32 MapX, Sint32 MapY, Sint32 MapZ);
-    void setCubeSolid(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue);
+
+
+    bool isCubeHidden(MapCoordinates Coordinates);
+    void setCubeHidden(MapCoordinates Coordinates, bool NewValue);
+
+    bool isCubeSubTerranean(MapCoordinates Coordinates);
+    void setCubeSubTerranean(MapCoordinates Coordinates, bool NewValue);
+
+    bool isCubeSkyView(MapCoordinates Coordinates);
+    void setCubeSkyView(MapCoordinates Coordinates, bool NewValue);
+
+    bool isCubeSunLit(MapCoordinates Coordinates);
+    void setCubeSunLit(MapCoordinates Coordinates, bool NewValue);
+
+    bool isCubeSolid(MapCoordinates Coordinates);
+    void setCubeSolid(MapCoordinates Coordinates, bool NewValue);
 
 
 
     void InitilizeTilePicker(DFHackAPI & DF);
-    Sint16 PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial,t_matglossPair constructionmaterial, t_occupancy occupancy);
+    Sint16 PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial, t_matglossPair constructionmaterial, t_occupancy occupancy);
 
     bool Generate(Uint32 Seed);
 
@@ -90,9 +116,9 @@ public:
 	Uint32 getMapSizeY() { return MapSizeY; }
 	Uint32 getMapSizeZ() { return MapSizeZ; }
 
-	Uint32 getCellSizeX() { return CellSizeX; }
-	Uint32 getCellSizeY() { return CellSizeY; }
-	Uint32 getCellSizeZ() { return CellSizeZ; }
+	Uint16 getCellSizeX() { return CellSizeX; }
+	Uint16 getCellSizeY() { return CellSizeY; }
+	Uint16 getCellSizeZ() { return CellSizeZ; }
 
     bool Extract();
     bool Load(string filename);
@@ -100,13 +126,17 @@ public:
 
     void ReleaseMap();
 
+    void DigChannel(MapCoordinates Coordinates);
+    void DigSlope(MapCoordinates Coordinates);
+    void Dig(MapCoordinates Coordinates);
+
     void LoadCellData(DFHackAPI & context,
                       vector< vector <uint16_t> >& layerassign,
                       Cell* TargetCell,
                       map<uint64_t, t_construction> & constuctions,
                       map<uint64_t, t_tree_desc> & vegetation,
                       map<uint64_t, t_building> & buildings,
-                      Uint32 CellX, Uint32 CellY, Uint32 CellZ);
+                      CellCoordinates NewCellCoordinates);
 
     void ChangeCellCount(Sint8 Change)      { CellCount += Change; }
     Uint32 getCellCount()                   { return CellCount; }
@@ -131,9 +161,9 @@ protected:
     Uint32 MapSizeY;
     Uint32 MapSizeZ;
 
-    Uint32 CellSizeX;
-    Uint32 CellSizeY;
-    Uint32 CellSizeZ;
+    Uint16 CellSizeX;
+    Uint16 CellSizeY;
+    Uint16 CellSizeZ;
 
     Column*** ColumnMatrix;
 

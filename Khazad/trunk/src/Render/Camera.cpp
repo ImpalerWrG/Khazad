@@ -18,7 +18,6 @@ Camera::Camera()
     AngleLock = false;
 
     IsoMode = false;
-    AllFacesDrawing = false;
 
     LevelSeperation = 1;
     CursorLevel = 0;
@@ -150,12 +149,6 @@ void Camera::onMousePoll()
     //DetermineMouseIntersection(LookZ());
 }
 
-void Camera::setCursor(Vector3 NewPoint)
-{
-    Cursor.x = NewPoint.x;
-    Cursor.y = NewPoint.y;
-    Cursor.z = NewPoint.z;
-}
 
 Vector3 Camera::DetermineMouseIntersection(float MapZ)
 {
@@ -186,40 +179,53 @@ Vector3 Camera::DetermineMouseIntersection(float MapZ)
 bool Camera::DetermineCursorIntersection()
 {
     Vector3 Intersection;
-    for(int i = SliceTop - 1; i >= SliceBottom && i >= 0; i--)
+    MapCoordinates TestCoordinates;
+
+    for(Sint16 i = SliceTop - 1; i >= SliceBottom && i >= 0; i--)
     {
         MouseIntersection = DetermineMouseIntersection(ZlevelSeperationAdjustment(i) + 0.5);
-        MouseIntersection.x = (int) (MouseIntersection.x + 0.5);
-        MouseIntersection.y = (int) (MouseIntersection.y + 0.5);
-        MouseIntersection.z = i;
 
-        if(RENDERER->isCubeDrawn((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i))
-        {
-            if(MAP->hasFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_TOP))
-            {
-                return true;
-            }
-        }
-
-        MouseIntersection = DetermineMouseIntersection(ZlevelSeperationAdjustment(i) - 0.5);
-        MouseIntersection.x = (int) (MouseIntersection.x + 0.5);
-        MouseIntersection.y = (int) (MouseIntersection.y + 0.5);
-        MouseIntersection.z = i;
-
-        if(RENDERER->isCubeDrawn((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i))
-        {
-            if(MAP->hasFace((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i, FACET_BOTTOM))
-            {
-                return true;
-            }
-        }
+        TestCoordinates.X = (int) MouseIntersection.x;
+        TestCoordinates.Y = (int) MouseIntersection.y;
+        TestCoordinates.Z = i;
 
         // Find Slopes while not picking Cubes that lack facets or arnt being drawn
-        if(RENDERER->isCubeDrawn((Sint32) MouseIntersection.x, (Sint32) MouseIntersection.y, i)) //&& (TargetCube->isSolid() || TargetCube->isSlope()))
+        if(RENDERER->isCubeDrawn(TestCoordinates) && MAP->isCubeSloped(TestCoordinates)) //&& (TargetCube->isSolid() || TargetCube->isSlope()))
         {
+            MouseIntersection.x = TestCoordinates.X + 0.5;
+            MouseIntersection.y = TestCoordinates.Y + 0.5;
+            MouseIntersection.z = i;
+
             return true;
         }
 
+        TestCoordinates.X = (int) (MouseIntersection.x + 0.0);
+        TestCoordinates.Y = (int) (MouseIntersection.y + 0.0);
+        TestCoordinates.Z = i;
+
+        if(RENDERER->isCubeDrawn(TestCoordinates) && MAP->hasFace(TestCoordinates, FACET_TOP))
+        {
+            MouseIntersection.x = TestCoordinates.X + 0.5;
+            MouseIntersection.y = TestCoordinates.Y + 0.5;
+            MouseIntersection.z = i;
+
+            return true;
+        }
+
+        MouseIntersection = DetermineMouseIntersection(ZlevelSeperationAdjustment(i) - 0.5);
+
+        TestCoordinates.X = (int) (MouseIntersection.x + 0.5);
+        TestCoordinates.Y = (int) (MouseIntersection.y + 0.5);
+        TestCoordinates.Z = i;
+
+        if(RENDERER->isCubeDrawn(TestCoordinates) && MAP->hasFace(TestCoordinates, FACET_BOTTOM))
+        {
+            MouseIntersection.x = TestCoordinates.X + 0.5;
+            MouseIntersection.y = TestCoordinates.Y + 0.5;
+            MouseIntersection.z = i;
+
+            return true;
+        }
     }
     return false;
 }
@@ -275,14 +281,30 @@ void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY, 
 
                 if(DetermineCursorIntersection())
                 {
-                    if(MouseIntersection.x == Cursor.x && MouseIntersection.y == Cursor.y && MouseIntersection.z == Cursor.z)
+                    MapCoordinates Cursor = RENDERER->getCursor();
+
+                    MapCoordinates MouseCoordinates;
+
+                    MouseCoordinates.X = MouseIntersection.x;
+                    MouseCoordinates.Y = MouseIntersection.y;
+                    MouseCoordinates.Z = MouseIntersection.z;
+
+                    if(MouseCoordinates.X == Cursor.X && MouseCoordinates.Y == Cursor.Y && MouseCoordinates.Z == Cursor.Z)
                     {
                         // adjust the lookAt for level separation
-                        Vector3 adjustedCursor = Cursor;
-                        adjustedCursor.z = ZlevelSeperationAdjustment(adjustedCursor.z);
+                        Vector3 adjustedCursor;
+
+                        adjustedCursor.x = Cursor.X;
+                        adjustedCursor.y = Cursor.Y;
+                        adjustedCursor.z = Cursor.Z;
+
+                        adjustedCursor.z = ZlevelSeperationAdjustment(MouseCoordinates.Z);
                         CenterView(adjustedCursor);
                     }
-                    Cursor = MouseIntersection;
+                    else
+                    {
+                        RENDERER->setCursor(MouseCoordinates);
+                    }
                 }
                 break;
             }
@@ -599,33 +621,6 @@ void Camera::MoveViewHorizontal(float X, float Y)
     generateViewFrustum();
 }
 
-void Camera::ConfineCursor()
-{
-    if(Cursor.x < 0)
-    {
-        Cursor.x = 0;
-    }
-    if(Cursor.x >= MAP->getMapSizeX())
-    {
-        Cursor.x = MAP->getMapSizeX() - 1;
-    }
-    if(Cursor.y < 0)
-    {
-        Cursor.y = 0;
-    }
-    if(Cursor.y >= MAP->getMapSizeY())
-    {
-        Cursor.y = MAP->getMapSizeY() - 1;
-    }
-    if(Cursor.z < 0)
-    {
-        Cursor.z = 0;
-    }
-    if(Cursor.z >= MAP->getMapSizeZ())
-    {
-        Cursor.z = MAP->getMapSizeZ() - 1;
-    }
-}
 
 void Camera::ConfineLookPosition()
 {
@@ -687,10 +682,10 @@ void Camera::MoveViewVertical(float Z)
     EyePosition.z += Z * LevelSeperation;
     LookPosition.z += Z * LevelSeperation;
 
-    Cursor.z += Z;
+    //Cursor.Z += Z;
     CursorLevel += Z;
 
-    ConfineCursor();
+    RENDERER->ConfineCursor();
 
     if(true) // confine within map toggle?
     {

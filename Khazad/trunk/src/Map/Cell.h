@@ -2,6 +2,7 @@
 #define CELL__HEADER
 
 #include <stdafx.h>
+#include <Map.h>
 #include <Renderer.h>
 #include <Vector3.h>
 #include <bitset>
@@ -36,7 +37,7 @@ public:
     Cell();
     ~Cell();
     bool Init();
-    void setPosition(Sint32 X, Sint32 Y, Sint32 Z);
+    void setPosition(CellCoordinates Coordinates);
 
 
     void Render(CameraOrientation CurrentOrientation);
@@ -50,56 +51,61 @@ public:
 
     void DrawCellCage();
 
-    bool Draw(Uint8 CubeX, Uint8 CubeY);
-    bool DrawFaces(Uint8 CubeX, Uint8 CubeY);
-    bool DrawSlope(Uint8 CubeX, Uint8 CubeY);
+    bool Draw(CubeCoordinates Coordinates);
+    bool DrawFaces(CubeCoordinates Coordinates);
+    bool DrawSlope(CubeCoordinates Coordinates);
     void BuildFaceData();
 
-    Cell* getAdjacentCell(Facet FacetType);
+    Vector3 getCubePosition(CubeCoordinates Coordinates);
+    MapCoordinates TranslateCubeToMap(CubeCoordinates Coordinates);
+    Uint16 TranslateCubeToIndex(CubeCoordinates Coordinates);
 
-    Vector3 getCubePosition(Uint8 CubeX, Uint8 CubeY);
+    void setCubeShape(CubeCoordinates Coordinates, Sint16 TileShape);
+    inline Sint16 getCubeShape(CubeCoordinates Coordinates)                   { return CubeShapeTypes[Coordinates.X][Coordinates.Y]; }
 
-    void setCubeShape(Uint8 CubeX, Uint8 CubeY, Sint16 TileShape);
-    inline Sint16 getCubeShape(Uint8 CubeX, Uint8 CubeY)                   { return CubeShapeTypes[CubeX][CubeY]; }
+    void setCubeMaterial(CubeCoordinates Coordinates, Sint16 MaterialID)      { CubeMaterialTypes[Coordinates.X][Coordinates.Y] = MaterialID; }
+    inline Sint16 getCubeMaterial(CubeCoordinates Coordinates)                { return CubeMaterialTypes[Coordinates.X][Coordinates.Y]; }
 
-    void setCubeMaterial(Uint8 CubeX, Uint8 CubeY, Sint16 MaterialID)      { CubeMaterialTypes[CubeX][CubeY] = MaterialID; }
-    inline Sint16 getCubeMaterial(Uint8 CubeX, Uint8 CubeY)                { return CubeMaterialTypes[CubeX][CubeY]; }
+    void setCubeSurface(CubeCoordinates Coordinates, Sint16 SurfaceID)        { CubeSurfaceTypes[Coordinates.X][Coordinates.Y] = SurfaceID; }
+    inline Sint16 getCubeSurface(CubeCoordinates Coordinates)                 { return CubeSurfaceTypes[Coordinates.X][Coordinates.Y]; }
 
-    void setCubeSurface(Uint8 CubeX, Uint8 CubeY, Sint16 SurfaceID)        { CubeSurfaceTypes[CubeX][CubeY] = SurfaceID; }
-    inline Sint16 getCubeSurface(Uint8 CubeX, Uint8 CubeY)                 { return CubeSurfaceTypes[CubeX][CubeY]; }
-
-    bool isCubeSloped(Uint8 CubeX, Uint8 CubeY);
-
-
-    inline bool isCubeHidden(Uint8 CubeX, Uint8 CubeY)                         { return Hidden.test((CubeX * CELLEDGESIZE) + CubeY); }
-    inline void setCubeHidden(Uint8 CubeX, Uint8 CubeY, bool NewValue)         { Hidden.set(((CubeX * CELLEDGESIZE) + CubeY), NewValue); }
-
-    inline bool isCubeSubTerranean(Uint8 CubeX, Uint8 CubeY)                   { return SubTerranean.test((CubeX * CELLEDGESIZE) + CubeY); }
-    inline void setCubeSubTerranean(Uint8 CubeX, Uint8 CubeY, bool NewValue)   { SubTerranean.set(((CubeX * CELLEDGESIZE) + CubeY), NewValue); }
-
-    inline bool isCubeSkyView(Uint8 CubeX, Uint8 CubeY)                        { return SkyView.test((CubeX * CELLEDGESIZE) + CubeY); }
-    inline void setCubeSkyView(Uint8 CubeX, Uint8 CubeY, bool NewValue)        { SkyView.set(((CubeX * CELLEDGESIZE) + CubeY), NewValue); }
-
-    inline bool isCubeSunLit(Uint8 CubeX, Uint8 CubeY)                         { return SunLit.test((CubeX * CELLEDGESIZE) + CubeY); }
-    inline void setCubeSunLit(Uint8 CubeX, Uint8 CubeY, bool NewValue)         { SunLit.set(((CubeX * CELLEDGESIZE) + CubeY), NewValue); }
-
-    inline bool isCubeSolid(Uint8 CubeX, Uint8 CubeY)                          { return Solid.test((CubeX * CELLEDGESIZE) + CubeY); }
-    inline void setCubeSolid(Uint8 CubeX, Uint8 CubeY, bool NewValue)          { Solid.set(((CubeX * CELLEDGESIZE) + CubeY), NewValue); }
-
-    void setLiquid(Uint8 CubeX, Uint8 CubeY, bool liquidtype, Uint8 NewValue);
+    bool isCubeSloped(CubeCoordinates Coordinates);
 
 
-    Face* getFace(Uint8 CubeX, Uint8 CubeY, Facet FacetType);
-    bool hasFace(Uint8 CubeX, Uint8 CubeY, Facet FaceType);
+    inline bool isCubeHidden(CubeCoordinates Coordinates)                         { return Hidden.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
+    inline void setCubeHidden(CubeCoordinates Coordinates, bool NewValue)         { Hidden.set(((Coordinates.X * CELLEDGESIZE) + Coordinates.Y), NewValue); }
 
-    Sint16 getFaceMaterialType(Uint8 CubeX, Uint8 CubeY, Facet FacetType);
-    bool setFaceMaterialType(Uint8 CubeX, Uint8 CubeY, Facet FacetType, Sint16 MaterialTypeID);
+    inline bool isCubeSubTerranean(CubeCoordinates Coordinates)                   { return SubTerranean.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
+    inline void setCubeSubTerranean(CubeCoordinates Coordinates, bool NewValue)   { SubTerranean.set(((Coordinates.X * CELLEDGESIZE) + Coordinates.Y), NewValue); }
 
-    Sint16 getFaceSurfaceType(Uint8 CubeX, Uint8 CubeY, Facet FacetType);
-    bool setFaceSurfaceType(Uint8 CubeX, Uint8 CubeY, Facet FacetType, Sint16 SurfaceTypeID);
+    inline bool isCubeSkyView(CubeCoordinates Coordinates)                        { return SkyView.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
+    inline void setCubeSkyView(CubeCoordinates Coordinates, bool NewValue)        { SkyView.set(((Coordinates.X * CELLEDGESIZE) + Coordinates.Y), NewValue); }
 
-    bool removeFace(Uint8 CubeX, Uint8 CubeY, Facet FacetType);
-    Face* addFace(Uint8 CubeX, Uint8 CubeY, Facet FacetType);
+    inline bool isCubeSunLit(CubeCoordinates Coordinates)                         { return SunLit.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
+    inline void setCubeSunLit(CubeCoordinates Coordinates, bool NewValue)         { SunLit.set(((Coordinates.X * CELLEDGESIZE) + Coordinates.Y), NewValue); }
+
+    inline bool isCubeSolid(CubeCoordinates Coordinates)                          { return Solid.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
+    inline void setCubeSolid(CubeCoordinates Coordinates, bool NewValue)          { Solid.set(((Coordinates.X * CELLEDGESIZE) + Coordinates.Y), NewValue); }
+
+    void setLiquid(CubeCoordinates Coordinates, bool liquidtype, Uint8 NewValue);
+
+
+    Face* getFace(CubeCoordinates Coordinates, Facet FacetType);
+    bool hasFace(CubeCoordinates Coordinates, Facet FaceType);
+
+    Sint16 getFaceMaterialType(CubeCoordinates Coordinates, Facet FacetType);
+    bool setFaceMaterialType(CubeCoordinates Coordinates, Facet FacetType, Sint16 MaterialTypeID);
+
+    Sint16 getFaceSurfaceType(CubeCoordinates Coordinates, Facet FacetType);
+    bool setFaceSurfaceType(CubeCoordinates Coordinates, Facet FacetType, Sint16 SurfaceTypeID);
+
+    bool removeFace(CubeCoordinates Coordinates, Facet FacetType);
+    Face* addFace(CubeCoordinates Coordinates, Facet FacetType);
+
+
+    void DigChannel(CubeCoordinates Coordinates);
+    void DigSlope(CubeCoordinates Coordinates);
+    void Dig(CubeCoordinates Coordinates);
 
 
     inline bool isActive()                              { return Active; }
@@ -155,13 +161,11 @@ protected:
     vector <Building*> buildings;
     vector <Tree*> trees;
 
-    // Exact spacial cordinates of the center of the cell, used for frustrum culling
+    // Exact spacial Coordinates of the center of the cell, used for frustrum culling
     Vector3 CellPosition;
 
     // The global position of this cell relative to other cells
-    Sint16 CellX;
-    Sint16 CellY;
-    Sint16 CellZ;
+    CellCoordinates thisCellCoodinates;
 };
 
 #endif // CELL__HEADER

@@ -4,7 +4,7 @@
 #include <stdafx.h>
 
 #include <Singleton.h>
-
+#include <Map.h>
 
 class ClipImage;
 class ImagePage;
@@ -217,7 +217,7 @@ public:
 
     void DirtyAllLists();
     bool Render();
-    void RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading);
+    void RenderCell(CellCoordinates Coordinates, float ZTranslate, float Shading);
 
     RenderObject *CreateRenderObject(vector <vertex> * source);
     void CallRenderObject(RenderObject * obj);
@@ -229,8 +229,9 @@ public:
     void DrawPoint(Vector3 Point, float Length = 1.0);
     void DrawPlane(Plane ArgumentPlane, float Length = 10);
 
-    void DrawCage(Vector3 Point, float x, float y, float z, bool Inflated, float red,float green,float blue);
-    void DrawCage(Vector3 Point, float x, float y, float z, bool Inflated);
+    void DrawCage(MapCoordinates Coodinates, float x, float y, float z, bool Inflated, float red,float green,float blue);
+    void DrawCage(MapCoordinates Coodinates, float x, float y, float z, bool Inflated);
+
     void DrawStreamers(Vector3 Point, float x, float y, float z, float Length, float red,float green,float blue);
     void DrawStreamers(Vector3 Point, float x, float y, float z, float Length);
 
@@ -242,11 +243,16 @@ public:
     void setDrawing3D();
     void setDrawingFlat();
 
-    bool isCubeDrawn(Sint16 X, Sint16 Y, Sint16 Z);
+    bool isCubeDrawn(MapCoordinates Coordinates);
 
     SDL_Surface* MainScreen()               { return ScreenSurface; }
 
     Camera* MainCamera;
+
+    MapCoordinates getCursor()                     { return Cursor; }
+
+    void setCursor(MapCoordinates Coordinates);
+    void ConfineCursor();
 
     uint32_t TotalTriangles;
     void binarysprintf(char* buffer, int Input); // TODO move this to some global place;
@@ -284,6 +290,8 @@ protected:
 
     bool FlatDraw;
     bool DebuggingDraw;
+
+    MapCoordinates Cursor;
 
     std::vector<GLuint*> DrawList;
 

@@ -55,9 +55,6 @@ public:
     Vector3 DetermineMouseIntersection(float MapZ);
     bool DetermineCursorIntersection();
 
-    Vector3 getCursor()                     { return Cursor; }
-    void setCursor(Vector3 NewPoint);
-
     Vector3 getMouseIntersection()          { return MouseIntersection; }
 
 	bool isAngleLock()                      { return AngleLock;}
@@ -166,11 +163,6 @@ public:
 	void MoveViewHorizontal(float X, float Y);
 
 	/**
-	* ConfineCursor - Shifts the Cursor inside the Map boundaries on all axis
-	*/
-    void ConfineCursor();
-
-	/**
 	* ConfineLookPosition - Shifts the Look Point inside the Map boundaries on all axis
 	*/
     void ConfineLookPosition();
@@ -239,8 +231,8 @@ protected:
 	Vector3 UpVector;
 	Vector3 LookPosition;
 
-    bool AllFacesDrawing;
 	bool IsoMode;
+
 	float IsoScalar;
 	Uint16 MaxScalar;
 	Uint16 MinScalar;
@@ -261,7 +253,6 @@ protected:
 
 	Plane FrustumPlanes[4];
 
-    Vector3 Cursor;
     Vector3 MouseIntersection;
 
     float CursorLevel;

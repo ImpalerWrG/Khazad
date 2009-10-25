@@ -509,13 +509,15 @@ void Renderer::DirtyAllLists()
         return;
     }
 
-	for(Uint32 SizeZ = 0; SizeZ < MAP->getCellSizeZ(); SizeZ++)
-	{
-		for (Uint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
-		{
-			for (Uint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
-			{
-			    Cell* TargetCell = MAP->getCell(SizeX, SizeY, SizeZ);
+    CellCoordinates TargetCellCoodinates;
+
+    for (TargetCellCoodinates.Z = 0; TargetCellCoodinates.Z < MAP->getCellSizeZ(); TargetCellCoodinates.Z += 1)
+    {
+        for (TargetCellCoodinates.X = 0; TargetCellCoodinates.X < MAP->getCellSizeX(); TargetCellCoodinates.X += 1)
+        {
+            for (TargetCellCoodinates.Y = 0; TargetCellCoodinates.Y < MAP->getCellSizeY(); TargetCellCoodinates.Y += 1)
+            {
+			    Cell* TargetCell = MAP->getCell(TargetCellCoodinates);
 			    if (TargetCell != NULL)
 			    {
                     TargetCell->setNeedsRedraw(true);
@@ -526,9 +528,9 @@ void Renderer::DirtyAllLists()
 }
 
 // FIXME: move to cell
-void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTranslate, float Shading)
+void Renderer::RenderCell(CellCoordinates Coordinates, float ZTranslate, float Shading)
 {
-    Cell* LoopCell = MAP->getCell(SizeX, SizeY, Zlevel);
+    Cell* LoopCell = MAP->getCell(Coordinates);
 
     if(LoopCell != NULL && LoopCell->isActive())
     {
@@ -539,7 +541,7 @@ void Renderer::RenderCell(Sint16 Zlevel, Sint32 SizeX, Sint32 SizeY, float ZTran
         {
             glPushMatrix();
 
-                glTranslatef(SizeX * CELLEDGESIZE, SizeY * CELLEDGESIZE, ZTranslate);
+                glTranslatef(Coordinates.X * CELLEDGESIZE, Coordinates.Y * CELLEDGESIZE, ZTranslate);
                 if(LoopCell->getNeedsRedraw())
                 {
                     // Rebuild the VBOs
@@ -582,22 +584,24 @@ bool Renderer::Render()
 
     if(FrameDraw)
     {
-        Vector3 Point(0, 0, 0);
+        MapCoordinates Coodinates;
+        Coodinates.X =0;
+        Coodinates.Y =0;
+        Coodinates.Z =0;
         //Point.z = MainCamera->LookZ() - (MainCamera->LookZ() * MainCamera->getLevelSeperation());
-        DrawCage(Point, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ() * MainCamera->getLevelSeperation(), false, 0, 1, 0);
+        DrawCage(Coodinates, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ() * MainCamera->getLevelSeperation(), false, 0, 1, 0);
 
-        Vector3 Cursor = MainCamera->getCursor();
-        Cursor.z = MainCamera->ZlevelSeperationAdjustment(Cursor.z);
+        //MapCoordinates Cursor;
+        //Cursor.z = MainCamera->ZlevelSeperationAdjustment(Cursor.z);
 
-        //Cube* CursorCube = MAP->getCube(Cursor.x, Cursor.y, Cursor.z);
-        //if(CursorCube != NULL && CursorCube->isSolid())
-        //{
+        if (MAP->isCubeSolid(Cursor))
+        {
             DrawCage(Cursor, 1, 1, 1, true, 1, 1, 1);
-        //}
-        //else
-        //{
-            //DrawCage(Cursor, 1, 1, 1, false, 1, 1, 1);
-        //}
+        }
+        else
+        {
+            DrawCage(Cursor, 1, 1, 1, false, 1, 1, 1);
+        }
     }
 
     TEXTURE->ResetTextureBinding();
@@ -623,14 +627,16 @@ bool Renderer::Render()
 
     /// render non-transparent stuff in any order
 
-    for(Sint16 Zlevel = Start; Zlevel < Stop ; Zlevel++)
+    CellCoordinates TargetCellCoodinates;
+
+    for (TargetCellCoodinates.Z = Start; TargetCellCoodinates.Z < Stop; TargetCellCoodinates.Z += 1)
     {
         float Shading = 1.0;
         if(ShadedDraw)
         {
-            Shading = MainCamera->getShading(Zlevel);
+            Shading = MainCamera->getShading(TargetCellCoodinates.Z);
         }
-        float ZTranslate = MainCamera->ZlevelSeperationAdjustment(Zlevel);
+        float ZTranslate = MainCamera->ZlevelSeperationAdjustment(TargetCellCoodinates.Z);
 
         GLfloat specular[] = {Shading, Shading, Shading , 1.0f};
         glLightfv(GL_LIGHT0, GL_DIFFUSE, specular);
@@ -652,11 +658,11 @@ bool Renderer::Render()
         //glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
         glLightfv(GL_LIGHT1, GL_POSITION, position2);
 
-        for(Sint32 SizeX = 0; SizeX < MAP->getCellSizeX(); SizeX++)
+        for (TargetCellCoodinates.X = 0; TargetCellCoodinates.X < MAP->getCellSizeX(); TargetCellCoodinates.X += 1)
         {
-            for(Sint32 SizeY = 0; SizeY < MAP->getCellSizeY(); SizeY++)
+            for (TargetCellCoodinates.Y = 0; TargetCellCoodinates.Y < MAP->getCellSizeY(); TargetCellCoodinates.Y += 1)
             {
-                RenderCell(Zlevel, SizeX, SizeY, ZTranslate, Shading);
+                RenderCell(TargetCellCoodinates, ZTranslate, Shading);
             }
         }
     }
@@ -734,25 +740,25 @@ void Renderer::setDrawing3D()
     }
 }
 
-bool Renderer::isCubeDrawn(Sint16 X, Sint16 Y, Sint16 Z)
+bool Renderer::isCubeDrawn(MapCoordinates Coordinates)
 {
-    Cell* TargetCell = MAP->getCubeOwner(X, Y, Z);
+    Cell* TargetCell = MAP->getCubeOwner(Coordinates);
 
     if (TargetCell != NULL)
     {
-        if(TargetCell->isCubeHidden(X % CELLEDGESIZE, Y % CELLEDGESIZE) && !isHiddenDraw())
+        if(MAP->isCubeHidden(Coordinates) && !isHiddenDraw())
         {
             return false;
         }
-        if(TargetCell->isCubeSubTerranean(X % CELLEDGESIZE, Y % CELLEDGESIZE) && !isSubTerranianDraw())
+        if(MAP->isCubeSubTerranean(Coordinates) && !isSubTerranianDraw())
         {
             return false;
         }
-        if(TargetCell->isCubeSkyView(X % CELLEDGESIZE, Y % CELLEDGESIZE) && !isSkyViewDraw())
+        if(MAP->isCubeSkyView(Coordinates) && !isSkyViewDraw())
         {
             return false;
         }
-        if(TargetCell->isCubeSunLit(X % CELLEDGESIZE, Y % CELLEDGESIZE) && !isSunLitDraw())
+        if(MAP->isCubeSunLit(Coordinates) && !isSunLitDraw())
         {
             return false;
         }
@@ -768,24 +774,19 @@ void Renderer::PrintDebugging()
         char buffer[256];
         setDrawingFlat();
 
-        int x,y,z;
-        Vector3 RawCursor = MainCamera->getCursor();
-
-        x = (int) RawCursor.x;
-        y = (int) RawCursor.y;
-        z = (int) RawCursor.z;
-
         int TileType = 0;
         int Designation = 0;
         int Ocupancy = 0;
         int BiomeOffset = 0;
         int Geolayer = 0;
         int veinMatgloss = 0;
+
         string matgloss;
         string matglosstype;
         t_matglossPair matglossdesc;
         t_building *building;
         t_tree_desc *tree;
+
         uint32_t region_x = 0;
         uint32_t region_y = 0;
         uint32_t region_z = 0;
@@ -794,7 +795,7 @@ void Renderer::PrintDebugging()
         position.x = 10;
         position.y = 160;
 
-        sprintf (buffer, "Cordinates: x%i y%i z%i", x, y, z);
+        sprintf (buffer, "Coordinates: x%i y%i z%i", Cursor.X, Cursor.Y, Cursor.Z);
         RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 
@@ -1004,14 +1005,14 @@ void Renderer::DrawPlane(Plane ArgumentPlane, float Length)
     glEnd();
 }
 
-void Renderer::DrawCage(Vector3 RawPoint, float x, float y, float z, bool Inflated)
+void Renderer::DrawCage(MapCoordinates Coodinates, float x, float y, float z, bool Inflated, float red, float green, float blue)
 {
-    DrawCage(RawPoint, x, y, z, Inflated, 1,1,1);
-}
+    Vector3 Point;
 
-void Renderer::DrawCage(Vector3 RawPoint, float x, float y, float z, bool Inflated, float red, float green, float blue)
-{
-    Vector3 Point = RawPoint;
+    Point.x = Coodinates.X;
+    Point.y = Coodinates.Y;
+    Point.z = Coodinates.Z;
+
     float X, Y, Z;
 
     if(Inflated)
@@ -1029,18 +1030,15 @@ void Renderer::DrawCage(Vector3 RawPoint, float x, float y, float z, bool Inflat
         X = x - 0.04;
         Y = y - 0.04;
         Z = z - 0.04;
+
         Point.x -= 0.48;
         Point.y -= 0.48;
         Point.z -= 0.48;
-        /*X = x;
-        Y = y;
-        Z = z;
-        Point.x -= 0.5;
-        Point.y -= 0.5;
-        Point.z -= 0.5;*/
     }
+
+    glColor3f (red, green, blue);
+
     glBegin(GL_LINES);
-        glColor3f (red, green, blue);
 
         glVertex3f(Point.x, Point.y, Point.z);
         glVertex3f(Point.x + X, Point.y, Point.z);
@@ -1078,6 +1076,7 @@ void Renderer::DrawCage(Vector3 RawPoint, float x, float y, float z, bool Inflat
 
         glVertex3f(Point.x, Point.y + Y, Point.z + Z);
         glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
+
     glEnd();
 }
 
@@ -1108,3 +1107,39 @@ void Renderer::DrawStreamers(Vector3 Point, float x, float y, float z, float Len
 
     glDisable(GL_LINE_STIPPLE); // Disable the line stipple
 }
+
+void Renderer::setCursor(MapCoordinates Coordinates)
+{
+    Cursor.X = Coordinates.X;
+    Cursor.Y = Coordinates.Y;
+    Cursor.Z = Coordinates.Z;
+}
+
+void Renderer::ConfineCursor()
+{
+    if(Cursor.X < 0)
+    {
+        Cursor.X = 0;
+    }
+    if(Cursor.X >= MAP->getMapSizeX())
+    {
+        Cursor.X = MAP->getMapSizeX() - 1;
+    }
+    if(Cursor.Y < 0)
+    {
+        Cursor.Y = 0;
+    }
+    if(Cursor.Y >= MAP->getMapSizeY())
+    {
+        Cursor.Y = MAP->getMapSizeY() - 1;
+    }
+    if(Cursor.Z < 0)
+    {
+        Cursor.Z = 0;
+    }
+    if(Cursor.Z >= MAP->getMapSizeZ())
+    {
+        Cursor.Z = MAP->getMapSizeZ() - 1;
+    }
+}
+

@@ -65,12 +65,17 @@ Tree::~Tree()
 bool Tree::Draw()
 {
     float xa,ya;
-    xa = x %16 - 0.5;
-    ya = y %16 - 0.5;
+    xa = x % 16 - 0.5;
+    ya = y % 16 - 0.5;
     int32_t texture;
     // some fake stuff
 
-    if(!RENDERER->isCubeDrawn(x, y ,z))
+    MapCoordinates Coordinates;
+    Coordinates.X = x % 16;
+    Coordinates.Y = y % 16;
+    Coordinates.Z = z;
+
+    if(!RENDERER->isCubeDrawn(Coordinates))
     {
         return false;
     }

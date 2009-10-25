@@ -66,26 +66,59 @@ bool Map::Generate(Uint32 Seed)
     return true;
 }
 
-Cell* Map::getCell(Sint32 X, Sint32 Y, Sint32 Z)
+CellCoordinates Map::TranslateMapToCell(MapCoordinates Coordinates)
 {
-	if (X >= 0 && X < CellSizeX && Y >= 0 && Y < CellSizeY)
+    CellCoordinates NewCoordinates;
+
+    NewCoordinates.X = Coordinates.X / CELLEDGESIZE;
+    NewCoordinates.Y = Coordinates.Y / CELLEDGESIZE;
+    NewCoordinates.Z = Coordinates.Z;
+
+    return NewCoordinates;
+}
+
+CubeCoordinates Map::TranslateMapToCube(MapCoordinates Coordinates)
+{
+    CubeCoordinates NewCoordinates;
+
+    NewCoordinates.X = Coordinates.X % CELLEDGESIZE;
+    NewCoordinates.Y = Coordinates.Y % CELLEDGESIZE;
+
+    return NewCoordinates;
+}
+
+Cell* Map::getCell(CellCoordinates Coordinates)
+{
+	if (Coordinates.X >= 0 && Coordinates.X < CellSizeX && Coordinates.Y >= 0 && Coordinates.Y < CellSizeY)
 	{
-	    if(Z >= ColumnMatrix[X][Y]->BottomLevel() && Z <= ColumnMatrix[X][Y]->TopLevel())
+	    if(Coordinates.Z >= ColumnMatrix[Coordinates.X][Coordinates.Y]->BottomLevel() && Coordinates.Z <= ColumnMatrix[Coordinates.X][Coordinates.Y]->TopLevel())
 	    {
-            return ColumnMatrix[X][Y]->getCell(Z);
+            return ColumnMatrix[Coordinates.X][Coordinates.Y]->getCell(Coordinates.Z);
 	    }
 	}
 	return NULL;
 }
 
-Cell* Map::getCubeOwner(Sint32 X, Sint32 Y, Sint32 Z)
+Cell* Map::getCubeOwner(MapCoordinates Coordinates)
 {
-    if ((X > MapSizeX) || (Y > MapSizeY) || (Z > MapSizeZ))
+    if ((Coordinates.X > MapSizeX) || (Coordinates.Y > MapSizeY) || (Coordinates.Z > MapSizeZ)) //TODO better more flexible limit check
     {
         return NULL;
     }
 
-    return getCell(X / CELLEDGESIZE, Y / CELLEDGESIZE, Z);
+    CellCoordinates TargetCellCoordinates = TranslateMapToCell(Coordinates);
+
+    return getCell(TargetCellCoordinates);
+}
+
+void Map::setCellNeedsReDraw(CellCoordinates Coordinates)
+{
+    Cell* TargetCell = getCell(Coordinates);
+
+    if (TargetCell != NULL)
+    {
+        TargetCell->setNeedsRedraw(true);
+    }
 }
 
 bool Map::Extract()
@@ -117,10 +150,12 @@ bool Map::Extract()
     InitilizeTilePicker(DF);
 
     // Initialize Cells and Cubes
-    DF.getSize(CellSizeX, CellSizeY, CellSizeZ);
-    // update depth slider
-    //UI->setZSliderRange(CellSizeZ);
-    //UI->setZSliders(0, CellSizeZ);
+    Uint32 X, Y, Z;
+    DF.getSize(X, Y, Z);
+
+    CellSizeX = X;
+    CellSizeY = Y;
+    CellSizeZ = Z;
 
     // read constructions
     map<uint64_t, t_construction> constructionAssigner;
@@ -184,52 +219,56 @@ bool Map::Extract()
 
     ColumnMatrix = new Column**[CellSizeX];
 
-    for (Uint16 x = 0; x < CellSizeX; x++)
+    CellCoordinates TargetCellCoodinates;
+
+    for (TargetCellCoodinates.X = 0; TargetCellCoodinates.X < CellSizeX; TargetCellCoodinates.X += 1)
     {
-        ColumnMatrix[x] = new Column*[CellSizeY];
-        for (Uint16 y = 0; y < CellSizeY; y++)
+        ColumnMatrix[TargetCellCoodinates.X] = new Column*[CellSizeY];
+        for (TargetCellCoodinates.Y = 0; TargetCellCoodinates.Y < CellSizeY; TargetCellCoodinates.Y += 1)
         {
-            ColumnMatrix[x][y] = new Column();
-            ColumnMatrix[x][y]->Init(x, y);
-            for (Uint32 z = 0; z < CellSizeZ; z++)
+            ColumnMatrix[TargetCellCoodinates.X][TargetCellCoodinates.Y] = new Column();
+            ColumnMatrix[TargetCellCoodinates.X][TargetCellCoodinates.Y]->Init(TargetCellCoodinates.X, TargetCellCoodinates.Y);
+
+            for (TargetCellCoodinates.Z = 0; TargetCellCoodinates.Z < CellSizeZ; TargetCellCoodinates.Z += 1)
             {
-                if(DF.isValidBlock(x, y, z))
+                if(DF.isValidBlock(TargetCellCoodinates.X, TargetCellCoodinates.Y, TargetCellCoodinates.Z))
                 {
                     Cell* NewCell = new Cell();
-                    NewCell->setPosition(x * CELLEDGESIZE, y * CELLEDGESIZE, z);
-                    LoadCellData(DF, layerassign, NewCell, constructionAssigner, plantAssigner, buildingAssigner, x, y, z);
-                    ColumnMatrix[x][y]->PushCell(NewCell, z);
+                    NewCell->setPosition(TargetCellCoodinates);
+                    LoadCellData(DF, layerassign, NewCell, constructionAssigner, plantAssigner, buildingAssigner, TargetCellCoodinates);
+                    ColumnMatrix[TargetCellCoodinates.X][TargetCellCoodinates.Y]->PushCell(NewCell, TargetCellCoodinates.Z);
 			    }
 			}
 		}
 	}
 
-	for(Uint16 Zlevel = 0; Zlevel < getCellSizeZ(); Zlevel++)
-	{
-        for (Uint32 SizeX = 0; SizeX < getCellSizeX(); SizeX++)
+    for (TargetCellCoodinates.X = 0; TargetCellCoodinates.X < CellSizeX; TargetCellCoodinates.X += 1)
+    {
+        for (TargetCellCoodinates.Y = 0; TargetCellCoodinates.Y < CellSizeY; TargetCellCoodinates.Y += 1)
         {
-            for (Uint32 SizeY = 0; SizeY < getCellSizeY(); SizeY++)
+            for (TargetCellCoodinates.Z = 0; TargetCellCoodinates.Z < CellSizeZ; TargetCellCoodinates.Z += 1)
             {
-                Cell* LoopCell = getCell(SizeX, SizeY, Zlevel);
+                Cell* LoopCell = getCell(TargetCellCoodinates);
                 if(LoopCell != NULL)
                 {
-                    LoopCell->Init();
+                    LoopCell->Init();  // ?? still nessary
 			    }
 			}
 		}
 	}
 
     DF.Detach();
+    delete pDF;
 
     // Initialize VBOs
 
-	for(Uint16 Zlevel = 0; Zlevel < getCellSizeZ(); Zlevel++)
-	{
-        for (Uint32 SizeX = 0; SizeX < getCellSizeX(); SizeX++)
+    for (TargetCellCoodinates.X = 0; TargetCellCoodinates.X < CellSizeX; TargetCellCoodinates.X += 1)
+    {
+        for (TargetCellCoodinates.Y = 0; TargetCellCoodinates.Y < CellSizeY; TargetCellCoodinates.Y += 1)
         {
-            for (Uint32 SizeY = 0; SizeY < getCellSizeY(); SizeY++)
+            for (TargetCellCoodinates.Z = 0; TargetCellCoodinates.Z < CellSizeZ; TargetCellCoodinates.Z += 1)
             {
-                Cell* LoopCell = getCell(SizeX, SizeY, Zlevel);
+                Cell* LoopCell = getCell(TargetCellCoodinates);
                 if(LoopCell != NULL && /*LoopCell->isActive() &&*/ LoopCell->getNeedsRedraw())
                 {
                     // Rebuild the new Drawlist
@@ -240,7 +279,7 @@ bool Map::Extract()
             }
         }
 	}
-    delete pDF;
+
     MapLoaded = true;
     return true;
 }
@@ -260,157 +299,421 @@ void Map::Save(string filename)
     return;
 }
 
-Face* Map::getFace(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType)
+Face* Map::getFace(MapCoordinates Coordinates, Facet FacetType)
 {
+    MapCoordinates TargetMapCoordinates = Coordinates;
+    Facet TargetFace = FacetType;
+
+    if (FacetType & 1) // East, South and Top Facets get translated to adjacent Cells avoiding a bounce back call
+    {
+        // Do something for edge of Map cases??
+        TranslateCoordinates(TargetMapCoordinates.X, TargetMapCoordinates.Y, TargetMapCoordinates.Z, FacetType);
+        TargetFace = OppositeFacet(TargetFace);
+    }
+
+    CellCoordinates TargetCellCoordinates = TranslateMapToCell(TargetMapCoordinates);
+    Cell* TargetCell = getCell(TargetCellCoordinates);
+
+    if (TargetCell != NULL)
+    {
+        return TargetCell->getFace(TranslateMapToCube(TargetMapCoordinates), TargetFace);
+    }
     return NULL;
 }
 
-bool Map::hasFace(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType)
+bool Map::hasFace(MapCoordinates Coordinates, Facet FacetType)
 {
-    return false;
-}
+    MapCoordinates TargetMapCoordinates = Coordinates;
+    Facet TargetFace = FacetType;
 
-bool Map::removeFace(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType)
-{
-    return true;
-}
-
-Face* Map::addFace(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType)
-{
-    return NULL;
-}
-
-bool Map::isCubeSloped(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
-{
-    Cell* TargetCell = getCubeOwner(MapX, MapY, MapZ);
-
-    if(TargetCell != NULL)
+    if (FacetType & 1) // East, South and Top Facets get translated to adjacent Cells avoiding a bounce back call
     {
-        return TargetCell->isCubeSloped(MapX % CELLEDGESIZE, MapY % CELLEDGESIZE);
+        // Do something for edge of Map cases??
+        TranslateCoordinates(TargetMapCoordinates.X, TargetMapCoordinates.Y, TargetMapCoordinates.Z, FacetType);
+        TargetFace = OppositeFacet(TargetFace);
+    }
+
+    CellCoordinates TargetCellCoordinates = TranslateMapToCell(TargetMapCoordinates);
+    Cell* TargetCell = getCell(TargetCellCoordinates);
+
+    if (TargetCell != NULL)
+    {
+        return TargetCell->hasFace(TranslateMapToCube(TargetMapCoordinates), TargetFace);
     }
     return false;
 }
 
-void Map::setCubeShape(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Sint16 TileShape)
+bool Map::removeFace(MapCoordinates Coordinates, Facet FacetType)
 {
+    MapCoordinates TargetMapCoordinates = Coordinates;
+    Facet TargetFace = FacetType;
 
+    if (FacetType & 1) // East, South and Top Facets get translated to adjacent Cells avoiding a bounce back call
+    {
+        // Do something for edge of Map cases??
+        TranslateCoordinates(TargetMapCoordinates.X, TargetMapCoordinates.Y, TargetMapCoordinates.Z, FacetType);
+        TargetFace = OppositeFacet(TargetFace);
+    }
+
+    CellCoordinates TargetCellCoordinates = TranslateMapToCell(TargetMapCoordinates);
+    Cell* TargetCell = getCell(TargetCellCoordinates);
+
+    if (TargetCell != NULL)
+    {
+        return TargetCell->removeFace(TranslateMapToCube(TargetMapCoordinates), TargetFace);
+    }
+
+    return false;
 }
 
-inline Sint16 Map::getCubeShape(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
+Face* Map::addFace(MapCoordinates Coordinates, Facet FacetType)
 {
+    MapCoordinates TargetMapCoordinates = Coordinates;
+    Facet TargetFace = FacetType;
+
+    if (FacetType & 1) // East, South and Top Facets get translated to adjacent Cells avoiding a bounce back call
+    {
+        // Do something for edge of Map cases??
+        TranslateCoordinates(TargetMapCoordinates.X, TargetMapCoordinates.Y, TargetMapCoordinates.Z, FacetType);
+        TargetFace = OppositeFacet(TargetFace);
+    }
+
+    CellCoordinates TargetCellCoordinates = TranslateMapToCell(TargetMapCoordinates);
+    Cell* TargetCell = getCell(TargetCellCoordinates);
+
+    if (TargetCell != NULL)
+    {
+        return TargetCell->addFace(TranslateMapToCube(TargetMapCoordinates), TargetFace);
+    }
+
+    return false;
+}
+
+bool Map::isCubeSloped(MapCoordinates Coordinates)
+{
+    Cell* TargetCell = getCubeOwner(Coordinates);
+
+    if(TargetCell != NULL)
+    {
+        return TargetCell->isCubeSloped(TranslateMapToCube(Coordinates));
+    }
+    return false;
+}
+
+void Map::setCubeShape(MapCoordinates Coordinates, Sint16 TileShape)
+{
+    Cell* TargetCell = getCubeOwner(Coordinates);
+
+    if (TargetCell != NULL)
+    {
+        TargetCell->setCubeShape(TranslateMapToCube(Coordinates), TileShape);
+    }
+}
+
+inline Sint16 Map::getCubeShape(MapCoordinates Coordinates)
+{
+    Cell* TargetCell = getCubeOwner(Coordinates);
+
+    if (TargetCell != NULL)
+    {
+        return TargetCell->getCubeShape(TranslateMapToCube(Coordinates));
+    }
     return -1;
 }
 
-void Map::setCubeMaterial(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Sint16 MaterialID)
+void Map::setCubeMaterial(MapCoordinates Coordinates, Sint16 MaterialID)
 {
+    Cell* TargetCell = getCubeOwner(Coordinates);
 
+    if (TargetCell != NULL)
+    {
+        TargetCell->setCubeMaterial(TranslateMapToCube(Coordinates), MaterialID);
+    }
 }
 
-inline Sint16 Map::getCubeMaterial(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
+inline Sint16 Map::getCubeMaterial(MapCoordinates Coordinates)
 {
+    Cell* TargetCell = getCubeOwner(Coordinates);
+
+    if (TargetCell != NULL)
+    {
+        return TargetCell->getCubeMaterial(TranslateMapToCube(Coordinates));
+    }
     return -1;
 }
 
-void Map::setCubeSurfaceType(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Sint16 SurfaceID)
+void Map::setCubeSurfaceType(MapCoordinates Coordinates, Sint16 SurfaceID)
 {
+    Cell* TargetCell = getCubeOwner(Coordinates);
+
+    if (TargetCell != NULL)
+    {
+        TargetCell->setCubeSurface(TranslateMapToCube(Coordinates), SurfaceID);
+    }
 }
 
-inline Sint16 Map::getCubeSurfaceType(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
+inline Sint16 Map::getCubeSurfaceType(MapCoordinates Coordinates)
 {
+    Cell* TargetCell = getCubeOwner(Coordinates);
+
+    if (TargetCell != NULL)
+    {
+        return TargetCell->getCubeSurface(TranslateMapToCube(Coordinates));
+    }
     return -1;
 }
 
-void Map::setFaceMaterial(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType, Sint16 MaterialID)
+void Map::setFaceMaterial(MapCoordinates Coordinates, Facet FacetType, Sint16 MaterialID)
 {
+    Face* TargetFace = getFace(Coordinates, FacetType);
+
+    if (TargetFace != NULL)
+    {
+        TargetFace->MaterialTypeID = MaterialID;
+
+        // TODO Set needs draw on Cell??
+    }
 }
 
-inline Sint16 Map::getFaceMaterial(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType)
+inline Sint16 Map::getFaceMaterial(MapCoordinates Coordinates, Facet FacetType)
 {
+    Face* TargetFace = getFace(Coordinates, FacetType);
+
+    if (TargetFace != NULL)
+    {
+        return TargetFace->MaterialTypeID;
+
+        // TODO Set needs draw on Cell??
+    }
     return -1;
 }
 
-void Map::setFaceSurfaceType(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType, Sint16 SurfaceID)
+void Map::setFaceSurfaceType(MapCoordinates Coordinates, Facet FacetType, Sint16 SurfaceID)
 {
+    Face* TargetFace = getFace(Coordinates, FacetType);
+
+    if (TargetFace != NULL)
+    {
+        if (FacetType & 1)
+        {
+            TargetFace->NegativeAxisSurfaceTypeID = SurfaceID;
+        }
+        else
+        {
+            TargetFace->PositiveAxisSurfaceTypeID = SurfaceID;
+        }
+        // TODO Set needs draw on Cell??
+    }
 }
 
-inline Sint16 Map::getFaceSurfaceType(Sint32 MapX, Sint32 MapY, Sint32 MapZ, Facet FacetType)
+inline Sint16 Map::getFaceSurfaceType(MapCoordinates Coordinates, Facet FacetType)
 {
+    Face* TargetFace = getFace(Coordinates, FacetType);
+
+    if (TargetFace != NULL)
+    {
+        if (FacetType & 1)
+        {
+            return TargetFace->NegativeAxisSurfaceTypeID;
+        }
+        else
+        {
+            return TargetFace->PositiveAxisSurfaceTypeID;
+        }
+        // TODO Set needs draw on Cell??
+    }
     return -1;
 }
 
-bool Map::isCubeHidden(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
+bool Map::isCubeHidden(MapCoordinates Coordinates)
 {
-    Cell* TargetCell = getCubeOwner(MapX, MapY, MapZ);
+    Cell* TargetCell = getCubeOwner(Coordinates);
 
     if(TargetCell != NULL)
     {
-        return TargetCell->isCubeHidden(MapX % CELLEDGESIZE, MapY % CELLEDGESIZE);
+        return TargetCell->isCubeHidden(TranslateMapToCube(Coordinates));
     }
     return false;
 }
 
-void Map::setCubeHidden(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue)
+void Map::setCubeHidden(MapCoordinates Coordinates, bool NewValue)
 {
-}
-
-bool Map::isCubeSubTerranean(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
-{
-    Cell* TargetCell = getCubeOwner(MapX, MapY, MapZ);
+    Cell* TargetCell = getCubeOwner(Coordinates);
 
     if(TargetCell != NULL)
     {
-        return TargetCell->isCubeSubTerranean(MapX % CELLEDGESIZE, MapY % CELLEDGESIZE);
+        TargetCell->setCubeHidden(TranslateMapToCube(Coordinates), NewValue);
+    }
+}
+
+bool Map::isCubeSubTerranean(MapCoordinates Coordinates)
+{
+    Cell* TargetCell = getCubeOwner(Coordinates);
+
+    if(TargetCell != NULL)
+    {
+        return TargetCell->isCubeSubTerranean(TranslateMapToCube(Coordinates));
     }
     return false;
 }
 
-void Map::setCubeSubTerranean(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue)
+void Map::setCubeSubTerranean(MapCoordinates Coordinates, bool NewValue)
 {
-}
-
-bool Map::isCubeSkyView(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
-{
-    Cell* TargetCell = getCubeOwner(MapX, MapY, MapZ);
+    Cell* TargetCell = getCubeOwner(Coordinates);
 
     if(TargetCell != NULL)
     {
-        return TargetCell->isCubeSkyView(MapX % CELLEDGESIZE, MapY % CELLEDGESIZE);
+        TargetCell->setCubeSubTerranean(TranslateMapToCube(Coordinates), NewValue);
+    }
+}
+
+bool Map::isCubeSkyView(MapCoordinates Coordinates)
+{
+    Cell* TargetCell = getCubeOwner(Coordinates);
+
+    if(TargetCell != NULL)
+    {
+        return TargetCell->isCubeSkyView(TranslateMapToCube(Coordinates));
     }
     return false;
 }
 
-void Map::setCubeSkyView(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue)
+void Map::setCubeSkyView(MapCoordinates Coordinates, bool NewValue)
 {
-}
-
-bool Map::isCubeSunLit(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
-{
-    Cell* TargetCell = getCubeOwner(MapX, MapY, MapZ);
+    Cell* TargetCell = getCubeOwner(Coordinates);
 
     if(TargetCell != NULL)
     {
-        return TargetCell->isCubeSunLit(MapX % CELLEDGESIZE, MapY % CELLEDGESIZE);
+        TargetCell->setCubeSkyView(TranslateMapToCube(Coordinates), NewValue);
+    }
+}
+
+bool Map::isCubeSunLit(MapCoordinates Coordinates)
+{
+    Cell* TargetCell = getCubeOwner(Coordinates);
+
+    if(TargetCell != NULL)
+    {
+        return TargetCell->isCubeSunLit(TranslateMapToCube(Coordinates));
     }
     return false;
 }
 
-void Map::setCubeSunLit(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue)
+void Map::setCubeSunLit(MapCoordinates Coordinates, bool NewValue)
 {
-}
-
-bool Map::isCubeSolid(Sint32 MapX, Sint32 MapY, Sint32 MapZ)
-{
-    Cell* TargetCell = getCubeOwner(MapX, MapY, MapZ);
+    Cell* TargetCell = getCubeOwner(Coordinates);
 
     if(TargetCell != NULL)
     {
-        return TargetCell->isCubeSolid(MapX % CELLEDGESIZE, MapY % CELLEDGESIZE);
+        TargetCell->setCubeSunLit(TranslateMapToCube(Coordinates), NewValue);
+    }
+}
+
+bool Map::isCubeSolid(MapCoordinates Coordinates)
+{
+    Cell* TargetCell = getCubeOwner(Coordinates);
+
+    if(TargetCell != NULL)
+    {
+        return TargetCell->isCubeSolid(TranslateMapToCube(Coordinates));
     }
     return false;
 }
 
-void Map::setCubeSolid(Sint32 MapX, Sint32 MapY, Sint32 MapZ, bool NewValue)
+void Map::setCubeSolid(MapCoordinates Coordinates, bool NewValue)
 {
+    Cell* TargetCell = getCubeOwner(Coordinates);
+
+    if(TargetCell != NULL)
+    {
+        TargetCell->setCubeSolid(TranslateMapToCube(Coordinates), NewValue);
+    }
+}
+
+void Map::DigChannel(MapCoordinates Coordinates)
+{
+    setCubeHidden(Coordinates, true);
+    setCubeShape(Coordinates, DATA->getLabelIndex("TILESHAPE_EMPTY"));
+
+    // reveal tiles around, deig below
+    for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+    {
+        MapCoordinates ModifiedCoordinates = Coordinates;
+        TranslateCoordinates(ModifiedCoordinates.X, ModifiedCoordinates.Y, ModifiedCoordinates.Z, DirectionType);
+
+        if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
+        {
+            setCubeHidden(ModifiedCoordinates, false);
+        }
+        if (DirectionType == DIRECTION_DOWN)
+        {
+            Dig(ModifiedCoordinates);
+        }
+    }
+}
+
+void Map::DigSlope(MapCoordinates Coordinates)
+{
+    static Sint16 FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
+    static Sint16 RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
+    static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
+
+    if (isCubeSolid(Coordinates))
+    {
+        setCubeHidden(Coordinates, false);
+        setCubeShape(Coordinates, FloorID);
+
+        // reveal tiles around
+        for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+        {
+            MapCoordinates ModifiedCoordinates = Coordinates;
+            TranslateCoordinates(ModifiedCoordinates.X, ModifiedCoordinates.Y, ModifiedCoordinates.Z, DirectionType);
+
+            if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
+            {
+                setCubeHidden(ModifiedCoordinates, false);
+            }
+            if(DirectionType == DIRECTION_UP)
+            {
+                DigChannel(ModifiedCoordinates);
+            }
+            if(DirectionType == DIRECTION_DOWN)
+            {
+                DigSlope(ModifiedCoordinates);
+            }
+        }
+    }
+    //else if (getCubeShape(Coordinates) != EmptyID)
+    //{
+        //Cube* NeighborCube = getNeighborCube(DIRECTION_DOWN);
+        //if(NeighborCube)
+        //{
+        //    NeighborCube->
+        //}
+    //}
+}
+
+void Map::Dig(MapCoordinates Coordinates)
+{
+    static Sint16 FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
+
+    if(isCubeSolid(Coordinates) || isCubeSloped(Coordinates))
+    {
+        setCubeHidden(Coordinates, false);
+        setCubeShape(Coordinates, FloorID);
+
+        // reveal tiles around
+        for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+        {
+            MapCoordinates ModifiedCoordinates = Coordinates;
+            TranslateCoordinates(ModifiedCoordinates.X, ModifiedCoordinates.Y, ModifiedCoordinates.Z, DirectionType);
+
+            if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
+            {
+                setCubeHidden(ModifiedCoordinates, false);
+            }
+        }
+    }
 }
 
 void Map::LoadCellData(DFHackAPI & DF,
@@ -419,7 +722,7 @@ void Map::LoadCellData(DFHackAPI & DF,
                        map<uint64_t, t_construction> & constructions,
                        map<uint64_t, t_tree_desc> & vegetation,
                        map<uint64_t, t_building> & buildings, // FIXME: this is wrong for buildings. they can overlap
-                       Uint32 CellX, Uint32 CellY, Uint32 CellZ)
+                       CellCoordinates NewCellCoordinates)
 {
     uint16_t tiletypes[16][16];
     t_designation designations[16][16];
@@ -430,15 +733,16 @@ void Map::LoadCellData(DFHackAPI & DF,
     t_matglossPair constmat [16][16];
     vector <t_vein> veins;
 
-    DF.ReadTileTypes(CellX, CellY, CellZ, (uint16_t *) tiletypes);
-    DF.ReadDesignations(CellX, CellY, CellZ, (uint32_t *) designations);
-    DF.ReadOccupancy(CellX, CellY, CellZ, (uint32_t *) occupancies);
-    DF.ReadRegionOffsets(CellX,CellY,CellZ, regionoffsets);
+    DF.ReadTileTypes(NewCellCoordinates.X, NewCellCoordinates.Y, NewCellCoordinates.Z, (uint16_t *) tiletypes);
+    DF.ReadDesignations(NewCellCoordinates.X, NewCellCoordinates.Y, NewCellCoordinates.Z, (uint32_t *) designations);
+    DF.ReadOccupancy(NewCellCoordinates.X, NewCellCoordinates.Y, NewCellCoordinates.Z, (uint32_t *) occupancies);
+    DF.ReadRegionOffsets(NewCellCoordinates.X, NewCellCoordinates.Y, NewCellCoordinates.Z, regionoffsets);
+
     memset(basemat, -1, sizeof(basemat));
     memset(veinmat, -1, sizeof(veinmat));
     memset(constmat, -1, sizeof(constmat));
     veins.clear();
-    DF.ReadVeins(CellX,CellY,CellZ,veins);
+    DF.ReadVeins(NewCellCoordinates.X, NewCellCoordinates.Y, NewCellCoordinates.Z, veins);
 
     // get the materials, buildings, trees
     for(uint32_t xx = 0; xx < 16; xx++)
@@ -464,7 +768,7 @@ void Map::LoadCellData(DFHackAPI & DF,
             }
 
             // constructions
-            uint64_t coord =  (uint64_t)CellZ + ((uint64_t)(CellY*16 + yy) << 16) + ((uint64_t)(CellX*16 + xx) << 32);
+            uint64_t coord =  (uint64_t)NewCellCoordinates.Z + ((uint64_t)(NewCellCoordinates.Y *16 + yy) << 16) + ((uint64_t)(NewCellCoordinates.X *16 + xx) << 32);
             //uint64_t coord =  (uint64_t)tempcon.z + ((uint64_t)tempcon.y << 16) + ((uint64_t)tempcon.x << 32);
             if(constructions.count(coord))
             {
@@ -490,30 +794,32 @@ void Map::LoadCellData(DFHackAPI & DF,
         }
     }
 
-    for(Uint32 CubeX = 0; CubeX < CELLEDGESIZE; CubeX++)
+    CubeCoordinates Coordinates;
+
+    for (Coordinates.X = 0; Coordinates.X < CELLEDGESIZE; Coordinates.X += 1)
     {
-        for(Uint32 CubeY = 0; CubeY < CELLEDGESIZE; CubeY++)
+        for (Coordinates.Y = 0; Coordinates.Y < CELLEDGESIZE; Coordinates.Y += 1)
         {
-            t_designation Designations = designations[CubeX][CubeY];
-            Uint16 TileType = tiletypes[CubeX][CubeY];
-            t_occupancy Ocupancies = occupancies[CubeX][CubeY];
+            t_designation Designations = designations[Coordinates.X][Coordinates.Y];
+            Uint16 TileType = tiletypes[Coordinates.X][Coordinates.Y];
+            t_occupancy Ocupancies = occupancies[Coordinates.X][Coordinates.Y];
 
             Sint16 TileShapeID = TileShapePicker[TileType];
             Sint16 TileSurfaceID = TileSurfacePicker[TileType];
-            Sint16 TileMaterialID = PickMaterial(TileType, basemat[CubeX][CubeY], veinmat[CubeX][CubeY], constmat[CubeX][CubeY], Ocupancies);
+            Sint16 TileMaterialID = PickMaterial(TileType, basemat[Coordinates.X][Coordinates.Y], veinmat[Coordinates.X][Coordinates.Y], constmat[Coordinates.X][Coordinates.Y], Ocupancies);
 
-            TargetCell->setCubeShape(CubeX, CubeY, TileShapeID);
-            TargetCell->setCubeSurface(CubeX, CubeY, TileSurfaceID);
-            TargetCell->setCubeMaterial(CubeX, CubeY, TileMaterialID);
+            TargetCell->setCubeShape(Coordinates, TileShapeID);
+            TargetCell->setCubeSurface(Coordinates, TileSurfaceID);
+            TargetCell->setCubeMaterial(Coordinates, TileMaterialID);
 
-            TargetCell->setCubeHidden(CubeX, CubeY, Designations.bits.hidden);
-            TargetCell->setCubeSubTerranean(CubeX, CubeY, Designations.bits.hidden);
-            TargetCell->setCubeSkyView(CubeX, CubeY, Designations.bits.hidden);
-            TargetCell->setCubeSunLit(CubeX, CubeY, Designations.bits.hidden);
+            TargetCell->setCubeHidden(Coordinates, Designations.bits.hidden);
+            TargetCell->setCubeSubTerranean(Coordinates, Designations.bits.hidden);
+            TargetCell->setCubeSkyView(Coordinates, Designations.bits.hidden);
+            TargetCell->setCubeSunLit(Coordinates, Designations.bits.hidden);
 
             if(Designations.bits.flow_size)
             {
-                TargetCell->setLiquid(CubeX, CubeY, Designations.bits.liquid_type, Designations.bits.flow_size);
+                TargetCell->setLiquid(Coordinates, Designations.bits.liquid_type, Designations.bits.flow_size);
             }
             //TargetCube->setVisible(true);
         }
@@ -573,7 +879,7 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
             StoneMatGloss.push_back(uninitialized);
         }
     }
-    
+
     Uint32 NumMetalMats = metaltypes.size();
     for(Uint32 i = 0; i < NumMetalMats; i++)
     {
@@ -661,7 +967,7 @@ Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmateri
                 //return MetalMatGloss[constructionmaterial.index];
             }
         }
-        
+
         if(construction_ret != -1)
         {
             return construction_ret;
@@ -669,12 +975,12 @@ Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmateri
         else
         {
             cerr << "construction material not in Materials.xml: "
-                 << constructionmaterial.type 
-                 << "::" 
-                 << constructionmaterial.index 
+                 << constructionmaterial.type
+                 << "::"
+                 << constructionmaterial.index
                  << endl;
         }
-        
+
         for (Sint16 MaterialClass = 0; MaterialClass < DATA->getNumMaterialClasses(); MaterialClass++)
         {
             if (constructionmaterial.type == DATA->getMaterialClassData(MaterialClass)->getMatGlossIndex())
@@ -683,7 +989,7 @@ Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmateri
                 //return DATA->getMaterialClassData(MaterialClass)->getDefaultMaterial();
             }
         }
-        
+
         if(construction_ret != -1)
         {
             return construction_ret;
@@ -691,9 +997,9 @@ Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmateri
         else
         {
             cerr << "construction material not in Material Classes: "
-            << constructionmaterial.type 
-            << "::" 
-            << constructionmaterial.index 
+            << constructionmaterial.type
+            << "::"
+            << constructionmaterial.index
             << endl;
         }
     }

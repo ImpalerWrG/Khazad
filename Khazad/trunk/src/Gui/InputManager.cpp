@@ -117,7 +117,13 @@ bool InputManager::HandleInput()
 					}
                     case SDLK_c:
                     {
-                        Vector3 adjustedCursor = RENDERER->MainCamera->getCursor();
+                        Vector3 adjustedCursor;
+                        MapCoordinates CursorCoodinates = RENDERER->getCursor();
+
+                        adjustedCursor.x = CursorCoodinates.X;
+                        adjustedCursor.y = CursorCoodinates.Y;
+                        adjustedCursor.z = CursorCoodinates.Z;
+
                         adjustedCursor.z = RENDERER->MainCamera->ZlevelSeperationAdjustment(adjustedCursor.z);
 
                         RENDERER->MainCamera->CenterView(adjustedCursor);

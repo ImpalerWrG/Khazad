@@ -216,13 +216,8 @@ class DigActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        Vector3 CubePosition = RENDERER->MainCamera->getCursor();
-        //Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
-        //if(TargetCube != NULL)
-        //{
-            //static Sint16 FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
-            //TargetCube->Dig();//setShape(FloorID);
-        //}
+        MapCoordinates TargetCoordinates = RENDERER->getCursor();
+        MAP->Dig(TargetCoordinates);
     }
 };
 
@@ -230,13 +225,8 @@ class RampActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        Vector3 CubePosition = RENDERER->MainCamera->getCursor();
-        //Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
-        //if(TargetCube != NULL)
-        //{
-            //static Sint16 RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
-            //TargetCube->DigSlope();//setShape(RampID);
-        //}
+        MapCoordinates TargetCoordinates = RENDERER->getCursor();
+        MAP->DigSlope(TargetCoordinates);
     }
 };
 
@@ -244,13 +234,8 @@ class ChannelActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        Vector3 CubePosition = RENDERER->MainCamera->getCursor();
-        //Cube* TargetCube = MAP->getCube((Sint32) CubePosition.x, (Sint32) CubePosition.y, (Sint32) CubePosition.z);
-        //if(TargetCube != NULL)
-        //{
-            //static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
-            //TargetCube->DigChannel();//setShape(EmptyID);
-        //}
+        MapCoordinates TargetCoordinates = RENDERER->getCursor();
+        MAP->DigChannel(TargetCoordinates);
     }
 };
 
@@ -272,7 +257,7 @@ class MapDumpActionListener: public gcn::ActionListener
             UI->setZSliders(MAP->getMapSizeZ(),0 );
             RENDERER->MainCamera->SetSliceTop(MAP->getMapSizeZ());
             RENDERER->MainCamera->SetSliceBottom(0);
-            RENDERER->MainCamera->ConfineCursor();
+            RENDERER->ConfineCursor();
             UI->setMapViewState();
         }
     }
@@ -298,7 +283,7 @@ class MapLoadActionListener: public gcn::ActionListener
             UI->setZSliders(0,MAP->getMapSizeZ() );
             RENDERER->MainCamera->SetSliceTop(MAP->getMapSizeZ());
             RENDERER->MainCamera->SetSliceBottom(0);
-            RENDERER->MainCamera->ConfineCursor();
+            RENDERER->ConfineCursor();
 
             UI->setMapViewState();
         }
