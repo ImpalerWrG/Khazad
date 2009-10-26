@@ -15,7 +15,7 @@ class Tree;
 
 struct ROstore
 {
-    inline ROstore( RenderObject* n, RenderObject* t ): normal(n){};
+    inline ROstore( RenderObject* n): normal(n){};
     inline ROstore(){};
 
     RenderObject* normal;
@@ -90,6 +90,8 @@ public:
     void setLiquid(CubeCoordinates Coordinates, bool liquidtype, Uint8 NewValue);
 
 
+    inline Uint32 GenerateFaceKey(CubeCoordinates Coordinates, Facet FacetType);
+
     Face* getFace(CubeCoordinates Coordinates, Facet FacetType);
     bool hasFace(CubeCoordinates Coordinates, Facet FaceType);
 
@@ -153,10 +155,8 @@ protected:
     bitset<(CELLEDGESIZE * CELLEDGESIZE)> LiquidType; // Allow more liquid types?
     Uint8 LiquidLevel[CELLEDGESIZE][CELLEDGESIZE];
 
-    // Keeps all Faces between Cubes, shares three sides with other Cells to avoid doubling
-    map<Uint32, Face*> NorthSouthFaces;
-    map<Uint32, Face*> EastWestFaces;
-    map<Uint32, Face*> BottomFaces;
+    // Keeps all Faces between Cubes, shares three sides with other Cubes to avoid doubling
+    map<Uint32, Face*> Faces;
 
     vector <Building*> buildings;
     vector <Tree*> trees;

@@ -333,7 +333,7 @@ void Cell::UpdateRenderLists()
         // for each material in normal geometry
         for( map<int16_t, vector <vertex>* >::iterator it = Geometry.begin(); it != Geometry.end(); ++it)
         {
-            Sint16 material = it->first;
+            Sint16 Texture = it->first;
             vector <vertex>* vertices = it->second;
 
             // generate VBOs out of vertex arrays
@@ -341,16 +341,16 @@ void Cell::UpdateRenderLists()
             delete vertices;
             // create descriptor
             ROstore tempRO;
-            if(ROs.count(material))
+            if(ROs.count(Texture))
             {
-                tempRO = ROs[material];
+                tempRO = ROs[Texture];
                 tempRO.normal = RO;
             }
             else
             {
-                tempRO= ROstore(RO,NULL);
+                tempRO= ROstore(RO);
             }
-            ROs[material] = tempRO;
+            ROs[Texture] = tempRO;
         }
     }
 }
@@ -361,111 +361,36 @@ void Cell::setLiquid(CubeCoordinates Coordinates, bool liquidtype, Uint8 NewValu
     LiquidLevel[Coordinates.X][Coordinates.Y] = NewValue;
 }
 
+inline Uint32 Cell::GenerateFaceKey(CubeCoordinates Coordinates, Facet FacetType)
+{
+    Uint32 Key = Coordinates.Y;
+    Key <<= 8;
+    Key += Coordinates.X;
+    Key <<= 8;
+    Key += FacetType;
+
+    return Key;
+}
+
 Face* Cell::getFace(CubeCoordinates Coordinates, Facet FacetType)
 {
     if (FacetType & 1)  // True for East, South and Top some of which will require calls to other Cells
     {
-        if(FacetType == FACET_EAST)
-        {
-            if (Coordinates.X == CELLEDGESIZE)  // Jump to adjacent Cells for edge Faces
-            {
-                MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-                TargetCoordinates.X += 1;
-                return MAP->getFace(TargetCoordinates, FACET_WEST);
-            }
-            else
-            {
-                Uint32 Key = Coordinates.Y;
-                Key <<= 8;
-                Key += Coordinates.X + 1;  // Jump one position to the East along X axis
-
-                if (EastWestFaces.find(Key) == EastWestFaces.end())
-                {
-                    return NULL;
-                }
-                else
-                {
-                    return EastWestFaces.find(Key)->second;
-                }
-            }
-        }
-        else if(FacetType == FACET_SOUTH)
-        {
-            if (Coordinates.Y == CELLEDGESIZE)  // Jump to adjacent Cells for edge Faces
-            {
-                MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-                TargetCoordinates.Y += 1;
-                return MAP->getFace(TargetCoordinates, FACET_NORTH);
-            }
-            else
-            {
-                Uint32 Key = Coordinates.X;
-                Key <<= 8;
-                Key += Coordinates.Y + 1;  // Jump one position to the South on the Y axis
-
-                if (NorthSouthFaces.find(Key) == NorthSouthFaces.end())
-                {
-                    return NULL;
-                }
-                else
-                {
-                    return NorthSouthFaces.find(Key)->second;
-                }
-            }
-        }
-        else if(FacetType == FACET_TOP)  // All top faces are stored in the cell above
-        {
-            MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-            TargetCoordinates.Z += 1;
-            return MAP->getFace(TargetCoordinates, FACET_BOTTOM);
-        }
+        MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
+        TranslateCoordinates(TargetCoordinates.X, TargetCoordinates.Y, TargetCoordinates.Z, FacetType);
+        return MAP->getFace(TargetCoordinates, OppositeFacet(FacetType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {
-        if(FacetType == FACET_WEST)
-        {
-            Uint32 Key = Coordinates.Y;
-            Key <<= 8;
-            Key += Coordinates.X;
+        Uint32 Key = GenerateFaceKey(Coordinates, FacetType);
 
-            if (EastWestFaces.find(Key) == EastWestFaces.end())
-            {
-                return NULL;
-            }
-            else
-            {
-                return EastWestFaces.find(Key)->second;
-            }
+        if (Faces.find(Key) == Faces.end())
+        {
+            return NULL;
         }
-        else if(FacetType == FACET_NORTH)
+        else
         {
-            Uint32 Key = Coordinates.X;
-            Key <<= 8;
-            Key += Coordinates.Y;
-
-            if (NorthSouthFaces.find(Key) == NorthSouthFaces.end())
-            {
-                return NULL;
-            }
-            else
-            {
-                return NorthSouthFaces.find(Key)->second;
-            }
-        }
-        else if(FacetType == FACET_BOTTOM)
-        {
-            Uint32 Key = Coordinates.X;
-            Key <<= 8;
-            Key += Coordinates.Y;
-
-            if (BottomFaces.find(Key) == BottomFaces.end())
-            {
-                return NULL;
-            }
-            else
-            {
-                return BottomFaces.find(Key)->second;
-            }
+            return Faces.find(Key)->second;
         }
     }
 }
@@ -474,73 +399,15 @@ bool Cell::hasFace(CubeCoordinates Coordinates, Facet FacetType)
 {
     if (FacetType & 1)  // True for East, South and Top some of which will require calls to other Cells
     {
-        if (FacetType == FACET_EAST)
-        {
-            if (Coordinates.X == CELLEDGESIZE)  // Jump to adjacent Cells for edge Faces
-            {
-                MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-                TargetCoordinates.X += 1;
-                return MAP->hasFace(TargetCoordinates, FACET_WEST);
-            }
-            else
-            {
-                Uint32 Key = Coordinates.Y;
-                Key <<= 8;
-                Key += Coordinates.X + 1;  // Jump one position to the East along X axis
-
-                return EastWestFaces.find(Key) != EastWestFaces.end();
-            }
-        }
-        else if (FacetType == FACET_SOUTH)
-        {
-            if (Coordinates.Y == CELLEDGESIZE)  // Jump to adjacent Cells for edge Faces
-            {
-                MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-                TargetCoordinates.Y += 1;
-                return MAP->hasFace(TargetCoordinates, FACET_NORTH);
-            }
-            else
-            {
-                Uint32 Key = Coordinates.X;
-                Key <<= 8;
-                Key += Coordinates.Y + 1;  // Jump one position to the South on the Y axis
-
-                return NorthSouthFaces.find(Key) != NorthSouthFaces.end();
-            }
-        }
-        else if (FacetType == FACET_TOP)  // All top faces are stored in the cell above
-        {
-            MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-            TargetCoordinates.Z += 1;
-            return MAP->hasFace(TargetCoordinates, FACET_BOTTOM);
-        }
+        MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
+        TranslateCoordinates(TargetCoordinates.X, TargetCoordinates.Y, TargetCoordinates.Z, FacetType);
+        return MAP->hasFace(TargetCoordinates, OppositeFacet(FacetType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {
-        if (FacetType == FACET_WEST)
-        {
-            Uint32 Key = Coordinates.Y;
-            Key <<= 8;
-            Key += Coordinates.X;
+        Uint32 Key = GenerateFaceKey(Coordinates, FacetType);
 
-            return EastWestFaces.find(Key) != EastWestFaces.end();
-        }
-        else if (FacetType == FACET_NORTH)
-        {
-            Uint32 Key = Coordinates.X;
-            Key <<= 8;
-            Key += Coordinates.Y;
-
-            return NorthSouthFaces.find(Key) != NorthSouthFaces.end();
-        }
-        else if (FacetType == FACET_BOTTOM)
-        {
-            Uint32 Key = Coordinates.X;
-            Key <<= 8;
-            Key += Coordinates.Y;
-
-            return BottomFaces.find(Key) != BottomFaces.end();
-        }
+        return Faces.find(Key) != Faces.end();
     }
 }
 
@@ -627,102 +494,21 @@ bool Cell::removeFace(CubeCoordinates Coordinates, Facet FacetType)
 {
     if (FacetType & 1)  // True for East, South and Top some of which will require calls to other Cells
     {
-        if (FacetType == FACET_EAST)
-        {
-            if (Coordinates.X == CELLEDGESIZE)  // Jump to adjacent Cells for edge Faces
-            {
-                MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-                TargetCoordinates.X += 1;
-                return MAP->removeFace(TargetCoordinates, FACET_WEST);
-            }
-            else
-            {
-                Uint32 Key = Coordinates.Y;
-                Key <<= 8;
-                Key += Coordinates.X + 1;  // Jump one position to the East along X axis
-
-                if (EastWestFaces.find(Key) != EastWestFaces.end())
-                {
-                    delete EastWestFaces.find(Key)->second;
-                    EastWestFaces.erase(Key);
-                    setNeedsRedraw(true);
-                    return true;
-                }
-            }
-        }
-        else if (FacetType == FACET_SOUTH)
-        {
-            if (Coordinates.Y == CELLEDGESIZE)  // Jump to adjacent Cells for edge Faces
-            {
-                MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-                TargetCoordinates.Y += 1;
-                return MAP->removeFace(TargetCoordinates, FACET_NORTH);
-            }
-            else
-            {
-                Uint32 Key = Coordinates.X;
-                Key <<= 8;
-                Key += Coordinates.Y + 1;  // Jump one position to the South on the Y axis
-
-                if (NorthSouthFaces.find(Key) != NorthSouthFaces.end())
-                {
-                    delete NorthSouthFaces.find(Key)->second;
-                    NorthSouthFaces.erase(Key);
-                    setNeedsRedraw(true);
-                    return true;
-                }
-            }
-        }
-        else if (FacetType == FACET_TOP)  // All top faces are stored in the cell above
-        {
-            MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-            TargetCoordinates.Z += 1;
-            return MAP->removeFace(TargetCoordinates, FACET_BOTTOM);
-        }
+        MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
+        TranslateCoordinates(TargetCoordinates.X, TargetCoordinates.Y, TargetCoordinates.Z, FacetType);
+        return MAP->removeFace(TargetCoordinates, OppositeFacet(FacetType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {
-        if(FacetType == FACET_WEST)
-        {
-            Uint32 Key = Coordinates.Y;
-            Key <<= 8;
-            Key += Coordinates.X;
+        Uint32 Key = GenerateFaceKey(Coordinates, FacetType);
 
-            if (EastWestFaces.find(Key) != EastWestFaces.end())
-            {
-                delete EastWestFaces.find(Key)->second;
-                EastWestFaces.erase(Key);
-                setNeedsRedraw(true);
-                return true;
-            }
-        }
-        else if(FacetType == FACET_NORTH)
+        if (Faces.find(Key) != Faces.end())
         {
-            Uint32 Key = Coordinates.X;
-            Key <<= 8;
-            Key += Coordinates.Y;
+            delete Faces.find(Key)->second;
+            Faces.erase(Key);
 
-            if (NorthSouthFaces.find(Key) != NorthSouthFaces.end())
-            {
-                delete NorthSouthFaces.find(Key)->second;
-                NorthSouthFaces.erase(Key);
-                setNeedsRedraw(true);
-                return true;
-            }
-        }
-        else if(FacetType == FACET_BOTTOM)
-        {
-            Uint32 Key = Coordinates.X;
-            Key <<= 8;
-            Key += Coordinates.Y;
-
-            if (BottomFaces.find(Key) != BottomFaces.end())
-            {
-                delete BottomFaces.find(Key)->second;
-                BottomFaces.erase(Key);
-                setNeedsRedraw(true);
-                return true;
-            }
+            setNeedsRedraw(true);
+            return true;
         }
     }
     return false;
@@ -732,107 +518,22 @@ Face* Cell::addFace(CubeCoordinates Coordinates, Facet FacetType)
 {
     if (FacetType & 1)  // True for East, South and Top some of which will require calls to other Cells
     {
-        if (FacetType == FACET_EAST)
-        {
-            if (Coordinates.X == CELLEDGESIZE)  // Jump to adjacent Cells for edge Faces
-            {
-                MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-                TargetCoordinates.X += 1;
-                return MAP->addFace(TargetCoordinates, FACET_WEST);
-            }
-            else
-            {
-                Uint32 Key = Coordinates.Y;
-                Key <<= 8;
-                Key += Coordinates.X + 1;  // Jump one position to the East along X axis
-
-                if (EastWestFaces.find(Key) == EastWestFaces.end())
-                {
-                    Face* NewFace = new Face();
-                    EastWestFaces[Key] = NewFace;
-                    setActive(true);
-                    setNeedsRedraw(true);
-                    return NewFace;
-                }
-            }
-        }
-        else if (FacetType == FACET_SOUTH)
-        {
-            if (Coordinates.Y == CELLEDGESIZE)  // Jump to adjacent Cells for edge Faces
-            {
-                MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-                TargetCoordinates.Y += 1;
-                return MAP->addFace(TargetCoordinates, FACET_NORTH);
-            }
-            else
-            {
-                Uint32 Key = Coordinates.X;
-                Key <<= 8;
-                Key += Coordinates.Y + 1;  // Jump one position to the South on the Y axis
-
-                if (NorthSouthFaces.find(Key) == NorthSouthFaces.end())
-                {
-                    Face* NewFace = new Face();
-                    NorthSouthFaces[Key] = NewFace;
-                    setActive(true);
-                    setNeedsRedraw(true);
-                    return NewFace;
-                }
-            }
-        }
-        else if (FacetType == FACET_TOP)  // All top faces are stored in the cell above
-        {
-            MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-            TargetCoordinates.Z += 1;
-            return MAP->addFace(TargetCoordinates, FACET_BOTTOM);
-        }
+        MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
+        TranslateCoordinates(TargetCoordinates.X, TargetCoordinates.Y, TargetCoordinates.Z, FacetType);
+        return MAP->addFace(TargetCoordinates, OppositeFacet(FacetType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {
-        if(FacetType == FACET_WEST)
-        {
-            Uint32 Key = Coordinates.Y;
-            Key <<= 8;
-            Key += Coordinates.X;
+        Uint32 Key = GenerateFaceKey(Coordinates, FacetType);
 
-            if (EastWestFaces.find(Key) == EastWestFaces.end())
-            {
-                Face* NewFace = new Face();
-                EastWestFaces[Key] = NewFace;
-                setActive(true);
-                setNeedsRedraw(true);
-                return NewFace;
-            }
-        }
-        else if(FacetType == FACET_NORTH)
+        if (Faces.find(Key) == Faces.end())
         {
-            Uint32 Key = Coordinates.X;
-            Key <<= 8;
-            Key += Coordinates.Y;
+            Face* NewFace = new Face();
+            Faces[Key] = NewFace;
 
-            if (NorthSouthFaces.find(Key) == NorthSouthFaces.end())
-            {
-                Face* NewFace = new Face();
-                NorthSouthFaces[Key] = NewFace;
-                setActive(true);
-                setNeedsRedraw(true);
-                return NewFace;
-            }
-        }
-        else if(FacetType == FACET_BOTTOM)
-        {
-            Uint32 Key = Coordinates.X;
-            Key <<= 8;
-            Key += Coordinates.Y;
-
-            if (BottomFaces.find(Key) == BottomFaces.end())
-            {
-                Face* NewFace = new Face();
-                BottomFaces[Key] = NewFace;
-                setActive(true);
-                setNeedsRedraw(true);
-                return NewFace;
-            }
+            setActive(true);
+            setNeedsRedraw(true);
+            return NewFace;
         }
     }
     return NULL;
