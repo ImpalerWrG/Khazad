@@ -56,7 +56,7 @@ bool Map::Init()
     Initialized = true;
     MapLoaded = false;
 
-	return true;
+    return true;
 }
 
 bool Map::Generate(Uint32 Seed)
@@ -89,14 +89,14 @@ CubeCoordinates Map::TranslateMapToCube(MapCoordinates Coordinates)
 
 Cell* Map::getCell(CellCoordinates Coordinates)
 {
-	if (Coordinates.X >= 0 && Coordinates.X < CellSizeX && Coordinates.Y >= 0 && Coordinates.Y < CellSizeY)
-	{
-	    if(Coordinates.Z >= ColumnMatrix[Coordinates.X][Coordinates.Y]->BottomLevel() && Coordinates.Z <= ColumnMatrix[Coordinates.X][Coordinates.Y]->TopLevel())
-	    {
+    if (Coordinates.X >= 0 && Coordinates.X < CellSizeX && Coordinates.Y >= 0 && Coordinates.Y < CellSizeY)
+    {
+        if(Coordinates.Z >= ColumnMatrix[Coordinates.X][Coordinates.Y]->BottomLevel() && Coordinates.Z <= ColumnMatrix[Coordinates.X][Coordinates.Y]->TopLevel())
+        {
             return ColumnMatrix[Coordinates.X][Coordinates.Y]->getCell(Coordinates.Z);
-	    }
-	}
-	return NULL;
+        }
+    }
+    return NULL;
 }
 
 Cell* Map::getCubeOwner(MapCoordinates Coordinates)
@@ -219,8 +219,8 @@ bool Map::Extract()
     DF.FinishReadBuildings();
 
     MapSizeX = CellSizeX * CELLEDGESIZE;
-	MapSizeY = CellSizeY * CELLEDGESIZE;
-	MapSizeZ = CellSizeZ;
+    MapSizeY = CellSizeY * CELLEDGESIZE;
+    MapSizeZ = CellSizeZ;
 
     ColumnMatrix = new Column**[CellSizeX];
 
@@ -242,10 +242,10 @@ bool Map::Extract()
                     NewCell->setPosition(TargetCellCoodinates);
                     LoadCellData(DF, layerassign, NewCell, constructionAssigner, plantAssigner, buildingAssigner, TargetCellCoodinates);
                     ColumnMatrix[TargetCellCoodinates.X][TargetCellCoodinates.Y]->PushCell(NewCell, TargetCellCoodinates.Z);
-			    }
-			}
-		}
-	}
+                }
+            }
+        }
+    }
 
     for (TargetCellCoodinates.X = 0; TargetCellCoodinates.X < CellSizeX; TargetCellCoodinates.X += 1)
     {
@@ -257,10 +257,10 @@ bool Map::Extract()
                 if(LoopCell != NULL)
                 {
                     LoopCell->Init();  // ?? still nessary
-			    }
-			}
-		}
-	}
+                }
+            }
+        }
+    }
 
     DF.Detach();
     delete pDF;
@@ -283,7 +283,7 @@ bool Map::Extract()
                 }
             }
         }
-	}
+    }
 
     MapLoaded = true;
     return true;

@@ -591,16 +591,17 @@ bool Renderer::Render()
         //Point.z = MainCamera->LookZ() - (MainCamera->LookZ() * MainCamera->getLevelSeperation());
         DrawCage(Coodinates, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ() * MainCamera->getLevelSeperation(), false, 0, 1, 0);
 
-        //MapCoordinates Cursor;
-        //Cursor.z = MainCamera->ZlevelSeperationAdjustment(Cursor.z);
+        
+        MapCoordinates AdjustedCursor = Cursor;
+        AdjustedCursor.Z = MainCamera->ZlevelSeperationAdjustment(Cursor.Z);
 
         if (MAP->isCubeSolid(Cursor))
         {
-            DrawCage(Cursor, 1, 1, 1, true, 1, 1, 1);
+            DrawCage(AdjustedCursor, 1, 1, 1, true, 1, 1, 1);
         }
         else
         {
-            DrawCage(Cursor, 1, 1, 1, false, 1, 1, 1);
+            DrawCage(AdjustedCursor, 1, 1, 1, false, 1, 1, 1);
         }
     }
 
