@@ -283,20 +283,14 @@ void Cell::BuildFaceData()
 
                 if (isCubeSolid(TargetCubeCoordinates))
                 {
-                    if (!MAP->isCubeSolid(TargetMapCoordinates))
+                    if (MAP->isCubeInited(TargetMapCoordinates))
                     {
-                        setFaceMaterialType(TargetCubeCoordinates, FacetType, CubeMaterial);
+                        if (!MAP->isCubeSolid(TargetMapCoordinates))
+                        {
+                            setFaceMaterialType(TargetCubeCoordinates, FacetType, CubeMaterial);
+                        }
                     }
                 }
-                /*
-                else
-                {
-                    if (MAP->isCubeSolid(X, Y, Z))
-                    {
-                        setFaceMaterialType(x, y, FacetType, CubeMaterial);
-                    }
-                }
-                */
             }
         }
     }

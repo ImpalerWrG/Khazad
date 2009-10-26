@@ -111,13 +111,18 @@ Cell* Map::getCubeOwner(MapCoordinates Coordinates)
     return getCell(TargetCellCoordinates);
 }
 
-void Map::setCellNeedsReDraw(CellCoordinates Coordinates)
+bool Map::isCubeInited(MapCoordinates Coordinates)
+{
+    return getCubeOwner(Coordinates) != NULL;
+}
+
+void Map::setCellNeedsReDraw(CellCoordinates Coordinates, bool NewValue)
 {
     Cell* TargetCell = getCell(Coordinates);
 
     if (TargetCell != NULL)
     {
-        TargetCell->setNeedsRedraw(true);
+        TargetCell->setNeedsRedraw(NewValue);
     }
 }
 

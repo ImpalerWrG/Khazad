@@ -57,7 +57,9 @@ public:
 
 	Cell* getCell(CellCoordinates);
 	Cell* getCubeOwner(MapCoordinates);
-    void setCellNeedsReDraw(CellCoordinates);
+    bool isCubeInited(MapCoordinates);
+
+    void setCellNeedsReDraw(CellCoordinates, bool NewValue);
 
     CellCoordinates TranslateMapToCell(MapCoordinates Coordinates);
     CubeCoordinates TranslateMapToCube(MapCoordinates Coordinates);
