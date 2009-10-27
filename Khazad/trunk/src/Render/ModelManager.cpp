@@ -34,11 +34,10 @@ ModelManager::ModelManager()
 
 ModelManager::~ModelManager()
 {
-    for( map<string, Model* >::iterator it = models.begin(); it != models.end(); ++it)
+    for( Uint32 i = 0; i < ModelVector.size(); i++)
     {
-        delete it->second;
+        delete ModelVector[i];
     }
-    models.clear();
 }
 
 bool ModelManager::Init()
@@ -46,23 +45,21 @@ bool ModelManager::Init()
     for(Uint32 i = 0; i < DATA->getNumModels(); ++i)
     {
         Model* NewModel = LoadModel(DATA->getModelData(i)->getPath());
-        //DATA->getTextureData(i)->setDevILID(DevilID);
+
+        ModelVector.push_back(NewModel);
     }
 }
 
 Model* ModelManager::LoadModel(string filename)
 {
     // skip creation if we already have a model
-    if(models.count(filename))
-    {
-        return models[filename];
-    }
 
     char buffer[256];
-    vector < vertex3f > verts;
-    vector < normal3f > normals;
-    vector < texcoord2f > texcoords;
-    map <string, pair <RenderObject *, vector <vertex> *> > submodels;
+    vector <vertex3f> verts;
+    vector <normal3f> normals;
+    vector <texcoord2f> texcoords;
+
+    map <string, pair <RenderObject*, vector <vertex> *> > submodels;
     string currentgroup = "main";
 
     vector <vertex> *finished_verts = new vector<vertex>;
@@ -188,10 +185,11 @@ Model* ModelManager::LoadModel(string filename)
     {
         delete finished_verts;
     }
-    Model *ret = new Model(submodels);
-    models[filename] = ret;
+
+    Model *NewModel = new Model(submodels);
     submodels.clear();
-    return ret;
+
+    return NewModel;
 }
 
 /// TODO: separate this from khazad, use for mesh generation

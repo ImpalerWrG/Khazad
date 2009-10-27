@@ -55,12 +55,15 @@ public:
     bool Init();
 
     Model* LoadModel(string filename);
+
     vector <vertex>* getSlope(SlopeIndex surroundings);
-    void clear();
+
+    Model* getModel(Sint16 ModelID)             { return ModelVector[ModelID]; }
 
 private:
 
-    map< string, Model* > models;
+    vector <Model*> ModelVector;
+
     map< Uint16, vector <vertex>* > slopes;
 };
 

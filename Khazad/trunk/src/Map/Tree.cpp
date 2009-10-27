@@ -47,7 +47,7 @@ Tree::Tree(t_matglossPair material, int x, int y, int z, VegetationType NewType)
         TreeData* Data = MAP->TreeMan->getTreeDesc(material.index);
         if(Data)
         {
-            model = MODEL->LoadModel(DATA->getModelData(Data->getModelID())->getPath());
+            model = MODEL->getModel(Data->getModelID());
             if(model)
             {
                 TreeVariant var = Data->getVariant(0);
