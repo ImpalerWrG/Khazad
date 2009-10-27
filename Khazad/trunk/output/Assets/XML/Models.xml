@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Models xmlns="namespace">
+	<Model>
+		<Name Label="MODEL_SAGUARO"/>
+		<File Path="Assets/Models/Saguaro/Saguaro.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_OAK"/>
+		<File Path="Assets/Models/oak/oak_leaves_snow.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_MAPLE"/>
+		<File Path="Assets/Models/maple/maple.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_BIRCH"/>
+		<File Path="Assets/Models/birch/birch.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_CHESTNUT"/>
+		<File Path="Assets/Models/chestnut/chestnut.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_PALM"/>
+		<File Path="Assets/Models/palm/palm.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_LARCH"/>
+		<File Path="Assets/Models/larch/larch.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_PINE"/>
+		<File Path="Assets/Models/pine/pine.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_BOULDER"/>
+		<File Path="Assets/Models/stones/stone01.obj"/>
+	</Model>
+</Models>

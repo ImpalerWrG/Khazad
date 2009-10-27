@@ -6,7 +6,6 @@
 #include <Map.h>
 #include <Camera.h>
 #include <Singleton.h>
-#include <Cube.h>
 #include <ConfigManager.h>
 #include <ColorManager.h>
 #include <DataManager.h>

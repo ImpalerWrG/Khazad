@@ -11,9 +11,7 @@ class ImagePage;
 class Camera;
 class Vector3;
 class Plane;
-class Cube;
 class Cell;
-class ModelManager;
 
 // typedefs for VBO GL functions
 typedef void (APIENTRY * GL_BindBuffer_Func) (GLenum target, GLuint buffer);
@@ -150,7 +148,6 @@ public:
 
     ~Renderer();
     bool Init();
-    ModelManager* ModelMan;
 
     // check for OpenGL extension
     bool IsExtensionSupported( char* extesion );

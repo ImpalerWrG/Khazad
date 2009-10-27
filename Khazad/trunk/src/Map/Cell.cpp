@@ -1,7 +1,6 @@
 #include <stdafx.h>
 
 #include <Cell.h>
-#include <Cube.h>
 #include <Map.h>
 #include <DFTypes.h>
 #include <Building.h>
@@ -54,6 +53,8 @@ bool Cell::Init()
 {
     Initialized = true;
     NeedsRedraw = true;
+
+    BuildFaceData();
 
     MAP->ChangeInitedCellCount(1);
 
@@ -233,7 +234,7 @@ bool Cell::DrawSlope(CubeCoordinates Coordinates)
     }
 
     // get slope geometry and mix it in
-    vector <vertex>* slopeVetices = RENDERER->ModelMan->getSlope(surroundings);
+    vector <vertex>* slopeVetices = MODEL->getSlope(surroundings);
     MixVertexVectorsOffset(slopeVetices, VertexTextureVector, Coordinates.X, Coordinates.Y);
 
     return true;
@@ -296,12 +297,11 @@ void Cell::BuildFaceData()
     }
 }
 
-void Cell::UpdateRenderLists()
+void Cell::UpdateRenderLists(WallDisplayMode Mode)
 {
     //maps between texture and vertex vectors
     Geometry.clear();
 
-    Cube* LoopCube = NULL;
     if(Initialized)
     {
         CubeCoordinates TargetCubeCoordinates;

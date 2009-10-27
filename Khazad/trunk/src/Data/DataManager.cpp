@@ -24,6 +24,7 @@ bool DataManager::Init()
 {
     Path color_xml = "Assets\\XML\\Colors.xml";
     Path texture_xml = "Assets\\XML\\Textures.xml";
+    Path model_xml = "Assets\\XML\\Models.xml";
     Path font_xml = "Assets\\XML\\Fonts.xml";
     Path material_xml = "Assets\\XML\\Materials.xml";
     Path tilegroup_xml = "Assets\\XML\\TileGroups.xml";
@@ -35,6 +36,7 @@ bool DataManager::Init()
     // Initial loading of all XML files
     LoadDataClass(&Colors, color_xml, "Color");
     LoadDataClass(&Textures, texture_xml, "Texture");
+    LoadDataClass(&Models, model_xml, "Model");
     LoadDataClass(&Fonts, font_xml, "Font");
     LoadDataClass(&Materials, material_xml, "Material");
     LoadDataClass(&TileGroups, tilegroup_xml, "TileGroup");
@@ -49,6 +51,8 @@ bool DataManager::Init()
     PostProcessDataClass(&TileGroups);
     PostProcessDataClass(&SurfaceTypes);
     PostProcessDataClass(&Trees);
+    PostProcessDataClass(&Models);
+
     return true;
 }
 

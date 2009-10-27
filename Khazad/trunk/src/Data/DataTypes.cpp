@@ -261,6 +261,25 @@ bool TextureData::Load(TiXmlElement* Entry, Uint32 Index)
     return false;
 }
 
+ModelData::ModelData()
+{}
+
+ModelData::~ModelData()
+{}
+
+bool ModelData::Load(TiXmlElement* Entry, Uint32 Index)
+{
+    if(Entry)
+    {
+        string temp;
+        XML->QueryTextValue(Entry, "File", "Path", temp);
+        sPath = temp;
+        DataBase::Load(Entry, Index);
+        return true;
+    }
+    return false;
+}
+
 TileShapeData::TileShapeData()
 {}
 
@@ -272,11 +291,17 @@ bool TileShapeData::Load(TiXmlElement* Entry, Uint32 Index)
     if(Entry)
     {
         XML->QueryBoolValue(Entry, "Open", "bool", Open);
+        XML->QueryTextValue(Entry, "Model", "label", ModelLabel);
 
         DataBase::Load(Entry, Index);
         return true;
     }
     return false;
+}
+
+bool TileShapeData::PostProcessing()
+{
+    ModelID = DATA->getLabelIndex(ModelLabel);
 }
 
 TreeData::TreeData()
@@ -290,7 +315,7 @@ bool TreeData::Load(TiXmlElement* Entry, Uint32 Index)
     if(Entry)
     {
         XML->QueryTextValue(Entry,"MatGloss","value", Matgloss);
-        XML->QueryTextValue(Entry,"Model","file", ModelFile);
+        XML->QueryTextValue(Entry,"Model","label", ModelLabel);
 
         TiXmlElement *Variant = Entry->FirstChildElement("Variant");
         do
@@ -311,6 +336,8 @@ bool TreeData::Load(TiXmlElement* Entry, Uint32 Index)
 }
 bool TreeData::PostProcessing()
 {
+    ModelID = DATA->getLabelIndex(ModelLabel);
+
     for(int i = 0; i < variants.size();i++)
     {
         variants[i].LeavesMaterialID = DATA->getLabelIndex(variants[i].LeavesMaterial);

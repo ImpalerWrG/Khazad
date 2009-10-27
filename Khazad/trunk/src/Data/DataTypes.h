@@ -62,6 +62,22 @@ protected:
     Uint32 DevILID;
 };
 
+class ModelData: public DataBase
+{
+
+public:
+
+    ModelData();
+    ~ModelData();
+    bool Load(TiXmlElement* Element, Uint32 Index);
+
+    Path getPath()                  { return sPath; }
+
+protected:
+
+    Path sPath;
+};
+
 class SurfaceTypeData: public DataBase
 {
 
@@ -191,6 +207,7 @@ public:
 
     FontData();
     ~FontData();
+
     bool Load(TiXmlElement* Element, Uint32 Index);
 
     Path getPath()    { return sPath; }
@@ -206,17 +223,22 @@ class TileShapeData: public DataBase
 {
 
 public:
-
     TileShapeData();
     ~TileShapeData();
+
     bool Load(TiXmlElement* Element, Uint32 Index);
+    bool PostProcessing();
 
     bool isOpen()               { return Open; }
+
+    Sint16 getModelID()         { return ModelID; }
 
 protected:
 
     bool Open;
 
+    Sint16 ModelID;
+    string ModelLabel;
 };
 
 struct TreeVariant
@@ -231,21 +253,27 @@ struct TreeVariant
 
 class TreeData: public DataBase
 {
-    public:
-        TreeData();
-        ~TreeData();
-        bool Load(TiXmlElement* Element, Uint32 Index);
-        bool PostProcessing();
-        TreeVariant getVariant(Uint32 idx)
-        {
-            return variants[idx];
-        };
-        string getModel() {return ModelFile;};
-        string getMatgloss() {return Matgloss;};
-    protected:
-        vector <TreeVariant> variants;
-        string ModelFile;
-        string Matgloss;
+
+public:
+    TreeData();
+    ~TreeData();
+
+    bool Load(TiXmlElement* Element, Uint32 Index);
+    bool PostProcessing();
+
+    TreeVariant getVariant(Uint32 idx)          { return variants[idx]; }
+
+    Sint16 getModelID()                     { return ModelID; }
+    string getMatgloss()                    { return Matgloss; }
+
+protected:
+
+    vector <TreeVariant> variants;
+
+    string Matgloss;
+
+    Sint16 ModelID;
+    string ModelLabel;
 };
 
 #endif // DATATYPE__HEADER

@@ -11,6 +11,7 @@
 #include <ConfigManager.h>
 #include <DataManager.h>
 #include <InputManager.h>
+#include <ModelManager.h>
 #include <Game.h>
 #include <Map.h>
 #include <Gui.h>
@@ -63,6 +64,11 @@ bool initManagers()
     TEXTURE->Init();
     printf("TEXTURE DONE\n");
 
+    printf("-=MODEL INITIALIZING=- ... \n");
+    MODEL->CreateInstance();
+    MODEL->Init();
+    printf("MODEL DONE\n");
+
     printf("-=UI INITIALIZING=- ... \n");
     UI->CreateInstance();
     UI->Init();
@@ -99,8 +105,8 @@ void cleanup()
     COLOR->FreeInstance();
     FONT->FreeInstance();
     DATA->FreeInstance();
-
     TEXTURE->FreeInstance();
+    MODEL->FreeInstance();
     IMAGE->FreeInstance();
     GAME->FreeInstance();
     INPUT->FreeInstance();

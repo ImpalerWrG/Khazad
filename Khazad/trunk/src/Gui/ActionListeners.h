@@ -5,7 +5,6 @@
 #include <Renderer.h>
 #include <Map.h>
 #include <Camera.h>
-#include <Cube.h>
 #include <ColorManager.h>
 #include <ConfigManager.h>
 #include <DataManager.h>

@@ -30,7 +30,6 @@ struct CubeCoordinates
 struct t_matglossPair;
 class Column;
 class Cell;
-class Cube;
 class Actor;
 class Face;
 class TreeManager;

@@ -14,7 +14,6 @@
 #include <string.h> // for memset
 
 #include <Column.h>
-#include <Cube.h>
 #include <Cell.h>
 #include <Random.h>
 #include <Building.h>
@@ -247,6 +246,7 @@ bool Map::Extract()
         }
     }
 
+    // Build Face Data and other Initializations, can only be done properly once all map data is loaded
     for (TargetCellCoodinates.X = 0; TargetCellCoodinates.X < CellSizeX; TargetCellCoodinates.X += 1)
     {
         for (TargetCellCoodinates.Y = 0; TargetCellCoodinates.Y < CellSizeY; TargetCellCoodinates.Y += 1)
@@ -256,7 +256,7 @@ bool Map::Extract()
                 Cell* LoopCell = getCell(TargetCellCoodinates);
                 if(LoopCell != NULL)
                 {
-                    LoopCell->Init();  // ?? still nessary
+                    LoopCell->Init();
                 }
             }
         }
@@ -264,26 +264,6 @@ bool Map::Extract()
 
     DF.Detach();
     delete pDF;
-
-    // Initialize VBOs
-
-    for (TargetCellCoodinates.X = 0; TargetCellCoodinates.X < CellSizeX; TargetCellCoodinates.X += 1)
-    {
-        for (TargetCellCoodinates.Y = 0; TargetCellCoodinates.Y < CellSizeY; TargetCellCoodinates.Y += 1)
-        {
-            for (TargetCellCoodinates.Z = 0; TargetCellCoodinates.Z < CellSizeZ; TargetCellCoodinates.Z += 1)
-            {
-                Cell* LoopCell = getCell(TargetCellCoodinates);
-                if(LoopCell != NULL && /*LoopCell->isActive() &&*/ LoopCell->getNeedsRedraw())
-                {
-                    // Rebuild the new Drawlist
-                    LoopCell->BuildFaceData();
-                    LoopCell->UpdateRenderLists();
-                    LoopCell->setNeedsRedraw(false);
-                }
-            }
-        }
-    }
 
     MapLoaded = true;
     return true;
@@ -1065,4 +1045,3 @@ void Map::ReleaseMap()
         ColumnMatrix = NULL;
     }
 }
-

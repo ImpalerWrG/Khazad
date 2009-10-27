@@ -18,34 +18,45 @@
 */
 
 #include <stdafx.h>
-#include "Renderer.h"
-#include "ModelManager.h"
-#include "Model.h"
 
+#include <Renderer.h>
+#include <ModelManager.h>
+#include <DataManager.h>
+#include <Model.h>
+
+
+DECLARE_SINGLETON(ModelManager)
 
 ModelManager::ModelManager()
 {
     //ctor, whatever
 }
+
 ModelManager::~ModelManager()
 {
-    clear();
-}
-
-void ModelManager::clear()
-{
-    for( map<string, Model * >::iterator it = models.begin(); it != models.end(); ++it)
+    for( map<string, Model* >::iterator it = models.begin(); it != models.end(); ++it)
     {
         delete it->second;
     }
     models.clear();
 }
 
-Model * ModelManager::LoadOBJModel(string filename)
+bool ModelManager::Init()
+{
+    for(Uint32 i = 0; i < DATA->getNumModels(); ++i)
+    {
+        Model* NewModel = LoadModel(DATA->getModelData(i)->getPath());
+        //DATA->getTextureData(i)->setDevILID(DevilID);
+    }
+}
+
+Model* ModelManager::LoadModel(string filename)
 {
     // skip creation if we already have a model
     if(models.count(filename))
+    {
         return models[filename];
+    }
 
     char buffer[256];
     vector < vertex3f > verts;
@@ -59,8 +70,10 @@ Model * ModelManager::LoadOBJModel(string filename)
     int v1,v2,v3,v4,v5,n1,n2,n3,n4,n5,t1,t2,t3,t4,t5;
     FILE * modelfile = fopen (filename.c_str(), "r");
     if (! modelfile)
+    {
         return NULL;
-    while (fgets(buffer,255,modelfile) != NULL)
+    }
+    while (fgets(buffer, 255, modelfile) != NULL)
     {
         char test = buffer[0];
         char test2 = buffer[1];
@@ -199,9 +212,9 @@ vector < vertex > * ModelManager::getSlope(SlopeIndex surroundings)
     */
     uint8_t hm[10] = {0,0,0,0,0,0,0,0,0,1};
     float hmf[10];// same in float
-    
+
     uint8_t covered[4] = {0,0,0,0}; // view of a side blocked by geometry?
-    
+
     // coordinates of the directions... fixed for spillover at the end of the loop
     static const float dc[9][2] =
     {
@@ -240,10 +253,10 @@ vector < vertex > * ModelManager::getSlope(SlopeIndex surroundings)
         {0,0,0}
     };
     uint8_t strong, weak, numsolids = 0;
-    
+
     // copy surroundings
     bool solid = 0;
-    
+
     solid = surroundings.directions.nw == 2;
     hm[0] = solid << 1;
     numsolids += solid;
@@ -251,37 +264,37 @@ vector < vertex > * ModelManager::getSlope(SlopeIndex surroundings)
     solid = surroundings.directions.n == 2;
     hm[1] = solid << 1;
     numsolids += solid;
-    
+
     solid = surroundings.directions.ne == 2;
     hm[2] = solid << 1;
     numsolids += solid;
-    
+
     solid = surroundings.directions.e == 2;
     hm[3] = solid << 1;
     numsolids += solid;
-    
+
     solid = surroundings.directions.se == 2;
     hm[4] = solid << 1;
     numsolids += solid;
-    
+
     solid = surroundings.directions.s == 2;
     hm[5] = solid << 1;
     numsolids += solid;
-    
+
     solid = surroundings.directions.sw == 2;
     hm[6] = solid << 1;
     numsolids += solid;
-    
+
     solid = surroundings.directions.w == 2;
     hm[7] = solid << 1;
     numsolids += solid;
-    
+
     // test for covered and uncovered sides
     covered[0] = hm[1] || surroundings.directions.n == 1;
     covered[1] = hm[3] || surroundings.directions.e == 1;
     covered[2] = hm[5] || surroundings.directions.s == 1;
     covered[3] = hm[7] || surroundings.directions.w == 1;
-    
+
     // determine center
     strong = (hm[7] && hm[1] && !hm[3] && !hm[4] && !hm[5])
     + (hm[1] && hm[3] && !hm[5] && !hm[6] && !hm[7])
@@ -296,27 +309,27 @@ vector < vertex > * ModelManager::getSlope(SlopeIndex surroundings)
     }
     else if(strong == 1) hm[9] = 2;
     else hm[9] = 1;
-    
+
     // fix corners
     hm[0] = hm[7] | hm[0] | hm[1];
     hm[2] = hm[1] | hm[2] | hm[3];
     hm[4] = hm[3] | hm[4] | hm[5];
     hm[6] = hm[5] | hm[6] | hm[7];
-    
+
     // fix sides so that slopes aren't jaggy.
     hm[1] = (hm[1] >> 1) + (hm[0] || hm[2]);
     hm[3] = (hm[3] >> 1) + (hm[2] || hm[4]);
     hm[5] = (hm[5] >> 1) + (hm[4] || hm[6]);
     hm[7] = (hm[7] >> 1) + (hm[6] || hm[0]);
-    
+
     hm[8] = hm[0]; // copy first point so we can safely use algorithms that go to N+1
-    
+
     // convert int heights to floats
     for(int i = 0; i < 10; ++i)
     {
         hmf[i] = ((float)hm[i]) / 2 - 0.5;
     }
-    
+
     // draw triangles
     for(Direction i = DIRECTIONS_START; i <= DIRECTION_WEST; ++i)
     {
@@ -334,11 +347,11 @@ vector < vertex > * ModelManager::getSlope(SlopeIndex surroundings)
         s2f tx0 = {0.5,0.5};
         s2f tx1 = {tc[i+1][0],tc[i+1][1]};
         s2f tx2 = {tc[i][0],tc[i][1]};
-        
+
         vertex v0 = vertex(center, tx0, norm);
         vertex v1 = vertex(pt1, tx1, norm);
         vertex v2 = vertex(pt2, tx2, norm);
-        
+
         ret->push_back(v0);
         ret->push_back(v1);
         ret->push_back(v2);
@@ -351,13 +364,13 @@ vector < vertex > * ModelManager::getSlope(SlopeIndex surroundings)
         {
             continue;
         }
-        
+
         // zero center can be ignored
         if (hm[i+1] == 0)
         {
             continue;
         }
-        
+
         // determine how many triangles are needed an in what configuration
         if(hm[i] == 0)// one tri, hm[i+2] is high
         {
@@ -385,7 +398,7 @@ vector < vertex > * ModelManager::getSlope(SlopeIndex surroundings)
             ret->push_back(vertex(dc[i+2][0],  dc[i+2][1], -0.5,    0.0,0.0,   norms[i][0],norms[i][1],norms[i][2] ));
             // first lower
             ret->push_back(vertex(dc[i][0], dc[i][1], -0.5,    1.0,0.0,   norms[i][0],norms[i][1],norms[i][2] ));
-            
+
             // first lower
             ret->push_back(vertex(dc[i][0], dc[i][1], -0.5,    1.0,0.0,   norms[i][0],norms[i][1],norms[i][2] ));
             // first upper

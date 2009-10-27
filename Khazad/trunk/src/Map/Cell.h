@@ -44,7 +44,7 @@ public:
     void ClearROs();
 
     // update VBOs
-    void UpdateRenderLists();
+    void UpdateRenderLists(WallDisplayMode Mode);
 
     // sync with DF if applicable
     bool Update();

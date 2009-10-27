@@ -17,8 +17,8 @@
 
 */
 
-#ifndef MODEL_H
-#define MODEL_H
+#ifndef MODEL_HEADER
+#define MODEL_HEADER
 
 struct RenderObject;
 class Model
@@ -33,6 +33,7 @@ class Model
             }
             RENDERER->CallRenderObject(submodels[0].first);
         };
+
         inline void Render( string submodel )
         {
             int idx = getSubmodelIndex(submodel);
@@ -42,6 +43,7 @@ class Model
             }
             RENDERER->CallRenderObject(submodels[idx].first);
         };
+
         inline void Render( uint32_t submodel )
         {
             if(submodels[submodel].first == NULL)
@@ -50,25 +52,28 @@ class Model
             }
             RENDERER->CallRenderObject(submodels[submodel].first);
         };
-        
+
         inline vector <vertex> * getSubmodelVertices ( uint32_t submodel )
         {
             return submodels[submodel].second;
         }
-        
+
         inline vector <vertex> * getVertices ()
         {
             return submodels[0].second;
         }
-        
+
         inline int32_t getSubmodelIndex (string submodel)
         {
             if(submodel_names.count(submodel))
+            {
                 return submodel_names[submodel];
+            }
             return -1;
         }
+
     private:
-        
+
         Model(map <string, pair <RenderObject *, vector <vertex> *> > & _submodels)
         {
             uint32_t i = 0;
@@ -79,6 +84,7 @@ class Model
                 submodels.push_back(it->second);
             }
         }
+
         ~Model()
         {
             for(int i = 0; i < submodels.size(); i++ )
@@ -90,8 +96,9 @@ class Model
                 delete submodels[i].second;
             }
         }
+
         map <string, uint32_t> submodel_names;
         vector < pair <RenderObject *, vector <vertex> *> > submodels;
 };
 
-#endif // MODEL_H
+#endif // MODEL_HEADER

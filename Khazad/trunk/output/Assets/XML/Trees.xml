@@ -1,78 +1,78 @@
 <Trees xmlns="namespace">
 	<Tree>
 		<Name Label="TREE_SAGUARO"/>
-		<MatGloss value="SAGUARO" />
-		<Model file="Assets/Models/Saguaro/Saguaro.obj" />
+		<MatGloss value="SAGUARO"/>
+		<Model label="MODEL_SAGUARO"/>
 		<Variant>
-		  <Trunk material="MATERIAL_SAGUARO" />
+		  <Trunk material="MATERIAL_SAGUARO"/>
 		</Variant>
 	</Tree>
 	<Tree>
 		<Name Label="TREE_OAK"/>
-		<MatGloss value="OAK" />
-		<Model file="Assets/Models/oak/oak_leaves_snow.obj" />
+		<MatGloss value="OAK"/>
+		<Model label="MODEL_OAK"/>
 		<Variant>
-		  <Trunk material="MATERIAL_OAK_TRUNK" />
-		  <Snow material="MATERIAL_TREE_SNOW" />
-		  <Leaves material="MATERIAL_OAK_LEAVES" />
+		  <Trunk material="MATERIAL_OAK_TRUNK"/>
+		  <Snow material="MATERIAL_TREE_SNOW"/>
+		  <Leaves material="MATERIAL_OAK_LEAVES"/>
 		</Variant>
 	</Tree>
 	<Tree>
 		<Name Label="TREE_MAPLE"/>
-		<MatGloss value="MAPLE" />
-		<Model file="Assets/Models/maple/maple.obj" />
+		<MatGloss value="MAPLE"/>
+		<Model label="MODEL_MAPLE"/>
 		<Variant>
-		  <Trunk material="MATERIAL_MAPLE_TRUNK" />
-		  <Snow material="MATERIAL_TREE_SNOW" />
-		  <Leaves material="MATERIAL_MAPLE_LEAVES" />
+		  <Trunk material="MATERIAL_MAPLE_TRUNK"/>
+		  <Snow material="MATERIAL_TREE_SNOW"/>
+		  <Leaves material="MATERIAL_MAPLE_LEAVES"/>
 		</Variant>
 	</Tree>
 	<Tree>
 		<Name Label="TREE_BIRCH"/>
-		<MatGloss value="BIRCH" />
-		<Model file="Assets/Models/birch/birch.obj" />
+		<MatGloss value="BIRCH"/>
+		<Model label="MODEL_BIRCH"/>
 		<Variant>
-		  <Trunk material="MATERIAL_BIRCH_TRUNK" />
-		  <Snow material="MATERIAL_TREE_SNOW" />
-		  <Leaves material="MATERIAL_BIRCH_LEAVES" />
+		  <Trunk material="MATERIAL_BIRCH_TRUNK"/>
+		  <Snow material="MATERIAL_TREE_SNOW"/>
+		  <Leaves material="MATERIAL_BIRCH_LEAVES"/>
 		</Variant>
 	</Tree>
 	<Tree>
 		<Name Label="TREE_CHESTNUT"/>
-		<MatGloss value="CHESTNUT" />
-		<Model file="Assets/Models/chestnut/chestnut.obj" />
+		<MatGloss value="CHESTNUT"/>
+		<Model label="MODEL_CHESTNUT"/>
 		<Variant>
-		  <Trunk material="MATERIAL_CHESTNUT_TRUNK" />
-		  <Snow material="MATERIAL_TREE_SNOW" />
-		  <Leaves material="MATERIAL_CHESTNUT_LEAVES" />
+		  <Trunk material="MATERIAL_CHESTNUT_TRUNK"/>
+		  <Snow material="MATERIAL_TREE_SNOW"/>
+		  <Leaves material="MATERIAL_CHESTNUT_LEAVES"/>
 		</Variant>
 	</Tree>
 	<Tree>
 		<Name Label="TREE_PALM"/>
-		<MatGloss value="PALM" />
-		<Model file="Assets/Models/palm/palm.obj" />
+		<MatGloss value="PALM"/>
+		<Model label="MODEL_PALM"/>
 		<Variant>
-		  <Trunk material="MATERIAL_PALM_TRUNK" />
-		  <!--<Snow material="MATERIAL_TREE_SNOW" />-->
-		  <Leaves material="MATERIAL_PALM_LEAVES" />
+		  <Trunk material="MATERIAL_PALM_TRUNK"/>
+		  <!--<Snow material="MATERIAL_TREE_SNOW"/>-->
+		  <Leaves material="MATERIAL_PALM_LEAVES"/>
 		</Variant>
 	</Tree>
         <Tree>
         <Name Label="TREE_PINE"/>
-        <MatGloss value="PINE" />
-        <Model file="Assets/Models/pine/pine.obj" />
+        <MatGloss value="PINE"/>
+        <Model label="MODEL_PINE"/>
         <Variant>
-          <Trunk material="MATERIAL_PINE_TRUNK" />
-          <Leaves material="MATERIAL_PINE_LEAVES" />
+          <Trunk material="MATERIAL_PINE_TRUNK"/>
+          <Leaves material="MATERIAL_PINE_LEAVES"/>
         </Variant>
     </Tree>
     <Tree>
         <Name Label="TREE_LARCH"/>
-        <MatGloss value="LARCH" />
-        <Model file="Assets/Models/larch/larch.obj" />
+        <MatGloss value="LARCH"/>
+        <Model label="MODEL_LARCH"/>
         <Variant>
-          <Trunk material="MATERIAL_LARCH_TRUNK" />
-          <Leaves material="MATERIAL_LARCH_LEAVES" />
+          <Trunk material="MATERIAL_LARCH_TRUNK"/>
+          <Leaves material="MATERIAL_LARCH_LEAVES"/>
         </Variant>
     </Tree>
 </Trees>

@@ -12,7 +12,7 @@
 #include <TextureManager.h>
 #include <ImageManager.h>
 #include <DataManager.h>
-#include "ModelManager.h"
+#include <ModelManager.h>
 
 #include <DFTypes.h>
 #include <DFHackAPI.h>
@@ -20,7 +20,6 @@
 #include <Game.h>
 #include <Map.h>
 #include <Cell.h>
-#include <Cube.h>
 #include <Gui.h>
 #include <Paths.h>
 
@@ -48,15 +47,14 @@ Renderer::Renderer()
 
     ScreenShotCounter = 0;
     TotalTriangles = 0;
-
-    ModelMan = new ModelManager();
 }
 
 Renderer::~Renderer()
 {
     if (imageLoader != NULL)
+    {
         delete imageLoader;
-    delete ModelMan;
+    }
 }
 
 bool Renderer::Init()
@@ -71,16 +69,11 @@ bool Renderer::Init()
 
     SDL_WM_SetCaption("Khazad", "Khazad");
 
-    //SDL_Surface* Icon = SDL_LoadBMP("Assets\\Textures\\Khazad_Icon.bmp");
     SDL_Surface* Icon = NULL;
-    //Icon = SDL_LoadBMP(Path("Assets\\Textures\\KIcon.bmp"));
     Icon = IMAGE->loadSurface(Path("Assets\\Textures\\KIcon.png"));
 
     if(Icon)
     {
-        //Uint32 colorkey = SDL_MapRGB(Icon->format, 255, 0, 255);
-        //SDL_SetColorKey(Icon, SDL_SRCCOLORKEY, colorkey);
-        //SDL_SetAlpha(Icon, SDL_SRCALPHA, 255);
         SDL_WM_SetIcon(Icon, NULL);
     }
 
@@ -545,7 +538,7 @@ void Renderer::RenderCell(CellCoordinates Coordinates, float ZTranslate, float S
                 if(LoopCell->getNeedsRedraw())
                 {
                     // Rebuild the VBOs
-                    LoopCell->UpdateRenderLists();
+                    LoopCell->UpdateRenderLists(MainCamera->getWallDisplayMode());
                     LoopCell->setNeedsRedraw(false);
                 }
 

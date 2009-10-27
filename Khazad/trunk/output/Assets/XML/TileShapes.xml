@@ -30,6 +30,6 @@
 	<TileShape>
 		<Name Label="TILESHAPE_BOULDER"/>
 		<Open bool="1"/>
-		<Model file=""/>
+        <Model label="MODEL_BOULDER"/>
 	</TileShape>
 </TileShapes>

@@ -5,7 +5,6 @@
 #include <Renderer.h>
 #include <Game.h>
 #include <Map.h>
-#include <Cube.h>
 
 
 Pawn::Pawn()
@@ -68,17 +67,6 @@ bool Pawn::Move(Vector3 Direction)
         }
     }
 
-    //Cube* NewCube = MAP->getCube((Uint32) Position.x, (Uint32) Position.y, (Uint32) Position.z);
-/*
-    if (NewCube)
-    {
-        if (NewCube->isInitalized() != true)
-        {
-            //NewCube->Init();
-            //NewCube->setVisible(true);
-        }
-    }
-*/
     return true;
 }
 

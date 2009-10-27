@@ -17,8 +17,14 @@
 
 */
 
-#ifndef MODELMANAGER_H
-#define MODELMANAGER_H
+#ifndef MODELMANAGER_HEADER
+#define MODELMANAGER_HEADER
+
+
+#include <stdafx.h>
+
+#include <Singleton.h>
+
 
 class Model;
 
@@ -40,16 +46,24 @@ union SlopeIndex
 
 class ModelManager
 {
-    public:
-        ModelManager();
-        ~ModelManager();
-        Model * LoadOBJModel(string filename);
-        vector < vertex > * getSlope(SlopeIndex surroundings);
-        void clear();
+    DECLARE_SINGLETON_CLASS(ModelManager)
 
-    private:
-        map < string, Model * > models;
-        map < uint16_t, vector < vertex > * > slopes;
+public:
+
+    ~ModelManager();
+
+    bool Init();
+
+    Model* LoadModel(string filename);
+    vector <vertex>* getSlope(SlopeIndex surroundings);
+    void clear();
+
+private:
+
+    map< string, Model* > models;
+    map< Uint16, vector <vertex>* > slopes;
 };
 
-#endif // MODELMANAGER_H
+#define MODEL (ModelManager::GetInstance())
+
+#endif // MODELMANAGER_HEADER

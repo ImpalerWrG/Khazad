@@ -62,7 +62,7 @@ public:
         return true;
     }
 
-    ColorData* getColorData(Uint32 Index)                    
+    ColorData* getColorData(Uint32 Index)
     {
         if (Index != -1)
             return Colors[Index];
@@ -72,6 +72,9 @@ public:
 
     TextureData* getTextureData(Uint32 Index)                { return Textures[Index]; }
     Uint32 getNumTextures()                                  { return Textures.size(); }
+
+    ModelData* getModelData(Uint32 Index)                    { return Models[Index]; }
+    Uint32 getNumModels()                                    { return Models.size(); }
 
     FontData* getFontData(Uint32 Index)                      { return Fonts[Index]; }
     Uint32 getNumFonts()                                     { return Fonts.size(); }
@@ -106,6 +109,7 @@ protected:
 
     std::vector<ColorData*> Colors;
     std::vector<TextureData*> Textures;
+    std::vector<ModelData*> Models;
     std::vector<FontData*> Fonts;
     std::vector<MaterialData*> Materials;
     std::vector<TileGroupData*> TileGroups;

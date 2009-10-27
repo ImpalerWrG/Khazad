@@ -5,7 +5,6 @@
 #include <Renderer.h>
 #include <ConfigManager.h>
 #include <Map.h>
-#include <Cube.h>
 #include <Gui.h>
 
 
@@ -203,17 +202,17 @@ bool Camera::DetermineCursorIntersection()
         TestCoordinates.X = (int) (MouseIntersection.x + 0.5);
         TestCoordinates.Y = (int) (MouseIntersection.y + 0.5);
         TestCoordinates.Z = i;
-        
+
         // Find Slopes while not picking Cubes that lack facets or arnt being drawn
         if(RENDERER->isCubeDrawn(TestCoordinates) && MAP->isCubeSloped(TestCoordinates)) //&& (TargetCube->isSolid() || TargetCube->isSlope()))
         {
             MouseIntersection.x = TestCoordinates.X + 0.5;
             MouseIntersection.y = TestCoordinates.Y + 0.5;
             MouseIntersection.z = i;
-            
+
             return true;
         }
-        
+
         if(RENDERER->isCubeDrawn(TestCoordinates) && MAP->hasFace(TestCoordinates, FACET_BOTTOM))
         {
             MouseIntersection.x = TestCoordinates.X + 0.5;
