@@ -139,6 +139,25 @@ void Ui::InitCameraControlMenu()
     CameraControlWindow->add(AngleLockToggleButton, ButtonSize * 4, ButtonSize * 0);
 
 
+    gcn::KhazToggleButton* SubterraneanToggleButton = new gcn::KhazToggleButton(Path("Assets/UI/Buttons/Hidden.png"), Path("Assets/UI/Buttons/Hidden2.png"));
+    SubterraneanToggleButton->setSize(ButtonSize, ButtonSize);
+    gcn::ActionListener* SubTerranianToggleListener = new SubterraneanToggleActionListener();
+    SubterraneanToggleButton->addActionListener(SubTerranianToggleListener);
+    CameraControlWindow->add(SubterraneanToggleButton, ButtonSize * 5, ButtonSize * 0);
+
+    gcn::KhazToggleButton* SkyViewToggleButton = new gcn::KhazToggleButton(Path("Assets/UI/Buttons/Hidden.png"), Path("Assets/UI/Buttons/Hidden2.png"));
+    SkyViewToggleButton->setSize(ButtonSize, ButtonSize);
+    gcn::ActionListener* SkyViewToggleListener = new SkyViewToggleActionListener();
+    SkyViewToggleButton->addActionListener(SkyViewToggleListener);
+    CameraControlWindow->add(SkyViewToggleButton, ButtonSize * 5, ButtonSize * 1);
+
+    gcn::KhazToggleButton* SunLitToggleButton = new gcn::KhazToggleButton(Path("Assets/UI/Buttons/Hidden.png"), Path("Assets/UI/Buttons/Hidden2.png"));
+    SunLitToggleButton->setSize(ButtonSize, ButtonSize);
+    gcn::ActionListener* SunLitToggleListener = new SunLitToggleActionListener();
+    SunLitToggleButton->addActionListener(SunLitToggleListener);
+    CameraControlWindow->add(SunLitToggleButton, ButtonSize * 5, ButtonSize * 2);
+
+
     gcn::KhazButton* ViewUpButton = new gcn::KhazButton(Path("Assets/UI/Buttons/UpArrow.png"));
     ViewUpButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* MoveViewUpListener = new MoveViewUpActionListener();
@@ -150,6 +169,7 @@ void Ui::InitCameraControlMenu()
     gcn::ActionListener* MoveViewDownListener = new MoveViewDownActionListener();
     ViewDownButton->addActionListener(MoveViewDownListener);
     CameraControlWindow->add(ViewDownButton, ButtonSize * 0, ButtonSize * 2);
+
 
     gcn::KhazButton* OrbitClockwiseButton = new gcn::KhazButton(Path("Assets/UI/Buttons/Clockwise.png"));
     OrbitClockwiseButton->setSize(ButtonSize, ButtonSize);

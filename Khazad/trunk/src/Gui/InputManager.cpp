@@ -133,21 +133,6 @@ bool InputManager::HandleInput()
                         RENDERER->CaptureScreenShot();
                         break;
                     }
-                    case SDLK_u:
-					{
-					    RENDERER->setSubTerranianDraw(!RENDERER->isSubTerranianDraw());
-					    break;
-					}
-                    case SDLK_i:
-					{
-					    RENDERER->setSkyViewDraw(!RENDERER->isSkyViewDraw());
-					    break;
-					}
-                    case SDLK_o:
-					{
-					    RENDERER->setSunLitDraw(!RENDERER->isSunLitDraw());
-					    break;
-					}
                     case SDLK_b:
 					{
 					    RENDERER->setDebuggingDraw(!RENDERER->isDebuggingDraw());

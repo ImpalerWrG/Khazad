@@ -115,6 +115,30 @@ class HiddenToggleActionListener: public gcn::ActionListener
     }
 };
 
+class SubterraneanToggleActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        RENDERER->setSubterraneanDraw(!RENDERER->isSubterraneanDraw());
+    }
+};
+
+class SkyViewToggleActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        RENDERER->setSkyViewDraw(!RENDERER->isSkyViewDraw());
+    }
+};
+
+class SunLitToggleActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        RENDERER->setSunLitDraw(!RENDERER->isSunLitDraw());
+    }
+};
+
 class IncresseLevelSeperationActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)

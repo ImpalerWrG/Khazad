@@ -837,9 +837,9 @@ void Map::LoadCellData(DFHackAPI & DF,
             TargetCell->setCubeMaterial(Coordinates, TileMaterialID);
 
             TargetCell->setCubeHidden(Coordinates, Designations.bits.hidden);
-            TargetCell->setCubeSubTerranean(Coordinates, Designations.bits.hidden);
-            TargetCell->setCubeSkyView(Coordinates, Designations.bits.hidden);
-            TargetCell->setCubeSunLit(Coordinates, Designations.bits.hidden);
+            TargetCell->setCubeSubTerranean(Coordinates, Designations.bits.subterranean);
+            TargetCell->setCubeSkyView(Coordinates, Designations.bits.skyview);
+            TargetCell->setCubeSunLit(Coordinates, Designations.bits.light);
 
             if(Designations.bits.flow_size)
             {

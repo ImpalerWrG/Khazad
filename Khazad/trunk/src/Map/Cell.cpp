@@ -148,6 +148,14 @@ bool Cell::DrawFaces(CubeCoordinates Coordinates)
             continue; // No bottom faces underneath slopes
         }
 
+        MapCoordinates AdjacentCubeCoordinates = TranslateCubeToMap(Coordinates);
+        TranslateCoordinates(AdjacentCubeCoordinates.X, AdjacentCubeCoordinates.Y, AdjacentCubeCoordinates.Z, FacetType);
+
+        if (FacetType != FACET_BOTTOM && !RENDERER->isCubeDrawn(AdjacentCubeCoordinates))
+        {
+            continue;
+        }
+
         Face* TargetFace = getFace(Coordinates, FacetType);
         if (TargetFace != NULL)
         {

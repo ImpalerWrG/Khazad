@@ -38,7 +38,8 @@ Renderer::Renderer()
     FrameDraw = true;
     ShadedDraw = true;
     HiddenDraw = false;
-    SubTerranianDraw = true;
+
+    SubterraneanDraw = true;
     SkyViewDraw = true;
     SunLitDraw = true;
 
@@ -582,7 +583,7 @@ bool Renderer::Render()
         Coodinates.Y =0;
         Coodinates.Z =0;
         DrawCage(Coodinates, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ() * MainCamera->getLevelSeperation(), false, 0, 1, 0);
-        
+
 		MapCoordinates AdjustedCursor = Cursor;
         AdjustedCursor.Z = MainCamera->ZlevelSeperationAdjustment(Cursor.Z);
 
@@ -742,7 +743,7 @@ bool Renderer::isCubeDrawn(MapCoordinates Coordinates)
         {
             return false;
         }
-        if(MAP->isCubeSubTerranean(Coordinates) && !isSubTerranianDraw())
+        if(MAP->isCubeSubTerranean(Coordinates) && !isSubterraneanDraw())
         {
             return false;
         }
@@ -912,9 +913,9 @@ void Renderer::setHiddenDraw(bool NewValue)
     DirtyAllLists();
 }
 
-void Renderer::setSubTerranianDraw(bool NewValue)
+void Renderer::setSubterraneanDraw(bool NewValue)
 {
-    SubTerranianDraw = NewValue;
+    SubterraneanDraw = NewValue;
     DirtyAllLists();
 }
 

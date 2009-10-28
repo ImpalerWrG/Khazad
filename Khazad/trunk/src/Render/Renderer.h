@@ -178,8 +178,8 @@ public:
     bool isHiddenDraw()                         { return HiddenDraw; }
     void setHiddenDraw(bool NewValue);
 
-    bool isSubTerranianDraw()                   { return SubTerranianDraw; }
-    void setSubTerranianDraw(bool NewValue);
+    bool isSubterraneanDraw()                   { return SubterraneanDraw; }
+    void setSubterraneanDraw(bool NewValue);
 
     bool isSkyViewDraw()                        { return SkyViewDraw; }
     void setSkyViewDraw(bool NewValue);
@@ -281,7 +281,7 @@ protected:
     bool ShadedDraw;
 
     bool HiddenDraw;
-    bool SubTerranianDraw;
+    bool SubterraneanDraw;
     bool SkyViewDraw;
     bool SunLitDraw;
 
