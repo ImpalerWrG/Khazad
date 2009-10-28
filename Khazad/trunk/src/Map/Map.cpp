@@ -467,8 +467,6 @@ inline Sint16 Map::getFaceMaterial(MapCoordinates Coordinates, Facet FacetType)
     if (TargetFace != NULL)
     {
         return TargetFace->MaterialTypeID;
-
-        // TODO Set needs draw on Cell??
     }
     return -1;
 }
@@ -491,6 +489,18 @@ void Map::setFaceSurfaceType(MapCoordinates Coordinates, Facet FacetType, Sint16
     }
 }
 
+void Map::setBothFaceSurfaceTypes(MapCoordinates Coordinates, Facet FacetType, Sint16 SurfaceID)
+{
+    Face* TargetFace = getFace(Coordinates, FacetType);
+
+    if (TargetFace != NULL)
+    {
+        TargetFace->NegativeAxisSurfaceTypeID = SurfaceID;
+        TargetFace->PositiveAxisSurfaceTypeID = SurfaceID;
+        // TODO Set needs draw on Cell??
+    }
+}
+
 inline Sint16 Map::getFaceSurfaceType(MapCoordinates Coordinates, Facet FacetType)
 {
     Face* TargetFace = getFace(Coordinates, FacetType);
@@ -505,7 +515,6 @@ inline Sint16 Map::getFaceSurfaceType(MapCoordinates Coordinates, Facet FacetTyp
         {
             return TargetFace->PositiveAxisSurfaceTypeID;
         }
-        // TODO Set needs draw on Cell??
     }
     return -1;
 }
@@ -617,7 +626,7 @@ void Map::setCubeSolid(MapCoordinates Coordinates, bool NewValue)
 
 void Map::DigChannel(MapCoordinates Coordinates)
 {
-    setCubeHidden(Coordinates, true);
+    Dig(Coordinates);
     setCubeShape(Coordinates, DATA->getLabelIndex("TILESHAPE_EMPTY"));
 
     // reveal tiles around, deig below
@@ -635,6 +644,7 @@ void Map::DigChannel(MapCoordinates Coordinates)
             Dig(ModifiedCoordinates);
         }
     }
+    removeFace(Coordinates, FACET_BOTTOM);
 }
 
 void Map::DigSlope(MapCoordinates Coordinates)
@@ -666,12 +676,11 @@ void Map::DigSlope(MapCoordinates Coordinates)
 void Map::Dig(MapCoordinates Coordinates)
 {
     static Sint16 FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
+    static Sint16 RoughWallID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
+    static Sint16 RoughFloorID = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
     if(isCubeSolid(Coordinates) || isCubeSloped(Coordinates))
     {
-        setCubeHidden(Coordinates, false);
-        setCubeShape(Coordinates, FloorID);
-
         // reveal tiles around
         for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
         {
@@ -691,15 +700,29 @@ void Map::Dig(MapCoordinates Coordinates)
 
             if (FacetType == FACET_BOTTOM)
             {
-                MAP->addFace(Coordinates, FacetType);
-                MAP->setFaceMaterial(Coordinates, FacetType, MAP->getCubeMaterial(Coordinates));
+                Face* TargetFace = getFace(Coordinates, FacetType);
+                if (TargetFace == NULL)
+                {
+                    TargetFace = getFace(Coordinates, FacetType);
+                }
+
+                MAP->addFace(Coordinates, FACET_BOTTOM);
+                MAP->setFaceMaterial(Coordinates, FACET_BOTTOM, getCubeMaterial(Coordinates));
+                MAP->setFaceSurfaceType(Coordinates, FACET_BOTTOM, RoughFloorID);
             }
             else
             {
                 if (MAP->isCubeSolid(ModifiedCoordinates))
                 {
-                    MAP->addFace(Coordinates, FacetType);
-                    MAP->setFaceMaterial(Coordinates, FacetType, MAP->getCubeMaterial(ModifiedCoordinates));
+                    Face* TargetFace = getFace(Coordinates, FacetType);
+                    if (TargetFace == NULL)
+                    {
+                        TargetFace = MAP->addFace(Coordinates, FacetType);
+                    }
+
+                    TargetFace->MaterialTypeID = getCubeMaterial(ModifiedCoordinates);
+                    TargetFace->NegativeAxisSurfaceTypeID = RoughWallID;
+                    TargetFace->PositiveAxisSurfaceTypeID = RoughWallID;
                 }
                 else
                 {
@@ -707,6 +730,9 @@ void Map::Dig(MapCoordinates Coordinates)
                 }
             }
         }
+
+        setCubeHidden(Coordinates, false);
+        setCubeShape(Coordinates, FloorID);
 
         MAP->setCubeMaterial(Coordinates, -1);
     }

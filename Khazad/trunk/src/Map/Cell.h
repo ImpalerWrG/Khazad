@@ -23,6 +23,14 @@ struct ROstore
 
 struct Face
 {
+    inline Face()
+    {
+        PositiveAxisSurfaceTypeID = -1;
+        NegativeAxisSurfaceTypeID = -1;
+
+        MaterialTypeID = -1;
+    };
+
     Sint16 PositiveAxisSurfaceTypeID;
     Sint16 NegativeAxisSurfaceTypeID;
 
@@ -100,6 +108,7 @@ public:
 
     Sint16 getFaceSurfaceType(CubeCoordinates Coordinates, Facet FacetType);
     bool setFaceSurfaceType(CubeCoordinates Coordinates, Facet FacetType, Sint16 SurfaceTypeID);
+    bool setBothFaceSurfaces(CubeCoordinates Coordinates, Facet FacetType, Sint16 SurfaceTypeID);
 
     bool removeFace(CubeCoordinates Coordinates, Facet FacetType);
     Face* addFace(CubeCoordinates Coordinates, Facet FacetType);

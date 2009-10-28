@@ -88,7 +88,7 @@ public:
 
     void setFaceSurfaceType(MapCoordinates Coordinates, Facet FacetType, Sint16 SurfaceID);
     inline Sint16 getFaceSurfaceType(MapCoordinates Coordinates, Facet FacetType);
-
+    void setBothFaceSurfaceTypes(MapCoordinates Coordinates, Facet FacetType, Sint16 SurfaceID);
 
 
     bool isCubeHidden(MapCoordinates Coordinates);

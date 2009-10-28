@@ -80,7 +80,7 @@ bool Tree::Draw()
     }
     if(model != NULL)
     {
-        glDisable(GL_CULL_FACE);
+        //glDisable(GL_CULL_FACE);
         glPushMatrix();
 
             glTranslatef(CubePosition.X, CubePosition.Y, -0.5);
@@ -108,7 +108,7 @@ bool Tree::Draw()
             }
 */
         glPopMatrix();
-        glEnable(GL_CULL_FACE);
+        //glEnable(GL_CULL_FACE);
 
         return true;
     }

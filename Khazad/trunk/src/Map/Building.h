@@ -3,6 +3,7 @@
 
 #include <stdafx.h>
 #include <Actor.h>
+#include <DFTypes.h>
 
 
 class Building : public Actor

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Textures xmlns="namespace">
 	<Texture>
+		<Name Label="TEXTURE_NEHE"/>
+		<File Path="Assets/Textures/nehe.png"/>
+	</Texture>
+	<Texture>
 		<Name Label="TEXTURE_TOP"/>
 		<File Path="Assets/Testing/Top.png"/>
 	</Texture>
@@ -157,10 +161,6 @@
 		<File Path="Assets/Textures/Air.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_NEHE"/>
-		<File Path="Assets/Textures/nehe.png"/>
-	</Texture>
-	<Texture>
 		<Name Label="TEXTURE_SAND"/>
 		<File Path="Assets/Textures/Sand.png"/>
 	</Texture>
@@ -238,11 +238,11 @@
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_IGNEOUS_INTRUSIVE"/>
-		<File Path="Assets/Textures/IgneousIntrusive.png"/>
+		<File Path="Assets/Textures/Igneous_Intrusive.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_IGNEOUS_EXTRUSIVE"/>
-		<File Path="Assets/Textures/IgneousExtrusive.png"/>
+		<File Path="Assets/Textures/Igneous_Extrusive.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_DRIFTWOOD"/>

@@ -157,7 +157,7 @@ bool Renderer::Init()
     //glEnable(GL_MULTISAMPLE_ARB);
     //glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE_ARB);
 
-    glEnable(GL_CULL_FACE); // force proper vertex ordering or suffer holes in geometry ;)
+    //glEnable(GL_CULL_FACE); // force proper vertex ordering or suffer holes in geometry ;)
     glEnable(GL_NORMALIZE);
     glShadeModel(GL_SMOOTH);
 
@@ -581,11 +581,9 @@ bool Renderer::Render()
         Coodinates.X =0;
         Coodinates.Y =0;
         Coodinates.Z =0;
-        //Point.z = MainCamera->LookZ() - (MainCamera->LookZ() * MainCamera->getLevelSeperation());
         DrawCage(Coodinates, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ() * MainCamera->getLevelSeperation(), false, 0, 1, 0);
-
         
-        MapCoordinates AdjustedCursor = Cursor;
+		MapCoordinates AdjustedCursor = Cursor;
         AdjustedCursor.Z = MainCamera->ZlevelSeperationAdjustment(Cursor.Z);
 
         if (MAP->isCubeSolid(Cursor))

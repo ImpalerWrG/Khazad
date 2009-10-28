@@ -2,7 +2,6 @@
 
 #include <Cell.h>
 #include <Map.h>
-#include <DFTypes.h>
 #include <Building.h>
 #include <Tree.h>
 #include <TextureManager.h>
@@ -134,7 +133,7 @@ bool Cell::DrawFaces(CubeCoordinates Coordinates)
     // work vector ptr
     vector<vertex>* TextureVector;
 
-    for (Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
+    for (Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType, ++FacetType)
     {
         if(isCubeSolid(Coordinates))
         {
@@ -142,27 +141,21 @@ bool Cell::DrawFaces(CubeCoordinates Coordinates)
             {
                 continue;
             }
-            if(FacetType == FACET_TOP)
-            {
-                continue;
-            }
         }
-        else
+
+        if (FacetType == FACET_BOTTOM && isCubeSloped(Coordinates))
         {
-            if(FacetType == FACET_TOP)
-            {
-                continue;
-            }
+            continue; // No bottom faces underneath slopes
         }
 
         Face* TargetFace = getFace(Coordinates, FacetType);
         if (TargetFace != NULL)
         {
-            Sint16 CubeMaterialType = getFaceMaterialType(Coordinates, FacetType);
-            if (CubeMaterialType != -1)
-            {
-                Uint32 Texture = TEXTURE->MapTexture(getFaceMaterialType(Coordinates, FacetType), getCubeSurface(Coordinates));
+            Sint16 FaceMaterial = getFaceMaterialType(Coordinates, FacetType);
+            Sint16 FaceSurface = getFaceSurfaceType(Coordinates, FacetType);
+            Uint32 Texture = TEXTURE->MapTexture(FaceMaterial, FaceSurface);
 
+            {
                 if (!Geometry.count(Texture))
                 {
                     TextureVector = new vector<vertex>;
@@ -266,19 +259,10 @@ void Cell::BuildFaceData()
         {
             Sint16 CubeShape = getCubeShape(TargetCubeCoordinates);
             Sint16 CubeMaterial = getCubeMaterial(TargetCubeCoordinates);
-
-            if(CubeShape == FloorID)
-            {
-                setFaceMaterialType(TargetCubeCoordinates, FACET_BOTTOM, CubeMaterial);
-            }
+            Sint16 CubeSurface = getCubeSurface(TargetCubeCoordinates);
 
             for (Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
             {
-                if (FacetType == FACET_TOP)
-                {
-                    continue;
-                }
-
                 TargetMapCoordinates = TranslateCubeToMap(TargetCubeCoordinates);
                 TranslateCoordinates(TargetMapCoordinates.X, TargetMapCoordinates.Y, TargetMapCoordinates.Z, FacetType);
 
@@ -288,10 +272,23 @@ void Cell::BuildFaceData()
                     {
                         if (!MAP->isCubeSolid(TargetMapCoordinates))
                         {
-                            setFaceMaterialType(TargetCubeCoordinates, FacetType, CubeMaterial);
+                            Face* NewFace = addFace(TargetCubeCoordinates, FacetType);
+
+                            NewFace->MaterialTypeID = CubeMaterial;
+                            NewFace->PositiveAxisSurfaceTypeID = CubeSurface;
+                            NewFace->NegativeAxisSurfaceTypeID = CubeSurface;
                         }
                     }
                 }
+            }
+
+            if (CubeShape == FloorID)
+            {
+                Face* NewFace = addFace(TargetCubeCoordinates, FACET_BOTTOM);
+
+                NewFace->MaterialTypeID = CubeMaterial;
+                NewFace->PositiveAxisSurfaceTypeID = CubeSurface;
+                NewFace->NegativeAxisSurfaceTypeID = CubeSurface;
             }
         }
     }
@@ -436,17 +433,13 @@ bool Cell::setFaceMaterialType(CubeCoordinates Coordinates, Facet FacetType, Sin
 {
     Face* TargetFace = getFace(Coordinates, FacetType);
 
-    if (TargetFace == NULL)
+    if (TargetFace != NULL)
     {
-        TargetFace = addFace(Coordinates, FacetType);
-        if (TargetFace != NULL)
+        if (TargetFace->MaterialTypeID != MaterialTypeID)
         {
-            if (TargetFace->MaterialTypeID != MaterialTypeID)
-            {
-                TargetFace->MaterialTypeID = MaterialTypeID;
-                setNeedsRedraw(true);
-                return true;
-            }
+            TargetFace->MaterialTypeID = MaterialTypeID;
+            setNeedsRedraw(true);
+            return true;
         }
     }
     return false;
@@ -458,27 +451,45 @@ bool Cell::setFaceSurfaceType(CubeCoordinates Coordinates, Facet FacetType, Sint
 
     if (TargetFace != NULL)
     {
-        TargetFace = addFace(Coordinates, FacetType);
-        if (TargetFace != NULL)
+        if (FacetType & 1)
         {
-            if (FacetType & 1)
+            if (TargetFace->PositiveAxisSurfaceTypeID != SurfaceTypeID)
             {
-                if (TargetFace->PositiveAxisSurfaceTypeID != SurfaceTypeID)
-                {
-                    TargetFace->PositiveAxisSurfaceTypeID = SurfaceTypeID;
-                    setNeedsRedraw(true);
-                    return true;
-                }
+                TargetFace->PositiveAxisSurfaceTypeID = SurfaceTypeID;
+                setNeedsRedraw(true);
+                return true;
             }
-            else
+        }
+        else
+        {
+            if (TargetFace->NegativeAxisSurfaceTypeID != SurfaceTypeID)
             {
-                if (TargetFace->NegativeAxisSurfaceTypeID = SurfaceTypeID)
-                {
-                    TargetFace->NegativeAxisSurfaceTypeID = SurfaceTypeID;
-                    setNeedsRedraw(true);
-                    return true;
-                }
+                TargetFace->NegativeAxisSurfaceTypeID = SurfaceTypeID;
+                setNeedsRedraw(true);
+                return true;
             }
+        }
+    }
+    return false;
+}
+
+bool Cell::setBothFaceSurfaces(CubeCoordinates Coordinates, Facet FacetType, Sint16 SurfaceTypeID)
+{
+    Face* TargetFace = getFace(Coordinates, FacetType);
+
+    if (TargetFace != NULL)
+    {
+        if (TargetFace->PositiveAxisSurfaceTypeID != SurfaceTypeID)
+        {
+            TargetFace->PositiveAxisSurfaceTypeID = SurfaceTypeID;
+            setNeedsRedraw(true);
+            return true;
+        }
+        if (TargetFace->NegativeAxisSurfaceTypeID != SurfaceTypeID)
+        {
+            TargetFace->NegativeAxisSurfaceTypeID = SurfaceTypeID;
+            setNeedsRedraw(true);
+            return true;
         }
     }
     return false;
@@ -529,8 +540,11 @@ Face* Cell::addFace(CubeCoordinates Coordinates, Facet FacetType)
             setNeedsRedraw(true);
             return NewFace;
         }
+        else
+        {
+            return Faces.find(Key)->second;
+        }
     }
-    return NULL;
 }
 
 Vector3 Cell::getCubePosition(CubeCoordinates Coordinates)

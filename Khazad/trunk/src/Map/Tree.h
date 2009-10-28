@@ -3,7 +3,7 @@
 
 #include <Actor.h>
 #include <Map.h>
-//#include "../../dfhack/library/DFTypes.h"
+#include <DFTypes.h>
 #include "../../dfhack/library/DFTileTypes.h"
 
 class Model;

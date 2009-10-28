@@ -252,8 +252,9 @@
 		<Name Label="MATERIAL_PIT"/>
 		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
 		<Texture label="TEXTURE_PIT"/>
-		<PrimaryColor label="COLOR_BLACK"/>
+		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_SILVER"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_GREEN_GLASS"/>
@@ -1370,8 +1371,8 @@
 	<Material>
 		<Name Label="MATERIAL_GRANITE"/>
 		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
-		<PrimaryColor label="COLOR_LIGHT_GREY"/>
-		<SecondaryColor label="COLOR_SILVER"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<BorderColor label="COLOR_SILVER"/>
 		<MatGloss label="GRANITE"/>
 		<SurfaceTextures>
@@ -1404,7 +1405,7 @@
 	<Material>
 		<Name Label="MATERIAL_RHYOLITE"/>
 		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
+		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<BorderColor label="COLOR_DARK_GREY"/>
 		<MatGloss label="RHYOLITE"/>
@@ -1415,7 +1416,7 @@
 	<Material>
 		<Name Label="MATERIAL_BASALT"/>
 		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
-		<PrimaryColor label="COLOR_BLACK"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_SILVER"/>
 		<MatGloss label="BASALT"/>
@@ -1426,10 +1427,10 @@
 	<Material>
 		<Name Label="MATERIAL_ANDESITE"/>
 		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
-		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
         <ColorMode mode="overlay" />
-		<SecondaryColor label="COLOR_LIGHT_GREY"/>
-		<BorderColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<BorderColor label="COLOR_BLACK"/>
 		<MatGloss label="ANDESITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
@@ -1450,9 +1451,9 @@
 	<Material>
 		<Name Label="MATERIAL_OBSIDIAN"/>
 		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
-		<PrimaryColor label="COLOR_DARK_GREY"/>
-		<!--<SecondaryColor label="COLOR_WHITE"/>
-		<BorderColor label="COLOR_WHITE"/>-->
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_WHITE"/>
 		<MatGloss label="OBSIDIAN"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
