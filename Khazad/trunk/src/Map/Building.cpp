@@ -39,7 +39,7 @@ bool Building::Draw()
         {
             glPushMatrix();
 
-                glTranslatef(CubeCoords.X, CubeCoords.Y, -HALFCUBE);
+                glTranslatef(CubeCoords.X + LengthX / 2, CubeCoords.Y + LengthY / 2, -HALFCUBE);
 
                 TEXTURE->BindTexture(TEXTURE->MapTexture(MaterialType, Surface));
                 model->Render();

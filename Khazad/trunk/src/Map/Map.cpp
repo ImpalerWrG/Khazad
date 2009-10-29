@@ -817,7 +817,7 @@ void Map::LoadCellData(DFHackAPI & DF,
                     if (DATA->getBuildingData(i)->getMatgloss() == b.type)
                     {
                         Sint16 MaterialID = ResolveMatGlossPair(b.material);
-                        Building* NewBuilding = new Building(MapCoordinates(b.x1, b.y1, b.z), b.x1 - b.x2, b.y1 - b.y2, MaterialID, i);
+                        Building* NewBuilding = new Building(MapCoordinates(b.x1, b.y1, b.z), b.x2 - b.x1, b.y2 - b.y1, MaterialID, i);
                         TargetCell->addBuilding(NewBuilding);
                     }
                 }
