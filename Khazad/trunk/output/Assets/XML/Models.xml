@@ -60,4 +60,12 @@
 		<Name Label="MODEL_HATCH"/>
 		<File Path="Assets/Models/hatch/hatch.obj"/>
 	</Model>
+	<Model>
+		<Name Label="MODEL_MASONS_WORKSHOP"/>
+		<File Path="Assets/Models/masons_workshop/masons_workshop.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_LEVER"/>
+		<File Path="Assets/Models/lever/lever.obj"/>
+	</Model>
 </Models>

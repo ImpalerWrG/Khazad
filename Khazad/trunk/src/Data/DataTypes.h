@@ -276,4 +276,25 @@ protected:
     string ModelLabel;
 };
 
+class BuildingData: public DataBase
+{
+
+public:
+    BuildingData();
+    ~BuildingData();
+
+    bool Load(TiXmlElement* Element, Uint32 Index);
+    bool PostProcessing();
+
+    Sint16 getModelID()                     { return ModelID; }
+    Uint16 getMatgloss()                    { return Matgloss; }
+
+protected:
+
+    Uint16 Matgloss;
+
+    Sint16 ModelID;
+    string ModelLabel;
+};
+
 #endif // DATATYPE__HEADER

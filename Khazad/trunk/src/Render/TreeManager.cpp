@@ -20,8 +20,6 @@
 #include <stdafx.h>
 #include "Renderer.h"
 #include "TreeManager.h"
-#include "ModelManager.h"
-#include "Model.h"
 #include <DataManager.h>
 #include "../../dfhack/library/DFTypes.h"
 
@@ -30,7 +28,7 @@
 TreeManager::TreeManager(vector<t_matgloss> & wood)
 {
     // build matgloss ID->tree map
-    for(uint32_t i = 0; i < DATA->getNumTree(); ++i)
+    for(uint32_t i = 0; i < DATA->getNumTrees(); ++i)
     {
         TreeData * td =  DATA->getTreeData(i);
         string mat1 = td->getMatgloss();
@@ -44,12 +42,15 @@ TreeManager::TreeManager(vector<t_matgloss> & wood)
         }
     }
 }
+
+TreeManager::~TreeManager()
+{
+
+}
+
 TreeData *TreeManager::getTreeDesc( int32_t matgloss_idx )
 {
     if (treemap.count(matgloss_idx))
         return treemap[matgloss_idx];
     return NULL;
-}
-TreeManager::~TreeManager()
-{
 }

@@ -314,16 +314,16 @@ bool TreeData::Load(TiXmlElement* Entry, Uint32 Index)
 {
     if(Entry)
     {
-        XML->QueryTextValue(Entry,"MatGloss","value", Matgloss);
-        XML->QueryTextValue(Entry,"Model","label", ModelLabel);
+        XML->QueryTextValue(Entry, "MatGloss", "value", Matgloss);
+        XML->QueryTextValue(Entry, "Model", "label", ModelLabel);
 
         TiXmlElement *Variant = Entry->FirstChildElement("Variant");
         do
         {
             TreeVariant var;
-            XML->QueryTextValue(Variant,"Trunk","material", var.TrunkMaterial);
-            XML->QueryTextValue(Variant,"Leaves","material", var.LeavesMaterial);
-            XML->QueryTextValue(Variant,"Snow","material", var.SnowMaterial);
+            XML->QueryTextValue(Variant, "Trunk", "material", var.TrunkMaterial);
+            XML->QueryTextValue(Variant, "Leaves", "material", var.LeavesMaterial);
+            XML->QueryTextValue(Variant, "Snow", "material", var.SnowMaterial);
             variants.push_back(var);
             Variant= Variant->NextSiblingElement("Variant");
         }
@@ -334,6 +334,7 @@ bool TreeData::Load(TiXmlElement* Entry, Uint32 Index)
     }
     return false;
 }
+
 bool TreeData::PostProcessing()
 {
     ModelID = DATA->getLabelIndex(ModelLabel);
@@ -344,5 +345,31 @@ bool TreeData::PostProcessing()
         variants[i].TrunkMaterialID = DATA->getLabelIndex(variants[i].TrunkMaterial);
         variants[i].SnowMaterialID = DATA->getLabelIndex(variants[i].SnowMaterial);
     }
+    return true;
+}
+
+BuildingData::BuildingData()
+{}
+
+BuildingData::~BuildingData()
+{}
+
+bool BuildingData::Load(TiXmlElement* Entry, Uint32 Index)
+{
+    if(Entry)
+    {
+        XML->QueryUIntValue(Entry, "MatGloss", "value", Matgloss);
+        XML->QueryTextValue(Entry, "Model", "label", ModelLabel);
+
+        DataBase::Load(Entry, Index);
+        return true;
+    }
+    return false;
+}
+
+bool BuildingData::PostProcessing()
+{
+    ModelID = DATA->getLabelIndex(ModelLabel);
+
     return true;
 }

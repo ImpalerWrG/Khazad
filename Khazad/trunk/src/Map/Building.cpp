@@ -19,7 +19,7 @@ Building::Building(MapCoordinates NewCoordinates, Uint8 Xlength, Uint8 Ylength, 
 
     BuildingType = BuildingID;
     MaterialType = MaterialID;
-    ModelType = ModelID;
+    ModelType = DATA->getBuildingData(BuildingType)->getModelID();
 }
 
 Building::~Building()
@@ -29,32 +29,22 @@ Building::~Building()
 
 bool Building::Draw()
 {
-    static Sint16 Surface = DATA->getLabelIndex("SURFACETYPE_CONSTRUCTED_FLOOR");
+    static Sint16 Surface = DATA->getLabelIndex("SURFACETYPE_SMOOTH_FLOOR");
 
-    //RENDERER->DrawCage(Coordinates, (float) LengthX, (float) LengthY, 1, false, 1.0, 1.0, 1.0);
-/*
-    glPushMatrix();
+    if(ModelType != -1)
+    {
+        Model* model = MODEL->getModel(ModelType);
 
-        glNormal3f(0.0, 0.0, 1.0);
+        if(model != NULL)
+        {
+            glPushMatrix();
 
-        glTexCoord2f(0.0, 1.0);      glVertex3f(xa           , ya + LengthY    , -0.4);
-        glTexCoord2f(1.0, 0.0);      glVertex3f(xa + LengthX , ya              , -0.4);
-        glTexCoord2f(0.0, 0.0);      glVertex3f(xa           , ya              , -0.4);
+                glTranslatef(CubeCoords.X, CubeCoords.Y, -HALFCUBE);
 
-        glTexCoord2f(0.0, 1.0);      glVertex3f(xa           , ya + LengthY   , -0.4);
-        glTexCoord2f(1.0, 1.0);      glVertex3f(xa + LengthX , ya + LengthY   , -0.4);
-        glTexCoord2f(0.0, 0.0);      glVertex3f(xa           , ya             , -0.4);
+                TEXTURE->BindTexture(TEXTURE->MapTexture(MaterialType, Surface));
+                model->Render();
 
-    glPopMatrix();
-*/
-    Model* model = MODEL->getModel(ModelType);
-
-    glPushMatrix();
-
-        glTranslatef(CubeCoords.X, CubeCoords.Y, -HALFCUBE);
-
-        TEXTURE->BindTexture(TEXTURE->MapTexture(MaterialType, Surface));
-        model->Render();
-
-    glPopMatrix();
+            glPopMatrix();
+        }
+    }
 }

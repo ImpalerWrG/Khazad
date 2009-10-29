@@ -95,7 +95,10 @@ public:
     Uint32 getNumTileShape()                                 { return TileShapes.size(); }
 
     TreeData* getTreeData(Uint32 Index)                      { return Trees[Index]; }
-    Uint32 getNumTree()                                      { return Trees.size(); }
+    Uint32 getNumTrees()                                     { return Trees.size(); }
+
+    BuildingData* getBuildingData(Uint32 Index)              { return Buildings[Index]; }
+    Uint32 getNumBuildings()                                 { return Buildings.size(); }
 
 
     Sint32 getLabelIndex(string Label);
@@ -117,6 +120,7 @@ protected:
     std::vector<SurfaceTypeData*> SurfaceTypes;
     std::vector<TileShapeData*> TileShapes;
     std::vector<TreeData*> Trees;
+    std::vector<BuildingData*> Buildings;
 };
 
 

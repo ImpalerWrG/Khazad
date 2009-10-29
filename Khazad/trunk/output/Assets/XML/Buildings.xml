@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Buildings xmlns="namespace">
+	<Building>
+		<Name Label="BUILDING_STOCKPILE"/>
+		<Model label="NONE"/>
+		<MatGloss value="0"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_ZONE"/>
+		<Model label="NONE"/>
+		<MatGloss value="1"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_CONSTRUCTION"/>
+		<Model label="NONE"/>
+		<MatGloss value="2"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_WAGON"/>
+		<Model label="NONE"/>
+		<MatGloss value="3"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_ARMOR_STAND"/>
+		<Model label="NONE"/>
+		<MatGloss value="4"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_BED"/>
+		<Model label="NONE"/>
+		<MatGloss value="5"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_CHAIR"/>
+		<Model label="MODEL_CHAIR"/>
+		<MatGloss value="6"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_BURIAL_RECEPTICAL"/>
+		<Model label="NONE"/>
+		<MatGloss value="7"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_DOOR"/>
+		<Model label="NONE"/>
+		<MatGloss value="8"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_FLOODGATE"/>
+		<Model label="NONE"/>
+		<MatGloss value="9"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_HATCH"/>
+		<Model label="MODEL_HATCH"/>
+		<MatGloss value="10"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_WALL_GRATE"/>
+		<Model label="NONE"/>
+		<MatGloss value="11"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_FLOOR_GRATE"/>
+		<Model label="NONE"/>
+		<MatGloss value="12"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_VERTICAL_BARS"/>
+		<Model label="NONE"/>
+		<MatGloss value="13"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_FLOOR_BARS"/>
+		<Model label="NONE"/>
+		<MatGloss value="14"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_CABINET"/>
+		<Model label="NONE"/>
+		<MatGloss value="15"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_CONTAINER"/>
+		<Model label="NONE"/>
+		<MatGloss value="16"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_SHOP"/>
+		<Model label="NONE"/>
+		<MatGloss value="17"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_WORKSHOP"/>
+		<Model label="NONE"/>
+		<MatGloss value="18"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_ALCHEMISTS_LABRATORY"/>
+		<Model label="NONE"/>
+		<MatGloss value="19"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_CARPENTERS_WORKSHOP"/>
+		<Model label="NONE"/>
+		<MatGloss value="20"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_FARMERS_WORKSHOP"/>
+		<Model label="NONE"/>
+		<MatGloss value="21"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_MASONS_WORKSHOP"/>
+		<Model label="MODEL_MASONS_WORKSHOP"/>
+		<MatGloss value="22"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_LEVER"/>
+		<Model label="MODEL_LEVER"/>
+		<MatGloss value="65"/>
+	</Building>
+	<Building>
+		<Name Label="BUILDING_CAGE"/>
+		<Model label="MODEL_CAGE"/>
+		<MatGloss value="79"/>
+	</Building>
+</Buildings>

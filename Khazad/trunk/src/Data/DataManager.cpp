@@ -32,6 +32,7 @@ bool DataManager::Init()
     Path surfacetype_xml = "Assets\\XML\\SurfaceTypes.xml";
     Path tileshape_xml = "Assets\\XML\\TileShapes.xml";
     Path tree_xml = "Assets\\XML\\Trees.xml";
+    Path building_xml = "Assets\\XML\\Buildings.xml";
 
     // Initial loading of all XML files
     LoadDataClass(&Colors, color_xml, "Color");
@@ -44,6 +45,7 @@ bool DataManager::Init()
     LoadDataClass(&SurfaceTypes, surfacetype_xml, "SurfaceType");
     LoadDataClass(&TileShapes, tileshape_xml, "TileShape");
     LoadDataClass(&Trees, tree_xml, "Tree");
+    LoadDataClass(&Buildings, building_xml, "Building");
 
     // Post process all data and dynamicly link references, not order dependent
     PostProcessDataClass(&Materials);
@@ -52,6 +54,7 @@ bool DataManager::Init()
     PostProcessDataClass(&SurfaceTypes);
     PostProcessDataClass(&Trees);
     PostProcessDataClass(&Models);
+    PostProcessDataClass(&Buildings);
 
     return true;
 }
