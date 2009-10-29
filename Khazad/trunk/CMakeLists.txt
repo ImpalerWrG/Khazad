@@ -120,6 +120,7 @@ src/Data/XMLManager.cpp
 src/Game/Actor.cpp
 src/Game/Game.cpp
 src/Game/Pawn.cpp
+src/Game/Furniture.cpp
 
 src/Geometry/Plane.cpp
 src/Geometry/Vector2.cpp
