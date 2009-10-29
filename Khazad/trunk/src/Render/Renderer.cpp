@@ -298,7 +298,7 @@ RenderObject *Renderer::CreateRenderObject (vector <vertex> * source)
     return ret;
 }
 
-void Renderer::CallRenderObject(RenderObject * obj)
+void Renderer::CallRenderObject(RenderObject* obj)
 {
     IncrementTriangles(obj->count / 3);
     if(haveVBO)
@@ -315,7 +315,7 @@ void Renderer::CallRenderObject(RenderObject * obj)
         glCallList(obj->gfxHandle);
     }
 }
-void Renderer::DeleteRenderObject(RenderObject * obj)
+void Renderer::DeleteRenderObject(RenderObject* obj)
 {
     if(haveVBO)
     {
@@ -375,7 +375,7 @@ void Renderer::RenderSurface(SDL_Surface* RenderSurface, SDL_Rect *location)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    RenderTexture(texture, &rect, location);
+    RenderTexture(texture, &rect, location, false);
 
 	/* return the deltas in the unused w,h part of the rect */
 	location->w = RenderSurface->w;
@@ -385,17 +385,28 @@ void Renderer::RenderSurface(SDL_Surface* RenderSurface, SDL_Rect *location)
 	glDeleteTextures(1, &texture);
 }
 
-void Renderer::RenderTexture(GLuint texture, SDL_Rect *Size, SDL_Rect *location)
+void Renderer::RenderTexture(GLuint texture, SDL_Rect *Size, SDL_Rect *location, bool invert)
 {
  	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glColor3f(1.0f, 1.0f, 1.0f);
 
 	glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 1.0f);   glVertex2f(location->x           , location->y);
-		glTexCoord2f(1.0f, 1.0f);   glVertex2f(location->x + Size->w , location->y);
-		glTexCoord2f(1.0f, 0.0f);   glVertex2f(location->x + Size->w , location->y + Size->h);
-		glTexCoord2f(0.0f, 0.0f);   glVertex2f(location->x           , location->y + Size->h);
+
+        if(invert)
+        {
+            glTexCoord2f(0.0f, 0.0f);   glVertex2f(location->x           , location->y);
+            glTexCoord2f(1.0f, 0.0f);   glVertex2f(location->x + Size->w , location->y);
+            glTexCoord2f(1.0f, 1.0f);   glVertex2f(location->x + Size->w , location->y + Size->h);
+            glTexCoord2f(0.0f, 1.0f);   glVertex2f(location->x           , location->y + Size->h);
+        }
+        else
+        {
+            glTexCoord2f(0.0f, 1.0f);   glVertex2f(location->x           , location->y);
+            glTexCoord2f(1.0f, 1.0f);   glVertex2f(location->x + Size->w , location->y);
+            glTexCoord2f(1.0f, 0.0f);   glVertex2f(location->x + Size->w , location->y + Size->h);
+            glTexCoord2f(0.0f, 0.0f);   glVertex2f(location->x           , location->y + Size->h);
+        }
 	glEnd();
 
 	glFinish();
@@ -415,7 +426,7 @@ void Renderer::RenderLogo()
     location.w = size.w;
     location.h = size.h;
 
-    RenderTexture(TEXTURE->getLogoTexture(), &size, &location);
+    RenderTexture(TEXTURE->getLogoTexture(), &size, &location, true);
 }
 
 void Renderer::CaptureScreenShot()
@@ -579,9 +590,6 @@ bool Renderer::Render()
     if(FrameDraw)
     {
         MapCoordinates Coodinates;
-        Coodinates.X =0;
-        Coodinates.Y =0;
-        Coodinates.Z =0;
         DrawCage(Coodinates, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ() * MainCamera->getLevelSeperation(), false, 0, 1, 0);
 
 		MapCoordinates AdjustedCursor = Cursor;

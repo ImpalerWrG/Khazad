@@ -7,9 +7,6 @@
 #include <Vector3.h>
 #include <bitset>
 
-#define CELLEDGESIZE 16
-#define HALFCUBE 0.5
-
 class Building;
 class Tree;
 
@@ -21,21 +18,6 @@ struct ROstore
     RenderObject* normal;
 };
 
-struct Face
-{
-    inline Face()
-    {
-        PositiveAxisSurfaceTypeID = -1;
-        NegativeAxisSurfaceTypeID = -1;
-
-        MaterialTypeID = -1;
-    };
-
-    Sint16 PositiveAxisSurfaceTypeID;
-    Sint16 NegativeAxisSurfaceTypeID;
-
-    Sint16 MaterialTypeID;
-};
 
 class Cell
 {
@@ -169,6 +151,8 @@ protected:
 
     vector <Building*> buildings;
     vector <Tree*> trees;
+
+
 
     // Exact spacial Coordinates of the center of the cell, used for frustrum culling
     Vector3 CellPosition;

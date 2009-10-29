@@ -88,6 +88,12 @@ void Cell::Render(CameraOrientation CurrentOrientation)
     {
         trees[i]->Draw();
     }
+
+    for(Uint32 i = 0; i< buildings.size(); i++)
+    {
+        buildings[i]->Draw();
+    }
+
 }
 
 bool Cell::DrawFaces(CubeCoordinates Coordinates)

@@ -36,4 +36,28 @@
 		<Name Label="MODEL_BOULDER"/>
 		<File Path="Assets/Models/stones/stone01.obj"/>
 	</Model>
+	<Model>
+		<Name Label="MODEL_CHAIR"/>
+		<File Path="Assets/Models/chair/chair.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_BIN"/>
+		<File Path="Assets/Models/bin/bin.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_CAGE"/>
+		<File Path="Assets/Models/cage/cage.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_LEVER"/>
+		<File Path="Assets/Models/lever/lever.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_QERN"/>
+		<File Path="Assets/Models/qern/qern.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_HATCH"/>
+		<File Path="Assets/Models/hatch/hatch.obj"/>
+	</Model>
 </Models>

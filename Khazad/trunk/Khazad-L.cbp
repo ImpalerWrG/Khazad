@@ -244,6 +244,8 @@
 		<Unit filename="src/Data/XMLManager.h" />
 		<Unit filename="src/Game/Actor.cpp" />
 		<Unit filename="src/Game/Actor.h" />
+		<Unit filename="src/Game/Furniture.cpp" />
+		<Unit filename="src/Game/Furniture.h" />
 		<Unit filename="src/Game/Game.cpp" />
 		<Unit filename="src/Game/Game.h" />
 		<Unit filename="src/Game/Pawn.cpp" />

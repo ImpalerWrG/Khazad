@@ -21,7 +21,8 @@
 	<Material>
 		<Name Label="MATERIAL_BUILDING"/>
 		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
-		<PrimaryColor label="COLOR_GREY"/>
+		<PrimaryColor label="COLOR_BLUE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_NEHE"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_NEHE"/>

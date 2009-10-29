@@ -193,7 +193,7 @@ public:
     void RenderTextCentered(const char* text, Sint8 FontIndex, SDL_Color color, Sint16 Verticaladjust);
 
     void RenderSurface(SDL_Surface* RenderSurface, SDL_Rect* location);
-    void RenderTexture(GLuint texture, SDL_Rect* Size, SDL_Rect* location);
+    void RenderTexture(GLuint texture, SDL_Rect* Size, SDL_Rect* location, bool invert);
 
     void RenderLogo();
 
@@ -216,9 +216,9 @@ public:
     bool Render();
     void RenderCell(CellCoordinates Coordinates, float ZTranslate, float Shading);
 
-    RenderObject *CreateRenderObject(vector <vertex> * source);
-    void CallRenderObject(RenderObject * obj);
-    void DeleteRenderObject(RenderObject * obj);
+    RenderObject* CreateRenderObject(vector <vertex>* source);
+    void CallRenderObject(RenderObject* obj);
+    void DeleteRenderObject(RenderObject* obj);
 
     void PrintDebugging();
 
@@ -226,10 +226,10 @@ public:
     void DrawPoint(Vector3 Point, float Length = 1.0);
     void DrawPlane(Plane ArgumentPlane, float Length = 10);
 
-    void DrawCage(MapCoordinates Coodinates, float x, float y, float z, bool Inflated, float red,float green,float blue);
+    void DrawCage(MapCoordinates Coodinates, float x, float y, float z, bool Inflated, float red, float green, float blue);
     void DrawCage(MapCoordinates Coodinates, float x, float y, float z, bool Inflated);
 
-    void DrawStreamers(Vector3 Point, float x, float y, float z, float Length, float red,float green,float blue);
+    void DrawStreamers(Vector3 Point, float x, float y, float z, float Length, float red, float green, float blue);
     void DrawStreamers(Vector3 Point, float x, float y, float z, float Length);
 
     void IncrementTriangles(Uint32 Triangles);

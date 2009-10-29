@@ -791,7 +791,6 @@ void Map::LoadCellData(DFHackAPI & DF,
 
             // constructions
             uint64_t coord =  (uint64_t)NewCellCoordinates.Z + ((uint64_t)(NewCellCoordinates.Y *16 + yy) << 16) + ((uint64_t)(NewCellCoordinates.X *16 + xx) << 32);
-            //uint64_t coord =  (uint64_t)tempcon.z + ((uint64_t)tempcon.y << 16) + ((uint64_t)tempcon.x << 32);
             if(constructions.count(coord))
             {
                 // store matgloss
@@ -804,7 +803,7 @@ void Map::LoadCellData(DFHackAPI & DF,
                 t_tree_desc t = vegetation[coord];
                 VegetationType Type = (VegetationType) getVegetationType(tiletypes[xx][yy]);
 
-                Tree *tree = new Tree(t.material,t.x,t.y,t.z, Type);
+                Tree *tree = new Tree(t.material, MapCoordinates(t.x, t.y, t.z), Type);
                 TargetCell->addTree(tree);
             }
 
@@ -812,8 +811,10 @@ void Map::LoadCellData(DFHackAPI & DF,
             if(buildings.count(coord))
             {
                 t_building b = buildings[coord];
-                Building *bld = new Building(b.x1,b.y1,b.x2,b.y2,b.z,b.material,b.type);
-                TargetCell->addBuilding(bld);
+                Sint16 MaterialID = ResolveMatGlossPair(b.material);
+
+                Building* NewBuilding = new Building(MapCoordinates(b.x1, b.y1, b.z), b.x1 - b.x2, b.y1 - b.y2, MaterialID, b.type);
+                TargetCell->addBuilding(NewBuilding);
             }
         }
     }
@@ -972,60 +973,10 @@ Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmateri
         }
     }
 
-    if (constructionmaterial.type != -1)
+    Sint16 ConstructionMaterial = ResolveMatGlossPair(constructionmaterial);
+    if(ConstructionMaterial != -1)
     {
-        int16_t construction_ret = -1;
-        if (constructionmaterial.type == Mat_Stone)
-        {
-            if (constructionmaterial.index >= 0 && constructionmaterial.index < StoneMatGloss.size())
-            {
-                construction_ret = StoneMatGloss[constructionmaterial.index];
-                //return StoneMatGloss[constructionmaterial.index];
-            }
-        }
-        else if (constructionmaterial.type == Mat_Metal)
-        {
-            if (constructionmaterial.index >= 0 && constructionmaterial.index < MetalMatGloss.size())
-            {
-                construction_ret = MetalMatGloss[constructionmaterial.index];
-                //return MetalMatGloss[constructionmaterial.index];
-            }
-        }
-
-        if(construction_ret != -1)
-        {
-            return construction_ret;
-        }
-        else
-        {
-            cerr << "construction material not in Materials.xml: "
-                 << constructionmaterial.type
-                 << "::"
-                 << constructionmaterial.index
-                 << endl;
-        }
-
-        for (Sint16 MaterialClass = 0; MaterialClass < DATA->getNumMaterialClasses(); MaterialClass++)
-        {
-            if (constructionmaterial.type == DATA->getMaterialClassData(MaterialClass)->getMatGlossIndex())
-            {
-                construction_ret = DATA->getMaterialClassData(MaterialClass)->getDefaultMaterial();
-                //return DATA->getMaterialClassData(MaterialClass)->getDefaultMaterial();
-            }
-        }
-
-        if(construction_ret != -1)
-        {
-            return construction_ret;
-        }
-        else
-        {
-            cerr << "construction material not in Material Classes: "
-            << constructionmaterial.type
-            << "::"
-            << constructionmaterial.index
-            << endl;
-        }
+        return ConstructionMaterial;
     }
 
     if (DefaultMaterial != -1 && DefaultMaterial < DATA->getNumMaterials())
@@ -1034,6 +985,67 @@ Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmateri
     }
 
     return Unknown;
+}
+
+Sint16 Map::ResolveMatGlossPair(t_matglossPair MatPair)
+{
+    if (MatPair.type != -1)
+    {
+        Sint16 PotentialMaterial = -1;
+
+
+        if (MatPair.type == Mat_Stone)
+        {
+            if (MatPair.index >= 0 && MatPair.index < StoneMatGloss.size())
+            {
+                PotentialMaterial = StoneMatGloss[MatPair.index];
+            }
+        }
+        else if (MatPair.type == Mat_Metal)
+        {
+            if (MatPair.index >= 0 && MatPair.index < MetalMatGloss.size())
+            {
+                PotentialMaterial = MetalMatGloss[MatPair.index];
+            }
+        }
+        /*   TODO ADD WOOD
+        else if (MatPair.type == Mat_Wood)
+        {
+            if (MatPair.index >= 0 && MatPair.index < WoodMatGloss.size())
+            {
+                construction_ret = WoodMatGloss[MatPair.index];
+                //return MetalMatGloss[constructionmaterial.index];
+            }
+        }
+        */
+
+        if(PotentialMaterial != -1)
+        {
+            return PotentialMaterial;
+        }
+        else
+        {
+            cerr << "construction material not in Materials.xml: "<< MatPair.type << "::" << MatPair.index << endl;
+        }
+
+        // Try to find a MateralClass default material
+        for (Sint16 MaterialClass = 0; MaterialClass < DATA->getNumMaterialClasses(); MaterialClass++)
+        {
+            if (MatPair.type == DATA->getMaterialClassData(MaterialClass)->getMatGlossIndex())
+            {
+                PotentialMaterial = DATA->getMaterialClassData(MaterialClass)->getDefaultMaterial();
+            }
+        }
+
+        if(PotentialMaterial != -1)
+        {
+            return PotentialMaterial;
+        }
+        else
+        {
+            cerr << "construction material not in Material Classes: "<< MatPair.type << "::" << MatPair.index << endl;
+        }
+    }
 }
 
 Vector3 Map::getMapCenter()

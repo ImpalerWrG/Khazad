@@ -1,13 +1,26 @@
-#include <string>
-using namespace std;
-#include <stdint.h>
-#include <DFTypes.h>
-#include "Building.h"
+#include <Building.h>
+
 #include <TextureManager.h>
 #include <DataManager.h>
+#include <ModelManager.h>
+//#include <Map.h>
+#include <Model.h>
 
-Building::Building(int x1, int y1, int x2, int y2, int z, t_matglossPair material, int type)
-: x1( x1 ),y1( y1 ),x2( x2 ),y2( y2 ),z( z ),material( material ),type( type ) { }
+
+Building::Building(MapCoordinates NewCoordinates, Uint8 Xlength, Uint8 Ylength, Sint16 MaterialID, Sint16 BuildingID)
+{
+    MapCoords = NewCoordinates;
+    CubeCoords = CubeCoordinates(MapCoords);
+
+    LengthX = Xlength + 1;
+    LengthY = Ylength + 1;
+
+    static Sint16 ModelID = DATA->getLabelIndex("MODEL_BIN");
+
+    BuildingType = BuildingID;
+    MaterialType = MaterialID;
+    ModelType = ModelID;
+}
 
 Building::~Building()
 {
@@ -16,28 +29,32 @@ Building::~Building()
 
 bool Building::Draw()
 {
-    float xa,xb,ya,yb;
-    xa = x1 %16 - 0.5;
-    xb = x2 - x1 + 1;
-    ya = y1 %16 - 0.5;
-    yb = y2 - y1 + 1;
+    static Sint16 Surface = DATA->getLabelIndex("SURFACETYPE_CONSTRUCTED_FLOOR");
 
+    //RENDERER->DrawCage(Coordinates, (float) LengthX, (float) LengthY, 1, false, 1.0, 1.0, 1.0);
+/*
+    glPushMatrix();
 
-    TEXTURE->BindTexture(DATA->getLabelIndex("MATERIAL_BUILDING"));
+        glNormal3f(0.0, 0.0, 1.0);
 
-    glNormal3f(0.0,0.0,1.0);
-    glTexCoord2f(0,1);
-    glVertex3f(xa     ,ya     ,-0.4);
-    glTexCoord2f(0,0);
-    glVertex3f(xa     ,ya + yb,-0.4);
-    glTexCoord2f(1,0);
-    glVertex3f(xa + xb,ya + yb,-0.4);
+        glTexCoord2f(0.0, 1.0);      glVertex3f(xa           , ya + LengthY    , -0.4);
+        glTexCoord2f(1.0, 0.0);      glVertex3f(xa + LengthX , ya              , -0.4);
+        glTexCoord2f(0.0, 0.0);      glVertex3f(xa           , ya              , -0.4);
 
-    glTexCoord2f(1,0);
-    glVertex3f(xa + xb,ya + yb,-0.4);
-    glTexCoord2f(1,1);
-    glVertex3f(xa + xb,ya     ,-0.4);
-    glTexCoord2f(0,1);
-    glVertex3f(xa     ,ya     ,-0.4);
-    return true;
+        glTexCoord2f(0.0, 1.0);      glVertex3f(xa           , ya + LengthY   , -0.4);
+        glTexCoord2f(1.0, 1.0);      glVertex3f(xa + LengthX , ya + LengthY   , -0.4);
+        glTexCoord2f(0.0, 0.0);      glVertex3f(xa           , ya             , -0.4);
+
+    glPopMatrix();
+*/
+    Model* model = MODEL->getModel(ModelType);
+
+    glPushMatrix();
+
+        glTranslatef(CubeCoords.X, CubeCoords.Y, -HALFCUBE);
+
+        TEXTURE->BindTexture(TEXTURE->MapTexture(MaterialType, Surface));
+        model->Render();
+
+    glPopMatrix();
 }

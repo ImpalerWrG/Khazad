@@ -15,13 +15,11 @@
 #include <Tree.h>
 
 
-Tree::Tree(t_matglossPair material, int x, int y, int z, VegetationType NewType)
+Tree::Tree(t_matglossPair material, MapCoordinates NewCoordinates, VegetationType NewType)
 {
     Vegetation = NewType;
 
-    MapPosition.X = x;
-    MapPosition.Y = y;
-    MapPosition.Z = z;
+    MapPosition = NewCoordinates;
 
     CubePosition.X = MapPosition.X % CELLEDGESIZE;
     CubePosition.Y = MapPosition.Y % CELLEDGESIZE;

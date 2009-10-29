@@ -12,7 +12,7 @@ class Tree : public Actor
 {
 
 public:
-        Tree(t_matglossPair material, int x, int y, int z, VegetationType Type);
+        Tree(t_matglossPair material, MapCoordinates Coordinates, VegetationType Type);
         virtual ~Tree();
 
         bool Init();
@@ -24,7 +24,9 @@ protected:
     CubeCoordinates CubePosition;
 
     t_matglossPair material;
+
     Model* model;
+
     // submodels
     int32_t trunkid;
     int32_t leavesid;

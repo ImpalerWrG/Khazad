@@ -1,24 +1,32 @@
-#ifndef BUILDING_H
-#define BUILDING_H
+#ifndef BUILDING_HEADER
+#define BUILDING_HEADER
 
 #include <stdafx.h>
 #include <Actor.h>
-#include <DFTypes.h>
+#include <Map.h>
 
 
 class Building : public Actor
 {
-    public:
-        /** Default constructor */
-        Building(int x1, int y1, int x2, int y2, int z, t_matglossPair material, int type);
-        /** Default destructor */
-        virtual ~Building();
-        bool Init();
-        bool Draw();
-    protected:
-    private:
-        int x1, y1, x2, y2, z, type;
-        t_matglossPair material;
+
+public:
+
+    Building(MapCoordinates Position, Uint8 Xlength, Uint8 Ylength, Sint16 MaterialID, Sint16 BuildingID);
+    ~Building();
+
+    bool Init();
+    bool Draw();
+
+protected:
+
+    MapCoordinates MapCoords;
+    CubeCoordinates CubeCoords;
+
+    Uint8 LengthX, LengthY;
+
+    Sint16 BuildingType;
+    Sint16 MaterialType;
+    Sint16 ModelType;
 };
 
-#endif // BUILDING_H
+#endif // BUILDING_HEADER

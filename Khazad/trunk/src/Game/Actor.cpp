@@ -1,7 +1,7 @@
 #include <stdafx.h>
 
 #include <Actor.h>
-#include <Timer.h>
+
 
 Actor::Actor(ActorType NewType)
 {

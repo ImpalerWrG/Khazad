@@ -5,7 +5,6 @@
 #include <Vector3.h>
 #include <Renderer.h>
 
-class ClipImage;
 
 class Actor
 {
@@ -14,6 +13,7 @@ public:
 
 	Actor(ActorType Type);
 	Actor();
+
 	bool Init();
 	virtual ~Actor();
 
