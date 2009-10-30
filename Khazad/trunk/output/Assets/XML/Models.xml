@@ -34,7 +34,7 @@
 	</Model>
 	<Model>
 		<Name Label="MODEL_BOULDER"/>
-		<File Path="Assets/Models/stones/stone01.obj"/>
+		<File Path="Assets/Models/stones/stone04.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_CHAIR"/>

@@ -238,7 +238,7 @@
 			<TileValue Int="338" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_3"/>
 			<TileValue Int="339" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_4"/>
 			<!-- stone boulder-->
-			<TileValue Int="402" TileShape="TILESHAPE_BOULDER" SurfaceType="SURFACETYPE_BOULDER"/>
+			<TileValue Int="402" TileShape="TILESHAPE_BOULDER" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
 			<!-- stone pebbles floors-->
 			<TileValue Int="405" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
 			<TileValue Int="406" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>

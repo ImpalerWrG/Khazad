@@ -8,6 +8,7 @@
 #include <DataManager.h>
 #include <Renderer.h>
 #include <ModelManager.h>
+#include <Model.h>
 
 Cell::Cell()
 {
@@ -94,6 +95,34 @@ void Cell::Render(CameraOrientation CurrentOrientation)
         buildings[i]->Draw();
     }
 
+        // HACK!!! get these into the RenderObject
+    CubeCoordinates TargetCubeCoordinates;
+
+    for (TargetCubeCoordinates.X = 0; TargetCubeCoordinates.X < CELLEDGESIZE; TargetCubeCoordinates.X += 1)
+    {
+        for (TargetCubeCoordinates.Y = 0; TargetCubeCoordinates.Y < CELLEDGESIZE; TargetCubeCoordinates.Y += 1)
+        {
+            if (isCubeDrawn(TargetCubeCoordinates))
+            {
+                Sint16 ModelID = DATA->getTileShapeData(getCubeShape(TargetCubeCoordinates))->getModelID();
+                if(ModelID != -1)
+                {
+                    Model* model = MODEL->getModel(ModelID);
+                    if (model != NULL)
+                    {
+                        glPushMatrix();
+
+                            glTranslatef(TargetCubeCoordinates.X, TargetCubeCoordinates.Y, -HALFCUBE);
+
+                            TEXTURE->BindTexture(TEXTURE->MapTexture(getCubeMaterial(TargetCubeCoordinates), getCubeSurface(TargetCubeCoordinates)));
+                            model->Render();
+
+                        glPopMatrix();
+                    }
+                }
+            }
+        }
+    }
 }
 
 bool Cell::DrawFaces(CubeCoordinates Coordinates)
@@ -260,6 +289,7 @@ void Cell::setCubeShape(CubeCoordinates Coordinates, Sint16 TileShape)
 void Cell::BuildFaceData()
 {
     static Sint16 FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
+    static Sint16 BoulderID = DATA->getLabelIndex("TILESHAPE_BOULDER");
     static Sint16 RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
     static Sint16 StairID = DATA->getLabelIndex("TILESHAPE_STAIR");
     static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
@@ -296,7 +326,7 @@ void Cell::BuildFaceData()
                 }
             }
 
-            if (CubeShape == FloorID)
+            if (CubeShape == FloorID || CubeShape == BoulderID)
             {
                 Face* NewFace = addFace(TargetCubeCoordinates, FACET_BOTTOM);
 
@@ -321,7 +351,9 @@ void Cell::UpdateRenderLists(WallDisplayMode Mode)
         {
             for (TargetCubeCoordinates.Y = 0; TargetCubeCoordinates.Y < CELLEDGESIZE; TargetCubeCoordinates.Y += 1)
             {
-                if (RENDERER->isCubeDrawn(TranslateCubeToMap(TargetCubeCoordinates)))
+                setCubeDrawn(TargetCubeCoordinates, RENDERER->isCubeDrawn(TranslateCubeToMap(TargetCubeCoordinates)));
+
+                if (isCubeDrawn(TargetCubeCoordinates))
                 {
                     if(isCubeSloped(TargetCubeCoordinates))
                     {

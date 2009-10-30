@@ -77,6 +77,10 @@ public:
     inline bool isCubeSolid(CubeCoordinates Coordinates)                          { return Solid.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
     inline void setCubeSolid(CubeCoordinates Coordinates, bool NewValue)          { Solid.set(((Coordinates.X * CELLEDGESIZE) + Coordinates.Y), NewValue); }
 
+    inline bool isCubeDrawn(CubeCoordinates Coordinates)                          { return Drawn.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
+    inline void setCubeDrawn(CubeCoordinates Coordinates, bool NewValue)          { Drawn.set(((Coordinates.X * CELLEDGESIZE) + Coordinates.Y), NewValue); }
+
+
     void setLiquid(CubeCoordinates Coordinates, bool liquidtype, Uint8 NewValue);
 
 
@@ -141,6 +145,8 @@ protected:
     bitset<(CELLEDGESIZE * CELLEDGESIZE)> SkyView;
     bitset<(CELLEDGESIZE * CELLEDGESIZE)> SunLit;
     bitset<(CELLEDGESIZE * CELLEDGESIZE)> Solid;
+
+    bitset<(CELLEDGESIZE * CELLEDGESIZE)> Drawn;
 
     // Liquid Data for each Cube
     bitset<(CELLEDGESIZE * CELLEDGESIZE)> LiquidType; // Allow more liquid types?

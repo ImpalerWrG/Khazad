@@ -52,6 +52,7 @@ bool DataManager::Init()
     PostProcessDataClass(&MaterialClasses);
     PostProcessDataClass(&TileGroups);
     PostProcessDataClass(&SurfaceTypes);
+    PostProcessDataClass(&TileShapes);
     PostProcessDataClass(&Trees);
     PostProcessDataClass(&Models);
     PostProcessDataClass(&Buildings);

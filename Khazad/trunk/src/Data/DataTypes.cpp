@@ -281,7 +281,12 @@ bool ModelData::Load(TiXmlElement* Entry, Uint32 Index)
 }
 
 TileShapeData::TileShapeData()
-{}
+{
+    Open = false;
+
+    ModelID = -1;
+    ModelLabel = "NONE";
+}
 
 TileShapeData::~TileShapeData()
 {}
