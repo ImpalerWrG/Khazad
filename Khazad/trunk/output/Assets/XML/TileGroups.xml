@@ -318,7 +318,7 @@
 			<TileValue Int="442" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_2"/>
 			<TileValue Int="443" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_3"/>
 			<TileValue Int="444" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_4"/>
-			<TileValue Int="436" TileShape="TILESHAPE_BOULDER" SurfaceType="SURFACETYPE_BOULDER"/>
+			<TileValue Int="436" TileShape="TILESHAPE_BOULDER" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
 			<TileValue Int="446" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
 			<TileValue Int="447" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
 			<TileValue Int="448" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>				
@@ -363,7 +363,7 @@
 			<TileValue Int="345" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_2"/>
 			<TileValue Int="346" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_3"/>
 			<TileValue Int="347" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_4"/>
-			<TileValue Int="404" TileShape="TILESHAPE_BOULDER" SurfaceType="SURFACETYPE_BOULDER"/>
+			<TileValue Int="404" TileShape="TILESHAPE_BOULDER" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
 			<TileValue Int="413" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
 			<TileValue Int="414" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
 			<TileValue Int="415" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
@@ -409,7 +409,7 @@
 			<TileValue Int="341" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_2"/>
 			<TileValue Int="342" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_3"/>
 			<TileValue Int="343" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_4"/>
-			<TileValue Int="403" TileShape="TILESHAPE_BOULDER" SurfaceType="SURFACETYPE_BOULDER"/>
+			<TileValue Int="403" TileShape="TILESHAPE_BOULDER" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
 			<TileValue Int="409" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
 			<TileValue Int="410" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>
 			<TileValue Int="411" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_PEBBLES"/>

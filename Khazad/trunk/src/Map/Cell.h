@@ -82,7 +82,8 @@ public:
 
 
     void setLiquid(CubeCoordinates Coordinates, bool liquidtype, Uint8 NewValue);
-
+    inline Uint8 getLiquidLevel(CubeCoordinates Coordinates)                           { return LiquidLevel[Coordinates.X][Coordinates.Y]; }
+    inline bool getLiquidType(CubeCoordinates Coordinates)                             { return LiquidType.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
 
     inline Uint32 GenerateFaceKey(CubeCoordinates Coordinates, Facet FacetType);
 

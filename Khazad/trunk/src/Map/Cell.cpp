@@ -105,7 +105,7 @@ void Cell::Render(CameraOrientation CurrentOrientation)
             if (isCubeDrawn(TargetCubeCoordinates))
             {
                 Sint16 ModelID = DATA->getTileShapeData(getCubeShape(TargetCubeCoordinates))->getModelID();
-                if(ModelID != -1)
+                if (ModelID != -1)
                 {
                     Model* model = MODEL->getModel(ModelID);
                     if (model != NULL)
@@ -224,6 +224,45 @@ bool Cell::DrawFaces(CubeCoordinates Coordinates)
             }
         }
     }
+
+    if (getLiquidLevel(Coordinates) != 0)
+    {
+        Sint16 LiquidMaterial;
+        Sint16 LiquidSurface = DATA->getLabelIndex("SURFACETYPE_LIQUID");
+
+        if (getLiquidType(Coordinates))
+        {
+            LiquidMaterial = DATA->getLabelIndex("MATERIAL_LAVA");
+        }
+        else
+        {
+            LiquidMaterial = DATA->getLabelIndex("MATERIAL_WATER");
+        }
+        Uint32 Texture = TEXTURE->MapTexture(LiquidMaterial, LiquidSurface);
+
+        if (!Geometry.count(Texture))
+        {
+            TextureVector = new vector<vertex>;
+            Geometry[Texture] = TextureVector;
+        }
+        else
+        {
+            TextureVector = Geometry[Texture];
+        }
+
+        vertex v3 = vertices[FACET_TOP][3];            v3.translate((float) Coordinates.X, (float) Coordinates.Y);
+        vertex v2 = vertices[FACET_TOP][2];            v2.translate((float) Coordinates.X, (float) Coordinates.Y);
+        vertex v1 = vertices[FACET_TOP][1];            v1.translate((float) Coordinates.X, (float) Coordinates.Y);
+        vertex v0 = vertices[FACET_TOP][0];            v0.translate((float) Coordinates.X, (float) Coordinates.Y);
+
+        TextureVector->push_back(v3);
+        TextureVector->push_back(v1);
+        TextureVector->push_back(v0);
+
+        TextureVector->push_back(v3);
+        TextureVector->push_back(v2);
+        TextureVector->push_back(v1);
+    }
 }
 
 bool Cell::DrawSlope(CubeCoordinates Coordinates)
@@ -333,6 +372,11 @@ void Cell::BuildFaceData()
                 NewFace->MaterialTypeID = CubeMaterial;
                 NewFace->PositiveAxisSurfaceTypeID = CubeSurface;
                 NewFace->NegativeAxisSurfaceTypeID = CubeSurface;
+            }
+
+            if (getLiquidLevel(TargetCubeCoordinates) != 0)
+            {
+                setActive(true);
             }
         }
     }
