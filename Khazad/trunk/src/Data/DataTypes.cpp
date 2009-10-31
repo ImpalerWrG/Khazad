@@ -262,7 +262,9 @@ bool TextureData::Load(TiXmlElement* Entry, Uint32 Index)
 }
 
 ModelData::ModelData()
-{}
+{
+    Scalar = 1.0;
+}
 
 ModelData::~ModelData()
 {}
@@ -273,6 +275,8 @@ bool ModelData::Load(TiXmlElement* Entry, Uint32 Index)
     {
         string temp;
         XML->QueryTextValue(Entry, "File", "Path", temp);
+        XML->QueryFloatValue(Entry, "Scale", "value", Scalar);
+
         sPath = temp;
         DataBase::Load(Entry, Index);
         return true;

@@ -86,6 +86,17 @@ public:
         return false;
     };
 
+    void QueryFloatValue(TiXmlElement* Entry, const char* Element, const char* Attribute, float& defaultvalue)
+    {
+        TiXmlElement* child = Entry->FirstChildElement(Element);
+        if (child)
+        {
+            float temp;
+            child->QueryFloatAttribute(Attribute, &temp);
+            defaultvalue = temp;
+        }
+    };
+
     template <class T>
     void QuerySIntArray(TiXmlElement* Entry, const char* Element, const char* SubElement, const char* Attribute, std::vector<T>& StorageVector)
     {

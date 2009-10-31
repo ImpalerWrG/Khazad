@@ -108,11 +108,14 @@ void Cell::Render(CameraOrientation CurrentOrientation)
                 if (ModelID != -1)
                 {
                     Model* model = MODEL->getModel(ModelID);
+                    float Scale = DATA->getModelData(ModelID)->getScalar();
+
                     if (model != NULL)
                     {
                         glPushMatrix();
 
                             glTranslatef(TargetCubeCoordinates.X, TargetCubeCoordinates.Y, -HALFCUBE);
+                            glScalef(Scale, Scale, Scale);
 
                             TEXTURE->BindTexture(TEXTURE->MapTexture(getCubeMaterial(TargetCubeCoordinates), getCubeSurface(TargetCubeCoordinates)));
                             model->Render();
@@ -434,6 +437,8 @@ void Cell::UpdateRenderLists(WallDisplayMode Mode)
             ROs[Texture] = tempRO;
         }
     }
+
+    Geometry.clear();
 }
 
 void Cell::setLiquid(CubeCoordinates Coordinates, bool liquidtype, Uint8 NewValue)

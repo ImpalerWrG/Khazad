@@ -72,10 +72,12 @@ public:
     bool Load(TiXmlElement* Element, Uint32 Index);
 
     Path getPath()                  { return sPath; }
+    float getScalar()               { return Scalar; }
 
 protected:
 
     Path sPath;
+    float Scalar;
 };
 
 class SurfaceTypeData: public DataBase

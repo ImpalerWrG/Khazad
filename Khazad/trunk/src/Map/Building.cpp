@@ -34,12 +34,14 @@ bool Building::Draw()
     if(ModelType != -1)
     {
         Model* model = MODEL->getModel(ModelType);
+        float Scale = DATA->getModelData(ModelType)->getScalar();
 
         if(model != NULL)
         {
             glPushMatrix();
 
                 glTranslatef(CubeCoords.X + LengthX / 2, CubeCoords.Y + LengthY / 2, -HALFCUBE);
+                glScalef(Scale, Scale, Scale);
 
                 TEXTURE->BindTexture(TEXTURE->MapTexture(MaterialType, Surface));
                 model->Render();
