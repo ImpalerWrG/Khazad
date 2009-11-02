@@ -15,11 +15,23 @@ Building::Building(MapCoordinates NewCoordinates, Uint8 Xlength, Uint8 Ylength, 
     LengthX = Xlength + 1;
     LengthY = Ylength + 1;
 
-    static Sint16 ModelID = DATA->getLabelIndex("MODEL_BIN");
-
     BuildingType = BuildingID;
     MaterialType = MaterialID;
+
     ModelType = DATA->getBuildingData(BuildingType)->getModelID();
+
+    static Sint16 BuildingMaterial = DATA->getLabelIndex("MATERIAL_BUILDING");  // this will keep the Texture Image
+    static Sint16 BuildingSurface = DATA->getLabelIndex("SURFACETYPE_CONSTRUCTED_FLOOR");
+
+    Sint16 TextureID = DATA->getBuildingData(BuildingType)->getTextureID();
+    if (TextureID != -1)
+    {
+        Texture = TEXTURE->MapTexture(BuildingMaterial, TextureID);
+    }
+    else
+    {
+        Texture = TEXTURE->MapTexture(MaterialType, TEXTURE->PickImageTexture(MaterialType, BuildingSurface));
+    }
 }
 
 Building::~Building()
@@ -29,9 +41,23 @@ Building::~Building()
 
 bool Building::Draw()
 {
-    static Sint16 Surface = DATA->getLabelIndex("SURFACETYPE_SMOOTH_FLOOR");
+    MapCoordinates TargetCoordinates = MapCoords;
+    bool Validated = false;
 
-    if(ModelType != -1)
+    for(; TargetCoordinates.X < (MapCoords.X + LengthX); TargetCoordinates.X += 1)
+    {
+        for(; TargetCoordinates.Y < (MapCoords.Y + LengthY); TargetCoordinates.Y += 1)
+        {
+            if (RENDERER->isCubeDrawn(TargetCoordinates))
+            {
+                Validated = true;
+                break;
+                break;
+            }
+        }
+    }
+
+    if(Validated && ModelType != -1)
     {
         Model* model = MODEL->getModel(ModelType);
         float Scale = DATA->getModelData(ModelType)->getScalar();
@@ -43,7 +69,7 @@ bool Building::Draw()
                 glTranslatef(CubeCoords.X + LengthX / 2, CubeCoords.Y + LengthY / 2, -HALFCUBE);
                 glScalef(Scale, Scale, Scale);
 
-                TEXTURE->BindTexture(TEXTURE->MapTexture(MaterialType, Surface));
+                TEXTURE->BindTexture(Texture);
                 model->Render();
 
             glPopMatrix();

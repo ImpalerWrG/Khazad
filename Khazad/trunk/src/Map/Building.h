@@ -27,6 +27,8 @@ protected:
     Sint16 BuildingType;
     Sint16 MaterialType;
     Sint16 ModelType;
+
+    GLuint Texture;
 };
 
 #endif // BUILDING_HEADER

@@ -34,7 +34,8 @@ public:
     GLuint getLogoTexture()                  { return LogoTexture; }
     void setLogoTexture(GLuint NewValue)     { LogoTexture = NewValue; }
 
-    GLuint MapTexture(Sint16 MaterialID, Sint16 SurfaceTypeID);
+    Sint16 PickImageTexture(Sint16 MaterialID, Sint16 SurfaceTypeID);
+    GLuint MapTexture(Sint16 MaterialID, Sint16 TextureID);
 
 protected:
 

@@ -289,6 +289,7 @@ public:
     bool PostProcessing();
 
     Sint16 getModelID()                     { return ModelID; }
+    Sint16 getTextureID()                   { return TextureID; }
     Uint16 getMatgloss()                    { return Matgloss; }
 
 protected:
@@ -296,7 +297,10 @@ protected:
     Uint16 Matgloss;
 
     Sint16 ModelID;
+    Sint16 TextureID;
+
     string ModelLabel;
+    string TextureLabel;
 };
 
 #endif // DATATYPE__HEADER

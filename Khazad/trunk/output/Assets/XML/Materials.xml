@@ -4,6 +4,7 @@
 		<Name Label="MATERIAL_UNINITIALIZED"/>
 		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
 		<PrimaryColor label="COLOR_BLUE"/>
+		<ColorMode mode="keepimage"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_NEHE"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_NEHE"/>
@@ -21,8 +22,9 @@
 	<Material>
 		<Name Label="MATERIAL_BUILDING"/>
 		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
-		<PrimaryColor label="COLOR_BLUE"/>
+		<PrimaryColor label="COLOR_YELLOW"/>
 		<SecondaryColor label="COLOR_BLACK"/>
+		<ColorMode mode="keepimage"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_NEHE"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_NEHE"/>
@@ -441,10 +443,14 @@
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_GOLD"/>
+		<Name Label="MATERIAL_GOLD_NUGGETS"/>
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_YELLOW"/>
@@ -452,10 +458,14 @@
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_SILVER"/>
+		<Name Label="MATERIAL_SILVER_NUGGETS"/>
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
@@ -463,10 +473,14 @@
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_COPPER"/>
+		<Name Label="MATERIAL_COPPER_NUGGETS"/>
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BROWN"/>
@@ -474,6 +488,10 @@
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -484,6 +502,10 @@
 		<MatGloss label="MALACHITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SWIRLY"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -495,6 +517,10 @@
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -506,6 +532,10 @@
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -517,6 +547,10 @@
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -540,7 +574,7 @@
 		</SurfaceTextures>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_PLATINUM"/>
+		<Name Label="MATERIAL_PLATINUM_NUGGETS"/>
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
@@ -548,6 +582,10 @@
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -569,6 +607,10 @@
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -580,6 +622,10 @@
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -591,6 +637,10 @@
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -682,6 +732,10 @@
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -822,10 +876,14 @@
 		<MatGloss label="BAUXITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SWIRLY"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_ALUMINUM"/>
+		<Name Label="MATERIAL_ALUMINUM_NUGGETS"/>
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
@@ -833,6 +891,10 @@
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -853,6 +915,10 @@
 		<MatGloss label="OLIVINE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -903,6 +969,10 @@
 		<MatGloss label="MICROCLINE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CRYSTALLINE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_CRYSTALLINE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_CRYSTALLINE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_CRYSTALLINE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_CRYSTALLINE"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -994,6 +1064,10 @@
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -1378,6 +1452,10 @@
 		<MatGloss label="GRANITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -1389,6 +1467,10 @@
 		<MatGloss label="DIORITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -1401,6 +1483,10 @@
 		<MatGloss label="GABBRO"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -1412,6 +1498,10 @@
 		<MatGloss label="RHYOLITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -1423,6 +1513,10 @@
 		<MatGloss label="BASALT"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -1435,6 +1529,10 @@
 		<MatGloss label="ANDESITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -1447,6 +1545,10 @@
 		<MatGloss label="FELSITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -1526,5 +1628,894 @@
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CARBONATE"/>
 		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_IRON"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="IRON"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GOLD"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_YELLOW"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<BorderColor label="COLOR_BROWN"/>
+		<MatGloss label="GOLD"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SILVER"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_GREY"/>
+		<MatGloss label="SILVER"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_COPPER"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_COPPER"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="COPPER"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_NICKEL"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="NICKEL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ZINC"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="ZINC"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BRONZE"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_COPPER"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="BRONZE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BRASS"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_COPPER"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="BRASS"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_STEEL"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="STEEL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PIG_IRON"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_NAVY_BLUE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="PIG_IRON"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PLATINUM"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="PLATINUM"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ELECTRUM"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="ELECTRUM"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_TIN"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="TIN"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PEWTER_FINE"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="PEWTER_FINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PEWTER_TRIFLE"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="PEWTER_TRIFLE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PEWTER_LAY"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="PEWTER_LAY"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_LEAD"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="LEAD"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ALUMINUM"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="ALUMINUM"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_NICKEL_SILVER"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="NICKEL_SILVER"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BILLON"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_COPPER"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="BILLON"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_STERLING_SILVER"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="STERLING_SILVER"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BLACK_BRONZE"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_PURPLE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="BLACK_BRONZE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ROSE_GOLD"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_PINK"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="ROSE_GOLD"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BISMUTH"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="BISMUTH"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BISMUTH_BRONZE"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_COPPER"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="BISMUTH_BRONZE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ADAMANTINE"/>
+		<MaterialClass label="MATERIALCLASS_METAL"/>
+		<PrimaryColor label="COLOR_AQUA"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="ADAMANTINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ONYX"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="ONYX"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MORION"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="MORION"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SCHORL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label=""/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_LACE_AGATE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="LACE AGATE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BLUE JADE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="BLUE JADE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_LAPIS LAZULI"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="LAPIS LAZULI"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PRASE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="PRASE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PRASE OPAL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="PRASE OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BLOODSTONE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="BLOODSTONE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MOSS AGATE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="MOSS AGATE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MOSS OPAL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="MOSS OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_VARISCITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="VARISCITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CHRYSOPRASE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="CHRYSOPRASE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CHRYSOCOLLA"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="CHRYSOCOLLA"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SARD"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="SARD"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CARNELIAN"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="CARNELIAN"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BANDED AGATE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="BANDED AGATE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SARDONYX"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="SARDONYX"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CHERRY OPAL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="CHERRY OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_LAVENDAR JADE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="LAVENDAR JADE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PINK JADE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="PINK JADE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_TUBE AGATE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="TUBE AGATE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_FIRE AGATE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="FIRE AGATE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PLUME AGATE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="PLUME AGATE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BROWN JASPER"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="BROWN JASPER"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PICTURE JASPER"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="PICTURE JASPER"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SMOKY QUARTZ"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="SMOKY QUARTZ"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_WAX OPAL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="WAX OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_WOOD OPAL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="WOOD OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_AMBER OPAL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="AMBER OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GOLD OPAL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="GOLD OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CITRINE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="CITRINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_YELLOW JASPER"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="YELLOW JASPER"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_TIGEREYE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="TIGEREYE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_TIGER IRON"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="TIGER IRON"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SUNSTONE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="SUNSTONE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_RESIN OPAL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="RESIN OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PYRITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="PYRITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_TOURMALINE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="TOURMALINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRAY CHALCEDONY"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="GRAY CHALCEDONY"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DENDRITIC AGATE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="DENDRITIC AGATE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SHELL OPAL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="SHELL OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BONE OPAL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="BONE OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_WHITE CHALCEDONY"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="WHITE CHALCEDONY"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_FORTIFICATION AGATE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="FORTIFICATION AGATE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MILK QUARTZ"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="MILK QUARTZ"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MOONSTONE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="MOONSTONE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_WHITE JADE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="WHITE JADE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_JASPER OPAL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="JASPER OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PINEAPPLE OPAL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="PINEAPPLE OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ONYX OPAL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="ONYX OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MILK OPAL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="MILK OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PIPE OPAL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="PIPE OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_AVENTURINE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="AVENTURINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_TURQUOISE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="TURQUOISE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_QUARTZ_ROSE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="QUARTZ_ROSE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CRYSTAL_ROCK"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="CRYSTAL_ROCK"/>
+	</Material>
+	
+	<Material>
+		<Name Label="MATERIAL_BLACK ZIRCON"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="BLACK ZIRCON"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BLACK PYROPE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="BLACK PYROPE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MELANITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="MELANITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_INDIGO TOURMALINE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="INDIGO TOURMALINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BLUE GARNET"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="BLUE GARNET"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_TSAVORITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="TSAVORITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GREEN TOURMALINE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="GREEN TOURMALINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DEMANTOID"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="DEMANTOID"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GREEN ZIRCON"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="GREEN ZIRCON"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GREEN JADE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="GREEN JADE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_HELIODOR"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="HELIODOR"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PERIDOT"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="PERIDOT"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_RED ZIRCON"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="RED ZIRCON"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_RED TOURMALINE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="RED TOURMALINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_RED PYROPE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="RED PYROPE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ALMANDINE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="ALMANDINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_RED GROSSULAR"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="RED GROSSULAR"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PINK TOURMALINE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="PINK TOURMALINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_RED BERYL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="RED BERYL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_FIRE OPAL"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="FIRE OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_RHODOLITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="RHODOLITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SPINEL_PURPLE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="SPINEL_PURPLE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ALEXANDRITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="ALEXANDRITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_TANZANITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="TANZANITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MORGANITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="MORGANITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_VIOLET SPESSARTINE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="VIOLET SPESSARTINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PINK GARNET"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="PINK GARNET"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_KUNZITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="KUNZITE"/>
 	</Material>
 </Materials>

@@ -105,7 +105,7 @@
 		<Channels Red="102" Green="61" Blue="41"/>
 	</Color>
 	<Color>
-		<Name Label="COLOR_BROWN_DARK"/>
+		<Name Label="COLOR_DARK_BROWN"/>
 		<Channels Red="56" Green="37" Blue="9"/>
 	</Color>
 	<Color>
@@ -161,7 +161,7 @@
 		<Channels Red="227" Green="30" Blue="0"/>
 	</Color>
 	<Color>
-		<Name Label="COLOR_DARK_BROWN"/>
-		<HexValue value="514728"/>
+		<Name Label="COLOR_COPPER"/>
+		<Channels Red="184" Green="115" Blue="51"/>
 	</Color>
 </Colors>

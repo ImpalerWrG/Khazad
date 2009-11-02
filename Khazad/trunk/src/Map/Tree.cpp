@@ -89,13 +89,13 @@ bool Tree::Draw()
 
             if(trunkid != -1)
             {
-                TEXTURE->BindTexture(TEXTURE->MapTexture(trunkmat, SurfaceTypeID));
+                TEXTURE->BindTexture(TEXTURE->MapTexture(trunkmat, TEXTURE->PickImageTexture(trunkmat, SurfaceTypeID)));
                 model->Render(trunkid);
             }
 
             if(leavesid != -1 && Vegetation != TREE_DEAD && Vegetation != SAPLING_DEAD)
             {
-                TEXTURE->BindTexture(TEXTURE->MapTexture(leavesmat_normal, SurfaceTypeID));
+                TEXTURE->BindTexture(TEXTURE->MapTexture(leavesmat_normal,  TEXTURE->PickImageTexture(leavesmat_normal, SurfaceTypeID)));
                 model->Render(leavesid);
             }
 /*

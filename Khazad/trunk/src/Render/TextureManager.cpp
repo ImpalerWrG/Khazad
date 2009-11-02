@@ -163,13 +163,41 @@ void TextureManager::BindTexture(Uint32 TextureID)
     }
 }
 
-GLuint TextureManager::MapTexture(Sint16 MaterialID, Sint16 SurfaceTypeID)
+Sint16 TextureManager::PickImageTexture(Sint16 MaterialID, Sint16 SurfaceTypeID)
 {
-    if(MaterialID != -1 && SurfaceTypeID != -1)
+    MaterialData* Material = DATA->getMaterialData(MaterialID);
+    Sint16 MaterialClassID = Material->getMaterialClass();
+
+    if (Material->getTexture(SurfaceTypeID) != -1)
+    {
+        return Material->getTexture((Uint16) SurfaceTypeID);
+    }
+    else
+    {
+        if(MaterialClassID != -1)
+        {
+            Sint16 TextureID = DATA->getMaterialClassData(MaterialClassID)->getTexture(SurfaceTypeID);
+            if(TextureID == -1)
+            {
+                cerr << "bad material/surface combination, no texture. MaterialClassID: " << MaterialClassID << " SurfaceTypeID: " << SurfaceTypeID << endl;
+                return  DATA->getLabelIndex("TEXTURE_NEHE");
+            }
+            else
+            {
+                return TextureID;
+            }
+        }
+        return  DATA->getLabelIndex("TEXTURE_NEHE");
+    }
+}
+
+GLuint TextureManager::MapTexture(Sint16 MaterialID, Sint16 TextureID)
+{
+    if(MaterialID != -1 && TextureID != -1)
     {
         Uint32 Key = MaterialID;
         Key = Key << 16;
-        Key += SurfaceTypeID;
+        Key += TextureID;
 
         if(TextureMap.find(Key) != TextureMap.end())
         {
@@ -177,7 +205,7 @@ GLuint TextureManager::MapTexture(Sint16 MaterialID, Sint16 SurfaceTypeID)
         }
         else
         {
-            ILuint DevILImageID = IMAGE->GenerateMaterialImage(MaterialID, SurfaceTypeID);
+            ILuint DevILImageID = IMAGE->GenerateMaterialImage(MaterialID, TextureID);
             if(DevILImageID != 0)
             {
                 GLuint NewTexture = GenerateTexture(DevILImageID);

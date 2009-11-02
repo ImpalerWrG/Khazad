@@ -76,22 +76,66 @@ bool InputManager::HandleInput()
                     }
                     case SDLK_RIGHT:
                     {
-                        RENDERER->MainCamera->OrbitView(CONFIG->OrbitSpeed() / 1000.0);
+                        RENDERER->MainCamera->SlideView(CONFIG->SlideSpeed(), 0);
+                        //RENDERER->MainCamera->OrbitView(CONFIG->OrbitSpeed() / 1000.0);
                         break;
                     }
                     case SDLK_LEFT:
                     {
-                        RENDERER->MainCamera->OrbitView(CONFIG->OrbitSpeed() / -1000.0);
+                        RENDERER->MainCamera->SlideView(-CONFIG->SlideSpeed(), 0);
+                        //RENDERER->MainCamera->OrbitView(CONFIG->OrbitSpeed() / -1000.0);
                         break;
                     }
                     case SDLK_UP:
                     {
-                        RENDERER->MainCamera->MoveViewVertical(1.0);
+                        RENDERER->MainCamera->SlideView(0, -CONFIG->SlideSpeed());
+                        //RENDERER->MainCamera->MoveViewVertical(1.0);
                         break;
                     }
                     case SDLK_DOWN:
                     {
-                        RENDERER->MainCamera->MoveViewVertical(-1.0);
+                        RENDERER->MainCamera->SlideView(0, CONFIG->SlideSpeed());
+                        //RENDERER->MainCamera->MoveViewVertical(-1.0);
+                        break;
+                    }
+                    case SDLK_KP1:
+                    {
+                        RENDERER->MainCamera->SlideView(-CONFIG->SlideSpeed(), CONFIG->SlideSpeed());
+                        break;
+                    }
+                    case SDLK_KP2:
+                    {
+                        RENDERER->MainCamera->SlideView(0, CONFIG->SlideSpeed());
+                        break;
+                    }
+                    case SDLK_KP3:
+                    {
+                        RENDERER->MainCamera->SlideView(CONFIG->SlideSpeed(), CONFIG->SlideSpeed());
+                        break;
+                    }
+                    case SDLK_KP4:
+                    {
+                        RENDERER->MainCamera->SlideView(-CONFIG->SlideSpeed(), 0);
+                        break;
+                    }
+                    case SDLK_KP6:
+                    {
+                        RENDERER->MainCamera->SlideView(CONFIG->SlideSpeed(), 0);
+                        break;
+                    }
+                    case SDLK_KP7:
+                    {
+                        RENDERER->MainCamera->SlideView(-CONFIG->SlideSpeed(), -CONFIG->SlideSpeed());
+                        break;
+                    }
+                    case SDLK_KP8:
+                    {
+                        RENDERER->MainCamera->SlideView(0, -CONFIG->SlideSpeed());
+                        break;
+                    }
+                    case SDLK_KP9:
+                    {
+                        RENDERER->MainCamera->SlideView(CONFIG->SlideSpeed(), -CONFIG->SlideSpeed());
                         break;
                     }
                     case SDLK_INSERT:

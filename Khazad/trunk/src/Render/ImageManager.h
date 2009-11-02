@@ -28,7 +28,7 @@ public:
 	void loadClippedSurface(char* filepath, int cliphight, int clipwidth, int rows, int columns, bool ColorKey = false);
 	ClipImage* loadSingleSurface(char* filepath, bool ColorKey = false);
 
-    ILuint GenerateMaterialImage(Sint16 MaterialID, Sint16 SurfaceTypeID);
+    ILuint GenerateMaterialImage(Sint16 MaterialID, Sint16 TextureID);
 
     ILuint GenerateGradientImage(ILuint TextureDevILID, Sint16 PrimaryColorID, Sint16 SecondaryColorID, Sint16 BorderColorID);
     ILuint GeneratedOverLayImage(ILuint TextureDevILID, Sint16 PrimaryColorID, Sint16 BorderColorID);

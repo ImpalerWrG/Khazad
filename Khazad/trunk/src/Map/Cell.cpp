@@ -117,7 +117,8 @@ void Cell::Render(CameraOrientation CurrentOrientation)
                             glTranslatef(TargetCubeCoordinates.X, TargetCubeCoordinates.Y, -HALFCUBE);
                             glScalef(Scale, Scale, Scale);
 
-                            TEXTURE->BindTexture(TEXTURE->MapTexture(getCubeMaterial(TargetCubeCoordinates), getCubeSurface(TargetCubeCoordinates)));
+                            Sint16 MaterialID = getCubeMaterial(TargetCubeCoordinates);
+                            TEXTURE->BindTexture(TEXTURE->MapTexture(MaterialID,  TEXTURE->PickImageTexture(MaterialID, getCubeSurface(TargetCubeCoordinates))));
                             model->Render();
 
                         glPopMatrix();
@@ -199,7 +200,7 @@ bool Cell::DrawFaces(CubeCoordinates Coordinates)
         {
             Sint16 FaceMaterial = getFaceMaterialType(Coordinates, FacetType);
             Sint16 FaceSurface = getFaceSurfaceType(Coordinates, FacetType);
-            Uint32 Texture = TEXTURE->MapTexture(FaceMaterial, FaceSurface);
+            Uint32 Texture = TEXTURE->MapTexture(FaceMaterial, TEXTURE->PickImageTexture(FaceMaterial, FaceSurface));
 
             {
                 if (!Geometry.count(Texture))
@@ -241,7 +242,7 @@ bool Cell::DrawFaces(CubeCoordinates Coordinates)
         {
             LiquidMaterial = DATA->getLabelIndex("MATERIAL_WATER");
         }
-        Uint32 Texture = TEXTURE->MapTexture(LiquidMaterial, LiquidSurface);
+        Uint32 Texture = TEXTURE->MapTexture(LiquidMaterial,  TEXTURE->PickImageTexture(LiquidMaterial, LiquidSurface));
 
         if (!Geometry.count(Texture))
         {
@@ -294,7 +295,7 @@ bool Cell::DrawSlope(CubeCoordinates Coordinates)
         surroundings.value |= solid << (2 * TestDirection); // Bit shift to create slope Index
     }
 
-    Uint32 Texture = TEXTURE->MapTexture(getCubeMaterial(Coordinates), getCubeSurface(Coordinates));
+    Uint32 Texture = TEXTURE->MapTexture(getCubeMaterial(Coordinates), TEXTURE->PickImageTexture(getCubeMaterial(Coordinates), getCubeSurface(Coordinates)));
 
     // create output vector if needed
     // FIXME: should be part of cell?

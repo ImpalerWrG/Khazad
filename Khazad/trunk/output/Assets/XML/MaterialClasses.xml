@@ -94,7 +94,7 @@
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_METAL"/>
-		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
+		<DefaultMaterial label="MATERIAL_IRON"/>
 		<DefaultSurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
@@ -104,7 +104,6 @@
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_VEGATATION"/>
 		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
-		<MatGlossIndex int="3"/>
 		<DefaultSurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_STONE_1"/>
@@ -112,6 +111,7 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_STONE_3"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_STONE_4"/>
 		</DefaultSurfaceTextures>
+		<MatGlossIndex int="3"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_LEATHER"/>

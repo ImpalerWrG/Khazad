@@ -888,24 +888,28 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
     vector<t_matgloss> woodtypes;
 
     DF.ReadStoneMatgloss(stonetypes);
-    DF.ReadMetalMatgloss(metaltypes);
+    DF.ReadPlantMatgloss(metaltypes);  // HACK, DF ReadPlantMatgloss and ReadMetalMatgloss are reversed
     DF.ReadWoodMatgloss(woodtypes);
 
-    Uint32 NumStoneMats = stonetypes.size();
-    int16_t uninitialized = -1;
+    Sint16 uninitialized = -1;
 
+    Uint32 NumStoneMats = stonetypes.size();
     for(Uint32 i = 0; i < NumStoneMats; i++)
     {
-        bool hit = false;
+        bool Matchfound = false;
         for(Uint32 j = 0; j < DATA->getNumMaterials(); ++j)
         {
-            if(DATA->getMaterialData(j)->getMatGloss() == stonetypes[i].id)
+            if(DATA->getMaterialClassData(DATA->getMaterialData(j)->getMaterialClass())->getMatGlossIndex() == Mat_Stone)
             {
-                StoneMatGloss.push_back(j);
-                hit = true;
+                if(DATA->getMaterialData(j)->getMatGloss() == stonetypes[i].id)
+                {
+                    StoneMatGloss.push_back(j);
+                    Matchfound = true;
+                    break;
+                }
             }
         }
-        if(!hit)
+        if(!Matchfound)
         {
             StoneMatGloss.push_back(uninitialized);
         }
@@ -914,22 +918,26 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
     Uint32 NumMetalMats = metaltypes.size();
     for(Uint32 i = 0; i < NumMetalMats; i++)
     {
-        bool hit = false;
+        bool Matchfound = false;
         for(Uint32 j = 0; j < DATA->getNumMaterials(); ++j)
         {
-            if(DATA->getMaterialData(j)->getMatGloss() == metaltypes[i].id)
+            if(DATA->getMaterialClassData(DATA->getMaterialData(j)->getMaterialClass())->getMatGlossIndex() == Mat_Metal)
             {
-                MetalMatGloss.push_back(j);
-                hit = true;
+                if(DATA->getMaterialData(j)->getMatGloss() == metaltypes[i].id)
+                {
+                    MetalMatGloss.push_back(j);
+                    Matchfound = true;
+                    break;
+                }
             }
         }
-        if(!hit)
+        if(!Matchfound)
         {
             MetalMatGloss.push_back(uninitialized);
         }
     }
 
-    if(TreeMan)
+    if(TreeMan) // TODO do trees in a more consistent way
     {
         delete TreeMan;
     }

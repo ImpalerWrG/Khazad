@@ -158,35 +158,10 @@ SDL_Surface* ImageManager::loadSurface(char* filepath, bool ColorKey)
 	return NULL;
 }
 
-ILuint ImageManager::GenerateMaterialImage(Sint16 MaterialID, Sint16 SurfaceTypeID)
+ILuint ImageManager::GenerateMaterialImage(Sint16 MaterialID, Sint16 TextureID)
 {
     MaterialData* Material = DATA->getMaterialData(MaterialID);
-    SurfaceTypeData* Surface = DATA->getSurfaceTypeData(SurfaceTypeID);
-
-    Sint16 MaterialClassID = Material->getMaterialClass();
-
-    TextureData* Texture = NULL;
-    if (Material->getTexture(SurfaceTypeID) != -1)
-    {
-        Sint16 TextureID = Material->getTexture((Uint16) SurfaceTypeID);
-        Texture = DATA->getTextureData(TextureID);
-    }
-    else
-    {
-        if(MaterialClassID != -1)
-        {
-            Sint16 TextureID = DATA->getMaterialClassData(MaterialClassID)->getTexture(SurfaceTypeID);
-            if(TextureID != -1)
-            {
-                Texture = DATA->getTextureData(TextureID);
-            }
-            else
-            {
-                cerr << "bad material/surface combination, no texture. MaterialClassID: " << MaterialClassID << " SurfaceTypeID: " << SurfaceTypeID << endl;
-                Texture = DATA->getTextureData(0);
-            }
-        }
-    }
+    TextureData* Texture = DATA->getTextureData(TextureID);
 
     ILuint TextureDevILID = Texture->getDevILID();
 
@@ -389,13 +364,13 @@ void ImageManager::ApplyBorder(ILuint DevilImageID, Sint32 BorderColorID)
                 ImageData[(i * width * bpp) +  0] = Blue;   // Blue
                 ImageData[(i * width * bpp) +  1] = Green;  // Green
                 ImageData[(i * width * bpp) +  2] = Red;    // Red
-                
+
                 ImageData[(i * width * bpp) +  3] = 255;    // Alpha
 
                 ImageData[(i * width * bpp) + ((height - 1) * bpp) + 0] = Blue;     // Blue
                 ImageData[(i * width * bpp) + ((height - 1) * bpp) + 1] = Green;    // Green
                 ImageData[(i * width * bpp) + ((height - 1) * bpp) + 2] = Red;      // Red
-                
+
                 ImageData[(i * width * bpp) + ((height - 1) * bpp) + 3] = 255;      // Alpha
             }
 
@@ -404,13 +379,13 @@ void ImageManager::ApplyBorder(ILuint DevilImageID, Sint32 BorderColorID)
                 ImageData[((width - 1) * height * bpp) + (j * bpp) + 0] = Blue;     // Blue
                 ImageData[((width - 1) * height * bpp) + (j * bpp) + 1] = Green;    // Green
                 ImageData[((width - 1) * height * bpp) + (j * bpp) + 2] = Red;      // Red
-                
+
                 ImageData[((width - 1) * height * bpp) + (j * bpp) + 3] = 255;      // Alpha
 
                 ImageData[(j * bpp) + 0] = Blue;    // Blue
                 ImageData[(j * bpp) + 1] = Green;   // Green
                 ImageData[(j * bpp) + 2] = Red;     // Red
-                
+
                 ImageData[(j * bpp) + 3] = 255;     // Alpha
             }
         }

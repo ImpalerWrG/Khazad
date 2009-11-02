@@ -358,7 +358,10 @@ bool TreeData::PostProcessing()
 }
 
 BuildingData::BuildingData()
-{}
+{
+    ModelID = - 1;
+    TextureID = - 1;
+}
 
 BuildingData::~BuildingData()
 {}
@@ -369,6 +372,7 @@ bool BuildingData::Load(TiXmlElement* Entry, Uint32 Index)
     {
         XML->QueryUIntValue(Entry, "MatGloss", "value", Matgloss);
         XML->QueryTextValue(Entry, "Model", "label", ModelLabel);
+        XML->QueryTextValue(Entry, "Texture", "label", TextureLabel);
 
         DataBase::Load(Entry, Index);
         return true;
@@ -379,6 +383,7 @@ bool BuildingData::Load(TiXmlElement* Entry, Uint32 Index)
 bool BuildingData::PostProcessing()
 {
     ModelID = DATA->getLabelIndex(ModelLabel);
+    TextureID = DATA->getLabelIndex(TextureLabel);
 
     return true;
 }

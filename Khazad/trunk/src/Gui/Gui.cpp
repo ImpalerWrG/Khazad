@@ -139,19 +139,19 @@ void Ui::InitCameraControlMenu()
     CameraControlWindow->add(AngleLockToggleButton, ButtonSize * 4, ButtonSize * 0);
 
 
-    gcn::KhazToggleButton* SubterraneanToggleButton = new gcn::KhazToggleButton(Path("Assets/UI/Buttons/Hidden.png"), Path("Assets/UI/Buttons/Hidden2.png"));
+    gcn::KhazToggleButton* SubterraneanToggleButton = new gcn::KhazToggleButton(Path("Assets/UI/Buttons/subterrain_off.png"), Path("Assets/UI/Buttons/subterrain.png"));
     SubterraneanToggleButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* SubTerranianToggleListener = new SubterraneanToggleActionListener();
     SubterraneanToggleButton->addActionListener(SubTerranianToggleListener);
     CameraControlWindow->add(SubterraneanToggleButton, ButtonSize * 5, ButtonSize * 0);
 
-    gcn::KhazToggleButton* SkyViewToggleButton = new gcn::KhazToggleButton(Path("Assets/UI/Buttons/Hidden.png"), Path("Assets/UI/Buttons/Hidden2.png"));
+    gcn::KhazToggleButton* SkyViewToggleButton = new gcn::KhazToggleButton(Path("Assets/UI/Buttons/sky_off.png"), Path("Assets/UI/Buttons/sky.png"));
     SkyViewToggleButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* SkyViewToggleListener = new SkyViewToggleActionListener();
     SkyViewToggleButton->addActionListener(SkyViewToggleListener);
     CameraControlWindow->add(SkyViewToggleButton, ButtonSize * 5, ButtonSize * 1);
 
-    gcn::KhazToggleButton* SunLitToggleButton = new gcn::KhazToggleButton(Path("Assets/UI/Buttons/Hidden.png"), Path("Assets/UI/Buttons/Hidden2.png"));
+    gcn::KhazToggleButton* SunLitToggleButton = new gcn::KhazToggleButton(Path("Assets/UI/Buttons/sun_off.png"), Path("Assets/UI/Buttons/sun.png"));
     SunLitToggleButton->setSize(ButtonSize, ButtonSize);
     gcn::ActionListener* SunLitToggleListener = new SunLitToggleActionListener();
     SunLitToggleButton->addActionListener(SunLitToggleListener);
