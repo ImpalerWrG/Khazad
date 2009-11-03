@@ -671,6 +671,8 @@ void Map::DigSlope(MapCoordinates Coordinates)
 
     setCubeHidden(Coordinates, false);
     setCubeShape(Coordinates, RampID);
+    setCubeMaterial(Coordinates, getFaceMaterial(Coordinates, FACET_BOTTOM));
+    setCubeSurfaceType(Coordinates, getFaceSurfaceType(Coordinates, FACET_BOTTOM));
 }
 
 void Map::Dig(MapCoordinates Coordinates)
@@ -679,62 +681,72 @@ void Map::Dig(MapCoordinates Coordinates)
     static Sint16 RoughWallID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
     static Sint16 RoughFloorID = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
-    if(isCubeSolid(Coordinates) || isCubeSloped(Coordinates))
+    if (isCubeInited(Coordinates))
     {
-        // reveal tiles around
-        for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+        if(isCubeSolid(Coordinates) || isCubeSloped(Coordinates))
         {
-            MapCoordinates ModifiedCoordinates = Coordinates;
-            TranslateCoordinates(ModifiedCoordinates.X, ModifiedCoordinates.Y, ModifiedCoordinates.Z, DirectionType);
-
-            if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
+            // reveal tiles around
+            for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
             {
-                setCubeHidden(ModifiedCoordinates, false);
-            }
-        }
+                MapCoordinates ModifiedCoordinates = Coordinates;
+                TranslateCoordinates(ModifiedCoordinates.X, ModifiedCoordinates.Y, ModifiedCoordinates.Z, DirectionType);
 
-        for(Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
-        {
-            MapCoordinates ModifiedCoordinates = Coordinates;
-            TranslateCoordinates(ModifiedCoordinates.X, ModifiedCoordinates.Y, ModifiedCoordinates.Z, FacetType);
-
-            if (FacetType == FACET_BOTTOM)
-            {
-                Face* TargetFace = getFace(Coordinates, FacetType);
-                if (TargetFace == NULL)
+                if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
                 {
-                    TargetFace = getFace(Coordinates, FacetType);
+                    setCubeHidden(ModifiedCoordinates, false);
                 }
-
-                MAP->addFace(Coordinates, FACET_BOTTOM);
-                MAP->setFaceMaterial(Coordinates, FACET_BOTTOM, getCubeMaterial(Coordinates));
-                MAP->setFaceSurfaceType(Coordinates, FACET_BOTTOM, RoughFloorID);
             }
-            else
-            {
-                if (MAP->isCubeSolid(ModifiedCoordinates))
-                {
-                    Face* TargetFace = getFace(Coordinates, FacetType);
-                    if (TargetFace == NULL)
-                    {
-                        TargetFace = MAP->addFace(Coordinates, FacetType);
-                    }
 
-                    TargetFace->MaterialTypeID = getCubeMaterial(ModifiedCoordinates);
-                    TargetFace->NegativeAxisSurfaceTypeID = RoughWallID;
-                    TargetFace->PositiveAxisSurfaceTypeID = RoughWallID;
+            for(Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
+            {
+                MapCoordinates ModifiedCoordinates = Coordinates;
+                TranslateCoordinates(ModifiedCoordinates.X, ModifiedCoordinates.Y, ModifiedCoordinates.Z, FacetType);
+
+                if (FacetType == FACET_BOTTOM)
+                {
+                    if (MAP->isCubeSolid(ModifiedCoordinates))
+                    {
+                        Face* TargetFace = getFace(Coordinates, FacetType);
+                        if (TargetFace == NULL)
+                        {
+                            TargetFace = MAP->addFace(Coordinates, FACET_BOTTOM);
+                        }
+
+                        TargetFace->MaterialTypeID = getCubeMaterial(ModifiedCoordinates);
+                        TargetFace->NegativeAxisSurfaceTypeID = RoughFloorID;
+                        TargetFace->PositiveAxisSurfaceTypeID = RoughFloorID;
+                    }
+                    else
+                    {
+                        MAP->removeFace(Coordinates, FacetType);
+                    }
                 }
                 else
                 {
-                    MAP->removeFace(Coordinates, FacetType);
+                    if (MAP->isCubeSolid(ModifiedCoordinates))
+                    {
+                        Face* TargetFace = getFace(Coordinates, FacetType);
+                        if (TargetFace == NULL)
+                        {
+                            TargetFace = MAP->addFace(Coordinates, FacetType);
+                        }
+
+                        TargetFace->MaterialTypeID = getCubeMaterial(ModifiedCoordinates);
+                        TargetFace->NegativeAxisSurfaceTypeID = getCubeSurfaceType(ModifiedCoordinates);
+                        TargetFace->PositiveAxisSurfaceTypeID = getCubeSurfaceType(ModifiedCoordinates);
+                    }
+                    else
+                    {
+                        MAP->removeFace(Coordinates, FacetType);
+                    }
                 }
             }
+
+            setCubeHidden(Coordinates, false);
+            setCubeShape(Coordinates, FloorID);
+
+            MAP->setCubeMaterial(Coordinates, -1);
         }
-
-        setCubeHidden(Coordinates, false);
-        setCubeShape(Coordinates, FloorID);
-
-        MAP->setCubeMaterial(Coordinates, -1);
     }
 }
 

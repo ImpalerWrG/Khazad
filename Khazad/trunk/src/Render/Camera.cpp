@@ -314,7 +314,11 @@ void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY, 
         {
             if (MouseButtonState & SDL_BUTTON(SDL_BUTTON_RIGHT))
             {
-                TiltView(DeltaY *  (CONFIG->TiltSpeed() / 1000.0), 0.01f, 10.0f);
+                if(!AngleLock)
+                {
+                    TiltView(DeltaY *  (CONFIG->TiltSpeed() / 1000.0), 0.01f, 10.0f);
+                }
+
                 OrbitView(DeltaX * (CONFIG->OrbitSpeed() / 10000.0));
 
                 generateViewFrustum();
@@ -500,11 +504,6 @@ void Camera::TiltView(float Movement, float Min, float Max)
 {
     float Distance = 0;
     Vector3 LookVector;
-
-    if(AngleLock)
-    {
-        return;
-    }
 
     if((Orientation == CAMERA_DOWN) && (Movement < 0)) // Break out of vertical using Up Vector
     {
