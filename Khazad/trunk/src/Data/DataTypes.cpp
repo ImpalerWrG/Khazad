@@ -118,7 +118,9 @@ bool TileGroupData::PostProcessing()
 }
 
 MaterialClassData::MaterialClassData()
-{}
+{
+    DefaultMaterialLabel = "NONE";
+}
 
 MaterialClassData::~MaterialClassData()
 {}
@@ -166,7 +168,11 @@ bool MaterialClassData::PostProcessing()
 }
 
 MaterialData::MaterialData()
-{}
+{
+    PrimaryColorLabel = "NONE";
+    SecondaryColorLabel = "NONE";
+    BorderColorLabel = "NONE";
+}
 
 MaterialData::~MaterialData()
 {}
@@ -359,8 +365,11 @@ bool TreeData::PostProcessing()
 
 BuildingData::BuildingData()
 {
-    ModelID = - 1;
-    TextureID = - 1;
+    ModelLabel = "NONE";
+    TextureLabel = "NONE";
+
+    ModelID = -1;
+    TextureID = -1;
 }
 
 BuildingData::~BuildingData()

@@ -73,6 +73,7 @@ void Ui::InitMainMenu()
     gcn::ActionListener* MapDumpListener = new MapDumpActionListener();
     MapDumpButton->addActionListener(MapDumpListener);
 
+/*
     // Populate the Window with Buttons
     gcn::KhazButton* MapLoadButton = new gcn::KhazButton(Path("Assets/UI/Buttons/OpenFile.png"));
     MapLoadButton->setSize(ButtonSize, ButtonSize);
@@ -86,11 +87,12 @@ void Ui::InitMainMenu()
     MainMenuWindow->add(MapSaveButton, ButtonSize * 2, 0);
     gcn::ActionListener* MapSaveListener = new MapSaveActionListener();
     MapSaveButton->addActionListener(MapSaveListener);
+*/
 
     // Populate the Window with Buttons
     gcn::KhazButton* ExitButton = new gcn::KhazButton(Path("Assets/UI/Buttons/Exit.png"));
     ExitButton->setSize(ButtonSize, ButtonSize);
-    MainMenuWindow->add(ExitButton, ButtonSize * 3 , 0);
+    MainMenuWindow->add(ExitButton, ButtonSize * 1 , 0);
     gcn::ActionListener* ExitListener = new ConfirmExitActionListener();
     ExitButton->addActionListener(ExitListener);
 

@@ -18,6 +18,13 @@ struct MapCoordinates
         Z = 0;
     };
 
+    MapCoordinates(Vector3 Point)
+    {
+        X = Point.x;
+        Y = Point.y;
+        Z = Point.z;
+    };
+
     MapCoordinates(Sint32 NewX, Sint32 NewY, Sint32 NewZ)
     {
         X = NewX;
@@ -245,7 +252,7 @@ public:
     Uint32 getFaceCount()                   { return FaceCount; }
 
 
-    Vector3 getMapCenter();
+    MapCoordinates getMapCenter();
 
     TreeManager* TreeMan;
 

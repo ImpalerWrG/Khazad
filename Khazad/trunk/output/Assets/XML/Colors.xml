@@ -61,7 +61,7 @@
 		<Channels Red="255" Green="255" Blue="0"/>
 	</Color>
 	<Color>
-		<Name Label="COLOR_NAVY"/>
+		<Name Label="COLOR_NAVY_BLUE"/>
 		<Channels Red="0" Green="0" Blue="128"/>
 	</Color>
 	<Color>
@@ -137,7 +137,7 @@
 		<Channels Red="128" Green="64" Blue="0"/>
 	</Color>
 	<Color>
-		<Name Label="COLOR_LAVENDER"/>
+		<Name Label="COLOR_ROYAL_PURPLE"/>
 		<Channels Red="128" Green="64" Blue="128"/>
 	</Color>
 	<Color>
@@ -163,5 +163,9 @@
 	<Color>
 		<Name Label="COLOR_COPPER"/>
 		<Channels Red="184" Green="115" Blue="51"/>
+	</Color>
+	<Color>
+		<Name Label="COLOR_LAVENDAR"/>
+		<Channels Red="230" Green="230" Blue="250"/>
 	</Color>
 </Colors>

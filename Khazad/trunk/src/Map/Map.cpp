@@ -1015,10 +1015,11 @@ Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmateri
 
 Sint16 Map::ResolveMatGlossPair(t_matglossPair MatPair)
 {
-    if (MatPair.type != -1)
+    static Uint16 Unknown = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
+
+    if (MatPair.type != -1 && MatPair.index != -1)
     {
         Sint16 PotentialMaterial = -1;
-
 
         if (MatPair.type == Mat_Stone)
         {
@@ -1051,7 +1052,7 @@ Sint16 Map::ResolveMatGlossPair(t_matglossPair MatPair)
         }
         else
         {
-            cerr << "construction material not in Materials.xml: "<< MatPair.type << "::" << MatPair.index << endl;
+            cerr << "material not in Materials.xml: "<< MatPair.type << "::" << MatPair.index << endl;
         }
 
         // Try to find a MateralClass default material
@@ -1069,18 +1070,20 @@ Sint16 Map::ResolveMatGlossPair(t_matglossPair MatPair)
         }
         else
         {
-            cerr << "construction material not in Material Classes: "<< MatPair.type << "::" << MatPair.index << endl;
+            cerr << "material not in Material Classes: "<< MatPair.type << "::" << MatPair.index << endl;
         }
     }
+
+    return Unknown;
 }
 
-Vector3 Map::getMapCenter()
+MapCoordinates Map::getMapCenter()
 {
-    Vector3 CenterPoint;
+    MapCoordinates CenterPoint;
 
-    CenterPoint.x = getMapSizeX() / 2;
-    CenterPoint.y = getMapSizeY() / 2;
-    CenterPoint.z = getMapSizeZ();
+    CenterPoint.X = getMapSizeX() / 2;
+    CenterPoint.Y = getMapSizeY() / 2;
+    CenterPoint.Z = getMapSizeZ();
 
     return CenterPoint;
 }

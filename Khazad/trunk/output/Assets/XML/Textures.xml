@@ -261,6 +261,10 @@
 		<File Path="Assets/Textures/wood_floor.png"/>
 	</Texture>
 	<Texture>
+		<Name Label="TEXTURE_ROUGH_GEMS"/>
+		<File Path="Assets/Textures/Gems.png"/>
+	</Texture>
+	<Texture>
 		<Name Label="TEXTURE_KHAZAD_LOGO"/>
 		<File Path="Assets/Textures/KhazadLogo.png"/>
 	</Texture>

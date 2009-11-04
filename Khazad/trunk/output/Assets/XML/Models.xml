@@ -67,4 +67,20 @@
 		<Name Label="MODEL_MASONS_WORKSHOP"/>
 		<File Path="Assets/Models/masons_workshop/masons_workshop.obj"/>
 	</Model>
+	<Model>
+		<Name Label="MODEL_FLOOR_GRATE"/>
+		<File Path="Assets/Models/grates-bars/floor_grate.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_WALL_GRATE"/>
+		<File Path="Assets/Models/grates-bars/wall_grate.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_FLOOR_BARS"/>
+		<File Path="Assets/Models/grates-bars/floor_bars.obj"/>
+	</Model>
+	<Model>
+		<Name Label="MODEL_WALL_BARS"/>
+		<File Path="Assets/Models/grates-bars/wall_bars.obj"/>
+	</Model>
 </Models>

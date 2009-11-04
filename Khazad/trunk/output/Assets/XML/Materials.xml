@@ -46,7 +46,7 @@
 		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
 		<PrimaryColor label="COLOR_TEAL"/>
 		<SecondaryColor label="COLOR_WHITE"/>
-		<ColorMode mode="gradientmap" />
+		<ColorMode mode="gradientmap"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_LIQUID" Texture="TEXTURE_LIQUID"/>
 		</SurfaceTextures>
@@ -101,7 +101,7 @@
 	<Material>
 		<Name Label="MATERIAL_SOIL"/>
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
-		<PrimaryColor label="COLOR_BROWN_DARK"/>
+		<PrimaryColor label="COLOR_DARK_BROWN"/>
 		<ColorMode mode="overlay"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GROUND"/>
@@ -110,7 +110,7 @@
 	<Material>
 		<Name Label="MATERIAL_FARM"/>
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
-		<PrimaryColor label="COLOR_BROWN_DARK"/>
+		<PrimaryColor label="COLOR_DARK_BROWN"/>
 		<ColorMode mode="overlay"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GROUND"/>
@@ -248,7 +248,7 @@
 	<Material>
 		<Name Label="MATERIAL_ICE"/>
 		<MaterialClass label="MATERIALCLASS_ICE"/>
-		<PrimaryColor label="COLOR_NAVY"/>
+		<PrimaryColor label="COLOR_NAVY_BLUE"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 	</Material>
 	<Material>
@@ -717,7 +717,7 @@
 		<Name Label="MATERIAL_KIMBERLITE"/>
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
-		<SecondaryColor label="COLOR_NAVY"/>
+		<SecondaryColor label="COLOR_NAVY_BLUE"/>
 		<MatGloss label="KIMBERLITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
@@ -852,7 +852,7 @@
 		<Name Label="MATERIAL_PYROLUSITE"/>
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_BLACK"/>
-		<SecondaryColor label="COLOR_NAVY"/>
+		<SecondaryColor label="COLOR_NAVY_BLUE"/>
 		<MatGloss label="PYROLUSITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
@@ -1577,8 +1577,8 @@
 		<Name Label="MATERIAL_SLATE"/>
 		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
-		<SecondaryColor label="COLOR_NAVY"/>
-		<BorderColor label="COLOR_NAVY"/>
+		<SecondaryColor label="COLOR_NAVY_BLUE"/>
+		<BorderColor label="COLOR_NAVY_BLUE"/>
 		<MatGloss label="SLATE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
@@ -1839,683 +1839,1145 @@
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_ONYX"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="ONYX"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MORION"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="MORION"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SCHORL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label=""/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_LACE_AGATE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BLUE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="LACE AGATE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_BLUE JADE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BLUE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="BLUE JADE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_LAPIS LAZULI"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BLUE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="LAPIS LAZULI"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PRASE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_DARK_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="PRASE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PRASE OPAL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_DARK_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="PRASE OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_BLOODSTONE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="BLOODSTONE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MOSS AGATE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_DARK_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="MOSS AGATE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MOSS OPAL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_DARK_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="MOSS OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_VARISCITE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_DARK_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="VARISCITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CHRYSOPRASE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="CHRYSOPRASE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CHRYSOCOLLA"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_AQUA"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="CHRYSOCOLLA"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SARD"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="SARD"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CARNELIAN"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="CARNELIAN"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_BANDED AGATE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="BANDED AGATE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SARDONYX"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="SARDONYX"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CHERRY OPAL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_RED"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="CHERRY OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_LAVENDAR JADE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_LAVENDAR"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="LAVENDAR JADE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PINK JADE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_PINK"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="PINK JADE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TUBE AGATE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="TUBE AGATE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_FIRE AGATE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_ORANGE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="FIRE AGATE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PLUME AGATE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="PLUME AGATE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_BROWN JASPER"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="BROWN JASPER"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PICTURE JASPER"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="PICTURE JASPER"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SMOKY QUARTZ"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="SMOKY QUARTZ"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_WAX OPAL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="WAX OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_WOOD OPAL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="WOOD OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_AMBER OPAL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="AMBER OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_GOLD OPAL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="GOLD OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CITRINE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_ORANGE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="CITRINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_YELLOW JASPER"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="YELLOW JASPER"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TIGEREYE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="TIGEREYE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TIGER IRON"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="TIGER IRON"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SUNSTONE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="SUNSTONE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RESIN OPAL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="RESIN OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PYRITE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="PYRITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TOURMALINE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="TOURMALINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_GRAY CHALCEDONY"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="GRAY CHALCEDONY"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DENDRITIC AGATE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="DENDRITIC AGATE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SHELL OPAL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="SHELL OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_BONE OPAL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="BONE OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_WHITE CHALCEDONY"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="WHITE CHALCEDONY"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_FORTIFICATION AGATE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="FORTIFICATION AGATE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MILK QUARTZ"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="MILK QUARTZ"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MOONSTONE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="MOONSTONE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_WHITE JADE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="WHITE JADE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_JASPER OPAL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="JASPER OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PINEAPPLE OPAL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="PINEAPPLE OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_ONYX OPAL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="ONYX OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MILK OPAL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="MILK OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PIPE OPAL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="PIPE OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_AVENTURINE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="AVENTURINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TURQUOISE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_AQUA"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="TURQUOISE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_QUARTZ_ROSE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_PINK"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="QUARTZ_ROSE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CRYSTAL_ROCK"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="CRYSTAL_ROCK"/>
 	</Material>
-	
 	<Material>
 		<Name Label="MATERIAL_BLACK ZIRCON"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="BLACK ZIRCON"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_BLACK PYROPE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="BLACK PYROPE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MELANITE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="MELANITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_INDIGO TOURMALINE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_NAVY_BLUE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="INDIGO TOURMALINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_BLUE GARNET"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BLUE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="BLUE GARNET"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TSAVORITE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="TSAVORITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_GREEN TOURMALINE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="GREEN TOURMALINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DEMANTOID"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="DEMANTOID"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_GREEN ZIRCON"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="GREEN ZIRCON"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_GREEN JADE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_LIME"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="GREEN JADE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_HELIODOR"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_LIME"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="HELIODOR"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PERIDOT"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_LIME"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="PERIDOT"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RED ZIRCON"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="RED ZIRCON"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RED TOURMALINE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="RED TOURMALINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RED PYROPE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="RED PYROPE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_ALMANDINE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="ALMANDINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RED GROSSULAR"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="RED GROSSULAR"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PINK TOURMALINE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_PINK"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="PINK TOURMALINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RED BERYL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_RED"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="RED BERYL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_FIRE OPAL"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_RED"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="FIRE OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RHODOLITE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_PURPLE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="RHODOLITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SPINEL_PURPLE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_PURPLE"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="SPINEL_PURPLE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_ALEXANDRITE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_MAGENTA"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="ALEXANDRITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TANZANITE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_MAGENTA"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="TANZANITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MORGANITE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_MAGENTA"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="MORGANITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_VIOLET SPESSARTINE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_MAGENTA"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="VIOLET SPESSARTINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PINK GARNET"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
-		<SecondaryColor label="COLOR_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_PINK"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
 		<MatGloss label="PINK GARNET"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_KUNZITE"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_WHITE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_MAGENTA"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="KUNZITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CINNAMON GROSSULAR"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="CINNAMON GROSSULAR"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_HONEY YELLOW BERYL"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="HONEY YELLOW BERYL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_JELLY OPAL"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="JELLY OPAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BROWN ZIRCON"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="BROWN ZIRCON"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_YELLOW ZIRCON"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
-		<MatGloss label="KUNZITE"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="YELLOW ZIRCON"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GOLDEN BERYL"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="GOLDEN BERYL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_YELLOW SPESSARTINE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="YELLOW SPESSARTINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_TOPAZ"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="TOPAZ"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_TOPAZOLITE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="TOPAZOLITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_YELLOW GROSSULAR"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="YELLOW GROSSULAR"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_RUBICELLE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="RUBICELLE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CLEAR GARNET"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="CLEAR GARNET"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GOSHENITE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="GOSHENITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CAT'S EYE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="CAT'S EYE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CLEAR ZIRCON"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="CLEAR ZIRCON"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_AMETHYST"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_MAGENTA"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="AMETHYST"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_AQUAMARINE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_AQUA"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="AQUAMARINE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SPINEL_RED"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_RED"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="SPINEL_RED"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CHRYSOBERYL"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_LIME"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="CHRYSOBERYL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_OPAL_PFIRE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_RED"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="OPAL_PFIRE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_OPAL_REDFLASH"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_RED"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="OPAL_REDFLASH"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_OPAL_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="OPAL_BLACK"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_OPAL_WHITE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="OPAL_WHITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_OPAL_CRYSTAL"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="OPAL_CRYSTAL"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_OPAL_CLARO"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BLUE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="OPAL_CLARO"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_OPAL_LEVIN"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="OPAL_LEVIN"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_OPAL_HARLEQUIN"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="OPAL_HARLEQUIN"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_OPAL_PINFIRE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="OPAL_PINFIRE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_OPAL_BANDFIRE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="OPAL_BANDFIRE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DIAMOND_LY"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="DIAMOND_LY"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DIAMOND_FY"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="DIAMOND_FY"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_EMERALD"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_GREEN"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="EMERALD"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_RUBY"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_RED"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="RUBY"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAPPHIRE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BLUE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="SAPPHIRE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DIAMOND_CLEAR"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="DIAMOND_CLEAR"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DIAMOND_RED"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_RED"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="DIAMOND_RED"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DIAMOND_GREEN"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_GREEN"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="DIAMOND_GREEN"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DIAMOND_BLUE"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BLUE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="DIAMOND_BLUE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DIAMOND_YELLOW"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="DIAMOND_YELLOW"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DIAMOND_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="DIAMOND_BLACK"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAPPHIRE_STAR"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_BLUE"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="SAPPHIRE_STAR"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_RUBY_STAR"/>
+		<MaterialClass label="MATERIALCLASS_GEM_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<SecondaryColor label="COLOR_RED"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<ColorMode mode="gradientmap"/>
+		<MatGloss label="RUBY_STAR"/>
 	</Material>
 </Materials>

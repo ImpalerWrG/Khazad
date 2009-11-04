@@ -42,10 +42,10 @@
 	</SurfaceType>
 	<SurfaceType>
 		<Name Label="SURFACETYPE_CONSTRUCTED_WALL"/>
-		<TextureUsed label=""/>
+		<TextureUsed label="NONE"/>
 	</SurfaceType>
 	<SurfaceType>
 		<Name Label="SURFACETYPE_CONSTRUCTED_FLOOR"/>
-		<TextureUsed label="TEXTURE_CONSTRUCTED_WALL"/>
+		<TextureUsed label="NONE"/>
 	</SurfaceType>
 </SurfaceTypes>

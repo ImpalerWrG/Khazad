@@ -62,7 +62,15 @@ class CenteringActionListener: public gcn::ActionListener
     void action(const gcn::ActionEvent& actionEvent)
     {
         gcn::Button* Source = (gcn::Button*) actionEvent.getSource();
-        RENDERER->MainCamera->CenterView(MAP->getMapCenter());
+
+        MapCoordinates Coordinate = MAP->getMapCenter();
+
+        Vector3 CenterPoint;
+        CenterPoint.x = Coordinate.X;
+        CenterPoint.y = Coordinate.Y;
+        CenterPoint.z = Coordinate.Z;
+
+        RENDERER->MainCamera->CenterView(CenterPoint);
     }
 };
 
@@ -275,12 +283,23 @@ class MapDumpActionListener: public gcn::ActionListener
 
         if(MAP->Extract())
         {
-            RENDERER->MainCamera->CenterView(MAP->getMapCenter());
+            MapCoordinates Coordinate = MAP->getMapCenter();
+
+            Vector3 CenterPoint;
+            CenterPoint.x = Coordinate.X;
+            CenterPoint.y = Coordinate.Y;
+            CenterPoint.z = Coordinate.Z;
+
+            RENDERER->MainCamera->CenterView(CenterPoint);
+            RENDERER->setCursor(MAP->getMapCenter());
+
             UI->setZSliderRange(MAP->getMapSizeZ());
             UI->setZSliders(MAP->getMapSizeZ(),0 );
+
             RENDERER->MainCamera->SetSliceTop(MAP->getMapSizeZ());
             RENDERER->MainCamera->SetSliceBottom(0);
             RENDERER->ConfineCursor();
+
             UI->setMapViewState();
         }
     }
@@ -301,9 +320,19 @@ class MapLoadActionListener: public gcn::ActionListener
 
         if(MAP->Load(Path(CONFIG->LoadPath())))
         {
-            RENDERER->MainCamera->CenterView(MAP->getMapCenter());
+            MapCoordinates Coordinate = MAP->getMapCenter();
+
+            Vector3 CenterPoint;
+
+            CenterPoint.x = Coordinate.X;
+            CenterPoint.y = Coordinate.Y;
+            CenterPoint.z = Coordinate.Z;
+
+            RENDERER->MainCamera->CenterView(CenterPoint);
+
             UI->setZSliderRange(MAP->getMapSizeZ());
-            UI->setZSliders(0,MAP->getMapSizeZ() );
+            UI->setZSliders(0, MAP->getMapSizeZ());
+
             RENDERER->MainCamera->SetSliceTop(MAP->getMapSizeZ());
             RENDERER->MainCamera->SetSliceBottom(0);
             RENDERER->ConfineCursor();

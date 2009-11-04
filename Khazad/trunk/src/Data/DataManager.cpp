@@ -67,6 +67,11 @@ Sint32 DataManager::getLabelIndex(string Label)
         return -1;
     }
 
+    if(strcmp(Label.c_str(), "") == 0)
+    {
+        return -1;
+    }
+
     std::map<string, Uint32, ltstr>::iterator iter;
     iter = GlobalLabelMap.find(Label);
 

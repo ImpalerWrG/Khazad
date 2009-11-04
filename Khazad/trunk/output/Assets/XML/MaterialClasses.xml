@@ -46,6 +46,23 @@
 		<MatGlossIndex int="1"/>
 	</MaterialClass>
 	<MaterialClass>
+		<Name Label="MATERIALCLASS_GEM_STONE"/>
+		<DefaultMaterial label="MATERIAL_VEIN_STONE"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH_GEMS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_ROUGH_GEMS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_ROUGH_GEMS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_ROUGH_GEMS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_ROUGH_GEMS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_WALL" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_FLOOR" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_PEBBLES" Texture="TEXTURE_PEBBLES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="1"/>
+	</MaterialClass>
+	<MaterialClass>
 		<Name Label="MATERIALCLASS_FEATURE_STONE"/>
 		<DefaultSurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
