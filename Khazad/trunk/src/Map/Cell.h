@@ -26,7 +26,10 @@ public:
 
     Cell();
     ~Cell();
+
     bool Init();
+    bool isInitialized()    { return Initialized; }
+
     void setPosition(CellCoordinates Coordinates);
 
 

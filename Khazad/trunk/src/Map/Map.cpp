@@ -6,6 +6,7 @@
 #include <DataManager.h>
 #include <TreeManager.h>
 #include <Gui.h>
+#include <Extractor.h>
 
 ///FIXME: dfhack paths
 #include "../../dfhack/library/DFTypes.h"
@@ -127,22 +128,18 @@ void Map::setCellNeedsReDraw(CellCoordinates Coordinates, bool NewValue)
 
 bool Map::Extract()
 {
-    Path path_to_xml("Assets/XML/Memory.xml");
-    DFHackAPI *pDF = CreateDFHackAPI(path_to_xml);
-    DFHackAPI &DF = *pDF;
+    if(!EXTRACTOR->Attach())
+    {
+        return false;
+    }
 
-    if(!DF.Attach())
-    {
-        return false;
-    }
-    if(!DF.InitMap())
-    {
-        return false;
-    }
+    DFHackAPI& DF = *EXTRACTOR->DFHack;
+
     if(MapLoaded)
     {
         ReleaseMap();
     }
+
     vector< vector <uint16_t> > layerassign;
     // get region geology
     if(!DF.ReadGeology( layerassign ))
@@ -160,6 +157,10 @@ bool Map::Extract()
     CellSizeX = X;
     CellSizeY = Y;
     CellSizeZ = Z;
+
+    MapSizeX = CellSizeX * CELLEDGESIZE;
+    MapSizeY = CellSizeY * CELLEDGESIZE;
+    MapSizeZ = CellSizeZ;
 
     // read constructions
     map<uint64_t, t_construction> constructionAssigner;
@@ -217,9 +218,6 @@ bool Map::Extract()
     }
     DF.FinishReadBuildings();
 
-    MapSizeX = CellSizeX * CELLEDGESIZE;
-    MapSizeY = CellSizeY * CELLEDGESIZE;
-    MapSizeZ = CellSizeZ;
 
     ColumnMatrix = new Column**[CellSizeX];
 
@@ -262,14 +260,12 @@ bool Map::Extract()
         }
     }
 
-    DF.Detach();
-    delete pDF;
+    EXTRACTOR->Detach();
 
     MapLoaded = true;
     return true;
 }
 
-// load from file
 bool Map::Load(string filename)
 {
     //DFExtractor->loadMap(filename);
@@ -277,7 +273,6 @@ bool Map::Load(string filename)
     return false;
 }
 
-// save to file
 void Map::Save(string filename)
 {
     //DFExtractor->writeMap(filename);
@@ -784,10 +779,7 @@ void Map::LoadCellData(DFHackAPI & DF,
         for (uint32_t yy = 0; yy < 16; yy++)
         {
             // base rock layers
-            basemat[xx][yy] =
-            layerassign
-            [regionoffsets[designations[xx][yy].bits.biome]]
-            [designations[xx][yy].bits.geolayer_index];
+            basemat[xx][yy] = layerassign[regionoffsets[designations[xx][yy].bits.biome]][designations[xx][yy].bits.geolayer_index];
 
             // veins
             for(int i = 0; i < veins.size();i++)

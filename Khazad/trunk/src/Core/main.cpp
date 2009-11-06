@@ -14,6 +14,7 @@
 #include <ModelManager.h>
 #include <Game.h>
 #include <Map.h>
+#include <Extractor.h>
 #include <Gui.h>
 #include <Paths.h>
 
@@ -78,6 +79,11 @@ bool initManagers()
     GAME->CreateInstance();
     GAME->Init();
     printf("GAME DONE\n");
+
+    printf("-=EXTRACTOR INITIALIZING=- ... \n");
+    EXTRACTOR->CreateInstance();
+    EXTRACTOR->Init();
+    printf("EXTRACTOR DONE\n");
 
     printf("-=MAP INITIALIZING=- ... \n");
     MAP->CreateInstance();

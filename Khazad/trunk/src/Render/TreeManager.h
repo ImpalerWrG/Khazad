@@ -22,7 +22,6 @@
 
 class TreeData;
 #include <DFTypes.h>
-class Model;
 
 class TreeManager
 {

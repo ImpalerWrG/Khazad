@@ -270,6 +270,15 @@ public:
 
 protected:
 
+    string TrunkMaterial;
+    string LeavesMaterial;
+    string SnowMaterial;
+
+    Sint16 TrunkMaterialID;
+    Sint16 LeavesMaterialID;
+    Sint16 SnowMaterialID;
+
+
     vector <TreeVariant> variants;
 
     string Matgloss;

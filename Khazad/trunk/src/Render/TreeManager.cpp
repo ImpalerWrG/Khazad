@@ -30,14 +30,15 @@ TreeManager::TreeManager(vector<t_matgloss> & wood)
     // build matgloss ID->tree map
     for(uint32_t i = 0; i < DATA->getNumTrees(); ++i)
     {
-        TreeData * td =  DATA->getTreeData(i);
+        TreeData* td =  DATA->getTreeData(i);
         string mat1 = td->getMatgloss();
-        for(uint32_t j = 0; j < wood.size();j++)
+
+        for(uint32_t j = 0; j < wood.size(); j++)
         {
             string mat2 = wood[j].id;
             if( mat1 == mat2)
             {
-                treemap[j]=td;
+                treemap[j] = td;
             }
         }
     }

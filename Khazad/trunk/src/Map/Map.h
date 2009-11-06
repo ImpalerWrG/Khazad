@@ -81,7 +81,6 @@ struct CellCoordinates
     Sint16 Z;
 };
 
-
 struct CubeCoordinates
 {
     CubeCoordinates()
