@@ -284,12 +284,8 @@
 		<Unit filename="src\Map\Map.h" />
 		<Unit filename="src\Render\Camera.cpp" />
 		<Unit filename="src\Render\Camera.h" />
-		<Unit filename="src\Render\ClipImage.cpp" />
-		<Unit filename="src\Render\ClipImage.h" />
 		<Unit filename="src\Render\ImageManager.cpp" />
 		<Unit filename="src\Render\ImageManager.h" />
-		<Unit filename="src\Render\ImagePage.cpp" />
-		<Unit filename="src\Render\ImagePage.h" />
 		<Unit filename="src\Render\Model.h" />
 		<Unit filename="src\Render\ModelManager.cpp" />
 		<Unit filename="src\Render\ModelManager.h" />

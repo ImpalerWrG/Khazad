@@ -2,8 +2,6 @@
 
 #include "Renderer.h"
 #include <Singleton.h>
-#include <ImagePage.h>
-#include <ClipImage.h>
 #include <Camera.h>
 
 #include <ConfigManager.h>

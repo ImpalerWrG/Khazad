@@ -5,6 +5,7 @@
 #include <Singleton.h>
 #include "KhazWindow.hpp"
 #include "KhazButton.hpp"
+#include <KhazSlider.hpp>
 
 class Ui
 {

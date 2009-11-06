@@ -1,7 +1,5 @@
 #include <stdafx.h>
 
-#include <ImagePage.h>
-#include <ClipImage.h>
 #include <ImageManager.h>
 #include <DataManager.h>
 
@@ -27,13 +25,15 @@ bool ImageManager::Init()
 		return false;
 	}
 
-    // Initilize Devil with OpenGL rendering support
+    // Initilize all Devil components with OpenGL rendering support
     ilInit();
     iluInit();
     ilutInit();
+
     ilutRenderer(ILUT_OPENGL);
     ilutEnable(ILUT_OPENGL_CONV);
     ilEnable (IL_CONV_PAL);
+
     ilClearColour(0, 0, 0, 0);
 
     for(Uint32 i = 0; i < DATA->getNumTextures(); ++i)
@@ -83,40 +83,6 @@ ILuint ImageManager::loadImage(char* filepath, bool ColorKey)
     ReportDevILErrors();
 
     return ImageID;
-}
-
-ClipImage* ImageManager::loadSingleSurface(char* filepath, bool ColorKey)
-{
-	ILuint ImageID;
-    ImageID = loadImage(filepath, ColorKey);
-
-	ImagePage* NewPage = new ImagePage(NULL, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 1, 1);
-	ImageLibrary.push_back(NewPage);
-
-	ClipImage* NewClip = new ClipImage(NewPage);
-	ClipLibrary.push_back(NewClip);
-
-	return NewClip;
-}
-
-void ImageManager::loadClippedSurface(char* filepath, int cliphight, int clipwidth, int rows, int columns, bool ColorKey)
-{
-    /*
-	SDL_Surface* Surface;
-    Surface = loadSurface(filepath, ColorKey);
-
-	ImagePage* NewPage = new ImagePage(Surface, cliphight, clipwidth, rows, columns);
-	ImageLibrary.push_back(NewPage);
-
-	for(int i = 0; i < rows; i++)
-	{
-		for(int j = 0; j < columns; j++)
-		{
-			ClipImage* NewClip = new ClipImage(NewPage, i, j);
-			ClipLibrary.push_back(NewClip);
-		}
-	}
-	*/
 }
 
 SDL_Surface* ImageManager::loadSurface(char* filepath, bool ColorKey)
