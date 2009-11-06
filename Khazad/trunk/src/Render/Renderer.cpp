@@ -8,7 +8,6 @@
 
 #include <ConfigManager.h>
 #include <FontManager.h>
-#include <ColorManager.h>
 #include <TextureManager.h>
 #include <ImageManager.h>
 #include <DataManager.h>
@@ -457,34 +456,6 @@ int Renderer::nextpoweroftwo(int x)
 	return round(pow(2, ceil(logbase2)));
 }
 
-void Renderer::applyClipAt(SDL_Rect Offset, ClipImage* Clip)
-{
-	if (Clip != NULL)
-	{
-		if (Clip->wholeImage)
-		{
-			SDL_BlitSurface( Clip->ParentPage->RawSurface, NULL, ScreenSurface, &Offset );
-		}
-		else
-		{
-			SDL_BlitSurface( Clip->ParentPage->RawSurface, &Clip->OffsetRect, ScreenSurface, &Offset );
-		}
-	}
-}
-
-void Renderer::applyClipCentered(SDL_Rect Offset, ClipImage* Clip)
-{
-    setDrawingFlat();
-
-	if (Clip != NULL)
-	{
-		SDL_Rect finalOffset;
-		finalOffset.x = Offset.x - Clip->ParentPage->clipWidth / 2;
-		finalOffset.y = Offset.y - Clip->ParentPage->clipHight / 2;
-		SDL_BlitSurface( Clip->ParentPage->RawSurface, &Clip->OffsetRect, ScreenSurface, &Offset );
-	}
-}
-
 bool Renderer::WipeScreen()
 {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -573,6 +544,9 @@ bool Renderer::Render()
     {
         setDrawingFlat();
         RenderLogo();
+
+        static const SDL_Color WHITE = {255, 255, 255};
+
         RenderTextCentered("KHAZAD", 0, WHITE, +10);
 
         return false;
@@ -797,6 +771,8 @@ void Renderer::PrintDebugging()
         position.y = 160;
 
         sprintf (buffer, "Coordinates: x%i y%i z%i", Cursor.X, Cursor.Y, Cursor.Z);
+        static const SDL_Color WHITE = {255, 255, 255};
+
         RenderText(buffer, 0, WHITE, &position);
         position.y -= 40;
 

@@ -7,7 +7,6 @@
 #include <Camera.h>
 #include <Singleton.h>
 #include <ConfigManager.h>
-#include <ColorManager.h>
 #include <DataManager.h>
 #include <Gui.h>
 

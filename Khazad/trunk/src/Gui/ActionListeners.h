@@ -5,7 +5,6 @@
 #include <Renderer.h>
 #include <Map.h>
 #include <Camera.h>
-#include <ColorManager.h>
 #include <ConfigManager.h>
 #include <DataManager.h>
 
@@ -278,6 +277,8 @@ class MapDumpActionListener: public gcn::ActionListener
         RENDERER->setDrawingFlat();
         RENDERER->RenderLogo();
 
+        static const SDL_Color WHITE = {255, 255, 255};
+
         RENDERER->RenderTextCentered("Dumping Memory", 0, WHITE, 0);
         RENDERER->Flip();
 
@@ -315,6 +316,9 @@ class MapLoadActionListener: public gcn::ActionListener
 
         char buffer[256];
         sprintf(buffer, "Loading from File:  %s", CONFIG->LoadPath());
+
+        static const SDL_Color WHITE = {255, 255, 255};
+
         RENDERER->RenderTextCentered(buffer, 0, WHITE, 0);
         RENDERER->Flip();
 
@@ -358,6 +362,9 @@ class MapSaveActionListener: public gcn::ActionListener
 
         char buffer[256];
         sprintf(buffer, "Writing to File:  %s", CONFIG->SavePath());
+
+        static const SDL_Color WHITE = {255, 255, 255};
+
         RENDERER->RenderTextCentered(buffer, 0, WHITE, 0);
         RENDERER->Flip();
 

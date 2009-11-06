@@ -199,9 +199,6 @@ public:
 
     void CaptureScreenShot();
 
-    void applyClipCentered(SDL_Rect Offset, ClipImage* Clip);
-    void applyClipAt(SDL_Rect Offset, ClipImage* Clip);
-
     int round(double x);
     int nextpoweroftwo(int x);
 
