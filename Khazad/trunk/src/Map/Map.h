@@ -277,6 +277,7 @@ protected:
 
     vector <int16_t> StoneMatGloss;
     vector <int16_t> MetalMatGloss;
+    vector <int16_t> WoodMatGloss;
 
     Uint32 CellCount;
     Uint32 FaceCount;

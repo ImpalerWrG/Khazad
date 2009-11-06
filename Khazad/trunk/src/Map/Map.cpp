@@ -807,8 +807,30 @@ void Map::LoadCellData(DFHackAPI & DF,
                 t_tree_desc t = vegetation[coord];
                 VegetationType Type = (VegetationType) getVegetationType(tiletypes[xx][yy]);
 
-                Tree *tree = new Tree(t.material, MapCoordinates(t.x, t.y, t.z), Type);
-                TargetCell->addTree(tree);
+                if (t.material.type == Mat_Wood)
+                {
+                    Sint16 TreeTypeID = ResolveMatGlossPair(t.material);
+
+                    bool isAlive = false;
+
+                    switch(Type)
+                    {
+                        case TREE_DEAD:
+                        case SAPLING_DEAD:
+                        case SHRUB_DEAD:
+                            isAlive = false;
+                            break;
+
+                        case TREE_OK:
+                        case SAPLING_OK:
+                        case SHRUB_OK:
+                            isAlive = true;
+                            break;
+                    }
+
+                    Tree *tree = new Tree(TreeTypeID, MapCoordinates(t.x, t.y, t.z), isAlive);
+                    TargetCell->addTree(tree);
+                }
             }
 
             // buildings, FIXME: doesn't work with overlapping buildings
@@ -890,10 +912,12 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
     vector<t_matgloss> stonetypes;
     vector<t_matgloss> metaltypes;
     vector<t_matgloss> woodtypes;
+    vector<t_matgloss> planttypes;
 
     DF.ReadStoneMatgloss(stonetypes);
     DF.ReadPlantMatgloss(metaltypes);  // HACK, DF ReadPlantMatgloss and ReadMetalMatgloss are reversed
     DF.ReadWoodMatgloss(woodtypes);
+    DF.ReadMetalMatgloss(planttypes);
 
     Sint16 uninitialized = -1;
 
@@ -941,11 +965,25 @@ void Map::InitilizeTilePicker(DFHackAPI & DF)
         }
     }
 
-    if(TreeMan) // TODO do trees in a more consistent way
+
+    Uint32 NumTreeMats = woodtypes.size();
+    for(Uint32 i = 0; i < NumTreeMats; i++)
     {
-        delete TreeMan;
+        bool Matchfound = false;
+        for(Uint32 j = 0; j < DATA->getNumTrees(); ++j)
+        {
+            if(DATA->getTreeData(j)->getMatgloss() == woodtypes[i].id)
+            {
+                WoodMatGloss.push_back(j);
+                Matchfound = true;
+                break;
+            }
+        }
+        if(!Matchfound)
+        {
+            WoodMatGloss.push_back(uninitialized);
+        }
     }
-    TreeMan = new TreeManager(woodtypes);
 }
 
 //FIXME: the ugly hack
@@ -1027,16 +1065,13 @@ Sint16 Map::ResolveMatGlossPair(t_matglossPair MatPair)
                 PotentialMaterial = MetalMatGloss[MatPair.index];
             }
         }
-        /*   TODO ADD WOOD
         else if (MatPair.type == Mat_Wood)
         {
             if (MatPair.index >= 0 && MatPair.index < WoodMatGloss.size())
             {
-                construction_ret = WoodMatGloss[MatPair.index];
-                //return MetalMatGloss[constructionmaterial.index];
+                PotentialMaterial = WoodMatGloss[MatPair.index];
             }
         }
-        */
 
         if(PotentialMaterial != -1)
         {
@@ -1053,6 +1088,7 @@ Sint16 Map::ResolveMatGlossPair(t_matglossPair MatPair)
             if (MatPair.type == DATA->getMaterialClassData(MaterialClass)->getMatGlossIndex())
             {
                 PotentialMaterial = DATA->getMaterialClassData(MaterialClass)->getDefaultMaterial();
+                break;
             }
         }
 

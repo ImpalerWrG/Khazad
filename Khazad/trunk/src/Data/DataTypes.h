@@ -243,16 +243,6 @@ protected:
     string ModelLabel;
 };
 
-struct TreeVariant
-{
-    string TrunkMaterial;
-    string LeavesMaterial;
-    string SnowMaterial;
-    Sint16 TrunkMaterialID;
-    Sint16 LeavesMaterialID;
-    Sint16 SnowMaterialID;
-};
-
 class TreeData: public DataBase
 {
 
@@ -263,23 +253,19 @@ public:
     bool Load(TiXmlElement* Element, Uint32 Index);
     bool PostProcessing();
 
-    TreeVariant getVariant(Uint32 idx)          { return variants[idx]; }
-
     Sint16 getModelID()                     { return ModelID; }
     string getMatgloss()                    { return Matgloss; }
 
+    Sint16 getTrunkMaterialID()             { return TrunkMaterialID; }
+    Sint16 getLeavesMaterialID()            { return LeavesMaterialID; }
+
 protected:
 
-    string TrunkMaterial;
-    string LeavesMaterial;
-    string SnowMaterial;
-
+    string TrunkMaterialLabel;
     Sint16 TrunkMaterialID;
+
+    string LeavesMaterialLabel;
     Sint16 LeavesMaterialID;
-    Sint16 SnowMaterialID;
-
-
-    vector <TreeVariant> variants;
 
     string Matgloss;
 
