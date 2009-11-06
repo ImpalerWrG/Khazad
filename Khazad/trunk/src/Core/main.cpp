@@ -3,7 +3,6 @@
 #include <Timer.h>
 #include <TextureManager.h>
 #include <FontManager.h>
-#include <ColorManager.h>
 #include <XMLManager.h>
 #include <Random.h>
 #include <Renderer.h>
@@ -44,11 +43,6 @@ bool initManagers()
     RANDOM->CreateInstance();
     RANDOM->Init();
     printf("RANDOM DONE\n");
-
-    printf("-=COLOR INITIALIZING=- ... \n");
-    COLOR->CreateInstance();
-    COLOR->Init();
-    printf("COLOR DONE\n");
 
     printf("-=RENDERER INITIALIZING=- ... \n");
     RENDERER->CreateInstance();
@@ -108,7 +102,6 @@ void cleanup()
     XML->FreeInstance();
     CONFIG->FreeInstance();
     RANDOM->FreeInstance();
-    COLOR->FreeInstance();
     FONT->FreeInstance();
     DATA->FreeInstance();
     TEXTURE->FreeInstance();
@@ -167,6 +160,8 @@ int main(int argv, char** argc)
     {
         return 0;
     }
+
+    static const SDL_Color WHITE = {255, 255, 255};
 
     bool done = false;
     printf("Starting timers ...");

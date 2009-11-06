@@ -4,7 +4,6 @@
 #include <Singleton.h>
 #include <TextureManager.h>
 #include <DataManager.h>
-#include <TreeManager.h>
 #include <Gui.h>
 #include <Extractor.h>
 

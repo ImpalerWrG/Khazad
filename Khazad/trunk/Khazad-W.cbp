@@ -286,8 +286,6 @@
 		<Unit filename="src\Render\Camera.h" />
 		<Unit filename="src\Render\ClipImage.cpp" />
 		<Unit filename="src\Render\ClipImage.h" />
-		<Unit filename="src\Render\ColorManager.cpp" />
-		<Unit filename="src\Render\ColorManager.h" />
 		<Unit filename="src\Render\ImageManager.cpp" />
 		<Unit filename="src\Render\ImageManager.h" />
 		<Unit filename="src\Render\ImagePage.cpp" />
