@@ -968,10 +968,14 @@ void Map::InitilizeTilePicker(DFHack::API & DF)
     Uint32 NumTreeMats = woodtypes.size();
     for(Uint32 i = 0; i < NumTreeMats; i++)
     {
+        /*
         bool Matchfound = false;
-        for(Uint32 j = 0; j < DATA->getNumTrees(); ++j)
+        int tree_end = DATA->getNumTrees();
+        for(Uint32 j = 0; j < tree_end; ++j)
         {
-            if(DATA->getTreeData(j)->getMatgloss() == woodtypes[i].id)
+            TreeData * td = DATA->getTreeData(j);
+            if(td)
+            if(td->getMatgloss() == woodtypes[i].id)
             {
                 WoodMatGloss.push_back(j);
                 Matchfound = true;
@@ -979,9 +983,9 @@ void Map::InitilizeTilePicker(DFHack::API & DF)
             }
         }
         if(!Matchfound)
-        {
+        {*/
             WoodMatGloss.push_back(uninitialized);
-        }
+        //}
     }
 }
 
