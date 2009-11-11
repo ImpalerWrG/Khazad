@@ -23,7 +23,7 @@ Tree::Tree(Sint16 TreeType, MapCoordinates NewCoordinates, bool isAlive)
     TreeData* Data = DATA->getTreeData(TreeType);
     if(Data != NULL)
     {
-        model = MODEL->getModel(DATA->getTreeData(TreeType)->getModelID());
+        model = MODEL->getModel(Data->getModelID());
         if(model)
         {
             trunkid = model->getSubmodelIndex("trunk");

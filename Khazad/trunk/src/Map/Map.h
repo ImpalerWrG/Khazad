@@ -9,6 +9,11 @@
 #define CELLEDGESIZE 16
 #define HALFCUBE 0.5
 
+namespace DFHack
+{
+    class API;
+}
+
 struct MapCoordinates
 {
     MapCoordinates()
@@ -209,7 +214,7 @@ public:
 
 
 
-    void InitilizeTilePicker(DFHackAPI & DF);
+    void InitilizeTilePicker(DFHack::API & DF);
     Sint16 PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial, t_matglossPair constructionmaterial, t_occupancy occupancy);
     Sint16 ResolveMatGlossPair(t_matglossPair MatPair);
 
@@ -233,7 +238,7 @@ public:
     void DigSlope(MapCoordinates Coordinates);
     void Dig(MapCoordinates Coordinates);
 
-    void LoadCellData(DFHackAPI & context,
+    void LoadCellData(DFHack::API & context,
                       vector< vector <uint16_t> >& layerassign,
                       Cell* TargetCell,
                       map<uint64_t, t_construction> & constuctions,

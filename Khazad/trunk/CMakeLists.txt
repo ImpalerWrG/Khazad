@@ -120,10 +120,11 @@ src/Data/XMLManager.cpp
 src/Game/Actor.cpp
 src/Game/Game.cpp
 src/Game/Pawn.cpp
+src/Game/Tree.cpp
+src/Game/Building.cpp
 src/Game/Furniture.cpp
 
 src/Geometry/Plane.cpp
-src/Geometry/Vector2.cpp
 src/Geometry/Vector3.cpp
 
 src/Gui/FontManager.cpp
@@ -134,21 +135,16 @@ src/Gui/CustomWidgets/KhazToggleButton.cpp
 src/Gui/CustomWidgets/KhazWindow.cpp
 src/Gui/CustomWidgets/KhazButton.cpp
 
-src/Map/Building.cpp
 src/Map/Cell.cpp
+src/Map/Extractor.cpp
 src/Map/Column.cpp
 src/Map/Map.cpp
-src/Map/Tree.cpp
 
 src/Render/Camera.cpp
-src/Render/ClipImage.cpp
-src/Render/ColorManager.cpp
 src/Render/ImageManager.cpp
-src/Render/ImagePage.cpp
 src/Render/ModelManager.cpp
 src/Render/Renderer.cpp
 src/Render/TextureManager.cpp
-src/Render/TreeManager.cpp
 )
 
 IF(UNIX)

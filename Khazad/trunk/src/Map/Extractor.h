@@ -23,7 +23,7 @@ public:
     bool Attach();
     void Detach();
 
-    DFHackAPI* DFHack;
+    DFHack::API* DFHack;
 
     bool isAttached()   { return Attached; }
 

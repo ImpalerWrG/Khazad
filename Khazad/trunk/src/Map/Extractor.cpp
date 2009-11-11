@@ -29,7 +29,7 @@ Extractor::~Extractor()
 bool Extractor::Init()
 {
     Path path_to_xml("Assets/XML/Memory.xml");
-    DFHack = CreateDFHackAPI(path_to_xml);
+    DFHack = new DFHack::API(path_to_xml);
 
     if (DFHack != NULL)
     {

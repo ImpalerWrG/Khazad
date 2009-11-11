@@ -132,7 +132,7 @@ bool Map::Extract()
         return false;
     }
 
-    DFHackAPI& DF = *EXTRACTOR->DFHack;
+    DFHack::API& DF = *EXTRACTOR->DFHack;
 
     if(MapLoaded)
     {
@@ -744,7 +744,7 @@ void Map::Dig(MapCoordinates Coordinates)
     }
 }
 
-void Map::LoadCellData(DFHackAPI & DF,
+void Map::LoadCellData(DFHack::API & DF,
                        vector< vector <uint16_t> >& layerassign,
                        Cell* TargetCell,
                        map<uint64_t, t_construction> & constructions,
@@ -804,7 +804,7 @@ void Map::LoadCellData(DFHackAPI & DF,
             if(vegetation.count(coord))
             {
                 t_tree_desc t = vegetation[coord];
-                VegetationType Type = (VegetationType) getVegetationType(tiletypes[xx][yy]);
+                DFHack::VegetationType Type = (DFHack::VegetationType) DFHack::getVegetationType(tiletypes[xx][yy]);
 
                 if (t.material.type == Mat_Wood)
                 {
@@ -814,15 +814,15 @@ void Map::LoadCellData(DFHackAPI & DF,
 
                     switch(Type)
                     {
-                        case TREE_DEAD:
-                        case SAPLING_DEAD:
-                        case SHRUB_DEAD:
+                        case DFHack::TREE_DEAD:
+                        case DFHack::SAPLING_DEAD:
+                        case DFHack::SHRUB_DEAD:
                             isAlive = false;
                             break;
 
-                        case TREE_OK:
-                        case SAPLING_OK:
-                        case SHRUB_OK:
+                        case DFHack::TREE_OK:
+                        case DFHack::SAPLING_OK:
+                        case DFHack::SHRUB_OK:
                             isAlive = true;
                             break;
                     }
@@ -882,7 +882,7 @@ void Map::LoadCellData(DFHackAPI & DF,
     }
 }
 
-void Map::InitilizeTilePicker(DFHackAPI & DF)
+void Map::InitilizeTilePicker(DFHack::API & DF)
 {
     for(int i = 0; i < 600; ++i)  // Exact number of possible DF tile types isn't know
     {
