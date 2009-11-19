@@ -57,6 +57,7 @@ bool Extractor::Attach()
 
 void Extractor::Detach()
 {
+    DFHack->ForceResume(); // just to be sure we really do resume on windows
     DFHack->Detach();
     Attached = false;
 }
