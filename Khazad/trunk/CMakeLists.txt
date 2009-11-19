@@ -50,10 +50,9 @@ TinyXML/tinyxmlerror.cpp
 TinyXML/tinyxmlparser.cpp
 
 dfhack/library/DFDataModel.cpp
-dfhack/library/DFHackAPI.cpp
 dfhack/library/DFMemInfo.cpp
-dfhack/library/DFProcess.cpp
-dfhack/library/DFProcessManager.cpp
+dfhack/library/DFMemInfoManager.cpp
+dfhack/library/DFHackAPI.cpp
 dfhack/library/DFTileTypes.cpp
 dfhack/library/md5/md5.cpp
 dfhack/library/md5/md5wrapper.cpp
@@ -146,6 +145,22 @@ src/Render/ModelManager.cpp
 src/Render/Renderer.cpp
 src/Render/TextureManager.cpp
 )
+
+SET(PROJECT_SRCS_LINUX
+dfhack/library/DFProcess-linux.cpp
+dfhack/library/DFProcessEnumerator-linux.cpp
+)
+
+SET(PROJECT_SRCS_WINDOWS
+dfhack/library/DFProcess-windows.cpp
+dfhack/library/DFProcessEnumerator-windows.cpp
+)
+
+IF(UNIX)
+LIST(APPEND PROJECT_SRCS ${PROJECT_SRCS_LINUX})
+ELSE(UNIX)
+LIST(APPEND PROJECT_SRCS ${PROJECT_SRCS_WINDOWS})
+ENDIF(UNIX)
 
 IF(UNIX)
 add_definitions(-DLINUX_BUILD)

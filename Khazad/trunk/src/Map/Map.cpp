@@ -9,7 +9,6 @@
 
 ///FIXME: dfhack paths
 #include "../../dfhack/library/DFTypes.h"
-#include "../../dfhack/library/DFTileTypes.h"
 #include "../../dfhack/library/DFHackAPI.h"
 #include <string.h> // for memset
 
