@@ -803,7 +803,7 @@ void Map::LoadCellData(DFHack::API & DF,
             if(vegetation.count(coord))
             {
                 t_tree_desc t = vegetation[coord];
-                DFHack::VegetationType Type = (DFHack::VegetationType) DFHack::getVegetationType(tiletypes[xx][yy]);
+                DFHack::TileClass Type = (DFHack::TileClass) DFHack::getVegetationType(tiletypes[xx][yy]);
 
                 if (t.material.type == Mat_Wood)
                 {
