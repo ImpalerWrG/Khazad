@@ -33,13 +33,17 @@ void Timer::Start()
     SamplingPause = 0;
 }
 
-void Timer::Stop()
+const Uint32 Timer::Stop()
 {
+    Uint32 Elapsed = getElapsed();
+
 	started = false;
 	paused = false;
 	StartTime = 0;
 	PausedTime = 0;
     SampleIndex = 0;
+
+    return Elapsed;
 }
 
 const Uint32 Timer::getElapsed()

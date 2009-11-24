@@ -12,12 +12,15 @@ public:
 	~Timer();
 
 	void Start();
-	void Stop();
+	const Uint32 Stop();
+
 	void Pause();
 	void Unpause();
+
 	void SetSampleSize(Uint32 Size);
 
 	const Uint32 getElapsed();
+
 	void doAverage();
     float getAverage();
 
@@ -25,9 +28,10 @@ protected:
 
 	Uint32 StartTime;
 	Uint32 PausedTime;
-	Uint32 Alarm;
+
     Uint32 SampleSize;
     Uint32 SampleIndex;
+
     Uint32 SamplingPause;
     float AverageTime;
 

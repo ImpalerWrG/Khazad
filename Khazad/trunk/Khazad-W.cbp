@@ -48,8 +48,11 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="std=c++0x" />
 			<Add option="-DPSAPI_VERSION=1" />
 			<Add option="-DBUILD_DFHACK_LIB" />
+			<Add option="-D_GLIBCXX_INCLUDE_AS_CXX0X" />
+			<Add option="-D__GXX_EXPERIMENTAL_CXX0X__" />
 			<Add directory="include" />
 			<Add directory="DevIL\include" />
 			<Add directory="guichan\include" />
@@ -64,6 +67,7 @@
 			<Add directory="src\Render" />
 			<Add directory="TinyXML" />
 			<Add directory="dfhack\library" />
+			<Add directory="src\Pathing" />
 		</Compiler>
 		<Linker>
 			<Add option="-lmingw32 -lpsapi -lSDLmain -lSDL -mwindows" />
@@ -286,6 +290,24 @@
 		<Unit filename="src\Map\Extractor.h" />
 		<Unit filename="src\Map\Map.cpp" />
 		<Unit filename="src\Map\Map.h" />
+		<Unit filename="src\Map\PathTester.cpp" />
+		<Unit filename="src\Map\PathTester.h" />
+		<Unit filename="src\Pathing\PathManager.cpp" />
+		<Unit filename="src\Pathing\PathManager.h" />
+		<Unit filename="src\Pathing\astar.cpp" />
+		<Unit filename="src\Pathing\astar.h" />
+		<Unit filename="src\Pathing\basiczone.h" />
+		<Unit filename="src\Pathing\cubezone.h" />
+		<Unit filename="src\Pathing\entry.h" />
+		<Unit filename="src\Pathing\graph.h" />
+		<Unit filename="src\Pathing\grid.h" />
+		<Unit filename="src\Pathing\gridzone.h" />
+		<Unit filename="src\Pathing\heuristics.h" />
+		<Unit filename="src\Pathing\point.h" />
+		<Unit filename="src\Pathing\read.cpp" />
+		<Unit filename="src\Pathing\read.h" />
+		<Unit filename="src\Pathing\zone.cpp" />
+		<Unit filename="src\Pathing\zone.h" />
 		<Unit filename="src\Render\Camera.cpp" />
 		<Unit filename="src\Render\Camera.h" />
 		<Unit filename="src\Render\ImageManager.cpp" />

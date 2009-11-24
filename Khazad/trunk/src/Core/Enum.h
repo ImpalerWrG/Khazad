@@ -12,6 +12,19 @@ enum ActorType
 	NUM_ACTORS
 };
 
+enum Dimension
+{
+    DIMENSION_X,
+    DIMENSION_Y,
+    DIMENSION_Z,
+
+    NUM_DIMENSIONS,
+    DIMENSIONS_START = 0
+};
+
+inline Dimension &operator++ (Dimension &OldDimension)      { return OldDimension = Dimension(OldDimension + 1); }
+inline Dimension &operator-- (Dimension &OldDimension)      { return OldDimension = Dimension(OldDimension - 1); }
+
 enum Facet
 {
 	FACET_WEST,    // -X axis
@@ -27,6 +40,8 @@ enum Facet
 
 inline Facet &operator++ (Facet &OldFacet)      { return OldFacet = Facet(OldFacet + 1); }
 inline Facet &operator-- (Facet &OldFacet)      { return OldFacet = Facet(OldFacet - 1); }
+
+inline Dimension DimensionalOrientation(Facet &FacetType)      { return (Dimension) (FacetType / 2); }
 
 inline Facet OppositeFacet(Facet FacetType)
 {
