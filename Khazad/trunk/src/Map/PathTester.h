@@ -5,6 +5,7 @@
 #include <Singleton.h>
 
 #include <Timer.h>
+#include <Map.h>
 
 class PathTester
 {
@@ -15,11 +16,15 @@ public:
     ~PathTester();
     bool Init();
 
-    void RunTestSuite();
+    void RunPathTestSuite(int Interations, vector<int> PathSystems);
+    void RunHuristicTestSuite(int Interations, vector<int> PathSystems);
 
 protected:
 
     Timer* PathingTimer;
+
+    MapCoordinates* TestCoords;
+    int NumTestPoints;
 };
 
 

@@ -4,8 +4,9 @@
 #include <Singleton.h>
 
 #include <PathManager.h>
-
+#include <Map.h>
 #include <Timer.h>
+#include <Random.h>
 
 DECLARE_SINGLETON(PathTester)
 
@@ -16,104 +17,68 @@ PathTester::PathTester()
 
 PathTester::~PathTester()
 {
-
+    delete TestCoords;
 }
 
 bool PathTester::Init()
 {
     PathingTimer = new Timer();      // Master Timer
+    NumTestPoints = 1000;
 
-    // Generate and store many random passable points from the map
+    TestCoords = new MapCoordinates[NumTestPoints];
+
+    for(int i = 0; i < NumTestPoints; i++)
+    {
+        TestCoords[i] = MapCoordinates(0, 0, 0);
+        // Generate real random passable points from the map
+    }
 
     return true;
 }
 
-void PathTester::RunTestSuite()
+void PathTester::RunPathTestSuite(int Interations, vector<int> PathSystems)
 {
-    uint64_t AStarGraphReads, AStarNodesConsidered, AStarPathLength, AStarTimeCost = 0;
-    double AStarGraphReadEfficiency, AStarSearchEfficiency = 0;
+    uint64_t TotalGraphReads, NodesConsidered, TotalPathLength, TotalTimeCost, CacheHits;
 
-    //GridGraph graph (g);
-    //MaxHeuristic max;
-    //EuclideanTiebreaker euc;
-
-    //gridZoneManager zm(&graph, &max, MAXLEN, SCALE, MINLEN);
-    //AStar astar (&graph, &max, &euc);
-
-    uint64_t ZonedAStarGraphReads, ZonedAStarNodesConsidered, ZonedAStarPathLength, ZonedAStarTimeCost, ZonedAStarCacheMisses = 0;
-    double ZonedAStarGraphReadEfficiency, ZonedAStarSearchEfficiency = 0;
-
-    //ZonedAStar zastar (&graph, &zm, &max, &euc);
-
-    MapCoordinates StartPoint, GoalPoint;
     Path ReturnedPath;
+    vector <int> StartCoords, GoalCoords;
 
-#define ITERATIONS 100000
-    for (unsigned i = 0; i < ITERATIONS; ++i)
+    for (int i = 0; i < Interations; i++)
     {
-        // Select two points at random
-        //StartPoint = getRandomPassablePoint(g);
-        //GoalPoint = getRandomPassablePoint(g);
-
-        //g->zeroCount();
-
-        PathingTimer->Start();
-
-            // Change to a call into the PathManager
-            // Path= astar.path(StartPoint, GoalPoint);
-
-        AStarTimeCost += PathingTimer->Stop();
-
-/*
-        AStarGraphReads += g->getCount();
-        AStarNodesConsidered += astar.getCount();
-        AStarPathLength += Path.first;
-
-        AStarGraphReadEfficiency += AStarGraphReads / AStarPathLength;
-        AStarSearchEfficiency += AStarNodesConsidered / AStarPathLength;
-
-        astar.zeroCount();
-        g->zeroCount();
-*/
-
-        PathingTimer->Start();
-
-            ReturnedPath = PATH->FindPath(StartPoint, GoalPoint);
-
-        ZonedAStarTimeCost += PathingTimer->Stop();
-
-        /*
-        ZonedAStarGraphReads += g->getCount();
-        ZonedAStarNodesConsidered += zastar.getCount();
-        ZonedAStarPathLength += Path.length;
-        ZonedAStarCacheMisses += zastar.cachemiss;
-
-        ZonedAStarGraphReadEfficiency += ZonedAStarGraphReads / ZonedAStarPathLength;
-        ZonedAStarSearchEfficiency += ZonedAStarNodesConsidered / ZonedAStarPathLength;
-        */
-
-//#ifdef ZONE_DEBUG
-        // zm.checkValid();
-//#endif
-
-        //zastar.zeroCount();
-        //g->zeroCount();
+        StartCoords.push_back(RANDOM->Roll(0, NumTestPoints));
+        GoalCoords.push_back(RANDOM->Roll(0, NumTestPoints));
     }
 
-    printf("A*  total path length: %llu \n", AStarPathLength);
-    printf("A*  graph reads: %llu \n", AStarGraphReads);
-    printf("A*  graph read eff: %lg \n", ITERATIONS / AStarGraphReadEfficiency);
-    printf("A*  nodes considered: %llu \n", AStarNodesConsidered);
-    printf("A*  search eff: %lg \n", ITERATIONS / AStarSearchEfficiency);
-    printf("A*  total time cost: %llu \n\n", AStarTimeCost);
+    for (int SystemIndex = 0; SystemIndex < PathSystems.size(); SystemIndex++)
+    {
+        TotalGraphReads = NodesConsidered = TotalPathLength = TotalTimeCost = CacheHits = 0;
 
-    printf("ZA* total path length: %llu \n", ZonedAStarTimeCost);
-    printf("ZA* graph reads: %llu \n", ZonedAStarGraphReads);
-    printf("ZA* graph read eff: %lg \n", ITERATIONS / ZonedAStarGraphReadEfficiency);
-    printf("ZA* nodes considered: %llu \n", ZonedAStarNodesConsidered);
-    printf("ZA* search eff: %lg \n", ITERATIONS / ZonedAStarSearchEfficiency);
-    printf("ZA* cache miss: %llu \n", ZonedAStarCacheMisses);
-    printf("ZA* total time cost: %llu \n\n", ZonedAStarTimeCost);
+        for (unsigned i = 0; i < Interations; ++i)
+        {
+            PATH->ResetProfileData();
 
-    //delete g;
+            PathingTimer->Start();
+                ReturnedPath = PATH->FindPath(PathSystems[SystemIndex], TestCoords[StartCoords[i]], TestCoords[GoalCoords[i]]);
+            TotalTimeCost += PathingTimer->Stop();
+
+            TotalGraphReads += PATH->getGraphReads();
+            NodesConsidered += PATH->getExpandedNodeCount();
+            TotalPathLength += ReturnedPath.Length;
+            CacheHits += PATH->isCacheHit();
+        }
+
+        printf("System %i TestResults\n\n", PathSystems[SystemIndex]);
+        printf("Ttotal path length: %llu \n", TotalPathLength);
+        printf("Graph reads: %llu \n", TotalGraphReads);
+        printf("Graph read efficiency: %lg \n", (TotalGraphReads / TotalPathLength) / Interations);
+        printf("Nodes considered: %llu \n", NodesConsidered);
+        printf("Search efficiency: %lg \n", (NodesConsidered / TotalPathLength) / Interations);
+        printf("Cache efficiency: %llu \n", CacheHits / Interations);
+        printf("Total time cost: %llu \n\n", TotalTimeCost);
+    }
+}
+
+void PathTester::RunHuristicTestSuite(int Interations, vector<int> PathSystems)
+{
+
 }

@@ -7,14 +7,13 @@
 
 struct Path
 {
-    Path()
-    {
-        Length = -1;
-    }
+    Path()      { Length = -1; }
 
     float Length;
+    int AdjentSize;
+    int TerrainFlags;
 
-    // coordinate storage here
+    vector <MapCoordinates> PathCourse;
 };
 
 class PathManager
@@ -30,11 +29,18 @@ public:
     void EditMapAbstraction();
     void DeleteMapAbstraction();
 
-    Path FindPath(MapCoordinates StartCoords, MapCoordinates GoalCoords);
-    float EstimatePathLength(MapCoordinates StartCoords, MapCoordinates GoalCoords);
+    Path FindPath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords);
+    float EstimatePathLength(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords);
+
+    int getExpandedNodeCount();
+    int getGraphReads();
+    bool isCacheHit();
+
+    void ResetProfileData();
 
 protected:
 
+    // Path system storage here
 };
 
 

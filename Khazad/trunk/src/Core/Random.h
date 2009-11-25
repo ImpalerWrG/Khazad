@@ -16,6 +16,7 @@ public:
 
 	bool Init();
 	~RandomNumberGenerator();
+
 	void Seed(Sint32);
 	Sint32 Roll(Sint32 Min, Sint32 Max);
 
