@@ -1,11 +1,11 @@
 /* Copyright Benoit Hudson 2009 */
-#ifndef heuristics_HEADER
-#define heuristics_HEADER
+#ifndef HEURISTIC_HEADER
+#define HEURISTIC_HEADER
 
 #include <math.h>
 #include <stdlib.h>
 
-#include "point.h"
+#include <point.h>
 
 typedef int cost_t;
 
@@ -58,4 +58,4 @@ struct EuclideanTiebreaker : Heuristic
     }
 };
 
-#endif
+#endif // HEURISTIC_HEADER

@@ -43,14 +43,17 @@ void PathTester::RunPathTestSuite(int Interations, vector<int> PathSystems)
     Path ReturnedPath;
     vector <int> StartCoords, GoalCoords;
 
+    // Prepare a set of Start Goal pairs for the test
     for (int i = 0; i < Interations; i++)
     {
         StartCoords.push_back(RANDOM->Roll(0, NumTestPoints));
         GoalCoords.push_back(RANDOM->Roll(0, NumTestPoints));
+        // Identic Start and Goal points are possible, the PathManager should handle them
     }
 
     for (int SystemIndex = 0; SystemIndex < PathSystems.size(); SystemIndex++)
     {
+        // Reset all the counting values for each System
         TotalGraphReads = NodesConsidered = TotalPathLength = TotalTimeCost = CacheHits = 0;
 
         for (unsigned i = 0; i < Interations; ++i)

@@ -119,7 +119,6 @@ public:
 
 };
 
-
 class gridZoneManager : public zoneManager
 {
     std::unordered_map<point,gridZone*,point::hash> zl;

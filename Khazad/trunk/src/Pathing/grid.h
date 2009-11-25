@@ -1,5 +1,5 @@
-#ifndef grid_HEADER
-#define grid_HEADER
+#ifndef GRID_HEADER
+#define GRID_HEADER
 
 #include "point.h"
 #include "heuristics.h"
@@ -16,14 +16,11 @@ struct gridInterface
     virtual bool contains(const point &p) const = 0;
 };
 
-
 struct grid : gridInterface
 {
-    grid(point maxcorner)
-            : maxcorner(maxcorner), count(0)
+    grid(point maxcorner): maxcorner(maxcorner), count(0)
     {
-        tile = (char*)calloc(maxcorner[0] * maxcorner[1] * maxcorner[2],
-                             sizeof(char));
+        tile = (char*)calloc(maxcorner[0] * maxcorner[1] * maxcorner[2], sizeof(char));
     }
     ~grid()
     {
@@ -35,10 +32,9 @@ struct grid : gridInterface
         ++count;
         if (inBounds(pa) && inBounds(pb))
         {
-            char ca,cb;
+            char ca, cb;
             ca = tile[index(pa)];
             cb = tile[index(pb)];
-
 
             if ((ca == '#') || (cb == '#'))  //no walking through walls
                 return -1;
@@ -53,8 +49,7 @@ struct grid : gridInterface
                 if ((dx != 0) || (dy != 0))
                 {
                     //diagonally up only for ramps
-                    if (((dz < 0) && (cb == 'r')) ||
-                            ((dz > 0) && (ca == 'r')))
+                    if (((dz < 0) && (cb == 'r')) || ((dz > 0) && (ca == 'r')))
                         //ramp
                         return 1;
                     else
@@ -69,7 +64,6 @@ struct grid : gridInterface
                         return 1;
                     else
                         return -1;
-
                 }
             }
             else
@@ -77,7 +71,6 @@ struct grid : gridInterface
                 //all other horizontal allowed
                 return 1;
             }
-
         }
         else
             return -1;
@@ -108,6 +101,7 @@ struct grid : gridInterface
     }
 
 private:
+
     bool inBounds(const point &p) const
     {
         for (unsigned i = 0; i < 3; ++i)
@@ -126,8 +120,7 @@ private:
     unsigned index(const point &p) const
     {
         assert(inBounds(p));
-        return p[0] + maxcorner[0] * p[1]
-               + maxcorner[0] * maxcorner[1] * p[2];
+        return p[0] + maxcorner[0] * p[1] + maxcorner[0] * maxcorner[1] * p[2];
     }
 
     point maxcorner;
@@ -135,4 +128,4 @@ private:
     mutable unsigned count;
 };
 
-#endif
+#endif // GRID_HEADER

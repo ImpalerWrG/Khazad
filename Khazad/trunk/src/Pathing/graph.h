@@ -1,9 +1,8 @@
 /* Copyright Benoit Hudson 2009 */
-#ifndef graph_HEADER
-#define graph_HEADER
+#ifndef GRAPH_HEADER
+#define GRAPH_HEADER
 
 
-//#include <boost/iterator/iterator_facade.hpp>
 #include <unordered_map>
 #include <list>
 
@@ -13,8 +12,6 @@
 struct zone;
 
 struct PointIterator
-//  : public boost::iterator_facade< PointIterator, point,
-//             std::random_access_iterator_tag, point >
 {
     static const unsigned maxoffset = 3 * 3 * 3; // 3 ** dim
 
@@ -95,10 +92,9 @@ private:
     unsigned i_;
 };
 
-
 struct GridGraph : gridInterface
 {
-    GridGraph (const gridInterface *grid) : grid_(grid) { }
+    GridGraph (const gridInterface* grid) : grid_(grid) { }
 
     typedef point vertex;
     static const unsigned dim = 3;
@@ -113,7 +109,6 @@ struct GridGraph : gridInterface
     {
         return iterator();
     }
-
 
     cost_t edgeCost(const point &a,const point &b) const
     {
@@ -137,4 +132,4 @@ private:
     const gridInterface * grid_;
 };
 
-#endif
+#endif // GRAPH_HEADER

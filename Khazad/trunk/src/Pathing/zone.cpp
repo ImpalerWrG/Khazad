@@ -14,5 +14,3 @@ void zoneBorderNode::invalidateCache(const zone *affected, const Heuristic *h)
         }
     }
 }
-
-

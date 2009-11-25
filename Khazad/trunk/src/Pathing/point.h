@@ -31,11 +31,7 @@ public:
 
     bool operator == (const point& other) const
     {
-        return memcmp(x_,other.x_,dim*sizeof(unsigned))==0;
-        /*for (unsigned i = 0; i < dim; ++i) {
-          if (x_[i] != other[i]) { return false; }
-        }
-        return true;*/
+        return memcmp(x_, other.x_, dim * sizeof(unsigned))==0;
     }
 
     /* Arbitrary total ordering. */

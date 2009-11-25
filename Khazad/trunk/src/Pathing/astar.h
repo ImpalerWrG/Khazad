@@ -1,5 +1,5 @@
-#ifndef astar_HEADER
-#define astar_HEADER
+#ifndef ASTAR_HEADER
+#define ASTAR_HEADER
 
 #include "point.h"
 #include "heuristics.h"
@@ -10,68 +10,67 @@ struct PathAlgorithm
 {
     virtual ~PathAlgorithm() {};
 
-    virtual std::pair<cost_t,std::vector<point>> path (const point &s, const point &t) = 0;
-    virtual void zeroCount() = 0;
+    virtual Path FindPath(const point &StartPoint, const point &GoalPoint) = 0;
+
+    virtual void Reset() = 0;
     virtual unsigned getCount() const = 0;
 
 };
 
-struct AStar : PathAlgorithm
+class AStar : PathAlgorithm
 {
-    unsigned count;
+public:
 
-    AStar(const GridGraph *G, const Heuristic *h, const Heuristic *tb): G_(G), heuristic(h), tiebreaker(tb)
+    AStar(const GridGraph *TargetSearchGraph, const Heuristic* MainHeuristicType, const Heuristic* TieBreakerHeuristicType)
     {
+        SearchGraph = TargetSearchGraph
+        MainHeuristic = MainHeuristicType;
+        TieBreakerHeuristic = TieBreakerHeuristicType;
         zeroCount();
     }
 
-    void zeroCount()
-    {
-        count = 0;
-    }
+    void Reset()                    { count = 0; }
+    unsigned getCount() const       { return count; }
 
-    unsigned getCount() const
-    {
-        return count;
-    }
-
-    std::pair<cost_t,std::vector<point>> path (const point &s, const point &t);
+    Path FindPath(const point &StartPoint, const point &GoalPoint);
 
 private:
 
-    const GridGraph *G_;
-    const Heuristic *heuristic, *tiebreaker;
-};
+    unsigned count;
+    const GridGraph* TargetSearchGraph;
 
+    const Heuristic* MainHeuristic;
+    const Heuristic* TieBreakerHeuristic;
+};
 
 struct ZonedAStar : PathAlgorithm
 {
-    unsigned count;
-    unsigned cachemiss;
+public:
 
-    ZonedAStar(const GridGraph *G, zoneManager *zm, const Heuristic *h, const Heuristic *tb) : G_(G), zm_(zm), heuristic(h), tiebreaker(tb)
+    ZonedAStar(const GridGraph* TargetSearchGraph, zoneManager *zm, const Heuristic* MainHeuristicType, const Heuristic* TieBreakerHeuristicType)
     {
+        SearchGraph = TargetSearchGraph;
+        MainHeuristic = MainHeuristicType;
+        TieBreakerHeuristic = TieBreakerHeuristicType;
         zeroCount();
     }
 
-    std::pair<cost_t,std::vector<point>> path (const point &s, const point &t);
+    Path FindPath(const point &StartPoint, const point &GoalPoint);
 
-    void zeroCount()
-    {
-        count = 0;
-        cachemiss = 0;
-    }
-
-    unsigned getCount() const
-    {
-        return count;
-    }
+    void Reset()                    { count = 0; cachemiss = 0;}
+    unsigned getCount() const       { return count; }
 
 private:
 
-    const Heuristic *heuristic, *tiebreaker;
-    const GridGraph *G_;
-    zoneManager *zm_;
+    unsigned count;
+    unsigned cachemiss;
+
+    const GridGraph* SearchGraph;
+
+    const Heuristic* MainHeuristic;
+    const Heuristic* TieBreakerHeuristic;
+
+    zoneManager* zm_;
 };
 
-#endif
+#endif // ASTAR_HEADER
