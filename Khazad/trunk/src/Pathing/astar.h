@@ -1,20 +1,31 @@
 #ifndef ASTAR_HEADER
 #define ASTAR_HEADER
 
-#include "point.h"
-#include "heuristics.h"
-#include "entry.h"
-#include "zone.h"
+#include <Coordinates.h>
+#include <heuristics.h>
 
-struct PathAlgorithm
+#include <Path.h>
+#include <Graph.h>
+//#include "zone.h"
+
+class PathAlgorithm
 {
+public:
+
     virtual ~PathAlgorithm() {};
 
-    virtual Path FindPath(const point &StartPoint, const point &GoalPoint) = 0;
+    virtual Path FindPath(const MapCoordinates &StartCoords, const MapCoordinates &GoalCoords) = 0;
 
     virtual void Reset() = 0;
     virtual unsigned getCount() const = 0;
 
+private:
+
+    unsigned count;
+    const GridGraph* TargetSearchGraph;
+
+    const Heuristic* MainHeuristic;
+    const Heuristic* TieBreakerHeuristic;
 };
 
 class AStar : PathAlgorithm
@@ -26,7 +37,7 @@ public:
         SearchGraph = TargetSearchGraph
         MainHeuristic = MainHeuristicType;
         TieBreakerHeuristic = TieBreakerHeuristicType;
-        zeroCount();
+        Reset();
     }
 
     void Reset()                    { count = 0; }
@@ -36,39 +47,26 @@ public:
 
 private:
 
-    unsigned count;
-    const GridGraph* TargetSearchGraph;
-
-    const Heuristic* MainHeuristic;
-    const Heuristic* TieBreakerHeuristic;
 };
 
-struct ZonedAStar : PathAlgorithm
+struct HierarchicalAStar : PathAlgorithm
 {
 public:
 
-    ZonedAStar(const GridGraph* TargetSearchGraph, zoneManager *zm, const Heuristic* MainHeuristicType, const Heuristic* TieBreakerHeuristicType)
+    HierarchicalAStar(const GridGraph* TargetSearchGraph, zoneManager *zm, const Heuristic* MainHeuristicType, const Heuristic* TieBreakerHeuristicType)
     {
         SearchGraph = TargetSearchGraph;
         MainHeuristic = MainHeuristicType;
         TieBreakerHeuristic = TieBreakerHeuristicType;
-        zeroCount();
+        Reset();
     }
-
-    Path FindPath(const point &StartPoint, const point &GoalPoint);
 
     void Reset()                    { count = 0; cachemiss = 0;}
     unsigned getCount() const       { return count; }
 
+    Path FindPath(const point &StartPoint, const point &GoalPoint);
+
 private:
-
-    unsigned count;
-    unsigned cachemiss;
-
-    const GridGraph* SearchGraph;
-
-    const Heuristic* MainHeuristic;
-    const Heuristic* TieBreakerHeuristic;
 
     zoneManager* zm_;
 };

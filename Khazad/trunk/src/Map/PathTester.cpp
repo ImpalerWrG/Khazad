@@ -56,7 +56,7 @@ void PathTester::RunPathTestSuite(int Interations, vector<int> PathSystems)
         // Reset all the counting values for each System
         TotalGraphReads = NodesConsidered = TotalPathLength = TotalTimeCost = CacheHits = 0;
 
-        for (unsigned i = 0; i < Interations; ++i)
+        for (int i = 0; i < Interations; ++i)
         {
             PATH->ResetProfileData();
 

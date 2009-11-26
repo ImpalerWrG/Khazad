@@ -5,56 +5,67 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include <point.h>
+#include <Coordinates.h>
 
-typedef int cost_t;
 
-//Interface (pure virtual base class)
-struct Heuristic
+struct Heuristic // Interface (pure virtual base class)
 {
     virtual ~Heuristic() {};
-    virtual cost_t operator() (const point p, const point t) const = 0;
+    virtual float Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord) const = 0;
 };
 
-struct L1Heuristic : Heuristic
+struct Manhatten : Heuristic
 {
-    cost_t operator () (const point p, const point t) const
+    float Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord)
     {
-        cost_t sum = 0;
-        for (unsigned i = 0; i < point::dim; ++i)
-        {
-            sum += abs(p[i] - t[i]);
-        }
-        return sum;
+        return (float) abs(StartCoord.X - GoalCoord.X) + abs(StartCoord.Y - GoalCoord.Y) +  abs(StartCoord.Z - GoalCoord.Z);
     }
 };
 
 struct MaxHeuristic : Heuristic
 {
-    cost_t operator () (const point p, const point t) const
+    float Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord)
     {
-        cost_t max = 0;
-        for (unsigned i = 0; i < point::dim; ++i)
-        {
-            cost_t cost = abs(p[i] - t[i]);
-            if (cost > max)
-                max = cost;
-        }
+        float max = 0;
+        float cost = 0;
+
+        cost = abs(StartCoord.X - GoalCoord.X);
+        if (cost > max)
+            max = cost;
+
+        cost = abs(StartCoord.Y - GoalCoord.Y);
+        if (cost > max)
+            max = cost;
+
+        cost = abs(StartCoord.Z - GoalCoord.Z);
+        if (cost > max)
+            max = cost;
+
         return max;
     }
 };
 
-struct EuclideanTiebreaker : Heuristic
+struct Euclidean : Heuristic
 {
-    cost_t operator () (const point p, const point t) const
+    float Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord)
     {
-        cost_t sum = 0;
-        for (unsigned i = 0; i < point::dim; ++i)
-        {
-            cost_t cost = p[i] - t[i];
-            sum += cost*cost;
-        }
-        return sum;
+        float cost = StartCoord.X - GoalCoord.X;
+        float sum = cost * cost;
+
+        cost = StartCoord.Y - GoalCoord.Y;
+        sum += cost * cost;
+
+        // Use Z as well?  cuberoot?
+
+        return sqrt(sum);
+    }
+};
+
+struct Dijkstra : Heuristic
+{
+    float Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord)
+    {
+        return 0;
     }
 };
 

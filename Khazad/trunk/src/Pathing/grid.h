@@ -1,19 +1,16 @@
 #ifndef GRID_HEADER
 #define GRID_HEADER
 
-#include "point.h"
-#include "heuristics.h"
+#include <Coordinates.h>
 
-#include <assert.h>
-#include <stdlib.h>
-
-struct gridInterface
+struct gridInterface  // Virtural Base class
 {
     virtual ~gridInterface() {};
 
-    virtual cost_t edgeCost( const point &pa, const point &pb) const = 0;
+    virtual float getEdgeCost( const MapCoordinates &StartCords, const MapCoordinates &GoalCoords) const = 0;
+
     virtual unsigned max(unsigned i) const = 0;
-    virtual bool contains(const point &p) const = 0;
+    virtual bool contains(const MapCoordinates &TestCoords) const = 0;
 };
 
 struct grid : gridInterface

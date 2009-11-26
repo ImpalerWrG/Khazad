@@ -1,29 +1,28 @@
+#include <astar.h>
+
 #include <vector>
 #include <algorithm>
-#include <unordered_set>
-//#include <boost/unordered_set.hpp>
-#include <boost/shared_ptr.hpp>
+#include <path.h>
 
-#include "astar.h"
 
-typedef boost::shared_ptr<AStarEntry> AStarEntryPtr;
 
-std::pair<cost_t,std::vector<point>> AStar::path (const point &s, const point &t)
+//typedef boost::shared_ptr<AStarEntry> AStarEntryPtr;
+
+FullPath AStar::path (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
 {
     entryGreaterThan egt(t, heuristic);
     std::vector<AStarEntryPtr> fringe;
-    std::unordered_set<point,point::hash> visited;
-    //boost:unordered_set<vertex,pointhash> visited;
+    std::unordered_set<point, point::hash> visited;
 
     std::make_heap(fringe.begin(), fringe.end(),egt);
 
     fringe.push_back(AStarEntryPtr(new AStarEntry(s, 0)));
     std::push_heap(fringe.begin(),fringe.end(),egt);
+
     while (!fringe.empty())
     {
-
         /* Get the min-weight element off the fringe. */
-        std::pop_heap(fringe.begin(),fringe.end(),egt);
+        std::pop_heap(fringe.begin(),fringe.end(), egt);
         AStarEntryPtr e = fringe.back();
         fringe.pop_back();
         count++;
@@ -63,8 +62,7 @@ std::pair<cost_t,std::vector<point>> AStar::path (const point &s, const point &t
             eiterator it = std::find(fringe.begin(), fringe.end(), eneigh);
             if (it != fringe.end())
             {
-                /* it's here, we just haven't gotten there yet; decrease_key
-                   if applicable */
+                /* it's here, we just haven't gotten there yet; decrease_key if applicable */
                 if (eneigh->cost_ < (*it)->cost_)
                 {
                     //printf("decreasing node cost (%2d,%2d,%2d)\n",neigh[0],neigh[1],neigh[2]);
@@ -75,16 +73,13 @@ std::pair<cost_t,std::vector<point>> AStar::path (const point &s, const point &t
                 continue;
             }
 #endif
-
-
-            /* ey was found neither in the fringe nor in visited; add it
-               to the fringe */
+            /* ey was found neither in the fringe nor in visited; add it to the fringe */
             fringe.push_back(eneigh);
             std::push_heap(fringe.begin(),fringe.end(),egt);
         } // end loop over neighbours
     } // end loop over fringe
-    return std::pair<cost_t,std::vector<point>>(-1,std::vector<point>());
-} // end function path()
+    return std::pair<cost_t, std::vector<point>> (-1, std::vector<point>());
+}
 
 class scopedAddBorderNode
 {
@@ -112,15 +107,14 @@ public:
     }
 
 private:
-    zone *z_;
+    zone* z_;
     zoneBorderNode* zbn_;
     bool zoneModified;
-
 };
 
 typedef boost::shared_ptr<AStarZoneEntry> AStarZoneEntryPtr;
 
-std::pair<cost_t,std::vector<point>> ZonedAStar::path (const point &s, const point &t)
+FullPath HierarchicalAStar::path (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
 {
     zone *zoneS = zm_->findContainingZone(s);
     zone *zoneT = zm_->findContainingZone(t);
@@ -129,27 +123,26 @@ std::pair<cost_t,std::vector<point>> ZonedAStar::path (const point &s, const poi
         return std::pair<cost_t,std::vector<point>>(-1,std::vector<point>());
 
     //add source and dest to zone
+    scopedAddBorderNode sbs(zoneS, s, heuristic), sbt(zoneT, t, heuristic);
 
-    scopedAddBorderNode sbs(zoneS,s,heuristic), sbt(zoneT,t,heuristic);
-
-    zoneBorderNode *bs = zoneS->get(s);
-    zoneBorderNode *bt = zoneT->get(t);
+    zoneBorderNode* bs = zoneS->get(s);
+    zoneBorderNode* bt = zoneT->get(t);
 
     entryGreaterThan egt(t, heuristic);
     std::vector<AStarZoneEntryPtr> fringe;
     std::unordered_set<point,point::hash> visited;
-    //boost:unordered_set<vertex,pointhash> visited;
 
     std::make_heap(fringe.begin(), fringe.end(),egt);
 
     adjacentNode ans = adjacentNode(bs,0);
     ans.cache_.push_back(s);
     ans.cache_.push_back(s);
+
     fringe.push_back(AStarZoneEntryPtr(new AStarZoneEntry(&ans,0)));
     std::push_heap(fringe.begin(),fringe.end(),egt);
+
     while (!fringe.empty())
     {
-
         /* Get the min-weight element off the fringe. */
         std::pop_heap(fringe.begin(),fringe.end(),egt);
         AStarZoneEntryPtr e = fringe.back();
@@ -270,12 +263,11 @@ std::pair<cost_t,std::vector<point>> ZonedAStar::path (const point &s, const poi
 #endif
 
             //printf("Ok\n");
-            /* ey was found neither in the fringe nor in visited; add it
-               to the fringe */
+            /* ey was found neither in the fringe nor in visited; add it to the fringe */
 
             fringe.push_back(eneigh);
             std::push_heap(fringe.begin(),fringe.end(),egt);
         } // end loop over neighbours
     } // end loop over fringe
     return std::pair<cost_t,std::vector<point>>(-1,std::vector<point>());
-} // end function path()
+}

@@ -5,117 +5,12 @@
 #include <stdafx.h>
 
 #include <Vector3.h>
-
-#define CELLEDGESIZE 16
-#define HALFCUBE 0.5
+#include <Coordinates.h>
 
 namespace DFHack
 {
     class API;
 }
-
-struct MapCoordinates
-{
-    MapCoordinates()
-    {
-        X = 0;
-        Y = 0;
-        Z = 0;
-    };
-
-    MapCoordinates(Vector3 Point)
-    {
-        X = Point.x;
-        Y = Point.y;
-        Z = Point.z;
-    };
-
-    MapCoordinates(Sint32 NewX, Sint32 NewY, Sint32 NewZ)
-    {
-        X = NewX;
-        Y = NewY;
-        Z = NewZ;
-    };
-
-    MapCoordinates& operator= (const MapCoordinates& ArgumentCoordinates)
-    {
-        X = ArgumentCoordinates.X;
-        Y = ArgumentCoordinates.Y;
-        Z = ArgumentCoordinates.Z;
-        return *this;
-    };
-
-    Sint32 X;
-    Sint32 Y;
-    Sint32 Z;
-};
-
-struct CellCoordinates
-{
-    CellCoordinates()
-    {
-        X = 0;
-        Y = 0;
-        Z = 0;
-    };
-
-    CellCoordinates(Sint16 NewX, Sint16 NewY, Sint16 NewZ)
-    {
-        X = NewX;
-        Y = NewY;
-        Z = NewZ;
-    };
-
-    CellCoordinates& operator= (const CellCoordinates& ArgumentCoordinates)
-    {
-        X = ArgumentCoordinates.X;
-        Y = ArgumentCoordinates.Y;
-        Z = ArgumentCoordinates.Z;
-        return *this;
-    };
-
-    CellCoordinates(MapCoordinates SourceCoordinates)
-    {
-        X = SourceCoordinates.X / CELLEDGESIZE;
-        Y = SourceCoordinates.Y / CELLEDGESIZE;
-        Z = SourceCoordinates.Z;
-    };
-
-    Sint16 X;
-    Sint16 Y;
-    Sint16 Z;
-};
-
-struct CubeCoordinates
-{
-    CubeCoordinates()
-    {
-        X = 0;
-        Y = 0;
-    };
-
-    CubeCoordinates(Uint8 NewX, Uint8 NewY)
-    {
-        X = NewX;
-        Y = NewY;
-    };
-
-    CubeCoordinates& operator= (const CubeCoordinates& ArgumentCoordinates)
-    {
-        X = ArgumentCoordinates.X;
-        Y = ArgumentCoordinates.Y;
-        return *this;
-    };
-
-    CubeCoordinates(MapCoordinates SourceCoordinates)
-    {
-        X = SourceCoordinates.X % CELLEDGESIZE;
-        Y = SourceCoordinates.Y % CELLEDGESIZE;
-    };
-
-    Uint8 X;
-    Uint8 Y;
-};
 
 struct Face
 {
