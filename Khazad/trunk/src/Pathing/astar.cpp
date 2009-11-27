@@ -7,8 +7,6 @@
 #include <Path.h>
 
 
-/*
-
 typedef std::shared_ptr<AStarEntry> AStarEntryPtr;
 
 FullPath AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
@@ -179,7 +177,7 @@ FullPath HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, 
             e->node_->cache_ = cpath.PathCourse; //update the cache!
             e->node_->cost_ = cpath.Length;
 
-            //point p = e->getPoint();
+            /*point p = e->getPoint();
             point q = e->path_.back();
             printf("Examine: (%2d,%2d,%2d)->(%2d,%2d,%2d) - %d:%d\n",q[0],q[1],q[2],p[0],p[1],p[2],e->path_.size()+cpath.second.size()-1,e->cost_+cpath.first);
             std::vector<point>::iterator it = e->path_.begin();
@@ -188,7 +186,7 @@ FullPath HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, 
               printf("(%2d,%2d,%2d)->",(*it)[0],(*it)[1],(*it)[2]);
             for (it = cpath.second.begin(); it != cpath.second.end(); it++)
               printf("(%2d,%2d,%2d)->",(*it)[0],(*it)[1],(*it)[2]);
-            printf(": %d\n",e->cost_+cpath.first);
+            printf(": %d\n",e->cost_+cpath.first);*/
 
             //if disconnected, ignore it
             if (cpath.Length >= 0)
@@ -273,4 +271,4 @@ FullPath HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, 
     } // end loop over fringe
     return FullPath(-1,std::vector<point>());
 }
-*/
+

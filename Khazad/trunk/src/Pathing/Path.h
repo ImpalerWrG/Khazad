@@ -8,8 +8,8 @@ using namespace std;
 
 struct MapPath
 {
-    Path() {}
-    Path(float length, int stepcount) : Length(length), StepCount(stepcount) {}
+    MapPath() {}
+    MapPath(float length, int stepcount) : Length(length), StepCount(stepcount) {}
     float Length;   // The travel cost of the path
     int StepCount;  // The number of individual steps in the path
 
@@ -21,7 +21,7 @@ struct MapPath
 
 struct FullPath: MapPath
 {
-    FullPath(float length, vector<MapCoordinates> course) : Path(length,course.size()-1), PathCourse(course) {}
+    FullPath(float length, vector<MapCoordinates> course) : MapPath(length,course.size()-1), PathCourse(course) {}
     vector<MapCoordinates> PathCourse;
 };
 

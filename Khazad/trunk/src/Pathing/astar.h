@@ -8,15 +8,13 @@
 #include <graph.h>
 #include "zone.h"
 
-/*
-
 class PathAlgorithm
 {
 public:
 
     virtual ~PathAlgorithm() {};
 
-    virtual Path FindPath(const MapCoordinates &StartCoords, const MapCoordinates &GoalCoords) = 0;
+    virtual MapPath FindPath(const MapCoordinates &StartCoords, const MapCoordinates &GoalCoords) = 0;
 
     virtual void Reset() = 0;
     virtual unsigned getCount() const = 0;
@@ -45,7 +43,7 @@ public:
     void Reset()                    { count = 0; }
     unsigned getCount() const       { return count; }
 
-    Path FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint) { return doFindPath(StartPoint, GoalPoint); }
+    MapPath FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint) { return doFindPath(StartPoint, GoalPoint); }
     FullPath doFindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint);
 
 };
@@ -66,14 +64,12 @@ public:
     void Reset()                    { count = 0;}
     unsigned getCount() const       { return count; }
 
-    Path FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint) { return doFindPath(StartPoint, GoalPoint); }
+    MapPath FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint) { return doFindPath(StartPoint, GoalPoint); }
 
 private:
     zoneManager* zm_;
 
     FullPath doFindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint);
 };
-
-*/
 
 #endif // ASTAR_HEADER

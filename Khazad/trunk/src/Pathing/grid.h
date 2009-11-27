@@ -33,13 +33,13 @@ struct gridInterface  // Virtural Base class
     }
 };
 
-/*
+
+
 struct grid : gridInterface
 {
   public:
     grid(MapCoordinates maxcorner) : maxcorner(maxcorner), count(0)
     {
-        maxcorner = Size;
         count = 0;
         tile = (char*)calloc(maxcorner[0] * maxcorner[1] * maxcorner[2], sizeof(char));
     }
@@ -323,6 +323,5 @@ struct ImpalerCanRenameThisGrid : gridInterface
   mutable unsigned count;
 };
 
-*/
 
 #endif // GRID_HEADER
