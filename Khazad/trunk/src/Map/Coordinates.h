@@ -77,6 +77,33 @@ struct MapCoordinates
 
         return false;  // All values equal thus not less than
     };
+    
+    int32_t operator[](unsigned i) const
+    {
+      switch (i)
+      {
+        case 0:
+          return X;
+        case 1:
+          return Y;
+        case 2:
+          return Z;
+      }
+      return X;
+    }
+    
+    void set(unsigned i, int32_t val)
+    {
+      switch (i)
+      {
+        case 0:
+          X = val;
+        case 1:
+          Y = val;
+        case 2:
+          Z = val;
+      }
+    }
 
     struct hash
     {

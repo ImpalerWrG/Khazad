@@ -1,23 +1,25 @@
-#include <astar.h>
-
 #include <vector>
 #include <algorithm>
-#include <path.h>
+#include <memory>
+#include <unordered_set>
+
+#include <astar.h>
+#include <Path.h>
 
 
-
-//typedef boost::shared_ptr<AStarEntry> AStarEntryPtr;
 /*
 
-FullPath AStar::path (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
+typedef std::shared_ptr<AStarEntry> AStarEntryPtr;
+
+FullPath AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
 {
-    entryGreaterThan egt(t, heuristic);
+    entryGreaterThan egt(GoalCoordinates, MainHeuristic);
     std::vector<AStarEntryPtr> fringe;
-    std::unordered_set<point, point::hash> visited;
+    std::unordered_set<MapCoordinates, MapCoordinates::hash> visited;
 
     std::make_heap(fringe.begin(), fringe.end(),egt);
 
-    fringe.push_back(AStarEntryPtr(new AStarEntry(s, 0)));
+    fringe.push_back(AStarEntryPtr(new AStarEntry(StartCoordinates, 0)));
     std::push_heap(fringe.begin(),fringe.end(),egt);
 
     while (!fringe.empty())
@@ -32,18 +34,18 @@ FullPath AStar::path (const MapCoordinates &StartCoordinates, const MapCoordinat
             continue;
 
         // if it's the destination, congratuations, we win a prize!
-        if (e->v_ == t)
+        if (e->v_ == GoalCoordinates)
         {
-            e->path_.push_back(t);
-            return std::pair<cost_t,std::vector<point>>(e->cost_,e->path_);
+            e->path_.push_back(GoalCoordinates);
+            return FullPath(e->cost_,e->path_);
         }
 
         // mark it visited if not already visited
         visited.insert(e->v_);
 
         // relax neighbours
-        GridGraph::iterator end = G_->end(e->v_);
-        for (GridGraph::iterator nit = G_->begin(e->v_); nit != end; ++nit)
+        GridGraph::iterator end = SearchGraph->end(e->v_);
+        for (GridGraph::iterator nit = SearchGraph->begin(e->v_); nit != end; ++nit)
         {
             point neigh = *nit;
 
@@ -51,11 +53,11 @@ FullPath AStar::path (const MapCoordinates &StartCoordinates, const MapCoordinat
             if (visited.find(neigh) != visited.end())
                 continue;
 
-            cost_t cost = G_->edgeCost(e->v_,neigh);
+            cost_t cost = SearchGraph->edgeCost(e->v_,neigh);
             if (cost < 0)
                 continue; //Not valid edge
 
-            AStarEntryPtr eneigh(new AStarEntry(neigh, *e, e->cost_ + cost, (*tiebreaker)(neigh,t)));
+            AStarEntryPtr eneigh(new AStarEntry(neigh, *e, e->cost_ + cost, (*TieBreakerHeuristic)(neigh,GoalCoordinates)));
 
 #if 0
             typedef std::vector<AStarEntryPtr>::iterator eiterator;
@@ -79,7 +81,7 @@ FullPath AStar::path (const MapCoordinates &StartCoordinates, const MapCoordinat
             std::push_heap(fringe.begin(),fringe.end(),egt);
         } // end loop over neighbours
     } // end loop over fringe
-    return std::pair<cost_t, std::vector<point>> (-1, std::vector<point>());
+    return FullPath(-1, std::vector<point>());
 }
 
 class scopedAddBorderNode
@@ -113,31 +115,31 @@ private:
     bool zoneModified;
 };
 
-typedef boost::shared_ptr<AStarZoneEntry> AStarZoneEntryPtr;
+typedef std::shared_ptr<AStarZoneEntry> AStarZoneEntryPtr;
 
-FullPath HierarchicalAStar::path (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
+FullPath HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
 {
-    zone *zoneS = zm_->findContainingZone(s);
-    zone *zoneT = zm_->findContainingZone(t);
+    zone *zoneS = zm_->findContainingZone(StartCoordinates);
+    zone *zoneT = zm_->findContainingZone(GoalCoordinates);
 
     if ((zoneS == NULL) || (zoneT == NULL))
-        return std::pair<cost_t,std::vector<point>>(-1,std::vector<point>());
+        return FullPath(-1,std::vector<point>());
 
     //add source and dest to zone
-    scopedAddBorderNode sbs(zoneS, s, heuristic), sbt(zoneT, t, heuristic);
+    scopedAddBorderNode sbs(zoneS, StartCoordinates, MainHeuristic), sbt(zoneT, GoalCoordinates, MainHeuristic);
 
-    zoneBorderNode* bs = zoneS->get(s);
-    zoneBorderNode* bt = zoneT->get(t);
+    zoneBorderNode* bs = zoneS->get(StartCoordinates);
+    zoneBorderNode* bt = zoneT->get(GoalCoordinates);
 
-    entryGreaterThan egt(t, heuristic);
+    entryGreaterThan egt(GoalCoordinates, MainHeuristic);
     std::vector<AStarZoneEntryPtr> fringe;
     std::unordered_set<point,point::hash> visited;
 
     std::make_heap(fringe.begin(), fringe.end(),egt);
 
     adjacentNode ans = adjacentNode(bs,0);
-    ans.cache_.push_back(s);
-    ans.cache_.push_back(s);
+    ans.cache_.push_back(StartCoordinates);
+    ans.cache_.push_back(StartCoordinates);
 
     fringe.push_back(AStarZoneEntryPtr(new AStarZoneEntry(&ans,0)));
     std::push_heap(fringe.begin(),fringe.end(),egt);
@@ -149,33 +151,33 @@ FullPath HierarchicalAStar::path (const MapCoordinates &StartCoordinates, const 
         AStarZoneEntryPtr e = fringe.back();
         fringe.pop_back();
 
-        if ((visited.find(*e->node_) != visited.end()) || (!G_->contains(*e->node_)))
+        if ((visited.find(*e->node_) != visited.end()) || (!SearchGraph->contains(*e->node_)))
             continue;
 
         if (!e->cached())
         {
-            cachemiss++;
+            //cachemiss++;
             //no cached path. (current cost is only an estimate)
 
-            std::pair<cost_t, std::vector<point>> cpath;
+            FullPath cpath(-1,std::vector<MapCoordinates>());
             //find the path, cache it
-            ZonedGridGraph zgg(G_,zm_->findContainingZone(e->getPoint()));
+            ZonedGridGraph zgg(SearchGraph,zm_->findContainingZone(e->getPoint()));
             if (zm_->down() == NULL)
             {
-                AStar lastar(&zgg,heuristic,tiebreaker);
-                cpath = lastar.path(e->path_.back(),e->getPoint());
+                AStar lastar(&zgg,MainHeuristic,TieBreakerHeuristic);
+                cpath = lastar.doFindPath(e->path_.back(),e->getPoint());
                 count += lastar.getCount();
             }
             else
             {
-                ZonedAStar dastar(&zgg,zm_->down(),heuristic,tiebreaker);
-                cpath = dastar.path(e->path_.back(),e->getPoint());
+                HierarchicalAStar dastar(&zgg,zm_->down(),MainHeuristic,TieBreakerHeuristic);
+                cpath = dastar.doFindPath(e->path_.back(),e->getPoint());
                 count += dastar.getCount();
-                cachemiss += dastar.cachemiss;
+                //cachemiss += dastar.cachemiss;
             }
 
-            e->node_->cache_ = cpath.second; //update the cache!
-            e->node_->cost_ = cpath.first;
+            e->node_->cache_ = cpath.PathCourse; //update the cache!
+            e->node_->cost_ = cpath.Length;
 
             //point p = e->getPoint();
             point q = e->path_.back();
@@ -189,7 +191,7 @@ FullPath HierarchicalAStar::path (const MapCoordinates &StartCoordinates, const 
             printf(": %d\n",e->cost_+cpath.first);
 
             //if disconnected, ignore it
-            if (cpath.first >= 0)
+            if (cpath.Length >= 0)
             {
                 //now let's try again with the real cost
                 fringe.push_back(e);
@@ -201,10 +203,10 @@ FullPath HierarchicalAStar::path (const MapCoordinates &StartCoordinates, const 
         count++;
 
         // if it's the destination, congratuations, we win a prize!
-        if (e->getPoint() == t)
+        if (e->getPoint() == GoalCoordinates)
         {
             e->path_.insert(e->path_.end(), ++e->node_->cache_.begin(),e->node_->cache_.end());
-            return std::pair<cost_t,std::vector<point>>(e->value(t,*heuristic),e->path_);
+            return FullPath(e->value(GoalCoordinates,*MainHeuristic),e->path_);
         }
 
         // mark it visited if not already visited
@@ -234,7 +236,7 @@ FullPath HierarchicalAStar::path (const MapCoordinates &StartCoordinates, const 
 
             assert(neigh != e->node_);
 
-            AStarZoneEntryPtr eneigh (new AStarZoneEntry(neigh, *e, (*tiebreaker)(*neigh,t)));
+            AStarZoneEntryPtr eneigh (new AStarZoneEntry(neigh, *e, (*TieBreakerHeuristic)(*neigh,GoalCoordinates)));
 
 #if 0
             typedef std::vector<AStarZoneEntryPtr>::iterator eiterator;
@@ -244,8 +246,7 @@ FullPath HierarchicalAStar::path (const MapCoordinates &StartCoordinates, const 
             {
                 // it's here, we just haven't gotten there yet; decrease_key if applicable
                 //if both cached or shortest one cached, choose shortest
-
-                if ((eneigh->value(t,*heuristic) < (*it)->value(t,*heuristic)) && (eneigh->cached()))
+                if ((eneigh->value(t,*MainHeuristic) < (*it)->value(t,*MainHeuristic)) && (eneigh->cached()))
                 {
                     //printf("Zdecreasing node cost (%2d,%2d,%2d)\n",(*neigh)[0],(*neigh)[1],(*neigh)[2]);
                     fringe.erase(it);
@@ -270,6 +271,6 @@ FullPath HierarchicalAStar::path (const MapCoordinates &StartCoordinates, const 
             std::push_heap(fringe.begin(),fringe.end(),egt);
         } // end loop over neighbours
     } // end loop over fringe
-    return std::pair<cost_t,std::vector<point>>(-1,std::vector<point>());
+    return FullPath(-1,std::vector<point>());
 }
 */

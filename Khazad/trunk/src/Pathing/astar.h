@@ -5,8 +5,8 @@
 #include <heuristics.h>
 
 #include <Path.h>
-#include <Graph.h>
-//#include "zone.h"
+#include <graph.h>
+#include "zone.h"
 
 /*
 
@@ -21,10 +21,10 @@ public:
     virtual void Reset() = 0;
     virtual unsigned getCount() const = 0;
 
-private:
+protected:
 
     unsigned count;
-    const GridGraph* TargetSearchGraph;
+    const GridGraph* SearchGraph;
 
     const Heuristic* MainHeuristic;
     const Heuristic* TieBreakerHeuristic;
@@ -45,9 +45,8 @@ public:
     void Reset()                    { count = 0; }
     unsigned getCount() const       { return count; }
 
-    Path FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint);
-
-private:
+    Path FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint) { return doFindPath(StartPoint, GoalPoint); }
+    FullPath doFindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint);
 
 };
 
@@ -57,22 +56,22 @@ public:
 
     HierarchicalAStar(const GridGraph* TargetSearchGraph, zoneManager *zm, const Heuristic* MainHeuristicType, const Heuristic* TieBreakerHeuristicType)
     {
+        zm_ = zm;
         SearchGraph = TargetSearchGraph;
         MainHeuristic = MainHeuristicType;
         TieBreakerHeuristic = TieBreakerHeuristicType;
         Reset();
     }
 
-    void Reset()                    { count = 0; cachemiss = 0;}
+    void Reset()                    { count = 0;}
     unsigned getCount() const       { return count; }
 
-    Path FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint);
+    Path FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint) { return doFindPath(StartPoint, GoalPoint); }
 
 private:
-
-    int cachemiss;
-
     zoneManager* zm_;
+
+    FullPath doFindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint);
 };
 
 */

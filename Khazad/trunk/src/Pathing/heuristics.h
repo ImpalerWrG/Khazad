@@ -7,27 +7,45 @@
 
 #include <Coordinates.h>
 
+typedef float cost_t;
+
+typedef MapCoordinates point;
+
+template <typename T>
+struct pointerEqualityPredicate
+{
+  const T* to_find;
+
+  pointerEqualityPredicate(const T* t) : to_find(t) {}
+
+  bool operator()(const T* other) const
+  {
+    return *to_find == *other;
+  }
+};
+
 
 struct Heuristic // Interface (pure virtual base class)
 {
     virtual ~Heuristic() {};
-    virtual float Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord) const = 0;
+    virtual cost_t Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord) const = 0;
+    cost_t operator()(const MapCoordinates StartCoord, const MapCoordinates GoalCoord) const { return Estimate(StartCoord, GoalCoord); }
 };
 
 struct Manhatten : Heuristic
 {
-    float Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord)
+    cost_t Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord) const
     {
-        return (float) abs(StartCoord.X - GoalCoord.X) + abs(StartCoord.Y - GoalCoord.Y) +  abs(StartCoord.Z - GoalCoord.Z);
+        return (cost_t) abs(StartCoord.X - GoalCoord.X) + abs(StartCoord.Y - GoalCoord.Y) +  abs(StartCoord.Z - GoalCoord.Z);
     }
 };
 
 struct MaxHeuristic : Heuristic
 {
-    float Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord)
+    cost_t Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord) const
     {
-        float max = 0;
-        float cost = 0;
+        cost_t max = 0;
+        cost_t cost = 0;
 
         cost = abs(StartCoord.X - GoalCoord.X);
         if (cost > max)
@@ -47,10 +65,10 @@ struct MaxHeuristic : Heuristic
 
 struct Euclidean : Heuristic
 {
-    float Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord)
+    cost_t Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord) const
     {
-        float cost = StartCoord.X - GoalCoord.X;
-        float sum = cost * cost;
+        cost_t cost = StartCoord.X - GoalCoord.X;
+        cost_t sum = cost * cost;
 
         cost = StartCoord.Y - GoalCoord.Y;
         sum += cost * cost;
@@ -63,7 +81,7 @@ struct Euclidean : Heuristic
 
 struct Dijkstra : Heuristic
 {
-    float Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord)
+    cost_t Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord) const
     {
         return 0;
     }

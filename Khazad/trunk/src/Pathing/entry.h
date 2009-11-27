@@ -5,15 +5,14 @@
 #include <memory>
 
 #include "heuristics.h"
-#include "point.h"
 
 struct entry
 {
     virtual ~entry() {};
-    virtual cost_t value(const point &t, const Heuristic &h) const = 0;
+    virtual cost_t value(const MapCoordinates &t, const Heuristic &h) const = 0;
     virtual cost_t tiebreaker() const = 0;
-    virtual point& getPoint() = 0;
-    virtual bool costLessThan(const entry &e, const point &t, const Heuristic &h) const
+    virtual MapCoordinates& getPoint() = 0;
+    virtual bool costLessThan(const entry &e, const MapCoordinates &t, const Heuristic &h) const
     {
         cost_t va,vb;
         va = value(t,h);
@@ -29,20 +28,20 @@ struct entry
 
 struct AStarEntry : entry
 {
-    point v_;
+    MapCoordinates v_;
     cost_t cost_;
     cost_t tiebreaker_;
-    std::vector<point> path_;
+    std::vector<MapCoordinates> path_;
 
-    AStarEntry(point v, cost_t cost) : v_(v), cost_(cost), tiebreaker_(0) { }
-    AStarEntry(point v, AStarEntry prev, cost_t cost, cost_t tiebreaker) : v_(v), cost_(cost), tiebreaker_(tiebreaker)
+    AStarEntry(MapCoordinates v, cost_t cost) : v_(v), cost_(cost), tiebreaker_(0) { }
+    AStarEntry(MapCoordinates v, AStarEntry prev, cost_t cost, cost_t tiebreaker) : v_(v), cost_(cost), tiebreaker_(tiebreaker)
     {
         path_.reserve(prev.path_.size()+1);
         path_.insert(path_.begin(), prev.path_.begin(),prev.path_.end());
         path_.push_back(prev.v_);
     }
 
-    cost_t value(const point &t, const Heuristic &h) const
+    cost_t value(const MapCoordinates &t, const Heuristic &h) const
     {
         return cost_ + h (v_, t);
     }
@@ -57,7 +56,7 @@ struct AStarEntry : entry
         return v_ == other.v_;
     }
 
-    virtual point& getPoint()
+    virtual MapCoordinates& getPoint()
     {
         return v_;
     }
@@ -66,10 +65,10 @@ struct AStarEntry : entry
 class entryGreaterThan
 {
 private:
-    const point t_;
+    const MapCoordinates t_;
     const Heuristic *h_;
 public:
-    entryGreaterThan(const point t, const Heuristic *h) : t_(t), h_(h) {}
+    entryGreaterThan(const MapCoordinates t, const Heuristic *h) : t_(t), h_(h) {}
     bool operator()(const std::shared_ptr<entry> a, const std::shared_ptr<entry> b) const
     {
         return !a->costLessThan(*b,t_,*h_);

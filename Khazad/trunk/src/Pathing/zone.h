@@ -5,9 +5,9 @@
 //#include <unordered_map>
 #include <algorithm>
 #include <memory>
+#include <stdio.h>
 
-#include <heuristics.h>
-#include <Coordinates.h>
+#include "heuristics.h"
 #include "entry.h"
 #include <graph.h>
 
@@ -51,7 +51,7 @@ public:
     virtual void checkValid() = 0;
 };
 
-class adjacentNode : public point
+class adjacentNode : public MapCoordinates
 {
 public:
     zoneBorderNode *node_;
@@ -61,7 +61,7 @@ public:
     adjacentNode(zoneBorderNode *n, cost_t c);
 };
 
-class zoneBorderNode : public point
+class zoneBorderNode : public MapCoordinates
 {
 public:
     zone *owner_;

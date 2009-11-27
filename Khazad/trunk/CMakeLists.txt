@@ -7,9 +7,12 @@ if(COMMAND cmake_policy)
   cmake_policy(SET CMP0003 NEW)
 endif(COMMAND cmake_policy)
 
-if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
+SET(khazad_SOURCE_DIR "src")
+SET(khazad_BINARY_DIR "build")
+
+if("${khazad_SOURCE_DIR}" STREQUAL "${khazad_BINARY_DIR}")
    message(SEND_ERROR "In-source builds are not allowed.")
-endif("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
+endif("${khazad_SOURCE_DIR}" STREQUAL "${khazad_BINARY_DIR}")
 
 IF(NOT DEFINED CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel.")
@@ -34,6 +37,7 @@ ${CMAKE_SOURCE_DIR}/src/Geometry
 ${CMAKE_SOURCE_DIR}/src/Gui
 ${CMAKE_SOURCE_DIR}/src/Gui/CustomWidgets
 ${CMAKE_SOURCE_DIR}/src/Map
+${CMAKE_SOURCE_DIR}/src/Pathing
 ${CMAKE_SOURCE_DIR}/src/Render
 ${CMAKE_SOURCE_DIR}/guichan/include
 # dynamic detect path to those two?
@@ -139,6 +143,10 @@ src/Map/Extractor.cpp
 src/Map/Column.cpp
 src/Map/Map.cpp
 
+src/Pathing/PathManager.cpp
+src/Pathing/zone.cpp
+src/Pathing/astar.cpp
+
 src/Render/Camera.cpp
 src/Render/ImageManager.cpp
 src/Render/ModelManager.cpp
@@ -164,6 +172,7 @@ ENDIF(UNIX)
 
 IF(UNIX)
 add_definitions(-DLINUX_BUILD)
+add_definitions(-std=c++0x)
 add_definitions(-DILUT_USE_OPENGL)
 add_definitions(-DBUILD_DFHACK_LIB)
 SET(PROJECT_LIBS SDL SDLmain SDL_ttf SDL_image SDL_mixer SDL_net GL GLU glut IL ILU ILUT z )
@@ -177,3 +186,13 @@ ENDIF(UNIX)
 
 ADD_EXECUTABLE(khazad ${PROJECT_SRCS})
 TARGET_LINK_LIBRARIES(khazad ${PROJECT_LIBS})
+
+SET(PATHING_SRCS 
+src/Pathing/zone.cpp
+src/Pathing/astar.cpp
+src/Pathing/read.cpp
+src/Pathing/testPathing.cpp )
+
+
+ADD_EXECUTABLE(testPathing ${PATHING_SRCS})
+TARGET_LINK_LIBRARIES(testPathing ${PROJECT_LIBS})
