@@ -5,8 +5,8 @@
 #include <list>
 
 
-#include "grid.h"
-
+#include <grid.h>
+#include <map.h>
 
 struct Vertex
 {
@@ -21,11 +21,11 @@ public:
     ~Graph();
 
     Vertex addVertex();
-    Edge addEdge(Vertex* SourceVertex, Vertex* DestinationVertex);
+    void addEdge(Vertex* SourceVertex, Vertex* DestinationVertex);
 
 private:
 
-    map<Vertex> Vertices;
+    //map<Vertex> Vertices;
 };
 
 class ZoneGraph : Graph   // A Graph composed of zones built ontop of a Grid and reflectin high level zones
@@ -41,7 +41,7 @@ public:
     ~GridGraph();
 
 
-    float edgeCost(const MapCoordinates &a, const MapCoordinates &b) const      { return Grid->edgeCost(a, b); }
+    float edgeCost(const MapCoordinates &a, const MapCoordinates &b) const      { /*return Grid->edgeCost(a, b);*/ }
 
     bool contains(const MapCoordinates &TestCoords) const        { return Grid->contains(TestCoords); }
 

@@ -13,10 +13,13 @@ struct gridInterface  // Virtural Base class
     virtual bool contains(const MapCoordinates &TestCoords) const = 0;
 };
 
+/*
 struct grid : gridInterface
 {
-    grid(point maxcorner): maxcorner(maxcorner), count(0)
+    grid(MapCoordinates Size)
     {
+        maxcorner = Size;
+        count = 0;
         tile = (char*)calloc(maxcorner[0] * maxcorner[1] * maxcorner[2], sizeof(char));
     }
     ~grid()
@@ -24,7 +27,7 @@ struct grid : gridInterface
         free(tile);
     }
 
-    cost_t edgeCost(const point &pa, const point &pb) const
+    float edgeCost(const MapCoordinates &pa, const MapCoordinates &pb) const
     {
         ++count;
         if (inBounds(pa) && inBounds(pb))
@@ -73,7 +76,7 @@ struct grid : gridInterface
             return -1;
     }
 
-    void set(point p, char c)
+    void set(MapCoordinates p, char c)
     {
         tile[index(p)] = c;
     }
@@ -83,7 +86,7 @@ struct grid : gridInterface
         return maxcorner[i];
     }
 
-    bool contains(const point &p) const
+    bool contains(const MapCoordinates &p) const
     {
         return inBounds(p);
     }
@@ -99,7 +102,7 @@ struct grid : gridInterface
 
 private:
 
-    bool inBounds(const point &p) const
+    bool inBounds(const MapCoordinates &p) const
     {
         for (unsigned i = 0; i < 3; ++i)
         {
@@ -114,15 +117,17 @@ private:
         }
         return true;
     }
-    unsigned index(const point &p) const
+    unsigned index(const MapCoordinates &p) const
     {
         assert(inBounds(p));
         return p[0] + maxcorner[0] * p[1] + maxcorner[0] * maxcorner[1] * p[2];
     }
 
-    point maxcorner;
+    MapCoordinates maxcorner;
     char *tile;
     mutable unsigned count;
 };
+
+*/
 
 #endif // GRID_HEADER

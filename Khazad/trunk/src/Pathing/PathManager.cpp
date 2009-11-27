@@ -36,13 +36,14 @@ void PathManager::DeleteMapAbstraction()
 
 }
 
-Path FindPath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords)
+MapPath PathManager::FindPath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords)
 {
-    return Path();
+    return MapPath();
 }
 
-float EstimatePathLength(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords)
+float PathManager::EstimatePathLength(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords)
 {
     return -1;
 }
+
 

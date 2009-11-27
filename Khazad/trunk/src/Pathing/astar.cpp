@@ -7,6 +7,7 @@
 
 
 //typedef boost::shared_ptr<AStarEntry> AStarEntryPtr;
+/*
 
 FullPath AStar::path (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
 {
@@ -21,7 +22,7 @@ FullPath AStar::path (const MapCoordinates &StartCoordinates, const MapCoordinat
 
     while (!fringe.empty())
     {
-        /* Get the min-weight element off the fringe. */
+        //Get the min-weight element off the fringe.
         std::pop_heap(fringe.begin(),fringe.end(), egt);
         AStarEntryPtr e = fringe.back();
         fringe.pop_back();
@@ -30,14 +31,14 @@ FullPath AStar::path (const MapCoordinates &StartCoordinates, const MapCoordinat
         if (visited.find(e->v_) != visited.end())
             continue;
 
-        /* if it's the destination, congratuations, we win a prize! */
+        // if it's the destination, congratuations, we win a prize!
         if (e->v_ == t)
         {
             e->path_.push_back(t);
             return std::pair<cost_t,std::vector<point>>(e->cost_,e->path_);
         }
 
-        /* mark it visited if not already visited */
+        // mark it visited if not already visited
         visited.insert(e->v_);
 
         // relax neighbours
@@ -62,7 +63,7 @@ FullPath AStar::path (const MapCoordinates &StartCoordinates, const MapCoordinat
             eiterator it = std::find(fringe.begin(), fringe.end(), eneigh);
             if (it != fringe.end())
             {
-                /* it's here, we just haven't gotten there yet; decrease_key if applicable */
+                // it's here, we just haven't gotten there yet; decrease_key if applicable
                 if (eneigh->cost_ < (*it)->cost_)
                 {
                     //printf("decreasing node cost (%2d,%2d,%2d)\n",neigh[0],neigh[1],neigh[2]);
@@ -73,7 +74,7 @@ FullPath AStar::path (const MapCoordinates &StartCoordinates, const MapCoordinat
                 continue;
             }
 #endif
-            /* ey was found neither in the fringe nor in visited; add it to the fringe */
+            // ey was found neither in the fringe nor in visited; add it to the fringe
             fringe.push_back(eneigh);
             std::push_heap(fringe.begin(),fringe.end(),egt);
         } // end loop over neighbours
@@ -143,7 +144,7 @@ FullPath HierarchicalAStar::path (const MapCoordinates &StartCoordinates, const 
 
     while (!fringe.empty())
     {
-        /* Get the min-weight element off the fringe. */
+        // Get the min-weight element off the fringe.
         std::pop_heap(fringe.begin(),fringe.end(),egt);
         AStarZoneEntryPtr e = fringe.back();
         fringe.pop_back();
@@ -176,7 +177,7 @@ FullPath HierarchicalAStar::path (const MapCoordinates &StartCoordinates, const 
             e->node_->cache_ = cpath.second; //update the cache!
             e->node_->cost_ = cpath.first;
 
-            /*point p = e->getPoint();
+            //point p = e->getPoint();
             point q = e->path_.back();
             printf("Examine: (%2d,%2d,%2d)->(%2d,%2d,%2d) - %d:%d\n",q[0],q[1],q[2],p[0],p[1],p[2],e->path_.size()+cpath.second.size()-1,e->cost_+cpath.first);
             std::vector<point>::iterator it = e->path_.begin();
@@ -185,7 +186,7 @@ FullPath HierarchicalAStar::path (const MapCoordinates &StartCoordinates, const 
               printf("(%2d,%2d,%2d)->",(*it)[0],(*it)[1],(*it)[2]);
             for (it = cpath.second.begin(); it != cpath.second.end(); it++)
               printf("(%2d,%2d,%2d)->",(*it)[0],(*it)[1],(*it)[2]);
-            printf(": %d\n",e->cost_+cpath.first);*/
+            printf(": %d\n",e->cost_+cpath.first);
 
             //if disconnected, ignore it
             if (cpath.first >= 0)
@@ -199,14 +200,14 @@ FullPath HierarchicalAStar::path (const MapCoordinates &StartCoordinates, const 
 
         count++;
 
-        /* if it's the destination, congratuations, we win a prize! */
+        // if it's the destination, congratuations, we win a prize!
         if (e->getPoint() == t)
         {
             e->path_.insert(e->path_.end(), ++e->node_->cache_.begin(),e->node_->cache_.end());
             return std::pair<cost_t,std::vector<point>>(e->value(t,*heuristic),e->path_);
         }
 
-        /* mark it visited if not already visited */
+        // mark it visited if not already visited
         visited.insert(e->getPoint());
         assert(*e->node_ == *e->node_->node_);
 
@@ -241,9 +242,9 @@ FullPath HierarchicalAStar::path (const MapCoordinates &StartCoordinates, const 
             eiterator it = std::find(fringe.begin(), fringe.end(), eneigh);
             if (it != fringe.end())
             {
-                /* it's here, we just haven't gotten there yet; decrease_key
-                   if applicable */
+                // it's here, we just haven't gotten there yet; decrease_key if applicable
                 //if both cached or shortest one cached, choose shortest
+
                 if ((eneigh->value(t,*heuristic) < (*it)->value(t,*heuristic)) && (eneigh->cached()))
                 {
                     //printf("Zdecreasing node cost (%2d,%2d,%2d)\n",(*neigh)[0],(*neigh)[1],(*neigh)[2]);
@@ -263,7 +264,7 @@ FullPath HierarchicalAStar::path (const MapCoordinates &StartCoordinates, const 
 #endif
 
             //printf("Ok\n");
-            /* ey was found neither in the fringe nor in visited; add it to the fringe */
+            // ey was found neither in the fringe nor in visited; add it to the fringe
 
             fringe.push_back(eneigh);
             std::push_heap(fringe.begin(),fringe.end(),egt);
@@ -271,3 +272,4 @@ FullPath HierarchicalAStar::path (const MapCoordinates &StartCoordinates, const 
     } // end loop over fringe
     return std::pair<cost_t,std::vector<point>>(-1,std::vector<point>());
 }
+*/

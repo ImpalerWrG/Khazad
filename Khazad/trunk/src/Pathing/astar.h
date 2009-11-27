@@ -8,6 +8,8 @@
 #include <Graph.h>
 //#include "zone.h"
 
+/*
+
 class PathAlgorithm
 {
 public:
@@ -34,7 +36,7 @@ public:
 
     AStar(const GridGraph *TargetSearchGraph, const Heuristic* MainHeuristicType, const Heuristic* TieBreakerHeuristicType)
     {
-        SearchGraph = TargetSearchGraph
+        SearchGraph = TargetSearchGraph;
         MainHeuristic = MainHeuristicType;
         TieBreakerHeuristic = TieBreakerHeuristicType;
         Reset();
@@ -43,7 +45,7 @@ public:
     void Reset()                    { count = 0; }
     unsigned getCount() const       { return count; }
 
-    Path FindPath(const point &StartPoint, const point &GoalPoint);
+    Path FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint);
 
 private:
 
@@ -64,11 +66,15 @@ public:
     void Reset()                    { count = 0; cachemiss = 0;}
     unsigned getCount() const       { return count; }
 
-    Path FindPath(const point &StartPoint, const point &GoalPoint);
+    Path FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint);
 
 private:
 
+    int cachemiss;
+
     zoneManager* zm_;
 };
+
+*/
 
 #endif // ASTAR_HEADER

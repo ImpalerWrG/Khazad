@@ -6,7 +6,7 @@
 
 using namespace std;
 
-struct Path
+struct MapPath
 {
     float Length;   // The travel cost of the path
     int StepCount;  // The number of individual steps in the path
@@ -17,18 +17,18 @@ struct Path
     MapCoordinates StartCoordinates, GoalCoordinates;
 };
 
-struct FullPath: Path
+struct FullPath: MapPath
 {
     vector<MapCoordinates> PathCourse;
 };
 
-struct VectorPath: Path
+struct VectorPath: MapPath
 {
     //vector<Direction> Directions;  // Needs a definition of Directions
     vector<int> Magnitudes;
 };
 
-struct WayPointPath: Path
+struct WayPointPath: MapPath
 {
     vector<MapCoordinates> WayPoints;
 };

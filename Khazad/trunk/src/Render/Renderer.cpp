@@ -577,6 +577,11 @@ bool Renderer::Render()
         }
     }
 
+    //MapCoordinates DiamondCoodinates = MapCoordinates(0, 0, 0);
+
+    //DrawDiamond(DiamondCoodinates, 1.0, 1.0, 1.0);
+
+
     TEXTURE->ResetTextureBinding();
     glEnable(GL_LIGHTING);
     glMatrixMode(GL_MODELVIEW);
@@ -1055,6 +1060,63 @@ void Renderer::DrawCage(MapCoordinates Coodinates, float x, float y, float z, bo
     glEnd();
 }
 
+void Renderer::DrawDiamond(MapCoordinates Coodinates, float red, float green, float blue)
+{
+    glColor3f (red, green, blue);
+
+    Vector3 Point;
+
+    Point.x = Coodinates.X;
+    Point.y = Coodinates.Y;
+    Point.z = Coodinates.Z;
+
+    glBegin(GL_TRIANGLES);
+    {
+        // Top NorthEast
+        glVertex3f(Point.x, Point.y, Point.z + (HALFCUBE / 2)); // Top
+        glVertex3f(Point.x, Point.y + (HALFCUBE / 2), Point.z); // North
+        glVertex3f(Point.x + (HALFCUBE / 2), Point.y, Point.z); // East
+
+        // Top SouthEast
+        glVertex3f(Point.x, Point.y, Point.z + (HALFCUBE / 2)); // Top
+        glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // South
+        glVertex3f(Point.x + (HALFCUBE / 2), Point.y, Point.z); // East
+
+        // Top SouthWest
+        glVertex3f(Point.x, Point.y, Point.z + (HALFCUBE / 2)); // Top
+        glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // South
+        glVertex3f(Point.x - (HALFCUBE / 2), Point.y, Point.z); // West
+
+        // Top NorthWest
+        glVertex3f(Point.x, Point.y, Point.z + (HALFCUBE / 2)); // Top
+        glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // North
+        glVertex3f(Point.x - (HALFCUBE / 2), Point.y, Point.z); // West
+
+
+
+        // Bottom NorthEast
+        glVertex3f(Point.x, Point.y, Point.z - (HALFCUBE / 2)); // Bottom
+        glVertex3f(Point.x, Point.y + (HALFCUBE / 2), Point.z); // North
+        glVertex3f(Point.x + (HALFCUBE / 2), Point.y, Point.z); // East
+
+        // Bottom SouthEast
+        glVertex3f(Point.x, Point.y, Point.z - (HALFCUBE / 2)); // Bottom
+        glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // South
+        glVertex3f(Point.x + (HALFCUBE / 2), Point.y, Point.z); // East
+
+        // Bottom SouthWest
+        glVertex3f(Point.x, Point.y, Point.z - (HALFCUBE / 2)); // Bottom
+        glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // South
+        glVertex3f(Point.x - (HALFCUBE / 2), Point.y, Point.z); // West
+
+        // Bottom NorthWest
+        glVertex3f(Point.x, Point.y, Point.z - (HALFCUBE / 2)); // Bottom
+        glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // North
+        glVertex3f(Point.x - (HALFCUBE / 2), Point.y, Point.z); // West
+    }
+}
+
+/*
 void Renderer::DrawStreamers(Vector3 Point, float x, float y, float z, float Length)
 {
     DrawStreamers(Point,x,y,z,Length,1,1,1);
@@ -1082,6 +1144,7 @@ void Renderer::DrawStreamers(Vector3 Point, float x, float y, float z, float Len
 
     glDisable(GL_LINE_STIPPLE); // Disable the line stipple
 }
+*/
 
 void Renderer::setCursor(MapCoordinates Coordinates)
 {

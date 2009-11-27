@@ -1,3 +1,4 @@
+/*
 #include "zone.h"
 
 adjacentNode::adjacentNode(zoneBorderNode *n, cost_t c) : point(*n), node_(n), cost_(c) {}
@@ -14,3 +15,5 @@ void zoneBorderNode::invalidateCache(const zone *affected, const Heuristic *h)
         }
     }
 }
+
+*/

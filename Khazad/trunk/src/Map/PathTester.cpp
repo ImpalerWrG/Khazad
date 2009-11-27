@@ -40,7 +40,7 @@ void PathTester::RunPathTestSuite(int Interations, vector<int> PathSystems)
 {
     uint64_t TotalGraphReads, NodesConsidered, TotalPathLength, TotalTimeCost, CacheHits;
 
-    Path ReturnedPath;
+    MapPath ReturnedPath;
     vector <int> StartCoords, GoalCoords;
 
     // Prepare a set of Start Goal pairs for the test

@@ -226,8 +226,11 @@ public:
     void DrawCage(MapCoordinates Coodinates, float x, float y, float z, bool Inflated, float red, float green, float blue);
     void DrawCage(MapCoordinates Coodinates, float x, float y, float z, bool Inflated);
 
-    void DrawStreamers(Vector3 Point, float x, float y, float z, float Length, float red, float green, float blue);
-    void DrawStreamers(Vector3 Point, float x, float y, float z, float Length);
+    //void DrawStreamers(Vector3 Point, float x, float y, float z, float Length, float red, float green, float blue);
+    //void DrawStreamers(Vector3 Point, float x, float y, float z, float Length);
+
+    void DrawDiamond(MapCoordinates Coodinates, float red, float green, float blue);
+
 
     void IncrementTriangles(Uint32 Triangles);
     Uint32 getTriangleCount()                   { return TotalTriangles; }
