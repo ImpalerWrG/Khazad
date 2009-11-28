@@ -18,7 +18,7 @@
 #include <Map.h>
 #include <Cell.h>
 #include <Gui.h>
-#include <Paths.h>
+#include <Path.h>
 
 #include <IL/ilut.h>
 
@@ -312,6 +312,7 @@ void Renderer::CallRenderObject(RenderObject* obj)
         glCallList(obj->gfxHandle);
     }
 }
+
 void Renderer::DeleteRenderObject(RenderObject* obj)
 {
     if(haveVBO)
@@ -577,9 +578,16 @@ bool Renderer::Render()
         }
     }
 
-    //MapCoordinates DiamondCoodinates = MapCoordinates(0, 0, 0);
+    vector<MapCoordinates> PathCoordinates;
 
-    //DrawDiamond(DiamondCoodinates, 1.0, 1.0, 1.0);
+    PathCoordinates.push_back(MapCoordinates(0, 1, 0));
+    PathCoordinates.push_back(MapCoordinates(1, 1, 0));
+    PathCoordinates.push_back(MapCoordinates(1, 1, 1));
+    PathCoordinates.push_back(MapCoordinates(2, 1, 1));
+    PathCoordinates.push_back(MapCoordinates(2, 2, 1));
+
+    MapPath TestPath = new MapPath(PathCoordinates);
+    DrawMapPath(TestPath);
 
 
     TEXTURE->ResetTextureBinding();
@@ -1113,6 +1121,14 @@ void Renderer::DrawDiamond(MapCoordinates Coodinates, float red, float green, fl
         glVertex3f(Point.x, Point.y, Point.z - (HALFCUBE / 2)); // Bottom
         glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // North
         glVertex3f(Point.x - (HALFCUBE / 2), Point.y, Point.z); // West
+    }
+}
+
+void Renderer::DrawMapPath(MapPath* TargetPath)
+{
+    for (int Step = 0; i < TargetPath->StepCount;)
+    {
+        DrawDiamond(TargetPath->NextCoordinate, 1.0, 1.0, 1.0);
     }
 }
 
