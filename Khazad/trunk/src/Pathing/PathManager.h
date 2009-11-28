@@ -20,7 +20,7 @@ public:
 
     MovementController getNewController(int AjentSize, int MovementType); // Create a new controler
 
-    MapPath FindPath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords);
+    MapPath *FindPath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords);
     float EstimatePathLength(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords);
 
     int getExpandedNodeCount()      { return 0; }

@@ -142,6 +142,7 @@ src/Map/Cell.cpp
 src/Map/Extractor.cpp
 src/Map/Column.cpp
 src/Map/Map.cpp
+src/Map/PathTester.cpp
 
 src/Pathing/PathManager.cpp
 src/Pathing/zone.cpp

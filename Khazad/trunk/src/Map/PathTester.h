@@ -25,8 +25,8 @@ public:
     void SetGoalCoords(MapCoordinates TestCoords)       { GoalCoords = TestCoords; }
     MapCoordinates getGoalCoords()                      { return GoalCoords; }
 
-    MapPath FindManualPath();
-    MapPath getManualPath();
+    MapPath* FindManualPath();
+    MapPath* getManualPath();
 
 protected:
 
@@ -36,7 +36,7 @@ protected:
     int NumTestPoints;
 
     MapCoordinates StartCoords, GoalCoords;  // Used for manual testing
-    MapPath ManualPath;
+    MapPath* ManualPath;
 };
 
 

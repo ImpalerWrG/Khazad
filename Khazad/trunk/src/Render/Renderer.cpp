@@ -579,9 +579,10 @@ bool Renderer::Render()
         }
     }
 
-    if (TESTER->getManualPath().Length != -1)
+    if (TESTER->getManualPath()->Length != -1)
     {
-        DrawMapPath(&TESTER->getManualPath());
+       MapPath *mp = TESTER->getManualPath();
+       DrawMapPath(mp);
     }
     else
     {

@@ -12,12 +12,13 @@ DECLARE_SINGLETON(PathTester)
 
 PathTester::PathTester()
 {
-
+   Init();
 }
 
 PathTester::~PathTester()
 {
-    delete TestCoords;
+   delete ManualPath;      
+   delete TestCoords;
 }
 
 bool PathTester::Init()
@@ -33,30 +34,30 @@ bool PathTester::Init()
         // Generate real random passable points from the map
     }
 
-    ManualPath = FullPath();
+    ManualPath = new FullPath();
 
     return true;
 }
 
-MapPath PathTester::getManualPath()
+MapPath* PathTester::getManualPath()
 {
     return ManualPath;
 }
 
-MapPath PathTester::FindManualPath()
+MapPath* PathTester::FindManualPath()
 {
     PATH->ResetProfileData();
 
     PathingTimer->Start();
-        ManualPath = PATH->FindPath(0, StartCoords, GoalCoords);
+    ManualPath = PATH->FindPath(0, StartCoords, GoalCoords);
     int TimeCost = PathingTimer->Stop();
 
     //printf("System %i TestResults\n\n", PathSystems[SystemIndex]);
-    printf("Ttotal path length: %llu \n", ManualPath.Length);
+    printf("Ttotal path length: %g \n", ManualPath->Length);
     printf("Graph reads: %llu \n", PATH->getGraphReads());
-    printf("Graph read efficiency: %lg \n", PATH->getGraphReads() / ManualPath.Length);
+    printf("Graph read efficiency: %lg \n", PATH->getGraphReads() / ManualPath->Length);
     printf("Nodes considered: %llu \n", PATH->getExpandedNodeCount());
-    printf("Search efficiency: %lg \n", PATH->getExpandedNodeCount() / ManualPath.Length);
+    printf("Search efficiency: %lg \n", PATH->getExpandedNodeCount() / ManualPath->Length);
     printf("Total time cost: %llu \n\n", TimeCost);
 
     return ManualPath;
@@ -66,7 +67,7 @@ void PathTester::RunPathTestSuite(int Interations, vector<int> PathSystems)
 {
     uint64_t TotalGraphReads, NodesConsidered, TotalPathLength, TotalTimeCost, CacheHits;
 
-    MapPath ReturnedPath;
+    MapPath *ReturnedPath;
     vector <int> StartCoords, GoalCoords;
 
     // Prepare a set of Start Goal pairs for the test
@@ -87,17 +88,18 @@ void PathTester::RunPathTestSuite(int Interations, vector<int> PathSystems)
             PATH->ResetProfileData();
 
             PathingTimer->Start();
-                ReturnedPath = PATH->FindPath(PathSystems[SystemIndex], TestCoords[StartCoords[i]], TestCoords[GoalCoords[i]]);
+            ReturnedPath = PATH->FindPath(PathSystems[SystemIndex], TestCoords[StartCoords[i]], TestCoords[GoalCoords[i]]);
             TotalTimeCost += PathingTimer->Stop();
 
             TotalGraphReads += PATH->getGraphReads();
             NodesConsidered += PATH->getExpandedNodeCount();
-            TotalPathLength += ReturnedPath.Length;
+            TotalPathLength += ReturnedPath->Length;
             CacheHits += PATH->isCacheHit();
+           delete ReturnedPath;
         }
 
         printf("System %i TestResults\n\n", PathSystems[SystemIndex]);
-        printf("Ttotal path length: %llu \n", TotalPathLength);
+        printf("Ttotal path length: %g \n", TotalPathLength);
         printf("Graph reads: %llu \n", TotalGraphReads);
         printf("Graph read efficiency: %lg \n", (TotalGraphReads / TotalPathLength) / Interations);
         printf("Nodes considered: %llu \n", NodesConsidered);
