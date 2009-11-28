@@ -1,7 +1,7 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
-#include <boost\unordered_set.hpp>
+#include <boost/unordered_set.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include <astar.h>
