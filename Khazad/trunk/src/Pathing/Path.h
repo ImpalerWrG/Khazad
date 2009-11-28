@@ -6,12 +6,12 @@
 
 struct MapPath
 {
-    MapPath();
+    MapPath() {};
 
-    virtual MapCoordinates NextCoordinate();
+    virtual MapCoordinates NextCoordinate() { return MapCoordinates(); }
     //virtual Direction NextDirection();
 
-    virtual void ResetSteps(); // Reset to the start of the path
+    virtual void ResetSteps() {}; // Reset to the start of the path
 
     float Length;   // The travel cost of the path
     int StepCount;  // The number of individual steps in the path
@@ -30,6 +30,7 @@ struct FullPath: MapPath
         Length = Cost;
         PathCourse = Course;
         StepCount = Course.size() - 1;
+        CurrentStep = 0;
 
         StartCoordinates = PathCourse[0];
         GoalCoordinates = PathCourse[StepCount];
@@ -42,10 +43,10 @@ struct FullPath: MapPath
 
     inline MapCoordinates NextCoordinate()
     {
-        if(CurrentStep <= StepCount)
+        if(CurrentStep < StepCount)
         {
-            return PathCourse[CurrentStep + 1];
             CurrentStep++;
+            return PathCourse[CurrentStep];
         }
         return GoalCoordinates; // Keep returning the Goal if we've reached the end of the path
     }

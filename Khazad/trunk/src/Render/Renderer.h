@@ -5,6 +5,7 @@
 
 #include <Singleton.h>
 #include <Map.h>
+#include <Path.h>
 
 class ClipImage;
 class ImagePage;
@@ -150,7 +151,7 @@ public:
     bool Init();
 
     // check for OpenGL extension
-    bool IsExtensionSupported( char* extesion );
+    bool IsExtensionSupported( const char* extesion );
 
     /// VBOs
     // VBO Name Generation Procedure
@@ -231,7 +232,8 @@ public:
 
     void DrawDiamond(MapCoordinates Coodinates, float red, float green, float blue);
 
-
+    void DrawMapPath(MapPath* TargetPath);
+    
     void IncrementTriangles(Uint32 Triangles);
     Uint32 getTriangleCount()                   { return TotalTriangles; }
 

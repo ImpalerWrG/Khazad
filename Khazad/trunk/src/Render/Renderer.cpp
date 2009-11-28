@@ -178,7 +178,7 @@ bool Renderer::Init()
     return true;
 }
 
-bool Renderer::IsExtensionSupported( char* extesion )
+bool Renderer::IsExtensionSupported( const char* extesion )
 {
     const unsigned char *extensions = NULL;
     const unsigned char *start;
@@ -586,7 +586,7 @@ bool Renderer::Render()
     PathCoordinates.push_back(MapCoordinates(2, 1, 1));
     PathCoordinates.push_back(MapCoordinates(2, 2, 1));
 
-    MapPath TestPath = new MapPath(PathCoordinates);
+    MapPath *TestPath = new FullPath(5.0,PathCoordinates);
     DrawMapPath(TestPath);
 
 
@@ -1122,13 +1122,15 @@ void Renderer::DrawDiamond(MapCoordinates Coodinates, float red, float green, fl
         glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // North
         glVertex3f(Point.x - (HALFCUBE / 2), Point.y, Point.z); // West
     }
+    glEnd();
 }
 
 void Renderer::DrawMapPath(MapPath* TargetPath)
 {
-    for (int Step = 0; i < TargetPath->StepCount;)
+    for (int Step = 0;  Step < TargetPath->StepCount; Step++)
     {
-        DrawDiamond(TargetPath->NextCoordinate, 1.0, 1.0, 1.0);
+       MapCoordinates t = TargetPath->NextCoordinate();
+       DrawDiamond(t, Step*1.0/TargetPath->StepCount, 1.0-Step*1.0/TargetPath->StepCount, 0.0);
     }
 }
 
