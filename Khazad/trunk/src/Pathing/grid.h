@@ -13,10 +13,10 @@ struct gridInterface  // Virtural Base class
     virtual ~gridInterface() {};
 
     virtual cost_t getEdgeCost( const MapCoordinates &StartCords, const MapCoordinates &GoalCoords) const = 0;
-    cost_t edgeCost( const MapCoordinates &StartCords, const MapCoordinates &GoalCoords) const { getEdgeCost(StartCords, GoalCoords); } 
+    cost_t edgeCost( const MapCoordinates &StartCords, const MapCoordinates &GoalCoords) const { getEdgeCost(StartCords, GoalCoords); }
 
     virtual unsigned max(unsigned i) const = 0;
-    bool contains(const MapCoordinates &TestCoords) const 
+    bool contains(const MapCoordinates &TestCoords) const
     {
       for (unsigned i = 0; i < 3; ++i)
       {
@@ -32,8 +32,6 @@ struct gridInterface  // Virtural Base class
       return true;
     }
 };
-
-
 
 struct grid : gridInterface
 {
@@ -129,7 +127,7 @@ struct grid : gridInterface
     mutable unsigned count;
 };
 
-typedef enum
+enum Direction
 {
    None = 0,
    West,
@@ -158,40 +156,41 @@ typedef enum
    DownSouthEast,
    DownSouth,
    DownSouthWest
-} Direction;
+};
 
-static uint32_t pointsToDirection(const MapCoordinates &pa, const MapCoordinates &pb)
+static Direction pointsToDirection(const MapCoordinates &pa, const MapCoordinates &pb)
 {
-  uint32_t direction = 0;
+  Direction direction = None;
+
   //determine the direction
   if (pa[2] > pb[2])
-    direction = Direction::Up;
+    direction = Up;
   else if (pa[2] < pb[2])
-    direction = Direction::Down;
+    direction = Down;
   if (pa[1] > pb[1])
   {
     if (pa[0] > pb[0])
-      direction = direction + Direction::NorthWest;
+      direction = (Direction) (direction + NorthWest);
     else if (pa[0] < pb[0])
-      direction = direction + Direction::NorthEast;
+      direction = (Direction) (direction + NorthEast);
     else
-      direction = direction + Direction::North;
+      direction = (Direction) (direction + North);
   }
   else if (pa[1] < pb[1])
   {
     if (pa[0] > pb[0])
-      direction = direction + Direction::SouthWest;
+      direction = (Direction) (direction + SouthWest);
     else if (pa[0] < pb[0])
-      direction = direction + Direction::SouthEast;
+      direction = (Direction) (direction + SouthEast);
     else
-      direction = direction + Direction::South;
+      direction = (Direction) (direction + South);
   }
   else
   {
     if (pa[0] > pb[0])
-      direction = direction + Direction::West;
+      direction = (Direction) (direction + West);
     else if (pa[0] < pb[0])
-      direction = direction + Direction::East;
+      direction = (Direction) (direction + East);
   }
   return direction;
 }
@@ -199,15 +198,15 @@ static uint32_t pointsToDirection(const MapCoordinates &pa, const MapCoordinates
 struct ImpalerCanRenameThisGrid : gridInterface
 {
   unsigned len[3];
-  std::vector<std::vector<std::vector<uint32_t>>> database;
-  
-   
+  std::vector<std::vector<std::vector<uint32_t> > > database;
+
+
   ImpalerCanRenameThisGrid()
   {
     for (int i = 0; i < 3; i++)
       len[i] = 0;
   }
-  
+
   ImpalerCanRenameThisGrid(gridInterface *G)
   {
     for (int i = 0; i < 3; i++)
@@ -220,7 +219,7 @@ struct ImpalerCanRenameThisGrid : gridInterface
         {
           uint32_t direction = 0;
           MapCoordinates p(x,y,z);
-          
+
           //for each possible direction
           for (int idx = 0; idx < 27; idx++)
           {
@@ -268,11 +267,11 @@ struct ImpalerCanRenameThisGrid : gridInterface
     }
   }
 
-  unsigned max(unsigned i) const 
+  unsigned max(unsigned i) const
   {
      return len[i];
   }
-  
+
   cost_t getEdgeCost(const MapCoordinates &pa, const MapCoordinates &pb) const
   {
     count++;
@@ -280,14 +279,14 @@ struct ImpalerCanRenameThisGrid : gridInterface
       return ((database[pa[0]][pa[1]][pa[2]] & (1 << pointsToDirection(pa,pb))) ? 1 : -1);
     else return -1;
   }
-  
+
   void setTileAllowedDirections(const MapCoordinates& p, uint32_t directions)
   {
     if (p[0] >= len[0])
     {
       for (int x = len[0]; x <= p[0]; x++)
       {
-        database.push_back(std::vector<std::vector<uint32_t>>(len[1],std::vector<uint32_t>(len[2],0)));
+        database.push_back(std::vector<std::vector<uint32_t> >(len[1], std::vector<uint32_t>(len[2],0)));
       }
       len[0] = p[0]+1;
     }
@@ -309,17 +308,17 @@ struct ImpalerCanRenameThisGrid : gridInterface
 
     database[p[0]][p[1]][p[2]] = directions;
   }
-  
+
   void zeroCount()
   {
     count = 0;
   }
-  
+
   unsigned getCount() const
   {
     return count;
   }
-    
+
   mutable unsigned count;
 };
 

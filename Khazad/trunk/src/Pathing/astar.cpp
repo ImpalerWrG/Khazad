@@ -1,19 +1,20 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
-#include <unordered_set>
+#include <boost\unordered_set.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include <astar.h>
 #include <Path.h>
 
 
-typedef std::shared_ptr<AStarEntry> AStarEntryPtr;
+typedef boost::shared_ptr<AStarEntry> AStarEntryPtr;
 
 FullPath AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
 {
     entryGreaterThan egt(GoalCoordinates, MainHeuristic);
     std::vector<AStarEntryPtr> fringe;
-    std::unordered_set<MapCoordinates, MapCoordinates::hash> visited;
+    boost::unordered_set<MapCoordinates, MapCoordinates::hash> visited;
 
     std::make_heap(fringe.begin(), fringe.end(),egt);
 
@@ -113,7 +114,7 @@ private:
     bool zoneModified;
 };
 
-typedef std::shared_ptr<AStarZoneEntry> AStarZoneEntryPtr;
+typedef boost::shared_ptr<AStarZoneEntry> AStarZoneEntryPtr;
 
 FullPath HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
 {
@@ -131,7 +132,7 @@ FullPath HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, 
 
     entryGreaterThan egt(GoalCoordinates, MainHeuristic);
     std::vector<AStarZoneEntryPtr> fringe;
-    std::unordered_set<point,point::hash> visited;
+    boost::unordered_set<point,point::hash> visited;
 
     std::make_heap(fringe.begin(), fringe.end(),egt);
 

@@ -2,9 +2,11 @@
 #define entry_HEADER
 
 #include <vector>
-#include <memory>
+#include <memory.h>
 
 #include "heuristics.h"
+#include <boost/shared_ptr.hpp>
+
 
 struct entry
 {
@@ -67,15 +69,16 @@ class entryGreaterThan
 private:
     const MapCoordinates t_;
     const Heuristic *h_;
+
 public:
     entryGreaterThan(const MapCoordinates t, const Heuristic *h) : t_(t), h_(h) {}
-    bool operator()(const std::shared_ptr<entry> a, const std::shared_ptr<entry> b) const
+    bool operator()(const boost::shared_ptr<entry> a, const boost::shared_ptr<entry> b) const
     {
-        return !a->costLessThan(*b,t_,*h_);
+        return !a->costLessThan(*b, t_, *h_);
     }
     bool operator()(const entry &a, const entry &b) const
     {
-        return !a.costLessThan(b,t_,*h_);
+        return !a.costLessThan(b, t_, *h_);
     }
 };
 

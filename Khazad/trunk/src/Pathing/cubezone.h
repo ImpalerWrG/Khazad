@@ -1,12 +1,15 @@
+#include <boost/unordered_map.hpp>
+
 class cubeZoneManager : public zoneManager
 {
-    std::unordered_map<point,gridZone*,point::hash> zl;
+    boost::unordered_map<point, gridZone*, point::hash> zl;
+
     const unsigned length;
     zoneManager *child;
     const GridGraph* G_;
     const Heuristic* h_;
 
-    typedef std::unordered_map<point,gridZone*,point::hash>::iterator iterator;
+    typedef boost::unordered_map<point, gridZone*, point::hash>::iterator iterator;
 
 public:
     cubeZoneManager(const GridGraph *G, const Heuristic *h, unsigned len, unsigned scale, unsigned minlen) : length(len), G_(G), h_(h)

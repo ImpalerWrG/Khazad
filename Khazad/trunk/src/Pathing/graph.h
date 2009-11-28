@@ -7,7 +7,7 @@
 #endif
 
 //#include <boost/iterator/iterator_facade.hpp>
-#include <unordered_map>
+#include <boost/unordered_map.hpp>
 #include <list>
 
 
@@ -27,11 +27,11 @@ struct PointIterator
     PointIterator () : i_(maxoffset) { }
 
     MapCoordinates operator*() const { return dereference(); }
-    MapCoordinates operator++() 
-    { 
-      increment(); 
-      if (i_ < maxoffset) 
-        return dereference(); 
+    MapCoordinates operator++()
+    {
+      increment();
+      if (i_ < maxoffset)
+        return dereference();
       else
         return MapCoordinates(0,0,0);
     }
@@ -86,18 +86,18 @@ struct GridGraph : gridInterface {
   static const unsigned dim = 3;
 
   typedef PointIterator iterator;
- 
+
   iterator begin(const MapCoordinates &v) const { return iterator(this, v); }
   iterator end(const MapCoordinates) const { return iterator(); }
 
-  
+
   cost_t getEdgeCost(const MapCoordinates &a,const MapCoordinates &b) const
-  { 
+  {
      return grid_->edgeCost(a,b);
   }
-  
+
   virtual zone* getZone() const { return NULL; }
-  
+
   unsigned max(unsigned dim) const { return grid_->max(dim); }
   bool contains(const MapCoordinates &p) const { return grid_->contains(p); }
   private:

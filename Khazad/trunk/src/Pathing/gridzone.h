@@ -1,11 +1,15 @@
 //basic zone covering a single tile (for debuging)
+
+#include <boost/unordered_map.hpp>
+
+
 class gridZone : public zone
 {
 public:
-    std::unordered_map<point,zoneBorderNode*,point::hash> zbn_;
+    boost::unordered_map< point, zoneBorderNode*, point::hash> zbn_;
     point tul_, blr_; //top upper left & bottom lower right
 
-    typedef std::unordered_map<point,zoneBorderNode*,point::hash>::iterator iterator;
+    typedef boost::unordered_map<point, zoneBorderNode*, point::hash>::iterator iterator;
 
     gridZone(const point &tul, const point &blr) : tul_(tul), blr_(blr) { }
 
@@ -121,13 +125,13 @@ public:
 
 class gridZoneManager : public zoneManager
 {
-    std::unordered_map<point,gridZone*,point::hash> zl;
+    boost::unordered_map<point, gridZone*, point::hash> zl;
     const unsigned length;
     zoneManager *child;
     const GridGraph* G_;
     const Heuristic* h_;
 
-    typedef std::unordered_map<point,gridZone*,point::hash>::iterator iterator;
+    typedef boost::unordered_map<point, gridZone*, point::hash>::iterator iterator;
 
 public:
     gridZoneManager(const GridGraph *G, const Heuristic *h, unsigned len, unsigned scale, unsigned minlen) : length(len), G_(G), h_(h)
