@@ -10,6 +10,7 @@
 #include <ImageManager.h>
 #include <DataManager.h>
 #include <ModelManager.h>
+#include <PathTester.h>
 
 #include <DFTypes.h>
 #include <DFHackAPI.h>
@@ -578,16 +579,15 @@ bool Renderer::Render()
         }
     }
 
-    vector<MapCoordinates> PathCoordinates;
-
-    PathCoordinates.push_back(MapCoordinates(0, 1, 0));
-    PathCoordinates.push_back(MapCoordinates(1, 1, 0));
-    PathCoordinates.push_back(MapCoordinates(1, 1, 1));
-    PathCoordinates.push_back(MapCoordinates(2, 1, 1));
-    PathCoordinates.push_back(MapCoordinates(2, 2, 1));
-
-    MapPath *TestPath = new FullPath(5.0,PathCoordinates);
-    DrawMapPath(TestPath);
+    if (TESTER->getManualPath().Length != -1)
+    {
+        DrawMapPath(&TESTER->getManualPath());
+    }
+    else
+    {
+        DrawDiamond(TESTER->getStartCoords(), 0.0, 0.0, 1.0);
+        DrawDiamond(TESTER->getGoalCoords(), 1.0, 1.0, 0.0);
+    }
 
 
     TEXTURE->ResetTextureBinding();
@@ -1127,10 +1127,12 @@ void Renderer::DrawDiamond(MapCoordinates Coodinates, float red, float green, fl
 
 void Renderer::DrawMapPath(MapPath* TargetPath)
 {
+    DrawDiamond(TargetPath->StartCoordinates, 0.0, 1.0, 0.0);
+
     for (int Step = 0;  Step < TargetPath->StepCount; Step++)
     {
-       MapCoordinates t = TargetPath->NextCoordinate();
-       DrawDiamond(t, Step*1.0/TargetPath->StepCount, 1.0-Step*1.0/TargetPath->StepCount, 0.0);
+        MapCoordinates Coords = TargetPath->NextCoordinate();
+        DrawDiamond(Coords, (Step * 1.0) / TargetPath->StepCount, 1.0 - ((Step * 1.0) / TargetPath->StepCount), 0.0);
     }
 }
 

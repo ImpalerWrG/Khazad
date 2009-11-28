@@ -25,9 +25,16 @@ struct MapPath
 
 struct FullPath: MapPath
 {
-    FullPath (float Cost, std::vector<MapCoordinates> Course)
+    FullPath ()
     {
-        Length = Cost;
+        Length = -1;
+        StepCount = 0;
+        CurrentStep = 0;
+    }
+
+    FullPath (float PathLength, std::vector<MapCoordinates> Course)
+    {
+        Length = PathLength;
         PathCourse = Course;
         StepCount = Course.size() - 1;
         CurrentStep = 0;

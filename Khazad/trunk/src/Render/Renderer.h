@@ -13,6 +13,7 @@ class Camera;
 class Vector3;
 class Plane;
 class Cell;
+class MapPath;
 
 // typedefs for VBO GL functions
 typedef void (APIENTRY * GL_BindBuffer_Func) (GLenum target, GLuint buffer);
@@ -233,7 +234,8 @@ public:
     void DrawDiamond(MapCoordinates Coodinates, float red, float green, float blue);
 
     void DrawMapPath(MapPath* TargetPath);
-    
+
+
     void IncrementTriangles(Uint32 Triangles);
     Uint32 getTriangleCount()                   { return TotalTriangles; }
 

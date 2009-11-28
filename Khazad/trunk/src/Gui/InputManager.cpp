@@ -8,6 +8,7 @@
 #include <Singleton.h>
 #include <ConfigManager.h>
 #include <DataManager.h>
+#include <PathTester.h>
 #include <Gui.h>
 
 
@@ -180,6 +181,21 @@ bool InputManager::HandleInput()
                     case SDLK_b:
 					{
 					    RENDERER->setDebuggingDraw(!RENDERER->isDebuggingDraw());
+					    break;
+					}
+                    case SDLK_s:
+					{
+					    TESTER->SetStartCoords(RENDERER->getCursor());
+					    break;
+					}
+                    case SDLK_g:
+					{
+					    TESTER->SetGoalCoords(RENDERER->getCursor());
+					    break;
+					}
+                    case SDLK_p:
+					{
+					    TESTER->FindManualPath();
 					    break;
 					}
 					default:

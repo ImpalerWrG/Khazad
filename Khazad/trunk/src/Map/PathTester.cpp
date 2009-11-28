@@ -33,7 +33,33 @@ bool PathTester::Init()
         // Generate real random passable points from the map
     }
 
+    ManualPath = FullPath();
+
     return true;
+}
+
+MapPath PathTester::getManualPath()
+{
+    return ManualPath;
+}
+
+MapPath PathTester::FindManualPath()
+{
+    PATH->ResetProfileData();
+
+    PathingTimer->Start();
+        ManualPath = PATH->FindPath(0, StartCoords, GoalCoords);
+    int TimeCost = PathingTimer->Stop();
+
+    //printf("System %i TestResults\n\n", PathSystems[SystemIndex]);
+    printf("Ttotal path length: %llu \n", ManualPath.Length);
+    printf("Graph reads: %llu \n", PATH->getGraphReads());
+    printf("Graph read efficiency: %lg \n", PATH->getGraphReads() / ManualPath.Length);
+    printf("Nodes considered: %llu \n", PATH->getExpandedNodeCount());
+    printf("Search efficiency: %lg \n", PATH->getExpandedNodeCount() / ManualPath.Length);
+    printf("Total time cost: %llu \n\n", TimeCost);
+
+    return ManualPath;
 }
 
 void PathTester::RunPathTestSuite(int Interations, vector<int> PathSystems)
