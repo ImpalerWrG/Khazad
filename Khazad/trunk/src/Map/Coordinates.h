@@ -21,13 +21,13 @@ inline Dimension &operator-- (Dimension &OldDimension)      { return OldDimensio
 
 enum Direction
 {
-	DIRECTION_UP,
     DIRECTION_DOWN,
+	DIRECTION_UP,
 
 	DIRECTION_NORTH,
 	DIRECTION_SOUTH,
-	DIRECTION_EAST,
 	DIRECTION_WEST,
+	DIRECTION_EAST,
 
     DIRECTION_NORTHWEST,
 	DIRECTION_SOUTHEAST,
@@ -73,6 +73,15 @@ inline Direction &operator-- (Direction &OldDirection)      { return OldDirectio
 inline Direction OppositeDirection(Direction DirectionType)
 {
     return  (Direction) ((int) DirectionType ^ 1);  // Flips the last bit
+}
+
+inline bool isDirectionPossitive(Direction DirectionType)
+{
+    if (DirectionType < NUM_AXIAL_DIRECTIONS)
+    {
+        return DirectionType & 1;
+    }
+    return 0;
 }
 
 struct MapCoordinates
