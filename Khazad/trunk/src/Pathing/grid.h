@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <vector>
 #include <stdint.h>
-#include <map.h>
+#include <map>
 
 #include <Coordinates.h>
 #include <heuristics.h>
@@ -118,7 +118,7 @@ public:
 
 private:
 
-    map<uint64_t, GridCell*> Cells;
+    std::map<uint64_t, GridCell*> Cells;
 
     mutable unsigned count;
 };

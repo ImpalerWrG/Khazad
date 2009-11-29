@@ -188,12 +188,12 @@ ENDIF(UNIX)
 ADD_EXECUTABLE(khazad ${PROJECT_SRCS})
 TARGET_LINK_LIBRARIES(khazad ${PROJECT_LIBS})
 
-SET(PATHING_SRCS 
-src/Pathing/zone.cpp
-src/Pathing/astar.cpp
-src/Pathing/read.cpp
-src/Pathing/testPathing.cpp )
+#SET(PATHING_SRCS 
+#src/Pathing/zone.cpp
+#src/Pathing/astar.cpp
+#src/Pathing/read.cpp
+#src/Pathing/testPathing.cpp )
 
 
-ADD_EXECUTABLE(testPathing ${PATHING_SRCS})
-TARGET_LINK_LIBRARIES(testPathing ${PROJECT_LIBS})
+#ADD_EXECUTABLE(testPathing ${PATHING_SRCS})
+#TARGET_LINK_LIBRARIES(testPathing ${PROJECT_LIBS})
