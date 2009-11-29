@@ -1077,7 +1077,7 @@ void Renderer::DrawDiamond(MapCoordinates Coodinates, float red, float green, fl
 
     Point.x = Coodinates.X;
     Point.y = Coodinates.Y;
-    Point.z = Coodinates.Z;
+    Point.z = MainCamera->ZlevelSeperationAdjustment(Coodinates.Z);
 
     glBegin(GL_TRIANGLES);
     {

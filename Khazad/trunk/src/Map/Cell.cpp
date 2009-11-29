@@ -278,7 +278,7 @@ bool Cell::DrawSlope(CubeCoordinates Coordinates)
     MapCoordinates UnModifiedCoordinates = TranslateCubeToMap(Coordinates);
 
     // copy surroundings
-    for(Direction TestDirection = DIRECTION_NORTHWEST; TestDirection <= DIRECTION_WEST; ++TestDirection)
+    for(Direction TestDirection = COMPASS_DIRECTIONS_START; TestDirection <= NUM_COMPASS_DIRECTIONS; ++TestDirection)
     {
         MapCoordinates ModifiedCoordinates = UnModifiedCoordinates;
         TranslateMapCoordinates(ModifiedCoordinates, TestDirection);
