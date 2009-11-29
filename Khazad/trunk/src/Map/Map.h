@@ -78,18 +78,18 @@ public:
 
 
 
-    Face* getFace(MapCoordinates Coordinates, Facet FacetType);
-    bool hasFace(MapCoordinates Coordinates, Facet FacetType);
+    Face* getFace(MapCoordinates Coordinates, Direction DirectionType);
+    bool hasFace(MapCoordinates Coordinates, Direction DirectionType);
 
-    bool removeFace(MapCoordinates Coordinates, Facet FacetType);
-    Face* addFace(MapCoordinates Coordinates, Facet FacetType);
+    bool removeFace(MapCoordinates Coordinates, Direction DirectionType);
+    Face* addFace(MapCoordinates Coordinates, Direction DirectionType);
 
-    void setFaceMaterial(MapCoordinates Coordinates, Facet FacetType, Sint16 MaterialID);
-    inline Sint16 getFaceMaterial(MapCoordinates Coordinates, Facet FacetType);
+    void setFaceMaterial(MapCoordinates Coordinates, Direction DirectionType, Sint16 MaterialID);
+    inline Sint16 getFaceMaterial(MapCoordinates Coordinates, Direction DirectionType);
 
-    void setFaceSurfaceType(MapCoordinates Coordinates, Facet FacetType, Sint16 SurfaceID);
-    inline Sint16 getFaceSurfaceType(MapCoordinates Coordinates, Facet FacetType);
-    void setBothFaceSurfaceTypes(MapCoordinates Coordinates, Facet FacetType, Sint16 SurfaceID);
+    void setFaceSurfaceType(MapCoordinates Coordinates, Direction DirectionType, Sint16 SurfaceID);
+    inline Sint16 getFaceSurfaceType(MapCoordinates Coordinates, Direction DirectionType);
+    void setBothFaceSurfaceTypes(MapCoordinates Coordinates, Direction DirectionType, Sint16 SurfaceID);
 
 
     bool isCubeHidden(MapCoordinates Coordinates);

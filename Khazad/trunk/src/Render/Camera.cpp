@@ -188,7 +188,7 @@ bool Camera::DetermineCursorIntersection()
         TestCoordinates.Y = (int) (MouseIntersection.y + 0.5);
         TestCoordinates.Z = i;
 
-        if(RENDERER->isCubeDrawn(TestCoordinates) && MAP->hasFace(TestCoordinates, FACET_TOP))
+        if(RENDERER->isCubeDrawn(TestCoordinates) && MAP->hasFace(TestCoordinates, DIRECTION_UP))
         {
             MouseIntersection.x = TestCoordinates.X + 0.5;
             MouseIntersection.y = TestCoordinates.Y + 0.5;
@@ -213,7 +213,7 @@ bool Camera::DetermineCursorIntersection()
             return true;
         }
 
-        if(RENDERER->isCubeDrawn(TestCoordinates) && MAP->hasFace(TestCoordinates, FACET_BOTTOM))
+        if(RENDERER->isCubeDrawn(TestCoordinates) && MAP->hasFace(TestCoordinates, DIRECTION_DOWN))
         {
             MouseIntersection.x = TestCoordinates.X + 0.5;
             MouseIntersection.y = TestCoordinates.Y + 0.5;

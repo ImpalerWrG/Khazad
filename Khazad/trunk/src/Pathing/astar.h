@@ -5,8 +5,9 @@
 #include <heuristics.h>
 
 #include <Path.h>
-#include <graph.h>
-#include "zone.h"
+
+class GridGraph;
+class zoneManager;
 
 class PathAlgorithm
 {

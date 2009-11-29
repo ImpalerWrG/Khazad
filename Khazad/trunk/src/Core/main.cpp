@@ -15,7 +15,8 @@
 #include <Map.h>
 #include <Extractor.h>
 #include <Gui.h>
-#include <Paths.h>
+#include <PathManager.h>
+#include <PathTester.h>
 
 
 // General use char buffer
@@ -93,6 +94,16 @@ bool initManagers()
     FONT->CreateInstance();
     FONT->Init();
     printf("FONT DONE\n");
+
+    printf("-=PATH INITIALIZING=- ... \n");
+    PATH->CreateInstance();
+    PATH->Init();
+    printf("PATH DONE\n");
+
+    printf("-=TESTER INITIALIZING=- ... \n");
+    TESTER->CreateInstance();
+    TESTER->Init();
+    printf("TESTER DONE\n");
 
     return true;
 }

@@ -277,16 +277,16 @@ void Map::Save(string filename)
     return;
 }
 
-Face* Map::getFace(MapCoordinates Coordinates, Facet FacetType)
+Face* Map::getFace(MapCoordinates Coordinates, Direction DirectionType)
 {
     MapCoordinates TargetMapCoordinates = Coordinates;
-    Facet TargetFace = FacetType;
+    Direction TargetFace = DirectionType;
 
-    if (FacetType & 1) // East, South and Top Facets get translated to adjacent Cells avoiding a bounce back call
+    if (DirectionType & 1) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
     {
         // Do something for edge of Map cases??
-        TranslateCoordinates(TargetMapCoordinates.X, TargetMapCoordinates.Y, TargetMapCoordinates.Z, FacetType);
-        TargetFace = OppositeFacet(TargetFace);
+        TranslateMapCoordinates(TargetMapCoordinates, DirectionType);
+        TargetFace = OppositeDirection(TargetFace);
     }
 
     CellCoordinates TargetCellCoordinates = TranslateMapToCell(TargetMapCoordinates);
@@ -299,16 +299,16 @@ Face* Map::getFace(MapCoordinates Coordinates, Facet FacetType)
     return NULL;
 }
 
-bool Map::hasFace(MapCoordinates Coordinates, Facet FacetType)
+bool Map::hasFace(MapCoordinates Coordinates, Direction DirectionType)
 {
     MapCoordinates TargetMapCoordinates = Coordinates;
-    Facet TargetFace = FacetType;
+    Direction TargetFace = DirectionType;
 
-    if (FacetType & 1) // East, South and Top Facets get translated to adjacent Cells avoiding a bounce back call
+    if (DirectionType & 1) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
     {
         // Do something for edge of Map cases??
-        TranslateCoordinates(TargetMapCoordinates.X, TargetMapCoordinates.Y, TargetMapCoordinates.Z, FacetType);
-        TargetFace = OppositeFacet(TargetFace);
+        TranslateMapCoordinates(TargetMapCoordinates, DirectionType);
+        TargetFace = OppositeDirection(TargetFace);
     }
 
     CellCoordinates TargetCellCoordinates = TranslateMapToCell(TargetMapCoordinates);
@@ -321,16 +321,16 @@ bool Map::hasFace(MapCoordinates Coordinates, Facet FacetType)
     return false;
 }
 
-bool Map::removeFace(MapCoordinates Coordinates, Facet FacetType)
+bool Map::removeFace(MapCoordinates Coordinates, Direction DirectionType)
 {
     MapCoordinates TargetMapCoordinates = Coordinates;
-    Facet TargetFace = FacetType;
+    Direction TargetFace = DirectionType;
 
-    if (FacetType & 1) // East, South and Top Facets get translated to adjacent Cells avoiding a bounce back call
+    if (DirectionType & 1) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
     {
         // Do something for edge of Map cases??
-        TranslateCoordinates(TargetMapCoordinates.X, TargetMapCoordinates.Y, TargetMapCoordinates.Z, FacetType);
-        TargetFace = OppositeFacet(TargetFace);
+        TranslateMapCoordinates(TargetMapCoordinates, DirectionType);
+        TargetFace = OppositeDirection(TargetFace);
     }
 
     CellCoordinates TargetCellCoordinates = TranslateMapToCell(TargetMapCoordinates);
@@ -344,16 +344,16 @@ bool Map::removeFace(MapCoordinates Coordinates, Facet FacetType)
     return false;
 }
 
-Face* Map::addFace(MapCoordinates Coordinates, Facet FacetType)
+Face* Map::addFace(MapCoordinates Coordinates, Direction DirectionType)
 {
     MapCoordinates TargetMapCoordinates = Coordinates;
-    Facet TargetFace = FacetType;
+    Direction TargetFace = DirectionType;
 
-    if (FacetType & 1) // East, South and Top Facets get translated to adjacent Cells avoiding a bounce back call
+    if (DirectionType & 1) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
     {
         // Do something for edge of Map cases??
-        TranslateCoordinates(TargetMapCoordinates.X, TargetMapCoordinates.Y, TargetMapCoordinates.Z, FacetType);
-        TargetFace = OppositeFacet(TargetFace);
+        TranslateMapCoordinates(TargetMapCoordinates, DirectionType);
+        TargetFace = OppositeDirection(TargetFace);
     }
 
     CellCoordinates TargetCellCoordinates = TranslateMapToCell(TargetMapCoordinates);
@@ -441,9 +441,9 @@ inline Sint16 Map::getCubeSurfaceType(MapCoordinates Coordinates)
     return -1;
 }
 
-void Map::setFaceMaterial(MapCoordinates Coordinates, Facet FacetType, Sint16 MaterialID)
+void Map::setFaceMaterial(MapCoordinates Coordinates, Direction DirectionType, Sint16 MaterialID)
 {
-    Face* TargetFace = getFace(Coordinates, FacetType);
+    Face* TargetFace = getFace(Coordinates, DirectionType);
 
     if (TargetFace != NULL)
     {
@@ -453,9 +453,9 @@ void Map::setFaceMaterial(MapCoordinates Coordinates, Facet FacetType, Sint16 Ma
     }
 }
 
-inline Sint16 Map::getFaceMaterial(MapCoordinates Coordinates, Facet FacetType)
+inline Sint16 Map::getFaceMaterial(MapCoordinates Coordinates, Direction DirectionType)
 {
-    Face* TargetFace = getFace(Coordinates, FacetType);
+    Face* TargetFace = getFace(Coordinates, DirectionType);
 
     if (TargetFace != NULL)
     {
@@ -464,13 +464,13 @@ inline Sint16 Map::getFaceMaterial(MapCoordinates Coordinates, Facet FacetType)
     return -1;
 }
 
-void Map::setFaceSurfaceType(MapCoordinates Coordinates, Facet FacetType, Sint16 SurfaceID)
+void Map::setFaceSurfaceType(MapCoordinates Coordinates, Direction DirectionType, Sint16 SurfaceID)
 {
-    Face* TargetFace = getFace(Coordinates, FacetType);
+    Face* TargetFace = getFace(Coordinates, DirectionType);
 
     if (TargetFace != NULL)
     {
-        if (FacetType & 1)
+        if (DirectionType & 1)
         {
             TargetFace->NegativeAxisSurfaceTypeID = SurfaceID;
         }
@@ -482,9 +482,9 @@ void Map::setFaceSurfaceType(MapCoordinates Coordinates, Facet FacetType, Sint16
     }
 }
 
-void Map::setBothFaceSurfaceTypes(MapCoordinates Coordinates, Facet FacetType, Sint16 SurfaceID)
+void Map::setBothFaceSurfaceTypes(MapCoordinates Coordinates, Direction DirectionType, Sint16 SurfaceID)
 {
-    Face* TargetFace = getFace(Coordinates, FacetType);
+    Face* TargetFace = getFace(Coordinates, DirectionType);
 
     if (TargetFace != NULL)
     {
@@ -494,13 +494,13 @@ void Map::setBothFaceSurfaceTypes(MapCoordinates Coordinates, Facet FacetType, S
     }
 }
 
-inline Sint16 Map::getFaceSurfaceType(MapCoordinates Coordinates, Facet FacetType)
+inline Sint16 Map::getFaceSurfaceType(MapCoordinates Coordinates, Direction DirectionType)
 {
-    Face* TargetFace = getFace(Coordinates, FacetType);
+    Face* TargetFace = getFace(Coordinates, DirectionType);
 
     if (TargetFace != NULL)
     {
-        if (FacetType & 1)
+        if (DirectionType & 1)
         {
             return TargetFace->NegativeAxisSurfaceTypeID;
         }
@@ -622,11 +622,11 @@ void Map::DigChannel(MapCoordinates Coordinates)
     Dig(Coordinates);
     setCubeShape(Coordinates, DATA->getLabelIndex("TILESHAPE_EMPTY"));
 
-    // reveal tiles around, deig below
-    for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+    // reveal tiles around, dig below
+    for(Direction DirectionType = COMPASS_DIRECTIONS_START; DirectionType < NUM_COMPASS_DIRECTIONS; ++DirectionType)
     {
         MapCoordinates ModifiedCoordinates = Coordinates;
-        TranslateCoordinates(ModifiedCoordinates.X, ModifiedCoordinates.Y, ModifiedCoordinates.Z, DirectionType);
+        TranslateMapCoordinates(ModifiedCoordinates, DirectionType);
 
         if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
         {
@@ -637,7 +637,7 @@ void Map::DigChannel(MapCoordinates Coordinates)
             Dig(ModifiedCoordinates);
         }
     }
-    removeFace(Coordinates, FACET_BOTTOM);
+    removeFace(Coordinates, DIRECTION_DOWN);
 }
 
 void Map::DigSlope(MapCoordinates Coordinates)
@@ -647,10 +647,10 @@ void Map::DigSlope(MapCoordinates Coordinates)
     Dig(Coordinates);
 
     // reveal tiles around
-    for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+    for(Direction DirectionType = COMPASS_DIRECTIONS_START; DirectionType < NUM_COMPASS_DIRECTIONS; ++DirectionType)
     {
         MapCoordinates ModifiedCoordinates = Coordinates;
-        TranslateCoordinates(ModifiedCoordinates.X, ModifiedCoordinates.Y, ModifiedCoordinates.Z, DirectionType);
+        TranslateMapCoordinates(ModifiedCoordinates, DirectionType);
 
         if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
         {
@@ -664,8 +664,8 @@ void Map::DigSlope(MapCoordinates Coordinates)
 
     setCubeHidden(Coordinates, false);
     setCubeShape(Coordinates, RampID);
-    setCubeMaterial(Coordinates, getFaceMaterial(Coordinates, FACET_BOTTOM));
-    setCubeSurfaceType(Coordinates, getFaceSurfaceType(Coordinates, FACET_BOTTOM));
+    setCubeMaterial(Coordinates, getFaceMaterial(Coordinates, DIRECTION_DOWN));
+    setCubeSurfaceType(Coordinates, getFaceSurfaceType(Coordinates, DIRECTION_DOWN));
 }
 
 void Map::Dig(MapCoordinates Coordinates)
@@ -679,10 +679,10 @@ void Map::Dig(MapCoordinates Coordinates)
         if(isCubeSolid(Coordinates) || isCubeSloped(Coordinates))
         {
             // reveal tiles around
-            for(Direction DirectionType = DIRECTIONS_START; DirectionType < NUM_DIRECTIONS; ++DirectionType)
+            for(Direction DirectionType = COMPASS_DIRECTIONS_START; DirectionType < NUM_COMPASS_DIRECTIONS; ++DirectionType)
             {
                 MapCoordinates ModifiedCoordinates = Coordinates;
-                TranslateCoordinates(ModifiedCoordinates.X, ModifiedCoordinates.Y, ModifiedCoordinates.Z, DirectionType);
+                TranslateMapCoordinates(ModifiedCoordinates, DirectionType);
 
                 if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
                 {
@@ -690,19 +690,19 @@ void Map::Dig(MapCoordinates Coordinates)
                 }
             }
 
-            for(Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
+            for(Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
             {
                 MapCoordinates ModifiedCoordinates = Coordinates;
-                TranslateCoordinates(ModifiedCoordinates.X, ModifiedCoordinates.Y, ModifiedCoordinates.Z, FacetType);
+                TranslateMapCoordinates(ModifiedCoordinates, DirectionType);
 
-                if (FacetType == FACET_BOTTOM)
+                if (DirectionType == DIRECTION_DOWN)
                 {
                     if (MAP->isCubeSolid(ModifiedCoordinates))
                     {
-                        Face* TargetFace = getFace(Coordinates, FacetType);
+                        Face* TargetFace = getFace(Coordinates, DirectionType);
                         if (TargetFace == NULL)
                         {
-                            TargetFace = MAP->addFace(Coordinates, FACET_BOTTOM);
+                            TargetFace = MAP->addFace(Coordinates, DIRECTION_DOWN);
                         }
 
                         TargetFace->MaterialTypeID = getCubeMaterial(ModifiedCoordinates);
@@ -711,17 +711,17 @@ void Map::Dig(MapCoordinates Coordinates)
                     }
                     else
                     {
-                        MAP->removeFace(Coordinates, FacetType);
+                        MAP->removeFace(Coordinates, DirectionType);
                     }
                 }
                 else
                 {
                     if (MAP->isCubeSolid(ModifiedCoordinates))
                     {
-                        Face* TargetFace = getFace(Coordinates, FacetType);
+                        Face* TargetFace = getFace(Coordinates, DirectionType);
                         if (TargetFace == NULL)
                         {
-                            TargetFace = MAP->addFace(Coordinates, FacetType);
+                            TargetFace = MAP->addFace(Coordinates, DirectionType);
                         }
 
                         TargetFace->MaterialTypeID = getCubeMaterial(ModifiedCoordinates);
@@ -730,7 +730,7 @@ void Map::Dig(MapCoordinates Coordinates)
                     }
                     else
                     {
-                        MAP->removeFace(Coordinates, FacetType);
+                        MAP->removeFace(Coordinates, DirectionType);
                     }
                 }
             }

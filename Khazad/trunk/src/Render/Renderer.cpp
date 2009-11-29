@@ -792,7 +792,7 @@ void Renderer::PrintDebugging()
         Cube* SelectedCube  = MAP->getCube(x,y,z);
         if(SelectedCube != NULL)
         {
-            sprintf (buffer, "NorthFacet: %d  SouthFacet: %d  EastFacet: %d  WestFacet: % d", SelectedCube->getFacetMaterialType(FACET_NORTH), SelectedCube->getFacetMaterialType(FACET_SOUTH), SelectedCube->getFacetMaterialType(FACET_EAST), SelectedCube->getFacetMaterialType(FACET_WEST));
+            sprintf (buffer, "NorthDirection: %d  SouthDirection: %d  EastDirection: %d  WestDirection: % d", SelectedCube->getDirectionMaterialType(DIRECTION_NORTH), SelectedCube->getDirectionMaterialType(DIRECTION_SOUTH), SelectedCube->getDirectionMaterialType(DIRECTION_EAST), SelectedCube->getDirectionMaterialType(DIRECTION_WEST));
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
 

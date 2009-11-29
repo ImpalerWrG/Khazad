@@ -1,12 +1,14 @@
+#include <astar.h>
+
 #include <vector>
 #include <algorithm>
-#include <memory>
+
 #include <boost/unordered_set.hpp>
 #include <boost/shared_ptr.hpp>
 
-#include <astar.h>
 #include <Path.h>
-
+#include <zone.h>
+#include <graph.h>
 
 typedef boost::shared_ptr<AStarEntry> AStarEntryPtr;
 
@@ -52,7 +54,7 @@ FullPath AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoo
             if (visited.find(neigh) != visited.end())
                 continue;
 
-            cost_t cost = SearchGraph->edgeCost(e->v_,neigh);
+            cost_t cost = 0;  //SearchGraph->edgeCost(e->v_, neigh);
             if (cost < 0)
                 continue; //Not valid edge
 

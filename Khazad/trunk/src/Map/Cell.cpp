@@ -135,34 +135,34 @@ bool Cell::DrawFaces(CubeCoordinates Coordinates)
     static const vertex vertices[6][4] =
     {
         // position, uv texture coords, normal vector - see vertex in Renderer.h
-        // FACET_WEST
+        // Direction_WEST
         vertex(-0.5f,-0.5f, 0.5f,  0.0f, 1.0f, -1.0f, 0.0f, 0.0f ),
         vertex(-0.5f, 0.5f, 0.5f,  1.0f, 1.0f, -1.0f, 0.0f, 0.0f ),
         vertex(-0.5f, 0.5f,-0.5f,  1.0f, 0.0f, -1.0f, 0.0f, 0.0f ),
         vertex(-0.5f,-0.5f,-0.5f,  0.0f, 0.0f, -1.0f, 0.0f, 0.0f ),
-        // FACET_EAST
+        // DIRECTION_EAST
         vertex( 0.5f, 0.5f, 0.5f,  0.0f, 1.0f,  1.0f, 0.0f, 0.0f ),
         vertex( 0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  1.0f, 0.0f, 0.0f ),
         vertex( 0.5f,-0.5f,-0.5f,  1.0f, 0.0f,  1.0f, 0.0f, 0.0f ),
         vertex( 0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  1.0f, 0.0f, 0.0f ),
 
-        // FACET_NORTH
+        // DIRECTION_NORTH
         vertex( 0.5f,-0.5f, 0.5f,  0.0f, 1.0f,  0.0f,-1.0f, 0.0f ),
         vertex(-0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  0.0f,-1.0f, 0.0f ),
         vertex(-0.5f,-0.5f,-0.5f,  1.0f, 0.0f,  0.0f,-1.0f, 0.0f ),
         vertex( 0.5f,-0.5f,-0.5f,  0.0f, 0.0f,  0.0f,-1.0f, 0.0f ),
-        // FACET_SOUTH
+        // DIRECTION_SOUTH
         vertex(-0.5f, 0.5f, 0.5f,  0.0f, 1.0f,  0.0f, 1.0f, 0.0f ),
         vertex( 0.5f, 0.5f, 0.5f,  1.0f, 1.0f,  0.0f, 1.0f, 0.0f ),
         vertex( 0.5f, 0.5f,-0.5f,  1.0f, 0.0f,  0.0f, 1.0f, 0.0f ),
         vertex(-0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  0.0f, 1.0f, 0.0f ),
 
-        // FACET_BOTTOM
+        // DIRECTION_BOTTOM
         vertex(-0.5f,-0.5f,-0.5f,  0.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
         vertex( 0.5f,-0.5f,-0.5f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
         vertex( 0.5f, 0.5f,-0.5f,  1.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
         vertex(-0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
-        // FACET_TOP
+        // DIRECTION_TOP
         vertex(-0.5f,-0.5f, 0.5f,  0.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
         vertex( 0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
         vertex( 0.5f, 0.5f, 0.5f,  1.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
@@ -172,34 +172,34 @@ bool Cell::DrawFaces(CubeCoordinates Coordinates)
     // work vector ptr
     vector<vertex>* TextureVector;
 
-    for (Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType, ++FacetType)
+    for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType, ++DirectionType)
     {
         if(isCubeSolid(Coordinates))
         {
-            if(FacetType == FACET_BOTTOM)
+            if(DirectionType == DIRECTION_DOWN)
             {
                 continue;
             }
         }
 
-        if (FacetType == FACET_BOTTOM && isCubeSloped(Coordinates))
+        if (DirectionType == DIRECTION_DOWN && isCubeSloped(Coordinates))
         {
             continue; // No bottom faces underneath slopes
         }
 
         MapCoordinates AdjacentCubeCoordinates = TranslateCubeToMap(Coordinates);
-        TranslateCoordinates(AdjacentCubeCoordinates.X, AdjacentCubeCoordinates.Y, AdjacentCubeCoordinates.Z, FacetType);
+        TranslateMapCoordinates(AdjacentCubeCoordinates, DirectionType);
 
-        if (FacetType != FACET_BOTTOM && !RENDERER->isCubeDrawn(AdjacentCubeCoordinates))
+        if (DirectionType != DIRECTION_DOWN && !RENDERER->isCubeDrawn(AdjacentCubeCoordinates))
         {
             continue;
         }
 
-        Face* TargetFace = getFace(Coordinates, FacetType);
+        Face* TargetFace = getFace(Coordinates, DirectionType);
         if (TargetFace != NULL)
         {
-            Sint16 FaceMaterial = getFaceMaterialType(Coordinates, FacetType);
-            Sint16 FaceSurface = getFaceSurfaceType(Coordinates, FacetType);
+            Sint16 FaceMaterial = getFaceMaterialType(Coordinates, DirectionType);
+            Sint16 FaceSurface = getFaceSurfaceType(Coordinates, DirectionType);
             Uint32 Texture = TEXTURE->MapTexture(FaceMaterial, TEXTURE->PickImageTexture(FaceMaterial, FaceSurface));
 
             {
@@ -213,10 +213,10 @@ bool Cell::DrawFaces(CubeCoordinates Coordinates)
                     TextureVector = Geometry[Texture];
                 }
 
-                vertex v3 = vertices[FacetType][3];            v3.translate((float) Coordinates.X, (float) Coordinates.Y);
-                vertex v2 = vertices[FacetType][2];            v2.translate((float) Coordinates.X, (float) Coordinates.Y);
-                vertex v1 = vertices[FacetType][1];            v1.translate((float) Coordinates.X, (float) Coordinates.Y);
-                vertex v0 = vertices[FacetType][0];            v0.translate((float) Coordinates.X, (float) Coordinates.Y);
+                vertex v3 = vertices[DirectionType][3];            v3.translate((float) Coordinates.X, (float) Coordinates.Y);
+                vertex v2 = vertices[DirectionType][2];            v2.translate((float) Coordinates.X, (float) Coordinates.Y);
+                vertex v1 = vertices[DirectionType][1];            v1.translate((float) Coordinates.X, (float) Coordinates.Y);
+                vertex v0 = vertices[DirectionType][0];            v0.translate((float) Coordinates.X, (float) Coordinates.Y);
 
                 TextureVector->push_back(v3);
                 TextureVector->push_back(v1);
@@ -254,10 +254,10 @@ bool Cell::DrawFaces(CubeCoordinates Coordinates)
             TextureVector = Geometry[Texture];
         }
 
-        vertex v3 = vertices[FACET_TOP][3];            v3.translate((float) Coordinates.X, (float) Coordinates.Y);
-        vertex v2 = vertices[FACET_TOP][2];            v2.translate((float) Coordinates.X, (float) Coordinates.Y);
-        vertex v1 = vertices[FACET_TOP][1];            v1.translate((float) Coordinates.X, (float) Coordinates.Y);
-        vertex v0 = vertices[FACET_TOP][0];            v0.translate((float) Coordinates.X, (float) Coordinates.Y);
+        vertex v3 = vertices[DIRECTION_UP][3];            v3.translate((float) Coordinates.X, (float) Coordinates.Y);
+        vertex v2 = vertices[DIRECTION_UP][2];            v2.translate((float) Coordinates.X, (float) Coordinates.Y);
+        vertex v1 = vertices[DIRECTION_UP][1];            v1.translate((float) Coordinates.X, (float) Coordinates.Y);
+        vertex v0 = vertices[DIRECTION_UP][0];            v0.translate((float) Coordinates.X, (float) Coordinates.Y);
 
         TextureVector->push_back(v3);
         TextureVector->push_back(v1);
@@ -281,7 +281,7 @@ bool Cell::DrawSlope(CubeCoordinates Coordinates)
     for(Direction TestDirection = DIRECTION_NORTHWEST; TestDirection <= DIRECTION_WEST; ++TestDirection)
     {
         MapCoordinates ModifiedCoordinates = UnModifiedCoordinates;
-        TranslateCoordinates(ModifiedCoordinates.X, ModifiedCoordinates.Y, ModifiedCoordinates.Z, TestDirection);
+        TranslateMapCoordinates(ModifiedCoordinates, TestDirection);
 
         solid = 0;
         if(MAP->isCubeSolid(ModifiedCoordinates))
@@ -348,10 +348,10 @@ void Cell::BuildFaceData()
             Sint16 CubeMaterial = getCubeMaterial(TargetCubeCoordinates);
             Sint16 CubeSurface = getCubeSurface(TargetCubeCoordinates);
 
-            for (Facet FacetType = FACETS_START; FacetType < NUM_FACETS; ++FacetType)
+            for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
             {
                 TargetMapCoordinates = TranslateCubeToMap(TargetCubeCoordinates);
-                TranslateCoordinates(TargetMapCoordinates.X, TargetMapCoordinates.Y, TargetMapCoordinates.Z, FacetType);
+                TranslateMapCoordinates(TargetMapCoordinates, DirectionType);
 
                 if (isCubeSolid(TargetCubeCoordinates))
                 {
@@ -359,7 +359,7 @@ void Cell::BuildFaceData()
                     {
                         if (!MAP->isCubeSolid(TargetMapCoordinates))
                         {
-                            Face* NewFace = addFace(TargetCubeCoordinates, FacetType);
+                            Face* NewFace = addFace(TargetCubeCoordinates, DirectionType);
 
                             NewFace->MaterialTypeID = CubeMaterial;
                             NewFace->PositiveAxisSurfaceTypeID = CubeSurface;
@@ -371,7 +371,7 @@ void Cell::BuildFaceData()
 
             if (CubeShape == FloorID || CubeShape == BoulderID)
             {
-                Face* NewFace = addFace(TargetCubeCoordinates, FACET_BOTTOM);
+                Face* NewFace = addFace(TargetCubeCoordinates, DIRECTION_DOWN);
 
                 NewFace->MaterialTypeID = CubeMaterial;
                 NewFace->PositiveAxisSurfaceTypeID = CubeSurface;
@@ -448,28 +448,28 @@ void Cell::setLiquid(CubeCoordinates Coordinates, bool liquidtype, Uint8 NewValu
     LiquidLevel[Coordinates.X][Coordinates.Y] = NewValue;
 }
 
-inline Uint32 Cell::GenerateFaceKey(CubeCoordinates Coordinates, Facet FacetType)
+inline Uint32 Cell::GenerateFaceKey(CubeCoordinates Coordinates, Direction DirectionType)
 {
     Uint32 Key = Coordinates.Y;
     Key <<= 8;
     Key += Coordinates.X;
     Key <<= 8;
-    Key += FacetType;
+    Key += DirectionType;
 
     return Key;
 }
 
-Face* Cell::getFace(CubeCoordinates Coordinates, Facet FacetType)
+Face* Cell::getFace(CubeCoordinates Coordinates, Direction DirectionType)
 {
-    if (FacetType & 1)  // True for East, South and Top some of which will require calls to other Cells
+    if (DirectionType & 1)  // True for East, South and Top some of which will require calls to other Cells
     {
         MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-        TranslateCoordinates(TargetCoordinates.X, TargetCoordinates.Y, TargetCoordinates.Z, FacetType);
-        return MAP->getFace(TargetCoordinates, OppositeFacet(FacetType));
+        TranslateMapCoordinates(TargetCoordinates, DirectionType);
+        return MAP->getFace(TargetCoordinates, OppositeDirection(DirectionType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {
-        Uint32 Key = GenerateFaceKey(Coordinates, FacetType);
+        Uint32 Key = GenerateFaceKey(Coordinates, DirectionType);
 
         if (Faces.find(Key) == Faces.end())
         {
@@ -482,25 +482,25 @@ Face* Cell::getFace(CubeCoordinates Coordinates, Facet FacetType)
     }
 }
 
-bool Cell::hasFace(CubeCoordinates Coordinates, Facet FacetType)
+bool Cell::hasFace(CubeCoordinates Coordinates, Direction DirectionType)
 {
-    if (FacetType & 1)  // True for East, South and Top some of which will require calls to other Cells
+    if (DirectionType & 1)  // True for East, South and Top some of which will require calls to other Cells
     {
         MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-        TranslateCoordinates(TargetCoordinates.X, TargetCoordinates.Y, TargetCoordinates.Z, FacetType);
-        return MAP->hasFace(TargetCoordinates, OppositeFacet(FacetType));
+        TranslateMapCoordinates(TargetCoordinates, DirectionType);
+        return MAP->hasFace(TargetCoordinates, OppositeDirection(DirectionType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {
-        Uint32 Key = GenerateFaceKey(Coordinates, FacetType);
+        Uint32 Key = GenerateFaceKey(Coordinates, DirectionType);
 
         return Faces.find(Key) != Faces.end();
     }
 }
 
-Sint16 Cell::getFaceMaterialType(CubeCoordinates Coordinates, Facet FacetType)
+Sint16 Cell::getFaceMaterialType(CubeCoordinates Coordinates, Direction DirectionType)
 {
-    Face* TargetFace = getFace(Coordinates, FacetType);
+    Face* TargetFace = getFace(Coordinates, DirectionType);
 
     if (TargetFace != NULL)
     {
@@ -508,13 +508,13 @@ Sint16 Cell::getFaceMaterialType(CubeCoordinates Coordinates, Facet FacetType)
     }
 }
 
-Sint16 Cell::getFaceSurfaceType(CubeCoordinates Coordinates, Facet FacetType)
+Sint16 Cell::getFaceSurfaceType(CubeCoordinates Coordinates, Direction DirectionType)
 {
-    Face* TargetFace = getFace(Coordinates, FacetType);
+    Face* TargetFace = getFace(Coordinates, DirectionType);
 
     if (TargetFace != NULL)
     {
-        if (FacetType & 1)
+        if (DirectionType & 1)
         {
             return TargetFace->PositiveAxisSurfaceTypeID;
         }
@@ -525,9 +525,9 @@ Sint16 Cell::getFaceSurfaceType(CubeCoordinates Coordinates, Facet FacetType)
     }
 }
 
-bool Cell::setFaceMaterialType(CubeCoordinates Coordinates, Facet FacetType, Sint16 MaterialTypeID)
+bool Cell::setFaceMaterialType(CubeCoordinates Coordinates, Direction DirectionType, Sint16 MaterialTypeID)
 {
-    Face* TargetFace = getFace(Coordinates, FacetType);
+    Face* TargetFace = getFace(Coordinates, DirectionType);
 
     if (TargetFace != NULL)
     {
@@ -541,13 +541,13 @@ bool Cell::setFaceMaterialType(CubeCoordinates Coordinates, Facet FacetType, Sin
     return false;
 }
 
-bool Cell::setFaceSurfaceType(CubeCoordinates Coordinates, Facet FacetType, Sint16 SurfaceTypeID)
+bool Cell::setFaceSurfaceType(CubeCoordinates Coordinates, Direction DirectionType, Sint16 SurfaceTypeID)
 {
-    Face* TargetFace = getFace(Coordinates, FacetType);
+    Face* TargetFace = getFace(Coordinates, DirectionType);
 
     if (TargetFace != NULL)
     {
-        if (FacetType & 1)
+        if (DirectionType & 1)
         {
             if (TargetFace->PositiveAxisSurfaceTypeID != SurfaceTypeID)
             {
@@ -569,9 +569,9 @@ bool Cell::setFaceSurfaceType(CubeCoordinates Coordinates, Facet FacetType, Sint
     return false;
 }
 
-bool Cell::setBothFaceSurfaces(CubeCoordinates Coordinates, Facet FacetType, Sint16 SurfaceTypeID)
+bool Cell::setBothFaceSurfaces(CubeCoordinates Coordinates, Direction DirectionType, Sint16 SurfaceTypeID)
 {
-    Face* TargetFace = getFace(Coordinates, FacetType);
+    Face* TargetFace = getFace(Coordinates, DirectionType);
 
     if (TargetFace != NULL)
     {
@@ -591,17 +591,17 @@ bool Cell::setBothFaceSurfaces(CubeCoordinates Coordinates, Facet FacetType, Sin
     return false;
 }
 
-bool Cell::removeFace(CubeCoordinates Coordinates, Facet FacetType)
+bool Cell::removeFace(CubeCoordinates Coordinates, Direction DirectionType)
 {
-    if (FacetType & 1)  // True for East, South and Top some of which will require calls to other Cells
+    if (DirectionType & 1)  // True for East, South and Top some of which will require calls to other Cells
     {
         MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-        TranslateCoordinates(TargetCoordinates.X, TargetCoordinates.Y, TargetCoordinates.Z, FacetType);
-        return MAP->removeFace(TargetCoordinates, OppositeFacet(FacetType));
+        TranslateMapCoordinates(TargetCoordinates, DirectionType);
+        return MAP->removeFace(TargetCoordinates, OppositeDirection(DirectionType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {
-        Uint32 Key = GenerateFaceKey(Coordinates, FacetType);
+        Uint32 Key = GenerateFaceKey(Coordinates, DirectionType);
 
         if (Faces.find(Key) != Faces.end())
         {
@@ -615,17 +615,17 @@ bool Cell::removeFace(CubeCoordinates Coordinates, Facet FacetType)
     return false;
 }
 
-Face* Cell::addFace(CubeCoordinates Coordinates, Facet FacetType)
+Face* Cell::addFace(CubeCoordinates Coordinates, Direction DirectionType)
 {
-    if (FacetType & 1)  // True for East, South and Top some of which will require calls to other Cells
+    if (DirectionType & 1)  // True for East, South and Top some of which will require calls to other Cells
     {
         MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-        TranslateCoordinates(TargetCoordinates.X, TargetCoordinates.Y, TargetCoordinates.Z, FacetType);
-        return MAP->addFace(TargetCoordinates, OppositeFacet(FacetType));
+        TranslateMapCoordinates(TargetCoordinates, DirectionType);
+        return MAP->addFace(TargetCoordinates, OppositeDirection(DirectionType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {
-        Uint32 Key = GenerateFaceKey(Coordinates, FacetType);
+        Uint32 Key = GenerateFaceKey(Coordinates, DirectionType);
 
         if (Faces.find(Key) == Faces.end())
         {

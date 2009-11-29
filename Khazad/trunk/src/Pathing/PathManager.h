@@ -4,6 +4,7 @@
 #include <stdafx.h>
 #include <Singleton.h>
 #include <MovementController.h>
+#include <astar.h>
 
 class PathManager
 {
@@ -31,6 +32,8 @@ public:
 
 protected:
 
+    //PathAlgorithm AstarImplementation;
+    //PathAlgorithm HeriarchialAstarImplementation;
     // Path system storage here
 };
 

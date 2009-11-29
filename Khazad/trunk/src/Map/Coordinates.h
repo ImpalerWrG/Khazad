@@ -6,6 +6,75 @@
 
 #include <stdint.h>
 
+enum Dimension
+{
+    DIMENSION_X,
+    DIMENSION_Y,
+    DIMENSION_Z,
+
+    NUM_DIMENSIONS,
+    DIMENSIONS_START = 0
+};
+
+inline Dimension &operator++ (Dimension &OldDimension)      { return OldDimension = Dimension(OldDimension + 1); }
+inline Dimension &operator-- (Dimension &OldDimension)      { return OldDimension = Dimension(OldDimension - 1); }
+
+enum Direction
+{
+	DIRECTION_UP,
+    DIRECTION_DOWN,
+
+	DIRECTION_NORTH,
+	DIRECTION_SOUTH,
+	DIRECTION_EAST,
+	DIRECTION_WEST,
+
+    DIRECTION_NORTHWEST,
+	DIRECTION_SOUTHEAST,
+	DIRECTION_NORTHEAST,
+	DIRECTION_SOUTHWEST,
+
+	DIRECTION_UP_NORTH,
+	DIRECTION_DOWN_SOUTH,
+	DIRECTION_UP_EAST,
+	DIRECTION_DOWN_WEST,
+	DIRECTION_DOWN_NORTH,
+	DIRECTION_UP_SOUTH,
+	DIRECTION_DOWN_EAST,
+	DIRECTION_UP_WEST,
+
+    DIRECTION_UP_NORTHWEST,
+	DIRECTION_DOWN_SOUTHEAST,
+	DIRECTION_UP_NORTHEAST,
+	DIRECTION_DOWN_SOUTHWEST,
+	DIRECTION_UP_SOUTHEAST,
+    DIRECTION_DOWN_NORTHWEST,
+	DIRECTION_UP_SOUTHWEST,
+	DIRECTION_DOWN_NORTHEAST,
+
+	DIRECTION_NONE,
+
+    CARDINAL_DIRECTIONS_START = 2,  // North, South, East and West
+	NUM_CARDINAL_DIRECTIONS = 6,
+
+	COMPASS_DIRECTIONS_START = 2,   // The 8 points of a compass
+	NUM_COMPASS_DIRECTIONS = 10,
+
+	AXIAL_DIRECTIONS_START = 0,     // Cardinal Directions pluss Up and Down
+	NUM_AXIAL_DIRECTIONS = 6,
+
+	ANGULAR_DIRECTIONS_START = 0,  // All Possible Directions
+	NUM_ANGULAR_DIRECTIONS = 26
+};
+
+inline Direction &operator++ (Direction &OldDirection)      { return OldDirection = Direction(OldDirection + 1); }
+inline Direction &operator-- (Direction &OldDirection)      { return OldDirection = Direction(OldDirection - 1); }
+
+inline Direction OppositeDirection(Direction DirectionType)
+{
+    return  (Direction) ((int) DirectionType ^ 1);  // Flips the last bit
+}
+
 struct MapCoordinates
 {
     MapCoordinates()
@@ -77,7 +146,7 @@ struct MapCoordinates
 
         return false;  // All values equal thus not less than
     };
-    
+
     int32_t operator[](unsigned i) const
     {
       switch (i)
@@ -91,7 +160,7 @@ struct MapCoordinates
       }
       return X;
     }
-    
+
     void set(unsigned i, int32_t val)
     {
       switch (i)
@@ -192,5 +261,124 @@ struct CubeCoordinates
     uint8_t X;
     uint8_t Y;
 };
+
+inline void TranslateMapCoordinates(MapCoordinates& TargetCoordinates, Direction DirectionType)
+{
+    switch (DirectionType)
+    {
+        case DIRECTION_UP:
+            TargetCoordinates.Z += 1;
+            break;
+        case DIRECTION_DOWN:
+            TargetCoordinates.Z -= 1;
+            break;
+
+        case DIRECTION_NORTH:
+            TargetCoordinates.Y -= 1;
+            break;
+        case DIRECTION_SOUTH:
+            TargetCoordinates.Y += 1;
+            break;
+        case DIRECTION_EAST:
+            TargetCoordinates.X += 1;
+            break;
+        case DIRECTION_WEST:
+            TargetCoordinates.X -= 1;
+            break;
+
+        case DIRECTION_NORTHWEST:
+            TargetCoordinates.Y -= 1;
+            TargetCoordinates.X -= 1;
+            break;
+        case DIRECTION_SOUTHEAST:
+            TargetCoordinates.Y += 1;
+            TargetCoordinates.X += 1;
+            break;
+        case DIRECTION_NORTHEAST:
+            TargetCoordinates.Y -= 1;
+            TargetCoordinates.X += 1;
+            break;
+        case DIRECTION_SOUTHWEST:
+            TargetCoordinates.Y += 1;
+            TargetCoordinates.X -= 1;
+            break;
+
+        case DIRECTION_UP_NORTH:
+            TargetCoordinates.Z += 1;
+            TargetCoordinates.Y -= 1;
+            break;
+        case DIRECTION_DOWN_SOUTH:
+            TargetCoordinates.Z -= 1;
+            TargetCoordinates.Y += 1;
+            break;
+        case DIRECTION_UP_EAST:
+            TargetCoordinates.Z += 1;
+            TargetCoordinates.X += 1;
+            break;
+        case DIRECTION_DOWN_WEST:
+            TargetCoordinates.Z -= 1;
+            TargetCoordinates.X -= 1;
+            break;
+        case DIRECTION_DOWN_NORTH:
+            TargetCoordinates.Z -= 1;
+            TargetCoordinates.Y -= 1;
+            break;
+        case DIRECTION_UP_SOUTH:
+            TargetCoordinates.Z += 1;
+            TargetCoordinates.Y += 1;
+            break;
+        case DIRECTION_DOWN_EAST:
+            TargetCoordinates.Z -= 1;
+            TargetCoordinates.X += 1;
+            break;
+        case DIRECTION_UP_WEST:
+            TargetCoordinates.Z += 1;
+            TargetCoordinates.X -= 1;
+            break;
+
+        case DIRECTION_UP_NORTHWEST:
+            TargetCoordinates.X -= 1;
+            TargetCoordinates.Y -= 1;
+            TargetCoordinates.Z += 1;
+            break;
+        case DIRECTION_DOWN_SOUTHEAST:
+            TargetCoordinates.X += 1;
+            TargetCoordinates.Y += 1;
+            TargetCoordinates.Z -= 1;
+            break;
+        case DIRECTION_UP_NORTHEAST:
+            TargetCoordinates.X += 1;
+            TargetCoordinates.Y -= 1;
+            TargetCoordinates.Z += 1;
+            break;
+        case DIRECTION_DOWN_SOUTHWEST:
+            TargetCoordinates.X -= 1;
+            TargetCoordinates.Y += 1;
+            TargetCoordinates.Z -= 1;
+            break;
+        case DIRECTION_UP_SOUTHEAST:
+            TargetCoordinates.X += 1;
+            TargetCoordinates.Y += 1;
+            TargetCoordinates.Z += 1;
+            break;
+        case DIRECTION_DOWN_NORTHWEST:
+            TargetCoordinates.X -= 1;
+            TargetCoordinates.Y -= 1;
+            TargetCoordinates.Z -= 1;
+            break;
+        case DIRECTION_UP_SOUTHWEST:
+            TargetCoordinates.X -= 1;
+            TargetCoordinates.Y += 1;
+            TargetCoordinates.Z += 1;
+            break;
+        case DIRECTION_DOWN_NORTHEAST:
+            TargetCoordinates.X += 1;
+            TargetCoordinates.Y -= 1;
+            TargetCoordinates.Z -= 1;
+            break;
+        case DIRECTION_NONE:
+            break;
+    }
+}
 
 #endif // COORDINATES__HEADER

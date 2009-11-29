@@ -88,20 +88,20 @@ public:
     inline Uint8 getLiquidLevel(CubeCoordinates Coordinates)                           { return LiquidLevel[Coordinates.X][Coordinates.Y]; }
     inline bool getLiquidType(CubeCoordinates Coordinates)                             { return LiquidType.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
 
-    inline Uint32 GenerateFaceKey(CubeCoordinates Coordinates, Facet FacetType);
+    inline Uint32 GenerateFaceKey(CubeCoordinates Coordinates, Direction DirectionType);
 
-    Face* getFace(CubeCoordinates Coordinates, Facet FacetType);
-    bool hasFace(CubeCoordinates Coordinates, Facet FaceType);
+    Face* getFace(CubeCoordinates Coordinates, Direction DirectionType);
+    bool hasFace(CubeCoordinates Coordinates, Direction DirectionType);
 
-    Sint16 getFaceMaterialType(CubeCoordinates Coordinates, Facet FacetType);
-    bool setFaceMaterialType(CubeCoordinates Coordinates, Facet FacetType, Sint16 MaterialTypeID);
+    Sint16 getFaceMaterialType(CubeCoordinates Coordinates, Direction DirectionType);
+    bool setFaceMaterialType(CubeCoordinates Coordinates, Direction DirectionType, Sint16 MaterialTypeID);
 
-    Sint16 getFaceSurfaceType(CubeCoordinates Coordinates, Facet FacetType);
-    bool setFaceSurfaceType(CubeCoordinates Coordinates, Facet FacetType, Sint16 SurfaceTypeID);
-    bool setBothFaceSurfaces(CubeCoordinates Coordinates, Facet FacetType, Sint16 SurfaceTypeID);
+    Sint16 getFaceSurfaceType(CubeCoordinates Coordinates, Direction DirectionType);
+    bool setFaceSurfaceType(CubeCoordinates Coordinates, Direction DirectionType, Sint16 SurfaceTypeID);
+    bool setBothFaceSurfaces(CubeCoordinates Coordinates, Direction DirectionType, Sint16 SurfaceTypeID);
 
-    bool removeFace(CubeCoordinates Coordinates, Facet FacetType);
-    Face* addFace(CubeCoordinates Coordinates, Facet FacetType);
+    bool removeFace(CubeCoordinates Coordinates, Direction DirectionType);
+    Face* addFace(CubeCoordinates Coordinates, Direction DirectionType);
 
 
     void DigChannel(CubeCoordinates Coordinates);

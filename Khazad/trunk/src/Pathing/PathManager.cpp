@@ -2,6 +2,9 @@
 
 #include <PathManager.h>
 #include <Singleton.h>
+#include <Map.h>
+#include <astar.h>
+#include <heuristics.h>
 
 
 DECLARE_SINGLETON(PathManager)
@@ -23,6 +26,15 @@ bool PathManager::Init()
 
 void PathManager::CreateMapAbstraction()
 {
+    //MAP->
+
+    //PathAlgorithm AstarImplementation;
+    //PathAlgorithm HeriarchialAstarImplementation;
+
+    //GridGraph* MapGrid;
+
+    //AstarImplementation = new AStar(MapGrid, Manhatten, Euclidean);
+
 
 }
 

@@ -329,7 +329,7 @@ vector < vertex > * ModelManager::getSlope(SlopeIndex surroundings)
     }
 
     // draw triangles
-    for(Direction i = DIRECTIONS_START; i <= DIRECTION_WEST; ++i)
+    for(Direction i = COMPASS_DIRECTIONS_START; i <= NUM_COMPASS_DIRECTIONS; ++i)
     {
         /**
         *  P--P+1--*

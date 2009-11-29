@@ -125,7 +125,7 @@ public:
                 for (int x = 0; x < G->max(0); x++)
                 {
                     point p(x,y,z);
-                    if ((G->edgeCost(p,p) > 0) && (findContainingZone(p) == NULL))
+                    if (/*G->edgeCost(p,p) > 0) && */(findContainingZone(p) == NULL))
                     {
                         //create a zone
                         basicZone *pbz = new basicZone(p);

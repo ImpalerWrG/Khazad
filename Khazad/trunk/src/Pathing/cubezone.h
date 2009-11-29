@@ -121,9 +121,9 @@ public:
         for (GridGraph::iterator nit = G_->begin(p); nit != end; ++nit)
         {
             point neigh = *nit;
-            assert(G_->edgeCost(p,neigh)>0);
-            assert(G_->edgeCost(p,p)>=0);
-            assert(G_->edgeCost(neigh,neigh)>0);
+            //assert(G_->edgeCost(p,neigh)>0);
+            //assert(G_->edgeCost(p,p)>=0);
+            //assert(G_->edgeCost(neigh,neigh)>0);
             if (!pz->contains(neigh)) //here's an edge leaving the zone
             {
                 if (pz->get(p) == NULL)
@@ -131,7 +131,7 @@ public:
                 gridZone *nz = (gridZone*) findContainingZone(neigh);
                 if (nz != NULL)
                 {
-                    pz->connect(nz,p,neigh,G_->edgeCost(p,neigh));
+                    //pz->connect(nz,p,neigh,G_->edgeCost(p,neigh));
 #ifdef ZONE_DEBUG
                     printf("(%2d,%2d,%2d)->(%2d,%2d,%2d)\n",p[0],p[1],p[2],neigh[0],neigh[1],neigh[2]);
                     pz->checkValid();
