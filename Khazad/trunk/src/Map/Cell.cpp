@@ -280,8 +280,49 @@ bool Cell::DrawSlope(CubeCoordinates Coordinates)
     // copy surroundings
     for(Direction TestDirection = COMPASS_DIRECTIONS_START; TestDirection <= NUM_COMPASS_DIRECTIONS; ++TestDirection)
     {
+        // HACK to convert to old direction system used to index the slope model
+        Direction ConvertedDirection;
+        int DirectionNumber;
+
+        switch(TestDirection)
+        {
+            case DIRECTION_NORTH:
+            	 ConvertedDirection = DIRECTION_NORTHWEST;
+            	 DirectionNumber = 0;
+            	 break;
+            case DIRECTION_SOUTH:
+            	 ConvertedDirection = DIRECTION_NORTH;
+            	 DirectionNumber = 1;
+            	 break;
+            case DIRECTION_WEST:
+            	 ConvertedDirection = DIRECTION_NORTHEAST;
+            	 DirectionNumber = 2;
+            	 break;
+            case DIRECTION_EAST:
+            	 ConvertedDirection = DIRECTION_EAST;
+            	 DirectionNumber = 3;
+            	 break;
+            case DIRECTION_NORTHWEST:
+            	 ConvertedDirection = DIRECTION_SOUTHEAST;
+            	 DirectionNumber = 4;
+            	 break;
+            case DIRECTION_SOUTHEAST:
+            	 ConvertedDirection = DIRECTION_SOUTH;
+            	 DirectionNumber = 5;
+            	 break;
+            case DIRECTION_NORTHEAST:
+            	 ConvertedDirection = DIRECTION_SOUTHWEST;
+            	 DirectionNumber = 6;
+            	 break;
+            case DIRECTION_SOUTHWEST:
+            	 ConvertedDirection = DIRECTION_WEST;
+            	 DirectionNumber = 7;
+            	 break;
+        }
+        // HACK
+
         MapCoordinates ModifiedCoordinates = UnModifiedCoordinates;
-        TranslateMapCoordinates(ModifiedCoordinates, TestDirection);
+        TranslateMapCoordinates(ModifiedCoordinates, ConvertedDirection);
 
         solid = 0;
         if(MAP->isCubeSolid(ModifiedCoordinates))
@@ -292,7 +333,7 @@ bool Cell::DrawSlope(CubeCoordinates Coordinates)
         {
             solid = 1;
         }
-        surroundings.value |= solid << (2 * TestDirection); // Bit shift to create slope Index
+        surroundings.value |= solid << (2 * DirectionNumber); // Bit shift to create slope Index
     }
 
     Uint32 Texture = TEXTURE->MapTexture(getCubeMaterial(Coordinates), TEXTURE->PickImageTexture(getCubeMaterial(Coordinates), getCubeSurface(Coordinates)));
