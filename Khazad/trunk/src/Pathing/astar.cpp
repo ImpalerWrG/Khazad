@@ -12,7 +12,7 @@
 
 typedef boost::shared_ptr<AStarEntry> AStarEntryPtr;
 
-FullPath AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
+FullPath *AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
 {
     entryGreaterThan egt(GoalCoordinates, MainHeuristic);
     std::vector<AStarEntryPtr> fringe;
@@ -38,23 +38,25 @@ FullPath AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoo
         if (e->v_ == GoalCoordinates)
         {
             e->path_.push_back(GoalCoordinates);
-            return FullPath(e->cost_,e->path_);
+            return new FullPath(e->cost_,e->path_);
         }
 
         // mark it visited if not already visited
         visited.insert(e->v_);
 
         // relax neighbours
-        GridGraph::iterator end = SearchGraph->end(e->v_);
-        for (GridGraph::iterator nit = SearchGraph->begin(e->v_); nit != end; ++nit)
+        for (Direction dir = ANGULAR_DIRECTIONS_START; dir < NUM_ANGULAR_DIRECTIONS; ++dir)
         {
-            point neigh = *nit;
+          if (SearchGraph->getEdgeCost(e->v_,dir) >= 0)
+          {
+            MapCoordinates neigh = e->v_;
+            TranslateMapCoordinates(neigh,dir);
 
             // try to find ey in the visited set
             if (visited.find(neigh) != visited.end())
                 continue;
 
-            cost_t cost = 0;  //SearchGraph->edgeCost(e->v_, neigh);
+            cost_t cost = SearchGraph->getEdgeCost(e->v_, dir);
             if (cost < 0)
                 continue; //Not valid edge
 
@@ -80,9 +82,10 @@ FullPath AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoo
             // ey was found neither in the fringe nor in visited; add it to the fringe
             fringe.push_back(eneigh);
             std::push_heap(fringe.begin(),fringe.end(),egt);
+          }
         } // end loop over neighbours
     } // end loop over fringe
-    return FullPath(-1, std::vector<point>());
+    return new FullPath();
 }
 
 class scopedAddBorderNode
@@ -118,13 +121,13 @@ private:
 
 typedef boost::shared_ptr<AStarZoneEntry> AStarZoneEntryPtr;
 
-FullPath HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
+FullPath *HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
 {
     zone *zoneS = zm_->findContainingZone(StartCoordinates);
     zone *zoneT = zm_->findContainingZone(GoalCoordinates);
 
     if ((zoneS == NULL) || (zoneT == NULL))
-        return FullPath(-1,std::vector<point>());
+        return new FullPath();
 
     //add source and dest to zone
     scopedAddBorderNode sbs(zoneS, StartCoordinates, MainHeuristic), sbt(zoneT, GoalCoordinates, MainHeuristic);
@@ -160,7 +163,7 @@ FullPath HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, 
             //cachemiss++;
             //no cached path. (current cost is only an estimate)
 
-            FullPath cpath(-1,std::vector<MapCoordinates>());
+            FullPath *cpath;
             //find the path, cache it
             ZonedGridGraph zgg(SearchGraph,zm_->findContainingZone(e->getPoint()));
             if (zm_->down() == NULL)
@@ -177,8 +180,8 @@ FullPath HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, 
                 //cachemiss += dastar.cachemiss;
             }
 
-            e->node_->cache_ = cpath.PathCourse; //update the cache!
-            e->node_->cost_ = cpath.Length;
+            e->node_->cache_ = cpath->PathCourse; //update the cache!
+            e->node_->cost_ = cpath->Length;
 
             /*point p = e->getPoint();
             point q = e->path_.back();
@@ -192,12 +195,13 @@ FullPath HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, 
             printf(": %d\n",e->cost_+cpath.first);*/
 
             //if disconnected, ignore it
-            if (cpath.Length >= 0)
+            if (cpath->Length >= 0)
             {
                 //now let's try again with the real cost
                 fringe.push_back(e);
                 std::push_heap(fringe.begin(),fringe.end(),egt);
             }
+            delete cpath;
             continue;
         }
 
@@ -207,7 +211,7 @@ FullPath HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, 
         if (e->getPoint() == GoalCoordinates)
         {
             e->path_.insert(e->path_.end(), ++e->node_->cache_.begin(),e->node_->cache_.end());
-            return FullPath(e->value(GoalCoordinates,*MainHeuristic),e->path_);
+            return new FullPath(e->value(GoalCoordinates,*MainHeuristic),e->path_);
         }
 
         // mark it visited if not already visited
@@ -220,7 +224,7 @@ FullPath HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, 
         {
             adjacentNode *neigh = *nit;
 
-            //printf("%d: (%2d,%2d,%2d)->(%2d,%2d,%2d) ~ %d=? ",e->node_->cost_,(*e->node_)[0],(*e->node_)[1],(*e->node_)[2],(*neigh)[0],(*neigh)[1],(*neigh)[2],neigh->cost_);
+            //printf("%g: (%2d,%2d,%2d)->(%2d,%2d,%2d) ~ %g=? ",e->node_->cost_,(*e->node_)[0],(*e->node_)[1],(*e->node_)[2],(*neigh)[0],(*neigh)[1],(*neigh)[2],neigh->cost_);
 
             // try to find ey in the visited set
             if (visited.find(*neigh) != visited.end())
@@ -272,6 +276,6 @@ FullPath HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, 
             std::push_heap(fringe.begin(),fringe.end(),egt);
         } // end loop over neighbours
     } // end loop over fringe
-    return FullPath(-1,std::vector<point>());
+    return new FullPath();
 }
 

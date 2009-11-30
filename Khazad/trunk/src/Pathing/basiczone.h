@@ -4,19 +4,19 @@ class basicZone : public zone
 public:
     zoneBorderNode p_;
 
-    basicZone(const point &p) : p_(p,this) {}
+    basicZone(const MapCoordinates &p) : p_(p,this) {}
 
     bool equals(const zone *z) const
     {
         return ((basicZone*)z)->p_ == p_;
     }
 
-    bool contains(const point &p) const
+    bool contains(const MapCoordinates &p) const
     {
         return p == p_;
     }
 
-    zoneBorderNode* get(const point &p)
+    zoneBorderNode* get(const MapCoordinates &p)
     {
         if (p == p_)
             return &p_;
@@ -28,18 +28,18 @@ public:
     {
     }
 
-    zoneBorderNode* addBorderNode(const point &p, const Heuristic* h)
+    zoneBorderNode* addBorderNode(const MapCoordinates &p, const Heuristic* h)
     {
         return NULL;
     }
 
-    void connect(zone *other, const point &pthis, const point &pother, cost_t cost)
+    void connect(zone *other, const MapCoordinates &pthis, const MapCoordinates &pother, cost_t cost)
     {
         assert(p_ == pthis);
         connect(other->connect(&p_,pother,cost),pthis,cost);
     }
 
-    zoneBorderNode* connect(zoneBorderNode *zbnother, const point &pthis, cost_t cost)
+    zoneBorderNode* connect(zoneBorderNode *zbnother, const MapCoordinates &pthis, cost_t cost)
     {
         assert(p_ == pthis);
         std::vector<point> cache;
@@ -99,7 +99,7 @@ public:
         }
     }
 
-    zone* findContainingZone(const point &p)
+    zone* findContainingZone(const MapCoordinates &p)
     {
         for (iterator it = zl.begin(); it != zl.end(); it++)
             if ((*it)->contains(p))
@@ -107,7 +107,7 @@ public:
         return NULL;
     }
 
-    virtual void registerChange(const point &p)
+    virtual void registerChange(const MapCoordinates &p)
     {
         zone *z = findContainingZone(p);
         zoneBorderNode *zbn = z->get(p);
@@ -124,7 +124,7 @@ public:
             {
                 for (int x = 0; x < G->max(0); x++)
                 {
-                    point p(x,y,z);
+                    MapCoordinates p(x,y,z);
                     if (/*G->edgeCost(p,p) > 0) && */(findContainingZone(p) == NULL))
                     {
                         //create a zone
@@ -132,10 +132,12 @@ public:
                         zl.push_back(pbz);
 
                         //connect zone to others...
-                        GridGraph::iterator end = G->end(p);
-                        for (GridGraph::iterator nit = G->begin(p); nit != end; ++nit)
+                        for (Direction dir = ANGULAR_DIRECTIONS_START; dir < NUM_ANGULAR_DIRECTIONS; ++dir)
                         {
-                            point neigh = *nit;
+                          if (G_->getEdgeCost(p,dir) >= 0)
+                          {
+                            MapCoordinates neigh = p;
+                            TranslateMapCoordinates(neigh,dir);
                             basicZone *nz = (basicZone*) findContainingZone(neigh);
                             if (nz != NULL)
                             {
@@ -146,6 +148,7 @@ public:
                                 nz->checkValid();
 #endif
                             }
+                          }
                         }
 
 

@@ -6,12 +6,12 @@
 class gridZone : public zone
 {
 public:
-    boost::unordered_map< point, zoneBorderNode*, point::hash> zbn_;
-    point tul_, blr_; //top upper left & bottom lower right
+    boost::unordered_map< MapCoordinates, zoneBorderNode*, MapCoordinates::hash> zbn_;
+    MapCoordinates tul_, blr_; //top upper left & bottom lower right
 
-    typedef boost::unordered_map<point, zoneBorderNode*, point::hash>::iterator iterator;
+    typedef boost::unordered_map<MapCoordinates, zoneBorderNode*, MapCoordinates::hash>::iterator iterator;
 
-    gridZone(const point &tul, const point &blr) : tul_(tul), blr_(blr) { }
+    gridZone(const MapCoordinates &tul, const MapCoordinates &blr) : tul_(tul), blr_(blr) { }
 
     ~gridZone()
     {
@@ -29,7 +29,7 @@ public:
         return (((gridZone*)z)->tul_ == tul_) && (((gridZone*)z)->blr_ == blr_);
     }
 
-    bool contains(const point &p) const
+    bool contains(const MapCoordinates &p) const
     {
         for (unsigned i = 0; i < 3; ++i)
         {
@@ -45,7 +45,7 @@ public:
         return true;
     }
 
-    zoneBorderNode* get(const point &p)
+    zoneBorderNode* get(const MapCoordinates &p)
     {
         if (zbn_.find(p) != zbn_.end())
             return zbn_[p];
@@ -55,8 +55,8 @@ public:
 
     void removeBorderNode(const zoneBorderNode* deleteme)
     {
-        zoneBorderNode* todelete = zbn_[(const point)*deleteme];
-        zbn_.erase((const point)*deleteme);
+        zoneBorderNode* todelete = zbn_[(const MapCoordinates)*deleteme];
+        zbn_.erase((const MapCoordinates)*deleteme);
         assert(todelete == deleteme);
         //fprintf(stderr,"Deleting (%2d,%2d,%2d)\n",(*todelete)[0],(*todelete)[1],(*todelete)[2]);
         delete todelete;
@@ -66,7 +66,7 @@ public:
 #endif
     }
 
-    zoneBorderNode* addBorderNode(const point &p, const Heuristic* h)
+    zoneBorderNode* addBorderNode(const MapCoordinates &p, const Heuristic* h)
     {
         assert(zbn_.find(p)==zbn_.end());
         std::vector<point> cache;
@@ -85,14 +85,14 @@ public:
         return r;
     }
 
-    void connect(zone *other, const point &pthis, const point &pother, cost_t cost)
+    void connect(zone *other, const MapCoordinates &pthis, const MapCoordinates &pother, cost_t cost)
     {
         zoneBorderNode *z = get(pthis);
         assert(z != NULL);
         connect(other->connect(z,pother,cost),pthis,cost);
     }
 
-    zoneBorderNode* connect(zoneBorderNode *zbnother, const point &pthis, cost_t cost)
+    zoneBorderNode* connect(zoneBorderNode *zbnother, const MapCoordinates &pthis, cost_t cost)
     {
         zoneBorderNode *z = get(pthis);
         assert(z != NULL);
@@ -131,7 +131,7 @@ class gridZoneManager : public zoneManager
     const GridGraph* G_;
     const Heuristic* h_;
 
-    typedef boost::unordered_map<point, gridZone*, point::hash>::iterator iterator;
+    typedef boost::unordered_map<MapCoordinates, gridZone*, MapCoordinates::hash>::iterator iterator;
 
 public:
     gridZoneManager(const GridGraph *G, const Heuristic *h, unsigned len, unsigned scale, unsigned minlen) : length(len), G_(G), h_(h)
@@ -156,7 +156,7 @@ public:
             delete child;
     }
 
-    zone* findContainingZone(const point &p)
+    zone* findContainingZone(const MapCoordinates &p)
     {
         point q(p[0]/length,p[1]/length,p[2]);
         if (zl.find(q)!= zl.end())
@@ -181,7 +181,7 @@ public:
         return child;
     }
 
-    virtual void registerChange(const point &p)
+    virtual void registerChange(const MapCoordinates &p)
     {
         if (child != NULL)
             child->registerChange(p);
@@ -236,12 +236,14 @@ public:
 #endif
     }
 
-    void AddLeavingEdges(zone *pz, const point &p)
+    void AddLeavingEdges(zone *pz, const MapCoordinates &p)
     {
-        GridGraph::iterator end = G_->end(p);
-        for (GridGraph::iterator nit = G_->begin(p); nit != end; ++nit)
+        for (Direction dir = ANGULAR_DIRECTIONS_START; dir < NUM_ANGULAR_DIRECTIONS; ++dir)
         {
-            point neigh = *nit;
+          if (G_->getEdgeCost(p,dir) >= 0)
+          {
+            MapCoordinates neigh = p;
+            TranslateMapCoordinates(neigh,dir);
             //assert(G_->edgeCost(p,neigh)>0);
             //assert(G_->edgeCost(p,p)>=0);
             //assert(G_->edgeCost(neigh,neigh)>0);
@@ -252,7 +254,7 @@ public:
                 gridZone *nz = (gridZone*) findContainingZone(neigh);
                 if (nz != NULL)
                 {
-                    //pz->connect(nz,p,neigh,G_->edgeCost(p,neigh));
+                    pz->connect(nz,p,neigh,G_->getEdgeCost(p,dir));
 #ifdef ZONE_DEBUG
                     printf("(%2d,%2d,%2d)->(%2d,%2d,%2d)\n",p[0],p[1],p[2],neigh[0],neigh[1],neigh[2]);
                     pz->checkValid();
@@ -260,6 +262,7 @@ public:
 #endif
                 }
             }
+          }
         }
     }
 };

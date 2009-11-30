@@ -281,48 +281,39 @@ bool Cell::DrawSlope(CubeCoordinates Coordinates)
     for(Direction TestDirection = COMPASS_DIRECTIONS_START; TestDirection <= NUM_COMPASS_DIRECTIONS; ++TestDirection)
     {
         // HACK to convert to old direction system used to index the slope model
-        Direction ConvertedDirection;
         int DirectionNumber;
 
         switch(TestDirection)
         {
             case DIRECTION_NORTH:
-            	 ConvertedDirection = DIRECTION_NORTHWEST;
-            	 DirectionNumber = 0;
-            	 break;
-            case DIRECTION_SOUTH:
-            	 ConvertedDirection = DIRECTION_NORTH;
             	 DirectionNumber = 1;
             	 break;
+            case DIRECTION_SOUTH:
+            	 DirectionNumber = 5;
+            	 break;
             case DIRECTION_WEST:
-            	 ConvertedDirection = DIRECTION_NORTHEAST;
-            	 DirectionNumber = 2;
+            	 DirectionNumber = 7;
             	 break;
             case DIRECTION_EAST:
-            	 ConvertedDirection = DIRECTION_EAST;
             	 DirectionNumber = 3;
             	 break;
             case DIRECTION_NORTHWEST:
-            	 ConvertedDirection = DIRECTION_SOUTHEAST;
-            	 DirectionNumber = 4;
+            	 DirectionNumber = 0;
             	 break;
             case DIRECTION_SOUTHEAST:
-            	 ConvertedDirection = DIRECTION_SOUTH;
-            	 DirectionNumber = 5;
+            	 DirectionNumber = 4;
             	 break;
             case DIRECTION_NORTHEAST:
-            	 ConvertedDirection = DIRECTION_SOUTHWEST;
-            	 DirectionNumber = 6;
+            	 DirectionNumber = 2;
             	 break;
             case DIRECTION_SOUTHWEST:
-            	 ConvertedDirection = DIRECTION_WEST;
-            	 DirectionNumber = 7;
+            	 DirectionNumber = 6;
             	 break;
         }
         // HACK
 
         MapCoordinates ModifiedCoordinates = UnModifiedCoordinates;
-        TranslateMapCoordinates(ModifiedCoordinates, ConvertedDirection);
+        TranslateMapCoordinates(ModifiedCoordinates, TestDirection);
 
         solid = 0;
         if(MAP->isCubeSolid(ModifiedCoordinates))
@@ -502,7 +493,7 @@ inline Uint32 Cell::GenerateFaceKey(CubeCoordinates Coordinates, Direction Direc
 
 Face* Cell::getFace(CubeCoordinates Coordinates, Direction DirectionType)
 {
-    if (isDirectionPossitive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
+    if (isDirectionPositive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
     {
         MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
         TranslateMapCoordinates(TargetCoordinates, DirectionType);
@@ -525,7 +516,7 @@ Face* Cell::getFace(CubeCoordinates Coordinates, Direction DirectionType)
 
 bool Cell::hasFace(CubeCoordinates Coordinates, Direction DirectionType)
 {
-    if (isDirectionPossitive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
+    if (isDirectionPositive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
     {
         MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
         TranslateMapCoordinates(TargetCoordinates, DirectionType);
@@ -555,7 +546,7 @@ Sint16 Cell::getFaceSurfaceType(CubeCoordinates Coordinates, Direction Direction
 
     if (TargetFace != NULL)
     {
-        if (isDirectionPossitive(DirectionType))
+        if (isDirectionPositive(DirectionType))
         {
             return TargetFace->PositiveAxisSurfaceTypeID;
         }
@@ -588,7 +579,7 @@ bool Cell::setFaceSurfaceType(CubeCoordinates Coordinates, Direction DirectionTy
 
     if (TargetFace != NULL)
     {
-        if (isDirectionPossitive(DirectionType))
+        if (isDirectionPositive(DirectionType))
         {
             if (TargetFace->PositiveAxisSurfaceTypeID != SurfaceTypeID)
             {
@@ -634,7 +625,7 @@ bool Cell::setBothFaceSurfaces(CubeCoordinates Coordinates, Direction DirectionT
 
 bool Cell::removeFace(CubeCoordinates Coordinates, Direction DirectionType)
 {
-    if (isDirectionPossitive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
+    if (isDirectionPositive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
     {
         MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
         TranslateMapCoordinates(TargetCoordinates, DirectionType);
@@ -658,7 +649,7 @@ bool Cell::removeFace(CubeCoordinates Coordinates, Direction DirectionType)
 
 Face* Cell::addFace(CubeCoordinates Coordinates, Direction DirectionType)
 {
-    if (isDirectionPossitive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
+    if (isDirectionPositive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
     {
         MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
         TranslateMapCoordinates(TargetCoordinates, DirectionType);

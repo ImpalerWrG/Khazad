@@ -2,14 +2,14 @@
 
 class cubeZoneManager : public zoneManager
 {
-    boost::unordered_map<point, gridZone*, point::hash> zl;
+    boost::unordered_map<MapCoordinates, gridZone*, MapCoordinates::hash> zl;
 
     const unsigned length;
     zoneManager *child;
     const GridGraph* G_;
     const Heuristic* h_;
 
-    typedef boost::unordered_map<point, gridZone*, point::hash>::iterator iterator;
+    typedef boost::unordered_map<MapCoordinates, gridZone*, MapCoordinates::hash>::iterator iterator;
 
 public:
     cubeZoneManager(const GridGraph *G, const Heuristic *h, unsigned len, unsigned scale, unsigned minlen) : length(len), G_(G), h_(h)
@@ -34,7 +34,7 @@ public:
             delete child;
     }
 
-    zone* findContainingZone(const point &p)
+    zone* findContainingZone(const MapCoordinates &p)
     {
         point q(p[0]/length,p[1]/length,p[2]/length);
         if (zl.find(q)!= zl.end())
@@ -59,7 +59,7 @@ public:
         return child;
     }
 
-    virtual void registerChange(const point &p)
+    virtual void registerChange(const MapCoordinates &p)
     {
         if (child != NULL)
             child->registerChange(p);
@@ -115,12 +115,14 @@ public:
 #endif
     }
 
-    void AddLeavingEdges(zone *pz, const point &p)
+    void AddLeavingEdges(zone *pz, const MapCoordinates &p)
     {
-        GridGraph::iterator end = G_->end(p);
-        for (GridGraph::iterator nit = G_->begin(p); nit != end; ++nit)
+        for (Direction dir = ANGULAR_DIRECTIONS_START; dir < NUM_ANGULAR_DIRECTIONS; ++dir)
         {
-            point neigh = *nit;
+          if (G_->getEdgeCost(p,dir) >= 0)
+          {
+            MapCoordinates neigh = p;
+            TranslateMapCoordinates(neigh,dir);
             //assert(G_->edgeCost(p,neigh)>0);
             //assert(G_->edgeCost(p,p)>=0);
             //assert(G_->edgeCost(neigh,neigh)>0);
@@ -131,7 +133,7 @@ public:
                 gridZone *nz = (gridZone*) findContainingZone(neigh);
                 if (nz != NULL)
                 {
-                    //pz->connect(nz,p,neigh,G_->edgeCost(p,neigh));
+                    pz->connect(nz,p,neigh,G_->getEdgeCost(p,dir));
 #ifdef ZONE_DEBUG
                     printf("(%2d,%2d,%2d)->(%2d,%2d,%2d)\n",p[0],p[1],p[2],neigh[0],neigh[1],neigh[2]);
                     pz->checkValid();
@@ -139,6 +141,7 @@ public:
 #endif
                 }
             }
+          }
         }
     }
 };

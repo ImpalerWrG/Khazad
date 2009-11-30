@@ -75,7 +75,7 @@ inline Direction OppositeDirection(Direction DirectionType)
     return  (Direction) ((int) DirectionType ^ 1);  // Flips the last bit
 }
 
-inline bool isDirectionPossitive(Direction DirectionType)
+inline bool isDirectionPositive(Direction DirectionType)
 {
     if (DirectionType < NUM_AXIAL_DIRECTIONS)
     {
@@ -176,10 +176,13 @@ struct MapCoordinates
       {
         case 0:
           X = val;
+          break;
         case 1:
           Y = val;
+          break;
         case 2:
           Z = val;
+          break;
       }
     }
 

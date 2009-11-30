@@ -282,7 +282,7 @@ Face* Map::getFace(MapCoordinates Coordinates, Direction DirectionType)
     MapCoordinates TargetMapCoordinates = Coordinates;
     Direction TargetFace = DirectionType;
 
-    if (isDirectionPossitive(DirectionType)) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
+    if (isDirectionPositive(DirectionType)) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
     {
         // Do something for edge of Map cases??
         TranslateMapCoordinates(TargetMapCoordinates, DirectionType);
@@ -304,7 +304,7 @@ bool Map::hasFace(MapCoordinates Coordinates, Direction DirectionType)
     MapCoordinates TargetMapCoordinates = Coordinates;
     Direction TargetFace = DirectionType;
 
-    if (isDirectionPossitive(DirectionType)) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
+    if (isDirectionPositive(DirectionType)) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
     {
         // Do something for edge of Map cases??
         TranslateMapCoordinates(TargetMapCoordinates, DirectionType);
@@ -326,7 +326,7 @@ bool Map::removeFace(MapCoordinates Coordinates, Direction DirectionType)
     MapCoordinates TargetMapCoordinates = Coordinates;
     Direction TargetFace = DirectionType;
 
-    if (isDirectionPossitive(DirectionType)) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
+    if (isDirectionPositive(DirectionType)) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
     {
         // Do something for edge of Map cases??
         TranslateMapCoordinates(TargetMapCoordinates, DirectionType);
@@ -349,7 +349,7 @@ Face* Map::addFace(MapCoordinates Coordinates, Direction DirectionType)
     MapCoordinates TargetMapCoordinates = Coordinates;
     Direction TargetFace = DirectionType;
 
-    if (isDirectionPossitive(DirectionType)) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
+    if (isDirectionPositive(DirectionType)) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
     {
         // Do something for edge of Map cases??
         TranslateMapCoordinates(TargetMapCoordinates, DirectionType);
@@ -470,7 +470,7 @@ void Map::setFaceSurfaceType(MapCoordinates Coordinates, Direction DirectionType
 
     if (TargetFace != NULL)
     {
-        if (isDirectionPossitive(DirectionType))
+        if (isDirectionPositive(DirectionType))
         {
             TargetFace->NegativeAxisSurfaceTypeID = SurfaceID;
         }
@@ -500,7 +500,7 @@ inline Sint16 Map::getFaceSurfaceType(MapCoordinates Coordinates, Direction Dire
 
     if (TargetFace != NULL)
     {
-        if (isDirectionPossitive(DirectionType))
+        if (isDirectionPositive(DirectionType))
         {
             return TargetFace->NegativeAxisSurfaceTypeID;
         }
