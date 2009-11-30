@@ -24,7 +24,7 @@ typedef uint32_t DirectionFlags;  // Bitfield for all directions
 
 struct GridCell
 {
-  GridCell() 
+  GridCell()
   {
     //zero direction flags
     memset(DirectionMatrix,0,sizeof(DirectionMatrix));
@@ -45,12 +45,12 @@ public:
 
             for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
             {
-                
+
                 if (getEdgeCost(TestCoords, DirectionType) >= 0)
                 {
                     Flags |= (1 << (int) DirectionType);
                 }
-                
+
             }
             //setDirectionFlags(TestCoords, Flags);
         }*/
@@ -88,7 +88,7 @@ public:
     {
         return getCell(CellCoordinates(TestCoords)) != NULL;
     }
-    
+
     unsigned max(int dim) const
     {
       return maxlen[dim];

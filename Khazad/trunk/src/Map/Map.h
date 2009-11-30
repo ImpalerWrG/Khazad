@@ -55,59 +55,55 @@ public:
     bool isInitialized()        { return Initialized; }
     bool isMapLoaded()          { return MapLoaded; }
 
-	Cell* getCell(CellCoordinates);
-	Cell* getCubeOwner(MapCoordinates);
-    bool isCubeInited(MapCoordinates);
+    uint64_t GenerateCellKey(CellCoordinates KeyCoords) const;
+	Cell* getCell(CellCoordinates) const;
+	Cell* getCubeOwner(MapCoordinates) const;
 
+    map<uint64_t, Cell*>* getCellMap();
+    bool addCell(Cell* NewCell, CellCoordinates TargetCoordinates);
+
+    bool isCubeInited(MapCoordinates) const;
     void setCellNeedsReDraw(CellCoordinates, bool NewValue);
 
-    CellCoordinates TranslateMapToCell(MapCoordinates Coordinates);
-    CubeCoordinates TranslateMapToCube(MapCoordinates Coordinates);
-
-
-    bool isCubeSloped(MapCoordinates Coordinates);
+    bool isCubeSloped(MapCoordinates Coordinates) const;
 
     void setCubeShape(MapCoordinates Coordinates, Sint16 TileShape);
-    inline Sint16 getCubeShape(MapCoordinates Coordinates);
+    inline Sint16 getCubeShape(MapCoordinates Coordinates) const;
 
     void setCubeMaterial(MapCoordinates Coordinates, Sint16 MaterialID);
-    inline Sint16 getCubeMaterial(MapCoordinates Coordinates);
+    inline Sint16 getCubeMaterial(MapCoordinates Coordinates) const;
 
     void setCubeSurfaceType(MapCoordinates Coordinates, Sint16 SurfaceID);
-    inline Sint16 getCubeSurfaceType(MapCoordinates Coordinates);
+    inline Sint16 getCubeSurfaceType(MapCoordinates Coordinates) const;
 
-
-
-    Face* getFace(MapCoordinates Coordinates, Direction DirectionType);
-    bool hasFace(MapCoordinates Coordinates, Direction DirectionType);
+    Face* getFace(MapCoordinates Coordinates, Direction DirectionType) const;
+    bool hasFace(MapCoordinates Coordinates, Direction DirectionType) const;
 
     bool removeFace(MapCoordinates Coordinates, Direction DirectionType);
     Face* addFace(MapCoordinates Coordinates, Direction DirectionType);
 
     void setFaceMaterial(MapCoordinates Coordinates, Direction DirectionType, Sint16 MaterialID);
-    inline Sint16 getFaceMaterial(MapCoordinates Coordinates, Direction DirectionType);
+    inline Sint16 getFaceMaterial(MapCoordinates Coordinates, Direction DirectionType) const;
 
     void setFaceSurfaceType(MapCoordinates Coordinates, Direction DirectionType, Sint16 SurfaceID);
-    inline Sint16 getFaceSurfaceType(MapCoordinates Coordinates, Direction DirectionType);
+    inline Sint16 getFaceSurfaceType(MapCoordinates Coordinates, Direction DirectionType) const;
     void setBothFaceSurfaceTypes(MapCoordinates Coordinates, Direction DirectionType, Sint16 SurfaceID);
 
 
-    bool isCubeHidden(MapCoordinates Coordinates);
+    bool isCubeHidden(MapCoordinates Coordinates) const;
     void setCubeHidden(MapCoordinates Coordinates, bool NewValue);
 
-    bool isCubeSubTerranean(MapCoordinates Coordinates);
+    bool isCubeSubTerranean(MapCoordinates Coordinates) const;
     void setCubeSubTerranean(MapCoordinates Coordinates, bool NewValue);
 
-    bool isCubeSkyView(MapCoordinates Coordinates);
+    bool isCubeSkyView(MapCoordinates Coordinates) const;
     void setCubeSkyView(MapCoordinates Coordinates, bool NewValue);
 
-    bool isCubeSunLit(MapCoordinates Coordinates);
+    bool isCubeSunLit(MapCoordinates Coordinates) const;
     void setCubeSunLit(MapCoordinates Coordinates, bool NewValue);
 
-    bool isCubeSolid(MapCoordinates Coordinates);
+    bool isCubeSolid(MapCoordinates Coordinates) const;
     void setCubeSolid(MapCoordinates Coordinates, bool NewValue);
-
-
 
     void InitilizeTilePicker(DFHack::API & DF);
     Sint16 PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial, t_matglossPair constructionmaterial, t_occupancy occupancy);
@@ -115,13 +111,13 @@ public:
 
     bool Generate(Uint32 Seed);
 
-	Uint32 getMapSizeX() { return MapSizeX; }
-	Uint32 getMapSizeY() { return MapSizeY; }
-	Uint32 getMapSizeZ() { return MapSizeZ; }
+	Uint32 getMapSizeX() const { return MapSizeX; }
+	Uint32 getMapSizeY() const { return MapSizeY; }
+	Uint32 getMapSizeZ() const { return MapSizeZ; }
 
-	Uint16 getCellSizeX() { return CellSizeX; }
-	Uint16 getCellSizeY() { return CellSizeY; }
-	Uint16 getCellSizeZ() { return CellSizeZ; }
+	Uint16 getCellSizeX() const { return CellSizeX; }
+	Uint16 getCellSizeY() const { return CellSizeY; }
+	Uint16 getCellSizeZ() const { return CellSizeZ; }
 
     bool Extract();
     bool Load(string filename);
@@ -142,16 +138,16 @@ public:
                       CellCoordinates NewCellCoordinates);
 
     void ChangeCellCount(Sint8 Change)      { CellCount += Change; }
-    Uint32 getCellCount()                   { return CellCount; }
+    Uint32 getCellCount() const             { return CellCount; }
 
     void ChangeInitedCellCount(Sint8 Change)      { InitedCellCount += Change; }
-    Uint32 getInitedCellCount()                   { return InitedCellCount; }
+    Uint32 getInitedCellCount() const             { return InitedCellCount; }
 
     void ChangeFaceCount(Sint8 Change)      { FaceCount += Change; }
-    Uint32 getFaceCount()                   { return FaceCount; }
+    Uint32 getFaceCount() const             { return FaceCount; }
 
 
-    MapCoordinates getMapCenter();
+    MapCoordinates getMapCenter() const;
 
     TreeManager* TreeMan;
 
@@ -168,7 +164,7 @@ protected:
     Uint16 CellSizeY;
     Uint16 CellSizeZ;
 
-    Column*** ColumnMatrix;
+    std::map<uint64_t, Cell*> Cells;
 
     Sint16 TileShapePicker[600];
     Sint16 TileSurfacePicker[600];

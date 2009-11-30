@@ -10,13 +10,15 @@
 ///FIXME: dfhack paths
 #include "../../dfhack/library/DFTypes.h"
 #include "../../dfhack/library/DFHackAPI.h"
-#include <string.h> // for memset
+//#include <string.h> // for memset
 
 #include <Column.h>
 #include <Cell.h>
 #include <Random.h>
 #include <Building.h>
 #include <Tree.h>
+
+#include <map>
 
 DECLARE_SINGLETON(Map)
 
@@ -37,7 +39,6 @@ Map::Map()
 
     InitedCellCount = 0;
 
-    ColumnMatrix = NULL;
     TreeMan = NULL;
 }
 
@@ -64,52 +65,60 @@ bool Map::Generate(Uint32 Seed)
     return true;
 }
 
-CellCoordinates Map::TranslateMapToCell(MapCoordinates Coordinates)
+uint64_t Map::GenerateCellKey(CellCoordinates KeyCoords) const
 {
-    CellCoordinates NewCoordinates;
+    uint64_t Key = KeyCoords.X;
+    Key <<= 16;
+    Key += KeyCoords.Y;
+    Key <<= 16;
+    Key += KeyCoords.Z;
 
-    NewCoordinates.X = Coordinates.X / CELLEDGESIZE;
-    NewCoordinates.Y = Coordinates.Y / CELLEDGESIZE;
-    NewCoordinates.Z = Coordinates.Z;
-
-    return NewCoordinates;
+    return Key;
 }
 
-CubeCoordinates Map::TranslateMapToCube(MapCoordinates Coordinates)
+Cell* Map::getCell(CellCoordinates TestCoords) const
 {
-    CubeCoordinates NewCoordinates;
+    uint64_t Key = GenerateCellKey(TestCoords);
 
-    NewCoordinates.X = Coordinates.X % CELLEDGESIZE;
-    NewCoordinates.Y = Coordinates.Y % CELLEDGESIZE;
-
-    return NewCoordinates;
-}
-
-Cell* Map::getCell(CellCoordinates Coordinates)
-{
-    if (Coordinates.X >= 0 && Coordinates.X < CellSizeX && Coordinates.Y >= 0 && Coordinates.Y < CellSizeY)
+    if (Cells.find(Key) == Cells.end())
     {
-        if(Coordinates.Z >= ColumnMatrix[Coordinates.X][Coordinates.Y]->BottomLevel() && Coordinates.Z <= ColumnMatrix[Coordinates.X][Coordinates.Y]->TopLevel())
-        {
-            return ColumnMatrix[Coordinates.X][Coordinates.Y]->getCell(Coordinates.Z);
-        }
+        return NULL;
     }
-    return NULL;
+    else
+    {
+        return Cells.find(Key)->second;
+    }
 }
 
-Cell* Map::getCubeOwner(MapCoordinates Coordinates)
+bool Map::addCell(Cell* NewCell, CellCoordinates TargetCoordinates)
+{
+    if (getCell(TargetCoordinates) == NULL)
+    {
+        uint64_t Key = GenerateCellKey(TargetCoordinates);
+        Cells[Key] = NewCell;
+        return true;
+    }
+    return false;  // A Cell already exists at that spot
+}
+
+map<uint64_t, Cell*>* Map::getCellMap()
+{
+    return &Cells;
+}
+
+Cell* Map::getCubeOwner(MapCoordinates Coordinates) const
 {
     if ((Coordinates.X > MapSizeX) || (Coordinates.Y > MapSizeY) || (Coordinates.Z > MapSizeZ)) //TODO better more flexible limit check
     {
         return NULL;
     }
 
-    CellCoordinates TargetCellCoordinates = TranslateMapToCell(Coordinates);
+    CellCoordinates TargetCellCoordinates = CellCoordinates(Coordinates);
 
     return getCell(TargetCellCoordinates);
 }
 
-bool Map::isCubeInited(MapCoordinates Coordinates)
+bool Map::isCubeInited(MapCoordinates Coordinates) const
 {
     return getCubeOwner(Coordinates) != NULL;
 }
@@ -217,18 +226,12 @@ bool Map::Extract()
     DF.FinishReadBuildings();
 
 
-    ColumnMatrix = new Column**[CellSizeX];
-
     CellCoordinates TargetCellCoodinates;
 
     for (TargetCellCoodinates.X = 0; TargetCellCoodinates.X < CellSizeX; TargetCellCoodinates.X += 1)
     {
-        ColumnMatrix[TargetCellCoodinates.X] = new Column*[CellSizeY];
         for (TargetCellCoodinates.Y = 0; TargetCellCoodinates.Y < CellSizeY; TargetCellCoodinates.Y += 1)
         {
-            ColumnMatrix[TargetCellCoodinates.X][TargetCellCoodinates.Y] = new Column();
-            ColumnMatrix[TargetCellCoodinates.X][TargetCellCoodinates.Y]->Init(TargetCellCoodinates.X, TargetCellCoodinates.Y);
-
             for (TargetCellCoodinates.Z = 0; TargetCellCoodinates.Z < CellSizeZ; TargetCellCoodinates.Z += 1)
             {
                 if(DF.isValidBlock(TargetCellCoodinates.X, TargetCellCoodinates.Y, TargetCellCoodinates.Z))
@@ -236,7 +239,8 @@ bool Map::Extract()
                     Cell* NewCell = new Cell();
                     NewCell->setPosition(TargetCellCoodinates);
                     LoadCellData(DF, layerassign, NewCell, constructionAssigner, plantAssigner, buildingAssigner, TargetCellCoodinates);
-                    ColumnMatrix[TargetCellCoodinates.X][TargetCellCoodinates.Y]->PushCell(NewCell, TargetCellCoodinates.Z);
+
+                    addCell(NewCell, TargetCellCoodinates);
                 }
             }
         }
@@ -277,7 +281,7 @@ void Map::Save(string filename)
     return;
 }
 
-Face* Map::getFace(MapCoordinates Coordinates, Direction DirectionType)
+Face* Map::getFace(MapCoordinates Coordinates, Direction DirectionType) const
 {
     MapCoordinates TargetMapCoordinates = Coordinates;
     Direction TargetFace = DirectionType;
@@ -289,17 +293,17 @@ Face* Map::getFace(MapCoordinates Coordinates, Direction DirectionType)
         TargetFace = OppositeDirection(TargetFace);
     }
 
-    CellCoordinates TargetCellCoordinates = TranslateMapToCell(TargetMapCoordinates);
+    CellCoordinates TargetCellCoordinates = CellCoordinates(TargetMapCoordinates);
     Cell* TargetCell = getCell(TargetCellCoordinates);
 
     if (TargetCell != NULL)
     {
-        return TargetCell->getFace(TranslateMapToCube(TargetMapCoordinates), TargetFace);
+        return TargetCell->getFace(CubeCoordinates(TargetMapCoordinates), TargetFace);
     }
     return NULL;
 }
 
-bool Map::hasFace(MapCoordinates Coordinates, Direction DirectionType)
+bool Map::hasFace(MapCoordinates Coordinates, Direction DirectionType) const
 {
     MapCoordinates TargetMapCoordinates = Coordinates;
     Direction TargetFace = DirectionType;
@@ -311,12 +315,12 @@ bool Map::hasFace(MapCoordinates Coordinates, Direction DirectionType)
         TargetFace = OppositeDirection(TargetFace);
     }
 
-    CellCoordinates TargetCellCoordinates = TranslateMapToCell(TargetMapCoordinates);
+    CellCoordinates TargetCellCoordinates = CellCoordinates(TargetMapCoordinates);
     Cell* TargetCell = getCell(TargetCellCoordinates);
 
     if (TargetCell != NULL)
     {
-        return TargetCell->hasFace(TranslateMapToCube(TargetMapCoordinates), TargetFace);
+        return TargetCell->hasFace(CubeCoordinates(TargetMapCoordinates), TargetFace);
     }
     return false;
 }
@@ -333,12 +337,12 @@ bool Map::removeFace(MapCoordinates Coordinates, Direction DirectionType)
         TargetFace = OppositeDirection(TargetFace);
     }
 
-    CellCoordinates TargetCellCoordinates = TranslateMapToCell(TargetMapCoordinates);
+    CellCoordinates TargetCellCoordinates = CellCoordinates(TargetMapCoordinates);
     Cell* TargetCell = getCell(TargetCellCoordinates);
 
     if (TargetCell != NULL)
     {
-        return TargetCell->removeFace(TranslateMapToCube(TargetMapCoordinates), TargetFace);
+        return TargetCell->removeFace(CubeCoordinates(TargetMapCoordinates), TargetFace);
     }
 
     return false;
@@ -356,24 +360,24 @@ Face* Map::addFace(MapCoordinates Coordinates, Direction DirectionType)
         TargetFace = OppositeDirection(TargetFace);
     }
 
-    CellCoordinates TargetCellCoordinates = TranslateMapToCell(TargetMapCoordinates);
+    CellCoordinates TargetCellCoordinates = CellCoordinates(TargetMapCoordinates);
     Cell* TargetCell = getCell(TargetCellCoordinates);
 
     if (TargetCell != NULL)
     {
-        return TargetCell->addFace(TranslateMapToCube(TargetMapCoordinates), TargetFace);
+        return TargetCell->addFace(CubeCoordinates(TargetMapCoordinates), TargetFace);
     }
 
     return false;
 }
 
-bool Map::isCubeSloped(MapCoordinates Coordinates)
+bool Map::isCubeSloped(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
     if(TargetCell != NULL)
     {
-        return TargetCell->isCubeSloped(TranslateMapToCube(Coordinates));
+        return TargetCell->isCubeSloped(CubeCoordinates(Coordinates));
     }
     return false;
 }
@@ -384,17 +388,17 @@ void Map::setCubeShape(MapCoordinates Coordinates, Sint16 TileShape)
 
     if (TargetCell != NULL)
     {
-        TargetCell->setCubeShape(TranslateMapToCube(Coordinates), TileShape);
+        TargetCell->setCubeShape(CubeCoordinates(Coordinates), TileShape);
     }
 }
 
-inline Sint16 Map::getCubeShape(MapCoordinates Coordinates)
+inline Sint16 Map::getCubeShape(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
     if (TargetCell != NULL)
     {
-        return TargetCell->getCubeShape(TranslateMapToCube(Coordinates));
+        return TargetCell->getCubeShape(CubeCoordinates(Coordinates));
     }
     return -1;
 }
@@ -405,17 +409,17 @@ void Map::setCubeMaterial(MapCoordinates Coordinates, Sint16 MaterialID)
 
     if (TargetCell != NULL)
     {
-        TargetCell->setCubeMaterial(TranslateMapToCube(Coordinates), MaterialID);
+        TargetCell->setCubeMaterial(CubeCoordinates(Coordinates), MaterialID);
     }
 }
 
-inline Sint16 Map::getCubeMaterial(MapCoordinates Coordinates)
+inline Sint16 Map::getCubeMaterial(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
     if (TargetCell != NULL)
     {
-        return TargetCell->getCubeMaterial(TranslateMapToCube(Coordinates));
+        return TargetCell->getCubeMaterial(CubeCoordinates(Coordinates));
     }
     return -1;
 }
@@ -426,17 +430,17 @@ void Map::setCubeSurfaceType(MapCoordinates Coordinates, Sint16 SurfaceID)
 
     if (TargetCell != NULL)
     {
-        TargetCell->setCubeSurface(TranslateMapToCube(Coordinates), SurfaceID);
+        TargetCell->setCubeSurface(CubeCoordinates(Coordinates), SurfaceID);
     }
 }
 
-inline Sint16 Map::getCubeSurfaceType(MapCoordinates Coordinates)
+inline Sint16 Map::getCubeSurfaceType(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
     if (TargetCell != NULL)
     {
-        return TargetCell->getCubeSurface(TranslateMapToCube(Coordinates));
+        return TargetCell->getCubeSurface(CubeCoordinates(Coordinates));
     }
     return -1;
 }
@@ -453,7 +457,7 @@ void Map::setFaceMaterial(MapCoordinates Coordinates, Direction DirectionType, S
     }
 }
 
-inline Sint16 Map::getFaceMaterial(MapCoordinates Coordinates, Direction DirectionType)
+inline Sint16 Map::getFaceMaterial(MapCoordinates Coordinates, Direction DirectionType) const
 {
     Face* TargetFace = getFace(Coordinates, DirectionType);
 
@@ -494,7 +498,7 @@ void Map::setBothFaceSurfaceTypes(MapCoordinates Coordinates, Direction Directio
     }
 }
 
-inline Sint16 Map::getFaceSurfaceType(MapCoordinates Coordinates, Direction DirectionType)
+inline Sint16 Map::getFaceSurfaceType(MapCoordinates Coordinates, Direction DirectionType) const
 {
     Face* TargetFace = getFace(Coordinates, DirectionType);
 
@@ -512,13 +516,13 @@ inline Sint16 Map::getFaceSurfaceType(MapCoordinates Coordinates, Direction Dire
     return -1;
 }
 
-bool Map::isCubeHidden(MapCoordinates Coordinates)
+bool Map::isCubeHidden(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
     if(TargetCell != NULL)
     {
-        return TargetCell->isCubeHidden(TranslateMapToCube(Coordinates));
+        return TargetCell->isCubeHidden(CubeCoordinates(Coordinates));
     }
     return false;
 }
@@ -529,17 +533,17 @@ void Map::setCubeHidden(MapCoordinates Coordinates, bool NewValue)
 
     if(TargetCell != NULL)
     {
-        TargetCell->setCubeHidden(TranslateMapToCube(Coordinates), NewValue);
+        TargetCell->setCubeHidden(CubeCoordinates(Coordinates), NewValue);
     }
 }
 
-bool Map::isCubeSubTerranean(MapCoordinates Coordinates)
+bool Map::isCubeSubTerranean(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
     if(TargetCell != NULL)
     {
-        return TargetCell->isCubeSubTerranean(TranslateMapToCube(Coordinates));
+        return TargetCell->isCubeSubTerranean(CubeCoordinates(Coordinates));
     }
     return false;
 }
@@ -550,17 +554,17 @@ void Map::setCubeSubTerranean(MapCoordinates Coordinates, bool NewValue)
 
     if(TargetCell != NULL)
     {
-        TargetCell->setCubeSubTerranean(TranslateMapToCube(Coordinates), NewValue);
+        TargetCell->setCubeSubTerranean(CubeCoordinates(Coordinates), NewValue);
     }
 }
 
-bool Map::isCubeSkyView(MapCoordinates Coordinates)
+bool Map::isCubeSkyView(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
     if(TargetCell != NULL)
     {
-        return TargetCell->isCubeSkyView(TranslateMapToCube(Coordinates));
+        return TargetCell->isCubeSkyView(CubeCoordinates(Coordinates));
     }
     return false;
 }
@@ -571,17 +575,17 @@ void Map::setCubeSkyView(MapCoordinates Coordinates, bool NewValue)
 
     if(TargetCell != NULL)
     {
-        TargetCell->setCubeSkyView(TranslateMapToCube(Coordinates), NewValue);
+        TargetCell->setCubeSkyView(CubeCoordinates(Coordinates), NewValue);
     }
 }
 
-bool Map::isCubeSunLit(MapCoordinates Coordinates)
+bool Map::isCubeSunLit(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
     if(TargetCell != NULL)
     {
-        return TargetCell->isCubeSunLit(TranslateMapToCube(Coordinates));
+        return TargetCell->isCubeSunLit(CubeCoordinates(Coordinates));
     }
     return false;
 }
@@ -592,17 +596,17 @@ void Map::setCubeSunLit(MapCoordinates Coordinates, bool NewValue)
 
     if(TargetCell != NULL)
     {
-        TargetCell->setCubeSunLit(TranslateMapToCube(Coordinates), NewValue);
+        TargetCell->setCubeSunLit(CubeCoordinates(Coordinates), NewValue);
     }
 }
 
-bool Map::isCubeSolid(MapCoordinates Coordinates)
+bool Map::isCubeSolid(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
     if(TargetCell != NULL)
     {
-        return TargetCell->isCubeSolid(TranslateMapToCube(Coordinates));
+        return TargetCell->isCubeSolid(CubeCoordinates(Coordinates));
     }
     return false;
 }
@@ -613,7 +617,7 @@ void Map::setCubeSolid(MapCoordinates Coordinates, bool NewValue)
 
     if(TargetCell != NULL)
     {
-        TargetCell->setCubeSolid(TranslateMapToCube(Coordinates), NewValue);
+        TargetCell->setCubeSolid(CubeCoordinates(Coordinates), NewValue);
     }
 }
 
@@ -1107,7 +1111,7 @@ Sint16 Map::ResolveMatGlossPair(t_matglossPair MatPair)
     return Unknown;
 }
 
-MapCoordinates Map::getMapCenter()
+MapCoordinates Map::getMapCenter() const
 {
     MapCoordinates CenterPoint;
 
@@ -1122,23 +1126,5 @@ void Map::ReleaseMap()
 {
     MapLoaded = false;
 
-    if (ColumnMatrix != NULL)
-    {
-        for (Uint32 x = 0; x < CellSizeX; ++x)
-        {
-            if (ColumnMatrix[x] != NULL)
-            {
-                for (Uint32 y = 0; y < CellSizeY; ++y)
-                {
-                    if (ColumnMatrix[x][y] != NULL)
-                    {
-                        delete ColumnMatrix[x][y];
-                    }
-                }
-                delete[] ColumnMatrix[x];
-            }
-        }
-        delete[] ColumnMatrix;
-        ColumnMatrix = NULL;
-    }
+    Cells.clear();
 }

@@ -485,21 +485,13 @@ void Renderer::DirtyAllLists()
         return;
     }
 
-    CellCoordinates TargetCellCoodinates;
-
-    for (TargetCellCoodinates.Z = 0; TargetCellCoodinates.Z < MAP->getCellSizeZ(); TargetCellCoodinates.Z += 1)
+    map<uint64_t, Cell*>* TargetCells = MAP->getCellMap();
+    for (map<uint64_t, Cell*>::iterator it = TargetCells->begin(); it != TargetCells->end(); ++it)
     {
-        for (TargetCellCoodinates.X = 0; TargetCellCoodinates.X < MAP->getCellSizeX(); TargetCellCoodinates.X += 1)
+        if (it->second != NULL)
         {
-            for (TargetCellCoodinates.Y = 0; TargetCellCoodinates.Y < MAP->getCellSizeY(); TargetCellCoodinates.Y += 1)
-            {
-			    Cell* TargetCell = MAP->getCell(TargetCellCoodinates);
-			    if (TargetCell != NULL)
-			    {
-                    TargetCell->setNeedsRedraw(true);
-			    }
-			}
-		}
+            it->second->setNeedsRedraw(true);
+        }
 	}
 }
 

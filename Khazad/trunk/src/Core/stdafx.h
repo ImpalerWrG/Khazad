@@ -23,6 +23,7 @@
 #include <functional>
 #include <iostream>
 #include <stdarg.h>
+#include <stdint.h>
 
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
