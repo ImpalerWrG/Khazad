@@ -329,8 +329,38 @@ vector < vertex > * ModelManager::getSlope(SlopeIndex surroundings)
     }
 
     // draw triangles
-    for(Direction i = COMPASS_DIRECTIONS_START; i <= NUM_COMPASS_DIRECTIONS; ++i)
+    for(Direction TestDirection = COMPASS_DIRECTIONS_START; TestDirection <= NUM_COMPASS_DIRECTIONS; ++TestDirection)
     {
+       // HACK to convert to old direction system used to index the slope model
+       int i = 0;
+       switch(TestDirection)
+        {
+            case DIRECTION_NORTH:
+            	 i = 1;
+            	 break;
+            case DIRECTION_SOUTH:
+            	 i = 5;
+            	 break;
+            case DIRECTION_WEST:
+            	 i = 7;
+            	 break;
+            case DIRECTION_EAST:
+            	 i = 3;
+            	 break;
+            case DIRECTION_NORTHWEST:
+            	 i = 0;
+            	 break;
+            case DIRECTION_SOUTHEAST:
+            	 i = 4;
+            	 break;
+            case DIRECTION_NORTHEAST:
+            	 i = 2;
+            	 break;
+            case DIRECTION_SOUTHWEST:
+            	 i = 6;
+            	 break;
+        }
+        //HACK
         /**
         *  P--P+1--*
         *  | \ | / |

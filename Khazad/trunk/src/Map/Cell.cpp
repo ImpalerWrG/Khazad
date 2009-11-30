@@ -278,7 +278,7 @@ bool Cell::DrawSlope(CubeCoordinates Coordinates)
     MapCoordinates UnModifiedCoordinates = TranslateCubeToMap(Coordinates);
 
     // copy surroundings
-    for(Direction TestDirection = COMPASS_DIRECTIONS_START; TestDirection <= NUM_COMPASS_DIRECTIONS; ++TestDirection)
+    for(Direction TestDirection = COMPASS_DIRECTIONS_START; TestDirection < NUM_COMPASS_DIRECTIONS; ++TestDirection)
     {
         // HACK to convert to old direction system used to index the slope model
         int DirectionNumber;
