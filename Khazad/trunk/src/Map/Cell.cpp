@@ -647,17 +647,17 @@ bool Cell::removeFace(CubeCoordinates TargetCoordinates, Direction DirectionType
     return false;
 }
 
-Face* Cell::addFace(CubeCoordinates TargetCoordinates, Direction DirectionType)
+Face* Cell::addFace(CubeCoordinates Coordinates, Direction DirectionType)
 {
     if (isDirectionPositive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
     {
-        MapCoordinates TargetCoordinates = TranslateCubeToMap(TargetCoordinates);
+        MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
         TargetCoordinates.TranslateMapCoordinates(DirectionType);
         return MAP->addFace(TargetCoordinates, OppositeDirection(DirectionType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {
-        Uint32 Key = GenerateFaceKey(TargetCoordinates, DirectionType);
+        Uint32 Key = GenerateFaceKey(Coordinates, DirectionType);
 
         if (Faces.find(Key) == Faces.end())
         {
