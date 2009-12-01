@@ -49,7 +49,8 @@ void PathManager::DeleteMapAbstraction()
 
 MapPath* PathManager::FindPath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords)
 {
-    return new FullPath();
+    CreateMapAbstraction();
+    return AstarImplementation->FindPath(StartCoords, GoalCoords);
 }
 
 float PathManager::EstimatePathLength(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords)

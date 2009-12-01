@@ -185,6 +185,8 @@ psapi
 )
 ENDIF(UNIX)
 
+add_definitions(-Wall)
+
 ADD_EXECUTABLE(khazad ${PROJECT_SRCS})
 TARGET_LINK_LIBRARIES(khazad ${PROJECT_LIBS})
 

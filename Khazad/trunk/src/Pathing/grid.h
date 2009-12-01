@@ -49,9 +49,9 @@ public:
                 CellCoordinates CellCoords = TargetCell->getCellCoordinates();
                 GridCell* NewGridCell = addCell(CellCoords);
                 CubeCoordinates TargetCubeCoords = CubeCoordinates(0, 0);
-                for (int x = 0; x < CELLEDGESIZE; TargetCubeCoords.X++)
+                for (TargetCubeCoords.X = 0; TargetCubeCoords.X < CELLEDGESIZE; TargetCubeCoords.X++)
                 {
-                    for (int y = 0; y < CELLEDGESIZE; TargetCubeCoords.Y++)
+                    for (TargetCubeCoords.Y = 0; TargetCubeCoords.Y < CELLEDGESIZE; TargetCubeCoords.Y++)
                     {
                         int16_t TileShapeID = TargetCell->getCubeShape(TargetCubeCoords);
 
