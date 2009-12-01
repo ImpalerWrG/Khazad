@@ -50,8 +50,8 @@ public:
     void BuildFaceData();
 
     Vector3 getCubePosition(CubeCoordinates Coordinates);
-    MapCoordinates TranslateCubeToMap(CubeCoordinates Coordinates);
     Uint16 TranslateCubeToIndex(CubeCoordinates Coordinates);
+    MapCoordinates TranslateCubeToMap(CubeCoordinates Coordinates);
 
     void setCubeShape(CubeCoordinates Coordinates, Sint16 TileShape);
     inline Sint16 getCubeShape(CubeCoordinates Coordinates)                   { return CubeShapeTypes[Coordinates.X][Coordinates.Y]; }
@@ -121,8 +121,8 @@ public:
     void addBuilding(Building* NewBuilding)             { buildings.push_back(NewBuilding); }
     void addTree(Tree* NewTree)                         { trees.push_back(NewTree); }
 
-
-    Vector3 getPosition()   { return CellPosition; }
+    CellCoordinates getCellCoordinates()        { return thisCellCoodinates; }
+    Vector3 getPosition()                       { return CellPosition; }
 
     map<int16_t, vector <vertex>* > Geometry;
 

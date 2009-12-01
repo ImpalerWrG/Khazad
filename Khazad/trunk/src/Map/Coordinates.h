@@ -34,23 +34,23 @@ enum Direction
 	DIRECTION_NORTHEAST,
 	DIRECTION_SOUTHWEST,
 
-	DIRECTION_UP_NORTH,
 	DIRECTION_DOWN_SOUTH,
-	DIRECTION_UP_EAST,
+	DIRECTION_UP_NORTH,
 	DIRECTION_DOWN_WEST,
+	DIRECTION_UP_EAST,
 	DIRECTION_DOWN_NORTH,
 	DIRECTION_UP_SOUTH,
 	DIRECTION_DOWN_EAST,
 	DIRECTION_UP_WEST,
 
-    DIRECTION_UP_NORTHWEST,
 	DIRECTION_DOWN_SOUTHEAST,
-	DIRECTION_UP_NORTHEAST,
+    DIRECTION_UP_NORTHWEST,
 	DIRECTION_DOWN_SOUTHWEST,
-	DIRECTION_UP_SOUTHEAST,
+	DIRECTION_UP_NORTHEAST,
     DIRECTION_DOWN_NORTHWEST,
-	DIRECTION_UP_SOUTHWEST,
+	DIRECTION_UP_SOUTHEAST,
 	DIRECTION_DOWN_NORTHEAST,
+	DIRECTION_UP_SOUTHWEST,
 
 	DIRECTION_NONE,
 
@@ -77,20 +77,17 @@ inline Direction OppositeDirection(Direction DirectionType)
 
 inline bool isDirectionPositive(Direction DirectionType)
 {
-    if (DirectionType < NUM_AXIAL_DIRECTIONS)
-    {
-        return DirectionType & 1;
-    }
-    return 0;
+    return DirectionType & 1;  // Referes to Z axis for Directions that span the Z axis
 }
+
+struct CubeCoordinates;
+struct CellCoordinates;
 
 struct MapCoordinates
 {
     MapCoordinates()
     {
-        X = 0;
-        Y = 0;
-        Z = 0;
+        X = Y = Z = 0;
     };
 
     /*MapCoordinates(Vector3 Point)
@@ -100,7 +97,134 @@ struct MapCoordinates
         Z = Point.z;
     };*/
 
-    MapCoordinates(int32_t NewX, int32_t NewY, int32_t NewZ)
+    //MapCoordinates(CellCoordinates CellCoords, CubeCoordinates CubeCoords);
+
+    inline void TranslateMapCoordinates(Direction DirectionType)
+    {
+        switch (DirectionType)
+        {
+            case DIRECTION_UP:
+                Z += 1;
+                break;
+            case DIRECTION_DOWN:
+                Z -= 1;
+                break;
+
+            case DIRECTION_NORTH:
+                Y -= 1;
+                break;
+            case DIRECTION_SOUTH:
+                Y += 1;
+                break;
+            case DIRECTION_EAST:
+                X += 1;
+                break;
+            case DIRECTION_WEST:
+                X -= 1;
+                break;
+
+            case DIRECTION_NORTHWEST:
+                Y -= 1;
+                X -= 1;
+                break;
+            case DIRECTION_SOUTHEAST:
+                Y += 1;
+                X += 1;
+                break;
+            case DIRECTION_NORTHEAST:
+                Y -= 1;
+                X += 1;
+                break;
+            case DIRECTION_SOUTHWEST:
+                Y += 1;
+                X -= 1;
+                break;
+
+            case DIRECTION_UP_NORTH:
+                Z += 1;
+                Y -= 1;
+                break;
+            case DIRECTION_DOWN_SOUTH:
+                Z -= 1;
+                Y += 1;
+                break;
+            case DIRECTION_UP_EAST:
+                Z += 1;
+                X += 1;
+                break;
+            case DIRECTION_DOWN_WEST:
+                Z -= 1;
+                X -= 1;
+                break;
+            case DIRECTION_DOWN_NORTH:
+                Z -= 1;
+                Y -= 1;
+                break;
+            case DIRECTION_UP_SOUTH:
+                Z += 1;
+                Y += 1;
+                break;
+            case DIRECTION_DOWN_EAST:
+                Z -= 1;
+                X += 1;
+                break;
+            case DIRECTION_UP_WEST:
+                Z += 1;
+                X -= 1;
+                break;
+
+            case DIRECTION_UP_NORTHWEST:
+                X -= 1;
+                Y -= 1;
+                Z += 1;
+                break;
+            case DIRECTION_DOWN_SOUTHEAST:
+                X += 1;
+                Y += 1;
+                Z -= 1;
+                break;
+            case DIRECTION_UP_NORTHEAST:
+                X += 1;
+                Y -= 1;
+                Z += 1;
+                break;
+            case DIRECTION_DOWN_SOUTHWEST:
+                X -= 1;
+                Y += 1;
+                Z -= 1;
+                break;
+            case DIRECTION_UP_SOUTHEAST:
+                X += 1;
+                Y += 1;
+                Z += 1;
+                break;
+            case DIRECTION_DOWN_NORTHWEST:
+                X -= 1;
+                Y -= 1;
+                Z -= 1;
+                break;
+            case DIRECTION_UP_SOUTHWEST:
+                X -= 1;
+                Y += 1;
+                Z += 1;
+                break;
+            case DIRECTION_DOWN_NORTHEAST:
+                X += 1;
+                Y -= 1;
+                Z -= 1;
+                break;
+            case DIRECTION_NONE:
+                break;
+        }
+    };
+
+    inline MapCoordinates(MapCoordinates SourceCoords, Direction DirectionType)
+    {
+        Set(SourceCoords.X, SourceCoords.Y, SourceCoords.Z);
+        TranslateMapCoordinates(DirectionType);
+    };
+
+    inline MapCoordinates(int32_t NewX, int32_t NewY, int32_t NewZ)
     {
         Set(NewX, NewY, NewZ);
     };
@@ -112,7 +236,7 @@ struct MapCoordinates
         Z = NewZ;
     };
 
-    MapCoordinates& operator= (const MapCoordinates& ArgumentCoordinates)
+    inline MapCoordinates& operator= (const MapCoordinates& ArgumentCoordinates)
     {
         X = ArgumentCoordinates.X;
         Y = ArgumentCoordinates.Y;
@@ -121,12 +245,12 @@ struct MapCoordinates
         return *this;
     };
 
-    bool operator == (const MapCoordinates& ArgumentCoordinates) const
+    inline bool operator == (const MapCoordinates& ArgumentCoordinates) const
     {
         return (X == ArgumentCoordinates.X && Y == ArgumentCoordinates.Y && Z == ArgumentCoordinates.Z);
     };
 
-    bool operator < (const MapCoordinates& ArgumentCoordinates) const
+    inline bool operator < (const MapCoordinates& ArgumentCoordinates) const
     {
         if (X < ArgumentCoordinates.X)
         {
@@ -274,123 +398,13 @@ struct CubeCoordinates
     uint8_t Y;
 };
 
-inline void TranslateMapCoordinates(MapCoordinates& TargetCoordinates, Direction DirectionType)
+/*
+MapCoordinates::MapCoordinates(CellCoordinates CellCoords, CubeCoordinates CubeCoords)
 {
-    switch (DirectionType)
-    {
-        case DIRECTION_UP:
-            TargetCoordinates.Z += 1;
-            break;
-        case DIRECTION_DOWN:
-            TargetCoordinates.Z -= 1;
-            break;
-
-        case DIRECTION_NORTH:
-            TargetCoordinates.Y -= 1;
-            break;
-        case DIRECTION_SOUTH:
-            TargetCoordinates.Y += 1;
-            break;
-        case DIRECTION_EAST:
-            TargetCoordinates.X += 1;
-            break;
-        case DIRECTION_WEST:
-            TargetCoordinates.X -= 1;
-            break;
-
-        case DIRECTION_NORTHWEST:
-            TargetCoordinates.Y -= 1;
-            TargetCoordinates.X -= 1;
-            break;
-        case DIRECTION_SOUTHEAST:
-            TargetCoordinates.Y += 1;
-            TargetCoordinates.X += 1;
-            break;
-        case DIRECTION_NORTHEAST:
-            TargetCoordinates.Y -= 1;
-            TargetCoordinates.X += 1;
-            break;
-        case DIRECTION_SOUTHWEST:
-            TargetCoordinates.Y += 1;
-            TargetCoordinates.X -= 1;
-            break;
-
-        case DIRECTION_UP_NORTH:
-            TargetCoordinates.Z += 1;
-            TargetCoordinates.Y -= 1;
-            break;
-        case DIRECTION_DOWN_SOUTH:
-            TargetCoordinates.Z -= 1;
-            TargetCoordinates.Y += 1;
-            break;
-        case DIRECTION_UP_EAST:
-            TargetCoordinates.Z += 1;
-            TargetCoordinates.X += 1;
-            break;
-        case DIRECTION_DOWN_WEST:
-            TargetCoordinates.Z -= 1;
-            TargetCoordinates.X -= 1;
-            break;
-        case DIRECTION_DOWN_NORTH:
-            TargetCoordinates.Z -= 1;
-            TargetCoordinates.Y -= 1;
-            break;
-        case DIRECTION_UP_SOUTH:
-            TargetCoordinates.Z += 1;
-            TargetCoordinates.Y += 1;
-            break;
-        case DIRECTION_DOWN_EAST:
-            TargetCoordinates.Z -= 1;
-            TargetCoordinates.X += 1;
-            break;
-        case DIRECTION_UP_WEST:
-            TargetCoordinates.Z += 1;
-            TargetCoordinates.X -= 1;
-            break;
-
-        case DIRECTION_UP_NORTHWEST:
-            TargetCoordinates.X -= 1;
-            TargetCoordinates.Y -= 1;
-            TargetCoordinates.Z += 1;
-            break;
-        case DIRECTION_DOWN_SOUTHEAST:
-            TargetCoordinates.X += 1;
-            TargetCoordinates.Y += 1;
-            TargetCoordinates.Z -= 1;
-            break;
-        case DIRECTION_UP_NORTHEAST:
-            TargetCoordinates.X += 1;
-            TargetCoordinates.Y -= 1;
-            TargetCoordinates.Z += 1;
-            break;
-        case DIRECTION_DOWN_SOUTHWEST:
-            TargetCoordinates.X -= 1;
-            TargetCoordinates.Y += 1;
-            TargetCoordinates.Z -= 1;
-            break;
-        case DIRECTION_UP_SOUTHEAST:
-            TargetCoordinates.X += 1;
-            TargetCoordinates.Y += 1;
-            TargetCoordinates.Z += 1;
-            break;
-        case DIRECTION_DOWN_NORTHWEST:
-            TargetCoordinates.X -= 1;
-            TargetCoordinates.Y -= 1;
-            TargetCoordinates.Z -= 1;
-            break;
-        case DIRECTION_UP_SOUTHWEST:
-            TargetCoordinates.X -= 1;
-            TargetCoordinates.Y += 1;
-            TargetCoordinates.Z += 1;
-            break;
-        case DIRECTION_DOWN_NORTHEAST:
-            TargetCoordinates.X += 1;
-            TargetCoordinates.Y -= 1;
-            TargetCoordinates.Z -= 1;
-            break;
-        case DIRECTION_NONE:
-            break;
-    }
+    X = (CellCoords.X * CELLEDGESIZE) + CubeCoords.X;
+    Y = (CellCoords.Y * CELLEDGESIZE) + CubeCoords.Y;
+    Z = CellCoords.Z;
 }
+*/
 
 #endif // COORDINATES__HEADER

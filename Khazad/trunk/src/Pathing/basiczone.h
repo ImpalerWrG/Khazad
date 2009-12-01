@@ -136,14 +136,14 @@ public:
                         {
                           if (G_->getEdgeCost(p,dir) >= 0)
                           {
-                            MapCoordinates neigh = p;
-                            TranslateMapCoordinates(neigh,dir);
-                            basicZone *nz = (basicZone*) findContainingZone(neigh);
+                            MapCoordinates NeiboringCoordinates = p;
+                            NeiboringCoordinates.TranslateMapCoordinates(dir);
+                            basicZone *nz = (basicZone*) findContainingZone(NeiboringCoordinates);
                             if (nz != NULL)
                             {
-                                pbz->connect(nz,p,neigh,(*h)(p,neigh));
+                                pbz->connect(nz,p,NeiboringCoordinates,(*h)(p, NeiboringCoordinates));
 #ifdef ZONE_DEBUG
-                                printf("(%2d,%2d,%2d)->(%2d,%2d,%2d)\n",p[0],p[1],p[2],neigh[0],neigh[1],neigh[2]);
+                                printf("(%2d,%2d,%2d)->(%2d,%2d,%2d)\n",p[0],p[1],p[2],NeiboringCoordinates[0],NeiboringCoordinates[1],NeiboringCoordinates[2]);
                                 pbz->checkValid();
                                 nz->checkValid();
 #endif

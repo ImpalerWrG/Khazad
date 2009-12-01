@@ -49,18 +49,18 @@ FullPath *AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
         {
           if (SearchGraph->getEdgeCost(e->v_,dir) >= 0)
           {
-            MapCoordinates neigh = e->v_;
-            TranslateMapCoordinates(neigh,dir);
+            MapCoordinates NeiboringCoordinates = e->v_;
+            NeiboringCoordinates.TranslateMapCoordinates(dir);
 
             // try to find ey in the visited set
-            if (visited.find(neigh) != visited.end())
+            if (visited.find(NeiboringCoordinates) != visited.end())
                 continue;
 
             cost_t cost = SearchGraph->getEdgeCost(e->v_, dir);
             if (cost < 0)
                 continue; //Not valid edge
 
-            AStarEntryPtr eneigh(new AStarEntry(neigh, *e, e->cost_ + cost, (*TieBreakerHeuristic)(neigh,GoalCoordinates)));
+            AStarEntryPtr eneigh(new AStarEntry(NeiboringCoordinates, *e, e->cost_ + cost, (*TieBreakerHeuristic)(NeiboringCoordinates,GoalCoordinates)));
 
 #if 0
             typedef std::vector<AStarEntryPtr>::iterator eiterator;

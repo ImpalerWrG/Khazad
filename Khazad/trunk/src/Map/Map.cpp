@@ -289,7 +289,7 @@ Face* Map::getFace(MapCoordinates Coordinates, Direction DirectionType) const
     if (isDirectionPositive(DirectionType)) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
     {
         // Do something for edge of Map cases??
-        TranslateMapCoordinates(TargetMapCoordinates, DirectionType);
+        TargetMapCoordinates.TranslateMapCoordinates(DirectionType);
         TargetFace = OppositeDirection(TargetFace);
     }
 
@@ -311,7 +311,7 @@ bool Map::hasFace(MapCoordinates Coordinates, Direction DirectionType) const
     if (isDirectionPositive(DirectionType)) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
     {
         // Do something for edge of Map cases??
-        TranslateMapCoordinates(TargetMapCoordinates, DirectionType);
+        TargetMapCoordinates.TranslateMapCoordinates(DirectionType);
         TargetFace = OppositeDirection(TargetFace);
     }
 
@@ -333,7 +333,7 @@ bool Map::removeFace(MapCoordinates Coordinates, Direction DirectionType)
     if (isDirectionPositive(DirectionType)) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
     {
         // Do something for edge of Map cases??
-        TranslateMapCoordinates(TargetMapCoordinates, DirectionType);
+        TargetMapCoordinates.TranslateMapCoordinates(DirectionType);
         TargetFace = OppositeDirection(TargetFace);
     }
 
@@ -356,7 +356,7 @@ Face* Map::addFace(MapCoordinates Coordinates, Direction DirectionType)
     if (isDirectionPositive(DirectionType)) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
     {
         // Do something for edge of Map cases??
-        TranslateMapCoordinates(TargetMapCoordinates, DirectionType);
+        TargetMapCoordinates.TranslateMapCoordinates(DirectionType);
         TargetFace = OppositeDirection(TargetFace);
     }
 
@@ -626,21 +626,14 @@ void Map::DigChannel(MapCoordinates Coordinates)
     Dig(Coordinates);
     setCubeShape(Coordinates, DATA->getLabelIndex("TILESHAPE_EMPTY"));
 
-    // reveal tiles around, dig below
+    // reveal tiles around
     for(Direction DirectionType = COMPASS_DIRECTIONS_START; DirectionType < NUM_COMPASS_DIRECTIONS; ++DirectionType)
     {
-        MapCoordinates ModifiedCoordinates = Coordinates;
-        TranslateMapCoordinates(ModifiedCoordinates, DirectionType);
-
-        if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
-        {
-            setCubeHidden(ModifiedCoordinates, false);
-        }
-        if (DirectionType == DIRECTION_DOWN)
-        {
-            Dig(ModifiedCoordinates);
-        }
+        setCubeHidden(MapCoordinates(Coordinates, DirectionType), false);
     }
+
+    Dig(MapCoordinates(Coordinates, DIRECTION_DOWN));
+
     removeFace(Coordinates, DIRECTION_DOWN);
 }
 
@@ -653,21 +646,12 @@ void Map::DigSlope(MapCoordinates Coordinates)
     // reveal tiles around
     for(Direction DirectionType = COMPASS_DIRECTIONS_START; DirectionType < NUM_COMPASS_DIRECTIONS; ++DirectionType)
     {
-        MapCoordinates ModifiedCoordinates = Coordinates;
-        TranslateMapCoordinates(ModifiedCoordinates, DirectionType);
-
-        if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
-        {
-            setCubeHidden(ModifiedCoordinates, false);
-        }
-        if(DirectionType == DIRECTION_UP)
-        {
-            DigChannel(ModifiedCoordinates);
-        }
+        setCubeHidden(MapCoordinates(Coordinates, DirectionType), false);
     }
 
-    setCubeHidden(Coordinates, false);
+    DigChannel(MapCoordinates(Coordinates, DIRECTION_UP));
     setCubeShape(Coordinates, RampID);
+
     setCubeMaterial(Coordinates, getFaceMaterial(Coordinates, DIRECTION_DOWN));
     setCubeSurfaceType(Coordinates, getFaceSurfaceType(Coordinates, DIRECTION_DOWN));
 }
@@ -682,22 +666,10 @@ void Map::Dig(MapCoordinates Coordinates)
     {
         if(isCubeSolid(Coordinates) || isCubeSloped(Coordinates))
         {
-            // reveal tiles around
-            for(Direction DirectionType = COMPASS_DIRECTIONS_START; DirectionType < NUM_COMPASS_DIRECTIONS; ++DirectionType)
-            {
-                MapCoordinates ModifiedCoordinates = Coordinates;
-                TranslateMapCoordinates(ModifiedCoordinates, DirectionType);
-
-                if(DirectionType != DIRECTION_DOWN && DirectionType != DIRECTION_UP)
-                {
-                    setCubeHidden(ModifiedCoordinates, false);
-                }
-            }
-
             for(Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
             {
                 MapCoordinates ModifiedCoordinates = Coordinates;
-                TranslateMapCoordinates(ModifiedCoordinates, DirectionType);
+                ModifiedCoordinates.TranslateMapCoordinates(DirectionType);
 
                 if (DirectionType == DIRECTION_DOWN)
                 {
@@ -743,6 +715,12 @@ void Map::Dig(MapCoordinates Coordinates)
             setCubeShape(Coordinates, FloorID);
 
             MAP->setCubeMaterial(Coordinates, -1);
+        }
+
+        // reveal tiles around
+        for(Direction DirectionType = COMPASS_DIRECTIONS_START; DirectionType < NUM_COMPASS_DIRECTIONS; ++DirectionType)
+        {
+            setCubeHidden(MapCoordinates(Coordinates, DirectionType), false);
         }
     }
 }

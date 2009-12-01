@@ -7,6 +7,7 @@
 #include <string.h>
 #include <map>
 
+#include <Cell.h>
 #include <Coordinates.h>
 #include <heuristics.h>
 
@@ -27,7 +28,7 @@ struct GridCell
   GridCell()
   {
     //zero direction flags
-    memset(DirectionMatrix,0,sizeof(DirectionMatrix));
+    memset(DirectionMatrix, 0, sizeof(DirectionMatrix));
   }
   DirectionFlags DirectionMatrix[CELLEDGESIZE][CELLEDGESIZE];
 };
@@ -38,22 +39,100 @@ public:
 
     KhazadGrid()
     {
-        /*for (int x = 0; x < 0; x++)
+        std::map<uint64_t, Cell*>* TargetCells = MAP->getCellMap();
+        for (std::map<uint64_t, Cell*>::iterator it = TargetCells->begin(); it != TargetCells->end(); ++it)
         {
-            //DirectionFlags Flags = 0;
-            //MapCoordinates TestCoords = MapCoordinates(x,y,z);
-
-            for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
+            if (it->second != NULL)
             {
+                Cell* TargetCell = it->second;
+                CellCoordinates CellCoords = TargetCell->getCellCoordinates();
+                GridCell* NewGridCell = addCell(CellCoords);
 
-                if (getEdgeCost(TestCoords, DirectionType) >= 0)
+                CubeCoordinates TargetCubeCoords = CubeCoordinates(0, 0);
+                for (int x = 0; x < CELLEDGESIZE; TargetCubeCoords.X++)
                 {
-                    Flags |= (1 << (int) DirectionType);
-                }
+                    for (int y = 0; y < CELLEDGESIZE; TargetCubeCoords.Y++)
+                    {
+                        int16_t TileShapeID = TargetCell->getCubeShape(TargetCubeCoords);
 
+                        static int16_t NONE_ID = 0;
+                        static int16_t FLOOR_ID = 1;
+                        static int16_t WALL_ID = 2;
+                        static int16_t RAMP_ID = 3;
+                        static int16_t STAIR_ID = 4;
+                        static int16_t FORT_ID = 5;
+                        static int16_t EMPTY_ID = 6;
+                        static int16_t BOULDER_ID = 7;
+
+                        uint32_t Flags = 0;
+
+                        if (TileShapeID == WALL_ID || TileShapeID == FORT_ID || TileShapeID == EMPTY_ID)
+                        {
+                            NewGridCell->DirectionMatrix[TargetCubeCoords.X][TargetCubeCoords.Y] = 0;
+                            continue;
+                        }
+
+                        if (TileShapeID == RAMP_ID || TileShapeID == STAIR_ID)
+                        {
+                            for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
+                            {
+                                int16_t AdjacentTileShape = MAP->getCubeShape(GenerateMapCoordinates(CellCoords, TargetCubeCoords));
+
+                                if (DirectionType == DIRECTION_DOWN || DirectionType == DIRECTION_UP)
+                                {
+                                    if (AdjacentTileShape != TileShapeID && TileShapeID != STAIR_ID)
+                                    {
+                                        continue;  // Strait up and down is possible only through a ramp or stair
+                                    }
+                                }
+
+                                if (AdjacentTileShape != WALL_ID && AdjacentTileShape != FORT_ID && AdjacentTileShape != EMPTY_ID)
+                                {
+                                    Flags |= (1 << (int) DirectionType);
+                                }
+                            }
+                            NewGridCell->DirectionMatrix[TargetCubeCoords.X][TargetCubeCoords.Y] = Flags;
+                            continue;
+                        }
+
+                        if (TileShapeID == FLOOR_ID || TileShapeID == BOULDER_ID)
+                        {
+                            for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
+                            {
+                                int16_t AdjacentTileShape = MAP->getCubeShape(GenerateMapCoordinates(CellCoords, TargetCubeCoords));
+
+                                if (DirectionType >= NUM_COMPASS_DIRECTIONS && isDirectionPositive(DirectionType))
+                                {
+                                    continue;  // Skip the upward directions, they are only valid for ramps/stairs
+                                }
+
+                                if (DirectionType == DIRECTION_DOWN || DirectionType == DIRECTION_UP)
+                                {
+                                    continue;  // Strait down is impossible through a floor
+                                }
+
+                                if (AdjacentTileShape == FLOOR_ID || AdjacentTileShape == RAMP_ID || AdjacentTileShape == STAIR_ID || AdjacentTileShape == BOULDER_ID)
+                                {
+                                    Flags |= (1 << (int) DirectionType);
+                                }
+                            }
+                            NewGridCell->DirectionMatrix[TargetCubeCoords.X][TargetCubeCoords.Y] = Flags;
+                        }
+                    }
+                }
             }
-            //setDirectionFlags(TestCoords, Flags);
-        }*/
+        }
+    }
+
+    MapCoordinates GenerateMapCoordinates(CellCoordinates CellCoords, CubeCoordinates CubeCoords)
+    {
+        MapCoordinates NewCoordinates;
+
+        NewCoordinates.X = (CellCoords.X * CELLEDGESIZE) + CubeCoords.X;
+        NewCoordinates.Y = (CellCoords.Y * CELLEDGESIZE) + CubeCoords.Y;
+        NewCoordinates.Z = CellCoords.Z;
+
+        return NewCoordinates;
     }
 
     DirectionFlags getDirectionFlags(const MapCoordinates &TargetCoords) const
@@ -117,6 +196,18 @@ public:
         {
             return Cells.find(Key)->second;
         }
+    }
+
+    GridCell* addCell(CellCoordinates TargetCoords)
+    {
+        GridCell* TargetCell = getCell(TargetCoords);
+        if (TargetCell == NULL)
+        {
+            GridCell* NewGridCell = new GridCell();
+            Cells[GenerateCellKey(TargetCoords)] = NewGridCell;
+            return NewGridCell;
+        }
+        return TargetCell;
     }
 
     float getEdgeCost(const MapCoordinates &TestCoords, Direction DirectionType) const

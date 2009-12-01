@@ -188,7 +188,7 @@ bool Cell::DrawFaces(CubeCoordinates Coordinates)
         }
 
         MapCoordinates AdjacentCubeCoordinates = TranslateCubeToMap(Coordinates);
-        TranslateMapCoordinates(AdjacentCubeCoordinates, DirectionType);
+        AdjacentCubeCoordinates.TranslateMapCoordinates(DirectionType);
 
         if (DirectionType != DIRECTION_DOWN && !RENDERER->isCubeDrawn(AdjacentCubeCoordinates))
         {
@@ -313,7 +313,7 @@ bool Cell::DrawSlope(CubeCoordinates Coordinates)
         // HACK
 
         MapCoordinates ModifiedCoordinates = UnModifiedCoordinates;
-        TranslateMapCoordinates(ModifiedCoordinates, TestDirection);
+        ModifiedCoordinates.TranslateMapCoordinates(TestDirection);
 
         solid = 0;
         if(MAP->isCubeSolid(ModifiedCoordinates))
@@ -383,7 +383,7 @@ void Cell::BuildFaceData()
             for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
             {
                 TargetMapCoordinates = TranslateCubeToMap(TargetCubeCoordinates);
-                TranslateMapCoordinates(TargetMapCoordinates, DirectionType);
+                TargetMapCoordinates.TranslateMapCoordinates(DirectionType);
 
                 if (isCubeSolid(TargetCubeCoordinates))
                 {
@@ -491,17 +491,17 @@ inline Uint32 Cell::GenerateFaceKey(CubeCoordinates Coordinates, Direction Direc
     return Key;
 }
 
-Face* Cell::getFace(CubeCoordinates Coordinates, Direction DirectionType)
+Face* Cell::getFace(CubeCoordinates TargetCoordinates, Direction DirectionType)
 {
     if (isDirectionPositive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
     {
-        MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-        TranslateMapCoordinates(TargetCoordinates, DirectionType);
+        MapCoordinates TargetCoordinates = TranslateCubeToMap(TargetCoordinates);
+        TargetCoordinates.TranslateMapCoordinates(DirectionType);
         return MAP->getFace(TargetCoordinates, OppositeDirection(DirectionType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {
-        Uint32 Key = GenerateFaceKey(Coordinates, DirectionType);
+        Uint32 Key = GenerateFaceKey(TargetCoordinates, DirectionType);
 
         if (Faces.find(Key) == Faces.end())
         {
@@ -514,17 +514,17 @@ Face* Cell::getFace(CubeCoordinates Coordinates, Direction DirectionType)
     }
 }
 
-bool Cell::hasFace(CubeCoordinates Coordinates, Direction DirectionType)
+bool Cell::hasFace(CubeCoordinates TargetCoordinates, Direction DirectionType)
 {
     if (isDirectionPositive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
     {
-        MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-        TranslateMapCoordinates(TargetCoordinates, DirectionType);
+        MapCoordinates TargetCoordinates = TranslateCubeToMap(TargetCoordinates);
+        TargetCoordinates.TranslateMapCoordinates(DirectionType);
         return MAP->hasFace(TargetCoordinates, OppositeDirection(DirectionType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {
-        Uint32 Key = GenerateFaceKey(Coordinates, DirectionType);
+        Uint32 Key = GenerateFaceKey(TargetCoordinates, DirectionType);
 
         return Faces.find(Key) != Faces.end();
     }
@@ -623,17 +623,17 @@ bool Cell::setBothFaceSurfaces(CubeCoordinates Coordinates, Direction DirectionT
     return false;
 }
 
-bool Cell::removeFace(CubeCoordinates Coordinates, Direction DirectionType)
+bool Cell::removeFace(CubeCoordinates TargetCoordinates, Direction DirectionType)
 {
     if (isDirectionPositive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
     {
-        MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-        TranslateMapCoordinates(TargetCoordinates, DirectionType);
+        MapCoordinates TargetCoordinates = TranslateCubeToMap(TargetCoordinates);
+        TargetCoordinates.TranslateMapCoordinates(DirectionType);
         return MAP->removeFace(TargetCoordinates, OppositeDirection(DirectionType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {
-        Uint32 Key = GenerateFaceKey(Coordinates, DirectionType);
+        Uint32 Key = GenerateFaceKey(TargetCoordinates, DirectionType);
 
         if (Faces.find(Key) != Faces.end())
         {
@@ -647,17 +647,17 @@ bool Cell::removeFace(CubeCoordinates Coordinates, Direction DirectionType)
     return false;
 }
 
-Face* Cell::addFace(CubeCoordinates Coordinates, Direction DirectionType)
+Face* Cell::addFace(CubeCoordinates TargetCoordinates, Direction DirectionType)
 {
     if (isDirectionPositive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
     {
-        MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-        TranslateMapCoordinates(TargetCoordinates, DirectionType);
+        MapCoordinates TargetCoordinates = TranslateCubeToMap(TargetCoordinates);
+        TargetCoordinates.TranslateMapCoordinates(DirectionType);
         return MAP->addFace(TargetCoordinates, OppositeDirection(DirectionType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {
-        Uint32 Key = GenerateFaceKey(Coordinates, DirectionType);
+        Uint32 Key = GenerateFaceKey(TargetCoordinates, DirectionType);
 
         if (Faces.find(Key) == Faces.end())
         {

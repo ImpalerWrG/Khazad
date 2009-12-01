@@ -242,21 +242,21 @@ public:
         {
           if (G_->getEdgeCost(p,dir) >= 0)
           {
-            MapCoordinates neigh = p;
-            TranslateMapCoordinates(neigh,dir);
+            MapCoordinates NeiboringCoordinates = p;
+            NeiboringCoordinates.TranslateMapCoordinates(dir);
             //assert(G_->edgeCost(p,neigh)>0);
             //assert(G_->edgeCost(p,p)>=0);
             //assert(G_->edgeCost(neigh,neigh)>0);
-            if (!pz->contains(neigh)) //here's an edge leaving the zone
+            if (!pz->contains(NeiboringCoordinates)) //here's an edge leaving the zone
             {
                 if (pz->get(p) == NULL)
                     pz->addBorderNode(p,h_);
-                gridZone *nz = (gridZone*) findContainingZone(neigh);
+                gridZone *nz = (gridZone*) findContainingZone(NeiboringCoordinates);
                 if (nz != NULL)
                 {
-                    pz->connect(nz,p,neigh,G_->getEdgeCost(p,dir));
+                    pz->connect(nz,p,NeiboringCoordinates,G_->getEdgeCost(p,dir));
 #ifdef ZONE_DEBUG
-                    printf("(%2d,%2d,%2d)->(%2d,%2d,%2d)\n",p[0],p[1],p[2],neigh[0],neigh[1],neigh[2]);
+                    printf("(%2d,%2d,%2d)->(%2d,%2d,%2d)\n",p[0],p[1],p[2],NeiboringCoordinates[0],NeiboringCoordinates[1],NeiboringCoordinates[2]);
                     pz->checkValid();
                     nz->checkValid();
 #endif
