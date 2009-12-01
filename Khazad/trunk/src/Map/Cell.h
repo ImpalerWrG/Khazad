@@ -54,13 +54,13 @@ public:
     MapCoordinates TranslateCubeToMap(CubeCoordinates Coordinates);
 
     void setCubeShape(CubeCoordinates Coordinates, Sint16 TileShape);
-    inline Sint16 getCubeShape(CubeCoordinates Coordinates)                   { return CubeShapeTypes[Coordinates.X][Coordinates.Y]; }
+    inline Sint16 getCubeShape(CubeCoordinates Coordinates) const             { return CubeShapeTypes[Coordinates.X][Coordinates.Y]; }
 
     void setCubeMaterial(CubeCoordinates Coordinates, Sint16 MaterialID)      { CubeMaterialTypes[Coordinates.X][Coordinates.Y] = MaterialID; }
-    inline Sint16 getCubeMaterial(CubeCoordinates Coordinates)                { return CubeMaterialTypes[Coordinates.X][Coordinates.Y]; }
+    inline Sint16 getCubeMaterial(CubeCoordinates Coordinates) const          { return CubeMaterialTypes[Coordinates.X][Coordinates.Y]; }
 
     void setCubeSurface(CubeCoordinates Coordinates, Sint16 SurfaceID)        { CubeSurfaceTypes[Coordinates.X][Coordinates.Y] = SurfaceID; }
-    inline Sint16 getCubeSurface(CubeCoordinates Coordinates)                 { return CubeSurfaceTypes[Coordinates.X][Coordinates.Y]; }
+    inline Sint16 getCubeSurface(CubeCoordinates Coordinates) const           { return CubeSurfaceTypes[Coordinates.X][Coordinates.Y]; }
 
     bool isCubeSloped(CubeCoordinates Coordinates);
 

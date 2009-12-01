@@ -5,6 +5,7 @@
 #include <Singleton.h>
 #include <MovementController.h>
 #include <astar.h>
+#include <grid.h>
 
 class PathManager
 {
@@ -32,9 +33,10 @@ public:
 
 protected:
 
-    //PathAlgorithm AstarImplementation;
+    AStar* AstarImplementation;
     //PathAlgorithm HeriarchialAstarImplementation;
-    // Path system storage here
+
+    KhazadGrid* MapGrid;
 };
 
 #define PATH (PathManager::GetInstance())

@@ -69,7 +69,7 @@ public:
     zoneBorderNode* addBorderNode(const MapCoordinates &p, const Heuristic* h)
     {
         assert(zbn_.find(p)==zbn_.end());
-        std::vector<point> cache;
+        std::vector<MapCoordinates> cache;
 
         zoneBorderNode *r = new zoneBorderNode(p,this); //not freed?
         for (iterator it = zbn_.begin(); it != zbn_.end(); it++)
@@ -85,20 +85,20 @@ public:
         return r;
     }
 
-    void connect(zone *other, const MapCoordinates &pthis, const MapCoordinates &pother, cost_t cost)
+    void connect(zone *other, const MapCoordinates &pthis, const MapCoordinates &pother, float cost)
     {
         zoneBorderNode *z = get(pthis);
         assert(z != NULL);
         connect(other->connect(z,pother,cost),pthis,cost);
     }
 
-    zoneBorderNode* connect(zoneBorderNode *zbnother, const MapCoordinates &pthis, cost_t cost)
+    zoneBorderNode* connect(zoneBorderNode *zbnother, const MapCoordinates &pthis, float cost)
     {
         zoneBorderNode *z = get(pthis);
         assert(z != NULL);
-        std::vector<point> cache;
+        std::vector<MapCoordinates> cache;
         cache.push_back(pthis);
-        cache.push_back((point)*zbnother);
+        cache.push_back((MapCoordinates)*zbnother);
         z->addAdjacentNode(zbnother,cost,cache);
         return z;
     }
@@ -125,7 +125,7 @@ public:
 
 class gridZoneManager : public zoneManager
 {
-    boost::unordered_map<point, gridZone*, point::hash> zl;
+    boost::unordered_map<MapCoordinates, gridZone*, MapCoordinates::hash> zl;
     const unsigned length;
     zoneManager *child;
     const gridInterface* G_;
@@ -235,7 +235,7 @@ public:
         }
 #endif
     }
-    
+
     zone *createZone(MapCoordinates p)
     {
       gridZone *pz;
@@ -246,7 +246,7 @@ public:
         MapCoordinates blr(tul[0]+length-1,tul[1]+length-1,tul[2]);
         z = pz = new gridZone(tul,blr);
         //create a zone
-        zl[point(p[0]/length,p[1]/length,p[2])] = pz;
+        zl[MapCoordinates(p[0]/length,p[1]/length,p[2])] = pz;
         //for each element in the zone
         for (int v = 0; v < length; v++)
             for (int u = 0; u < length; u++)

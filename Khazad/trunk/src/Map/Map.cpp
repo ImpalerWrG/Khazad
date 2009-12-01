@@ -392,7 +392,7 @@ void Map::setCubeShape(MapCoordinates Coordinates, Sint16 TileShape)
     }
 }
 
-inline Sint16 Map::getCubeShape(MapCoordinates Coordinates) const
+Sint16 Map::getCubeShape(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 

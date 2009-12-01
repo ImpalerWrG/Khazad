@@ -68,7 +68,7 @@ public:
     bool isCubeSloped(MapCoordinates Coordinates) const;
 
     void setCubeShape(MapCoordinates Coordinates, Sint16 TileShape);
-    inline Sint16 getCubeShape(MapCoordinates Coordinates) const;
+    Sint16 getCubeShape(MapCoordinates Coordinates) const;
 
     void setCubeMaterial(MapCoordinates Coordinates, Sint16 MaterialID);
     inline Sint16 getCubeMaterial(MapCoordinates Coordinates) const;

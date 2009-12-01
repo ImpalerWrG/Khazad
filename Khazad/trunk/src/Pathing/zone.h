@@ -21,13 +21,13 @@ public:
     virtual ~zone() {};
 
     virtual bool equals(const zone *z) const = 0;
-    virtual bool contains(const point &p) const = 0;
-    virtual zoneBorderNode* get(const point &p) = 0;
+    virtual bool contains(const MapCoordinates &p) const = 0;
+    virtual zoneBorderNode* get(const MapCoordinates &p) = 0;
 
-    virtual zoneBorderNode* addBorderNode(const point &p, const Heuristic* h)  = 0;
+    virtual zoneBorderNode* addBorderNode(const MapCoordinates &p, const Heuristic* h)  = 0;
     virtual void removeBorderNode(const zoneBorderNode *deleteme) = 0;
-    virtual void connect(zone *other, const point &pthis, const point &pother, cost_t estimate) = 0;
-    virtual zoneBorderNode* connect(zoneBorderNode *zbnother, const point &pthis, cost_t estimate) = 0;
+    virtual void connect(zone *other, const MapCoordinates &pthis, const MapCoordinates &pother, float estimate) = 0;
+    virtual zoneBorderNode* connect(zoneBorderNode *zbnother, const MapCoordinates &pthis, float estimate) = 0;
     virtual void clearCache(const Heuristic *h) = 0;
 
     virtual void checkValid() = 0;
@@ -42,12 +42,12 @@ class zoneManager
 public:
     virtual ~zoneManager() {};
 
-    virtual zone* findContainingZone(const point &p) = 0;
+    virtual zone* findContainingZone(const MapCoordinates &p) = 0;
     virtual zoneManager* down()
     {
         return NULL;
     }
-    virtual void registerChange(const point &p) = 0;
+    virtual void registerChange(const MapCoordinates &p) = 0;
     virtual void checkValid() = 0;
 };
 
@@ -55,10 +55,10 @@ class adjacentNode : public MapCoordinates
 {
 public:
     zoneBorderNode *node_;
-    cost_t cost_;
+    float cost_;
     std::vector<MapCoordinates> cache_;
 
-    adjacentNode(zoneBorderNode *n, cost_t c);
+    adjacentNode(zoneBorderNode *n, float c);
     void setCache(FullPath *cpath);
 };
 
@@ -80,7 +80,7 @@ public:
         return at_.end();
     }
 
-    zoneBorderNode(const point &p, zone *owner) : point(p), owner_(owner) {}
+    zoneBorderNode(const MapCoordinates &p, zone *owner) : MapCoordinates(p), owner_(owner) {}
     ~zoneBorderNode()
     {
         iterator it = at_.begin();
@@ -94,7 +94,7 @@ public:
     }
 
     void invalidateCache(const zone *affected, const Heuristic *h);
-    void addAdjacentNode(zoneBorderNode *zbn, cost_t c, const std::vector<point> &cache)
+    void addAdjacentNode(zoneBorderNode *zbn, float c, const std::vector<MapCoordinates> &cache)
     {
         adjacentNode *an = new adjacentNode(zbn,c);
         an->cache_.insert(an->cache_.begin(),cache.begin(), cache.end());
@@ -105,7 +105,7 @@ public:
 
     void removeAdjacentNode(const zoneBorderNode *zbn)
     {
-        iterator it = std::find_if(at_.begin(),at_.end(),pointerEqualityPredicate<point>((const point*)zbn));
+        iterator it = std::find_if(at_.begin(),at_.end(),pointerEqualityPredicate<MapCoordinates>((const MapCoordinates*)zbn));
         assert(it != at_.end());
         adjacentNode* an = *it;
         at_.erase(it);
@@ -129,16 +129,16 @@ struct ZonedGridGraph : public gridInterface
 {
     ZonedGridGraph (const gridInterface *grid, const zone* zone) : grid_(grid), z_(zone) { }
 
-    bool contains(const point &p) const
+    bool contains(const MapCoordinates &p) const
     {
         return z_->contains(p);
     }
-    
-    cost_t getEdgeCost(const MapCoordinates &TestCoords, Direction DirectionType) const
+
+    float getEdgeCost(const MapCoordinates &TestCoords, Direction DirectionType) const
     {
         return grid_->getEdgeCost(TestCoords,DirectionType);
     }
-    
+
     virtual int max(unsigned dim) const { return grid_->max(dim); }
     virtual int min(unsigned dim) const { return grid_->min(dim); }
 
@@ -154,12 +154,12 @@ class AStarZoneEntry : public entry
 {
 public:
     adjacentNode *node_;
-    cost_t cost_;
-    cost_t tiebreaker_;
-    std::vector<point> path_;
+    float cost_;
+    float tiebreaker_;
+    std::vector<MapCoordinates> path_;
 
-    AStarZoneEntry(adjacentNode *node, cost_t cost) : node_(node), cost_(cost), tiebreaker_(0) { }
-    AStarZoneEntry(adjacentNode *node, const AStarZoneEntry &prev, cost_t tiebreaker)
+    AStarZoneEntry(adjacentNode *node, float cost) : node_(node), cost_(cost), tiebreaker_(0) { }
+    AStarZoneEntry(adjacentNode *node, const AStarZoneEntry &prev, float tiebreaker)
     {
         node_ = node;
         cost_ = prev.cost_+prev.node_->cost_;
@@ -169,12 +169,12 @@ public:
         path_.insert(path_.end(), ++(prev.node_->cache_.begin()),prev.node_->cache_.end()); //no duplicating end node
     }
 
-    cost_t value(const point &t, const Heuristic &h) const
+    float value(const MapCoordinates &t, const Heuristic &h) const
     {
         return cost_ + node_->cost_ + h(*node_,t); //previous cost + most recent edge cost + heuristic to dest
     }
 
-    cost_t tiebreaker() const
+    float tiebreaker() const
     {
         return tiebreaker_;
     }
@@ -188,11 +188,11 @@ public:
         return node_->cache_.size() != 0;
     }
 
-    virtual point& getPoint()
+    virtual MapCoordinates& getPoint()
     {
         return *node_;
     }
-    
+
 };
 
 #endif // ZONE_HEADER

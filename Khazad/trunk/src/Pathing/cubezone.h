@@ -36,7 +36,7 @@ public:
 
     zone* findContainingZone(const MapCoordinates &p)
     {
-        point q(p[0]/length,p[1]/length,p[2]/length);
+        MapCoordinates q(p[0]/length,p[1]/length,p[2]/length);
         if (zl.find(q)!= zl.end())
             return zl[q];
         else
@@ -98,7 +98,7 @@ public:
             {
                 for (int x = G_->min(0); x < G_->max(0); x+=length)
                 {
-                    point tul(x,y,z);
+                    MapCoordinates tul(x,y,z);
                     createZone(tul);
 
                 }
@@ -112,7 +112,7 @@ public:
         }
 #endif
     }
-    
+
     zone *createZone(MapCoordinates p)
     {
       gridZone *pz;
@@ -123,7 +123,7 @@ public:
         MapCoordinates blr(tul[0]+length-1,tul[1]+length-1,tul[2]+length-1);
         z = pz = new gridZone(tul,blr);
         //create a zone
-        zl[point(p[0]/length,p[1]/length,p[2]/length)] = pz;
+        zl[MapCoordinates(p[0]/length,p[1]/length,p[2]/length)] = pz;
         //for each element in the zone
         for (int v = 0; v < length; v++)
             for (int u = 0; u < length; u++)

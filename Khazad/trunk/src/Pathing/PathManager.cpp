@@ -3,6 +3,7 @@
 #include <PathManager.h>
 #include <Singleton.h>
 #include <Map.h>
+#include <grid.h>
 #include <astar.h>
 #include <heuristics.h>
 
@@ -26,16 +27,14 @@ bool PathManager::Init()
 
 void PathManager::CreateMapAbstraction()
 {
-    //MAP->
+    MapGrid = new KhazadGrid();
 
-    //PathAlgorithm AstarImplementation;
-    //PathAlgorithm HeriarchialAstarImplementation;
+    Heuristic* ManhattenHeuristic = new Manhatten();
+    Heuristic* EuclideanHeuristic = new Euclidean();
+    Heuristic* MaxHeuristicType = new MaxHeuristic();
+    Heuristic* DijkstraHeuristic = new Dijkstra();
 
-    //GridGraph* MapGrid;
-
-    //AstarImplementation = new AStar(MapGrid, Manhatten, Euclidean);
-
-
+    AstarImplementation = new AStar(MapGrid, ManhattenHeuristic, EuclideanHeuristic);
 }
 
 void PathManager::EditMapAbstraction()
@@ -48,7 +47,7 @@ void PathManager::DeleteMapAbstraction()
 
 }
 
-MapPath *PathManager::FindPath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords)
+MapPath* PathManager::FindPath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords)
 {
     return new FullPath();
 }
@@ -57,5 +56,3 @@ float PathManager::EstimatePathLength(int PathSystem, MapCoordinates StartCoords
 {
     return -1;
 }
-
-

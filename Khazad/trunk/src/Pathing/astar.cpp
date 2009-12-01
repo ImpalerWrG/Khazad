@@ -54,7 +54,7 @@ FullPath *AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
             if (visited.find(neigh) != visited.end())
                 continue;
 
-            cost_t cost = SearchGraph->getEdgeCost(e->v_, dir);
+            float cost = SearchGraph->getEdgeCost(e->v_, dir);
             if (cost < 0)
                 continue; //Not valid edge
 
@@ -89,7 +89,7 @@ FullPath *AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
 class scopedAddBorderNode
 {
 public:
-    scopedAddBorderNode(zone *z, const point &p, const Heuristic *h) : z_(z), zoneModified(false)
+    scopedAddBorderNode(zone *z, const MapCoordinates &p, const Heuristic *h) : z_(z), zoneModified(false)
     {
         zbn_ = z->get(p);
         if (zbn_ == NULL)
@@ -135,7 +135,7 @@ FullPath *HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
 
     entryGreaterThan egt(GoalCoordinates, MainHeuristic);
     std::vector<AStarZoneEntryPtr> fringe;
-    boost::unordered_set<point,point::hash> visited;
+    boost::unordered_set<MapCoordinates,MapCoordinates::hash> visited;
 
     std::make_heap(fringe.begin(), fringe.end(),egt);
 
@@ -182,10 +182,10 @@ FullPath *HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
             //e->node_->cache_ = cpath->PathCourse; //update the cache!
             //e->node_->cost_ = cpath->Length;
 
-            /*point p = e->getPoint();
-            point q = e->path_.back();
+            /*MapCoordinates p = e->getPoint();
+            MapCoordinates q = e->path_.back();
             printf("Examine: (%2d,%2d,%2d)->(%2d,%2d,%2d) - %d:%d\n",q[0],q[1],q[2],p[0],p[1],p[2],e->path_.size()+cpath.second.size()-1,e->cost_+cpath.first);
-            std::vector<point>::iterator it = e->path_.begin();
+            std::vector<MapCoordinates>::iterator it = e->path_.begin();
             it++;
             for (; it != e->path_.end(); it++)
               printf("(%2d,%2d,%2d)->",(*it)[0],(*it)[1],(*it)[2]);
