@@ -1,14 +1,13 @@
-#include <astar.h>
-
 #include <vector>
 #include <algorithm>
 
 #include <boost/unordered_set.hpp>
 #include <boost/shared_ptr.hpp>
 
-#include <Path.h>
-#include <zone.h>
-#include <graph.h>
+#include "astar.h"
+#include "Path.h"
+#include "zone.h"
+#include "grid.h"
 
 typedef boost::shared_ptr<AStarEntry> AStarEntryPtr;
 
@@ -47,20 +46,19 @@ FullPath *AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
         // relax neighbours
         for (Direction dir = ANGULAR_DIRECTIONS_START; dir < NUM_ANGULAR_DIRECTIONS; ++dir)
         {
-          if (SearchGraph->getEdgeCost(e->v_,dir) >= 0)
+          MapCoordinates neigh = e->v_;
+          neigh.TranslateMapCoordinates(dir);
+          if (SearchGraph->contains(neigh) && (SearchGraph->getEdgeCost(e->v_,dir) >= 0))
           {
-            MapCoordinates NeiboringCoordinates = e->v_;
-            NeiboringCoordinates.TranslateMapCoordinates(dir);
-
             // try to find ey in the visited set
-            if (visited.find(NeiboringCoordinates) != visited.end())
+            if (visited.find(neigh) != visited.end())
                 continue;
 
             cost_t cost = SearchGraph->getEdgeCost(e->v_, dir);
             if (cost < 0)
                 continue; //Not valid edge
 
-            AStarEntryPtr eneigh(new AStarEntry(NeiboringCoordinates, *e, e->cost_ + cost, (*TieBreakerHeuristic)(NeiboringCoordinates,GoalCoordinates)));
+            AStarEntryPtr eneigh(new AStarEntry(neigh, *e, e->cost_ + cost, (*TieBreakerHeuristic)(neigh,GoalCoordinates)));
 
 #if 0
             typedef std::vector<AStarEntryPtr>::iterator eiterator;
@@ -180,8 +178,9 @@ FullPath *HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
                 //cachemiss += dastar.cachemiss;
             }
 
-            e->node_->cache_ = cpath->PathCourse; //update the cache!
-            e->node_->cost_ = cpath->Length;
+            e->node_->setCache(cpath);
+            //e->node_->cache_ = cpath->PathCourse; //update the cache!
+            //e->node_->cost_ = cpath->Length;
 
             /*point p = e->getPoint();
             point q = e->path_.back();

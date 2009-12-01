@@ -128,19 +128,19 @@ class gridZoneManager : public zoneManager
     boost::unordered_map<point, gridZone*, point::hash> zl;
     const unsigned length;
     zoneManager *child;
-    const GridGraph* G_;
+    const gridInterface* G_;
     const Heuristic* h_;
 
     typedef boost::unordered_map<MapCoordinates, gridZone*, MapCoordinates::hash>::iterator iterator;
 
 public:
-    gridZoneManager(const GridGraph *G, const Heuristic *h, unsigned len, unsigned scale, unsigned minlen) : length(len), G_(G), h_(h)
+    gridZoneManager(const gridInterface *G, const Heuristic *h, unsigned len, unsigned scale, unsigned minlen) : length(len), G_(G), h_(h)
     {
         if (len/scale >= minlen)
             child = new gridZoneManager(G,h,len/scale,scale,minlen);
         else
             child = NULL;
-        createZones(G,h);
+        createZones();
     }
 
     ~gridZoneManager()
@@ -158,7 +158,7 @@ public:
 
     zone* findContainingZone(const MapCoordinates &p)
     {
-        point q(p[0]/length,p[1]/length,p[2]);
+        MapCoordinates q(p[0]/length,p[1]/length,p[2]);
         if (zl.find(q)!= zl.end())
             return zl[q];
         else
@@ -186,6 +186,8 @@ public:
         if (child != NULL)
             child->registerChange(p);
         zone *z = findContainingZone(p);
+        if (z == NULL)
+          z = createZone(p);
         zoneBorderNode *zbn = z->get(p);
         if (zbn != NULL)
             z->removeBorderNode(zbn);
@@ -199,31 +201,29 @@ public:
             z->checkValid();
         }
 #endif
+        if (((gridZone*)z)->zbn_.size() == 0)
+        {
+          //this is an empty zone, so we can probably delete it
+          MapCoordinates q(p[0]/length,p[1]/length,p[2]);
+          iterator it = zl.find(q);
+          assert(it != zl.end());
+          zl.erase(it);
+          delete z;
+        }
     }
 
-    void createZones(const GridGraph *G, const Heuristic *h)
+    void createZones()
     {
         zl.clear();
         //zl.reserve(G_->max(0)*G_->max(1)*G_->max(2)/length/length+1);
-        for (int z = 0; z < G_->max(2); z++)
+        for (int z = G_->min(2); z < G_->max(2); z++)
         {
-            for (int y = 0;  y < G_->max(1); y+=length)
+            for (int y = G_->min(1);  y < G_->max(1); y+=length)
             {
-                for (int x = 0; x < G_->max(0); x+=length)
+                for (int x = G_->min(0); x < G_->max(0); x+=length)
                 {
-                    point tul(x,y,z), blr(x+length-1,y+length-1,z);
-                    gridZone *pz = new gridZone(tul,blr);
-                    //create a zone
-                    zl[point(x/length,y/length,z)] = pz;
-
-                    //for each element in the zone
-                    for (int v = 0; v < length; v++)
-                        for (int u = 0; u < length; u++)
-                        {
-                            point p(x+u,y+v,z);
-                            AddLeavingEdges(pz, p);
-                        }
-
+                    MapCoordinates p(x,y,z);
+                    createZone(p);
                 }
             }
         }
@@ -235,6 +235,30 @@ public:
         }
 #endif
     }
+    
+    zone *createZone(MapCoordinates p)
+    {
+      gridZone *pz;
+      zone *z = findContainingZone(p);
+      if ((G_->contains(p)) && (z == NULL))
+      {
+        MapCoordinates tul(length*floor(p[0]/length),length*floor(p[1]/length),p[2]);
+        MapCoordinates blr(tul[0]+length-1,tul[1]+length-1,tul[2]);
+        z = pz = new gridZone(tul,blr);
+        //create a zone
+        zl[point(p[0]/length,p[1]/length,p[2])] = pz;
+        //for each element in the zone
+        for (int v = 0; v < length; v++)
+            for (int u = 0; u < length; u++)
+                {
+                    MapCoordinates p(tul[0]+u,tul[1]+v,tul[2]);
+                    AddLeavingEdges(pz, p);
+                }
+      }
+      return z;
+    }
+
+
 
     void AddLeavingEdges(zone *pz, const MapCoordinates &p)
     {

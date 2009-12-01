@@ -16,7 +16,8 @@ struct gridInterface  // Virtural Base class
     virtual ~gridInterface() {};
 
     virtual float getEdgeCost(const MapCoordinates &TestCoords, Direction DirectionType) const = 0;
-    virtual unsigned max(int dim) const = 0;
+    virtual int max(unsigned dim) const = 0;
+    virtual int min(unsigned dim) const = 0;
 
     virtual bool contains(const MapCoordinates &TestCoords) const = 0;
 };
@@ -25,7 +26,7 @@ typedef uint32_t DirectionFlags;  // Bitfield for all directions
 
 struct GridCell
 {
-  GridCell()
+  GridCell() 
   {
     //zero direction flags
     memset(DirectionMatrix, 0, sizeof(DirectionMatrix));
@@ -47,7 +48,6 @@ public:
                 Cell* TargetCell = it->second;
                 CellCoordinates CellCoords = TargetCell->getCellCoordinates();
                 GridCell* NewGridCell = addCell(CellCoords);
-
                 CubeCoordinates TargetCubeCoords = CubeCoordinates(0, 0);
                 for (int x = 0; x < CELLEDGESIZE; TargetCubeCoords.X++)
                 {
@@ -120,6 +120,7 @@ public:
                         }
                     }
                 }
+                
             }
         }
     }
@@ -159,18 +160,27 @@ public:
         CubeCoordinates CubeCoords = CubeCoordinates(MapCoords);
         TargetCell->DirectionMatrix[CubeCoords.X][CubeCoords.Y] = Flags;
         for (int i = 0; i < 3; i++)
-           if (MapCoords[i] > maxlen[i])
-             maxlen.set(i,MapCoords[i]);
+        {
+          if (MapCoords[i] > maxlen[i])
+            maxlen.set(i,MapCoords[i]);
+          if (MapCoords[i] < minlen[i])
+            minlen.set(i,MapCoords[i]);
+        }
     }
 
     bool contains(const MapCoordinates &TestCoords) const
     {
         return getCell(CellCoordinates(TestCoords)) != NULL;
     }
-
-    unsigned max(int dim) const
+    
+    int max(unsigned dim) const
     {
       return maxlen[dim];
+    }
+    
+    int min(unsigned dim) const
+    {
+      return minlen[dim];
     }
 
     uint64_t GenerateCellKey(CellCoordinates KeyCoords) const
@@ -231,6 +241,7 @@ private:
 
     mutable unsigned count;
     MapCoordinates maxlen;
+    MapCoordinates minlen;
 };
 
 #endif // GRID_HEADER

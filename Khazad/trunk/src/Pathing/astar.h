@@ -6,7 +6,7 @@
 
 #include <Path.h>
 
-class GridGraph;
+class gridInterface;
 class zoneManager;
 
 class PathAlgorithm
@@ -23,7 +23,7 @@ public:
 protected:
 
     unsigned count;
-    const GridGraph* SearchGraph;
+    const gridInterface* SearchGraph;
 
     const Heuristic* MainHeuristic;
     const Heuristic* TieBreakerHeuristic;
@@ -33,7 +33,7 @@ class AStar : PathAlgorithm
 {
 public:
 
-    AStar(const GridGraph *TargetSearchGraph, const Heuristic* MainHeuristicType, const Heuristic* TieBreakerHeuristicType)
+    AStar(const gridInterface *TargetSearchGraph, const Heuristic* MainHeuristicType, const Heuristic* TieBreakerHeuristicType)
     {
         SearchGraph = TargetSearchGraph;
         MainHeuristic = MainHeuristicType;
@@ -53,7 +53,7 @@ struct HierarchicalAStar : PathAlgorithm
 {
 public:
 
-    HierarchicalAStar(const GridGraph* TargetSearchGraph, zoneManager *zm, const Heuristic* MainHeuristicType, const Heuristic* TieBreakerHeuristicType)
+    HierarchicalAStar(const gridInterface* TargetSearchGraph, zoneManager *zm, const Heuristic* MainHeuristicType, const Heuristic* TieBreakerHeuristicType)
     {
         zm_ = zm;
         SearchGraph = TargetSearchGraph;

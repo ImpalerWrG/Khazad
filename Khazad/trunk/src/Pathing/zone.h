@@ -9,7 +9,8 @@
 
 #include "heuristics.h"
 #include "entry.h"
-#include <graph.h>
+#include "grid.h"
+#include "Path.h"
 
 class zoneBorderNode;
 
@@ -42,7 +43,6 @@ public:
     virtual ~zoneManager() {};
 
     virtual zone* findContainingZone(const point &p) = 0;
-    virtual void createZones(const GridGraph *G, const Heuristic *h) = 0;
     virtual zoneManager* down()
     {
         return NULL;
@@ -56,9 +56,10 @@ class adjacentNode : public MapCoordinates
 public:
     zoneBorderNode *node_;
     cost_t cost_;
-    std::vector<point> cache_;
+    std::vector<MapCoordinates> cache_;
 
     adjacentNode(zoneBorderNode *n, cost_t c);
+    void setCache(FullPath *cpath);
 };
 
 class zoneBorderNode : public MapCoordinates
@@ -124,20 +125,27 @@ public:
     }
 };
 
-struct ZonedGridGraph : public GridGraph
+struct ZonedGridGraph : public gridInterface
 {
-    ZonedGridGraph (const gridInterface *grid, const zone* zone) : GridGraph(grid), z_(zone) { }
+    ZonedGridGraph (const gridInterface *grid, const zone* zone) : grid_(grid), z_(zone) { }
 
     bool contains(const point &p) const
     {
         return z_->contains(p);
     }
+    
+    cost_t getEdgeCost(const MapCoordinates &TestCoords, Direction DirectionType) const
+    {
+        return grid_->getEdgeCost(TestCoords,DirectionType);
+    }
+    
+    virtual int max(unsigned dim) const { return grid_->max(dim); }
+    virtual int min(unsigned dim) const { return grid_->min(dim); }
 
 private:
     const zone *z_;
+    const gridInterface * grid_;
 };
-
-#include "basiczone.h"
 
 #include "gridzone.h"
 #include "cubezone.h"
@@ -184,6 +192,7 @@ public:
     {
         return *node_;
     }
+    
 };
 
 #endif // ZONE_HEADER
