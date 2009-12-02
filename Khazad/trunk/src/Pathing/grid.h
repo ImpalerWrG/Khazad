@@ -8,8 +8,9 @@
 #include <map>
 
 #include <Cell.h>
-#include <Coordinates.h>
-#include <heuristics.h>
+//#include <Coordinates.h>
+class MapCoordinates;
+class Heuristic;
 
 struct gridInterface  // Virtural Base class
 {
@@ -26,7 +27,7 @@ typedef uint32_t DirectionFlags;  // Bitfield for all directions
 
 struct GridCell
 {
-  GridCell() 
+  GridCell()
   {
     //zero direction flags
     memset(DirectionMatrix, 0, sizeof(DirectionMatrix));
@@ -80,7 +81,7 @@ public:
 
                                 if (DirectionType == DIRECTION_DOWN || DirectionType == DIRECTION_UP)
                                 {
-                                    if (AdjacentTileShape != TileShapeID && TileShapeID != STAIR_ID)
+                                    if (AdjacentTileShape != RAMP_ID && AdjacentTileShape != STAIR_ID)
                                     {
                                         continue;  // Strait up and down is possible only through a ramp or stair
                                     }
@@ -120,7 +121,7 @@ public:
                         }
                     }
                 }
-                
+
             }
         }
     }
@@ -172,12 +173,12 @@ public:
     {
         return getCell(CellCoordinates(TestCoords)) != NULL;
     }
-    
+
     int max(unsigned dim) const
     {
       return maxlen[dim];
     }
-    
+
     int min(unsigned dim) const
     {
       return minlen[dim];

@@ -4,7 +4,8 @@
 #include <vector>
 #include <memory.h>
 
-#include <heuristics.h>
+class Heuristic;
+
 #include <boost/shared_ptr.hpp>
 
 

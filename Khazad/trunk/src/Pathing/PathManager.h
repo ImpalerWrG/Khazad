@@ -3,9 +3,12 @@
 
 #include <stdafx.h>
 #include <Singleton.h>
+
 #include <MovementController.h>
-#include <astar.h>
-#include <grid.h>
+
+class MapCoordinates;
+class KhazadGrid;
+class AStar;
 
 class PathManager
 {

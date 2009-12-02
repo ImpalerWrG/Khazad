@@ -296,10 +296,8 @@
 		<Unit filename="src\Pathing\PathManager.h" />
 		<Unit filename="src\Pathing\astar.cpp" />
 		<Unit filename="src\Pathing\astar.h" />
-		<Unit filename="src\Pathing\basiczone.h" />
 		<Unit filename="src\Pathing\cubezone.h" />
 		<Unit filename="src\Pathing\entry.h" />
-		<Unit filename="src\Pathing\graph.h" />
 		<Unit filename="src\Pathing\grid.h" />
 		<Unit filename="src\Pathing\gridzone.h" />
 		<Unit filename="src\Pathing\heuristics.h" />

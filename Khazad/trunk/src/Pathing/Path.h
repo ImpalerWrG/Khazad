@@ -63,8 +63,65 @@ struct FullPath: MapPath
 
 struct VectorPath: MapPath
 {
-    //vector<Direction> Directions;  // Needs a definition of Directions
+    VectorPath()
+    {
+
+    }
+
+    void ResetSteps()
+    {
+        CurrentStep = 0;
+        MagnitudeCountDown = Magnitudes[0];  // Prime the counter with the first legs magnitude
+        LegCounter = 0;
+        StepCoordinates = StartCoordinates;
+    }
+
+    MapCoordinates NextCoordinate()
+    {
+        if(CurrentStep < StepCount)
+        {
+            if (MagnitudeCountDown == 0)
+            {
+                LegCounter++;
+                MagnitudeCountDown = Magnitudes[LegCounter];
+            }
+
+            CurrentStep++;
+            MagnitudeCountDown--;
+
+            StepCoordinates.TranslateMapCoordinates(Directions[LegCounter]);
+
+            return StepCoordinates;
+        }
+        return GoalCoordinates; // Keep returning the Goal if we've reached the end of the path
+    }
+
+    Direction NextDirection()
+    {
+        if(CurrentStep < StepCount)
+        {
+            if (MagnitudeCountDown == 0)
+            {
+                LegCounter++;
+                MagnitudeCountDown = Magnitudes[LegCounter];
+            }
+
+            CurrentStep++;
+            MagnitudeCountDown--;
+
+            return Directions[LegCounter];
+        }
+        return DIRECTION_NONE;
+    }
+
+    std::vector<Direction> Directions;
     std::vector<int> Magnitudes;
+
+private:
+
+    MapCoordinates StepCoordinates;
+    int MagnitudeCountDown;
+    int LegCounter;
 };
 
 struct WayPointPath: MapPath

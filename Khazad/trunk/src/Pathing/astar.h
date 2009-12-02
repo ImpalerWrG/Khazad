@@ -1,13 +1,12 @@
 #ifndef ASTAR_HEADER
 #define ASTAR_HEADER
 
-#include <Coordinates.h>
-#include <heuristics.h>
-
 #include <Path.h>
 
 class gridInterface;
 class zoneManager;
+class MapCoordinates;
+class Heuristic;
 
 class PathAlgorithm
 {
@@ -44,8 +43,8 @@ public:
     void Reset()                    { count = 0; }
     unsigned getCount() const       { return count; }
 
-    MapPath *FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint) { return doFindPath(StartPoint, GoalPoint); }
-    FullPath *doFindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint);
+    MapPath* FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint) { return doFindPath(StartPoint, GoalPoint); }
+    FullPath* doFindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint);
 
 };
 

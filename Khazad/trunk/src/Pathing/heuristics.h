@@ -8,8 +8,6 @@
 
 #include <Coordinates.h>
 
-//typedef MapCoordinates point;
-
 template <typename T>
 struct pointerEqualityPredicate
 {
