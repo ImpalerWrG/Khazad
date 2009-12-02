@@ -7,6 +7,7 @@
 #include <Camera.h>
 #include <ConfigManager.h>
 #include <DataManager.h>
+#include <PathManager.h>
 
 class MainKeyListener : public gcn::KeyListener
 {
@@ -302,6 +303,8 @@ class MapDumpActionListener: public gcn::ActionListener
             RENDERER->ConfineCursor();
 
             UI->setMapViewState();
+
+            PATH->CreateMapAbstraction();
         }
     }
 };

@@ -48,7 +48,7 @@ struct FullPath: MapPath
         CurrentStep = 0;
     }
 
-    inline MapCoordinates NextCoordinate()
+    MapCoordinates NextCoordinate()
     {
         if(CurrentStep < StepCount)
         {
@@ -126,6 +126,16 @@ private:
 
 struct WayPointPath: MapPath
 {
+    MapCoordinates NextCoordinate()
+    {
+        return GoalCoordinates;
+    }
+
+    void ResetSteps()
+    {
+        CurrentStep = 0;
+    }
+
     std::vector<MapCoordinates> WayPoints;
 };
 

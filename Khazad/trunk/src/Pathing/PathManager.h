@@ -9,6 +9,7 @@
 class MapCoordinates;
 class KhazadGrid;
 class AStar;
+class Heuristic;
 
 class PathManager
 {
@@ -40,6 +41,11 @@ protected:
     //PathAlgorithm HeriarchialAstarImplementation;
 
     KhazadGrid* MapGrid;
+
+    Heuristic* ManhattenHeuristic;
+    Heuristic* EuclideanHeuristic;
+    Heuristic* MaxHeuristicType;
+    Heuristic* DijkstraHeuristic;
 };
 
 #define PATH (PathManager::GetInstance())

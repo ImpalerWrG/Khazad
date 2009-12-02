@@ -17,10 +17,10 @@ FullPath *AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
     std::vector<AStarEntryPtr> fringe;
     boost::unordered_set<MapCoordinates, MapCoordinates::hash> visited;
 
-    std::make_heap(fringe.begin(), fringe.end(),egt);
+    std::make_heap(fringe.begin(), fringe.end(), egt);
 
     fringe.push_back(AStarEntryPtr(new AStarEntry(StartCoordinates, 0)));
-    std::push_heap(fringe.begin(),fringe.end(),egt);
+    std::push_heap(fringe.begin(), fringe.end(), egt);
 
     while (!fringe.empty())
     {
@@ -29,61 +29,64 @@ FullPath *AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
         AStarEntryPtr e = fringe.back();
         fringe.pop_back();
         count++;
+        MapCoordinates TestCoordinates = e->v_;
 
-        if (visited.find(e->v_) != visited.end())
+        if (visited.find(TestCoordinates) != visited.end())
+        {
             continue;
+        }
 
         // if it's the destination, congratuations, we win a prize!
-        if (e->v_ == GoalCoordinates)
+        if (TestCoordinates == GoalCoordinates)
         {
             e->path_.push_back(GoalCoordinates);
-            return new FullPath(e->cost_,e->path_);
+            return new FullPath(e->cost_, e->path_);
         }
 
         // mark it visited if not already visited
-        visited.insert(e->v_);
+        visited.insert(TestCoordinates);
+
+        MapCoordinates NeiboringCoordinates;
+        DirectionFlags TestDirections = SearchGraph->getDirectionFlags(TestCoordinates);
 
         // relax neighbours
-        for (Direction dir = ANGULAR_DIRECTIONS_START; dir < NUM_ANGULAR_DIRECTIONS; ++dir)
+        for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
         {
-          MapCoordinates neigh = e->v_;
-          neigh.TranslateMapCoordinates(dir);
-          if (SearchGraph->contains(neigh) && (SearchGraph->getEdgeCost(e->v_,dir) >= 0))
-          {
-            // try to find ey in the visited set
-            if (visited.find(neigh) != visited.end())
-                continue;
-
-            float cost = SearchGraph->getEdgeCost(e->v_, dir);
-            if (cost < 0)
-                continue; //Not valid edge
-
-            AStarEntryPtr eneigh(new AStarEntry(neigh, *e, e->cost_ + cost, (*TieBreakerHeuristic)(neigh,GoalCoordinates)));
-
-#if 0
-            typedef std::vector<AStarEntryPtr>::iterator eiterator;
-            // try to find neigh in the fringe
-            eiterator it = std::find(fringe.begin(), fringe.end(), eneigh);
-            if (it != fringe.end())
+            if (TestDirections & (1 << (int) DirectionType))  // Connectivity is valid for this direction
             {
-                // it's here, we just haven't gotten there yet; decrease_key if applicable
-                if (eneigh->cost_ < (*it)->cost_)
+                NeiboringCoordinates = TestCoordinates;
+                NeiboringCoordinates.TranslateMapCoordinates(DirectionType);
+
+                // If Coordinate is not already on the Visited list
+                if (visited.find(NeiboringCoordinates) == visited.end())
                 {
-                    //printf("decreasing node cost (%2d,%2d,%2d)\n",neigh[0],neigh[1],neigh[2]);
-                    fringe.erase(it);
-                    fringe.push_back(eneigh);
-                    std::make_heap(fringe.begin(),fringe.end(),egt);
-                }
-                continue;
-            }
+                    float cost = SearchGraph->getEdgeCost(TestCoordinates, DirectionType);
+                    AStarEntryPtr eneigh(new AStarEntry(NeiboringCoordinates, *e, e->cost_ + cost, (*TieBreakerHeuristic)(NeiboringCoordinates, GoalCoordinates)));
+#if 0
+                    typedef std::vector<AStarEntryPtr>::iterator eiterator;
+                    // try to find neigh in the fringe
+                    eiterator it = std::find(fringe.begin(), fringe.end(), eneigh);
+                    if (it != fringe.end())
+                    {
+                        // it's here, we just haven't gotten there yet; decrease_key if applicable
+                        if (eneigh->cost_ < (*it)->cost_)
+                        {
+                            //printf("decreasing node cost (%2d,%2d,%2d)\n",NeiboringCoordinates[0],NeiboringCoordinates[1],NeiboringCoordinates[2]);
+                            fringe.erase(it);
+                            fringe.push_back(eneigh);
+                            std::make_heap(fringe.begin(), fringe.end(), egt);
+                        }
+                        continue;
+                    }
 #endif
-            // ey was found neither in the fringe nor in visited; add it to the fringe
-            fringe.push_back(eneigh);
-            std::push_heap(fringe.begin(),fringe.end(),egt);
-          }
-        } // end loop over neighbours
-    } // end loop over fringe
-    return new FullPath();
+                    // ey was found neither in the fringe nor in visited; add it to the fringe
+                    fringe.push_back(eneigh);
+                    std::push_heap(fringe.begin(), fringe.end(), egt);
+                }
+            }
+        }
+    }
+    return new FullPath();  // Return an empty path to indicate failure
 }
 
 class scopedAddBorderNode
@@ -163,7 +166,7 @@ FullPath *HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
 
             FullPath *cpath;
             //find the path, cache it
-            ZonedGridGraph zgg(SearchGraph,zm_->findContainingZone(e->getPoint()));
+            ZonedGridGraph zgg(SearchGraph, zm_->findContainingZone(e->getPoint()));
             if (zm_->down() == NULL)
             {
                 AStar lastar(&zgg,MainHeuristic,TieBreakerHeuristic);

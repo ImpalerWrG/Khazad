@@ -139,6 +139,11 @@ struct ZonedGridGraph : public gridInterface
         return grid_->getEdgeCost(TestCoords,DirectionType);
     }
 
+    DirectionFlags getDirectionFlags(const MapCoordinates &TargetCoords) const
+    {
+        return 0;
+    }
+
     virtual int max(unsigned dim) const { return grid_->max(dim); }
     virtual int min(unsigned dim) const { return grid_->min(dim); }
 
