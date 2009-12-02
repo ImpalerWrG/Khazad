@@ -248,8 +248,8 @@ public:
         //create a zone
         zl[MapCoordinates(p[0]/length,p[1]/length,p[2])] = pz;
         //for each element in the zone
-        for (int v = 0; v < length; v++)
-            for (int u = 0; u < length; u++)
+        for (unsigned v = 0; v < length; v++)
+            for (unsigned u = 0; u < length; u++)
                 {
                     MapCoordinates p(tul[0]+u,tul[1]+v,tul[2]);
                     AddLeavingEdges(pz, p);

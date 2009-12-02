@@ -143,8 +143,8 @@ struct ZonedGridGraph : public gridInterface
     virtual int min(unsigned dim) const { return grid_->min(dim); }
 
 private:
-    const zone *z_;
     const gridInterface * grid_;
+    const zone *z_;
 };
 
 #include "gridzone.h"

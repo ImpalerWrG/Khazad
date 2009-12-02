@@ -1075,17 +1075,17 @@ void Renderer::DrawDiamond(MapCoordinates Coodinates, float red, float green, fl
     {
         // Top NorthEast
         glVertex3f(Point.x, Point.y, Point.z + (HALFCUBE / 2)); // Top
-        glVertex3f(Point.x, Point.y + (HALFCUBE / 2), Point.z); // North
+        glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // North
         glVertex3f(Point.x + (HALFCUBE / 2), Point.y, Point.z); // East
 
         // Top SouthEast
         glVertex3f(Point.x, Point.y, Point.z + (HALFCUBE / 2)); // Top
-        glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // South
+        glVertex3f(Point.x, Point.y + (HALFCUBE / 2), Point.z); // South
         glVertex3f(Point.x + (HALFCUBE / 2), Point.y, Point.z); // East
 
         // Top SouthWest
         glVertex3f(Point.x, Point.y, Point.z + (HALFCUBE / 2)); // Top
-        glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // South
+        glVertex3f(Point.x, Point.y + (HALFCUBE / 2), Point.z); // South
         glVertex3f(Point.x - (HALFCUBE / 2), Point.y, Point.z); // West
 
         // Top NorthWest
@@ -1097,17 +1097,17 @@ void Renderer::DrawDiamond(MapCoordinates Coodinates, float red, float green, fl
 
         // Bottom NorthEast
         glVertex3f(Point.x, Point.y, Point.z - (HALFCUBE / 2)); // Bottom
-        glVertex3f(Point.x, Point.y + (HALFCUBE / 2), Point.z); // North
+        glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // North
         glVertex3f(Point.x + (HALFCUBE / 2), Point.y, Point.z); // East
 
         // Bottom SouthEast
         glVertex3f(Point.x, Point.y, Point.z - (HALFCUBE / 2)); // Bottom
-        glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // South
+        glVertex3f(Point.x, Point.y + (HALFCUBE / 2), Point.z); // South
         glVertex3f(Point.x + (HALFCUBE / 2), Point.y, Point.z); // East
 
         // Bottom SouthWest
         glVertex3f(Point.x, Point.y, Point.z - (HALFCUBE / 2)); // Bottom
-        glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // South
+        glVertex3f(Point.x, Point.y + (HALFCUBE / 2), Point.z); // South
         glVertex3f(Point.x - (HALFCUBE / 2), Point.y, Point.z); // West
 
         // Bottom NorthWest
@@ -1126,7 +1126,7 @@ void Renderer::DrawMapPath(MapPath* TargetPath)
     for (int Step = 0;  Step < TargetPath->StepCount; Step++)
     {
         MapCoordinates Coords = TargetPath->NextCoordinate();
-        DrawDiamond(Coords, (Step * 1.0) / TargetPath->StepCount, 1.0 - ((Step * 1.0) / TargetPath->StepCount), 0.0);
+        DrawDiamond(Coords, (Step * 1.0) / TargetPath->StepCount, 1.0 - ((Step * 1.0) / TargetPath->StepCount), 1.0-fabs(1.0 - ((Step * 2.0) / TargetPath->StepCount)));
     }
 }
 
@@ -1165,6 +1165,7 @@ void Renderer::setCursor(MapCoordinates Coordinates)
     Cursor.X = Coordinates.X;
     Cursor.Y = Coordinates.Y;
     Cursor.Z = Coordinates.Z;
+    fprintf(stderr,"Tile (%d,%d,%d) Shape %d\n", Coordinates.X ,Coordinates.Y ,Coordinates.Z, MAP->getCubeShape(Coordinates));
 }
 
 void Renderer::ConfineCursor()

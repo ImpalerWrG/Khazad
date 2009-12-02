@@ -131,7 +131,7 @@ FullPath *HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
     scopedAddBorderNode sbs(zoneS, StartCoordinates, MainHeuristic), sbt(zoneT, GoalCoordinates, MainHeuristic);
 
     zoneBorderNode* bs = zoneS->get(StartCoordinates);
-    zoneBorderNode* bt = zoneT->get(GoalCoordinates);
+    //zoneBorderNode* bt = zoneT->get(GoalCoordinates);
 
     entryGreaterThan egt(GoalCoordinates, MainHeuristic);
     std::vector<AStarZoneEntryPtr> fringe;
