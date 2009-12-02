@@ -1120,6 +1120,7 @@ void Renderer::DrawDiamond(MapCoordinates Coodinates, float red, float green, fl
 
 void Renderer::DrawMapPath(MapPath* TargetPath)
 {
+    TargetPath->ResetSteps();
     DrawDiamond(TargetPath->StartCoordinates, 0.0, 1.0, 0.0);
 
     for (int Step = 0;  Step < TargetPath->StepCount; Step++)
