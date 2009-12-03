@@ -107,7 +107,7 @@
 		<Material label="NONE"/>
 		<TileValues>
 			<TileValue Int="39" TileShape="TILESHAPE_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
-			<TileValue Int="40" TileShape="TILESHAPE_EMPTY" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
+			<TileValue Int="40" TileShape="TILESHAPE_DOWN_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 			<TileValue Int="41" TileShape="TILESHAPE_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 			<TileValue Int="241" TileShape="TILESHAPE_RAMP" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
 			<TileValue Int="265" TileShape="TILESHAPE_WALL" SurfaceType="SURFACETYPE_ROUGH_WALL"/>
@@ -198,7 +198,7 @@
 			<!-- stone updown stair -->
 			<TileValue Int="55" TileShape="TILESHAPE_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 			<!-- stone down stair -->
-			<TileValue Int="56" TileShape="TILESHAPE_EMPTY" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
+			<TileValue Int="56" TileShape="TILESHAPE_DOWN_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 			<!-- up stair stone -->
 			<TileValue Int="57" TileShape="TILESHAPE_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 			<!-- stone fortification -->
@@ -274,7 +274,7 @@
 			<TileValue Int="513" TileShape="TILESHAPE_WALL" SurfaceType="SURFACETYPE_CONSTRUCTED_WALL"/>
 			<TileValue Int="514" TileShape="TILESHAPE_WALL" SurfaceType="SURFACETYPE_CONSTRUCTED_WALL"/>
 			<TileValue Int="515" TileShape="TILESHAPE_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
-			<TileValue Int="516" TileShape="TILESHAPE_EMPTY" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
+			<TileValue Int="516" TileShape="TILESHAPE_DOWN_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 			<TileValue Int="517" TileShape="TILESHAPE_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 			<TileValue Int="518" TileShape="TILESHAPE_RAMP" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 		</TileValues>
@@ -286,7 +286,7 @@
 		<TileValues>
 			<TileValue Int="46" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_SMOOTH_FLOOR"/>
 			<TileValue Int="58" TileShape="TILESHAPE_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
-			<TileValue Int="59" TileShape="TILESHAPE_EMPTY" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
+			<TileValue Int="59" TileShape="TILESHAPE_DOWN_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 			<TileValue Int="60" TileShape="TILESHAPE_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 			<TileValue Int="82" TileShape="TILESHAPE_WALL" SurfaceType="SURFACETYPE_SMOOTH_WALL"/>
 			<TileValue Int="240" TileShape="TILESHAPE_RAMP" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
@@ -332,7 +332,7 @@
 		<TileValues>
 			<TileValue Int="45" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_SMOOTH_FLOOR"/>
 			<TileValue Int="61" TileShape="TILESHAPE_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
-			<TileValue Int="62" TileShape="TILESHAPE_EMPTY" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
+			<TileValue Int="62" TileShape="TILESHAPE_DOWN_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 			<TileValue Int="63" TileShape="TILESHAPE_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 			<TileValue Int="81" TileShape="TILESHAPE_WALL" SurfaceType="SURFACETYPE_SMOOTH_WALL"/>
 			<TileValue Int="288" TileShape="TILESHAPE_WALL" SurfaceType="SURFACETYPE_SMOOTH_WALL"/>
@@ -376,7 +376,7 @@
 		<Material label="MATERIAL_OBSIDIAN"/>
 		<TileValues>
 			<TileValue Int="36" TileShape="TILESHAPE_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
-			<TileValue Int="37" TileShape="TILESHAPE_EMPTY" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
+			<TileValue Int="37" TileShape="TILESHAPE_DOWN_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 			<TileValue Int="38" TileShape="TILESHAPE_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 			<TileValue Int="44" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_SMOOTH_FLOOR"/>
 			<TileValue Int="80" TileShape="TILESHAPE_WALL" SurfaceType="SURFACETYPE_SMOOTH_WALL"/>
@@ -422,7 +422,7 @@
 		<Material label="MATERIAL_ICE"/>
 		<TileValues>
 			<TileValue Int="25" TileShape="TILESHAPE_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
-			<TileValue Int="26" TileShape="TILESHAPE_EMPTY" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
+			<TileValue Int="26" TileShape="TILESHAPE_DOWN_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 			<TileValue Int="27" TileShape="TILESHAPE_STAIR" SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR"/>
 			<TileValue Int="47" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_SMOOTH_FLOOR"/>
 			<TileValue Int="83" TileShape="TILESHAPE_WALL" SurfaceType="SURFACETYPE_SMOOTH_WALL"/>

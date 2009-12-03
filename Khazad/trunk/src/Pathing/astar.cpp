@@ -61,6 +61,12 @@ FullPath *AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
                 if (visited.find(NeiboringCoordinates) == visited.end())
                 {
                     float cost = SearchGraph->getEdgeCost(TestCoordinates, DirectionType);
+
+                    if (cost < 0)
+                    {
+                        continue; //Not valid edge
+                    }
+
                     AStarEntryPtr eneigh(new AStarEntry(NeiboringCoordinates, *e, e->cost_ + cost, (*TieBreakerHeuristic)(NeiboringCoordinates, GoalCoordinates)));
 #if 0
                     typedef std::vector<AStarEntryPtr>::iterator eiterator;

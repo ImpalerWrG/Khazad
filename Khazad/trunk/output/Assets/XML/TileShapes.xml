@@ -20,6 +20,10 @@
 		<Open bool="1"/>
 	</TileShape>
 	<TileShape>
+		<Name Label="TILESHAPE_DOWN_STAIR"/>
+		<Open bool="1"/>
+	</TileShape>
+	<TileShape>
 		<Name Label="TILESHAPE_FORTIFICATION"/>
 		<Open bool="0"/>
 	</TileShape>

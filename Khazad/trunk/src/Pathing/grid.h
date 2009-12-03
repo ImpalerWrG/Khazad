@@ -4,10 +4,12 @@
 #include <assert.h>
 #include <vector>
 #include <stdint.h>
-#include <string.h>
+#include <math.h>
 #include <map>
 
+#include <DataManager.h>
 #include <Cell.h>
+
 class MapCoordinates;
 class Heuristic;
 
@@ -41,7 +43,6 @@ struct GridCell
     }
 
     DirectionFlags DirectionMatrix[CELLEDGESIZE][CELLEDGESIZE];
-
     CellCoordinates thisCellCoodinates;
 };
 
@@ -51,14 +52,15 @@ public:
 
     KhazadGrid()
     {
-        static int16_t NONE_ID = 0;
-        static int16_t FLOOR_ID = 1;
-        static int16_t WALL_ID = 2;
-        static int16_t RAMP_ID = 3;
-        static int16_t STAIR_ID = 4;
-        static int16_t FORT_ID = 5;
-        static int16_t EMPTY_ID = 6;
-        static int16_t BOULDER_ID = 7;
+        static int16_t NONE_ID = DATA->getLabelIndex("TILESHAPE_UNKNOWN");
+        static int16_t FLOOR_ID = DATA->getLabelIndex("TILESHAPE_FLOOR");
+        static int16_t WALL_ID = DATA->getLabelIndex("TILESHAPE_WALL");
+        static int16_t BOULDER_ID = DATA->getLabelIndex("TILESHAPE_BOULDER");
+        static int16_t RAMP_ID = DATA->getLabelIndex("TILESHAPE_RAMP");
+        static int16_t STAIR_ID = DATA->getLabelIndex("TILESHAPE_STAIR");
+        static int16_t EMPTY_ID = DATA->getLabelIndex("TILESHAPE_EMPTY");
+        static int16_t DOWNSTAIR_ID = DATA->getLabelIndex("TILESHAPE_DOWN_STAIR");
+        static int16_t FORT_ID = DATA->getLabelIndex("TILESHAPE_FORTIFICATION");
 
         std::map<uint64_t, Cell*>* TargetCells = MAP->getCellMap();
         for (std::map<uint64_t, Cell*>::iterator it = TargetCells->begin(); it != TargetCells->end(); ++it)
@@ -90,9 +92,17 @@ public:
                             {
                                 int16_t AdjacentTileShape = MAP->getCubeShape(GenerateMapCoordinates(CellCoords, TargetCubeCoords));
 
-                                if (DirectionType == DIRECTION_DOWN || DirectionType == DIRECTION_UP)
+                                if (DirectionType == DIRECTION_DOWN )
                                 {
                                     if (AdjacentTileShape != STAIR_ID)
+                                    {
+                                        continue;  // Strait up and down is possible only through another stair
+                                    }
+                                }
+
+                                if (DirectionType == DIRECTION_UP)
+                                {
+                                    if (AdjacentTileShape != DOWNSTAIR_ID)
                                     {
                                         continue;  // Strait up and down is possible only through another stair
                                     }
@@ -128,13 +138,21 @@ public:
                             continue;
                         }
 
-                        if (TileShapeID == FLOOR_ID || TileShapeID == BOULDER_ID)
+                        if (TileShapeID == FLOOR_ID || TileShapeID == BOULDER_ID || TileShapeID == DOWNSTAIR_ID)
                         {
                             for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
                             {
                                 int16_t AdjacentTileShape = MAP->getCubeShape(GenerateMapCoordinates(CellCoords, TargetCubeCoords));
 
-                                if (DirectionType == DIRECTION_DOWN || DirectionType == DIRECTION_UP)
+                                if (DirectionType == DIRECTION_DOWN && TileShapeID == DOWNSTAIR_ID)
+                                {
+                                    if (AdjacentTileShape != STAIR_ID)
+                                    {
+                                        continue;  // Strait down is possible only if its to a stair
+                                    }
+                                }
+
+                                if (DirectionType == DIRECTION_UP)
                                 {
                                     continue;  // Strait down is impossible through a floor
                                 }
@@ -161,7 +179,7 @@ public:
                                     }
                                 }
 
-                                if (AdjacentTileShape == FLOOR_ID || AdjacentTileShape == RAMP_ID || AdjacentTileShape == STAIR_ID || AdjacentTileShape == BOULDER_ID)
+                                if (AdjacentTileShape == FLOOR_ID || AdjacentTileShape == RAMP_ID || AdjacentTileShape == STAIR_ID || AdjacentTileShape == BOULDER_ID || AdjacentTileShape == DOWNSTAIR_ID)
                                 {
                                     Flags |= (1 << (int) DirectionType);
                                 }
@@ -170,8 +188,6 @@ public:
                         }
                     }
                 }
-
-
             }
         }
     }
@@ -200,7 +216,6 @@ public:
 
     void setDirectionFlags(const MapCoordinates& MapCoords, DirectionFlags Flags)
     {
-        //find the Target cell (add if necessary)
         GridCell* TargetCell = addCell(CellCoordinates(MapCoords));
         if (TargetCell == NULL)
         {
@@ -272,30 +287,39 @@ public:
 
     float getEdgeCost(const MapCoordinates &TestCoords, Direction DirectionType) const
     {
-        count++;  // Count number of edges checked (for profiling path-finding algorithms)
-
         if (getDirectionFlags(TestCoords) & (1 << (int) DirectionType))
         {
-            return 1;  // Standard cost, will need to be more complex in the future
+            // perhapse replace this with a matrix;
+
+            if (DirectionType < CARDINAL_DIRECTIONS_START) // True for Up and Down
+            {
+                return 2;  // Strait up and down should be hard
+            }
+
+            if (DirectionType < NUM_CARDINAL_DIRECTIONS) // N, S, E, W
+            {
+                return 1;  // Adjacent tiles are the standard 1
+            }
+
+            if (DirectionType < NUM_COMPASS_DIRECTIONS) // NE, SE, NW, SW
+            {
+                return M_SQRT2;
+            }
+
+            if (DirectionType == DIRECTION_NONE)
+            {
+                return 0;
+            }
+
+            return 2; // Updward and downward angles
         }
         return -1;  // No Edge exists
-    }
-
-    void zeroCount()
-    {
-        count = 0;
-    }
-
-    unsigned getCount() const
-    {
-        return count;
     }
 
 private:
 
     std::map<uint64_t, GridCell*> Cells;
 
-    mutable unsigned count;
     MapCoordinates maxlen;
     MapCoordinates minlen;
 };
