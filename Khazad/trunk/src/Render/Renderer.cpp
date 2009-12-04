@@ -11,6 +11,7 @@
 #include <DataManager.h>
 #include <ModelManager.h>
 #include <PathTester.h>
+#include <PathManager.h>
 
 #include <DFTypes.h>
 #include <DFHackAPI.h>
@@ -507,6 +508,7 @@ void Renderer::RenderCell(CellCoordinates Coordinates, float ZTranslate, float S
 
         if(MainCamera->sphereInFrustum(RenderingPosition, CELLEDGESIZE))
         {
+            /*
             glPushMatrix();
 
                 glTranslatef(Coordinates.X * CELLEDGESIZE, Coordinates.Y * CELLEDGESIZE, ZTranslate);
@@ -520,10 +522,29 @@ void Renderer::RenderCell(CellCoordinates Coordinates, float ZTranslate, float S
                 //glColor4f(0.5, 0.5, 0.5, 1.0);
                 //glColor4f(0.5, 0.5, 0.5, 0.3);
 
-                LoopCell->Render(MainCamera->getOrientation());
+                //LoopCell->Render(MainCamera->getOrientation());
                 //TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
 
+
             glPopMatrix();
+            */
+
+            CubeCoordinates TargetCubeCoordinates;
+
+            for (TargetCubeCoordinates.X = 0; TargetCubeCoordinates.X < CELLEDGESIZE; TargetCubeCoordinates.X += 1)
+            {
+                for (TargetCubeCoordinates.Y = 0; TargetCubeCoordinates.Y < CELLEDGESIZE; TargetCubeCoordinates.Y += 1)
+                {
+                    MapCoordinates TargetCoordinates;
+
+                    TargetCoordinates.X = (Coordinates.X * CELLEDGESIZE) + TargetCubeCoordinates.X;
+                    TargetCoordinates.Y = (Coordinates.Y * CELLEDGESIZE) + TargetCubeCoordinates.Y;
+                    TargetCoordinates.Z = Coordinates.Z;
+
+                    DrawConnectivityLines(TargetCoordinates, PATH->getDirectionFlags(TargetCoordinates));
+                }
+            }
+
         }
     }
 }
@@ -555,8 +576,8 @@ bool Renderer::Render()
 
     if(FrameDraw)
     {
-        MapCoordinates Coodinates;
-        DrawCage(Coodinates, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ() * MainCamera->getLevelSeperation(), false, 0, 1, 0);
+        MapCoordinates Coordinates;
+        DrawCage(Coordinates, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ() * MainCamera->getLevelSeperation(), false, 0, 1, 0);
 
 		MapCoordinates AdjustedCursor = Cursor;
         AdjustedCursor.Z = MainCamera->ZlevelSeperationAdjustment(Cursor.Z);
@@ -606,16 +627,16 @@ bool Renderer::Render()
 
     /// render non-transparent stuff in any order
 
-    CellCoordinates TargetCellCoodinates;
+    CellCoordinates TargetCellCoordinates;
 
-    for (TargetCellCoodinates.Z = Start; TargetCellCoodinates.Z < Stop; TargetCellCoodinates.Z += 1)
+    for (TargetCellCoordinates.Z = Start; TargetCellCoordinates.Z < Stop; TargetCellCoordinates.Z += 1)
     {
         float Shading = 1.0;
         if(ShadedDraw)
         {
-            Shading = MainCamera->getShading(TargetCellCoodinates.Z);
+            Shading = MainCamera->getShading(TargetCellCoordinates.Z);
         }
-        float ZTranslate = MainCamera->ZlevelSeperationAdjustment(TargetCellCoodinates.Z);
+        float ZTranslate = MainCamera->ZlevelSeperationAdjustment(TargetCellCoordinates.Z);
 
         GLfloat specular[] = {Shading, Shading, Shading , 1.0f};
         glLightfv(GL_LIGHT0, GL_DIFFUSE, specular);
@@ -637,22 +658,23 @@ bool Renderer::Render()
         //glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
         glLightfv(GL_LIGHT1, GL_POSITION, position2);
 
-        for (TargetCellCoodinates.X = 0; TargetCellCoodinates.X < MAP->getCellSizeX(); TargetCellCoodinates.X += 1)
+        for (TargetCellCoordinates.X = 0; TargetCellCoordinates.X < MAP->getCellSizeX(); TargetCellCoordinates.X += 1)
         {
-            for (TargetCellCoodinates.Y = 0; TargetCellCoodinates.Y < MAP->getCellSizeY(); TargetCellCoodinates.Y += 1)
+            for (TargetCellCoordinates.Y = 0; TargetCellCoordinates.Y < MAP->getCellSizeY(); TargetCellCoordinates.Y += 1)
             {
-                RenderCell(TargetCellCoodinates, ZTranslate, Shading);
+                RenderCell(TargetCellCoordinates, ZTranslate, Shading);
             }
         }
     }
+
     /// bind normal stuff
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     /// turn off z-buffer accumulation
     glDepthMask(GL_FALSE);
 
     /// turn on blending
-    glEnable(GL_BLEND);
+    //glEnable(GL_BLEND);
 
     /// sort transparent stuff by distance from camera, do nothing if there's no change
 
@@ -986,13 +1008,13 @@ void Renderer::DrawPlane(Plane ArgumentPlane, float Length)
     glEnd();
 }
 
-void Renderer::DrawCage(MapCoordinates Coodinates, float x, float y, float z, bool Inflated, float red, float green, float blue)
+void Renderer::DrawCage(MapCoordinates Coordinates, float x, float y, float z, bool Inflated, float red, float green, float blue)
 {
     Vector3 Point;
 
-    Point.x = Coodinates.X;
-    Point.y = Coodinates.Y;
-    Point.z = Coodinates.Z;
+    Point.x = Coordinates.X;
+    Point.y = Coordinates.Y;
+    Point.z = Coordinates.Z;
 
     float X, Y, Z;
 
@@ -1061,15 +1083,15 @@ void Renderer::DrawCage(MapCoordinates Coodinates, float x, float y, float z, bo
     glEnd();
 }
 
-void Renderer::DrawDiamond(MapCoordinates Coodinates, float red, float green, float blue)
+void Renderer::DrawDiamond(MapCoordinates Coordinates, float red, float green, float blue)
 {
     glColor3f (red, green, blue);
 
     Vector3 Point;
 
-    Point.x = Coodinates.X;
-    Point.y = Coodinates.Y;
-    Point.z = MainCamera->ZlevelSeperationAdjustment(Coodinates.Z);
+    Point.x = Coordinates.X;
+    Point.y = Coordinates.Y;
+    Point.z = MainCamera->ZlevelSeperationAdjustment(Coordinates.Z);
 
     glBegin(GL_TRIANGLES);
     {
@@ -1127,6 +1149,37 @@ void Renderer::DrawMapPath(MapPath* TargetPath)
     {
         MapCoordinates Coords = TargetPath->NextCoordinate();
         DrawDiamond(Coords, (Step * 1.0) / TargetPath->StepCount, 1.0 - ((Step * 1.0) / TargetPath->StepCount), 1.0-fabs(1.0 - ((Step * 2.0) / TargetPath->StepCount)));
+    }
+}
+
+void Renderer::DrawConnectivityLines(MapCoordinates Coordinates, uint32_t ConnectivityFlags)
+{
+    if (ConnectivityFlags != 0)
+    {
+        glColor3f (0, 1.0, 0);
+
+        Vector3 CenterPoint, NeiborPoint;
+        MapCoordinates NeiborCoords;
+
+        CenterPoint.x = Coordinates.X;
+        CenterPoint.y = Coordinates.Y;
+        CenterPoint.z = MainCamera->ZlevelSeperationAdjustment(Coordinates.Z);
+
+        glBegin(GL_LINES);
+
+            for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
+            {
+                if (ConnectivityFlags & (1 << DirectionType))
+                {
+                    NeiborCoords = Coordinates;
+                    NeiborCoords.TranslateMapCoordinates(DirectionType);
+
+                    glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
+                    glVertex3f((float) NeiborCoords.X, (float) NeiborCoords.Y, (float) NeiborCoords.Z);
+                }
+            }
+
+        glEnd();
     }
 }
 

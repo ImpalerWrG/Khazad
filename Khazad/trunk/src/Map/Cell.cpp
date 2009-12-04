@@ -67,7 +67,7 @@ void Cell::setPosition(CellCoordinates Coordinates)
     CellPosition.y = (float) (Coordinates.Y * CELLEDGESIZE) + (CELLEDGESIZE / 2) - HALFCUBE;
     CellPosition.z = (float) Coordinates.Z;
 
-    thisCellCoodinates = Coordinates;
+    thisCellCoordinates = Coordinates;
 }
 
 bool Cell::Update()
@@ -120,6 +120,7 @@ void Cell::Render(CameraOrientation CurrentOrientation)
                             Sint16 MaterialID = getCubeMaterial(TargetCubeCoordinates);
                             TEXTURE->BindTexture(TEXTURE->MapTexture(MaterialID,  TEXTURE->PickImageTexture(MaterialID, getCubeSurface(TargetCubeCoordinates))));
                             model->Render();
+
 
                         glPopMatrix();
                     }
@@ -688,9 +689,9 @@ MapCoordinates Cell::TranslateCubeToMap(CubeCoordinates Coordinates)
 {
     MapCoordinates NewCoordinates;
 
-    NewCoordinates.X = (thisCellCoodinates.X * CELLEDGESIZE) + Coordinates.X;
-    NewCoordinates.Y = (thisCellCoodinates.Y * CELLEDGESIZE) + Coordinates.Y;
-    NewCoordinates.Z = thisCellCoodinates.Z;
+    NewCoordinates.X = (thisCellCoordinates.X * CELLEDGESIZE) + Coordinates.X;
+    NewCoordinates.Y = (thisCellCoordinates.Y * CELLEDGESIZE) + Coordinates.Y;
+    NewCoordinates.Z = thisCellCoordinates.Z;
 
     return NewCoordinates;
 }

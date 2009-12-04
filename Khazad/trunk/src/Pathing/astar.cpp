@@ -52,7 +52,8 @@ FullPath *AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
         // relax neighbours
         for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
         {
-            if (TestDirections & (1 << (int) DirectionType))  // Connectivity is valid for this direction
+            int DirectionBit = 1 << (int) DirectionType;
+            if (TestDirections & DirectionBit)  // Connectivity is valid for this direction
             {
                 NeiboringCoordinates = TestCoordinates;
                 NeiboringCoordinates.TranslateMapCoordinates(DirectionType);

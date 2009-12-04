@@ -53,7 +53,6 @@ class DepthChangeActionListener: public gcn::ActionListener
         gcn::KhazSlider* Source = (gcn::KhazSlider*) actionEvent.getSource();
         RENDERER->MainCamera->SetSliceTop( Source->getTopSlice());
         RENDERER->MainCamera->SetSliceBottom(Source->getBottomSlice());
-        //cout << "TOP: " << Source->getTopSlice() << " BOTTOM: " <<  Source->getBottomSlice() << endl;
     }
 };
 

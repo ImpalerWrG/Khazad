@@ -225,16 +225,16 @@ public:
     void DrawPoint(Vector3 Point, float Length = 1.0);
     void DrawPlane(Plane ArgumentPlane, float Length = 10);
 
-    void DrawCage(MapCoordinates Coodinates, float x, float y, float z, bool Inflated, float red, float green, float blue);
-    void DrawCage(MapCoordinates Coodinates, float x, float y, float z, bool Inflated);
+    void DrawCage(MapCoordinates Coordinates, float x, float y, float z, bool Inflated, float red, float green, float blue);
+    void DrawCage(MapCoordinates Coordinates, float x, float y, float z, bool Inflated);
 
     //void DrawStreamers(Vector3 Point, float x, float y, float z, float Length, float red, float green, float blue);
     //void DrawStreamers(Vector3 Point, float x, float y, float z, float Length);
 
-    void DrawDiamond(MapCoordinates Coodinates, float red, float green, float blue);
+    void DrawDiamond(MapCoordinates Coordinates, float red, float green, float blue);
 
     void DrawMapPath(MapPath* TargetPath);
-
+    void DrawConnectivityLines(MapCoordinates Coordinates, uint32_t ConnectivityFlags);
 
     void IncrementTriangles(Uint32 Triangles);
     Uint32 getTriangleCount()                   { return TotalTriangles; }

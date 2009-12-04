@@ -22,10 +22,10 @@ PathManager::~PathManager()
 
 bool PathManager::Init()
 {
-    Heuristic* ManhattenHeuristic = new Manhatten();
-    Heuristic* EuclideanHeuristic = new Euclidean();
-    Heuristic* MaxHeuristicType = new MaxHeuristic();
-    Heuristic* DijkstraHeuristic = new Dijkstra();
+    ManhattenHeuristic = new Manhatten();
+    EuclideanHeuristic = new Euclidean();
+    MaxHeuristicType = new MaxHeuristic();
+    DijkstraHeuristic = new Dijkstra();
 
     return true;
 }
@@ -63,4 +63,12 @@ MapPath* PathManager::FindPath(int PathSystem, MapCoordinates StartCoords, MapCo
 float PathManager::EstimatePathLength(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords)
 {
     return -1;
+}
+
+uint32_t PathManager::getDirectionFlags(MapCoordinates Coordinates)
+{
+    if (MapGrid != NULL)
+    {
+        return MapGrid->getDirectionFlags(Coordinates);
+    }
 }

@@ -121,7 +121,7 @@ public:
     void addBuilding(Building* NewBuilding)             { buildings.push_back(NewBuilding); }
     void addTree(Tree* NewTree)                         { trees.push_back(NewTree); }
 
-    CellCoordinates getCellCoordinates()        { return thisCellCoodinates; }
+    CellCoordinates getCellCoordinates()        { return thisCellCoordinates; }
     Vector3 getPosition()                       { return CellPosition; }
 
     map<int16_t, vector <vertex>* > Geometry;
@@ -168,7 +168,7 @@ protected:
     Vector3 CellPosition;
 
     // The global position of this cell relative to other cells
-    CellCoordinates thisCellCoodinates;
+    CellCoordinates thisCellCoordinates;
 };
 
 #endif // CELL__HEADER

@@ -17,7 +17,7 @@ PathTester::PathTester()
 
 PathTester::~PathTester()
 {
-   delete ManualPath;      
+   delete ManualPath;
    delete TestCoords;
 }
 
@@ -49,7 +49,7 @@ MapPath* PathTester::FindManualPath()
     PATH->ResetProfileData();
 
     PathingTimer->Start();
-    ManualPath = PATH->FindPath(0, StartCoords, GoalCoords);
+        ManualPath = PATH->FindPath(0, getStartCoords(), getGoalCoords());
     int TimeCost = PathingTimer->Stop();
 
     //printf("System %i TestResults\n\n", PathSystems[SystemIndex]);

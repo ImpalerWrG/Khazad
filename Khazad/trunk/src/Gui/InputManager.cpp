@@ -160,15 +160,15 @@ bool InputManager::HandleInput()
 					}
                     case SDLK_c:
                     {
-                        MapCoordinates CursorCoodinates = RENDERER->getCursor();
+                        MapCoordinates CursorCoordinates = RENDERER->getCursor();
 
                         Vector3 CenterPoint;
 
-                        CenterPoint.x = CursorCoodinates.X;
-                        CenterPoint.y = CursorCoodinates.Y;
-                        CenterPoint.z = CursorCoodinates.Z;
+                        CenterPoint.x = CursorCoordinates.X;
+                        CenterPoint.y = CursorCoordinates.Y;
+                        CenterPoint.z = CursorCoordinates.Z;
 
-                        CenterPoint.z = RENDERER->MainCamera->ZlevelSeperationAdjustment(CursorCoodinates.Z);
+                        CenterPoint.z = RENDERER->MainCamera->ZlevelSeperationAdjustment(CursorCoordinates.Z);
 
                         RENDERER->MainCamera->CenterView(CenterPoint);
                         break;

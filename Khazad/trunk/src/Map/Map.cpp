@@ -226,34 +226,34 @@ bool Map::Extract()
     DF.FinishReadBuildings();
 
 
-    CellCoordinates TargetCellCoodinates;
+    CellCoordinates TargetCellCoordinates;
 
-    for (TargetCellCoodinates.X = 0; TargetCellCoodinates.X < CellSizeX; TargetCellCoodinates.X += 1)
+    for (TargetCellCoordinates.X = 0; TargetCellCoordinates.X < CellSizeX; TargetCellCoordinates.X += 1)
     {
-        for (TargetCellCoodinates.Y = 0; TargetCellCoodinates.Y < CellSizeY; TargetCellCoodinates.Y += 1)
+        for (TargetCellCoordinates.Y = 0; TargetCellCoordinates.Y < CellSizeY; TargetCellCoordinates.Y += 1)
         {
-            for (TargetCellCoodinates.Z = 0; TargetCellCoodinates.Z < CellSizeZ; TargetCellCoodinates.Z += 1)
+            for (TargetCellCoordinates.Z = 0; TargetCellCoordinates.Z < CellSizeZ; TargetCellCoordinates.Z += 1)
             {
-                if(DF.isValidBlock(TargetCellCoodinates.X, TargetCellCoodinates.Y, TargetCellCoodinates.Z))
+                if(DF.isValidBlock(TargetCellCoordinates.X, TargetCellCoordinates.Y, TargetCellCoordinates.Z))
                 {
                     Cell* NewCell = new Cell();
-                    NewCell->setPosition(TargetCellCoodinates);
-                    LoadCellData(DF, layerassign, NewCell, constructionAssigner, plantAssigner, buildingAssigner, TargetCellCoodinates);
+                    NewCell->setPosition(TargetCellCoordinates);
+                    LoadCellData(DF, layerassign, NewCell, constructionAssigner, plantAssigner, buildingAssigner, TargetCellCoordinates);
 
-                    addCell(NewCell, TargetCellCoodinates);
+                    addCell(NewCell, TargetCellCoordinates);
                 }
             }
         }
     }
 
     // Build Face Data and other Initializations, can only be done properly once all map data is loaded
-    for (TargetCellCoodinates.X = 0; TargetCellCoodinates.X < CellSizeX; TargetCellCoodinates.X += 1)
+    for (TargetCellCoordinates.X = 0; TargetCellCoordinates.X < CellSizeX; TargetCellCoordinates.X += 1)
     {
-        for (TargetCellCoodinates.Y = 0; TargetCellCoodinates.Y < CellSizeY; TargetCellCoodinates.Y += 1)
+        for (TargetCellCoordinates.Y = 0; TargetCellCoordinates.Y < CellSizeY; TargetCellCoordinates.Y += 1)
         {
-            for (TargetCellCoodinates.Z = 0; TargetCellCoodinates.Z < CellSizeZ; TargetCellCoodinates.Z += 1)
+            for (TargetCellCoordinates.Z = 0; TargetCellCoordinates.Z < CellSizeZ; TargetCellCoordinates.Z += 1)
             {
-                Cell* LoopCell = getCell(TargetCellCoodinates);
+                Cell* LoopCell = getCell(TargetCellCoordinates);
                 if(LoopCell != NULL)
                 {
                     LoopCell->Init();
