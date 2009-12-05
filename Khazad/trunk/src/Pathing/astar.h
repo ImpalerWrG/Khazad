@@ -16,12 +16,16 @@ public:
 
     virtual MapPath *FindPath(const MapCoordinates &StartCoords, const MapCoordinates &GoalCoords) = 0;
 
-    virtual void Reset() = 0;
-    virtual unsigned getCount() const = 0;
+    virtual void ResetPrifiler() = 0;
+
+    virtual unsigned getGraphReads() const = 0;
+    virtual unsigned getExpandedNodes() const = 0;
 
 protected:
 
-    unsigned count;
+    unsigned GraphReads;
+    unsigned ExpandedNodes;
+
     const gridInterface* SearchGraph;
 
     const Heuristic* MainHeuristic;
@@ -37,11 +41,13 @@ public:
         SearchGraph = TargetSearchGraph;
         MainHeuristic = MainHeuristicType;
         TieBreakerHeuristic = TieBreakerHeuristicType;
-        Reset();
+        ResetPrifiler();
     }
 
-    void Reset()                    { count = 0; }
-    unsigned getCount() const       { return count; }
+    void ResetPrifiler()                { GraphReads = 0; ExpandedNodes= 0; }
+
+    unsigned getGraphReads() const      { return GraphReads; }
+    unsigned getExpandedNodes() const    { return ExpandedNodes; }
 
     MapPath* FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint) { return doFindPath(StartPoint, GoalPoint); }
     FullPath* doFindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint);
@@ -58,11 +64,13 @@ public:
         SearchGraph = TargetSearchGraph;
         MainHeuristic = MainHeuristicType;
         TieBreakerHeuristic = TieBreakerHeuristicType;
-        Reset();
+        ResetPrifiler();
     }
 
-    void Reset()                    { count = 0;}
-    unsigned getCount() const       { return count; }
+    void ResetPrifiler()                { GraphReads = 0; ExpandedNodes= 0; }
+
+    unsigned getGraphReads() const      { return GraphReads; }
+    unsigned getExpandedNodes() const    { return ExpandedNodes; }
 
     MapPath *FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint) { return doFindPath(StartPoint, GoalPoint); }
 

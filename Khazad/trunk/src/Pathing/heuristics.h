@@ -98,6 +98,24 @@ struct Diagonal : Heuristic
     }
 };
 
+struct StraitLine : Heuristic
+{
+    float Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord) const
+    {
+        /*
+        dx1 = current.x - goal.x
+        dy1 = current.y - goal.y
+
+        dx2 = start.x - goal.x
+        dy2 = start.y - goal.y
+
+        cross = abs(dx1*dy2 - dx2*dy1)
+        heuristic += cross*0.001
+        */
+        return 0;
+    }
+};
+
 struct Dijkstra : Heuristic
 {
     float Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord) const

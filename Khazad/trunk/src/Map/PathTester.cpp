@@ -46,19 +46,16 @@ MapPath* PathTester::getManualPath()
 
 MapPath* PathTester::FindManualPath()
 {
-    PATH->ResetProfileData();
+    PATH->ResetProfileData(0);
 
     PathingTimer->Start();
         ManualPath = PATH->FindPath(0, getStartCoords(), getGoalCoords());
-    int TimeCost = PathingTimer->Stop();
+    ManualPathCost = PathingTimer->Stop();
 
-    //printf("System %i TestResults\n\n", PathSystems[SystemIndex]);
-    printf("Ttotal path length: %g \n", ManualPath->Length);
-    printf("Graph reads: %llu \n", PATH->getGraphReads());
-    printf("Graph read efficiency: %lg \n", PATH->getGraphReads() / ManualPath->Length);
-    printf("Nodes considered: %llu \n", PATH->getExpandedNodeCount());
-    printf("Search efficiency: %lg \n", PATH->getExpandedNodeCount() / ManualPath->Length);
-    printf("Total time cost: %llu \n\n", TimeCost);
+    ManualPathSteps = ManualPath->StepCount;
+    ManualPathLength = ManualPath->Length;
+    ManualPathGraphReads = PATH->getGraphReads(0);
+    ManualPathExpandedNodes = PATH->getExpandedNodeCount(0);
 
     return ManualPath;
 }
@@ -85,17 +82,18 @@ void PathTester::RunPathTestSuite(int Interations, vector<int> PathSystems)
 
         for (int i = 0; i < Interations; ++i)
         {
-            PATH->ResetProfileData();
+            PATH->ResetProfileData(SystemIndex);
 
             PathingTimer->Start();
-            ReturnedPath = PATH->FindPath(PathSystems[SystemIndex], TestCoords[StartCoords[i]], TestCoords[GoalCoords[i]]);
+                ReturnedPath = PATH->FindPath(PathSystems[SystemIndex], TestCoords[StartCoords[i]], TestCoords[GoalCoords[i]]);
             TotalTimeCost += PathingTimer->Stop();
 
-            TotalGraphReads += PATH->getGraphReads();
-            NodesConsidered += PATH->getExpandedNodeCount();
+            TotalGraphReads += PATH->getGraphReads(SystemIndex);
+            NodesConsidered += PATH->getExpandedNodeCount(SystemIndex);
             TotalPathLength += ReturnedPath->Length;
-            CacheHits += PATH->isCacheHit();
-           delete ReturnedPath;
+            CacheHits += PATH->isCacheHit(SystemIndex);
+
+            delete ReturnedPath;
         }
 
         printf("System %i TestResults\n\n", PathSystems[SystemIndex]);

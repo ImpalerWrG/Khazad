@@ -11,7 +11,7 @@
 
 typedef boost::shared_ptr<AStarEntry> AStarEntryPtr;
 
-FullPath *AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
+FullPath* AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
 {
     entryGreaterThan egt(GoalCoordinates, MainHeuristic);
     std::vector<AStarEntryPtr> fringe;
@@ -24,11 +24,13 @@ FullPath *AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
 
     while (!fringe.empty())
     {
+        ExpandedNodes++;
         //Get the min-weight element off the fringe.
-        std::pop_heap(fringe.begin(),fringe.end(), egt);
+        std::pop_heap(fringe.begin(), fringe.end(), egt);
         AStarEntryPtr e = fringe.back();
         fringe.pop_back();
-        count++;
+
+
         MapCoordinates TestCoordinates = e->v_;
 
         if (visited.find(TestCoordinates) != visited.end())
@@ -52,8 +54,7 @@ FullPath *AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
         // relax neighbours
         for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
         {
-            int DirectionBit = 1 << (int) DirectionType;
-            if (TestDirections & DirectionBit)  // Connectivity is valid for this direction
+            if (TestDirections & (1 << (int) DirectionType))  // Connectivity is valid for this direction
             {
                 NeiboringCoordinates = TestCoordinates;
                 NeiboringCoordinates.TranslateMapCoordinates(DirectionType);
@@ -63,10 +64,7 @@ FullPath *AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
                 {
                     float cost = SearchGraph->getEdgeCost(TestCoordinates, DirectionType);
 
-                    if (cost < 0)
-                    {
-                        continue; //Not valid edge
-                    }
+                    GraphReads++;
 
                     AStarEntryPtr eneigh(new AStarEntry(NeiboringCoordinates, *e, e->cost_ + cost, (*TieBreakerHeuristic)(NeiboringCoordinates, GoalCoordinates)));
 #if 0
@@ -129,10 +127,10 @@ private:
 
 typedef boost::shared_ptr<AStarZoneEntry> AStarZoneEntryPtr;
 
-FullPath *HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
+FullPath* HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
 {
-    zone *zoneS = zm_->findContainingZone(StartCoordinates);
-    zone *zoneT = zm_->findContainingZone(GoalCoordinates);
+    zone* zoneS = zm_->findContainingZone(StartCoordinates);
+    zone* zoneT = zm_->findContainingZone(GoalCoordinates);
 
     if ((zoneS == NULL) || (zoneT == NULL))
         return new FullPath();
@@ -178,13 +176,13 @@ FullPath *HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
             {
                 AStar lastar(&zgg,MainHeuristic,TieBreakerHeuristic);
                 cpath = lastar.doFindPath(e->path_.back(),e->getPoint());
-                count += lastar.getCount();
+                //count += lastar.getCount();
             }
             else
             {
                 HierarchicalAStar dastar(&zgg,zm_->down(),MainHeuristic,TieBreakerHeuristic);
                 cpath = dastar.doFindPath(e->path_.back(),e->getPoint());
-                count += dastar.getCount();
+                //count += dastar.getCount();
                 //cachemiss += dastar.cachemiss;
             }
 
@@ -214,7 +212,7 @@ FullPath *HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
             continue;
         }
 
-        count++;
+        //count++;
 
         // if it's the destination, congratuations, we win a prize!
         if (e->getPoint() == GoalCoordinates)

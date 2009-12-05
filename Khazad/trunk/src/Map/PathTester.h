@@ -28,6 +28,12 @@ public:
     MapPath* FindManualPath();
     MapPath* getManualPath();
 
+    int getManualPathSteps()                    { return ManualPathSteps; }
+    int getManualPathCost()                     { return ManualPathCost; }
+    float getManualPathLength()                 { return ManualPathLength; }
+    int getManualPathGraphReads()               { return ManualPathGraphReads; }
+    int getManualPathExpandedNodes()            { return ManualPathExpandedNodes; }
+
 protected:
 
     Timer* PathingTimer;
@@ -37,6 +43,12 @@ protected:
 
     MapCoordinates StartCoords, GoalCoords;  // Used for manual testing
     MapPath* ManualPath;
+
+    int ManualPathSteps;
+    int ManualPathCost;
+    float ManualPathLength;
+    int ManualPathGraphReads;
+    int ManualPathExpandedNodes;
 };
 
 

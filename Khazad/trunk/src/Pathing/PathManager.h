@@ -30,11 +30,11 @@ public:
     float EstimatePathLength(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords);
     uint32_t getDirectionFlags(MapCoordinates Coordinates);
 
-    int getExpandedNodeCount()      { return 0; }
-    int getGraphReads()             { return 0; }
-    bool isCacheHit()               { return false; }
+    int getExpandedNodeCount(int SystemIndex);
+    int getGraphReads(int SystemIndex);
+    bool isCacheHit(int SystemIndex);
 
-    void ResetProfileData()         { };
+    void ResetProfileData(int SystemIndex);
 
 protected:
 
@@ -47,6 +47,7 @@ protected:
     Heuristic* EuclideanHeuristic;
     Heuristic* MaxHeuristicType;
     Heuristic* DijkstraHeuristic;
+    Heuristic* DiagonalHeuristic;
 };
 
 #define PATH (PathManager::GetInstance())

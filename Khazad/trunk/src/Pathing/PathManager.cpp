@@ -26,6 +26,7 @@ bool PathManager::Init()
     EuclideanHeuristic = new Euclidean();
     MaxHeuristicType = new MaxHeuristic();
     DijkstraHeuristic = new Dijkstra();
+    DiagonalHeuristic = new Diagonal();
 
     return true;
 }
@@ -34,7 +35,7 @@ void PathManager::CreateMapAbstraction()
 {
     MapGrid = new KhazadGrid();
 
-    AstarImplementation = new AStar(MapGrid, ManhattenHeuristic, EuclideanHeuristic);
+    AstarImplementation = new AStar(MapGrid, DiagonalHeuristic, EuclideanHeuristic);
 }
 
 void PathManager::EditMapAbstraction()
@@ -71,4 +72,25 @@ uint32_t PathManager::getDirectionFlags(MapCoordinates Coordinates)
     {
         return MapGrid->getDirectionFlags(Coordinates);
     }
+    return 0;
+}
+
+int PathManager::getExpandedNodeCount(int SystemIndex)
+{
+    return AstarImplementation->getExpandedNodes();
+}
+
+int PathManager::getGraphReads(int SystemIndex)
+{
+    return AstarImplementation->getGraphReads();
+}
+
+bool PathManager::isCacheHit(int SystemIndex)
+{
+    return false;
+}
+
+void PathManager::ResetProfileData(int SystemIndex)
+{
+    AstarImplementation->ResetPrifiler();
 }

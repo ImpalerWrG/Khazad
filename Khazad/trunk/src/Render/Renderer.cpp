@@ -72,7 +72,7 @@ bool Renderer::Init()
     SDL_Surface* Icon = NULL;
     Icon = IMAGE->loadSurface(Path("Assets\\Textures\\KIcon.png"));
 
-    if(Icon)
+    if (Icon)
     {
         SDL_WM_SetIcon(Icon, NULL);
     }
@@ -83,9 +83,9 @@ bool Renderer::Init()
     ScreenWidth = info->current_w;
     ScreenHeight = info->current_h;
 
-	CurrentBPP = ScreenBPP = WindowBPP = 32;
+    CurrentBPP = ScreenBPP = WindowBPP = 32;
 
-    if(CONFIG->FullScreen())
+    if (CONFIG->FullScreen())
     {
         FullScreen = true;
         CurrentWidth = ScreenWidth;
@@ -101,14 +101,14 @@ bool Renderer::Init()
         CurrentBPP = WindowBPP;
 
         ///FIXME: no resizing on windows
-        #ifndef LINUX_BUILD
-            ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL );
-        #else
-            ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
-        #endif
+#ifndef LINUX_BUILD
+        ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL );
+#else
+        ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_RESIZABLE );
+#endif
     }
     // let's try searching for VBO extension
-    if(IsExtensionSupported("GL_ARB_vertex_buffer_object"))
+    if (IsExtensionSupported("GL_ARB_vertex_buffer_object"))
     {
         haveVBO = true;
         // we have VBO ext, set up VBO functions
@@ -126,7 +126,7 @@ bool Renderer::Init()
         cerr << "GL_vertex_buffer_object OpenGL extension not supported, using fallback rendering method.\n";
     }
     haveSHADOW = true;
-    if(IsExtensionSupported("GL_ARB_depth_texture") && IsExtensionSupported("GL_ARB_shadow"))
+    if (IsExtensionSupported("GL_ARB_depth_texture") && IsExtensionSupported("GL_ARB_shadow"))
     {
         cout << "Nice, we can do shadows." << endl;
         haveSHADOW = true;
@@ -188,7 +188,7 @@ bool Renderer::IsExtensionSupported( const char* extesion )
 
     // Extension names should not have spaces
     position = (unsigned char *) strchr( extesion, ' ' );
-    if( position || *extesion == '\0' )
+    if ( position || *extesion == '\0' )
         return false;
 
     // Get Extensions String
@@ -196,29 +196,29 @@ bool Renderer::IsExtensionSupported( const char* extesion )
 
     // Search The Extensions String For An Exact Copy
     start = extensions;
-    for(;;)
+    for (;;)
     {
         position = (unsigned char *) strstr( (const char *) start, extesion );
-        if( !position )
+        if ( !position )
             break;
         terminator = position + strlen( extesion );
-        if( position == start || *( position - 1 ) == ' ' )
-            if( *terminator == ' ' || *terminator == '\0' )
+        if ( position == start || *( position - 1 ) == ' ' )
+            if ( *terminator == ' ' || *terminator == '\0' )
                 return true;
-            start = terminator;
+        start = terminator;
     }
     return false;
 }
 
 bool Renderer::ReSizeScreen(Uint16 Width, Uint16 Height, bool fullscreen)
 {
-    #ifndef LINUX_BUILD
-        return false;
-    #endif
+#ifndef LINUX_BUILD
+    return false;
+#endif
     CurrentWidth = Width;
     CurrentHeight = Height;
     FullScreen = fullscreen;
-    if(!fullscreen)
+    if (!fullscreen)
     {
         WindowWidth = Width;
         WindowHeight = Height;
@@ -229,12 +229,12 @@ bool Renderer::ReSizeScreen(Uint16 Width, Uint16 Height, bool fullscreen)
     MainCamera->setIsometricProj(CurrentWidth, CurrentHeight, 1000000.0);
     glViewport(0, 0, CurrentWidth, CurrentHeight);
 
-    if(FlatDraw) // Reset Flat drawing if thats what we were in
+    if (FlatDraw) // Reset Flat drawing if thats what we were in
     {
         setDrawingFlat();
     }
 
-    if(fullscreen)
+    if (fullscreen)
     {
         ScreenSurface = SDL_SetVideoMode(CurrentWidth, CurrentHeight, CurrentBPP, SDL_HWSURFACE | SDL_OPENGL | SDL_HWACCEL | SDL_FULLSCREEN );
     }
@@ -250,11 +250,11 @@ bool Renderer::ReSizeScreen(Uint16 Width, Uint16 Height, bool fullscreen)
 
 void Renderer::ToggleFullScreen()
 {
-    #ifndef LINUX_BUILD
-        return;
-    #endif
+#ifndef LINUX_BUILD
+    return;
+#endif
     FullScreen = !FullScreen;
-    if(FullScreen)
+    if (FullScreen)
     {
         ReSizeScreen(ScreenWidth,ScreenHeight,1);
     }
@@ -271,7 +271,7 @@ RenderObject *Renderer::CreateRenderObject (vector <vertex> * source)
     RenderObject *ret = new RenderObject;
     ret->count = work.size();
     ret->gfxHandle = 0;
-    if(haveVBO)
+    if (haveVBO)
     {
         // Generate And Bind The Vertex Buffer
         RENDERER->glGenBuffers( 1, &ret->gfxHandle ); // Get A Valid Name
@@ -288,10 +288,10 @@ RenderObject *Renderer::CreateRenderObject (vector <vertex> * source)
         char * handle = (char *) &work[0];
         // draw into display list
         glNewList(ret->gfxHandle,GL_COMPILE);
-            glTexCoordPointer(2, GL_FLOAT, 32, (const GLvoid*) (handle + 12)); // texture coords
-            glNormalPointer(GL_FLOAT, 32, (const GLvoid*) (handle + 20)); // normal vectors
-            glVertexPointer(3, GL_FLOAT, 32 , (const GLvoid*) handle);
-            glDrawArrays(GL_TRIANGLES,0,ret->count);
+        glTexCoordPointer(2, GL_FLOAT, 32, (const GLvoid*) (handle + 12)); // texture coords
+        glNormalPointer(GL_FLOAT, 32, (const GLvoid*) (handle + 20)); // normal vectors
+        glVertexPointer(3, GL_FLOAT, 32 , (const GLvoid*) handle);
+        glDrawArrays(GL_TRIANGLES,0,ret->count);
         glEndList();
     }
     return ret;
@@ -300,7 +300,7 @@ RenderObject *Renderer::CreateRenderObject (vector <vertex> * source)
 void Renderer::CallRenderObject(RenderObject* obj)
 {
     IncrementTriangles(obj->count / 3);
-    if(haveVBO)
+    if (haveVBO)
     {
         glBindBuffer(GL_ARRAY_BUFFER, obj->gfxHandle);
         glTexCoordPointer(2, GL_FLOAT, 32, (const GLvoid*) 12); // texture coords
@@ -317,7 +317,7 @@ void Renderer::CallRenderObject(RenderObject* obj)
 
 void Renderer::DeleteRenderObject(RenderObject* obj)
 {
-    if(haveVBO)
+    if (haveVBO)
     {
         glDeleteBuffers(1, &obj->gfxHandle);
     }
@@ -350,66 +350,66 @@ void Renderer::RenderTextCentered(const char *text, Sint8 FontIndex, SDL_Color C
 
 void Renderer::RenderSurface(SDL_Surface* RenderSurface, SDL_Rect *location)
 {
-	SDL_Surface *intermediary;
-	SDL_Rect rect;
-	GLuint texture;
+    SDL_Surface *intermediary;
+    SDL_Rect rect;
+    GLuint texture;
 
-	rect.w = nextpoweroftwo(RenderSurface->w);
-	rect.h = nextpoweroftwo(RenderSurface->h);
+    rect.w = nextpoweroftwo(RenderSurface->w);
+    rect.h = nextpoweroftwo(RenderSurface->h);
 
-	intermediary = SDL_CreateRGBSurface(0, rect.w, rect.h, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
-    if(intermediary == NULL)
+    intermediary = SDL_CreateRGBSurface(0, rect.w, rect.h, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+    if (intermediary == NULL)
     {
         cerr << "RenderSurface:SDL_CreateRGBSurface failed: " << rect.w << " " << rect.h << endl;
         return;
     }
 
 
-	SDL_BlitSurface(RenderSurface, 0, intermediary, 0);
+    SDL_BlitSurface(RenderSurface, 0, intermediary, 0);
 
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, 4, rect.w, rect.h, 0, GL_BGRA, GL_UNSIGNED_BYTE, intermediary->pixels );
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, 4, rect.w, rect.h, 0, GL_BGRA, GL_UNSIGNED_BYTE, intermediary->pixels );
 
-	/* GL_NEAREST looks horrible, if scaled... */
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    /* GL_NEAREST looks horrible, if scaled... */
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     RenderTexture(texture, &rect, location, false);
 
-	/* return the deltas in the unused w,h part of the rect */
-	location->w = RenderSurface->w;
-	location->h = RenderSurface->h;
+    /* return the deltas in the unused w,h part of the rect */
+    location->w = RenderSurface->w;
+    location->h = RenderSurface->h;
 
-	SDL_FreeSurface(intermediary);
-	glDeleteTextures(1, &texture);
+    SDL_FreeSurface(intermediary);
+    glDeleteTextures(1, &texture);
 }
 
 void Renderer::RenderTexture(GLuint texture, SDL_Rect *Size, SDL_Rect *location, bool invert)
 {
- 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glColor3f(1.0f, 1.0f, 1.0f);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glColor3f(1.0f, 1.0f, 1.0f);
 
-	glBegin(GL_QUADS);
+    glBegin(GL_QUADS);
 
-        if(invert)
-        {
+    if (invert)
+    {
             glTexCoord2f(0.0f, 0.0f);   glVertex2f(location->x           , location->y);
             glTexCoord2f(1.0f, 0.0f);   glVertex2f(location->x + Size->w , location->y);
             glTexCoord2f(1.0f, 1.0f);   glVertex2f(location->x + Size->w , location->y + Size->h);
             glTexCoord2f(0.0f, 1.0f);   glVertex2f(location->x           , location->y + Size->h);
-        }
-        else
-        {
+    }
+    else
+    {
             glTexCoord2f(0.0f, 1.0f);   glVertex2f(location->x           , location->y);
             glTexCoord2f(1.0f, 1.0f);   glVertex2f(location->x + Size->w , location->y);
             glTexCoord2f(1.0f, 0.0f);   glVertex2f(location->x + Size->w , location->y + Size->h);
             glTexCoord2f(0.0f, 0.0f);   glVertex2f(location->x           , location->y + Size->h);
-        }
-	glEnd();
+    }
+    glEnd();
 
-	glFinish();
+    glFinish();
 }
 
 void Renderer::RenderLogo()
@@ -431,13 +431,13 @@ void Renderer::RenderLogo()
 
 void Renderer::CaptureScreenShot()
 {
-    if(ilutGLScreen())
+    if (ilutGLScreen())
     {
         char buffer[256];
         sprintf(buffer, "ScreenShots\\ScreenShot%i.png", ScreenShotCounter);
         // dumb, but it works.
         /// TODO: add this functionality to Path
-        while(!ilSaveImage(Path(buffer)))
+        while (!ilSaveImage(Path(buffer)))
         {
             ScreenShotCounter++;
             sprintf(buffer, "ScreenShots\\ScreenShot%i.png", ScreenShotCounter);
@@ -448,40 +448,40 @@ void Renderer::CaptureScreenShot()
 
 int Renderer::round(double x)
 {
-	return (int)(x + 0.5);
+    return (int)(x + 0.5);
 }
 
 int Renderer::nextpoweroftwo(int x)
 {
-	double logbase2 = log(x) / log(2);
-	return round(pow(2, ceil(logbase2)));
+    double logbase2 = log(x) / log(2);
+    return round(pow(2, ceil(logbase2)));
 }
 
 bool Renderer::WipeScreen()
 {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	SDL_GL_SwapBuffers();
+    SDL_GL_SwapBuffers();
 
-	return true;
+    return true;
 }
 
 bool Renderer::ClearDevice()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
-	return true;
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+    return true;
 }
 
 bool Renderer::Flip()
 {
-	SDL_GL_SwapBuffers();
+    SDL_GL_SwapBuffers();
 
-	return true;
+    return true;
 }
 
 void Renderer::DirtyAllLists()
 {
-    if(MAP == NULL || !MAP->isInitialized())
+    if (MAP == NULL || !MAP->isInitialized())
     {
         return;
     }
@@ -493,7 +493,7 @@ void Renderer::DirtyAllLists()
         {
             it->second->setNeedsRedraw(true);
         }
-	}
+    }
 }
 
 // FIXME: move to cell
@@ -501,12 +501,12 @@ void Renderer::RenderCell(CellCoordinates Coordinates, float ZTranslate, float S
 {
     Cell* LoopCell = MAP->getCell(Coordinates);
 
-    if(LoopCell != NULL && LoopCell->isActive())
+    if (LoopCell != NULL && LoopCell->isActive())
     {
         Vector3 RenderingPosition = LoopCell->getPosition();
         RenderingPosition.z = ZTranslate;
 
-        if(MainCamera->sphereInFrustum(RenderingPosition, CELLEDGESIZE))
+        if (MainCamera->sphereInFrustum(RenderingPosition, CELLEDGESIZE))
         {
             /*
             glPushMatrix();
@@ -553,7 +553,7 @@ bool Renderer::Render()
 {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    if(MAP == NULL || !MAP->isMapLoaded())
+    if (MAP == NULL || !MAP->isMapLoaded())
     {
         setDrawingFlat();
         RenderLogo();
@@ -565,21 +565,21 @@ bool Renderer::Render()
         return false;
     }
 
-	TotalTriangles = 0;
+    TotalTriangles = 0;
 
-    if(FlatDraw)
+    if (FlatDraw)
     {
         setDrawing3D();
     }
 
     MainCamera->UpdateView();
 
-    if(FrameDraw)
+    if (FrameDraw)
     {
         MapCoordinates Coordinates;
         DrawCage(Coordinates, MAP->getMapSizeX(), MAP->getMapSizeY(), MAP->getMapSizeZ() * MainCamera->getLevelSeperation(), false, 0, 1, 0);
 
-		MapCoordinates AdjustedCursor = Cursor;
+        MapCoordinates AdjustedCursor = Cursor;
         AdjustedCursor.Z = MainCamera->ZlevelSeperationAdjustment(Cursor.Z);
 
         if (MAP->isCubeSolid(Cursor))
@@ -594,8 +594,11 @@ bool Renderer::Render()
 
     if (TESTER->getManualPath()->Length != -1)
     {
-       MapPath *mp = TESTER->getManualPath();
-       DrawMapPath(mp);
+        MapPath *mp = TESTER->getManualPath();
+        DrawMapPath(mp);
+
+        DrawDiamond(TESTER->getStartCoords(), 0.0, 0.0, 1.0);
+        DrawDiamond(TESTER->getGoalCoords(), 1.0, 1.0, 0.0);
     }
     else
     {
@@ -632,7 +635,7 @@ bool Renderer::Render()
     for (TargetCellCoordinates.Z = Start; TargetCellCoordinates.Z < Stop; TargetCellCoordinates.Z += 1)
     {
         float Shading = 1.0;
-        if(ShadedDraw)
+        if (ShadedDraw)
         {
             Shading = MainCamera->getShading(TargetCellCoordinates.Z);
         }
@@ -685,16 +688,16 @@ bool Renderer::Render()
     glDisable(GL_LIGHT0);
     glDisable(GL_LIGHTING);
     /// deprecated
-/*
-	for (Uint32 i = 0; i < GAME->ActorList.size(); i++)
-	{
-	    if (GAME->ActorList[i]->getType() == PAWN_ACTOR)
-	    {
-            GAME->ActorList[i]->Draw();
-	    }
-	}
-*/
-	return true;
+    /*
+    	for (Uint32 i = 0; i < GAME->ActorList.size(); i++)
+    	{
+    	    if (GAME->ActorList[i]->getType() == PAWN_ACTOR)
+    	    {
+                GAME->ActorList[i]->Draw();
+    	    }
+    	}
+    */
+    return true;
 }
 
 void Renderer::IncrementTriangles(Uint32 Triangles)
@@ -704,7 +707,7 @@ void Renderer::IncrementTriangles(Uint32 Triangles)
 
 void Renderer::setDrawingFlat()
 {
-    if(!FlatDraw)
+    if (!FlatDraw)
     {
         int vPort[4];
 
@@ -728,7 +731,7 @@ void Renderer::setDrawingFlat()
 
 void Renderer::setDrawing3D()
 {
-    if(FlatDraw)  // Discard the FlatProjection Matrices
+    if (FlatDraw) // Discard the FlatProjection Matrices
     {
         glEnable(GL_DEPTH_TEST);
 
@@ -747,19 +750,19 @@ bool Renderer::isCubeDrawn(MapCoordinates Coordinates)
 
     if (TargetCell != NULL)
     {
-        if(MAP->isCubeHidden(Coordinates) && !isHiddenDraw())
+        if (MAP->isCubeHidden(Coordinates) && !isHiddenDraw())
         {
             return false;
         }
-        if(MAP->isCubeSubTerranean(Coordinates) && !isSubterraneanDraw())
+        if (MAP->isCubeSubTerranean(Coordinates) && !isSubterraneanDraw())
         {
             return false;
         }
-        if(MAP->isCubeSkyView(Coordinates) && !isSkyViewDraw())
+        if (MAP->isCubeSkyView(Coordinates) && !isSkyViewDraw())
         {
             return false;
         }
-        if(MAP->isCubeSunLit(Coordinates) && !isSunLitDraw())
+        if (MAP->isCubeSunLit(Coordinates) && !isSunLitDraw())
         {
             return false;
         }
@@ -794,13 +797,45 @@ void Renderer::PrintDebugging()
 
         SDL_Rect position;
         position.x = 10;
-        position.y = 160;
+        position.y = 280;
 
         sprintf (buffer, "Coordinates: x%i y%i z%i", Cursor.X, Cursor.Y, Cursor.Z);
         static const SDL_Color WHITE = {255, 255, 255};
 
-        RenderText(buffer, 0, WHITE, &position);
-        position.y -= 40;
+        //RenderText(buffer, 0, WHITE, &position);
+        //position.y -= 40;
+
+
+        if (TESTER->getManualPath()->Length != -1)
+        {
+            sprintf(buffer, "Total path steps: %i", TESTER->getManualPathSteps());
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+
+            sprintf(buffer, "Total path length: %f", TESTER->getManualPathLength());
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+
+            sprintf(buffer, "Graph reads: %i", TESTER->getManualPathGraphReads());
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+
+            sprintf(buffer, "Graph read efficiency: %f", TESTER->getManualPathGraphReads() / TESTER->getManualPathSteps());
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+
+            sprintf(buffer, "Nodes considered: %i", TESTER->getManualPathExpandedNodes());
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+
+            sprintf(buffer, "Search efficiency: %f", TESTER->getManualPathExpandedNodes() / TESTER->getManualPathSteps());
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+
+            sprintf(buffer, "Total time cost: %i", TESTER->getManualPathCost());
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+        }
 
         /*
         Cube* SelectedCube  = MAP->getCube(x,y,z);
@@ -816,81 +851,81 @@ void Renderer::PrintDebugging()
         }
         */
 
-/*        Block* TargetBlock = df_map->getBlock(x / 16, y / 16, z);
-        if(TargetBlock != NULL)
-        {
-            sprintf (buffer, "Block offset: 0x%X", TargetBlock->origin);
-            SCREEN->RenderText(buffer, 0, WHITE, &position);
-            position.y -= 40;
-        }*/
-/*
-        sprintf (buffer, "Tile: %i", TileType);
-        SCREEN->RenderText(buffer, 0, WHITE, &position);
-        position.y -= 40;
+        /*        Block* TargetBlock = df_map->getBlock(x / 16, y / 16, z);
+                if(TargetBlock != NULL)
+                {
+                    sprintf (buffer, "Block offset: 0x%X", TargetBlock->origin);
+                    SCREEN->RenderText(buffer, 0, WHITE, &position);
+                    position.y -= 40;
+                }*/
+        /*
+                sprintf (buffer, "Tile: %i", TileType);
+                SCREEN->RenderText(buffer, 0, WHITE, &position);
+                position.y -= 40;
 
-        // display tile material
-        stringstream acc (stringstream::in | stringstream::out);
-        matglosstype = df_map->getMaterialTypeString(matglossdesc.type);
-        matgloss = df_map->getMaterialString(matglossdesc.type,matglossdesc.index);
-        acc << "material: " << matglossdesc.type << ":" << matglossdesc.index << " = " <<
-               matglosstype << ":" << matgloss;
-        SCREEN->RenderText(acc.str().c_str(), 0, WHITE, &position);
-        position.y -= 40;*/
-/*
-        sprintf (buffer, "biome %i, layer %i, vein: %s #%i", Biome, Geolayer, matgloss.c_str(), veinMatgloss);
+                // display tile material
+                stringstream acc (stringstream::in | stringstream::out);
+                matglosstype = df_map->getMaterialTypeString(matglossdesc.type);
+                matgloss = df_map->getMaterialString(matglossdesc.type,matglossdesc.index);
+                acc << "material: " << matglossdesc.type << ":" << matglossdesc.index << " = " <<
+                       matglosstype << ":" << matgloss;
+                SCREEN->RenderText(acc.str().c_str(), 0, WHITE, &position);
+                position.y -= 40;*/
+        /*
+                sprintf (buffer, "biome %i, layer %i, vein: %s #%i", Biome, Geolayer, matgloss.c_str(), veinMatgloss);
 
-        SCREEN->RenderText(buffer, 0, WHITE, &position);
-        position.y -= 40;
-*/
-/*
-        if(building)
-        {
-            matglosstype = df_map->getMaterialTypeString(building->material.type);
-            matgloss = df_map->getMaterialString(building->material.type,building->material.index);
-            sprintf (buffer, "building: 0x%x:%s, material: %d:%d = %s:%s ", building->vtable, df_map->getBuildingTypeName(building->type).c_str(),building->material.type, building->material.index,matglosstype.c_str(), matgloss.c_str());
-            SCREEN->RenderText(buffer, 0, WHITE, &position);
-            position.y -= 40;
-        }
-        if (tree)
-        {
-            matglosstype = df_map->getMaterialTypeString(tree->material.type);
-            matgloss = df_map->getMaterialString(tree->material.type,tree->material.index);
-            sprintf (buffer, "plant: %d:%d = %s:%s ",tree->material.type, tree->material.index,matglosstype.c_str(), matgloss.c_str());
-            SCREEN->RenderText(buffer, 0, WHITE, &position);
-            position.y -= 40;
-        }*/
-/*
-        char binarybuffer[33];
-        binarysprintf(binarybuffer, Designation);
-        sprintf (buffer, "Designation: %s", binarybuffer);
-        SCREEN->RenderText(buffer, 0, WHITE, &position);
+                SCREEN->RenderText(buffer, 0, WHITE, &position);
+                position.y -= 40;
+        */
+        /*
+                if(building)
+                {
+                    matglosstype = df_map->getMaterialTypeString(building->material.type);
+                    matgloss = df_map->getMaterialString(building->material.type,building->material.index);
+                    sprintf (buffer, "building: 0x%x:%s, material: %d:%d = %s:%s ", building->vtable, df_map->getBuildingTypeName(building->type).c_str(),building->material.type, building->material.index,matglosstype.c_str(), matgloss.c_str());
+                    SCREEN->RenderText(buffer, 0, WHITE, &position);
+                    position.y -= 40;
+                }
+                if (tree)
+                {
+                    matglosstype = df_map->getMaterialTypeString(tree->material.type);
+                    matgloss = df_map->getMaterialString(tree->material.type,tree->material.index);
+                    sprintf (buffer, "plant: %d:%d = %s:%s ",tree->material.type, tree->material.index,matglosstype.c_str(), matgloss.c_str());
+                    SCREEN->RenderText(buffer, 0, WHITE, &position);
+                    position.y -= 40;
+                }*/
+        /*
+                char binarybuffer[33];
+                binarysprintf(binarybuffer, Designation);
+                sprintf (buffer, "Designation: %s", binarybuffer);
+                SCREEN->RenderText(buffer, 0, WHITE, &position);
 
-        position.y -= 40;
+                position.y -= 40;
 
-        binarysprintf(binarybuffer, Ocupancy);
-        sprintf (buffer, "Ocupancy: %s", binarybuffer);
-        SCREEN->RenderText(buffer, 0, WHITE, &position);
+                binarysprintf(binarybuffer, Ocupancy);
+                sprintf (buffer, "Ocupancy: %s", binarybuffer);
+                SCREEN->RenderText(buffer, 0, WHITE, &position);
 
-        position.y -= 40;
-*/
+                position.y -= 40;
+        */
 
-/*
-        sprintf (buffer, "Cells: %i  Cubes: %i  Faces: %i  Slopes: %i", MAP->getCellCount(), MAP->getCubeCount(), MAP->getFaceCount(), MAP->getSlopeCount());
-        SCREEN->RenderText(buffer, 0, WHITE, &position);
+        /*
+                sprintf (buffer, "Cells: %i  Cubes: %i  Faces: %i  Slopes: %i", MAP->getCellCount(), MAP->getCubeCount(), MAP->getFaceCount(), MAP->getSlopeCount());
+                SCREEN->RenderText(buffer, 0, WHITE, &position);
 
-        position.y -= 40;
+                position.y -= 40;
 
-        sprintf (buffer, "InitCells: %i  InitCubes: %i  InitFaces: %i  InitSlopes: %i", MAP->getInitedCellCount(), MAP->getInitedCubeCount(), MAP->getInitedFaceCount(), MAP->getInitedSlopeCount());
-        SCREEN->RenderText(buffer, 0, WHITE, &position);
-*/
+                sprintf (buffer, "InitCells: %i  InitCubes: %i  InitFaces: %i  InitSlopes: %i", MAP->getInitedCellCount(), MAP->getInitedCubeCount(), MAP->getInitedFaceCount(), MAP->getInitedSlopeCount());
+                SCREEN->RenderText(buffer, 0, WHITE, &position);
+        */
 
-/*
-        GLint MaxVerts, MaxIndex;
-        glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &MaxVerts);
-        glGetIntegerv(GL_MAX_ELEMENTS_INDICES, &MaxIndex);
-        sprintf (buffer, "MaxElementsVertices: %i  MaxElementsIndices: %i", MaxVerts, MaxIndex);
-        SCREEN->RenderText(buffer, 0, WHITE, &position);
-*/
+        /*
+                GLint MaxVerts, MaxIndex;
+                glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &MaxVerts);
+                glGetIntegerv(GL_MAX_ELEMENTS_INDICES, &MaxIndex);
+                sprintf (buffer, "MaxElementsVertices: %i  MaxElementsIndices: %i", MaxVerts, MaxIndex);
+                SCREEN->RenderText(buffer, 0, WHITE, &position);
+        */
     }
 }
 
@@ -945,17 +980,17 @@ void Renderer::DrawPoint(Vector3 Point, float Length)
 {
     // Draw the positive side of the lines x,y,z
     glBegin(GL_LINES);
-        glColor3f (0.0, 1.0, 0.0); // Green for x axis
-        glVertex3f(Point.x, Point.y, Point.z);
-        glVertex3f(Point.x + Length, Point.y, Point.z);
+    glColor3f (0.0, 1.0, 0.0); // Green for x axis
+    glVertex3f(Point.x, Point.y, Point.z);
+    glVertex3f(Point.x + Length, Point.y, Point.z);
 
-        glColor3f(1.0, 0.0, 0.0); // Red for y axis
-        glVertex3f(Point.x, Point.y, Point.z);
-        glVertex3f(Point.x, Point.y + Length, Point.z);
+    glColor3f(1.0, 0.0, 0.0); // Red for y axis
+    glVertex3f(Point.x, Point.y, Point.z);
+    glVertex3f(Point.x, Point.y + Length, Point.z);
 
-        glColor3f(0.0, 0.0, 1.0); // Blue for z axis
-        glVertex3f(Point.x, Point.y, Point.z);
-        glVertex3f(Point.x, Point.y, Point.z + Length);
+    glColor3f(0.0, 0.0, 1.0); // Blue for z axis
+    glVertex3f(Point.x, Point.y, Point.z);
+    glVertex3f(Point.x, Point.y, Point.z + Length);
     glEnd();
 
     // Dotted lines for the negative sides of x,y,z
@@ -963,17 +998,17 @@ void Renderer::DrawPoint(Vector3 Point, float Length)
     glLineStipple(1, 0x0101); // Dotted stipple pattern for the lines
 
     glBegin(GL_LINES);
-        glColor3f (0.0, 1.0, 0.0); // Green for x axis
-        glVertex3f(Point.x, Point.y, Point.z);
-        glVertex3f(Point.x - Length, Point.y, Point.z);
+    glColor3f (0.0, 1.0, 0.0); // Green for x axis
+    glVertex3f(Point.x, Point.y, Point.z);
+    glVertex3f(Point.x - Length, Point.y, Point.z);
 
-        glColor3f(1.0, 0.0, 0.0); // Red for y axis
-        glVertex3f(Point.x, Point.y, Point.z);
-        glVertex3f(Point.x, Point.y - Length, Point.z);
+    glColor3f(1.0, 0.0, 0.0); // Red for y axis
+    glVertex3f(Point.x, Point.y, Point.z);
+    glVertex3f(Point.x, Point.y - Length, Point.z);
 
-        glColor3f(0.0, 0.0, 1.0); // Blue for z axis
-        glVertex3f(Point.x, Point.y, Point.z);
-        glVertex3f(Point.x, Point.y, Point.z - Length);
+    glColor3f(0.0, 0.0, 1.0); // Blue for z axis
+    glVertex3f(Point.x, Point.y, Point.z);
+    glVertex3f(Point.x, Point.y, Point.z - Length);
     glEnd();
 
     glDisable(GL_LINE_STIPPLE); // Disable the line stipple
@@ -990,21 +1025,21 @@ void Renderer::DrawPlane(Plane ArgumentPlane, float Length)
     float D = ArgumentPlane.D;
 
     glBegin(GL_LINES);
-        glColor3f (0.0, 1.0, 0.0); // Green for x axis
-        glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
-        glVertex3f(CenterPoint.x + 1, CenterPoint.y, CenterPoint.z);
+    glColor3f (0.0, 1.0, 0.0); // Green for x axis
+    glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
+    glVertex3f(CenterPoint.x + 1, CenterPoint.y, CenterPoint.z);
 
-        glColor3f(1.0, 0.0, 0.0); // Red for y axis
-        glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
-        glVertex3f(CenterPoint.x, CenterPoint.y + 1, CenterPoint.z);
+    glColor3f(1.0, 0.0, 0.0); // Red for y axis
+    glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
+    glVertex3f(CenterPoint.x, CenterPoint.y + 1, CenterPoint.z);
 
-        glColor3f(0.0, 0.0, 1.0); // Blue for z axis
-        glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
-        glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z + 1);
+    glColor3f(0.0, 0.0, 1.0); // Blue for z axis
+    glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
+    glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z + 1);
 
-        glColor3f(1.0, 1.0, 1.0); // White for D
-        glVertex3f(0, 0, 0);
-        glVertex3f(NoramlVector.x * D, NoramlVector.y * D, NoramlVector.z * D);
+    glColor3f(1.0, 1.0, 1.0); // White for D
+    glVertex3f(0, 0, 0);
+    glVertex3f(NoramlVector.x * D, NoramlVector.y * D, NoramlVector.z * D);
     glEnd();
 }
 
@@ -1018,7 +1053,7 @@ void Renderer::DrawCage(MapCoordinates Coordinates, float x, float y, float z, b
 
     float X, Y, Z;
 
-    if(Inflated)
+    if (Inflated)
     {
         X = x + 0.08;
         Y = y + 0.08;
@@ -1043,42 +1078,42 @@ void Renderer::DrawCage(MapCoordinates Coordinates, float x, float y, float z, b
 
     glBegin(GL_LINES);
 
-        glVertex3f(Point.x, Point.y, Point.z);
-        glVertex3f(Point.x + X, Point.y, Point.z);
+    glVertex3f(Point.x, Point.y, Point.z);
+    glVertex3f(Point.x + X, Point.y, Point.z);
 
-        glVertex3f(Point.x, Point.y, Point.z);
-        glVertex3f(Point.x, Point.y + Y, Point.z);
+    glVertex3f(Point.x, Point.y, Point.z);
+    glVertex3f(Point.x, Point.y + Y, Point.z);
 
-        glVertex3f(Point.x + X, Point.y, Point.z);
-        glVertex3f(Point.x + X, Point.y + Y, Point.z);
+    glVertex3f(Point.x + X, Point.y, Point.z);
+    glVertex3f(Point.x + X, Point.y + Y, Point.z);
 
-        glVertex3f(Point.x, Point.y + Y, Point.z);
-        glVertex3f(Point.x + X, Point.y + Y, Point.z);
+    glVertex3f(Point.x, Point.y + Y, Point.z);
+    glVertex3f(Point.x + X, Point.y + Y, Point.z);
 
-        glVertex3f(Point.x, Point.y, Point.z);
-        glVertex3f(Point.x, Point.y, Point.z + Z);
+    glVertex3f(Point.x, Point.y, Point.z);
+    glVertex3f(Point.x, Point.y, Point.z + Z);
 
-        glVertex3f(Point.x + X, Point.y, Point.z);
-        glVertex3f(Point.x + X, Point.y, Point.z + Z);
+    glVertex3f(Point.x + X, Point.y, Point.z);
+    glVertex3f(Point.x + X, Point.y, Point.z + Z);
 
-        glVertex3f(Point.x, Point.y + Y, Point.z);
-        glVertex3f(Point.x, Point.y + Y, Point.z + Z);
+    glVertex3f(Point.x, Point.y + Y, Point.z);
+    glVertex3f(Point.x, Point.y + Y, Point.z + Z);
 
-        glVertex3f(Point.x + X, Point.y + Y, Point.z);
-        glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
+    glVertex3f(Point.x + X, Point.y + Y, Point.z);
+    glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
 
 
-        glVertex3f(Point.x, Point.y, Point.z + Z);
-        glVertex3f(Point.x + X, Point.y, Point.z + Z);
+    glVertex3f(Point.x, Point.y, Point.z + Z);
+    glVertex3f(Point.x + X, Point.y, Point.z + Z);
 
-        glVertex3f(Point.x, Point.y, Point.z + Z);
-        glVertex3f(Point.x, Point.y + Y, Point.z + Z);
+    glVertex3f(Point.x, Point.y, Point.z + Z);
+    glVertex3f(Point.x, Point.y + Y, Point.z + Z);
 
-        glVertex3f(Point.x + X, Point.y, Point.z + Z);
-        glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
+    glVertex3f(Point.x + X, Point.y, Point.z + Z);
+    glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
 
-        glVertex3f(Point.x, Point.y + Y, Point.z + Z);
-        glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
+    glVertex3f(Point.x, Point.y + Y, Point.z + Z);
+    glVertex3f(Point.x + X, Point.y + Y, Point.z + Z);
 
     glEnd();
 }
@@ -1167,17 +1202,17 @@ void Renderer::DrawConnectivityLines(MapCoordinates Coordinates, uint32_t Connec
 
         glBegin(GL_LINES);
 
-            for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
+        for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
+        {
+            if (ConnectivityFlags & (1 << DirectionType))
             {
-                if (ConnectivityFlags & (1 << DirectionType))
-                {
-                    NeiborCoords = Coordinates;
-                    NeiborCoords.TranslateMapCoordinates(DirectionType);
+                NeiborCoords = Coordinates;
+                NeiborCoords.TranslateMapCoordinates(DirectionType);
 
-                    glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
-                    glVertex3f((float) NeiborCoords.X, (float) NeiborCoords.Y, (float) NeiborCoords.Z);
-                }
+                glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
+                glVertex3f((float) NeiborCoords.X, (float) NeiborCoords.Y, (float) NeiborCoords.Z);
             }
+        }
 
         glEnd();
     }
@@ -1223,27 +1258,27 @@ void Renderer::setCursor(MapCoordinates Coordinates)
 
 void Renderer::ConfineCursor()
 {
-    if(Cursor.X < 0)
+    if (Cursor.X < 0)
     {
         Cursor.X = 0;
     }
-    if(Cursor.X >= MAP->getMapSizeX())
+    if (Cursor.X >= MAP->getMapSizeX())
     {
         Cursor.X = MAP->getMapSizeX() - 1;
     }
-    if(Cursor.Y < 0)
+    if (Cursor.Y < 0)
     {
         Cursor.Y = 0;
     }
-    if(Cursor.Y >= MAP->getMapSizeY())
+    if (Cursor.Y >= MAP->getMapSizeY())
     {
         Cursor.Y = MAP->getMapSizeY() - 1;
     }
-    if(Cursor.Z < 0)
+    if (Cursor.Z < 0)
     {
         Cursor.Z = 0;
     }
-    if(Cursor.Z >= MAP->getMapSizeZ())
+    if (Cursor.Z >= MAP->getMapSizeZ())
     {
         Cursor.Z = MAP->getMapSizeZ() - 1;
     }
