@@ -17,6 +17,8 @@ public:
     ~PathTester();
     bool Init();
 
+    void CreateTestSuite();
+
     void RunPathTestSuite(int Interations, vector<int> PathSystems);
     void RunHuristicTestSuite(int Interations, vector<int> PathSystems);
 

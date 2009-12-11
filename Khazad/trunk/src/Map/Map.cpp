@@ -12,7 +12,6 @@
 #include "../../dfhack/library/DFHackAPI.h"
 //#include <string.h> // for memset
 
-#include <Column.h>
 #include <Cell.h>
 #include <Random.h>
 #include <Building.h>

@@ -97,7 +97,7 @@ struct MapCoordinates
         Z = Point.z;
     };*/
 
-    //MapCoordinates(CellCoordinates CellCoords, CubeCoordinates CubeCoords);
+    MapCoordinates(CellCoordinates CellCoords, CubeCoordinates CubeCoords);
 
     inline void TranslateMapCoordinates(Direction DirectionType)
     {
@@ -404,13 +404,5 @@ struct CubeCoordinates
     uint8_t Y;
 };
 
-/*
-MapCoordinates::MapCoordinates(CellCoordinates CellCoords, CubeCoordinates CubeCoords)
-{
-    X = (CellCoords.X * CELLEDGESIZE) + CubeCoords.X;
-    Y = (CellCoords.Y * CELLEDGESIZE) + CubeCoords.Y;
-    Z = CellCoords.Z;
-}
-*/
 
 #endif // COORDINATES__HEADER

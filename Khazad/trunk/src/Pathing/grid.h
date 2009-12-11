@@ -81,7 +81,7 @@ public:
                             Flags |= (1 << (int) DIRECTION_NONE);
                             for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
                             {
-                                MapCoordinates AdjacentTileCoords = GenerateMapCoordinates(CellCoords, TargetCubeCoords);
+                                MapCoordinates AdjacentTileCoords = MapCoordinates(CellCoords, TargetCubeCoords);
                                 AdjacentTileCoords.TranslateMapCoordinates(DirectionType);
 
                                 //see if we've done this already..
@@ -145,17 +145,6 @@ public:
 
             }
         }
-    }
-
-    static MapCoordinates GenerateMapCoordinates(CellCoordinates CellCoords, CubeCoordinates CubeCoords)
-    {
-        MapCoordinates NewCoordinates;
-
-        NewCoordinates.X = (CellCoords.X * CELLEDGESIZE) + CubeCoords.X;
-        NewCoordinates.Y = (CellCoords.Y * CELLEDGESIZE) + CubeCoords.Y;
-        NewCoordinates.Z = CellCoords.Z;
-
-        return NewCoordinates;
     }
 
     DirectionFlags getDirectionFlags(const MapCoordinates &TargetCoords) const

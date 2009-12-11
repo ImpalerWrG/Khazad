@@ -8,6 +8,7 @@
 #include <ConfigManager.h>
 #include <DataManager.h>
 #include <PathManager.h>
+#include <PathTester.h>
 
 class MainKeyListener : public gcn::KeyListener
 {
@@ -304,6 +305,7 @@ class MapDumpActionListener: public gcn::ActionListener
             UI->setMapViewState();
 
             PATH->CreateMapAbstraction();
+            TESTER->CreateTestSuite();
         }
     }
 };

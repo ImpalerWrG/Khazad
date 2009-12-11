@@ -5,8 +5,10 @@
 
 #include <PathManager.h>
 #include <Map.h>
+#include <Cell.h>
 #include <Timer.h>
 #include <Random.h>
+#include <map>
 
 DECLARE_SINGLETON(PathTester)
 
@@ -23,10 +25,40 @@ PathTester::~PathTester()
 
 bool PathTester::Init()
 {
+
+}
+
+void PathTester::CreateTestSuite()
+{
     PathingTimer = new Timer();      // Master Timer
     NumTestPoints = 1000;
 
     TestCoords = new MapCoordinates[NumTestPoints];
+    std::vector<MapCoordinates> PotentialTestCoords;
+
+    std::map<uint64_t, Cell*>* TargetCells = MAP->getCellMap();
+    for (std::map<uint64_t, Cell*>::iterator it = TargetCells->begin(); it != TargetCells->end(); ++it)
+    {
+        if (it->second != NULL)
+        {
+            Cell* TargetCell = it->second;
+            CellCoordinates CellCoords = TargetCell->getCellCoordinates();
+
+            CubeCoordinates TargetCubeCoords;
+            for (TargetCubeCoords.X = 0; TargetCubeCoords.X < CELLEDGESIZE; TargetCubeCoords.X++)
+            {
+                for (TargetCubeCoords.Y = 0; TargetCubeCoords.Y < CELLEDGESIZE; TargetCubeCoords.Y++)
+                {
+                   MapCoordinates TestCoords = MapCoordinates(CellCoords, TargetCubeCoords);
+
+                    if(false)
+                    {
+                        PotentialTestCoords.push_back(TestCoords);
+                    }
+                }
+            }
+        }
+    }
 
     for(int i = 0; i < NumTestPoints; i++)
     {
@@ -35,8 +67,6 @@ bool PathTester::Init()
     }
 
     ManualPath = new FullPath();
-
-    return true;
 }
 
 MapPath* PathTester::getManualPath()
@@ -72,7 +102,7 @@ void PathTester::RunPathTestSuite(int Interations, vector<int> PathSystems)
     {
         StartCoords.push_back(RANDOM->Roll(0, NumTestPoints));
         GoalCoords.push_back(RANDOM->Roll(0, NumTestPoints));
-        // Identic Start and Goal points are possible, the PathManager should handle them
+        // Identical Start and Goal points are possible, the PathManager should handle them
     }
 
     for (int SystemIndex = 0; SystemIndex < PathSystems.size(); SystemIndex++)
