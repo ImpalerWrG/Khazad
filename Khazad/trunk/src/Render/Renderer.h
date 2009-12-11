@@ -189,6 +189,9 @@ public:
     bool isSunLitDraw()                         { return SunLitDraw; }
     void setSunLitDraw(bool NewValue);
 
+    bool isConnectivityDraw()                   { return ConnectivityDraw; }
+    void setConnectivityDraw(bool NewValue);
+
     bool ReSizeScreen(Uint16 Width, Uint16 Hight, bool fullscreen);
 
     void RenderText(const char* text, Sint8 FontIndex, SDL_Color color, SDL_Rect *location);
@@ -228,13 +231,10 @@ public:
     void DrawCage(MapCoordinates Coordinates, float x, float y, float z, bool Inflated, float red, float green, float blue);
     void DrawCage(MapCoordinates Coordinates, float x, float y, float z, bool Inflated);
 
-    //void DrawStreamers(Vector3 Point, float x, float y, float z, float Length, float red, float green, float blue);
-    //void DrawStreamers(Vector3 Point, float x, float y, float z, float Length);
-
-    void DrawDiamond(MapCoordinates Coordinates, float red, float green, float blue);
+    void DrawDiamond(MapCoordinates Coordinates, float size, float red, float green, float blue);
 
     void DrawMapPath(MapPath* TargetPath);
-    void DrawConnectivityLines(MapCoordinates Coordinates, uint32_t ConnectivityFlags);
+    void DrawConnectivity(CellCoordinates Coordinates);
 
     void IncrementTriangles(Uint32 Triangles);
     Uint32 getTriangleCount()                   { return TotalTriangles; }
@@ -288,6 +288,8 @@ protected:
     bool SubterraneanDraw;
     bool SkyViewDraw;
     bool SunLitDraw;
+
+    bool ConnectivityDraw;
 
     bool FlatDraw;
     bool DebuggingDraw;

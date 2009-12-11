@@ -42,6 +42,8 @@ Renderer::Renderer()
     SkyViewDraw = true;
     SunLitDraw = true;
 
+    ConnectivityDraw = false;
+
     FlatDraw = false;
     DebuggingDraw = true;
 
@@ -508,7 +510,6 @@ void Renderer::RenderCell(CellCoordinates Coordinates, float ZTranslate, float S
 
         if (MainCamera->sphereInFrustum(RenderingPosition, CELLEDGESIZE))
         {
-            /*
             glPushMatrix();
 
                 glTranslatef(Coordinates.X * CELLEDGESIZE, Coordinates.Y * CELLEDGESIZE, ZTranslate);
@@ -522,29 +523,15 @@ void Renderer::RenderCell(CellCoordinates Coordinates, float ZTranslate, float S
                 //glColor4f(0.5, 0.5, 0.5, 1.0);
                 //glColor4f(0.5, 0.5, 0.5, 0.3);
 
-                //LoopCell->Render(MainCamera->getOrientation());
+                LoopCell->Render(MainCamera->getOrientation());
                 //TotalTriangles += LoopCell->getTriangleCount();  // Use stored Triangle Count
 
+                if (isConnectivityDraw())
+                {
+                    DrawConnectivity(Coordinates);
+                }
 
             glPopMatrix();
-            */
-
-            CubeCoordinates TargetCubeCoordinates;
-
-            for (TargetCubeCoordinates.X = 0; TargetCubeCoordinates.X < CELLEDGESIZE; TargetCubeCoordinates.X += 1)
-            {
-                for (TargetCubeCoordinates.Y = 0; TargetCubeCoordinates.Y < CELLEDGESIZE; TargetCubeCoordinates.Y += 1)
-                {
-                    MapCoordinates TargetCoordinates;
-
-                    TargetCoordinates.X = (Coordinates.X * CELLEDGESIZE) + TargetCubeCoordinates.X;
-                    TargetCoordinates.Y = (Coordinates.Y * CELLEDGESIZE) + TargetCubeCoordinates.Y;
-                    TargetCoordinates.Z = Coordinates.Z;
-
-                    DrawConnectivityLines(TargetCoordinates, PATH->getDirectionFlags(TargetCoordinates));
-                }
-            }
-
         }
     }
 }
@@ -597,13 +584,13 @@ bool Renderer::Render()
         MapPath *mp = TESTER->getManualPath();
         DrawMapPath(mp);
 
-        DrawDiamond(TESTER->getStartCoords(), 0.0, 0.0, 1.0);
-        DrawDiamond(TESTER->getGoalCoords(), 1.0, 1.0, 0.0);
+        DrawDiamond(TESTER->getStartCoords(), 1.0, 0.0, 0.0, 1.0);
+        DrawDiamond(TESTER->getGoalCoords(), 1.0, 1.0, 1.0, 0.0);
     }
     else
     {
-        DrawDiamond(TESTER->getStartCoords(), 0.0, 0.0, 1.0);
-        DrawDiamond(TESTER->getGoalCoords(), 1.0, 1.0, 0.0);
+        DrawDiamond(TESTER->getStartCoords(), 1.0, 0.0, 0.0, 1.0);
+        DrawDiamond(TESTER->getGoalCoords(), 1.0, 1.0, 1.0, 0.0);
     }
 
 
@@ -976,6 +963,11 @@ void Renderer::setSunLitDraw(bool NewValue)
     DirtyAllLists();
 }
 
+void Renderer::setConnectivityDraw(bool NewValue)
+{
+    ConnectivityDraw = NewValue;
+}
+
 void Renderer::DrawPoint(Vector3 Point, float Length)
 {
     // Draw the positive side of the lines x,y,z
@@ -1118,7 +1110,7 @@ void Renderer::DrawCage(MapCoordinates Coordinates, float x, float y, float z, b
     glEnd();
 }
 
-void Renderer::DrawDiamond(MapCoordinates Coordinates, float red, float green, float blue)
+void Renderer::DrawDiamond(MapCoordinates Coordinates, float size, float red, float green, float blue)
 {
     glColor3f (red, green, blue);
 
@@ -1129,124 +1121,109 @@ void Renderer::DrawDiamond(MapCoordinates Coordinates, float red, float green, f
     Point.z = MainCamera->ZlevelSeperationAdjustment(Coordinates.Z);
 
     glBegin(GL_TRIANGLES);
-    {
+
         // Top NorthEast
-        glVertex3f(Point.x, Point.y, Point.z + (HALFCUBE / 2)); // Top
-        glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // North
-        glVertex3f(Point.x + (HALFCUBE / 2), Point.y, Point.z); // East
+        glVertex3f(Point.x, Point.y, Point.z + (size / 2)); // Top
+        glVertex3f(Point.x, Point.y - (size / 2), Point.z); // North
+        glVertex3f(Point.x + (size / 2), Point.y, Point.z); // East
 
         // Top SouthEast
-        glVertex3f(Point.x, Point.y, Point.z + (HALFCUBE / 2)); // Top
-        glVertex3f(Point.x, Point.y + (HALFCUBE / 2), Point.z); // South
-        glVertex3f(Point.x + (HALFCUBE / 2), Point.y, Point.z); // East
+        glVertex3f(Point.x, Point.y, Point.z + (size / 2)); // Top
+        glVertex3f(Point.x, Point.y + (size / 2), Point.z); // South
+        glVertex3f(Point.x + (size / 2), Point.y, Point.z); // East
 
         // Top SouthWest
-        glVertex3f(Point.x, Point.y, Point.z + (HALFCUBE / 2)); // Top
-        glVertex3f(Point.x, Point.y + (HALFCUBE / 2), Point.z); // South
-        glVertex3f(Point.x - (HALFCUBE / 2), Point.y, Point.z); // West
+        glVertex3f(Point.x, Point.y, Point.z + (size / 2)); // Top
+        glVertex3f(Point.x, Point.y + (size / 2), Point.z); // South
+        glVertex3f(Point.x - (size / 2), Point.y, Point.z); // West
 
         // Top NorthWest
-        glVertex3f(Point.x, Point.y, Point.z + (HALFCUBE / 2)); // Top
-        glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // North
-        glVertex3f(Point.x - (HALFCUBE / 2), Point.y, Point.z); // West
+        glVertex3f(Point.x, Point.y, Point.z + (size / 2)); // Top
+        glVertex3f(Point.x, Point.y - (size / 2), Point.z); // North
+        glVertex3f(Point.x - (size / 2), Point.y, Point.z); // West
 
 
 
         // Bottom NorthEast
-        glVertex3f(Point.x, Point.y, Point.z - (HALFCUBE / 2)); // Bottom
-        glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // North
-        glVertex3f(Point.x + (HALFCUBE / 2), Point.y, Point.z); // East
+        glVertex3f(Point.x, Point.y, Point.z - (size / 2)); // Bottom
+        glVertex3f(Point.x, Point.y - (size / 2), Point.z); // North
+        glVertex3f(Point.x + (size / 2), Point.y, Point.z); // East
 
         // Bottom SouthEast
-        glVertex3f(Point.x, Point.y, Point.z - (HALFCUBE / 2)); // Bottom
-        glVertex3f(Point.x, Point.y + (HALFCUBE / 2), Point.z); // South
-        glVertex3f(Point.x + (HALFCUBE / 2), Point.y, Point.z); // East
+        glVertex3f(Point.x, Point.y, Point.z - (size / 2)); // Bottom
+        glVertex3f(Point.x, Point.y + (size / 2), Point.z); // South
+        glVertex3f(Point.x + (size / 2), Point.y, Point.z); // East
 
         // Bottom SouthWest
-        glVertex3f(Point.x, Point.y, Point.z - (HALFCUBE / 2)); // Bottom
-        glVertex3f(Point.x, Point.y + (HALFCUBE / 2), Point.z); // South
-        glVertex3f(Point.x - (HALFCUBE / 2), Point.y, Point.z); // West
+        glVertex3f(Point.x, Point.y, Point.z - (size / 2)); // Bottom
+        glVertex3f(Point.x, Point.y + (size / 2), Point.z); // South
+        glVertex3f(Point.x - (size / 2), Point.y, Point.z); // West
 
         // Bottom NorthWest
-        glVertex3f(Point.x, Point.y, Point.z - (HALFCUBE / 2)); // Bottom
-        glVertex3f(Point.x, Point.y - (HALFCUBE / 2), Point.z); // North
-        glVertex3f(Point.x - (HALFCUBE / 2), Point.y, Point.z); // West
-    }
+        glVertex3f(Point.x, Point.y, Point.z - (size / 2)); // Bottom
+        glVertex3f(Point.x, Point.y - (size / 2), Point.z); // North
+        glVertex3f(Point.x - (size / 2), Point.y, Point.z); // West
+
     glEnd();
 }
 
 void Renderer::DrawMapPath(MapPath* TargetPath)
 {
     TargetPath->ResetSteps();
-    DrawDiamond(TargetPath->StartCoordinates, 0.0, 1.0, 0.0);
+    DrawDiamond(TargetPath->StartCoordinates, 1.0, 0.0, 1.0, 0.0);
 
     for (int Step = 0;  Step < TargetPath->StepCount; Step++)
     {
         MapCoordinates Coords = TargetPath->NextCoordinate();
-        DrawDiamond(Coords, (Step * 1.0) / TargetPath->StepCount, 1.0 - ((Step * 1.0) / TargetPath->StepCount), 1.0-fabs(1.0 - ((Step * 2.0) / TargetPath->StepCount)));
+        DrawDiamond(Coords, 1.0, (Step * 1.0) / TargetPath->StepCount, 1.0 - ((Step * 1.0) / TargetPath->StepCount), 0.0);
     }
 }
 
-void Renderer::DrawConnectivityLines(MapCoordinates Coordinates, uint32_t ConnectivityFlags)
+void Renderer::DrawConnectivity(CellCoordinates Coordinates)
 {
-    if (ConnectivityFlags != 0)
-    {
-        glColor3f (0, 1.0, 0);
+    CubeCoordinates TargetCubeCoordinates;
 
-        Vector3 CenterPoint, NeiborPoint;
-        MapCoordinates NeiborCoords;
+    glColor3f (1.0, 1.0, 1.0);
 
-        CenterPoint.x = Coordinates.X;
-        CenterPoint.y = Coordinates.Y;
-        CenterPoint.z = MainCamera->ZlevelSeperationAdjustment(Coordinates.Z);
+    glBegin(GL_LINES);
 
-        glBegin(GL_LINES);
-
-        for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
+        for (TargetCubeCoordinates.X = 0; TargetCubeCoordinates.X < CELLEDGESIZE; TargetCubeCoordinates.X += 1)
         {
-            if (ConnectivityFlags & (1 << DirectionType))
+            for (TargetCubeCoordinates.Y = 0; TargetCubeCoordinates.Y < CELLEDGESIZE; TargetCubeCoordinates.Y += 1)
             {
-                NeiborCoords = Coordinates;
-                NeiborCoords.TranslateMapCoordinates(DirectionType);
+                MapCoordinates TargetCoordinates;
 
-                glVertex3f(CenterPoint.x, CenterPoint.y, CenterPoint.z);
-                glVertex3f((float) NeiborCoords.X, (float) NeiborCoords.Y, (float) NeiborCoords.Z);
+                TargetCoordinates.X = (Coordinates.X * CELLEDGESIZE) + TargetCubeCoordinates.X;
+                TargetCoordinates.Y = (Coordinates.Y * CELLEDGESIZE) + TargetCubeCoordinates.Y;
+                TargetCoordinates.Z = Coordinates.Z;
+
+                uint32_t ConnectivityFlags = PATH->getDirectionFlags(TargetCoordinates);
+
+                if (ConnectivityFlags != 0)
+                {
+                    MapCoordinates SourceCoords, NeiborCoords;
+
+                    for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
+                    {
+                        if (ConnectivityFlags & (1 << DirectionType))
+                        {
+                            SourceCoords.X = TargetCubeCoordinates.X;
+                            SourceCoords.Y = TargetCubeCoordinates.Y;
+                            SourceCoords.Z = 0;
+
+                            NeiborCoords = SourceCoords;
+                            NeiborCoords.TranslateMapCoordinates(DirectionType);
+
+                            glVertex3f((float) SourceCoords.X, (float) SourceCoords.Y, (float) SourceCoords.Z);
+                            glVertex3f((float) NeiborCoords.X, (float) NeiborCoords.Y, (float) NeiborCoords.Z);
+                        }
+                    }
+                }
             }
         }
 
-        glEnd();
-    }
-}
-
-/*
-void Renderer::DrawStreamers(Vector3 Point, float x, float y, float z, float Length)
-{
-    DrawStreamers(Point,x,y,z,Length,1,1,1);
-}
-
-void Renderer::DrawStreamers(Vector3 Point, float x, float y, float z, float Length, float red, float green, float blue)
-{
-    glEnable(GL_LINE_STIPPLE);  // Enable line stipple to use a dotted pattern for the lines
-    glLineStipple(1, 0x0101);   // Dotted stipple pattern for the lines
-
-    glBegin(GL_LINES);
-        glColor3f (red, green, blue);
-        glVertex3f(Point.x + x, Point.y, Point.z);
-        glVertex3f(Point.x + x, Point.y, Point.z - Length);
-
-        glVertex3f(Point.x, Point.y + y, Point.z);
-        glVertex3f(Point.x, Point.y + y, Point.z - Length);
-
-        glVertex3f(Point.x + x, Point.y + y, Point.z);
-        glVertex3f(Point.x + x, Point.y + y, Point.z - Length);
-
-        glVertex3f(Point.x, Point.y, Point.z);
-        glVertex3f(Point.x, Point.y, Point.z - Length);
     glEnd();
-
-    glDisable(GL_LINE_STIPPLE); // Disable the line stipple
 }
-*/
 
 void Renderer::setCursor(MapCoordinates Coordinates)
 {

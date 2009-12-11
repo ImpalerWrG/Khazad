@@ -31,16 +31,19 @@ struct gridInterface  // Virtural Base class
 
 struct GridCell
 {
-  GridCell(CellCoordinates Coordinates)
-  {
-    thisCellCoodinates = Coordinates;
-    //zero direction flags
-    memset(DirectionMatrix, 0, sizeof(DirectionMatrix));
-  }
-  CellCoordinates getCellCoordinates() const { return thisCellCoodinates; }
-  
-  DirectionFlags DirectionMatrix[CELLEDGESIZE][CELLEDGESIZE];
-  CellCoordinates thisCellCoodinates;
+    GridCell(CellCoordinates Coordinates)
+    {
+        thisCellCoodinates = Coordinates;
+        //zero direction flags
+        memset(DirectionMatrix, 0, sizeof(DirectionMatrix));
+    }
+    CellCoordinates getCellCoordinates() const
+    {
+        return thisCellCoodinates;
+    }
+
+    DirectionFlags DirectionMatrix[CELLEDGESIZE][CELLEDGESIZE];
+    CellCoordinates thisCellCoodinates;
 };
 
 class KhazadGrid : public gridInterface
@@ -49,15 +52,12 @@ public:
 
     KhazadGrid()
     {
-        //static int16_t NONE_ID = 0;
         int16_t FLOOR_ID = DATA->getLabelIndex("TILESHAPE_FLOOR");
-        //static int16_t WALL_ID = 2;
         int16_t RAMP_ID = DATA->getLabelIndex("TILESHAPE_RAMP");
         int16_t STAIR_ID = DATA->getLabelIndex("TILESHAPE_STAIR");
-        //static int16_t FORT_ID = 5;
-        //static int16_t EMPTY_ID = DATA->getLabelIndex("TILESHAPE_EMPTY");
-        int16_t BOULDER_ID = DATA->getLabelIndex("TILESHAPE_BOULDER");
+        //int16_t BOULDER_ID = DATA->getLabelIndex("TILESHAPE_BOULDER");
         int16_t STAIRDOWN_ID = DATA->getLabelIndex("TILESHAPE_DOWN_STAIR");
+
         std::map<uint64_t, Cell*>* TargetCells = MAP->getCellMap();
         for (std::map<uint64_t, Cell*>::iterator it = TargetCells->begin(); it != TargetCells->end(); ++it)
         {
@@ -67,35 +67,32 @@ public:
                 CellCoordinates CellCoords = TargetCell->getCellCoordinates();
                 GridCell* NewGridCell = addCell(CellCoords);
                 CubeCoordinates TargetCubeCoords = CubeCoordinates(0, 0);
+
                 for (TargetCubeCoords.X = 0; TargetCubeCoords.X < CELLEDGESIZE; TargetCubeCoords.X++)
                 {
                     for (TargetCubeCoords.Y = 0; TargetCubeCoords.Y < CELLEDGESIZE; TargetCubeCoords.Y++)
                     {
                         int16_t TileShapeID = TargetCell->getCubeShape(TargetCubeCoords);
-
                         uint32_t Flags = 0;
 
-#define SHAPE_PASSABLE(shape) (((shape) == FLOOR_ID) || ((shape) == RAMP_ID) || ((shape) == STAIR_ID) || ((shape) == STAIRDOWN_ID) || ((shape) == BOULDER_ID))
-                      
-                        if (SHAPE_PASSABLE(TileShapeID))
+                        if (TileShapeID == FLOOR_ID || TileShapeID == RAMP_ID || TileShapeID == STAIR_ID || TileShapeID == STAIRDOWN_ID)
                         {
                             Flags |= (1 << (int) DIRECTION_NONE);
                             for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
                             {
-                                assert((int) DIRECTION_DOWN == 0);
                                 MapCoordinates AdjacentTileCoords = GenerateMapCoordinates(CellCoords, TargetCubeCoords);
                                 AdjacentTileCoords.TranslateMapCoordinates(DirectionType);
-                          
+
                                 //see if we've done this already..
                                 if (getDirectionFlags(AdjacentTileCoords) & (1 << (int) OppositeDirection(DirectionType)))
                                 {
                                     Flags |= (1 << (int) DirectionType);
                                     continue;
                                 }
-                            
+
                                 int16_t AdjacentTileShape = MAP->getCubeShape(AdjacentTileCoords);
-                                
-                                if (SHAPE_PASSABLE(AdjacentTileShape))
+
+                                if (AdjacentTileShape == FLOOR_ID || AdjacentTileShape == RAMP_ID || AdjacentTileShape == STAIR_ID || AdjacentTileShape == STAIRDOWN_ID)
                                 {
                                     if (DirectionType == DIRECTION_DOWN)
                                     {
@@ -104,14 +101,16 @@ public:
                                         {
                                             Flags |= (1 << (int) DirectionType);
                                         }
-                                    } else if (DirectionType == DIRECTION_UP)
-                                        {
+                                    }
+                                    else if (DirectionType == DIRECTION_UP)
+                                    {
                                         //only stairs go straight up
                                         if ((AdjacentTileShape == STAIRDOWN_ID) && (TileShapeID ==  STAIR_ID))
                                         {
                                             Flags |= (1 << (int) DirectionType);
                                         }
-                                    } else if (DirectionType >= NUM_COMPASS_DIRECTIONS)
+                                    }
+                                    else if (DirectionType >= NUM_COMPASS_DIRECTIONS)
                                     {
                                         if (isDirectionPositive(DirectionType))
                                         {
@@ -120,15 +119,16 @@ public:
                                             {
                                                 Flags |= (1 << (int) DirectionType);
                                             }
-                                        } else
+                                        }
+                                        else
                                         {
                                             //only can go down-diagonal to ramp
                                             if (AdjacentTileShape == RAMP_ID)
                                             {
-                                              Flags |= (1 << (int) DirectionType);
+                                                Flags |= (1 << (int) DirectionType);
                                             }
                                         }
-                                    } 
+                                    }
                                     else
                                     {
                                         //If no vertical direction, we only care that this tile is passable
@@ -137,7 +137,7 @@ public:
                                 }
                             }
                         }
-                        
+
                         NewGridCell->DirectionMatrix[TargetCubeCoords.X][TargetCubeCoords.Y] = Flags;
                     }
                 }
@@ -255,9 +255,15 @@ public:
         return -1;  // No Edge exists
     }
 
-    void zeroCount()                    { count = 0; }
+    void zeroCount()
+    {
+        count = 0;
+    }
 
-    unsigned getCount() const           { return count; }
+    unsigned getCount() const
+    {
+        return count;
+    }
 
 private:
 

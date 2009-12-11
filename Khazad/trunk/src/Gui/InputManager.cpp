@@ -173,6 +173,11 @@ bool InputManager::HandleInput()
                         RENDERER->MainCamera->CenterView(CenterPoint);
                         break;
                     }
+                    case SDLK_t:
+					{
+					    RENDERER->setConnectivityDraw(!RENDERER->isConnectivityDraw());
+					    break;
+					}
                     case SDLK_PRINT:
                     {
                         RENDERER->CaptureScreenShot();
