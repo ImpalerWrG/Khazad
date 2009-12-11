@@ -130,10 +130,10 @@
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
 		<Material label="MATERIAL_UNDERGROWTH"/>
 		<TileValues>
-			<TileValue Int="24"  TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
+			<TileValue Int="24"  TileShape="TILESHAPE_TREE" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
 			<TileValue Int="34" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
 			<TileValue Int="231" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
-			<TileValue Int="391" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
+			<TileValue Int="391" TileShape="TILESHAPE_TREE" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
 			<TileValue Int="392" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
 			<TileValue Int="393" TileShape="TILESHAPE_FLOOR" SurfaceType="SURFACETYPE_ROUGH_FLOOR_1"/>
 		</TileValues>

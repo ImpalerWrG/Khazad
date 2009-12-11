@@ -1,7 +1,7 @@
 <TileShapes xmlns="namespace">
 	<TileShape>
 		<Name Label="TILESHAPE_UNKNOWN"/>
-		<Open bool="1"/>
+		<Open bool="0"/>
 	</TileShape>
 	<TileShape>
 		<Name Label="TILESHAPE_FLOOR"/>
@@ -35,5 +35,9 @@
 		<Name Label="TILESHAPE_BOULDER"/>
 		<Open bool="1"/>
         <Model label="MODEL_BOULDER"/>
+	</TileShape>
+	<TileShape>
+		<Name Label="TILESHAPE_TREE"/>
+		<Open bool="1"/>
 	</TileShape>
 </TileShapes>

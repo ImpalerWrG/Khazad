@@ -35,7 +35,7 @@ void PathManager::CreateMapAbstraction()
 {
     MapGrid = new KhazadGrid();
 
-    AstarImplementation = new AStar(MapGrid, DiagonalHeuristic, EuclideanHeuristic);
+    AstarImplementation = new AStar(MapGrid, ManhattenHeuristic, EuclideanHeuristic);
 }
 
 void PathManager::EditMapAbstraction()

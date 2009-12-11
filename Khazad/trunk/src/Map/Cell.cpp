@@ -366,10 +366,7 @@ void Cell::BuildFaceData()
 {
     static Sint16 FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
     static Sint16 BoulderID = DATA->getLabelIndex("TILESHAPE_BOULDER");
-    //static Sint16 RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
-    //static Sint16 StairID = DATA->getLabelIndex("TILESHAPE_STAIR");
-    //static Sint16 EmptyID = DATA->getLabelIndex("TILESHAPE_EMPTY");
-    //static Sing16 DownStairID = DATA->getLabelIndex("TILESHAPE_DOWN_STAIR");
+    static Sint16 TreeID = DATA->getLabelIndex("TILESHAPE_TREE");
 
     CubeCoordinates TargetCubeCoordinates;
     MapCoordinates TargetMapCoordinates;
@@ -403,7 +400,7 @@ void Cell::BuildFaceData()
                 }
             }
 
-            if (CubeShape == FloorID || CubeShape == BoulderID)
+            if (CubeShape == FloorID || CubeShape == BoulderID || CubeShape == TreeID)
             {
                 Face* NewFace = addFace(TargetCubeCoordinates, DIRECTION_DOWN);
 

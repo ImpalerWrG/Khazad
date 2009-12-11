@@ -55,7 +55,8 @@ public:
         int16_t FLOOR_ID = DATA->getLabelIndex("TILESHAPE_FLOOR");
         int16_t RAMP_ID = DATA->getLabelIndex("TILESHAPE_RAMP");
         int16_t STAIR_ID = DATA->getLabelIndex("TILESHAPE_STAIR");
-        //int16_t BOULDER_ID = DATA->getLabelIndex("TILESHAPE_BOULDER");
+        int16_t TREE_ID = DATA->getLabelIndex("TILESHAPE_TREE");
+        int16_t BOULDER_ID = DATA->getLabelIndex("TILESHAPE_BOULDER");
         int16_t STAIRDOWN_ID = DATA->getLabelIndex("TILESHAPE_DOWN_STAIR");
 
         std::map<uint64_t, Cell*>* TargetCells = MAP->getCellMap();
