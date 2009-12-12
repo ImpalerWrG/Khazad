@@ -20,22 +20,15 @@ PathTester::PathTester()
 PathTester::~PathTester()
 {
    delete ManualPath;
-   delete TestCoords;
 }
 
 bool PathTester::Init()
 {
-
+    PathingTimer = new Timer();      // Master Timer
 }
 
 void PathTester::CreateTestSuite()
 {
-    PathingTimer = new Timer();      // Master Timer
-    NumTestPoints = 1000;
-
-    TestCoords = new MapCoordinates[NumTestPoints];
-    std::vector<MapCoordinates> PotentialTestCoords;
-
     std::map<uint64_t, Cell*>* TargetCells = MAP->getCellMap();
     for (std::map<uint64_t, Cell*>::iterator it = TargetCells->begin(); it != TargetCells->end(); ++it)
     {
@@ -49,21 +42,15 @@ void PathTester::CreateTestSuite()
             {
                 for (TargetCubeCoords.Y = 0; TargetCubeCoords.Y < CELLEDGESIZE; TargetCubeCoords.Y++)
                 {
-                   MapCoordinates TestCoords = MapCoordinates(CellCoords, TargetCubeCoords);
+                    MapCoordinates TestCoordinates = MapCoordinates(CellCoords, TargetCubeCoords);
 
-                    if(false)
+                    if (PATH->contains(TestCoordinates) && PATH->getDirectionFlags(TestCoordinates) != 0)
                     {
-                        PotentialTestCoords.push_back(TestCoords);
+                        TestCoords.push_back(TestCoordinates);
                     }
                 }
             }
         }
-    }
-
-    for(int i = 0; i < NumTestPoints; i++)
-    {
-        TestCoords[i] = MapCoordinates(0, 0, 0);
-        // Generate real random passable points from the map
     }
 
     ManualPath = new FullPath();
@@ -90,50 +77,55 @@ MapPath* PathTester::FindManualPath()
     return ManualPath;
 }
 
-void PathTester::RunPathTestSuite(int Interations, vector<int> PathSystems)
+void PathTester::RunPathTestSuite(int Seed, int Iterations, vector<int> PathSystems)
 {
-    uint64_t TotalGraphReads, NodesConsidered, TotalPathLength, TotalTimeCost, CacheHits;
+    uint64_t TotalGraphReads, NodesConsidered, TotalPathSteps, TotalTimeCost, CacheHits;
 
     MapPath *ReturnedPath;
-    vector <int> StartCoords, GoalCoords;
+    std::vector<MapCoordinates> StartCoordsList, GoalCoordsList;
+    RANDOM->Seed(Seed);
 
     // Prepare a set of Start Goal pairs for the test
-    for (int i = 0; i < Interations; i++)
+    for (int i = 0; i < Iterations; i++)
     {
-        StartCoords.push_back(RANDOM->Roll(0, NumTestPoints));
-        GoalCoords.push_back(RANDOM->Roll(0, NumTestPoints));
+        MapCoordinates StartCoords = TestCoords[RANDOM->Roll(0, (int32_t) TestCoords.size() - 1)];
+        StartCoordsList.push_back(StartCoords);
+
+        MapCoordinates GoalCoords = TestCoords[RANDOM->Roll(0, (int32_t) TestCoords.size() - 1)];
+        GoalCoordsList.push_back(GoalCoords);
         // Identical Start and Goal points are possible, the PathManager should handle them
     }
 
     for (int SystemIndex = 0; SystemIndex < PathSystems.size(); SystemIndex++)
     {
         // Reset all the counting values for each System
-        TotalGraphReads = NodesConsidered = TotalPathLength = TotalTimeCost = CacheHits = 0;
+        TotalGraphReads = NodesConsidered = TotalPathSteps = TotalTimeCost = CacheHits = 0;
 
-        for (int i = 0; i < Interations; ++i)
+        for (int i = 0; i < Iterations; ++i)
         {
             PATH->ResetProfileData(SystemIndex);
 
             PathingTimer->Start();
-                ReturnedPath = PATH->FindPath(PathSystems[SystemIndex], TestCoords[StartCoords[i]], TestCoords[GoalCoords[i]]);
+                ReturnedPath = PATH->FindPath(PathSystems[SystemIndex], StartCoordsList[i], GoalCoordsList[i]);
             TotalTimeCost += PathingTimer->Stop();
 
             TotalGraphReads += PATH->getGraphReads(SystemIndex);
             NodesConsidered += PATH->getExpandedNodeCount(SystemIndex);
-            TotalPathLength += ReturnedPath->Length;
+            TotalPathSteps += ReturnedPath->StepCount;
             CacheHits += PATH->isCacheHit(SystemIndex);
 
             delete ReturnedPath;
         }
 
         printf("System %i TestResults\n\n", PathSystems[SystemIndex]);
-        printf("Ttotal path length: %g \n", TotalPathLength);
-        printf("Graph reads: %llu \n", TotalGraphReads);
-        printf("Graph read efficiency: %lg \n", (TotalGraphReads / TotalPathLength) / Interations);
-        printf("Nodes considered: %llu \n", NodesConsidered);
-        printf("Search efficiency: %lg \n", (NodesConsidered / TotalPathLength) / Interations);
-        printf("Cache efficiency: %llu \n", CacheHits / Interations);
-        printf("Total time cost: %llu \n\n", TotalTimeCost);
+        printf("Total path length: %i\n", TotalPathSteps);
+        printf("Graph reads: %i\n", TotalGraphReads);
+        printf("Graph read efficiency (Reads per Step): %f \n", (float) TotalGraphReads / TotalPathSteps);
+        printf("Nodes considered: %i \n", NodesConsidered);
+        printf("Search efficiency (Nodes per Step): %f \n", (float) NodesConsidered / TotalPathSteps);
+        printf("Cache efficiency (Percent Hits): %f \n", CacheHits / Iterations);
+        printf("Total time cost: %i \n", TotalTimeCost);
+        printf("Time efficiency (Time per Step): %f \n", (float) TotalTimeCost / TotalPathSteps);
     }
 }
 

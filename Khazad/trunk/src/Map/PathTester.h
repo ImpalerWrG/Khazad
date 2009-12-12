@@ -19,13 +19,13 @@ public:
 
     void CreateTestSuite();
 
-    void RunPathTestSuite(int Interations, vector<int> PathSystems);
+    void RunPathTestSuite(int Seed, int Iterations, vector<int> PathSystems);
     void RunHuristicTestSuite(int Interations, vector<int> PathSystems);
 
-    void SetStartCoords(MapCoordinates TestCoords)      { StartCoords = TestCoords; }
-    MapCoordinates getStartCoords()                     { return StartCoords; }
-    void SetGoalCoords(MapCoordinates TestCoords)       { GoalCoords = TestCoords; }
-    MapCoordinates getGoalCoords()                      { return GoalCoords; }
+    void SetStartCoords(MapCoordinates TestCoords)      { ManualStartCoords = TestCoords; }
+    MapCoordinates getStartCoords()                     { return ManualStartCoords; }
+    void SetGoalCoords(MapCoordinates TestCoords)       { ManualGoalCoords = TestCoords; }
+    MapCoordinates getGoalCoords()                      { return ManualGoalCoords; }
 
     MapPath* FindManualPath();
     MapPath* getManualPath();
@@ -40,10 +40,9 @@ protected:
 
     Timer* PathingTimer;
 
-    MapCoordinates* TestCoords;
-    int NumTestPoints;
+    std::vector<MapCoordinates> TestCoords;
 
-    MapCoordinates StartCoords, GoalCoords;  // Used for manual testing
+    MapCoordinates ManualStartCoords, ManualGoalCoords;  // Used for manual testing
     MapPath* ManualPath;
 
     int ManualPathSteps;

@@ -198,11 +198,20 @@ bool InputManager::HandleInput()
 					    TESTER->SetGoalCoords(RENDERER->getCursor());
 					    break;
 					}
-                    case SDLK_p:
+                    case SDLK_m:
 					{
 					    TESTER->FindManualPath();
 					    break;
 					}
+                    case SDLK_p:
+					{
+					    std::vector<int> Systems;
+					    Systems.push_back(0);
+
+                        TESTER->RunPathTestSuite(0, 30, Systems);
+					    break;
+					}
+
 					default:
                         break;
 				}

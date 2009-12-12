@@ -75,6 +75,15 @@ uint32_t PathManager::getDirectionFlags(MapCoordinates Coordinates)
     return 0;
 }
 
+bool PathManager::contains(MapCoordinates Coordinates)
+{
+    if (MapGrid != NULL)
+    {
+        return MapGrid->contains(Coordinates);
+    }
+    return 0;
+}
+
 int PathManager::getExpandedNodeCount(int SystemIndex)
 {
     return AstarImplementation->getExpandedNodes();

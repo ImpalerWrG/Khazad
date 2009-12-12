@@ -1,5 +1,6 @@
 #include <Singleton.h>
 #include <Random.h>
+#include <stdint.h>
 
 DECLARE_SINGLETON(RandomNumberGenerator)
 
@@ -15,17 +16,16 @@ RandomNumberGenerator::~RandomNumberGenerator()
 
 bool RandomNumberGenerator::Init()
 {
-	Seed((Uint32)time(0));
+	Seed((int32_t)time(0));
 	return true;
 }
 
-void RandomNumberGenerator::Seed(Sint32 Seed)
+void RandomNumberGenerator::Seed(int32_t Seed)
 {
 	srand(Seed);
 }
 
-Sint32 RandomNumberGenerator::Roll(Sint32 Min, Sint32 Max)
+int32_t RandomNumberGenerator::Roll(int32_t Min, int32_t Max)
 {
-    int range = (Max - Min) + 1;
-    return (Sint32) Min + (range * rand() / (RAND_MAX + 1));
+    return rand() % (Max - Min + 1) + Min;
 }

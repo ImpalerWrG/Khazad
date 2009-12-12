@@ -29,6 +29,7 @@ public:
     MapPath *FindPath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords);
     float EstimatePathLength(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords);
     uint32_t getDirectionFlags(MapCoordinates Coordinates);
+    bool contains(MapCoordinates Coordinates);
 
     int getExpandedNodeCount(int SystemIndex);
     int getGraphReads(int SystemIndex);

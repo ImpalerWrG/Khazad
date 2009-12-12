@@ -142,7 +142,6 @@ public:
                         NewGridCell->DirectionMatrix[TargetCubeCoords.X][TargetCubeCoords.Y] = Flags;
                     }
                 }
-
             }
         }
     }

@@ -807,7 +807,7 @@ void Renderer::PrintDebugging()
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
 
-            sprintf(buffer, "Graph read efficiency: %f", TESTER->getManualPathGraphReads() / TESTER->getManualPathSteps());
+            sprintf(buffer, "Graph read efficiency (Reads per Step): %f", (float) TESTER->getManualPathGraphReads() / TESTER->getManualPathSteps());
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
 
@@ -815,11 +815,15 @@ void Renderer::PrintDebugging()
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
 
-            sprintf(buffer, "Search efficiency: %f", TESTER->getManualPathExpandedNodes() / TESTER->getManualPathSteps());
+            sprintf(buffer, "Search efficiency (Nodes per Step): %f", (float) TESTER->getManualPathExpandedNodes() / TESTER->getManualPathSteps());
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
 
             sprintf(buffer, "Total time cost: %i", TESTER->getManualPathCost());
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+
+            sprintf(buffer, "Time efficiency (Time per Step): %f", (float) TESTER->getManualPathCost() / TESTER->getManualPathSteps());
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
         }
