@@ -8,10 +8,10 @@ struct MapPath
 {
     MapPath() {};
 
-    virtual MapCoordinates NextCoordinate() = 0;
+    virtual MapCoordinates NextCoordinate()  {};
     //virtual Direction NextDirection();
 
-    virtual void ResetSteps() = 0; // Reset to the start of the path
+    virtual void ResetSteps() {}; // Reset to the start of the path
 
     float Length;   // The travel cost of the path
     int StepCount;  // The number of individual steps in the path

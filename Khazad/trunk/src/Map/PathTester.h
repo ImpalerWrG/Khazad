@@ -8,6 +8,37 @@
 #include <Map.h>
 #include <Path.h>
 
+
+struct Profile  // stores data from profiling
+{
+    Profile()
+    {
+        Valid = false;
+        PathGraphReads = PathExpandedNodes = CacheHit = PathTimeCost = 0;
+        ProfiledPath = NULL;
+    }
+
+    bool Valid;
+
+    int PathTimeCost;
+    int PathGraphReads;
+    int PathExpandedNodes;
+    bool CacheHit;
+
+    MapPath* ProfiledPath;
+};
+
+struct GroupProfile
+{
+    bool Valid;
+
+    std::vector<Profile> Profiles;
+
+    float GraphReadEfficency;
+    float NodeSearchEfficency;
+    float CacheEfficency;
+};
+
 class PathTester
 {
 	DECLARE_SINGLETON_CLASS(PathTester)
@@ -30,11 +61,7 @@ public:
     MapPath* FindManualPath();
     MapPath* getManualPath();
 
-    int getManualPathSteps()                    { return ManualPathSteps; }
-    int getManualPathCost()                     { return ManualPathCost; }
-    float getManualPathLength()                 { return ManualPathLength; }
-    int getManualPathGraphReads()               { return ManualPathGraphReads; }
-    int getManualPathExpandedNodes()            { return ManualPathExpandedNodes; }
+    Profile getManualProfile()                          { return ManualProfile; }
 
 protected:
 
@@ -43,13 +70,8 @@ protected:
     std::vector<MapCoordinates> TestCoords;
 
     MapCoordinates ManualStartCoords, ManualGoalCoords;  // Used for manual testing
-    MapPath* ManualPath;
 
-    int ManualPathSteps;
-    int ManualPathCost;
-    float ManualPathLength;
-    int ManualPathGraphReads;
-    int ManualPathExpandedNodes;
+    Profile ManualProfile;
 };
 
 

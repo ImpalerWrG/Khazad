@@ -14,17 +14,19 @@ DECLARE_SINGLETON(PathTester)
 
 PathTester::PathTester()
 {
-   Init();
+
 }
 
 PathTester::~PathTester()
 {
-   delete ManualPath;
+   delete PathingTimer;
 }
 
 bool PathTester::Init()
 {
     PathingTimer = new Timer();      // Master Timer
+
+    return true;
 }
 
 void PathTester::CreateTestSuite()
@@ -53,12 +55,12 @@ void PathTester::CreateTestSuite()
         }
     }
 
-    ManualPath = new FullPath();
+    ManualProfile.Valid = false;
 }
 
 MapPath* PathTester::getManualPath()
 {
-    return ManualPath;
+    return ManualProfile.ProfiledPath;
 }
 
 MapPath* PathTester::FindManualPath()
@@ -66,14 +68,15 @@ MapPath* PathTester::FindManualPath()
     PATH->ResetProfileData(0);
 
     PathingTimer->Start();
-        ManualPath = PATH->FindPath(0, getStartCoords(), getGoalCoords());
-    ManualPathCost = PathingTimer->Stop();
+        MapPath* ManualPath = PATH->FindPath(0, getStartCoords(), getGoalCoords());
+    ManualProfile.PathTimeCost = PathingTimer->Stop();
 
-    ManualPathSteps = ManualPath->StepCount;
-    ManualPathLength = ManualPath->Length;
-    ManualPathGraphReads = PATH->getGraphReads(0);
-    ManualPathExpandedNodes = PATH->getExpandedNodeCount(0);
+    ManualProfile.ProfiledPath = ManualPath;
 
+    ManualProfile.PathGraphReads = PATH->getGraphReads(0);
+    ManualProfile.PathExpandedNodes = PATH->getExpandedNodeCount(0);
+
+    ManualProfile.Valid = true;
     return ManualPath;
 }
 
@@ -81,7 +84,7 @@ void PathTester::RunPathTestSuite(int Seed, int Iterations, vector<int> PathSyst
 {
     uint64_t TotalGraphReads, NodesConsidered, TotalPathSteps, TotalTimeCost, CacheHits;
 
-    MapPath *ReturnedPath;
+    MapPath* ReturnedPath;
     std::vector<MapCoordinates> StartCoordsList, GoalCoordsList;
     RANDOM->Seed(Seed);
 

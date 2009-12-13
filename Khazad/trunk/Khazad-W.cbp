@@ -281,8 +281,7 @@
 		<Unit filename="src\Gui\InputManager.h" />
 		<Unit filename="src\Map\Cell.cpp" />
 		<Unit filename="src\Map\Cell.h" />
-		<Unit filename="src\Map\Column.cpp" />
-		<Unit filename="src\Map\Column.h" />
+		<Unit filename="src\Map\Coordinates.cpp" />
 		<Unit filename="src\Map\Coordinates.h" />
 		<Unit filename="src\Map\Extractor.cpp" />
 		<Unit filename="src\Map\Extractor.h" />

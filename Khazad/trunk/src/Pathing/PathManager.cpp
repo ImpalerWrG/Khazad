@@ -24,7 +24,7 @@ bool PathManager::Init()
 {
     ManhattenHeuristic = new Manhatten();
     EuclideanHeuristic = new Euclidean();
-    MaxHeuristicType = new MaxHeuristic();
+    MaxDimensionHeuristic = new MaxDimension();
     DijkstraHeuristic = new Dijkstra();
     DiagonalHeuristic = new Diagonal();
 

@@ -579,10 +579,9 @@ bool Renderer::Render()
         }
     }
 
-    if (TESTER->getManualPath()->Length != -1)
+    if (TESTER->getManualPath() != NULL)
     {
-        MapPath *mp = TESTER->getManualPath();
-        DrawMapPath(mp);
+        DrawMapPath(TESTER->getManualPath());
 
         DrawDiamond(TESTER->getStartCoords(), 1.0, 0.0, 0.0, 1.0);
         DrawDiamond(TESTER->getGoalCoords(), 1.0, 1.0, 1.0, 0.0);
@@ -793,40 +792,43 @@ void Renderer::PrintDebugging()
         //position.y -= 40;
 
 
-        if (TESTER->getManualPath()->Length != -1)
+        if (TESTER->getManualProfile().Valid)
         {
-            sprintf(buffer, "Total path steps: %i", TESTER->getManualPathSteps());
+            Profile TargetProfile = TESTER->getManualProfile();
+
+            sprintf(buffer, "Total path steps: %i", TargetProfile.ProfiledPath->StepCount);
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
 
-            sprintf(buffer, "Total path length: %f", TESTER->getManualPathLength());
+            sprintf(buffer, "Total path length: %f", TargetProfile.ProfiledPath->Length);
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
 
-            sprintf(buffer, "Graph reads: %i", TESTER->getManualPathGraphReads());
+            sprintf(buffer, "Graph reads: %i", TargetProfile.PathGraphReads);
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
 
-            sprintf(buffer, "Graph read efficiency (Reads per Step): %f", (float) TESTER->getManualPathGraphReads() / TESTER->getManualPathSteps());
+            sprintf(buffer, "Graph read efficiency (Reads per Step): %f", (float) TargetProfile.PathGraphReads / TargetProfile.ProfiledPath->StepCount);
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
 
-            sprintf(buffer, "Nodes considered: %i", TESTER->getManualPathExpandedNodes());
+            sprintf(buffer, "Nodes considered: %i", TargetProfile.PathExpandedNodes);
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
 
-            sprintf(buffer, "Search efficiency (Nodes per Step): %f", (float) TESTER->getManualPathExpandedNodes() / TESTER->getManualPathSteps());
+            sprintf(buffer, "Search efficiency (Nodes per Step): %f", (float) TargetProfile.PathExpandedNodes / TargetProfile.ProfiledPath->StepCount);
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
 
-            sprintf(buffer, "Total time cost: %i", TESTER->getManualPathCost());
+            sprintf(buffer, "Total time cost: %i", TargetProfile.PathTimeCost);
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
 
-            sprintf(buffer, "Time efficiency (Time per Step): %f", (float) TESTER->getManualPathCost() / TESTER->getManualPathSteps());
+            sprintf(buffer, "Time efficiency (Time per Step): %f", (float) TargetProfile.PathTimeCost / TargetProfile.ProfiledPath->StepCount);
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
         }
+
 
         /*
         Cube* SelectedCube  = MAP->getCube(x,y,z);

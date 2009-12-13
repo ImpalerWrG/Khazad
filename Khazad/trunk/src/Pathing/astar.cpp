@@ -67,7 +67,7 @@ FullPath* AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
                     GraphReads++;
 
                     AStarEntryPtr eneigh(new AStarEntry(NeiboringCoordinates, *e, e->cost_ + cost, (*TieBreakerHeuristic)(NeiboringCoordinates, GoalCoordinates)));
-#if 0
+/*  #if 0
                     typedef std::vector<AStarEntryPtr>::iterator eiterator;
                     // try to find neigh in the fringe
                     eiterator it = std::find(fringe.begin(), fringe.end(), eneigh);
@@ -83,7 +83,7 @@ FullPath* AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
                         }
                         continue;
                     }
-#endif
+#endif  */
                     // ey was found neither in the fringe nor in visited; add it to the fringe
                     fringe.push_back(eneigh);
                     std::push_heap(fringe.begin(), fringe.end(), egt);

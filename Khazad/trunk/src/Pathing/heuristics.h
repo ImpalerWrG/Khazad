@@ -39,7 +39,7 @@ struct Manhatten : Heuristic
     }
 };
 
-struct MaxHeuristic : Heuristic
+struct MaxDimension : Heuristic
 {
     float Estimate(const MapCoordinates StartCoord, const MapCoordinates GoalCoord) const
     {

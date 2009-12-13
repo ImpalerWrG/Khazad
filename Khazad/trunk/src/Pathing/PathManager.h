@@ -46,7 +46,7 @@ protected:
 
     Heuristic* ManhattenHeuristic;
     Heuristic* EuclideanHeuristic;
-    Heuristic* MaxHeuristicType;
+    Heuristic* MaxDimensionHeuristic;
     Heuristic* DijkstraHeuristic;
     Heuristic* DiagonalHeuristic;
 };
