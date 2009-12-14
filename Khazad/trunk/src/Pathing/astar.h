@@ -14,12 +14,12 @@ public:
 
     virtual ~PathAlgorithm() {};
 
-    virtual MapPath *FindPath(const MapCoordinates &StartCoords, const MapCoordinates &GoalCoords) = 0;
+    virtual MapPath *FindPath(const MapCoordinates &StartCoords, const MapCoordinates &GoalCoords) {};
 
-    virtual void ResetPrifiler() = 0;
+    virtual void ResetPrifiler() {};
 
-    virtual unsigned getGraphReads() const = 0;
-    virtual unsigned getExpandedNodes() const = 0;
+    virtual unsigned getGraphReads() const {};
+    virtual unsigned getExpandedNodes() const {};
 
 protected:
 
@@ -32,7 +32,7 @@ protected:
     const Heuristic* TieBreakerHeuristic;
 };
 
-class AStar : PathAlgorithm
+class AStar : public PathAlgorithm
 {
 public:
 
@@ -54,7 +54,7 @@ public:
 
 };
 
-struct HierarchicalAStar : PathAlgorithm
+struct HierarchicalAStar : public PathAlgorithm
 {
 public:
 

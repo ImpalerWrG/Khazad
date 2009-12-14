@@ -144,6 +144,11 @@ struct ZonedGridGraph : public gridInterface
         return 0;
     }
 
+    bool isPathPossible(const MapCoordinates StartCoords, const MapCoordinates GoalCoords)
+    {
+        return true;
+    }
+
     virtual int max(unsigned dim) const { return grid_->max(dim); }
     virtual int min(unsigned dim) const { return grid_->min(dim); }
 

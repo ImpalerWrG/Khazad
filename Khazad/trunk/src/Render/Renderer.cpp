@@ -764,6 +764,7 @@ void Renderer::PrintDebugging()
         char buffer[256];
         setDrawingFlat();
 
+/*
         int TileType = 0;
         int Designation = 0;
         int Ocupancy = 0;
@@ -780,7 +781,7 @@ void Renderer::PrintDebugging()
         uint32_t region_x = 0;
         uint32_t region_y = 0;
         uint32_t region_z = 0;
-
+*/
         SDL_Rect position;
         position.x = 10;
         position.y = 280;
@@ -791,11 +792,10 @@ void Renderer::PrintDebugging()
         //RenderText(buffer, 0, WHITE, &position);
         //position.y -= 40;
 
+        Profile TargetProfile = TESTER->getManualProfile();
 
-        if (TESTER->getManualProfile().Valid)
+        if (TargetProfile.ProfiledPath != NULL)
         {
-            Profile TargetProfile = TESTER->getManualProfile();
-
             sprintf(buffer, "Total path steps: %i", TargetProfile.ProfiledPath->StepCount);
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;

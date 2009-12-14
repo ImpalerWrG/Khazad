@@ -20,13 +20,15 @@ struct gridInterface  // Virtural Base class
     virtual ~gridInterface() {};
 
     virtual float getEdgeCost(const MapCoordinates &TestCoords, Direction DirectionType) const = 0;
+
     virtual int max(unsigned dim) const = 0;
     virtual int min(unsigned dim) const = 0;
+
     virtual DirectionFlags getDirectionFlags(const MapCoordinates &TargetCoords) const = 0;
+    virtual bool isPathPossible(const MapCoordinates StartCoords, const MapCoordinates GoalCoords) = 0;
 
     virtual bool contains(const MapCoordinates &TestCoords) const = 0;
 };
-
 
 
 struct GridCell
@@ -36,6 +38,7 @@ struct GridCell
         thisCellCoodinates = Coordinates;
         //zero direction flags
         memset(DirectionMatrix, 0, sizeof(DirectionMatrix));
+        memset(ConnectivityZone, 0, sizeof(ConnectivityZone));
     }
     CellCoordinates getCellCoordinates() const
     {
@@ -43,6 +46,8 @@ struct GridCell
     }
 
     DirectionFlags DirectionMatrix[CELLEDGESIZE][CELLEDGESIZE];
+    int ConnectivityZone[CELLEDGESIZE][CELLEDGESIZE];
+
     CellCoordinates thisCellCoodinates;
 };
 
@@ -78,7 +83,7 @@ public:
 
                         if (TileShapeID == FLOOR_ID || TileShapeID == RAMP_ID || TileShapeID == STAIR_ID || TileShapeID == STAIRDOWN_ID)
                         {
-                            Flags |= (1 << (int) DIRECTION_NONE);
+                            //Flags |= (1 << (int) DIRECTION_NONE);
                             for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
                             {
                                 MapCoordinates AdjacentTileCoords = MapCoordinates(CellCoords, TargetCubeCoords);
@@ -144,6 +149,73 @@ public:
                 }
             }
         }
+
+        BuildConnectivityZones();
+    }
+
+    void BuildConnectivityZones()
+    {
+        int ZoneCounter = 0;
+        CubeCoordinates TargetCubeCoords;
+
+        // Loop to do connectivity
+        for (std::map<uint64_t, GridCell*>::iterator it = Cells.begin(); it != Cells.end(); ++it)
+        {
+            if (it->second != NULL)
+            {
+                GridCell* TargetCell = it->second;
+                CellCoordinates CellCoords = TargetCell->thisCellCoodinates;
+
+                for (TargetCubeCoords.X = 0; TargetCubeCoords.X < CELLEDGESIZE; TargetCubeCoords.X++)
+                {
+                    for (TargetCubeCoords.Y = 0; TargetCubeCoords.Y < CELLEDGESIZE; TargetCubeCoords.Y++)
+                    {
+                        //uint32_t Flags = TargetCell->DirectionMatrix[TargetCubeCoords.X][TargetCubeCoords.Y];
+                        uint32_t Flags = getDirectionFlags(MapCoordinates(CellCoords, TargetCubeCoords));
+
+                        if (Flags != 0)
+                        {
+                            if (TargetCell->ConnectivityZone[TargetCubeCoords.X][TargetCubeCoords.Y] == 0) // Start a new zone if not connected to another zone
+                            {
+                                ZoneCounter++; // First zone will be 1, 0 will indicate unititialized
+                                TargetCell->ConnectivityZone[TargetCubeCoords.X][TargetCubeCoords.Y] = ZoneCounter;
+                            }
+                             // Push this current zone onto the adjacent area
+                            int CurrentZoneIndex = TargetCell->ConnectivityZone[TargetCubeCoords.X][TargetCubeCoords.Y];
+
+                            for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
+                            {
+                                if (Flags & (1 << (int) DirectionType))
+                                {
+                                    // Find the Zone that the adjcent Tile has
+                                    MapCoordinates AdjacentTileCoords = MapCoordinates(CellCoords, TargetCubeCoords);
+                                    AdjacentTileCoords.TranslateMapCoordinates(DirectionType);
+                                    int AdjacentZoneIndex = getConnectivityZone(AdjacentTileCoords);
+
+                                    if (AdjacentZoneIndex == 0) // The other location is unititialized
+                                    {
+                                        setConnectivityZone(AdjacentTileCoords, CurrentZoneIndex); // Push this current zone onto the adjacent area
+                                    }
+                                    else
+                                    {
+                                        if (AdjacentZoneIndex != CurrentZoneIndex) // A different zone update the Connectivity Map
+                                        {
+                                            ChangeConnectivityMap(CurrentZoneIndex, AdjacentZoneIndex, 1);  // Add one connection between zones
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            TargetCell->ConnectivityZone[TargetCubeCoords.X][TargetCubeCoords.Y] = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        RebuildConnectivityCache(ZoneCounter);
     }
 
     DirectionFlags getDirectionFlags(const MapCoordinates &TargetCoords) const
@@ -155,6 +227,27 @@ public:
             return TargetCell->DirectionMatrix[CubeCoords.X][CubeCoords.Y];
         }
         return (DirectionFlags) 0;  // No connectivity because Cell is invalid
+    }
+
+    int getConnectivityZone(const MapCoordinates &TargetCoords) const
+    {
+        GridCell* TargetCell = getCell(CellCoordinates(TargetCoords));
+        if (TargetCell != NULL)
+        {
+            CubeCoordinates CubeCoords = CubeCoordinates(TargetCoords);
+            return TargetCell->ConnectivityZone[CubeCoords.X][CubeCoords.Y];
+        }
+        return 0;  // No connectivity zone because Cell is invalid
+    }
+
+    void setConnectivityZone(const MapCoordinates &TargetCoords, int NewZone)
+    {
+        GridCell* TargetCell = getCell(CellCoordinates(TargetCoords));
+        if (TargetCell != NULL)
+        {
+            CubeCoordinates CubeCoords = CubeCoordinates(TargetCoords);
+            TargetCell->ConnectivityZone[CubeCoords.X][CubeCoords.Y] = NewZone;
+        }
     }
 
     void setDirectionFlags(const MapCoordinates& MapCoords, DirectionFlags Flags)
@@ -170,6 +263,67 @@ public:
                 maxlen.set(i,MapCoords[i]);
             if (MapCoords[i] < minlen[i])
                 minlen.set(i,MapCoords[i]);
+        }
+    }
+
+    std::map<uint32_t, int32_t>* getConnectivtySubMap(int Zone)
+    {
+        std::map<uint32_t, std::map<uint32_t, int32_t> >::iterator it;
+        it = ConnectivityMap.find(Zone);
+
+        if (it == ConnectivityMap.end())
+        {
+            std::map<uint32_t, int32_t>* TargetMap = new std::map<uint32_t, int32_t>;
+            ConnectivityMap[Zone] = *TargetMap;
+            return TargetMap;
+        }
+        else
+        {
+            return &it->second;
+        }
+    }
+
+    void ChangeConnectivityMap(uint32_t FirstZone, uint32_t SecondZone, int32_t connectionChange)
+    {
+        if (FirstZone == SecondZone)
+        {
+            return;  // Cannot connect to self
+        }
+
+        int LowZone, HighZone;
+        if (FirstZone < SecondZone)
+        {
+            LowZone = FirstZone;
+            HighZone = SecondZone;
+        }
+        else
+        {
+            LowZone = SecondZone;
+            HighZone = FirstZone;
+        }
+
+        // Always grow connections from the High zone to the low zone
+        std::map<uint32_t, int32_t>* TargetMap = getConnectivtySubMap(LowZone);
+
+        std::map<uint32_t, int32_t>::iterator it;
+        it = TargetMap->find(HighZone);
+
+        if (it == TargetMap->end())
+        {
+            if (connectionChange > 0)  // Do not allow negative connection counts
+            {
+                (*TargetMap)[HighZone] = connectionChange;
+            }
+        }
+        else
+        {
+            it->second += connectionChange;
+
+            if (it->second <= 0)
+            {
+                // Remove the connection entirely
+                TargetMap->erase(it);
+            }
         }
     }
 
@@ -227,8 +381,6 @@ public:
 
     float getEdgeCost(const MapCoordinates &TestCoords, Direction DirectionType) const
     {
-        count++;  // Count number of edges checked (for profiling path-finding algorithms)
-
         if (getDirectionFlags(TestCoords) & (1 << (int) DirectionType))
         {
             if (DirectionType < CARDINAL_DIRECTIONS_START) // True for Up and Down
@@ -244,23 +396,55 @@ public:
         return -1;  // No Edge exists
     }
 
-    void zeroCount()
+    bool isPathPossible(const MapCoordinates StartCoords, const MapCoordinates GoalCoords)
     {
-        count = 0;
+        uint32_t StartZone = getConnectivityZone(StartCoords);
+        uint32_t GoalZone = getConnectivityZone(GoalCoords);
+
+        uint32_t StartZoneEquivilency = ConnectivityCache[StartZone];
+        uint32_t GoalZoneEquivilency = ConnectivityCache[GoalZone];
+
+        return (StartZoneEquivilency == GoalZoneEquivilency);
     }
 
-    unsigned getCount() const
+    void updateConnectivityCache(uint32_t Zone, uint32_t ZoneEquivilency)
     {
-        return count;
+        int CurrentZone = Zone;
+        std::map<uint32_t, int32_t>* TargetMap = getConnectivtySubMap(CurrentZone);
+
+        for (std::map<uint32_t, int32_t>::iterator it = TargetMap->begin(); it != TargetMap->end(); ++it)
+        {
+            if (ConnectivityCache[it->first] == 0)
+            {
+                updateConnectivityCache(it->first, ZoneEquivilency);  // Recursivly push the lowest zone to all children
+            }
+        }
+        ConnectivityCache[Zone] = ZoneEquivilency;
+    }
+
+    void RebuildConnectivityCache(uint32_t ZoneCount)
+    {
+        ConnectivityCache.reserve(ZoneCount);
+        ConnectivityCache.assign(ZoneCount, 0);
+
+        for (uint32_t i = 1; i < ConnectivityCache.size(); i++)  // Skip zero, no such zone
+        {
+            if (ConnectivityCache[i] == 0)
+            {
+                updateConnectivityCache(i, i);
+            }
+        }
     }
 
 private:
 
     std::map<uint64_t, GridCell*> Cells;
 
-    mutable unsigned count;
     MapCoordinates maxlen;
     MapCoordinates minlen;
+
+    std::vector<uint32_t> ConnectivityCache;
+    std::map<uint32_t, std::map<uint32_t, int32_t> > ConnectivityMap;
 };
 
 #endif // GRID_HEADER

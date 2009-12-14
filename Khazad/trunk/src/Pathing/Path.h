@@ -4,12 +4,19 @@
 #include "Coordinates.h"
 #include <vector>
 
+enum PathResult
+{
+    PATH_CODE_SUCCESS,
+    PATH_CODE_FAILURE_INVALID_LOCATION,
+    PATH_CODE_FAILURE_NO_PATH_POSSIBLE,
+};
+
 struct MapPath
 {
     MapPath() {};
 
-    virtual MapCoordinates NextCoordinate()  {};
-    //virtual Direction NextDirection();
+    virtual MapCoordinates NextCoordinate() {};
+    virtual Direction NextDirection() {};
 
     virtual void ResetSteps() {}; // Reset to the start of the path
 
@@ -57,6 +64,11 @@ struct FullPath: MapPath
         }
         return GoalCoordinates; // Keep returning the Goal if we've reached the end of the path
     }
+
+    Direction NextDirection()
+    {
+        return DIRECTION_NONE;
+    };
 
     std::vector<MapCoordinates> PathCourse;
 };
@@ -130,6 +142,11 @@ struct WayPointPath: MapPath
     {
         return GoalCoordinates;
     }
+
+    Direction NextDirection()
+    {
+        return DIRECTION_NONE;
+    };
 
     void ResetSteps()
     {

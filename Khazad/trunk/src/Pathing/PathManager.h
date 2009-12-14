@@ -6,6 +6,7 @@
 
 #include <MovementController.h>
 
+class PathAlgorithm;
 class MapCoordinates;
 class KhazadGrid;
 class AStar;
@@ -24,23 +25,27 @@ public:
     void EditMapAbstraction();
     void DeleteMapAbstraction();
 
-    MovementController getNewController(int AjentSize, int MovementType); // Create a new controler
+    MovementController* getNewController(int AjentSize, int MovementType, MapCoordinates StarCoords); // Create a new controler
 
     MapPath *FindPath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords);
+    bool isPathPossible(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords);
     float EstimatePathLength(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords);
-    uint32_t getDirectionFlags(MapCoordinates Coordinates);
-    bool contains(MapCoordinates Coordinates);
 
-    int getExpandedNodeCount(int SystemIndex);
-    int getGraphReads(int SystemIndex);
-    bool isCacheHit(int SystemIndex);
+    uint32_t getDirectionFlags(MapCoordinates Coordinates) const;
+    bool contains(MapCoordinates Coordinates) const;
+
+    int getExpandedNodeCount(int SystemIndex) const;
+    int getGraphReads(int SystemIndex) const;
+    bool isCacheHit(int SystemIndex) const;
 
     void ResetProfileData(int SystemIndex);
 
 protected:
 
-    AStar* AstarImplementation;
-    //PathAlgorithm HeriarchialAstarImplementation;
+    PathAlgorithm* AstarImplementation;
+    PathAlgorithm* HeriarchialAstarImplementation;
+
+    std::vector<MovementController*> MoveControllers;
 
     KhazadGrid* MapGrid;
 

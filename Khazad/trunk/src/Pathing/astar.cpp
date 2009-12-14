@@ -24,12 +24,10 @@ FullPath* AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
 
     while (!fringe.empty())
     {
-        ExpandedNodes++;
         //Get the min-weight element off the fringe.
         std::pop_heap(fringe.begin(), fringe.end(), egt);
         AStarEntryPtr e = fringe.back();
         fringe.pop_back();
-
 
         MapCoordinates TestCoordinates = e->v_;
 
@@ -47,6 +45,7 @@ FullPath* AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
 
         // mark it visited if not already visited
         visited.insert(TestCoordinates);
+        ExpandedNodes++;
 
         MapCoordinates NeiboringCoordinates;
         DirectionFlags TestDirections = SearchGraph->getDirectionFlags(TestCoordinates);
@@ -63,7 +62,6 @@ FullPath* AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
                 if (visited.find(NeiboringCoordinates) == visited.end())
                 {
                     float cost = SearchGraph->getEdgeCost(TestCoordinates, DirectionType);
-
                     GraphReads++;
 
                     AStarEntryPtr eneigh(new AStarEntry(NeiboringCoordinates, *e, e->cost_ + cost, (*TieBreakerHeuristic)(NeiboringCoordinates, GoalCoordinates)));

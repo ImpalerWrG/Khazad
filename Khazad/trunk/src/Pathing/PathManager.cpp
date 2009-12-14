@@ -56,9 +56,24 @@ MapPath* PathManager::FindPath(int PathSystem, MapCoordinates StartCoords, MapCo
 {
     if (AstarImplementation != NULL)
     {
-        return AstarImplementation->FindPath(StartCoords, GoalCoords);
+        if (MapGrid->contains(StartCoords) && MapGrid->contains(GoalCoords))
+        {
+            if (isPathPossible(PathSystem, StartCoords, GoalCoords))
+            {
+                return AstarImplementation->FindPath(StartCoords, GoalCoords);
+            }
+        }
     }
     return NULL;
+}
+
+bool PathManager::isPathPossible(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords)
+{
+    if (MapGrid != NULL)
+    {
+        return MapGrid->isPathPossible(StartCoords, GoalCoords);
+    }
+    return false;
 }
 
 float PathManager::EstimatePathLength(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords)
@@ -66,7 +81,7 @@ float PathManager::EstimatePathLength(int PathSystem, MapCoordinates StartCoords
     return -1;
 }
 
-uint32_t PathManager::getDirectionFlags(MapCoordinates Coordinates)
+uint32_t PathManager::getDirectionFlags(MapCoordinates Coordinates) const
 {
     if (MapGrid != NULL)
     {
@@ -75,26 +90,26 @@ uint32_t PathManager::getDirectionFlags(MapCoordinates Coordinates)
     return 0;
 }
 
-bool PathManager::contains(MapCoordinates Coordinates)
+bool PathManager::contains(MapCoordinates Coordinates) const
 {
     if (MapGrid != NULL)
     {
         return MapGrid->contains(Coordinates);
     }
-    return 0;
+    return false;
 }
 
-int PathManager::getExpandedNodeCount(int SystemIndex)
+int PathManager::getExpandedNodeCount(int SystemIndex) const
 {
     return AstarImplementation->getExpandedNodes();
 }
 
-int PathManager::getGraphReads(int SystemIndex)
+int PathManager::getGraphReads(int SystemIndex) const
 {
     return AstarImplementation->getGraphReads();
 }
 
-bool PathManager::isCacheHit(int SystemIndex)
+bool PathManager::isCacheHit(int SystemIndex) const
 {
     return false;
 }
