@@ -34,6 +34,9 @@ public:
     uint32_t getDirectionFlags(MapCoordinates Coordinates) const;
     bool contains(MapCoordinates Coordinates) const;
 
+    uint32_t getZone(const MapCoordinates &TargetCoords) const;
+    uint32_t getZoneEquivilency(const MapCoordinates &TargetCoords) const;
+
     int getExpandedNodeCount(int SystemIndex) const;
     int getGraphReads(int SystemIndex) const;
     bool isCacheHit(int SystemIndex) const;

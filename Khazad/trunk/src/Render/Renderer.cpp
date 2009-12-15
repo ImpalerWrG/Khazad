@@ -828,6 +828,12 @@ void Renderer::PrintDebugging()
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
         }
+        else
+        {
+            sprintf(buffer, "Zone: %i Zone Equivilency: % i", PATH->getZone(Cursor), PATH->getZoneEquivilency(Cursor));
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+        }
 
 
         /*

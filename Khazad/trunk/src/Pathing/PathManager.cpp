@@ -99,6 +99,24 @@ bool PathManager::contains(MapCoordinates Coordinates) const
     return false;
 }
 
+uint32_t PathManager::getZone(const MapCoordinates &TargetCoords) const
+{
+    if (MapGrid != NULL)
+    {
+        return MapGrid->getConnectivityZone(TargetCoords);
+    }
+    return 0;
+}
+
+uint32_t PathManager::getZoneEquivilency(const MapCoordinates &TargetCoords) const
+{
+    if (MapGrid != NULL)
+    {
+        return MapGrid->getZoneEquivilency(TargetCoords);
+    }
+    return 0;
+}
+
 int PathManager::getExpandedNodeCount(int SystemIndex) const
 {
     return AstarImplementation->getExpandedNodes();
