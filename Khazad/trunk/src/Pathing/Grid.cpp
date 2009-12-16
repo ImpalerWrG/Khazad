@@ -244,30 +244,15 @@ void KhazadGrid::ChangeConnectivityMap(uint32_t FirstZone, uint32_t SecondZone, 
         return;  // Cannot connect to self
     }
 
-    int LowZone, HighZone;
-    if (FirstZone < SecondZone)
-    {
-        LowZone = FirstZone;
-        HighZone = SecondZone;
-    }
-    else
-    {
-        LowZone = SecondZone;
-        HighZone = FirstZone;
-    }
-
-    // Always grow connections from the low zone to the high zone
-    std::map<uint32_t, int32_t>* TargetMap = getConnectivtySubMap(LowZone);
-
+    std::map<uint32_t, int32_t>* TargetMap = getConnectivtySubMap(FirstZone);
     std::map<uint32_t, int32_t>::iterator it;
-    it = TargetMap->find(HighZone);
+    it = TargetMap->find(SecondZone);
 
     if (it == TargetMap->end())
     {
         if (connectionChange > 0)  // Do not allow negative connection counts
         {
-            TargetMap->insert(pair<uint32_t, int32_t>(HighZone, connectionChange));
-            //(*TargetMap)[HighZone] = connectionChange;
+            TargetMap->insert(pair<uint32_t, int32_t>(SecondZone, connectionChange));
         }
     }
     else
@@ -276,8 +261,7 @@ void KhazadGrid::ChangeConnectivityMap(uint32_t FirstZone, uint32_t SecondZone, 
 
         if (it->second <= 0)
         {
-            // Remove the connection entirely
-            TargetMap->erase(it);
+            TargetMap->erase(it); // Remove the connection entirely
         }
     }
 }
@@ -336,7 +320,7 @@ float KhazadGrid::getEdgeCost(const MapCoordinates &TestCoords, Direction Direct
             return M_SQRT2;
         if (DirectionType == DIRECTION_NONE)
             return 0;
-        return 1;  // Standard cost, will need to be more complex in the future
+        return 2;  // All other z axis diagonals
     }
     return -1;  // No Edge exists
 }

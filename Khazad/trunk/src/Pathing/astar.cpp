@@ -13,6 +13,8 @@ typedef boost::shared_ptr<AStarEntry> AStarEntryPtr;
 
 FullPath* AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
 {
+    GraphReads = ExpandedNodes = 0;
+
     entryGreaterThan egt(GoalCoordinates, MainHeuristic);
     std::vector<AStarEntryPtr> fringe;
     boost::unordered_set<MapCoordinates, MapCoordinates::hash> visited;

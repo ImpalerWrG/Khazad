@@ -4,13 +4,6 @@
 #include "Coordinates.h"
 #include <vector>
 
-enum PathResult
-{
-    PATH_CODE_SUCCESS,
-    PATH_CODE_FAILURE_INVALID_LOCATION,
-    PATH_CODE_FAILURE_NO_PATH_POSSIBLE,
-};
-
 struct MapPath
 {
     MapPath() {};

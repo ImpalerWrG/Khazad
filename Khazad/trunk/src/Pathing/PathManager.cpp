@@ -6,6 +6,8 @@
 #include <grid.h>
 #include <astar.h>
 #include <heuristics.h>
+#include <PathTester.h>
+#include <Timer.h>
 
 
 DECLARE_SINGLETON(PathManager)
@@ -18,6 +20,7 @@ PathManager::PathManager()
 PathManager::~PathManager()
 {
     DeleteMapAbstraction();
+    delete PathingTimer;
 }
 
 bool PathManager::Init()
@@ -27,6 +30,8 @@ bool PathManager::Init()
     MaxDimensionHeuristic = new MaxDimension();
     DijkstraHeuristic = new Dijkstra();
     DiagonalHeuristic = new Diagonal();
+
+    PathingTimer = new Timer();      // Master Timer
 
     return true;
 }
@@ -65,6 +70,53 @@ MapPath* PathManager::FindPath(int PathSystem, MapCoordinates StartCoords, MapCo
         }
     }
     return NULL;
+}
+
+MapPath* PathManager::ProfilePath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords, Profile* TargetProfile)
+{
+    if (AstarImplementation != NULL)
+    {
+        if (MapGrid->contains(StartCoords) && MapGrid->contains(GoalCoords))
+        {
+            if (isPathPossible(PathSystem, StartCoords, GoalCoords))
+            {
+                PathingTimer->Start();
+                    MapPath* FoundPath = AstarImplementation->FindPath(StartCoords, GoalCoords);
+                TargetProfile->PathTimeCost = PathingTimer->Stop();
+
+                TargetProfile->ProfiledPath = FoundPath;
+
+                if (FoundPath == NULL)
+                {
+                    TargetProfile->ResultCode = PATH_CODE_FAILURE_UNKNOWN;
+                }
+                else
+                {
+                    TargetProfile->ResultCode = PATH_CODE_SUCCESS;
+                }
+
+                TargetProfile->PathGraphReads = AstarImplementation->getGraphReads();
+                TargetProfile->PathExpandedNodes = AstarImplementation->getExpandedNodes();
+
+                return FoundPath;
+            }
+            else
+            {
+                TargetProfile->ResultCode = PATH_CODE_FAILURE_NO_CONNECTION;
+                return NULL;
+            }
+        }
+        else
+        {
+            TargetProfile->ResultCode = PATH_CODE_FAILURE_INVALID_LOCATION;
+            return NULL;
+        }
+    }
+    else
+    {
+        TargetProfile->ResultCode = PATH_CODE_FAILUTE_UNITIALIZED;
+        return NULL;
+    }
 }
 
 bool PathManager::isPathPossible(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords)
@@ -115,24 +167,4 @@ uint32_t PathManager::getZoneEquivilency(const MapCoordinates &TargetCoords) con
         return MapGrid->getZoneEquivilency(TargetCoords);
     }
     return 0;
-}
-
-int PathManager::getExpandedNodeCount(int SystemIndex) const
-{
-    return AstarImplementation->getExpandedNodes();
-}
-
-int PathManager::getGraphReads(int SystemIndex) const
-{
-    return AstarImplementation->getGraphReads();
-}
-
-bool PathManager::isCacheHit(int SystemIndex) const
-{
-    return false;
-}
-
-void PathManager::ResetProfileData(int SystemIndex)
-{
-    AstarImplementation->ResetPrifiler();
 }

@@ -792,10 +792,48 @@ void Renderer::PrintDebugging()
         //RenderText(buffer, 0, WHITE, &position);
         //position.y -= 40;
 
+/*
         Profile TargetProfile = TESTER->getManualProfile();
 
         if (TargetProfile.ProfiledPath != NULL)
         {
+            switch(TargetProfile.ResultCode)
+            {
+                case PATH_CODE_NO_DATA:
+                {
+                    sprintf(buffer, "No Data");
+                    break;
+                }
+                case PATH_CODE_SUCCESS:
+                {
+                    sprintf(buffer, "Path Successeded");
+                    break;
+                }
+                case PATH_CODE_FAILUTE_UNITIALIZED:
+                {
+                    sprintf(buffer, "Path Failed, Pathfinder Uninitialized");
+                    break;
+                }
+                case PATH_CODE_FAILURE_INVALID_LOCATION:
+                {
+                    sprintf(buffer, "Path Failed, Invalid Location");
+                    break;
+                }
+                case PATH_CODE_FAILURE_NO_CONNECTION:
+                {
+                    sprintf(buffer, "Path Failed, No Connection");
+                    break;
+                }
+                case PATH_CODE_FAILURE_UNKNOWN:
+                {
+                    sprintf(buffer, "Path Failed, Unknown");
+                    break;
+                }
+            }
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+
+
             sprintf(buffer, "Total path steps: %i", TargetProfile.ProfiledPath->StepCount);
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
@@ -834,6 +872,50 @@ void Renderer::PrintDebugging()
             RenderText(buffer, 0, WHITE, &position);
             position.y -= 40;
         }
+        */
+
+
+        GroupProfile* TargetProfile = TESTER->getSystemGroupProfile();
+
+        if (TargetProfile != NULL)
+        {
+
+
+            sprintf(buffer, "Total path steps: %i", TargetProfile->TotalPathSteps);
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+
+            sprintf(buffer, "Total path length: %f", TargetProfile->TotalPathLength);
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+
+            sprintf(buffer, "Graph reads: %i", TargetProfile->TotalGraphReads);
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+
+            sprintf(buffer, "Graph read efficiency (Reads per Step): %f", TargetProfile->GraphReadEfficency);
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+
+            sprintf(buffer, "Nodes considered: %i", TargetProfile->TotalNodesExpanded);
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+
+            sprintf(buffer, "Search efficiency (Nodes per Step): %f", TargetProfile->NodeSearchEfficency);
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+
+            sprintf(buffer, "Total time cost: %i", TargetProfile->TotalTimeCost);
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+
+            sprintf(buffer, "Time efficiency (Time per Step): %f", TargetProfile->TimeCostEfficency);
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
+        }
+
+
+
 
 
         /*

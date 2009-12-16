@@ -4,13 +4,15 @@
 #include <stdafx.h>
 #include <Singleton.h>
 
-#include <MovementController.h>
-
+class MovementController;
 class PathAlgorithm;
 class MapCoordinates;
 class KhazadGrid;
 class AStar;
 class Heuristic;
+class Profile;
+class MapPath;
+class Timer;
 
 class PathManager
 {
@@ -27,7 +29,9 @@ public:
 
     MovementController* getNewController(int AjentSize, int MovementType, MapCoordinates StarCoords); // Create a new controler
 
-    MapPath *FindPath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords);
+    MapPath* FindPath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords);
+    MapPath* ProfilePath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords, Profile* TargetProfile);
+
     bool isPathPossible(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords);
     float EstimatePathLength(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords);
 
@@ -37,13 +41,9 @@ public:
     uint32_t getZone(const MapCoordinates &TargetCoords) const;
     uint32_t getZoneEquivilency(const MapCoordinates &TargetCoords) const;
 
-    int getExpandedNodeCount(int SystemIndex) const;
-    int getGraphReads(int SystemIndex) const;
-    bool isCacheHit(int SystemIndex) const;
-
-    void ResetProfileData(int SystemIndex);
-
 protected:
+
+    Timer* PathingTimer;
 
     PathAlgorithm* AstarImplementation;
     PathAlgorithm* HeriarchialAstarImplementation;
