@@ -14,7 +14,9 @@ enum ProfileResultCode
     PATH_CODE_FAILUTE_UNITIALIZED,
     PATH_CODE_FAILURE_INVALID_LOCATION,
     PATH_CODE_FAILURE_NO_CONNECTION,
-    PATH_CODE_FAILURE_UNKNOWN
+    PATH_CODE_FAILURE_UNKNOWN,
+
+    NUM_PATH_CODES = 6
 };
 
 struct Profile  // stores data from profiling
@@ -52,6 +54,8 @@ struct GroupProfile
     int TotalCacheHits;
     int TotalTimeCost;
 
+    int Results[NUM_PATH_CODES];
+
     float GraphReadEfficency;
     float NodeSearchEfficency;
     float CacheEfficency;
@@ -61,8 +65,15 @@ struct GroupProfile
     {
         TotalGraphReads = TotalNodesExpanded = TotalCacheHits = TotalPathLength = TotalPathSteps =  TotalTimeCost = 0;
 
+        for (int i = 0; i < NUM_PATH_CODES; i++)
+        {
+            Results[i] = 0;
+        }
+
         for (int i = 0; i < Profiles.size(); i++)
         {
+            Results[(ProfileResultCode) Profiles[i]->ResultCode] += 1;
+
             if (Profiles[i]->ProfiledPath != NULL && Profiles[i]->ResultCode == PATH_CODE_SUCCESS)
             {
                 TotalPathSteps += Profiles[i]->ProfiledPath->StepCount;

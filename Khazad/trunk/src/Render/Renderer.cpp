@@ -792,94 +792,14 @@ void Renderer::PrintDebugging()
         //RenderText(buffer, 0, WHITE, &position);
         //position.y -= 40;
 
-/*
-        Profile TargetProfile = TESTER->getManualProfile();
-
-        if (TargetProfile.ProfiledPath != NULL)
-        {
-            switch(TargetProfile.ResultCode)
-            {
-                case PATH_CODE_NO_DATA:
-                {
-                    sprintf(buffer, "No Data");
-                    break;
-                }
-                case PATH_CODE_SUCCESS:
-                {
-                    sprintf(buffer, "Path Successeded");
-                    break;
-                }
-                case PATH_CODE_FAILUTE_UNITIALIZED:
-                {
-                    sprintf(buffer, "Path Failed, Pathfinder Uninitialized");
-                    break;
-                }
-                case PATH_CODE_FAILURE_INVALID_LOCATION:
-                {
-                    sprintf(buffer, "Path Failed, Invalid Location");
-                    break;
-                }
-                case PATH_CODE_FAILURE_NO_CONNECTION:
-                {
-                    sprintf(buffer, "Path Failed, No Connection");
-                    break;
-                }
-                case PATH_CODE_FAILURE_UNKNOWN:
-                {
-                    sprintf(buffer, "Path Failed, Unknown");
-                    break;
-                }
-            }
-            RenderText(buffer, 0, WHITE, &position);
-            position.y -= 40;
-
-
-            sprintf(buffer, "Total path steps: %i", TargetProfile.ProfiledPath->StepCount);
-            RenderText(buffer, 0, WHITE, &position);
-            position.y -= 40;
-
-            sprintf(buffer, "Total path length: %f", TargetProfile.ProfiledPath->Length);
-            RenderText(buffer, 0, WHITE, &position);
-            position.y -= 40;
-
-            sprintf(buffer, "Graph reads: %i", TargetProfile.PathGraphReads);
-            RenderText(buffer, 0, WHITE, &position);
-            position.y -= 40;
-
-            sprintf(buffer, "Graph read efficiency (Reads per Step): %f", (float) TargetProfile.PathGraphReads / TargetProfile.ProfiledPath->StepCount);
-            RenderText(buffer, 0, WHITE, &position);
-            position.y -= 40;
-
-            sprintf(buffer, "Nodes considered: %i", TargetProfile.PathExpandedNodes);
-            RenderText(buffer, 0, WHITE, &position);
-            position.y -= 40;
-
-            sprintf(buffer, "Search efficiency (Nodes per Step): %f", (float) TargetProfile.PathExpandedNodes / TargetProfile.ProfiledPath->StepCount);
-            RenderText(buffer, 0, WHITE, &position);
-            position.y -= 40;
-
-            sprintf(buffer, "Total time cost: %i", TargetProfile.PathTimeCost);
-            RenderText(buffer, 0, WHITE, &position);
-            position.y -= 40;
-
-            sprintf(buffer, "Time efficiency (Time per Step): %f", (float) TargetProfile.PathTimeCost / TargetProfile.ProfiledPath->StepCount);
-            RenderText(buffer, 0, WHITE, &position);
-            position.y -= 40;
-        }
-        else
-        {
-            sprintf(buffer, "Zone: %i Zone Equivilency: % i", PATH->getZone(Cursor), PATH->getZoneEquivilency(Cursor));
-            RenderText(buffer, 0, WHITE, &position);
-            position.y -= 40;
-        }
-        */
-
 
         GroupProfile* TargetProfile = TESTER->getSystemGroupProfile();
 
         if (TargetProfile != NULL)
         {
-
+            sprintf(buffer, "Successfull Paths: %i, Invalid Locations: %i, Not Connected: %i", TargetProfile->Results[PATH_CODE_SUCCESS], TargetProfile->Results[PATH_CODE_FAILURE_INVALID_LOCATION], TargetProfile->Results[PATH_CODE_FAILURE_NO_CONNECTION]);
+            RenderText(buffer, 0, WHITE, &position);
+            position.y -= 40;
 
             sprintf(buffer, "Total path steps: %i", TargetProfile->TotalPathSteps);
             RenderText(buffer, 0, WHITE, &position);
