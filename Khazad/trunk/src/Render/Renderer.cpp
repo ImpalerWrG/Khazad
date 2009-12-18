@@ -784,16 +784,13 @@ void Renderer::PrintDebugging()
 */
         SDL_Rect position;
         position.x = 10;
-        position.y = 280;
+        position.y = 320;
 
         sprintf (buffer, "Coordinates: x%i y%i z%i", Cursor.X, Cursor.Y, Cursor.Z);
         static const SDL_Color WHITE = {255, 255, 255};
 
-        //RenderText(buffer, 0, WHITE, &position);
-        //position.y -= 40;
 
-
-        GroupProfile* TargetProfile = TESTER->getSystemGroupProfile();
+        GroupProfile* TargetProfile = TESTER->getCurrentGroupProfile();
 
         if (TargetProfile != NULL)
         {

@@ -104,7 +104,9 @@ public:
 
     void CreateTestSuite();
 
-    void RunPathTestSuite(int Seed, int Iterations, vector<int> PathSystems);
+    void RunPathTestSuites(vector<int> TestSystems, int Iterations);
+    void TestSuite(int Iterations, int SystemIndex, GroupProfile* SystemProfileGroup, vector<MapCoordinates> StartCoordsList, vector<MapCoordinates> GoalCoordsList);
+
     void RunHuristicTestSuite(int Interations, vector<int> PathSystems);
 
     void SetStartCoords(MapCoordinates TestCoords)      { ManualStartCoords = TestCoords; }
@@ -115,8 +117,7 @@ public:
     MapPath* FindManualPath();
     MapPath* getManualPath();
 
-    Profile getManualProfile()                          { return ManualProfile; }
-    GroupProfile* getSystemGroupProfile()                { return SystemProfileGroup; }
+    GroupProfile* getCurrentGroupProfile()              { return CurrentProfileGroup; }
 
 protected:
 
@@ -124,8 +125,9 @@ protected:
 
     MapCoordinates ManualStartCoords, ManualGoalCoords;  // Used for manual testing
 
-    Profile ManualProfile;
-    GroupProfile* SystemProfileGroup;
+    GroupProfile* CurrentProfileGroup;
+
+    GroupProfile* ProfileGroupList[2];
 };
 
 
