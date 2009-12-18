@@ -103,7 +103,7 @@ class TakeScreenShotActionListener: public gcn::ActionListener
 {
     void action(const gcn::ActionEvent& actionEvent)
     {
-        RENDERER->CaptureScreenShot();
+        RENDERER->TakeScreenShot();
     }
 };
 

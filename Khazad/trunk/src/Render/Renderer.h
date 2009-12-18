@@ -202,6 +202,7 @@ public:
 
     void RenderLogo();
 
+    void TakeScreenShot();
     void CaptureScreenShot();
 
     int round(double x);
@@ -293,6 +294,8 @@ protected:
 
     bool FlatDraw;
     bool DebuggingDraw;
+
+    bool NeedScreenShot;
 
     MapCoordinates Cursor;
 

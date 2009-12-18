@@ -242,6 +242,8 @@ int main(int argv, char** argc)
             RENDERER->setDrawing3D(); // Come out of HUD mode
         }
 
+        RENDERER->CaptureScreenShot();
+
         RENDERER->Flip();
 		FPSTimer->Pause(); // FrameRate Captures whole loop
 

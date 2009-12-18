@@ -431,20 +431,29 @@ void Renderer::RenderLogo()
     RenderTexture(TEXTURE->getLogoTexture(), &size, &location, true);
 }
 
+void Renderer::TakeScreenShot()
+{
+    NeedScreenShot = true;
+}
+
 void Renderer::CaptureScreenShot()
 {
-    if (ilutGLScreen())
+    if (NeedScreenShot)
     {
-        char buffer[256];
-        sprintf(buffer, "ScreenShots\\ScreenShot%i.png", ScreenShotCounter);
-        // dumb, but it works.
-        /// TODO: add this functionality to Path
-        while (!ilSaveImage(Path(buffer)))
+        if (ilutGLScreen())
         {
-            ScreenShotCounter++;
+            char buffer[256];
             sprintf(buffer, "ScreenShots\\ScreenShot%i.png", ScreenShotCounter);
+            // dumb, but it works.
+            /// TODO: add this functionality to Path
+            while (!ilSaveImage(Path(buffer)))
+            {
+                ScreenShotCounter++;
+                sprintf(buffer, "ScreenShots\\ScreenShot%i.png", ScreenShotCounter);
+            }
+            ScreenShotCounter++;
         }
-        ScreenShotCounter++;
+        NeedScreenShot = false;
     }
 }
 
