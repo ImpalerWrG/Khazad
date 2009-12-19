@@ -84,16 +84,15 @@ struct Diagonal : Heuristic
     {
         float DiagonalsX = abs(StartCoord.X - GoalCoord.X);
         float DiagonalsY = abs(StartCoord.Y - GoalCoord.Y);
-
-        float Straits = abs((StartCoord.X - GoalCoord.X) + abs(StartCoord.Y - GoalCoord.Y));
+        float ZDifference = abs(StartCoord.Z - GoalCoord.Z);
 
         if(DiagonalsX < DiagonalsY)
         {
-            return (M_SQRT2 * DiagonalsX) + (Straits - (2 * DiagonalsX));
+            return (M_SQRT2 * DiagonalsX) + (DiagonalsY - DiagonalsX) + (ZDifference * 2);
         }
         else
         {
-            return (M_SQRT2 * DiagonalsY) + (Straits - (2 * DiagonalsY));
+            return (M_SQRT2 * DiagonalsY) + (DiagonalsX - DiagonalsY) + (ZDifference * 2);
         }
     }
 };
