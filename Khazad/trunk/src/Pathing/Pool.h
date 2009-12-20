@@ -34,9 +34,14 @@ public:
         return ObjectPool[ObjectCount++];
     }
 
-    void RelesePool()
+    void Release()
     {
         InUse = false;
+        ObjectCount = 0;
+    }
+
+    void Wipe()
+    {
         ObjectCount = 0;
     }
 

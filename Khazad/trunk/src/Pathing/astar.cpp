@@ -1,7 +1,6 @@
 #include <vector>
 #include <algorithm>
 
-#include <boost/unordered_set.hpp>
 #include <PathManager.h>
 
 #include "astar.h"
@@ -10,97 +9,179 @@
 #include "grid.h"
 #include "Pool.h"
 
-FullPath* AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
+
+AStar::AStar(const gridInterface *TargetSearchGraph)
 {
+    SearchGraph = TargetSearchGraph;
+    NodePool = PATH->getCentralNodePool()->ProvidePool();
+    FinalPath = NULL;
+}
+
+AStar::~AStar()
+{
+    NodePool->Release();
+}
+
+void AStar::setEndPoints(const MapCoordinates &StartCoords, const MapCoordinates &GoalCoords)
+{
+    StartCoordinates = StartCoords;
+    GoalCoordinates = GoalCoords;
     GraphReads = ExpandedNodes = 0;
+    FinalPath = NULL;
+    FringeExausted = false;
 
-    Pool<AStarNode>* NodePool = PATH->getCentralNodePool()->ProvidePool();
+    FringeNodes.clear();
+    VisitedCoordinates.clear();
 
-    std::vector<AStarNode*> FringeNodes;
-    boost::unordered_set<MapCoordinates, MapCoordinates::hash> visited;
-
-    std::make_heap(FringeNodes.begin(), FringeNodes.end(), NodeGreaterThan());
+    NodePool->Wipe();
 
     AStarNode* StartNode = NodePool->ProvideObject();
-    StartNode->Set(StartCoordinates, NULL, 0, MainHeuristic->Estimate(StartCoordinates, GoalCoordinates), TieBreakerHeuristic->Estimate(StartCoordinates, GoalCoordinates));
+    StartNode->Set(StartCoordinates, NULL, 0, MainHeuristic->Estimate(StartCoords, GoalCoords), TieBreakerHeuristic->Estimate(StartCoords, GoalCoords));
 
     FringeNodes.push_back(StartNode);
-    std::push_heap(FringeNodes.begin(), FringeNodes.end(), NodeGreaterThan());
+    std::make_heap(FringeNodes.begin(), FringeNodes.end(), NodeGreaterThan());
 
-    //visited.insert(StartCoordinates);
+    //VisitedCoordinates.insert(StartCoordinates);
+};
 
-    while (!FringeNodes.empty())
+bool AStar::SearchPath(int NodesToExpand)
+{
+    if (FringeExausted)
     {
-        // Get the min-weight element off the fringe.
-        std::pop_heap(FringeNodes.begin(), FringeNodes.end(), NodeGreaterThan());
-        AStarNode* CurrentNode = FringeNodes.back();
-        FringeNodes.pop_back();
+        return false; // No more searching can be done
+    }
 
-        MapCoordinates TestCoordinates = CurrentNode->LocationCoordinates;
-
-        if (visited.find(TestCoordinates) != visited.end())
+    if (FinalPath == NULL)
+    {
+        bool GoalFound;
+        if (NodesToExpand > 0)  // Search for a limited time
         {
-            continue;
-        }
-
-        if (TestCoordinates == GoalCoordinates)
-        {
-            ExpandedNodes = visited.size();
-
-            int PathLength = CurrentNode->PathLengthFromStart;
-            std::vector<MapCoordinates> Course;
-
-            while(CurrentNode != NULL)
+            int RemainingNodes = NodesToExpand;
+            while (!FringeNodes.empty())
             {
-                Course.push_back(CurrentNode->LocationCoordinates);
-                CurrentNode = CurrentNode->Parent;
-            }
-            Course.push_back(StartCoordinates);
-
-            // Delete All the Nodes that were created
-            NodePool->RelesePool();
-
-            reverse(Course.begin(), Course.end());
-            return new FullPath(PathLength, Course);
-        }
-
-        // mark it visited if not already visited
-        visited.insert(TestCoordinates);
-
-        MapCoordinates NeiboringCoordinates;
-        DirectionFlags TestDirections = SearchGraph->getDirectionFlags(TestCoordinates);
-
-        // Check all Neibors
-        for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
-        {
-            if (TestDirections & (1 << (int) DirectionType))  // Connectivity is valid for this direction
-            {
-                NeiboringCoordinates = TestCoordinates;
-                NeiboringCoordinates.TranslateMapCoordinates(DirectionType);
-
-                // If Coordinate is not already on the Visited list
-                if (visited.find(NeiboringCoordinates) == visited.end())
+                if (RemainingNodes-- > 0 )
                 {
-                    float EdgeCost = SearchGraph->getEdgeCost(TestCoordinates, DirectionType);
-                    GraphReads++;
-
-                    AStarNode* NewNode = NodePool->ProvideObject();
-                    NewNode->Set(NeiboringCoordinates, CurrentNode, CurrentNode->PathLengthFromStart + EdgeCost, MainHeuristic->Estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic->Estimate(NeiboringCoordinates, GoalCoordinates));
-
-                    // Add the new Node to the Fringe
-                    FringeNodes.push_back(NewNode);
-                    std::push_heap(FringeNodes.begin(), FringeNodes.end(), NodeGreaterThan());
+                    if (ExpandNode())
+                    {
+                        return true; // Path found
+                    }
                 }
+                return false; // Path not yet found
+            }
+            FringeExausted = true; // Path could not be found
+            return false;
+        }
+        else // Search untill Path is found or Fringe is exhausted
+        {
+            while (!FringeNodes.empty())
+            {
+                if (ExpandNode())
+                {
+                    return true;
+                }
+            }
+            FringeExausted = true;
+            return false;
+        }
+    }
+    return true;  // Final Path already found don't do any more searching
+}
+
+MapPath* AStar::FindPath(int NodesToExpand)
+{
+    if (FringeExausted)
+    {
+        return NULL; // Fringe Exhastion, don't return a useless path
+    }
+
+    bool FinalPathFound = SearchPath(NodesToExpand);
+
+    if (FinalPath == NULL)
+    {
+        MapPath* CurrentPath = GenerateBestPath();
+
+        if (FinalPathFound)
+        {
+            FinalPath = CurrentPath;
+            NodePool->Wipe();  // Nodes can be released now that a final path has been found
+        }
+
+        return CurrentPath;
+    }
+    return FinalPath;
+}
+
+inline bool AStar::ExpandNode()
+{
+    // Get the min-weight element off the fringe.
+    std::pop_heap(FringeNodes.begin(), FringeNodes.end(), NodeGreaterThan());
+    CurrentNode = FringeNodes.back();
+    FringeNodes.pop_back();
+
+    MapCoordinates TestCoordinates = CurrentNode->LocationCoordinates;
+
+    if (VisitedCoordinates.find(TestCoordinates) != VisitedCoordinates.end())
+    {
+        return false;
+    }
+
+    if (TestCoordinates == GoalCoordinates)
+    {
+        return true; //GenerateBestPath();
+    }
+
+    // mark as VisitedCoordinates if not already VisitedCoordinates
+    VisitedCoordinates.insert(TestCoordinates);
+
+    MapCoordinates NeiboringCoordinates;
+    DirectionFlags TestDirections = SearchGraph->getDirectionFlags(TestCoordinates);
+
+    // Check all Neibors
+    for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
+    {
+        if (TestDirections & (1 << (int) DirectionType))  // Connectivity is valid for this direction
+        {
+            NeiboringCoordinates = TestCoordinates;
+            NeiboringCoordinates.TranslateMapCoordinates(DirectionType);
+
+            // If Coordinate is not already on the VisitedCoordinates list
+            if (VisitedCoordinates.find(NeiboringCoordinates) == VisitedCoordinates.end())
+            {
+                float EdgeCost = SearchGraph->getEdgeCost(TestCoordinates, DirectionType);
+                GraphReads++;
+
+                AStarNode* NewNode = NodePool->ProvideObject();
+                NewNode->Set(NeiboringCoordinates, CurrentNode, CurrentNode->PathLengthFromStart + EdgeCost, MainHeuristic->Estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic->Estimate(NeiboringCoordinates, GoalCoordinates));
+
+                // Add the new Node to the Fringe
+                FringeNodes.push_back(NewNode);
+                std::push_heap(FringeNodes.begin(), FringeNodes.end(), NodeGreaterThan());
             }
         }
     }
 
-    // Delete All the Nodes that were created
-    NodePool->RelesePool();
-
-    return new FullPath();  // Return an empty path to indicate failure
+    return false; // Goal was not found
 }
 
+MapPath* AStar::GenerateBestPath()
+{
+    ExpandedNodes = VisitedCoordinates.size();
+
+    int PathLength = CurrentNode->PathLengthFromStart;
+    std::vector<MapCoordinates> Course;
+
+    while(CurrentNode != NULL)
+    {
+        Course.push_back(CurrentNode->LocationCoordinates);
+        CurrentNode = CurrentNode->Parent;
+    }
+    Course.push_back(StartCoordinates);
+
+    reverse(Course.begin(), Course.end());
+    return new FullPath(PathLength, Course);
+}
+
+/*
 class scopedAddBorderNode
 {
 public:
@@ -151,7 +232,7 @@ FullPath* HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
 
     NodeGreaterThan egt(GoalCoordinates, MainHeuristic);
     std::vector<AStarZoneNodePtr> fringe;
-    boost::unordered_set<MapCoordinates,MapCoordinates::hash> visited;
+    boost::unordered_set<MapCoordinates,MapCoordinates::hash> VisitedCoordinates;
 
     std::make_heap(fringe.begin(), fringe.end(),egt);
 
@@ -169,7 +250,7 @@ FullPath* HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
         AStarZoneNodePtr e = fringe.back();
         fringe.pop_back();
 
-        if ((visited.find(*e->node_) != visited.end()) || (!SearchGraph->contains(*e->node_)))
+        if ((VisitedCoordinates.find(*e->node_) != VisitedCoordinates.end()) || (!SearchGraph->contains(*e->node_)))
             continue;
 
         if (!e->cached())
@@ -230,8 +311,8 @@ FullPath* HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
             return new FullPath(e->value(GoalCoordinates,*MainHeuristic),e->path_);
         }
 
-        // mark it visited if not already visited
-        visited.insert(e->getCoordinates());
+        // mark it VisitedCoordinates if not already VisitedCoordinates
+        VisitedCoordinates.insert(e->getCoordinates());
         assert(*e->node_ == *e->node_->node_);
 
         e->node_->node_->checkValid();
@@ -242,10 +323,10 @@ FullPath* HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
 
             //printf("%g: (%2d,%2d,%2d)->(%2d,%2d,%2d) ~ %g=? ",e->node_->cost_,(*e->node_)[0],(*e->node_)[1],(*e->node_)[2],(*neigh)[0],(*neigh)[1],(*neigh)[2],neigh->cost_);
 
-            // try to find ey in the visited set
-            if (visited.find(*neigh) != visited.end())
+            // try to find ey in the VisitedCoordinates set
+            if (VisitedCoordinates.find(*neigh) != VisitedCoordinates.end())
             {
-                //printf("No -- visited\n");
+                //printf("No -- VisitedCoordinates\n");
                 continue;
             }
 
@@ -286,7 +367,7 @@ FullPath* HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
 #endif
 
             //printf("Ok\n");
-            // ey was found neither in the fringe nor in visited; add it to the fringe
+            // ey was found neither in the fringe nor in VisitedCoordinates; add it to the fringe
 
             fringe.push_back(eneigh);
             std::push_heap(fringe.begin(),fringe.end(),egt);

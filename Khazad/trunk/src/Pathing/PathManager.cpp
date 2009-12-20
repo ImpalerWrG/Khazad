@@ -42,7 +42,8 @@ void PathManager::CreateMapAbstraction()
 {
     MapGrid = new KhazadGrid();
 
-    AstarImplementation = new AStar(MapGrid, DiagonalHeuristic, EuclideanHeuristic);
+    AstarImplementation = new AStar(MapGrid);
+    AstarImplementation->setHeuristics(DiagonalHeuristic, EuclideanHeuristic);
 }
 
 void PathManager::EditMapAbstraction()
@@ -67,7 +68,8 @@ MapPath* PathManager::FindPath(int PathSystem, MapCoordinates StartCoords, MapCo
         {
             if (isPathPossible(PathSystem, StartCoords, GoalCoords))
             {
-                return AstarImplementation->FindPath(StartCoords, GoalCoords);
+                AstarImplementation->setEndPoints(StartCoords, GoalCoords);
+                return AstarImplementation->FindPath();
             }
         }
     }
@@ -83,7 +85,8 @@ MapPath* PathManager::ProfilePath(int PathSystem, MapCoordinates StartCoords, Ma
             if (isPathPossible(PathSystem, StartCoords, GoalCoords))
             {
                 PathingTimer->Start();
-                    MapPath* FoundPath = AstarImplementation->FindPath(StartCoords, GoalCoords);
+                    AstarImplementation->setEndPoints(StartCoords, GoalCoords);
+                    MapPath* FoundPath = AstarImplementation->FindPath();
                 TargetProfile->PathTimeCost = PathingTimer->Stop();
 
                 TargetProfile->ProfiledPath = FoundPath;

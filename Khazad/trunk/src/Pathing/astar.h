@@ -1,12 +1,14 @@
 #ifndef ASTAR_HEADER
 #define ASTAR_HEADER
 
-#include <Path.h>
+#include <boost/unordered_set.hpp>
 
 class gridInterface;
 class zoneManager;
 class MapCoordinates;
 class Heuristic;
+
+#include <Path.h>
 
 class PathAlgorithm
 {
@@ -14,12 +16,25 @@ public:
 
     virtual ~PathAlgorithm() {};
 
-    virtual MapPath *FindPath(const MapCoordinates &StartCoords, const MapCoordinates &GoalCoords) {};
+    virtual void setEndPoints(const MapCoordinates &StartCoords, const MapCoordinates &GoalCoords)
+    {
+        StartCoordinates = StartCoords;
+        GoalCoordinates = GoalCoords;
+        GraphReads = ExpandedNodes = 0;
+        FinalPath = NULL;
+    };
 
-    virtual void ResetPrifiler() {};
+    void setHeuristics(const Heuristic* PrimaryHeuristic, const Heuristic* SecondaryHeuristic)
+    {
+        MainHeuristic = PrimaryHeuristic;
+        TieBreakerHeuristic = SecondaryHeuristic;
+    };
 
-    virtual unsigned getGraphReads() const {};
-    virtual unsigned getExpandedNodes() const {};
+    unsigned getGraphReads() const              { return GraphReads; };
+    unsigned getExpandedNodes() const           { return ExpandedNodes; };
+
+    virtual bool SearchPath(int NodesToExpand = 0) {};       // Search but do not return Path
+    virtual MapPath* FindPath(int NodesToExpand = 0) {};     // Search and return the best Path
 
 protected:
 
@@ -28,56 +43,56 @@ protected:
 
     const gridInterface* SearchGraph;
 
+    MapCoordinates StartCoordinates;
+    MapCoordinates GoalCoordinates;
+
     const Heuristic* MainHeuristic;
     const Heuristic* TieBreakerHeuristic;
+
+    MapPath* FinalPath;
 };
 
 class AStar : public PathAlgorithm
 {
 public:
 
-    AStar(const gridInterface *TargetSearchGraph, const Heuristic* MainHeuristicType, const Heuristic* TieBreakerHeuristicType)
-    {
-        SearchGraph = TargetSearchGraph;
-        MainHeuristic = MainHeuristicType;
-        TieBreakerHeuristic = TieBreakerHeuristicType;
-        ResetPrifiler();
-    }
+    AStar(const gridInterface *TargetSearchGraph);
+    ~AStar();
 
-    void ResetPrifiler()                { GraphReads = 0; ExpandedNodes= 0; }
+    void setEndPoints(const MapCoordinates &StartCoords, const MapCoordinates &GoalCoords);
 
-    unsigned getGraphReads() const      { return GraphReads; }
-    unsigned getExpandedNodes() const    { return ExpandedNodes; }
+    bool SearchPath(int NodesToExpand = 0);
+    MapPath* FindPath(int NodesToExpand = 0);
 
-    MapPath* FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint) { return doFindPath(StartPoint, GoalPoint); }
-    FullPath* doFindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint);
+    inline bool ExpandNode();
+    MapPath* GenerateBestPath();
 
+protected:
+
+    std::vector<AStarNode*> FringeNodes;
+    boost::unordered_set<MapCoordinates, MapCoordinates::hash> VisitedCoordinates;
+    AStarNode* CurrentNode;
+    bool FringeExausted;
+    Pool<AStarNode>* NodePool;
 };
 
 struct HierarchicalAStar : public PathAlgorithm
 {
 public:
 
-    HierarchicalAStar(const gridInterface* TargetSearchGraph, zoneManager *zm, const Heuristic* MainHeuristicType, const Heuristic* TieBreakerHeuristicType)
+    HierarchicalAStar(const gridInterface* TargetSearchGraph, zoneManager *zm)
     {
         zm_ = zm;
         SearchGraph = TargetSearchGraph;
-        MainHeuristic = MainHeuristicType;
-        TieBreakerHeuristic = TieBreakerHeuristicType;
-        ResetPrifiler();
+        GraphReads = ExpandedNodes = 0;
     }
 
-    void ResetPrifiler()                { GraphReads = 0; ExpandedNodes= 0; }
-
-    unsigned getGraphReads() const      { return GraphReads; }
-    unsigned getExpandedNodes() const    { return ExpandedNodes; }
-
-    MapPath *FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint) { return doFindPath(StartPoint, GoalPoint); }
+    MapPath* FindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint) { return doFindPath(StartPoint, GoalPoint); }
 
 private:
     zoneManager* zm_;
 
-    FullPath *doFindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint);
+    MapPath* doFindPath(const MapCoordinates &StartPoint, const MapCoordinates &GoalPoint);
 };
 
 #endif // ASTAR_HEADER
