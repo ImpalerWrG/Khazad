@@ -10,7 +10,8 @@
 ///FIXME: dfhack paths
 #include "../../dfhack/library/DFTypes.h"
 #include "../../dfhack/library/DFHackAPI.h"
-//#include <string.h> // for memset
+
+using namespace DFHack;
 
 #include <Cell.h>
 #include <Random.h>
@@ -169,9 +170,9 @@ bool Map::Extract()
     MapSizeZ = CellSizeZ;
 
     // read constructions
-    map<uint64_t, t_construction> constructionAssigner;
+    map<uint64_t, DFHack::t_construction> constructionAssigner;
     uint32_t numconstructions = DF.InitReadConstructions();
-    t_construction tempcon;
+    DFHack::t_construction tempcon;
     uint32_t index = 0;
     while(index < numconstructions)
     {
@@ -183,9 +184,9 @@ bool Map::Extract()
     DF.FinishReadConstructions();
 
     // read trees
-    map<uint64_t, t_tree_desc> plantAssigner;
+    map<uint64_t, DFHack::t_tree_desc> plantAssigner;
     uint32_t numtrees = DF.InitReadVegetation();
-    t_tree_desc temptree;
+    DFHack::t_tree_desc temptree;
     index = 0;
     while(index < numtrees)
     {
@@ -197,10 +198,10 @@ bool Map::Extract()
     DF.FinishReadVegetation();
 
     // read buildings
-    map<uint64_t, t_building> buildingAssigner;
+    map<uint64_t, DFHack::t_building> buildingAssigner;
     vector <string> v_buildingtypes;// FIXME: this is currently unused
     uint32_t numbuildings = DF.InitReadBuildings(v_buildingtypes);
-    t_building tempbld;
+    DFHack::t_building tempbld;
     index = 0;
     while(index < numbuildings)
     {
@@ -727,18 +728,18 @@ void Map::Dig(MapCoordinates Coordinates)
 void Map::LoadCellData(DFHack::API & DF,
                        vector< vector <uint16_t> >& layerassign,
                        Cell* TargetCell,
-                       map<uint64_t, t_construction> & constructions,
-                       map<uint64_t, t_tree_desc> & vegetation,
-                       map<uint64_t, t_building> & buildings, // FIXME: this is wrong for buildings. they can overlap
+                       map<uint64_t, DFHack::t_construction> & constructions,
+                       map<uint64_t, DFHack::t_tree_desc> & vegetation,
+                       map<uint64_t, DFHack::t_building> & buildings, // FIXME: this is wrong for buildings. they can overlap
                        CellCoordinates NewCellCoordinates)
 {
     uint16_t tiletypes[16][16];
-    t_designation designations[16][16];
-    t_occupancy occupancies[16][16];
+    DFHack::t_designation designations[16][16];
+    DFHack::t_occupancy occupancies[16][16];
     uint8_t regionoffsets[16];
     int16_t basemat [16][16];
     int16_t veinmat [16][16];
-    t_matglossPair constmat [16][16];
+    DFHack::t_matglossPair constmat [16][16];
     vector <t_vein> veins;
 
     DF.ReadTileTypes(NewCellCoordinates.X, NewCellCoordinates.Y, NewCellCoordinates.Z, (uint16_t *) tiletypes);
@@ -783,7 +784,7 @@ void Map::LoadCellData(DFHack::API & DF,
             // plants
             if(vegetation.count(coord))
             {
-                t_tree_desc t = vegetation[coord];
+                DFHack::t_tree_desc t = vegetation[coord];
                 DFHack::TileClass Type = (DFHack::TileClass) DFHack::getVegetationType(tiletypes[xx][yy]);
 
                 if (t.material.type == Mat_Wood)
@@ -815,7 +816,7 @@ void Map::LoadCellData(DFHack::API & DF,
             // buildings, FIXME: doesn't work with overlapping buildings
             if(buildings.count(coord))
             {
-                t_building b = buildings[coord];
+                DFHack::t_building b = buildings[coord];
 
                 for(Uint32 i = 0; i < DATA->getNumBuildings(); i++)
                 {
@@ -836,9 +837,9 @@ void Map::LoadCellData(DFHack::API & DF,
     {
         for (Coordinates.Y = 0; Coordinates.Y < CELLEDGESIZE; Coordinates.Y += 1)
         {
-            t_designation Designations = designations[Coordinates.X][Coordinates.Y];
+            DFHack::t_designation Designations = designations[Coordinates.X][Coordinates.Y];
             Uint16 TileType = tiletypes[Coordinates.X][Coordinates.Y];
-            t_occupancy Ocupancies = occupancies[Coordinates.X][Coordinates.Y];
+            DFHack::t_occupancy Ocupancies = occupancies[Coordinates.X][Coordinates.Y];
 
             Sint16 TileShapeID = TileShapePicker[TileType];
             Sint16 TileSurfaceID = TileSurfacePicker[TileType];
@@ -970,7 +971,7 @@ void Map::InitilizeTilePicker(DFHack::API & DF)
 }
 
 //FIXME: the ugly hack
-Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial, t_matglossPair constructionmaterial, t_occupancy occupancy)
+Sint16 Map::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial, DFHack::t_matglossPair constructionmaterial, DFHack::t_occupancy occupancy)
 {
     static Uint16 Unknown = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
     static Uint16 LayerStone = DATA->getLabelIndex("MATERIALCLASS_LAYER_STONE");

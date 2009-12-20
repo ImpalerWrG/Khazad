@@ -7,6 +7,9 @@
 #include <Vector3.h>
 #include <Coordinates.h>
 
+#include "../../dfhack/library/DFTypes.h"
+#include "../../dfhack/library/DFHackAPI.h"
+
 namespace DFHack
 {
     class API;
@@ -29,16 +32,16 @@ struct Face
 };
 
 
-struct t_matglossPair;
+struct DFHack::t_matglossPair;
 class Column;
 class Cell;
 class Actor;
 class Face;
 class TreeManager;
 union t_occupancy;
-struct t_construction;
-struct t_tree_desc;
-struct t_building;
+struct DFHack::t_construction;
+struct DFHack::t_tree_desc;
+struct DFHack::t_building;
 struct Face;
 class DFHackAPI;
 
@@ -106,8 +109,8 @@ public:
     void setCubeSolid(MapCoordinates Coordinates, bool NewValue);
 
     void InitilizeTilePicker(DFHack::API & DF);
-    Sint16 PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial, t_matglossPair constructionmaterial, t_occupancy occupancy);
-    Sint16 ResolveMatGlossPair(t_matglossPair MatPair);
+    Sint16 PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial, DFHack::t_matglossPair constructionmaterial, DFHack::t_occupancy occupancy);
+    Sint16 ResolveMatGlossPair(DFHack::t_matglossPair MatPair);
 
     bool Generate(Uint32 Seed);
 
@@ -132,9 +135,9 @@ public:
     void LoadCellData(DFHack::API & context,
                       vector< vector <uint16_t> >& layerassign,
                       Cell* TargetCell,
-                      map<uint64_t, t_construction> & constuctions,
-                      map<uint64_t, t_tree_desc> & vegetation,
-                      map<uint64_t, t_building> & buildings,
+                      map<uint64_t, DFHack::t_construction> & constuctions,
+                      map<uint64_t, DFHack::t_tree_desc> & vegetation,
+                      map<uint64_t, DFHack::t_building> & buildings,
                       CellCoordinates NewCellCoordinates);
 
     void ChangeCellCount(Sint8 Change)      { CellCount += Change; }
