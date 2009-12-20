@@ -2,35 +2,38 @@
 #include <algorithm>
 
 #include <boost/unordered_set.hpp>
+#include <PathManager.h>
 
 #include "astar.h"
 #include "Path.h"
 #include "zone.h"
 #include "grid.h"
+#include "Pool.h"
 
 FullPath* AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
 {
     GraphReads = ExpandedNodes = 0;
 
-    entryGreaterThan egt(GoalCoordinates, MainHeuristic);
-    std::vector<AStarEntry*> FringeNodes;
-    std::vector<AStarEntry*> AllNodes;     // Used to prevent Memory Leaks
+    Pool<AStarNode>* NodePool = PATH->getCentralNodePool()->ProvidePool();
+
+    std::vector<AStarNode*> FringeNodes;
     boost::unordered_set<MapCoordinates, MapCoordinates::hash> visited;
 
-    std::make_heap(FringeNodes.begin(), FringeNodes.end(), egt);
+    std::make_heap(FringeNodes.begin(), FringeNodes.end(), NodeGreaterThan());
 
-    AStarEntry* StartNode = new AStarEntry(StartCoordinates, 0);
+    AStarNode* StartNode = NodePool->ProvideObject();
+    StartNode->Set(StartCoordinates, NULL, 0, MainHeuristic->Estimate(StartCoordinates, GoalCoordinates), TieBreakerHeuristic->Estimate(StartCoordinates, GoalCoordinates));
+
     FringeNodes.push_back(StartNode);
-    AllNodes.push_back(StartNode);
-    std::push_heap(FringeNodes.begin(), FringeNodes.end(), egt);
+    std::push_heap(FringeNodes.begin(), FringeNodes.end(), NodeGreaterThan());
 
     //visited.insert(StartCoordinates);
 
     while (!FringeNodes.empty())
     {
         // Get the min-weight element off the fringe.
-        std::pop_heap(FringeNodes.begin(), FringeNodes.end(), egt);
-        AStarEntry* CurrentNode = FringeNodes.back();
+        std::pop_heap(FringeNodes.begin(), FringeNodes.end(), NodeGreaterThan());
+        AStarNode* CurrentNode = FringeNodes.back();
         FringeNodes.pop_back();
 
         MapCoordinates TestCoordinates = CurrentNode->LocationCoordinates;
@@ -55,10 +58,7 @@ FullPath* AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
             Course.push_back(StartCoordinates);
 
             // Delete All the Nodes that were created
-            for (int i = 0; i < AllNodes.size(); i++)
-            {
-                delete AllNodes[i];
-            }
+            NodePool->RelesePool();
 
             reverse(Course.begin(), Course.end());
             return new FullPath(PathLength, Course);
@@ -84,22 +84,19 @@ FullPath* AStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCo
                     float EdgeCost = SearchGraph->getEdgeCost(TestCoordinates, DirectionType);
                     GraphReads++;
 
-                    AStarEntry* NewEntry = new AStarEntry(NeiboringCoordinates, CurrentNode, CurrentNode->PathLengthFromStart + EdgeCost, (*TieBreakerHeuristic)(NeiboringCoordinates, GoalCoordinates));
+                    AStarNode* NewNode = NodePool->ProvideObject();
+                    NewNode->Set(NeiboringCoordinates, CurrentNode, CurrentNode->PathLengthFromStart + EdgeCost, MainHeuristic->Estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic->Estimate(NeiboringCoordinates, GoalCoordinates));
 
                     // Add the new Node to the Fringe
-                    FringeNodes.push_back(NewEntry);
-                    std::push_heap(FringeNodes.begin(), FringeNodes.end(), egt);
-                    AllNodes.push_back(NewEntry);
+                    FringeNodes.push_back(NewNode);
+                    std::push_heap(FringeNodes.begin(), FringeNodes.end(), NodeGreaterThan());
                 }
             }
         }
     }
 
     // Delete All the Nodes that were created
-    for (int i = 0; i < AllNodes.size(); i++)
-    {
-        delete AllNodes[i];
-    }
+    NodePool->RelesePool();
 
     return new FullPath();  // Return an empty path to indicate failure
 }
@@ -135,8 +132,9 @@ private:
     bool zoneModified;
 };
 
-typedef boost::shared_ptr<AStarZoneEntry> AStarZoneEntryPtr;
+//typedef boost::shared_ptr<AStarZoneNode> AStarZoneNodePtr;
 
+/*
 FullPath* HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates, const MapCoordinates &GoalCoordinates)
 {
     zone* zoneS = zm_->findContainingZone(StartCoordinates);
@@ -151,8 +149,8 @@ FullPath* HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
     zoneBorderNode* bs = zoneS->get(StartCoordinates);
     //zoneBorderNode* bt = zoneT->get(GoalCoordinates);
 
-    entryGreaterThan egt(GoalCoordinates, MainHeuristic);
-    std::vector<AStarZoneEntryPtr> fringe;
+    NodeGreaterThan egt(GoalCoordinates, MainHeuristic);
+    std::vector<AStarZoneNodePtr> fringe;
     boost::unordered_set<MapCoordinates,MapCoordinates::hash> visited;
 
     std::make_heap(fringe.begin(), fringe.end(),egt);
@@ -161,14 +159,14 @@ FullPath* HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
     ans.cache_.push_back(StartCoordinates);
     ans.cache_.push_back(StartCoordinates);
 
-    fringe.push_back(AStarZoneEntryPtr(new AStarZoneEntry(&ans,0)));
+    fringe.push_back(AStarZoneNodePtr(new AStarZoneNode(&ans,0)));
     std::push_heap(fringe.begin(),fringe.end(),egt);
 
     while (!fringe.empty())
     {
         // Get the min-weight element off the fringe.
         std::pop_heap(fringe.begin(),fringe.end(),egt);
-        AStarZoneEntryPtr e = fringe.back();
+        AStarZoneNodePtr e = fringe.back();
         fringe.pop_back();
 
         if ((visited.find(*e->node_) != visited.end()) || (!SearchGraph->contains(*e->node_)))
@@ -209,7 +207,8 @@ FullPath* HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
               printf("(%2d,%2d,%2d)->",(*it)[0],(*it)[1],(*it)[2]);
             for (it = cpath.second.begin(); it != cpath.second.end(); it++)
               printf("(%2d,%2d,%2d)->",(*it)[0],(*it)[1],(*it)[2]);
-            printf(": %d\n",e->cost_+cpath.first);*/
+            printf(": %d\n",e->cost_+cpath.first);
+
 
             //if disconnected, ignore it
             if (cpath->Length >= 0)
@@ -258,10 +257,10 @@ FullPath* HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
 
             assert(neigh != e->node_);
 
-            AStarZoneEntryPtr eneigh (new AStarZoneEntry(neigh, *e, (*TieBreakerHeuristic)(*neigh,GoalCoordinates)));
+            AStarZoneNode* eneigh (new AStarZoneNode(neigh, *e, (*TieBreakerHeuristic)(*neigh, GoalCoordinates)));
 
 #if 0
-            typedef std::vector<AStarZoneEntryPtr>::iterator eiterator;
+            typedef std::vector<AStarZoneNode*>::iterator eiterator;
             // try to find neigh in the fringe
             eiterator it = std::find(fringe.begin(), fringe.end(), eneigh);
             if (it != fringe.end())
@@ -295,4 +294,4 @@ FullPath* HierarchicalAStar::doFindPath (const MapCoordinates &StartCoordinates,
     } // end loop over fringe
     return new FullPath();
 }
-
+*/

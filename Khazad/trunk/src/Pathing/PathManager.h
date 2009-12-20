@@ -3,6 +3,7 @@
 
 #include <stdafx.h>
 #include <Singleton.h>
+#include <Pool.h>
 
 class MovementController;
 class PathAlgorithm;
@@ -13,6 +14,7 @@ class Heuristic;
 class Profile;
 class MapPath;
 class Timer;
+class AStarNode;
 
 class PathManager
 {
@@ -41,6 +43,8 @@ public:
     uint32_t getZone(const MapCoordinates &TargetCoords) const;
     uint32_t getZoneEquivilency(const MapCoordinates &TargetCoords) const;
 
+    CentralPool<AStarNode>* getCentralNodePool()         { return NodeCentralPool; }
+
 protected:
 
     Timer* PathingTimer;
@@ -57,6 +61,8 @@ protected:
     Heuristic* MaxDimensionHeuristic;
     Heuristic* DijkstraHeuristic;
     Heuristic* DiagonalHeuristic;
+
+    CentralPool<AStarNode>* NodeCentralPool;
 };
 
 #define PATH (PathManager::GetInstance())

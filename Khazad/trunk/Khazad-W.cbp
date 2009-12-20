@@ -289,15 +289,16 @@
 		<Unit filename="src\Map\Map.h" />
 		<Unit filename="src\Pathing\Grid.cpp" />
 		<Unit filename="src\Pathing\MovementController.h" />
+		<Unit filename="src\Pathing\Node.h" />
 		<Unit filename="src\Pathing\Path.h" />
 		<Unit filename="src\Pathing\PathManager.cpp" />
 		<Unit filename="src\Pathing\PathManager.h" />
 		<Unit filename="src\Pathing\PathTester.cpp" />
 		<Unit filename="src\Pathing\PathTester.h" />
+		<Unit filename="src\Pathing\Pool.h" />
 		<Unit filename="src\Pathing\astar.cpp" />
 		<Unit filename="src\Pathing\astar.h" />
 		<Unit filename="src\Pathing\cubezone.h" />
-		<Unit filename="src\Pathing\entry.h" />
 		<Unit filename="src\Pathing\grid.h" />
 		<Unit filename="src\Pathing\gridzone.h" />
 		<Unit filename="src\Pathing\heuristics.h" />

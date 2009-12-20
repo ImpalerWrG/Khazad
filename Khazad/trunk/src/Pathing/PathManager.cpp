@@ -8,6 +8,7 @@
 #include <heuristics.h>
 #include <PathTester.h>
 #include <Timer.h>
+#include <Pool.h>
 
 
 DECLARE_SINGLETON(PathManager)
@@ -32,6 +33,7 @@ bool PathManager::Init()
     DiagonalHeuristic = new Diagonal();
 
     PathingTimer = new Timer();      // Master Timer
+    NodeCentralPool = new CentralPool<AStarNode>();
 
     return true;
 }

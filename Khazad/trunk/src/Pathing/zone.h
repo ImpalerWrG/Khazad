@@ -7,7 +7,7 @@
 #include <stdio.h>
 
 #include "heuristics.h"
-#include "entry.h"
+#include "Node.h"
 #include "grid.h"
 #include "Path.h"
 
@@ -159,7 +159,7 @@ private:
 #include "gridzone.h"
 #include "cubezone.h"
 
-class AStarZoneEntry : public entry
+class AStarZoneNode : public Node
 {
 public:
 
@@ -169,9 +169,9 @@ public:
     float tiebreaker_;
     std::vector<MapCoordinates> path_;
 
-    AStarZoneEntry(adjacentNode *node, float cost) : node_(node), cost_(cost), tiebreaker_(0) { }
+    AStarZoneNode(adjacentNode *node, float cost) : node_(node), cost_(cost), tiebreaker_(0) { }
 
-    AStarZoneEntry(adjacentNode *node, const AStarZoneEntry &prev, float tiebreaker)
+    AStarZoneNode(adjacentNode *node, const AStarZoneNode &prev, float tiebreaker)
     {
         node_ = node;
         cost_ = prev.cost_ + prev.node_->cost_;
@@ -191,7 +191,7 @@ public:
         return tiebreaker_;
     }
 
-    bool operator == (const AStarZoneEntry& other) const
+    bool operator == (const AStarZoneNode& other) const
     {
         return *node_ == *other.node_;
     }
