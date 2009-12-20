@@ -208,7 +208,7 @@ bool InputManager::HandleInput()
 					    std::vector<int> Systems;
 					    Systems.push_back(0);
 
-                        TESTER->RunPathTestSuites(Systems, 100);
+                        TESTER->RunPathTestSuites(Systems, 200);
 					    break;
 					}
 

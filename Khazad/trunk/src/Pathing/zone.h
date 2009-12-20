@@ -2,7 +2,6 @@
 #define ZONE_HEADER
 
 #include <vector>
-//#include <unordered_map>
 #include <algorithm>
 #include <memory>
 #include <stdio.h>
@@ -163,18 +162,21 @@ private:
 class AStarZoneEntry : public entry
 {
 public:
-    adjacentNode *node_;
+
+    adjacentNode* node_;
+
     float cost_;
     float tiebreaker_;
     std::vector<MapCoordinates> path_;
 
     AStarZoneEntry(adjacentNode *node, float cost) : node_(node), cost_(cost), tiebreaker_(0) { }
+
     AStarZoneEntry(adjacentNode *node, const AStarZoneEntry &prev, float tiebreaker)
     {
         node_ = node;
-        cost_ = prev.cost_+prev.node_->cost_;
+        cost_ = prev.cost_ + prev.node_->cost_;
         tiebreaker_ = tiebreaker;
-        path_.reserve(prev.path_.size()+prev.node_->cache_.size());
+        path_.reserve(prev.path_.size() + prev.node_->cache_.size());
         path_.insert(path_.begin(), prev.path_.begin(),prev.path_.end());
         path_.insert(path_.end(), ++(prev.node_->cache_.begin()),prev.node_->cache_.end()); //no duplicating end node
     }
@@ -184,7 +186,7 @@ public:
         return cost_ + node_->cost_ + h(*node_,t); //previous cost + most recent edge cost + heuristic to dest
     }
 
-    float tiebreaker() const
+    float getTiebreaker() const
     {
         return tiebreaker_;
     }
@@ -198,7 +200,7 @@ public:
         return node_->cache_.size() != 0;
     }
 
-    virtual MapCoordinates& getPoint()
+    virtual MapCoordinates& getCoordinates()
     {
         return *node_;
     }
