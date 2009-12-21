@@ -305,7 +305,7 @@ class MapDumpActionListener: public gcn::ActionListener
             UI->setMapViewState();
 
             PATH->CreateMapAbstraction();
-            TESTER->CreateTestSuite();
+            TESTER->CreateTestSuite(0, 500);
         }
     }
 };

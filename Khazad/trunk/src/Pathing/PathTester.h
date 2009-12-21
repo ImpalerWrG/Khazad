@@ -102,9 +102,9 @@ public:
     ~PathTester();
     bool Init();
 
-    void CreateTestSuite();
+    void CreateTestSuite(int Seed, int Iterations);
 
-    void RunPathTestSuites(vector<int> TestSystems, int Iterations);
+    void RunPathTestSuites(vector<int> TestSystems);
     void TestSuite(int Iterations, int SystemIndex, GroupProfile* SystemProfileGroup, vector<MapCoordinates> StartCoordsList, vector<MapCoordinates> GoalCoordsList);
 
     void RunHuristicTestSuite(int Interations, vector<int> PathSystems);
@@ -114,20 +114,22 @@ public:
     void SetGoalCoords(MapCoordinates TestCoords)       { ManualGoalCoords = TestCoords; }
     MapCoordinates getGoalCoords()                      { return ManualGoalCoords; }
 
-    MapPath* FindManualPath();
-    MapPath* getManualPath();
+    void ProfileManualPath();
+    MapPath* getManualPath()                            { return ManualPath; }
 
     GroupProfile* getCurrentGroupProfile()              { return CurrentProfileGroup; }
 
 protected:
 
-    std::vector<MapCoordinates> TestCoords;
-
     MapCoordinates ManualStartCoords, ManualGoalCoords;  // Used for manual testing
+    MapPath* ManualPath;
 
+    GroupProfile* ManualProfileGroup;
     GroupProfile* CurrentProfileGroup;
-
     GroupProfile* ProfileGroupList[2];
+
+    std::vector<MapCoordinates> StartCoordsList, GoalCoordsList;
+    int TestingIterations;
 };
 
 

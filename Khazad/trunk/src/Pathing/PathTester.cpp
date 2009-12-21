@@ -26,13 +26,17 @@ bool PathTester::Init()
     ProfileGroupList[1] = NULL;
 
     CurrentProfileGroup = NULL;
+    ManualProfileGroup = NULL;
+    ManualPath = NULL;
 
     return true;
 }
 
-void PathTester::CreateTestSuite()
+void PathTester::CreateTestSuite(int Seed, int Iterations)
 {
+    std::vector<MapCoordinates> TestCoords;
     std::map<uint64_t, Cell*>* TargetCells = MAP->getCellMap();
+
     for (std::map<uint64_t, Cell*>::iterator it = TargetCells->begin(); it != TargetCells->end(); ++it)
     {
         if (it->second != NULL)
@@ -55,30 +59,9 @@ void PathTester::CreateTestSuite()
             }
         }
     }
-}
 
-MapPath* PathTester::getManualPath()
-{
-    return NULL; //ManualProfile.ProfiledPath;
-}
-
-MapPath* PathTester::FindManualPath()
-{
-    //ManualProfileGroup;
-
-    //std::vector<int> Systems;
-    //Systems.push_back(0);  // 0th system for the manual path
-
-    //RunPathTestSuite(Systems);
-
-    //return ManualProfile.ProfiledPath;
-    return NULL;
-}
-
-void PathTester::RunPathTestSuites(vector<int> TestSystems, int Iterations)
-{
-    std::vector<MapCoordinates> StartCoordsList, GoalCoordsList;
-    RANDOM->Seed(0);
+    RANDOM->Seed(Seed);
+    TestingIterations = Iterations;
 
     // Prepare a set of Start Goal pairs for the test
     for (int i = 0; i < Iterations; i++)
@@ -87,7 +70,32 @@ void PathTester::RunPathTestSuites(vector<int> TestSystems, int Iterations)
         GoalCoordsList.push_back(TestCoords[RANDOM->Roll(0, (int32_t) TestCoords.size() - 1)]);
         // Identical Start and Goal points are possible, the PathManager should handle them
     }
+}
 
+void PathTester::ProfileManualPath()
+{
+    if (ManualProfileGroup == NULL)
+    {
+        ManualProfileGroup = new GroupProfile();
+    }
+    else
+    {
+        delete ManualProfileGroup;
+        ManualProfileGroup = new GroupProfile();
+    }
+
+    Profile* NewProfile = new Profile();
+    PATH->ProfilePath(0, ManualStartCoords, ManualGoalCoords, NewProfile);
+
+    ManualProfileGroup->Profiles.push_back(NewProfile);
+    ManualPath = NewProfile->ProfiledPath;
+
+    ManualProfileGroup->Analyze();
+    CurrentProfileGroup = ManualProfileGroup;
+}
+
+void PathTester::RunPathTestSuites(vector<int> TestSystems)
+{
     for (int i = 0; i < TestSystems.size(); i++)
     {
         if (ProfileGroupList[TestSystems[i]] == NULL)
@@ -100,7 +108,7 @@ void PathTester::RunPathTestSuites(vector<int> TestSystems, int Iterations)
             ProfileGroupList[TestSystems[i]] = new GroupProfile();
         }
 
-        TestSuite(Iterations, TestSystems[i], ProfileGroupList[TestSystems[i]], StartCoordsList, GoalCoordsList);
+        TestSuite(TestingIterations, TestSystems[i], ProfileGroupList[TestSystems[i]], StartCoordsList, GoalCoordsList);
         CurrentProfileGroup = ProfileGroupList[TestSystems[i]];
     }
 }

@@ -200,7 +200,7 @@ bool InputManager::HandleInput()
 					}
                     case SDLK_m:
 					{
-					    TESTER->FindManualPath();
+					    TESTER->ProfileManualPath();
 					    break;
 					}
                     case SDLK_p:
@@ -208,7 +208,7 @@ bool InputManager::HandleInput()
 					    std::vector<int> Systems;
 					    Systems.push_back(0);
 
-                        TESTER->RunPathTestSuites(Systems, 500);
+                        TESTER->RunPathTestSuites(Systems);
 					    break;
 					}
 
