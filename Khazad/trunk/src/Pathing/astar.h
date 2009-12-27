@@ -5,10 +5,10 @@
 
 class gridInterface;
 class zoneManager;
-class MapCoordinates;
 class Heuristic;
+class MapPath;
 
-#include <Path.h>
+#include <Coordinates.h>
 
 class PathAlgorithm
 {

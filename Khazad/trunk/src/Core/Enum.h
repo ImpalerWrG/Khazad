@@ -1,17 +1,6 @@
 #ifndef ENUM__HEADER
 #define ENUM__HEADER
 
-enum ActorType
-{
-	FACE_ACTOR,
-	SLOPE_ACTOR,
-	CUBE_ACTOR,
-	CELL_ACTOR,
-	PAWN_ACTOR,
-
-	NUM_ACTORS
-};
-
 /*
 enum Slopping
 {

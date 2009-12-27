@@ -4,6 +4,8 @@
 #include <stdafx.h>
 
 #include <Actor.h>
+#include <Coordinates.h>
+#include <MovementController.h>
 
 class Cell;
 
@@ -14,19 +16,20 @@ public:
 
     Pawn();
 	~Pawn();
-    bool Init(Vector3 SpawnLocation);
 
-	Cell* getCell() {return Location;}
+    bool Init(MapCoordinates SpawnCoordinates);
 
-	bool Move(Vector3 Direction);
+	Cell* getCell() { return CellLocation; }
+
+	bool Move();
 	bool Update();
-	bool Draw();
-
+    bool Draw(CameraOrientation Orientaion);
 
 protected:
 
-	Cell* Location;
+	Cell* CellLocation;
 
+    MovementController* Controller;
 };
 
 #endif // PAWN__HEADER

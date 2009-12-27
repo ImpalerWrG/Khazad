@@ -5,9 +5,10 @@
 #include <Singleton.h>
 #include <Pool.h>
 
+#include <Coordinates.h>
+
 class MovementController;
 class PathAlgorithm;
-class MapCoordinates;
 class KhazadGrid;
 class AStar;
 class Heuristic;
@@ -29,7 +30,7 @@ public:
     void EditMapAbstraction();
     void DeleteMapAbstraction();
 
-    MovementController* getNewController(int AjentSize, int MovementType, MapCoordinates StarCoords); // Create a new controler
+    MovementController* getNewController(int AgentSize, int MovementType, MapCoordinates StartCoords); // Create a new controler
 
     MapPath* FindPath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords);
     MapPath* ProfilePath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords, Profile* TargetProfile);
@@ -39,6 +40,8 @@ public:
 
     uint32_t getDirectionFlags(MapCoordinates Coordinates) const;
     bool contains(MapCoordinates Coordinates) const;
+    float getEdgeCost(const MapCoordinates &TestCoords, Direction DirectionType) const;
+
 
     uint32_t getZone(const MapCoordinates &TargetCoords) const;
     uint32_t getZoneEquivilency(const MapCoordinates &TargetCoords) const;

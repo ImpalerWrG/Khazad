@@ -1,6 +1,8 @@
 #include <stdafx.h>
 
 #include <PathManager.h>
+
+#include <MovementController.h>
 #include <Singleton.h>
 #include <Map.h>
 #include <grid.h>
@@ -58,6 +60,11 @@ void PathManager::DeleteMapAbstraction()
 
     delete AstarImplementation;
     AstarImplementation = NULL;
+}
+
+MovementController* PathManager::getNewController(int AgentSize, int MovementType, MapCoordinates StartCoords)
+{
+    return new MovementController(AgentSize, MovementType);
 }
 
 MapPath* PathManager::FindPath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords)
@@ -156,7 +163,16 @@ bool PathManager::contains(MapCoordinates Coordinates) const
     return false;
 }
 
-uint32_t PathManager::getZone(const MapCoordinates &TargetCoords) const
+float PathManager::getEdgeCost(const MapCoordinates &TestCoords, Direction DirectionType) const
+{
+    if (MapGrid != NULL)
+    {
+        return MapGrid->getEdgeCost(TestCoords, DirectionType);
+    }
+    return -1;
+}
+
+uint32_t PathManager::getZone(const MapCoordinates &TargetCoords) const // Superflous?
 {
     if (MapGrid != NULL)
     {

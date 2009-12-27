@@ -357,13 +357,21 @@ struct CellCoordinates
     CellCoordinates(MapCoordinates SourceCoordinates)
     {
         if (SourceCoordinates.X >= 0)
-          X = SourceCoordinates.X / CELLEDGESIZE;
+        {
+            X = SourceCoordinates.X / CELLEDGESIZE;
+        }
         else
-          X = SourceCoordinates.X / CELLEDGESIZE - 1; //truncate to negative infinity
+        {
+            X = SourceCoordinates.X / CELLEDGESIZE - 1; //truncate to negative infinity
+        }
         if (SourceCoordinates.Y >= 0)
-          Y = SourceCoordinates.Y / CELLEDGESIZE;
+        {
+            Y = SourceCoordinates.Y / CELLEDGESIZE;
+        }
         else
-          Y = SourceCoordinates.Y / CELLEDGESIZE - 1; //truncate to negative infinity
+        {
+            Y = SourceCoordinates.Y / CELLEDGESIZE - 1; //truncate to negative infinity
+        }
         Z = SourceCoordinates.Z;
     };
 

@@ -87,12 +87,12 @@ void Cell::Render(CameraOrientation CurrentOrientation)
     }
     for(Uint32 i = 0; i< trees.size(); i++)
     {
-        trees[i]->Draw();
+        trees[i]->Draw(CurrentOrientation);
     }
 
     for(Uint32 i = 0; i< buildings.size(); i++)
     {
-        buildings[i]->Draw();
+        buildings[i]->Draw(CurrentOrientation);
     }
 
         // HACK!!! get these into the RenderObject

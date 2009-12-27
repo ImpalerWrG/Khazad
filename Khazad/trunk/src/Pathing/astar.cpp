@@ -3,11 +3,13 @@
 
 #include <PathManager.h>
 
-#include "astar.h"
-#include "Path.h"
-#include "zone.h"
-#include "grid.h"
-#include "Pool.h"
+#include <astar.h>
+
+#include <Path.h>
+#include <grid.h>
+#include <Pool.h>
+#include <Node.h>
+#include <heuristics.h>
 
 
 AStar::AStar(const gridInterface *TargetSearchGraph)

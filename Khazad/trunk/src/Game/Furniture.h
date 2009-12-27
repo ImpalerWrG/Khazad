@@ -9,7 +9,6 @@ class Furniture: Actor
 
 public:
 
-	Furniture(ActorType Type);
 	Furniture();
 
 	bool Init();

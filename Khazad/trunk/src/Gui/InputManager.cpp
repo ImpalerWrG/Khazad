@@ -211,6 +211,11 @@ bool InputManager::HandleInput()
                         TESTER->RunPathTestSuites(Systems);
 					    break;
 					}
+					case SDLK_a:
+					{
+                        GAME->SpawnPawn(RENDERER->getCursor());
+                        break;
+					}
 
 					default:
                         break;

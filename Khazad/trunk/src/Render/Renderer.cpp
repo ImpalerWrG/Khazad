@@ -22,6 +22,8 @@
 #include <Gui.h>
 #include <Path.h>
 
+#include <Pawn.h>
+
 #include <IL/ilut.h>
 
 #include <iostream>
@@ -672,7 +674,7 @@ bool Renderer::Render()
     glDepthMask(GL_FALSE);
 
     /// turn on blending
-    //glEnable(GL_BLEND);
+    glEnable(GL_BLEND);
 
     /// sort transparent stuff by distance from camera, do nothing if there's no change
 
@@ -682,16 +684,13 @@ bool Renderer::Render()
     glDepthMask(GL_TRUE);
     glDisable(GL_LIGHT0);
     glDisable(GL_LIGHTING);
-    /// deprecated
-    /*
-    	for (Uint32 i = 0; i < GAME->ActorList.size(); i++)
-    	{
-    	    if (GAME->ActorList[i]->getType() == PAWN_ACTOR)
-    	    {
-                GAME->ActorList[i]->Draw();
-    	    }
-    	}
-    */
+
+    // Render Actors  // Move this inside Cells at some point
+    for (Uint32 i = 0; i < GAME->PawnList.size(); i++)
+    {
+        GAME->PawnList[i]->Draw(CurrentOrientation);
+    }
+
     return true;
 }
 

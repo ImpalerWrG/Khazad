@@ -44,7 +44,17 @@ Tree::~Tree()
     // NOP
 }
 
-bool Tree::Draw()
+bool Tree::Init()
+{
+    return true;
+}
+
+bool Tree::Update()
+{
+    return true;
+}
+
+bool Tree::Draw(CameraOrientation Orientaion)
 {
     static Sint16 SurfaceTypeID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
 

@@ -39,7 +39,17 @@ Building::~Building()
     // NOP
 }
 
-bool Building::Draw()
+bool Building::Init()
+{
+    return true;
+}
+
+bool Building::Update()
+{
+    return true;
+}
+
+bool Building::Draw(CameraOrientation Orientaion)
 {
     MapCoordinates TargetCoordinates = MapCoords;
     bool Validated = false;

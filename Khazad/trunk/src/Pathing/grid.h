@@ -56,7 +56,6 @@ public:
     DirectionFlags getDirectionFlags(const MapCoordinates &TargetCoords) const;
 
     int getConnectivityZone(const MapCoordinates &TargetCoords) const;
-
     void setConnectivityZone(const MapCoordinates &TargetCoords, int NewZone);
 
     void setDirectionFlags(const MapCoordinates& MapCoords, DirectionFlags Flags);

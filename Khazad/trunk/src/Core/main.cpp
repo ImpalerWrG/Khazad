@@ -169,12 +169,13 @@ int main(int argv, char** argc)
 {
     if (!initManagers())
     {
-        return 0;
+        return 0; // Errors durring Initialization, Abort
     }
 
     static const SDL_Color WHITE = {255, 255, 255};
 
     bool done = false;
+
     printf("Starting timers ...");
     Timer* FPSTimer = new Timer(20);
     Timer* GameTimer = new Timer(20);
@@ -183,14 +184,12 @@ int main(int argv, char** argc)
 
     //Uint8 FrameCounter = 0;
     Uint32 FrameRate = 0;
+    Uint32 GameRate = 0;
 
     GameTimer->Start();
     RenderTimer->Start();
-    printf("DONE\n");
 
-    printf("Wiping the screen ...");
     RENDERER->WipeScreen();
-    printf("DONE\n");
 
     printf("Init done. Entering main loop.\n");
 	while(!done) // While program isn't done
@@ -243,13 +242,14 @@ int main(int argv, char** argc)
         }
 
         RENDERER->CaptureScreenShot();
-
         RENDERER->Flip();
+
 		FPSTimer->Pause(); // FrameRate Captures whole loop
 
         FrameRate = (Uint32) FrameRateControl(FPSTimer);
+        //GameRate = (Uint32) GameRateControl(FPSTimer);
 
-	} // Program done, exited
+	} // Program done, exiting
 
 	cleanup();
 

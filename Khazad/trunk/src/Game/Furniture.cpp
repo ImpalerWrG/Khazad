@@ -2,13 +2,6 @@
 
 #include <Furniture.h>
 
-Furniture::Furniture(ActorType NewType)
-{
-	Visible = false;
-	Type = NewType;
-
-	//BirthDate = 0;
-}
 
 Furniture::Furniture()
 {

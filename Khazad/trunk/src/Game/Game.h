@@ -2,27 +2,30 @@
 #define GAME__HEADER
 
 #include <stdafx.h>
+
 #include <Singleton.h>
-#include <Actor.h>
 
 class Actor;
+class Pawn;
+class MapCoordinates;
 
 class Game
 {
 DECLARE_SINGLETON_CLASS(Game)
 
 public:
+
 	~Game();
 	bool Init();
 	bool Run();
 
-	std::vector<Actor*> ActorList;
 
-	bool RemoveActor(Uint32 ID);
+	bool RemovePawn(Uint32 ID);
+    void SpawnPawn(MapCoordinates SpawnCoordinates);
+
+	std::vector<Pawn*> PawnList;
 
 protected:
-
-
 
 };
 

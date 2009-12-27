@@ -1,18 +1,17 @@
 #include <stdafx.h>
 
 #include <Pawn.h>
+
 #include <Random.h>
 #include <Renderer.h>
 #include <Game.h>
 #include <Map.h>
+#include <PathManager.h>
 
 
 Pawn::Pawn()
 {
-	setType(PAWN_ACTOR);
 
-	GAME->ActorList.push_back(this);
-	//ID = (Uint32) GAME->ActorList.size();
 }
 
 Pawn::~Pawn()
@@ -20,51 +19,23 @@ Pawn::~Pawn()
 
 }
 
-bool Pawn::Init(Vector3 SpawnLocation)
+bool Pawn::Init(MapCoordinates SpawnLocation)
 {
-	Position = SpawnLocation;
+	LocationCoordinates = SpawnLocation;
+	Controller = PATH->getNewController(0, 0, LocationCoordinates);
+	Controller->setBehaviorMode(PATH_BEHAVIOR_WANDER_DRUNKENLY);
 
     return true;
 }
 
-bool Pawn::Move(Vector3 Direction)
+bool Pawn::Move()
 {
-    Position += Direction;
+    Direction MoveDirection = Controller->getNextStep();
 
-    if(Position.x > MAP->getMapSizeX())
+    if (PATH->getEdgeCost(LocationCoordinates, MoveDirection) != -1)
     {
-        Position.x = MAP->getMapSizeX();
-    }
-    else
-    {
-         if(Position.x < 0)
-        {
-            Position.x = 0;
-        }
-    }
-
-    if(Position.y > MAP->getMapSizeY())
-    {
-        Position.y = MAP->getMapSizeY();
-    }
-    else
-    {
-         if(Position.y < 0)
-        {
-            Position.y = 0;
-        }
-    }
-
-    if(Position.z > MAP->getMapSizeZ())
-    {
-        Position.z = MAP->getMapSizeZ();
-    }
-    else
-    {
-         if(Position.z < 0)
-        {
-            Position.z = 0;
-        }
+        // Perform the Move
+        LocationCoordinates.TranslateMapCoordinates(MoveDirection);
     }
 
     return true;
@@ -72,72 +43,14 @@ bool Pawn::Move(Vector3 Direction)
 
 bool Pawn::Update()
 {
-    if(RANDOM->Roll(0, 20) == 20)
-    {
-        switch (RANDOM->Roll(0, 5))
-        {
-            case 0:
-            {
-                Vector3 Direction = Vector3(1, 0, 0);
-                Move(Direction);
-                break;
-            }
-            case 1:
-            {
-                Vector3 Direction = Vector3(0, 1, 0);
-                Move(Direction);
-                break;
-            }
-            case 2:
-            {
-                Vector3 Direction = Vector3(-1, 0, 0);
-                Move(Direction);
-                break;
-            }
-            case 3:
-            {
-                Vector3 Direction = Vector3(0, -1, 0);
-                Move(Direction);
-                break;
-            }
-            case 4:
-            {
-                Vector3 Direction = Vector3(0, 0, -1);
-                Move(Direction);
-                break;
-            }
-            case 5:
-            {
-                Vector3 Direction = Vector3(0, 0, 1);
-                Move(Direction);
-                break;
-            }
-        }
-    }
+    Move();
 
     return true;
 }
 
-bool Pawn::Draw()
+bool Pawn::Draw(CameraOrientation Orientaion)
 {
-	glColor3f(1.0, 1.0, 1.0);
-
-  	glBegin(GL_QUADS);
-
-		glVertex3f(Position.x - 0.5, Position.y + 0.5, Position.z + 0.5);
-		glVertex3f(Position.x + 0.5, Position.y + 0.5, Position.z + 0.5);
-		glVertex3f(Position.x + 0.5, Position.y - 0.5, Position.z + 0.5);
-		glVertex3f(Position.x - 0.5, Position.y - 0.5, Position.z + 0.5);
-
-        /*
-		glVertex3f(Position.x - 0.5, Position.y + 0.5, Position.z - 0.5);
-		glVertex3f(Position.x + 0.5, Position.y + 0.5, Position.z - 0.5);
-		glVertex3f(Position.x + 0.5, Position.y - 0.5, Position.z - 0.5);
-		glVertex3f(Position.x - 0.5, Position.y - 0.5, Position.z - 0.5);
-		*/
-
-	glEnd();
-
+    RENDERER->DrawDiamond(LocationCoordinates, 1, 1, 1, 1);
 
     return true;
 }

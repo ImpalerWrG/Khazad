@@ -9,15 +9,15 @@ class PathManager;
 
 enum MovementBehavior
 {
-    PATH_BEHAVIOR_HALT,              // Ajent stands still
-    PATH_BEHAVIOR_WANDER_DRUNKENLY,  // Ajent wanders and ignores all obsticles
-    PATH_BEHAVIOR_WANDER_AIMLESSLY,  // Ajent wanders but will not try to path through walls
-    PATH_BEHAVIOR_WANDER_IN_AREA,    // Ajent wanders inside a confined area
-    PATH_BEHAVIOR_FOLLOW_ADJENT,     // Ajent stay within a set distance of another ajent
-    PATH_BEHAVIOR_FLEE_ADJENT,       // Ajent runs away from another adjent
-    PATH_BEHAVIOR_SEAK_ADJENT,       // Ajent moves directly onto another ajent
-    PATH_BEHAVIOR_ROUTE_TO_LOCATION, // Ajent follows a path to a specific location
-    PATH_BEHAVIOR_ROUTE_TO_AREA      // Ajent follows a path closest location in an area
+    PATH_BEHAVIOR_HALT,              // Agent stands still
+    PATH_BEHAVIOR_WANDER_DRUNKENLY,  // Agent wanders and ignores all obsticles and hazards
+    PATH_BEHAVIOR_WANDER_AIMLESSLY,  // Agent wanders but will not try to path through walls
+    PATH_BEHAVIOR_WANDER_IN_AREA,    // Agent wanders inside a confined area
+    PATH_BEHAVIOR_FOLLOW_ADJENT,     // Agent stay within a set distance of another ajent
+    PATH_BEHAVIOR_FLEE_ADJENT,       // Agent runs away from another adjent
+    PATH_BEHAVIOR_SEAK_ADJENT,       // Agent moves directly onto another ajent
+    PATH_BEHAVIOR_ROUTE_TO_LOCATION, // Agent follows a path to a specific location
+    PATH_BEHAVIOR_ROUTE_TO_AREA      // Agent follows a path to the closest location in an area
 };
 
 class MovementController
