@@ -446,5 +446,42 @@ bool Ui::Draw()
     return true;
 }
 
+void Ui::PrintFrameRate(int FrameRate)
+{
+    static const SDL_Color WHITE = {255, 255, 255};
+    char buffer[256];
 
+    if(MAP->isMapLoaded())
+    {
+        RENDERER->setDrawingFlat();  // Go into HUD-drawing mode
+
+        if(RENDERER->isDebuggingDraw())
+        {
+            SDL_Rect position;
+            position.x = 10;
+            position.y = RENDERER->getHeight() - 40;
+
+            sprintf (buffer, "FrameRate %i", FrameRate);
+            RENDERER->RenderText(buffer, 0, WHITE, &position);
+
+            position.y -= 40;
+
+            sprintf (buffer, "Triangles %i", RENDERER->getTriangleCount());
+            RENDERER->RenderText(buffer, 0, WHITE, &position);
+
+            RENDERER->PrintDebugging();
+        }
+        else
+        {
+            SDL_Rect position;
+            position.x = 10;
+            position.y = RENDERER->getHeight() - 40;
+
+            sprintf (buffer, "KHAZAD");
+            RENDERER->RenderText(buffer, 0, WHITE, &position);
+        }
+
+        RENDERER->setDrawing3D(); // Come out of HUD mode
+    }
+}
 

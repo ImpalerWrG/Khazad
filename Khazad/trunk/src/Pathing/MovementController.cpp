@@ -5,6 +5,7 @@
 
 #include <grid.h>
 #include <Random.h>
+#include <PathManager.h>
 
 
 
@@ -36,6 +37,24 @@ Direction MovementController::getNextStep()  // Next movement step for the ajent
 
         case PATH_BEHAVIOR_WANDER_AIMLESSLY:  // Agent wanders but will not try to path through walls
         {
+            uint32_t DirectionFlags = PATH->getDirectionFlags(CurrentLocation);
+
+            std::vector<int> ValidDirections;
+            int Position = 0;
+
+            for (uint32_t TemporaryFlags = DirectionFlags; TemporaryFlags; TemporaryFlags >>= 1, Position++)
+            {
+                if (TemporaryFlags & 1)
+                {
+                    ValidDirections.push_back(Position);
+                }
+            }
+
+            if (ValidDirections.size() > 0)
+            {
+                return (Direction) ValidDirections[RANDOM->Roll(0, ValidDirections.size() - 1)];
+            }
+
             return DIRECTION_NONE;
         }
         break;

@@ -23,7 +23,7 @@ bool Pawn::Init(MapCoordinates SpawnLocation)
 {
 	LocationCoordinates = SpawnLocation;
 	Controller = PATH->getNewController(0, 0, LocationCoordinates);
-	Controller->setBehaviorMode(PATH_BEHAVIOR_WANDER_DRUNKENLY);
+	Controller->setBehaviorMode(PATH_BEHAVIOR_WANDER_AIMLESSLY);
 
     return true;
 }
@@ -36,6 +36,7 @@ bool Pawn::Move()
     {
         // Perform the Move
         LocationCoordinates.TranslateMapCoordinates(MoveDirection);
+        Controller->setLocation(LocationCoordinates);
     }
 
     return true;

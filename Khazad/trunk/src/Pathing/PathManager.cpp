@@ -64,7 +64,9 @@ void PathManager::DeleteMapAbstraction()
 
 MovementController* PathManager::getNewController(int AgentSize, int MovementType, MapCoordinates StartCoords)
 {
-    return new MovementController(AgentSize, MovementType);
+    MovementController* NewController = new MovementController(AgentSize, MovementType);
+    NewController->setLocation(StartCoords);
+    return NewController;
 }
 
 MapPath* PathManager::FindPath(int PathSystem, MapCoordinates StartCoords, MapCoordinates GoalCoords)

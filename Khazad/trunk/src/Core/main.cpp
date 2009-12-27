@@ -19,10 +19,6 @@
 #include <PathTester.h>
 
 
-// General use char buffer
-char buffer[256];
-
-
 bool initManagers()
 {
     printf("-=XML INITIALIZING=- ... \n");
@@ -157,7 +153,9 @@ float FrameRateControl(Timer* FPSTimer)
         float delay = (1000 / FRAMES_PER_SECOND) - FPSTimer->getElapsed();
         SDL_Delay(delay);
         if(delay > 100)
+        {
             printf("DELAY %f > 100 !\n", delay);
+        }
     }
 
     FrameRateAcumulator += FPSTimer->getElapsed();
@@ -172,14 +170,13 @@ int main(int argv, char** argc)
         return 0; // Errors durring Initialization, Abort
     }
 
-    static const SDL_Color WHITE = {255, 255, 255};
-
     bool done = false;
 
     printf("Starting timers ...");
+
     Timer* FPSTimer = new Timer(20);
     Timer* GameTimer = new Timer(20);
-    //Timer* UITimer = new Timer(20);
+    Timer* UITimer = new Timer(20);
     Timer* RenderTimer = new Timer(20);
 
     //Uint8 FrameCounter = 0;
@@ -196,53 +193,24 @@ int main(int argv, char** argc)
 	{
 		FPSTimer->Start();
 
-        done = INPUT->HandleInput();
+            done = INPUT->HandleInput();
 
-        GameTimer->Unpause();
-            GAME->Run();
-        GameTimer->Pause();
+            GameTimer->Unpause();
+                GAME->Run();
+            GameTimer->Pause();
 
-        RenderTimer->Unpause();
-            RENDERER->Render();
-        RenderTimer->Pause();
+            RenderTimer->Unpause();
+                RENDERER->Render();
+            RenderTimer->Pause();
 
-        UI->Draw();
+            UITimer->Unpause();
+                UI->Draw();
+                UI->PrintFrameRate(FrameRate);
+            UITimer->Pause();
 
-        if(MAP->isMapLoaded())
-        {
-            RENDERER->setDrawingFlat();  // Go into HUD-drawing mode
 
-            if(RENDERER->isDebuggingDraw())
-            {
-                SDL_Rect position;
-                position.x = 10;
-                position.y = RENDERER->getHeight() - 40;
-
-                sprintf (buffer, "FrameRate %i", FrameRate);
-                RENDERER->RenderText(buffer, 0, WHITE, &position);
-
-                position.y -= 40;
-
-                sprintf (buffer, "Triangles %i", RENDERER->getTriangleCount());
-                RENDERER->RenderText(buffer, 0, WHITE, &position);
-
-                RENDERER->PrintDebugging();
-            }
-            else
-            {
-                SDL_Rect position;
-                position.x = 10;
-                position.y = RENDERER->getHeight() - 40;
-
-                sprintf (buffer, "KHAZAD");
-                RENDERER->RenderText(buffer, 0, WHITE, &position);
-            }
-
-            RENDERER->setDrawing3D(); // Come out of HUD mode
-        }
-
-        RENDERER->CaptureScreenShot();
-        RENDERER->Flip();
+            RENDERER->CaptureScreenShot();
+            RENDERER->Flip();
 
 		FPSTimer->Pause(); // FrameRate Captures whole loop
 
