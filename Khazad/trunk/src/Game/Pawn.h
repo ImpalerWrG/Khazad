@@ -21,13 +21,19 @@ public:
 
 	Cell* getCell() { return CellLocation; }
 
-	bool Move();
+	bool BeginMove();
 	bool Update();
+	bool UpdateRenderPosition();
     bool Draw(CameraOrientation Orientaion);
 
 protected:
 
 	Cell* CellLocation;
+	bool Moving;
+	int CoolDown;
+
+	Vector3 RenderLocation;
+	Vector3 RenderLocationChange;
 
     MovementController* Controller;
 };

@@ -11,7 +11,8 @@
 
 Pawn::Pawn()
 {
-
+    CoolDown = 0;
+    Moving = false;
 }
 
 Pawn::~Pawn()
@@ -28,30 +29,62 @@ bool Pawn::Init(MapCoordinates SpawnLocation)
     return true;
 }
 
-bool Pawn::Move()
+bool Pawn::BeginMove()
 {
     Direction MoveDirection = Controller->getNextStep();
 
-    if (PATH->getEdgeCost(LocationCoordinates, MoveDirection) != -1)
+    if (MoveDirection == DIRECTION_NONE)
+    {
+        return false;
+    }
+
+    float EdgeCost = PATH->getEdgeCost(LocationCoordinates, MoveDirection);
+
+    if (EdgeCost != -1)
     {
         // Perform the Move
+        RenderLocation.set(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z);
+
         LocationCoordinates.TranslateMapCoordinates(MoveDirection);
-        Controller->setLocation(LocationCoordinates);
+        Controller->setLocation(LocationCoordinates);  // Delay this untill halfway point
+
+        Moving = true;
+        CoolDown += EdgeCost * 10;
+
+        RenderLocationChange.set(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z);
+        RenderLocationChange -= RenderLocation;  // Create movement vector from position difference;
+        RenderLocationChange = RenderLocationChange * (1 / (float) CoolDown);       // Reduce magnitude proportional to cooldown
+
+        return true;
+    }
+    return false;
+}
+
+bool Pawn::Update()
+{
+    if (!CoolDown--)
+    {
+        Moving = BeginMove();
+    }
+
+    if (Moving)
+    {
+        UpdateRenderPosition();
     }
 
     return true;
 }
 
-bool Pawn::Update()
+bool Pawn::UpdateRenderPosition()
 {
-    Move();
+    RenderLocation += RenderLocationChange;
 
-    return true;
+    return true;  // Adjust Position vector incrementaly her to make smoth movements
 }
 
 bool Pawn::Draw(CameraOrientation Orientaion)
 {
-    RENDERER->DrawDiamond(LocationCoordinates, 1, 1, 1, 1);
+    RENDERER->DrawDiamond(RenderLocation.x, RenderLocation.y, RenderLocation.z, 1, 1, 1, 1);
 
     return true;
 }

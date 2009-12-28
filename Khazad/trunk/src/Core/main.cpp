@@ -201,16 +201,16 @@ int main(int argv, char** argc)
 
             RenderTimer->Unpause();
                 RENDERER->Render();
-            RenderTimer->Pause();
 
-            UITimer->Unpause();
+            //UITimer->Unpause();
                 UI->Draw();
                 UI->PrintFrameRate(FrameRate);
-            UITimer->Pause();
+            //UITimer->Pause();
 
+                RENDERER->CaptureScreenShot();
+                RENDERER->Flip();
 
-            RENDERER->CaptureScreenShot();
-            RENDERER->Flip();
+            RenderTimer->Pause();
 
 		FPSTimer->Pause(); // FrameRate Captures whole loop
 

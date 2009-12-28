@@ -593,15 +593,9 @@ bool Renderer::Render()
     if (TESTER->getManualPath() != NULL)
     {
         DrawMapPath(TESTER->getManualPath());
-
-        DrawDiamond(TESTER->getStartCoords(), 1.0, 0.0, 0.0, 1.0);
-        DrawDiamond(TESTER->getGoalCoords(), 1.0, 1.0, 1.0, 0.0);
     }
-    else
-    {
-        DrawDiamond(TESTER->getStartCoords(), 1.0, 0.0, 0.0, 1.0);
-        DrawDiamond(TESTER->getGoalCoords(), 1.0, 1.0, 1.0, 0.0);
-    }
+    //DrawDiamond(TESTER->getStartCoords().X, TESTER->getStartCoords().Y, TESTER->getStartCoords().Z, 1.0, 0.0, 0.0, 1.0);
+    //DrawDiamond(TESTER->getGoalCoords(), 1.0, 1.0, 1.0, 0.0);
 
 
     TEXTURE->ResetTextureBinding();
@@ -1129,15 +1123,15 @@ void Renderer::DrawCage(MapCoordinates Coordinates, float x, float y, float z, b
     glEnd();
 }
 
-void Renderer::DrawDiamond(MapCoordinates Coordinates, float size, float red, float green, float blue)
+void Renderer::DrawDiamond(float X, float Y, float Z, float size, float red, float green, float blue)
 {
     glColor3f (red, green, blue);
 
     Vector3 Point;
 
-    Point.x = Coordinates.X;
-    Point.y = Coordinates.Y;
-    Point.z = MainCamera->ZlevelSeperationAdjustment(Coordinates.Z);
+    Point.x = X;
+    Point.y = Y;
+    Point.z = MainCamera->ZlevelSeperationAdjustment((int) Z);
 
     glBegin(GL_TRIANGLES);
 
@@ -1189,12 +1183,12 @@ void Renderer::DrawDiamond(MapCoordinates Coordinates, float size, float red, fl
 void Renderer::DrawMapPath(MapPath* TargetPath)
 {
     TargetPath->ResetSteps();
-    DrawDiamond(TargetPath->StartCoordinates, 1.0, 0.0, 1.0, 0.0);
+    DrawDiamond((float) TargetPath->StartCoordinates.X, (float) TargetPath->StartCoordinates.Y, (float) TargetPath->StartCoordinates.Z, 1.0, 0.0, 1.0, 0.0);
 
     for (int Step = 0;  Step < TargetPath->StepCount; Step++)
     {
         MapCoordinates Coords = TargetPath->NextCoordinate();
-        DrawDiamond(Coords, 1.0, (Step * 1.0) / TargetPath->StepCount, 1.0 - ((Step * 1.0) / TargetPath->StepCount), 0.0);
+        DrawDiamond((float) Coords.X, (float) Coords.Y, (float) Coords.Z, 1.0, (Step * 1.0) / TargetPath->StepCount, 1.0 - ((Step * 1.0) / TargetPath->StepCount), 0.0);
     }
 }
 

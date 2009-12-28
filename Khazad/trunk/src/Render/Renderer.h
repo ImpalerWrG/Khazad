@@ -232,7 +232,7 @@ public:
     void DrawCage(MapCoordinates Coordinates, float x, float y, float z, bool Inflated, float red, float green, float blue);
     void DrawCage(MapCoordinates Coordinates, float x, float y, float z, bool Inflated);
 
-    void DrawDiamond(MapCoordinates Coordinates, float size, float red, float green, float blue);
+    void DrawDiamond(float X, float Y, float Z, float size, float red, float green, float blue);
 
     void DrawMapPath(MapPath* TargetPath);
     void DrawConnectivity(CellCoordinates Coordinates);
