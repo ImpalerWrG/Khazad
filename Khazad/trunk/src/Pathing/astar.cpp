@@ -38,7 +38,7 @@ void AStar::setEndPoints(const MapCoordinates &StartCoords, const MapCoordinates
     NodePool->Wipe();
 
     AStarNode* StartNode = NodePool->ProvideObject();
-    StartNode->Set(StartCoordinates, NULL, 0, MainHeuristic->Estimate(StartCoords, GoalCoords), TieBreakerHeuristic->Estimate(StartCoords, GoalCoords));
+    StartNode->Set(StartCoordinates, NULL, DIRECTION_NONE, 0, MainHeuristic->Estimate(StartCoords, GoalCoords), TieBreakerHeuristic->Estimate(StartCoords, GoalCoords));
 
     FringeNodes.push_back(StartNode);
     std::make_heap(FringeNodes.begin(), FringeNodes.end(), NodeGreaterThan());
@@ -100,7 +100,7 @@ MapPath* AStar::FindPath(int NodesToExpand)
 
     if (FinalPath == NULL)
     {
-        MapPath* CurrentPath = GenerateBestPath();
+        MapPath* CurrentPath = GenerateVectorPath();
 
         if (FinalPathFound)
         {
@@ -153,7 +153,7 @@ inline bool AStar::ExpandNode()
                 GraphReads++;
 
                 AStarNode* NewNode = NodePool->ProvideObject();
-                NewNode->Set(NeiboringCoordinates, CurrentNode, CurrentNode->PathLengthFromStart + EdgeCost, MainHeuristic->Estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic->Estimate(NeiboringCoordinates, GoalCoordinates));
+                NewNode->Set(NeiboringCoordinates, CurrentNode, DirectionType, CurrentNode->PathLengthFromStart + EdgeCost, MainHeuristic->Estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic->Estimate(NeiboringCoordinates, GoalCoordinates));
 
                 // Add the new Node to the Fringe
                 FringeNodes.push_back(NewNode);
@@ -165,14 +165,14 @@ inline bool AStar::ExpandNode()
     return false; // Goal was not found
 }
 
-MapPath* AStar::GenerateBestPath()
+FullPath* AStar::GenerateFullPath()
 {
     ExpandedNodes = VisitedCoordinates.size();
 
     int PathLength = CurrentNode->PathLengthFromStart;
     std::vector<MapCoordinates> Course;
 
-    while(CurrentNode != NULL)
+    while (CurrentNode != NULL)
     {
         Course.push_back(CurrentNode->LocationCoordinates);
         CurrentNode = CurrentNode->Parent;
@@ -181,6 +181,24 @@ MapPath* AStar::GenerateBestPath()
 
     reverse(Course.begin(), Course.end());
     return new FullPath(PathLength, Course);
+}
+
+VectorPath* AStar::GenerateVectorPath()
+{
+    ExpandedNodes = VisitedCoordinates.size();
+
+    int PathLength = CurrentNode->PathLengthFromStart;
+    std::vector<Direction> Course;
+
+    while (CurrentNode != NULL)
+    {
+        Course.push_back(CurrentNode->ParentDirection);
+        CurrentNode = CurrentNode->Parent;
+    }
+    Course.erase(Course.end());
+
+    reverse(Course.begin(), Course.end());
+    return new VectorPath(PathLength, Course, StartCoordinates, GoalCoordinates);
 }
 
 /*

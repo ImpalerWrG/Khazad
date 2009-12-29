@@ -1,152 +1,93 @@
 #ifndef PATH__HEADER
 #define PATH__HEADER
 
-#include "Coordinates.h"
+#include <Coordinates.h>
 #include <vector>
 
-struct MapPath
+class PathWalker
 {
-    MapPath() {};
+public:
 
-    virtual MapCoordinates NextCoordinate() {};
-    virtual Direction NextDirection() {};
+    virtual MapCoordinates NextCoordinate() = 0;
+    virtual Direction NextDirection() = 0;
+    virtual void Reset() = 0;
 
-    virtual void ResetSteps() {}; // Reset to the start of the path
+    int CurrentStep;
+};
+
+class MapPath
+{
+public:
 
     float Length;   // The travel cost of the path
     int StepCount;  // The number of individual steps in the path
-    int CurrentStep;  // Used to iterate the path
 
     int SizeLimit;      // Largest size of adjent that can use this path
     int MovementFlags;  // Booleans flags for terrain passable flags
 
+    virtual PathWalker* getPathWalker() = 0;
+
     MapCoordinates StartCoordinates, GoalCoordinates;
 };
 
-struct FullPath: MapPath
+class FullPath: public MapPath
 {
-    FullPath ()
-    {
-        Length = -1;
-        StepCount = 0;
-        CurrentStep = 0;
-    }
+public:
 
-    FullPath (float PathLength, std::vector<MapCoordinates> Course)
-    {
-        Length = PathLength;
-        PathCourse = Course;
-        StepCount = Course.size() - 1;
-        CurrentStep = 0;
-
-        StartCoordinates = PathCourse[0];
-        GoalCoordinates = PathCourse[StepCount];
-    }
-
-    void ResetSteps()
-    {
-        CurrentStep = 0;
-    }
-
-    MapCoordinates NextCoordinate()
-    {
-        if(CurrentStep < StepCount)
-        {
-            CurrentStep++;
-            return PathCourse[CurrentStep];
-        }
-        return GoalCoordinates; // Keep returning the Goal if we've reached the end of the path
-    }
-
-    Direction NextDirection()
-    {
-        return DIRECTION_NONE;
-    };
+    FullPath(float PathLength, std::vector<MapCoordinates> Course);
+    PathWalker* getPathWalker();
 
     std::vector<MapCoordinates> PathCourse;
 };
 
-struct VectorPath: MapPath
+class FullPathWalker: public PathWalker
 {
-    VectorPath()
-    {
+public:
 
-    }
+    FullPathWalker(FullPath* SourcePath);
 
-    void ResetSteps()
-    {
-        CurrentStep = 0;
-        MagnitudeCountDown = Magnitudes[0];  // Prime the counter with the first legs magnitude
-        LegCounter = 0;
-        StepCoordinates = StartCoordinates;
-    }
+    MapCoordinates NextCoordinate();
+    Direction NextDirection();
+    void Reset();
 
-    MapCoordinates NextCoordinate()
-    {
-        if(CurrentStep < StepCount)
-        {
-            if (MagnitudeCountDown == 0)
-            {
-                LegCounter++;
-                MagnitudeCountDown = Magnitudes[LegCounter];
-            }
+    FullPath* TargetPath;
+};
 
-            CurrentStep++;
-            MagnitudeCountDown--;
+class VectorPath: public MapPath
+{
+public:
 
-            StepCoordinates.TranslateMapCoordinates(Directions[LegCounter]);
-
-            return StepCoordinates;
-        }
-        return GoalCoordinates; // Keep returning the Goal if we've reached the end of the path
-    }
-
-    Direction NextDirection()
-    {
-        if(CurrentStep < StepCount)
-        {
-            if (MagnitudeCountDown == 0)
-            {
-                LegCounter++;
-                MagnitudeCountDown = Magnitudes[LegCounter];
-            }
-
-            CurrentStep++;
-            MagnitudeCountDown--;
-
-            return Directions[LegCounter];
-        }
-        return DIRECTION_NONE;
-    }
+    VectorPath(float PathLength, std::vector<Direction> RawDirections, MapCoordinates StartCoords, MapCoordinates GoalCoords);
+    PathWalker* getPathWalker();
 
     std::vector<Direction> Directions;
     std::vector<int> Magnitudes;
+};
+
+class VectorPathWalker: public PathWalker
+{
+public:
+
+    VectorPathWalker(VectorPath* SourcePath);
+
+    MapCoordinates NextCoordinate();
+    Direction NextDirection();
+    void Reset();
 
 private:
 
     MapCoordinates StepCoordinates;
     int MagnitudeCountDown;
     int LegCounter;
+
+    VectorPath* TargetPath;
 };
 
-struct WayPointPath: MapPath
+/*
+class WayPointPath: public MapPath
 {
-    MapCoordinates NextCoordinate()
-    {
-        return GoalCoordinates;
-    }
-
-    Direction NextDirection()
-    {
-        return DIRECTION_NONE;
-    };
-
-    void ResetSteps()
-    {
-        CurrentStep = 0;
-    }
-
     std::vector<MapCoordinates> WayPoints;
 };
+*/
 
 #endif // PATH__HEADER

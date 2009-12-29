@@ -7,6 +7,7 @@
 #include <Game.h>
 #include <Map.h>
 #include <PathManager.h>
+#include <PathTester.h>
 
 
 Pawn::Pawn()
@@ -23,14 +24,23 @@ Pawn::~Pawn()
 bool Pawn::Init(MapCoordinates SpawnLocation)
 {
 	LocationCoordinates = SpawnLocation;
+    RenderLocation.set(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z);
+	DestinationCoordinates = SpawnLocation;  // This will imediatly trigger a pathing action
+
 	Controller = PATH->getNewController(0, 0, LocationCoordinates);
-	Controller->setBehaviorMode(PATH_BEHAVIOR_WANDER_AIMLESSLY);
+	Controller->setBehaviorMode(PATH_BEHAVIOR_ROUTE_TO_LOCATION);
 
     return true;
 }
 
 bool Pawn::BeginMove()
 {
+    if (LocationCoordinates == DestinationCoordinates)
+    {
+        DestinationCoordinates = TESTER->getRandomPassableCoordinate();  // This needs to get DIFFERENT coords each time
+        Controller->ChangeDestination(DestinationCoordinates);
+    }
+
     Direction MoveDirection = Controller->getNextStep();
 
     if (MoveDirection == DIRECTION_NONE)
@@ -49,7 +59,7 @@ bool Pawn::BeginMove()
         Controller->setLocation(LocationCoordinates);  // Delay this untill halfway point
 
         Moving = true;
-        CoolDown += EdgeCost * 10;
+        CoolDown += EdgeCost * 2;  // Cooldown factor
 
         RenderLocationChange.set(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z);
         RenderLocationChange -= RenderLocation;  // Create movement vector from position difference;

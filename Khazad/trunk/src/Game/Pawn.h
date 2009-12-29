@@ -32,6 +32,8 @@ protected:
 	bool Moving;
 	int CoolDown;
 
+    MapCoordinates DestinationCoordinates;
+
 	Vector3 RenderLocation;
 	Vector3 RenderLocationChange;
 

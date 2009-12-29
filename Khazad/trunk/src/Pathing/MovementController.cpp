@@ -11,12 +11,21 @@
 
 MovementController::MovementController(int AjentSize, int MovementType)
 {
-
+    CurrentPath = NULL;
+    CurrentPathWalker = NULL;
 }
 
 MovementController::~MovementController()
 {
+    if (CurrentPath != NULL)
+    {
+        delete CurrentPath;
+    }
 
+    if (CurrentPathWalker != NULL)
+    {
+        delete CurrentPathWalker;
+    }
 }
 
 Direction MovementController::getNextStep()  // Next movement step for the ajent
@@ -37,7 +46,7 @@ Direction MovementController::getNextStep()  // Next movement step for the ajent
 
         case PATH_BEHAVIOR_WANDER_AIMLESSLY:  // Agent wanders but will not try to path through walls
         {
-            uint32_t DirectionFlags = PATH->getDirectionFlags(CurrentLocation);
+            uint32_t DirectionFlags = ParentManager->getDirectionFlags(CurrentLocation);
 
             std::vector<int> ValidDirections;
             int Position = 0;
@@ -85,7 +94,7 @@ Direction MovementController::getNextStep()  // Next movement step for the ajent
 
         case PATH_BEHAVIOR_ROUTE_TO_LOCATION: // Agent follows a path to a specific location
         {
-            return DIRECTION_NONE;
+            return CurrentPathWalker->NextDirection();
         }
         break;
 
@@ -110,6 +119,22 @@ void MovementController::setBehaviorMode(MovementBehavior NewBehavior) // Set Cr
 
 bool MovementController::ChangeDestination(MapCoordinates NewDestination)
 {
+    Destination = NewDestination;
+
+    delete CurrentPath;
+    CurrentPath = NULL;
+
+    while (CurrentPath == NULL)
+    {
+        CurrentPath = PATH->FindPath(0, CurrentLocation, Destination);
+    }
+
+    if (CurrentPathWalker != NULL)
+    {
+        delete CurrentPathWalker;
+    }
+    CurrentPathWalker = CurrentPath->getPathWalker();
+
     return true;
 }
 

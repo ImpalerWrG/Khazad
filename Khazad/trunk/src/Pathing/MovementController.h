@@ -49,6 +49,14 @@ private:
 
     MapCoordinates CurrentLocation;
     MapCoordinates Destination;
+
+    MapPath* CurrentPath;
+    PathWalker* CurrentPathWalker;
+
+    MapCoordinates StepCoordinates;
+    int MagnitudeCountDown;
+    int LegCounter;
+    int CurrentStep;
 };
 
 #endif // MOVE_CONTROLLER__HEADER

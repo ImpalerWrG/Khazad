@@ -7,6 +7,8 @@ class gridInterface;
 class zoneManager;
 class Heuristic;
 class MapPath;
+class FullPath;
+class VectorPath;
 
 #include <Coordinates.h>
 
@@ -65,7 +67,8 @@ public:
     MapPath* FindPath(int NodesToExpand = 0);
 
     inline bool ExpandNode();
-    MapPath* GenerateBestPath();
+    FullPath* GenerateFullPath();
+    VectorPath* GenerateVectorPath();
 
 protected:
 

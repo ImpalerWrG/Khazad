@@ -42,12 +42,14 @@ struct AStarNode : Node
     float MinimumCostToGoal;
 
     AStarNode* Parent;
+    Direction ParentDirection;
 
     AStarNode()  {}
 
-    void Set(MapCoordinates TargetCoordinates, AStarNode* ParentNode, float DistanceFromStart, float MinimumCost, float TieBreaker)
+    void Set(MapCoordinates TargetCoordinates, AStarNode* ParentNode, Direction SourceDirection, float DistanceFromStart, float MinimumCost, float TieBreaker)
     {
         Parent = ParentNode;
+        ParentDirection = SourceDirection;
         LocationCoordinates = TargetCoordinates;
         PathLengthFromStart = DistanceFromStart;
         MinimumCostToGoal = MinimumCost;

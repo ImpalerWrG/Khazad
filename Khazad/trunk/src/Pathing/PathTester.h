@@ -103,6 +103,7 @@ public:
     bool Init();
 
     void CreateTestSuite(int Seed, int Iterations);
+    MapCoordinates getRandomPassableCoordinate();
 
     void RunPathTestSuites(vector<int> TestSystems);
     void TestSuite(int Iterations, int SystemIndex, GroupProfile* SystemProfileGroup, vector<MapCoordinates> StartCoordsList, vector<MapCoordinates> GoalCoordsList);
@@ -128,6 +129,7 @@ protected:
     GroupProfile* CurrentProfileGroup;
     GroupProfile* ProfileGroupList[2];
 
+    std::vector<MapCoordinates> TestCoords;
     std::vector<MapCoordinates> StartCoordsList, GoalCoordsList;
     int TestingIterations;
 };

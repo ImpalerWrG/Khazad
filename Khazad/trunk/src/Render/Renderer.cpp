@@ -1182,13 +1182,26 @@ void Renderer::DrawDiamond(float X, float Y, float Z, float size, float red, flo
 
 void Renderer::DrawMapPath(MapPath* TargetPath)
 {
-    TargetPath->ResetSteps();
-    DrawDiamond((float) TargetPath->StartCoordinates.X, (float) TargetPath->StartCoordinates.Y, (float) TargetPath->StartCoordinates.Z, 1.0, 0.0, 1.0, 0.0);
+    VectorPath* ConvertedPath = (VectorPath*) TargetPath;
+    DrawDiamond((float) ConvertedPath->StartCoordinates.X, (float) ConvertedPath->StartCoordinates.Y, (float) ConvertedPath->StartCoordinates.Z, 1.0, 0.0, 1.0, 0.0);
 
-    for (int Step = 0;  Step < TargetPath->StepCount; Step++)
+    int MagnitudeCountDown = ConvertedPath->Magnitudes[0];
+    int LegCounter = 0;
+    MapCoordinates StepCoordinates = ConvertedPath->StartCoordinates;
+
+    for (int Step = 0; Step < ConvertedPath->StepCount; Step++)
     {
-        MapCoordinates Coords = TargetPath->NextCoordinate();
-        DrawDiamond((float) Coords.X, (float) Coords.Y, (float) Coords.Z, 1.0, (Step * 1.0) / TargetPath->StepCount, 1.0 - ((Step * 1.0) / TargetPath->StepCount), 0.0);
+        if (MagnitudeCountDown == 0)
+        {
+            LegCounter++;
+            MagnitudeCountDown = ConvertedPath->Magnitudes[LegCounter];
+        }
+
+        MagnitudeCountDown--;
+
+        StepCoordinates.TranslateMapCoordinates(ConvertedPath->Directions[LegCounter]);
+
+        DrawDiamond((float) StepCoordinates.X, (float) StepCoordinates.Y, (float) StepCoordinates.Z, 1.0, (Step * 1.0) / TargetPath->StepCount, 1.0 - ((Step * 1.0) / TargetPath->StepCount), 0.0);
     }
 }
 

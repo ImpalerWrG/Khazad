@@ -34,7 +34,6 @@ bool PathTester::Init()
 
 void PathTester::CreateTestSuite(int Seed, int Iterations)
 {
-    std::vector<MapCoordinates> TestCoords;
     std::map<uint64_t, Cell*>* TargetCells = MAP->getCellMap();
 
     for (std::map<uint64_t, Cell*>::iterator it = TargetCells->begin(); it != TargetCells->end(); ++it)
@@ -70,6 +69,11 @@ void PathTester::CreateTestSuite(int Seed, int Iterations)
         GoalCoordsList.push_back(TestCoords[RANDOM->Roll(0, (int32_t) TestCoords.size() - 1)]);
         // Identical Start and Goal points are possible, the PathManager should handle them
     }
+}
+
+MapCoordinates PathTester::getRandomPassableCoordinate()
+{
+    return TestCoords[RANDOM->Roll(0, (int32_t) TestCoords.size() - 1)];
 }
 
 void PathTester::ProfileManualPath()
