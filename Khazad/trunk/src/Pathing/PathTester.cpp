@@ -59,7 +59,7 @@ void PathTester::CreateTestSuite(int Seed, int Iterations)
         }
     }
 
-    RANDOM->Seed(Seed);
+    //RANDOM->Seed(Seed);
     TestingIterations = Iterations;
 
     // Prepare a set of Start Goal pairs for the test

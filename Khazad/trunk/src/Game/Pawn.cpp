@@ -38,6 +38,11 @@ bool Pawn::BeginMove()
     if (LocationCoordinates == DestinationCoordinates)
     {
         DestinationCoordinates = TESTER->getRandomPassableCoordinate();  // This needs to get DIFFERENT coords each time
+
+        while (! Controller->isDestinationReachable(DestinationCoordinates))
+        {
+            DestinationCoordinates = TESTER->getRandomPassableCoordinate();
+        }
         Controller->ChangeDestination(DestinationCoordinates);
     }
 

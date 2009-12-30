@@ -17,7 +17,7 @@ DECLARE_SINGLETON(PathManager)
 
 PathManager::PathManager()
 {
-
+    MapGrid = NULL;
 }
 
 PathManager::~PathManager()
@@ -64,8 +64,9 @@ void PathManager::DeleteMapAbstraction()
 
 MovementController* PathManager::getNewController(int AgentSize, int MovementType, MapCoordinates StartCoords)
 {
-    MovementController* NewController = new MovementController(AgentSize, MovementType);
+    MovementController* NewController = new MovementController(AgentSize, MovementType, this);
     NewController->setLocation(StartCoords);
+
     return NewController;
 }
 

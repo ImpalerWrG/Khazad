@@ -291,6 +291,7 @@
 		<Unit filename="src\Pathing\MovementController.cpp" />
 		<Unit filename="src\Pathing\MovementController.h" />
 		<Unit filename="src\Pathing\Node.h" />
+		<Unit filename="src\Pathing\Path.cpp" />
 		<Unit filename="src\Pathing\Path.h" />
 		<Unit filename="src\Pathing\PathManager.cpp" />
 		<Unit filename="src\Pathing\PathManager.h" />

@@ -24,7 +24,7 @@ class MovementController
 {
 public:
 
-    MovementController(int AjentSize, int MovementType);
+    MovementController(int AjentSize, int MovementType, PathManager* Parent);
     ~MovementController();
 
     Direction getNextStep();  // Next movement step for the ajent
@@ -36,7 +36,7 @@ public:
     void setLocation(MapCoordinates NewLocation);
 
     float getPathEstimate(MapCoordinates TestDestination);
-    bool isPathReachable(MapCoordinates TestDestination);
+    bool isDestinationReachable(MapCoordinates TestDestination);
 
 private:
 

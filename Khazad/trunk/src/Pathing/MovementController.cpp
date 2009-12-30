@@ -9,10 +9,11 @@
 
 
 
-MovementController::MovementController(int AjentSize, int MovementType)
+MovementController::MovementController(int AjentSize, int MovementType, PathManager* Parent)
 {
     CurrentPath = NULL;
     CurrentPathWalker = NULL;
+    ParentManager = Parent;
 }
 
 MovementController::~MovementController()
@@ -127,6 +128,11 @@ bool MovementController::ChangeDestination(MapCoordinates NewDestination)
     while (CurrentPath == NULL)
     {
         CurrentPath = PATH->FindPath(0, CurrentLocation, Destination);
+
+        if (CurrentPath == NULL)
+        {
+            return false;
+        }
     }
 
     if (CurrentPathWalker != NULL)
@@ -148,7 +154,7 @@ float MovementController::getPathEstimate(MapCoordinates TestDestination)
     return 0;
 }
 
-bool MovementController::isPathReachable(MapCoordinates TestDestination)
+bool MovementController::isDestinationReachable(MapCoordinates TestDestination)
 {
-    return true;
+    return ParentManager->isPathPossible(0, CurrentLocation, TestDestination);
 }
