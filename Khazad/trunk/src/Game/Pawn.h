@@ -22,14 +22,17 @@ public:
 	Cell* getCell() { return CellLocation; }
 
 	bool BeginMove();
-	bool Update();
+	int Update();
 	bool UpdateRenderPosition();
     bool Draw(CameraOrientation Orientaion);
 
 protected:
 
 	Cell* CellLocation;
+	CellCoordinates CurrentCell;
+
 	bool Moving;
+	Direction CurrentMovementDirection;
 	int CoolDown;
 
     MapCoordinates DestinationCoordinates;

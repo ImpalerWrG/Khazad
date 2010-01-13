@@ -126,6 +126,9 @@ public:
 
     map<int16_t, vector <vertex>* > Geometry;
 
+    int addActor(Actor* NewActor);
+    void removeActor(int Index);
+
 protected:
 
     bool NeedsRedraw; //TODO maintain a vector of cells that need redraw instead
@@ -162,7 +165,7 @@ protected:
     vector <Building*> buildings;
     vector <Tree*> trees;
 
-
+    vector <Actor*> LocalActors;
 
     // Exact spacial Coordinates of the center of the cell, used for frustrum culling
     Vector3 CellPosition;

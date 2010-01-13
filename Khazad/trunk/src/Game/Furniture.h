@@ -14,7 +14,7 @@ public:
 	bool Init();
 	virtual ~Furniture();
 
-	bool Update();
+	int Update();
 	bool Draw(CameraOrientation Orientaion);
 
     Sint16 getFurnitureType()                   { return FurnitureType; }

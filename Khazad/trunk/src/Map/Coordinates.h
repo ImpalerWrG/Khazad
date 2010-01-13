@@ -2,6 +2,9 @@
 #define COORDINATES__HEADER
 
 #define CELLEDGESIZE 16
+#define CELLBITSHIFT 4
+#define CELLBITFLAG 15
+#define CELLSPERBLOCK 256
 #define HALFCUBE 0.5
 
 #include <stdint.h>
@@ -354,6 +357,16 @@ struct CellCoordinates
         return *this;
     };
 
+    bool operator!= (const CellCoordinates& ArgumentCoordinates)
+    {
+        return (X != ArgumentCoordinates.X || Y != ArgumentCoordinates.Y || Z != ArgumentCoordinates.Z);
+    };
+
+    bool operator== (const CellCoordinates& ArgumentCoordinates)
+    {
+        return (X == ArgumentCoordinates.X && Y == ArgumentCoordinates.Y && Z == ArgumentCoordinates.Z);
+    };
+
     CellCoordinates(MapCoordinates SourceCoordinates)
     {
         if (SourceCoordinates.X >= 0)
@@ -386,30 +399,37 @@ struct CubeCoordinates
     {
         X = 0;
         Y = 0;
+        Index = 0;
     };
 
     CubeCoordinates(uint8_t NewX, uint8_t NewY)
     {
         X = NewX;
         Y = NewY;
+        Index = (X * CELLEDGESIZE) + Y;
     };
 
     CubeCoordinates& operator= (const CubeCoordinates& ArgumentCoordinates)
     {
         X = ArgumentCoordinates.X;
         Y = ArgumentCoordinates.Y;
+        Index = ArgumentCoordinates.Index;
 
         return *this;
     };
 
     CubeCoordinates(MapCoordinates SourceCoordinates)
     {
-        X = SourceCoordinates.X % CELLEDGESIZE;
-        Y = SourceCoordinates.Y % CELLEDGESIZE;
+        X = SourceCoordinates.X & CELLBITFLAG;
+        Y = SourceCoordinates.Y & CELLBITFLAG;
+        Index = (X * CELLEDGESIZE) + Y;
     };
+
 
     uint8_t X;
     uint8_t Y;
+
+    uint8_t Index;
 };
 
 

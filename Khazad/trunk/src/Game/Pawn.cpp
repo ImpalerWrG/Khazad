@@ -14,6 +14,7 @@ Pawn::Pawn()
 {
     CoolDown = 0;
     Moving = false;
+    CurrentMovementDirection = DIRECTION_NONE;
 }
 
 Pawn::~Pawn()
@@ -27,6 +28,10 @@ bool Pawn::Init(MapCoordinates SpawnLocation)
     RenderLocation.set(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z);
 	DestinationCoordinates = SpawnLocation;  // This will imediatly trigger a pathing action
 
+    CurrentCellCoordinates = CellCoordinates(LocationCoordinates);
+	CurrentCubeCoordinates = CubeCoordinates(LocationCoordinates);
+	CellActorIndex = MAP->getCell(CurrentCellCoordinates)->addActor(this);
+
 	Controller = PATH->getNewController(0, 0, LocationCoordinates);
 	Controller->setBehaviorMode(PATH_BEHAVIOR_ROUTE_TO_LOCATION);
 
@@ -35,6 +40,14 @@ bool Pawn::Init(MapCoordinates SpawnLocation)
 
 bool Pawn::BeginMove()
 {
+    // Set Old destinations as current Location
+    MapCoordinates NewLocation = MapCoordinates(LocationCoordinates, CurrentMovementDirection);
+    setLocation(NewLocation);
+
+    Controller->setLocation(NewLocation);
+    RenderLocation.set(CurrentCubeCoordinates.X, CurrentCubeCoordinates.Y, 0);
+    // Delay this untill halfway point ???
+
     if (LocationCoordinates == DestinationCoordinates)
     {
         DestinationCoordinates = TESTER->getRandomPassableCoordinate();  // This needs to get DIFFERENT coords each time
@@ -46,28 +59,24 @@ bool Pawn::BeginMove()
         Controller->ChangeDestination(DestinationCoordinates);
     }
 
-    Direction MoveDirection = Controller->getNextStep();
-
-    if (MoveDirection == DIRECTION_NONE)
+    CurrentMovementDirection = Controller->getNextStep();
+    if (CurrentMovementDirection == DIRECTION_NONE)
     {
         return false;
     }
 
-    float EdgeCost = PATH->getEdgeCost(LocationCoordinates, MoveDirection);
+    float EdgeCost = PATH->getEdgeCost(LocationCoordinates, CurrentMovementDirection);
 
     if (EdgeCost != -1)
     {
         // Perform the Move
-        RenderLocation.set(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z);
-
-        LocationCoordinates.TranslateMapCoordinates(MoveDirection);
-        Controller->setLocation(LocationCoordinates);  // Delay this untill halfway point
+        NewLocation.TranslateMapCoordinates(CurrentMovementDirection);
 
         Moving = true;
-        CoolDown += EdgeCost * 2;  // Cooldown factor
+        CoolDown += EdgeCost * 100;  // Cooldown factor, inverse speed
 
-        RenderLocationChange.set(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z);
-        RenderLocationChange -= RenderLocation;  // Create movement vector from position difference;
+        // Create movement vector from position difference;
+        RenderLocationChange.set(NewLocation.X - LocationCoordinates.X, NewLocation.Y - LocationCoordinates.Y, NewLocation.Z - LocationCoordinates.Z);
         RenderLocationChange = RenderLocationChange * (1 / (float) CoolDown);       // Reduce magnitude proportional to cooldown
 
         return true;
@@ -75,7 +84,7 @@ bool Pawn::BeginMove()
     return false;
 }
 
-bool Pawn::Update()
+int Pawn::Update()
 {
     if (!CoolDown--)
     {
@@ -87,7 +96,7 @@ bool Pawn::Update()
         UpdateRenderPosition();
     }
 
-    return true;
+    return 1;
 }
 
 bool Pawn::UpdateRenderPosition()

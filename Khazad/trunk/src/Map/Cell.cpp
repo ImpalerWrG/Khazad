@@ -87,15 +87,21 @@ void Cell::Render(CameraOrientation CurrentOrientation)
     }
     for(Uint32 i = 0; i< trees.size(); i++)
     {
-        trees[i]->Draw(CurrentOrientation);
+        //trees[i]->Draw(CurrentOrientation);
     }
 
     for(Uint32 i = 0; i< buildings.size(); i++)
     {
-        buildings[i]->Draw(CurrentOrientation);
+        //buildings[i]->Draw(CurrentOrientation);
     }
 
-        // HACK!!! get these into the RenderObject
+    for(uint32_t i = 0; i < LocalActors.size(); i++)
+    {
+        LocalActors[i]->Draw(CurrentOrientation);
+    }
+
+
+    // HACK!!! get these into the RenderObject
     CubeCoordinates TargetCubeCoordinates;
 
     for (TargetCubeCoordinates.X = 0; TargetCubeCoordinates.X < CELLEDGESIZE; TargetCubeCoordinates.X += 1)
@@ -724,3 +730,17 @@ void Cell::DrawCellCage()
 {
     //RENDERER->DrawCage(AdjustedPoint, CELLEDGESIZE, CELLEDGESIZE, 1.0, true, 1, 1, 1);
 }
+
+int Cell::addActor(Actor* NewActor)
+{
+    LocalActors.push_back(NewActor);
+    return LocalActors.size() - 1;
+}
+
+void Cell::removeActor(int Index)
+{
+    LocalActors[Index] = LocalActors[LocalActors.size() - 1];
+    LocalActors[Index]->setCellActorIndex(Index);
+    LocalActors.pop_back();
+}
+

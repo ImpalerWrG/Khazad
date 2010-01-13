@@ -14,15 +14,15 @@ SPECULATIVE FEATURES:  Explore the feasability and desirability of these feature
 
 NEXT RELEASE FEATURES:  Things the user will experience as new features
 
-- Pixel perfect mouse selection on all surfaces (Impaler)
-- Volumetric mouse drag areas (Impaler)
-- Persistent 'zone' creation with mouse (Impaler)
+- Pixel perfect mouse selection on all surfaces (HOLD)
+- Volumetric mouse drag areas (HOLD)
+- Persistent 'zone' creation with mouse (HOLD)
+- Shade walls and floors differently by 1/2 level (HOLD)
 
 NEXT RELEASE NON FEATURE:  Key improvements to existing functionality
 
-- Shade walls and floors differently by 1/2 level (Impaler)
+
 
 NEXT RELEASE BUG FIXES:  Bugs in current functionality
 
-- ScreenShots lack UI elements (Impaler)
-- Crash durring texture loading on Forceware video drivers (Dorf)
+- Crash durring texture loading on Forceware video drivers (HOLD)

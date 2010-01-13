@@ -19,7 +19,7 @@ bool Furniture::Init()
 	return true;
 }
 
-bool Furniture::Update()
+int Furniture::Update()
 {
 	return true;
 }

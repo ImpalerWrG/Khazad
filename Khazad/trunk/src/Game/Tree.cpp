@@ -49,9 +49,9 @@ bool Tree::Init()
     return true;
 }
 
-bool Tree::Update()
+int Tree::Update()
 {
-    return true;
+    return 1;
 }
 
 bool Tree::Draw(CameraOrientation Orientaion)

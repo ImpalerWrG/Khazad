@@ -49,6 +49,7 @@ Renderer::Renderer()
     FlatDraw = false;
     DebuggingDraw = true;
 
+    NeedScreenShot = false;
     ScreenShotCounter = 0;
     TotalTriangles = 0;
 }
@@ -678,12 +679,6 @@ bool Renderer::Render()
     glDepthMask(GL_TRUE);
     glDisable(GL_LIGHT0);
     glDisable(GL_LIGHTING);
-
-    // Render Actors  // Move this inside Cells at some point
-    for (Uint32 i = 0; i < GAME->PawnList.size(); i++)
-    {
-        GAME->PawnList[i]->Draw(CurrentOrientation);
-    }
 
     return true;
 }

@@ -216,6 +216,23 @@ bool InputManager::HandleInput()
                         GAME->SpawnPawn(RENDERER->getCursor());
                         break;
 					}
+					case SDLK_PLUS:
+					case SDLK_KP_PLUS:
+					{
+                        GAME->changeTickRate(1);
+                        break;
+					}
+					case SDLK_MINUS:
+					case SDLK_KP_MINUS:
+					{
+                        GAME->changeTickRate(-1);
+                        break;
+					}
+					case SDLK_SPACE:
+					{
+					    GAME->togglePause();
+					    break;
+					}
 
 					default:
                         break;

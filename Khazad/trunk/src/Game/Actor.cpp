@@ -1,24 +1,29 @@
 #include <stdafx.h>
 
 #include <Actor.h>
+#include <Cell.h>
 
 Actor::Actor()
 {
     Visible = false; Hidden = false;
-};
+}
 
 Actor::~Actor()
 {
 
-};
+}
 
-bool Actor::Update()
+void Actor::setLocation(MapCoordinates NewPosition)
 {
-    return true;
-};
+    LocationCoordinates = NewPosition;
+    CurrentCubeCoordinates = CubeCoordinates(NewPosition);
 
-bool Actor::Draw(CameraOrientation Orientaion)
-{
-    return true;
+    CellCoordinates NewCellCoords = CellCoordinates(NewPosition);
+    if (NewCellCoords != CurrentCellCoordinates)
+    {
+        MAP->getCell(CurrentCellCoordinates)->removeActor(CellActorIndex);
+        CellActorIndex = MAP->getCell(NewCellCoords)->addActor(this);
+        CurrentCellCoordinates = NewCellCoords;
+    }
 };
 

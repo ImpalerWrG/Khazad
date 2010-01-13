@@ -44,9 +44,9 @@ bool Building::Init()
     return true;
 }
 
-bool Building::Update()
+int Building::Update()
 {
-    return true;
+    return 1;
 }
 
 bool Building::Draw(CameraOrientation Orientaion)
