@@ -32,6 +32,7 @@ bool Ui::Init()
     InitConfirmationWindow();
     InitDepthSlider();
     InitDigWindow();
+    InitGameSpeedMenu();
 
 	return true;
 }
@@ -97,6 +98,44 @@ void Ui::InitMainMenu()
     ExitButton->addActionListener(ExitListener);
 
     MainMenuWindow->resizeToContent();
+}
+
+void Ui::InitGameSpeedMenu()
+{
+    Uint16 ButtonSize = 34;
+
+    GameSpeedWindow = new gcn::KhazWindow("GAME SPEED MENU");
+
+    TopWidget->add(GameSpeedWindow);
+    GameSpeedWindow->setPosition(350, 50);
+    GameSpeedWindow->setVisible(false);
+
+    // Populate the Window with Buttons
+    gcn::KhazButton* PauseButton = new gcn::KhazButton(Path("Assets/UI/Buttons/Pause.png"));
+    PauseButton->setSize(ButtonSize, ButtonSize);
+    GameSpeedWindow->add(PauseButton, 0, 0);
+    gcn::ActionListener* PauseListener = new GamePauseActionListener();
+    PauseButton->addActionListener(PauseListener);
+
+    gcn::KhazButton* SlowButton = new gcn::KhazButton(Path("Assets/UI/Buttons/SlowSpeed.png"));
+    SlowButton->setSize(ButtonSize, ButtonSize);
+    GameSpeedWindow->add(SlowButton, ButtonSize * 1, 0);
+    gcn::ActionListener* SlowListener = new SlowSpeedActionListener();
+    SlowButton->addActionListener(SlowListener);
+
+    gcn::KhazButton* MediumButton = new gcn::KhazButton(Path("Assets/UI/Buttons/MediumSpeed.png"));
+    MediumButton->setSize(ButtonSize, ButtonSize);
+    GameSpeedWindow->add(MediumButton, ButtonSize * 2, 0);
+    gcn::ActionListener* MediumListener = new MediumSpeedActionListener();
+    MediumButton->addActionListener(MediumListener);
+
+    gcn::KhazButton* FastButton = new gcn::KhazButton(Path("Assets/UI/Buttons/FastSpeed.png"));
+    FastButton->setSize(ButtonSize, ButtonSize);
+    GameSpeedWindow->add(FastButton, ButtonSize * 3, 0);
+    gcn::ActionListener* FastListener = new FastSpeedActionListener();
+    FastButton->addActionListener(FastListener);
+
+    GameSpeedWindow->resizeToContent();
 }
 
 void Ui::InitCameraControlMenu()
@@ -337,6 +376,7 @@ void Ui::setMapViewState()
     DepthSlider->setVisible(true);
     CameraControlWindow->setVisible(true);
     DigWindow->setVisible(true);
+    GameSpeedWindow->setVisible(true);
 }
 
 Ui::~Ui()
@@ -368,7 +408,8 @@ bool Ui::ProcessEvent(SDL_Event event, Sint32 RelativeX, Sint32 RelativeY)
                || isWidgetCollision(MainMenuWindow, OriginX, OriginY)
                || isWidgetCollision(CameraControlWindow, OriginX, OriginY)
                || isWidgetCollision(ConfirmationWindow, OriginX, OriginY)
-               || isWidgetCollision(DigWindow, OriginX, OriginY))
+               || isWidgetCollision(DigWindow, OriginX, OriginY)
+               || isWidgetCollision(GameSpeedWindow, OriginX, OriginY))
             {
                 Input->pushInput(event);
                 guimousecapture = true;

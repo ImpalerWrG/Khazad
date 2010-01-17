@@ -54,6 +54,11 @@ int Tree::Update()
     return 1;
 }
 
+Vector3 Tree::getRenderPosition()
+{
+    return Vector3();
+}
+
 bool Tree::Draw(CameraOrientation Orientaion)
 {
     static Sint16 SurfaceTypeID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");

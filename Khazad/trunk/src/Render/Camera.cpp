@@ -6,6 +6,7 @@
 #include <ConfigManager.h>
 #include <Map.h>
 #include <Gui.h>
+#include <Actor.h>
 
 
 Camera::Camera()
@@ -27,6 +28,8 @@ Camera::Camera()
 
     SliceTop = 1;
     SliceBottom = 0;
+
+    ChasedActor = NULL;
 }
 
 bool Camera::ReInit(bool Isometric)
@@ -112,6 +115,11 @@ void Camera::UpdateView()
     if (IsoMode)
     {
         glScalef(IsoScalar, IsoScalar, IsoScalar);
+    }
+
+    if (ChasedActor != NULL)
+    {
+        CenterView(ChasedActor->getRenderPosition());
     }
 
     gluLookAt(EyePosition.x, EyePosition.y, EyePosition.z, LookPosition.x, LookPosition.y, LookPosition.z, UpVector.x, UpVector.y, UpVector.z);
@@ -284,7 +292,7 @@ void Camera::onMouseEvent(SDL_Event* Event, Sint32 RelativeX, Sint32 RelativeY, 
                     MouseCoordinates.Y = MouseIntersection.y;
                     MouseCoordinates.Z = MouseIntersection.z;
 
-                    if(MouseCoordinates.X == Cursor.X && MouseCoordinates.Y == Cursor.Y && MouseCoordinates.Z == Cursor.Z)
+                    if(MouseCoordinates == Cursor)
                     {
                         // adjust the lookAt for level separation
                         Vector3 adjustedCursor;
@@ -747,6 +755,7 @@ void Camera::SetSliceTop(int newValue)
     ViewLevels = SliceTop - SliceBottom;
     generateViewFrustum();
 }
+
 void Camera::SetSliceBottom(int newValue)
 {
     SliceBottom = newValue;
@@ -915,4 +924,9 @@ void Camera::PrintDebugging()
     printf("Look Position X: %f\n", LookPosition.x);
     printf("Look Position Y: %f\n", LookPosition.y);
     printf("Look Position Z: %f\n", LookPosition.z);
+}
+
+void Camera::setChasedActor(Actor* TargetActor)
+{
+    ChasedActor = TargetActor;
 }

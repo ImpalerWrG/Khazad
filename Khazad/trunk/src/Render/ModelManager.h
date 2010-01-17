@@ -24,6 +24,7 @@
 #include <stdafx.h>
 
 #include <Singleton.h>
+#include <Renderer.h>
 
 
 class Model;
@@ -56,7 +57,7 @@ public:
 
     Model* LoadModel(string filename);
 
-    vector <vertex>* getSlope(SlopeIndex surroundings);
+    std::vector<vertex>* getSlope(SlopeIndex surroundings);
 
     Model* getModel(Sint16 ModelID)             { return ModelVector[ModelID]; }
 
@@ -64,7 +65,7 @@ private:
 
     vector <Model*> ModelVector;
 
-    map< Uint16, vector <vertex>* > slopes;
+    std::map< Uint16, vector <vertex>* > slopes;
 };
 
 #define MODEL (ModelManager::GetInstance())

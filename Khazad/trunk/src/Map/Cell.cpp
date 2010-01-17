@@ -739,8 +739,17 @@ int Cell::addActor(Actor* NewActor)
 
 void Cell::removeActor(int Index)
 {
-    LocalActors[Index] = LocalActors[LocalActors.size() - 1];
-    LocalActors[Index]->setCellActorIndex(Index);
-    LocalActors.pop_back();
+    if (LocalActors.size() != 0)
+    {
+        Actor* LastActor = LocalActors.back();
+
+        if (LastActor != NULL)
+        {
+            LastActor->setCellActorIndex(Index);
+        }
+        LocalActors[Index] = LastActor;
+
+        LocalActors.pop_back();
+    }
 }
 

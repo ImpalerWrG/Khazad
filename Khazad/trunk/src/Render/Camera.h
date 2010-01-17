@@ -4,7 +4,7 @@
 #include <stdafx.h>
 
 #include <Plane.h>
-
+class Actor;
 
 class Camera
 {
@@ -223,6 +223,8 @@ public:
 	*/
 	void setWallDisplayMode(WallDisplayMode NewValue)       { DisplayMode = NewValue; }
 
+    void setChasedActor(Actor* TargetActor);
+
 protected:
 
     WallDisplayMode DisplayMode;
@@ -259,6 +261,8 @@ protected:
 
     Vector3 NearMouseClickPoint;
     Vector3 FarMouseClickPoint;
+
+    Actor* ChasedActor;
 };
 
 #endif // CAMERA__HEADER

@@ -5,6 +5,7 @@
 #include <Actor.h>
 #include <Map.h>
 
+class Vector3;
 
 class Building : public Actor
 {
@@ -16,6 +17,8 @@ public:
 
     bool Init();
     int Update();
+
+    Vector3 getRenderPosition();
     bool Draw(CameraOrientation Orientaion);
 
 protected:

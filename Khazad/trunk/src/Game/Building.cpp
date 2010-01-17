@@ -49,6 +49,11 @@ int Building::Update()
     return 1;
 }
 
+Vector3 Building::getRenderPosition()
+{
+    return Vector3();
+}
+
 bool Building::Draw(CameraOrientation Orientaion)
 {
     MapCoordinates TargetCoordinates = MapCoords;

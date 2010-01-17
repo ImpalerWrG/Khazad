@@ -5,7 +5,9 @@
 
 Actor::Actor()
 {
-    Visible = false; Hidden = false;
+    Visible = false;
+    Hidden = false;
+    CurrentCell = NULL;
 }
 
 Actor::~Actor()
@@ -19,11 +21,19 @@ void Actor::setLocation(MapCoordinates NewPosition)
     CurrentCubeCoordinates = CubeCoordinates(NewPosition);
 
     CellCoordinates NewCellCoords = CellCoordinates(NewPosition);
-    if (NewCellCoords != CurrentCellCoordinates)
+    Cell* NewCell = MAP->getCell(NewCellCoords);
+
+    if (CurrentCell != NewCell)
     {
-        MAP->getCell(CurrentCellCoordinates)->removeActor(CellActorIndex);
-        CellActorIndex = MAP->getCell(NewCellCoords)->addActor(this);
-        CurrentCellCoordinates = NewCellCoords;
+        if (CurrentCell != NULL)
+        {
+            CurrentCell->removeActor(CellActorIndex);
+        }
+
+        if (NewCell != NULL)
+        {
+            CellActorIndex = NewCell->addActor(this);
+            CurrentCell = NewCell;
+        }
     }
 };
-

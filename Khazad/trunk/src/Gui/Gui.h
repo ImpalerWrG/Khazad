@@ -47,13 +47,15 @@ public:
 protected:
 
     void InitMainMenu();
+    void InitGameSpeedMenu();
     void InitCameraControlMenu();
     void InitConfirmationWindow();
     void InitDepthSlider();
     void InitDigWindow();
 
-    gcn::KhazWindow* CameraControlWindow;
     gcn::KhazWindow* MainMenuWindow;
+    gcn::KhazWindow* CameraControlWindow;
+    gcn::KhazWindow* GameSpeedWindow;
     gcn::KhazWindow* ConfirmationWindow;
     gcn::KhazWindow* DigWindow;
 
@@ -64,6 +66,7 @@ protected:
     gcn::ActionListener* ExitListener;
 
     gcn::KhazSlider* DepthSlider;
+
     bool done;  // quit program command recived by UI
 };
 

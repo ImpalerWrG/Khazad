@@ -16,7 +16,7 @@ bool Game::Init()
 Game::Game()
 {
     TickCounter = 0;
-    TickRate = 1;
+    TickRate = 10;
     Pause = false;
 }
 
@@ -57,12 +57,14 @@ bool Game::setActorCooldown(Actor* TargetActor, int CoolDown)
 bool Game::UpdateActors()
 {
     // Insert Buffered Actors
-    for (int i = 0; i < ActorBuffer.size(); i++)
+    for (int i = 0; i < ReIndexedActorBuffer.size(); i++)
     {
-        AddActor(ActorBuffer[i].first, ActorBuffer[i].second);
+        AddActor(ReIndexedActorBuffer[i], ReIndexedActorCoolDown[i]);
     }
-    ActorBuffer.clear(); // Clear the list now that all Actors are inserted
 
+    // Clear the list now that all Actors are inserted
+    ReIndexedActorBuffer.clear();
+    ReIndexedActorCoolDown.clear();
 
     std::map<uint32_t, std::vector<Actor*>*>::iterator CoolDownGroupIterator;
 
@@ -72,18 +74,22 @@ bool Game::UpdateActors()
         std::vector<Actor*>* TargetCarosel = CoolDownGroupIterator->second;
         std::vector<Actor*>* TargetBucket = &TargetCarosel[TickCounter % CoolDown];
 
-        for (std::vector<Actor*>::iterator BucketIterator = TargetBucket->begin(); BucketIterator != TargetBucket->end(); BucketIterator++)
+        for (int i = 0; i < TargetBucket->size(); i++)
         {
-            int ActorDesiredCoolDown = (*BucketIterator)->Update();
+            int ActorDesiredCoolDown = (*TargetBucket)[i]->Update();
 
             if (ActorDesiredCoolDown != CoolDown)
             {
-                std::pair<Actor*, int> MovingActor = make_pair(*BucketIterator, ActorDesiredCoolDown);
-                ActorBuffer.push_back(MovingActor);
+                ReIndexedActorBuffer.push_back((*TargetBucket)[i]);
+                ReIndexedActorCoolDown.push_back(ActorDesiredCoolDown);
 
-                // Move last element into vacant spot
-                *BucketIterator = *TargetBucket->end();
-                TargetBucket->pop_back();
+                // Grab the last Actor, update it and replace the moved actor
+                if (TargetBucket->size() > 1)
+                {
+                    ((*TargetBucket).back())->Update();
+                    (*TargetBucket)[i] = (*TargetBucket).back();
+                }
+                (*TargetBucket).pop_back();
             }
         }
     }
@@ -102,6 +108,7 @@ std::vector<Actor*>* Game::getCarosel(int CoolDown)
     {
         // Create and Insert a new Carosel
         std::vector<Actor*>* NewCarosel = new std::vector<Actor*>[CoolDown];
+        NewCarosel->reserve(1000);
         ActorUpdateGroups[CoolDown] = NewCarosel;
         return NewCarosel;
     }
@@ -123,11 +130,12 @@ bool Game::AddActor(Actor* NewActor, int CoolDown)
     }
 }
 
-void Game::SpawnPawn(MapCoordinates SpawnCoordinates)
+Pawn* Game::SpawnPawn(MapCoordinates SpawnCoordinates)
 {
     Pawn* NewPawn = new Pawn();
     NewPawn->Init(SpawnCoordinates);
     AddActor(NewPawn, 1);
+    return NewPawn;
 }
 
 void Game::changeTickRate(int32_t RateChange)
@@ -138,4 +146,9 @@ void Game::changeTickRate(int32_t RateChange)
     {
         TickRate = 0;
     }
+}
+
+void Game::setTickRate(int32_t NewRate)
+{
+    TickRate = NewRate;
 }

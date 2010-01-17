@@ -21,7 +21,7 @@ public:
 
 
 	bool RemovePawn(Uint32 ID);
-    void SpawnPawn(MapCoordinates SpawnCoordinates);
+    Pawn* SpawnPawn(MapCoordinates SpawnCoordinates);
 
 	//std::vector<Pawn*> PawnList;
 
@@ -30,9 +30,14 @@ public:
     bool UpdateActors();
     bool AddActor(Actor* NewActor, int CoolDown);
 
-    void changeTickRate(int32_t NewRate);
+    void changeTickRate(int32_t RateChange);
+    void setTickRate(int32_t NewRate);
+
+    int32_t getTickCount()      { return TickCounter; }
     int32_t getTickRate()       { return TickRate; }
-    void togglePause()          { Pause = !Pause; }
+
+    void togglePause()              { Pause = !Pause; }
+    void setPause(bool NewState)    { Pause = NewState; }
 
 protected:
 
@@ -41,7 +46,9 @@ protected:
     bool Pause;
 
     std::map< uint32_t, std::vector< Actor* >* > ActorUpdateGroups;
-    std::vector< std::pair<Actor*, int> > ActorBuffer;
+
+    std::vector<Actor*> ReIndexedActorBuffer;
+    std::vector<int> ReIndexedActorCoolDown;
 };
 
 #define GAME (Game::GetInstance())

@@ -2,9 +2,11 @@
 #define ACTOR__HEADER
 
 #include <stdafx.h>
-#include <Vector3.h>
-#include <Renderer.h>
-#include <Cell.h>
+
+class Vector3;
+class Cell;
+
+#include <Coordinates.h>
 
 
 class Actor
@@ -15,11 +17,9 @@ public:
 	virtual ~Actor();
 
 	virtual int Update() = 0;
+
+    virtual Vector3 getRenderPosition() = 0;
 	virtual bool Draw(CameraOrientation Orientaion) = 0;
-
-
-    Vector3 getPosition()                              { return RenderPosition; }
-    void setPosition(Vector3 NewPosition)              { RenderPosition = NewPosition; }
 
     MapCoordinates getLocationCoordinates()            { return LocationCoordinates; }
     void setLocation(MapCoordinates NewPosition);
@@ -35,12 +35,15 @@ public:
 
 protected:
 
-	Vector3 RenderPosition;                 // Used to Render things between Cubes
 	MapCoordinates LocationCoordinates;     // The location for gameplay logic purposes
-	CellCoordinates CurrentCellCoordinates; // Cell that this Actor is currently in
+
+    Cell* CurrentCell;
+	//CellCoordinates CurrentCellCoordinates; // Cell that this Actor is currently in
 	CubeCoordinates CurrentCubeCoordinates; // CubeLocation within the Cell
+
     int CellActorIndex;
 
+    // TODO Use bitvector in the future
 	bool Visible;
     bool Hidden;
 };

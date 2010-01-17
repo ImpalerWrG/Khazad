@@ -9,6 +9,7 @@
 #include <DataManager.h>
 #include <PathManager.h>
 #include <PathTester.h>
+#include <Game.h>
 
 class MainKeyListener : public gcn::KeyListener
 {
@@ -20,6 +21,41 @@ class MainKeyListener : public gcn::KeyListener
     void keyReleased(gcn::KeyEvent& keyEvent)
     {
         std::cout << "Key released: " << keyEvent.getKey().getValue() << std::endl;
+    }
+};
+
+class GamePauseActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        GAME->togglePause();
+    }
+};
+
+class SlowSpeedActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        GAME->setPause(false);
+        GAME->setTickRate(10);
+    }
+};
+
+class MediumSpeedActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        GAME->setPause(false);
+        GAME->setTickRate(20);
+    }
+};
+
+class FastSpeedActionListener: public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent& actionEvent)
+    {
+        GAME->setPause(false);
+        GAME->setTickRate(40);
     }
 };
 

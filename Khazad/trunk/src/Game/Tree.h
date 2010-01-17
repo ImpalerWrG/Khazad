@@ -16,6 +16,8 @@ public:
 
     bool Init();
     int Update();
+
+    Vector3 getRenderPosition();
     bool Draw(CameraOrientation Orientaion);
 
 protected:

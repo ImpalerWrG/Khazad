@@ -1126,7 +1126,7 @@ void Renderer::DrawDiamond(float X, float Y, float Z, float size, float red, flo
 
     Point.x = X;
     Point.y = Y;
-    Point.z = MainCamera->ZlevelSeperationAdjustment((int) Z);
+    Point.z = Z;
 
     glBegin(GL_TRIANGLES);
 
@@ -1177,14 +1177,14 @@ void Renderer::DrawDiamond(float X, float Y, float Z, float size, float red, flo
 
 void Renderer::DrawMapPath(MapPath* TargetPath)
 {
-    DrawDiamond((float) TargetPath->StartCoordinates.X, (float) TargetPath->StartCoordinates.Y, (float) TargetPath->StartCoordinates.Z, 1.0, 0.0, 1.0, 0.0);
+    DrawDiamond((float) TargetPath->StartCoordinates.X, (float) TargetPath->StartCoordinates.Y, (float) MainCamera->ZlevelSeperationAdjustment((int) TargetPath->StartCoordinates.Z) , 1.0, 0.0, 1.0, 0.0);
 
     PathWalker* Walker = TargetPath->getPathWalker();
     MapCoordinates PathCoordinates = Walker->NextCoordinate();
 
     for (int Step = 0; Step < TargetPath->StepCount; Step++)
     {
-        DrawDiamond((float) PathCoordinates.X, (float) PathCoordinates.Y, (float) PathCoordinates.Z, 1.0, (Step * 1.0) / TargetPath->StepCount, 1.0 - ((Step * 1.0) / TargetPath->StepCount), 0.0);
+        DrawDiamond((float) PathCoordinates.X, (float) PathCoordinates.Y, (float) MainCamera->ZlevelSeperationAdjustment((int) PathCoordinates.Z), 1.0, (Step * 1.0) / TargetPath->StepCount, 1.0 - ((Step * 1.0) / TargetPath->StepCount), 0.0);
         PathCoordinates = Walker->NextCoordinate();
     }
 }

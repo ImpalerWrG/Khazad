@@ -213,7 +213,7 @@ bool InputManager::HandleInput()
 					}
 					case SDLK_a:
 					{
-                        GAME->SpawnPawn(RENDERER->getCursor());
+                        RENDERER->MainCamera->setChasedActor((Actor*) GAME->SpawnPawn(RENDERER->getCursor()));
                         break;
 					}
 					case SDLK_PLUS:

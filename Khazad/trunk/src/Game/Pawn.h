@@ -5,6 +5,7 @@
 
 #include <Actor.h>
 #include <Coordinates.h>
+#include <Vector3.h>
 #include <MovementController.h>
 
 class Cell;
@@ -21,19 +22,22 @@ public:
 
 	Cell* getCell() { return CellLocation; }
 
-	bool BeginMove();
+	int AttemptMove(Direction MovementDirection);
 	int Update();
-	bool UpdateRenderPosition();
+
+    Vector3 getRenderPosition();
+    Vector3 getRederPositionMovementAdjustment();
     bool Draw(CameraOrientation Orientaion);
 
 protected:
 
 	Cell* CellLocation;
-	CellCoordinates CurrentCell;
 
 	bool Moving;
 	Direction CurrentMovementDirection;
+
 	int CoolDown;
+	int UpdateTick;
 
     MapCoordinates DestinationCoordinates;
 
