@@ -140,13 +140,16 @@ src/Gui/CustomWidgets/KhazButton.cpp
 
 src/Map/Cell.cpp
 src/Map/Extractor.cpp
-src/Map/Column.cpp
 src/Map/Map.cpp
-src/Map/PathTester.cpp
+src/Map/Coordinates.cpp
 
+src/Pathing/PathTester.cpp
 src/Pathing/PathManager.cpp
 src/Pathing/zone.cpp
 src/Pathing/astar.cpp
+src/Pathing/MovementController.cpp
+src/Pathing/Grid.cpp
+src/Pathing/Path.cpp
 
 src/Render/Camera.cpp
 src/Render/ImageManager.cpp
@@ -157,11 +160,15 @@ src/Render/TextureManager.cpp
 
 SET(PROJECT_SRCS_LINUX
 dfhack/library/DFProcess-linux.cpp
+dfhack/library/DFProcess-linux-SHM.cpp
+dfhack/library/DFWindow-linux.cpp
 dfhack/library/DFProcessEnumerator-linux.cpp
 )
 
 SET(PROJECT_SRCS_WINDOWS
 dfhack/library/DFProcess-windows.cpp
+dfhack/library/DFProcess-windows-SHM.cpp
+dfhack/library/DFWindow-windows.cpp
 dfhack/library/DFProcessEnumerator-windows.cpp
 )
 

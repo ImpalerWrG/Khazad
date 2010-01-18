@@ -26,7 +26,7 @@ public:
 	//std::vector<Pawn*> PawnList;
 
 	bool setActorCooldown(Actor* TargetActor, int CoolDown);
-    std::vector<Actor*>* Game::getCarosel(int CoolDown);
+    std::vector<Actor*>* getCarosel(int CoolDown);
     bool UpdateActors();
     bool AddActor(Actor* NewActor, int CoolDown);
 

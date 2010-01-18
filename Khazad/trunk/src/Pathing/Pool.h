@@ -1,7 +1,7 @@
 #ifndef POOL_HEADER
 #define POOL_HEADER
 
-#include <vector.h>
+#include <vector>
 
 template<class T>
 class Pool
