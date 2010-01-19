@@ -36,4 +36,10 @@ void Actor::setLocation(MapCoordinates NewPosition)
             CurrentCell = NewCell;
         }
     }
-};
+}
+
+Vector3 Actor::getRenderPosition()
+{
+    return Vector3(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z);
+}
+

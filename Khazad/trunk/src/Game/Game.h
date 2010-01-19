@@ -7,6 +7,7 @@
 
 class Actor;
 class Pawn;
+class Tree;
 class MapCoordinates;
 
 class Game
@@ -22,6 +23,7 @@ public:
 
 	bool RemovePawn(Uint32 ID);
     Pawn* SpawnPawn(MapCoordinates SpawnCoordinates);
+    Tree* SpawnTree(MapCoordinates SpawnCoordinates, Sint16 TreeType, bool isAlive);
 
 	//std::vector<Pawn*> PawnList;
 
@@ -31,18 +33,18 @@ public:
     bool AddActor(Actor* NewActor, int CoolDown);
 
     void changeTickRate(int32_t RateChange);
-    void setTickRate(int32_t NewRate);
+    void setTickRate(uint32_t NewRate);
 
-    int32_t getTickCount()      { return TickCounter; }
-    int32_t getTickRate()       { return TickRate; }
+    uint32_t getTickCount()      { return TickCounter; }
+    uint32_t getTickRate()       { return TickRate; }
 
     void togglePause()              { Pause = !Pause; }
     void setPause(bool NewState)    { Pause = NewState; }
 
 protected:
 
-    int32_t TickCounter;  // Simulation time units
-    int32_t TickRate;     // Simulation Rate;
+    uint32_t TickCounter;  // Simulation time units
+    uint32_t TickRate;     // Simulation Rate;
     bool Pause;
 
     std::map< uint32_t, std::vector< Actor* >* > ActorUpdateGroups;

@@ -46,7 +46,7 @@ class MediumSpeedActionListener: public gcn::ActionListener
     void action(const gcn::ActionEvent& actionEvent)
     {
         GAME->setPause(false);
-        GAME->setTickRate(20);
+        GAME->setTickRate(30);
     }
 };
 
@@ -55,7 +55,7 @@ class FastSpeedActionListener: public gcn::ActionListener
     void action(const gcn::ActionEvent& actionEvent)
     {
         GAME->setPause(false);
-        GAME->setTickRate(40);
+        GAME->setTickRate(90);
     }
 };
 

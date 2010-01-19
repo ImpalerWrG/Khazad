@@ -18,7 +18,7 @@ public:
 
 	virtual int Update() = 0;
 
-    virtual Vector3 getRenderPosition() = 0;
+    virtual Vector3 getRenderPosition();
 	virtual bool Draw(CameraOrientation Orientaion) = 0;
 
     MapCoordinates getLocationCoordinates()            { return LocationCoordinates; }

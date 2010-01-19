@@ -4,6 +4,7 @@
 
 #include <Actor.h>
 #include <Pawn.h>
+#include <Tree.h>
 
 
 DECLARE_SINGLETON(Game)
@@ -97,8 +98,8 @@ bool Game::UpdateActors()
 
 std::vector<Actor*>* Game::getCarosel(int CoolDown)
 {
-    std::map<uint32_t, std::vector<Actor*>*>::iterator it;
-    it = ActorUpdateGroups.find(CoolDown);
+    std::map<uint32_t, std::vector<Actor*>*>::iterator it = ActorUpdateGroups.find(CoolDown);
+    //it = ActorUpdateGroups.find(CoolDown);
 
     if (it != ActorUpdateGroups.end())
     {
@@ -108,7 +109,7 @@ std::vector<Actor*>* Game::getCarosel(int CoolDown)
     {
         // Create and Insert a new Carosel
         std::vector<Actor*>* NewCarosel = new std::vector<Actor*>[CoolDown];
-        NewCarosel->reserve(1000);
+        //NewCarosel->reserve(1000);
         ActorUpdateGroups[CoolDown] = NewCarosel;
         return NewCarosel;
     }
@@ -135,7 +136,16 @@ Pawn* Game::SpawnPawn(MapCoordinates SpawnCoordinates)
     Pawn* NewPawn = new Pawn();
     NewPawn->Init(SpawnCoordinates);
     AddActor(NewPawn, 1);
+
     return NewPawn;
+}
+
+Tree* Game::SpawnTree(MapCoordinates SpawnCoordinates, Sint16 TreeType, bool isAlive)
+{
+    Tree* NewTree = new Tree(TreeType, SpawnCoordinates, isAlive);
+    //NewTree->Init(SpawnCoordinates);
+    AddActor(NewTree, 1);
+    return NewTree;
 }
 
 void Game::changeTickRate(int32_t RateChange)
@@ -148,7 +158,7 @@ void Game::changeTickRate(int32_t RateChange)
     }
 }
 
-void Game::setTickRate(int32_t NewRate)
+void Game::setTickRate(uint32_t NewRate)
 {
     TickRate = NewRate;
 }

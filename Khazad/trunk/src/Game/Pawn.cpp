@@ -44,7 +44,6 @@ int Pawn::AttemptMove(Direction MovementDirection)
         Moving = true;
         CoolDown = EdgeCost * 100;  // Cooldown factor, inverse speed
 
-        // Create movement vector from position difference
         // Create Vector directly from a MovementDirection?
         RenderLocationChange.set(NewLocation.X - LocationCoordinates.X, NewLocation.Y - LocationCoordinates.Y, NewLocation.Z - LocationCoordinates.Z);
         RenderLocationChange = RenderLocationChange * (1 / (float) CoolDown);
@@ -66,7 +65,7 @@ int Pawn::Update()
         MapCoordinates NewLocation = MapCoordinates(LocationCoordinates, CurrentMovementDirection);
         setLocation(NewLocation);
 
-        //Controller->setLocation(NewLocation);
+        Controller->setLocation(NewLocation);
     }
 
     if (LocationCoordinates == DestinationCoordinates)
@@ -106,6 +105,7 @@ bool Pawn::Draw(CameraOrientation Orientaion)
     Vector3 MovmentAdjustment = getRederPositionMovementAdjustment();
 
     RENDERER->DrawDiamond(CurrentCubeCoordinates.X + MovmentAdjustment.x, CurrentCubeCoordinates.Y + MovmentAdjustment.y, MovmentAdjustment.z, 1, 1, 1, 1);
+
     //MapCoordinates CageCoordinates = MapCoordinates(CurrentCubeCoordinates.X, CurrentCubeCoordinates.Y, 0);
     //RENDERER->DrawCage(CageCoordinates, 1, 1, 1, false, 1, 1, 1);
 

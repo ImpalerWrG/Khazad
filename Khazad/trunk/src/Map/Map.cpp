@@ -17,6 +17,7 @@ using namespace DFHack;
 #include <Random.h>
 #include <Building.h>
 #include <Tree.h>
+#include <Game.h>
 
 #include <map>
 
@@ -238,9 +239,9 @@ bool Map::Extract()
                 {
                     Cell* NewCell = new Cell();
                     NewCell->setPosition(TargetCellCoordinates);
-                    LoadCellData(DF, layerassign, NewCell, constructionAssigner, plantAssigner, buildingAssigner, TargetCellCoordinates);
 
                     addCell(NewCell, TargetCellCoordinates);
+                    LoadCellData(DF, layerassign, NewCell, constructionAssigner, plantAssigner, buildingAssigner, TargetCellCoordinates);
                 }
             }
         }
@@ -808,8 +809,7 @@ void Map::LoadCellData(DFHack::API & DF,
                             break;
                     }
 
-                    Tree *tree = new Tree(TreeTypeID, MapCoordinates(t.x, t.y, t.z), isAlive);
-                    TargetCell->addTree(tree);
+                    Tree* NewTree = GAME->SpawnTree(MapCoordinates(t.x, t.y, t.z), TreeTypeID, isAlive);
                 }
             }
 

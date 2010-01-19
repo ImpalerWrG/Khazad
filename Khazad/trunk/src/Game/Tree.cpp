@@ -9,14 +9,10 @@
 #include <Model.h>
 
 
-Tree::Tree(Sint16 TreeType, MapCoordinates NewCoordinates, bool isAlive)
+Tree::Tree(Sint16 TreeType, MapCoordinates SpawnLocation, bool isAlive)
 {
     Alive = isAlive;
-
-    MapPosition = NewCoordinates;
-
-    CubePosition.X = MapPosition.X % CELLEDGESIZE;
-    CubePosition.Y = MapPosition.Y % CELLEDGESIZE;
+    setLocation(SpawnLocation);
 
     model = NULL;
     if(TreeType >= DATA->getNumTrees())
@@ -51,27 +47,23 @@ bool Tree::Init()
 
 int Tree::Update()
 {
-    return 1;
-}
-
-Vector3 Tree::getRenderPosition()
-{
-    return Vector3();
+    return 1000;
 }
 
 bool Tree::Draw(CameraOrientation Orientaion)
 {
     static Sint16 SurfaceTypeID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
 
-    if(!RENDERER->isCubeDrawn(MapPosition))
+    if(!RENDERER->isCubeDrawn(LocationCoordinates))
     {
         return false;
     }
+
     if(model != NULL)
     {
         glPushMatrix();
 
-            glTranslatef(CubePosition.X, CubePosition.Y, -HALFCUBE);
+            glTranslatef(CurrentCubeCoordinates.X, CurrentCubeCoordinates.Y, -HALFCUBE);
 
             //float scale = 1 + ((float)(rand % 100 - 50)) * 0.002;
             //glScalef(scale,scale,scale);

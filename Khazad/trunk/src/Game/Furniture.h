@@ -26,8 +26,6 @@ public:
     Sint16 getModelType()                       { return ModelType; }
     void setModelType(Sint16 NewType)           { ModelType = NewType; }
 
-    Vector3 getRenderPosition();
-
 protected:
 
     Sint16 FurnitureType;

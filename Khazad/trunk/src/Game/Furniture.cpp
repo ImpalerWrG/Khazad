@@ -24,11 +24,6 @@ int Furniture::Update()
 	return true;
 }
 
-Vector3 Furniture::getRenderPosition()
-{
-    return Vector3();
-}
-
 bool Furniture::Draw(CameraOrientation Orientation)
 {
 	return true;
