@@ -108,10 +108,6 @@ public:
     bool isCubeSolid(MapCoordinates Coordinates) const;
     void setCubeSolid(MapCoordinates Coordinates, bool NewValue);
 
-    void InitilizeTilePicker(DFHack::API & DF);
-    Sint16 PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 veinmaterial, DFHack::t_matglossPair constructionmaterial, DFHack::t_occupancy occupancy);
-    Sint16 ResolveMatGlossPair(DFHack::t_matglossPair MatPair);
-
     bool Generate(Uint32 Seed);
 
 	Uint32 getMapSizeX() const { return MapSizeX; }
@@ -131,14 +127,6 @@ public:
     void DigChannel(MapCoordinates Coordinates);
     void DigSlope(MapCoordinates Coordinates);
     void Dig(MapCoordinates Coordinates);
-
-    void LoadCellData(DFHack::API & context,
-                      vector< vector <uint16_t> >& layerassign,
-                      Cell* TargetCell,
-                      map<uint64_t, DFHack::t_construction> & constuctions,
-                      map<uint64_t, DFHack::t_tree_desc> & vegetation,
-                      map<uint64_t, DFHack::t_building> & buildings,
-                      CellCoordinates NewCellCoordinates);
 
     void ChangeCellCount(Sint8 Change)      { CellCount += Change; }
     Uint32 getCellCount() const             { return CellCount; }
@@ -168,15 +156,6 @@ protected:
     Uint16 CellSizeZ;
 
     std::map<uint64_t, Cell*> Cells;
-
-    Sint16 TileShapePicker[600];
-    Sint16 TileSurfacePicker[600];
-    Sint16 TileMaterialPicker[600];
-    Sint16 TileMaterialClassPicker[600];
-
-    vector <int16_t> StoneMatGloss;
-    vector <int16_t> MetalMatGloss;
-    vector <int16_t> WoodMatGloss;
 
     Uint32 CellCount;
     Uint32 FaceCount;
