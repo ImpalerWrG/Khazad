@@ -15,11 +15,7 @@ Tree::Tree(Sint16 TreeType, MapCoordinates SpawnLocation, bool isAlive)
     setLocation(SpawnLocation);
 
     model = NULL;
-    if(TreeType >= DATA->getNumTrees())
-    {
-        TreeType = 0;
-        cerr << "PLANTS ARE ALWAYS PLANTS" << endl;
-    }
+
     TreeData* Data = DATA->getTreeData(TreeType);
     if(Data != NULL)
     {
