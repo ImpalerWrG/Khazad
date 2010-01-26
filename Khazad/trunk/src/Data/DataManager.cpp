@@ -12,7 +12,38 @@ DECLARE_SINGLETON(DataManager)
 
 DataManager::DataManager()
 {
+    Colors = new ColorDataLibrary();
+    GlobalDataTypeMap["Color"] = Colors;
 
+    Textures = new TextureDataLibrary();
+    GlobalDataTypeMap["Texture"] = Textures;
+
+    Models = new ModelDataLibrary();
+    GlobalDataTypeMap["Model"] = Models;
+
+    Fonts = new FontDataLibrary();
+    GlobalDataTypeMap["Font"] = Fonts;
+
+    Materials = new MaterialDataLibrary();
+    GlobalDataTypeMap["Material"] = Materials;
+
+    TileGroups = new TileGroupDataLibrary();
+    GlobalDataTypeMap["TileGroup"] = TileGroups;
+
+    MaterialClasses = new MaterialClassDataLibrary();
+    GlobalDataTypeMap["MaterialClass"] = MaterialClasses;
+
+    SurfaceTypes = new SurfaceTypeDataLibrary();
+    GlobalDataTypeMap["SurfaceType"] = SurfaceTypes;
+
+    TileShapes = new TileShapeDataLibrary();
+    GlobalDataTypeMap["TileShape"] = TileShapes;
+
+    Trees = new TreeDataLibrary();
+    GlobalDataTypeMap["Tree"] = Trees;
+
+    Buildings = new BuildingDataLibrary();
+    GlobalDataTypeMap["Building"] = Buildings;
 }
 
 DataManager::~DataManager()
@@ -22,40 +53,32 @@ DataManager::~DataManager()
 
 bool DataManager::Init()
 {
-    Path color_xml = "Assets\\XML\\Colors.xml";
-    Path texture_xml = "Assets\\XML\\Textures.xml";
-    Path model_xml = "Assets\\XML\\Models.xml";
-    Path font_xml = "Assets\\XML\\Fonts.xml";
-    Path material_xml = "Assets\\XML\\Materials.xml";
-    Path tilegroup_xml = "Assets\\XML\\TileGroups.xml";
-    Path materialclass_xml = "Assets\\XML\\MaterialClasses.xml";
-    Path surfacetype_xml = "Assets\\XML\\SurfaceTypes.xml";
-    Path tileshape_xml = "Assets\\XML\\TileShapes.xml";
-    Path tree_xml = "Assets\\XML\\Trees.xml";
-    Path building_xml = "Assets\\XML\\Buildings.xml";
+    std::vector<Path> DataFiles;
 
-    // Initial loading of all XML files
-    LoadDataClass(&Colors, color_xml, "Color");
-    LoadDataClass(&Textures, texture_xml, "Texture");
-    LoadDataClass(&Models, model_xml, "Model");
-    LoadDataClass(&Fonts, font_xml, "Font");
-    LoadDataClass(&Materials, material_xml, "Material");
-    LoadDataClass(&TileGroups, tilegroup_xml, "TileGroup");
-    LoadDataClass(&MaterialClasses, materialclass_xml, "MaterialClass");
-    LoadDataClass(&SurfaceTypes, surfacetype_xml, "SurfaceType");
-    LoadDataClass(&TileShapes, tileshape_xml, "TileShape");
-    LoadDataClass(&Trees, tree_xml, "Tree");
-    LoadDataClass(&Buildings, building_xml, "Building");
+    // master file reading from xml?
+    DataFiles.push_back(Path("Assets\\XML\\Colors.xml"));
+    DataFiles.push_back(Path("Assets\\XML\\Textures.xml"));
+    DataFiles.push_back(Path("Assets\\XML\\Models.xml"));
+    DataFiles.push_back(Path("Assets\\XML\\Fonts.xml"));
+    DataFiles.push_back(Path("Assets\\XML\\Materials.xml"));
+    DataFiles.push_back(Path("Assets\\XML\\TileGroups.xml"));
+    DataFiles.push_back(Path("Assets\\XML\\MaterialClasses.xml"));
+    DataFiles.push_back(Path("Assets\\XML\\SurfaceTypes.xml"));
+    DataFiles.push_back(Path("Assets\\XML\\TileShapes.xml"));
+    DataFiles.push_back(Path("Assets\\XML\\Trees.xml"));
+    DataFiles.push_back(Path("Assets\\XML\\Buildings.xml"));
 
-    // Post process all data and dynamicly link references, not order dependent
-    PostProcessDataClass(&Materials);
-    PostProcessDataClass(&MaterialClasses);
-    PostProcessDataClass(&TileGroups);
-    PostProcessDataClass(&SurfaceTypes);
-    PostProcessDataClass(&TileShapes);
-    PostProcessDataClass(&Trees);
-    PostProcessDataClass(&Models);
-    PostProcessDataClass(&Buildings);
+    std::vector<Path>::iterator FileIterator;
+    for (FileIterator = DataFiles.begin(); FileIterator != DataFiles.end(); FileIterator++)
+    {
+        LoadDataFile(*FileIterator);
+    }
+
+    std::map<string, DataLibraryBase*, ltstr>::iterator TypeIterator;
+    for (TypeIterator = GlobalDataTypeMap.begin(); TypeIterator != GlobalDataTypeMap.end(); TypeIterator++)
+    {
+        (*TypeIterator).second->PostProcessDataClass();
+    }
 
     return true;
 }
@@ -72,17 +95,31 @@ Sint32 DataManager::getLabelIndex(string Label)
         return -1;
     }
 
-    std::map<string, Uint32, ltstr>::iterator iter;
-    iter = GlobalLabelMap.find(Label);
+    std::map<string, Uint32, ltstr>::iterator it = GlobalLabelMap.find(Label);
 
-    if(iter != GlobalLabelMap.end())
+    if(it != GlobalLabelMap.end())
     {
-        return iter->second;
+        return it->second;
     }
     else
     {
         cout << Label << " is not in GlobalLabelMap" << endl;
         return -1;
+    }
+}
+
+DataLibraryBase* DataManager::getDataTypeGroup(string ElementType)
+{
+    std::map<string, DataLibraryBase*, ltstr>::iterator it = GlobalDataTypeMap.find(ElementType);
+
+    if(it != GlobalDataTypeMap.end())
+    {
+        return it->second;
+    }
+    else
+    {
+        cout << ElementType << " is not in GlobalDataTypeMap" << endl;
+        return NULL;
     }
 }
 

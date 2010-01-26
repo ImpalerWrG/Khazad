@@ -13,12 +13,22 @@ public:
 
     DataBase();
     virtual ~DataBase();
-    bool Load(TiXmlElement* Entry, Uint32 Index);   // This must be called to index the Data Title
-    virtual bool PostProcessing()              {return false;};  // Empty for overRiding in derived data classes
+
+    bool Load(TiXmlElement* Entry, int32_t Index);   // This must be called to index the Data Title
+    virtual bool PostProcessing() = 0;
 
 protected:
 
     string Name;
+};
+
+class DataLibraryBase
+{
+
+public:
+
+    virtual void LoadElement(TiXmlElement* Element) = 0;
+    virtual void PostProcessDataClass() = 0;
 };
 
 class ColorData: public DataBase
@@ -30,6 +40,7 @@ public:
     ~ColorData();
 
     bool Load(TiXmlElement* Element, Uint32 Index);
+    bool PostProcessing() {};
 
     Uint8 getRed()      { return Red; }
     Uint8 getGreen()    { return Green; }
@@ -42,6 +53,17 @@ protected:
     Uint8 Blue;
 };
 
+class ColorDataLibrary: public DataLibraryBase
+{
+
+public:
+
+    void LoadElement(TiXmlElement* Element);
+    void PostProcessDataClass() {};
+
+    std::vector<ColorData*> DataEntries;
+};
+
 class TextureData: public DataBase
 {
 
@@ -49,7 +71,9 @@ public:
 
     TextureData();
     ~TextureData();
+
     bool Load(TiXmlElement* Element, Uint32 Index);
+    bool PostProcessing() {};
 
     Path getPath() { return sPath; }
 
@@ -62,6 +86,17 @@ protected:
     Uint32 DevILID;
 };
 
+class TextureDataLibrary: public DataLibraryBase
+{
+
+public:
+
+    void LoadElement(TiXmlElement* Element);
+    void PostProcessDataClass() {};
+
+    std::vector<TextureData*> DataEntries;
+};
+
 class ModelData: public DataBase
 {
 
@@ -69,7 +104,9 @@ public:
 
     ModelData();
     ~ModelData();
+
     bool Load(TiXmlElement* Element, Uint32 Index);
+    bool PostProcessing() {};
 
     Path getPath()                  { return sPath; }
     float getScalar()               { return Scalar; }
@@ -80,6 +117,17 @@ protected:
     float Scalar;
 };
 
+class ModelDataLibrary: public DataLibraryBase
+{
+
+public:
+
+    void LoadElement(TiXmlElement* Element);
+    void PostProcessDataClass() {};
+
+    std::vector<ModelData*> DataEntries;
+};
+
 class SurfaceTypeData: public DataBase
 {
 
@@ -87,6 +135,7 @@ public:
 
     SurfaceTypeData();
     ~SurfaceTypeData();
+
     bool Load(TiXmlElement* Element, Uint32 Index);
     bool PostProcessing();
 
@@ -96,6 +145,17 @@ protected:
 
     string TextureLabel;
     Sint16 TextureID;
+};
+
+class SurfaceTypeDataLibrary: public DataLibraryBase
+{
+
+public:
+
+    void LoadElement(TiXmlElement* Element);
+    void PostProcessDataClass();
+
+    std::vector<SurfaceTypeData*> DataEntries;
 };
 
 class TileGroupData: public DataBase
@@ -128,6 +188,17 @@ protected:
     Sint16 MaterialID;
 };
 
+class TileGroupDataLibrary: public DataLibraryBase
+{
+
+public:
+
+    void LoadElement(TiXmlElement* Element);
+    void PostProcessDataClass();
+
+    std::vector<TileGroupData*> DataEntries;
+};
+
 class MaterialClassData: public DataBase
 {
 
@@ -155,6 +226,17 @@ protected:
 
     std::vector<string> SurfaceTypeLabels;
     std::vector<string> TextureLabels;
+};
+
+class MaterialClassDataLibrary: public DataLibraryBase
+{
+
+public:
+
+    void LoadElement(TiXmlElement* Element);
+    void PostProcessDataClass();
+
+    std::vector<MaterialClassData*> DataEntries;
 };
 
 class MaterialData: public DataBase
@@ -202,6 +284,17 @@ protected:
     std::vector<string> TextureLabels;
 };
 
+class MaterialDataLibrary: public DataLibraryBase
+{
+
+public:
+
+    void LoadElement(TiXmlElement* Element);
+    void PostProcessDataClass();
+
+    std::vector<MaterialData*> DataEntries;
+};
+
 class FontData: public DataBase
 {
 
@@ -211,6 +304,7 @@ public:
     ~FontData();
 
     bool Load(TiXmlElement* Element, Uint32 Index);
+    bool PostProcessing() {};
 
     Path getPath()    { return sPath; }
     Uint16 getSize()  { return Size; }
@@ -219,6 +313,17 @@ protected:
 
     Path sPath;
     Uint16 Size;
+};
+
+class FontDataLibrary: public DataLibraryBase
+{
+
+public:
+
+    void LoadElement(TiXmlElement* Element);
+    void PostProcessDataClass() {};
+
+    std::vector<FontData*> DataEntries;
 };
 
 class TileShapeData: public DataBase
@@ -241,6 +346,17 @@ protected:
 
     Sint16 ModelID;
     string ModelLabel;
+};
+
+class TileShapeDataLibrary: public DataLibraryBase
+{
+
+public:
+
+    void LoadElement(TiXmlElement* Element);
+    void PostProcessDataClass();
+
+    std::vector<TileShapeData*> DataEntries;
 };
 
 class TreeData: public DataBase
@@ -273,6 +389,17 @@ protected:
     string ModelLabel;
 };
 
+class TreeDataLibrary: public DataLibraryBase
+{
+
+public:
+
+    void LoadElement(TiXmlElement* Element);
+    void PostProcessDataClass();
+
+    std::vector<TreeData*> DataEntries;
+};
+
 class BuildingData: public DataBase
 {
 
@@ -296,6 +423,17 @@ protected:
 
     string ModelLabel;
     string TextureLabel;
+};
+
+class BuildingDataLibrary: public DataLibraryBase
+{
+
+public:
+
+    void LoadElement(TiXmlElement* Element);
+    void PostProcessDataClass();
+
+    std::vector<BuildingData*> DataEntries;
 };
 
 #endif // DATATYPE__HEADER

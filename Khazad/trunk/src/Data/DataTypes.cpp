@@ -3,13 +3,12 @@
 #include <DataManager.h>
 #include "../../TinyXML/tinyxml.h"
 
-DataBase::DataBase()
-{}
 
-DataBase::~DataBase()
-{}
+DataBase::DataBase(){}
 
-bool DataBase::Load(TiXmlElement* Entry, Uint32 Index)
+DataBase::~DataBase(){}
+
+bool DataBase::Load(TiXmlElement* Entry, int32_t Index)
 {
     if(Entry)
     {
@@ -20,11 +19,12 @@ bool DataBase::Load(TiXmlElement* Entry, Uint32 Index)
     return false;
 }
 
-ColorData::ColorData()
-{}
 
-ColorData::~ColorData()
-{}
+// COLOR
+
+ColorData::ColorData(){}
+
+ColorData::~ColorData(){}
 
 bool ColorData::Load(TiXmlElement* Entry, Uint32 Index)
 {
@@ -51,11 +51,96 @@ bool ColorData::Load(TiXmlElement* Entry, Uint32 Index)
     return false;
 }
 
-SurfaceTypeData::SurfaceTypeData()
-{}
+void ColorDataLibrary::LoadElement(TiXmlElement* Element)
+{
+    ColorData* NewData = new ColorData();
+    if (NewData->Load(Element, DataEntries.size()))
+    {
+        DataEntries.push_back(NewData);
+    }
+    else  // Error durring loading delete the Data object
+    {
+        printf("Failed to Load Data object");
+        delete NewData;
+    }
+}
 
-SurfaceTypeData::~SurfaceTypeData()
-{}
+// TEXTURE
+
+TextureData::TextureData(){}
+
+TextureData::~TextureData(){}
+
+bool TextureData::Load(TiXmlElement* Entry, Uint32 Index)
+{
+    if(Entry)
+    {
+        string temp;
+        XML->QueryTextValue(Entry, "File", "Path", temp);
+        sPath = temp;
+        DataBase::Load(Entry, Index);
+        return true;
+    }
+    return false;
+}
+
+void TextureDataLibrary::LoadElement(TiXmlElement* Element)
+{
+    TextureData* NewData = new TextureData();
+    if (NewData->Load(Element, DataEntries.size()))
+    {
+        DataEntries.push_back(NewData);
+    }
+    else  // Error durring loading delete the Data object
+    {
+        printf("Failed to Load Data object");
+        delete NewData;
+    }
+}
+
+// MODEL
+
+ModelData::ModelData()
+{
+    Scalar = 1.0;
+}
+
+ModelData::~ModelData(){}
+
+bool ModelData::Load(TiXmlElement* Entry, Uint32 Index)
+{
+    if(Entry)
+    {
+        string temp;
+        XML->QueryTextValue(Entry, "File", "Path", temp);
+        XML->QueryFloatValue(Entry, "Scale", "value", Scalar);
+
+        sPath = temp;
+        DataBase::Load(Entry, Index);
+        return true;
+    }
+    return false;
+}
+
+void ModelDataLibrary::LoadElement(TiXmlElement* Element)
+{
+    ModelData* NewData = new ModelData();
+    if (NewData->Load(Element, DataEntries.size()))
+    {
+        DataEntries.push_back(NewData);
+    }
+    else  // Error durring loading delete the Data object
+    {
+        printf("Failed to Load Data object");
+        delete NewData;
+    }
+}
+
+// SURFACE TYPE
+
+SurfaceTypeData::SurfaceTypeData(){}
+
+SurfaceTypeData::~SurfaceTypeData(){}
 
 bool SurfaceTypeData::Load(TiXmlElement* Entry, Uint32 Index)
 {
@@ -76,11 +161,33 @@ bool SurfaceTypeData::PostProcessing()
     return true;
 }
 
-TileGroupData::TileGroupData()
-{}
+void SurfaceTypeDataLibrary::LoadElement(TiXmlElement* Element)
+{
+    SurfaceTypeData* NewData = new SurfaceTypeData();
+    if (NewData->Load(Element, DataEntries.size()))
+    {
+        DataEntries.push_back(NewData);
+    }
+    else  // Error durring loading delete the Data object
+    {
+        printf("Failed to Load Data object");
+        delete NewData;
+    }
+}
 
-TileGroupData::~TileGroupData()
-{}
+void SurfaceTypeDataLibrary::PostProcessDataClass()
+{
+    for(int i = 0; i < DataEntries.size(); i++)
+    {
+        DataEntries[i]->PostProcessing();
+    }
+}
+
+// TILEGROUP
+
+TileGroupData::TileGroupData(){}
+
+TileGroupData::~TileGroupData(){}
 
 bool TileGroupData::Load(TiXmlElement* Entry, Uint32 Index)
 {
@@ -117,13 +224,36 @@ bool TileGroupData::PostProcessing()
     return true;
 }
 
+void TileGroupDataLibrary::LoadElement(TiXmlElement* Element)
+{
+    TileGroupData* NewData = new TileGroupData();
+    if (NewData->Load(Element, DataEntries.size()))
+    {
+        DataEntries.push_back(NewData);
+    }
+    else  // Error durring loading delete the Data object
+    {
+        printf("Failed to Load Data object");
+        delete NewData;
+    }
+}
+
+void TileGroupDataLibrary::PostProcessDataClass()
+{
+    for(int i = 0; i < DataEntries.size(); i++)
+    {
+        DataEntries[i]->PostProcessing();
+    }
+}
+
+// MATERIAL CLASS
+
 MaterialClassData::MaterialClassData()
 {
     DefaultMaterialLabel = "NONE";
 }
 
-MaterialClassData::~MaterialClassData()
-{}
+MaterialClassData::~MaterialClassData(){}
 
 bool MaterialClassData::Load(TiXmlElement* Entry, Uint32 Index)
 {
@@ -167,6 +297,30 @@ bool MaterialClassData::PostProcessing()
     return true;
 }
 
+void MaterialClassDataLibrary::LoadElement(TiXmlElement* Element)
+{
+    MaterialClassData* NewData = new MaterialClassData();
+    if (NewData->Load(Element, DataEntries.size()))
+    {
+        DataEntries.push_back(NewData);
+    }
+    else  // Error durring loading delete the Data object
+    {
+        printf("Failed to Load Data object");
+        delete NewData;
+    }
+}
+
+void MaterialClassDataLibrary::PostProcessDataClass()
+{
+    for(int i = 0; i < DataEntries.size(); i++)
+    {
+        DataEntries[i]->PostProcessing();
+    }
+}
+
+// MATERIAL
+
 MaterialData::MaterialData()
 {
     PrimaryColorLabel = "NONE";
@@ -174,8 +328,7 @@ MaterialData::MaterialData()
     BorderColorLabel = "NONE";
 }
 
-MaterialData::~MaterialData()
-{}
+MaterialData::~MaterialData(){}
 
 bool MaterialData::Load(TiXmlElement* Entry, Uint32 Index)
 {
@@ -227,11 +380,33 @@ bool MaterialData::PostProcessing()
     return true;
 }
 
-FontData::FontData()
-{}
+void MaterialDataLibrary::LoadElement(TiXmlElement* Element)
+{
+    MaterialData* NewData = new MaterialData();
+    if (NewData->Load(Element, DataEntries.size()))
+    {
+        DataEntries.push_back(NewData);
+    }
+    else  // Error durring loading delete the Data object
+    {
+        printf("Failed to Load Data object");
+        delete NewData;
+    }
+}
 
-FontData::~FontData()
-{}
+void MaterialDataLibrary::PostProcessDataClass()
+{
+    for(int i = 0; i < DataEntries.size(); i++)
+    {
+        DataEntries[i]->PostProcessing();
+    }
+}
+
+// FONT
+
+FontData::FontData(){}
+
+FontData::~FontData(){}
 
 bool FontData::Load(TiXmlElement* Entry, Uint32 Index)
 {
@@ -248,47 +423,21 @@ bool FontData::Load(TiXmlElement* Entry, Uint32 Index)
     return false;
 }
 
-TextureData::TextureData()
-{}
-
-TextureData::~TextureData()
-{}
-
-bool TextureData::Load(TiXmlElement* Entry, Uint32 Index)
+void FontDataLibrary::LoadElement(TiXmlElement* Element)
 {
-    if(Entry)
+    FontData* NewData = new FontData();
+    if (NewData->Load(Element, DataEntries.size()))
     {
-        string temp;
-        XML->QueryTextValue(Entry, "File", "Path", temp);
-        sPath = temp;
-        DataBase::Load(Entry, Index);
-        return true;
+        DataEntries.push_back(NewData);
     }
-    return false;
-}
-
-ModelData::ModelData()
-{
-    Scalar = 1.0;
-}
-
-ModelData::~ModelData()
-{}
-
-bool ModelData::Load(TiXmlElement* Entry, Uint32 Index)
-{
-    if(Entry)
+    else  // Error durring loading delete the Data object
     {
-        string temp;
-        XML->QueryTextValue(Entry, "File", "Path", temp);
-        XML->QueryFloatValue(Entry, "Scale", "value", Scalar);
-
-        sPath = temp;
-        DataBase::Load(Entry, Index);
-        return true;
+        printf("Failed to Load Data object");
+        delete NewData;
     }
-    return false;
 }
+
+// TILE SHAPE
 
 TileShapeData::TileShapeData()
 {
@@ -298,8 +447,7 @@ TileShapeData::TileShapeData()
     ModelLabel = "NONE";
 }
 
-TileShapeData::~TileShapeData()
-{}
+TileShapeData::~TileShapeData(){}
 
 bool TileShapeData::Load(TiXmlElement* Entry, Uint32 Index)
 {
@@ -319,11 +467,33 @@ bool TileShapeData::PostProcessing()
     ModelID = DATA->getLabelIndex(ModelLabel);
 }
 
-TreeData::TreeData()
-{}
+void TileShapeDataLibrary::LoadElement(TiXmlElement* Element)
+{
+    TileShapeData* NewData = new TileShapeData();
+    if (NewData->Load(Element, DataEntries.size()))
+    {
+        DataEntries.push_back(NewData);
+    }
+    else  // Error durring loading delete the Data object
+    {
+        printf("Failed to Load Data object");
+        delete NewData;
+    }
+}
 
-TreeData::~TreeData()
-{}
+void TileShapeDataLibrary::PostProcessDataClass()
+{
+    for(int i = 0; i < DataEntries.size(); i++)
+    {
+        DataEntries[i]->PostProcessing();
+    }
+}
+
+// TREE
+
+TreeData::TreeData(){}
+
+TreeData::~TreeData(){}
 
 bool TreeData::Load(TiXmlElement* Entry, Uint32 Index)
 {
@@ -351,6 +521,30 @@ bool TreeData::PostProcessing()
     return true;
 }
 
+void TreeDataLibrary::LoadElement(TiXmlElement* Element)
+{
+    TreeData* NewData = new TreeData();
+    if (NewData->Load(Element, DataEntries.size()))
+    {
+        DataEntries.push_back(NewData);
+    }
+    else  // Error durring loading delete the Data object
+    {
+        printf("Failed to Load Data object");
+        delete NewData;
+    }
+}
+
+void TreeDataLibrary::PostProcessDataClass()
+{
+    for(int i = 0; i < DataEntries.size(); i++)
+    {
+        DataEntries[i]->PostProcessing();
+    }
+}
+
+// BUILDING
+
 BuildingData::BuildingData()
 {
     ModelLabel = "NONE";
@@ -360,8 +554,7 @@ BuildingData::BuildingData()
     TextureID = -1;
 }
 
-BuildingData::~BuildingData()
-{}
+BuildingData::~BuildingData(){}
 
 bool BuildingData::Load(TiXmlElement* Entry, Uint32 Index)
 {
@@ -383,4 +576,26 @@ bool BuildingData::PostProcessing()
     TextureID = DATA->getLabelIndex(TextureLabel);
 
     return true;
+}
+
+void BuildingDataLibrary::LoadElement(TiXmlElement* Element)
+{
+    BuildingData* NewData = new BuildingData();
+    if (NewData->Load(Element, DataEntries.size()))
+    {
+        DataEntries.push_back(NewData);
+    }
+    else  // Error durring loading delete the Data object
+    {
+        printf("Failed to Load Data object");
+        delete NewData;
+    }
+}
+
+void BuildingDataLibrary::PostProcessDataClass()
+{
+    for(int i = 0; i < DataEntries.size(); i++)
+    {
+        DataEntries[i]->PostProcessing();
+    }
 }

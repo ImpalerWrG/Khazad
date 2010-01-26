@@ -24,98 +24,83 @@ public:
     ~DataManager();
     bool Init();
 
-    template <class T>
-    bool LoadDataClass(std::vector<T*>* DataVector, const char* Path, const char* Entry)
+    bool LoadDataFile(const char* Path)
     {
         cout << "Loading " << Path << endl;
 
+        // Safety null checks on documents
         TiXmlDocument* Document = XML->loadFile(Path);
         TiXmlElement* Parent = Document->RootElement();
-        TiXmlElement* Iterator = Parent->FirstChildElement(Entry);
+        TiXmlElement* Iterator = Parent->FirstChildElement();
 
-        for(; Iterator != NULL; Iterator = Iterator->NextSiblingElement(Entry))
+        for(; Iterator != NULL; Iterator = Iterator->NextSiblingElement())
         {
-            //TODO allow the type of Element to fork to different loading types so mixed files are possible
-            T* NewData = new T;
-            if(NewData->Load(Iterator, DataVector->size()))
-            {
-                DataVector->push_back(NewData);
-            }
-            else  // Error durring loading delete the Data object
-            {
-                printf("Failed to Load Data object");
-                NewData->~T();
-            }
+            DataLibraryBase* TargetLibrary = getDataTypeGroup(Iterator->Value());
+            TargetLibrary->LoadElement(Iterator);
         }
 
         Document->~TiXmlDocument();  // Free the Document
         return true;
     }
 
-	template <class T>
-	bool PostProcessDataClass(std::vector<T*>* DataVector)
-    {
-        for(uint32_t i = 0; i < DataVector->size(); ++i)
-        {
-            DataVector->at(i)->PostProcessing();
-        }
-        return true;
-    }
+    ColorData* getColorData(Uint32 Index)                    { return Colors->DataEntries[Index]; }
+    Uint32 getNumColors()                                    { return Colors->DataEntries.size(); }
 
-    ColorData* getColorData(Uint32 Index)                    { return Colors[Index]; }
-    Uint32 getNumColors()                                    { return Colors.size(); }
+    TextureData* getTextureData(Uint32 Index)                { return Textures->DataEntries[Index]; }
+    Uint32 getNumTextures()                                  { return Textures->DataEntries.size(); }
 
-    TextureData* getTextureData(Uint32 Index)                { return Textures[Index]; }
-    Uint32 getNumTextures()                                  { return Textures.size(); }
+    ModelData* getModelData(Uint32 Index)                    { return Models->DataEntries[Index]; }
+    Uint32 getNumModels()                                    { return Models->DataEntries.size(); }
 
-    ModelData* getModelData(Uint32 Index)                    { return Models[Index]; }
-    Uint32 getNumModels()                                    { return Models.size(); }
+    FontData* getFontData(Uint32 Index)                      { return Fonts->DataEntries[Index]; }
+    Uint32 getNumFonts()                                     { return Fonts->DataEntries.size(); }
 
-    FontData* getFontData(Uint32 Index)                      { return Fonts[Index]; }
-    Uint32 getNumFonts()                                     { return Fonts.size(); }
+    MaterialData* getMaterialData(Uint32 Index)              { return Materials->DataEntries[Index]; }
+    Uint32 getNumMaterials()                                 { return Materials->DataEntries.size(); }
 
-    MaterialData* getMaterialData(Uint32 Index)              { return Materials[Index]; }
-    Uint32 getNumMaterials()                                 { return Materials.size(); }
+    TileGroupData* getTileGroupData(Uint32 Index)            { return TileGroups->DataEntries[Index]; }
+    Uint32 getNumTileGroups()                                { return TileGroups->DataEntries.size(); }
 
-    TileGroupData* getTileGroupData(Uint32 Index)            { return TileGroups[Index]; }
-    Uint32 getNumTileGroups()                                { return TileGroups.size(); }
+    MaterialClassData* getMaterialClassData(Uint32 Index)    { return MaterialClasses->DataEntries[Index]; }
+    Uint32 getNumMaterialClasses()                           { return MaterialClasses->DataEntries.size(); }
 
-    MaterialClassData* getMaterialClassData(Uint32 Index)    { return MaterialClasses[Index]; }
-    Uint32 getNumMaterialClasses()                           { return MaterialClasses.size(); }
+    SurfaceTypeData* getSurfaceTypeData(Uint32 Index)        { return SurfaceTypes->DataEntries[Index]; }
+    Uint32 getNumSurfaceTypes()                              { return SurfaceTypes->DataEntries.size(); }
 
-    SurfaceTypeData* getSurfaceTypeData(Uint32 Index)        { return SurfaceTypes[Index]; }
-    Uint32 getNumSurfaceTypes()                              { return SurfaceTypes.size(); }
+    TileShapeData* getTileShapeData(Uint32 Index)            { return TileShapes->DataEntries[Index]; }
+    Uint32 getNumTileShape()                                 { return TileShapes->DataEntries.size(); }
 
-    TileShapeData* getTileShapeData(Uint32 Index)            { return TileShapes[Index]; }
-    Uint32 getNumTileShape()                                 { return TileShapes.size(); }
+    TreeData* getTreeData(Uint32 Index)                      { return Trees->DataEntries[Index]; }
+    Uint32 getNumTrees()                                     { return Trees->DataEntries.size(); }
 
-    TreeData* getTreeData(Uint32 Index)                      { return Trees[Index]; }
-    Uint32 getNumTrees()                                     { return Trees.size(); }
+    BuildingData* getBuildingData(Uint32 Index)              { return Buildings->DataEntries[Index]; }
+    Uint32 getNumBuildings()                                 { return Buildings->DataEntries.size(); }
 
-    BuildingData* getBuildingData(Uint32 Index)              { return Buildings[Index]; }
-    Uint32 getNumBuildings()                                 { return Buildings.size(); }
-
+    // ADD New Data classes gets Here
 
     Sint32 getLabelIndex(string Label);
     void addLabel(string Label, Uint32 Index);
 
+    DataLibraryBase* getDataTypeGroup(string ElementType);
+
 protected:
 
-    std::map<string, Uint32, ltstr> GlobalLabelMap;
+    std::map<string, uint32_t, ltstr> GlobalLabelMap;
+    std::map<string, DataLibraryBase*, ltstr> GlobalDataTypeMap;
 
-    // ADD New Data classes Here
+    // ADD New Data classes Libraries Here
 
-    std::vector<ColorData*> Colors;
-    std::vector<TextureData*> Textures;
-    std::vector<ModelData*> Models;
-    std::vector<FontData*> Fonts;
-    std::vector<MaterialData*> Materials;
-    std::vector<TileGroupData*> TileGroups;
-    std::vector<MaterialClassData*> MaterialClasses;
-    std::vector<SurfaceTypeData*> SurfaceTypes;
-    std::vector<TileShapeData*> TileShapes;
-    std::vector<TreeData*> Trees;
-    std::vector<BuildingData*> Buildings;
+    ColorDataLibrary* Colors;
+    TextureDataLibrary* Textures;
+    ModelDataLibrary* Models;
+    FontDataLibrary* Fonts;
+    MaterialDataLibrary* Materials;
+    TileGroupDataLibrary* TileGroups;
+    MaterialClassDataLibrary* MaterialClasses;
+    SurfaceTypeDataLibrary* SurfaceTypes;
+    TileShapeDataLibrary* TileShapes;
+    TreeDataLibrary* Trees;
+    BuildingDataLibrary* Buildings;
 };
 
 
