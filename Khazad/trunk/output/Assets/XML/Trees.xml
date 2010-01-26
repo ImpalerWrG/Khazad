@@ -1,4 +1,34 @@
 <Trees xmlns="namespace">
+	<MaterialClass>
+		<Name Label="MATERIALCLASS_VEGATATION"/>
+		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_STONE_1"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_STONE_2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_STONE_3"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_STONE_4"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="3"/>
+	</MaterialClass>
+	<MaterialClass>
+		<Name Label="MATERIALCLASS_WOOD"/>
+		<DefaultMaterial label="NONE"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_WOOD_WALL"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_WOOD_FLOOR"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="0"/>
+	</MaterialClass>
+	<Material>
+		<Name Label="MATERIAL_WOOD"/>
+		<MaterialClass label="MATERIALCLASS_WOOD"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<ColorMode mode="overlay" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_WOOD_FLOOR"/>
+		</SurfaceTextures>
+	</Material>
 	<Tree>
 		<Name Label="TREE_SAGUARO"/>
 		<MatGloss value="SAGUARO"/>
@@ -41,7 +71,7 @@
 		<Trunk material="MATERIAL_PALM_TRUNK"/>
 		<Leaves material="MATERIAL_PALM_LEAVES"/>
 	</Tree>
-        <Tree>
+    <Tree>
         <Name Label="TREE_PINE"/>
         <MatGloss value="PINE"/>
         <Model label="MODEL_PINE"/>
@@ -55,4 +85,132 @@
         <Trunk material="MATERIAL_LARCH_TRUNK"/>
         <Leaves material="MATERIAL_LARCH_LEAVES"/>
     </Tree>
+    <Material>
+        <Name Label="MATERIAL_SAGUARO"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SAGUARO"/>
+		</SurfaceTextures>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_OAK_TRUNK"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_OAK_TRUNK"/>
+		</SurfaceTextures>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_TREE_SNOW"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_TREE_SNOW"/>
+		</SurfaceTextures>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_OAK_LEAVES"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_OAK_LEAVES"/>
+		</SurfaceTextures>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_MAPLE_TRUNK"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_MAPLE_TRUNK"/>
+		</SurfaceTextures>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_MAPLE_LEAVES"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_MAPLE_LEAVES"/>
+		</SurfaceTextures>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_BIRCH_TRUNK"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_BIRCH_TRUNK"/>
+		</SurfaceTextures>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_BIRCH_LEAVES"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_BIRCH_LEAVES"/>
+		</SurfaceTextures>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_CHESTNUT_TRUNK"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CHESTNUT_TRUNK"/>
+		</SurfaceTextures>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_CHESTNUT_LEAVES"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CHESTNUT_LEAVES"/>
+		</SurfaceTextures>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_PALM_TRUNK"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_PALM_TRUNK"/>
+		</SurfaceTextures>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_PALM_LEAVES"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_PALM_LEAVES"/>
+		</SurfaceTextures>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_PINE_TRUNK"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_PINE_TRUNK"/>
+		</SurfaceTextures>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_PINE_LEAVES"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_PINE_LEAVES"/>
+		</SurfaceTextures>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_LARCH_TRUNK"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LARCH_TRUNK"/>
+		</SurfaceTextures>
+    </Material>
+    <Material>
+        <Name Label="MATERIAL_LARCH_LEAVES"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LARCH_LEAVES"/>
+		</SurfaceTextures>
+    </Material>
 </Trees>

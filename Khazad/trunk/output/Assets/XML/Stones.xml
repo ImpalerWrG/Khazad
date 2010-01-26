@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Stones xmlns="namespace">
+	<MaterialClass>
+		<Name Label="MATERIALCLASS_FEATURE_STONE"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_STONE_1"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_STONE_2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_STONE_3"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_STONE_4"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_WALL" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_FLOOR" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_PEBBLES" Texture="TEXTURE_PEBBLES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_BOULDER" Texture="TEXTURE_BOULDER"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="1"/>
+	</MaterialClass>
+	<Material>
+		<Name Label="MATERIAL_FEATURE_STONE"/>
+		<MaterialClass label="MATERIALCLASS_FEATURE_STONE"/>
+		<PrimaryColor label="COLOR_PINK"/>
+		<SecondaryColor label="COLOR_GREEN"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_ROUGH"/>
+		</SurfaceTextures>
+	</Material>
+	<MaterialClass>
+		<Name Label="MATERIALCLASS_LAVA_STONE"/>
+		<DefaultMaterial label="MATERIAL_OBSIDIAN"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_STONE_1"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_STONE_2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_STONE_3"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_STONE_4"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_WALL" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_FLOOR" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_PEBBLES" Texture="TEXTURE_PEBBLES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_BOULDER" Texture="TEXTURE_BOULDER"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="1"/>
+	</MaterialClass>
+	<Material>
+		<Name Label="MATERIAL_OBSIDIAN"/>
+		<MaterialClass label="MATERIALCLASS_LAVA_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_ROUGH"/>
+		</SurfaceTextures>
+	</Material>
+	<MaterialClass>
+		<Name Label="MATERIALCLASS_LAYER_STONE"/>
+		<DefaultMaterial label="MATERIAL_LAYER_STONE"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_STONE_1"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_STONE_2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_STONE_3"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_STONE_4"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_WALL" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_FLOOR" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_PEBBLES" Texture="TEXTURE_PEBBLES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_BOULDER" Texture="TEXTURE_BOULDER"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
+		</DefaultSurfaceTextures>
+		<MatGlossIndex int="1"/>
+	</MaterialClass>
+	<Material>
+		<Name Label="MATERIAL_LAYER_STONE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<!--<BorderColor label="COLOR_DARK_GREY"/>-->
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_STONE_1"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_STONE_2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_STONE_3"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_STONE_4"/>
+		</SurfaceTextures>
+	</Material>	
+	<Material>
+		<Name Label="MATERIAL_SANDSTONE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+        <ColorMode mode="overlay" />
+		<PrimaryColor label="COLOR_TAN"/>
+		<!--<SecondaryColor label="COLOR_PINK"/>-->
+		<BorderColor label="COLOR_TAN"/>
+		<MatGloss label="SANDSTONE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SILTSTONE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="SILTSTONE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MUDSTONE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<BorderColor label="COLOR_DARK_GREY"/>
+		<MatGloss label="MUDSTONE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SHALE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_SILVER"/>
+		<MatGloss label="SHALE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CLAYSTONE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_TAN"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<BorderColor label="COLOR_DARK_GREY"/>
+		<MatGloss label="CLAYSTONE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ROCK_SALT"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_WHITE"/>
+		<MatGloss label="ROCK_SALT"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CUBIC"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_LIMESTONE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<BorderColor label="COLOR_LIGHT_GREY"/>
+		<MatGloss label="LIMESTONE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CARBONATE"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CONGLOMERATE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_DARK_ORANGE"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<BorderColor label="COLOR_LIGHT_GREY"/>
+		<MatGloss label="CONGLOMERATE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_PEBBLES"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DOLOMITE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_SILVER"/>
+		<MatGloss label="DOLOMITE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CARBONATE"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_FLINT"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_SILVER"/>
+		<MatGloss label="FLINT"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CHERT"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+		<BorderColor label="COLOR_LIGHT_GREY"/>
+		<MatGloss label="CHERT"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CHALK"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_SILVER"/>
+		<MatGloss label="CHALK"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CARBONATE"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GRANITE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<BorderColor label="COLOR_SILVER"/>
+		<MatGloss label="GRANITE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DIORITE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<BorderColor label="COLOR_DARK_GREY"/>
+		<MatGloss label="DIORITE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GABBRO"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+        <ColorMode mode="overlay" />
+		<SecondaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_SILVER"/>
+		<MatGloss label="GABBRO"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_RHYOLITE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<BorderColor label="COLOR_DARK_GREY"/>
+		<MatGloss label="RHYOLITE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BASALT"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_SILVER"/>
+		<MatGloss label="BASALT"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ANDESITE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+        <ColorMode mode="overlay" />
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="ANDESITE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_FELSITE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+        <ColorMode mode="overlay" />
+		<BorderColor label="COLOR_LIGHT_GREY"/>
+		<MatGloss label="FELSITE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_OBSIDIAN"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<BorderColor label="COLOR_WHITE"/>
+		<MatGloss label="OBSIDIAN"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_QUARTZITE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_SILVER"/>
+		<MatGloss label="QUARTZITE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SLATE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_NAVY_BLUE"/>
+		<BorderColor label="COLOR_NAVY_BLUE"/>
+		<MatGloss label="SLATE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PHYLLITE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_SILVER"/>
+		<MatGloss label="PHYLLITE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SCHIST"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_TAN"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_SILVER"/>
+		<MatGloss label="SCHIST"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_FOLIATED"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GNEISS"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+        <ColorMode mode="overlay" />
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<!--<SecondaryColor label="COLOR_SILVER"/>-->
+		<BorderColor label="COLOR_SILVER"/>
+		<MatGloss label="GNEISS"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_FOLIATED"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MARBLE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<MatGloss label="MARBLE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CARBONATE"/>
+		</SurfaceTextures>
+	</Material>
+</Stones>

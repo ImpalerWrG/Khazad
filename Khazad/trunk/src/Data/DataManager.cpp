@@ -68,6 +68,13 @@ bool DataManager::Init()
     DataFiles.push_back(Path("Assets\\XML\\Trees.xml"));
     DataFiles.push_back(Path("Assets\\XML\\Buildings.xml"));
 
+    DataFiles.push_back(Path("Assets\\XML\\Ores.xml"));
+    DataFiles.push_back(Path("Assets\\XML\\Minerals.xml"));
+    DataFiles.push_back(Path("Assets\\XML\\Stones.xml"));
+    DataFiles.push_back(Path("Assets\\XML\\Gems.xml"));
+    DataFiles.push_back(Path("Assets\\XML\\Soils.xml"));
+    DataFiles.push_back(Path("Assets\\XML\\Metals.xml"));
+
     std::vector<Path>::iterator FileIterator;
     for (FileIterator = DataFiles.begin(); FileIterator != DataFiles.end(); FileIterator++)
     {
