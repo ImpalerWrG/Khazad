@@ -98,6 +98,40 @@ void TextureDataLibrary::LoadElement(TiXmlElement* Element)
     }
 }
 
+// TEXTURE GRID
+
+TextureGridData::TextureGridData(){}
+
+TextureGridData::~TextureGridData(){}
+
+bool TextureGridData::Load(TiXmlElement* Entry, Uint32 Index)
+{
+    if(Entry)
+    {
+        string temp;
+        XML->QueryTextValue(Entry, "File", "Path", temp);
+        sPath = temp;
+
+        DataBase::Load(Entry, Index);
+        return true;
+    }
+    return false;
+}
+
+void TextureGridDataLibrary::LoadElement(TiXmlElement* Element)
+{
+    TextureGridData* NewData = new TextureGridData();
+    if (NewData->Load(Element, DataEntries.size()))
+    {
+        DataEntries.push_back(NewData);
+    }
+    else  // Error durring loading delete the Data object
+    {
+        printf("Failed to Load Data object");
+        delete NewData;
+    }
+}
+
 // MODEL
 
 ModelData::ModelData()

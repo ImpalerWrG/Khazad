@@ -29,6 +29,15 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_WOOD_FLOOR"/>
 		</SurfaceTextures>
 	</Material>
+    <Material>
+        <Name Label="MATERIAL_TREE_SNOW"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+        <ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_TREE_SNOW"/>
+		</SurfaceTextures>
+    </Material>	
+	
 	<Tree>
 		<Name Label="TREE_SAGUARO"/>
 		<MatGloss value="SAGUARO"/>
@@ -36,55 +45,6 @@
 		<Trunk material="MATERIAL_SAGUARO"/>
 		<Leaves material="MATERIAL_SAGUARO"/>
 	</Tree>
-	<Tree>
-		<Name Label="TREE_OAK"/>
-		<MatGloss value="OAK"/>
-		<Model label="MODEL_OAK"/>
-		<Trunk material="MATERIAL_OAK_TRUNK"/>
-		<Leaves material="MATERIAL_OAK_LEAVES"/>
-	</Tree>
-	<Tree>
-		<Name Label="TREE_MAPLE"/>
-		<MatGloss value="MAPLE"/>
-		<Model label="MODEL_MAPLE"/>
-		<Trunk material="MATERIAL_MAPLE_TRUNK"/>
-		<Leaves material="MATERIAL_MAPLE_LEAVES"/>
-	</Tree>
-	<Tree>
-		<Name Label="TREE_BIRCH"/>
-		<MatGloss value="BIRCH"/>
-		<Model label="MODEL_BIRCH"/>
-		<Trunk material="MATERIAL_BIRCH_TRUNK"/>
-		<Leaves material="MATERIAL_BIRCH_LEAVES"/>
-	</Tree>
-	<Tree>
-		<Name Label="TREE_CHESTNUT"/>
-		<MatGloss value="CHESTNUT"/>
-		<Model label="MODEL_CHESTNUT"/>
-		<Trunk material="MATERIAL_CHESTNUT_TRUNK"/>
-		<Leaves material="MATERIAL_CHESTNUT_LEAVES"/>
-	</Tree>
-	<Tree>
-		<Name Label="TREE_PALM"/>
-		<MatGloss value="PALM"/>
-		<Model label="MODEL_PALM"/>
-		<Trunk material="MATERIAL_PALM_TRUNK"/>
-		<Leaves material="MATERIAL_PALM_LEAVES"/>
-	</Tree>
-    <Tree>
-        <Name Label="TREE_PINE"/>
-        <MatGloss value="PINE"/>
-        <Model label="MODEL_PINE"/>
-        <Trunk material="MATERIAL_PINE_TRUNK"/>
-        <Leaves material="MATERIAL_PINE_LEAVES"/>
-    </Tree>
-    <Tree>
-        <Name Label="TREE_LARCH"/>
-        <MatGloss value="LARCH"/>
-        <Model label="MODEL_LARCH"/>
-        <Trunk material="MATERIAL_LARCH_TRUNK"/>
-        <Leaves material="MATERIAL_LARCH_LEAVES"/>
-    </Tree>
     <Material>
         <Name Label="MATERIAL_SAGUARO"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
@@ -93,20 +53,21 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SAGUARO"/>
 		</SurfaceTextures>
     </Material>
+
+	
+	<Tree>
+		<Name Label="TREE_OAK"/>
+		<MatGloss value="OAK"/>
+		<Model label="MODEL_OAK"/>
+		<Trunk material="MATERIAL_OAK_TRUNK"/>
+		<Leaves material="MATERIAL_OAK_LEAVES"/>
+	</Tree>
     <Material>
         <Name Label="MATERIAL_OAK_TRUNK"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_OAK_TRUNK"/>
-		</SurfaceTextures>
-    </Material>
-    <Material>
-        <Name Label="MATERIAL_TREE_SNOW"/>
-		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
-        <ColorMode mode="keepimage"/>
-		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_TREE_SNOW"/>
 		</SurfaceTextures>
     </Material>
     <Material>
@@ -117,7 +78,16 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_OAK_LEAVES"/>
 		</SurfaceTextures>
     </Material>
-    <Material>
+
+	
+	<Tree>
+		<Name Label="TREE_MAPLE"/>
+		<MatGloss value="MAPLE"/>
+		<Model label="MODEL_MAPLE"/>
+		<Trunk material="MATERIAL_MAPLE_TRUNK"/>
+		<Leaves material="MATERIAL_MAPLE_LEAVES"/>
+	</Tree>
+	<Material>
         <Name Label="MATERIAL_MAPLE_TRUNK"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
@@ -133,6 +103,15 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_MAPLE_LEAVES"/>
 		</SurfaceTextures>
     </Material>
+	
+	
+	<Tree>
+		<Name Label="TREE_BIRCH"/>
+		<MatGloss value="BIRCH"/>
+		<Model label="MODEL_BIRCH"/>
+		<Trunk material="MATERIAL_BIRCH_TRUNK"/>
+		<Leaves material="MATERIAL_BIRCH_LEAVES"/>
+	</Tree>
     <Material>
         <Name Label="MATERIAL_BIRCH_TRUNK"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
@@ -149,6 +128,14 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_BIRCH_LEAVES"/>
 		</SurfaceTextures>
     </Material>
+
+	<Tree>
+		<Name Label="TREE_CHESTNUT"/>
+		<MatGloss value="CHESTNUT"/>
+		<Model label="MODEL_CHESTNUT"/>
+		<Trunk material="MATERIAL_CHESTNUT_TRUNK"/>
+		<Leaves material="MATERIAL_CHESTNUT_LEAVES"/>
+	</Tree>
     <Material>
         <Name Label="MATERIAL_CHESTNUT_TRUNK"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
@@ -165,7 +152,15 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CHESTNUT_LEAVES"/>
 		</SurfaceTextures>
     </Material>
-    <Material>
+
+	<Tree>
+		<Name Label="TREE_PALM"/>
+		<MatGloss value="PALM"/>
+		<Model label="MODEL_PALM"/>
+		<Trunk material="MATERIAL_PALM_TRUNK"/>
+		<Leaves material="MATERIAL_PALM_LEAVES"/>
+	</Tree>
+   <Material>
         <Name Label="MATERIAL_PALM_TRUNK"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
@@ -181,6 +176,14 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_PALM_LEAVES"/>
 		</SurfaceTextures>
     </Material>
+	
+    <Tree>
+        <Name Label="TREE_PINE"/>
+        <MatGloss value="PINE"/>
+        <Model label="MODEL_PINE"/>
+        <Trunk material="MATERIAL_PINE_TRUNK"/>
+        <Leaves material="MATERIAL_PINE_LEAVES"/>
+    </Tree>
     <Material>
         <Name Label="MATERIAL_PINE_TRUNK"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
@@ -197,6 +200,14 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_PINE_LEAVES"/>
 		</SurfaceTextures>
     </Material>
+
+    <Tree>
+        <Name Label="TREE_LARCH"/>
+        <MatGloss value="LARCH"/>
+        <Model label="MODEL_LARCH"/>
+        <Trunk material="MATERIAL_LARCH_TRUNK"/>
+        <Leaves material="MATERIAL_LARCH_LEAVES"/>
+    </Tree>
     <Material>
         <Name Label="MATERIAL_LARCH_TRUNK"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
@@ -213,4 +224,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LARCH_LEAVES"/>
 		</SurfaceTextures>
     </Material>
+	
+
 </Trees>

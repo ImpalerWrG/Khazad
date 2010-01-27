@@ -55,25 +55,16 @@ bool DataManager::Init()
 {
     std::vector<Path> DataFiles;
 
-    // master file reading from xml?
-    DataFiles.push_back(Path("Assets\\XML\\Colors.xml"));
-    DataFiles.push_back(Path("Assets\\XML\\Textures.xml"));
-    DataFiles.push_back(Path("Assets\\XML\\Models.xml"));
-    DataFiles.push_back(Path("Assets\\XML\\Fonts.xml"));
-    DataFiles.push_back(Path("Assets\\XML\\Materials.xml"));
-    DataFiles.push_back(Path("Assets\\XML\\TileGroups.xml"));
-    DataFiles.push_back(Path("Assets\\XML\\MaterialClasses.xml"));
-    DataFiles.push_back(Path("Assets\\XML\\SurfaceTypes.xml"));
-    DataFiles.push_back(Path("Assets\\XML\\TileShapes.xml"));
-    DataFiles.push_back(Path("Assets\\XML\\Trees.xml"));
-    DataFiles.push_back(Path("Assets\\XML\\Buildings.xml"));
+    // Safety null checks on documents
+    TiXmlDocument* Document = XML->loadFile("Assets\\XML\\MasterFileList.xml");
+    TiXmlElement* Parent = Document->RootElement();
+    TiXmlElement* Iterator = Parent->FirstChildElement();
 
-    DataFiles.push_back(Path("Assets\\XML\\Ores.xml"));
-    DataFiles.push_back(Path("Assets\\XML\\Minerals.xml"));
-    DataFiles.push_back(Path("Assets\\XML\\Stones.xml"));
-    DataFiles.push_back(Path("Assets\\XML\\Gems.xml"));
-    DataFiles.push_back(Path("Assets\\XML\\Soils.xml"));
-    DataFiles.push_back(Path("Assets\\XML\\Metals.xml"));
+    for(; Iterator != NULL; Iterator = Iterator->NextSiblingElement())
+    {
+        DataFiles.push_back(Path(Iterator->Attribute("Path")));
+    }
+    Document->~TiXmlDocument();  // Free the Document
 
     std::vector<Path>::iterator FileIterator;
     for (FileIterator = DataFiles.begin(); FileIterator != DataFiles.end(); FileIterator++)
@@ -84,7 +75,7 @@ bool DataManager::Init()
     std::map<string, DataLibraryBase*, ltstr>::iterator TypeIterator;
     for (TypeIterator = GlobalDataTypeMap.begin(); TypeIterator != GlobalDataTypeMap.end(); TypeIterator++)
     {
-        (*TypeIterator).second->PostProcessDataClass();
+        TypeIterator->second->PostProcessDataClass();
     }
 
     return true;

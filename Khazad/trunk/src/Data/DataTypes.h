@@ -97,6 +97,39 @@ public:
     std::vector<TextureData*> DataEntries;
 };
 
+class TextureGridData: public DataBase
+{
+
+public:
+
+    TextureGridData();
+    ~TextureGridData();
+
+    bool Load(TiXmlElement* Element, Uint32 Index);
+    bool PostProcessing() {};
+
+    Path getPath() { return sPath; }
+
+    void setDevILID(Uint32 ID)      { DevILID = ID; }
+    Uint32 getDevILID()             { return DevILID; }
+
+protected:
+
+    Path sPath;
+    Uint32 DevILID;
+};
+
+class TextureGridDataLibrary: public DataLibraryBase
+{
+
+public:
+
+    void LoadElement(TiXmlElement* Element);
+    void PostProcessDataClass() {};
+
+    std::vector<TextureGridData*> DataEntries;
+};
+
 class ModelData: public DataBase
 {
 
