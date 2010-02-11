@@ -27,7 +27,7 @@ class DataLibraryBase
 
 public:
 
-    virtual void LoadElement(TiXmlElement* Element) = 0;
+    virtual DataBase* LoadElement(TiXmlElement* Element) = 0;
     virtual void PostProcessDataClass() = 0;
 };
 
@@ -58,7 +58,7 @@ class ColorDataLibrary: public DataLibraryBase
 
 public:
 
-    void LoadElement(TiXmlElement* Element);
+    DataBase* LoadElement(TiXmlElement* Element);
     void PostProcessDataClass() {};
 
     std::vector<ColorData*> DataEntries;
@@ -75,15 +75,32 @@ public:
     bool Load(TiXmlElement* Element, Uint32 Index);
     bool PostProcessing() {};
 
-    Path getPath() { return sPath; }
+    Path getPath()              { return sPath; }
+    void setPath(Path newPath)  { sPath = newPath; }
 
     void setDevILID(Uint32 ID)      { DevILID = ID; }
     Uint32 getDevILID()             { return DevILID; }
+
+    void setX(uint16_t X)    { x = X; }
+    void setY(uint16_t Y)    { y = Y; }
+    void setW(uint16_t W)    { w = W; }
+    void setH(uint16_t H)    { h = H; }
+
+    uint16_t getX()    { return x; }
+    uint16_t getY()    { return y; }
+    uint16_t getW()    { return w; }
+    uint16_t getH()    { return h; }
+
+    bool isLoneTexture()                { return LoneTexture; }
+    bool setLoneTexture(bool NewValue)  { LoneTexture = NewValue; }
 
 protected:
 
     Path sPath;
     Uint32 DevILID;
+
+    bool LoneTexture;     // Marks this texture as a whole file texture
+    uint16_t x, y, h, w;  // Used for grid and sheet derived textures
 };
 
 class TextureDataLibrary: public DataLibraryBase
@@ -91,7 +108,7 @@ class TextureDataLibrary: public DataLibraryBase
 
 public:
 
-    void LoadElement(TiXmlElement* Element);
+    DataBase* LoadElement(TiXmlElement* Element);
     void PostProcessDataClass() {};
 
     std::vector<TextureData*> DataEntries;
@@ -113,10 +130,18 @@ public:
     void setDevILID(Uint32 ID)      { DevILID = ID; }
     Uint32 getDevILID()             { return DevILID; }
 
+    std::vector<TextureData*> TextureList;
+
+    uint16_t getTextureHeight()     { return TextureHeight; }
+    uint16_t getTextureWidth()      { return TextureWidth; }
+
 protected:
 
     Path sPath;
     Uint32 DevILID;
+
+    uint16_t GridHeight, GridWidth;
+    uint16_t TextureHeight, TextureWidth;
 };
 
 class TextureGridDataLibrary: public DataLibraryBase
@@ -124,10 +149,45 @@ class TextureGridDataLibrary: public DataLibraryBase
 
 public:
 
-    void LoadElement(TiXmlElement* Element);
+    DataBase* LoadElement(TiXmlElement* Element);
     void PostProcessDataClass() {};
 
     std::vector<TextureGridData*> DataEntries;
+};
+
+class TextureSheetData: public DataBase
+{
+
+public:
+
+    TextureSheetData();
+    ~TextureSheetData();
+
+    bool Load(TiXmlElement* Element, Uint32 Index);
+    bool PostProcessing() {};
+
+    Path getPath() { return sPath; }
+
+    void setDevILID(Uint32 ID)      { DevILID = ID; }
+    Uint32 getDevILID()             { return DevILID; }
+
+    std::vector<TextureData*> TextureList;
+
+protected:
+
+    Path sPath;
+    Uint32 DevILID;
+};
+
+class TextureSheetDataLibrary: public DataLibraryBase
+{
+
+public:
+
+    DataBase* LoadElement(TiXmlElement* Element);
+    void PostProcessDataClass() {};
+
+    std::vector<TextureSheetData*> DataEntries;
 };
 
 class ModelData: public DataBase
@@ -155,7 +215,7 @@ class ModelDataLibrary: public DataLibraryBase
 
 public:
 
-    void LoadElement(TiXmlElement* Element);
+    DataBase* LoadElement(TiXmlElement* Element);
     void PostProcessDataClass() {};
 
     std::vector<ModelData*> DataEntries;
@@ -185,7 +245,7 @@ class SurfaceTypeDataLibrary: public DataLibraryBase
 
 public:
 
-    void LoadElement(TiXmlElement* Element);
+    DataBase* LoadElement(TiXmlElement* Element);
     void PostProcessDataClass();
 
     std::vector<SurfaceTypeData*> DataEntries;
@@ -226,7 +286,7 @@ class TileGroupDataLibrary: public DataLibraryBase
 
 public:
 
-    void LoadElement(TiXmlElement* Element);
+    DataBase* LoadElement(TiXmlElement* Element);
     void PostProcessDataClass();
 
     std::vector<TileGroupData*> DataEntries;
@@ -266,7 +326,7 @@ class MaterialClassDataLibrary: public DataLibraryBase
 
 public:
 
-    void LoadElement(TiXmlElement* Element);
+    DataBase* LoadElement(TiXmlElement* Element);
     void PostProcessDataClass();
 
     std::vector<MaterialClassData*> DataEntries;
@@ -322,7 +382,7 @@ class MaterialDataLibrary: public DataLibraryBase
 
 public:
 
-    void LoadElement(TiXmlElement* Element);
+    DataBase* LoadElement(TiXmlElement* Element);
     void PostProcessDataClass();
 
     std::vector<MaterialData*> DataEntries;
@@ -353,7 +413,7 @@ class FontDataLibrary: public DataLibraryBase
 
 public:
 
-    void LoadElement(TiXmlElement* Element);
+    DataBase* LoadElement(TiXmlElement* Element);
     void PostProcessDataClass() {};
 
     std::vector<FontData*> DataEntries;
@@ -386,7 +446,7 @@ class TileShapeDataLibrary: public DataLibraryBase
 
 public:
 
-    void LoadElement(TiXmlElement* Element);
+    DataBase* LoadElement(TiXmlElement* Element);
     void PostProcessDataClass();
 
     std::vector<TileShapeData*> DataEntries;
@@ -427,7 +487,7 @@ class TreeDataLibrary: public DataLibraryBase
 
 public:
 
-    void LoadElement(TiXmlElement* Element);
+    DataBase* LoadElement(TiXmlElement* Element);
     void PostProcessDataClass();
 
     std::vector<TreeData*> DataEntries;
@@ -463,7 +523,7 @@ class BuildingDataLibrary: public DataLibraryBase
 
 public:
 
-    void LoadElement(TiXmlElement* Element);
+    DataBase* LoadElement(TiXmlElement* Element);
     void PostProcessDataClass();
 
     std::vector<BuildingData*> DataEntries;

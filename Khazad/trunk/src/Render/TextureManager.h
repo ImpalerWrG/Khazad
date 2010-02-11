@@ -19,7 +19,7 @@ public:
 	~TextureManager();
 	bool Init();
 
-    void MergeTextures();
+    //void MergeTextures();
 
     int round(double x);
     int nextpoweroftwo(int x);

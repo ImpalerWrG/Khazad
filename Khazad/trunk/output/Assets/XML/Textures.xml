@@ -101,22 +101,6 @@
         <File Path="Assets/Models/larch/leavesnt.png"/>
     </Texture>
 	<Texture>
-		<Name Label="TEXTURE_GRASS_1"/>
-		<File Path="Assets/Textures/grass1.png"/>
-	</Texture>
-	<Texture>
-		<Name Label="TEXTURE_GRASS_2"/>
-		<File Path="Assets/Textures/grass2.png"/>
-	</Texture>
-	<Texture>
-		<Name Label="TEXTURE_GRASS_3"/>
-		<File Path="Assets/Textures/grass3.png"/>
-	</Texture>
-	<Texture>
-		<Name Label="TEXTURE_GRASS_4"/>
-		<File Path="Assets/Textures/grass4.png"/>
-	</Texture>
-	<Texture>
 		<Name Label="TEXTURE_STONE_1"/>
 		<File Path="Assets/Textures/stone1.png"/>
 	</Texture>
@@ -268,4 +252,48 @@
 		<Name Label="TEXTURE_KHAZAD_LOGO"/>
 		<File Path="Assets/Textures/KhazadLogo.png"/>
 	</Texture>
+	<TextureGrid>
+		<TextureSize Height="32" Width="32"/>
+		<GridSize Height="9" Width="7"/>
+		<File Path="Assets/Textures/grass.png"/>
+		<Textures>
+			<Texture>
+				<Name Label="TEXTURE_GRASS_1"/>
+				<GridLocation X="0" Y="0"/>
+			</Texture>
+			<Texture>
+				<Name Label="TEXTURE_GRASS_2"/>
+				<GridLocation X="0" Y="1"/>
+			</Texture>
+			<Texture>
+				<Name Label="TEXTURE_GRASS_3"/>
+				<GridLocation X="1" Y="0"/>
+			</Texture>
+			<Texture>
+				<Name Label="TEXTURE_GRASS_4"/>
+				<GridLocation X="1" Y="1"/>
+			</Texture>
+		</Textures>
+	</TextureGrid>
+	<TextureSheet>
+		<File Path="Assets/Textures/grassSheet.png"/>
+		<Textures>
+			<Texture>
+				<Name Label="TEXTURE_GRASS_5"/>
+				<SheetLocation X="25" Y="91" W="16" H="16"/>
+			</Texture>
+			<Texture>
+				<Name Label="TEXTURE_GRASS_6"/>
+				<SheetLocation X="78" Y="14" W="32" H="32"/>
+			</Texture>
+			<Texture>
+				<Name Label="TEXTURE_GRASS_7"/>
+				<SheetLocation X="65" Y="64" W="64" H="64"/>
+			</Texture>
+			<Texture>
+				<Name Label="TEXTURE_GRASS_8"/>
+				<SheetLocation X="155" Y="19" W="64" H="64"/>
+			</Texture>
+		</Textures>
+	</TextureSheet>
 </Textures>

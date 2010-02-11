@@ -36,7 +36,10 @@ public:
         for(; Iterator != NULL; Iterator = Iterator->NextSiblingElement())
         {
             DataLibraryBase* TargetLibrary = getDataTypeGroup(Iterator->Value());
-            TargetLibrary->LoadElement(Iterator);
+            if (TargetLibrary != NULL)
+            {
+                TargetLibrary->LoadElement(Iterator);
+            }
         }
 
         Document->~TiXmlDocument();  // Free the Document
@@ -45,36 +48,55 @@ public:
 
     ColorData* getColorData(Uint32 Index)                    { return Colors->DataEntries[Index]; }
     Uint32 getNumColors()                                    { return Colors->DataEntries.size(); }
+    ColorDataLibrary* getColorDataLibrary()                  { return Colors; }
 
     TextureData* getTextureData(Uint32 Index)                { return Textures->DataEntries[Index]; }
     Uint32 getNumTextures()                                  { return Textures->DataEntries.size(); }
+    TextureDataLibrary* getTextureDataLibrary()              { return Textures; }
+
+    TextureGridData* getTextureGridData(Uint32 Index)        { return TextureGrids->DataEntries[Index]; }
+    Uint32 getNumTextureGrids()                              { return TextureGrids->DataEntries.size(); }
+    TextureGridDataLibrary* getTextureGridDataLibrary()      { return TextureGrids; }
+
+    TextureSheetData* getTextureSheetData(Uint32 Index)      { return TextureSheets->DataEntries[Index]; }
+    Uint32 getNumTextureSheets()                             { return TextureSheets->DataEntries.size(); }
+    TextureSheetDataLibrary* getTextureSheetDataLibrary()    { return TextureSheets; }
 
     ModelData* getModelData(Uint32 Index)                    { return Models->DataEntries[Index]; }
     Uint32 getNumModels()                                    { return Models->DataEntries.size(); }
+    ModelDataLibrary* getModelDataLibrary()                  { return Models; }
 
     FontData* getFontData(Uint32 Index)                      { return Fonts->DataEntries[Index]; }
     Uint32 getNumFonts()                                     { return Fonts->DataEntries.size(); }
+    FontDataLibrary* getFontDataLibrary()                    { return Fonts; }
 
     MaterialData* getMaterialData(Uint32 Index)              { return Materials->DataEntries[Index]; }
     Uint32 getNumMaterials()                                 { return Materials->DataEntries.size(); }
+    MaterialDataLibrary* getMaterialDataLibrary()            { return Materials; }
 
     TileGroupData* getTileGroupData(Uint32 Index)            { return TileGroups->DataEntries[Index]; }
     Uint32 getNumTileGroups()                                { return TileGroups->DataEntries.size(); }
+    TileGroupDataLibrary* getTileGroupDataLibrary()          { return TileGroups; }
 
     MaterialClassData* getMaterialClassData(Uint32 Index)    { return MaterialClasses->DataEntries[Index]; }
     Uint32 getNumMaterialClasses()                           { return MaterialClasses->DataEntries.size(); }
+    MaterialClassDataLibrary* getMaterialClassDataLibrary()  { return MaterialClasses; }
 
     SurfaceTypeData* getSurfaceTypeData(Uint32 Index)        { return SurfaceTypes->DataEntries[Index]; }
     Uint32 getNumSurfaceTypes()                              { return SurfaceTypes->DataEntries.size(); }
+    SurfaceTypeDataLibrary* getSurfaceTypeDataLibrary()      { return SurfaceTypes; }
 
     TileShapeData* getTileShapeData(Uint32 Index)            { return TileShapes->DataEntries[Index]; }
     Uint32 getNumTileShape()                                 { return TileShapes->DataEntries.size(); }
+    TileShapeDataLibrary* getTileShapeDataLibrary()          { return TileShapes; }
 
     TreeData* getTreeData(Uint32 Index)                      { return Trees->DataEntries[Index]; }
     Uint32 getNumTrees()                                     { return Trees->DataEntries.size(); }
+    TreeDataLibrary* getTreeDataLibrary()                    { return Trees; }
 
     BuildingData* getBuildingData(Uint32 Index)              { return Buildings->DataEntries[Index]; }
     Uint32 getNumBuildings()                                 { return Buildings->DataEntries.size(); }
+    BuildingDataLibrary* getBuildingDataLibrary()            { return Buildings; }
 
     // ADD New Data classes gets Here
 
@@ -92,6 +114,8 @@ protected:
 
     ColorDataLibrary* Colors;
     TextureDataLibrary* Textures;
+    TextureGridDataLibrary* TextureGrids;
+    TextureSheetDataLibrary* TextureSheets;
     ModelDataLibrary* Models;
     FontDataLibrary* Fonts;
     MaterialDataLibrary* Materials;

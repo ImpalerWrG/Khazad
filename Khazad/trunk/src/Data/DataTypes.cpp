@@ -51,23 +51,30 @@ bool ColorData::Load(TiXmlElement* Entry, Uint32 Index)
     return false;
 }
 
-void ColorDataLibrary::LoadElement(TiXmlElement* Element)
+DataBase* ColorDataLibrary::LoadElement(TiXmlElement* Element)
 {
     ColorData* NewData = new ColorData();
     if (NewData->Load(Element, DataEntries.size()))
     {
         DataEntries.push_back(NewData);
+        return NewData;
     }
     else  // Error durring loading delete the Data object
     {
         printf("Failed to Load Data object");
         delete NewData;
+        return NULL;
     }
 }
 
 // TEXTURE
 
-TextureData::TextureData(){}
+TextureData::TextureData()
+{
+    LoneTexture = true;
+
+    x = y = w = h = 0;
+}
 
 TextureData::~TextureData(){}
 
@@ -78,23 +85,35 @@ bool TextureData::Load(TiXmlElement* Entry, Uint32 Index)
         string temp;
         XML->QueryTextValue(Entry, "File", "Path", temp);
         sPath = temp;
+
+        XML->QueryUIntValue(Entry, "GridLocation", "X", x);
+        XML->QueryUIntValue(Entry, "GridLocation", "Y", y);
+
+        XML->QueryUIntValue(Entry, "SheetLocation", "X", x);
+        XML->QueryUIntValue(Entry, "SheetLocation", "Y", y);
+
+        XML->QueryUIntValue(Entry, "SheetLocation", "W", w);
+        XML->QueryUIntValue(Entry, "SheetLocation", "H", h);
+
         DataBase::Load(Entry, Index);
         return true;
     }
     return false;
 }
 
-void TextureDataLibrary::LoadElement(TiXmlElement* Element)
+DataBase* TextureDataLibrary::LoadElement(TiXmlElement* Element)
 {
     TextureData* NewData = new TextureData();
     if (NewData->Load(Element, DataEntries.size()))
     {
         DataEntries.push_back(NewData);
+        return NewData;
     }
     else  // Error durring loading delete the Data object
     {
         printf("Failed to Load Data object");
         delete NewData;
+        return NULL;
     }
 }
 
@@ -112,23 +131,93 @@ bool TextureGridData::Load(TiXmlElement* Entry, Uint32 Index)
         XML->QueryTextValue(Entry, "File", "Path", temp);
         sPath = temp;
 
+        XML->QueryUIntValue(Entry, "TextureSize", "Height", TextureHeight);
+        XML->QueryUIntValue(Entry, "TextureSize", "Width", TextureWidth);
+
+        XML->QueryUIntValue(Entry, "GridSize", "Height", GridHeight);
+        XML->QueryUIntValue(Entry, "GridSize", "Width", GridWidth);
+
+
+        TiXmlElement* Iterator = Entry->FirstChildElement("Textures");
+        Iterator = Iterator->FirstChildElement("Texture");
+        for(; Iterator != NULL; Iterator = Iterator->NextSiblingElement())
+        {
+            TextureData* NewTexture = static_cast<TextureData*> (DATA->getTextureDataLibrary()->LoadElement(Iterator));
+
+            NewTexture->setLoneTexture(false);
+
+            // Convert Grid position to pixels
+            NewTexture->setX(NewTexture->getX() * TextureWidth);
+            NewTexture->setY(NewTexture->getY() * TextureHeight);
+
+            TextureList.push_back(NewTexture);
+        }
+
         DataBase::Load(Entry, Index);
         return true;
     }
     return false;
 }
 
-void TextureGridDataLibrary::LoadElement(TiXmlElement* Element)
+DataBase* TextureGridDataLibrary::LoadElement(TiXmlElement* Element)
 {
     TextureGridData* NewData = new TextureGridData();
     if (NewData->Load(Element, DataEntries.size()))
     {
         DataEntries.push_back(NewData);
+        return NewData;
     }
     else  // Error durring loading delete the Data object
     {
         printf("Failed to Load Data object");
         delete NewData;
+        return NULL;
+    }
+}
+
+// TEXTURE SHEET
+
+TextureSheetData::TextureSheetData(){}
+
+TextureSheetData::~TextureSheetData(){}
+
+bool TextureSheetData::Load(TiXmlElement* Entry, Uint32 Index)
+{
+    if(Entry)
+    {
+        string temp;
+        XML->QueryTextValue(Entry, "File", "Path", temp);
+        sPath = temp;
+
+        TiXmlElement* Iterator = Entry->FirstChildElement("Textures");
+        Iterator = Iterator->FirstChildElement("Texture");
+        for(; Iterator != NULL; Iterator = Iterator->NextSiblingElement())
+        {
+            TextureData* NewTexture = static_cast<TextureData*> (DATA->getTextureDataLibrary()->LoadElement(Iterator));
+
+            NewTexture->setLoneTexture(false);
+            TextureList.push_back(NewTexture);
+        }
+
+        DataBase::Load(Entry, Index);
+        return true;
+    }
+    return false;
+}
+
+DataBase* TextureSheetDataLibrary::LoadElement(TiXmlElement* Element)
+{
+    TextureSheetData* NewData = new TextureSheetData();
+    if (NewData->Load(Element, DataEntries.size()))
+    {
+        DataEntries.push_back(NewData);
+        return NewData;
+    }
+    else  // Error durring loading delete the Data object
+    {
+        printf("Failed to Load Data object");
+        delete NewData;
+        return NULL;
     }
 }
 
@@ -156,17 +245,19 @@ bool ModelData::Load(TiXmlElement* Entry, Uint32 Index)
     return false;
 }
 
-void ModelDataLibrary::LoadElement(TiXmlElement* Element)
+DataBase* ModelDataLibrary::LoadElement(TiXmlElement* Element)
 {
     ModelData* NewData = new ModelData();
     if (NewData->Load(Element, DataEntries.size()))
     {
         DataEntries.push_back(NewData);
+        return NewData;
     }
     else  // Error durring loading delete the Data object
     {
         printf("Failed to Load Data object");
         delete NewData;
+        return NULL;
     }
 }
 
@@ -195,17 +286,19 @@ bool SurfaceTypeData::PostProcessing()
     return true;
 }
 
-void SurfaceTypeDataLibrary::LoadElement(TiXmlElement* Element)
+DataBase* SurfaceTypeDataLibrary::LoadElement(TiXmlElement* Element)
 {
     SurfaceTypeData* NewData = new SurfaceTypeData();
     if (NewData->Load(Element, DataEntries.size()))
     {
         DataEntries.push_back(NewData);
+        return NewData;
     }
     else  // Error durring loading delete the Data object
     {
         printf("Failed to Load Data object");
         delete NewData;
+        return NULL;
     }
 }
 
@@ -258,17 +351,19 @@ bool TileGroupData::PostProcessing()
     return true;
 }
 
-void TileGroupDataLibrary::LoadElement(TiXmlElement* Element)
+DataBase* TileGroupDataLibrary::LoadElement(TiXmlElement* Element)
 {
     TileGroupData* NewData = new TileGroupData();
     if (NewData->Load(Element, DataEntries.size()))
     {
         DataEntries.push_back(NewData);
+        return NewData;
     }
     else  // Error durring loading delete the Data object
     {
         printf("Failed to Load Data object");
         delete NewData;
+        return NULL;
     }
 }
 
@@ -331,17 +426,19 @@ bool MaterialClassData::PostProcessing()
     return true;
 }
 
-void MaterialClassDataLibrary::LoadElement(TiXmlElement* Element)
+DataBase* MaterialClassDataLibrary::LoadElement(TiXmlElement* Element)
 {
     MaterialClassData* NewData = new MaterialClassData();
     if (NewData->Load(Element, DataEntries.size()))
     {
         DataEntries.push_back(NewData);
+        return NewData;
     }
     else  // Error durring loading delete the Data object
     {
         printf("Failed to Load Data object");
         delete NewData;
+        return NULL;
     }
 }
 
@@ -414,17 +511,19 @@ bool MaterialData::PostProcessing()
     return true;
 }
 
-void MaterialDataLibrary::LoadElement(TiXmlElement* Element)
+DataBase* MaterialDataLibrary::LoadElement(TiXmlElement* Element)
 {
     MaterialData* NewData = new MaterialData();
     if (NewData->Load(Element, DataEntries.size()))
     {
         DataEntries.push_back(NewData);
+        return NewData;
     }
     else  // Error durring loading delete the Data object
     {
         printf("Failed to Load Data object");
         delete NewData;
+        return NULL;
     }
 }
 
@@ -457,17 +556,19 @@ bool FontData::Load(TiXmlElement* Entry, Uint32 Index)
     return false;
 }
 
-void FontDataLibrary::LoadElement(TiXmlElement* Element)
+DataBase* FontDataLibrary::LoadElement(TiXmlElement* Element)
 {
     FontData* NewData = new FontData();
     if (NewData->Load(Element, DataEntries.size()))
     {
         DataEntries.push_back(NewData);
+        return NewData;
     }
     else  // Error durring loading delete the Data object
     {
         printf("Failed to Load Data object");
         delete NewData;
+        return NULL;
     }
 }
 
@@ -501,17 +602,19 @@ bool TileShapeData::PostProcessing()
     ModelID = DATA->getLabelIndex(ModelLabel);
 }
 
-void TileShapeDataLibrary::LoadElement(TiXmlElement* Element)
+DataBase* TileShapeDataLibrary::LoadElement(TiXmlElement* Element)
 {
     TileShapeData* NewData = new TileShapeData();
     if (NewData->Load(Element, DataEntries.size()))
     {
         DataEntries.push_back(NewData);
+        return NewData;
     }
     else  // Error durring loading delete the Data object
     {
         printf("Failed to Load Data object");
         delete NewData;
+        return NULL;
     }
 }
 
@@ -555,17 +658,19 @@ bool TreeData::PostProcessing()
     return true;
 }
 
-void TreeDataLibrary::LoadElement(TiXmlElement* Element)
+DataBase* TreeDataLibrary::LoadElement(TiXmlElement* Element)
 {
     TreeData* NewData = new TreeData();
     if (NewData->Load(Element, DataEntries.size()))
     {
         DataEntries.push_back(NewData);
+        return NewData;
     }
     else  // Error durring loading delete the Data object
     {
         printf("Failed to Load Data object");
         delete NewData;
+        return NULL;
     }
 }
 
@@ -612,17 +717,19 @@ bool BuildingData::PostProcessing()
     return true;
 }
 
-void BuildingDataLibrary::LoadElement(TiXmlElement* Element)
+DataBase* BuildingDataLibrary::LoadElement(TiXmlElement* Element)
 {
     BuildingData* NewData = new BuildingData();
     if (NewData->Load(Element, DataEntries.size()))
     {
         DataEntries.push_back(NewData);
+        return NewData;
     }
     else  // Error durring loading delete the Data object
     {
         printf("Failed to Load Data object");
         delete NewData;
+        return NULL;
     }
 }
 

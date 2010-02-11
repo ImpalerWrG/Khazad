@@ -59,6 +59,7 @@ bool TextureManager::isFileEnding(const char* FilePath, const char* Ending)
     return strcmp(FilePath + EndingStart,  Ending) == 0;
 }
 
+/*
 void TextureManager::MergeTextures()
 {
     printf("Creating Texture Palette from %i individual textures\n", IMAGE->DevilImageVector.size());
@@ -136,6 +137,7 @@ void TextureManager::MergeTextures()
         gluBuild2DMipmaps(GL_TEXTURE_2D, ilGetInteger(IL_IMAGE_BPP), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
     }
 }
+*/
 
 int TextureManager::round(double x)
 {

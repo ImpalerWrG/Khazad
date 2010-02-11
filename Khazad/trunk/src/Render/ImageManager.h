@@ -24,6 +24,8 @@ public:
 
     ILuint GenerateMaterialImage(Sint16 MaterialID, Sint16 TextureID);
 
+    ILuint ClipImage(ILuint SourceID, ILuint X, ILuint Y, ILuint W, ILuint H);
+
     ILuint GenerateGradientImage(ILuint TextureDevILID, Sint16 PrimaryColorID, Sint16 SecondaryColorID, Sint16 BorderColorID);
     ILuint GeneratedOverLayImage(ILuint TextureDevILID, Sint16 PrimaryColorID, Sint16 BorderColorID);
     ILuint GenerateKeeperImage(ILuint TextureDevILID, Sint16 BorderColorID);

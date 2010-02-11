@@ -18,6 +18,12 @@ DataManager::DataManager()
     Textures = new TextureDataLibrary();
     GlobalDataTypeMap["Texture"] = Textures;
 
+    TextureGrids = new TextureGridDataLibrary();
+    GlobalDataTypeMap["TextureGrid"] = TextureGrids;
+
+    TextureSheets = new TextureSheetDataLibrary();
+    GlobalDataTypeMap["TextureSheet"] = TextureSheets;
+
     Models = new ModelDataLibrary();
     GlobalDataTypeMap["Model"] = Models;
 

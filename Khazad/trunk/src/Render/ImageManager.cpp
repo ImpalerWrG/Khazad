@@ -38,8 +38,40 @@ bool ImageManager::Init()
 
     for(Uint32 i = 0; i < DATA->getNumTextures(); ++i)
     {
-        ILuint DevilID = loadImage(DATA->getTextureData(i)->getPath(), false);
-        DATA->getTextureData(i)->setDevILID(DevilID);
+        if (DATA->getTextureData(i)->isLoneTexture())
+        {
+            ILuint DevilID = loadImage(DATA->getTextureData(i)->getPath(), false);
+            DATA->getTextureData(i)->setDevILID(DevilID);
+        }
+    }
+
+    for(Uint32 i = 0; i < DATA->getNumTextureGrids(); ++i)
+    {
+        TextureGridData* Grid = DATA->getTextureGridData(i);
+        ILuint DevilID = loadImage(Grid->getPath(), false);
+
+        uint16_t w = Grid->getTextureWidth();
+        uint16_t h = Grid->getTextureHeight();
+
+        std::vector<TextureData*> Textures = DATA->getTextureGridData(i)->TextureList;
+        for (int j = 0; j < Textures.size(); j++)
+        {
+            ILuint NewID = ClipImage(DevilID, Textures[j]->getX(), Textures[j]->getY(), w, h);
+            Textures[j]->setDevILID(NewID);
+        }
+    }
+
+    for(Uint32 i = 0; i < DATA->getNumTextureSheets(); ++i)
+    {
+        TextureSheetData* Sheet = DATA->getTextureSheetData(i);
+        ILuint DevilID = loadImage(Sheet->getPath(), false);
+
+        std::vector<TextureData*> Textures = DATA->getTextureSheetData(i)->TextureList;
+        for (int j = 0; j < Textures.size(); j++)
+        {
+            ILuint NewID = ClipImage(DevilID, Textures[j]->getX(), Textures[j]->getY(), Textures[j]->getW(), Textures[j]->getH());
+            Textures[j]->setDevILID(NewID);
+        }
     }
 
     return true;
@@ -78,9 +110,23 @@ ILuint ImageManager::loadImage(char* filepath, bool ColorKey)
     {
         //convert color key
     }
-    DevilImageVector.push_back(ImageID);
+    //DevilImageVector.push_back(ImageID);
 
     ReportDevILErrors();
+
+    return ImageID;
+}
+
+ILuint ImageManager::ClipImage(ILuint SourceID, ILuint X, ILuint Y, ILuint W, ILuint H)
+{
+    ILuint ImageID;
+    ilGenImages(1, &ImageID);
+    ilBindImage(ImageID);
+    ilTexImage(W, H, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
+
+    Uint8* NewImageData = ilGetData();
+    ilBindImage(SourceID);
+    ilCopyPixels(X, Y, 0, W, H, 1, IL_BGRA, IL_UNSIGNED_BYTE, NewImageData);
 
     return ImageID;
 }
