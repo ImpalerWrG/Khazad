@@ -275,6 +275,7 @@
 			</Texture>
 		</Textures>
 	</TextureGrid>
+	<!-- Texture missing, causes errors
 	<TextureSheet>
 		<File Path="Assets/Textures/grassSheet.png"/>
 		<Textures>
@@ -296,4 +297,5 @@
 			</Texture>
 		</Textures>
 	</TextureSheet>
+	-->
 </Textures>

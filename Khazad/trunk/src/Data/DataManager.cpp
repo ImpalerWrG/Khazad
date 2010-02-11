@@ -62,7 +62,7 @@ bool DataManager::Init()
     std::vector<Path> DataFiles;
 
     // Safety null checks on documents
-    TiXmlDocument* Document = XML->loadFile("Assets\\XML\\MasterFileList.xml");
+    TiXmlDocument* Document = XML->loadFile(Path("Assets/XML/MasterFileList.xml"));
     TiXmlElement* Parent = Document->RootElement();
     TiXmlElement* Iterator = Parent->FirstChildElement();
 

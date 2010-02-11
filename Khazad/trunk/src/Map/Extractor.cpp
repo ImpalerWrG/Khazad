@@ -332,9 +332,15 @@ Sint16 Extractor::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 vein
     {
         DefaultMaterial = DATA->getMaterialClassData(TileMaterialClass)->getDefaultMaterial();
     }
-
+    
+    ///Peterix, 11.2.2010: I added some checks here because of segfault bugs
     if ( TileMaterialClass == LayerStone || TileMaterialClass == Soil )
     {
+        if( basematerial  >= StoneMatGloss.size())
+        {
+            //cerr << "Can't find material "<< basematerial <<" in StoneMatGloss vector, resorting to default" << endl;
+            return DefaultMaterial;
+        }
         return StoneMatGloss[basematerial];
     }
     else if (TileMaterialClass == VeinStone)
@@ -345,7 +351,7 @@ Sint16 Extractor::PickMaterial(Sint16 TileType, Sint16 basematerial, Sint16 vein
         }
         else // Probably a Modded material
         {
-            cerr << "bad or unknown vein matgloss:" << veinmaterial << endl;
+            //cerr << "bad or unknown vein matgloss:" << veinmaterial << endl;
             if(DefaultMaterial != -1 && DefaultMaterial < DATA->getNumMaterials())
             {
                 return DefaultMaterial;

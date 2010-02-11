@@ -84,7 +84,10 @@ ILuint ImageManager::loadImage(char* filepath, bool ColorKey)
     ilBindImage(ImageID);
 
     printf("Loading Image file: %s\n", filepath);
-    ilLoadImage(filepath);
+    if(!ilLoadImage(filepath))
+    {
+        cerr << "Couldn't load image " << filepath << endl;
+    }
 
     /*
     IL_RGB

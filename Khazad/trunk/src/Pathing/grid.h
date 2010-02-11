@@ -4,7 +4,7 @@
 #include <vector>
 #include <stdint.h>
 #include <map>
-//#include <string.h>
+#include <string.h>
 #include <Coordinates.h>
 
 

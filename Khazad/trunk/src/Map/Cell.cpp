@@ -110,7 +110,9 @@ void Cell::Render(CameraOrientation CurrentOrientation)
         {
             if (isCubeDrawn(TargetCubeCoordinates))
             {
-                Sint16 ModelID = DATA->getTileShapeData(getCubeShape(TargetCubeCoordinates))->getModelID();
+                int idx1 = getCubeShape(TargetCubeCoordinates);
+                TileShapeData * tdata =  DATA->getTileShapeData(idx1);
+                Sint16 ModelID = tdata->getModelID();
                 if (ModelID != -1)
                 {
                     Model* model = MODEL->getModel(ModelID);
