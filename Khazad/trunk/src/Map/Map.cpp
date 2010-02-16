@@ -165,7 +165,8 @@ bool Map::Extract()
 
     // read constructions
     map<uint64_t, DFHack::t_construction> constructionAssigner;
-    uint32_t numconstructions = DF.InitReadConstructions();
+    uint32_t numconstructions;
+    DF.InitReadConstructions(numconstructions);
     DFHack::t_construction tempcon;
     uint32_t index = 0;
     while(index < numconstructions)
@@ -179,7 +180,8 @@ bool Map::Extract()
 
     // read trees
     map<uint64_t, DFHack::t_tree_desc> plantAssigner;
-    uint32_t numtrees = DF.InitReadVegetation();
+    uint32_t numtrees;
+    DF.InitReadVegetation(numtrees);
     DFHack::t_tree_desc temptree;
     index = 0;
     while(index < numtrees)
@@ -193,17 +195,19 @@ bool Map::Extract()
 
     // read buildings
     map<uint64_t, DFHack::t_building> buildingAssigner;
-    vector <string> v_buildingtypes;// FIXME: this is currently unused
-    uint32_t numbuildings = DF.InitReadBuildings(v_buildingtypes);
+    vector <string> objtypes;// FIXME: this is currently unused
+    uint32_t numbuildings;
+    DF.InitReadBuildings(numbuildings);
+    DF.getClassIDMapping(objtypes);
     DFHack::t_building tempbld;
     index = 0;
     while(index < numbuildings)
     {
         DF.ReadBuilding(index, tempbld);
-        if(tempbld.type < v_buildingtypes.size())
+        if(tempbld.type != 0xFFFFFFFF)
         {
-            string strtype = v_buildingtypes[tempbld.type];
-            if( strtype == "stockpile" || strtype == "zone" ||strtype == "construction_blueprint" )
+            string strtype = objtypes[tempbld.type];
+            if( strtype == "building_stockpile" || strtype == "building_zone" ||strtype == "building_construction" )
             {
                 index++;
                 continue;

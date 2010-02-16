@@ -97,8 +97,6 @@
 		<Unit filename="TinyXML\tinyxmlerror.cpp" />
 		<Unit filename="TinyXML\tinyxmlparser.cpp" />
 		<Unit filename="dfhack\library\DFCommonInternal.h" />
-		<Unit filename="dfhack\library\DFDataModel.cpp" />
-		<Unit filename="dfhack\library\DFDataModel.h" />
 		<Unit filename="dfhack\library\DFHackAPI.cpp" />
 		<Unit filename="dfhack\library\DFHackAPI.h" />
 		<Unit filename="dfhack\library\DFMemInfo.cpp" />

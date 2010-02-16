@@ -53,7 +53,6 @@ TinyXML/tinyxml.cpp
 TinyXML/tinyxmlerror.cpp
 TinyXML/tinyxmlparser.cpp
 
-dfhack/library/DFDataModel.cpp
 dfhack/library/DFMemInfo.cpp
 dfhack/library/DFMemInfoManager.cpp
 dfhack/library/DFHackAPI.cpp
@@ -161,6 +160,7 @@ src/Render/TextureManager.cpp
 SET(PROJECT_SRCS_LINUX
 dfhack/library/DFProcess-linux.cpp
 dfhack/library/DFProcess-linux-SHM.cpp
+dfhack/library/DFProcess-linux-wine.cpp
 dfhack/library/DFWindow-linux.cpp
 dfhack/library/DFProcessEnumerator-linux.cpp
 )

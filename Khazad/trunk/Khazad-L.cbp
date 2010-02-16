@@ -91,8 +91,6 @@
 		<Unit filename="TinyXML/tinyxmlerror.cpp" />
 		<Unit filename="TinyXML/tinyxmlparser.cpp" />
 		<Unit filename="dfhack/library/DFCommonInternal.h" />
-		<Unit filename="dfhack/library/DFDataModel.cpp" />
-		<Unit filename="dfhack/library/DFDataModel.h" />
 		<Unit filename="dfhack/library/DFHackAPI.cpp" />
 		<Unit filename="dfhack/library/DFHackAPI.h" />
 		<Unit filename="dfhack/library/DFMemAccess.h" />
@@ -101,6 +99,7 @@
 		<Unit filename="dfhack/library/DFMemInfoManager.cpp" />
 		<Unit filename="dfhack/library/DFMemInfoManager.h" />
 		<Unit filename="dfhack/library/DFProcess-linux.cpp" />
+		<Unit filename="dfhack/library/DFProcess-linux-wine.cpp" />
 		<Unit filename="dfhack/library/DFProcessEnumerator-linux.cpp" />
 		<Unit filename="dfhack/library/DFProcessEnumerator.h" />
 		<Unit filename="dfhack/library/DFTileTypes.cpp" />
