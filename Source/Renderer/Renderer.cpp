@@ -96,6 +96,7 @@ void Renderer::setupScene()
     //Light *light;
     char buffer [50];
 
+/*
     for (uint16_t i = 0; i < 10; i++)
     {
         for (uint16_t j = 0; j < 10; j++)
@@ -109,7 +110,7 @@ void Renderer::setupScene()
             NewNode->setDirection(Ogre::Vector3::UNIT_Y);
         }
     }
-
+*/
 
 
     //OverlayElement* guiDbg = OverlayManager::getSingleton().getOverlayElement("Core/DebugText");

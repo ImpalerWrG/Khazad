@@ -33,7 +33,7 @@ int main(int argc, char **argv)
 #endif
 {
         Ogre::LogManager* logMgr = new Ogre::LogManager;
-        Ogre::Log *log = Ogre::LogManager::getSingleton().createLog("Khazad Log.log", true, true, false);
+        Ogre::Log *log = Ogre::LogManager::getSingleton().createLog("Ogre.log", true, true, false);
         //Ogre::LogManager::getSingletonPtr()->logMessage("NEW LOG MESSAGE");
 
         // XML Data loading

@@ -5,19 +5,19 @@
 		<Cursor position="2043" topLine="3" />
 	</File>
 	<File name="..\..\Source\Core\main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="534" topLine="0" />
+		<Cursor position="835" topLine="6" />
 	</File>
 	<File name="..\..\Source\Core\stdafx.h" open="1" top="0" tabpos="4">
 		<Cursor position="329" topLine="0" />
 	</File>
 	<File name="..\..\Source\Data\ConfigManager.cpp" open="1" top="0" tabpos="32">
-		<Cursor position="328" topLine="0" />
+		<Cursor position="363" topLine="0" />
 	</File>
 	<File name="..\..\Source\Data\ConfigManager.h" open="1" top="0" tabpos="29">
 		<Cursor position="228" topLine="0" />
 	</File>
 	<File name="..\..\Source\Data\DataManager.cpp" open="1" top="0" tabpos="33">
-		<Cursor position="171" topLine="0" />
+		<Cursor position="1615" topLine="0" />
 	</File>
 	<File name="..\..\Source\Data\DataManager.h" open="1" top="0" tabpos="30">
 		<Cursor position="46" topLine="0" />
@@ -44,7 +44,7 @@
 		<Cursor position="196" topLine="0" />
 	</File>
 	<File name="..\..\Source\GUI\InputManager.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="2787" topLine="16" />
+		<Cursor position="2787" topLine="7" />
 	</File>
 	<File name="..\..\Source\GUI\InputManager.h" open="1" top="0" tabpos="36">
 		<Cursor position="1224" topLine="0" />
@@ -106,14 +106,14 @@
 	<File name="..\..\Source\Map\Map.h" open="1" top="0" tabpos="7">
 		<Cursor position="477" topLine="0" />
 	</File>
-	<File name="..\..\Source\Renderer\Camera.cpp" open="1" top="1" tabpos="34">
-		<Cursor position="1794" topLine="25" />
+	<File name="..\..\Source\Renderer\Camera.cpp" open="1" top="0" tabpos="34">
+		<Cursor position="1794" topLine="0" />
 	</File>
 	<File name="..\..\Source\Renderer\Camera.h" open="1" top="0" tabpos="35">
 		<Cursor position="462" topLine="0" />
 	</File>
-	<File name="..\..\Source\Renderer\Renderer.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="2815" topLine="0" />
+	<File name="..\..\Source\Renderer\Renderer.cpp" open="1" top="1" tabpos="2">
+		<Cursor position="2316" topLine="36" />
 	</File>
 	<File name="..\..\Source\Renderer\Renderer.h" open="1" top="0" tabpos="11">
 		<Cursor position="977" topLine="0" />
@@ -121,7 +121,7 @@
 	<File name="..\..\Source\TinyXML\tinyxml.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="8869" topLine="51" />
 	</File>
-	<File name="..\..\Source\TinyXML\tinyxml.h" open="0" top="0" tabpos="0">
-		<Cursor position="49590" topLine="362" />
+	<File name="..\..\Source\TinyXML\tinyxml.h" open="1" top="0" tabpos="37">
+		<Cursor position="15909" topLine="103" />
 	</File>
 </CodeBlocks_layout_file>

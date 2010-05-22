@@ -1,0 +1,36 @@
+# compiled objects
+
+
+obj/*
+
+
+
+# Ogre SDK
+
+
+OgreSDK_mingw_v1-7-1/*
+
+
+
+#MyGUI 
+
+SDK
+MyGUI/*
+
+
+
+
+#Dlls
+
+*.dll
+
+#The Executable
+
+Distribution/Khazad_Debug.exe
+Distribution/Khazad.exe
+
+# Log files
+
+Distribution/Ogre.log
+Distribution/MyGUI.log
+Distribution/ogre.cfg

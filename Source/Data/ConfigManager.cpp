@@ -29,7 +29,7 @@ ConfigManager::~ConfigManager()
 
 bool ConfigManager::Init()
 {
-	TiXmlDocument* Document = XML->loadFile(Path("..\\Media\\XML\\GlobalDefines.xml"));
+	TiXmlDocument* Document = XML->loadFile(Path("XML\\GlobalDefines.xml"));
     TiXmlElement* Root = Document->RootElement();
 
 	XML->QueryUIntValue(Root, "ScreenResolution", "X", XResolution);
