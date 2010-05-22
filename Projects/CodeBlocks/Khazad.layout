@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="..\..\Source\Core\Singleton.h" open="0" top="0" tabpos="21">
+		<Cursor position="2043" topLine="3" />
+	</File>
+	<File name="..\..\Source\Core\main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="534" topLine="0" />
+	</File>
+	<File name="..\..\Source\Core\stdafx.h" open="1" top="0" tabpos="4">
+		<Cursor position="329" topLine="0" />
+	</File>
+	<File name="..\..\Source\Data\ConfigManager.cpp" open="1" top="0" tabpos="32">
+		<Cursor position="328" topLine="0" />
+	</File>
+	<File name="..\..\Source\Data\ConfigManager.h" open="1" top="0" tabpos="29">
+		<Cursor position="228" topLine="0" />
+	</File>
+	<File name="..\..\Source\Data\DataManager.cpp" open="1" top="0" tabpos="33">
+		<Cursor position="171" topLine="0" />
+	</File>
+	<File name="..\..\Source\Data\DataManager.h" open="1" top="0" tabpos="30">
+		<Cursor position="46" topLine="0" />
+	</File>
+	<File name="..\..\Source\Data\DataTypes.cpp" open="1" top="0" tabpos="16">
+		<Cursor position="18479" topLine="178" />
+	</File>
+	<File name="..\..\Source\Data\DataTypes.h" open="1" top="0" tabpos="10">
+		<Cursor position="9036" topLine="54" />
+	</File>
+	<File name="..\..\Source\Data\Paths.cpp" open="0" top="0" tabpos="22">
+		<Cursor position="19" topLine="0" />
+	</File>
+	<File name="..\..\Source\Data\XMLManager.cpp" open="1" top="0" tabpos="31">
+		<Cursor position="27" topLine="0" />
+	</File>
+	<File name="..\..\Source\Data\XMLManager.h" open="0" top="0" tabpos="18">
+		<Cursor position="4516" topLine="0" />
+	</File>
+	<File name="..\..\Source\GUI\GUI.cpp" open="1" top="0" tabpos="17">
+		<Cursor position="313" topLine="0" />
+	</File>
+	<File name="..\..\Source\GUI\GUI.h" open="1" top="0" tabpos="27">
+		<Cursor position="196" topLine="0" />
+	</File>
+	<File name="..\..\Source\GUI\InputManager.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="2787" topLine="16" />
+	</File>
+	<File name="..\..\Source\GUI\InputManager.h" open="1" top="0" tabpos="36">
+		<Cursor position="1224" topLine="0" />
+	</File>
+	<File name="..\..\Source\GUI\SplashScreen.cpp" open="1" top="0" tabpos="26">
+		<Cursor position="273" topLine="0" />
+	</File>
+	<File name="..\..\Source\GUI\SplashScreen.h" open="1" top="0" tabpos="28">
+		<Cursor position="427" topLine="0" />
+	</File>
+	<File name="..\..\Source\Game\Actor.cpp" open="1" top="0" tabpos="18">
+		<Cursor position="839" topLine="0" />
+	</File>
+	<File name="..\..\Source\Game\Actor.h" open="1" top="0" tabpos="15">
+		<Cursor position="252" topLine="0" />
+	</File>
+	<File name="..\..\Source\Game\Building.cpp" open="1" top="0" tabpos="21">
+		<Cursor position="1704" topLine="0" />
+	</File>
+	<File name="..\..\Source\Game\Building.h" open="1" top="0" tabpos="19">
+		<Cursor position="587" topLine="0" />
+	</File>
+	<File name="..\..\Source\Game\Furniture.cpp" open="1" top="0" tabpos="24">
+		<Cursor position="26" topLine="0" />
+	</File>
+	<File name="..\..\Source\Game\Furniture.h" open="1" top="0" tabpos="20">
+		<Cursor position="761" topLine="0" />
+	</File>
+	<File name="..\..\Source\Game\Game.cpp" open="1" top="0" tabpos="22">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\Source\Game\Game.h" open="1" top="0" tabpos="14">
+		<Cursor position="1053" topLine="0" />
+	</File>
+	<File name="..\..\Source\Game\Pawn.cpp" open="1" top="0" tabpos="25">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\Source\Game\Pawn.h" open="1" top="0" tabpos="13">
+		<Cursor position="817" topLine="0" />
+	</File>
+	<File name="..\..\Source\Game\Tree.cpp" open="1" top="0" tabpos="23">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\Source\Game\Tree.h" open="1" top="0" tabpos="12">
+		<Cursor position="79" topLine="0" />
+	</File>
+	<File name="..\..\Source\Map\Cell.cpp" open="1" top="0" tabpos="8">
+		<Cursor position="24594" topLine="56" />
+	</File>
+	<File name="..\..\Source\Map\Cell.h" open="1" top="0" tabpos="5">
+		<Cursor position="195" topLine="0" />
+	</File>
+	<File name="..\..\Source\Map\Coordinates.h" open="1" top="0" tabpos="6">
+		<Cursor position="2180" topLine="0" />
+	</File>
+	<File name="..\..\Source\Map\Map.cpp" open="1" top="0" tabpos="9">
+		<Cursor position="17701" topLine="111" />
+	</File>
+	<File name="..\..\Source\Map\Map.h" open="1" top="0" tabpos="7">
+		<Cursor position="477" topLine="0" />
+	</File>
+	<File name="..\..\Source\Renderer\Camera.cpp" open="1" top="1" tabpos="34">
+		<Cursor position="1794" topLine="25" />
+	</File>
+	<File name="..\..\Source\Renderer\Camera.h" open="1" top="0" tabpos="35">
+		<Cursor position="462" topLine="0" />
+	</File>
+	<File name="..\..\Source\Renderer\Renderer.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="2815" topLine="0" />
+	</File>
+	<File name="..\..\Source\Renderer\Renderer.h" open="1" top="0" tabpos="11">
+		<Cursor position="977" topLine="0" />
+	</File>
+	<File name="..\..\Source\TinyXML\tinyxml.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="8869" topLine="51" />
+	</File>
+	<File name="..\..\Source\TinyXML\tinyxml.h" open="0" top="0" tabpos="0">
+		<Cursor position="49590" topLine="362" />
+	</File>
+</CodeBlocks_layout_file>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Khazad" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="..\..\Output\Debug\Khazad_Debug" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\Output\Debug\" />
+				<Option object_output="..\..\obj\Debug\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-D_DEBUG" />
+				</Compiler>
+				<Linker>
+					<Add library="OgreMain_d" />
+					<Add library="OIS_d" />
+					<Add library="MyGUIEngine_d" />
+					<Add library="MyGUI.OgrePlatform_d" />
+					<Add directory="..\..\MyGUI\lib\debug" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="..\..\Output\Khazad" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\Output\Release\" />
+				<Option object_output="..\..\obj\Release\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-DNDEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="OgreMain" />
+					<Add library="OIS" />
+					<Add library="MyGUIEngine" />
+					<Add library="MyGUI.OgrePlatform" />
+					<Add directory="..\..\MyGUI\lib\release" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-mthreads" />
+			<Add option="-fmessage-length=0" />
+			<Add option="-fexceptions" />
+			<Add option="-fident" />
+			<Add option="-DWIN32" />
+			<Add option="-D_WINDOWS" />
+			<Add directory="..\..\OgreSDK_mingw_v1-7-1\include\OGRE" />
+			<Add directory="..\..\Source\Core" />
+			<Add directory="..\..\Source\GUI" />
+			<Add directory="..\..\Source\Renderer" />
+			<Add directory="..\..\OgreSDK_mingw_v1-7-1\include\OIS" />
+			<Add directory="..\..\MyGUI\include" />
+			<Add directory="..\..\MyGUI\OgrePlatform\include" />
+			<Add directory="..\..\Source\Data" />
+			<Add directory="..\..\Source\TinyXML" />
+			<Add directory="..\..\Source\Map" />
+			<Add directory="..\..\Source\Game" />
+		</Compiler>
+		<Linker>
+			<Add option="-Wl,--enable-runtime-pseudo-reloc" />
+			<Add option="-Wl,--enable-auto-image-base" />
+			<Add option="-Wl,--add-stdcall-alias" />
+			<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib" />
+			<Add directory="..\..\OgreSDK_mingw_v1-7-1\bin\debug" />
+			<Add directory="..\..\OgreSDK_mingw_v1-7-1\bin\release" />
+		</Linker>
+		<Unit filename="..\..\Source\Core\Singleton.h" />
+		<Unit filename="..\..\Source\Core\main.cpp" />
+		<Unit filename="..\..\Source\Core\stdafx.h" />
+		<Unit filename="..\..\Source\Data\ConfigManager.cpp" />
+		<Unit filename="..\..\Source\Data\ConfigManager.h" />
+		<Unit filename="..\..\Source\Data\DataManager.cpp" />
+		<Unit filename="..\..\Source\Data\DataManager.h" />
+		<Unit filename="..\..\Source\Data\DataTypes.cpp" />
+		<Unit filename="..\..\Source\Data\DataTypes.h" />
+		<Unit filename="..\..\Source\Data\Paths.cpp" />
+		<Unit filename="..\..\Source\Data\Paths.h" />
+		<Unit filename="..\..\Source\Data\XMLManager.cpp" />
+		<Unit filename="..\..\Source\Data\XMLManager.h" />
+		<Unit filename="..\..\Source\GUI\GUI.cpp" />
+		<Unit filename="..\..\Source\GUI\GUI.h" />
+		<Unit filename="..\..\Source\GUI\InputManager.cpp" />
+		<Unit filename="..\..\Source\GUI\InputManager.h" />
+		<Unit filename="..\..\Source\GUI\SplashScreen.cpp" />
+		<Unit filename="..\..\Source\GUI\SplashScreen.h" />
+		<Unit filename="..\..\Source\Game\Actor.cpp" />
+		<Unit filename="..\..\Source\Game\Actor.h" />
+		<Unit filename="..\..\Source\Game\Building.cpp" />
+		<Unit filename="..\..\Source\Game\Building.h" />
+		<Unit filename="..\..\Source\Game\Furniture.cpp" />
+		<Unit filename="..\..\Source\Game\Furniture.h" />
+		<Unit filename="..\..\Source\Game\Game.cpp" />
+		<Unit filename="..\..\Source\Game\Game.h" />
+		<Unit filename="..\..\Source\Game\Pawn.cpp" />
+		<Unit filename="..\..\Source\Game\Pawn.h" />
+		<Unit filename="..\..\Source\Game\Tree.cpp" />
+		<Unit filename="..\..\Source\Game\Tree.h" />
+		<Unit filename="..\..\Source\Map\Cell.cpp" />
+		<Unit filename="..\..\Source\Map\Cell.h" />
+		<Unit filename="..\..\Source\Map\Coordinates.cpp" />
+		<Unit filename="..\..\Source\Map\Coordinates.h" />
+		<Unit filename="..\..\Source\Map\Map.cpp" />
+		<Unit filename="..\..\Source\Map\Map.h" />
+		<Unit filename="..\..\Source\Renderer\Camera.cpp" />
+		<Unit filename="..\..\Source\Renderer\Camera.h" />
+		<Unit filename="..\..\Source\Renderer\Renderer.cpp" />
+		<Unit filename="..\..\Source\Renderer\Renderer.h" />
+		<Unit filename="..\..\Source\TinyXML\tinystr.cpp" />
+		<Unit filename="..\..\Source\TinyXML\tinystr.h" />
+		<Unit filename="..\..\Source\TinyXML\tinyxml.cpp" />
+		<Unit filename="..\..\Source\TinyXML\tinyxml.h" />
+		<Unit filename="..\..\Source\TinyXML\tinyxmlerror.cpp" />
+		<Unit filename="..\..\Source\TinyXML\tinyxmlparser.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

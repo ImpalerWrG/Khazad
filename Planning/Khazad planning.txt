@@ -1,0 +1,38 @@
+
+
+Core Requirements:
+
+3D rendering of terrain as in SDL Khazad, 360 rotation and ~45 degree tilt, wall transparency togglable
+
+2D sprite charactes, simple set of animations (walk, carry, fall, strike), dwarfs not differentiated by proffession
+
+Pathfinding for jobs/work/consumption, combat/group pathfinding deffered
+
+Basic physilogical needs for Dwarves, food, alchol, sleep, social-interaction and work.  No unique personality or querks.  Simple fortress happyness agragation 'meter' for player and fortess wide 'we demand X' messages.
+
+Zone system that encompases room/workshop/stockpile/zone concepts under one roof.  Almost all managment is through use of zones, production chains created with 'Kanban' and inventory 'pull' from zone-2-zone.
+
+Designation of dig commands in 3D environment and easy volumetric shapes, intelligent AI excavation of multi-level volumes (top down).  Dig area constitutes work zone which can be controled (turn work on/off), special type for ore mining for 'vein following'
+
+XML data based data for most game play related aspects and art assignment.  Object types, reactions, dwarf phsiological needs and abilities.
+
+Trade able to remove surpluss goods and deliver needed items, high level items should be difficult to make thus requiring inportation.  Probably Wagoons and pack animals nessary.
+
+
+
+Defered concepts:  Not nessary for initial release
+
+Skill gain by individuals
+Proffession graphics for individuals
+Individual pesonalities
+Temperatures
+Flowing liquids (water/lava)
+Goverment/Nobles
+Combat/Invasions
+Quality levels of Items
+Complex Geology/underground
+Body systems for individuals
+World map
+
+
+
