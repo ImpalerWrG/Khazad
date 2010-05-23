@@ -11,7 +11,7 @@ class SplashScreen
 
 public:
 
-    SplashScreen(GUI* GuiManager);
+    SplashScreen(GUIManager* GUISystem);
 
     bool Init();
 
@@ -25,7 +25,7 @@ private:
     MyGUI::Widget* PanelWidgit;
     MyGUI::StaticImage* LogoImage;
 
-    GUI* GuiManager;
+    GUIManager* GUISystem;
 };
 
 //#define RENDERER (Renderer::GetInstance())

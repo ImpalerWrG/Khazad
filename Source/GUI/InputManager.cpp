@@ -1,18 +1,22 @@
 #include <InputManager.h>
 
 #include <Renderer.h>
+#include <GUI.h>
 
-//using namespace Ogre;
+DECLARE_SINGLETON(InputManager)
 
+InputManager::InputManager()
+{
 
-bool BufferedInputHandler::Init(Ogre::Root* OgreRoot, GUI* TargetGUI)
+}
+
+bool InputManager::Init()
 {
     size_t windowHnd = 0;
     std::ostringstream windowHndStr;
     OIS::ParamList Parameters;
-    Ogre::RenderWindow *win = OgreRoot->getAutoCreatedWindow();
 
-    win->getCustomAttribute("WINDOW", &windowHnd);
+    RENDERER->getWindow()->getCustomAttribute("WINDOW", &windowHnd);
     windowHndStr << windowHnd;
     Parameters.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
     InputManagerObject = OIS::InputManager::createInputSystem(Parameters);
@@ -33,17 +37,26 @@ bool BufferedInputHandler::Init(Ogre::Root* OgreRoot, GUI* TargetGUI)
         throw Ogre::Exception(42, e.eText, "Application::setupInputSystem");
     }
 
-    const OIS::MouseState &mouseState = MouseObject->getMouseState();
-    mouseState.width = win->getWidth();
-    mouseState.height = win->getHeight();
+    ResetMouse();
 
-    GuiManager = TargetGUI;
-
-    OgreRoot->addFrameListener(this);
+    RENDERER->getRoot()->addFrameListener(this);
     return true;
 }
 
-BufferedInputHandler::~BufferedInputHandler()
+void InputManager::ResetMouse()
+{
+    const OIS::MouseState &State = MouseObject->getMouseState();
+
+    State.width = RENDERER->getWindow()->getWidth();
+    State.height = RENDERER->getWindow()->getHeight();
+
+    ModifedMouseX = State.width / 2;
+    ModifedMouseY = State.height / 2;
+
+    GUI->injectMouseMove(ModifedMouseX, ModifedMouseY, 0);
+}
+
+InputManager::~InputManager()
 {
     InputManagerObject->destroyInputObject(KeyboardObject);
     InputManagerObject->destroyInputObject(MouseObject);
@@ -51,35 +64,38 @@ BufferedInputHandler::~BufferedInputHandler()
     OIS::InputManager::destroyInputSystem(InputManagerObject);
 }
 
-bool BufferedInputHandler::frameStarted()
+bool InputManager::frameStarted()
 {
     KeyboardObject->capture();
     MouseObject->capture();
 
-    return GuiManager->isContinueRunning();
+    return GUI->isContinueRunning();
 }
 
 
 // KeyListener
-bool BufferedInputHandler::keyPressed(const OIS::KeyEvent &arg)
+bool InputManager::keyPressed(const OIS::KeyEvent &arg)
 {
-    GuiManager->injectKeyPress(arg);
+    GUI->injectKeyPress(arg);
 
     return true;
 }
 
-bool BufferedInputHandler::keyReleased(const OIS::KeyEvent &arg)
+bool InputManager::keyReleased(const OIS::KeyEvent &arg)
 {
-    GuiManager->injectKeyRelease(arg);
+    GUI->injectKeyRelease(arg);
 
     return true;
 }
 
 
 // MouseListener
-bool BufferedInputHandler::mouseMoved(const OIS::MouseEvent &arg)
+bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
 {
-    GuiManager->injectMouseMove(arg.state.X.abs, arg.state.Y.abs, arg.state.Z.abs);
+    ModifedMouseX += arg.state.X.rel;
+    ModifedMouseY += arg.state.Y.rel;
+
+    GUI->injectMouseMove(ModifedMouseX, ModifedMouseY, 0);
 
     if (arg.state.Z.rel != 0)
     {
@@ -106,34 +122,43 @@ bool BufferedInputHandler::mouseMoved(const OIS::MouseEvent &arg)
     return true;
 }
 
-bool BufferedInputHandler::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
+bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
-    GuiManager->injectMousePress(arg.state.X.abs, arg.state.Y.abs, id);
+    ModifedMouseX += arg.state.X.rel;
+    ModifedMouseY += arg.state.Y.rel;
+
+    GUI->injectMousePress(ModifedMouseX, ModifedMouseY, id);
 
     return true;
 }
 
-bool BufferedInputHandler::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
+bool InputManager::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
-    GuiManager->injectMouseRelease(arg.state.X.abs, arg.state.Y.abs, id);
+    ModifedMouseX += arg.state.X.rel;
+    ModifedMouseY += arg.state.Y.rel;
+
+    GUI->injectMouseRelease(ModifedMouseX, ModifedMouseY, id);
 
     return true;
 }
 
 
 // JoystickListener
-bool BufferedInputHandler::buttonPressed(const OIS::JoyStickEvent &arg, int button)
+bool InputManager::buttonPressed(const OIS::JoyStickEvent &arg, int button)
 {
     return true;
 }
 
-bool BufferedInputHandler::buttonReleased(const OIS::JoyStickEvent &arg, int button)
+bool InputManager::buttonReleased(const OIS::JoyStickEvent &arg, int button)
 {
     return true;
 }
 
-bool BufferedInputHandler::axisMoved(const OIS::JoyStickEvent &arg, int axis)
+bool InputManager::axisMoved(const OIS::JoyStickEvent &arg, int axis)
 {
     return true;
 }
 
+void InputManager::windowResized(Ogre::RenderWindow* rw)
+{
+}

@@ -2,6 +2,7 @@
 #define GUI__HEADER
 
 #include <stdafx.h>
+#include <Singleton.h>
 
 #include <OIS.h>
 #include "MyGUI.h"
@@ -10,14 +11,15 @@
 //using namespace Ogre;
 
 
-class GUI
+class GUIManager
 {
+DECLARE_SINGLETON_CLASS(GUIManager)
 
 public:
 
-    bool Init(Ogre::Root* OgreRoot, Ogre::SceneManager* OgreSceneManager);
+    bool Init();
 
-    ~GUI();
+    ~GUIManager();
 
     bool injectMouseMove(int X, int Y, int Z);
     bool injectMousePress(int X, int Y, OIS::MouseButtonID ID);
@@ -39,6 +41,6 @@ private:
     bool ContinueRunning;
 };
 
-//#define GUI (GUI::GetInstance())
+#define GUI (GUIManager::GetInstance())
 
 #endif  // GUI__HEADER

@@ -6801,12 +6801,13 @@
 	<Ogre.h>
 	<Renderer.h>
 
-1274311298 source:c:\users\kenny\desktop\khazad\source\core\main.cpp
+1274604715 source:c:\users\kenny\desktop\khazad\source\core\main.cpp
 	<stdafx.h>
 	<Ogre.h>
 	<DataManager.h>
 	<Renderer.h>
 	<InputManager.h>
+	<GUI.h>
 	"windows.h"
 
 1274160476 c:\users\kenny\desktop\khazad\source\core\stdafx.h
@@ -8151,11 +8152,11 @@
 	<stdafx.h>
 	<Ogre.h>
 
-1274311298 c:\users\kenny\desktop\khazad\source\gui\inputmanager.h
+1274604748 c:\users\kenny\desktop\khazad\source\gui\inputmanager.h
 	<stdafx.h>
+	<Singleton.h>
 	<Ogre.h>
 	<OIS.h>
-	<GUI.h>
 
 1167693870 c:\users\kenny\desktop\khazad\ogresdk_mingw_v1-7-1\include\ois\ois.h
 	"OISPrereqs.h"
@@ -8171,7 +8172,7 @@
 	"OISInterface.h"
 	"OISForceFeedback.h"
 
-1202934816 c:\users\kenny\desktop\khazad\ogresdk_mingw_v1-7-1\include\ois\oisprereqs.h
+1274587372 c:\users\kenny\desktop\khazad\ogresdk_mingw_v1-7-1\include\ois\oisprereqs.h
 	<vector>
 	<string>
 	<map>
@@ -8219,8 +8220,9 @@
 	"OISInterface.h"
 	"OISEffect.h"
 
-1274311224 c:\users\kenny\desktop\khazad\source\gui\gui.h
+1274594589 c:\users\kenny\desktop\khazad\source\gui\gui.h
 	<stdafx.h>
+	<Singleton.h>
 	<OIS.h>
 	"MyGUI.h"
 	"MyGUI_OgrePlatform.h"
@@ -9107,19 +9109,21 @@
 	<tinystr.h>
 	<tinyxml.h>
 
-1274311361 source:c:\users\kenny\desktop\khazad\source\gui\gui.cpp
+1274595002 source:c:\users\kenny\desktop\khazad\source\gui\gui.cpp
 	<GUI.h>
+	<Singleton.h>
 	<SplashScreen.h>
+	<Renderer.h>
 
-1274166404 c:\users\kenny\desktop\khazad\source\gui\splashscreen.h
+1274594765 c:\users\kenny\desktop\khazad\source\gui\splashscreen.h
 	<stdafx.h>
 	"MyGUI.h"
 
-1274425324 source:c:\users\kenny\desktop\khazad\source\gui\inputmanager.cpp
+1274603824 source:c:\users\kenny\desktop\khazad\source\gui\inputmanager.cpp
 	<InputManager.h>
 	<Renderer.h>
 
-1274258018 source:c:\users\kenny\desktop\khazad\source\gui\splashscreen.cpp
+1274594883 source:c:\users\kenny\desktop\khazad\source\gui\splashscreen.cpp
 	<GUI.h>
 	<SplashScreen.h>
 

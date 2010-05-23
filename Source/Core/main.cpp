@@ -5,6 +5,7 @@
 #include <DataManager.h>
 #include <Renderer.h>
 #include <InputManager.h>
+#include <GUI.h>
 
 
 
@@ -37,30 +38,28 @@ int main(int argc, char **argv)
         //Ogre::LogManager::getSingletonPtr()->logMessage("NEW LOG MESSAGE");
 
         // XML Data loading
-
         printf("-=DATA INITIALIZING=- ... \n");
         DATA->CreateInstance();
         DATA->Init();
         printf("DATA DONE\n");
 
         // OGRE Renderer
-        printf("-=DATA INITIALIZING=- ... \n");
+        printf("-=RENDER INITIALIZING=- ... \n");
         RENDERER->CreateInstance();
         RENDERER->Init();
-        printf("DATA DONE\n");
-
-
-        //Renderer* RenderEngine = new Renderer();
-        //RenderEngine->Init();
-
+        printf("RENDER DONE\n");
 
         // MyGUI with OGRE Platform
-        GUI* GuiManager = new GUI();
-        GuiManager->Init(RENDERER->getRoot(), RENDERER->getSceneManager());
+        printf("-=GUI INITIALIZING=- ... \n");
+        GUI->CreateInstance();
+        GUI->Init();
+        printf("GUI DONE\n");
 
         // OIS injection into GUI
-        BufferedInputHandler* Input = new BufferedInputHandler();
-        Input->Init(RENDERER->getRoot(), GuiManager);
+        printf("-=INPUT INITIALIZING=- ... \n");
+        INPUT->CreateInstance();
+        INPUT->Init();
+        printf("INPUT DONE\n");
 
         //return 0; // Errors durring Initialization, Abort
 
@@ -91,7 +90,7 @@ int main(int argc, char **argv)
 	{
 		//FPSTimer->Start();
 
-            Continue = Input->frameStarted();
+            Continue = INPUT->frameStarted();
 
             //GameTimer->Unpause();
                 //GAME->Run();

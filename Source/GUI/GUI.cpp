@@ -1,23 +1,26 @@
 #include <GUI.h>
 
+#include <Singleton.h>
+
 #include <SplashScreen.h>
+#include <Renderer.h>
 
 using namespace MyGUI;
 
+DECLARE_SINGLETON(GUIManager)
 
-bool GUI::Init(Ogre::Root* OgreRoot, Ogre::SceneManager* OgreSceneManager)
+GUIManager::GUIManager()
+{
+    ContinueRunning = true;
+}
+
+bool GUIManager::Init()
 {
     MyGUI = new MyGUI::Gui();
     GUIPlatform = new MyGUI::OgrePlatform();
 
-    Ogre::RenderWindow* Window = OgreRoot->getAutoCreatedWindow();
-    Ogre::SceneManager* Manager = OgreSceneManager;
-
-    GUIPlatform->initialise(Window, Manager);
+    GUIPlatform->initialise(RENDERER->getWindow(), RENDERER->getSceneManager());
     MyGUI->initialise();
-
-    ContinueRunning = true;
-
 
     // Initialize Screens and stuff here
 
@@ -25,7 +28,7 @@ bool GUI::Init(Ogre::Root* OgreRoot, Ogre::SceneManager* OgreSceneManager)
     NewSplashScreen->Init();
 }
 
-GUI::~GUI()
+GUIManager::~GUIManager()
 {
     MyGUI->shutdown();
     delete MyGUI;
@@ -35,23 +38,23 @@ GUI::~GUI()
 }
 
 
-bool GUI::injectMouseMove(int X, int Y, int Z)
+bool GUIManager::injectMouseMove(int X, int Y, int Z)
 {
     return MyGUI->injectMouseMove(X, Y, Z);
 }
 
-bool GUI::injectMousePress(int X, int Y, OIS::MouseButtonID ID)
+bool GUIManager::injectMousePress(int X, int Y, OIS::MouseButtonID ID)
 {
     return MyGUI->injectMousePress(X, Y, MyGUI::MouseButton::Enum(ID));
 }
 
-bool GUI::injectMouseRelease(int X, int Y, OIS::MouseButtonID ID)
+bool GUIManager::injectMouseRelease(int X, int Y, OIS::MouseButtonID ID)
 {
     return MyGUI->injectMouseRelease(X, Y, MyGUI::MouseButton::Enum(ID));
 }
 
 
-bool GUI::injectKeyPress(OIS::KeyEvent Key)
+bool GUIManager::injectKeyPress(OIS::KeyEvent Key)
 {
     if (Key.key == OIS::KC_ESCAPE)
     {
@@ -61,7 +64,7 @@ bool GUI::injectKeyPress(OIS::KeyEvent Key)
     return MyGUI->injectKeyPress(MyGUI::KeyCode::Enum(Key.key), Key.text);
 }
 
-bool GUI::injectKeyRelease(OIS::KeyEvent Key)
+bool GUIManager::injectKeyRelease(OIS::KeyEvent Key)
 {
     return MyGUI->injectKeyRelease(MyGUI::KeyCode::Enum(Key.key));
 }

@@ -2,23 +2,21 @@
 #define INPUT__HEADER
 
 #include <stdafx.h>
+#include <Singleton.h>
 
 #include <Ogre.h>
 #include <OIS.h>
-#include <GUI.h>
 
 
-//using namespace Ogre;
-
-
-class BufferedInputHandler :  public OIS::KeyListener, public OIS::MouseListener, public OIS::JoyStickListener, public Ogre::FrameListener
+class InputManager :  public OIS::KeyListener, public OIS::MouseListener, public OIS::JoyStickListener, public Ogre::FrameListener
 {
+DECLARE_SINGLETON_CLASS(InputManager)
 
 public:
 
-    bool Init(Ogre::Root* OgreRoot, GUI* GuiManager);
+    bool Init();
 
-    ~BufferedInputHandler();
+    ~InputManager();
 
     bool frameStarted();
 
@@ -36,7 +34,13 @@ public:
     virtual bool buttonReleased(const OIS::JoyStickEvent &arg, int button);
     virtual bool axisMoved(const OIS::JoyStickEvent &arg, int axis);
 
+    void ResetMouse();
+
+    void windowResized(Ogre::RenderWindow* rw);
+
 private:
+
+    int16_t ModifedMouseX, ModifedMouseY;
 
     OIS::Keyboard* KeyboardObject;
     OIS::Mouse* MouseObject;
@@ -44,9 +48,9 @@ private:
 
     OIS::InputManager* InputManagerObject;
 
-    GUI* GuiManager;
+    //GUIManager* GUISystem;
 };
 
-//#define RENDERER (Renderer::GetInstance())
+#define INPUT (InputManager::GetInstance())
 
 #endif  // INPUT__HEADER
