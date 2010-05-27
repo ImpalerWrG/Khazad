@@ -23,6 +23,7 @@ public:
 
     Ogre::Root* getRoot()                         { return OgreRoot; }
     Ogre::SceneManager* getSceneManager()         { return OgreSceneManager; }
+    Ogre::SceneNode* getRootNode()                { return OgreSceneManager->getRootSceneNode(); }
     Ogre::RenderWindow* getWindow()               { return OgreRenderWindow; }
 
     Camera* getActiveCamera()                     { return Cameras[ActiveCameraIndex]; }

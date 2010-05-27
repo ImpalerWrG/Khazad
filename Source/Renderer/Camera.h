@@ -36,6 +36,7 @@ private:
     Ogre::Viewport* OgreViewPort;
 
     Ogre::Real ZoomFactor;
+    float TranslationFactor;
 };
 
 #endif  // CAMERA_HEADER

@@ -116,7 +116,7 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
     }
     if (MouseObject->getMouseState().buttonDown(OIS::MB_Left))
     {
-        RENDERER->getActiveCamera()->TranslateCamera(arg.state.X.rel / 1200.0, arg.state.Y.rel / 1200.0);
+        RENDERER->getActiveCamera()->TranslateCamera(arg.state.X.rel, arg.state.Y.rel);
     }
 
     return true;

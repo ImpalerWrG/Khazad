@@ -29,8 +29,10 @@ bool Camera::Init()
     OgreCamera->setFarClipDistance(100000);
 
     ZoomFactor = OgreCamera->getOrthoWindowWidth();
+    TranslationFactor = ZoomFactor / RENDERER->getWindow()->getWidth();
 
     PitchLock = false;
+    ZoomCamera(0.05);
     PitchCamera(45);
     RotateCamera(2.37);
 }
@@ -38,6 +40,8 @@ bool Camera::Init()
 void Camera::ZoomCamera(float ZoomChange)
 {
     ZoomFactor *= ZoomChange;
+    TranslationFactor = ZoomFactor / RENDERER->getWindow()->getWidth();
+
     OgreCamera->setOrthoWindowWidth(ZoomFactor);
 }
 
@@ -64,5 +68,5 @@ void Camera::PitchCamera(float PitchFactor)
 
 void Camera::TranslateCamera(float X, float Y)
 {
-    TargetNode->translate(-X * ZoomFactor, Y * ZoomFactor, 0, Ogre::Node::TS_LOCAL);
+    TargetNode->translate(-X * TranslationFactor, Y * TranslationFactor, 0, Ogre::Node::TS_LOCAL);
 }
