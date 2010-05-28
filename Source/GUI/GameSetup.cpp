@@ -1,4 +1,4 @@
-#include <SplashScreen.h>
+#include <GameSetup.h>
 
 #include <GUI.h>
 
@@ -7,12 +7,12 @@
 using namespace MyGUI;
 
 
-SplashScreen::SplashScreen()
+GameSetup::GameSetup()
 {
 
 }
 
-bool SplashScreen::Init()
+bool GameSetup::Init()
 {
     const MyGUI::IntSize & view = MyGUI::Gui::getInstance().getViewSize();
 
@@ -22,11 +22,11 @@ bool SplashScreen::Init()
 
     MyGUI::ButtonPtr Newbutton = PanelWidgit->createWidgetReal<MyGUI::Button>("Button", .10, 1.0/7, .80, 2.0/7, MyGUI::Align::HCenter, "Main");
     Newbutton->setCaption("NEW GAME");
-    Newbutton->eventMouseButtonClick = MyGUI::newDelegate(this, &SplashScreen::NewPressed);
+    Newbutton->eventMouseButtonClick = MyGUI::newDelegate(this, &GameSetup::NewPressed);
 
     MyGUI::ButtonPtr Exitbutton = PanelWidgit->createWidgetReal<MyGUI::Button>("Button", .10, 4.0/7, .80, 2.0/7, MyGUI::Align::HCenter, "Main");
-    Exitbutton->setCaption("EXIT");
-    Exitbutton->eventMouseButtonClick = MyGUI::newDelegate(this, &SplashScreen::ExitPressed);
+    Exitbutton->setCaption("CANCEL");
+    Exitbutton->eventMouseButtonClick = MyGUI::newDelegate(this, &GameSetup::ExitPressed);
 
 
     const MyGUI::IntSize size(200, 200);
@@ -34,21 +34,18 @@ bool SplashScreen::Init()
     LogoImage->setImageTexture("KhazadLogo.png");
 }
 
-SplashScreen::~SplashScreen()
+GameSetup::~GameSetup()
 {
 
 }
 
-void SplashScreen::ExitPressed(MyGUI::WidgetPtr SourceWidget)
+void GameSetup::ExitPressed(MyGUI::WidgetPtr SourceWidget)
 {
-    GUI->TerminateRunning();
+
 }
 
-void SplashScreen::NewPressed(MyGUI::WidgetPtr SourceWidget)
+void GameSetup::NewPressed(MyGUI::WidgetPtr SourceWidget)
 {
     LogoImage->setVisible(false);
     PanelWidgit->setVisible(false);
-
-    GAME->CreateInstance();
-    GAME->Init();
 }

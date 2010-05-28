@@ -1,21 +1,21 @@
-#ifndef SPLASH__HEADER
-#define SPLASH__HEADER
+#ifndef GAMESETUP__HEADER
+#define GAMESETUP__HEADER
 
 #include <stdafx.h>
 
 #include <MyGUI.h>
 
 
-class SplashScreen
+class GameSetup
 {
 
 public:
 
-    SplashScreen();
+    GameSetup();
 
     bool Init();
 
-    ~SplashScreen();
+    ~GameSetup();
 
 private:
 
@@ -27,4 +27,4 @@ private:
 
 };
 
-#endif  // GUI__HEADER
+#endif  // GAMESETUP__HEADER

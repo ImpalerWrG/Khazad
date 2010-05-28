@@ -87,6 +87,8 @@
 		<Unit filename="..\..\Source\Data\XMLManager.h" />
 		<Unit filename="..\..\Source\GUI\GUI.cpp" />
 		<Unit filename="..\..\Source\GUI\GUI.h" />
+		<Unit filename="..\..\Source\GUI\GameSetup.cpp" />
+		<Unit filename="..\..\Source\GUI\GameSetup.h" />
 		<Unit filename="..\..\Source\GUI\InputManager.cpp" />
 		<Unit filename="..\..\Source\GUI\InputManager.h" />
 		<Unit filename="..\..\Source\GUI\SplashScreen.cpp" />

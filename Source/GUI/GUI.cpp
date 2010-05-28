@@ -24,7 +24,7 @@ bool GUIManager::Init()
 
     // Initialize Screens and stuff here
 
-    SplashScreen* NewSplashScreen = new SplashScreen(this);
+    SplashScreen* NewSplashScreen = new SplashScreen();
     NewSplashScreen->Init();
 }
 

@@ -9,6 +9,10 @@ DECLARE_SINGLETON(Game)
 
 bool Game::Init()
 {
+    MainMap = new Map();
+    MainMap->Init();
+    MainMap->Generate(0);
+
 	return true;
 }
 
@@ -16,6 +20,7 @@ Game::Game()
 {
     TickCounter = 0;
     TickRate = 10;
+
     Pause = false;
 }
 
@@ -26,7 +31,7 @@ Game::~Game()
 
 bool Game::RemovePawn(uint32_t ID)
 {
-
+    // TODP, retreave and remove pawn
     return false;
 }
 

@@ -6,7 +6,7 @@
 #include <Renderer.h>
 #include <InputManager.h>
 #include <GUI.h>
-
+#include <Game.h>
 
 
 
@@ -36,6 +36,8 @@ int main(int argc, char **argv)
         Ogre::LogManager* logMgr = new Ogre::LogManager;
         Ogre::Log *log = Ogre::LogManager::getSingleton().createLog("Ogre.log", true, true, false);
         //Ogre::LogManager::getSingletonPtr()->logMessage("NEW LOG MESSAGE");
+
+        Ogre::LogManager::getSingletonPtr()->logMessage("Starting Geom main routine...");
 
         // XML Data loading
         printf("-=DATA INITIALIZING=- ... \n");
@@ -92,6 +94,18 @@ int main(int argc, char **argv)
 
             Continue = INPUT->frameStarted();
 
+
+                // Calculate time since last frame and remember current time for next frame
+                //unsigned long lTimeCurrentFrame = mRoot->getTimer()->getMilliseconds();
+                //unsigned long lTimeSinceLastFrame = lTimeCurrentFrame - lTimeLastFrame;
+                //lTimeLastFrame = lTimeCurrentFrame;
+
+
+                if (GAME)
+                {
+                    GAME->Run();
+                }
+
             //GameTimer->Unpause();
                 //GAME->Run();
             //GameTimer->Pause();
@@ -100,10 +114,6 @@ int main(int argc, char **argv)
                 //RENDERER->Render();
 				RENDERER->RenderFrame();
 
-            //UITimer->Unpause();
-                //UI->Draw();
-                //UI->PrintFrameRate(FrameRate);
-            //UITimer->Pause();
 
                 //RENDERER->CaptureScreenShot();
                 //RENDERER->Flip();

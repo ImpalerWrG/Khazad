@@ -5,7 +5,7 @@
 #include <DataManager.h>
 //#include <Gui.h>
 //#include <Extractor.h>
-
+#include <Renderer.h>
 
 #include <Cell.h>
 //#include <Random.h>
@@ -53,7 +53,37 @@ bool Map::Init()
 
 bool Map::Generate(uint32_t Seed)
 {
-    //RANDOM->Seed(Seed);
+    //CellCoordinates TargetCellCoordinates = CellCoordinates(0, 0, 0);
+    //Cell* NewCell = new Cell();
+    //NewCell->setPosition(TargetCellCoordinates);
+
+    //addCell(NewCell, TargetCellCoordinates);
+
+
+
+
+
+
+    char buffer [50];
+
+
+    for (uint16_t i = 0; i < 100; i++)
+    {
+        for (uint16_t j = 0; j < 100; j++)
+        {
+            sprintf(buffer, "Tile%d", (i * 100) + j);
+            Ogre::Entity *ent = RENDERER->getSceneManager()->createEntity(buffer, "Tile");
+            ent->setCastShadows(false);
+            Ogre::SceneNode* NewNode = RENDERER->getRootNode()->createChildSceneNode();
+            NewNode->attachObject(ent);
+            NewNode->setPosition(i * 1.1, j * 1.1, 0);
+            //NewNode->setDirection(Ogre::Vector3::UNIT_Y);
+        }
+    }
+
+
+
+
 
     return true;
 }
