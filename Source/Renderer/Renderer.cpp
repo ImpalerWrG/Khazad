@@ -4,6 +4,7 @@
 
 #include <Camera.h>
 
+#include <GUI.h>
 //using namespace Ogre;
 
 DECLARE_SINGLETON(Renderer)
@@ -32,6 +33,7 @@ Renderer::~Renderer()
 
 void Renderer::RenderFrame()
 {
+	GUI->NewFPSDisplay->Update();
     OgreRoot->renderOneFrame();
     OgreRoot->_fireFrameStarted();
 }

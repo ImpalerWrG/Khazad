@@ -7,6 +7,7 @@
 #include <OIS.h>
 #include "MyGUI.h"
 #include "MyGUI_OgrePlatform.h"
+#include <FPS.h>
 
 //using namespace Ogre;
 
@@ -32,6 +33,7 @@ public:
     void TerminateRunning()         { ContinueRunning = false; }
 
     MyGUI::Gui* getGUI()            { return MyGUI; }
+	FPSDisplay* NewFPSDisplay;
 
 private:
 

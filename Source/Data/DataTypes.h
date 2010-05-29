@@ -40,7 +40,7 @@ public:
     ~ColorData();
 
     bool Load(TiXmlElement* Element, uint32_t Index);
-    bool PostProcessing() {};
+    bool PostProcessing() {return true; };
 
     uint8_t getRed()      { return Red; }
     uint8_t getGreen()    { return Green; }
@@ -73,7 +73,7 @@ public:
     ~TextureData();
 
     bool Load(TiXmlElement* Element, uint32_t Index);
-    bool PostProcessing() {};
+    bool PostProcessing() {return true;};
 
     Path getPath()              { return sPath; }
     void setPath(Path newPath)  { sPath = newPath; }
@@ -92,7 +92,7 @@ public:
     uint16_t getH()    { return h; }
 
     bool isLoneTexture()                { return LoneTexture; }
-    bool setLoneTexture(bool NewValue)  { LoneTexture = NewValue; }
+    bool setLoneTexture(bool NewValue)  { LoneTexture = NewValue; return true;}
 
 protected:
 
@@ -123,7 +123,7 @@ public:
     ~TextureGridData();
 
     bool Load(TiXmlElement* Element, uint32_t Index);
-    bool PostProcessing() {};
+    bool PostProcessing() {return true;};
 
     Path getPath() { return sPath; }
 
@@ -164,7 +164,7 @@ public:
     ~TextureSheetData();
 
     bool Load(TiXmlElement* Element, uint32_t Index);
-    bool PostProcessing() {};
+    bool PostProcessing() {return true;};
 
     Path getPath() { return sPath; }
 
@@ -199,7 +199,7 @@ public:
     ~ModelData();
 
     bool Load(TiXmlElement* Element, uint32_t Index);
-    bool PostProcessing() {};
+    bool PostProcessing() {return true;};
 
     Path getPath()                  { return sPath; }
     float getScalar()               { return Scalar; }
@@ -397,7 +397,7 @@ public:
     ~FontData();
 
     bool Load(TiXmlElement* Element, uint32_t Index);
-    bool PostProcessing() {};
+    bool PostProcessing() {return true;};
 
     Path getPath()    { return sPath; }
     uint16_t getSize()  { return Size; }

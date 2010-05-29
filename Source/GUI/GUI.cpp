@@ -3,6 +3,7 @@
 #include <Singleton.h>
 
 #include <SplashScreen.h>
+#include <FPS.h>
 #include <Renderer.h>
 
 using namespace MyGUI;
@@ -11,60 +12,63 @@ DECLARE_SINGLETON(GUIManager)
 
 GUIManager::GUIManager()
 {
-    ContinueRunning = true;
+	ContinueRunning = true;
 }
 
 bool GUIManager::Init()
 {
-    MyGUI = new MyGUI::Gui();
-    GUIPlatform = new MyGUI::OgrePlatform();
+	MyGUI = new MyGUI::Gui();
+	GUIPlatform = new MyGUI::OgrePlatform();
 
-    GUIPlatform->initialise(RENDERER->getWindow(), RENDERER->getSceneManager());
-    MyGUI->initialise();
+	GUIPlatform->initialise(RENDERER->getWindow(), RENDERER->getSceneManager());
+	MyGUI->initialise();
 
-    // Initialize Screens and stuff here
+	// Initialize Screens and stuff here
 
-    SplashScreen* NewSplashScreen = new SplashScreen();
-    NewSplashScreen->Init();
+	SplashScreen* NewSplashScreen = new SplashScreen();
+	NewSplashScreen->Init();
+	NewFPSDisplay = new FPSDisplay();
+	NewFPSDisplay->Init();
+	return true;
 }
 
 GUIManager::~GUIManager()
 {
-    MyGUI->shutdown();
-    delete MyGUI;
+	MyGUI->shutdown();
+	delete MyGUI;
 
-    GUIPlatform->shutdown();
-    delete GUIPlatform;
+	GUIPlatform->shutdown();
+	delete GUIPlatform;
 }
 
 
 bool GUIManager::injectMouseMove(int X, int Y, int Z)
 {
-    return MyGUI->injectMouseMove(X, Y, Z);
+	return MyGUI->injectMouseMove(X, Y, Z);
 }
 
 bool GUIManager::injectMousePress(int X, int Y, OIS::MouseButtonID ID)
 {
-    return MyGUI->injectMousePress(X, Y, MyGUI::MouseButton::Enum(ID));
+	return MyGUI->injectMousePress(X, Y, MyGUI::MouseButton::Enum(ID));
 }
 
 bool GUIManager::injectMouseRelease(int X, int Y, OIS::MouseButtonID ID)
 {
-    return MyGUI->injectMouseRelease(X, Y, MyGUI::MouseButton::Enum(ID));
+	return MyGUI->injectMouseRelease(X, Y, MyGUI::MouseButton::Enum(ID));
 }
 
 
 bool GUIManager::injectKeyPress(OIS::KeyEvent Key)
 {
-    if (Key.key == OIS::KC_ESCAPE)
-    {
-        ContinueRunning = false;
-    }
+	if (Key.key == OIS::KC_ESCAPE)
+	{
+		ContinueRunning = false;
+	}
 
-    return MyGUI->injectKeyPress(MyGUI::KeyCode::Enum(Key.key), Key.text);
+	return MyGUI->injectKeyPress(MyGUI::KeyCode::Enum(Key.key), Key.text);
 }
 
 bool GUIManager::injectKeyRelease(OIS::KeyEvent Key)
 {
-    return MyGUI->injectKeyRelease(MyGUI::KeyCode::Enum(Key.key));
+	return MyGUI->injectKeyRelease(MyGUI::KeyCode::Enum(Key.key));
 }

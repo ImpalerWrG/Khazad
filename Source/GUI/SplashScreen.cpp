@@ -3,7 +3,7 @@
 #include <GUI.h>
 
 #include <Game.h>
-
+#include <Renderer.h>
 using namespace MyGUI;
 
 
@@ -28,10 +28,10 @@ bool SplashScreen::Init()
     Exitbutton->setCaption("EXIT");
     Exitbutton->eventMouseButtonClick = MyGUI::newDelegate(this, &SplashScreen::ExitPressed);
 
-
     const MyGUI::IntSize size(200, 200);
     LogoImage = GUI->getGUI()->createWidget<MyGUI::StaticImage>("StaticImage", MyGUI::IntCoord((view.width - size.width) / 2, (view.height - size.height) / 4, size.width, size.height), MyGUI::Align::Default, "Main");
     LogoImage->setImageTexture("KhazadLogo.png");
+	return true;
 }
 
 SplashScreen::~SplashScreen()
@@ -51,4 +51,5 @@ void SplashScreen::NewPressed(MyGUI::WidgetPtr SourceWidget)
 
     GAME->CreateInstance();
     GAME->Init();
+	RENDERER->getWindow()->resetStatistics();
 }

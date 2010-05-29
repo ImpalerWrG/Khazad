@@ -63,6 +63,7 @@
 			<Add directory="..\..\Source\TinyXML" />
 			<Add directory="..\..\Source\Map" />
 			<Add directory="..\..\Source\Game" />
+			<Add directory="..\..\OgreSDK_mingw_v1-7-1\boost_1_42" />
 		</Compiler>
 		<Linker>
 			<Add option="-Wl,--enable-runtime-pseudo-reloc" />
@@ -71,6 +72,7 @@
 			<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib" />
 			<Add directory="..\..\OgreSDK_mingw_v1-7-1\bin\debug" />
 			<Add directory="..\..\OgreSDK_mingw_v1-7-1\bin\release" />
+			<Add directory="..\..\OgreSDK_mingw_v1-7-1\boost_1_42\lib" />
 		</Linker>
 		<Unit filename="..\..\Source\Core\Singleton.h" />
 		<Unit filename="..\..\Source\Core\main.cpp" />
@@ -85,6 +87,8 @@
 		<Unit filename="..\..\Source\Data\Paths.h" />
 		<Unit filename="..\..\Source\Data\XMLManager.cpp" />
 		<Unit filename="..\..\Source\Data\XMLManager.h" />
+		<Unit filename="..\..\Source\GUI\FPS.cpp" />
+		<Unit filename="..\..\Source\GUI\FPS.h" />
 		<Unit filename="..\..\Source\GUI\GUI.cpp" />
 		<Unit filename="..\..\Source\GUI\GUI.h" />
 		<Unit filename="..\..\Source\GUI\GameSetup.cpp" />

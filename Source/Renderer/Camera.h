@@ -37,6 +37,7 @@ private:
 
     Ogre::Real ZoomFactor;
     float TranslationFactor;
+    float minpitch;
 };
 
 #endif  // CAMERA_HEADER

@@ -7,7 +7,11 @@
 #define CELLSPERBLOCK 256
 #define HALFCUBE 0.5
 
+#ifdef _MSC_VER
+#include <stdint_win.h>
+#else
 #include <stdint.h>
+#endif
 
 enum Dimension
 {
