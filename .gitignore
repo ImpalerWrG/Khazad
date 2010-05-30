@@ -17,7 +17,11 @@ OgreSDK_mingw_v1-7-1/*
 SDK
 MyGUI/*
 
+#Superflous CB Project files
 
+Projects/CodeBlocks/Khazad.depend
+Projects/CodeBlocks/Khazad.layout
+Projects/CodeBlocks/Khazad.workspace
 
 
 #Dlls
