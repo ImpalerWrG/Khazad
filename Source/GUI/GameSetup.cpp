@@ -4,8 +4,6 @@
 
 #include <Game.h>
 
-using namespace MyGUI;
-
 
 GameSetup::GameSetup()
 {
@@ -14,6 +12,7 @@ GameSetup::GameSetup()
 
 bool GameSetup::Init()
 {
+    /*
 	const MyGUI::IntSize & view = MyGUI::Gui::getInstance().getViewSize();
 
 
@@ -33,6 +32,7 @@ bool GameSetup::Init()
 	LogoImage = GUI->getGUI()->createWidget<MyGUI::StaticImage>("StaticImage", MyGUI::IntCoord((view.width - size.width) / 2, (view.height - size.height) / 4, size.width, size.height), MyGUI::Align::Default, "Main");
 	LogoImage->setImageTexture("KhazadLogo.png");
 	return true;
+	*/
 }
 
 GameSetup::~GameSetup()
@@ -40,13 +40,13 @@ GameSetup::~GameSetup()
 
 }
 
-void GameSetup::ExitPressed(MyGUI::WidgetPtr SourceWidget)
+void GameSetup::ExitPressed()
 {
 
 }
 
-void GameSetup::NewPressed(MyGUI::WidgetPtr SourceWidget)
+void GameSetup::NewPressed()
 {
-	LogoImage->setVisible(false);
-	PanelWidgit->setVisible(false);
+	//LogoImage->setVisible(false);
+	//PanelWidgit->setVisible(false);
 }

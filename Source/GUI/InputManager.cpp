@@ -37,7 +37,7 @@ bool InputManager::Init()
         throw Ogre::Exception(42, e.eText, "Application::setupInputSystem");
     }
 
-    ResetMouse();
+    //ResetMouse();
 
     RENDERER->getRoot()->addFrameListener(this);
     return true;
@@ -92,10 +92,12 @@ bool InputManager::keyReleased(const OIS::KeyEvent &arg)
 // MouseListener
 bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
 {
-    ModifedMouseX += arg.state.X.rel;
-    ModifedMouseY += arg.state.Y.rel;
+    //ModifedMouseX += arg.state.X.rel;
+    //ModifedMouseY += arg.state.Y.rel;
 
-    GUI->injectMouseMove(ModifedMouseX, ModifedMouseY, 0);
+    //GUI->injectMouseMove(ModifedMouseX, ModifedMouseY, 0);
+
+    GUI->injectMouseMove(arg.state.X.rel, arg.state.Y.rel, 0);
 
     if (arg.state.Z.rel != 0)
     {

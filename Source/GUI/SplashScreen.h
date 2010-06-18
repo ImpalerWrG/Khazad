@@ -3,10 +3,11 @@
 
 #include <stdafx.h>
 
-#include <MyGUI.h>
+#include <CEGUI.h>
 
+#include <ScreenBase.h>
 
-class SplashScreen
+class SplashScreen: ScreenBase
 {
 
 public:
@@ -17,13 +18,13 @@ public:
 
     ~SplashScreen();
 
+    void ShowScreen();
+
 private:
 
-    void ExitPressed(MyGUI::WidgetPtr SourceWidget);
-    void NewPressed(MyGUI::WidgetPtr SourceWidget);
-
-    MyGUI::Widget* PanelWidgit;
-    MyGUI::StaticImage* LogoImage;
+    bool ExitPressed(const CEGUI::EventArgs& pEventArgs);
+    bool OptionsPressed(const CEGUI::EventArgs& pEventArgs);
+    bool NewGamePressed(const CEGUI::EventArgs& pEventArgs);
 
 };
 

@@ -3,8 +3,8 @@
 
 #include <stdafx.h>
 
-#include "MyGUI.h"
-#include "MyGUI_OgrePlatform.h"
+//#include "MyGUI.h"
+//#include "MyGUI_OgrePlatform.h"
 
 //using namespace Ogre;
 
@@ -24,9 +24,9 @@ public:
 
 private:
 
-	MyGUI::WidgetPtr PanelWidget;
+	//MyGUI::WidgetPtr PanelWidget;
 
-	MyGUI::StaticTextPtr FPSText;
+	//MyGUI::StaticTextPtr FPSText;
 
 };
 

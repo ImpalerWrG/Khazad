@@ -51,7 +51,7 @@ int main(int argc, char **argv)
         RENDERER->Init();
         printf("RENDER DONE\n");
 
-        // MyGUI with OGRE Platform
+        // CEGUI with OGRE Platform
         printf("-=GUI INITIALIZING=- ... \n");
         GUI->CreateInstance();
         GUI->Init();

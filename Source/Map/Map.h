@@ -25,8 +25,7 @@ struct Face
 
 class Cell;
 class Actor;
-class Face;
-struct Face;
+class Geology;
 
 
 class Map
@@ -145,6 +144,8 @@ protected:
     uint32_t FaceCount;
 
     uint32_t InitedCellCount;
+
+    Geology* MapGeology;
 };
 
 #endif // MAP__HEADER

@@ -94,7 +94,7 @@ public:
         TiXmlElement* child = Entry->FirstChildElement(Element);
         if (child)
         {
-            float temp;
+            float temp = 0;
             child->QueryFloatAttribute(Attribute, &temp);
             defaultvalue = temp;
         }

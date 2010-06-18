@@ -3,7 +3,7 @@
 
 #include <stdafx.h>
 
-#include <MyGUI.h>
+//#include <MyGUI.h>
 
 
 class GameSetup
@@ -19,11 +19,11 @@ public:
 
 private:
 
-    void ExitPressed(MyGUI::WidgetPtr SourceWidget);
-    void NewPressed(MyGUI::WidgetPtr SourceWidget);
+    void ExitPressed();
+    void NewPressed();
 
-    MyGUI::Widget* PanelWidgit;
-    MyGUI::StaticImage* LogoImage;
+    //MyGUI::Widget* PanelWidgit;
+    //MyGUI::StaticImage* LogoImage;
 
 };
 

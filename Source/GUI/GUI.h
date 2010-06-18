@@ -5,11 +5,14 @@
 #include <Singleton.h>
 
 #include <OIS.h>
-#include "MyGUI.h"
-#include "MyGUI_OgrePlatform.h"
+
+#include "CEGUI.h"
+#include <CEGUIOgreRenderer.h>
+
+//#include "MyGUI_OgrePlatform.h"
 #include <FPS.h>
 
-//using namespace Ogre;
+#include <ScreenBase.h>
 
 
 class GUIManager
@@ -32,13 +35,20 @@ public:
     bool isContinueRunning()        { return ContinueRunning; }
     void TerminateRunning()         { ContinueRunning = false; }
 
-    MyGUI::Gui* getGUI()            { return MyGUI; }
+    void ShowScreen(ScreenBase* TargetScreen);
+
 	FPSDisplay* NewFPSDisplay;
+
+	CEGUI::WindowManager* getWindowManager()        { return CEGUIWindowManager; }
+	CEGUI::System* getSystem()                      { return CEGUISystem; }
 
 private:
 
-    MyGUI::Gui* MyGUI;
-    MyGUI::OgrePlatform* GUIPlatform;
+    ScreenBase* ActiveScreen;
+
+    CEGUI::OgreRenderer* GUIRenderer;
+    CEGUI::System* CEGUISystem;
+    CEGUI::WindowManager* CEGUIWindowManager;
 
     bool ContinueRunning;
 };

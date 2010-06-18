@@ -19,9 +19,10 @@
 				<Linker>
 					<Add library="OgreMain_d" />
 					<Add library="OIS_d" />
-					<Add library="MyGUIEngine_d" />
-					<Add library="MyGUI.OgrePlatform_d" />
-					<Add directory="..\..\MyGUI\lib\debug" />
+					<Add library="CEGUIBase_d" />
+					<Add library="CEGUIOgreRenderer_d" />
+					<Add directory="..\..\CEGUI\bin" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\debug" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -38,9 +39,10 @@
 					<Add option="-s" />
 					<Add library="OgreMain" />
 					<Add library="OIS" />
-					<Add library="MyGUIEngine" />
-					<Add library="MyGUI.OgrePlatform" />
-					<Add directory="..\..\MyGUI\lib\release" />
+					<Add library="CEGUIBase" />
+					<Add library="CEGUIOgreRenderer" />
+					<Add directory="..\..\CEGUI\lib" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\release" />
 				</Linker>
 			</Target>
 		</Build>
@@ -57,8 +59,8 @@
 			<Add directory="..\..\Source\GUI" />
 			<Add directory="..\..\Source\Renderer" />
 			<Add directory="..\..\OgreSDK_mingw_v1-7-1\include\OIS" />
-			<Add directory="..\..\MyGUI\include" />
-			<Add directory="..\..\MyGUI\OgrePlatform\include" />
+			<Add directory="..\..\CEGUI\include" />
+			<Add directory="..\..\CEGUI\include\RendererModules\Ogre" />
 			<Add directory="..\..\Source\Data" />
 			<Add directory="..\..\Source\TinyXML" />
 			<Add directory="..\..\Source\Map" />
@@ -69,10 +71,6 @@
 			<Add option="-Wl,--enable-runtime-pseudo-reloc" />
 			<Add option="-Wl,--enable-auto-image-base" />
 			<Add option="-Wl,--add-stdcall-alias" />
-			<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib" />
-			<Add directory="..\..\OgreSDK_mingw_v1-7-1\bin\debug" />
-			<Add directory="..\..\OgreSDK_mingw_v1-7-1\bin\release" />
-			<Add directory="..\..\OgreSDK_mingw_v1-7-1\boost_1_42\lib" />
 		</Linker>
 		<Unit filename="..\..\Source\Core\Singleton.h" />
 		<Unit filename="..\..\Source\Core\main.cpp" />
@@ -95,6 +93,7 @@
 		<Unit filename="..\..\Source\GUI\GameSetup.h" />
 		<Unit filename="..\..\Source\GUI\InputManager.cpp" />
 		<Unit filename="..\..\Source\GUI\InputManager.h" />
+		<Unit filename="..\..\Source\GUI\ScreenBase.h" />
 		<Unit filename="..\..\Source\GUI\SplashScreen.cpp" />
 		<Unit filename="..\..\Source\GUI\SplashScreen.h" />
 		<Unit filename="..\..\Source\Game\Actor.cpp" />
@@ -113,6 +112,8 @@
 		<Unit filename="..\..\Source\Map\Cell.h" />
 		<Unit filename="..\..\Source\Map\Coordinates.cpp" />
 		<Unit filename="..\..\Source\Map\Coordinates.h" />
+		<Unit filename="..\..\Source\Map\Geology.cpp" />
+		<Unit filename="..\..\Source\Map\Geology.h" />
 		<Unit filename="..\..\Source\Map\Map.cpp" />
 		<Unit filename="..\..\Source\Map\Map.h" />
 		<Unit filename="..\..\Source\Renderer\Camera.cpp" />

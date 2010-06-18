@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultWindow" Name="SplashScreen" >
+        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Window Type="Vanilla/Button" Name="SplashScreen/ExitButton" >
+            <Property Name="Text" Value="Exit" />
+            <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.85,0},{0.7,0},{0.90,0}}" />
+        </Window>
+        <Window Type="Vanilla/Button" Name="SplashScreen/OptionsButton" >
+            <Property Name="Text" Value="Options" />
+            <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.75,0},{0.7,0},{0.80,0}}" />
+        </Window>
+        <Window Type="Vanilla/Button" Name="SplashScreen/NewGameButton" >
+            <Property Name="Text" Value="New Game" />
+            <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.65,0},{0.7,0},{0.70,0}}" />
+        </Window>
+        <Window Type="Vanilla/StaticImage" Name="SplashScreen/Logo" >
+            <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.113219,0},{0.7,0},{0.363219,0}}" />
+        </Window>
+        <Window Type="Vanilla/StaticText" Name="SplashScreen/Title" >
+            <Property Name="Text" Value="Khazad" />
+            <Property Name="HorzExtent" Value="77" />
+            <Property Name="VertExtent" Value="24.6366" />
+            <Property Name="UnifiedAreaRect" Value="{{0.43813,0},{0.330967,0},{0.521943,0},{0.414504,0}}" />
+        </Window>
+    </Window>
+</GUILayout>
