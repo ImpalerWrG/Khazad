@@ -19,6 +19,7 @@ bool Camera::Init()
 
 	OgreCamera->setAspectRatio(Ogre::Real(OgreViewPort->getActualWidth()) / Ogre::Real(OgreViewPort->getActualHeight()));
 	OgreCamera->setProjectionType(Ogre::PT_ORTHOGRAPHIC);
+	OgreViewPort->update();
 
 	CameraNode = TargetNode->createChildSceneNode("MainCameraNode");
 	CameraNode->setPosition(Ogre::Vector3(0, 0, 10000));
