@@ -17,12 +17,12 @@
 					<Add option="-D_DEBUG" />
 				</Compiler>
 				<Linker>
-					<Add library="OgreMain_d" />
-					<Add library="OIS_d" />
-					<Add library="CEGUIBase_d" />
-					<Add library="CEGUIOgreRenderer_d" />
+					<Add library="OgreMain" />
+					<Add library="OIS" />
+					<Add library="CEGUIBase" />
+					<Add library="CEGUIOgreRenderer" />
 					<Add directory="..\..\CEGUI\bin" />
-					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\debug" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\release" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -41,7 +41,7 @@
 					<Add library="OIS" />
 					<Add library="CEGUIBase" />
 					<Add library="CEGUIOgreRenderer" />
-					<Add directory="..\..\CEGUI\lib" />
+					<Add directory="..\..\CEGUI\bin" />
 					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\release" />
 				</Linker>
 			</Target>
