@@ -33,7 +33,7 @@ Renderer::~Renderer()
 
 void Renderer::RenderFrame()
 {
-	GUI->NewFPSDisplay->Update();
+	//GUI->NewFPSDisplay->Update();
     OgreRoot->renderOneFrame();
     OgreRoot->_fireFrameStarted();
 }

@@ -6,14 +6,24 @@
 
 #include <OIS.h>
 
-#include "CEGUI.h"
+#include <CEGUI.h>
 #include <CEGUIOgreRenderer.h>
 
-//#include "MyGUI_OgrePlatform.h"
 #include <FPS.h>
 
 #include <ScreenBase.h>
 
+enum ScreenType
+{
+    SCREEN_SPLASH,
+    SCREEN_OPTIONS,
+    SCREEN_CREDITS,
+    SCREEN_GAME_SETUP,
+    SCREEN_MAIN_GAME,
+
+    NUM_SCREENS = 5,
+    NO_SCREEN,
+};
 
 class GUIManager
 {
@@ -35,20 +45,20 @@ public:
     bool isContinueRunning()        { return ContinueRunning; }
     void TerminateRunning()         { ContinueRunning = false; }
 
-    void ShowScreen(ScreenBase* TargetScreen);
+    void ShowScreen(ScreenType);
 
-	FPSDisplay* NewFPSDisplay;
 
 	CEGUI::WindowManager* getWindowManager()        { return CEGUIWindowManager; }
 	CEGUI::System* getSystem()                      { return CEGUISystem; }
 
 private:
 
-    ScreenBase* ActiveScreen;
-
     CEGUI::OgreRenderer* GUIRenderer;
     CEGUI::System* CEGUISystem;
     CEGUI::WindowManager* CEGUIWindowManager;
+
+    ScreenBase* ScreenList [NUM_SCREENS];
+    ScreenType ActiveScreen;
 
     bool ContinueRunning;
 };

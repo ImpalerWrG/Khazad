@@ -3,28 +3,22 @@
 
 #include <stdafx.h>
 
-//#include <MyGUI.h>
+#include <ScreenBase.h>
 
-
-class GameSetup
+class GameSetupScreen: ScreenBase
 {
 
 public:
 
-    GameSetup();
+    GameSetupScreen();
 
     bool Init();
 
-    ~GameSetup();
+    ~GameSetupScreen();
 
 private:
 
-    void ExitPressed();
-    void NewPressed();
-
-    //MyGUI::Widget* PanelWidgit;
-    //MyGUI::StaticImage* LogoImage;
-
+    bool BeginGamePressed(const CEGUI::EventArgs& pEventArgs);
 };
 
 #endif  // GAMESETUP__HEADER

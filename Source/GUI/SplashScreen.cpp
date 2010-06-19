@@ -2,9 +2,6 @@
 
 #include <GUI.h>
 
-#include <Game.h>
-#include <Renderer.h>
-
 
 SplashScreen::SplashScreen()
 {
@@ -13,8 +10,8 @@ SplashScreen::SplashScreen()
 
 bool SplashScreen::Init()
 {
-    CEGUI::Window* RootWindow = CEGUI::WindowManager::getSingleton().loadWindowLayout("SplashScreen.layout");
-    CEGUI::System::getSingleton().setGUISheet(RootWindow);
+    RootWindow = CEGUI::WindowManager::getSingleton().loadWindowLayout("SplashScreen.layout");
+    //CEGUI::System::getSingleton().setGUISheet(RootWindow);
 
 
 
@@ -24,7 +21,7 @@ bool SplashScreen::Init()
 
 SplashScreen::~SplashScreen()
 {
-
+    delete RootWindow;
 }
 
 bool SplashScreen::ExitPressed(const CEGUI::EventArgs& pEventArgs)
@@ -39,10 +36,5 @@ bool SplashScreen::OptionsPressed(const CEGUI::EventArgs& pEventArgs)
 
 bool SplashScreen::NewGamePressed(const CEGUI::EventArgs& pEventArgs)
 {
-    //LogoImage->setVisible(false);
-    //PanelWidgit->setVisible(false);
-
-    GAME->CreateInstance();
-    GAME->Init();
-	RENDERER->getWindow()->resetStatistics();
+    GUI->ShowScreen(SCREEN_GAME_SETUP);
 }

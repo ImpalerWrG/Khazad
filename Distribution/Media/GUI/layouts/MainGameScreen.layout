@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultWindow" Name="MainGameScreen" >
+        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Window Type="Vanilla/Button" Name="MainGameScreen/ExitButton" >
+            <Property Name="Text" Value="Exit" />
+            <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.85,0},{0.7,0},{0.90,0}}" />
+        </Window>
+    </Window>
+</GUILayout>

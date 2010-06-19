@@ -3,6 +3,9 @@
 #include <Singleton.h>
 
 #include <SplashScreen.h>
+#include <GameSetup.h>
+#include <MainGameScreen.h>
+
 #include <FPS.h>
 #include <Renderer.h>
 
@@ -14,6 +17,7 @@ GUIManager::GUIManager()
 {
 	ContinueRunning = true;
 
+    ActiveScreen = NO_SCREEN;
 }
 
 bool GUIManager::Init()
@@ -47,30 +51,38 @@ bool GUIManager::Init()
     // Move mouse to center of screen??
     CEGUISystem->injectMousePosition(RENDERER->getWindow()->getWidth() / 2, RENDERER->getWindow()->getHeight() / 2);
 
-	// Initialize Screens and stuff here
 
-	SplashScreen* NewSplashScreen = new SplashScreen();
-	NewSplashScreen->Init();
 
-	NewFPSDisplay = new FPSDisplay();
-	NewFPSDisplay->Init();
+	// Initialize Screens here matching them to their Enum
+
+	ScreenList[SCREEN_SPLASH] = (ScreenBase*) new SplashScreen();
+	ScreenList[SCREEN_SPLASH]->Init();
+
+	ScreenList[SCREEN_GAME_SETUP] = (ScreenBase*) new GameSetupScreen();
+	ScreenList[SCREEN_GAME_SETUP]->Init();
+
+	ScreenList[SCREEN_MAIN_GAME] = (ScreenBase*) new MainGameScreen();
+	ScreenList[SCREEN_MAIN_GAME]->Init();
+
+
+
+    ShowScreen(SCREEN_SPLASH);
 
 	return true;
 }
 
 GUIManager::~GUIManager()
 {
-	//MyGUI->shutdown();
-	//delete MyGUI;
 
-	//GUIPlatform->shutdown();
-	//delete GUIPlatform;
 }
 
-void GUIManager::ShowScreen(ScreenBase* TargetScreen)
+void GUIManager::ShowScreen(ScreenType TargetScreen)
 {
-    ActiveScreen = TargetScreen;
-    CEGUISystem->setGUISheet(TargetScreen->getRootWindow());
+    if (TargetScreen != ActiveScreen)
+    {
+        ActiveScreen = TargetScreen;
+        CEGUISystem->setGUISheet(ScreenList[TargetScreen]->getRootWindow());
+    }
 }
 
 bool GUIManager::injectMouseMove(int X, int Y, int Z)
@@ -90,17 +102,14 @@ bool GUIManager::injectMouseRelease(int X, int Y, OIS::MouseButtonID ID)
 }
 
 
-bool GUIManager::injectKeyPress(OIS::KeyEvent Key)
+bool GUIManager::injectKeyPress(OIS::KeyEvent Event)
 {
-	if (Key.key == OIS::KC_ESCAPE)
-	{
-		ContinueRunning = false;
-	}
-
-    return CEGUISystem->injectKeyDown(Key.key);
+    return CEGUISystem->injectKeyDown(Event.key);
 }
 
-bool GUIManager::injectKeyRelease(OIS::KeyEvent Key)
+bool GUIManager::injectKeyRelease(OIS::KeyEvent Event)
 {
-    return CEGUISystem->injectKeyUp(Key.key);
+    CEGUISystem->injectChar(Event.text);
+
+    return CEGUISystem->injectKeyUp(Event.key);
 }

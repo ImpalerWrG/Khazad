@@ -13,7 +13,9 @@ public:
 
     ScreenBase()                         { RootWindow = NULL; };
 
-    ~ScreenBase()                                 {};
+    ~ScreenBase()                        { };
+
+    virtual bool Init()                  { };
 
     CEGUI::Window* getRootWindow()       { return RootWindow; }
 

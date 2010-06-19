@@ -3,8 +3,6 @@
 
 #include <stdafx.h>
 
-#include <CEGUI.h>
-
 #include <ScreenBase.h>
 
 class SplashScreen: ScreenBase
@@ -28,4 +26,4 @@ private:
 
 };
 
-#endif  // GUI__HEADER
+#endif  // SPLASH__HEADER
