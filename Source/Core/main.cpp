@@ -91,6 +91,7 @@ int main(int argc, char **argv)
 	while(Continue) // While program isn't done
 	{
 		//FPSTimer->Start();
+            Ogre::WindowEventUtilities::messagePump();
 
             Continue = INPUT->frameStarted();
 

@@ -18,11 +18,14 @@ public:
 
     void ZoomCamera(float ZoomChange);
     void RotateCamera(float RotationFactor);
+    void ElevateCamera(float ElevationFactor);
     void PitchCamera(float PitchFactor);
     void TranslateCamera(float X, float Y);
 
     void setPitchLock(bool NewLock)                 { PitchLock = NewLock; }
     bool getPitchLock()                             { return PitchLock; }
+
+    void SetDefaultView();
 
 
 private:

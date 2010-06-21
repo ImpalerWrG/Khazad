@@ -29,22 +29,37 @@ bool Camera::Init()
 	OgreCamera->setNearClipDistance(1);
 	OgreCamera->setFarClipDistance(100000);
 
+    OgreCamera->setFixedYawAxis(true, Ogre::Vector3::UNIT_Z);
+
+            //Ogre::Entity *ent = RENDERER->getSceneManager()->createEntity("CameraMarker", "Tile");
+            //ent->setCastShadows(false);
+            //TargetNode->attachObject(ent);
+
 	ZoomFactor = OgreCamera->getOrthoWindowWidth();
 	TranslationFactor = ZoomFactor / RENDERER->getWindow()->getWidth();
 
 	PitchLock = false;
-	ZoomCamera(0.05);
-	PitchCamera(45);
-	RotateCamera(2.37);
+	SetDefaultView();
+
 	return true;
 }
 
 void Camera::ZoomCamera(float ZoomChange)
 {
-	ZoomFactor *= ZoomChange;
-	TranslationFactor = ZoomFactor / RENDERER->getWindow()->getWidth();
+    if (ZoomFactor < 200 && ZoomChange > 1)
+    {
+        ZoomFactor *= ZoomChange;
+        TranslationFactor = ZoomFactor / RENDERER->getWindow()->getWidth();
 
-	OgreCamera->setOrthoWindowWidth(ZoomFactor);
+        OgreCamera->setOrthoWindowWidth(ZoomFactor);
+    }
+    else if (ZoomFactor > 10 && ZoomChange < 1)
+    {
+        ZoomFactor *= ZoomChange;
+        TranslationFactor = ZoomFactor / RENDERER->getWindow()->getWidth();
+
+        OgreCamera->setOrthoWindowWidth(ZoomFactor);
+    }
 }
 
 void Camera::RotateCamera(float RotationFactor)
@@ -52,23 +67,57 @@ void Camera::RotateCamera(float RotationFactor)
 	TargetNode->rotate(Ogre::Vector3::UNIT_Z, Ogre::Radian(RotationFactor), Ogre::Node::TS_WORLD);
 }
 
+void Camera::ElevateCamera(float ElevationFactor)
+{
+	TargetNode->translate(0, 0, ElevationFactor, Ogre::Node::TS_WORLD);
+}
+
 void Camera::PitchCamera(float PitchFactor)
 {
 	if (!PitchLock)
 	{
-		TargetNode->pitch(Ogre::Radian(PitchFactor));
+        Ogre::Degree originalPitch = TargetNode->getOrientation().getPitch();
 
-		Ogre::Real pitchAngle = 2 * Ogre::Degree(Ogre::Math::ACos(TargetNode->getOrientation().w)).valueDegrees();
-		Ogre::Real pitchAngleSign = TargetNode->getOrientation().x;
-
-		if (pitchAngle > 90.0f)
-		{
-			//TargetNode->setOrientation(Ogre::Quaternion(Ogre::Math::Sqrt(0.5f), Ogre::Math::Sqrt(0.5f), 0, 0));
-		}
+        if (originalPitch > Ogre::Degree(100) && PitchFactor > 0)
+        {
+            TargetNode->pitch(Ogre::Degree(PitchFactor));
+        }
+        else if (originalPitch < Ogre::Degree(178) && PitchFactor < 0)
+        {
+            TargetNode->pitch(Ogre::Degree(PitchFactor));
+        }
 	}
 }
 
 void Camera::TranslateCamera(float X, float Y)
 {
-	TargetNode->translate(-X * TranslationFactor, Y * TranslationFactor, 0, Ogre::Node::TS_LOCAL);
+    Ogre::Vector3 LookVector = TargetNode->_getDerivedPosition() - CameraNode->_getDerivedPosition();
+
+    LookVector.normalise();
+    float zComp = LookVector.z;
+    LookVector.z = 0;
+    LookVector.normalise();
+
+    Ogre::Vector3 TempUpVector = Ogre::Vector3::UNIT_Z;
+
+    Ogre::Vector3 CrossProduct = TempUpVector.crossProduct(LookVector);
+    CrossProduct.normalise();
+
+
+	TargetNode->translate(LookVector * -Y * TranslationFactor / zComp, Ogre::Node::TS_WORLD);
+	TargetNode->translate(CrossProduct * X * TranslationFactor, Ogre::Node::TS_WORLD);
+}
+
+void Camera::SetDefaultView()
+{
+    TargetNode->setPosition(Ogre::Vector3(0, 0, 0));
+	CameraNode->setPosition(Ogre::Vector3(0, 0, 10000));
+
+
+    TargetNode->pitch(Ogre::Degree(60));
+	TargetNode->rotate(Ogre::Vector3::UNIT_Z, Ogre::Degree(135), Ogre::Node::TS_WORLD);
+
+    ZoomFactor = 100;
+	TranslationFactor = ZoomFactor / RENDERER->getWindow()->getWidth();
+    OgreCamera->setOrthoWindowWidth(ZoomFactor) ;
 }

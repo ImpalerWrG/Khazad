@@ -78,6 +78,21 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
 {
     GUI->injectKeyPress(arg);
 
+    if (arg.key == OIS::KC_UP)
+    {
+        RENDERER->getActiveCamera()->ElevateCamera(1);
+    }
+
+    if (arg.key == OIS::KC_DOWN)
+    {
+        RENDERER->getActiveCamera()->ElevateCamera(-1);
+    }
+
+    if (arg.key == OIS::KC_D)
+    {
+        RENDERER->getActiveCamera()->SetDefaultView();
+    }
+
     return true;
 }
 
@@ -113,7 +128,7 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
 
         if (arg.state.Y.rel != 0)
         {
-            RENDERER->getActiveCamera()->PitchCamera(arg.state.Y.rel / 500.0);
+            RENDERER->getActiveCamera()->PitchCamera(arg.state.Y.rel / 10.0);
         }
     }
     if (MouseObject->getMouseState().buttonDown(OIS::MB_Left))
