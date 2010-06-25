@@ -7,7 +7,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="10"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_SILK_CLOTH"/>
@@ -16,7 +15,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="11"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_PLANT_THREAD_CLOTH"/>
@@ -25,7 +23,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="12"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_GREEN_GLASS"/>
@@ -34,7 +31,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK2"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_BRICK2"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="13"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_CLEAR_GLASS"/>
@@ -43,7 +39,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK2"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_BRICK2"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="14"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_CRYSTAL_GLASS"/>
@@ -52,7 +47,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK2"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_BRICK2"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="15"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_ICE"/>
@@ -70,7 +64,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="17"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_CHARCOAL"/>
@@ -79,7 +72,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="18"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_POTASH"/>
@@ -88,7 +80,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="19"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_ASHES"/>
@@ -97,7 +88,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="20"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_PEARLASH"/>
@@ -106,7 +96,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="21"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_SOAP"/>
@@ -115,11 +104,9 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="24"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_EXOTIC"/>
 		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
-		<MatGlossIndex int="-1"/>
 	</MaterialClass>
 </MaterialClasses>

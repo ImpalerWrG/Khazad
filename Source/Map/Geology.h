@@ -16,7 +16,7 @@ public:
     Geology();
     ~Geology();
 
-    bool Init();
+    bool Init(uint32_t Seed);
 
     int16_t getRockTypeAtCoordinates(MapCoordinates Target);
 

@@ -10,6 +10,7 @@
 #include <Game.h>
 //#include <ModelManager.h>
 //#include <Model.h>
+#include <Geology.h>
 
 Cell::Cell()
 {
@@ -35,6 +36,8 @@ Cell::Cell()
     Solid.reset();
     LiquidType.reset();
 
+    CellSceneNode = RENDERER->getRootNode()->createChildSceneNode();
+
     GAME->getMap()->ChangeCellCount(1);
 }
 
@@ -57,18 +60,34 @@ bool Cell::Init()
 
     BuildFaceData();
 
-    //MAP->ChangeInitedCellCount(1);
-
     return true;
 }
 
 void Cell::setPosition(CellCoordinates Coordinates)
 {
+    Ogre::Vector3 CellPosition;
+
     CellPosition.x = (float) (Coordinates.X * CELLEDGESIZE) + (CELLEDGESIZE / 2) - HALFCUBE;
     CellPosition.y = (float) (Coordinates.Y * CELLEDGESIZE) + (CELLEDGESIZE / 2) - HALFCUBE;
     CellPosition.z = (float) Coordinates.Z;
 
+    CellSceneNode->setPosition(CellPosition);
+
     thisCellCoordinates = Coordinates;
+}
+
+void Cell::LoadCellData(Geology* MapGeology)
+{
+    CubeCoordinates TargetCubeCoordinates = CubeCoordinates(0, 0);
+    static int16_t FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
+
+    for (TargetCubeCoordinates.X = 0; TargetCubeCoordinates.X < CELLEDGESIZE; TargetCubeCoordinates.X += 1)
+    {
+        for (TargetCubeCoordinates.Y = 0; TargetCubeCoordinates.Y < CELLEDGESIZE; TargetCubeCoordinates.Y += 1)
+        {
+            setCubeShape(TargetCubeCoordinates, FloorID);
+        }
+    }
 }
 
 bool Cell::Update()
@@ -676,6 +695,18 @@ Face* Cell::addFace(CubeCoordinates Coordinates, Direction DirectionType)
             Face* NewFace = new Face();
             Faces[Key] = NewFace;
 
+            // Contain within Face?
+            char buffer [50];
+            sprintf(buffer, "Cell%dFace%d", thisCellCoordinates.X * 100 + thisCellCoordinates.Y * 10 + thisCellCoordinates.Z, Coordinates.X * CELLEDGESIZE + Coordinates.Y);
+
+            Ogre::Entity *ent = RENDERER->getSceneManager()->createEntity(buffer, "Tile");
+            ent->setCastShadows(false);
+            ent->setMaterial(RENDERER->getMaterial());
+
+            Ogre::SceneNode* NewFaceNode = CellSceneNode->createChildSceneNode();
+            NewFaceNode->attachObject(ent);
+            NewFaceNode->setPosition(Coordinates.X, Coordinates.Y, 0);
+
             setActive(true);
             setNeedsRedraw(true);
             return NewFace;
@@ -689,10 +720,10 @@ Face* Cell::addFace(CubeCoordinates Coordinates, Direction DirectionType)
 
 Ogre::Vector3 Cell::getCubePosition(CubeCoordinates Coordinates)
 {
-    float X = CellPosition.x - (float)(CELLEDGESIZE / 2) + (float)Coordinates.X + (float)HALFCUBE;
-    float Y = CellPosition.y - (float)(CELLEDGESIZE / 2) + (float)Coordinates.Y + (float)HALFCUBE;
+    float X = CellSceneNode->getPosition().x - (float)(CELLEDGESIZE / 2) + (float)Coordinates.X + (float)HALFCUBE;
+    float Y = CellSceneNode->getPosition().y - (float)(CELLEDGESIZE / 2) + (float)Coordinates.Y + (float)HALFCUBE;
 
-	return Ogre::Vector3(X, Y, CellPosition.z);
+	return Ogre::Vector3(X, Y, CellSceneNode->getPosition().z);
 }
 
 MapCoordinates Cell::TranslateCubeToMap(CubeCoordinates Coordinates)
@@ -720,26 +751,10 @@ bool Cell::isCubeSloped(CubeCoordinates Coordinates) //TODO move data int Shape 
     return (CubeShapeID == RampID || CubeShapeID == StairID);
 }
 
-/*
-void Cell::ClearROs()
-{
-    for( map<int16_t, ROstore >::iterator it = ROs.begin(); it != ROs.end(); ++it)
-    {
-        ROstore tmp = it->second;
-        if(tmp.normal)
-        {
-            RENDERER->DeleteRenderObject( tmp.normal );
-        }
-    }
-    ROs.clear();
-}
-*/
-
 void Cell::DrawCellCage()
 {
     //RENDERER->DrawCage(AdjustedPoint, CELLEDGESIZE, CELLEDGESIZE, 1.0, true, 1, 1, 1);
 }
-
 
 int Cell::addActor(Actor* NewActor)
 {

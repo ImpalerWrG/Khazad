@@ -51,39 +51,36 @@ bool Map::Init()
     return true;
 }
 
-bool Map::Generate(uint32_t Seed)
+bool Map::Generate(Geology* RegionGeology)
 {
-    //CellCoordinates TargetCellCoordinates = CellCoordinates(0, 0, 0);
-    //Cell* NewCell = new Cell();
-    //NewCell->setPosition(TargetCellCoordinates);
+    CellSizeX = 3;
+    CellSizeY = 3;
 
-    //addCell(NewCell, TargetCellCoordinates);
+    MapSizeX = CellSizeX * CELLEDGESIZE;
+    MapSizeY = CellSizeY * CELLEDGESIZE;
+    //MapSizeZ = CellSizeZ;
 
-
-
-
-
-
-    char buffer [50];
-
-
-    for (uint16_t i = 0; i < 100; i++)
+    // Create and add Cells with shape and material data
+    for (uint16_t X = 0; X < CellSizeX; X++)
     {
-        for (uint16_t j = 0; j < 100; j++)
+        for (uint16_t Y = 0; Y < CellSizeX; Y++)
         {
-            sprintf(buffer, "Tile%d", (i * 100) + j);
-            Ogre::Entity *ent = RENDERER->getSceneManager()->createEntity(buffer, "Tile");
-            ent->setCastShadows(false);
-            Ogre::SceneNode* NewNode = RENDERER->getRootNode()->createChildSceneNode();
-            NewNode->attachObject(ent);
-            NewNode->setPosition(i * 1.1, j * 1.1, 0);
-            //NewNode->setDirection(Ogre::Vector3::UNIT_Y);
+            int Z = 0; //get From Geology
+
+            CellCoordinates TargetCellCoordinates = CellCoordinates(X, Y, Z);
+            Cell* NewCell = new Cell();
+            NewCell->setPosition(TargetCellCoordinates);
+
+            addCell(NewCell, TargetCellCoordinates);
+            NewCell->LoadCellData(MapGeology);
         }
     }
 
-
-
-
+    // Initialize Faces for the cells
+    for(std::map<uint64_t, Cell*>::iterator CellIterator = Cells.begin() ; CellIterator != Cells.end(); ++CellIterator )
+    {
+        CellIterator->second->Init();
+    }
 
     return true;
 }
@@ -156,151 +153,13 @@ void Map::setCellNeedsReDraw(CellCoordinates Coordinates, bool NewValue)
     }
 }
 
-/*
-bool Map::Extract()
-{
-    if(!EXTRACTOR->Attach())
-    {
-        return false;
-    }
-
-    DFHack::API& DF = *EXTRACTOR->DFHack;
-
-    if(MapLoaded)
-    {
-        ReleaseMap();
-    }
-
-    vector< vector <uint16_t> > layerassign;
-    // get region geology
-    if(!DF.ReadGeology( layerassign ))
-    {
-        cerr << "Can't get region geology." << endl;
-        return false;
-    }
-
-    // Initialize Cells and Cubes
-    uint32_t X, Y, Z;
-    DF.getSize(X, Y, Z);
-
-    CellSizeX = X;
-    CellSizeY = Y;
-    CellSizeZ = Z;
-
-    MapSizeX = CellSizeX * CELLEDGESIZE;
-    MapSizeY = CellSizeY * CELLEDGESIZE;
-    MapSizeZ = CellSizeZ;
-
-    // read constructions
-    map<uint64_t, DFHack::t_construction> constructionAssigner;
-    uint32_t numconstructions = DF.InitReadConstructions();
-    DFHack::t_construction tempcon;
-    uint32_t index = 0;
-    while(index < numconstructions)
-    {
-        DF.ReadConstruction(index, tempcon);
-        uint64_t coord =  ((uint64_t)tempcon.z) + (((uint64_t)tempcon.y) << 16) + (((uint64_t)tempcon.x) << 32);
-        constructionAssigner[coord] = tempcon;
-        index ++;
-    }
-    DF.FinishReadConstructions();
-
-    // read trees
-    map<uint64_t, DFHack::t_tree_desc> plantAssigner;
-    uint32_t numtrees = DF.InitReadVegetation();
-    DFHack::t_tree_desc temptree;
-    index = 0;
-    while(index < numtrees)
-    {
-        DF.ReadVegetation(index, temptree);
-        uint64_t coord =  ((uint64_t)temptree.z) + (((uint64_t)temptree.y) << 16) + (((uint64_t)temptree.x) << 32);
-        plantAssigner[coord] = temptree;
-        index ++;
-    }
-    DF.FinishReadVegetation();
-
-    // read buildings
-    map<uint64_t, DFHack::t_building> buildingAssigner;
-    vector <string> v_buildingtypes;// FIXME: this is currently unused
-    uint32_t numbuildings = DF.InitReadBuildings(v_buildingtypes);
-    DFHack::t_building tempbld;
-    index = 0;
-    while(index < numbuildings)
-    {
-        DF.ReadBuilding(index, tempbld);
-        if(tempbld.type < v_buildingtypes.size())
-        {
-            string strtype = v_buildingtypes[tempbld.type];
-            if( strtype == "stockpile" || strtype == "zone" ||strtype == "construction_blueprint" )
-            {
-                index++;
-                continue;
-            }
-            uint64_t coord =  ((uint64_t)tempbld.z) + (((uint64_t)tempbld.y1) << 16) + (((uint64_t)tempbld.x1) << 32);
-            buildingAssigner[coord] = tempbld;
-        }
-        else
-        {
-            printf ("building at %d %d %d, unknown type %d, vtable %x\n",tempbld.x1,tempbld.y1,tempbld.z,tempbld.type, tempbld.vtable);
-        }
-        index ++;
-    }
-    DF.FinishReadBuildings();
-
-
-    CellCoordinates TargetCellCoordinates;
-
-    for (TargetCellCoordinates.X = 0; TargetCellCoordinates.X < CellSizeX; TargetCellCoordinates.X += 1)
-    {
-        for (TargetCellCoordinates.Y = 0; TargetCellCoordinates.Y < CellSizeY; TargetCellCoordinates.Y += 1)
-        {
-            for (TargetCellCoordinates.Z = 0; TargetCellCoordinates.Z < CellSizeZ; TargetCellCoordinates.Z += 1)
-            {
-                if(DF.isValidBlock(TargetCellCoordinates.X, TargetCellCoordinates.Y, TargetCellCoordinates.Z))
-                {
-                    Cell* NewCell = new Cell();
-                    NewCell->setPosition(TargetCellCoordinates);
-
-                    addCell(NewCell, TargetCellCoordinates);
-                    EXTRACTOR->LoadCellData(DF, layerassign, NewCell, constructionAssigner, plantAssigner, buildingAssigner, TargetCellCoordinates);
-                }
-            }
-        }
-    }
-
-    // Build Face Data and other Initializations, can only be done properly once all map data is loaded
-    for (TargetCellCoordinates.X = 0; TargetCellCoordinates.X < CellSizeX; TargetCellCoordinates.X += 1)
-    {
-        for (TargetCellCoordinates.Y = 0; TargetCellCoordinates.Y < CellSizeY; TargetCellCoordinates.Y += 1)
-        {
-            for (TargetCellCoordinates.Z = 0; TargetCellCoordinates.Z < CellSizeZ; TargetCellCoordinates.Z += 1)
-            {
-                Cell* LoopCell = getCell(TargetCellCoordinates);
-                if(LoopCell != NULL)
-                {
-                    LoopCell->Init();
-                }
-            }
-        }
-    }
-
-    EXTRACTOR->Detach();
-
-    MapLoaded = true;
-    return true;
-}
-*/
-
 bool Map::Load(string filename)
 {
-    //DFExtractor->loadMap(filename);
-    //ReparseExtract();
     return false;
 }
 
 void Map::Save(string filename)
 {
-    //DFExtractor->writeMap(filename);
     return;
 }
 

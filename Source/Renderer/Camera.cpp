@@ -25,15 +25,23 @@ bool Camera::Init()
 	CameraNode->setPosition(Ogre::Vector3(0, 0, 10000));
 	CameraNode->attachObject(OgreCamera);
 
+
+
+            char buffer [50];
+            sprintf(buffer, "CameraMarker");
+            Ogre::Entity *ent = RENDERER->getSceneManager()->createEntity(buffer, "ColorCube");
+            ent->setCastShadows(false);
+            TargetNode->attachObject(ent);
+
+
+
+
+
 	CameraNode->setAutoTracking(true, TargetNode);
-	OgreCamera->setNearClipDistance(1);
+	OgreCamera->setNearClipDistance(100);
 	OgreCamera->setFarClipDistance(100000);
 
     OgreCamera->setFixedYawAxis(true, Ogre::Vector3::UNIT_Z);
-
-            //Ogre::Entity *ent = RENDERER->getSceneManager()->createEntity("CameraMarker", "Tile");
-            //ent->setCastShadows(false);
-            //TargetNode->attachObject(ent);
 
 	ZoomFactor = OgreCamera->getOrthoWindowWidth();
 	TranslationFactor = ZoomFactor / RENDERER->getWindow()->getWidth();

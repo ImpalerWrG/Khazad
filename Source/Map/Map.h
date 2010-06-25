@@ -14,6 +14,7 @@ struct Face
         NegativeAxisSurfaceTypeID = -1;
 
         MaterialTypeID = -1;
+
     };
 
     int16_t PositiveAxisSurfaceTypeID;
@@ -91,7 +92,7 @@ public:
     bool isCubeSolid(MapCoordinates Coordinates) const;
     void setCubeSolid(MapCoordinates Coordinates, bool NewValue);
 
-    bool Generate(uint32_t Seed);
+    bool Generate(Geology* RegionGeology);
 
 	uint32_t getMapSizeX() const { return MapSizeX; }
 	uint32_t getMapSizeY() const { return MapSizeY; }
@@ -101,7 +102,6 @@ public:
 	uint16_t getCellSizeY() const { return CellSizeY; }
 	uint16_t getCellSizeZ() const { return CellSizeZ; }
 
-    bool Extract();
     bool Load(std::string filename);
     void Save(std::string filename);
 
@@ -123,7 +123,6 @@ public:
 
     MapCoordinates getMapCenter() const;
 
-    //TreeManager* TreeMan;
 
 protected:
 

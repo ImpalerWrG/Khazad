@@ -12,6 +12,7 @@
 
 class Building;
 class Tree;
+class Geology;
 
 //using namespace Ogre;
 
@@ -34,6 +35,7 @@ public:
 
     // update VBOs
     //void UpdateRenderLists(WallDisplayMode Mode);
+    void LoadCellData(Geology* MapGeology);
 
     // sync with DF if applicable
     bool Update();
@@ -117,8 +119,8 @@ public:
     void addBuilding(Building* NewBuilding)             { buildings.push_back(NewBuilding); }
     void addTree(Tree* NewTree)                         { trees.push_back(NewTree); }
 
-    CellCoordinates getCellCoordinates()        { return thisCellCoordinates; }
-    Ogre::Vector3 getPosition()                       { return CellPosition; }
+    CellCoordinates getCellCoordinates()                { return thisCellCoordinates; }
+    Ogre::Vector3 getPosition()                         { return CellSceneNode->getPosition(); }
 
     //std::map<int16_t, vector <vertex>* > Geometry;
 
@@ -163,8 +165,10 @@ protected:
 
     std::vector <Actor*> LocalActors;
 
-    // Exact spacial Coordinates of the center of the cell, used for frustrum culling
-    Ogre::Vector3 CellPosition;
+    // Exact spacial Coordinates of the center of the cell, used for rendering
+    //Ogre::Vector3 CellPosition;
+    Ogre::SceneNode* CellSceneNode;
+
 
     // The global position of this cell relative to other cells
     CellCoordinates thisCellCoordinates;

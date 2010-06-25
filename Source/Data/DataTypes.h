@@ -304,7 +304,6 @@ public:
     bool PostProcessing();
 
     int16_t getDefaultMaterial()     { return DefaultMaterialID; }
-    uint16_t getMatGlossIndex()       { return MatGlossIndex; }
 
     int16_t getTexture(uint16_t SurfaceID)     { return TextureArray[SurfaceID]; }
 
@@ -315,7 +314,6 @@ protected:
     string DefaultMaterialLabel;
 
     int16_t DefaultMaterialID;
-    uint16_t MatGlossIndex;
 
     std::vector<string> SurfaceTypeLabels;
     std::vector<string> TextureLabels;

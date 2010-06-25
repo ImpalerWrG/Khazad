@@ -28,6 +28,8 @@ public:
 
     Camera* getActiveCamera()                     { return Cameras[ActiveCameraIndex]; }
 
+    Ogre::MaterialPtr getMaterial()                { return GrassMat; }
+
 private:
 
     Ogre::Root* OgreRoot;
@@ -41,9 +43,12 @@ private:
     void initializeResourceGroups();
 
     void setupScene();
+    void createCamera();
 
     vector<Camera*> Cameras;
     uint16_t ActiveCameraIndex;
+
+    Ogre::MaterialPtr GrassMat;
 };
 
 #define RENDERER (Renderer::GetInstance())

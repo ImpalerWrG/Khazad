@@ -3,15 +3,18 @@
 #include <Actor.h>
 #include <Pawn.h>
 #include <Tree.h>
+#include <Geology.h>
 
 
 DECLARE_SINGLETON(Game)
 
 bool Game::Init()
 {
+    Geology* MapGeology = new Geology();
+
 	MainMap = new Map();
 	MainMap->Init();
-	MainMap->Generate(0);
+	MainMap->Generate(MapGeology);
 
 	return true;
 }

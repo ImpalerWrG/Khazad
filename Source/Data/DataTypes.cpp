@@ -395,8 +395,6 @@ bool MaterialClassData::Load(TiXmlElement* Entry, uint32_t Index)
 		XML->QueryTextArray(Entry, "DefaultSurfaceTextures", "SurfaceTexture", "SurfaceType", &SurfaceTypeLabels);
 		XML->QueryTextArray(Entry, "DefaultSurfaceTextures", "SurfaceTexture", "Texture", &TextureLabels);
 
-		XML->QueryUIntValue(Entry, "MatGlossIndex", "int", MatGlossIndex);
-
 		return true;
 	}
 	return false;

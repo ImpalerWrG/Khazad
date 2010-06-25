@@ -13,11 +13,12 @@ Geology::~Geology()
 
 }
 
-bool Geology::Init()
+bool Geology::Init(uint32_t Seed)
 {
-    //Ogre::Plane RockLayer = Ogre::Plane::Plane(Ogre::Vector3(0, 0, 1), 1);
+    Ogre::Plane RockLayer = Ogre::Plane(Ogre::Vector3(0, 0, 1), 1);
+    int RockType = 42;
 
-    //LayerBoundries.push_back(make_pair(RockLayer, 42));
+    LayerBoundries.push_back(make_pair(RockLayer, RockType));
 
 
     return true;
