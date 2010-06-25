@@ -6,128 +6,178 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="Debug">
-				<Option output="..\..\Distribution\Khazad_Debug" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\Distribution" />
-				<Option object_output="..\..\obj\Debug\" />
+			<Target title="Windows Debug">
+				<Option output="../../Distribution/Khazad_Debug" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../Distribution" />
+				<Option object_output="../../obj/Debug/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-mthreads" />
+					<Add option="-D_DEBUG" />
+					<Add option="-DWIN32" />
+					<Add option="-D_WINDOWS" />
+					<Add directory="../../OgreSDK_mingw_v1-7-1/include/OIS" />
+					<Add directory="../../OgreSDK_mingw_v1-7-1/include/OGRE" />
+					<Add directory="../../OgreSDK_mingw_v1-7-1/boost_1_42" />
+					<Add directory="../../CEGUI/include" />
+					<Add directory="../../CEGUI/include/RendererModules/Ogre" />
+				</Compiler>
+				<Linker>
+					<Add option="-Wl,--enable-runtime-pseudo-reloc" />
+					<Add option="-Wl,--enable-auto-image-base" />
+					<Add option="-Wl,--add-stdcall-alias" />
+					<Add directory="../../CEGUI/bin" />
+					<Add directory="../../OgreSDK_mingw_v1-7-1/lib/release" />
+				</Linker>
+			</Target>
+			<Target title="Windows Release">
+				<Option output="../../Distribution/Khazad" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../Distribution" />
+				<Option object_output="../../obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-mthreads" />
+					<Add option="-DNDEBUG" />
+					<Add option="-DWIN32" />
+					<Add option="-D_WINDOWS" />
+					<Add directory="../../OgreSDK_mingw_v1-7-1/include/OIS" />
+					<Add directory="../../OgreSDK_mingw_v1-7-1/include/OGRE" />
+					<Add directory="../../OgreSDK_mingw_v1-7-1/boost_1_42" />
+					<Add directory="../../CEGUI/include" />
+					<Add directory="../../CEGUI/include/RendererModules/Ogre" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-Wl,--enable-runtime-pseudo-reloc" />
+					<Add option="-Wl,--enable-auto-image-base" />
+					<Add option="-Wl,--add-stdcall-alias" />
+					<Add directory="../../CEGUI/bin" />
+					<Add directory="../../OgreSDK_mingw_v1-7-1/lib/release" />
+				</Linker>
+			</Target>
+			<Target title="Linux Debug">
+				<Option platforms="Unix;" />
+				<Option output="../../Distribution/Khazad_Debug" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../Distribution" />
+				<Option object_output="../../obj/Debug/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-D_DEBUG" />
+					<Add option="-DLINUX_BUILD" />
+					<Add directory="/usr/local/include/OIS" />
+					<Add directory="/usr/local/include/OGRE" />
+					<Add directory="/usr/local/include/CEGUI" />
+					<Add directory="/usr/local/include/CEGUI/RendererModules/Ogre" />
 				</Compiler>
 				<Linker>
-					<Add library="OgreMain" />
-					<Add library="OIS" />
-					<Add library="CEGUIBase" />
-					<Add library="CEGUIOgreRenderer" />
-					<Add directory="..\..\CEGUI\bin" />
-					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\release" />
+					<Add option="-Wl" />
+					<Add directory="/usr/local/lib" />
 				</Linker>
 			</Target>
-			<Target title="Release">
-				<Option output="..\..\Distribution\Khazad" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="..\..\Distribution" />
-				<Option object_output="..\..\obj\Release\" />
+			<Target title="Linux Release">
+				<Option platforms="Unix;" />
+				<Option output="../../Distribution/Khazad" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../Distribution" />
+				<Option object_output="../../obj/Release/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-DNDEBUG" />
+					<Add option="-DLINUX_BUILD" />
+					<Add directory="/usr/local/include/OIS" />
+					<Add directory="/usr/local/include/OGRE" />
+					<Add directory="/usr/local/include/CEGUI" />
+					<Add directory="/usr/local/include/CEGUI/RendererModules/Ogre" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="OgreMain" />
-					<Add library="OIS" />
-					<Add library="CEGUIBase" />
-					<Add library="CEGUIOgreRenderer" />
-					<Add directory="..\..\CEGUI\bin" />
-					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\release" />
+					<Add option="-Wl" />
+					<Add directory="/usr/local/lib" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-mthreads" />
 			<Add option="-fmessage-length=0" />
 			<Add option="-fexceptions" />
 			<Add option="-fident" />
-			<Add option="-DWIN32" />
-			<Add option="-D_WINDOWS" />
-			<Add directory="..\..\OgreSDK_mingw_v1-7-1\include\OGRE" />
-			<Add directory="..\..\Source\Core" />
-			<Add directory="..\..\Source\GUI" />
-			<Add directory="..\..\Source\Renderer" />
-			<Add directory="..\..\OgreSDK_mingw_v1-7-1\include\OIS" />
-			<Add directory="..\..\CEGUI\include" />
-			<Add directory="..\..\CEGUI\include\RendererModules\Ogre" />
-			<Add directory="..\..\Source\Data" />
-			<Add directory="..\..\Source\TinyXML" />
-			<Add directory="..\..\Source\Map" />
-			<Add directory="..\..\Source\Game" />
-			<Add directory="..\..\OgreSDK_mingw_v1-7-1\boost_1_42" />
+			<Add directory="../../Source/Core" />
+			<Add directory="../../Source/GUI" />
+			<Add directory="../../Source/Renderer" />
+			<Add directory="../../Source/Data" />
+			<Add directory="../../Source/TinyXML" />
+			<Add directory="../../Source/Map" />
+			<Add directory="../../Source/Game" />
 		</Compiler>
 		<Linker>
-			<Add option="-Wl,--enable-runtime-pseudo-reloc" />
-			<Add option="-Wl,--enable-auto-image-base" />
-			<Add option="-Wl,--add-stdcall-alias" />
+			<Add library="OgreMain" />
+			<Add library="OIS" />
+			<Add library="CEGUIBase" />
+			<Add library="CEGUIOgreRenderer" />
 		</Linker>
-		<Unit filename="..\..\Source\Core\Singleton.h" />
-		<Unit filename="..\..\Source\Core\main.cpp" />
-		<Unit filename="..\..\Source\Core\stdafx.h" />
-		<Unit filename="..\..\Source\Data\ConfigManager.cpp" />
-		<Unit filename="..\..\Source\Data\ConfigManager.h" />
-		<Unit filename="..\..\Source\Data\DataManager.cpp" />
-		<Unit filename="..\..\Source\Data\DataManager.h" />
-		<Unit filename="..\..\Source\Data\DataTypes.cpp" />
-		<Unit filename="..\..\Source\Data\DataTypes.h" />
-		<Unit filename="..\..\Source\Data\Paths.cpp" />
-		<Unit filename="..\..\Source\Data\Paths.h" />
-		<Unit filename="..\..\Source\Data\XMLManager.cpp" />
-		<Unit filename="..\..\Source\Data\XMLManager.h" />
-		<Unit filename="..\..\Source\GUI\FPS.cpp" />
-		<Unit filename="..\..\Source\GUI\FPS.h" />
-		<Unit filename="..\..\Source\GUI\GUI.cpp" />
-		<Unit filename="..\..\Source\GUI\GUI.h" />
-		<Unit filename="..\..\Source\GUI\GameSetup.cpp" />
-		<Unit filename="..\..\Source\GUI\GameSetup.h" />
-		<Unit filename="..\..\Source\GUI\InputManager.cpp" />
-		<Unit filename="..\..\Source\GUI\InputManager.h" />
-		<Unit filename="..\..\Source\GUI\MainGameScreen.cpp" />
-		<Unit filename="..\..\Source\GUI\MainGameScreen.h" />
-		<Unit filename="..\..\Source\GUI\ScreenBase.h" />
-		<Unit filename="..\..\Source\GUI\SplashScreen.cpp" />
-		<Unit filename="..\..\Source\GUI\SplashScreen.h" />
-		<Unit filename="..\..\Source\Game\Actor.cpp" />
-		<Unit filename="..\..\Source\Game\Actor.h" />
-		<Unit filename="..\..\Source\Game\Building.cpp" />
-		<Unit filename="..\..\Source\Game\Building.h" />
-		<Unit filename="..\..\Source\Game\Furniture.cpp" />
-		<Unit filename="..\..\Source\Game\Furniture.h" />
-		<Unit filename="..\..\Source\Game\Game.cpp" />
-		<Unit filename="..\..\Source\Game\Game.h" />
-		<Unit filename="..\..\Source\Game\Pawn.cpp" />
-		<Unit filename="..\..\Source\Game\Pawn.h" />
-		<Unit filename="..\..\Source\Game\Tree.cpp" />
-		<Unit filename="..\..\Source\Game\Tree.h" />
-		<Unit filename="..\..\Source\Map\Cell.cpp" />
-		<Unit filename="..\..\Source\Map\Cell.h" />
-		<Unit filename="..\..\Source\Map\Coordinates.cpp" />
-		<Unit filename="..\..\Source\Map\Coordinates.h" />
-		<Unit filename="..\..\Source\Map\Geology.cpp" />
-		<Unit filename="..\..\Source\Map\Geology.h" />
-		<Unit filename="..\..\Source\Map\Map.cpp" />
-		<Unit filename="..\..\Source\Map\Map.h" />
-		<Unit filename="..\..\Source\Renderer\Camera.cpp" />
-		<Unit filename="..\..\Source\Renderer\Camera.h" />
-		<Unit filename="..\..\Source\Renderer\Renderer.cpp" />
-		<Unit filename="..\..\Source\Renderer\Renderer.h" />
-		<Unit filename="..\..\Source\TinyXML\tinystr.cpp" />
-		<Unit filename="..\..\Source\TinyXML\tinystr.h" />
-		<Unit filename="..\..\Source\TinyXML\tinyxml.cpp" />
-		<Unit filename="..\..\Source\TinyXML\tinyxml.h" />
-		<Unit filename="..\..\Source\TinyXML\tinyxmlerror.cpp" />
-		<Unit filename="..\..\Source\TinyXML\tinyxmlparser.cpp" />
+		<Unit filename="../../Source/Core/Singleton.h" />
+		<Unit filename="../../Source/Core/main.cpp" />
+		<Unit filename="../../Source/Core/stdafx.h" />
+		<Unit filename="../../Source/Data/ConfigManager.cpp" />
+		<Unit filename="../../Source/Data/ConfigManager.h" />
+		<Unit filename="../../Source/Data/DataManager.cpp" />
+		<Unit filename="../../Source/Data/DataManager.h" />
+		<Unit filename="../../Source/Data/DataTypes.cpp" />
+		<Unit filename="../../Source/Data/DataTypes.h" />
+		<Unit filename="../../Source/Data/Paths.cpp" />
+		<Unit filename="../../Source/Data/Paths.h" />
+		<Unit filename="../../Source/Data/XMLManager.cpp" />
+		<Unit filename="../../Source/Data/XMLManager.h" />
+		<Unit filename="../../Source/GUI/FPS.cpp" />
+		<Unit filename="../../Source/GUI/FPS.h" />
+		<Unit filename="../../Source/GUI/GUI.cpp" />
+		<Unit filename="../../Source/GUI/GUI.h" />
+		<Unit filename="../../Source/GUI/GameSetup.cpp" />
+		<Unit filename="../../Source/GUI/GameSetup.h" />
+		<Unit filename="../../Source/GUI/InputManager.cpp" />
+		<Unit filename="../../Source/GUI/InputManager.h" />
+		<Unit filename="../../Source/GUI/MainGameScreen.cpp" />
+		<Unit filename="../../Source/GUI/MainGameScreen.h" />
+		<Unit filename="../../Source/GUI/ScreenBase.h" />
+		<Unit filename="../../Source/GUI/SplashScreen.cpp" />
+		<Unit filename="../../Source/GUI/SplashScreen.h" />
+		<Unit filename="../../Source/Game/Actor.cpp" />
+		<Unit filename="../../Source/Game/Actor.h" />
+		<Unit filename="../../Source/Game/Building.cpp" />
+		<Unit filename="../../Source/Game/Building.h" />
+		<Unit filename="../../Source/Game/Furniture.cpp" />
+		<Unit filename="../../Source/Game/Furniture.h" />
+		<Unit filename="../../Source/Game/Game.cpp" />
+		<Unit filename="../../Source/Game/Game.h" />
+		<Unit filename="../../Source/Game/Pawn.cpp" />
+		<Unit filename="../../Source/Game/Pawn.h" />
+		<Unit filename="../../Source/Game/Tree.cpp" />
+		<Unit filename="../../Source/Game/Tree.h" />
+		<Unit filename="../../Source/Map/Cell.cpp" />
+		<Unit filename="../../Source/Map/Cell.h" />
+		<Unit filename="../../Source/Map/Coordinates.cpp" />
+		<Unit filename="../../Source/Map/Coordinates.h" />
+		<Unit filename="../../Source/Map/Geology.cpp" />
+		<Unit filename="../../Source/Map/Geology.h" />
+		<Unit filename="../../Source/Map/Map.cpp" />
+		<Unit filename="../../Source/Map/Map.h" />
+		<Unit filename="../../Source/Renderer/Camera.cpp" />
+		<Unit filename="../../Source/Renderer/Camera.h" />
+		<Unit filename="../../Source/Renderer/Renderer.cpp" />
+		<Unit filename="../../Source/Renderer/Renderer.h" />
+		<Unit filename="../../Source/TinyXML/tinystr.cpp" />
+		<Unit filename="../../Source/TinyXML/tinystr.h" />
+		<Unit filename="../../Source/TinyXML/tinyxml.cpp" />
+		<Unit filename="../../Source/TinyXML/tinyxml.h" />
+		<Unit filename="../../Source/TinyXML/tinyxmlerror.cpp" />
+		<Unit filename="../../Source/TinyXML/tinyxmlparser.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
