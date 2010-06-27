@@ -17,12 +17,9 @@
 					<Add option="-D_DEBUG" />
 				</Compiler>
 				<Linker>
-					<Add library="OgreMain" />
-					<Add library="OIS" />
-					<Add library="CEGUIBase" />
-					<Add library="CEGUIOgreRenderer" />
 					<Add directory="..\..\CEGUI\bin" />
 					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\release" />
+					<Add directory="..\..\DevIL\lib" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -37,12 +34,9 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="OgreMain" />
-					<Add library="OIS" />
-					<Add library="CEGUIBase" />
-					<Add library="CEGUIOgreRenderer" />
 					<Add directory="..\..\CEGUI\bin" />
 					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\release" />
+					<Add directory="..\..\DevIL\lib" />
 				</Linker>
 			</Target>
 		</Build>
@@ -66,11 +60,19 @@
 			<Add directory="..\..\Source\Map" />
 			<Add directory="..\..\Source\Game" />
 			<Add directory="..\..\OgreSDK_mingw_v1-7-1\boost_1_42" />
+			<Add directory="..\..\DevIL\include" />
 		</Compiler>
 		<Linker>
 			<Add option="-Wl,--enable-runtime-pseudo-reloc" />
 			<Add option="-Wl,--enable-auto-image-base" />
 			<Add option="-Wl,--add-stdcall-alias" />
+			<Add library="OgreMain" />
+			<Add library="OIS" />
+			<Add library="CEGUIBase" />
+			<Add library="CEGUIOgreRenderer" />
+			<Add library="DevIL" />
+			<Add library="ILU" />
+			<Add library="ILUT" />
 		</Linker>
 		<Unit filename="..\..\Source\Core\Singleton.h" />
 		<Unit filename="..\..\Source\Core\main.cpp" />
@@ -120,6 +122,8 @@
 		<Unit filename="..\..\Source\Map\Map.h" />
 		<Unit filename="..\..\Source\Renderer\Camera.cpp" />
 		<Unit filename="..\..\Source\Renderer\Camera.h" />
+		<Unit filename="..\..\Source\Renderer\ImageManager.cpp" />
+		<Unit filename="..\..\Source\Renderer\ImageManager.h" />
 		<Unit filename="..\..\Source\Renderer\Renderer.cpp" />
 		<Unit filename="..\..\Source\Renderer\Renderer.h" />
 		<Unit filename="..\..\Source\TinyXML\tinystr.cpp" />

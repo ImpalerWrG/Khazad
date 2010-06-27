@@ -5,6 +5,7 @@
 #include <DataManager.h>
 #include <Renderer.h>
 #include <InputManager.h>
+#include <ImageManager.h>
 #include <GUI.h>
 #include <Game.h>
 
@@ -44,6 +45,11 @@ int main(int argc, char **argv)
         DATA->CreateInstance();
         DATA->Init();
         printf("DATA DONE\n");
+
+        printf("-=IMAGE INITIALIZING=- ... \n");
+        IMAGE->CreateInstance();
+        IMAGE->Init();
+        printf("IMAGE DONE\n");
 
         // OGRE Renderer
         printf("-=RENDER INITIALIZING=- ... \n");

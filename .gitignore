@@ -1,44 +1,36 @@
 # compiled objects
-
 obj/*
 
 
-
 # Ogre SDK
-
 OgreSDK_mingw_v1-7-1/*
 
 
+# DevIL SDK
+DevIL/*
+
 
 #CEGUI SDK
-
 CEGUI/*
 Dependencies/*
 
 
 #Superflous CB Project files
-
 Projects/CodeBlocks/Khazad.depend
 Projects/CodeBlocks/Khazad.layout
 Projects/CodeBlocks/Khazad.workspace
 
 
-
 #Dlls
-
 *.dll
 
 
-
 #The Executable
-
 Distribution/Khazad_Debug.exe
 Distribution/Khazad.exe
 
 
-
 # Log files
-
 Distribution/Ogre.log
 Distribution/CEGUI.log
 Distribution/ogre.cfg
