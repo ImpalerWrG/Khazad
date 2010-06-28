@@ -16,7 +16,14 @@ Renderer::Renderer()
 
 bool Renderer::Init()
 {
-    OgreRoot = new Ogre::Root();
+    // TODO replace with entirely manual plugin loading
+    #ifdef LINUX_BUILD
+        OgreRoot = new Ogre::Root("plugins.linux.cfg");
+    #else
+        OgreRoot = new Ogre::Root("plugins.windows.cfg");
+    #endif
+
+    //OgreRoot = new Ogre::Root();
 
     defineResources();
     setupRenderSystem();

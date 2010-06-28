@@ -6,7 +6,63 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="Debug">
+			<Target title="Windows Debug">
+				<Option output="..\..\Distribution\Khazad_Debug" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\Distribution" />
+				<Option object_output="..\..\obj\Debug\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-mthreads" />
+					<Add option="-D_DEBUG" />
+					<Add option="-DWIN32" />
+					<Add option="-D_WINDOWS" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-1\include\OIS" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-1\include\OGRE" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-1\boost_1_42" />
+					<Add directory="..\..\CEGUI\include" />
+					<Add directory="..\..\CEGUI\include\RendererModules\Ogre" />
+				</Compiler>
+				<Linker>
+					<Add option="-Wl,--enable-runtime-pseudo-reloc" />
+					<Add option="-Wl,--enable-auto-image-base" />
+					<Add option="-Wl,--add-stdcall-alias" />
+					<Add directory="..\..\CEGUI\bin" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\release" />
+					<Add directory="..\..\DevIL\lib" />
+				</Linker>
+			</Target>
+			<Target title="Windows Release">
+				<Option output="..\..\Distribution\Khazad" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="..\..\Distribution" />
+				<Option object_output="..\..\obj\Release\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-mthreads" />
+					<Add option="-DNDEBUG" />
+					<Add option="-DWIN32" />
+					<Add option="-D_WINDOWS" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-1\include\OIS" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-1\include\OGRE" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-1\boost_1_42" />
+					<Add directory="..\..\CEGUI\include" />
+					<Add directory="..\..\CEGUI\include\RendererModules\Ogre" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-Wl,--enable-runtime-pseudo-reloc" />
+					<Add option="-Wl,--enable-auto-image-base" />
+					<Add option="-Wl,--add-stdcall-alias" />
+					<Add directory="..\..\CEGUI\bin" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\release" />
+					<Add directory="..\..\DevIL\lib" />
+				</Linker>
+			</Target>
+			<Target title="Linux Debug">
+				<Option platforms="Unix;" />
 				<Option output="..\..\Distribution\Khazad_Debug" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="..\..\Distribution" />
 				<Option object_output="..\..\obj\Debug\" />
@@ -15,14 +71,19 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-D_DEBUG" />
+					<Add option="-DLINUX_BUILD" />
+					<Add directory="\usr\local\include\OIS" />
+					<Add directory="\usr\local\include\OGRE" />
+					<Add directory="\usr\local\include\CEGUI" />
+					<Add directory="\usr\local\include\CEGUI\RendererModules\Ogre" />
 				</Compiler>
 				<Linker>
-					<Add directory="..\..\CEGUI\bin" />
-					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\release" />
-					<Add directory="..\..\DevIL\lib" />
+					<Add option="-Wl" />
+					<Add directory="\usr\local\lib" />
 				</Linker>
 			</Target>
-			<Target title="Release">
+			<Target title="Linux Release">
+				<Option platforms="Unix;" />
 				<Option output="..\..\Distribution\Khazad" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="..\..\Distribution" />
 				<Option object_output="..\..\obj\Release\" />
@@ -31,41 +92,34 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-DNDEBUG" />
+					<Add option="-DLINUX_BUILD" />
+					<Add directory="\usr\local\include\OIS" />
+					<Add directory="\usr\local\include\OGRE" />
+					<Add directory="\usr\local\include\CEGUI" />
+					<Add directory="\usr\local\include\CEGUI\RendererModules\Ogre" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add directory="..\..\CEGUI\bin" />
-					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\release" />
-					<Add directory="..\..\DevIL\lib" />
+					<Add option="-Wl" />
+					<Add directory="\usr\local\lib" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-mthreads" />
 			<Add option="-fmessage-length=0" />
 			<Add option="-fexceptions" />
 			<Add option="-fident" />
-			<Add option="-DWIN32" />
-			<Add option="-D_WINDOWS" />
-			<Add directory="..\..\OgreSDK_mingw_v1-7-1\include\OGRE" />
 			<Add directory="..\..\Source\Core" />
 			<Add directory="..\..\Source\GUI" />
 			<Add directory="..\..\Source\Renderer" />
-			<Add directory="..\..\OgreSDK_mingw_v1-7-1\include\OIS" />
-			<Add directory="..\..\CEGUI\include" />
-			<Add directory="..\..\CEGUI\include\RendererModules\Ogre" />
 			<Add directory="..\..\Source\Data" />
 			<Add directory="..\..\Source\TinyXML" />
 			<Add directory="..\..\Source\Map" />
 			<Add directory="..\..\Source\Game" />
-			<Add directory="..\..\OgreSDK_mingw_v1-7-1\boost_1_42" />
 			<Add directory="..\..\DevIL\include" />
 		</Compiler>
 		<Linker>
-			<Add option="-Wl,--enable-runtime-pseudo-reloc" />
-			<Add option="-Wl,--enable-auto-image-base" />
-			<Add option="-Wl,--add-stdcall-alias" />
 			<Add library="OgreMain" />
 			<Add library="OIS" />
 			<Add library="CEGUIBase" />
