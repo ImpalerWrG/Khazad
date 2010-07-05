@@ -253,7 +253,7 @@
 		<File Path="Media/Textures/KhazadLogo.png"/>
 	</Texture>
 	<TextureGrid>
-		<TextureSize Height="32" Width="32"/>
+		<TextureSize Height="64" Width="64"/>
 		<GridSize Height="9" Width="7"/>
 		<File Path="Media/Textures/grass.png"/>
 		<Textures>

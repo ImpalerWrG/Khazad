@@ -86,6 +86,8 @@ void Cell::LoadCellData(Geology* MapGeology)
         for (TargetCubeCoordinates.Y = 0; TargetCubeCoordinates.Y < CELLEDGESIZE; TargetCubeCoordinates.Y += 1)
         {
             setCubeShape(TargetCubeCoordinates, FloorID);
+
+
         }
     }
 }
@@ -395,8 +397,6 @@ void Cell::setCubeShape(CubeCoordinates Coordinates, int16_t TileShape)
 void Cell::BuildFaceData()
 {
     static int16_t FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
-    static int16_t BoulderID = DATA->getLabelIndex("TILESHAPE_BOULDER");
-    static int16_t TreeID = DATA->getLabelIndex("TILESHAPE_TREE");
 
     CubeCoordinates TargetCubeCoordinates;
     MapCoordinates TargetMapCoordinates;
@@ -430,13 +430,23 @@ void Cell::BuildFaceData()
                 }
             }
 
-            if (CubeShape == FloorID || CubeShape == BoulderID || CubeShape == TreeID)
+            if (CubeShape == FloorID)
             {
                 Face* NewFace = addFace(TargetCubeCoordinates, DIRECTION_DOWN);
 
-                NewFace->MaterialTypeID = CubeMaterial;
-                NewFace->PositiveAxisSurfaceTypeID = CubeSurface;
-                NewFace->NegativeAxisSurfaceTypeID = CubeSurface;
+                //NewFace->MaterialTypeID = CubeMaterial;
+                //NewFace->PositiveAxisSurfaceTypeID = CubeSurface;
+                //NewFace->NegativeAxisSurfaceTypeID = CubeSurface;
+
+
+
+                int16_t MaterialID = DATA->getLabelIndex("MATERIAL_DARK_GRASS");
+                int16_t SurfaceID = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_2");
+
+
+                NewFace->setFaceMaterialType(MaterialID);
+                NewFace->setFaceSurfaceType(SurfaceID, DIRECTION_DOWN);
+
             }
 
             if (getLiquidLevel(TargetCubeCoordinates) != 0)
@@ -594,12 +604,8 @@ bool Cell::setFaceMaterialType(CubeCoordinates Coordinates, Direction DirectionT
 
     if (TargetFace != NULL)
     {
-        if (TargetFace->MaterialTypeID != MaterialTypeID)
-        {
-            TargetFace->MaterialTypeID = MaterialTypeID;
-            setNeedsRedraw(true);
-            return true;
-        }
+        TargetFace->setFaceMaterialType(MaterialTypeID);
+        return true;
     }
     return false;
 }
@@ -610,24 +616,8 @@ bool Cell::setFaceSurfaceType(CubeCoordinates Coordinates, Direction DirectionTy
 
     if (TargetFace != NULL)
     {
-        if (isDirectionPositive(DirectionType))
-        {
-            if (TargetFace->PositiveAxisSurfaceTypeID != SurfaceTypeID)
-            {
-                TargetFace->PositiveAxisSurfaceTypeID = SurfaceTypeID;
-                setNeedsRedraw(true);
-                return true;
-            }
-        }
-        else
-        {
-            if (TargetFace->NegativeAxisSurfaceTypeID != SurfaceTypeID)
-            {
-                TargetFace->NegativeAxisSurfaceTypeID = SurfaceTypeID;
-                setNeedsRedraw(true);
-                return true;
-            }
-        }
+        TargetFace->setFaceSurfaceType(SurfaceTypeID, DirectionType);
+        return true;
     }
     return false;
 }
@@ -638,18 +628,9 @@ bool Cell::setBothFaceSurfaces(CubeCoordinates Coordinates, Direction DirectionT
 
     if (TargetFace != NULL)
     {
-        if (TargetFace->PositiveAxisSurfaceTypeID != SurfaceTypeID)
-        {
-            TargetFace->PositiveAxisSurfaceTypeID = SurfaceTypeID;
-            setNeedsRedraw(true);
-            return true;
-        }
-        if (TargetFace->NegativeAxisSurfaceTypeID != SurfaceTypeID)
-        {
-            TargetFace->NegativeAxisSurfaceTypeID = SurfaceTypeID;
-            setNeedsRedraw(true);
-            return true;
-        }
+        TargetFace->setFaceSurfaceType(SurfaceTypeID, DirectionType);
+        TargetFace->setFaceSurfaceType(SurfaceTypeID, OppositeDirection(DirectionType));
+        return true;
     }
     return false;
 }
@@ -692,23 +673,11 @@ Face* Cell::addFace(CubeCoordinates Coordinates, Direction DirectionType)
 
         if (Faces.find(Key) == Faces.end())
         {
-            Face* NewFace = new Face();
+            Ogre::SceneNode* NewFaceNode = CellSceneNode->createChildSceneNode();
+            NewFaceNode->setPosition(Coordinates.X, Coordinates.Y, 0);
+            Face* NewFace = new Face(NewFaceNode);
             Faces[Key] = NewFace;
 
-            // Contain within Face?
-            char buffer [50];
-            sprintf(buffer, "Cell%dFace%d", thisCellCoordinates.X * 100 + thisCellCoordinates.Y * 10 + thisCellCoordinates.Z, Coordinates.X * CELLEDGESIZE + Coordinates.Y);
-
-            Ogre::Entity *ent = RENDERER->getSceneManager()->createEntity(buffer, "Tile");
-            ent->setCastShadows(false);
-            ent->setMaterial(RENDERER->getMaterial());
-
-            Ogre::SceneNode* NewFaceNode = CellSceneNode->createChildSceneNode();
-            NewFaceNode->attachObject(ent);
-            NewFaceNode->setPosition(Coordinates.X, Coordinates.Y, 0);
-
-            setActive(true);
-            setNeedsRedraw(true);
             return NewFace;
         }
         else

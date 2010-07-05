@@ -5,6 +5,10 @@
 #include <Camera.h>
 
 #include <GUI.h>
+//#include <ImageManager.h>
+//#include <DataManager.h>
+#include <Camera.h>
+
 //using namespace Ogre;
 
 DECLARE_SINGLETON(Renderer)
@@ -88,8 +92,6 @@ void Renderer::setupScene()
     OgreSceneManager = OgreRoot->createSceneManager(Ogre::ST_GENERIC, "Default SceneManager");
     OgreRenderWindow = OgreRoot->getAutoCreatedWindow();
 
-
-
     OgreSceneManager->setAmbientLight(Ogre::ColourValue(1, 1, 1));
     OgreSceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
 
@@ -97,38 +99,28 @@ void Renderer::setupScene()
 
 
 
-			Ogre::MaterialPtr lMaterial = Ogre::MaterialManager::getSingleton().create("GrassMaterial", "General", true);
-			Ogre::Technique* lFirstTechnique = lMaterial->getTechnique(0);
-			Ogre::Pass* lFirstPass = lFirstTechnique->getPass(0);
-			lFirstPass->setLightingEnabled(false);
-
-			// We create the TextureUnit and tell it to use a specific texture (using it's name).
-			// The texture must be available in a resourcegroup at render time.
-			Ogre::TextureUnitState* lTextureUnit = lFirstPass->createTextureUnitState();
-			lTextureUnit->setTextureName("grass.png", Ogre::TEX_TYPE_2D);
-			lTextureUnit->setTextureCoordSet(0);
 
 
-    GrassMat = lMaterial;
+
 
 
     Ogre::ManualObject* ManualTileObject = OgreSceneManager->createManualObject("ManualTile");
     ManualTileObject->setDynamic(false);
     ManualTileObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
 
-    ManualTileObject->position(-0.45, -0.45, 0.0);
+    ManualTileObject->position(-0.5, -0.5, 0.0);
     ManualTileObject->colour(Ogre::ColourValue::White);
     ManualTileObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
 
-    ManualTileObject->position( 0.45, -0.45, 0.0);
-    ManualTileObject->colour(Ogre::ColourValue::White);
-    ManualTileObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
-
-    ManualTileObject->position(-0.45,  0.45, 0.0);
+    ManualTileObject->position( 0.5, -0.5, 0.0);
     ManualTileObject->colour(Ogre::ColourValue::White);
     ManualTileObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
 
-    ManualTileObject->position( 0.45,  0.45, 0.0);
+    ManualTileObject->position(-0.5,  0.5, 0.0);
+    ManualTileObject->colour(Ogre::ColourValue::White);
+    ManualTileObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+
+    ManualTileObject->position( 0.5,  0.5, 0.0);
     ManualTileObject->colour(Ogre::ColourValue::White);
     ManualTileObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
 
@@ -211,4 +203,9 @@ void Renderer::createCamera()
     Cameras.push_back(newCamera);
     ActiveCameraIndex = 0;
     newCamera->Init();
+}
+
+void Renderer::TakeScreenShoot()
+{
+    OgreRenderWindow->writeContentsToFile("ScreenShoot.png");
 }

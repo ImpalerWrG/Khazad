@@ -18,8 +18,6 @@ public:
 	~ImageManager();
 	bool Init();
 
-	std::vector<ILuint> DevilImageVector;
-
     ILuint GenerateMaterialImage(int16_t MaterialID, int16_t TextureID);
 
     ILuint ClipImage(ILuint SourceID, ILuint X, ILuint Y, ILuint W, ILuint H);
@@ -29,6 +27,10 @@ public:
     ILuint GenerateKeeperImage(ILuint TextureDevILID, int16_t BorderColorID);
 
     void ApplyBorder(ILuint DevilImageID, int32_t BorderColorID);
+
+    uint8_t* getImageData(ILuint DevilImageID);
+    uint16_t getImageWidth(ILuint DevilImageID);
+    uint16_t getImageHeight(ILuint DevilImageID);
 
     void ReportDevILErrors();
 

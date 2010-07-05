@@ -26,12 +26,13 @@ bool Camera::Init()
 	CameraNode->attachObject(OgreCamera);
 
 
-
+            /*
             char buffer [50];
             sprintf(buffer, "CameraMarker");
             Ogre::Entity *ent = RENDERER->getSceneManager()->createEntity(buffer, "ColorCube");
             ent->setCastShadows(false);
             TargetNode->attachObject(ent);
+            */
 
 
 

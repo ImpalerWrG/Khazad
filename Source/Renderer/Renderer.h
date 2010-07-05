@@ -5,9 +5,9 @@
 #include <Singleton.h>
 
 #include <Ogre.h>
-#include "Camera.h"
+//#include <Camera.h>
 
-//using namespace Ogre;
+class Camera;
 
 class Renderer
 {
@@ -29,6 +29,7 @@ public:
     Camera* getActiveCamera()                     { return Cameras[ActiveCameraIndex]; }
 
     Ogre::MaterialPtr getMaterial()                { return GrassMat; }
+    void TakeScreenShoot();
 
 private:
 

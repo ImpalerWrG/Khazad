@@ -15,7 +15,7 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-mthreads" />
-					<Add option="-D_DEBUG" />
+					<Add option="-DKHAZAD_DEBUG" />
 					<Add option="-DWIN32" />
 					<Add option="-D_WINDOWS" />
 					<Add directory="..\..\OgreSDK_mingw_v1-7-1\include\OIS" />
@@ -23,6 +23,7 @@
 					<Add directory="..\..\OgreSDK_mingw_v1-7-1\boost_1_42" />
 					<Add directory="..\..\CEGUI\include" />
 					<Add directory="..\..\CEGUI\include\RendererModules\Ogre" />
+					<Add directory="..\..\DevIL\include" />
 				</Compiler>
 				<Linker>
 					<Add option="-Wl,--enable-runtime-pseudo-reloc" />
@@ -50,6 +51,7 @@
 					<Add directory="..\..\OgreSDK_mingw_v1-7-1\boost_1_42" />
 					<Add directory="..\..\CEGUI\include" />
 					<Add directory="..\..\CEGUI\include\RendererModules\Ogre" />
+					<Add directory="..\..\DevIL\include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -70,7 +72,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add option="-D_DEBUG" />
+					<Add option="-DKHAZAD_DEBUG" />
 					<Add option="-DLINUX_BUILD" />
 					<Add directory="\usr\local\include\OIS" />
 					<Add directory="\usr\local\include\OGRE" />
@@ -180,6 +182,8 @@
 		<Unit filename="..\..\Source\Renderer\ImageManager.h" />
 		<Unit filename="..\..\Source\Renderer\Renderer.cpp" />
 		<Unit filename="..\..\Source\Renderer\Renderer.h" />
+		<Unit filename="..\..\Source\Renderer\TextureManager.cpp" />
+		<Unit filename="..\..\Source\Renderer\TextureManager.h" />
 		<Unit filename="..\..\Source\TinyXML\tinystr.cpp" />
 		<Unit filename="..\..\Source\TinyXML\tinystr.h" />
 		<Unit filename="..\..\Source\TinyXML\tinyxml.cpp" />

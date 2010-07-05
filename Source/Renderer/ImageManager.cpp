@@ -19,20 +19,23 @@ ImageManager::~ImageManager()
 bool ImageManager::Init()
 {
     // Version Check of DevIL
-    if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION || iluGetInteger(ILU_VERSION_NUM) < ILU_VERSION /*|| ilutGetInteger(ILUT_VERSION_NUM) < ILUT_VERSION*/)
+    if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION /*|| iluGetInteger(ILU_VERSION_NUM) < ILU_VERSION || ilutGetInteger(ILUT_VERSION_NUM) < ILUT_VERSION*/)
     {
 		printf ("DevIL library is out of date! Please upgrade\n");
 		return false;
 	}
 
-    // Initilize all Devil components with OpenGL rendering support
+    // Initilize all Devil components
     ilInit();
-    iluInit();
+    //iluInit();
     //ilutInit();
 
     //ilutRenderer(ILUT_OPENGL);
+    //ilutRenderer(ILUT_DIRECT3D9);
+
     //ilutEnable(ILUT_OPENGL_CONV);
-    ilEnable (IL_CONV_PAL);
+
+    //ilEnable(IL_CONV_PAL);
 
     ilClearColour(0, 0, 0, 0);
 
@@ -113,7 +116,6 @@ ILuint ImageManager::loadImage(char* filepath, bool ColorKey)
     {
         //convert color key
     }
-    //DevilImageVector.push_back(ImageID);
 
     ReportDevILErrors();
 
@@ -134,46 +136,23 @@ ILuint ImageManager::ClipImage(ILuint SourceID, ILuint X, ILuint Y, ILuint W, IL
     return ImageID;
 }
 
-/*
-SDL_Surface* ImageManager::loadSurface(char* filepath, bool ColorKey)
+uint8_t* ImageManager::getImageData(ILuint DevilImageID)
 {
-	SDL_Surface* RawSurface = IMG_Load(filepath);
-	SDL_Surface* ConvertedSurface = NULL;
-
-	if(RawSurface != NULL)
-	{
-		if (ColorKey)
-		{
-			ConvertedSurface = SDL_DisplayFormat(RawSurface);
-			SDL_FreeSurface(RawSurface);
-			if (ConvertedSurface != NULL)
-			{
-				if (ColorKey)
-				{
-					uint32_t colorkey = SDL_MapRGB( ConvertedSurface->format, 0xFF, 0, 0xFF );
-					SDL_SetColorKey( ConvertedSurface, SDL_SRCCOLORKEY, colorkey );
-					return ConvertedSurface;
-				}
-				return ConvertedSurface;
-			}
-		}
-		else
-		{
-			ConvertedSurface = SDL_DisplayFormatAlpha(RawSurface);
-			if (ConvertedSurface != NULL)
-			{
-                SDL_FreeSurface(RawSurface);
-				return ConvertedSurface;
-			}
-            SDL_FreeSurface(ConvertedSurface);
-			return RawSurface;
-		}
-
-		return NULL;
-	}
-	return NULL;
+    ilBindImage(DevilImageID);
+    return ilGetData();
 }
-*/
+
+uint16_t ImageManager::getImageWidth(ILuint DevilImageID)
+{
+    ilBindImage(DevilImageID);
+    return ilGetInteger(IL_IMAGE_WIDTH);
+}
+
+uint16_t ImageManager::getImageHeight(ILuint DevilImageID)
+{
+    ilBindImage(DevilImageID);
+    return ilGetInteger(IL_IMAGE_HEIGHT);
+}
 
 ILuint ImageManager::GenerateMaterialImage(int16_t MaterialID, int16_t TextureID)
 {
@@ -414,6 +393,6 @@ void ImageManager::ReportDevILErrors()
     ILenum Error;
     while ((Error = ilGetError()) != IL_NO_ERROR)
     {
-        printf("DevIL Error %d: %s\n", Error, iluErrorString(Error));
+       // printf("DevIL Error %d: %s\n", Error, iluErrorString(Error));
     }
 }

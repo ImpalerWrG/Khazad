@@ -98,7 +98,7 @@
 		<Name Label="MATERIAL_DARK_GRASS"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
 		<PrimaryColor label="GRASS_DARK"/>
-		<!--<BorderColor label="COLOR_FOREST_GREEN"/>-->
+		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="overlay"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GRASS_1"/>
@@ -111,7 +111,7 @@
 		<Name Label="MATERIAL_BRIGHT_GRASS"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
 		<PrimaryColor label="GRASS_BRIGHT"/>
-		<!--<BorderColor label="COLOR_FOREST_GREEN"/>-->
+		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="overlay"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GRASS_1"/>

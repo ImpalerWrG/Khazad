@@ -2,6 +2,7 @@
 
 #include <Renderer.h>
 #include <GUI.h>
+#include <Camera.h>
 
 DECLARE_SINGLETON(InputManager)
 
@@ -91,6 +92,11 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
     if (arg.key == OIS::KC_D)
     {
         RENDERER->getActiveCamera()->SetDefaultView();
+    }
+
+    if (arg.key == OIS::KC_SYSRQ)
+    {
+        RENDERER->TakeScreenShoot();
     }
 
     return true;
