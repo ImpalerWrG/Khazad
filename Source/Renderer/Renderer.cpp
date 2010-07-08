@@ -138,55 +138,55 @@ void Renderer::setupScene()
 
 
 
-    Ogre::ManualObject* ManualCubeObject = OgreSceneManager->createManualObject("ManualCube");
-    ManualCubeObject->setDynamic(false);
-    ManualCubeObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
 
-        float lSize = 0.45f;
 
-        float cp = 1.0f * lSize ;
-        float cm = -1.0f * lSize;
 
-        ManualCubeObject->position(cm, cp, cm);// a vertex
-        ManualCubeObject->colour(Ogre::ColourValue(0.0f,1.0f,0.0f,1.0f));
-        ManualCubeObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
 
-        ManualCubeObject->position(cp, cp, cm);// a vertex
-        ManualCubeObject->colour(Ogre::ColourValue(1.0f,1.0f,0.0f,1.0f));
-        ManualCubeObject->position(cp, cm, cm);// a vertex
-        ManualCubeObject->colour(Ogre::ColourValue(1.0f,0.0f,0.0f,1.0f));
-        ManualCubeObject->position(cm, cm, cm);// a vertex
-        ManualCubeObject->colour(Ogre::ColourValue(0.0f,0.0f,0.0f,1.0f));
 
-        ManualCubeObject->position(cm, cp, cp);// a vertex
-        ManualCubeObject->colour(Ogre::ColourValue(0.0f,1.0f,1.0f,1.0f));
-        ManualCubeObject->position(cp, cp, cp);// a vertex
-        ManualCubeObject->colour(Ogre::ColourValue(1.0f,1.0f,1.0f,1.0f));
-        ManualCubeObject->position(cp, cm, cp);// a vertex
-        ManualCubeObject->colour(Ogre::ColourValue(1.0f,0.0f,1.0f,1.0f));
-        ManualCubeObject->position(cm, cm, cp);// a vertex
-        ManualCubeObject->colour(Ogre::ColourValue(0.0f,0.0f,1.0f,1.0f));
 
-        // face behind / front
-        ManualCubeObject->triangle(0,1,2);
-        ManualCubeObject->triangle(2,3,0);
-        ManualCubeObject->triangle(4,6,5);
-        ManualCubeObject->triangle(6,4,7);
 
-        // face top / down
-        ManualCubeObject->triangle(0,4,5);
-        ManualCubeObject->triangle(5,1,0);
-        ManualCubeObject->triangle(2,6,7);
-        ManualCubeObject->triangle(7,3,2);
 
-        // face left / right
-        ManualCubeObject->triangle(0,7,4);
-        ManualCubeObject->triangle(7,0,3);
-        ManualCubeObject->triangle(1,5,6);
-        ManualCubeObject->triangle(6,2,1);
 
-    ManualCubeObject->end();
-    ManualCubeObject->convertToMesh("ColorCube");
+    Ogre::ManualObject* lManualObject = OgreSceneManager->createManualObject("ManualCube");
+    lManualObject->setDynamic(false);
+    //lManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+
+
+
+			lManualObject->begin("BaseWhiteNoLighting",Ogre::RenderOperation::OT_LINE_LIST);
+			{
+				float lAxeSize = 10;
+				// X Red
+				lManualObject->position(0.0f, 0.0f, 0.0f);
+				lManualObject->colour(Ogre::ColourValue::Red);
+
+				lManualObject->position(lAxeSize, 0.0f, 0.0f);
+				lManualObject->colour(Ogre::ColourValue::Red);
+
+				// Y Green
+				lManualObject->position(0.0f, 0.0f, 0.0f);
+				lManualObject->colour(Ogre::ColourValue::Green);
+
+				lManualObject->position(0.0, lAxeSize, 0.0);
+				lManualObject->colour(Ogre::ColourValue::Green);
+
+				// Z Blue
+				lManualObject->position(0.0f, 0.0f, 0.0f);
+				lManualObject->colour(Ogre::ColourValue::Blue);
+
+				lManualObject->position(0.0, 0.0, lAxeSize);
+				lManualObject->colour(Ogre::ColourValue::Blue);
+
+				lManualObject->index(0);
+				lManualObject->index(1);
+				lManualObject->index(2);
+				lManualObject->index(3);
+				lManualObject->index(4);
+				lManualObject->index(5);
+			}
+			lManualObject->end();
+
+            lManualObject->convertToMesh("ColorCube");
 
 
     //Light *light;
