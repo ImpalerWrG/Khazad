@@ -48,11 +48,6 @@ bool GUIManager::Init()
     CEGUIWindowManager = &CEGUI::WindowManager::getSingleton();
 
 
-    // Move mouse to center of screen??
-    CEGUISystem->injectMousePosition(RENDERER->getWindow()->getWidth() / 2, RENDERER->getWindow()->getHeight() / 2);
-
-
-
 	// Initialize Screens here matching them to their Enum
 
 	ScreenList[SCREEN_SPLASH] = (ScreenBase*) new SplashScreen();

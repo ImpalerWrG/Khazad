@@ -38,7 +38,7 @@ bool InputManager::Init()
         throw Ogre::Exception(42, e.eText, "Application::setupInputSystem");
     }
 
-    //ResetMouse();
+    ResetMouse();
 
     RENDERER->getRoot()->addFrameListener(this);
     return true;
@@ -51,10 +51,12 @@ void InputManager::ResetMouse()
     State.width = RENDERER->getWindow()->getWidth();
     State.height = RENDERER->getWindow()->getHeight();
 
-    ModifedMouseX = State.width / 2;
-    ModifedMouseY = State.height / 2;
+    // Forcibly Hackishly place mouse at center of Screen
+    CEGUI::Point mousePos = CEGUI::MouseCursor::getSingleton().getPosition();
+    OIS::MouseState &mutableMouseState = const_cast<OIS::MouseState &>(State);
 
-    GUI->injectMouseMove(ModifedMouseX, ModifedMouseY, 0);
+    mutableMouseState.X.abs = State.width / 2;
+    mutableMouseState.Y.abs = State.height / 2;
 }
 
 InputManager::~InputManager()
@@ -70,9 +72,49 @@ bool InputManager::frameStarted()
     KeyboardObject->capture();
     MouseObject->capture();
 
+    ProccessDownKeys();
+
     return GUI->isContinueRunning();
 }
 
+void InputManager::ProccessDownKeys()
+{
+    float DiagonalSpeed = 1.414;
+    float CardinalSpeed = 2;
+
+    if (KeyboardObject->isKeyDown(OIS::KC_NUMPAD1))
+    {
+        RENDERER->getActiveCamera()->TranslateCamera(DiagonalSpeed, -DiagonalSpeed);
+    }
+    if (KeyboardObject->isKeyDown(OIS::KC_NUMPAD2))
+    {
+        RENDERER->getActiveCamera()->TranslateCamera(0, -CardinalSpeed);
+    }
+    if (KeyboardObject->isKeyDown(OIS::KC_NUMPAD3))
+    {
+        RENDERER->getActiveCamera()->TranslateCamera(-DiagonalSpeed, -DiagonalSpeed);
+    }
+    if (KeyboardObject->isKeyDown(OIS::KC_NUMPAD4))
+    {
+        RENDERER->getActiveCamera()->TranslateCamera(CardinalSpeed, 0);
+    }
+    if (KeyboardObject->isKeyDown(OIS::KC_NUMPAD6))
+    {
+        RENDERER->getActiveCamera()->TranslateCamera(-CardinalSpeed, 0);
+    }
+    if (KeyboardObject->isKeyDown(OIS::KC_NUMPAD7))
+    {
+        RENDERER->getActiveCamera()->TranslateCamera(DiagonalSpeed, DiagonalSpeed);
+    }
+    if (KeyboardObject->isKeyDown(OIS::KC_NUMPAD8))
+    {
+        RENDERER->getActiveCamera()->TranslateCamera(0, CardinalSpeed);
+    }
+    if (KeyboardObject->isKeyDown(OIS::KC_NUMPAD9))
+    {
+        RENDERER->getActiveCamera()->TranslateCamera(-DiagonalSpeed, DiagonalSpeed);
+    }
+}
 
 // KeyListener
 bool InputManager::keyPressed(const OIS::KeyEvent &arg)
@@ -113,11 +155,6 @@ bool InputManager::keyReleased(const OIS::KeyEvent &arg)
 // MouseListener
 bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
 {
-    //ModifedMouseX += arg.state.X.rel;
-    //ModifedMouseY += arg.state.Y.rel;
-
-    //GUI->injectMouseMove(ModifedMouseX, ModifedMouseY, 0);
-
     GUI->injectMouseMove(arg.state.X.rel, arg.state.Y.rel, 0);
 
     if (arg.state.Z.rel != 0)
@@ -125,7 +162,7 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
         RENDERER->getActiveCamera()->ZoomCamera((-arg.state.Z.rel / 1000.0) + 1);
     }
 
-    if (MouseObject->getMouseState().buttonDown(OIS::MB_Right))
+    if (MouseObject->getMouseState().buttonDown(OIS::MB_Middle))
     {
         if (arg.state.X.rel != 0)
         {
@@ -137,7 +174,8 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
             RENDERER->getActiveCamera()->PitchCamera(arg.state.Y.rel / 10.0);
         }
     }
-    if (MouseObject->getMouseState().buttonDown(OIS::MB_Left))
+
+    if (MouseObject->getMouseState().buttonDown(OIS::MB_Right))
     {
         RENDERER->getActiveCamera()->TranslateCamera(arg.state.X.rel, arg.state.Y.rel);
     }
@@ -147,20 +185,22 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
 
 bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
-    ModifedMouseX += arg.state.X.rel;
-    ModifedMouseY += arg.state.Y.rel;
+    GUI->injectMousePress(0, 0, id);
 
-    GUI->injectMousePress(ModifedMouseX, ModifedMouseY, id);
+    const OIS::MouseState &State = MouseObject->getMouseState();
+
+    if (id == OIS::MB_Left && (KeyboardObject->isKeyDown(OIS::KC_RSHIFT) || KeyboardObject->isKeyDown(OIS::KC_LSHIFT)))
+    {
+        Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height));
+        RENDERER->getActiveCamera()->FocusAt(FocusPoint);
+    }
 
     return true;
 }
 
 bool InputManager::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
-    ModifedMouseX += arg.state.X.rel;
-    ModifedMouseY += arg.state.Y.rel;
-
-    GUI->injectMouseRelease(ModifedMouseX, ModifedMouseY, id);
+    GUI->injectMouseRelease(0, 0, id);
 
     return true;
 }

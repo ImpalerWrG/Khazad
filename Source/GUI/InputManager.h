@@ -19,6 +19,7 @@ public:
     ~InputManager();
 
     bool frameStarted();
+    void ProccessDownKeys();
 
     // KeyListener
     virtual bool keyPressed(const OIS::KeyEvent &arg);
@@ -40,15 +41,11 @@ public:
 
 private:
 
-    int16_t ModifedMouseX, ModifedMouseY;
-
     OIS::Keyboard* KeyboardObject;
     OIS::Mouse* MouseObject;
     OIS::JoyStick* JoyStickObject;
 
     OIS::InputManager* InputManagerObject;
-
-    //GUIManager* GUISystem;
 };
 
 #define INPUT (InputManager::GetInstance())

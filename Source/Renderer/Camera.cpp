@@ -138,7 +138,6 @@ Ogre::Vector3 Camera::getMouseRayIntersection(float X, float Y)
 void Camera::FocusAt(Ogre::Vector3 FocalPoint)
 {
     TargetNode->setPosition(FocalPoint);
-	OgreCamera->lookAt(TargetNode->getPosition());
 }
 
 void Camera::SetDefaultView()
