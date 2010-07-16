@@ -11,11 +11,13 @@ class Face
 {
 public:
 
-    Face(Ogre::SceneNode* NewPosition)
+    Face(Ogre::SceneNode* NewPosition, Direction DirectionType)
     {
         PositiveAxisSurfaceTypeID = -1;
         NegativeAxisSurfaceTypeID = -1;
         PositionNode = NewPosition;
+
+        PositionNode->translate(0, 0, -0.5);
 
         Ogre::Entity *ent1 = RENDERER->getSceneManager()->createEntity("Tile");
         OgreEntityPositive = ent1;

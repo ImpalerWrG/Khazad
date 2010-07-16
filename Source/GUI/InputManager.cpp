@@ -3,6 +3,8 @@
 #include <Renderer.h>
 #include <GUI.h>
 #include <Camera.h>
+#include <Game.h>
+#include <Coordinates.h>
 
 DECLARE_SINGLETON(InputManager)
 
@@ -121,24 +123,65 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
 {
     GUI->injectKeyPress(arg);
 
-    if (arg.key == OIS::KC_UP)
+    switch (arg.key)
     {
-        RENDERER->getActiveCamera()->ElevateCamera(1);
-    }
+        case OIS::KC_UP:
+        {
+            RENDERER->getActiveCamera()->ElevateCamera(1);
+            break;
+        }
 
-    if (arg.key == OIS::KC_DOWN)
-    {
-        RENDERER->getActiveCamera()->ElevateCamera(-1);
-    }
+        case OIS::KC_DOWN:
+        {
+            RENDERER->getActiveCamera()->ElevateCamera(-1);
+            break;
+        }
 
-    if (arg.key == OIS::KC_D)
-    {
-        RENDERER->getActiveCamera()->SetDefaultView();
-    }
+        case OIS::KC_D:
+        {
+            RENDERER->getActiveCamera()->SetDefaultView();
+            break;
+        }
 
-    if (arg.key == OIS::KC_SYSRQ)
-    {
-        RENDERER->TakeScreenShoot();
+        case OIS::KC_SYSRQ:
+        {
+            RENDERER->TakeScreenShoot();
+            break;
+        }
+
+        case OIS::KC_ADD:
+        {
+            GAME->changeTickRate(1);
+            break;
+        }
+
+        case OIS::KC_SUBTRACT:
+        case OIS::KC_MINUS:
+        {
+            GAME->changeTickRate(-1);
+            break;
+        }
+
+        case OIS::KC_SPACE:
+        {
+            GAME->togglePause();
+            break;
+        }
+
+        case OIS::KC_A:
+        {
+            GAME->SpawnPawn(MapCoordinates(10, 10, 0));
+            break;
+        }
+
+        case OIS::KC_GRAVE:
+        {
+            RENDERER->ToggleOverlay();
+            break;
+        }
+
+        default:
+        break;
     }
 
     return true;

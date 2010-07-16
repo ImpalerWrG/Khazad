@@ -6,7 +6,6 @@
 #include <GameSetup.h>
 #include <MainGameScreen.h>
 
-#include <FPS.h>
 #include <Renderer.h>
 
 #include <Game.h>

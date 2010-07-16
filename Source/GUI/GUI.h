@@ -9,8 +9,6 @@
 #include <CEGUI.h>
 #include <CEGUIOgreRenderer.h>
 
-#include <FPS.h>
-
 #include <ScreenBase.h>
 
 enum ScreenType

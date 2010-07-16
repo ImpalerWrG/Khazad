@@ -675,7 +675,7 @@ Face* Cell::addFace(CubeCoordinates Coordinates, Direction DirectionType)
         {
             Ogre::SceneNode* NewFaceNode = CellSceneNode->createChildSceneNode();
             NewFaceNode->setPosition(Coordinates.X, Coordinates.Y, 0);
-            Face* NewFace = new Face(NewFaceNode);
+            Face* NewFace = new Face(NewFaceNode, DirectionType);
             Faces[Key] = NewFace;
 
             return NewFace;

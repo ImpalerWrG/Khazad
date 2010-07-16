@@ -143,8 +143,6 @@
 		<Unit filename="..\..\Source\Data\Paths.h" />
 		<Unit filename="..\..\Source\Data\XMLManager.cpp" />
 		<Unit filename="..\..\Source\Data\XMLManager.h" />
-		<Unit filename="..\..\Source\GUI\FPS.cpp" />
-		<Unit filename="..\..\Source\GUI\FPS.h" />
 		<Unit filename="..\..\Source\GUI\GUI.cpp" />
 		<Unit filename="..\..\Source\GUI\GUI.h" />
 		<Unit filename="..\..\Source\GUI\GameSetup.cpp" />

@@ -28,7 +28,9 @@ public:
 
     Camera* getActiveCamera()                     { return Cameras[ActiveCameraIndex]; }
 
-    Ogre::MaterialPtr getMaterial()                { return GrassMat; }
+    void ToggleOverlay();
+    void UpdateOverlay();
+
     void TakeScreenShoot();
 
 private:
@@ -46,10 +48,12 @@ private:
     void setupScene();
     void createCamera();
 
+
     vector<Camera*> Cameras;
     uint16_t ActiveCameraIndex;
 
-    Ogre::MaterialPtr GrassMat;
+    Ogre::Overlay*			OgreDebugOverlay;
+	Ogre::Overlay*			OgreInfoOverlay;
 };
 
 #define RENDERER (Renderer::GetInstance())

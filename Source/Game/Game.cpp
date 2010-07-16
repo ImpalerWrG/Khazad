@@ -58,6 +58,7 @@ bool Game::Run()
 
 bool Game::setActorCooldown(Actor* TargetActor, int CoolDown)
 {
+    // GEt the actor and move to appropriate carosel
 
 	return true;
 }

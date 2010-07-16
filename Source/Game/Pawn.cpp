@@ -29,6 +29,14 @@ bool Pawn::Init(MapCoordinates SpawnLocation)
 	//Controller = PATH->getNewController(0, 0, LocationCoordinates);
 	//Controller->setBehaviorMode(PATH_BEHAVIOR_ROUTE_TO_LOCATION);
 
+    ActorBillboard = RENDERER->getSceneManager()->createBillboardSet("ActorName1", 1);
+    ActorBillboard->createBillboard(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z);
+    ActorBillboard->setDefaultDimensions(1.0, 1.0);
+
+	Ogre::SceneNode* PawnNode = RENDERER->getSceneManager()->getRootSceneNode()->createChildSceneNode("ActorNode1");
+
+    PawnNode->attachObject(ActorBillboard);
+
     return true;
 }
 

@@ -44,6 +44,8 @@ protected:
 
     int CellActorIndex;
 
+    Ogre::BillboardSet* ActorBillboard;
+
     // TODO Use bitvector in the future
 	bool Visible;
     bool Hidden;
