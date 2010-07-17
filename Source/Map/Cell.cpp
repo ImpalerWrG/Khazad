@@ -1,16 +1,11 @@
 #include <Cell.h>
 
 #include <Map.h>
-//#include <Building.h>
-#include <Tree.h>
-//#include <TextureManager.h>
+#include <Face.h>
+#include <Actor.h>
 #include <DataManager.h>
 #include <Renderer.h>
 
-#include <Game.h>
-//#include <ModelManager.h>
-//#include <Model.h>
-#include <Geology.h>
 
 Cell::Cell()
 {
@@ -22,9 +17,9 @@ Cell::Cell()
     {
         for(uint8_t j = 0; j < CELLEDGESIZE; j++)
         {
-            CubeShapeTypes[i][j] = -1;
-            CubeMaterialTypes[i][j] = -1;
-            CubeSurfaceTypes[i][j] = -1;
+            CubeShapeTypes[i][j] = INVALID_INDEX;
+            CubeMaterialTypes[i][j] = INVALID_INDEX;
+            CubeSurfaceTypes[i][j] = INVALID_INDEX;
             LiquidLevel[i][j] = 0;
         }
     }
@@ -37,27 +32,24 @@ Cell::Cell()
     LiquidType.reset();
 
     CellSceneNode = RENDERER->getRootNode()->createChildSceneNode();
-
-    GAME->getMap()->ChangeCellCount(1);
 }
 
 Cell::~Cell()
 {
-    //MAP->ChangeCellCount(-1);
+    //ParentMap->ChangeCellCount(-1);
 
     if(Initialized)
     {
         //MAP->ChangeInitedCellCount(-1);
     }
-
-    //ClearROs();
 }
 
-bool Cell::Init()
+bool Cell::InitializeCell(Map* Parent)
 {
     Initialized = true;
     NeedsRedraw = true;
 
+    ParentMap = Parent;
     BuildFaceData();
 
     return true;
@@ -134,7 +126,7 @@ void Cell::Render(CameraOrientation CurrentOrientation)
             if (isCubeDrawn(TargetCubeCoordinates))
             {
                 int16_t ModelID = DATA->getTileShapeData(getCubeShape(TargetCubeCoordinates))->getModelID();
-                if (ModelID != -1)
+                if (ModelID != INVALID_INDEX)
                 {
                     Model* model = MODEL->getModel(ModelID);
                     float Scale = DATA->getModelData(ModelID)->getScalar();
@@ -416,15 +408,16 @@ void Cell::BuildFaceData()
 
                 if (isCubeSolid(TargetCubeCoordinates))
                 {
-                    if (GAME->getMap()->isCubeInited(TargetMapCoordinates))
+                    if (ParentMap->isCubeInited(TargetMapCoordinates))
                     {
-                        if (!GAME->getMap()->isCubeSolid(TargetMapCoordinates))
+                        if (!ParentMap->isCubeSolid(TargetMapCoordinates))
                         {
                             Face* NewFace = addFace(TargetCubeCoordinates, DirectionType);
 
-                            NewFace->MaterialTypeID = CubeMaterial;
-                            NewFace->PositiveAxisSurfaceTypeID = CubeSurface;
-                            NewFace->NegativeAxisSurfaceTypeID = CubeSurface;
+                            NewFace->setFaceMaterialType(CubeMaterial);
+
+                            NewFace->setFaceSurfaceType(CubeSurface, DirectionType);
+                            //NewFace->setFaceSurfaceType(CubeSurface, DirectionType);
                         }
                     }
                 }
@@ -538,7 +531,7 @@ Face* Cell::getFace(CubeCoordinates TargetCoordinates, Direction DirectionType)
     {
         MapCoordinates TargetCoordinates = TranslateCubeToMap(TargetCoordinates);
         TargetCoordinates.TranslateMapCoordinates(DirectionType);
-        return GAME->getMap()->getFace(TargetCoordinates, OppositeDirection(DirectionType));
+        return ParentMap->getFace(TargetCoordinates, OppositeDirection(DirectionType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {
@@ -561,7 +554,7 @@ bool Cell::hasFace(CubeCoordinates TargetCoordinates, Direction DirectionType)
     {
         MapCoordinates TargetCoordinates = TranslateCubeToMap(TargetCoordinates);
         TargetCoordinates.TranslateMapCoordinates(DirectionType);
-        return GAME->getMap()->hasFace(TargetCoordinates, OppositeDirection(DirectionType));
+        return ParentMap->hasFace(TargetCoordinates, OppositeDirection(DirectionType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {
@@ -577,8 +570,9 @@ int16_t Cell::getFaceMaterialType(CubeCoordinates Coordinates, Direction Directi
 
     if (TargetFace != NULL)
     {
-        return TargetFace->MaterialTypeID;
+        return TargetFace->getFaceMaterialType();
     }
+    return INVALID_INDEX;
 }
 
 int16_t Cell::getFaceSurfaceType(CubeCoordinates Coordinates, Direction DirectionType)
@@ -589,11 +583,11 @@ int16_t Cell::getFaceSurfaceType(CubeCoordinates Coordinates, Direction Directio
     {
         if (isDirectionPositive(DirectionType))
         {
-            return TargetFace->PositiveAxisSurfaceTypeID;
+            return TargetFace->getPositiveAxisSurfateType();
         }
         else
         {
-            return TargetFace->NegativeAxisSurfaceTypeID;
+            return TargetFace->getNegativeAxisSurfaceType();
         }
     }
 }
@@ -641,7 +635,7 @@ bool Cell::removeFace(CubeCoordinates TargetCoordinates, Direction DirectionType
     {
         MapCoordinates TargetCoordinates = TranslateCubeToMap(TargetCoordinates);
         TargetCoordinates.TranslateMapCoordinates(DirectionType);
-        return GAME->getMap()->removeFace(TargetCoordinates, OppositeDirection(DirectionType));
+        return ParentMap->removeFace(TargetCoordinates, OppositeDirection(DirectionType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {
@@ -665,7 +659,7 @@ Face* Cell::addFace(CubeCoordinates Coordinates, Direction DirectionType)
     {
         MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
         TargetCoordinates.TranslateMapCoordinates(DirectionType);
-        return GAME->getMap()->addFace(TargetCoordinates, OppositeDirection(DirectionType));
+        return ParentMap->addFace(TargetCoordinates, OppositeDirection(DirectionType));
     }
     else  // All West, North and Bottom Faces will be within this Cell
     {

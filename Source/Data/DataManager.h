@@ -3,6 +3,7 @@
 
 #include <stdafx.h>
 #include <Singleton.h>
+
 #include <DataTypes.h>
 #include <XMLManager.h>
 
@@ -46,9 +47,9 @@ public:
         return true;
     }
 
-    ColorData* getColorData(uint32_t Index)                    { return Colors->DataEntries[Index]; }
-    uint32_t getNumColors()                                    { return Colors->DataEntries.size(); }
-    ColorDataLibrary* getColorDataLibrary()                  { return Colors; }
+    ColorData* getColorData(COLOR_INDEX Index)                    { return Colors->DataEntries[Index]; }
+    uint32_t getNumColors()                                       { return Colors->DataEntries.size(); }
+    ColorDataLibrary* getColorDataLibrary()                       { return Colors; }
 
     TextureData* getTextureData(uint32_t Index)                { return Textures->DataEntries[Index]; }
     uint32_t getNumTextures()                                  { return Textures->DataEntries.size(); }
@@ -86,7 +87,7 @@ public:
     uint32_t getNumSurfaceTypes()                              { return SurfaceTypes->DataEntries.size(); }
     SurfaceTypeDataLibrary* getSurfaceTypeDataLibrary()      { return SurfaceTypes; }
 
-    TileShapeData* getTileShapeData(uint32_t Index)            { return TileShapes->DataEntries[Index]; }
+    TileShapeData* getTileShapeData(TILESHAPE_INDEX Index)            { return TileShapes->DataEntries[Index]; }
     uint32_t getNumTileShape()                                 { return TileShapes->DataEntries.size(); }
     TileShapeDataLibrary* getTileShapeDataLibrary()          { return TileShapes; }
 

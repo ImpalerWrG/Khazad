@@ -1,5 +1,5 @@
 #include <DataManager.h>
-//#include <Singleton.h>
+
 #include <XMLManager.h>
 #include <DataTypes.h>
 
@@ -91,12 +91,12 @@ int32_t DataManager::getLabelIndex(string Label)
 {
     if(strcmp(Label.c_str(), "NONE") == 0)
     {
-        return -1;
+        return INVALID_INDEX;
     }
 
     if(strcmp(Label.c_str(), "") == 0)
     {
-        return -1;
+        return INVALID_INDEX;
     }
 
     std::map<string, uint32_t, ltstr>::iterator it = GlobalLabelMap.find(Label);
@@ -108,7 +108,7 @@ int32_t DataManager::getLabelIndex(string Label)
     else
     {
         cout << Label << " is not in GlobalLabelMap" << endl;
-        return -1;
+        return INVALID_INDEX;
     }
 }
 

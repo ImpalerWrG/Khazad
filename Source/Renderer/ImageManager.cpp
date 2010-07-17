@@ -239,7 +239,7 @@ ILuint ImageManager::GenerateGradientImage(ILuint TextureDevILID, int16_t Primar
 
     ilOverlayImage(MaskImageID, 0, 0, 0);
 
-    if (BorderColorID != -1)
+    if (BorderColorID != INVALID_INDEX)
     {
         ApplyBorder(NewImageID, BorderColorID);
     }
@@ -307,7 +307,7 @@ ILuint ImageManager::GeneratedOverLayImage(ILuint TextureDevILID, int16_t Primar
         }
     }
 
-    if (BorderColorID != -1)
+    if (BorderColorID != INVALID_INDEX)
     {
         ApplyBorder(NewImageID, BorderColorID);
     }
@@ -318,7 +318,7 @@ ILuint ImageManager::GeneratedOverLayImage(ILuint TextureDevILID, int16_t Primar
 ILuint ImageManager::GenerateKeeperImage(ILuint TextureDevILID, int16_t BorderColorID)
 {
     ILuint NewImageID;
-    if (BorderColorID != -1)
+    if (BorderColorID != INVALID_INDEX)
     {
         ilGenImages(1, &NewImageID);
         ilBindImage(NewImageID);

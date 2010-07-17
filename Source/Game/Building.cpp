@@ -24,7 +24,7 @@ Building::Building(MapCoordinates NewCoordinates, uint8_t Xlength, uint8_t Yleng
     static int16_t BuildingSurface = DATA->getLabelIndex("SURFACETYPE_CONSTRUCTED_FLOOR");
 
     int16_t TextureID = DATA->getBuildingData(BuildingType)->getTextureID();
-    if (TextureID != -1)
+    if (TextureID != INVALID_INDEX)
     {
         //Texture = TEXTURE->MapTexture(BuildingMaterial, TextureID);
     }
@@ -68,7 +68,7 @@ bool Building::Draw(CameraOrientation Orientaion)
         }
     }
 
-    if(Validated && ModelType != -1)
+    if(Validated && ModelType != INVALID_INDEX)
     {
         Model* model = MODEL->getModel(ModelType);
         float Scale = DATA->getModelData(ModelType)->getScalar();

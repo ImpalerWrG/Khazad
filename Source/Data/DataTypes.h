@@ -2,9 +2,27 @@
 #define DATATYPE__HEADER
 
 #include <stdafx.h>
-
-#include <tinyxml.h>
 #include <Paths.h>
+
+class TiXmlElement;
+
+#define INVALID_INDEX -1
+
+typedef unsigned short COLOR_INDEX;
+typedef unsigned short TEXTURE_INDEX;
+typedef unsigned short TEXTUREGRID_INDEX;
+typedef unsigned short TEXTURESHEET_INDEX;
+typedef unsigned short MODEL_INDEX;
+typedef unsigned short SURFACE_INDEX;
+typedef unsigned short TILEGROUP_INDEX;
+typedef unsigned short MATERIALCLASS_INDEX;
+typedef unsigned short MATERIAL_INDEX;
+typedef unsigned short FONT_INDEX;
+typedef unsigned short TILESHAPE_INDEX;
+typedef unsigned short TREE_INDEX;
+typedef unsigned short BUILDING_INDEX;
+
+
 
 class DataBase
 {

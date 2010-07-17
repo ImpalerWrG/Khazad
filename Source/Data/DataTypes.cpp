@@ -1,8 +1,10 @@
 #include <DataTypes.h>
+
 #include <XMLManager.h>
 #include <DataManager.h>
-#include <tinyxml.h>
 
+#include <tinyxml.h>
+#include <Paths.h>
 
 DataBase::DataBase(){}
 
@@ -409,13 +411,13 @@ bool MaterialClassData::PostProcessing()
 
 	for (int i = 0; i < size; i++)
 	{
-		TextureArray[i] = -1;
+		TextureArray[i] = INVALID_INDEX;
 	}
 
 	for (uint16_t i = 0; i < SurfaceTypeLabels.size(); i++)
 	{
 		int16_t SurfaceTypeID = DATA->getLabelIndex(SurfaceTypeLabels[i]);
-		if(SurfaceTypeID != -1)
+		if(SurfaceTypeID != INVALID_INDEX)
 		{
 			TextureArray[SurfaceTypeID] = DATA->getLabelIndex(TextureLabels[i]);
 		}
@@ -494,13 +496,13 @@ bool MaterialData::PostProcessing()
 
 	for (int i = 0; i < size; i++)
 	{
-		TextureArray[i] = -1;
+		TextureArray[i] = INVALID_INDEX;
 	}
 
 	for(uint16_t i = 0; i < SurfaceTypeLabels.size(); i++)
 	{
 		int16_t SurfaceTypeID = DATA->getLabelIndex(SurfaceTypeLabels[i]);
-		if(SurfaceTypeID != -1)
+		if(SurfaceTypeID != INVALID_INDEX)
 		{
 			TextureArray[SurfaceTypeID] = DATA->getLabelIndex(TextureLabels[i]);
 		}
@@ -576,7 +578,7 @@ TileShapeData::TileShapeData()
 {
 	Open = false;
 
-	ModelID = -1;
+	ModelID = INVALID_INDEX;
 	ModelLabel = "NONE";
 }
 
@@ -688,8 +690,8 @@ BuildingData::BuildingData()
 	ModelLabel = "NONE";
 	TextureLabel = "NONE";
 
-	ModelID = -1;
-	TextureID = -1;
+	ModelID = INVALID_INDEX;
+	TextureID = INVALID_INDEX;
 }
 
 BuildingData::~BuildingData(){}

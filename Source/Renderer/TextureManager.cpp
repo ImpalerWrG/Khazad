@@ -33,16 +33,16 @@ int16_t TextureManager::PickImageTexture(int16_t MaterialID, int16_t SurfaceType
     MaterialData* Material = DATA->getMaterialData(MaterialID);
     int16_t MaterialClassID = Material->getMaterialClass();
 
-    if (Material->getTexture(SurfaceTypeID) != -1)
+    if (Material->getTexture(SurfaceTypeID) != INVALID_INDEX)
     {
         return Material->getTexture((uint16_t) SurfaceTypeID);
     }
     else
     {
-        if (MaterialClassID != -1)
+        if (MaterialClassID != INVALID_INDEX)
         {
             int16_t TextureID = DATA->getMaterialClassData(MaterialClassID)->getTexture(SurfaceTypeID);
-            if (TextureID == -1)
+            if (TextureID == INVALID_INDEX)
             {
                 cerr << "bad material/surface combination, no texture. MaterialClassID: " << MaterialClassID << " SurfaceTypeID: " << SurfaceTypeID << endl;
                 return  DATA->getLabelIndex("TEXTURE_NEHE");
@@ -58,7 +58,7 @@ int16_t TextureManager::PickImageTexture(int16_t MaterialID, int16_t SurfaceType
 
 Ogre::MaterialPtr TextureManager::MapTexture(int16_t MaterialID, int16_t TextureID)
 {
-    if (MaterialID != -1 && TextureID != -1)
+    if (MaterialID != INVALID_INDEX && TextureID != INVALID_INDEX)
     {
         uint32_t Key = MaterialID;
         Key = Key << 16;
@@ -100,7 +100,7 @@ Ogre::MaterialPtr TextureManager::makeOgreMaterial(int16_t MaterialTypeID, int16
 
 
     NewImage->loadDynamicImage(iData, Width, Height, Ogre::PF_A8R8G8B8);
-    Ogre::TexturePtr NewTex = Ogre::TextureManager::getSingleton().loadImage("TextureX", "General", *NewImage, Ogre::TEX_TYPE_2D, 1);
+    Ogre::TexturePtr NewTex = Ogre::TextureManager::getSingleton().loadImage("TextureX", "General", *NewImage, Ogre::TEX_TYPE_2D, Ogre::MIP_DEFAULT);
 
     Ogre::Technique* FirstTechnique = NewMaterial->getTechnique(0);
     Ogre::Pass* FirstPass = FirstTechnique->getPass(0);

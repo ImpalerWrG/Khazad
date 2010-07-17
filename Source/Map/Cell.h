@@ -13,8 +13,8 @@
 class Building;
 class Tree;
 class Geology;
+class Actor;
 
-//using namespace Ogre;
 
 
 class Cell
@@ -25,7 +25,7 @@ public:
     Cell();
     ~Cell();
 
-    bool Init();
+    bool InitializeCell(Map* ParentMap);
     bool isInitialized()    { return Initialized; }
 
     void setPosition(CellCoordinates Coordinates);
@@ -166,12 +166,13 @@ protected:
     std::vector <Actor*> LocalActors;
 
     // Exact spacial Coordinates of the center of the cell, used for rendering
-    //Ogre::Vector3 CellPosition;
     Ogre::SceneNode* CellSceneNode;
 
 
     // The global position of this cell relative to other cells
     CellCoordinates thisCellCoordinates;
+
+    Map* ParentMap;
 };
 
 #endif // CELL__HEADER

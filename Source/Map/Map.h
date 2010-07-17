@@ -7,95 +7,11 @@
 #include <Renderer.h>
 #include <TextureManager.h>
 
-class Face
-{
-public:
-
-    Face(Ogre::SceneNode* NewPosition, Direction DirectionType)
-    {
-        PositiveAxisSurfaceTypeID = -1;
-        NegativeAxisSurfaceTypeID = -1;
-        PositionNode = NewPosition;
-
-        PositionNode->translate(0, 0, -0.5);
-
-        Ogre::Entity *ent1 = RENDERER->getSceneManager()->createEntity("Tile");
-        OgreEntityPositive = ent1;
-        OgreEntityPositive->setCastShadows(false);
-        PositionNode->attachObject(OgreEntityPositive);
-
-        Ogre::Entity *ent2 = RENDERER->getSceneManager()->createEntity("Tile");
-        OgreEntityNegative = ent2;
-        OgreEntityNegative->setCastShadows(false);
-        PositionNode->attachObject(OgreEntityNegative);
-
-        MaterialTypeID = -1;
-        PositionNode = NewPosition;
-    };
-
-    ~Face()
-    {
-        delete OgreEntityPositive;
-        delete OgreEntityNegative;
-        delete PositionNode;
-    };
-
-    void setFaceMaterialType(int16_t NewMaterialTypeID)
-    {
-        if (NewMaterialTypeID != MaterialTypeID)  // Restet both Entities
-        {
-            if (PositiveAxisSurfaceTypeID != -1)
-            {
-                OgreEntityPositive->setMaterial(TEXTURE->getOgreMaterial(NewMaterialTypeID, PositiveAxisSurfaceTypeID));
-            }
-            if (NegativeAxisSurfaceTypeID != -1)
-            {
-                OgreEntityNegative->setMaterial(TEXTURE->getOgreMaterial(NewMaterialTypeID, NegativeAxisSurfaceTypeID));
-            }
-            MaterialTypeID = NewMaterialTypeID;
-        }
-    };
-
-    void setFaceSurfaceType(int16_t NewSurfaceTypeID, Direction DirectionType)
-    {
-        if (isDirectionPositive(DirectionType))
-        {
-            if (NewSurfaceTypeID != PositiveAxisSurfaceTypeID)  // Restet Positive only
-            {
-                PositiveAxisSurfaceTypeID = NewSurfaceTypeID;
-                if (MaterialTypeID != -1)
-                {
-                    OgreEntityPositive->setMaterial(TEXTURE->getOgreMaterial(MaterialTypeID, PositiveAxisSurfaceTypeID));
-                }
-            }
-        }
-        else
-        {
-            if (NewSurfaceTypeID != NegativeAxisSurfaceTypeID)  // Restet Negative only
-            {
-                NegativeAxisSurfaceTypeID = NewSurfaceTypeID;
-                if (MaterialTypeID != -1)
-                {
-                    OgreEntityNegative->setMaterial(TEXTURE->getOgreMaterial(MaterialTypeID, NegativeAxisSurfaceTypeID));
-                }
-            }
-        }
-    };
-
-    int16_t PositiveAxisSurfaceTypeID;
-    int16_t NegativeAxisSurfaceTypeID;
-
-    int16_t MaterialTypeID;
-
-    Ogre::Entity* OgreEntityPositive;
-    Ogre::Entity* OgreEntityNegative;
-    Ogre::SceneNode* PositionNode;
-};
-
 
 class Cell;
-class Actor;
+//class Actor;
 class Geology;
+class Face;
 
 
 class Map
@@ -180,7 +96,6 @@ public:
     void DigSlope(MapCoordinates Coordinates);
     void Dig(MapCoordinates Coordinates);
 
-    void ChangeCellCount(int8_t Change)      { CellCount += Change; }
     uint32_t getCellCount() const             { return CellCount; }
 
     void ChangeInitedCellCount(int8_t Change)      { InitedCellCount += Change; }

@@ -170,6 +170,8 @@
 		<Unit filename="..\..\Source\Map\Cell.h" />
 		<Unit filename="..\..\Source\Map\Coordinates.cpp" />
 		<Unit filename="..\..\Source\Map\Coordinates.h" />
+		<Unit filename="..\..\Source\Map\Face.cpp" />
+		<Unit filename="..\..\Source\Map\Face.h" />
 		<Unit filename="..\..\Source\Map\Geology.cpp" />
 		<Unit filename="..\..\Source\Map\Geology.h" />
 		<Unit filename="..\..\Source\Map\Map.cpp" />

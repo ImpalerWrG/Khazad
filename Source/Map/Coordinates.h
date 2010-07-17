@@ -13,33 +13,35 @@
 #include <stdint.h>
 #endif
 
-enum Dimension
-{
-    DIMENSION_X,
-    DIMENSION_Y,
-    DIMENSION_Z,
+#include <OgreVector3.h>
 
-    NUM_DIMENSIONS,
-    DIMENSIONS_START = 0
+enum Axis
+{
+    AXIS_Z,
+    AXIS_Y,
+    AXIS_X,
+
+    NUM_AXIS,
+    AXIS_START = 0
 };
 
-inline Dimension &operator++ (Dimension &OldDimension)      { return OldDimension = Dimension(OldDimension + 1); }
-inline Dimension &operator-- (Dimension &OldDimension)      { return OldDimension = Dimension(OldDimension - 1); }
+inline Axis &operator++ (Axis &OldAxis)      { return OldAxis = Axis(OldAxis + 1); }
+inline Axis &operator-- (Axis &OldAxis)      { return OldAxis = Axis(OldAxis - 1); }
 
 enum Direction
 {
     DIRECTION_DOWN,
 	DIRECTION_UP,
 
-	DIRECTION_NORTH,
 	DIRECTION_SOUTH,
+	DIRECTION_NORTH,
 	DIRECTION_WEST,
 	DIRECTION_EAST,
 
-    DIRECTION_NORTHWEST,
 	DIRECTION_SOUTHEAST,
-	DIRECTION_NORTHEAST,
+    DIRECTION_NORTHWEST,
 	DIRECTION_SOUTHWEST,
+	DIRECTION_NORTHEAST,
 
 	DIRECTION_DOWN_SOUTH,
 	DIRECTION_UP_NORTH,
@@ -87,6 +89,60 @@ inline bool isDirectionPositive(Direction DirectionType)
     return DirectionType & 1;  // Referes to Z axis for Directions that span the Z axis
 }
 
+inline int DirectionValueOnAxis(Direction DirectionType, Axis TestAxis)
+{
+    if (DirectionType <= NUM_AXIAL_DIRECTIONS)
+    {
+        if (TestAxis == (DirectionType << 1))
+        {
+            if (DirectionType & 1)
+            {
+                return 1;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    return 0;  // TODO finish for remaining directions
+};
+
+inline Ogre::Vector3 DirectionToVector(Direction DirectionType)
+{
+    if (DirectionType <= NUM_AXIAL_DIRECTIONS)
+    {
+        switch (DirectionType)
+        {
+            case DIRECTION_UP:
+                return Ogre::Vector3::UNIT_Z;
+
+            case DIRECTION_DOWN:
+                return Ogre::Vector3::NEGATIVE_UNIT_Z;
+
+            case DIRECTION_NORTH:
+                return Ogre::Vector3::UNIT_Y;
+
+            case DIRECTION_SOUTH:
+                return Ogre::Vector3::NEGATIVE_UNIT_Y;
+
+            case DIRECTION_EAST:
+                return Ogre::Vector3::UNIT_X;
+
+            case DIRECTION_WEST:
+                return Ogre::Vector3::NEGATIVE_UNIT_X;
+
+            default:
+                return Ogre::Vector3::ZERO;
+        }
+    }
+    return Ogre::Vector3::ZERO;  // TODO finish for remaining directions
+};
+
 struct CubeCoordinates;
 struct CellCoordinates;
 
@@ -106,119 +162,119 @@ struct MapCoordinates
 
     MapCoordinates(CellCoordinates CellCoords, CubeCoordinates CubeCoords);
 
-    inline void TranslateMapCoordinates(Direction DirectionType)
+    inline void TranslateMapCoordinates(Direction DirectionType, int Length = 1)
     {
         switch (DirectionType)
         {
             case DIRECTION_UP:
-                Z += 1;
+                Z += Length;
                 break;
             case DIRECTION_DOWN:
-                Z -= 1;
+                Z -= Length;
                 break;
 
             case DIRECTION_NORTH:
-                Y -= 1;
+                Y -= Length;
                 break;
             case DIRECTION_SOUTH:
-                Y += 1;
+                Y += Length;
                 break;
             case DIRECTION_EAST:
-                X += 1;
+                X += Length;
                 break;
             case DIRECTION_WEST:
-                X -= 1;
+                X -= Length;
                 break;
 
             case DIRECTION_NORTHWEST:
-                Y -= 1;
-                X -= 1;
+                Y -= Length;
+                X -= Length;
                 break;
             case DIRECTION_SOUTHEAST:
-                Y += 1;
-                X += 1;
+                Y += Length;
+                X += Length;
                 break;
             case DIRECTION_NORTHEAST:
-                Y -= 1;
-                X += 1;
+                Y -= Length;
+                X += Length;
                 break;
             case DIRECTION_SOUTHWEST:
-                Y += 1;
-                X -= 1;
+                Y += Length;
+                X -= Length;
                 break;
 
             case DIRECTION_UP_NORTH:
-                Z += 1;
-                Y -= 1;
+                Z += Length;
+                Y -= Length;
                 break;
             case DIRECTION_DOWN_SOUTH:
-                Z -= 1;
-                Y += 1;
+                Z -= Length;
+                Y += Length;
                 break;
             case DIRECTION_UP_EAST:
-                Z += 1;
-                X += 1;
+                Z += Length;
+                X += Length;
                 break;
             case DIRECTION_DOWN_WEST:
-                Z -= 1;
-                X -= 1;
+                Z -= Length;
+                X -= Length;
                 break;
             case DIRECTION_DOWN_NORTH:
-                Z -= 1;
-                Y -= 1;
+                Z -= Length;
+                Y -= Length;
                 break;
             case DIRECTION_UP_SOUTH:
-                Z += 1;
-                Y += 1;
+                Z += Length;
+                Y += Length;
                 break;
             case DIRECTION_DOWN_EAST:
-                Z -= 1;
-                X += 1;
+                Z -= Length;
+                X += Length;
                 break;
             case DIRECTION_UP_WEST:
-                Z += 1;
-                X -= 1;
+                Z += Length;
+                X -= Length;
                 break;
 
             case DIRECTION_UP_NORTHWEST:
-                X -= 1;
-                Y -= 1;
-                Z += 1;
+                X -= Length;
+                Y -= Length;
+                Z += Length;
                 break;
             case DIRECTION_DOWN_SOUTHEAST:
-                X += 1;
-                Y += 1;
-                Z -= 1;
+                X += Length;
+                Y += Length;
+                Z -= Length;
                 break;
             case DIRECTION_UP_NORTHEAST:
-                X += 1;
-                Y -= 1;
-                Z += 1;
+                X += Length;
+                Y -= Length;
+                Z += Length;
                 break;
             case DIRECTION_DOWN_SOUTHWEST:
-                X -= 1;
-                Y += 1;
-                Z -= 1;
+                X -= Length;
+                Y += Length;
+                Z -= Length;
                 break;
             case DIRECTION_UP_SOUTHEAST:
-                X += 1;
-                Y += 1;
-                Z += 1;
+                X += Length;
+                Y += Length;
+                Z += Length;
                 break;
             case DIRECTION_DOWN_NORTHWEST:
-                X -= 1;
-                Y -= 1;
-                Z -= 1;
+                X -= Length;
+                Y -= Length;
+                Z -= Length;
                 break;
             case DIRECTION_UP_SOUTHWEST:
-                X -= 1;
-                Y += 1;
-                Z += 1;
+                X -= Length;
+                Y += Length;
+                Z += Length;
                 break;
             case DIRECTION_DOWN_NORTHEAST:
-                X += 1;
-                Y -= 1;
-                Z -= 1;
+                X += Length;
+                Y -= Length;
+                Z -= Length;
                 break;
             case DIRECTION_NONE:
                 break;

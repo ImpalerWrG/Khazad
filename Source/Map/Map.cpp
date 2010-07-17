@@ -1,19 +1,13 @@
 #include <Map.h>
 
 
-//#include <TextureManager.h>
 #include <DataManager.h>
-//#include <Gui.h>
-//#include <Extractor.h>
 #include <Renderer.h>
 
 #include <Cell.h>
-//#include <Random.h>
-//#include <Building.h>
-//#include <Tree.h>
-//#include <Game.h>
+#include <Face.h>
 
-//#include <map>
+
 
 Map::Map()
 {
@@ -31,8 +25,6 @@ Map::Map()
     FaceCount = 0;
 
     InitedCellCount = 0;
-
-    //TreeMan = NULL;
 }
 
 Map::~Map()
@@ -79,7 +71,8 @@ bool Map::Generate(Geology* RegionGeology)
     // Initialize Faces for the cells
     for(std::map<uint64_t, Cell*>::iterator CellIterator = Cells.begin() ; CellIterator != Cells.end(); ++CellIterator )
     {
-        CellIterator->second->Init();
+        CellIterator->second->InitializeCell(this);
+        CellCount += 1;
     }
 
     return true;
@@ -282,7 +275,7 @@ int16_t Map::getCubeShape(MapCoordinates Coordinates) const
     {
         return TargetCell->getCubeShape(CubeCoordinates(Coordinates));
     }
-    return -1;
+    return INVALID_INDEX;
 }
 
 void Map::setCubeMaterial(MapCoordinates Coordinates, int16_t MaterialID)
@@ -303,7 +296,7 @@ inline int16_t Map::getCubeMaterial(MapCoordinates Coordinates) const
     {
         return TargetCell->getCubeMaterial(CubeCoordinates(Coordinates));
     }
-    return -1;
+    return INVALID_INDEX;
 }
 
 void Map::setCubeSurfaceType(MapCoordinates Coordinates, int16_t SurfaceID)
@@ -324,7 +317,7 @@ inline int16_t Map::getCubeSurfaceType(MapCoordinates Coordinates) const
     {
         return TargetCell->getCubeSurface(CubeCoordinates(Coordinates));
     }
-    return -1;
+    return INVALID_INDEX;
 }
 
 void Map::setFaceMaterial(MapCoordinates Coordinates, Direction DirectionType, int16_t MaterialID)
@@ -333,7 +326,7 @@ void Map::setFaceMaterial(MapCoordinates Coordinates, Direction DirectionType, i
 
     if (TargetFace != NULL)
     {
-        TargetFace->MaterialTypeID = MaterialID;
+        TargetFace->setFaceMaterialType(MaterialID);
 
         // TODO Set needs draw on Cell??
     }
@@ -345,9 +338,9 @@ inline int16_t Map::getFaceMaterial(MapCoordinates Coordinates, Direction Direct
 
     if (TargetFace != NULL)
     {
-        return TargetFace->MaterialTypeID;
+        return TargetFace->getFaceMaterialType();
     }
-    return -1;
+    return INVALID_INDEX;
 }
 
 void Map::setFaceSurfaceType(MapCoordinates Coordinates, Direction DirectionType, int16_t SurfaceID)
@@ -356,14 +349,7 @@ void Map::setFaceSurfaceType(MapCoordinates Coordinates, Direction DirectionType
 
     if (TargetFace != NULL)
     {
-        if (isDirectionPositive(DirectionType))
-        {
-            TargetFace->NegativeAxisSurfaceTypeID = SurfaceID;
-        }
-        else
-        {
-            TargetFace->PositiveAxisSurfaceTypeID = SurfaceID;
-        }
+        TargetFace->setFaceSurfaceType(SurfaceID, DirectionType);
         // TODO Set needs draw on Cell??
     }
 }
@@ -374,8 +360,9 @@ void Map::setBothFaceSurfaceTypes(MapCoordinates Coordinates, Direction Directio
 
     if (TargetFace != NULL)
     {
-        TargetFace->NegativeAxisSurfaceTypeID = SurfaceID;
-        TargetFace->PositiveAxisSurfaceTypeID = SurfaceID;
+        TargetFace->setFaceSurfaceType(SurfaceID, DirectionType);
+        TargetFace->setFaceSurfaceType(SurfaceID, OppositeDirection(DirectionType));
+
         // TODO Set needs draw on Cell??
     }
 }
@@ -388,14 +375,14 @@ inline int16_t Map::getFaceSurfaceType(MapCoordinates Coordinates, Direction Dir
     {
         if (isDirectionPositive(DirectionType))
         {
-            return TargetFace->NegativeAxisSurfaceTypeID;
+            return TargetFace->getNegativeAxisSurfaceType();
         }
         else
         {
-            return TargetFace->PositiveAxisSurfaceTypeID;
+            return TargetFace->getPositiveAxisSurfateType();
         }
     }
-    return -1;
+    return INVALID_INDEX;
 }
 
 bool Map::isCubeHidden(MapCoordinates Coordinates) const
@@ -563,9 +550,9 @@ void Map::Dig(MapCoordinates Coordinates)
                             TargetFace = addFace(Coordinates, DIRECTION_DOWN);
                         }
 
-                        TargetFace->MaterialTypeID = getCubeMaterial(ModifiedCoordinates);
-                        TargetFace->NegativeAxisSurfaceTypeID = RoughFloorID;
-                        TargetFace->PositiveAxisSurfaceTypeID = RoughFloorID;
+                        TargetFace->setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
+                        TargetFace->setFaceSurfaceType(RoughFloorID, DirectionType);
+                        TargetFace->setFaceSurfaceType(RoughFloorID, OppositeDirection(DirectionType));
                     }
                     else
                     {
@@ -582,9 +569,9 @@ void Map::Dig(MapCoordinates Coordinates)
                             TargetFace = addFace(Coordinates, DirectionType);
                         }
 
-                        TargetFace->MaterialTypeID = getCubeMaterial(ModifiedCoordinates);
-                        TargetFace->NegativeAxisSurfaceTypeID = getCubeSurfaceType(ModifiedCoordinates);
-                        TargetFace->PositiveAxisSurfaceTypeID = getCubeSurfaceType(ModifiedCoordinates);
+                        TargetFace->setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
+                        TargetFace->setFaceSurfaceType(RoughWallID, DirectionType);
+                        TargetFace->setFaceSurfaceType(RoughWallID, OppositeDirection(DirectionType));
                     }
                     else
                     {
@@ -596,7 +583,7 @@ void Map::Dig(MapCoordinates Coordinates)
             setCubeHidden(Coordinates, false);
             setCubeShape(Coordinates, FloorID);
 
-            setCubeMaterial(Coordinates, -1);
+            setCubeMaterial(Coordinates, INVALID_INDEX);
         }
 
         // reveal tiles around
