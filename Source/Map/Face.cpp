@@ -13,18 +13,22 @@ Face::Face(Ogre::SceneNode* NewPosition, Direction DirectionType)
 	PositionNode = NewPosition;
 
 
-    Ogre::Vector3 TranslateVector = DirectionToVector(DirectionType);
-	PositionNode->translate(TranslateVector * HALFCUBE);
+    // TODO use 6 different Tiles fore each Axial Direction all centered onthe cube center
 
-	Ogre::Entity *ent1 = RENDERER->getSceneManager()->createEntity("Tile");
-	OgreEntityPositive = ent1;
-	OgreEntityPositive->setCastShadows(false);
-	PositionNode->attachObject(OgreEntityPositive);
-
-	Ogre::Entity *ent2 = RENDERER->getSceneManager()->createEntity("Tile");
-	OgreEntityNegative = ent2;
-	OgreEntityNegative->setCastShadows(false);
-	PositionNode->attachObject(OgreEntityNegative);
+    if (isDirectionPositive(DirectionType))
+    {
+        Ogre::Entity *ent1 = RENDERER->getSceneManager()->createEntity("DownTile");
+        OgreEntityPositive = ent1;
+        OgreEntityPositive->setCastShadows(false);
+        PositionNode->attachObject(OgreEntityPositive);
+    }
+    else
+    {
+        Ogre::Entity *ent2 = RENDERER->getSceneManager()->createEntity("DownTile");
+        OgreEntityNegative = ent2;
+        OgreEntityNegative->setCastShadows(false);
+        PositionNode->attachObject(OgreEntityNegative);
+    }
 
 	MaterialTypeID = INVALID_INDEX;
 	PositionNode = NewPosition;

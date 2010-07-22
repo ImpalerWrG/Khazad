@@ -46,10 +46,11 @@ private:
     void initializeResourceGroups();
 
     void setupScene();
+    void CreateManualObjects();
+
     void createCamera();
 
-
-    vector<Camera*> Cameras;
+    std::vector<Camera*> Cameras;
     uint16_t ActiveCameraIndex;
 
     Ogre::Overlay*			OgreDebugOverlay;

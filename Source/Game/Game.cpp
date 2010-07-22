@@ -79,13 +79,14 @@ bool Game::UpdateActors()
 
 	for (CoolDownGroupIterator = ActorUpdateGroups.begin(); CoolDownGroupIterator != ActorUpdateGroups.end(); CoolDownGroupIterator++)
 	{
-		int CoolDown = CoolDownGroupIterator->first;
+		int CoolDown = CoolDownGroupIterator->first;        // CoolDown is the size of this Carosel and how long it takes to 'revolve'
+
 		std::vector<Actor*>* TargetCarosel = CoolDownGroupIterator->second;
 		std::vector<Actor*>* TargetBucket = &TargetCarosel[TickCounter % CoolDown];
 
 		for (int i = 0; i < TargetBucket->size(); i++)
 		{
-			int ActorDesiredCoolDown = (*TargetBucket)[i]->Update();
+			int ActorDesiredCoolDown = (*TargetBucket)[i]->Update();  // The amount of Cooldown the Actor desires untill its next update
 
 			if (ActorDesiredCoolDown != CoolDown)
 			{
@@ -95,7 +96,7 @@ bool Game::UpdateActors()
 				// Grab the last Actor, update it and replace the moved actor
 				if (TargetBucket->size() > 1)
 				{
-					((*TargetBucket).back())->Update();
+					((*TargetBucket).back())->Update();  // What if this actor needs reindexing too?
 					(*TargetBucket)[i] = (*TargetBucket).back();
 				}
 				(*TargetBucket).pop_back();

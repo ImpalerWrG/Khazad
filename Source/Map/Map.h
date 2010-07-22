@@ -5,13 +5,12 @@
 
 #include <Coordinates.h>
 #include <Renderer.h>
-#include <TextureManager.h>
 
 
 class Cell;
-//class Actor;
 class Geology;
 class Face;
+class Zone;
 
 
 class Map
@@ -77,6 +76,7 @@ public:
     bool isCubeSolid(MapCoordinates Coordinates) const;
     void setCubeSolid(MapCoordinates Coordinates, bool NewValue);
 
+
     bool Generate(Geology* RegionGeology);
 
 	uint32_t getMapSizeX() const { return MapSizeX; }
@@ -97,16 +97,16 @@ public:
     void Dig(MapCoordinates Coordinates);
 
     uint32_t getCellCount() const             { return CellCount; }
-
-    void ChangeInitedCellCount(int8_t Change)      { InitedCellCount += Change; }
-    uint32_t getInitedCellCount() const             { return InitedCellCount; }
-
-    void ChangeFaceCount(int8_t Change)      { FaceCount += Change; }
     uint32_t getFaceCount() const             { return FaceCount; }
 
 
     MapCoordinates getMapCenter() const;
 
+    Zone* getZone() const;
+    void addZone(Zone* NewZone);
+    void setActiveZone(Zone* ActivatedZone)        { ActiveZone = ActivatedZone; }
+    Zone* getActiveZone()                          { return ActiveZone; }
+    void DeactivateZone()                          { ActiveZone = NULL; }
 
 protected:
 
@@ -122,11 +122,12 @@ protected:
     uint16_t CellSizeZ;
 
     std::map<uint64_t, Cell*> Cells;
+    std::vector<Zone*> Zones;
+
+    Zone* ActiveZone;
 
     uint32_t CellCount;
     uint32_t FaceCount;
-
-    uint32_t InitedCellCount;
 
     Geology* MapGeology;
 };

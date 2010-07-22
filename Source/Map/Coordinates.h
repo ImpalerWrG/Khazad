@@ -153,12 +153,12 @@ struct MapCoordinates
         X = Y = Z = 0;
     };
 
-    /*MapCoordinates(Vector3 Point)
+    MapCoordinates(Ogre::Vector3 Point)
     {
-        X = Point.x;
-        Y = Point.y;
-        Z = Point.z;
-    };*/
+        X = Point.x + HALFCUBE;
+        Y = Point.y + HALFCUBE;
+        Z = Point.z + HALFCUBE;
+    };
 
     MapCoordinates(CellCoordinates CellCoords, CubeCoordinates CubeCoords);
 

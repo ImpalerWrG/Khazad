@@ -24,7 +24,7 @@ Map::Map()
     CellCount = 0;
     FaceCount = 0;
 
-    InitedCellCount = 0;
+    ActiveZone = NULL;
 }
 
 Map::~Map()
@@ -61,7 +61,7 @@ bool Map::Generate(Geology* RegionGeology)
 
             CellCoordinates TargetCellCoordinates = CellCoordinates(X, Y, Z);
             Cell* NewCell = new Cell();
-            NewCell->setPosition(TargetCellCoordinates);
+            NewCell->setCellPosition(TargetCellCoordinates);
 
             addCell(NewCell, TargetCellCoordinates);
             NewCell->LoadCellData(MapGeology);
@@ -610,4 +610,10 @@ void Map::ReleaseMap()
     MapLoaded = false;
 
     Cells.clear();
+    Zones.clear();
+}
+
+void Map::addZone(Zone* NewZone)
+{
+    Zones.push_back(NewZone);
 }

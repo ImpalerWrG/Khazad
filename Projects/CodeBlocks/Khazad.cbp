@@ -176,6 +176,8 @@
 		<Unit filename="..\..\Source\Map\Geology.h" />
 		<Unit filename="..\..\Source\Map\Map.cpp" />
 		<Unit filename="..\..\Source\Map\Map.h" />
+		<Unit filename="..\..\Source\Map\Zone.cpp" />
+		<Unit filename="..\..\Source\Map\Zone.h" />
 		<Unit filename="..\..\Source\Renderer\Camera.cpp" />
 		<Unit filename="..\..\Source\Renderer\Camera.h" />
 		<Unit filename="..\..\Source\Renderer\ImageManager.cpp" />

@@ -28,7 +28,7 @@ public:
     bool InitializeCell(Map* ParentMap);
     bool isInitialized()    { return Initialized; }
 
-    void setPosition(CellCoordinates Coordinates);
+    void setCellPosition(CellCoordinates Coordinates);
 
 
     //void Render(CameraOrientation CurrentOrientation);

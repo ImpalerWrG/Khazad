@@ -25,7 +25,9 @@ public:
     void setPitchLock(bool NewLock)                 { PitchLock = NewLock; }
     bool getPitchLock()                             { return PitchLock; }
 
-    Ogre::Vector3 getMouseRayIntersection(float X, float Y);
+    Ogre::Vector3 getMouseRayIntersection(float X, float Y, float Z);
+    Ogre::Vector3 ConvertMouseToVector(float X, float Y);
+
     void FocusAt(Ogre::Vector3 FocalPoint);
 
     void SetDefaultView();
@@ -45,7 +47,6 @@ private:
 
     Ogre::Real ZoomFactor;
     float TranslationFactor;
-    float minpitch;
 };
 
 #endif  // CAMERA_HEADER

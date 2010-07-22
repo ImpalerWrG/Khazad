@@ -3,6 +3,7 @@
 #include <Ogre.h>
 #include <Renderer.h>
 
+
 Camera::Camera()
 {
 
@@ -30,11 +31,9 @@ bool Camera::Init()
 
 
 
-            char buffer [50];
-            sprintf(buffer, "CameraMarker1");
-            Ogre::Entity *ent1 = RENDERER->getSceneManager()->createEntity(buffer, "ColorCube");
-            ent1->setCastShadows(false);
-            TargetNode->attachObject(ent1);
+            Ogre::Entity* Marker = RENDERER->getSceneManager()->createEntity("AxialMarker");
+            Marker->setCastShadows(false);
+            TargetNode->attachObject(Marker);
 
 
 
@@ -102,6 +101,13 @@ void Camera::PitchCamera(float PitchFactor)
 
 void Camera::TranslateCamera(float X, float Y)
 {
+    Ogre::Vector3 TranslationVector = ConvertMouseToVector(X, Y);
+
+	TargetNode->translate(TranslationVector, Ogre::Node::TS_WORLD);
+}
+
+Ogre::Vector3 Camera::ConvertMouseToVector(float X, float Y)
+{
     Ogre::Vector3 LookVector = TargetNode->_getDerivedPosition() - CameraNode->_getDerivedPosition();
 
     LookVector.normalise();
@@ -114,16 +120,14 @@ void Camera::TranslateCamera(float X, float Y)
     Ogre::Vector3 CrossProduct = TempUpVector.crossProduct(LookVector);
     CrossProduct.normalise();
 
-
-	TargetNode->translate(LookVector * -Y * TranslationFactor / zComp, Ogre::Node::TS_WORLD);
-	TargetNode->translate(CrossProduct * X * TranslationFactor, Ogre::Node::TS_WORLD);
+    return (CrossProduct * X * TranslationFactor) + (LookVector * -Y * TranslationFactor / zComp);
 }
 
-Ogre::Vector3 Camera::getMouseRayIntersection(float X, float Y)
+Ogre::Vector3 Camera::getMouseRayIntersection(float X, float Y, float Z)
 {
     Ogre::Plane FloorLevel;
     FloorLevel.normal = Ogre::Vector3::UNIT_Z;
-    FloorLevel.d = 0.0f;
+    FloorLevel.d = -Z;
 
        // get selection ray from viewport mouse position
     Ogre::Ray selectRay = OgreCamera->getCameraToViewportRay(X, Y);

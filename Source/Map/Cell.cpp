@@ -38,10 +38,6 @@ Cell::~Cell()
 {
     //ParentMap->ChangeCellCount(-1);
 
-    if(Initialized)
-    {
-        //MAP->ChangeInitedCellCount(-1);
-    }
 }
 
 bool Cell::InitializeCell(Map* Parent)
@@ -55,16 +51,13 @@ bool Cell::InitializeCell(Map* Parent)
     return true;
 }
 
-void Cell::setPosition(CellCoordinates Coordinates)
+void Cell::setCellPosition(CellCoordinates Coordinates)
 {
-    Ogre::Vector3 CellPosition;
+    float x = (float) (Coordinates.X * CELLEDGESIZE) + (CELLEDGESIZE / 2) - HALFCUBE;
+    float y = (float) (Coordinates.Y * CELLEDGESIZE) + (CELLEDGESIZE / 2) - HALFCUBE;
+    float z = (float) Coordinates.Z;
 
-    CellPosition.x = (float) (Coordinates.X * CELLEDGESIZE) + (CELLEDGESIZE / 2) - HALFCUBE;
-    CellPosition.y = (float) (Coordinates.Y * CELLEDGESIZE) + (CELLEDGESIZE / 2) - HALFCUBE;
-    CellPosition.z = (float) Coordinates.Z;
-
-    CellSceneNode->setPosition(CellPosition);
-
+    CellSceneNode->setPosition(x, y, z);
     thisCellCoordinates = Coordinates;
 }
 
@@ -668,7 +661,7 @@ Face* Cell::addFace(CubeCoordinates Coordinates, Direction DirectionType)
         if (Faces.find(Key) == Faces.end())
         {
             Ogre::SceneNode* NewFaceNode = CellSceneNode->createChildSceneNode();
-            NewFaceNode->setPosition(Coordinates.X, Coordinates.Y, 0);
+            NewFaceNode->setPosition(Coordinates.X - (CELLEDGESIZE / 2) + HALFCUBE, Coordinates.Y - (CELLEDGESIZE / 2) + HALFCUBE, 0);
             Face* NewFace = new Face(NewFaceNode, DirectionType);
             Faces[Key] = NewFace;
 

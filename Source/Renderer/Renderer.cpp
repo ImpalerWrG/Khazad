@@ -33,6 +33,7 @@ bool Renderer::Init()
     setupRenderSystem();
     initializeResourceGroups();
     setupScene();
+    CreateManualObjects();
     createCamera();
 
     return true;
@@ -99,114 +100,171 @@ void Renderer::setupScene()
 
     OgreSceneManager->setAmbientLight(Ogre::ColourValue(1, 1, 1));
     OgreSceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
+}
+
+void Renderer::CreateManualObjects()
+{
+    // Flat tiles need 6
+    Ogre::ManualObject* ManualObject;
+
+    ManualObject = OgreSceneManager->createManualObject("ManualDownTile");
+    ManualObject->setDynamic(false);
+
+    ManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
+    {
+        ManualObject->position(-0.5, -0.5, -0.5);
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+
+        ManualObject->position( 0.5, -0.5, -0.5);
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+        ManualObject->position(-0.5,  0.5, -0.5);
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+
+        ManualObject->position( 0.5,  0.5, -0.5);
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
+
+        ManualObject->index(0);
+        ManualObject->index(1);
+        ManualObject->index(2);
+        ManualObject->index(3);
+    }
+    ManualObject->end();
+    ManualObject->convertToMesh("DownTile");
 
 
 
 
 
 
+    // A 3 pronged marker to show the XYZ axies
+    ManualObject = OgreSceneManager->createManualObject("ManualAxialMarker");
+    ManualObject->setDynamic(false);
 
+    ManualObject->begin("BaseWhiteNoLighting",Ogre::RenderOperation::OT_LINE_LIST);
+    {
+        float lAxeSize = 10;
+        // X Red
+        ManualObject->position(0.0f, 0.0f, 0.0f);
+        ManualObject->colour(Ogre::ColourValue::Red);
 
+        ManualObject->position(lAxeSize, 0.0f, 0.0f);
+        ManualObject->colour(Ogre::ColourValue::Red);
 
+        // Y Green
+        ManualObject->position(0.0f, 0.0f, 0.0f);
+        ManualObject->colour(Ogre::ColourValue::Green);
 
-    Ogre::ManualObject* ManualTileObject = OgreSceneManager->createManualObject("ManualTile");
-    ManualTileObject->setDynamic(false);
-    ManualTileObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
+        ManualObject->position(0.0, lAxeSize, 0.0);
+        ManualObject->colour(Ogre::ColourValue::Green);
 
-    ManualTileObject->position(-0.5, -0.5, 0.0);
-    ManualTileObject->colour(Ogre::ColourValue::White);
-    ManualTileObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+        // Z Blue
+        ManualObject->position(0.0f, 0.0f, 0.0f);
+        ManualObject->colour(Ogre::ColourValue::Blue);
 
-    ManualTileObject->position( 0.5, -0.5, 0.0);
-    ManualTileObject->colour(Ogre::ColourValue::White);
-    ManualTileObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+        ManualObject->position(0.0, 0.0, lAxeSize);
+        ManualObject->colour(Ogre::ColourValue::Blue);
 
-    ManualTileObject->position(-0.5,  0.5, 0.0);
-    ManualTileObject->colour(Ogre::ColourValue::White);
-    ManualTileObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
-
-    ManualTileObject->position( 0.5,  0.5, 0.0);
-    ManualTileObject->colour(Ogre::ColourValue::White);
-    ManualTileObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
-
-    ManualTileObject->index(0);
-    ManualTileObject->index(1);
-    ManualTileObject->index(2);
-    ManualTileObject->index(3);
-    //manual->index(0);
-
-    ManualTileObject->end();
-    ManualTileObject->convertToMesh("Tile");
-
-
-
-
-
-
-
-
-
-
+        ManualObject->index(0);
+        ManualObject->index(1);
+        ManualObject->index(2);
+        ManualObject->index(3);
+        ManualObject->index(4);
+        ManualObject->index(5);
+    }
+    ManualObject->end();
+    ManualObject->convertToMesh("AxialMarker");
 
 
 
 
 
-    Ogre::ManualObject* lManualObject = OgreSceneManager->createManualObject("ManualCube");
-    lManualObject->setDynamic(false);
-    //lManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+    // A 3 pronged marker to show the XYZ axies
+    ManualObject = OgreSceneManager->createManualObject("ManualWireFrame");
+    ManualObject->setDynamic(true);
 
+    ManualObject->begin("BaseWhiteNoLighting",Ogre::RenderOperation::OT_LINE_LIST);
+    {
+        float HALFCUBE = 0.5;
+        // TOP
+        ManualObject->position(HALFCUBE, HALFCUBE, HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue::White);
 
+        ManualObject->position(HALFCUBE, -HALFCUBE, HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue::White);
 
-			lManualObject->begin("BaseWhiteNoLighting",Ogre::RenderOperation::OT_LINE_LIST);
-			{
-				float lAxeSize = 10;
-				// X Red
-				lManualObject->position(0.0f, 0.0f, 0.0f);
-				lManualObject->colour(Ogre::ColourValue::Red);
+        ManualObject->position(-HALFCUBE, -HALFCUBE, HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue::White);
 
-				lManualObject->position(lAxeSize, 0.0f, 0.0f);
-				lManualObject->colour(Ogre::ColourValue::Red);
+        ManualObject->position(-HALFCUBE, HALFCUBE, HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue::White);
 
-				// Y Green
-				lManualObject->position(0.0f, 0.0f, 0.0f);
-				lManualObject->colour(Ogre::ColourValue::Green);
+        // BOTTOM
+        ManualObject->position(HALFCUBE, HALFCUBE, -HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue::White);
 
-				lManualObject->position(0.0, lAxeSize, 0.0);
-				lManualObject->colour(Ogre::ColourValue::Green);
+        ManualObject->position(HALFCUBE, -HALFCUBE, -HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue::White);
 
-				// Z Blue
-				lManualObject->position(0.0f, 0.0f, 0.0f);
-				lManualObject->colour(Ogre::ColourValue::Blue);
+        ManualObject->position(-HALFCUBE, -HALFCUBE, -HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue::White);
 
-				lManualObject->position(0.0, 0.0, lAxeSize);
-				lManualObject->colour(Ogre::ColourValue::Blue);
+        ManualObject->position(-HALFCUBE, HALFCUBE, -HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue::White);
 
-				lManualObject->index(0);
-				lManualObject->index(1);
-				lManualObject->index(2);
-				lManualObject->index(3);
-				lManualObject->index(4);
-				lManualObject->index(5);
-			}
-			lManualObject->end();
+        // TOP
+        ManualObject->index(0);
+        ManualObject->index(1);
 
-            lManualObject->convertToMesh("ColorCube");
+        ManualObject->index(1);
+        ManualObject->index(2);
 
+        ManualObject->index(2);
+        ManualObject->index(3);
 
-    //Light *light;
+        ManualObject->index(3);
+        ManualObject->index(0);
 
+        // BOTTOM
+        ManualObject->index(4);
+        ManualObject->index(5);
 
+        ManualObject->index(5);
+        ManualObject->index(6);
 
-    //OverlayElement* guiDbg = OverlayManager::getSingleton().getOverlayElement("Core/DebugText");
-    //guiDbg->setCaption(OgreRoot->getAutoCreatedWindow()->getDebugText());
+        ManualObject->index(6);
+        ManualObject->index(7);
+
+        ManualObject->index(7);
+        ManualObject->index(4);
+
+        // SIDES
+        ManualObject->index(0);
+        ManualObject->index(4);
+
+        ManualObject->index(1);
+        ManualObject->index(5);
+
+        ManualObject->index(2);
+        ManualObject->index(6);
+
+        ManualObject->index(3);
+        ManualObject->index(7);
+    }
+    ManualObject->end();
+    ManualObject->convertToMesh("WireFrame");
 }
 
 void Renderer::createCamera()
 {
     Camera* newCamera = new Camera();
     Cameras.push_back(newCamera);
-    ActiveCameraIndex = 0;
+    ActiveCameraIndex = Cameras.size() - 1;
+
     newCamera->Init();
 }
 
