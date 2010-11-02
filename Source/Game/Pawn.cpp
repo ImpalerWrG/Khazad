@@ -11,7 +11,6 @@
 
 Pawn::Pawn()
 {
-    CoolDown = 1;
     Moving = false;
     CurrentMovementDirection = DIRECTION_NONE;
 }
@@ -49,19 +48,19 @@ int Pawn::AttemptMove(Direction MovementDirection)
         MapCoordinates NewLocation = MapCoordinates(LocationCoordinates, MovementDirection);
 
         Moving = true;
-        CoolDown = EdgeCost * 100;  // Cooldown factor, inverse speed
+        CoolDown MovementCoolDown = EdgeCost * 100;  // Cooldown factor, inverse speed
 
         // Create Vector directly from a MovementDirection?
         //RenderLocationChange.set(NewLocation.X - LocationCoordinates.X, NewLocation.Y - LocationCoordinates.Y, NewLocation.Z - LocationCoordinates.Z);
         //RenderLocationChange = RenderLocationChange * (1 / (float) CoolDown);
         // Reduce magnitude proportional to cooldown
 
-        return CoolDown;
+        return MovementCoolDown;
     }
     return 1;
 }
 
-int Pawn::Update()
+CoolDown Pawn::Update()
 {
     UpdateTick = GAME->getTickCount();   // Record the current Tick
 

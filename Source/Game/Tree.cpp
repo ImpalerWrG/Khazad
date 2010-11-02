@@ -39,7 +39,7 @@ bool Tree::Init()
     return true;
 }
 
-int Tree::Update()
+CoolDown Tree::Update()
 {
     return 1000;
 }

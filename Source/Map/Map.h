@@ -108,6 +108,8 @@ public:
     Zone* getActiveZone()                          { return ActiveZone; }
     void DeactivateZone()                          { ActiveZone = NULL; }
 
+    Zone* getZoneAt(MapCoordinates TestCoordinates);
+
 protected:
 
     bool Initialized;

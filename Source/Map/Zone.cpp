@@ -50,3 +50,9 @@ void Zone::MorphZone(Direction MorphDirection, int ValueChange)
         AxialBox.setMinimum(OldMin + MorphVector);
     }
 }
+
+bool Zone::isCoordinateInZone(MapCoordinates TestCoordinates)
+{
+    // TODO use MapCoordinates rather then AAB and replicated logic of intersect in integer math
+    return AxialBox.intersects(Ogre::Vector3(TestCoordinates.X, TestCoordinates.Y, TestCoordinates.Z));
+}

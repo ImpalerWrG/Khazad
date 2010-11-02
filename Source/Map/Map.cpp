@@ -6,6 +6,7 @@
 
 #include <Cell.h>
 #include <Face.h>
+#include <Zone.h>
 
 
 
@@ -616,4 +617,16 @@ void Map::ReleaseMap()
 void Map::addZone(Zone* NewZone)
 {
     Zones.push_back(NewZone);
+}
+
+Zone* Map::getZoneAt(MapCoordinates TestCoordinates)
+{
+    for(uint32_t ZoneIndex = 0; ZoneIndex != Zones.size(); ZoneIndex++)
+    {
+        if (Zones[ZoneIndex]->isCoordinateInZone(TestCoordinates))
+        {
+            return Zones[ZoneIndex];
+        }
+    }
+    return NULL;
 }

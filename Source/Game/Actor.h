@@ -8,19 +8,19 @@
 class Cell;
 
 #include <Coordinates.h>
+#include <Temporal.h>
 
 
-class Actor
+class Actor: virtual public Temporal
 {
 public:
 
 	Actor();
-	virtual ~Actor();
+    ~Actor();
 
-	virtual int Update() = 0;
+	virtual CoolDown Update() = 0;
 
     virtual Ogre::Vector3 getRenderPosition();
-	//virtual bool Draw(CameraOrientation Orientaion) = 0;
 
     MapCoordinates getLocationCoordinates()            { return LocationCoordinates; }
     void setLocation(MapCoordinates NewPosition);
@@ -52,4 +52,3 @@ protected:
 };
 
 #endif  // ACTOR__HEADER
-

@@ -3,7 +3,7 @@
 
 
 // Include in the .cpp file
-#define DECLARE_SINGLETON(CLASS) CLASS* CLASS::instance = NULL;
+#define DECLARE_SINGLETON(CLASS) CLASS* CLASS::instance = NULL;  bool CLASS::instanced = false;
 
 // Include in the .h file
 #define DECLARE_SINGLETON_CLASS(CLASS)		                                    \
@@ -30,18 +30,26 @@
         if (!CLASS::instance)                                                   \
         {				                                                        \
             CLASS::instance = new CLASS;                                        \
+            CLASS::instanced = true;                                            \
         }		                                                                \
     };									                                        \
                                                                                 \
     static void FreeInstance()                                                  \
     {                                                                           \
         delete CLASS::instance;				                                    \
-        CLASS::instance = NULL;				                                    \
+        CLASS::instance = NULL;                                                 \
+        CLASS::instanced = false;  				                                \
     };									                                        \
+                                                                                \
+    static bool isInstance()                                                    \
+    {                                                                           \
+        return CLASS::instanced;                                                \
+    };                                                                          \
                                                                                 \
     private:								                                    \
                                                                                 \
     static CLASS* instance;	                                    				\
+    static bool instanced;                                                      \
                                                                                 \
     protected:						                                    		\
                                                                                 \

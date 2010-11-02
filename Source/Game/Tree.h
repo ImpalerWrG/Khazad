@@ -15,7 +15,7 @@ public:
     virtual ~Tree();
 
     bool Init();
-    int Update();
+    CoolDown Update();
 
     //bool Draw(CameraOrientation Orientaion);
 

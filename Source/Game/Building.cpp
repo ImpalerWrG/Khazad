@@ -44,7 +44,7 @@ bool Building::Init()
     return true;
 }
 
-int Building::Update()
+CoolDown Building::Update()
 {
     return 1;
 }

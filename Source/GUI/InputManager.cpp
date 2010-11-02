@@ -172,7 +172,7 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
 
         case OIS::KC_A:
         {
-            GAME->SpawnPawn(MapCoordinates(10, 10, 0));
+            //GAME->SpawnPawn(MapCoordinates(10, 10, 0));
             break;
         }
 
@@ -220,22 +220,26 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
         }
     }
 
-    if (MouseObject->getMouseState().buttonDown(OIS::MB_Right))
+    if (Game::isInstance())
     {
-        RENDERER->getActiveCamera()->TranslateCamera(arg.state.X.rel, arg.state.Y.rel);
-    }
-
-    if (MouseObject->getMouseState().buttonDown(OIS::MB_Left) && (KeyboardObject->isKeyDown(OIS::KC_RSHIFT) || KeyboardObject->isKeyDown(OIS::KC_LSHIFT)))
-    {
-        if (GAME->getMap()->getActiveZone() != NULL)
+        if (MouseObject->getMouseState().buttonDown(OIS::MB_Right))
         {
-            Zone* ActiveZone = GAME->getMap()->getActiveZone();
+            if (GAME->getMap()->getActiveZone() != NULL)
+            {
+                Zone* ActiveZone = GAME->getMap()->getActiveZone();
 
-            Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height), -HALFCUBE);
+                Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height), -HALFCUBE);
 
-            ActiveZone->MoveZone(MapCoordinates(FocusPoint));
+                ActiveZone->MoveZone(MapCoordinates(FocusPoint));
+            }
+            else
+            {
+                RENDERER->getActiveCamera()->TranslateCamera(arg.state.X.rel, arg.state.Y.rel);
+            }
         }
     }
+
+    //if (MouseObject->getMouseState().buttonDown(OIS::MB_Left) && (KeyboardObject->isKeyDown(OIS::KC_RSHIFT) || KeyboardObject->isKeyDown(OIS::KC_LSHIFT)))
 
     return true;
 }
@@ -248,14 +252,28 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
 
     if (id == OIS::MB_Left && (KeyboardObject->isKeyDown(OIS::KC_RSHIFT) || KeyboardObject->isKeyDown(OIS::KC_LSHIFT)))
     {
-        //if (GAME->getMap()->getActiveZone() == NULL)
-        //{
-            Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height), -HALFCUBE);
+        Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height), -HALFCUBE);
+        MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
+        Zone* ClickedZone = GAME->getMap()->getZoneAt(ClickCoordinates);
 
-            Zone* NewZone = new Zone(MapCoordinates(FocusPoint));
+        if (ClickedZone == NULL)
+        {
+            Zone* NewZone = new Zone(ClickCoordinates);
             GAME->getMap()->addZone(NewZone);
             GAME->getMap()->setActiveZone(NewZone);
-        //}
+        }
+    }
+
+    if (id == OIS::MB_Right && (KeyboardObject->isKeyDown(OIS::KC_RSHIFT) || KeyboardObject->isKeyDown(OIS::KC_LSHIFT)))
+    {
+        Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height), -HALFCUBE);
+        MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
+        Zone* ClickedZone = GAME->getMap()->getZoneAt(ClickCoordinates);
+
+        if (ClickedZone != NULL)
+        {
+            GAME->getMap()->setActiveZone(ClickedZone);
+        }
     }
 
     return true;
@@ -264,6 +282,11 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
 bool InputManager::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
     GUI->injectMouseRelease(0, 0, id);
+
+    if (Game::isInstance())
+    {
+        GAME->getMap()->setActiveZone(NULL);
+    }
 
     return true;
 }

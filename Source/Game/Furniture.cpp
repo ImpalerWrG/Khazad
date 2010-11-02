@@ -18,7 +18,7 @@ bool Furniture::Init()
 	return true;
 }
 
-int Furniture::Update()
+CoolDown Furniture::Update()
 {
 	return true;
 }

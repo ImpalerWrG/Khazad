@@ -17,6 +17,8 @@ public:
     void TranslateZone(Direction TranslationDirection, int Distance);
     void MorphZone(Direction MorphDirection, int ValueChange);
 
+    bool isCoordinateInZone(MapCoordinates TestCoordinates);
+
 private:
 
     // Multiple Boxes for irregular areas, custome wireframes for cleaner apearance?

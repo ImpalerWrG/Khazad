@@ -108,7 +108,7 @@ int main(int argc, char **argv)
                 //lTimeLastFrame = lTimeCurrentFrame;
 
 
-                if (GAME)
+                if (Game::isInstance())
                 {
                     GAME->Run();
                 }

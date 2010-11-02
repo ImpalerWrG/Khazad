@@ -164,6 +164,8 @@
 		<Unit filename="..\..\Source\Game\Game.h" />
 		<Unit filename="..\..\Source\Game\Pawn.cpp" />
 		<Unit filename="..\..\Source\Game\Pawn.h" />
+		<Unit filename="..\..\Source\Game\Temporal.cpp" />
+		<Unit filename="..\..\Source\Game\Temporal.h" />
 		<Unit filename="..\..\Source\Game\Tree.cpp" />
 		<Unit filename="..\..\Source\Game\Tree.h" />
 		<Unit filename="..\..\Source\Map\Cell.cpp" />

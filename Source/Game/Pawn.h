@@ -10,7 +10,7 @@
 
 class Cell;
 
-class Pawn: public Actor
+class Pawn: virtual public Actor
 {
 
 public:
@@ -23,7 +23,7 @@ public:
 	Cell* getCell() { return CellLocation; }
 
 	int AttemptMove(Direction MovementDirection);
-	int Update();
+	CoolDown Update();
 
     Ogre::Vector3 getRenderPosition();
     Ogre::Vector3 getRederPositionMovementAdjustment();
@@ -36,7 +36,7 @@ protected:
 	bool Moving;
 	Direction CurrentMovementDirection;
 
-	int CoolDown;
+	//int CoolDown;
 	int UpdateTick;
 
     MapCoordinates DestinationCoordinates;
