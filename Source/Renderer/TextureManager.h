@@ -19,6 +19,9 @@ public:
     int16_t PickImageTexture(int16_t MaterialID, int16_t SurfaceTypeID);
     Ogre::MaterialPtr MapTexture(int16_t MaterialID, int16_t TextureID);
 
+    const char* getMaterialName(int16_t MaterialTypeID, int16_t TextureID);
+    const char* getTextureName(int16_t MaterialTypeID, int16_t TextureID);
+
     Ogre::MaterialPtr getOgreMaterial(int16_t MaterialTypeID, int16_t SurfaceTypeID);
     Ogre::MaterialPtr makeOgreMaterial(int16_t MaterialTypeID, int16_t TextureID);
 

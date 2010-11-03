@@ -172,7 +172,7 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
 
         case OIS::KC_A:
         {
-            //GAME->SpawnPawn(MapCoordinates(10, 10, 0));
+            GAME->SpawnPawn(MapCoordinates(10, 10, 0));
             break;
         }
 
@@ -250,29 +250,29 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
 
     const OIS::MouseState &State = MouseObject->getMouseState();
 
-    if (id == OIS::MB_Left && (KeyboardObject->isKeyDown(OIS::KC_RSHIFT) || KeyboardObject->isKeyDown(OIS::KC_LSHIFT)))
+    if (id == OIS::MB_Left)
     {
-        Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height), -HALFCUBE);
-        MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
-        Zone* ClickedZone = GAME->getMap()->getZoneAt(ClickCoordinates);
-
-        if (ClickedZone == NULL)
+        if (Game::isInstance())
         {
-            Zone* NewZone = new Zone(ClickCoordinates);
-            GAME->getMap()->addZone(NewZone);
-            GAME->getMap()->setActiveZone(NewZone);
-        }
-    }
+            Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height), -HALFCUBE);
+            MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
+            Zone* ClickedZone = GAME->getMap()->getZoneAt(ClickCoordinates);
 
-    if (id == OIS::MB_Right && (KeyboardObject->isKeyDown(OIS::KC_RSHIFT) || KeyboardObject->isKeyDown(OIS::KC_LSHIFT)))
-    {
-        Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height), -HALFCUBE);
-        MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
-        Zone* ClickedZone = GAME->getMap()->getZoneAt(ClickCoordinates);
+            if ((RENDERER->getRoot()->getTimer()->getMillisecondsCPU() - DoubleClickTime) < 250)  // Left DoubleClick
+            {
+                bool Doubleclick = true;
 
-        if (ClickedZone != NULL)
-        {
-            GAME->getMap()->setActiveZone(ClickedZone);
+                if (ClickedZone == NULL)
+                {
+                    Zone* NewZone = new Zone(ClickCoordinates);
+                    GAME->getMap()->addZone(NewZone);
+                    GAME->getMap()->setActiveZone(NewZone);
+                }
+            }
+            else // Single Left Click
+            {
+                GAME->getMap()->setActiveZone(ClickedZone);
+            }
         }
     }
 
@@ -283,9 +283,9 @@ bool InputManager::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID 
 {
     GUI->injectMouseRelease(0, 0, id);
 
-    if (Game::isInstance())
+    if (id == OIS::MB_Left)
     {
-        GAME->getMap()->setActiveZone(NULL);
+        DoubleClickTime = RENDERER->getRoot()->getTimer()->getMillisecondsCPU();
     }
 
     return true;

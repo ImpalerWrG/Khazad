@@ -256,7 +256,79 @@ void Renderer::CreateManualObjects()
         ManualObject->index(7);
     }
     ManualObject->end();
-    ManualObject->convertToMesh("WireFrame");
+    ManualObject->convertToMesh("WhiteWireFrame");
+
+    ManualObject->begin("BaseWhiteNoLighting",Ogre::RenderOperation::OT_LINE_LIST);
+    {
+        float HALFCUBE = 0.5;
+        // TOP
+        ManualObject->position(HALFCUBE, HALFCUBE, HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+
+        ManualObject->position(HALFCUBE, -HALFCUBE, HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+
+        ManualObject->position(-HALFCUBE, -HALFCUBE, HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+
+        ManualObject->position(-HALFCUBE, HALFCUBE, HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+
+        // BOTTOM
+        ManualObject->position(HALFCUBE, HALFCUBE, -HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+
+        ManualObject->position(HALFCUBE, -HALFCUBE, -HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+
+        ManualObject->position(-HALFCUBE, -HALFCUBE, -HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+
+        ManualObject->position(-HALFCUBE, HALFCUBE, -HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+
+        // TOP
+        ManualObject->index(0);
+        ManualObject->index(1);
+
+        ManualObject->index(1);
+        ManualObject->index(2);
+
+        ManualObject->index(2);
+        ManualObject->index(3);
+
+        ManualObject->index(3);
+        ManualObject->index(0);
+
+        // BOTTOM
+        ManualObject->index(4);
+        ManualObject->index(5);
+
+        ManualObject->index(5);
+        ManualObject->index(6);
+
+        ManualObject->index(6);
+        ManualObject->index(7);
+
+        ManualObject->index(7);
+        ManualObject->index(4);
+
+        // SIDES
+        ManualObject->index(0);
+        ManualObject->index(4);
+
+        ManualObject->index(1);
+        ManualObject->index(5);
+
+        ManualObject->index(2);
+        ManualObject->index(6);
+
+        ManualObject->index(3);
+        ManualObject->index(7);
+    }
+    ManualObject->end();
+    ManualObject->convertToMesh("YellowWireFrame");
+
 }
 
 void Renderer::createCamera()

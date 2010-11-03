@@ -19,12 +19,16 @@ public:
 
     bool isCoordinateInZone(MapCoordinates TestCoordinates);
 
+    void setActive(bool ActiveState);
+
 private:
 
     // Multiple Boxes for irregular areas, custome wireframes for cleaner apearance?
 
     Ogre::AxisAlignedBox AxialBox;
     Ogre::SceneNode* BoxNode;
+
+    bool Active;
 };
 
 #endif // ZONE__HEADER

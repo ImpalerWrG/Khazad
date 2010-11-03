@@ -22,6 +22,7 @@ public:
 	bool Init();
 	bool Run();
 
+    Pawn* SpawnPawn(MapCoordinates SpawnCoordinates);
 
     void changeTickRate(int32_t RateChange);
     void setTickRate(uint32_t NewRate);

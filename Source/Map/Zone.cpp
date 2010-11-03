@@ -10,10 +10,11 @@ Zone::Zone(MapCoordinates SpawnLocation)
     Ogre::Vector3 Max = Ogre::Vector3(SpawnLocation.X + HALFCUBE, SpawnLocation.Y + HALFCUBE, SpawnLocation.Z + HALFCUBE);
 
     AxialBox = Ogre::AxisAlignedBox(Min, Max);
+    Active = false;
 
     BoxNode = RENDERER->getRootNode()->createChildSceneNode();
 
-    Ogre::Entity* WireBox = RENDERER->getSceneManager()->createEntity("WireFrame");
+    Ogre::Entity* WireBox = RENDERER->getSceneManager()->createEntity("WhiteWireFrame");
     WireBox->setCastShadows(false);
     BoxNode->attachObject(WireBox);
 
@@ -55,4 +56,31 @@ bool Zone::isCoordinateInZone(MapCoordinates TestCoordinates)
 {
     // TODO use MapCoordinates rather then AAB and replicated logic of intersect in integer math
     return AxialBox.intersects(Ogre::Vector3(TestCoordinates.X, TestCoordinates.Y, TestCoordinates.Z));
+}
+
+void Zone::setActive(bool ActiveState)
+{
+    if (ActiveState != Active)
+    {
+        Active = ActiveState;
+
+        if (Active)
+        {
+            //BoxNode->detachObject(WireBox);
+            BoxNode->detachAllObjects();
+
+            Ogre::Entity* WireBox = RENDERER->getSceneManager()->createEntity("YellowWireFrame");
+            WireBox->setCastShadows(false);
+            BoxNode->attachObject(WireBox);
+        }
+        else
+        {
+            //BoxNode->detachObject(WireBox);
+            BoxNode->detachAllObjects();
+
+            Ogre::Entity* WireBox = RENDERER->getSceneManager()->createEntity("WhiteWireFrame");
+            WireBox->setCastShadows(false);
+            BoxNode->attachObject(WireBox);
+        }
+    }
 }

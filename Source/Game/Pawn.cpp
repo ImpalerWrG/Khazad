@@ -2,8 +2,11 @@
 
 //#include <Random.h>
 //#include <Renderer.h>
+#include <DataManager.h>
 #include <Game.h>
 #include <Map.h>
+
+#include <TextureManager.h>
 
 //#include <PathManager.h>
 //#include <PathTester.h>
@@ -31,6 +34,13 @@ bool Pawn::Init(MapCoordinates SpawnLocation)
     ActorBillboard = RENDERER->getSceneManager()->createBillboardSet("ActorName1", 1);
     ActorBillboard->createBillboard(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z);
     ActorBillboard->setDefaultDimensions(1.0, 1.0);
+
+
+
+    Ogre::MaterialPtr Mat = TEXTURE->getOgreMaterial(DATA->getLabelIndex("MATERIAL_ICE"), DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1"));
+
+
+    ActorBillboard->setMaterialName(Mat->getName());
 
 	Ogre::SceneNode* PawnNode = RENDERER->getSceneManager()->getRootSceneNode()->createChildSceneNode("ActorNode1");
 

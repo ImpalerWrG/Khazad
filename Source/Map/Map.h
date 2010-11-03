@@ -104,7 +104,7 @@ public:
 
     Zone* getZone() const;
     void addZone(Zone* NewZone);
-    void setActiveZone(Zone* ActivatedZone)        { ActiveZone = ActivatedZone; }
+    void setActiveZone(Zone* ActivatedZone);
     Zone* getActiveZone()                          { return ActiveZone; }
     void DeactivateZone()                          { ActiveZone = NULL; }
 

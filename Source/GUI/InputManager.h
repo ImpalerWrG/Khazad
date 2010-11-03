@@ -41,6 +41,8 @@ public:
 
 private:
 
+    uint32_t DoubleClickTime;
+
     OIS::Keyboard* KeyboardObject;
     OIS::Mouse* MouseObject;
     OIS::JoyStick* JoyStickObject;

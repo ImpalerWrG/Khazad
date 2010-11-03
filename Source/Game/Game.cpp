@@ -47,17 +47,13 @@ bool Game::Run()
 	return true;
 }
 
-/*
 Pawn* Game::SpawnPawn(MapCoordinates SpawnCoordinates)
 {
 	Pawn* NewPawn = new Pawn();
 	NewPawn->Init(SpawnCoordinates);
-	AddActor(NewPawn, 1);
 
 	return NewPawn;
 }
-*/
-
 
 void Game::changeTickRate(int32_t RateChange)
 {
