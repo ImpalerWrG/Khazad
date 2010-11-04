@@ -16,4 +16,6 @@
 	<File Path="XML\Gems.xml"/>
 	<File Path="XML\Soils.xml"/>
 	<File Path="XML\Metals.xml"/>
+	<File Path="XML\SpriteTextures.xml"/>
+	<File Path="XML\Creatures.xml"/>
 </Files>

@@ -104,22 +104,26 @@ const char* TextureManager::getTextureName(int16_t MaterialTypeID, int16_t Textu
 
 Ogre::MaterialPtr TextureManager::makeOgreMaterial(int16_t MaterialTypeID, int16_t TextureID)
 {
-    Ogre::MaterialPtr NewMaterial = Ogre::MaterialManager::getSingleton().create(getMaterialName(MaterialTypeID, TextureID), "General", true);
-
-    Ogre::Image* NewImage = new Ogre::Image(); // Delete?
     uint16_t ImageID = IMAGE->GenerateMaterialImage(MaterialTypeID, TextureID);
     uint8_t* iData = IMAGE->getImageData(ImageID);
     uint16_t Width = IMAGE->getImageWidth(ImageID);
     uint16_t Height = IMAGE->getImageHeight(ImageID);
 
+    Ogre::Image* NewImage = new Ogre::Image(); // Delete?
     NewImage->loadDynamicImage(iData, Width, Height, Ogre::PF_A8R8G8B8);
-    Ogre::TexturePtr NewTex = Ogre::TextureManager::getSingleton().loadImage(getTextureName(MaterialTypeID, TextureID), "General", *NewImage, Ogre::TEX_TYPE_2D, Ogre::MIP_DEFAULT);
 
+    Ogre::TexturePtr NewTex = Ogre::TextureManager::getSingleton().loadImage(getTextureName(MaterialTypeID, TextureID), "General", *NewImage, Ogre::TEX_TYPE_2D, Ogre::MIP_UNLIMITED, 1.0, true, Ogre::PF_A8R8G8B8);
+
+    Ogre::MaterialPtr NewMaterial = Ogre::MaterialManager::getSingleton().create(getMaterialName(MaterialTypeID, TextureID), "General", true);
     Ogre::Technique* FirstTechnique = NewMaterial->getTechnique(0);
     Ogre::Pass* FirstPass = FirstTechnique->getPass(0);
     FirstPass->setLightingEnabled(false);
 
+    //FirstPass->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
+    FirstPass->setAlphaRejectSettings(Ogre::CMPF_GREATER, 0, false);
+
     Ogre::TextureUnitState* TextureUnit = FirstPass->createTextureUnitState();
+    TextureUnit->setTextureFiltering(Ogre::TFO_NONE);
     TextureUnit->setTextureName(getTextureName(MaterialTypeID, TextureID), Ogre::TEX_TYPE_2D);
 
     delete NewImage;

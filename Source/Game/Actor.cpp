@@ -3,6 +3,9 @@
 #include <Cell.h>
 #include <Game.h>
 
+#include <TextureManager.h>
+#include <DataManager.h>
+
 Actor::Actor()
 {
     Visible = false;
@@ -13,6 +16,24 @@ Actor::Actor()
 Actor::~Actor()
 {
 
+}
+
+bool Actor::Init(MapCoordinates SpawnLocation)
+{
+    setLocation(SpawnLocation);
+
+    ActorBillboard = RENDERER->getSceneManager()->createBillboardSet(1);
+    ActorBillboard->createBillboard(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z);
+    ActorBillboard->setDefaultDimensions(1.0, 1.0);
+
+
+    Ogre::MaterialPtr Mat = TEXTURE->getOgreMaterial(DATA->getLabelIndex("MATERIAL_DWARF"), DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_2"));
+    ActorBillboard->setMaterialName(Mat->getName());
+
+	Ogre::SceneNode* PawnNode = RENDERER->getSceneManager()->getRootSceneNode()->createChildSceneNode(); //"ActorNode1");
+    PawnNode->attachObject(ActorBillboard);
+
+    return true;
 }
 
 void Actor::setLocation(MapCoordinates NewPosition)

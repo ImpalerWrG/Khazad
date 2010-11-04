@@ -170,12 +170,6 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
             break;
         }
 
-        case OIS::KC_A:
-        {
-            GAME->SpawnPawn(MapCoordinates(10, 10, 0));
-            break;
-        }
-
         case OIS::KC_GRAVE:
         {
             RENDERER->ToggleOverlay();
@@ -274,6 +268,14 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
                 GAME->getMap()->setActiveZone(ClickedZone);
             }
         }
+    }
+
+    if (id == OIS::MB_Left && KeyboardObject->isKeyDown(OIS::KC_A))
+    {
+        Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height), -HALFCUBE);
+        MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
+
+        GAME->SpawnPawn(ClickCoordinates);
     }
 
     return true;

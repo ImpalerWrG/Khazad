@@ -25,26 +25,10 @@ Pawn::~Pawn()
 
 bool Pawn::Init(MapCoordinates SpawnLocation)
 {
-	setLocation(SpawnLocation);
-	DestinationCoordinates = SpawnLocation;  // This will imediatly trigger a pathing action
+    Actor::Init(SpawnLocation);
 
-	//Controller = PATH->getNewController(0, 0, LocationCoordinates);
+    //Controller = PATH->getNewController(0, 0, LocationCoordinates);
 	//Controller->setBehaviorMode(PATH_BEHAVIOR_ROUTE_TO_LOCATION);
-
-    ActorBillboard = RENDERER->getSceneManager()->createBillboardSet("ActorName1", 1);
-    ActorBillboard->createBillboard(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z);
-    ActorBillboard->setDefaultDimensions(1.0, 1.0);
-
-
-
-    Ogre::MaterialPtr Mat = TEXTURE->getOgreMaterial(DATA->getLabelIndex("MATERIAL_ICE"), DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1"));
-
-
-    ActorBillboard->setMaterialName(Mat->getName());
-
-	Ogre::SceneNode* PawnNode = RENDERER->getSceneManager()->getRootSceneNode()->createChildSceneNode("ActorNode1");
-
-    PawnNode->attachObject(ActorBillboard);
 
     return true;
 }

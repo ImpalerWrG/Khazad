@@ -50,6 +50,7 @@ bool Game::Run()
 Pawn* Game::SpawnPawn(MapCoordinates SpawnCoordinates)
 {
 	Pawn* NewPawn = new Pawn();
+
 	NewPawn->Init(SpawnCoordinates);
 
 	return NewPawn;

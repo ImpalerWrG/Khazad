@@ -31,9 +31,9 @@ bool Camera::Init()
 
 
 
-            Ogre::Entity* Marker = RENDERER->getSceneManager()->createEntity("AxialMarker");
-            Marker->setCastShadows(false);
-            TargetNode->attachObject(Marker);
+            //Ogre::Entity* Marker = RENDERER->getSceneManager()->createEntity("AxialMarker");
+            //Marker->setCastShadows(false);
+            //TargetNode->attachObject(Marker);
 
 
 

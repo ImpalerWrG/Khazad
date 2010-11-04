@@ -18,6 +18,8 @@ public:
 	Actor();
     ~Actor();
 
+    bool Init(MapCoordinates SpawnLocation);
+
 	virtual CoolDown Update() = 0;
 
     virtual Ogre::Vector3 getRenderPosition();
