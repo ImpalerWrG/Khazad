@@ -6,7 +6,7 @@
 #include <Actor.h>
 #include <Coordinates.h>
 #include <OgreVector3.h>
-//#include <MovementController.h>
+#include <MovementController.h>
 
 class Cell;
 
@@ -44,7 +44,7 @@ protected:
 	Ogre::Vector3 RenderLocation;
 	Ogre::Vector3 RenderLocationChange;
 
-    //MovementController* Controller;
+    MovementController* Controller;
 };
 
 #endif // PAWN__HEADER

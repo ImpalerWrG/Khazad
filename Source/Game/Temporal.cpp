@@ -106,11 +106,12 @@ void TemporalManager::UpdateTick()
 		Carrosel* TargetCarosel = CarroselIterator->second;
 
 		Bucket* TargetBucket = TargetCarosel->Buckets[(CurrentGameTick + CurrentCoolDown) % CurrentCoolDown];  // Modulus advances to the next bucket each update
+		uint16_t BucketShorteningCounter = 0;
 
 		for (uint32_t i = 0; i < TargetBucket->TemporalVector.size(); i++)
 		{
-		    //if (TargetBucket[i] != NULL)  // should Null be allowed?
-		    //{
+		    if (TargetBucket->TemporalVector[i] != NULL)  // should Null be allowed?
+		    {
                 CoolDown DesiredCoolDown = TargetBucket->TemporalVector[i]->Update();  // The amount of Cooldown the Temporal desires untill its next update
 
                 if (DesiredCoolDown != CurrentCoolDown)  // ReIndex the Temporal
@@ -118,15 +119,17 @@ void TemporalManager::UpdateTick()
                     ReIndexedTemporalBuffer.push_back(TargetBucket->TemporalVector[i]);
                     ReIndexedTemporalCoolDown.push_back(DesiredCoolDown);
 
-                    TargetBucket->TemporalVector[i] = NULL;  //
+                    TargetBucket->TemporalVector[i] = TargetBucket->TemporalVector.back();  i--; //  Move Last Object into the current slot and remain on it for lext loop
+                    TargetBucket->TemporalVector.back() = NULL;
+                    BucketShorteningCounter++;
                 }
-		    //}
-		    //else
-		    //{
-
-		    //}
+		    }
+            else
+		    {
+                //BucketShorteningCounter++; // No Nulls should slip through
+		    }
 		}
-		// shrink if oversided?
+		TargetBucket->TemporalVector.resize(TargetBucket->TemporalVector.size() - BucketShorteningCounter);  //Shrink the Bucket to save space
 	}
 
 

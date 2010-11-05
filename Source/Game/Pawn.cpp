@@ -1,15 +1,13 @@
 #include <Pawn.h>
 
-//#include <Random.h>
-//#include <Renderer.h>
 #include <DataManager.h>
 #include <Game.h>
 #include <Map.h>
 
 #include <TextureManager.h>
 
-//#include <PathManager.h>
-//#include <PathTester.h>
+#include <PathManager.h>
+#include <PathTester.h>
 
 
 Pawn::Pawn()
@@ -27,22 +25,24 @@ bool Pawn::Init(MapCoordinates SpawnLocation)
 {
     Actor::Init(SpawnLocation);
 
-    //Controller = PATH->getNewController(0, 0, LocationCoordinates);
+    Controller = GAME->getPath()->getNewController(0, 0, LocationCoordinates);
+
 	//Controller->setBehaviorMode(PATH_BEHAVIOR_ROUTE_TO_LOCATION);
+	Controller->setBehaviorMode(PATH_BEHAVIOR_WANDER_AIMLESSLY);
 
     return true;
 }
 
 int Pawn::AttemptMove(Direction MovementDirection)
 {
-    float EdgeCost = 0;  //PATH->getEdgeCost(LocationCoordinates, MovementDirection);
+    float EdgeCost = GAME->getPath()->getEdgeCost(LocationCoordinates, MovementDirection);
 
     if (EdgeCost != -1)
     {
         MapCoordinates NewLocation = MapCoordinates(LocationCoordinates, MovementDirection);
 
         Moving = true;
-        CoolDown MovementCoolDown = EdgeCost * 100;  // Cooldown factor, inverse speed
+        CoolDown MovementCoolDown = EdgeCost * 1000;  // Cooldown factor, inverse speed
 
         // Create Vector directly from a MovementDirection?
         //RenderLocationChange.set(NewLocation.X - LocationCoordinates.X, NewLocation.Y - LocationCoordinates.Y, NewLocation.Z - LocationCoordinates.Z);
@@ -51,7 +51,7 @@ int Pawn::AttemptMove(Direction MovementDirection)
 
         return MovementCoolDown;
     }
-    return 1;
+    return 1000;
 }
 
 CoolDown Pawn::Update()
@@ -65,28 +65,30 @@ CoolDown Pawn::Update()
         MapCoordinates NewLocation = MapCoordinates(LocationCoordinates, CurrentMovementDirection);
         setLocation(NewLocation);
 
-        //Controller->setLocation(NewLocation);
+        Controller->setLocation(NewLocation);
     }
 
     if (LocationCoordinates == DestinationCoordinates)
     {
-        //DestinationCoordinates = TESTER->getRandomPassableCoordinate();  // This needs to get DIFFERENT coords each time
+        /*
+        DestinationCoordinates = GAME->getPath()->getRandomPassableCoordinate();  // This needs to get DIFFERENT coords each time
 
-        //while (!Controller->isDestinationReachable(DestinationCoordinates))
-        //{
-        //    DestinationCoordinates = TESTER->getRandomPassableCoordinate();
-        //}
-        //Controller->ChangeDestination(DestinationCoordinates);
+        while (!Controller->isDestinationReachable(DestinationCoordinates))
+        {
+            DestinationCoordinates = GAME->getPath()->getRandomPassableCoordinate();
+        }
+        Controller->ChangeDestination(DestinationCoordinates);
+        */
     }
 
-    //CurrentMovementDirection = Controller->getNextStep();
+    CurrentMovementDirection = Controller->getNextStep();
 
     if (CurrentMovementDirection != DIRECTION_NONE)
     {
         return AttemptMove(CurrentMovementDirection);
     }
 
-    return 1;
+    return 100;
 }
 
 Ogre::Vector3 Pawn::getRenderPosition()

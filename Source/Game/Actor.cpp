@@ -20,8 +20,6 @@ Actor::~Actor()
 
 bool Actor::Init(MapCoordinates SpawnLocation)
 {
-    setLocation(SpawnLocation);
-
     ActorBillboard = RENDERER->getSceneManager()->createBillboardSet(1);
     ActorBillboard->createBillboard(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z);
     ActorBillboard->setDefaultDimensions(1.0, 1.0);
@@ -30,8 +28,10 @@ bool Actor::Init(MapCoordinates SpawnLocation)
     Ogre::MaterialPtr Mat = TEXTURE->getOgreMaterial(DATA->getLabelIndex("MATERIAL_DWARF"), DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_2"));
     ActorBillboard->setMaterialName(Mat->getName());
 
-	Ogre::SceneNode* PawnNode = RENDERER->getSceneManager()->getRootSceneNode()->createChildSceneNode(); //"ActorNode1");
-    PawnNode->attachObject(ActorBillboard);
+	ActorNode = RENDERER->getSceneManager()->getRootSceneNode()->createChildSceneNode(); //"ActorNode1");
+    ActorNode->attachObject(ActorBillboard);
+
+    setLocation(SpawnLocation);
 
     return true;
 }
@@ -43,6 +43,8 @@ void Actor::setLocation(MapCoordinates NewPosition)
 
     CellCoordinates NewCellCoords = CellCoordinates(NewPosition);
     Cell* NewCell = GAME->getMap()->getCell(NewCellCoords);
+
+    ActorNode->setPosition(NewPosition.X, NewPosition.Y, NewPosition.Z);
 
     if (CurrentCell != NewCell)
     {

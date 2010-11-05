@@ -46,6 +46,7 @@ protected:
 
     int CellActorIndex;
 
+    Ogre::SceneNode* ActorNode;
     Ogre::BillboardSet* ActorBillboard;
 
     // TODO Use bitvector in the future

@@ -9,6 +9,7 @@ class Actor;
 class Pawn;
 class Tree;
 class Map;
+class PathManager;
 
 class MapCoordinates;
 
@@ -34,6 +35,7 @@ public:
     void setPause(bool NewState)    { Pause = NewState; }
 
     Map* getMap()               { return MainMap; }
+    PathManager* getPath()      { return Path; }
 
 protected:
 
@@ -42,6 +44,7 @@ protected:
     bool Pause;
 
     Map* MainMap;
+    PathManager* Path;
 };
 
 #define GAME (Game::GetInstance())

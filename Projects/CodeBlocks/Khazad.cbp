@@ -32,6 +32,7 @@
 					<Add directory="..\..\CEGUI\bin" />
 					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\release" />
 					<Add directory="..\..\DevIL\lib" />
+					<Add directory="..\..\CEGUI\lib" />
 				</Linker>
 			</Target>
 			<Target title="Windows Release">
@@ -119,7 +120,10 @@
 			<Add directory="..\..\Source\TinyXML" />
 			<Add directory="..\..\Source\Map" />
 			<Add directory="..\..\Source\Game" />
+			<Add directory="..\..\Source\Pathing" />
 			<Add directory="..\..\DevIL\include" />
+			<Add directory="..\..\Boost" />
+			<Add directory="..\..\CEGUI\include" />
 		</Compiler>
 		<Linker>
 			<Add library="OgreMain" />
@@ -131,6 +135,8 @@
 			<Add library="ILUT" />
 		</Linker>
 		<Unit filename="..\..\Source\Core\Singleton.h" />
+		<Unit filename="..\..\Source\Core\Timer.cpp" />
+		<Unit filename="..\..\Source\Core\Timer.h" />
 		<Unit filename="..\..\Source\Core\main.cpp" />
 		<Unit filename="..\..\Source\Core\stdafx.h" />
 		<Unit filename="..\..\Source\Data\ConfigManager.cpp" />
@@ -180,6 +186,25 @@
 		<Unit filename="..\..\Source\Map\Map.h" />
 		<Unit filename="..\..\Source\Map\Zone.cpp" />
 		<Unit filename="..\..\Source\Map\Zone.h" />
+		<Unit filename="..\..\Source\Pathing\Astar.cpp" />
+		<Unit filename="..\..\Source\Pathing\Astar.h" />
+		<Unit filename="..\..\Source\Pathing\Cubezone.h" />
+		<Unit filename="..\..\Source\Pathing\Grid.cpp" />
+		<Unit filename="..\..\Source\Pathing\Grid.h" />
+		<Unit filename="..\..\Source\Pathing\Gridzone.h" />
+		<Unit filename="..\..\Source\Pathing\Heuristics.h" />
+		<Unit filename="..\..\Source\Pathing\MovementController.cpp" />
+		<Unit filename="..\..\Source\Pathing\MovementController.h" />
+		<Unit filename="..\..\Source\Pathing\Node.h" />
+		<Unit filename="..\..\Source\Pathing\Path.cpp" />
+		<Unit filename="..\..\Source\Pathing\Path.h" />
+		<Unit filename="..\..\Source\Pathing\PathManager.cpp" />
+		<Unit filename="..\..\Source\Pathing\PathManager.h" />
+		<Unit filename="..\..\Source\Pathing\PathTester.cpp" />
+		<Unit filename="..\..\Source\Pathing\PathTester.h" />
+		<Unit filename="..\..\Source\Pathing\Pool.h" />
+		<Unit filename="..\..\Source\Pathing\Zone.cpp" />
+		<Unit filename="..\..\Source\Pathing\Zone.h" />
 		<Unit filename="..\..\Source\Renderer\Camera.cpp" />
 		<Unit filename="..\..\Source\Renderer\Camera.h" />
 		<Unit filename="..\..\Source\Renderer\ImageManager.cpp" />

@@ -4,6 +4,7 @@
 #include <Pawn.h>
 #include <Tree.h>
 #include <Geology.h>
+#include <PathManager.h>
 
 
 DECLARE_SINGLETON(Game)
@@ -15,6 +16,10 @@ bool Game::Init()
 	MainMap = new Map();
 	MainMap->Init();
 	MainMap->Generate(MapGeology);
+
+	Path = new PathManager();
+	Path->Init();
+	Path->CreateMapAbstraction(MainMap);
 
 	return true;
 }
