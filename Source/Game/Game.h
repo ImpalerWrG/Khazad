@@ -28,7 +28,6 @@ public:
     void changeTickRate(int32_t RateChange);
     void setTickRate(uint32_t NewRate);
 
-    uint32_t getTickCount()      { return TickCounter; }
     uint32_t getTickRate()       { return TickRate; }
 
     void togglePause()              { Pause = !Pause; }
@@ -39,7 +38,6 @@ public:
 
 protected:
 
-    uint32_t TickCounter;  // Simulation time units
     uint32_t TickRate;     // Simulation Rate;
     bool Pause;
 

@@ -1,7 +1,6 @@
 #include <stdafx.h>
 
 #include <PathTester.h>
-#include <Singleton.h>
 
 #include <PathManager.h>
 #include <Game.h>
@@ -10,7 +9,6 @@
 #include <Random.h>
 #include <map>
 
-DECLARE_SINGLETON(PathTester)
 
 PathTester::PathTester()
 {
@@ -33,10 +31,12 @@ bool PathTester::Init(PathManager* Parent)
 
     PathDice = new RandomNumberGenerator();
 
+    CollectTestCoords();
+
     return true;
 }
 
-void PathTester::CreateTestSuite(int Seed, int Iterations)
+void PathTester::CollectTestCoords()
 {
     std::map<uint64_t, Cell*>* TargetCells = GAME->getMap()->getCellMap();
 
@@ -62,8 +62,10 @@ void PathTester::CreateTestSuite(int Seed, int Iterations)
             }
         }
     }
+}
 
-    //RANDOM->Seed(Seed);
+void PathTester::CreateTestSuite(int Seed, int Iterations)
+{
     TestingIterations = Iterations;
 
     // Prepare a set of Start Goal pairs for the test

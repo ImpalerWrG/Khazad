@@ -29,7 +29,6 @@
 					<Add option="-Wl,--enable-runtime-pseudo-reloc" />
 					<Add option="-Wl,--enable-auto-image-base" />
 					<Add option="-Wl,--add-stdcall-alias" />
-					<Add directory="..\..\CEGUI\bin" />
 					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\release" />
 					<Add directory="..\..\DevIL\lib" />
 					<Add directory="..\..\CEGUI\lib" />
@@ -134,6 +133,8 @@
 			<Add library="ILU" />
 			<Add library="ILUT" />
 		</Linker>
+		<Unit filename="..\..\Source\Core\Random.cpp" />
+		<Unit filename="..\..\Source\Core\Random.h" />
 		<Unit filename="..\..\Source\Core\Singleton.h" />
 		<Unit filename="..\..\Source\Core\Timer.cpp" />
 		<Unit filename="..\..\Source\Core\Timer.h" />

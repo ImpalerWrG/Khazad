@@ -20,13 +20,13 @@ bool Game::Init()
 	Path = new PathManager();
 	Path->Init();
 	Path->CreateMapAbstraction(MainMap);
+	Path->InitializeTestingSuite();
 
 	return true;
 }
 
 Game::Game()
 {
-	TickCounter = 0;
 	TickRate = 10;
 
 	Pause = false;

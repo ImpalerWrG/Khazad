@@ -58,20 +58,20 @@ bool AStar::SearchPath(int NodesToExpand)
         bool GoalFound;
         if (NodesToExpand > 0)  // Search for a limited time
         {
-            int RemainingNodes = NodesToExpand;
-            while (!FringeNodes.empty())
+            for(int RemainingNodes = NodesToExpand; RemainingNodes > 0; RemainingNodes--)
             {
-                if (RemainingNodes-- > 0 )
+                if (FringeNodes.empty())
                 {
-                    if (ExpandNode())
-                    {
-                        return true; // Path found
-                    }
+                    FringeExausted = true; // Path could not be found
+                    return false;
                 }
-                return false; // Path not yet found
+
+                if (ExpandNode())
+                {
+                    return true; // Path found, skip to finish
+                }
             }
-            FringeExausted = true; // Path could not be found
-            return false;
+            return false; // Path not yet found
         }
         else // Search untill Path is found or Fringe is exhausted
         {
@@ -187,7 +187,7 @@ VectorPath* AStar::GenerateVectorPath()
 {
     ExpandedNodes = VisitedCoordinates.size();
 
-    int PathLength = CurrentNode->PathLengthFromStart;
+    float PathLength = CurrentNode->PathLengthFromStart;
     std::vector<Direction> Course;
 
     while (CurrentNode != NULL)
@@ -195,7 +195,7 @@ VectorPath* AStar::GenerateVectorPath()
         Course.push_back(CurrentNode->ParentDirection);
         CurrentNode = CurrentNode->Parent;
     }
-    Course.erase(Course.end());
+    Course.pop_back();
 
     reverse(Course.begin(), Course.end());
     return new VectorPath(PathLength, Course, StartCoordinates, GoalCoordinates);

@@ -36,8 +36,9 @@ protected:
 	bool Moving;
 	Direction CurrentMovementDirection;
 
-	//int CoolDown;
-	int UpdateTick;
+	CoolDown MovementCoolDown;
+	Tick MovementStarted;
+	Tick UpdateTick;
 
     MapCoordinates DestinationCoordinates;
 

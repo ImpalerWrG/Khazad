@@ -38,6 +38,12 @@ bool PathManager::Init()
     return true;
 }
 
+void PathManager::InitializeTestingSuite()
+{
+    Tester = new PathTester();
+    Tester->Init(this);
+}
+
 void PathManager::CreateMapAbstraction(Map* TargetMap)
 {
     MapGrid = new KhazadGrid(TargetMap);

@@ -2,7 +2,6 @@
 #define TEST__HEADER
 
 #include <stdafx.h>
-#include <Singleton.h>
 
 #include <Map.h>
 #include <Path.h>
@@ -98,14 +97,16 @@ struct GroupProfile
 
 class PathTester
 {
-	DECLARE_SINGLETON_CLASS(PathTester)
 
 public:
 
+    PathTester();
     ~PathTester();
     bool Init(PathManager* Parent);
 
+    void CollectTestCoords();
     void CreateTestSuite(int Seed, int Iterations);
+
     MapCoordinates getRandomPassableCoordinate();
 
     void RunPathTestSuites(vector<int> TestSystems);
@@ -139,8 +140,5 @@ protected:
     std::vector<MapCoordinates> StartCoordsList, GoalCoordsList;
     int TestingIterations;
 };
-
-
-#define TESTER (PathTester::GetInstance())
 
 #endif // TEST__HEADER

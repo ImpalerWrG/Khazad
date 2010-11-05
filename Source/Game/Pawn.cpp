@@ -27,8 +27,10 @@ bool Pawn::Init(MapCoordinates SpawnLocation)
 
     Controller = GAME->getPath()->getNewController(0, 0, LocationCoordinates);
 
-	//Controller->setBehaviorMode(PATH_BEHAVIOR_ROUTE_TO_LOCATION);
-	Controller->setBehaviorMode(PATH_BEHAVIOR_WANDER_AIMLESSLY);
+    DestinationCoordinates = LocationCoordinates;
+
+	Controller->setBehaviorMode(PATH_BEHAVIOR_ROUTE_TO_LOCATION);
+	//Controller->setBehaviorMode(PATH_BEHAVIOR_WANDER_AIMLESSLY);
 
     return true;
 }
@@ -42,53 +44,61 @@ int Pawn::AttemptMove(Direction MovementDirection)
         MapCoordinates NewLocation = MapCoordinates(LocationCoordinates, MovementDirection);
 
         Moving = true;
-        CoolDown MovementCoolDown = EdgeCost * 1000;  // Cooldown factor, inverse speed
+        MovementCoolDown = EdgeCost * 1000;  // Cooldown factor, inverse speed
+        MovementStarted = TEMPORAL->getCurrentTimeTick();
 
         // Create Vector directly from a MovementDirection?
-        //RenderLocationChange.set(NewLocation.X - LocationCoordinates.X, NewLocation.Y - LocationCoordinates.Y, NewLocation.Z - LocationCoordinates.Z);
-        //RenderLocationChange = RenderLocationChange * (1 / (float) CoolDown);
-        // Reduce magnitude proportional to cooldown
+        RenderLocationChange.x = NewLocation.X - LocationCoordinates.X;
+        RenderLocationChange.y = NewLocation.Y - LocationCoordinates.Y;
+        RenderLocationChange.z = NewLocation.Z - LocationCoordinates.Z;
 
-        return MovementCoolDown;
+        RenderLocationChange = RenderLocationChange * (1 / (float) MovementCoolDown);
+        // Reduce magnitude proportional to cooldown
     }
-    return 1000;
+    return 1;
 }
 
 CoolDown Pawn::Update()
 {
-    UpdateTick = GAME->getTickCount();   // Record the current Tick
+    UpdateTick = TEMPORAL->getCurrentTimeTick();   // Record the current Tick
 
     if (Moving)
     {
-        // Set Old destinations as current Location
-        // Delay this untill halfway point ???
-        MapCoordinates NewLocation = MapCoordinates(LocationCoordinates, CurrentMovementDirection);
-        setLocation(NewLocation);
+        MoveRenderPosition(RenderLocationChange);
 
-        Controller->setLocation(NewLocation);
-    }
+        //if (UpdateTick > (MovementStarted + (MovementCoolDown / 2)))  // Halfway point? move for logic purposes/collision etc
 
-    if (LocationCoordinates == DestinationCoordinates)
-    {
-        /*
-        DestinationCoordinates = GAME->getPath()->getRandomPassableCoordinate();  // This needs to get DIFFERENT coords each time
-
-        while (!Controller->isDestinationReachable(DestinationCoordinates))
+        if (UpdateTick > (MovementStarted + MovementCoolDown))  // Done
         {
-            DestinationCoordinates = GAME->getPath()->getRandomPassableCoordinate();
+            MapCoordinates NewLocation = MapCoordinates(LocationCoordinates, CurrentMovementDirection);
+            setLocation(NewLocation);
+            Controller->setLocation(NewLocation);
+
+            Moving = false;
         }
-        Controller->ChangeDestination(DestinationCoordinates);
-        */
     }
-
-    CurrentMovementDirection = Controller->getNextStep();
-
-    if (CurrentMovementDirection != DIRECTION_NONE)
+    else
     {
-        return AttemptMove(CurrentMovementDirection);
+        if (LocationCoordinates == DestinationCoordinates)
+        {
+            DestinationCoordinates = GAME->getPath()->getTester()->getRandomPassableCoordinate();  // This needs to get DIFFERENT coords each time
+
+            while (!Controller->isDestinationReachable(DestinationCoordinates))
+            {
+                DestinationCoordinates = GAME->getPath()->getTester()->getRandomPassableCoordinate();
+            }
+            Controller->ChangeDestination(DestinationCoordinates);
+        }
+
+        CurrentMovementDirection = Controller->getNextStep();
+
+        if (CurrentMovementDirection != DIRECTION_NONE)
+        {
+            return AttemptMove(CurrentMovementDirection);
+        }
     }
 
-    return 100;
+    return 1;
 }
 
 Ogre::Vector3 Pawn::getRenderPosition()
@@ -98,20 +108,7 @@ Ogre::Vector3 Pawn::getRenderPosition()
 
 Ogre::Vector3 Pawn::getRederPositionMovementAdjustment()
 {
-    uint32_t MovementMultiplier = GAME->getTickCount() - UpdateTick;
+    uint32_t MovementMultiplier = TEMPORAL->getCurrentTimeTick() - UpdateTick;
     return RenderLocationChange * MovementMultiplier;
 }
 
-/*
-bool Pawn::Draw(CameraOrientation Orientaion)
-{
-    Vector3 MovmentAdjustment = getRederPositionMovementAdjustment();
-
-    RENDERER->DrawDiamond(CurrentCubeCoordinates.X + MovmentAdjustment.x, CurrentCubeCoordinates.Y + MovmentAdjustment.y, MovmentAdjustment.z, 1, 1, 1, 1);
-
-    //MapCoordinates CageCoordinates = MapCoordinates(CurrentCubeCoordinates.X, CurrentCubeCoordinates.Y, 0);
-    //RENDERER->DrawCage(CageCoordinates, 1, 1, 1, false, 1, 1, 1);
-
-    return true;
-}
-*/

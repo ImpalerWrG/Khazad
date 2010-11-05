@@ -61,8 +61,13 @@ void Actor::setLocation(MapCoordinates NewPosition)
     }
 }
 
-Ogre::Vector3 Actor::getRenderPosition()
+void Actor::setRenderPosition(Ogre::Vector3 NewPosition)
 {
-    return Ogre::Vector3(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z);
+    ActorNode->setPosition(NewPosition);
+}
+
+void Actor::MoveRenderPosition(Ogre::Vector3 Translation)
+{
+    ActorNode->translate(Translation);
 }
 

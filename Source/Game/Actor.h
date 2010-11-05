@@ -22,7 +22,8 @@ public:
 
 	virtual CoolDown Update() = 0;
 
-    virtual Ogre::Vector3 getRenderPosition();
+    void setRenderPosition(Ogre::Vector3 NewPosition);
+    void MoveRenderPosition(Ogre::Vector3 Translation);
 
     MapCoordinates getLocationCoordinates()            { return LocationCoordinates; }
     void setLocation(MapCoordinates NewPosition);

@@ -15,6 +15,7 @@ class Profile;
 class MapPath;
 class Timer;
 class AStarNode;
+class PathTester;
 
 class Map;
 
@@ -27,6 +28,7 @@ public:
     ~PathManager();
     bool Init();
 
+    void InitializeTestingSuite();
     void CreateMapAbstraction(Map* TargetMap);
     void EditMapAbstraction();
     void DeleteMapAbstraction();
@@ -49,6 +51,8 @@ public:
 
     CentralPool<AStarNode>* getCentralNodePool()         { return NodeCentralPool; }
 
+    PathTester* getTester()         { return Tester; }
+
 protected:
 
     Timer* PathingTimer;
@@ -67,6 +71,8 @@ protected:
     Heuristic* DiagonalHeuristic;
 
     CentralPool<AStarNode>* NodeCentralPool;
+
+    PathTester* Tester;
 };
 
 #define PATH (PathManager::GetInstance())
