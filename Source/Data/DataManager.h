@@ -63,6 +63,14 @@ public:
     uint32_t getNumTextureSheets()                             { return TextureSheets->DataEntries.size(); }
     TextureSheetDataLibrary* getTextureSheetDataLibrary()    { return TextureSheets; }
 
+    AnimationTypeData* getAnimationTypeData(uint32_t Index)     { return AnimationTypes->DataEntries[Index]; }
+    uint32_t getNumAnimationTypes()                              { return AnimationTypes->DataEntries.size(); }
+    AnimationTypeDataLibrary* getAnimationTypesDataLibrary()    { return AnimationTypes; }
+
+    AnimationGroupData* getAnimationGroupData(uint32_t Index)     { return AnimationGroups->DataEntries[Index]; }
+    uint32_t getNumAnimationGroups()                              { return AnimationGroups->DataEntries.size(); }
+    AnimationGroupDataLibrary* getAnimationGroupsDataLibrary()    { return AnimationGroups; }
+
     ModelData* getModelData(uint32_t Index)                    { return Models->DataEntries[Index]; }
     uint32_t getNumModels()                                    { return Models->DataEntries.size(); }
     ModelDataLibrary* getModelDataLibrary()                  { return Models; }
@@ -117,6 +125,8 @@ protected:
     TextureDataLibrary* Textures;
     TextureGridDataLibrary* TextureGrids;
     TextureSheetDataLibrary* TextureSheets;
+    AnimationTypeDataLibrary* AnimationTypes;
+    AnimationGroupDataLibrary* AnimationGroups;
     ModelDataLibrary* Models;
     FontDataLibrary* Fonts;
     MaterialDataLibrary* Materials;

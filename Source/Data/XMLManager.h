@@ -89,6 +89,17 @@ public:
         return false;
     };
 
+    bool ReadTextValue(TiXmlElement* Element, const char* Attribute, std::string& String)
+    {
+        const char * attr = Element->Attribute(Attribute);
+        if(attr != NULL)
+        {
+            String = attr;
+            return true;
+        }
+        return false;
+    };
+
     void QueryFloatValue(TiXmlElement* Entry, const char* Element, const char* Attribute, float& defaultvalue)
     {
         TiXmlElement* child = Entry->FirstChildElement(Element);

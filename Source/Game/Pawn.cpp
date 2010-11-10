@@ -30,6 +30,12 @@ bool Pawn::Init(MapCoordinates SpawnLocation)
     DestinationCoordinates = LocationCoordinates;
 
 	Controller->setBehaviorMode(PATH_BEHAVIOR_ROUTE_TO_LOCATION);
+
+	AnimationGroupID = DATA->getLabelIndex("ANIMATION_CAT");
+	setAnimationType(DATA->getLabelIndex("ANIMATION_TYPE_IDLE"));
+
+	//Ogre::TextureUnitState* TexUnit = Mat->getTechnique(0)->getPass(0)->getTextureUnitState(0);
+	//TexUnit->setCurrentFrame(8);
 	//Controller->setBehaviorMode(PATH_BEHAVIOR_WANDER_AIMLESSLY);
 
     return true;
@@ -58,6 +64,24 @@ int Pawn::AttemptMove(Direction MovementDirection)
     return 1;
 }
 
+void Pawn::setAnimationType(ANIMATION_TYPE_INDEX NewAnimationType)
+{
+    AnimationStartIndex = CurrentFrame = DATA->getAnimationGroupData(AnimationGroupID)->getAnimationStart(NewAnimationType);
+	AnimationLoopLength = DATA->getAnimationGroupData(AnimationGroupID)->getAnimationLength(NewAnimationType);
+
+	Mat->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setCurrentFrame(CurrentFrame);
+}
+
+void Pawn::AdvanceFrame()
+{
+    Mat->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setCurrentFrame(CurrentFrame++);  // advance the animation
+
+    if (CurrentFrame == AnimationLoopLength)
+    {
+        CurrentFrame = AnimationStartIndex;
+    }
+}
+
 CoolDown Pawn::Update()
 {
     UpdateTick = TEMPORAL->getCurrentTimeTick();   // Record the current Tick
@@ -65,8 +89,6 @@ CoolDown Pawn::Update()
     if (Moving)
     {
         MoveRenderPosition(RenderLocationChange);
-
-        //if (UpdateTick > (MovementStarted + (MovementCoolDown / 2)))  // Halfway point? move for logic purposes/collision etc
 
         if (UpdateTick > (MovementStarted + MovementCoolDown))  // Done
         {
@@ -91,9 +113,11 @@ CoolDown Pawn::Update()
         }
 
         CurrentMovementDirection = Controller->getNextStep();
+        AdvanceFrame();
 
         if (CurrentMovementDirection != DIRECTION_NONE)
         {
+            //AdvanceFrame();
             return AttemptMove(CurrentMovementDirection);
         }
     }

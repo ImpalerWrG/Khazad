@@ -70,7 +70,7 @@ Ogre::MaterialPtr TextureManager::MapTexture(int16_t MaterialID, int16_t Texture
         }
         else
         {
-            Ogre::MaterialPtr SelectedMaterial = makeOgreMaterial(MaterialID, TextureID);
+            Ogre::MaterialPtr SelectedMaterial = makeStaticMaterial(MaterialID, TextureID);
             if (SelectedMaterial.get() != NULL)
             {
                 TextureMap[Key] = SelectedMaterial;
@@ -88,23 +88,22 @@ Ogre::MaterialPtr TextureManager::getOgreMaterial(int16_t MaterialTypeID, int16_
     return MapTexture(MaterialTypeID, TextureID);
 }
 
-const char* TextureManager::getMaterialName(int16_t MaterialTypeID, int16_t TextureID)
+const char* TextureManager::getStaticMaterialName(int16_t MaterialTypeID, int16_t TextureID)
 {
     char buffer[32];
-    sprintf(buffer, "Mat%i-%i",  MaterialTypeID, TextureID);
+    sprintf(buffer, "StaticMat%i-%i",  MaterialTypeID, TextureID);
     return buffer;
 }
 
-const char* TextureManager::getTextureName(int16_t MaterialTypeID, int16_t TextureID)
+const char* TextureManager::getStaticTextureName(int16_t MaterialTypeID, int16_t TextureID)
 {
     char buffer[32];
-    sprintf(buffer, "Tex%i-%i",  MaterialTypeID, TextureID);
+    sprintf(buffer, "StaticTex%i-%i",  MaterialTypeID, TextureID);
     return buffer;
 }
 
-Ogre::MaterialPtr TextureManager::makeOgreMaterial(int16_t MaterialTypeID, int16_t TextureID)
+Ogre::Image* TextureManager::ConvertToOgreImage(int16_t ImageID)
 {
-    uint16_t ImageID = IMAGE->GenerateMaterialImage(MaterialTypeID, TextureID);
     uint8_t* iData = IMAGE->getImageData(ImageID);
     uint16_t Width = IMAGE->getImageWidth(ImageID);
     uint16_t Height = IMAGE->getImageHeight(ImageID);
@@ -112,21 +111,72 @@ Ogre::MaterialPtr TextureManager::makeOgreMaterial(int16_t MaterialTypeID, int16
     Ogre::Image* NewImage = new Ogre::Image(); // Delete?
     NewImage->loadDynamicImage(iData, Width, Height, Ogre::PF_A8R8G8B8);
 
-    Ogre::TexturePtr NewTex = Ogre::TextureManager::getSingleton().loadImage(getTextureName(MaterialTypeID, TextureID), "General", *NewImage, Ogre::TEX_TYPE_2D, Ogre::MIP_UNLIMITED, 1.0, true, Ogre::PF_A8R8G8B8);
+    return NewImage;
+}
 
-    Ogre::MaterialPtr NewMaterial = Ogre::MaterialManager::getSingleton().create(getMaterialName(MaterialTypeID, TextureID), "General", true);
+Ogre::MaterialPtr TextureManager::makeStaticMaterial(int16_t MaterialTypeID, int16_t TextureID)
+{
+    uint16_t ImageID = IMAGE->GenerateMaterialImage(MaterialTypeID, TextureID);
+    Ogre::Image* NewImage = ConvertToOgreImage(ImageID);
+
+    Ogre::MaterialPtr NewMaterial = Ogre::MaterialManager::getSingleton().create(getStaticMaterialName(MaterialTypeID, TextureID), "General", true);
     Ogre::Technique* FirstTechnique = NewMaterial->getTechnique(0);
     Ogre::Pass* FirstPass = FirstTechnique->getPass(0);
-    FirstPass->setLightingEnabled(false);
 
+    Ogre::TexturePtr NewTex = Ogre::TextureManager::getSingleton().loadImage(getStaticTextureName(MaterialTypeID, TextureID), "General", *NewImage, Ogre::TEX_TYPE_2D, Ogre::MIP_UNLIMITED, 1.0, true, Ogre::PF_A8R8G8B8);
     //FirstPass->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
+    Ogre::TextureUnitState* TextureUnit = FirstPass->createTextureUnitState();
+
+
+    FirstPass->setLightingEnabled(false);
     FirstPass->setAlphaRejectSettings(Ogre::CMPF_GREATER, 0, false);
 
-    Ogre::TextureUnitState* TextureUnit = FirstPass->createTextureUnitState();
-    TextureUnit->setTextureFiltering(Ogre::TFO_NONE);
-    TextureUnit->setTextureName(getTextureName(MaterialTypeID, TextureID), Ogre::TEX_TYPE_2D);
+    //TextureUnit->setTextureFiltering(Ogre::TFO_NONE);
+    TextureUnit->setTextureName(getStaticTextureName(MaterialTypeID, TextureID), Ogre::TEX_TYPE_2D);
 
-    delete NewImage;
+    return NewMaterial;
+}
+
+const char* TextureManager::getAnimationTextureName(int16_t AnimationGroupID, int16_t ColorID, int16_t SlideNumber)
+{
+    char buffer[64];
+    sprintf(buffer, "Slide%i-%i-%i",  AnimationGroupID, ColorID, SlideNumber);
+    return buffer;
+}
+
+Ogre::MaterialPtr TextureManager::makeAnimatedMaterial(int16_t AnimationGroupID, int16_t ColorID)
+{
+    AnimationGroupData* Animation = DATA->getAnimationGroupData(AnimationGroupID);
+    uint16_t Animations = Animation->getTextureCount();
+
+    Ogre::String* TextureNames = new Ogre::String[Animations];
+
+    Ogre::MaterialPtr NewMaterial = Ogre::MaterialManager::getSingleton().create(getStaticMaterialName(AnimationGroupID, ColorID), "General", true);
+    Ogre::Technique* FirstTechnique = NewMaterial->getTechnique(0);
+    Ogre::Pass* FirstPass = FirstTechnique->getPass(0);
+    //FirstPass->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
+    FirstPass->setLightingEnabled(false);
+    FirstPass->setAlphaRejectSettings(Ogre::CMPF_GREATER, 0, false);
+
+
+    Ogre::TextureUnitState* TextureUnit = FirstPass->createTextureUnitState();
+
+    TextureUnit->setAnimatedTextureName(TextureNames, Animations, 0);
+
+    for (uint16_t i = 0; i < Animations; i++)
+    {
+        TextureNames[i] = getAnimationTextureName(AnimationGroupID, ColorID, i);
+        TextureData* Texture = DATA->getTextureData(Animation->getTexture(i));
+
+        uint16_t ImageID = IMAGE->GeneratedOverLayImage(Texture->getDevILID(), ColorID, -1);
+        Ogre::Image* NewImage = ConvertToOgreImage(ImageID);
+
+        Ogre::TexturePtr NewTex = Ogre::TextureManager::getSingleton().loadImage(TextureNames[i], "General", *NewImage); //, Ogre::TEX_TYPE_2D, Ogre::MIP_UNLIMITED, 1.0, true, Ogre::PF_A8R8G8B8);
+     	TextureUnit->setFrameTextureName(TextureNames[i], i);
+    }
+
+    TextureUnit->setTextureFiltering(Ogre::TFO_NONE);
+    //TextureUnit->setAnimatedTextureName(TextureNames, Animations, 0);
 
     return NewMaterial;
 }

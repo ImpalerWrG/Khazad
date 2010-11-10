@@ -24,8 +24,8 @@ bool Actor::Init(MapCoordinates SpawnLocation)
     ActorBillboard->createBillboard(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z);
     ActorBillboard->setDefaultDimensions(1.0, 1.0);
 
-
-    Ogre::MaterialPtr Mat = TEXTURE->getOgreMaterial(DATA->getLabelIndex("MATERIAL_DWARF"), DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_2"));
+    Ogre::MaterialPtr MatPointer = TEXTURE->makeAnimatedMaterial(DATA->getLabelIndex("ANIMATION_CAT"), DATA->getLabelIndex("COLOR_ORANGE"));
+    Mat = MatPointer.get();
     ActorBillboard->setMaterialName(Mat->getName());
 
 	ActorNode = RENDERER->getSceneManager()->getRootSceneNode()->createChildSceneNode(); //"ActorNode1");

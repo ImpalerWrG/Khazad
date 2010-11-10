@@ -24,6 +24,12 @@ DataManager::DataManager()
     TextureSheets = new TextureSheetDataLibrary();
     GlobalDataTypeMap["TextureSheet"] = TextureSheets;
 
+    AnimationTypes = new AnimationTypeDataLibrary();
+    GlobalDataTypeMap["AnimationType"] = AnimationTypes;
+
+    AnimationGroups = new AnimationGroupDataLibrary();
+    GlobalDataTypeMap["AnimationGroup"] = AnimationGroups;
+
     Models = new ModelDataLibrary();
     GlobalDataTypeMap["Model"] = Models;
 

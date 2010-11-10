@@ -18,4 +18,6 @@
 	<File Path="XML\Metals.xml"/>
 	<File Path="XML\SpriteTextures.xml"/>
 	<File Path="XML\Creatures.xml"/>
+	<File Path="XML\Animations.xml"/>
+	<File Path="XML\AnimationTypes.xml"/>
 </Files>

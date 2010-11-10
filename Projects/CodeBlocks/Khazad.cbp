@@ -7,12 +7,14 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Windows Debug">
+				<Option platforms="Windows;" />
 				<Option output="..\..\Distribution\Khazad_Debug" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="..\..\Distribution" />
 				<Option object_output="..\..\obj\Debug\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-pg" />
 					<Add option="-g" />
 					<Add option="-mthreads" />
 					<Add option="-DKHAZAD_DEBUG" />
@@ -26,6 +28,7 @@
 					<Add directory="..\..\DevIL\include" />
 				</Compiler>
 				<Linker>
+					<Add option="-pg -lgmon" />
 					<Add option="-Wl,--enable-runtime-pseudo-reloc" />
 					<Add option="-Wl,--enable-auto-image-base" />
 					<Add option="-Wl,--add-stdcall-alias" />
@@ -35,6 +38,7 @@
 				</Linker>
 			</Target>
 			<Target title="Windows Release">
+				<Option platforms="Windows;" />
 				<Option output="..\..\Distribution\Khazad" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="..\..\Distribution" />
 				<Option object_output="..\..\obj\Release\" />

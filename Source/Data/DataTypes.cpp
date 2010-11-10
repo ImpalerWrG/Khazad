@@ -223,6 +223,127 @@ DataBase* TextureSheetDataLibrary::LoadElement(TiXmlElement* Element)
 	}
 }
 
+// ANIMATION TYPES
+
+AnimationTypeData::AnimationTypeData(){}
+
+AnimationTypeData::~AnimationTypeData(){}
+
+bool AnimationTypeData::Load(TiXmlElement* Entry, uint32_t Index)
+{
+	if(Entry)
+	{
+		DataBase::Load(Entry, Index);
+		return true;
+	}
+	return false;
+}
+
+DataBase* AnimationTypeDataLibrary::LoadElement(TiXmlElement* Element)
+{
+	AnimationTypeData* NewData = new AnimationTypeData();
+	if (NewData->Load(Element, DataEntries.size()))
+	{
+		DataEntries.push_back(NewData);
+		return NewData;
+	}
+	else  // Error durring loading delete the Data object
+	{
+		printf("Failed to Load Data object");
+		delete NewData;
+		return NULL;
+	}
+}
+
+// ANIMATION GROUP
+
+AnimationGroupData::AnimationGroupData(){}
+
+AnimationGroupData::~AnimationGroupData(){}
+
+bool AnimationGroupData::Load(TiXmlElement* Entry, uint32_t Index)
+{
+	if(Entry)
+	{
+		TiXmlElement* Iterator = Entry->FirstChildElement("Animations");
+		Iterator = Iterator->FirstChildElement("Animation");
+		uint16_t TextureCounter = 0;
+
+		for (; Iterator != NULL; Iterator = Iterator->NextSiblingElement(), TextureCounter++)
+		{
+		    uint16_t AnimationLengthCount = 0;
+
+		    AnimationStartIndex.push_back(TextureCounter);
+		    string typeLabel;
+		    XML->ReadTextValue(Iterator, "Label", typeLabel);
+            AnimatinTypeLabels.push_back(typeLabel);
+
+            TiXmlElement* TexIterator = Iterator->FirstChildElement("Texture");
+            for(; TexIterator != NULL; TexIterator = TexIterator->NextSiblingElement(), TextureCounter++)
+            {
+                AnimationLengthCount++;
+                string TexLabel;
+                XML->ReadTextValue(TexIterator, "Label", TexLabel);
+
+                TextureLabels.push_back(TexLabel);
+            }
+
+		    AnimationLength.push_back(AnimationLengthCount);
+		}
+
+		DataBase::Load(Entry, Index);
+		return true;
+	}
+	return false;
+}
+
+bool AnimationGroupData::PostProcessing()
+{
+    for (uint16_t i; i < TextureLabels.size(); i++)
+    {
+        TextureList.push_back(DATA->getLabelIndex(TextureLabels[i]));
+    }
+
+    // Used to temporarily store data for re-ordering
+    std::vector<uint16_t> TempStartIndex; TempStartIndex.resize(DATA->getNumAnimationTypes(), -1);
+    std::vector<uint16_t> TempLengthIndex; TempLengthIndex.resize(DATA->getNumAnimationTypes(), -1);
+
+    for (uint16_t i = 0; i < AnimatinTypeLabels.size(); i++)
+    {
+        ANIMATION_TYPE_INDEX AnimationType= DATA->getLabelIndex(AnimatinTypeLabels[i]);
+
+        TempStartIndex[AnimationType] = AnimationStartIndex[i];
+        TempLengthIndex[AnimationType] = AnimationLength[i];
+    }
+
+    AnimationStartIndex = TempStartIndex;
+    AnimationLength = TempLengthIndex;
+}
+
+DataBase* AnimationGroupDataLibrary::LoadElement(TiXmlElement* Element)
+{
+	AnimationGroupData* NewData = new AnimationGroupData();
+	if (NewData->Load(Element, DataEntries.size()))
+	{
+		DataEntries.push_back(NewData);
+		return NewData;
+	}
+	else  // Error durring loading delete the Data object
+	{
+		printf("Failed to Load Data object");
+		delete NewData;
+		return NULL;
+	}
+}
+
+void AnimationGroupDataLibrary::PostProcessDataClass()
+{
+	for(uint16_t i = 0; i < DataEntries.size(); i++)
+	{
+		DataEntries[i]->PostProcessing();
+	}
+}
+
 // MODEL
 
 ModelData::ModelData()

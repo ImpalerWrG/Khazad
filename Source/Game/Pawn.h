@@ -3,6 +3,7 @@
 
 #include <stdafx.h>
 
+#include <DataManager.h>
 #include <Actor.h>
 #include <Coordinates.h>
 #include <OgreVector3.h>
@@ -22,8 +23,11 @@ public:
 
 	Cell* getCell() { return CellLocation; }
 
+    void AdvanceFrame();
 	int AttemptMove(Direction MovementDirection);
 	CoolDown Update();
+
+    void setAnimationType(ANIMATION_TYPE_INDEX NewAnimationType);
 
     Ogre::Vector3 getRenderPosition();
     Ogre::Vector3 getRederPositionMovementAdjustment();
@@ -44,6 +48,11 @@ protected:
 
 	Ogre::Vector3 RenderLocation;
 	Ogre::Vector3 RenderLocationChange;
+
+	uint16_t AnimationGroupID;
+	uint16_t AnimationStartIndex;
+	uint16_t CurrentFrame;
+	uint16_t AnimationLoopLength;
 
     MovementController* Controller;
 };

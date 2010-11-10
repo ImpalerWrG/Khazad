@@ -50,6 +50,7 @@ protected:
     Ogre::SceneNode* ActorNode;
     Ogre::BillboardSet* ActorBillboard;
 
+    Ogre::Material* Mat;
     // TODO Use bitvector in the future
 	bool Visible;
     bool Hidden;

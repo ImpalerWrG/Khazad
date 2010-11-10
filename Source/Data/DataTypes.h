@@ -12,6 +12,8 @@ typedef unsigned short COLOR_INDEX;
 typedef unsigned short TEXTURE_INDEX;
 typedef unsigned short TEXTUREGRID_INDEX;
 typedef unsigned short TEXTURESHEET_INDEX;
+typedef unsigned short ANIMATION_TYPE_INDEX;
+typedef unsigned short ANIMATION_GROUP_INDEX;
 typedef unsigned short MODEL_INDEX;
 typedef unsigned short SURFACE_INDEX;
 typedef unsigned short TILEGROUP_INDEX;
@@ -206,6 +208,68 @@ public:
     void PostProcessDataClass() {};
 
     std::vector<TextureSheetData*> DataEntries;
+};
+
+class AnimationTypeData: public DataBase
+{
+
+public:
+
+    AnimationTypeData();
+    ~AnimationTypeData();
+
+    bool Load(TiXmlElement* Element, uint32_t Index);
+    bool PostProcessing() {};
+};
+
+class AnimationTypeDataLibrary: public DataLibraryBase
+{
+public:
+
+    DataBase* LoadElement(TiXmlElement* Element);
+    void PostProcessDataClass() {};
+
+    std::vector<AnimationTypeData*> DataEntries;
+};
+
+class AnimationGroupData: public DataBase
+{
+
+public:
+
+    AnimationGroupData();
+    ~AnimationGroupData();
+
+    bool Load(TiXmlElement* Element, uint32_t Index);
+    bool PostProcessing();
+
+    int getAnimationStart(ANIMATION_TYPE_INDEX Type)    { return AnimationStartIndex[Type]; }
+    int getAnimationLength(ANIMATION_TYPE_INDEX Type)   { return AnimationLength[Type]; }
+
+    TEXTURE_INDEX getTexture(int AnimationIndex)        { return TextureList[AnimationIndex]; }
+    int getTextureCount()                               { return TextureList.size(); }
+
+protected:
+
+    std::vector<string> TextureLabels;
+    std::vector<TEXTURE_INDEX> TextureList;
+
+    std::vector<string> AnimatinTypeLabels;
+    std::vector<ANIMATION_TYPE_INDEX> AnimationTypeIndex;
+
+    std::vector<uint16_t> AnimationStartIndex;
+    std::vector<uint16_t> AnimationLength;
+};
+
+class AnimationGroupDataLibrary: public DataLibraryBase
+{
+
+public:
+
+    DataBase* LoadElement(TiXmlElement* Element);
+    void PostProcessDataClass();
+
+    std::vector<AnimationGroupData*> DataEntries;
 };
 
 class ModelData: public DataBase
