@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Textures xmlns="namespace">
+	<TextureSheet>
+		<File Path="Media/Textures/Sprites/forest_tiles.png"/>
+		<Textures>
+			<Texture>
+				<Name Label="TEXTURE_TREE_0"/>
+				<SheetLocation X="64" Y="0" W="32" H="32"/>
+			</Texture>
+			<Texture>
+				<Name Label="TEXTURE_TREE_1"/>
+				<SheetLocation X="128" Y="0" W="32" H="64"/>
+			</Texture>
+			<Texture>
+				<Name Label="TEXTURE_TREE_2"/>
+				<SheetLocation X="192" Y="0" W="32" H="64"/>
+			</Texture>
+		</Textures>
+	</TextureSheet>
+</Textures>

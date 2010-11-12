@@ -18,17 +18,16 @@ Actor::~Actor()
 
 }
 
-bool Actor::Init(MapCoordinates SpawnLocation)
+bool Actor::Init(MapCoordinates SpawnLocation, Ogre::MaterialPtr Mat, float Width, float Height)
 {
     ActorBillboard = RENDERER->getSceneManager()->createBillboardSet(1);
-    ActorBillboard->createBillboard(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z);
-    ActorBillboard->setDefaultDimensions(1.0, 1.0);
 
-    Ogre::MaterialPtr MatPointer = TEXTURE->makeAnimatedMaterial(DATA->getLabelIndex("ANIMATION_CAT"), DATA->getLabelIndex("COLOR_ORANGE"));
-    Mat = MatPointer.get();
+    ActorBillboard->setDefaultDimensions(Width, Height);
+    ActorBillboard->createBillboard(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z + ((Height - 1.0) / 2));
+
     ActorBillboard->setMaterialName(Mat->getName());
 
-	ActorNode = RENDERER->getSceneManager()->getRootSceneNode()->createChildSceneNode(); //"ActorNode1");
+	ActorNode = RENDERER->getSceneManager()->getRootSceneNode()->createChildSceneNode();
     ActorNode->attachObject(ActorBillboard);
 
     setLocation(SpawnLocation);

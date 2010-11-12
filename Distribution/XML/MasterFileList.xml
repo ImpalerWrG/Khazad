@@ -20,4 +20,5 @@
 	<File Path="XML\Creatures.xml"/>
 	<File Path="XML\Animations.xml"/>
 	<File Path="XML\AnimationTypes.xml"/>
+	<File Path="XML\TreeTextures.xml"/>
 </Files>

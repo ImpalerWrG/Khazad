@@ -24,7 +24,7 @@ public:
 	Cell* getCell() { return CellLocation; }
 
     void AdvanceFrame();
-	int AttemptMove(Direction MovementDirection);
+	CoolDown AttemptMove(Direction MovementDirection);
 	CoolDown Update();
 
     void setAnimationType(ANIMATION_TYPE_INDEX NewAnimationType);
@@ -40,6 +40,7 @@ protected:
 	bool Moving;
 	Direction CurrentMovementDirection;
 
+    CoolDown FrameCooldown;
 	CoolDown MovementCoolDown;
 	Tick MovementStarted;
 	Tick UpdateTick;

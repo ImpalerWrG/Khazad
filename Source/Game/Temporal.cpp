@@ -23,6 +23,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 Temporal::Temporal()
 {
+    UniqueID = TEMPORAL->getNextUniqueID();
 	TEMPORAL->AddTemporal(this, 1);  // Will set CurrentBucket
 }
 
@@ -89,6 +90,7 @@ DECLARE_SINGLETON(TemporalManager)
 TemporalManager::TemporalManager()
 {
     CurrentGameTick = 0;
+    UniqueIDCounter = 0;
 }
 
 TemporalManager::~TemporalManager()

@@ -1,32 +1,12 @@
 #include <Tree.h>
-//#include <TextureManager.h>
+
 #include <DataManager.h>
 #include <Map.h>
 
-//#include <ModelManager.h>
-//#include <Model.h>
 
-
-Tree::Tree(int16_t TreeType, MapCoordinates SpawnLocation, bool isAlive)
+Tree::Tree()
 {
     Alive = isAlive;
-    setLocation(SpawnLocation);
-
-    model = NULL;
-
-    TreeData* Data = DATA->getTreeData(TreeType);
-    if(Data != NULL)
-    {
-        //model = MODEL->getModel(Data->getModelID());
-        if(model)
-        {
-            //trunkid = model->getSubmodelIndex("trunk");
-            //leavesid  = model->getSubmodelIndex("leaves");
-
-            //trunkmat = Data->getTrunkMaterialID();
-            //leavesmat = Data->getLeavesMaterialID();
-        }
-    }
 }
 
 Tree::~Tree()
@@ -34,8 +14,23 @@ Tree::~Tree()
     // NOP
 }
 
-bool Tree::Init()
+bool Tree::Init(int16_t TreeType, MapCoordinates SpawnLocation, bool isAlive)
 {
+    setLocation(SpawnLocation);
+
+    TreeData* Data = DATA->getTreeData(TreeType);
+    if(Data != NULL)
+    {
+
+    }
+
+
+
+
+    Ogre::MaterialPtr MatPointer = TEXTURE->makeAnimatedMaterial(DATA->getLabelIndex("ANIMATION_HUMAN"), DATA->getLabelIndex("COLOR_BROWN"));
+
+    Actor::Init(SpawnLocation, MatPointer, 2.0, 2.0);
+
     return true;
 }
 

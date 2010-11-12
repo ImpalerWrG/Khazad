@@ -23,7 +23,9 @@ Pawn::~Pawn()
 
 bool Pawn::Init(MapCoordinates SpawnLocation)
 {
-    Actor::Init(SpawnLocation);
+    Ogre::MaterialPtr MatPointer = TEXTURE->makeAnimatedMaterial(DATA->getLabelIndex("ANIMATION_HUMAN"), DATA->getLabelIndex("COLOR_BROWN"));
+
+    Actor::Init(SpawnLocation, MatPointer, 1.0, 1.5);
 
     Controller = GAME->getPath()->getNewController(0, 0, LocationCoordinates);
 
@@ -31,7 +33,7 @@ bool Pawn::Init(MapCoordinates SpawnLocation)
 
 	Controller->setBehaviorMode(PATH_BEHAVIOR_ROUTE_TO_LOCATION);
 
-	AnimationGroupID = DATA->getLabelIndex("ANIMATION_CAT");
+	AnimationGroupID = DATA->getLabelIndex("ANIMATION_HUMAN");
 	setAnimationType(DATA->getLabelIndex("ANIMATION_TYPE_IDLE"));
 
 	//Ogre::TextureUnitState* TexUnit = Mat->getTechnique(0)->getPass(0)->getTextureUnitState(0);
@@ -41,7 +43,7 @@ bool Pawn::Init(MapCoordinates SpawnLocation)
     return true;
 }
 
-int Pawn::AttemptMove(Direction MovementDirection)
+CoolDown Pawn::AttemptMove(Direction MovementDirection)
 {
     float EdgeCost = GAME->getPath()->getEdgeCost(LocationCoordinates, MovementDirection);
 
@@ -50,15 +52,21 @@ int Pawn::AttemptMove(Direction MovementDirection)
         MapCoordinates NewLocation = MapCoordinates(LocationCoordinates, MovementDirection);
 
         Moving = true;
-        MovementCoolDown = EdgeCost * 1000;  // Cooldown factor, inverse speed
+        float Speed = 1.0;
+        MovementCoolDown = EdgeCost / ( Speed / 1000.0);
         MovementStarted = TEMPORAL->getCurrentTimeTick();
+
+        float AnimationSpeed = 0.5;
+        float FramesToMove = AnimationLoopLength * AnimationSpeed * EdgeCost;
+        FrameCooldown = MovementCoolDown / FramesToMove;
 
         // Create Vector directly from a MovementDirection?
         RenderLocationChange.x = NewLocation.X - LocationCoordinates.X;
         RenderLocationChange.y = NewLocation.Y - LocationCoordinates.Y;
         RenderLocationChange.z = NewLocation.Z - LocationCoordinates.Z;
 
-        RenderLocationChange = RenderLocationChange * (1 / (float) MovementCoolDown);
+        RenderLocationChange = RenderLocationChange / FramesToMove;
+        return FrameCooldown;
         // Reduce magnitude proportional to cooldown
     }
     return 1;
@@ -69,12 +77,12 @@ void Pawn::setAnimationType(ANIMATION_TYPE_INDEX NewAnimationType)
     AnimationStartIndex = CurrentFrame = DATA->getAnimationGroupData(AnimationGroupID)->getAnimationStart(NewAnimationType);
 	AnimationLoopLength = DATA->getAnimationGroupData(AnimationGroupID)->getAnimationLength(NewAnimationType);
 
-	Mat->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setCurrentFrame(CurrentFrame);
+	ActorBillboard->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setCurrentFrame(CurrentFrame);
 }
 
 void Pawn::AdvanceFrame()
 {
-    Mat->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setCurrentFrame(CurrentFrame++);  // advance the animation
+    ActorBillboard->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setCurrentFrame(CurrentFrame++);  // advance the animation
 
     if (CurrentFrame == AnimationLoopLength)
     {
@@ -86,18 +94,20 @@ CoolDown Pawn::Update()
 {
     UpdateTick = TEMPORAL->getCurrentTimeTick();   // Record the current Tick
 
+
     if (Moving)
     {
+        AdvanceFrame();
         MoveRenderPosition(RenderLocationChange);
 
-        if (UpdateTick > (MovementStarted + MovementCoolDown))  // Done
+        if (UpdateTick >= (MovementStarted + MovementCoolDown))  // Done
         {
             MapCoordinates NewLocation = MapCoordinates(LocationCoordinates, CurrentMovementDirection);
             setLocation(NewLocation);
             Controller->setLocation(NewLocation);
-
             Moving = false;
         }
+        return FrameCooldown;
     }
     else
     {
@@ -113,12 +123,10 @@ CoolDown Pawn::Update()
         }
 
         CurrentMovementDirection = Controller->getNextStep();
-        AdvanceFrame();
 
         if (CurrentMovementDirection != DIRECTION_NONE)
         {
-            //AdvanceFrame();
-            return AttemptMove(CurrentMovementDirection);
+            AttemptMove(CurrentMovementDirection);
         }
     }
 

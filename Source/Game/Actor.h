@@ -3,7 +3,7 @@
 
 #include <stdafx.h>
 
-#include <OgreVector3.h>
+//#include <OgreVector3.h>
 
 class Cell;
 
@@ -18,7 +18,7 @@ public:
 	Actor();
     ~Actor();
 
-    bool Init(MapCoordinates SpawnLocation);
+    bool Init(MapCoordinates SpawnLocation, Ogre::MaterialPtr Mat, float Width, float Height);
 
 	virtual CoolDown Update() = 0;
 
@@ -50,7 +50,6 @@ protected:
     Ogre::SceneNode* ActorNode;
     Ogre::BillboardSet* ActorBillboard;
 
-    Ogre::Material* Mat;
     // TODO Use bitvector in the future
 	bool Visible;
     bool Hidden;

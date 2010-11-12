@@ -88,6 +88,7 @@ protected:
 
 	virtual CoolDown Update() = 0;
 	Bucket* CurrentBucket;
+	uint32_t UniqueID;
 };
 
 class Bucket  // An unsorted group of Entities that will be updated together
@@ -132,6 +133,8 @@ public:
     Tick getCurrentTimeTick()   { return CurrentGameTick; }
     bool isTickInProgress();
 
+    uint32_t getNextUniqueID()      { return UniqueIDCounter++; }
+
 protected:
 
     // Called only from the Temporal constructor and destructors
@@ -148,6 +151,7 @@ protected:
 
     std::vector<Temporal*> RetiredTemporalBuffer;
 
+    uint32_t UniqueIDCounter;
 };
 
 #define TEMPORAL (TemporalManager::GetInstance())

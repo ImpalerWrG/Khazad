@@ -269,7 +269,7 @@ bool AnimationGroupData::Load(TiXmlElement* Entry, uint32_t Index)
 		Iterator = Iterator->FirstChildElement("Animation");
 		uint16_t TextureCounter = 0;
 
-		for (; Iterator != NULL; Iterator = Iterator->NextSiblingElement(), TextureCounter++)
+		for (; Iterator != NULL; Iterator = Iterator->NextSiblingElement())
 		{
 		    uint16_t AnimationLengthCount = 0;
 
@@ -279,8 +279,9 @@ bool AnimationGroupData::Load(TiXmlElement* Entry, uint32_t Index)
             AnimatinTypeLabels.push_back(typeLabel);
 
             TiXmlElement* TexIterator = Iterator->FirstChildElement("Texture");
-            for(; TexIterator != NULL; TexIterator = TexIterator->NextSiblingElement(), TextureCounter++)
+            for(; TexIterator != NULL; TexIterator = TexIterator->NextSiblingElement())
             {
+                TextureCounter++;
                 AnimationLengthCount++;
                 string TexLabel;
                 XML->ReadTextValue(TexIterator, "Label", TexLabel);
@@ -290,6 +291,7 @@ bool AnimationGroupData::Load(TiXmlElement* Entry, uint32_t Index)
 
 		    AnimationLength.push_back(AnimationLengthCount);
 		}
+		TextureCounter--;
 
 		DataBase::Load(Entry, Index);
 		return true;
