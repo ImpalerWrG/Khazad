@@ -6,7 +6,6 @@
 
 Tree::Tree()
 {
-    Alive = isAlive;
 }
 
 Tree::~Tree()
@@ -17,6 +16,7 @@ Tree::~Tree()
 bool Tree::Init(int16_t TreeType, MapCoordinates SpawnLocation, bool isAlive)
 {
     setLocation(SpawnLocation);
+    Alive = isAlive;
 
     TreeData* Data = DATA->getTreeData(TreeType);
     if(Data != NULL)
@@ -27,9 +27,9 @@ bool Tree::Init(int16_t TreeType, MapCoordinates SpawnLocation, bool isAlive)
 
 
 
-    Ogre::MaterialPtr MatPointer = TEXTURE->makeAnimatedMaterial(DATA->getLabelIndex("ANIMATION_HUMAN"), DATA->getLabelIndex("COLOR_BROWN"));
+    //Ogre::MaterialPtr MatPointer = TEXTURE->makeAnimatedMaterial(DATA->getLabelIndex("ANIMATION_HUMAN"), DATA->getLabelIndex("COLOR_BROWN"));
 
-    Actor::Init(SpawnLocation, MatPointer, 2.0, 2.0);
+    //Actor::Init(SpawnLocation, MatPointer, 2.0, 2.0);
 
     return true;
 }

@@ -11,10 +11,10 @@ class Tree : public Actor
 
 public:
 
-    Tree(int16_t TreeType, MapCoordinates Coordinates, bool isAlive);
+    Tree();
     virtual ~Tree();
 
-    bool Init();
+    bool Init(int16_t TreeType, MapCoordinates SpawnLocation, bool isAlive);
     CoolDown Update();
 
     //bool Draw(CameraOrientation Orientaion);
