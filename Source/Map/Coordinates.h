@@ -83,9 +83,21 @@ inline Axis AxisFromDirection(Direction DirectionType)
 {
     if (DirectionType < NUM_AXIAL_DIRECTIONS)
     {
-        return (Axis) ((int) DirectionType << 1);
+        return (Axis) ((int) DirectionType >> 1);
     }
     return NUM_AXIS;
+}
+
+inline Direction DirectionFromAxis(Axis AxisType, bool Possitive)
+{
+    if (Possitive)
+    {
+        return (Direction) ((int) AxisType << 1);
+    }
+    else
+    {
+        return (Direction) (((int) AxisType << 1) + 1);
+    }
 }
 
 inline Direction OppositeDirection(Direction DirectionType)
@@ -183,10 +195,10 @@ struct MapCoordinates
                 break;
 
             case DIRECTION_NORTH:
-                Y -= Length;
+                Y += Length;
                 break;
             case DIRECTION_SOUTH:
-                Y += Length;
+                Y -= Length;
                 break;
             case DIRECTION_EAST:
                 X += Length;
@@ -196,29 +208,29 @@ struct MapCoordinates
                 break;
 
             case DIRECTION_NORTHWEST:
-                Y -= Length;
+                Y += Length;
                 X -= Length;
                 break;
             case DIRECTION_SOUTHEAST:
-                Y += Length;
-                X += Length;
-                break;
-            case DIRECTION_NORTHEAST:
                 Y -= Length;
                 X += Length;
                 break;
-            case DIRECTION_SOUTHWEST:
+            case DIRECTION_NORTHEAST:
                 Y += Length;
+                X += Length;
+                break;
+            case DIRECTION_SOUTHWEST:
+                Y -= Length;
                 X -= Length;
                 break;
 
             case DIRECTION_UP_NORTH:
                 Z += Length;
-                Y -= Length;
+                Y += Length;
                 break;
             case DIRECTION_DOWN_SOUTH:
                 Z -= Length;
-                Y += Length;
+                Y -= Length;
                 break;
             case DIRECTION_UP_EAST:
                 Z += Length;
@@ -230,11 +242,11 @@ struct MapCoordinates
                 break;
             case DIRECTION_DOWN_NORTH:
                 Z -= Length;
-                Y -= Length;
+                Y += Length;
                 break;
             case DIRECTION_UP_SOUTH:
                 Z += Length;
-                Y += Length;
+                Y -= Length;
                 break;
             case DIRECTION_DOWN_EAST:
                 Z -= Length;
@@ -247,42 +259,42 @@ struct MapCoordinates
 
             case DIRECTION_UP_NORTHWEST:
                 X -= Length;
-                Y -= Length;
+                Y += Length;
                 Z += Length;
                 break;
             case DIRECTION_DOWN_SOUTHEAST:
                 X += Length;
-                Y += Length;
+                Y -= Length;
                 Z -= Length;
                 break;
             case DIRECTION_UP_NORTHEAST:
                 X += Length;
-                Y -= Length;
+                Y += Length;
                 Z += Length;
                 break;
             case DIRECTION_DOWN_SOUTHWEST:
                 X -= Length;
-                Y += Length;
+                Y -= Length;
                 Z -= Length;
                 break;
             case DIRECTION_UP_SOUTHEAST:
                 X += Length;
-                Y += Length;
+                Y -= Length;
                 Z += Length;
                 break;
             case DIRECTION_DOWN_NORTHWEST:
                 X -= Length;
-                Y -= Length;
+                Y += Length;
                 Z -= Length;
                 break;
             case DIRECTION_UP_SOUTHWEST:
                 X -= Length;
-                Y += Length;
+                Y -= Length;
                 Z += Length;
                 break;
             case DIRECTION_DOWN_NORTHEAST:
                 X += Length;
-                Y -= Length;
+                Y += Length;
                 Z -= Length;
                 break;
             case DIRECTION_NONE:

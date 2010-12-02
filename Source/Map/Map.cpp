@@ -103,21 +103,21 @@ void Map::CreateManualObjects()
 
     ManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
     {
-        ManualObject->position( -HALFCUBE,  HALFCUBE, -HALFCUBE);  // South East Down
+        ManualObject->position( HALFCUBE, -HALFCUBE, HALFCUBE);  // East South Up
         ManualObject->colour(Ogre::ColourValue::White);
-        ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
 
-        ManualObject->position( -HALFCUBE,  HALFCUBE, HALFCUBE);  // South East Up
+        ManualObject->position( HALFCUBE, -HALFCUBE, -HALFCUBE);  // East South Down
         ManualObject->colour(Ogre::ColourValue::White);
         ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
 
-        ManualObject->position( -HALFCUBE, -HALFCUBE, -HALFCUBE);  // South West Down
+        ManualObject->position( -HALFCUBE, -HALFCUBE, HALFCUBE);  // West South Up
         ManualObject->colour(Ogre::ColourValue::White);
         ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
 
-        ManualObject->position( -HALFCUBE, -HALFCUBE, HALFCUBE);  // South West Up
+        ManualObject->position( -HALFCUBE, -HALFCUBE, -HALFCUBE);  // West South Down
         ManualObject->colour(Ogre::ColourValue::White);
-        ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+        ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
 
         ManualObject->index(0);
         ManualObject->index(1);
@@ -134,19 +134,19 @@ void Map::CreateManualObjects()
 
     ManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
     {
-        ManualObject->position( -HALFCUBE, -HALFCUBE, HALFCUBE);  // South West Up
+        ManualObject->position(-HALFCUBE, -HALFCUBE,  HALFCUBE);  //  West South Up
         ManualObject->colour(Ogre::ColourValue::White);
         ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
 
-        ManualObject->position( -HALFCUBE, -HALFCUBE, -HALFCUBE);  // South West Down
-        ManualObject->colour(Ogre::ColourValue::White);
-        ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
-
-        ManualObject->position( -HALFCUBE,  HALFCUBE, HALFCUBE);  // South East Up
+        ManualObject->position(-HALFCUBE, -HALFCUBE,  -HALFCUBE);  // West South Down
         ManualObject->colour(Ogre::ColourValue::White);
         ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
 
-        ManualObject->position( -HALFCUBE,  HALFCUBE, -HALFCUBE);  // South East Down
+        ManualObject->position( HALFCUBE, -HALFCUBE,  HALFCUBE);  // East South Up
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+        ManualObject->position( HALFCUBE, -HALFCUBE, -HALFCUBE);  // East South Down
         ManualObject->colour(Ogre::ColourValue::White);
         ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
 
@@ -165,21 +165,22 @@ void Map::CreateManualObjects()
 
     ManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
     {
-        ManualObject->position(-HALFCUBE, -HALFCUBE,  HALFCUBE);  // South West Up
+        ManualObject->position(-HALFCUBE,  HALFCUBE, HALFCUBE);  // West North Up
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+
+        ManualObject->position(-HALFCUBE,  HALFCUBE, -HALFCUBE);  // West North Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
+
+        ManualObject->position(-HALFCUBE, -HALFCUBE,  HALFCUBE);  //  West South Up
         ManualObject->colour(Ogre::ColourValue::White);
         ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
 
-        ManualObject->position( HALFCUBE, -HALFCUBE,  HALFCUBE);  // North West Up
+        ManualObject->position(-HALFCUBE, -HALFCUBE, -HALFCUBE);  // West South Down
         ManualObject->colour(Ogre::ColourValue::White);
         ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
 
-        ManualObject->position( HALFCUBE, -HALFCUBE, -HALFCUBE);  // North West Down
-        ManualObject->colour(Ogre::ColourValue::White);
-        ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
-
-        ManualObject->position(-HALFCUBE, -HALFCUBE,  HALFCUBE);  // South West Down
-        ManualObject->colour(Ogre::ColourValue::White);
-        ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
 
         ManualObject->index(0);
         ManualObject->index(1);
@@ -196,21 +197,21 @@ void Map::CreateManualObjects()
 
     ManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
     {
-        ManualObject->position( HALFCUBE, -HALFCUBE,  HALFCUBE);  // North West Up
-        ManualObject->colour(Ogre::ColourValue::White);
-        ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
-
-        ManualObject->position(-HALFCUBE, -HALFCUBE,  HALFCUBE);  // South West Up
+        ManualObject->position( -HALFCUBE, -HALFCUBE, HALFCUBE);  //  West South Up
         ManualObject->colour(Ogre::ColourValue::White);
         ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
 
-        ManualObject->position(-HALFCUBE, -HALFCUBE,  HALFCUBE);  // South West Down
-        ManualObject->colour(Ogre::ColourValue::White);
-        ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
-
-        ManualObject->position( HALFCUBE, -HALFCUBE, -HALFCUBE);  // North West Down
+        ManualObject->position( -HALFCUBE, -HALFCUBE, -HALFCUBE);  // West South Down
         ManualObject->colour(Ogre::ColourValue::White);
         ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+        ManualObject->position( -HALFCUBE,  HALFCUBE, HALFCUBE);  // West North Up
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+
+        ManualObject->position( -HALFCUBE,  HALFCUBE, -HALFCUBE);  // West North Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
 
         ManualObject->index(0);
         ManualObject->index(1);

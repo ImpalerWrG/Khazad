@@ -20,61 +20,52 @@ Face::Face(Ogre::SceneNode* NewPosition, Direction DirectionType)
 
     // TODO use 6 different Tiles fore each Axial Direction all centered onthe cube center
 
-    if (isDirectionPositive(DirectionType))
-    {
-        InitPositiveFace(DirectionType);
-    }
-    else
-    {
-        InitNegativeFace(DirectionType);
-    }
-
 	MaterialTypeID = INVALID_INDEX;
 	PositionNode = NewPosition;
 }
 
 void Face::InitPositiveFace(Direction DirectionType)
 {
-    Ogre::Entity* ent1;
-
     if (DirectionType == DIRECTION_UP)
     {
-        ent1 = RENDERER->getSceneManager()->createEntity("UpTile");
+        OgreEntityPositive = RENDERER->getSceneManager()->createEntity("UpTile");
+        OgreEntityPositive->setCastShadows(false);
+        PositionNode->attachObject(OgreEntityPositive);
     }
     if (DirectionType == DIRECTION_NORTH)
     {
-        ent1 = RENDERER->getSceneManager()->createEntity("NorthTile");
+        OgreEntityPositive = RENDERER->getSceneManager()->createEntity("NorthTile");
+        OgreEntityPositive->setCastShadows(false);
+        PositionNode->attachObject(OgreEntityPositive);
     }
     if (DirectionType == DIRECTION_EAST)
     {
-        ent1 = RENDERER->getSceneManager()->createEntity("EastTile");
+        OgreEntityPositive = RENDERER->getSceneManager()->createEntity("EastTile");
+        OgreEntityPositive->setCastShadows(false);
+        PositionNode->attachObject(OgreEntityPositive);
     }
-
-    OgreEntityPositive = ent1;
-    OgreEntityPositive->setCastShadows(false);
-    PositionNode->attachObject(OgreEntityPositive);
 }
 
 void Face::InitNegativeFace(Direction DirectionType)
 {
-    Ogre::Entity* ent2;
-
     if (DirectionType == DIRECTION_DOWN)
     {
-        ent2 = RENDERER->getSceneManager()->createEntity("DownTile");
+        OgreEntityNegative = RENDERER->getSceneManager()->createEntity("DownTile");
+        OgreEntityNegative->setCastShadows(false);
+        PositionNode->attachObject(OgreEntityNegative);
     }
     if (DirectionType == DIRECTION_SOUTH)
     {
-        ent2 = RENDERER->getSceneManager()->createEntity("SouthTile");
+        OgreEntityNegative = RENDERER->getSceneManager()->createEntity("SouthTile");
+        OgreEntityNegative->setCastShadows(false);
+        PositionNode->attachObject(OgreEntityNegative);
     }
     if (DirectionType == DIRECTION_WEST)
     {
-        ent2 = RENDERER->getSceneManager()->createEntity("WestTile");
+        OgreEntityNegative = RENDERER->getSceneManager()->createEntity("WestTile");
+        OgreEntityNegative->setCastShadows(false);
+        PositionNode->attachObject(OgreEntityNegative);
     }
-
-    OgreEntityNegative = ent2;
-    OgreEntityNegative->setCastShadows(false);
-    PositionNode->attachObject(OgreEntityNegative);
 }
 
 Face::~Face()
@@ -95,13 +86,13 @@ Face::~Face()
 
 void Face::setFaceMaterialType(int16_t NewMaterialTypeID)
 {
-	if (NewMaterialTypeID != MaterialTypeID)  // Restet both Entities
+	if (NewMaterialTypeID != MaterialTypeID)  // Reset both Entities
 	{
 		if (PositiveAxisSurfaceTypeID != INVALID_INDEX)
 		{
 		    if (OgreEntityPositive == NULL)
 		    {
-		        //InitPositiveFace(FaceAxis);
+		        InitPositiveFace(DirectionFromAxis(FaceAxis, true));
 		    }
 
 			OgreEntityPositive->setMaterial(TEXTURE->getOgreMaterial(NewMaterialTypeID, PositiveAxisSurfaceTypeID));
@@ -110,7 +101,7 @@ void Face::setFaceMaterialType(int16_t NewMaterialTypeID)
 		{
             if (OgreEntityNegative == NULL)
 		    {
-		        //InitNegativeFace(FaceAxis);
+		        InitNegativeFace(DirectionFromAxis(FaceAxis, false));
 		    }
 
 			OgreEntityNegative->setMaterial(TEXTURE->getOgreMaterial(NewMaterialTypeID, NegativeAxisSurfaceTypeID));
@@ -133,7 +124,10 @@ void Face::setFaceSurfaceType(int16_t NewSurfaceTypeID, Direction DirectionType)
                     InitPositiveFace(DirectionType);
                 }
 
-				OgreEntityPositive->setMaterial(TEXTURE->getOgreMaterial(MaterialTypeID, PositiveAxisSurfaceTypeID));
+                if (OgreEntityPositive != NULL)
+                {
+                    OgreEntityPositive->setMaterial(TEXTURE->getOgreMaterial(MaterialTypeID, PositiveAxisSurfaceTypeID));
+                }
 			}
 		}
 	}
@@ -148,8 +142,10 @@ void Face::setFaceSurfaceType(int16_t NewSurfaceTypeID, Direction DirectionType)
                 {
                     InitNegativeFace(DirectionType);
                 }
-
-				OgreEntityNegative->setMaterial(TEXTURE->getOgreMaterial(MaterialTypeID, NegativeAxisSurfaceTypeID));
+                if (OgreEntityNegative != NULL)
+                {
+                    OgreEntityNegative->setMaterial(TEXTURE->getOgreMaterial(MaterialTypeID, NegativeAxisSurfaceTypeID));
+                }
 			}
 		}
 	}
