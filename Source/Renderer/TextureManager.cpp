@@ -70,7 +70,8 @@ Ogre::MaterialPtr TextureManager::MapTexture(int16_t MaterialID, int16_t Texture
         }
         else
         {
-            Ogre::MaterialPtr SelectedMaterial = makeStaticMaterial(MaterialID, TextureID);
+            char buffer[32];
+            Ogre::MaterialPtr SelectedMaterial = makeStaticMaterial(makeImage(MaterialID, TextureID), getStaticTextureName(buffer, MaterialID, TextureID));
             if (SelectedMaterial.get() != NULL)
             {
                 TextureMap[Key] = SelectedMaterial;
@@ -88,18 +89,16 @@ Ogre::MaterialPtr TextureManager::getOgreMaterial(int16_t MaterialTypeID, int16_
     return MapTexture(MaterialTypeID, TextureID);
 }
 
-const char* TextureManager::getStaticMaterialName(int16_t MaterialTypeID, int16_t TextureID)
+const char* TextureManager::getStaticMaterialName(char* Buffer, int16_t MaterialTypeID, int16_t TextureID)
 {
-    char buffer[32];
-    sprintf(buffer, "StaticMat%i-%i",  MaterialTypeID, TextureID);
-    return buffer;
+    sprintf(Buffer, "StaticMat%i-%i",  MaterialTypeID, TextureID);
+    return Buffer;
 }
 
-const char* TextureManager::getStaticTextureName(int16_t MaterialTypeID, int16_t TextureID)
+const char* TextureManager::getStaticTextureName(char* Buffer, int16_t MaterialTypeID, int16_t TextureID)
 {
-    char buffer[32];
-    sprintf(buffer, "StaticTex%i-%i",  MaterialTypeID, TextureID);
-    return buffer;
+    sprintf(Buffer, "StaticTex%i-%i",  MaterialTypeID, TextureID);
+    return Buffer;
 }
 
 Ogre::Image* TextureManager::ConvertToOgreImage(int16_t ImageID)
@@ -114,16 +113,21 @@ Ogre::Image* TextureManager::ConvertToOgreImage(int16_t ImageID)
     return NewImage;
 }
 
-Ogre::MaterialPtr TextureManager::makeStaticMaterial(int16_t MaterialTypeID, int16_t TextureID)
+Ogre::Image* TextureManager::makeImage(int16_t MaterialTypeID, int16_t TextureID)
 {
     uint16_t ImageID = IMAGE->GenerateMaterialImage(MaterialTypeID, TextureID);
     Ogre::Image* NewImage = ConvertToOgreImage(ImageID);
 
-    Ogre::MaterialPtr NewMaterial = Ogre::MaterialManager::getSingleton().create(getStaticMaterialName(MaterialTypeID, TextureID), "General", true);
+    return NewImage;
+}
+
+Ogre::MaterialPtr TextureManager::makeStaticMaterial(Ogre::Image* NewImage, const char* MaterialName)
+{
+    Ogre::MaterialPtr NewMaterial = Ogre::MaterialManager::getSingleton().create(MaterialName, "General", true);
     Ogre::Technique* FirstTechnique = NewMaterial->getTechnique(0);
     Ogre::Pass* FirstPass = FirstTechnique->getPass(0);
 
-    Ogre::TexturePtr NewTex = Ogre::TextureManager::getSingleton().loadImage(getStaticTextureName(MaterialTypeID, TextureID), "General", *NewImage, Ogre::TEX_TYPE_2D, Ogre::MIP_UNLIMITED, 1.0, true, Ogre::PF_A8R8G8B8);
+    Ogre::TexturePtr NewTex = Ogre::TextureManager::getSingleton().loadImage(MaterialName, "General", *NewImage, Ogre::TEX_TYPE_2D, Ogre::MIP_UNLIMITED, 1.0, true, Ogre::PF_A8R8G8B8);
     //FirstPass->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
     Ogre::TextureUnitState* TextureUnit = FirstPass->createTextureUnitState();
 
@@ -132,7 +136,7 @@ Ogre::MaterialPtr TextureManager::makeStaticMaterial(int16_t MaterialTypeID, int
     FirstPass->setAlphaRejectSettings(Ogre::CMPF_GREATER, 0, false);
 
     //TextureUnit->setTextureFiltering(Ogre::TFO_NONE);
-    TextureUnit->setTextureName(getStaticTextureName(MaterialTypeID, TextureID), Ogre::TEX_TYPE_2D);
+    TextureUnit->setTextureName(MaterialName, Ogre::TEX_TYPE_2D);
 
     return NewMaterial;
 }
@@ -157,7 +161,9 @@ Ogre::MaterialPtr TextureManager::makeAnimatedMaterial(int16_t AnimationGroupID,
 
     Ogre::String* TextureNames = new Ogre::String[Animations];
 
-    Ogre::MaterialPtr NewMaterial = Ogre::MaterialManager::getSingleton().create(getStaticMaterialName(AnimationGroupID, ColorID), "General", true);
+    char buffer[32];
+
+    Ogre::MaterialPtr NewMaterial = Ogre::MaterialManager::getSingleton().create(getStaticMaterialName(buffer, AnimationGroupID, ColorID), "General", true);
     Ogre::Technique* FirstTechnique = NewMaterial->getTechnique(0);
     Ogre::Pass* FirstPass = FirstTechnique->getPass(0);
     //FirstPass->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);

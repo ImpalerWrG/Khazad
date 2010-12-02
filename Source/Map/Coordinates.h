@@ -17,9 +17,9 @@
 
 enum Axis
 {
-    AXIS_Z,
-    AXIS_Y,
-    AXIS_X,
+    AXIS_Z,   // Vertical
+    AXIS_Y,   // North/South
+    AXIS_X,   // East/West
 
     NUM_AXIS,
     AXIS_START = 0
@@ -79,6 +79,15 @@ enum Direction
 inline Direction &operator++ (Direction &OldDirection)      { return OldDirection = Direction(OldDirection + 1); }
 inline Direction &operator-- (Direction &OldDirection)      { return OldDirection = Direction(OldDirection - 1); }
 
+inline Axis AxisFromDirection(Direction DirectionType)
+{
+    if (DirectionType < NUM_AXIAL_DIRECTIONS)
+    {
+        return (Axis) ((int) DirectionType << 1);
+    }
+    return NUM_AXIS;
+}
+
 inline Direction OppositeDirection(Direction DirectionType)
 {
     return  (Direction) ((int) DirectionType ^ 1);  // Flips the last bit
@@ -97,16 +106,16 @@ inline int DirectionValueOnAxis(Direction DirectionType, Axis TestAxis)
         {
             if (DirectionType & 1)
             {
-                return 1;
+                return 1;  // On Axis and positive
             }
             else
             {
-                return -1;
+                return -1; // On Axis and negative
             }
         }
         else
         {
-            return 0;
+            return 0;  // Not on Axis
         }
     }
     return 0;  // TODO finish for remaining directions

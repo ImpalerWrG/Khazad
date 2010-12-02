@@ -25,7 +25,395 @@ Map::Map()
     CellCount = 0;
     FaceCount = 0;
 
+    CreateManualObjects();
+
     ActiveZone = NULL;
+}
+
+void Map::CreateManualObjects()
+{
+    // Flat tiles need 6
+    Ogre::ManualObject* ManualObject;
+
+    ManualObject = RENDERER->getSceneManager()->createManualObject("ManualUpTile");
+    ManualObject->setDynamic(false);
+
+    ManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
+    {
+        ManualObject->position( HALFCUBE,  HALFCUBE, -HALFCUBE);  // North East Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
+
+        ManualObject->position(-HALFCUBE,  HALFCUBE, -HALFCUBE);  // South East Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+
+        ManualObject->position( HALFCUBE, -HALFCUBE, -HALFCUBE);  // North West Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+        ManualObject->position(-HALFCUBE, -HALFCUBE, -HALFCUBE);  // South West Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+
+
+        ManualObject->index(0);
+        ManualObject->index(1);
+        ManualObject->index(2);
+        ManualObject->index(3);
+    }
+    ManualObject->end();
+    ManualObject->convertToMesh("UpTile");
+    RENDERER->getSceneManager()->destroyManualObject(ManualObject);
+
+
+    ManualObject = RENDERER->getSceneManager()->createManualObject("ManualDownTile");
+    ManualObject->setDynamic(false);
+
+    ManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
+    {
+        ManualObject->position( HALFCUBE,  HALFCUBE, -HALFCUBE);  // North East Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
+
+        ManualObject->position(-HALFCUBE,  HALFCUBE, -HALFCUBE);  // South East Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+
+        ManualObject->position( HALFCUBE, -HALFCUBE, -HALFCUBE);  // North West Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+        ManualObject->position(-HALFCUBE, -HALFCUBE, -HALFCUBE);  // South West Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+
+        ManualObject->index(0);
+        ManualObject->index(1);
+        ManualObject->index(2);
+        ManualObject->index(3);
+    }
+    ManualObject->end();
+    ManualObject->convertToMesh("DownTile");
+    RENDERER->getSceneManager()->destroyManualObject(ManualObject);
+
+
+    ManualObject = RENDERER->getSceneManager()->createManualObject("ManualNorthTile");
+    ManualObject->setDynamic(false);
+
+    ManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
+    {
+        ManualObject->position( -HALFCUBE,  HALFCUBE, -HALFCUBE);  // South East Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
+
+        ManualObject->position( -HALFCUBE,  HALFCUBE, HALFCUBE);  // South East Up
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+
+        ManualObject->position( -HALFCUBE, -HALFCUBE, -HALFCUBE);  // South West Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+        ManualObject->position( -HALFCUBE, -HALFCUBE, HALFCUBE);  // South West Up
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+
+        ManualObject->index(0);
+        ManualObject->index(1);
+        ManualObject->index(2);
+        ManualObject->index(3);
+    }
+    ManualObject->end();
+    ManualObject->convertToMesh("NorthTile");
+    RENDERER->getSceneManager()->destroyManualObject(ManualObject);
+
+
+    ManualObject = RENDERER->getSceneManager()->createManualObject("ManualSouthTile");
+    ManualObject->setDynamic(false);
+
+    ManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
+    {
+        ManualObject->position( -HALFCUBE, -HALFCUBE, HALFCUBE);  // South West Up
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+
+        ManualObject->position( -HALFCUBE, -HALFCUBE, -HALFCUBE);  // South West Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+        ManualObject->position( -HALFCUBE,  HALFCUBE, HALFCUBE);  // South East Up
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+
+        ManualObject->position( -HALFCUBE,  HALFCUBE, -HALFCUBE);  // South East Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
+
+        ManualObject->index(0);
+        ManualObject->index(1);
+        ManualObject->index(2);
+        ManualObject->index(3);
+    }
+    ManualObject->end();
+    ManualObject->convertToMesh("SouthTile");
+    RENDERER->getSceneManager()->destroyManualObject(ManualObject);
+
+
+    ManualObject = RENDERER->getSceneManager()->createManualObject("ManualWestTile");
+    ManualObject->setDynamic(false);
+
+    ManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
+    {
+        ManualObject->position(-HALFCUBE, -HALFCUBE,  HALFCUBE);  // South West Up
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+
+        ManualObject->position( HALFCUBE, -HALFCUBE,  HALFCUBE);  // North West Up
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+        ManualObject->position( HALFCUBE, -HALFCUBE, -HALFCUBE);  // North West Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+        ManualObject->position(-HALFCUBE, -HALFCUBE,  HALFCUBE);  // South West Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+
+        ManualObject->index(0);
+        ManualObject->index(1);
+        ManualObject->index(2);
+        ManualObject->index(3);
+    }
+    ManualObject->end();
+    ManualObject->convertToMesh("WestTile");
+    RENDERER->getSceneManager()->destroyManualObject(ManualObject);
+
+
+    ManualObject = RENDERER->getSceneManager()->createManualObject("ManualEastTile");
+    ManualObject->setDynamic(false);
+
+    ManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_STRIP);
+    {
+        ManualObject->position( HALFCUBE, -HALFCUBE,  HALFCUBE);  // North West Up
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+        ManualObject->position(-HALFCUBE, -HALFCUBE,  HALFCUBE);  // South West Up
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+
+        ManualObject->position(-HALFCUBE, -HALFCUBE,  HALFCUBE);  // South West Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+
+        ManualObject->position( HALFCUBE, -HALFCUBE, -HALFCUBE);  // North West Down
+        ManualObject->colour(Ogre::ColourValue::White);
+        ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+        ManualObject->index(0);
+        ManualObject->index(1);
+        ManualObject->index(2);
+        ManualObject->index(3);
+    }
+    ManualObject->end();
+    ManualObject->convertToMesh("EastTile");
+    RENDERER->getSceneManager()->destroyManualObject(ManualObject);
+
+
+
+    // A 3 pronged marker to show the XYZ axies
+    ManualObject = RENDERER->getSceneManager()->createManualObject("ManualAxialMarker");
+    ManualObject->setDynamic(false);
+
+    ManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST);
+    {
+        float lAxeSize = 10;
+        // X Red
+        ManualObject->position(0.0f, 0.0f, 0.0f);
+        ManualObject->colour(Ogre::ColourValue::Red);
+
+        ManualObject->position(lAxeSize, 0.0f, 0.0f);
+        ManualObject->colour(Ogre::ColourValue::Red);
+
+        // Y Green
+        ManualObject->position(0.0f, 0.0f, 0.0f);
+        ManualObject->colour(Ogre::ColourValue::Green);
+
+        ManualObject->position(0.0, lAxeSize, 0.0);
+        ManualObject->colour(Ogre::ColourValue::Green);
+
+        // Z Blue
+        ManualObject->position(0.0f, 0.0f, 0.0f);
+        ManualObject->colour(Ogre::ColourValue::Blue);
+
+        ManualObject->position(0.0, 0.0, lAxeSize);
+        ManualObject->colour(Ogre::ColourValue::Blue);
+
+        ManualObject->index(0);
+        ManualObject->index(1);
+        ManualObject->index(2);
+        ManualObject->index(3);
+        ManualObject->index(4);
+        ManualObject->index(5);
+    }
+    ManualObject->end();
+    ManualObject->convertToMesh("AxialMarker");
+    RENDERER->getSceneManager()->destroyManualObject(ManualObject);
+
+
+    // A 3 pronged marker to show the XYZ axies
+    ManualObject = RENDERER->getSceneManager()->createManualObject("ManualWireFrame");
+    ManualObject->setDynamic(true);
+
+    ManualObject->begin("BaseWhiteNoLighting",Ogre::RenderOperation::OT_LINE_LIST);
+    {
+        // TOP
+        ManualObject->position(HALFCUBE, HALFCUBE, HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue::White);
+
+        ManualObject->position(HALFCUBE, -HALFCUBE, HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue::White);
+
+        ManualObject->position(-HALFCUBE, -HALFCUBE, HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue::White);
+
+        ManualObject->position(-HALFCUBE, HALFCUBE, HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue::White);
+
+        // BOTTOM
+        ManualObject->position(HALFCUBE, HALFCUBE, -HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue::White);
+
+        ManualObject->position(HALFCUBE, -HALFCUBE, -HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue::White);
+
+        ManualObject->position(-HALFCUBE, -HALFCUBE, -HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue::White);
+
+        ManualObject->position(-HALFCUBE, HALFCUBE, -HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue::White);
+
+        // TOP
+        ManualObject->index(0);
+        ManualObject->index(1);
+
+        ManualObject->index(1);
+        ManualObject->index(2);
+
+        ManualObject->index(2);
+        ManualObject->index(3);
+
+        ManualObject->index(3);
+        ManualObject->index(0);
+
+        // BOTTOM
+        ManualObject->index(4);
+        ManualObject->index(5);
+
+        ManualObject->index(5);
+        ManualObject->index(6);
+
+        ManualObject->index(6);
+        ManualObject->index(7);
+
+        ManualObject->index(7);
+        ManualObject->index(4);
+
+        // SIDES
+        ManualObject->index(0);
+        ManualObject->index(4);
+
+        ManualObject->index(1);
+        ManualObject->index(5);
+
+        ManualObject->index(2);
+        ManualObject->index(6);
+
+        ManualObject->index(3);
+        ManualObject->index(7);
+    }
+    ManualObject->end();
+    ManualObject->convertToMesh("WhiteWireFrame");
+    RENDERER->getSceneManager()->destroyManualObject(ManualObject);
+
+
+    // A 3 pronged marker to show the XYZ axies
+    ManualObject = RENDERER->getSceneManager()->createManualObject("ManualWireFrame");
+    ManualObject->setDynamic(true);
+
+    ManualObject->begin("BaseWhiteNoLighting",Ogre::RenderOperation::OT_LINE_LIST);
+    {
+        // TOP
+        ManualObject->position(HALFCUBE, HALFCUBE, HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+
+        ManualObject->position(HALFCUBE, -HALFCUBE, HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+
+        ManualObject->position(-HALFCUBE, -HALFCUBE, HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+
+        ManualObject->position(-HALFCUBE, HALFCUBE, HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+
+        // BOTTOM
+        ManualObject->position(HALFCUBE, HALFCUBE, -HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+
+        ManualObject->position(HALFCUBE, -HALFCUBE, -HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+
+        ManualObject->position(-HALFCUBE, -HALFCUBE, -HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+
+        ManualObject->position(-HALFCUBE, HALFCUBE, -HALFCUBE);
+        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+
+        // TOP
+        ManualObject->index(0);
+        ManualObject->index(1);
+
+        ManualObject->index(1);
+        ManualObject->index(2);
+
+        ManualObject->index(2);
+        ManualObject->index(3);
+
+        ManualObject->index(3);
+        ManualObject->index(0);
+
+        // BOTTOM
+        ManualObject->index(4);
+        ManualObject->index(5);
+
+        ManualObject->index(5);
+        ManualObject->index(6);
+
+        ManualObject->index(6);
+        ManualObject->index(7);
+
+        ManualObject->index(7);
+        ManualObject->index(4);
+
+        // SIDES
+        ManualObject->index(0);
+        ManualObject->index(4);
+
+        ManualObject->index(1);
+        ManualObject->index(5);
+
+        ManualObject->index(2);
+        ManualObject->index(6);
+
+        ManualObject->index(3);
+        ManualObject->index(7);
+    }
+
+    ManualObject->end();
+    ManualObject->convertToMesh("YellowWireFrame");
+    RENDERER->getSceneManager()->destroyManualObject(ManualObject);
 }
 
 Map::~Map()
@@ -591,6 +979,57 @@ void Map::Dig(MapCoordinates Coordinates)
         for(Direction DirectionType = COMPASS_DIRECTIONS_START; DirectionType < NUM_COMPASS_DIRECTIONS; ++DirectionType)
         {
             setCubeHidden(MapCoordinates(Coordinates, DirectionType), false);
+        }
+    }
+}
+
+void Map::Fill(MapCoordinates Coordinates, int16_t MaterialID)
+{
+    static int16_t WallID = DATA->getLabelIndex("TILESHAPE_WALL");
+    static int16_t RoughWallID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
+    static int16_t RoughFloorID = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
+
+    if (isCubeInited(Coordinates))
+    {
+        if (!isCubeSolid(Coordinates) && !isCubeSloped(Coordinates))
+        {
+            setCubeShape(Coordinates, WallID);
+            setCubeMaterial(Coordinates, MaterialID);
+
+            for(Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
+            {
+                MapCoordinates ModifiedCoordinates = Coordinates;
+                ModifiedCoordinates.TranslateMapCoordinates(DirectionType);
+
+                if (isCubeInited(Coordinates) && !isCubeSolid(ModifiedCoordinates))
+                {
+                    Face* TargetFace = getFace(Coordinates, DirectionType);
+                    if (TargetFace == NULL)
+                    {
+                        TargetFace = addFace(Coordinates, DirectionType);
+                    }
+
+                    if (TargetFace != NULL)
+                    {
+                        if (DirectionType == DIRECTION_UP)
+                        {
+                            TargetFace->setFaceMaterialType(MaterialID);
+                            TargetFace->setFaceSurfaceType(RoughFloorID, DirectionType);
+                            //TargetFace->setFaceSurfaceType(RoughFloorID, OppositeDirection(DirectionType));
+                        }
+                        else
+                        {
+                            TargetFace->setFaceMaterialType(MaterialID);
+                            TargetFace->setFaceSurfaceType(RoughWallID, DirectionType);
+                            //TargetFace->setFaceSurfaceType(RoughWallID, OppositeDirection(DirectionType));
+                        }
+                    }
+                }
+                else
+                {
+                    removeFace(Coordinates, DirectionType);
+                }
+            }
         }
     }
 }

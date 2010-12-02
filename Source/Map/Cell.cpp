@@ -431,7 +431,7 @@ void Cell::BuildFaceData()
 
 
                 NewFace->setFaceMaterialType(MaterialID);
-                NewFace->setFaceSurfaceType(SurfaceID, DIRECTION_DOWN);
+                NewFace->setFaceSurfaceType(SurfaceID, DIRECTION_UP);
 
             }
 

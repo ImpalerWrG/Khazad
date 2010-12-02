@@ -81,18 +81,17 @@ void GUIManager::ShowScreen(ScreenType TargetScreen)
 
 bool GUIManager::injectMouseMove(int X, int Y, int Z)
 {
-	CEGUISystem->injectMouseMove(X, Y);
-	CEGUISystem->injectMouseWheelChange(Z);
+	return CEGUISystem->injectMouseMove(X, Y) & CEGUISystem->injectMouseWheelChange(Z);
 }
 
 bool GUIManager::injectMousePress(int X, int Y, OIS::MouseButtonID ID)
 {
-    CEGUISystem->injectMouseButtonDown((CEGUI::MouseButton)ID);
+    return CEGUISystem->injectMouseButtonDown((CEGUI::MouseButton)ID);
 }
 
 bool GUIManager::injectMouseRelease(int X, int Y, OIS::MouseButtonID ID)
 {
-    CEGUISystem->injectMouseButtonUp((CEGUI::MouseButton)ID);
+    return CEGUISystem->injectMouseButtonUp((CEGUI::MouseButton)ID);
 }
 
 

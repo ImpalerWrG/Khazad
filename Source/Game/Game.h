@@ -24,6 +24,7 @@ public:
 	bool Run();
 
     Pawn* SpawnPawn(MapCoordinates SpawnCoordinates);
+    Tree* SpawnTree(MapCoordinates SpawnCoordinates);
 
     void changeTickRate(int32_t RateChange);
     void setTickRate(uint32_t NewRate);

@@ -16,5 +16,6 @@ public:
 private:
 
     bool ExitPressed(const CEGUI::EventArgs& pEventArgs);
+    bool DepthSliderMoved(const CEGUI::EventArgs& pEventArgs);
 
 };

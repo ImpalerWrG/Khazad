@@ -13,7 +13,7 @@
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_WOOD"/>
-		<DefaultMaterial label="NONE"/>
+		<DefaultMaterial label="MATERIAL_GENERIC_WOOD"/>
 		<DefaultSurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_WOOD_WALL"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_WOOD_FLOOR"/>
@@ -21,7 +21,7 @@
 		<MatGlossIndex int="0"/>
 	</MaterialClass>
 	<Material>
-		<Name Label="MATERIAL_WOOD"/>
+		<Name Label="MATERIAL_GENERIC_WOOD"/>
 		<MaterialClass label="MATERIALCLASS_WOOD"/>
 		<PrimaryColor label="COLOR_BROWN"/>
 		<ColorMode mode="overlay" />
@@ -29,24 +29,15 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_WOOD_FLOOR"/>
 		</SurfaceTextures>
 	</Material>
-    <Material>
-        <Name Label="MATERIAL_TREE_SNOW"/>
-		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
-        <ColorMode mode="keepimage"/>
-		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_TREE_SNOW"/>
-		</SurfaceTextures>
-    </Material>	
 	
 	<Tree>
 		<Name Label="TREE_SAGUARO"/>
-		<MatGloss value="SAGUARO"/>
 		<Model label="MODEL_SAGUARO"/>
-		<Trunk material="MATERIAL_SAGUARO"/>
-		<Leaves material="MATERIAL_SAGUARO"/>
+		<Trunk material="MATERIAL_SAGUARO_WOOD"/>
+		<Leaves material="MATERIAL_SAGUARO_LEAVES"/>
 	</Tree>
     <Material>
-        <Name Label="MATERIAL_SAGUARO"/>
+        <Name Label="MATERIAL_SAGUARO_WOOD"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
@@ -57,13 +48,13 @@
 	
 	<Tree>
 		<Name Label="TREE_OAK"/>
-		<MatGloss value="OAK"/>
 		<Model label="MODEL_OAK"/>
 		<Trunk material="MATERIAL_OAK_TRUNK"/>
 		<Leaves material="MATERIAL_OAK_LEAVES"/>
+		<Texture Texture="TEXTURE_TREE_0"/>
 	</Tree>
     <Material>
-        <Name Label="MATERIAL_OAK_TRUNK"/>
+        <Name Label="MATERIAL_OAK_BARK"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
@@ -82,7 +73,6 @@
 	
 	<Tree>
 		<Name Label="TREE_MAPLE"/>
-		<MatGloss value="MAPLE"/>
 		<Model label="MODEL_MAPLE"/>
 		<Trunk material="MATERIAL_MAPLE_TRUNK"/>
 		<Leaves material="MATERIAL_MAPLE_LEAVES"/>
@@ -107,7 +97,6 @@
 	
 	<Tree>
 		<Name Label="TREE_BIRCH"/>
-		<MatGloss value="BIRCH"/>
 		<Model label="MODEL_BIRCH"/>
 		<Trunk material="MATERIAL_BIRCH_TRUNK"/>
 		<Leaves material="MATERIAL_BIRCH_LEAVES"/>
@@ -131,7 +120,6 @@
 
 	<Tree>
 		<Name Label="TREE_CHESTNUT"/>
-		<MatGloss value="CHESTNUT"/>
 		<Model label="MODEL_CHESTNUT"/>
 		<Trunk material="MATERIAL_CHESTNUT_TRUNK"/>
 		<Leaves material="MATERIAL_CHESTNUT_LEAVES"/>
@@ -155,7 +143,6 @@
 
 	<Tree>
 		<Name Label="TREE_PALM"/>
-		<MatGloss value="PALM"/>
 		<Model label="MODEL_PALM"/>
 		<Trunk material="MATERIAL_PALM_TRUNK"/>
 		<Leaves material="MATERIAL_PALM_LEAVES"/>
@@ -179,7 +166,6 @@
 	
     <Tree>
         <Name Label="TREE_PINE"/>
-        <MatGloss value="PINE"/>
         <Model label="MODEL_PINE"/>
         <Trunk material="MATERIAL_PINE_TRUNK"/>
         <Leaves material="MATERIAL_PINE_LEAVES"/>
@@ -203,7 +189,6 @@
 
     <Tree>
         <Name Label="TREE_LARCH"/>
-        <MatGloss value="LARCH"/>
         <Model label="MODEL_LARCH"/>
         <Trunk material="MATERIAL_LARCH_TRUNK"/>
         <Leaves material="MATERIAL_LARCH_LEAVES"/>

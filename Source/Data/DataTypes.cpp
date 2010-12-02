@@ -760,11 +760,12 @@ bool TreeData::Load(TiXmlElement* Entry, uint32_t Index)
 {
 	if(Entry)
 	{
-		XML->QueryTextValue(Entry, "MatGloss", "value", Matgloss);
 		XML->QueryTextValue(Entry, "Model", "label", ModelLabel);
 
 		XML->QueryTextValue(Entry, "Trunk", "material", TrunkMaterialLabel);
 		XML->QueryTextValue(Entry, "Leaves", "material", LeavesMaterialLabel);
+
+		XML->QueryTextValue(Entry, "Texture", "Texture", TextureLabel);
 
 		DataBase::Load(Entry, Index);
 		return true;
@@ -778,6 +779,7 @@ bool TreeData::PostProcessing()
 
 	TrunkMaterialID = DATA->getLabelIndex(TrunkMaterialLabel);
 	LeavesMaterialID = DATA->getLabelIndex(LeavesMaterialLabel);
+	TextureID = DATA->getLabelIndex(TextureLabel);
 
 	return true;
 }

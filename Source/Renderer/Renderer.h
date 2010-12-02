@@ -46,7 +46,6 @@ private:
     void initializeResourceGroups();
 
     void setupScene();
-    void CreateManualObjects();
 
     void createCamera();
 

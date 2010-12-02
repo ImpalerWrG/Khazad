@@ -26,6 +26,8 @@ public:
     bool isInitialized()        { return Initialized; }
     bool isMapLoaded()          { return MapLoaded; }
 
+    void CreateManualObjects();
+
     uint64_t GenerateCellKey(CellCoordinates KeyCoords) const;
 	Cell* getCell(CellCoordinates) const;
 	Cell* getCubeOwner(MapCoordinates) const;
@@ -95,6 +97,7 @@ public:
     void DigChannel(MapCoordinates Coordinates);
     void DigSlope(MapCoordinates Coordinates);
     void Dig(MapCoordinates Coordinates);
+    void Fill(MapCoordinates Coordinates, int16_t MaterialID);
 
     uint32_t getCellCount() const             { return CellCount; }
     uint32_t getFaceCount() const             { return FaceCount; }

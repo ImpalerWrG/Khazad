@@ -7,5 +7,13 @@
             <Property Name="Text" Value="Exit" />
             <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.85,0},{0.7,0},{0.90,0}}" />
         </Window>
+		<Window Type="Vanilla/VerticalScrollbar" Name="MainGameScreen/DepthScroller" >
+			<Property Name="PageSize" Value="10" />
+			<Property Name="StepSize" Value="1" />
+			<Property Name="OverlapSize" Value="0" />
+			<Property Name="DocumentSize" Value="100" />
+			<Property Name="ScrollPosition" Value="50" />
+			<Property Name="UnifiedAreaRect" Value="{{1.0,-25},{0,0},{1.0,0},{1.0,0}}" />
+		</Window>
     </Window>
 </GUILayout>

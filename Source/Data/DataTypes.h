@@ -543,10 +543,10 @@ public:
     bool PostProcessing();
 
     int16_t getModelID()                     { return ModelID; }
-    string getMatgloss()                    { return Matgloss; }
 
     int16_t getTrunkMaterialID()             { return TrunkMaterialID; }
     int16_t getLeavesMaterialID()            { return LeavesMaterialID; }
+    int16_t getTextureID()                   { return TextureID; }
 
 protected:
 
@@ -556,10 +556,11 @@ protected:
     string LeavesMaterialLabel;
     int16_t LeavesMaterialID;
 
-    string Matgloss;
-
     int16_t ModelID;
     string ModelLabel;
+
+    int16_t TextureID;
+    string TextureLabel;
 };
 
 class TreeDataLibrary: public DataLibraryBase

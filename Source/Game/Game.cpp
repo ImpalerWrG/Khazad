@@ -61,6 +61,15 @@ Pawn* Game::SpawnPawn(MapCoordinates SpawnCoordinates)
 	return NewPawn;
 }
 
+Tree* Game::SpawnTree(MapCoordinates SpawnCoordinates)
+{
+	Tree* NewTree = new Tree();
+
+	NewTree->Init(DATA->getLabelIndex("TREE_OAK"), SpawnCoordinates, true);
+
+	return NewTree;
+}
+
 void Game::changeTickRate(int32_t RateChange)
 {
 	TickRate += RateChange;
