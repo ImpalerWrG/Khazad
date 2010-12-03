@@ -25,6 +25,9 @@ Map::Map()
     CellCount = 0;
     FaceCount = 0;
 
+    HighestCell = 0;
+    LowestCell = 0;
+
     CreateManualObjects();
 
     ActiveZone = NULL;
@@ -437,24 +440,26 @@ bool Map::Generate(Geology* RegionGeology)
 {
     CellSizeX = 3;
     CellSizeY = 3;
+    CellSizeZ = 4;
 
     MapSizeX = CellSizeX * CELLEDGESIZE;
     MapSizeY = CellSizeY * CELLEDGESIZE;
-    //MapSizeZ = CellSizeZ;
+    MapSizeZ = CellSizeZ;
 
     // Create and add Cells with shape and material data
     for (uint16_t X = 0; X < CellSizeX; X++)
     {
         for (uint16_t Y = 0; Y < CellSizeX; Y++)
         {
-            int Z = 0; //get From Geology
+            for (uint16_t Z = 0; Z < CellSizeZ; Z++)
+            {
+                CellCoordinates TargetCellCoordinates = CellCoordinates(X, Y, Z);
+                Cell* NewCell = new Cell();
+                NewCell->setCellPosition(TargetCellCoordinates);
 
-            CellCoordinates TargetCellCoordinates = CellCoordinates(X, Y, Z);
-            Cell* NewCell = new Cell();
-            NewCell->setCellPosition(TargetCellCoordinates);
-
-            addCell(NewCell, TargetCellCoordinates);
-            NewCell->LoadCellData(MapGeology);
+                insertCell(NewCell, TargetCellCoordinates);
+                NewCell->LoadCellData(MapGeology);
+            }
         }
     }
 
@@ -493,15 +498,42 @@ Cell* Map::getCell(CellCoordinates TestCoords) const
     }
 }
 
-bool Map::addCell(Cell* NewCell, CellCoordinates TargetCoordinates)
+bool Map::insertCell(Cell* NewCell, CellCoordinates TargetCoordinates)
 {
     if (getCell(TargetCoordinates) == NULL)
     {
         uint64_t Key = GenerateCellKey(TargetCoordinates);
         Cells[Key] = NewCell;
+
+        if (TargetCoordinates.Z > HighestCell)
+        {
+            HighestCell = TargetCoordinates.Z;
+        }
+        if (TargetCoordinates.Z < LowestCell)
+        {
+            LowestCell = TargetCoordinates.Z;
+        }
+
         return true;
     }
     return false;  // A Cell already exists at that spot
+}
+
+bool Map::initializeMapAtCoordinates(MapCoordinates NewCoords)
+{
+    if (!isCubeInited(NewCoords))
+    {
+        CellCoordinates TargetCellCoordinates = CellCoordinates(NewCoords);
+
+        Cell* NewCell = new Cell();
+        NewCell->setCellPosition(TargetCellCoordinates);
+
+        insertCell(NewCell, TargetCellCoordinates);
+        NewCell->LoadCellData(MapGeology);
+
+        return true;
+    }
+    return false;
 }
 
 std::map<uint64_t, Cell*>* Map::getCellMap()
@@ -632,8 +664,18 @@ Face* Map::addFace(MapCoordinates Coordinates, Direction DirectionType)
     {
         return TargetCell->addFace(CubeCoordinates(TargetMapCoordinates), TargetFace);
     }
+    else
+    {
+        Cell* NewCell = new Cell();
+        NewCell->setCellPosition(TargetCellCoordinates);
 
-    return false;
+        insertCell(NewCell, TargetCellCoordinates);
+        NewCell->LoadCellData(MapGeology);
+
+        return NewCell->addFace(CubeCoordinates(TargetMapCoordinates), TargetFace);
+    }
+
+    return NULL;
 }
 
 bool Map::isCubeSloped(MapCoordinates Coordinates) const
@@ -1002,7 +1044,7 @@ void Map::Fill(MapCoordinates Coordinates, int16_t MaterialID)
                 MapCoordinates ModifiedCoordinates = Coordinates;
                 ModifiedCoordinates.TranslateMapCoordinates(DirectionType);
 
-                if (isCubeInited(Coordinates) && !isCubeSolid(ModifiedCoordinates))
+                if (!isCubeSolid(ModifiedCoordinates) || !isCubeInited(ModifiedCoordinates))  //((AxisFromDirection(DirectionType) == AXIS_Z) && (!)))
                 {
                     Face* TargetFace = getFace(Coordinates, DirectionType);
                     if (TargetFace == NULL)
@@ -1016,13 +1058,11 @@ void Map::Fill(MapCoordinates Coordinates, int16_t MaterialID)
                         {
                             TargetFace->setFaceMaterialType(MaterialID);
                             TargetFace->setFaceSurfaceType(RoughFloorID, DirectionType);
-                            //TargetFace->setFaceSurfaceType(RoughFloorID, OppositeDirection(DirectionType));
                         }
                         else
                         {
                             TargetFace->setFaceMaterialType(MaterialID);
                             TargetFace->setFaceSurfaceType(RoughWallID, DirectionType);
-                            //TargetFace->setFaceSurfaceType(RoughWallID, OppositeDirection(DirectionType));
                         }
                     }
                 }
@@ -1031,6 +1071,24 @@ void Map::Fill(MapCoordinates Coordinates, int16_t MaterialID)
                     removeFace(Coordinates, DirectionType);
                 }
             }
+        }
+    }
+}
+
+MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay) const
+{
+    Ogre::Plane TestPlane;
+    TestPlane.normal = Ogre::Vector3::UNIT_Z;
+    TestPlane.d = -HighestCell;
+
+    for (int32_t i = HighestCell; i > LowestCell; i--) // Drill down testing each Z level
+    {
+        TestPlane.d = (-i - HALFCUBE);
+        std::pair<bool, Ogre::Real> result = MouseRay.intersects(TestPlane);
+
+        if (result.first) // Was an intersection found
+        {
+            return MapCoordinates(MouseRay.getPoint(result.second));  // Convert Vector3 to MapCoordinates
         }
     }
 }

@@ -485,15 +485,16 @@ struct CubeCoordinates
 
     CubeCoordinates(uint8_t NewX, uint8_t NewY)
     {
-        X = NewX;
-        Y = NewY;
-        Index = (X * CELLEDGESIZE) + Y;
+        X = NewX;   Y = NewY;
+
+        Index = (NewX << CELLBITSHIFT) + NewY;
     };
 
     CubeCoordinates& operator= (const CubeCoordinates& ArgumentCoordinates)
     {
         X = ArgumentCoordinates.X;
         Y = ArgumentCoordinates.Y;
+
         Index = ArgumentCoordinates.Index;
 
         return *this;
@@ -503,7 +504,8 @@ struct CubeCoordinates
     {
         X = SourceCoordinates.X & CELLBITFLAG;
         Y = SourceCoordinates.Y & CELLBITFLAG;
-        Index = (X * CELLEDGESIZE) + Y;
+
+        Index = (X << CELLBITSHIFT) + Y;
     };
 
 
@@ -513,5 +515,28 @@ struct CubeCoordinates
     uint8_t Index;
 };
 
+struct FaceCoordinates: public MapCoordinates
+{
+    FaceCoordinates()
+    {
+        X = Y = Z = 0;
+        FaceDirection = DIRECTION_DOWN;
+        Possitive = true;
+    };
+
+    FaceCoordinates(MapCoordinates SourceCoords, Direction DirectionComponent, bool isPossitive)
+    {
+        Set(SourceCoords.X, SourceCoords.Y, SourceCoords.Z);
+        FaceDirection = DirectionComponent;
+        Possitive = isPossitive;
+    };
+
+    int32_t X;
+    int32_t Y;
+    int32_t Z;
+
+    Direction FaceDirection;
+    bool Possitive;
+};
 
 #endif // COORDINATES__HEADER

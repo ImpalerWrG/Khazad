@@ -27,6 +27,7 @@ public:
 
     Ogre::Vector3 getMouseRayIntersection(float X, float Y, float Z);
     Ogre::Vector3 ConvertMouseToVector(float X, float Y);
+    Ogre::Ray getMouseRay(float MouseX, float MouseY);
 
     void FocusAt(Ogre::Vector3 FocalPoint);
 

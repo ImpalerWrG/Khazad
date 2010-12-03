@@ -5,6 +5,7 @@
 #include <Actor.h>
 #include <DataManager.h>
 #include <Renderer.h>
+#include <Geology.h>
 
 
 Cell::Cell()
@@ -64,15 +65,23 @@ void Cell::setCellPosition(CellCoordinates Coordinates)
 void Cell::LoadCellData(Geology* MapGeology)
 {
     CubeCoordinates TargetCubeCoordinates = CubeCoordinates(0, 0);
-    static int16_t FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
+    static int16_t WallID = DATA->getLabelIndex("TILESHAPE_WALL");
+    static int16_t RoughWallID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
+
 
     for (TargetCubeCoordinates.X = 0; TargetCubeCoordinates.X < CELLEDGESIZE; TargetCubeCoordinates.X += 1)
     {
         for (TargetCubeCoordinates.Y = 0; TargetCubeCoordinates.Y < CELLEDGESIZE; TargetCubeCoordinates.Y += 1)
         {
-            setCubeShape(TargetCubeCoordinates, FloorID);
+            int16_t MaterialType = MapGeology->getRockTypeAtCoordinates(TranslateCubeToMap(TargetCubeCoordinates));
 
+            setCubeMaterial(TargetCubeCoordinates, MaterialType);
 
+            if (MaterialType != INVALID_INDEX)
+            {
+                setCubeShape(TargetCubeCoordinates, WallID);
+                setCubeSurface(TargetCubeCoordinates, RoughWallID);
+            }
         }
     }
 }
@@ -381,8 +390,6 @@ void Cell::setCubeShape(CubeCoordinates Coordinates, int16_t TileShape)
 
 void Cell::BuildFaceData()
 {
-    static int16_t FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
-
     CubeCoordinates TargetCubeCoordinates;
     MapCoordinates TargetMapCoordinates;
 
@@ -414,25 +421,6 @@ void Cell::BuildFaceData()
                         }
                     }
                 }
-            }
-
-            if (CubeShape == FloorID)
-            {
-                Face* NewFace = addFace(TargetCubeCoordinates, DIRECTION_DOWN);
-
-                //NewFace->MaterialTypeID = CubeMaterial;
-                //NewFace->PositiveAxisSurfaceTypeID = CubeSurface;
-                //NewFace->NegativeAxisSurfaceTypeID = CubeSurface;
-
-
-
-                int16_t MaterialID = DATA->getLabelIndex("MATERIAL_DARK_GRASS");
-                int16_t SurfaceID = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_2");
-
-
-                NewFace->setFaceMaterialType(MaterialID);
-                NewFace->setFaceSurfaceType(SurfaceID, DIRECTION_UP);
-
             }
 
             if (getLiquidLevel(TargetCubeCoordinates) != 0)

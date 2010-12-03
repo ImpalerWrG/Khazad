@@ -23,3 +23,14 @@ bool Geology::Init(uint32_t Seed)
 
     return true;
 }
+
+int16_t Geology::getRockTypeAtCoordinates(MapCoordinates Target)
+{
+    static uint16_t RockType = DATA->getLabelIndex("MATERIAL_GRANITE");
+
+    if (Target.Z == 3)
+    {
+        return INVALID_INDEX;
+    }
+    return RockType;
+}

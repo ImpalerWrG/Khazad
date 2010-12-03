@@ -123,20 +123,25 @@ Ogre::Vector3 Camera::ConvertMouseToVector(float X, float Y)
     return (CrossProduct * X * TranslationFactor) + (LookVector * -Y * TranslationFactor / zComp);
 }
 
-Ogre::Vector3 Camera::getMouseRayIntersection(float X, float Y, float Z)
+Ogre::Vector3 Camera::getMouseRayIntersection(float MouseX, float MouseY, float TestPlaneZ)
 {
     Ogre::Plane FloorLevel;
     FloorLevel.normal = Ogre::Vector3::UNIT_Z;
-    FloorLevel.d = -Z;
+    FloorLevel.d = -TestPlaneZ;
 
-       // get selection ray from viewport mouse position
-    Ogre::Ray selectRay = OgreCamera->getCameraToViewportRay(X, Y);
+    // get a ray from viewport mouse position
+    Ogre::Ray selectRay = OgreCamera->getCameraToViewportRay(MouseX, MouseY);
     std::pair<bool, Ogre::Real> result = selectRay.intersects(FloorLevel);
 
-    if (result.first)
+    if (result.first) // Was an intersection found
     {
-        return selectRay.getPoint(result.second);
+        return selectRay.getPoint(result.second);  // Convert Vector3 to MapCoordinates
     }
+}
+
+Ogre::Ray Camera::getMouseRay(float MouseX, float MouseY)
+{
+    return OgreCamera->getCameraToViewportRay(MouseX, MouseY);
 }
 
 void Camera::FocusAt(Ogre::Vector3 FocalPoint)

@@ -33,7 +33,8 @@ public:
 	Cell* getCubeOwner(MapCoordinates) const;
 
     std::map<uint64_t, Cell*>* getCellMap();
-    bool addCell(Cell* NewCell, CellCoordinates TargetCoordinates);
+    bool insertCell(Cell* NewCell, CellCoordinates TargetCoordinates);
+    bool initializeMapAtCoordinates(MapCoordinates NewCoords);
 
     bool isCubeInited(MapCoordinates) const;
     void setCellNeedsReDraw(CellCoordinates, bool NewValue);
@@ -103,6 +104,7 @@ public:
     uint32_t getFaceCount() const             { return FaceCount; }
 
 
+    MapCoordinates getRayIntersection(Ogre::Ray MouseRay) const;
     MapCoordinates getMapCenter() const;
 
     Zone* getZone() const;
@@ -127,6 +129,10 @@ protected:
     uint16_t CellSizeZ;
 
     std::map<uint64_t, Cell*> Cells;
+
+    uint32_t HighestCell;
+    uint32_t LowestCell;
+
     std::vector<Zone*> Zones;
 
     Zone* ActiveZone;
