@@ -6,7 +6,15 @@
 
 Camera::Camera()
 {
+    SliceTop = 1;
+    SliceBottom = 0;
 
+    RayQuery = NULL;
+}
+
+Camera::~Camera()
+{
+    RENDERER->getSceneManager()->destroyQuery(RayQuery);
 }
 
 bool Camera::Init()
@@ -46,6 +54,9 @@ bool Camera::Init()
 	TranslationFactor = ZoomFactor / RENDERER->getWindow()->getWidth();
 
 	PitchLock = false;
+
+	RayQuery = RENDERER->getSceneManager()->createRayQuery(Ogre::Ray());
+
 	SetDefaultView();
 
 	return true;
@@ -106,6 +117,91 @@ void Camera::TranslateCamera(float X, float Y)
 	TargetNode->translate(TranslationVector, Ogre::Node::TS_WORLD);
 }
 
+void Camera::ChangeViewLevel(int32_t Change)
+{
+    if (Change != 0)
+    {
+        /*
+        int ZMax = MAP->getMapSizeZ();
+        ///FIXME: possible off-by-one errors?
+        if(SliceTop + Change > ZMax)
+        {
+            Change = ZMax - SliceTop;
+        }
+        if(SliceBottom + Change < 0)
+        {
+            Change = -SliceBottom;
+        }
+        SliceTop += Change;
+        SliceBottom += Change;
+        ViewLevels = SliceTop - SliceBottom;
+
+        UI->setZSliders(SliceTop,SliceBottom);
+        //generateViewFrustum();
+        */
+    }
+}
+
+void Camera::SetSliceTop(int16_t newValue)
+{
+    SliceTop = newValue;
+    if(SliceBottom >= SliceTop)
+    {
+        SliceBottom = SliceTop - 1;
+    }
+    ViewLevels = SliceTop - SliceBottom;
+    //generateViewFrustum();
+}
+
+void Camera::SetSliceBottom(int16_t newValue)
+{
+    SliceBottom = newValue;
+    if(SliceTop <= SliceBottom)
+    {
+        SliceTop = SliceBottom + 1;
+    }
+    ViewLevels = SliceTop - SliceBottom;
+    //generateViewFrustum();
+}
+
+bool Camera::InSlice(int16_t Zlevel)
+{
+    if (Zlevel <= SliceTop)
+    {
+        float Depth = SliceTop - Zlevel;
+        if (Depth < ViewLevels)
+        {
+            return true;
+        }
+        return false;
+    }
+    return false;
+}
+
+float Camera::getShading(int16_t Zlevel)
+{
+    static float Minimum = 0.3;
+
+    if (Zlevel <= SliceTop)
+    {
+        float Depth = SliceTop - Zlevel;
+        if (Depth < ViewLevels)
+        {
+            float Shading = 1.0;
+            if (Depth > 0) // Below look level
+            {
+                Shading -= Depth / (float) ViewLevels;
+
+                Shading = ((1.0 - Minimum) * Shading) + (Minimum);
+                return Shading;
+            }
+            return Shading;
+        }
+        return Minimum;
+    }
+    return Minimum;
+}
+
 Ogre::Vector3 Camera::ConvertMouseToVector(float X, float Y)
 {
     Ogre::Vector3 LookVector = TargetNode->_getDerivedPosition() - CameraNode->_getDerivedPosition();
@@ -137,6 +233,27 @@ Ogre::Vector3 Camera::getMouseRayIntersection(float MouseX, float MouseY, float 
     {
         return selectRay.getPoint(result.second);  // Convert Vector3 to MapCoordinates
     }
+}
+
+Ogre::Vector3 Camera::getMouseRayIntersection(float MouseX, float MouseY)
+{
+    RayQuery->setRay(OgreCamera->getCameraToViewportRay(MouseX, MouseY));
+    RayQuery->setSortByDistance(true);
+
+    //RayQuery->setQueryTypeMask(SceneManager::FX_TYPE_MASK);  // Select Billboards
+    RayQuery->setQueryTypeMask(Ogre::SceneManager::ENTITY_TYPE_MASK);  // Select Terrain (made of Entities)
+    //RayQuery->setQueryMask();
+
+    Ogre::RaySceneQueryResult &result = RayQuery->execute();
+
+    for (Ogre::RaySceneQueryResult::iterator it = result.begin(); it != result.end(); it++)
+    {
+        if (it->movable)
+        {
+            return it->movable->getParentSceneNode()->_getDerivedPosition();
+        }
+    }
+    return Ogre::Vector3(0, 0, 0);
 }
 
 Ogre::Ray Camera::getMouseRay(float MouseX, float MouseY)

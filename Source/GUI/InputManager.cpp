@@ -255,7 +255,7 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
                 {
                     Zone* ActiveZone = GAME->getMap()->getActiveZone();
 
-                    Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height), -HALFCUBE);
+                    Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height));
 
                     ActiveZone->MoveZone(MapCoordinates(FocusPoint));
                 }

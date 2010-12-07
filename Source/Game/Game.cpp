@@ -12,6 +12,7 @@ DECLARE_SINGLETON(Game)
 bool Game::Init()
 {
     Geology* MapGeology = new Geology();
+    MapGeology->Init(42);
 
 	MainMap = new Map();
 	MainMap->Init();

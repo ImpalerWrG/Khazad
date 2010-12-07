@@ -458,7 +458,7 @@ bool Map::Generate(Geology* RegionGeology)
                 NewCell->setCellPosition(TargetCellCoordinates);
 
                 insertCell(NewCell, TargetCellCoordinates);
-                NewCell->LoadCellData(MapGeology);
+                NewCell->LoadCellData(RegionGeology);
             }
         }
     }
