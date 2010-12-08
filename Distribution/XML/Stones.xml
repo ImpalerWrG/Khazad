@@ -15,7 +15,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="1"/>
 	</MaterialClass>
 	<Material>
 		<Name Label="MATERIAL_FEATURE_STONE"/>
@@ -42,7 +41,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="1"/>
 	</MaterialClass>
 	<Material>
 		<Name Label="MATERIAL_OBSIDIAN"/>
@@ -69,7 +67,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="1"/>
 	</MaterialClass>
 	<Material>
 		<Name Label="MATERIAL_LAYER_STONE"/>
@@ -91,7 +88,6 @@
 		<PrimaryColor label="COLOR_TAN"/>
 		<!--<SecondaryColor label="COLOR_PINK"/>-->
 		<BorderColor label="COLOR_TAN"/>
-		<MatGloss label="SANDSTONE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
 		</SurfaceTextures>
@@ -102,7 +98,6 @@
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
-		<MatGloss label="SILTSTONE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
 		</SurfaceTextures>
@@ -113,7 +108,6 @@
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<BorderColor label="COLOR_DARK_GREY"/>
-		<MatGloss label="MUDSTONE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
 		</SurfaceTextures>
@@ -124,7 +118,6 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_SILVER"/>
-		<MatGloss label="SHALE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
 		</SurfaceTextures>
@@ -135,7 +128,6 @@
 		<PrimaryColor label="COLOR_TAN"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<BorderColor label="COLOR_DARK_GREY"/>
-		<MatGloss label="CLAYSTONE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
 		</SurfaceTextures>
@@ -146,7 +138,6 @@
 		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_WHITE"/>
-		<MatGloss label="ROCK_SALT"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CUBIC"/>
 		</SurfaceTextures>
@@ -157,7 +148,6 @@
 		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 		<BorderColor label="COLOR_LIGHT_GREY"/>
-		<MatGloss label="LIMESTONE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CARBONATE"/>
 		</SurfaceTextures>
@@ -168,7 +158,6 @@
 		<PrimaryColor label="COLOR_DARK_ORANGE"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 		<BorderColor label="COLOR_LIGHT_GREY"/>
-		<MatGloss label="CONGLOMERATE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_PEBBLES"/>
 		</SurfaceTextures>
@@ -179,7 +168,6 @@
 		<PrimaryColor label="COLOR_LIGHT_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_SILVER"/>
-		<MatGloss label="DOLOMITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CARBONATE"/>
 		</SurfaceTextures>
@@ -190,7 +178,6 @@
 		<PrimaryColor label="COLOR_LIGHT_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_SILVER"/>
-		<MatGloss label="FLINT"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -201,7 +188,6 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 		<BorderColor label="COLOR_LIGHT_GREY"/>
-		<MatGloss label="CHERT"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -212,7 +198,6 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_SILVER"/>
-		<MatGloss label="CHALK"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CARBONATE"/>
 		</SurfaceTextures>
@@ -223,7 +208,6 @@
 		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<BorderColor label="COLOR_SILVER"/>
-		<MatGloss label="GRANITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
@@ -238,7 +222,6 @@
 		<PrimaryColor label="COLOR_LIGHT_GREY"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<BorderColor label="COLOR_DARK_GREY"/>
-		<MatGloss label="DIORITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
@@ -254,7 +237,6 @@
         <ColorMode mode="overlay" />
 		<SecondaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_SILVER"/>
-		<MatGloss label="GABBRO"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
@@ -269,7 +251,6 @@
 		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<BorderColor label="COLOR_DARK_GREY"/>
-		<MatGloss label="RHYOLITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
@@ -284,7 +265,6 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_SILVER"/>
-		<MatGloss label="BASALT"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
@@ -300,7 +280,6 @@
         <ColorMode mode="overlay" />
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<BorderColor label="COLOR_BLACK"/>
-		<MatGloss label="ANDESITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
@@ -316,7 +295,6 @@
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
         <ColorMode mode="overlay" />
 		<BorderColor label="COLOR_LIGHT_GREY"/>
-		<MatGloss label="FELSITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_EXTRUSIVE"/>
@@ -331,7 +309,6 @@
 		<PrimaryColor label="COLOR_BLACK"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_WHITE"/>
-		<MatGloss label="OBSIDIAN"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -342,7 +319,6 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_SILVER"/>
-		<MatGloss label="QUARTZITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -353,7 +329,6 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_NAVY_BLUE"/>
 		<BorderColor label="COLOR_NAVY_BLUE"/>
-		<MatGloss label="SLATE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
 		</SurfaceTextures>
@@ -364,7 +339,6 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_SILVER"/>
-		<MatGloss label="PHYLLITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
 		</SurfaceTextures>
@@ -375,7 +349,6 @@
 		<PrimaryColor label="COLOR_TAN"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_SILVER"/>
-		<MatGloss label="SCHIST"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_FOLIATED"/>
 		</SurfaceTextures>
@@ -387,7 +360,6 @@
 		<PrimaryColor label="COLOR_LIGHT_GREY"/>
 		<!--<SecondaryColor label="COLOR_SILVER"/>-->
 		<BorderColor label="COLOR_SILVER"/>
-		<MatGloss label="GNEISS"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_FOLIATED"/>
 		</SurfaceTextures>
@@ -398,7 +370,6 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
-		<MatGloss label="MARBLE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CARBONATE"/>
 		</SurfaceTextures>

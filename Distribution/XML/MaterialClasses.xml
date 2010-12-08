@@ -109,7 +109,7 @@
 		<Name Label="MATERIALCLASS_EXOTIC"/>
 		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
 	</MaterialClass>
-		<MaterialClass>
+	<MaterialClass>
 		<Name Label="MATERIALCLASS_CREATURE"/>
 		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
 	</MaterialClass>

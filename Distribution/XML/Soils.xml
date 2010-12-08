@@ -10,7 +10,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_GROUND"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_GROUND"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="1"/>
 	</MaterialClass>
 	<Material>
 		<Name Label="MATERIAL_SOIL"/>
@@ -26,7 +25,6 @@
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
 		<PrimaryColor label="COLOR_BROWN"/>
 <!-- 		<BorderColor label="COLOR_TAN"/> -->
-		<MatGloss label="SAND_TAN"/>
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SAND"/>
@@ -41,7 +39,6 @@
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
 		<PrimaryColor label="COLOR_KHAKI"/>
 <!-- 		<BorderColor label="COLOR_YELLOW"/> -->
-		<MatGloss label="SAND_YELLOW"/>
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SAND"/>
@@ -56,7 +53,6 @@
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
 		<PrimaryColor label="COLOR_SILVER"/>
 <!-- 		<BorderColor label="COLOR_WHITE"/> -->
-		<MatGloss label="SAND_WHITE"/>
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SAND"/>
@@ -71,7 +67,6 @@
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
 		<PrimaryColor label="COLOR_BLOOD_RED"/>
 <!-- 		<BorderColor label="COLOR_RED"/> -->
-		<MatGloss label="SAND_RED"/>
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SAND"/>
@@ -86,7 +81,6 @@
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 <!-- 		<BorderColor label="COLOR_BLACK"/> -->
-		<MatGloss label="SAND_BLACK"/>
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SAND"/>
@@ -102,7 +96,6 @@
 		<PrimaryColor label="COLOR_RED"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_TAN"/>
-		<MatGloss label="CLAY"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
 		</SurfaceTextures>
@@ -113,7 +106,6 @@
 		<PrimaryColor label="COLOR_RED"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<BorderColor label="COLOR_DARK_GREY"/>
-		<MatGloss label="SILTY_CLAY"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
 		</SurfaceTextures>
@@ -124,7 +116,6 @@
 		<PrimaryColor label="COLOR_MAROON"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
-		<MatGloss label="SANDY_CLAY"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
 		</SurfaceTextures>
@@ -135,7 +126,6 @@
 		<PrimaryColor label="COLOR_YELLOW"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
-		<MatGloss label="CLAY_LOAM"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
 		</SurfaceTextures>
@@ -146,7 +136,6 @@
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_YELLOW"/>
-		<MatGloss label="SANDY_CLAY_LOAM"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -157,7 +146,6 @@
 		<PrimaryColor label="COLOR_YELLOW"/>
 		<SecondaryColor label="COLOR_LEATHER"/>
 		<BorderColor label="COLOR_LEATHER"/>
-		<MatGloss label="SILTY_CLAY_LOAM"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -168,7 +156,6 @@
 		<PrimaryColor label="COLOR_LEATHER"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
-		<MatGloss label="LOAM"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -179,7 +166,6 @@
 		<PrimaryColor label="COLOR_ORANGE"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
-		<MatGloss label="SANDY_LOAM"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -190,7 +176,6 @@
 		<PrimaryColor label="COLOR_YELLOW"/>
 		<SecondaryColor label="COLOR_DARK_ORANGE"/>
 		<BorderColor label="COLOR_DARK_ORANGE"/>
-		<MatGloss label="SILT_LOAM"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -201,7 +186,6 @@
 		<PrimaryColor label="COLOR_YELLOW"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
-		<MatGloss label="LOAMY_SAND"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -212,7 +196,6 @@
 		<PrimaryColor label="COLOR_BLACK"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
-		<MatGloss label="SILT"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -223,7 +206,6 @@
 		<PrimaryColor label="COLOR_FOREST_GREEN"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
-		<MatGloss label="PEAT"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -234,7 +216,6 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
-		<MatGloss label="PELAGIC_CLAY"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
 		</SurfaceTextures>
@@ -245,7 +226,6 @@
 		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<BorderColor label="COLOR_DARK_GREY"/>
-		<MatGloss label="CALCAREOUS_OOZE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
 		</SurfaceTextures>
@@ -256,7 +236,6 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_SILVER"/>
-		<MatGloss label="SILICEOUS_OOZE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
 		</SurfaceTextures>

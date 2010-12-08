@@ -435,71 +435,6 @@ void SurfaceTypeDataLibrary::PostProcessDataClass()
 	}
 }
 
-// TILEGROUP
-
-TileGroupData::TileGroupData(){}
-
-TileGroupData::~TileGroupData(){}
-
-bool TileGroupData::Load(TiXmlElement* Entry, uint32_t Index)
-{
-	if(Entry)
-	{
-		XML->QueryTextValue(Entry, "MaterialClass", "label", MaterialClassLabel);
-		XML->QueryTextValue(Entry, "Material", "label", MaterialLabel);
-
-		XML->QueryUIntArray(Entry, "TileValues", "TileValue", "Int", TileValues);
-		XML->QueryTextArray(Entry, "TileValues", "TileValue", "TileShape", &TileShapeLabels);
-		XML->QueryTextArray(Entry, "TileValues", "TileValue", "SurfaceType", &SurfaceTypeLabels);
-
-		DataBase::Load(Entry, Index);
-
-		return true;
-	}
-	return false;
-}
-
-bool TileGroupData::PostProcessing()
-{
-	MaterialClassID = DATA->getLabelIndex(MaterialClassLabel);
-	MaterialID = DATA->getLabelIndex(MaterialLabel);
-
-	for(uint16_t i = 0; i < TileShapeLabels.size(); i++)
-	{
-		TileShapeID.push_back(DATA->getLabelIndex(TileShapeLabels[i]));
-	}
-	for(uint16_t i = 0; i < SurfaceTypeLabels.size(); i++)
-	{
-		SurfaceTypeID.push_back(DATA->getLabelIndex(SurfaceTypeLabels[i]));
-	}
-
-	return true;
-}
-
-DataBase* TileGroupDataLibrary::LoadElement(TiXmlElement* Element)
-{
-	TileGroupData* NewData = new TileGroupData();
-	if (NewData->Load(Element, DataEntries.size()))
-	{
-		DataEntries.push_back(NewData);
-		return NewData;
-	}
-	else  // Error durring loading delete the Data object
-	{
-		printf("Failed to Load Data object");
-		delete NewData;
-		return NULL;
-	}
-}
-
-void TileGroupDataLibrary::PostProcessDataClass()
-{
-	for(uint16_t i = 0; i < DataEntries.size(); i++)
-	{
-		DataEntries[i]->PostProcessing();
-	}
-}
-
 // MATERIAL CLASS
 
 MaterialClassData::MaterialClassData()
@@ -594,7 +529,6 @@ bool MaterialData::Load(TiXmlElement* Entry, uint32_t Index)
 		XML->QueryTextValue(Entry, "SecondaryColor", "label", SecondaryColorLabel);
 		XML->QueryTextValue(Entry, "BorderColor", "label", BorderColorLabel);
 
-		XML->QueryTextValue(Entry, "MatGloss", "label", MatGloss);
 		XML->QueryTextValue(Entry, "ColorMode", "mode", ColorMode);
 
 		XML->QueryTextArray(Entry, "SurfaceTextures", "SurfaceTexture", "SurfaceType", &SurfaceTypeLabels);
@@ -825,7 +759,6 @@ bool BuildingData::Load(TiXmlElement* Entry, uint32_t Index)
 {
 	if(Entry)
 	{
-		XML->QueryUIntValue(Entry, "MatGloss", "value", Matgloss);
 		XML->QueryTextValue(Entry, "Model", "label", ModelLabel);
 		XML->QueryTextValue(Entry, "Texture", "label", TextureLabel);
 

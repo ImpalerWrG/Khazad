@@ -39,9 +39,6 @@ DataManager::DataManager()
     Materials = new MaterialDataLibrary();
     GlobalDataTypeMap["Material"] = Materials;
 
-    TileGroups = new TileGroupDataLibrary();
-    GlobalDataTypeMap["TileGroup"] = TileGroups;
-
     MaterialClasses = new MaterialClassDataLibrary();
     GlobalDataTypeMap["MaterialClass"] = MaterialClasses;
 

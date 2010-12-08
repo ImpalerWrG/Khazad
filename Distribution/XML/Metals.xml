@@ -7,7 +7,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="2"/>
 	</MaterialClass>
 	<Material>
 		<Name Label="MATERIAL_IRON"/>

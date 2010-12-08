@@ -333,47 +333,6 @@ public:
     std::vector<SurfaceTypeData*> DataEntries;
 };
 
-class TileGroupData: public DataBase
-{
-
-public:
-
-    TileGroupData();
-    ~TileGroupData();
-
-    bool Load(TiXmlElement* Element, uint32_t Index);
-    bool PostProcessing();
-
-    int16_t getMaterialClassID()     { return MaterialClassID; }
-    int16_t getMaterialID()          { return MaterialID; }
-
-    std::vector<uint16_t> TileValues;
-    std::vector<uint16_t> TileShapeID;
-    std::vector<uint16_t> SurfaceTypeID;
-
-protected:
-
-    string MaterialClassLabel;
-    string MaterialLabel;
-
-    std::vector<string> TileShapeLabels;
-    std::vector<string> SurfaceTypeLabels;
-
-    int16_t MaterialClassID;
-    int16_t MaterialID;
-};
-
-class TileGroupDataLibrary: public DataLibraryBase
-{
-
-public:
-
-    DataBase* LoadElement(TiXmlElement* Element);
-    void PostProcessDataClass();
-
-    std::vector<TileGroupData*> DataEntries;
-};
-
 class MaterialClassData: public DataBase
 {
 
@@ -430,8 +389,6 @@ public:
     int16_t getBorderColorID()           { return BorderColorID; }
     string getColorMode()               { return ColorMode; }
 
-    string getMatGloss()                { return MatGloss; }
-
     int16_t getTexture(uint16_t SurfaceID)     { return TextureArray[SurfaceID]; }
 
 protected:
@@ -444,7 +401,6 @@ protected:
 
     string MaterialClassLabel;
 
-    string MatGloss;
     string ColorMode;
 
     int16_t PrimaryColorID;

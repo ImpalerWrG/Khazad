@@ -5,7 +5,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_LIGHT_GREY"/>
 		<SecondaryColor label="COLOR_WHITE"/>
-		<MatGloss label="GYPSUM"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -15,7 +14,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
-		<MatGloss label="TALC"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -25,7 +23,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_BLACK"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
-		<MatGloss label="JET"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -35,7 +32,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BROWN"/>
-		<MatGloss label="PUDDINGSTONE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -45,7 +41,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_MAROON"/>
-		<MatGloss label="PETRIFIED_WOOD"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -55,7 +50,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
-		<MatGloss label="GRAPHITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -65,7 +59,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_YELLOW"/>
-		<MatGloss label="BRIMSTONE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -75,7 +68,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_NAVY_BLUE"/>
-		<MatGloss label="KIMBERLITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -85,7 +77,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_LIGHT_GREY"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
-		<MatGloss label="BISMUTHINITE"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
@@ -100,7 +91,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_RED"/>
 		<SecondaryColor label="COLOR_RED"/>
-		<MatGloss label="REALGAR"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -110,7 +100,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_YELLOW"/>
 		<SecondaryColor label="COLOR_BROWN"/>
-		<MatGloss label="ORPIMENT"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -120,7 +109,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
-		<MatGloss label="STIBNITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -130,7 +118,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_YELLOW"/>
-		<MatGloss label="MARCASITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -140,7 +127,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_RED"/>
 		<SecondaryColor label="COLOR_YELLOW"/>
-		<MatGloss label="SYLVITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -150,7 +136,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_RED"/>
-		<MatGloss label="CRYOLITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -160,7 +145,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
-		<MatGloss label="PERICLASE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -170,7 +154,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_WHITE"/>
-		<MatGloss label="ILMENITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -180,7 +163,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_MAROON"/>
 		<SecondaryColor label="COLOR_BROWN"/>
-		<MatGloss label="RUTILE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -190,7 +172,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_BLACK"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
-		<MatGloss label="MAGNETITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -200,7 +181,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_BLACK"/>
 		<SecondaryColor label="COLOR_BROWN"/>
-		<MatGloss label="CHROMITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -210,7 +190,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_BLACK"/>
 		<SecondaryColor label="COLOR_NAVY_BLUE"/>
-		<MatGloss label="PYROLUSITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -220,7 +199,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_PURPLE"/>
 		<SecondaryColor label="COLOR_BROWN"/>
-		<MatGloss label="PITCHBLENDE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -230,7 +208,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_SALMON"/>
-		<MatGloss label="BAUXITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SWIRLY"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SWIRLY"/>
@@ -244,7 +221,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
-		<MatGloss label="ALUMINUM"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
@@ -259,7 +235,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_SILVER"/>
-		<MatGloss label="BORAX"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -269,7 +244,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_OLIVE"/>
 		<SecondaryColor label="COLOR_BLACK"/>
-		<MatGloss label="OLIVINE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
@@ -283,7 +257,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_BLACK"/>
 		<SecondaryColor label="COLOR_WHITE"/>
-		<MatGloss label="HORNBLENDE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -293,7 +266,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_PINK"/>
-		<MatGloss label="KAOLINITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -303,7 +275,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREEN"/>
 		<SecondaryColor label="COLOR_WHITE"/>
-		<MatGloss label="SERPENTINE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -313,7 +284,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_PINK"/>
 		<SecondaryColor label="COLOR_WHITE"/>
-		<MatGloss label="ORTHOCLASE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -323,7 +293,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_TEAL"/>
 		<SecondaryColor label="COLOR_WHITE"/>
-		<MatGloss label="MICROCLINE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CRYSTALLINE"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_CRYSTALLINE"/>
@@ -337,7 +306,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_SILVER"/>
-		<MatGloss label="MICA"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -347,7 +315,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_WHITE"/>
-		<MatGloss label="CALCITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -357,7 +324,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_WHITE"/>
-		<MatGloss label="SALTPETER"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -367,7 +333,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
-		<MatGloss label="ALABASTER"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -377,7 +342,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
-		<MatGloss label="SELENITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -387,7 +351,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
-		<MatGloss label="SATINSPAR"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -397,7 +360,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_BLUE"/>
-		<MatGloss label="ANHYDRITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -407,7 +369,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_LIGHT_GREY"/>
 		<SecondaryColor label="COLOR_WHITE"/>
-		<MatGloss label="ALUNITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -417,7 +378,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_AQUA"/>
-		<MatGloss label="RAW_ADAMANTINE"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>

@@ -16,7 +16,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="1"/>
 	</MaterialClass>
 	<Material>
 		<Name Label="MATERIAL_VEIN_STONE"/>
@@ -32,7 +31,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_BLACK"/>
-		<MatGloss label="HEMATITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -42,7 +40,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_BLACK"/>
-		<MatGloss label="LIMONITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -52,7 +49,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_GREEN"/>
-		<MatGloss label="GARNIERITE"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
@@ -67,7 +63,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_YELLOW"/>
-		<MatGloss label="GOLD"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
@@ -82,7 +77,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
-		<MatGloss label="SILVER"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
@@ -97,7 +91,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BROWN"/>
-		<MatGloss label="COPPER"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
@@ -112,7 +105,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_GREEN"/>
 		<SecondaryColor label="COLOR_FOREST_GREEN"/>
-		<MatGloss label="MALACHITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SWIRLY"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SWIRLY"/>
@@ -126,7 +118,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
-		<MatGloss label="GALENA"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
@@ -141,7 +132,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
-		<MatGloss label="SPHALERITE"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
@@ -156,7 +146,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BROWN"/>
-		<MatGloss label="CASSITERITE"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
@@ -171,7 +160,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_BLACK"/>
 		<SecondaryColor label="COLOR_SILVER"/>
-		<MatGloss label="COAL_BITUMINOUS"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -181,7 +169,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_BLACK"/>
-		<MatGloss label="LIGNITE"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -191,7 +178,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
-		<MatGloss label="PLATINUM"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
@@ -206,7 +192,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_RED"/>
 		<SecondaryColor label="COLOR_BLACK"/>
-		<MatGloss label="CINNABAR"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
@@ -216,7 +201,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BLUE"/>
-		<MatGloss label="COBALTITE"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
@@ -231,7 +215,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
-		<MatGloss label="TETRAHEDRITE"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
@@ -246,7 +229,6 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_WHITE"/>
-		<MatGloss label="HORN_SILVER"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>

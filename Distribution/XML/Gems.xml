@@ -15,7 +15,6 @@
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="1"/>
 	</MaterialClass>
 	<Material>
 		<Name Label="MATERIAL_ONYX"/>
@@ -24,7 +23,6 @@
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="ONYX"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MORION"/>
@@ -33,7 +31,6 @@
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="MORION"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SCHORL"/>
@@ -42,7 +39,6 @@
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label=""/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_LACE_AGATE"/>
@@ -51,7 +47,6 @@
 		<SecondaryColor label="COLOR_BLUE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="LACE AGATE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_BLUE JADE"/>
@@ -60,7 +55,6 @@
 		<SecondaryColor label="COLOR_BLUE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="BLUE JADE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_LAPIS LAZULI"/>
@@ -69,7 +63,6 @@
 		<SecondaryColor label="COLOR_BLUE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="LAPIS LAZULI"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PRASE"/>
@@ -78,7 +71,6 @@
 		<SecondaryColor label="COLOR_DARK_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="PRASE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PRASE OPAL"/>
@@ -87,7 +79,6 @@
 		<SecondaryColor label="COLOR_DARK_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="PRASE OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_BLOODSTONE"/>
@@ -96,7 +87,6 @@
 		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="BLOODSTONE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MOSS AGATE"/>
@@ -105,7 +95,6 @@
 		<SecondaryColor label="COLOR_DARK_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="MOSS AGATE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MOSS OPAL"/>
@@ -114,7 +103,6 @@
 		<SecondaryColor label="COLOR_DARK_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="MOSS OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_VARISCITE"/>
@@ -123,7 +111,6 @@
 		<SecondaryColor label="COLOR_DARK_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="VARISCITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CHRYSOPRASE"/>
@@ -132,7 +119,6 @@
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="CHRYSOPRASE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CHRYSOCOLLA"/>
@@ -141,7 +127,6 @@
 		<SecondaryColor label="COLOR_AQUA"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="CHRYSOCOLLA"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SARD"/>
@@ -150,7 +135,6 @@
 		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="SARD"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CARNELIAN"/>
@@ -159,7 +143,6 @@
 		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="CARNELIAN"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_BANDED AGATE"/>
@@ -168,7 +151,6 @@
 		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="BANDED AGATE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SARDONYX"/>
@@ -177,7 +159,6 @@
 		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="SARDONYX"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CHERRY OPAL"/>
@@ -186,7 +167,6 @@
 		<SecondaryColor label="COLOR_RED"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="CHERRY OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_LAVENDAR JADE"/>
@@ -195,7 +175,6 @@
 		<SecondaryColor label="COLOR_LAVENDAR"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="LAVENDAR JADE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PINK JADE"/>
@@ -204,7 +183,6 @@
 		<SecondaryColor label="COLOR_PINK"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="PINK JADE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TUBE AGATE"/>
@@ -213,7 +191,6 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="TUBE AGATE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_FIRE AGATE"/>
@@ -222,7 +199,6 @@
 		<SecondaryColor label="COLOR_ORANGE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="FIRE AGATE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PLUME AGATE"/>
@@ -231,7 +207,6 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="PLUME AGATE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_BROWN JASPER"/>
@@ -240,7 +215,6 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="BROWN JASPER"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PICTURE JASPER"/>
@@ -249,7 +223,6 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="PICTURE JASPER"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SMOKY QUARTZ"/>
@@ -258,7 +231,6 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="SMOKY QUARTZ"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_WAX OPAL"/>
@@ -267,7 +239,6 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="WAX OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_WOOD OPAL"/>
@@ -276,7 +247,6 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="WOOD OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_AMBER OPAL"/>
@@ -285,7 +255,6 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="AMBER OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_GOLD OPAL"/>
@@ -294,7 +263,6 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="GOLD OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CITRINE"/>
@@ -303,7 +271,6 @@
 		<SecondaryColor label="COLOR_ORANGE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="CITRINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_YELLOW JASPER"/>
@@ -312,7 +279,6 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="YELLOW JASPER"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TIGEREYE"/>
@@ -321,7 +287,6 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="TIGEREYE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TIGER IRON"/>
@@ -330,7 +295,6 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="TIGER IRON"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SUNSTONE"/>
@@ -339,7 +303,6 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="SUNSTONE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RESIN OPAL"/>
@@ -348,7 +311,6 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="RESIN OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PYRITE"/>
@@ -357,7 +319,6 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="PYRITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TOURMALINE"/>
@@ -366,7 +327,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="TOURMALINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_GRAY CHALCEDONY"/>
@@ -375,7 +335,6 @@
 		<SecondaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="GRAY CHALCEDONY"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DENDRITIC AGATE"/>
@@ -384,7 +343,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="DENDRITIC AGATE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SHELL OPAL"/>
@@ -393,7 +351,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="SHELL OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_BONE OPAL"/>
@@ -402,7 +359,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="BONE OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_WHITE CHALCEDONY"/>
@@ -411,7 +367,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="WHITE CHALCEDONY"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_FORTIFICATION AGATE"/>
@@ -420,7 +375,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="FORTIFICATION AGATE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MILK QUARTZ"/>
@@ -429,7 +383,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="MILK QUARTZ"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MOONSTONE"/>
@@ -438,7 +391,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="MOONSTONE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_WHITE JADE"/>
@@ -447,7 +399,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="WHITE JADE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_JASPER OPAL"/>
@@ -456,7 +407,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="JASPER OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PINEAPPLE OPAL"/>
@@ -465,7 +415,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="PINEAPPLE OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_ONYX OPAL"/>
@@ -474,7 +423,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="ONYX OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MILK OPAL"/>
@@ -483,7 +431,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="MILK OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PIPE OPAL"/>
@@ -492,7 +439,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="PIPE OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_AVENTURINE"/>
@@ -501,7 +447,6 @@
 		<SecondaryColor label="COLOR_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="AVENTURINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TURQUOISE"/>
@@ -510,7 +455,6 @@
 		<SecondaryColor label="COLOR_AQUA"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="TURQUOISE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_QUARTZ_ROSE"/>
@@ -519,7 +463,6 @@
 		<SecondaryColor label="COLOR_PINK"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="QUARTZ_ROSE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CRYSTAL_ROCK"/>
@@ -528,7 +471,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="CRYSTAL_ROCK"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_BLACK ZIRCON"/>
@@ -537,7 +479,6 @@
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="BLACK ZIRCON"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_BLACK PYROPE"/>
@@ -546,7 +487,6 @@
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="BLACK PYROPE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MELANITE"/>
@@ -555,7 +495,6 @@
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="MELANITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_INDIGO TOURMALINE"/>
@@ -564,7 +503,6 @@
 		<SecondaryColor label="COLOR_NAVY_BLUE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="INDIGO TOURMALINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_BLUE GARNET"/>
@@ -573,7 +511,6 @@
 		<SecondaryColor label="COLOR_BLUE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="BLUE GARNET"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TSAVORITE"/>
@@ -582,7 +519,6 @@
 		<SecondaryColor label="COLOR_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="TSAVORITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_GREEN TOURMALINE"/>
@@ -591,7 +527,6 @@
 		<SecondaryColor label="COLOR_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="GREEN TOURMALINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DEMANTOID"/>
@@ -600,7 +535,6 @@
 		<SecondaryColor label="COLOR_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="DEMANTOID"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_GREEN ZIRCON"/>
@@ -609,7 +543,6 @@
 		<SecondaryColor label="COLOR_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="GREEN ZIRCON"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_GREEN JADE"/>
@@ -618,7 +551,6 @@
 		<SecondaryColor label="COLOR_LIME"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="GREEN JADE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_HELIODOR"/>
@@ -627,7 +559,6 @@
 		<SecondaryColor label="COLOR_LIME"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="HELIODOR"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PERIDOT"/>
@@ -636,7 +567,6 @@
 		<SecondaryColor label="COLOR_LIME"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="PERIDOT"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RED ZIRCON"/>
@@ -645,7 +575,6 @@
 		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="RED ZIRCON"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RED TOURMALINE"/>
@@ -654,7 +583,6 @@
 		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="RED TOURMALINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RED PYROPE"/>
@@ -663,7 +591,6 @@
 		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="RED PYROPE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_ALMANDINE"/>
@@ -672,7 +599,6 @@
 		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="ALMANDINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RED GROSSULAR"/>
@@ -681,7 +607,6 @@
 		<SecondaryColor label="COLOR_MAROON"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="RED GROSSULAR"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PINK TOURMALINE"/>
@@ -690,7 +615,6 @@
 		<SecondaryColor label="COLOR_PINK"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="PINK TOURMALINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RED BERYL"/>
@@ -699,7 +623,6 @@
 		<SecondaryColor label="COLOR_RED"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="RED BERYL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_FIRE OPAL"/>
@@ -708,7 +631,6 @@
 		<SecondaryColor label="COLOR_RED"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="FIRE OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RHODOLITE"/>
@@ -717,7 +639,6 @@
 		<SecondaryColor label="COLOR_PURPLE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="RHODOLITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SPINEL_PURPLE"/>
@@ -726,7 +647,6 @@
 		<SecondaryColor label="COLOR_PURPLE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="SPINEL_PURPLE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_ALEXANDRITE"/>
@@ -735,7 +655,6 @@
 		<SecondaryColor label="COLOR_MAGENTA"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="ALEXANDRITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TANZANITE"/>
@@ -744,7 +663,6 @@
 		<SecondaryColor label="COLOR_MAGENTA"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="TANZANITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_MORGANITE"/>
@@ -753,7 +671,6 @@
 		<SecondaryColor label="COLOR_MAGENTA"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="MORGANITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_VIOLET SPESSARTINE"/>
@@ -762,7 +679,6 @@
 		<SecondaryColor label="COLOR_MAGENTA"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="VIOLET SPESSARTINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_PINK GARNET"/>
@@ -771,7 +687,6 @@
 		<SecondaryColor label="COLOR_PINK"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="PINK GARNET"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_KUNZITE"/>
@@ -780,7 +695,6 @@
 		<SecondaryColor label="COLOR_MAGENTA"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="KUNZITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CINNAMON GROSSULAR"/>
@@ -789,7 +703,6 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="CINNAMON GROSSULAR"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_HONEY YELLOW BERYL"/>
@@ -798,7 +711,6 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="HONEY YELLOW BERYL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_JELLY OPAL"/>
@@ -807,7 +719,6 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="JELLY OPAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_BROWN ZIRCON"/>
@@ -816,7 +727,6 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="BROWN ZIRCON"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_YELLOW ZIRCON"/>
@@ -825,7 +735,6 @@
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="YELLOW ZIRCON"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_GOLDEN BERYL"/>
@@ -834,7 +743,6 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="GOLDEN BERYL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_YELLOW SPESSARTINE"/>
@@ -843,7 +751,6 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="YELLOW SPESSARTINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TOPAZ"/>
@@ -852,7 +759,6 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="TOPAZ"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_TOPAZOLITE"/>
@@ -861,7 +767,6 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="TOPAZOLITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_YELLOW GROSSULAR"/>
@@ -870,7 +775,6 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="YELLOW GROSSULAR"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RUBICELLE"/>
@@ -879,7 +783,6 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="RUBICELLE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CLEAR GARNET"/>
@@ -888,7 +791,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="CLEAR GARNET"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_GOSHENITE"/>
@@ -897,7 +799,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="GOSHENITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CAT'S EYE"/>
@@ -906,7 +807,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="CAT'S EYE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CLEAR ZIRCON"/>
@@ -915,7 +815,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="CLEAR ZIRCON"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_AMETHYST"/>
@@ -924,7 +823,6 @@
 		<SecondaryColor label="COLOR_MAGENTA"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="AMETHYST"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_AQUAMARINE"/>
@@ -933,7 +831,6 @@
 		<SecondaryColor label="COLOR_AQUA"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="AQUAMARINE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SPINEL_RED"/>
@@ -942,7 +839,6 @@
 		<SecondaryColor label="COLOR_RED"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="SPINEL_RED"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_CHRYSOBERYL"/>
@@ -951,7 +847,6 @@
 		<SecondaryColor label="COLOR_LIME"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="CHRYSOBERYL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_OPAL_PFIRE"/>
@@ -960,7 +855,6 @@
 		<SecondaryColor label="COLOR_RED"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="OPAL_PFIRE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_OPAL_REDFLASH"/>
@@ -969,7 +863,6 @@
 		<SecondaryColor label="COLOR_RED"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="OPAL_REDFLASH"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_OPAL_BLACK"/>
@@ -978,7 +871,6 @@
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="OPAL_BLACK"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_OPAL_WHITE"/>
@@ -987,7 +879,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="OPAL_WHITE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_OPAL_CRYSTAL"/>
@@ -996,7 +887,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="OPAL_CRYSTAL"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_OPAL_CLARO"/>
@@ -1005,7 +895,6 @@
 		<SecondaryColor label="COLOR_BLUE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="OPAL_CLARO"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_OPAL_LEVIN"/>
@@ -1014,7 +903,6 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="OPAL_LEVIN"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_OPAL_HARLEQUIN"/>
@@ -1023,7 +911,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="OPAL_HARLEQUIN"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_OPAL_PINFIRE"/>
@@ -1032,7 +919,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="OPAL_PINFIRE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_OPAL_BANDFIRE"/>
@@ -1041,7 +927,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="OPAL_BANDFIRE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DIAMOND_LY"/>
@@ -1050,7 +935,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="DIAMOND_LY"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DIAMOND_FY"/>
@@ -1059,7 +943,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="DIAMOND_FY"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_EMERALD"/>
@@ -1068,7 +951,6 @@
 		<SecondaryColor label="COLOR_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="EMERALD"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RUBY"/>
@@ -1077,7 +959,6 @@
 		<SecondaryColor label="COLOR_RED"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="RUBY"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SAPPHIRE"/>
@@ -1086,7 +967,6 @@
 		<SecondaryColor label="COLOR_BLUE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="SAPPHIRE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DIAMOND_CLEAR"/>
@@ -1095,7 +975,6 @@
 		<SecondaryColor label="COLOR_WHITE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="DIAMOND_CLEAR"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DIAMOND_RED"/>
@@ -1104,7 +983,6 @@
 		<SecondaryColor label="COLOR_RED"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="DIAMOND_RED"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DIAMOND_GREEN"/>
@@ -1113,7 +991,6 @@
 		<SecondaryColor label="COLOR_GREEN"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="DIAMOND_GREEN"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DIAMOND_BLUE"/>
@@ -1122,7 +999,6 @@
 		<SecondaryColor label="COLOR_BLUE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="DIAMOND_BLUE"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DIAMOND_YELLOW"/>
@@ -1131,7 +1007,6 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="DIAMOND_YELLOW"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_DIAMOND_BLACK"/>
@@ -1140,7 +1015,6 @@
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="DIAMOND_BLACK"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SAPPHIRE_STAR"/>
@@ -1149,7 +1023,6 @@
 		<SecondaryColor label="COLOR_BLUE"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="SAPPHIRE_STAR"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_RUBY_STAR"/>
@@ -1158,6 +1031,5 @@
 		<SecondaryColor label="COLOR_RED"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="gradientmap"/>
-		<MatGloss label="RUBY_STAR"/>
 	</Material>
 </Gems>

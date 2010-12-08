@@ -4,7 +4,6 @@
 	<File Path="XML\Models.xml"/>
 	<File Path="XML\Fonts.xml"/>
 	<File Path="XML\Materials.xml"/>
-	<File Path="XML\TileGroups.xml"/>
 	<File Path="XML\MaterialClasses.xml"/>
 	<File Path="XML\SurfaceTypes.xml"/>
 	<File Path="XML\TileShapes.xml"/>

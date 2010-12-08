@@ -1,6 +1,6 @@
 <TileShapes xmlns="namespace">
 	<TileShape>
-		<Name Label="TILESHAPE_UNKNOWN"/>
+		<Name Label="TILESHAPE_WALL"/>
 		<Open bool="0"/>
 	</TileShape>
 	<TileShape>
@@ -8,19 +8,35 @@
 		<Open bool="1"/>
 	</TileShape>
 	<TileShape>
-		<Name Label="TILESHAPE_WALL"/>
-		<Open bool="0"/>
-	</TileShape>
-	<TileShape>
-		<Name Label="TILESHAPE_RAMP"/>
+		<Name Label="TILESHAPE_NORTH_RAMP"/>
 		<Open bool="1"/>
 	</TileShape>
 	<TileShape>
-		<Name Label="TILESHAPE_STAIR"/>
+		<Name Label="TILESHAPE_SOUTH_RAMP"/>
 		<Open bool="1"/>
 	</TileShape>
 	<TileShape>
-		<Name Label="TILESHAPE_DOWN_STAIR"/>
+		<Name Label="TILESHAPE_EAST_RAMP"/>
+		<Open bool="1"/>
+	</TileShape>
+	<TileShape>
+		<Name Label="TILESHAPE_WEST_RAMP"/>
+		<Open bool="1"/>
+	</TileShape>
+	<TileShape>
+		<Name Label="TILESHAPE_NORTH_STAIR"/>
+		<Open bool="1"/>
+	</TileShape>
+	<TileShape>
+		<Name Label="TILESHAPE_SOUTH_STAIR"/>
+		<Open bool="1"/>
+	</TileShape>
+	<TileShape>
+		<Name Label="TILESHAPE_EAST_STAIR"/>
+		<Open bool="1"/>
+	</TileShape>
+	<TileShape>
+		<Name Label="TILESHAPE_WEST_STAIR"/>
 		<Open bool="1"/>
 	</TileShape>
 	<TileShape>
@@ -35,9 +51,5 @@
 		<Name Label="TILESHAPE_BOULDER"/>
 		<Open bool="1"/>
         <Model label="MODEL_BOULDER"/>
-	</TileShape>
-	<TileShape>
-		<Name Label="TILESHAPE_TREE"/>
-		<Open bool="1"/>
 	</TileShape>
 </TileShapes>

@@ -83,10 +83,6 @@ public:
     uint32_t getNumMaterials()                                 { return Materials->DataEntries.size(); }
     MaterialDataLibrary* getMaterialDataLibrary()            { return Materials; }
 
-    TileGroupData* getTileGroupData(uint32_t Index)            { return TileGroups->DataEntries[Index]; }
-    uint32_t getNumTileGroups()                                { return TileGroups->DataEntries.size(); }
-    TileGroupDataLibrary* getTileGroupDataLibrary()          { return TileGroups; }
-
     MaterialClassData* getMaterialClassData(uint32_t Index)    { return MaterialClasses->DataEntries[Index]; }
     uint32_t getNumMaterialClasses()                           { return MaterialClasses->DataEntries.size(); }
     MaterialClassDataLibrary* getMaterialClassDataLibrary()  { return MaterialClasses; }
@@ -130,7 +126,6 @@ protected:
     ModelDataLibrary* Models;
     FontDataLibrary* Fonts;
     MaterialDataLibrary* Materials;
-    TileGroupDataLibrary* TileGroups;
     MaterialClassDataLibrary* MaterialClasses;
     SurfaceTypeDataLibrary* SurfaceTypes;
     TileShapeDataLibrary* TileShapes;
