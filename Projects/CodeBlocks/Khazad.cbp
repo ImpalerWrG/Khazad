@@ -20,9 +20,9 @@
 					<Add option="-DKHAZAD_DEBUG" />
 					<Add option="-DWIN32" />
 					<Add option="-D_WINDOWS" />
-					<Add directory="..\..\OgreSDK_mingw_v1-7-1\include\OIS" />
-					<Add directory="..\..\OgreSDK_mingw_v1-7-1\include\OGRE" />
-					<Add directory="..\..\OgreSDK_mingw_v1-7-1\boost_1_42" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-2\include\OIS" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-2\include\OGRE" />
+					<Add directory="..\..\boost_1_44_0" />
 					<Add directory="..\..\CEGUI\include" />
 					<Add directory="..\..\CEGUI\include\RendererModules\Ogre" />
 					<Add directory="..\..\DevIL\include" />
@@ -32,7 +32,7 @@
 					<Add option="-Wl,--enable-runtime-pseudo-reloc" />
 					<Add option="-Wl,--enable-auto-image-base" />
 					<Add option="-Wl,--add-stdcall-alias" />
-					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\release" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-2\lib\release" />
 					<Add directory="..\..\DevIL\lib" />
 					<Add directory="..\..\CEGUI\lib" />
 				</Linker>
@@ -50,9 +50,9 @@
 					<Add option="-DNDEBUG" />
 					<Add option="-DWIN32" />
 					<Add option="-D_WINDOWS" />
-					<Add directory="..\..\OgreSDK_mingw_v1-7-1\include\OIS" />
-					<Add directory="..\..\OgreSDK_mingw_v1-7-1\include\OGRE" />
-					<Add directory="..\..\OgreSDK_mingw_v1-7-1\boost_1_42" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-2\include\OIS" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-2\include\OGRE" />
+					<Add directory="..\..\boost_1_44_0" />
 					<Add directory="..\..\CEGUI\include" />
 					<Add directory="..\..\CEGUI\include\RendererModules\Ogre" />
 					<Add directory="..\..\DevIL\include" />
@@ -62,8 +62,8 @@
 					<Add option="-Wl,--enable-runtime-pseudo-reloc" />
 					<Add option="-Wl,--enable-auto-image-base" />
 					<Add option="-Wl,--add-stdcall-alias" />
-					<Add directory="..\..\CEGUI\bin" />
-					<Add directory="..\..\OgreSDK_mingw_v1-7-1\lib\release" />
+					<Add directory="..\..\CEGUI\lib" />
+					<Add directory="..\..\OgreSDK_mingw_v1-7-2\lib\release" />
 					<Add directory="..\..\DevIL\lib" />
 				</Linker>
 			</Target>
@@ -129,6 +129,8 @@
 			<Add directory="..\..\CEGUI\include" />
 		</Compiler>
 		<Linker>
+			<Add option="-static-libgcc" />
+			<Add option="-static-libstdc++" />
 			<Add library="OgreMain" />
 			<Add library="OIS" />
 			<Add library="CEGUIBase" />
