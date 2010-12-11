@@ -207,7 +207,7 @@
 		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
 		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
-		<BorderColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_DARK_GREY"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>

@@ -33,11 +33,30 @@ public:
     Geology();
     ~Geology();
 
-    bool Init(uint32_t Seed);
+    bool Init(int32_t Seed);
+
+    void SetArea(int32_t X, int32_t Y);
+
+    void Generate();
+    void GenerateCellHeight(int32_t X, int32_t Y, float heightScale = 1.0, float Roughness = 0.5);
 
     int16_t getRockTypeAtCoordinates(MapCoordinates Target);
 
+    int16_t getCellBottomZLevel()  { return CellBottomZ; }
+    int16_t getCellTopZLevel()     { return CellTopZ; }
+
 private:
+
+    int32_t MasterSeed;
+
+    int32_t MapSizeX;
+    int32_t MapSizeY;
+
+    int16_t CellTopZ;
+    int16_t CellBottomZ;
+
+    float Height[CELLEDGESIZE + 1][CELLEDGESIZE + 1];
+    bool Seeded[CELLEDGESIZE + 1][CELLEDGESIZE + 1];
 
     std::vector< std::pair< Ogre::Plane, int16_t > > LayerBoundries;
 

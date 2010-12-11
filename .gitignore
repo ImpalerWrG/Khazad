@@ -3,12 +3,13 @@ obj/*
 
 
 # Ogre SDK
-OgreSDK_mingw_v1-7-1/*
-
+OgreSDK_mingw_v1-7-2/*
 
 # DevIL SDK
 DevIL/*
 
+# Boost
+boost_1_44_0/*
 
 #CEGUI SDK
 CEGUI/*

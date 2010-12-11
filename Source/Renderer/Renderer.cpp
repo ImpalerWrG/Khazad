@@ -29,11 +29,12 @@ bool Renderer::Init()
 
     //OgreRoot = new Ogre::Root();
 
-    defineResources();
     setupRenderSystem();
-    initializeResourceGroups();
     setupScene();
     createCamera();
+
+    defineResources();
+    initializeResourceGroups();
 
     return true;
 }

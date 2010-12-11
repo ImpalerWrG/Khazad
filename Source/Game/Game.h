@@ -10,6 +10,7 @@ class Pawn;
 class Tree;
 class Map;
 class PathManager;
+class Geology;
 
 class MapCoordinates;
 
@@ -35,6 +36,7 @@ public:
     void setPause(bool NewState)    { Pause = NewState; }
 
     Map* getMap()               { return MainMap; }
+    Geology* getGeology()       { return MapGeology; }
     PathManager* getPath()      { return Path; }
 
 protected:
@@ -43,6 +45,8 @@ protected:
     bool Pause;
 
     Map* MainMap;
+    Geology* MapGeology;
+
     PathManager* Path;
 };
 

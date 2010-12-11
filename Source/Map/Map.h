@@ -139,8 +139,6 @@ protected:
 
     uint32_t CellCount;
     uint32_t FaceCount;
-
-    Geology* MapGeology;
 };
 
 #endif // MAP__HEADER

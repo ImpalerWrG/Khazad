@@ -4,6 +4,7 @@
 #include <DataManager.h>
 #include <Renderer.h>
 
+#include <Geology.h>
 #include <Cell.h>
 #include <Face.h>
 #include <Zone.h>
@@ -440,18 +441,18 @@ bool Map::Generate(Geology* RegionGeology)
 {
     CellSizeX = 3;
     CellSizeY = 3;
-    CellSizeZ = 4;
 
     MapSizeX = CellSizeX * CELLEDGESIZE;
     MapSizeY = CellSizeY * CELLEDGESIZE;
-    MapSizeZ = CellSizeZ;
 
     // Create and add Cells with shape and material data
-    for (uint16_t X = 0; X < CellSizeX; X++)
+    for (int32_t X = 0; X < CellSizeX; X++)
     {
-        for (uint16_t Y = 0; Y < CellSizeX; Y++)
+        for (int32_t Y = 0; Y < CellSizeX; Y++)
         {
-            for (uint16_t Z = 0; Z < CellSizeZ; Z++)
+            RegionGeology->GenerateCellHeight(X, Y, 2.0, 0.8);
+
+            for (int16_t Z = RegionGeology->getCellBottomZLevel(); Z <= RegionGeology->getCellTopZLevel() + 1; Z++)
             {
                 CellCoordinates TargetCellCoordinates = CellCoordinates(X, Y, Z);
                 Cell* NewCell = new Cell();
@@ -529,7 +530,7 @@ bool Map::initializeMapAtCoordinates(MapCoordinates NewCoords)
         NewCell->setCellPosition(TargetCellCoordinates);
 
         insertCell(NewCell, TargetCellCoordinates);
-        NewCell->LoadCellData(MapGeology);
+        //NewCell->LoadCellData(GAME->getGeology());
 
         return true;
     }
@@ -543,11 +544,6 @@ std::map<uint64_t, Cell*>* Map::getCellMap()
 
 Cell* Map::getCubeOwner(MapCoordinates Coordinates) const
 {
-    if ((Coordinates.X > MapSizeX) || (Coordinates.Y > MapSizeY) || (Coordinates.Z > MapSizeZ)) //TODO better more flexible limit check
-    {
-        return NULL;
-    }
-
     CellCoordinates TargetCellCoordinates = CellCoordinates(Coordinates);
 
     return getCell(TargetCellCoordinates);
@@ -670,7 +666,7 @@ Face* Map::addFace(MapCoordinates Coordinates, Direction DirectionType)
         NewCell->setCellPosition(TargetCellCoordinates);
 
         insertCell(NewCell, TargetCellCoordinates);
-        NewCell->LoadCellData(MapGeology);
+        //NewCell->LoadCellData(MapGeology);
 
         return NewCell->addFace(CubeCoordinates(TargetMapCoordinates), TargetFace);
     }
