@@ -27,9 +27,15 @@ Generation is done at the Cell level by first calling for Generation of
 the X and Y Cell coordinate and then querrying the individuals blocks.
 
 All data must be generated from the Master Seed in combination with
-Coordinate data to ensure reproducability of the map.*/
+Coordinate data to ensure reproducability of the map no mater what order
+its Cells are initialized in.
 
-// TODO
+To achive this a course grained global height map is created initially,
+then as each Cell is requested it is seeded with values along all
+edges to guaranteed both perfect reproduction and perfect fit with
+adjacent Cells initialized later.*/
+
+// TODO  Create the initial World map by some fancy Tectonic process
 
 #ifndef GEOLOGY__HEADER
 #define GEOLOGY__HEADER
@@ -53,7 +59,8 @@ public:
 
     void SetArea(int32_t X, int32_t Y);
 
-    void Generate();
+    void GenerateWorldHeightMap(int32_t X, int32_t Y);
+    void GenerateCellEdge(float X, float Y, float heightScale = 1.0, float Roughness = 0.5);
     void GenerateCellHeight(int32_t X, int32_t Y, float heightScale = 1.0, float Roughness = 0.5);
 
     int16_t getRockTypeAtCoordinates(MapCoordinates Target);
@@ -65,12 +72,15 @@ private:
 
     int32_t MasterSeed;
 
-    int32_t MapSizeX;
-    int32_t MapSizeY;
+    int32_t WorldSizeX;
+    int32_t WorldSizeY;
+
+    float** WorldHeight;
 
     int16_t CellTopZ;
     int16_t CellBottomZ;
 
+    float Edge[CELLEDGESIZE + 1];
     float Height[CELLEDGESIZE + 1][CELLEDGESIZE + 1];
     bool Seeded[CELLEDGESIZE + 1][CELLEDGESIZE + 1];
 

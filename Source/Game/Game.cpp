@@ -32,6 +32,7 @@ bool Game::Init()
 {
     MapGeology = new Geology();
     MapGeology->Init(42);
+    MapGeology->GenerateWorldHeightMap(3, 3);
 
 	MainMap = new Map();
 	MainMap->Init();

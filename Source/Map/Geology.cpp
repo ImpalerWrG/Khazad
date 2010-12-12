@@ -46,26 +46,67 @@ bool Geology::Init(int32_t Seed)
     RandGenerator = new RandomNumberGenerator();
     RandGenerator->Init();
 
+
     LayerBoundries.push_back(make_pair(RockLayer, RockType));
 
     return true;
 }
 
-void Geology::SetArea(int32_t X, int32_t Y)
+void Geology::GenerateWorldHeightMap(int32_t X, int32_t Y)
 {
-    MapSizeX = X;
-    MapSizeY = Y;
+    WorldSizeX = X;
+    WorldSizeY = Y;
+
+    WorldHeight = new float*[X + 1];
+
+    for (int32_t x = 0; x < X + 1; x++)
+    {
+        WorldHeight[x] = new float[Y + 1];
+
+        for (int32_t y = 0; y < Y + 1; y++)
+        {
+            WorldHeight[x][y] = x + y;
+        }
+    }
 }
 
-void Geology::Generate()
+void Geology::GenerateCellEdge(float X, float Y, float heightScale, float Roughness)
 {
+    boost::hash< std::pair< float, float > > CoordinateHash;
+    int32_t Hash = CoordinateHash(std::make_pair(Y, X));
 
+    RandGenerator->Seed(MasterSeed);
+    int32_t FinalSeed = RandGenerator->Roll(0, 0x7fffffff) ^ Hash;
+
+    RandGenerator->Seed(FinalSeed);
+
+
+    Edge[0] = X;     Edge[CELLEDGESIZE] = Y;
+
+	float ratio = (float) pow (2.0, -Roughness);
+	float scale = heightScale * ratio;
+
+    /* Seed the endpoints of the array. To enable seamless wrapping,
+       the endpoints need to be the same point. */
+    uint8_t stride = CELLEDGESIZE / 2;
+
+    while (stride)
+    {
+		for (int8_t i = stride; i < CELLEDGESIZE; i += stride)
+		{
+			Edge[i] = scale * RandGenerator->Roll(-1.0f, 1.0f) + ((Edge[i - stride] + Edge[i + stride]) * .5f);
+
+			/* reduce random number range */
+			scale *= ratio;
+
+			i += stride;
+		}
+		stride >>= 1;
+    }
 }
 
 void Geology::GenerateCellHeight(int32_t X, int32_t Y, float heightScale, float Roughness)
 {
-    //float** Height = float[CELLEDGESIZE + 1][CELLEDGESIZE + 1];
-    //bool** Seeded = bool[CELLEDGESIZE + 1][CELLEDGESIZE + 1];
     uint8_t size = CELLEDGESIZE + 1;
 
     // Mark edges as Seeded to prevent them from being overwritten
@@ -74,19 +115,40 @@ void Geology::GenerateCellHeight(int32_t X, int32_t Y, float heightScale, float 
         for (uint16_t y = 0; y < size; y++)
         {
             Seeded[x][y] = false;
-            Height[x][y] = 0.0f;
+            //Height[x][y] = 0.0f;
         }
     }
 
     // Edges Initialized to anchor values to create contiguousness
+    GenerateCellEdge(WorldHeight[X][Y], WorldHeight[X + 1][Y], heightScale, Roughness);
+
     for (uint16_t x = 0; x < size; x++)
     {
+        Height[x][0] = Edge[x];
         Seeded[x][0] = true;
+    }
+
+    GenerateCellEdge(WorldHeight[X][Y + 1], WorldHeight[X + 1][Y + 1], heightScale, Roughness);
+
+    for (uint16_t x = 0; x < size; x++)
+    {
+        Height[x][CELLEDGESIZE] = Edge[x];
         Seeded[x][CELLEDGESIZE] = true;
     }
+
+    GenerateCellEdge(WorldHeight[X][Y], WorldHeight[X + 1][Y], heightScale, Roughness);
+
     for (uint16_t y = 0; y < size; y++)
     {
+        Height[0][y] = Edge[y];
         Seeded[0][y] = true;
+    }
+
+    GenerateCellEdge(WorldHeight[X + 1][Y], WorldHeight[X + 1][Y + 1], heightScale, Roughness);
+
+    for (uint16_t y = 0; y < size; y++)
+    {
+        Height[CELLEDGESIZE][y] = Edge[y];
         Seeded[CELLEDGESIZE][y] = true;
     }
 
@@ -107,8 +169,6 @@ void Geology::GenerateCellHeight(int32_t X, int32_t Y, float heightScale, float 
 	   'ratio' is multiplied by 'scale' after each iteration
 	   to effectively reduce the randum number range.
 	   */
-	float ratio = (float) pow (2.0, -Roughness);
-	float scale = heightScale * ratio;
 
     /* Seed the first four values. For example, in a 4x4 array, we
        would initialize the data points indicated by '*':
@@ -132,12 +192,25 @@ void Geology::GenerateCellHeight(int32_t X, int32_t Y, float heightScale, float 
 
     uint8_t stride = CELLEDGESIZE / 2;
 
-    Height[0][0] = 0.0;
-    Height[CELLEDGESIZE][0] = 0.0;
-    Height[0][CELLEDGESIZE] = 0.0;
-    Height[CELLEDGESIZE][CELLEDGESIZE] = 0.0;
+    Height[0][0] = WorldHeight[X][Y];
+    Seeded[0][0] = true;
 
-    CellTopZ = CellBottomZ = Height[0][0];
+    Height[CELLEDGESIZE][0] = WorldHeight[X + 1][Y];
+    Seeded[CELLEDGESIZE][0] = true;
+
+    Height[0][CELLEDGESIZE] = WorldHeight[X][Y + 1];
+    Seeded[0][CELLEDGESIZE] = true;
+
+    Height[CELLEDGESIZE][CELLEDGESIZE] = WorldHeight[X + 1][Y + 1];
+    Seeded[CELLEDGESIZE][CELLEDGESIZE] = true;
+
+    CellTopZ = max(max(Height[0][0], Height[CELLEDGESIZE][0]), max(Height[0][CELLEDGESIZE], Height[CELLEDGESIZE][CELLEDGESIZE]));
+    CellBottomZ = min(min(Height[0][0], Height[CELLEDGESIZE][0]), min(Height[0][CELLEDGESIZE], Height[CELLEDGESIZE][CELLEDGESIZE]));
+
+
+    // Set initial Fractal value range (scale) and the rate of decrese (ratio)
+	float ratio = (float) pow (2.0, -Roughness);
+	float scale = heightScale * ratio;
 
     /* Now we add ever-increasing detail based on the "diamond" seeded
        values. We loop over stride, which gets cut in half at the
