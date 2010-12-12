@@ -271,20 +271,9 @@ bool KhazadGrid::contains(const MapCoordinates &TestCoords) const
     return getCell(CellCoordinates(TestCoords)) != NULL;
 }
 
-uint64_t KhazadGrid::GenerateCellKey(CellCoordinates KeyCoords) const
-{
-    uint64_t Key = KeyCoords.X;
-    Key <<= 16;
-    Key += KeyCoords.Y;
-    Key <<= 16;
-    Key += KeyCoords.Z;
-
-    return Key;
-}
-
 GridCell* KhazadGrid::getCell(CellCoordinates TestCoords) const
 {
-    uint64_t Key = GenerateCellKey(TestCoords);
+    uint64_t Key = TestCoords.Key();
 
     if (Cells.find(Key) == Cells.end())
     {
@@ -302,7 +291,7 @@ GridCell* KhazadGrid::addCell(CellCoordinates TargetCoords)
     if (TargetCell == NULL)
     {
         GridCell* NewGridCell = new GridCell(TargetCoords);
-        Cells[GenerateCellKey(TargetCoords)] = NewGridCell;
+        Cells[TargetCoords.Key()] = NewGridCell;
         return NewGridCell;
     }
     return TargetCell;

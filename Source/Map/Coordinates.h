@@ -469,6 +469,17 @@ struct CellCoordinates
         Z = SourceCoordinates.Z;
     };
 
+    uint64_t Key()
+    {
+        uint64_t Key = X;
+        Key <<= 16;
+        Key += Y;
+        Key <<= 16;
+        Key += Z;
+
+        return Key;
+    };
+
     int16_t X;
     int16_t Y;
     int16_t Z;

@@ -1,3 +1,21 @@
+/* Copyright 2010 Kenneth Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
+
 #include <Map.h>
 
 
@@ -15,15 +33,6 @@ Map::Map()
 {
     Initialized = false;
 
-    MapSizeX = 0;
-    MapSizeY = 0;
-    MapSizeZ = 0;
-
-    CellSizeX = 0;
-    CellSizeY = 0;
-    CellSizeZ = 0;
-
-    CellCount = 0;
     FaceCount = 0;
 
     HighestCell = 0;
@@ -437,74 +446,18 @@ bool Map::Init()
     return true;
 }
 
-bool Map::Generate(Geology* RegionGeology)
-{
-    CellSizeX = 3;
-    CellSizeY = 3;
-
-    MapSizeX = CellSizeX * CELLEDGESIZE;
-    MapSizeY = CellSizeY * CELLEDGESIZE;
-
-    // Create and add Cells with shape and material data
-    for (int32_t X = 0; X < CellSizeX; X++)
-    {
-        for (int32_t Y = 0; Y < CellSizeX; Y++)
-        {
-            RegionGeology->GenerateCellHeight(X, Y, 2.0, 0.8);
-
-            for (int16_t Z = RegionGeology->getCellBottomZLevel(); Z <= RegionGeology->getCellTopZLevel() + 1; Z++)
-            {
-                CellCoordinates TargetCellCoordinates = CellCoordinates(X, Y, Z);
-                Cell* NewCell = new Cell();
-                NewCell->setCellPosition(TargetCellCoordinates);
-
-                insertCell(NewCell, TargetCellCoordinates);
-                NewCell->LoadCellData(RegionGeology);
-            }
-        }
-    }
-
-    // Initialize Faces for the cells
-    for(std::map<uint64_t, Cell*>::iterator CellIterator = Cells.begin() ; CellIterator != Cells.end(); ++CellIterator )
-    {
-        CellIterator->second->InitializeCell(this);
-        CellCount += 1;
-    }
-
-    return true;
-}
-
-uint64_t Map::GenerateCellKey(CellCoordinates KeyCoords) const
-{
-    uint64_t Key = KeyCoords.X;
-    Key <<= 16;
-    Key += KeyCoords.Y;
-    Key <<= 16;
-    Key += KeyCoords.Z;
-
-    return Key;
-}
-
 Cell* Map::getCell(CellCoordinates TestCoords) const
 {
-    uint64_t Key = GenerateCellKey(TestCoords);
+    std::map<uint64_t, Cell*>::const_iterator SearchResult = Cells.find(TestCoords.Key());
 
-    if (Cells.find(Key) == Cells.end())
-    {
-        return NULL;
-    }
-    else
-    {
-        return Cells.find(Key)->second;
-    }
+    return SearchResult == Cells.end() ? NULL : SearchResult->second;
 }
 
 bool Map::insertCell(Cell* NewCell, CellCoordinates TargetCoordinates)
 {
     if (getCell(TargetCoordinates) == NULL)
     {
-        uint64_t Key = GenerateCellKey(TargetCoordinates);
-        Cells[Key] = NewCell;
+        Cells[TargetCoordinates.Key()] = NewCell;
 
         if (TargetCoordinates.Z > HighestCell)
         {
@@ -1089,6 +1042,7 @@ MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay) const
     }
 }
 
+/*
 MapCoordinates Map::getMapCenter() const
 {
     MapCoordinates CenterPoint;
@@ -1099,6 +1053,7 @@ MapCoordinates Map::getMapCenter() const
 
     return CenterPoint;
 }
+*/
 
 void Map::ReleaseMap()
 {

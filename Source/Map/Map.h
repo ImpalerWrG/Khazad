@@ -1,3 +1,21 @@
+/* Copyright 2010 Kenneth Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
+
 #ifndef MAP__HEADER
 #define MAP__HEADER
 
@@ -28,7 +46,6 @@ public:
 
     void CreateManualObjects();
 
-    uint64_t GenerateCellKey(CellCoordinates KeyCoords) const;
 	Cell* getCell(CellCoordinates) const;
 	Cell* getCubeOwner(MapCoordinates) const;
 
@@ -80,16 +97,6 @@ public:
     void setCubeSolid(MapCoordinates Coordinates, bool NewValue);
 
 
-    bool Generate(Geology* RegionGeology);
-
-	uint32_t getMapSizeX() const { return MapSizeX; }
-	uint32_t getMapSizeY() const { return MapSizeY; }
-	uint32_t getMapSizeZ() const { return MapSizeZ; }
-
-	uint16_t getCellSizeX() const { return CellSizeX; }
-	uint16_t getCellSizeY() const { return CellSizeY; }
-	uint16_t getCellSizeZ() const { return CellSizeZ; }
-
     bool Load(std::string filename);
     void Save(std::string filename);
 
@@ -100,12 +107,12 @@ public:
     void Dig(MapCoordinates Coordinates);
     void Fill(MapCoordinates Coordinates, int16_t MaterialID);
 
-    uint32_t getCellCount() const             { return CellCount; }
+    uint32_t getCellCount() const             { return Cells.size(); }
     uint32_t getFaceCount() const             { return FaceCount; }
 
 
     MapCoordinates getRayIntersection(Ogre::Ray MouseRay) const;
-    MapCoordinates getMapCenter() const;
+    //MapCoordinates getMapCenter() const;
 
     Zone* getZone() const;
     void addZone(Zone* NewZone);
@@ -120,14 +127,6 @@ protected:
     bool Initialized;
     bool MapLoaded;
 
-    uint32_t MapSizeX;
-    uint32_t MapSizeY;
-    uint32_t MapSizeZ;
-
-    uint16_t CellSizeX;
-    uint16_t CellSizeY;
-    uint16_t CellSizeZ;
-
     std::map<uint64_t, Cell*> Cells;
 
     uint32_t HighestCell;
@@ -137,7 +136,6 @@ protected:
 
     Zone* ActiveZone;
 
-    uint32_t CellCount;
     uint32_t FaceCount;
 };
 

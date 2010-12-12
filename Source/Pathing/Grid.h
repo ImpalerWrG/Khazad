@@ -71,8 +71,6 @@ public:
     int max(unsigned dim) const         { return maxlen[dim]; }
     int min(unsigned dim) const         { return minlen[dim]; }
 
-    uint64_t GenerateCellKey(CellCoordinates KeyCoords) const;
-
     GridCell* getCell(CellCoordinates TestCoords) const;
     GridCell* addCell(CellCoordinates TargetCoords);
 

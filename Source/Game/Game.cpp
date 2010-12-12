@@ -1,3 +1,21 @@
+/* Copyright 2010 Kenneth Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
+
 #include <Game.h>
 
 #include <Temporal.h>
@@ -5,6 +23,7 @@
 #include <Tree.h>
 #include <Geology.h>
 #include <PathManager.h>
+#include <Cell.h>
 
 
 DECLARE_SINGLETON(Game)
@@ -16,7 +35,8 @@ bool Game::Init()
 
 	MainMap = new Map();
 	MainMap->Init();
-	MainMap->Generate(MapGeology);
+
+	BuildMapChunk(0, 0, 3, 3);
 
 	Path = new PathManager();
 	Path->Init();
@@ -36,6 +56,39 @@ Game::Game()
 Game::~Game()
 {
 
+}
+
+bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
+{
+    int16_t SizeX = X + Width;
+    int16_t SizeY = Y + Height;
+
+    // Create and add Cells with shape and material data
+    for (int32_t x = X; x < SizeX; x++)
+    {
+        for (int32_t y = Y; y < SizeY; y++)
+        {
+            MapGeology->GenerateCellHeight(x, y, 2.0, 0.4);
+
+            for (int16_t z = MapGeology->getCellBottomZLevel() - 1; z <= MapGeology->getCellTopZLevel() + 1; z++)
+            {
+                CellCoordinates TargetCellCoordinates = CellCoordinates(x, y, z);
+                Cell* NewCell = new Cell();
+                NewCell->setCellPosition(TargetCellCoordinates);
+
+                MainMap->insertCell(NewCell, TargetCellCoordinates);
+                NewCell->LoadCellData(MapGeology);
+            }
+        }
+    }
+
+    // Initialize Faces for the cells
+    for(std::map<uint64_t, Cell*>::iterator CellIterator = MainMap->getCellMap()->begin() ; CellIterator != MainMap->getCellMap()->end(); ++CellIterator )
+    {
+        CellIterator->second->InitializeCell(MainMap);
+    }
+
+    return true;
 }
 
 bool Game::Run()

@@ -1,9 +1,29 @@
+/* Copyright 2010 Kenneth Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
+
 #include <Geology.h>
 
 #include <DataManager.h>
 #include <Random.h>
 #include <Coordinates.h>
 #include <math.h>
+
+#include <boost/functional/hash.hpp>
 
 
 Geology::Geology()
@@ -70,14 +90,14 @@ void Geology::GenerateCellHeight(int32_t X, int32_t Y, float heightScale, float 
         Seeded[CELLEDGESIZE][y] = true;
     }
 
-
     /* initialize random number generator */
+
+    boost::hash< std::pair< int32_t, int32_t > > CoordinateHash;
+    int32_t Hash = CoordinateHash(std::make_pair(X, Y));
+
     RandGenerator->Seed(MasterSeed);
+    int32_t FinalSeed = RandGenerator->Roll(0, 0x7fffffff) ^ Hash;
 
-    int32_t SecondSeed = RandGenerator->Roll(0, 0x7fffffff);
-    RandGenerator->Seed(SecondSeed);
-
-    int32_t FinalSeed = RandGenerator->Roll(0, 0x7fffffff);
     RandGenerator->Seed(FinalSeed);
 
 
@@ -117,7 +137,7 @@ void Geology::GenerateCellHeight(int32_t X, int32_t Y, float heightScale, float 
     Height[0][CELLEDGESIZE] = 0.0;
     Height[CELLEDGESIZE][CELLEDGESIZE] = 0.0;
 
-    CellTopZ = CellBottomZ = 0;
+    CellTopZ = CellBottomZ = Height[0][0];
 
     /* Now we add ever-increasing detail based on the "diamond" seeded
        values. We loop over stride, which gets cut in half at the
@@ -151,7 +171,7 @@ void Geology::GenerateCellHeight(int32_t X, int32_t Y, float heightScale, float 
 			    if (!Seeded[x][y])
 			    {
 			        float Average = (Height[x - stride][y - stride] + Height[x - stride][y + stride] + Height[x + stride][y - stride] + Height[x + stride][y + stride]) * 0.25;
-                    float RandomFactor = scale * RandGenerator->Roll(-0.5f, 0.5f);
+                    float RandomFactor = scale * RandGenerator->Roll(-1.0f, 1.0f);
 
                     Height[x][y] = RandomFactor + Average;
 
@@ -240,21 +260,13 @@ int16_t Geology::getRockTypeAtCoordinates(MapCoordinates Target)
         return INVALID_INDEX;
     }
 
-    if (Target.Z == 3)
-    {
-        return INVALID_INDEX;
-    }
-    if (Target.Z == 2)
-    {
-        return RockType2;
-    }
-    if (Target.Z == 1)
+    if (Target.Z > 0)
     {
         return RockType1;
     }
-    if (Target.Z == 0)
+    if (Target.Z < 0)
     {
-        return RockType0;
+        return RockType2;
     }
     return RockType0;
 }

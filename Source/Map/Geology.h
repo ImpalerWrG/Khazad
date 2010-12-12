@@ -15,6 +15,22 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
+
+/*------------------------GEOLOGY---------------------------
+
+Geology is responsible for creating and Holding data about the
+still un-initialized parts of the map, both deep underground and
+beyond the embark area and then making that data available on request
+through efficient run-time procedural generation.
+
+Generation is done at the Cell level by first calling for Generation of
+the X and Y Cell coordinate and then querrying the individuals blocks.
+
+All data must be generated from the Master Seed in combination with
+Coordinate data to ensure reproducability of the map.*/
+
+// TODO
+
 #ifndef GEOLOGY__HEADER
 #define GEOLOGY__HEADER
 
