@@ -6,6 +6,7 @@
 #include <DataManager.h>
 #include <Renderer.h>
 #include <Geology.h>
+#include <TextureManager.h>
 
 
 Cell::Cell()
@@ -18,7 +19,7 @@ Cell::Cell()
     {
         for(uint8_t j = 0; j < CELLEDGESIZE; j++)
         {
-            CubeShapeTypes[i][j] = INVALID_INDEX;
+            CubeShapeTypes[i][j] = NUM_TILESHAPES;
             CubeMaterialTypes[i][j] = INVALID_INDEX;
             CubeSurfaceTypes[i][j] = INVALID_INDEX;
             LiquidLevel[i][j] = 0;
@@ -65,7 +66,6 @@ void Cell::setCellPosition(CellCoordinates Coordinates)
 void Cell::LoadCellData(Geology* MapGeology)
 {
     CubeCoordinates TargetCubeCoordinates = CubeCoordinates(0, 0);
-    static int16_t WallID = DATA->getLabelIndex("TILESHAPE_WALL");
     static int16_t RoughWallID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
 
 
@@ -73,14 +73,23 @@ void Cell::LoadCellData(Geology* MapGeology)
     {
         for (TargetCubeCoordinates.Y = 0; TargetCubeCoordinates.Y < CELLEDGESIZE; TargetCubeCoordinates.Y += 1)
         {
-            int16_t MaterialType = MapGeology->getRockTypeAtCoordinates(TranslateCubeToMap(TargetCubeCoordinates));
+            TileShape Shape = MapGeology->getTileShapeAtCoordinates(TargetCubeCoordinates, thisCellCoordinates.Z);
 
-            setCubeMaterial(TargetCubeCoordinates, MaterialType);
-
-            if (MaterialType != INVALID_INDEX)
+            if (Shape != TILESHAPE_EMPTY)
             {
-                setCubeShape(TargetCubeCoordinates, WallID);
-                setCubeSurface(TargetCubeCoordinates, RoughWallID);
+                int16_t MaterialType = MapGeology->getRockTypeAtCoordinates(TargetCubeCoordinates, thisCellCoordinates.Z);
+
+                setCubeMaterial(TargetCubeCoordinates, MaterialType);
+                if (MaterialType != INVALID_INDEX)
+                {
+                    setCubeShape(TargetCubeCoordinates, Shape);
+                    setCubeSurface(TargetCubeCoordinates, RoughWallID);
+                }
+            }
+            else
+            {
+                setCubeShape(TargetCubeCoordinates, Shape);
+                setCubeMaterial(TargetCubeCoordinates, INVALID_INDEX);
             }
         }
     }
@@ -378,12 +387,12 @@ bool Cell::DrawSlope(CubeCoordinates Coordinates)
 }
 */
 
-void Cell::setCubeShape(CubeCoordinates Coordinates, int16_t TileShape)
+void Cell::setCubeShape(CubeCoordinates Coordinates, TileShape NewShape)
 {
-    if (TileShape != CubeShapeTypes[Coordinates.X][Coordinates.Y])
+    if (NewShape != CubeShapeTypes[Coordinates.X][Coordinates.Y])
     {
-        CubeShapeTypes[Coordinates.X][Coordinates.Y] = TileShape;
-        setCubeSolid(Coordinates, !DATA->getTileShapeData(TileShape)->isOpen());
+        CubeShapeTypes[Coordinates.X][Coordinates.Y] = NewShape;
+        setCubeSolid(Coordinates, NewShape == TILESHAPE_WALL);
         setNeedsRedraw(true);
     }
 }
@@ -397,7 +406,7 @@ void Cell::BuildFaceData()
     {
         for (TargetCubeCoordinates.Y = 0; TargetCubeCoordinates.Y < CELLEDGESIZE; TargetCubeCoordinates.Y += 1)
         {
-            int16_t CubeShape = getCubeShape(TargetCubeCoordinates);
+            TileShape CubeShape = getCubeShape(TargetCubeCoordinates);
             int16_t CubeMaterial = getCubeMaterial(TargetCubeCoordinates);
             int16_t CubeSurface = getCubeSurface(TargetCubeCoordinates);
 
@@ -427,8 +436,37 @@ void Cell::BuildFaceData()
             {
                 setActive(true);
             }
+
+            if (CubeShape > TILESHAPE_EMPTY && CubeShape < TILESHAPE_WALL)
+            {
+                addSlope(TargetCubeCoordinates, (TileShape) CubeShape);
+            }
         }
     }
+}
+
+void Cell::BuildStaticGeometry()
+{
+    char buffer[64];
+    sprintf(buffer, "Cell%i-%i-%i",  thisCellCoordinates.X, thisCellCoordinates.Y, thisCellCoordinates.Z);
+
+    Ogre::StaticGeometry* CellGeometry;
+
+    if (!RENDERER->getSceneManager()->hasStaticGeometry(buffer))
+    {
+        CellGeometry = RENDERER->getSceneManager()->createStaticGeometry(buffer);
+        CellGeometry->setCastShadows(false);
+    }
+    else
+    {
+        CellGeometry = RENDERER->getSceneManager()->getStaticGeometry(buffer);
+        CellGeometry->destroy();
+    }
+
+    CellGeometry->addSceneNode(CellSceneNode);
+
+    CellSceneNode->setVisible(false);
+    CellGeometry->build();
 }
 
 /*
@@ -660,6 +698,20 @@ Face* Cell::addFace(CubeCoordinates Coordinates, Direction DirectionType)
             return Faces.find(Key)->second;
         }
     }
+}
+
+void Cell::addSlope(CubeCoordinates Coordinates, TileShape NewShape)
+{
+    Ogre::SceneNode* NewSlopeNode = CellSceneNode->createChildSceneNode();
+    NewSlopeNode->setPosition(Coordinates.X - (CELLEDGESIZE / 2) + HALFCUBE, Coordinates.Y - (CELLEDGESIZE / 2) + HALFCUBE, 0);
+
+    char buffer[64];
+    sprintf(buffer, "Slope%i", (uint16_t) NewShape);
+
+    Ogre::Entity* NewSlope = RENDERER->getSceneManager()->createEntity(buffer);
+    NewSlope->setMaterial(TEXTURE->getOgreMaterial(getCubeMaterial(Coordinates), getCubeSurface(Coordinates)));
+
+    NewSlopeNode->attachObject(NewSlope);
 }
 
 Ogre::Vector3 Cell::getCubePosition(CubeCoordinates Coordinates)

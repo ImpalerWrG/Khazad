@@ -63,7 +63,8 @@ public:
     void GenerateCellEdge(float X, float Y, float heightScale = 1.0, float Roughness = 0.5);
     void GenerateCellHeight(int32_t X, int32_t Y, float heightScale = 1.0, float Roughness = 0.5);
 
-    int16_t getRockTypeAtCoordinates(MapCoordinates Target);
+    int16_t getRockTypeAtCoordinates(CubeCoordinates Target, int32_t Zlevel);
+    TileShape getTileShapeAtCoordinates(CubeCoordinates Target, int32_t Zlevel);
 
     int16_t getCellBottomZLevel()  { return CellBottomZ; }
     int16_t getCellTopZLevel()     { return CellTopZ; }

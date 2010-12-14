@@ -31,10 +31,10 @@ KhazadGrid::KhazadGrid(Map* TargetMap)
             {
                 for (TargetCubeCoords.Y = 0; TargetCubeCoords.Y < CELLEDGESIZE; TargetCubeCoords.Y++)
                 {
-                    int16_t TileShapeID = TargetCell->getCubeShape(TargetCubeCoords);
+                    TileShape TileShapeID = TargetCell->getCubeShape(TargetCubeCoords);
                     uint32_t Flags = 0;
 
-                    if (TileShapeID == FLOOR_ID || TileShapeID == RAMP_ID || TileShapeID == STAIR_ID || TileShapeID == STAIRDOWN_ID)
+                    if (TileShapeID == TILESHAPE_FLOOR)
                     {
                         //Flags |= (1 << (int) DIRECTION_NONE);
                         for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
@@ -49,7 +49,7 @@ KhazadGrid::KhazadGrid(Map* TargetMap)
                                 continue;
                             }
 
-                            int16_t AdjacentTileShape = TargetMap->getCubeShape(AdjacentTileCoords);
+                            TileShape AdjacentTileShape = TargetMap->getCubeShape(AdjacentTileCoords);
 
                             if (AdjacentTileShape == FLOOR_ID || AdjacentTileShape == RAMP_ID || AdjacentTileShape == STAIR_ID || AdjacentTileShape == STAIRDOWN_ID)
                             {

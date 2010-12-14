@@ -42,17 +42,15 @@ public:
 
     void DrawCellCage();
 
-    //bool Draw(CubeCoordinates Coordinates);
-    //bool DrawFaces(CubeCoordinates Coordinates);
-    //bool DrawSlope(CubeCoordinates Coordinates);
     void BuildFaceData();
+    void BuildStaticGeometry();
 
     Ogre::Vector3 getCubePosition(CubeCoordinates Coordinates);
     uint16_t TranslateCubeToIndex(CubeCoordinates Coordinates);
     MapCoordinates TranslateCubeToMap(CubeCoordinates Coordinates);
 
-    void setCubeShape(CubeCoordinates Coordinates, int16_t TileShape);
-    inline int16_t getCubeShape(CubeCoordinates Coordinates) const             { return CubeShapeTypes[Coordinates.X][Coordinates.Y]; }
+    void setCubeShape(CubeCoordinates Coordinates, TileShape NewShape);
+    inline TileShape getCubeShape(CubeCoordinates Coordinates) const             { return CubeShapeTypes[Coordinates.X][Coordinates.Y]; }
 
     void setCubeMaterial(CubeCoordinates Coordinates, int16_t MaterialID)      { CubeMaterialTypes[Coordinates.X][Coordinates.Y] = MaterialID; }
     inline int16_t getCubeMaterial(CubeCoordinates Coordinates) const          { return CubeMaterialTypes[Coordinates.X][Coordinates.Y]; }
@@ -61,7 +59,7 @@ public:
     inline int16_t getCubeSurface(CubeCoordinates Coordinates) const           { return CubeSurfaceTypes[Coordinates.X][Coordinates.Y]; }
 
     bool isCubeSloped(CubeCoordinates Coordinates);
-
+    void addSlope(CubeCoordinates Coordinates, TileShape NewShape);
 
     inline bool isCubeHidden(CubeCoordinates Coordinates)                         { return Hidden.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
     inline void setCubeHidden(CubeCoordinates Coordinates, bool NewValue)         { Hidden.set(((Coordinates.X * CELLEDGESIZE) + Coordinates.Y), NewValue); }
@@ -140,7 +138,7 @@ protected:
     uint16_t TriangleCount;
 
     // Data specific to each Cube
-    int16_t CubeShapeTypes[CELLEDGESIZE][CELLEDGESIZE];
+    TileShape CubeShapeTypes[CELLEDGESIZE][CELLEDGESIZE];
     int16_t CubeMaterialTypes[CELLEDGESIZE][CELLEDGESIZE];
     int16_t CubeSurfaceTypes[CELLEDGESIZE][CELLEDGESIZE];
 

@@ -87,6 +87,7 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
     for(std::map<uint64_t, Cell*>::iterator CellIterator = MainMap->getCellMap()->begin() ; CellIterator != MainMap->getCellMap()->end(); ++CellIterator )
     {
         CellIterator->second->InitializeCell(MainMap);
+        CellIterator->second->BuildStaticGeometry();
     }
 
     return true;

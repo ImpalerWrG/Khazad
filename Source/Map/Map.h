@@ -44,8 +44,6 @@ public:
     bool isInitialized()        { return Initialized; }
     bool isMapLoaded()          { return MapLoaded; }
 
-    void CreateManualObjects();
-
 	Cell* getCell(CellCoordinates) const;
 	Cell* getCubeOwner(MapCoordinates) const;
 
@@ -58,8 +56,8 @@ public:
 
     bool isCubeSloped(MapCoordinates Coordinates) const;
 
-    void setCubeShape(MapCoordinates Coordinates, int16_t TileShape);
-    int16_t getCubeShape(MapCoordinates Coordinates) const;
+    void setCubeShape(MapCoordinates Coordinates, TileShape NewShape);
+    TileShape getCubeShape(MapCoordinates Coordinates) const;
 
     void setCubeMaterial(MapCoordinates Coordinates, int16_t MaterialID);
     inline int16_t getCubeMaterial(MapCoordinates Coordinates) const;

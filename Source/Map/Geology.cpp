@@ -320,26 +320,44 @@ void Geology::GenerateCellHeight(int32_t X, int32_t Y, float heightScale, float 
     }
 }
 
-int16_t Geology::getRockTypeAtCoordinates(MapCoordinates Target)
+int16_t Geology::getRockTypeAtCoordinates(CubeCoordinates Target, int32_t Zlevel)
 {
     static uint16_t RockType0 = DATA->getLabelIndex("MATERIAL_GRANITE");
     static uint16_t RockType1 = DATA->getLabelIndex("MATERIAL_SANDSTONE");
     static uint16_t RockType2 = DATA->getLabelIndex("MATERIAL_LIMESTONE");
 
-    CubeCoordinates Cube = CubeCoordinates(Target);
-
-    if (Target.Z  > Height[Cube.X][Cube.Y])
+    if (Zlevel > Height[Target.X][Target.Y])
     {
         return INVALID_INDEX;
     }
 
-    if (Target.Z > 0)
+    if (Zlevel > 4)
     {
         return RockType1;
     }
-    if (Target.Z < 0)
+    if (Zlevel > 2)
     {
         return RockType2;
     }
     return RockType0;
+}
+
+TileShape Geology::getTileShapeAtCoordinates(CubeCoordinates CubeTarget, int32_t Zlevel)
+{
+    float Remainder;
+    float Fraction = 3.0;
+
+    Remainder = Height[CubeTarget.X][CubeTarget.Y] - ((float) Zlevel);
+    int8_t SWCornerHeight = roundf(min(max(Remainder, 0.0f), 1.0f) * Fraction);
+
+    Remainder = Height[CubeTarget.X + 1][CubeTarget.Y] - ((float) Zlevel);
+    int8_t SECornerHeight = roundf(min(max(Remainder, 0.0f), 1.0f) * Fraction);
+
+    Remainder = Height[CubeTarget.X][CubeTarget.Y + 1] - ((float) Zlevel);
+    int8_t NWCornerHeight = roundf(min(max(Remainder, 0.0f), 1.0f) * Fraction);
+
+    Remainder = Height[CubeTarget.X + 1][CubeTarget.Y + 1] - ((float) Zlevel);
+    int8_t NECornerHeight = roundf(min(max(Remainder, 0.0f), 1.0f) * Fraction);
+
+    return getTileShapeFromCornerHeight(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight);
 }
