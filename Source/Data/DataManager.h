@@ -91,10 +91,6 @@ public:
     uint32_t getNumSurfaceTypes()                              { return SurfaceTypes->DataEntries.size(); }
     SurfaceTypeDataLibrary* getSurfaceTypeDataLibrary()      { return SurfaceTypes; }
 
-    TileShapeData* getTileShapeData(TILESHAPE_INDEX Index)            { return TileShapes->DataEntries[Index]; }
-    uint32_t getNumTileShape()                                 { return TileShapes->DataEntries.size(); }
-    TileShapeDataLibrary* getTileShapeDataLibrary()          { return TileShapes; }
-
     TreeData* getTreeData(uint32_t Index)                      { return Trees->DataEntries[Index]; }
     uint32_t getNumTrees()                                     { return Trees->DataEntries.size(); }
     TreeDataLibrary* getTreeDataLibrary()                    { return Trees; }
@@ -128,7 +124,6 @@ protected:
     MaterialDataLibrary* Materials;
     MaterialClassDataLibrary* MaterialClasses;
     SurfaceTypeDataLibrary* SurfaceTypes;
-    TileShapeDataLibrary* TileShapes;
     TreeDataLibrary* Trees;
     BuildingDataLibrary* Buildings;
 };

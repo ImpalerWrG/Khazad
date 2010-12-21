@@ -6,7 +6,6 @@
 	<File Path="XML\Materials.xml"/>
 	<File Path="XML\MaterialClasses.xml"/>
 	<File Path="XML\SurfaceTypes.xml"/>
-	<File Path="XML\TileShapes.xml"/>
 	<File Path="XML\Trees.xml"/>
 	<File Path="XML\Buildings.xml"/>
 	<File Path="XML\Ores.xml"/>

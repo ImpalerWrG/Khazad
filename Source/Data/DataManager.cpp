@@ -45,9 +45,6 @@ DataManager::DataManager()
     SurfaceTypes = new SurfaceTypeDataLibrary();
     GlobalDataTypeMap["SurfaceType"] = SurfaceTypes;
 
-    TileShapes = new TileShapeDataLibrary();
-    GlobalDataTypeMap["TileShape"] = TileShapes;
-
     Trees = new TreeDataLibrary();
     GlobalDataTypeMap["Tree"] = Trees;
 

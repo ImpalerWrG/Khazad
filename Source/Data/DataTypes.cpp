@@ -629,61 +629,6 @@ DataBase* FontDataLibrary::LoadElement(TiXmlElement* Element)
 	}
 }
 
-// TILE SHAPE
-
-TileShapeData::TileShapeData()
-{
-	Open = false;
-
-	ModelID = INVALID_INDEX;
-	ModelLabel = "NONE";
-}
-
-TileShapeData::~TileShapeData(){}
-
-bool TileShapeData::Load(TiXmlElement* Entry, uint32_t Index)
-{
-	if(Entry)
-	{
-		XML->QueryBoolValue(Entry, "Open", "bool", Open);
-		XML->QueryTextValue(Entry, "Model", "label", ModelLabel);
-
-		DataBase::Load(Entry, Index);
-		return true;
-	}
-	return false;
-}
-
-bool TileShapeData::PostProcessing()
-{
-	ModelID = DATA->getLabelIndex(ModelLabel);
-	return true;
-}
-
-DataBase* TileShapeDataLibrary::LoadElement(TiXmlElement* Element)
-{
-	TileShapeData* NewData = new TileShapeData();
-	if (NewData->Load(Element, DataEntries.size()))
-	{
-		DataEntries.push_back(NewData);
-		return NewData;
-	}
-	else  // Error durring loading delete the Data object
-	{
-		printf("Failed to Load Data object");
-		delete NewData;
-		return NULL;
-	}
-}
-
-void TileShapeDataLibrary::PostProcessDataClass()
-{
-	for(uint16_t i = 0; i < DataEntries.size(); i++)
-	{
-		DataEntries[i]->PostProcessing();
-	}
-}
-
 // TREE
 
 TreeData::TreeData(){}

@@ -20,7 +20,6 @@ typedef unsigned short TILEGROUP_INDEX;
 typedef unsigned short MATERIALCLASS_INDEX;
 typedef unsigned short MATERIAL_INDEX;
 typedef unsigned short FONT_INDEX;
-typedef unsigned short TILESHAPE_INDEX;
 typedef unsigned short TREE_INDEX;
 typedef unsigned short BUILDING_INDEX;
 
@@ -453,39 +452,6 @@ public:
     void PostProcessDataClass() {};
 
     std::vector<FontData*> DataEntries;
-};
-
-class TileShapeData: public DataBase
-{
-
-public:
-    TileShapeData();
-    ~TileShapeData();
-
-    bool Load(TiXmlElement* Element, uint32_t Index);
-    bool PostProcessing();
-
-    bool isOpen()               { return Open; }
-
-    int16_t getModelID()         { return ModelID; }
-
-protected:
-
-    bool Open;
-
-    int16_t ModelID;
-    string ModelLabel;
-};
-
-class TileShapeDataLibrary: public DataLibraryBase
-{
-
-public:
-
-    DataBase* LoadElement(TiXmlElement* Element);
-    void PostProcessDataClass();
-
-    std::vector<TileShapeData*> DataEntries;
 };
 
 class TreeData: public DataBase
