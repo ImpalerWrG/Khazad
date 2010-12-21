@@ -5,7 +5,6 @@
 #include <Actor.h>
 #include <DataManager.h>
 #include <Renderer.h>
-#include <Geology.h>
 #include <TextureManager.h>
 
 
@@ -19,7 +18,7 @@ Cell::Cell()
     {
         for(uint8_t j = 0; j < CELLEDGESIZE; j++)
         {
-            CubeShapeTypes[i][j] = NUM_TILESHAPES;
+            CubeShapeTypes[i][j] = TILESHAPE_EMPTY;
             CubeMaterialTypes[i][j] = INVALID_INDEX;
             CubeSurfaceTypes[i][j] = INVALID_INDEX;
             LiquidLevel[i][j] = 0;
@@ -38,7 +37,6 @@ Cell::Cell()
 
 Cell::~Cell()
 {
-    //ParentMap->ChangeCellCount(-1);
 
 }
 
@@ -61,38 +59,6 @@ void Cell::setCellPosition(CellCoordinates Coordinates)
 
     CellSceneNode->setPosition(x, y, z);
     thisCellCoordinates = Coordinates;
-}
-
-void Cell::LoadCellData(Geology* MapGeology)
-{
-    CubeCoordinates TargetCubeCoordinates = CubeCoordinates(0, 0);
-    static int16_t RoughWallID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
-
-
-    for (TargetCubeCoordinates.X = 0; TargetCubeCoordinates.X < CELLEDGESIZE; TargetCubeCoordinates.X += 1)
-    {
-        for (TargetCubeCoordinates.Y = 0; TargetCubeCoordinates.Y < CELLEDGESIZE; TargetCubeCoordinates.Y += 1)
-        {
-            TileShape Shape = MapGeology->getTileShapeAtCoordinates(TargetCubeCoordinates, thisCellCoordinates.Z);
-
-            if (Shape != TILESHAPE_EMPTY)
-            {
-                int16_t MaterialType = MapGeology->getRockTypeAtCoordinates(TargetCubeCoordinates, thisCellCoordinates.Z);
-
-                setCubeMaterial(TargetCubeCoordinates, MaterialType);
-                if (MaterialType != INVALID_INDEX)
-                {
-                    setCubeShape(TargetCubeCoordinates, Shape);
-                    setCubeSurface(TargetCubeCoordinates, RoughWallID);
-                }
-            }
-            else
-            {
-                setCubeShape(TargetCubeCoordinates, Shape);
-                setCubeMaterial(TargetCubeCoordinates, INVALID_INDEX);
-            }
-        }
-    }
 }
 
 bool Cell::Update()
@@ -163,228 +129,6 @@ void Cell::Render(CameraOrientation CurrentOrientation)
 }
 
 
-bool Cell::DrawFaces(CubeCoordinates Coordinates)
-{
-    // cached quads
-    static const vertex vertices[6][4] =
-    {
-        // position, uv texture coords, normal vector - see vertex in Renderer.h
-        // DIRECTION_BOTTOM
-        vertex(-0.5f,-0.5f,-0.5f,  0.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
-        vertex( 0.5f,-0.5f,-0.5f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
-        vertex( 0.5f, 0.5f,-0.5f,  1.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
-        vertex(-0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
-        // DIRECTION_TOP
-        vertex(-0.5f,-0.5f, 0.5f,  0.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
-        vertex( 0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f ),
-        vertex( 0.5f, 0.5f, 0.5f,  1.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
-        vertex(-0.5f, 0.5f, 0.5f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f ),
-
-        // DIRECTION_NORTH
-        vertex( 0.5f,-0.5f, 0.5f,  0.0f, 1.0f,  0.0f,-1.0f, 0.0f ),
-        vertex(-0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  0.0f,-1.0f, 0.0f ),
-        vertex(-0.5f,-0.5f,-0.5f,  1.0f, 0.0f,  0.0f,-1.0f, 0.0f ),
-        vertex( 0.5f,-0.5f,-0.5f,  0.0f, 0.0f,  0.0f,-1.0f, 0.0f ),
-        // DIRECTION_SOUTH
-        vertex(-0.5f, 0.5f, 0.5f,  0.0f, 1.0f,  0.0f, 1.0f, 0.0f ),
-        vertex( 0.5f, 0.5f, 0.5f,  1.0f, 1.0f,  0.0f, 1.0f, 0.0f ),
-        vertex( 0.5f, 0.5f,-0.5f,  1.0f, 0.0f,  0.0f, 1.0f, 0.0f ),
-        vertex(-0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  0.0f, 1.0f, 0.0f ),
-
-        // Direction_WEST
-        vertex(-0.5f,-0.5f, 0.5f,  0.0f, 1.0f, -1.0f, 0.0f, 0.0f ),
-        vertex(-0.5f, 0.5f, 0.5f,  1.0f, 1.0f, -1.0f, 0.0f, 0.0f ),
-        vertex(-0.5f, 0.5f,-0.5f,  1.0f, 0.0f, -1.0f, 0.0f, 0.0f ),
-        vertex(-0.5f,-0.5f,-0.5f,  0.0f, 0.0f, -1.0f, 0.0f, 0.0f ),
-        // DIRECTION_EAST
-        vertex( 0.5f, 0.5f, 0.5f,  0.0f, 1.0f,  1.0f, 0.0f, 0.0f ),
-        vertex( 0.5f,-0.5f, 0.5f,  1.0f, 1.0f,  1.0f, 0.0f, 0.0f ),
-        vertex( 0.5f,-0.5f,-0.5f,  1.0f, 0.0f,  1.0f, 0.0f, 0.0f ),
-        vertex( 0.5f, 0.5f,-0.5f,  0.0f, 0.0f,  1.0f, 0.0f, 0.0f )
-    };
-
-    // work vector ptr
-    vector<vertex>* TextureVector;
-
-    for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType, ++DirectionType)
-    {
-        if(isCubeSolid(Coordinates))
-        {
-            if(DirectionType == DIRECTION_DOWN)
-            {
-                continue;
-            }
-        }
-
-        if (DirectionType == DIRECTION_DOWN && isCubeSloped(Coordinates))
-        {
-            continue; // No bottom faces underneath slopes
-        }
-
-        MapCoordinates AdjacentCubeCoordinates = TranslateCubeToMap(Coordinates);
-        AdjacentCubeCoordinates.TranslateMapCoordinates(DirectionType);
-
-        if (DirectionType != DIRECTION_DOWN && !RENDERER->isCubeDrawn(AdjacentCubeCoordinates))
-        {
-            continue;
-        }
-
-        Face* TargetFace = getFace(Coordinates, DirectionType);
-        if (TargetFace != NULL)
-        {
-            int16_t FaceMaterial = getFaceMaterialType(Coordinates, DirectionType);
-            int16_t FaceSurface = getFaceSurfaceType(Coordinates, DirectionType);
-            uint32_t Texture = TEXTURE->MapTexture(FaceMaterial, TEXTURE->PickImageTexture(FaceMaterial, FaceSurface));
-
-            {
-                if (!Geometry.count(Texture))
-                {
-                    TextureVector = new vector<vertex>;
-                    Geometry[Texture] = TextureVector;
-                }
-                else
-                {
-                    TextureVector = Geometry[Texture];
-                }
-
-                vertex v3 = vertices[DirectionType][3];            v3.translate((float) Coordinates.X, (float) Coordinates.Y);
-                vertex v2 = vertices[DirectionType][2];            v2.translate((float) Coordinates.X, (float) Coordinates.Y);
-                vertex v1 = vertices[DirectionType][1];            v1.translate((float) Coordinates.X, (float) Coordinates.Y);
-                vertex v0 = vertices[DirectionType][0];            v0.translate((float) Coordinates.X, (float) Coordinates.Y);
-
-                TextureVector->push_back(v3);
-                TextureVector->push_back(v1);
-                TextureVector->push_back(v0);
-
-                TextureVector->push_back(v3);
-                TextureVector->push_back(v2);
-                TextureVector->push_back(v1);
-            }
-        }
-    }
-
-    if (getLiquidLevel(Coordinates) != 0)
-    {
-        int16_t LiquidMaterial;
-        int16_t LiquidSurface = DATA->getLabelIndex("SURFACETYPE_LIQUID");
-
-        if (getLiquidType(Coordinates))
-        {
-            LiquidMaterial = DATA->getLabelIndex("MATERIAL_LAVA");
-        }
-        else
-        {
-            LiquidMaterial = DATA->getLabelIndex("MATERIAL_WATER");
-        }
-        uint32_t Texture = TEXTURE->MapTexture(LiquidMaterial,  TEXTURE->PickImageTexture(LiquidMaterial, LiquidSurface));
-
-        if (!Geometry.count(Texture))
-        {
-            TextureVector = new vector<vertex>;
-            Geometry[Texture] = TextureVector;
-        }
-        else
-        {
-            TextureVector = Geometry[Texture];
-        }
-
-        vertex v3 = vertices[DIRECTION_UP][3];            v3.translate((float) Coordinates.X, (float) Coordinates.Y);
-        vertex v2 = vertices[DIRECTION_UP][2];            v2.translate((float) Coordinates.X, (float) Coordinates.Y);
-        vertex v1 = vertices[DIRECTION_UP][1];            v1.translate((float) Coordinates.X, (float) Coordinates.Y);
-        vertex v0 = vertices[DIRECTION_UP][0];            v0.translate((float) Coordinates.X, (float) Coordinates.Y);
-
-        TextureVector->push_back(v3);
-        TextureVector->push_back(v1);
-        TextureVector->push_back(v0);
-
-        TextureVector->push_back(v3);
-        TextureVector->push_back(v2);
-        TextureVector->push_back(v1);
-    }
-}
-
-
-bool Cell::DrawSlope(CubeCoordinates Coordinates)
-{
-    SlopeIndex surroundings;
-    surroundings.value = 0;
-
-    uint8_t solid;
-    MapCoordinates UnModifiedCoordinates = TranslateCubeToMap(Coordinates);
-
-    // copy surroundings
-    for(Direction TestDirection = COMPASS_DIRECTIONS_START; TestDirection < NUM_COMPASS_DIRECTIONS; ++TestDirection)
-    {
-        // HACK to convert to old direction system used to index the slope model
-        int DirectionNumber;
-
-        switch(TestDirection)
-        {
-            case DIRECTION_NORTH:
-            	 DirectionNumber = 1;
-            	 break;
-            case DIRECTION_SOUTH:
-            	 DirectionNumber = 5;
-            	 break;
-            case DIRECTION_WEST:
-            	 DirectionNumber = 7;
-            	 break;
-            case DIRECTION_EAST:
-            	 DirectionNumber = 3;
-            	 break;
-            case DIRECTION_NORTHWEST:
-            	 DirectionNumber = 0;
-            	 break;
-            case DIRECTION_SOUTHEAST:
-            	 DirectionNumber = 4;
-            	 break;
-            case DIRECTION_NORTHEAST:
-            	 DirectionNumber = 2;
-            	 break;
-            case DIRECTION_SOUTHWEST:
-            	 DirectionNumber = 6;
-            	 break;
-        }
-        // HACK
-
-        MapCoordinates ModifiedCoordinates = UnModifiedCoordinates;
-        ModifiedCoordinates.TranslateMapCoordinates(TestDirection);
-
-        solid = 0;
-        if(MAP->isCubeSolid(ModifiedCoordinates))
-        {
-            solid = 2;
-        }
-        else if (MAP->isCubeSloped(ModifiedCoordinates))
-        {
-            solid = 1;
-        }
-        surroundings.value |= solid << (2 * DirectionNumber); // Bit shift to create slope Index
-    }
-
-    uint32_t Texture = TEXTURE->MapTexture(getCubeMaterial(Coordinates), TEXTURE->PickImageTexture(getCubeMaterial(Coordinates), getCubeSurface(Coordinates)));
-
-    // create output vector if needed
-    // FIXME: should be part of cell?
-    vector <vertex>* VertexTextureVector;
-
-    if(!Geometry.count(Texture))
-    {
-        VertexTextureVector = new vector <vertex>;
-        Geometry[Texture] = VertexTextureVector;
-        VertexTextureVector->reserve(256); // ???
-    }
-    else
-    {
-        VertexTextureVector = Geometry[Texture];
-    }
-
-    // get slope geometry and mix it in
-    vector <vertex>* slopeVetices = MODEL->getSlope(surroundings);
-    MixVertexVectorsOffset(slopeVetices, VertexTextureVector, Coordinates.X, Coordinates.Y);
-
-    return true;
-}
 */
 
 void Cell::setCubeShape(CubeCoordinates Coordinates, TileShape NewShape)
@@ -393,6 +137,7 @@ void Cell::setCubeShape(CubeCoordinates Coordinates, TileShape NewShape)
     {
         CubeShapeTypes[Coordinates.X][Coordinates.Y] = NewShape;
         setCubeSolid(Coordinates, NewShape == TILESHAPE_WALL);
+
         setNeedsRedraw(true);
     }
 }
@@ -410,23 +155,22 @@ void Cell::BuildFaceData()
             int16_t CubeMaterial = getCubeMaterial(TargetCubeCoordinates);
             int16_t CubeSurface = getCubeSurface(TargetCubeCoordinates);
 
-            for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
+            if (CubeShape == TILESHAPE_WALL)
             {
-                TargetMapCoordinates = TranslateCubeToMap(TargetCubeCoordinates);
-                TargetMapCoordinates.TranslateMapCoordinates(DirectionType);
-
-                if (isCubeSolid(TargetCubeCoordinates))
+                for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
                 {
+                    TargetMapCoordinates = TranslateCubeToMap(TargetCubeCoordinates);
+                    TargetMapCoordinates.TranslateMapCoordinates(DirectionType);
+
                     if (ParentMap->isCubeInited(TargetMapCoordinates))
                     {
-                        if (!ParentMap->isCubeSolid(TargetMapCoordinates))
+                        if (ParentMap->getCubeShape(TargetMapCoordinates) == TILESHAPE_EMPTY)
                         {
                             Face* NewFace = addFace(TargetCubeCoordinates, DirectionType);
 
                             NewFace->setFaceMaterialType(CubeMaterial);
 
                             NewFace->setFaceSurfaceType(CubeSurface, DirectionType);
-                            //NewFace->setFaceSurfaceType(CubeSurface, DirectionType);
                         }
                     }
                 }
@@ -738,13 +482,10 @@ uint16_t Cell::TranslateCubeToIndex(CubeCoordinates Coordinates)
     return (Coordinates.X * CELLEDGESIZE) + Coordinates.Y;
 }
 
-bool Cell::isCubeSloped(CubeCoordinates Coordinates) //TODO move data int Shape definitions
+bool Cell::isCubeSloped(CubeCoordinates Coordinates)
 {
-    static int16_t RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
-    static int16_t StairID = DATA->getLabelIndex("TILESHAPE_STAIR");
-
-    int16_t CubeShapeID = getCubeShape(Coordinates);
-    return (CubeShapeID == RampID || CubeShapeID == StairID);
+    TileShape CubeShape = getCubeShape(Coordinates);
+    return (CubeShape > TILESHAPE_EMPTY && CubeShape < TILESHAPE_WALL);
 }
 
 void Cell::DrawCellCage()

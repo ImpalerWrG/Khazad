@@ -12,7 +12,6 @@
 
 class Building;
 class Tree;
-class Geology;
 class Actor;
 
 
@@ -100,7 +99,6 @@ public:
     Face* addFace(CubeCoordinates Coordinates, Direction DirectionType);
 
 
-    void DigChannel(CubeCoordinates Coordinates);
     void DigSlope(CubeCoordinates Coordinates);
     void Dig(CubeCoordinates Coordinates);
 

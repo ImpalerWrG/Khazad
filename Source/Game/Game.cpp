@@ -78,13 +78,13 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
                 NewCell->setCellPosition(TargetCellCoordinates);
 
                 MainMap->insertCell(NewCell, TargetCellCoordinates);
-                NewCell->LoadCellData(MapGeology);
+                MapGeology->LoadCellData(NewCell);
             }
         }
     }
 
     // Initialize Faces for the cells
-    for(std::map<uint64_t, Cell*>::iterator CellIterator = MainMap->getCellMap()->begin() ; CellIterator != MainMap->getCellMap()->end(); ++CellIterator )
+    for (std::map<uint64_t, Cell*>::iterator CellIterator = MainMap->getCellMap()->begin() ; CellIterator != MainMap->getCellMap()->end(); ++CellIterator )
     {
         CellIterator->second->InitializeCell(MainMap);
         CellIterator->second->BuildStaticGeometry();

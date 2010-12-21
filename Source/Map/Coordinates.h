@@ -79,38 +79,6 @@ enum Direction
 inline Direction &operator++ (Direction &OldDirection)      { return OldDirection = Direction(OldDirection + 1); }
 inline Direction &operator-- (Direction &OldDirection)      { return OldDirection = Direction(OldDirection - 1); }
 
-enum TileShape
-{
-    TILESHAPE_EMPTY = 0,
-
-    // 254 implicit ramp shape combinations
-
-    TILESHAPE_WALL = 255,
-    TILESHAPE_FLOOR = 256,
-
-    // Add other tile shapes here but increment NUM
-    NUM_TILESHAPES = 257,
-    TILESHAPE_START = 0
-};
-
-inline TileShape &operator++ (TileShape &OldTileShape)      { return OldTileShape = TileShape(OldTileShape + 1); }
-inline TileShape &operator-- (TileShape &OldTileShape)      { return OldTileShape = TileShape(OldTileShape - 1); }
-
-inline TileShape getTileShapeFromCornerHeight(uint8_t SWCorner, uint8_t SECorner, uint8_t NWCorner, uint8_t NECorner)
-{
-    uint16_t Shape = 0;
-
-    Shape = Shape | (SWCorner << 0);
-
-    Shape = Shape | (SECorner << 2);
-
-    Shape = Shape | (NWCorner << 4);
-
-    Shape = Shape | (NECorner << 6);
-
-    return (TileShape) Shape;
-}
-
 inline Axis AxisFromDirection(Direction DirectionType)
 {
     if (DirectionType < NUM_AXIAL_DIRECTIONS)

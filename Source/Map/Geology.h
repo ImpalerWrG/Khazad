@@ -46,6 +46,9 @@ adjacent Cells initialized later.*/
 
 #include <OgrePlane.h>
 #include <Random.h>
+#include <TileShapes.h>
+
+class Cell;
 
 class Geology
 {
@@ -68,6 +71,8 @@ public:
 
     int16_t getCellBottomZLevel()  { return CellBottomZ; }
     int16_t getCellTopZLevel()     { return CellTopZ; }
+
+    void LoadCellData(Cell* TargetCell);
 
 private:
 

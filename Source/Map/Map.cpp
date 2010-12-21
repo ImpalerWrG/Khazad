@@ -86,23 +86,6 @@ bool Map::insertCell(Cell* NewCell, CellCoordinates TargetCoordinates)
     return false;  // A Cell already exists at that spot
 }
 
-bool Map::initializeMapAtCoordinates(MapCoordinates NewCoords)
-{
-    if (!isCubeInited(NewCoords))
-    {
-        CellCoordinates TargetCellCoordinates = CellCoordinates(NewCoords);
-
-        Cell* NewCell = new Cell();
-        NewCell->setCellPosition(TargetCellCoordinates);
-
-        insertCell(NewCell, TargetCellCoordinates);
-        //NewCell->LoadCellData(GAME->getGeology());
-
-        return true;
-    }
-    return false;
-}
-
 std::map<uint64_t, Cell*>* Map::getCellMap()
 {
     return &Cells;
@@ -484,22 +467,6 @@ void Map::setCubeSolid(MapCoordinates Coordinates, bool NewValue)
     }
 }
 
-void Map::DigChannel(MapCoordinates Coordinates)
-{
-    Dig(Coordinates);
-    setCubeShape(Coordinates, TILESHAPE_EMPTY);
-
-    // reveal tiles around
-    for(Direction DirectionType = COMPASS_DIRECTIONS_START; DirectionType < NUM_COMPASS_DIRECTIONS; ++DirectionType)
-    {
-        setCubeHidden(MapCoordinates(Coordinates, DirectionType), false);
-    }
-
-    Dig(MapCoordinates(Coordinates, DIRECTION_DOWN));
-
-    removeFace(Coordinates, DIRECTION_DOWN);
-}
-
 void Map::DigSlope(MapCoordinates Coordinates)
 {
     static int16_t RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
@@ -512,7 +479,6 @@ void Map::DigSlope(MapCoordinates Coordinates)
         setCubeHidden(MapCoordinates(Coordinates, DirectionType), false);
     }
 
-    DigChannel(MapCoordinates(Coordinates, DIRECTION_UP));
     //setCubeShape(Coordinates, RampID);
 
     setCubeMaterial(Coordinates, getFaceMaterial(Coordinates, DIRECTION_DOWN));

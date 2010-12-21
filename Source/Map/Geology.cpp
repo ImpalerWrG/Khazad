@@ -21,6 +21,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 #include <DataManager.h>
 #include <Random.h>
 #include <Coordinates.h>
+#include <Cell.h>
 #include <math.h>
 
 #include <boost/functional/hash.hpp>
@@ -345,19 +346,58 @@ int16_t Geology::getRockTypeAtCoordinates(CubeCoordinates Target, int32_t Zlevel
 TileShape Geology::getTileShapeAtCoordinates(CubeCoordinates CubeTarget, int32_t Zlevel)
 {
     float Remainder;
-    float Fraction = 3.0;
 
     Remainder = Height[CubeTarget.X][CubeTarget.Y] - ((float) Zlevel);
-    int8_t SWCornerHeight = roundf(min(max(Remainder, 0.0f), 1.0f) * Fraction);
+    int8_t SWCornerHeight = Remainder < 0.0 ? 0 : roundf(min(Remainder, 1.0f) * HEIGHT_FRACTIONS) + 1;
 
     Remainder = Height[CubeTarget.X + 1][CubeTarget.Y] - ((float) Zlevel);
-    int8_t SECornerHeight = roundf(min(max(Remainder, 0.0f), 1.0f) * Fraction);
+    int8_t SECornerHeight = Remainder < 0.0 ? 0 : roundf(min(Remainder, 1.0f) * HEIGHT_FRACTIONS) + 1;
 
     Remainder = Height[CubeTarget.X][CubeTarget.Y + 1] - ((float) Zlevel);
-    int8_t NWCornerHeight = roundf(min(max(Remainder, 0.0f), 1.0f) * Fraction);
+    int8_t NWCornerHeight = Remainder < 0.0 ? 0 : roundf(min(Remainder, 1.0f) * HEIGHT_FRACTIONS) + 1;
 
     Remainder = Height[CubeTarget.X + 1][CubeTarget.Y + 1] - ((float) Zlevel);
-    int8_t NECornerHeight = roundf(min(max(Remainder, 0.0f), 1.0f) * Fraction);
+    int8_t NECornerHeight = Remainder < 0.0 ? 0 : roundf(min(Remainder, 1.0f) * HEIGHT_FRACTIONS) + 1;
 
-    return getTileShapeFromCornerHeight(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight);
+    if (((NECornerHeight <= SECornerHeight) && (NECornerHeight <= NWCornerHeight))  &&  ((SWCornerHeight >= SECornerHeight) && (SWCornerHeight >= NWCornerHeight)))  // Break quad along a NW-SE line
+    {
+        return getTileShapeFromCornerHeight(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, true);
+    }
+    else
+    {
+        return getTileShapeFromCornerHeight(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, true);
+    }
+}
+
+void Geology::LoadCellData(Cell* TargetCell)
+{
+    CellCoordinates TargetCoordinates = TargetCell->getCellCoordinates();
+    CubeCoordinates TargetCubeCoordinates = CubeCoordinates(0, 0);
+
+    static int16_t RoughWallID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
+
+    for (TargetCubeCoordinates.X = 0; TargetCubeCoordinates.X < CELLEDGESIZE; TargetCubeCoordinates.X += 1)
+    {
+        for (TargetCubeCoordinates.Y = 0; TargetCubeCoordinates.Y < CELLEDGESIZE; TargetCubeCoordinates.Y += 1)
+        {
+            TileShape Shape = getTileShapeAtCoordinates(TargetCubeCoordinates, TargetCoordinates.Z);
+
+            if (Shape != TILESHAPE_EMPTY)
+            {
+                int16_t MaterialType = getRockTypeAtCoordinates(TargetCubeCoordinates, TargetCoordinates.Z);
+                TargetCell->setCubeMaterial(TargetCubeCoordinates, MaterialType);
+
+                if (MaterialType != INVALID_INDEX)
+                {
+                    TargetCell->setCubeShape(TargetCubeCoordinates, Shape);
+                    TargetCell->setCubeSurface(TargetCubeCoordinates, RoughWallID);
+                }
+            }
+            else
+            {
+                TargetCell->setCubeShape(TargetCubeCoordinates, Shape);
+                TargetCell->setCubeMaterial(TargetCubeCoordinates, INVALID_INDEX);
+            }
+        }
+    }
 }

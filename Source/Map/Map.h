@@ -23,6 +23,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 #include <Coordinates.h>
 #include <Renderer.h>
+#include <TileShapes.h>
 
 
 class Cell;
@@ -49,7 +50,6 @@ public:
 
     std::map<uint64_t, Cell*>* getCellMap();
     bool insertCell(Cell* NewCell, CellCoordinates TargetCoordinates);
-    bool initializeMapAtCoordinates(MapCoordinates NewCoords);
 
     bool isCubeInited(MapCoordinates) const;
     void setCellNeedsReDraw(CellCoordinates, bool NewValue);
@@ -100,7 +100,6 @@ public:
 
     void ReleaseMap();
 
-    void DigChannel(MapCoordinates Coordinates);
     void DigSlope(MapCoordinates Coordinates);
     void Dig(MapCoordinates Coordinates);
     void Fill(MapCoordinates Coordinates, int16_t MaterialID);
