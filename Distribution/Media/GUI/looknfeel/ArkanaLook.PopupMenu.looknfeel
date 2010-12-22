@@ -1,0 +1,125 @@
+<?xml version="1.0" ?>
+<Falagard>
+    <!--
+    ***************************************************
+        ArkanaLook/PopupMenu
+    ***************************************************
+    -->
+    <WidgetLook name="ArkanaLook/PopupMenu">
+
+      <!-- The Property definitions. These are properties you can set in your layout/code. -->
+      <!-- ******************************************************************************* -->
+
+      <PropertyDefinition name="BorderWidth" initialValue="2" layoutOnWrite="true" />
+
+      <Property name="UnifiedMinSize" value="{{0,40},{0,40}}" />
+      <Property name="WantsMultiClickEvents" value="False" />
+
+      <!-- The Named Area sections. This tells CEGUI where to draw text. -->
+      <!-- ************************************************************* -->
+
+      <NamedArea name="ItemRenderArea">
+            <Area>
+                <Dim type="LeftEdge" >
+                    <ImageDim imageset="ArkanaLook" image="PopupMenuFrameL" dimension="Width">
+                        <DimOperator op="Add">
+                            <PropertyDim name="BorderWidth" />
+                        </DimOperator>
+                    </ImageDim>
+                </Dim>
+                <Dim type="TopEdge" >
+                    <ImageDim imageset="ArkanaLook" image="PopupMenuFrameT" dimension="Height">
+                        <DimOperator op="Add">
+                            <PropertyDim name="BorderWidth" />
+                        </DimOperator>
+                    </ImageDim>
+                </Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim imageset="ArkanaLook" image="PopupMenuFrameR" dimension="Width">
+                                <DimOperator op="Add">
+                                    <PropertyDim name="BorderWidth" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim imageset="ArkanaLook" image="PopupMenuFrameB" dimension="Height">
+                                <DimOperator op="Add">
+                                    <PropertyDim name="BorderWidth" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+      </NamedArea>
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- This section is needed by CEGUI to draw the frame. -->
+      <ImagerySection name="frame">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+               <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner" imageset="ArkanaLook" image="PopupMenuFrameTL" />
+            <Image type="TopRightCorner" imageset="ArkanaLook" image="PopupMenuFrameTR" />
+            <Image type="BottomLeftCorner" imageset="ArkanaLook" image="PopupMenuFrameBL" />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="PopupMenuFrameBR" />
+            <Image type="LeftEdge" imageset="ArkanaLook" image="PopupMenuFrameL" />
+            <Image type="RightEdge" imageset="ArkanaLook" image="PopupMenuFrameR" />
+            <Image type="TopEdge" imageset="ArkanaLook" image="PopupMenuFrameT" />
+            <Image type="BottomEdge" imageset="ArkanaLook" image="PopupMenuFrameB" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- This section is needed by CEGUI to draw the background. -->
+      <ImagerySection name="bg">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge" ><ImageDim imageset="ArkanaLook" image="Conf_PopupMenu_FrameBg" dimension="XPosition" /></Dim>
+               <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_PopupMenu_FrameBg" dimension="YPosition" /></Dim>
+               <Dim type="RightEdge" >
+                  <UnifiedDim scale="1" type="RightEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="Conf_PopupMenu_FrameBg" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="BottomEdge" >
+                  <UnifiedDim scale="1" type="BottomEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="Conf_PopupMenu_FrameBg" dimension="Height" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="PopupMenuFrameBg" />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <StateImagery name="Enabled">
+         <Layer><Section section="bg" /></Layer>
+         <Layer><Section section="frame" /></Layer>
+      </StateImagery>
+      <StateImagery name="Disabled">
+         <Layer><Section section="bg"><Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" /></Section></Layer>
+         <Layer><Section section="frame"><Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" /></Section></Layer>
+      </StateImagery>
+   </WidgetLook>
+</Falagard>
+

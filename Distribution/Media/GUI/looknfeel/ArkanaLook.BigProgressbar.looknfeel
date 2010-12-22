@@ -1,0 +1,116 @@
+<?xml version="1.0" ?>
+
+<Falagard>
+   <!--
+   ***************************************************
+   A Simple arkanalook progressbar.
+   For perfect representation, the size should be 281x42 px.
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/BigProgressbar">
+      <!-- The Property Initialisers. These are properties that are set here. -->
+      <!-- ****************************************************************** -->
+      <Property name="VerticalProgress" value="False" />
+      <Property name="ReversedProgress" value="False" />
+
+      <Property name="UnifiedMinSize" value="{{0,281},{0,42}}" />
+      <Property name="WantsMultiClickEvents" value="False" />
+
+      <!-- The Named Area sections. This tells CEGUI where to draw text. -->
+      <!-- ************************************************************* -->
+
+      <!-- You can configure these borders using the entries in the imageset. -->
+      <NamedArea name="ProgressArea">
+         <Area>
+            <Dim type="LeftEdge" ><ImageDim imageset="ArkanaLook" image="Conf_BigProgressBar" dimension="XPosition" /></Dim>
+            <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_BigProgressBar" dimension="YPosition" /></Dim>
+            <Dim type="Width" ><ImageDim imageset="ArkanaLook" image="Conf_BigProgressBar" dimension="Width" /></Dim>
+            <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="Conf_BigProgressBar" dimension="Height" /></Dim>
+         </Area>
+      </NamedArea>
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- This section is needed by CEGUI to know how to draw the enabled background. -->
+      <ImagerySection name="background_enabled">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width" ><ImageDim imageset="ArkanaLook" image="BigProgressBarEnabledBg" dimension="Width" /></Dim>
+               <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="BigProgressBarEnabledBg" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="BigProgressBarEnabledBg" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This section is needed by CEGUI to know how to draw the disabled background. -->
+      <ImagerySection name="background_disabled">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width" ><ImageDim imageset="ArkanaLook" image="BigProgressBarDisabledBg" dimension="Width" /></Dim>
+               <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="BigProgressBarDisabledBg" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="BigProgressBarDisabledBg" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This section is needed by CEGUI to know how to draw the enabled lighted progress. -->
+      <ImagerySection name="progress_light_enabled" >
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+               <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="BigProgressBarEnabledLight" />
+            <VertFormat type="CentreAligned" />
+            <HorzFormat type="LeftAligned" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This section is needed by CEGUI to know how to draw the disabled lighted progress. -->
+      <ImagerySection name="progress_light_disabled" >
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+               <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="BigProgressBarDisabledLight" />
+            <VertFormat type="CentreAligned" />
+            <HorzFormat type="LeftAligned" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <!-- The background in enabled mode. -->
+      <StateImagery name="Enabled">
+         <Layer><Section section="background_enabled" /></Layer>
+      </StateImagery>
+
+      <!-- The background in disabled mode. -->
+      <StateImagery name="Disabled">
+         <Layer><Section section="background_disabled"></Section></Layer>
+      </StateImagery>
+
+      <!-- The progress light in enabled mode. -->
+      <StateImagery name="EnabledProgress">
+         <Layer><Section section="progress_light_enabled" /></Layer>
+      </StateImagery>
+
+      <!-- The progress light in disabled mode. -->
+      <StateImagery name="DisabledProgress">
+         <Layer><Section section="progress_light_disabled"></Section></Layer>
+      </StateImagery>
+   </WidgetLook>
+</Falagard>
+

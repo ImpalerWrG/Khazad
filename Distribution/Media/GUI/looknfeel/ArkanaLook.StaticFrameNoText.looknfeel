@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+
+<Falagard>
+   <!--
+   ***************************************************
+   This is a frame around widgets, without a title.
+   Mainly used to group widgets in a category.
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/StaticFrameNoText">
+
+      <!-- The Property definitions. These are properties you can set in your layout/code. -->
+      <!-- ******************************************************************************* -->
+
+      <Property name="UnifiedMinSize" value="{{0,24},{0,24}}" />
+      <Property name="WantsMultiClickEvents" value="False" />
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- Draws the frame. -->
+      <!-- - - - - - - - -  -->
+      <ImagerySection name="normal">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner"     imageset="ArkanaLook" image="ActiveWindowTL" />
+            <Image type="TopEdge"           imageset="ArkanaLook" image="ActiveWindowT" />
+            <Image type="TopRightCorner"    imageset="ArkanaLook" image="ActiveWindowTR" />
+            <Image type="RightEdge"         imageset="ArkanaLook" image="ActiveWindowR" />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="ActiveWindowBR" />
+            <Image type="BottomEdge"        imageset="ArkanaLook" image="ActiveWindowB" />
+            <Image type="BottomLeftCorner"  imageset="ArkanaLook" image="ActiveWindowBL" />
+            <Image type="LeftEdge"          imageset="ArkanaLook" image="ActiveWindowL" />
+<!--             <Image type="Background"        imageset="ArkanaLook" image="ButtonNormalBg" /> -->
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- Draws the frame in disabled mode. -->
+      <!-- - - - - - - - - - - - - - - - -   -->
+      <ImagerySection name="disabled">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner"     imageset="ArkanaLook" image="DisabledWindowTL" />
+            <Image type="TopEdge"           imageset="ArkanaLook" image="DisabledWindowT" />
+            <Image type="TopRightCorner"    imageset="ArkanaLook" image="DisabledWindowTR" />
+            <Image type="RightEdge"         imageset="ArkanaLook" image="DisabledWindowR" />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="DisabledWindowBR" />
+            <Image type="BottomEdge"        imageset="ArkanaLook" image="DisabledWindowB" />
+            <Image type="BottomLeftCorner"  imageset="ArkanaLook" image="DisabledWindowBL" />
+            <Image type="LeftEdge"          imageset="ArkanaLook" image="DisabledWindowL" />
+<!--             <Image type="Background"        imageset="ArkanaLook" image="ButtonNormalBg" /> -->
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <!-- Enabled -->
+      <StateImagery name="Enabled">
+         <Layer>
+            <Section section="normal" />
+         </Layer>
+      </StateImagery>
+
+      <!-- Disabled -->
+      <StateImagery name="Disabled">
+         <Layer>
+            <Section section="disabled" />
+         </Layer>
+      </StateImagery>
+
+   </WidgetLook>
+</Falagard>
+

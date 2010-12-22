@@ -1,0 +1,505 @@
+<?xml version="1.0" ?>
+
+<Falagard>
+   <!--
+   ***************************************************
+   This is a frame around widgets, with a title.
+   Mainly used to group widgets in a category.
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/StaticFrame">
+
+      <!-- The Property definitions. These are properties you can set in your layout/code. -->
+      <!-- ******************************************************************************* -->
+
+      <PropertyDefinition name="TextColourNormal" initialValue="FF1B56A0" redrawOnWrite="true" />
+      <PropertyDefinition name="TextColourDisabled" initialValue="FF000000" redrawOnWrite="true" />
+
+      <Property name="UnifiedMinSize" value="{{0,24},{0,24}}" />
+      <Property name="WantsMultiClickEvents" value="False" />
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- Draws the label. -->
+      <!-- - - - - - - - -  -->
+      <ImagerySection name="label">
+         <TextComponent>
+            <Area>
+               <Dim type="LeftEdge"><ImageDim imageset="ArkanaLook" image="Conf_StaticFrame_TextPos" dimension="XPosition" /></Dim>
+               <Dim type="TopEdge"><ImageDim imageset="ArkanaLook" image="Conf_StaticFrame_TextPos" dimension="YPosition" /></Dim>
+               <Dim type="Width"><UnifiedDim scale="1" type="Width" /></Dim>
+               <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <VertFormat type="TopAligned" />
+            <HorzFormat type="LeftAligned" />
+         </TextComponent>
+      </ImagerySection>
+
+      <!-- Draws the frame. -->
+      <!-- - - - - - - - -  -->
+      <ImagerySection name="normal">
+         <!-- The top left edge. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge">
+                  <FontDim type="LineSpacing" padding="0">
+                     <DimOperator op="Divide">
+                        <AbsoluteDim value="2" />
+                     </DimOperator>
+                  </FontDim>
+               </Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="ActiveWindowTL" dimension="Width" /></Dim>
+               <Dim type="Height"><ImageDim imageset="ArkanaLook" image="ActiveWindowTL" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="ActiveWindowTL" />
+         </ImageryComponent>
+         <!-- The left border. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge">
+                  <ImageDim imageset="ArkanaLook" image="ActiveWindowTL" dimension="Height">
+                     <DimOperator op="Add">
+                        <FontDim type="LineSpacing" padding="0">
+                           <DimOperator op="Divide">
+                              <AbsoluteDim value="2" />
+                           </DimOperator>
+                        </FontDim>
+                     </DimOperator>
+                  </ImageDim>
+               </Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="ActiveWindowL" dimension="Width" /></Dim>
+               <Dim type="BottomEdge">
+                  <UnifiedDim scale="1" type="BottomEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="ActiveWindowBL" dimension="Height">
+                           <DimOperator op="Subtract">
+                              <AbsoluteDim value="1" />
+                           </DimOperator>
+                        </ImageDim>
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="ActiveWindowL" />
+            <VertFormat type="Stretched" />
+         </ImageryComponent>
+         <!-- The bottom left edge. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge">
+                  <UnifiedDim scale="1" type="BottomEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="ActiveWindowBL" dimension="Height" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="ActiveWindowBL" dimension="Width" /></Dim>
+               <Dim type="Height"><ImageDim imageset="ArkanaLook" image="ActiveWindowBL" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="ActiveWindowBL" />
+         </ImageryComponent>
+         <!-- The top right edge. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge">
+                  <UnifiedDim scale="1" type="RightEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="ActiveWindowTR" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="TopEdge">
+                  <FontDim type="LineSpacing" padding="0">
+                     <DimOperator op="Divide">
+                        <AbsoluteDim value="2" />
+                     </DimOperator>
+                  </FontDim>
+               </Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="ActiveWindowTR" dimension="Width" /></Dim>
+               <Dim type="Height"><ImageDim imageset="ArkanaLook" image="ActiveWindowTR" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="ActiveWindowTR" />
+         </ImageryComponent>
+         <!-- The right border. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge">
+                  <UnifiedDim scale="1" type="RightEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="ActiveWindowR" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="TopEdge">
+                  <ImageDim imageset="ArkanaLook" image="ActiveWindowTR" dimension="Height">
+                     <DimOperator op="Add">
+                        <FontDim type="LineSpacing" padding="0">
+                           <DimOperator op="Divide">
+                              <AbsoluteDim value="2" />
+                           </DimOperator>
+                        </FontDim>
+                     </DimOperator>
+                  </ImageDim>
+               </Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="ActiveWindowR" dimension="Width" /></Dim>
+               <Dim type="BottomEdge">
+                  <UnifiedDim scale="1" type="BottomEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="ActiveWindowBR" dimension="Height">
+                           <DimOperator op="Subtract">
+                              <AbsoluteDim value="1" />
+                           </DimOperator>
+                        </ImageDim>
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="ActiveWindowR" />
+            <VertFormat type="Stretched" />
+         </ImageryComponent>
+         <!-- The bottom right edge. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge">
+                  <UnifiedDim scale="1" type="RightEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="ActiveWindowTR" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="TopEdge">
+                  <UnifiedDim scale="1" type="BottomEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="ActiveWindowBR" dimension="Height" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="ActiveWindowBR" dimension="Width" /></Dim>
+               <Dim type="Height"><ImageDim imageset="ArkanaLook" image="ActiveWindowBR" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="ActiveWindowBR" />
+         </ImageryComponent>
+         <!-- The top border, first half. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><ImageDim imageset="ArkanaLook" image="ActiveWindowTL" dimension="Width" /></Dim>
+               <Dim type="TopEdge">
+                  <FontDim type="LineSpacing" padding="0">
+                     <DimOperator op="Divide">
+                        <AbsoluteDim value="2" />
+                     </DimOperator>
+                  </FontDim>
+               </Dim>
+               <Dim type="RightEdge"><ImageDim imageset="ArkanaLook" image="Conf_StaticFrame_BorderTL" dimension="Width" /></Dim>
+               <Dim type="Height"><ImageDim imageset="ArkanaLook" image="ActiveWindowT" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="ActiveWindowT" />
+            <HorzFormat type="Stretched" />
+         </ImageryComponent>
+         <!-- The top border, second half. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge">
+                  <ImageDim imageset="ArkanaLook" image="Conf_StaticFrame_TextPos" dimension="XPosition">
+                     <DimOperator op="Add">
+                        <FontDim type="HorzExtent">
+                           <DimOperator op="Add">
+                              <ImageDim imageset="ArkanaLook" image="Conf_StaticFrame_BorderTL" dimension="Width" />
+                           </DimOperator>
+                        </FontDim>
+                     </DimOperator>
+                  </ImageDim>
+               </Dim>
+               <Dim type="TopEdge">
+                  <FontDim type="LineSpacing" padding="0">
+                     <DimOperator op="Divide">
+                        <AbsoluteDim value="2" />
+                     </DimOperator>
+                  </FontDim>
+               </Dim>
+               <Dim type="RightEdge">
+                  <UnifiedDim scale="1" type="RightEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="ActiveWindowTR" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="Height"><ImageDim imageset="ArkanaLook" image="ActiveWindowT" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="ActiveWindowT" />
+            <HorzFormat type="Stretched" />
+         </ImageryComponent>
+         <!-- The bottom border. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><ImageDim imageset="ArkanaLook" image="ActiveWindowBL" dimension="Width" /></Dim>
+               <Dim type="TopEdge">
+                  <UnifiedDim scale="1" type="BottomEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="ActiveWindowB" dimension="Height" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="RightEdge">
+                  <UnifiedDim scale="1" type="RightEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="ActiveWindowBR" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="Height"><ImageDim imageset="ArkanaLook" image="ActiveWindowB" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="ActiveWindowB" />
+            <HorzFormat type="Stretched" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- Draws the frame in disabled mode. -->
+      <!-- - - - - - - - - - - - - - - - -   -->
+      <ImagerySection name="disabled">
+         <!-- The top left edge. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge">
+                  <FontDim type="LineSpacing" padding="0">
+                     <DimOperator op="Divide">
+                        <AbsoluteDim value="2" />
+                     </DimOperator>
+                  </FontDim>
+               </Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="DisabledWindowTL" dimension="Width" /></Dim>
+               <Dim type="Height"><ImageDim imageset="ArkanaLook" image="DisabledWindowTL" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="DisabledWindowTL" />
+         </ImageryComponent>
+         <!-- The left border. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge">
+                  <ImageDim imageset="ArkanaLook" image="DisabledWindowTL" dimension="Height">
+                     <DimOperator op="Add">
+                        <FontDim type="LineSpacing" padding="0">
+                           <DimOperator op="Divide">
+                              <AbsoluteDim value="2" />
+                           </DimOperator>
+                        </FontDim>
+                     </DimOperator>
+                  </ImageDim>
+               </Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="DisabledWindowL" dimension="Width" /></Dim>
+               <Dim type="BottomEdge">
+                  <UnifiedDim scale="1" type="BottomEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="DisabledWindowBL" dimension="Height">
+                           <DimOperator op="Subtract">
+                              <AbsoluteDim value="1" />
+                           </DimOperator>
+                        </ImageDim>
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="DisabledWindowL" />
+            <VertFormat type="Stretched" />
+         </ImageryComponent>
+         <!-- The bottom left edge. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge">
+                  <UnifiedDim scale="1" type="BottomEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="DisabledWindowBL" dimension="Height" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="DisabledWindowBL" dimension="Width" /></Dim>
+               <Dim type="Height"><ImageDim imageset="ArkanaLook" image="DisabledWindowBL" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="DisabledWindowBL" />
+         </ImageryComponent>
+         <!-- The top right edge. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge">
+                  <UnifiedDim scale="1" type="RightEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="DisabledWindowTR" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="TopEdge">
+                  <FontDim type="LineSpacing" padding="0">
+                     <DimOperator op="Divide">
+                        <AbsoluteDim value="2" />
+                     </DimOperator>
+                  </FontDim>
+               </Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="DisabledWindowTR" dimension="Width" /></Dim>
+               <Dim type="Height"><ImageDim imageset="ArkanaLook" image="DisabledWindowTR" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="DisabledWindowTR" />
+         </ImageryComponent>
+         <!-- The right border. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge">
+                  <UnifiedDim scale="1" type="RightEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="DisabledWindowR" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="TopEdge">
+                  <ImageDim imageset="ArkanaLook" image="DisabledWindowTR" dimension="Height">
+                     <DimOperator op="Add">
+                        <FontDim type="LineSpacing" padding="0">
+                           <DimOperator op="Divide">
+                              <AbsoluteDim value="2" />
+                           </DimOperator>
+                        </FontDim>
+                     </DimOperator>
+                  </ImageDim>
+               </Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="DisabledWindowR" dimension="Width" /></Dim>
+               <Dim type="BottomEdge">
+                  <UnifiedDim scale="1" type="BottomEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="DisabledWindowBR" dimension="Height">
+                           <DimOperator op="Subtract">
+                              <AbsoluteDim value="1" />
+                           </DimOperator>
+                        </ImageDim>
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="DisabledWindowR" />
+            <VertFormat type="Stretched" />
+         </ImageryComponent>
+         <!-- The bottom right edge. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge">
+                  <UnifiedDim scale="1" type="RightEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="DisabledWindowTR" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="TopEdge">
+                  <UnifiedDim scale="1" type="BottomEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="DisabledWindowBR" dimension="Height" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="DisabledWindowBR" dimension="Width" /></Dim>
+               <Dim type="Height"><ImageDim imageset="ArkanaLook" image="DisabledWindowBR" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="DisabledWindowBR" />
+         </ImageryComponent>
+         <!-- The top border, first half. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><ImageDim imageset="ArkanaLook" image="DisabledWindowTL" dimension="Width" /></Dim>
+               <Dim type="TopEdge">
+                  <FontDim type="LineSpacing" padding="0">
+                     <DimOperator op="Divide">
+                        <AbsoluteDim value="2" />
+                     </DimOperator>
+                  </FontDim>
+               </Dim>
+               <Dim type="RightEdge"><ImageDim imageset="ArkanaLook" image="Conf_StaticFrame_BorderTL" dimension="Width" /></Dim>
+               <Dim type="Height"><ImageDim imageset="ArkanaLook" image="DisabledWindowT" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="DisabledWindowT" />
+            <HorzFormat type="Stretched" />
+         </ImageryComponent>
+         <!-- The top border, second half. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge">
+                  <ImageDim imageset="ArkanaLook" image="Conf_StaticFrame_TextPos" dimension="XPosition">
+                     <DimOperator op="Add">
+                        <FontDim type="HorzExtent">
+                           <DimOperator op="Add">
+                              <ImageDim imageset="ArkanaLook" image="Conf_StaticFrame_BorderTL" dimension="Width" />
+                           </DimOperator>
+                        </FontDim>
+                     </DimOperator>
+                  </ImageDim>
+               </Dim>
+               <Dim type="TopEdge">
+                  <FontDim type="LineSpacing" padding="0">
+                     <DimOperator op="Divide">
+                        <AbsoluteDim value="2" />
+                     </DimOperator>
+                  </FontDim>
+               </Dim>
+               <Dim type="RightEdge">
+                  <UnifiedDim scale="1" type="RightEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="DisabledWindowTR" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="Height"><ImageDim imageset="ArkanaLook" image="DisabledWindowT" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="DisabledWindowT" />
+            <HorzFormat type="Stretched" />
+         </ImageryComponent>
+         <!-- The bottom border. -->
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><ImageDim imageset="ArkanaLook" image="DisabledWindowBL" dimension="Width" /></Dim>
+               <Dim type="TopEdge">
+                  <UnifiedDim scale="1" type="BottomEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="DisabledWindowB" dimension="Height" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="RightEdge">
+                  <UnifiedDim scale="1" type="RightEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="DisabledWindowBR" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="Height"><ImageDim imageset="ArkanaLook" image="DisabledWindowB" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="DisabledWindowB" />
+            <HorzFormat type="Stretched" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <!-- Enabled -->
+      <StateImagery name="Enabled">
+         <Layer>
+            <Section section="normal" />
+            <Section section="label"><ColourProperty name="TextColourNormal" /></Section>
+         </Layer>
+      </StateImagery>
+
+      <!-- Disabled -->
+      <StateImagery name="Disabled">
+         <Layer>
+            <Section section="disabled" />
+            <Section section="label"><ColourProperty name="TextColourDisabled" /></Section>
+         </Layer>
+      </StateImagery>
+
+   </WidgetLook>
+</Falagard>
+

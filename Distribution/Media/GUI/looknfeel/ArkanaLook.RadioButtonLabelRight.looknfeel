@@ -1,0 +1,256 @@
+<?xml version="1.0" ?>
+
+<Falagard>
+   <!--
+   ***************************************************
+   This is a radiobutton like we all know it, but it has
+   some text on its left side, this text can be aligned
+   to the left, centre or right, but the radiobutton in
+   person will always be aligned to the right.
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/RadioButtonLabelRight">
+
+      <!-- The Property definitions. These are properties you can set in your layout/code. -->
+      <!-- ******************************************************************************* -->
+
+      <PropertyDefinition name="TextColourNormal"   initialValue="FF373737" redrawOnWrite="true" />
+      <PropertyDefinition name="TextColourHover"    initialValue="FF606060" redrawOnWrite="true" />
+      <PropertyDefinition name="TextColourPushed"   initialValue="FF606060" redrawOnWrite="true" />
+      <PropertyDefinition name="TextColourDisabled" initialValue="FF7F7F7F" redrawOnWrite="true" />
+      <PropertyDefinition name="TextColourNormalSel"   initialValue="FF373737" redrawOnWrite="true" />
+      <PropertyDefinition name="TextColourHoverSel"    initialValue="FF606060" redrawOnWrite="true" />
+      <PropertyDefinition name="TextColourPushedSel"   initialValue="FF606060" redrawOnWrite="true" />
+      <PropertyDefinition name="TextColourDisabledSel" initialValue="FF7F7F7F" redrawOnWrite="true" />
+      <PropertyDefinition name="TextVertFormat" initialValue="CentreAligned" redrawOnWrite="true" />
+      <PropertyDefinition name="TextHorzFormat" initialValue="LeftAligned" redrawOnWrite="true" />
+      <PropertyDefinition name="BoxVertAlignment" initialValue="CentreAligned" redrawOnWrite="true" />
+      <PropertyDefinition name="BoxHorzAlignment" initialValue="LeftAligned" redrawOnWrite="true" />
+
+      <Property name="UnifiedMinSize" value="{{0,24},{0,24}}" />
+      <Property name="WantsMultiClickEvents" value="False" />
+      <Property name="Font" value="old2" />
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- This is the label, just white so the color can be modulated to whatever, in selected state. -->
+      <ImagerySection name="labelSelected">
+         <TextComponent>
+            <Area>
+               <Dim type="LeftEdge">
+                  <ImageDim imageset="ArkanaLook" image="RadioNormal" dimension="Width">
+                     <DimOperator op="Add">
+                        <ImageDim imageset="ArkanaLook" image="Conf_Radio_Textborder" dimension="XPosition" />
+                     </DimOperator>
+                  </ImageDim>
+               </Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <VertFormatProperty name="TextVertFormat" />
+            <HorzFormatProperty name="TextHorzFormat" />
+         </TextComponent>
+      </ImagerySection>
+
+      <!-- This is the label, just white so the color can be modulated to whatever, in unselected state. -->
+      <ImagerySection name="labelUnselected">
+         <TextComponent>
+            <Area>
+               <Dim type="LeftEdge">
+                  <ImageDim imageset="ArkanaLook" image="RadioNormal" dimension="Width">
+                     <DimOperator op="Add">
+                        <ImageDim imageset="ArkanaLook" image="Conf_Radio_Textborder" dimension="YPosition" />
+                     </DimOperator>
+                  </ImageDim>
+               </Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <VertFormatProperty name="TextVertFormat" />
+            <HorzFormatProperty name="TextHorzFormat" />
+         </TextComponent>
+      </ImagerySection>
+
+      <!-- ======================================================== -->
+
+      <!-- This is for drawing the radio button, unselected/normal state. -->
+      <ImagerySection name="unselected_normal">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="RadioNormal" dimension="Width" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="RadioNormal" />
+            <VertFormatProperty name="BoxVertAlignment" />
+            <HorzFormatProperty type="BoxHorzAlignment" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This is for drawing the radio button, unselected/hover state. -->
+      <ImagerySection name="unselected_hover">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="RadioHover" dimension="Width" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="RadioHover" />
+            <VertFormatProperty name="BoxVertAlignment" />
+            <HorzFormatProperty type="BoxHorzAlignment" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This is for drawing the radio button, unselected/pushed state. -->
+      <ImagerySection name="unselected_pushed">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="RadioPushed" dimension="Width" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="RadioPushed" />
+            <VertFormatProperty name="BoxVertAlignment" />
+            <HorzFormatProperty type="BoxHorzAlignment" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This is for drawing the radio button, unselected/disabled state. -->
+      <ImagerySection name="unselected_disabled">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="RadioDisabled" dimension="Width" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="RadioDisabled" />
+            <VertFormatProperty name="BoxVertAlignment" />
+            <HorzFormatProperty type="BoxHorzAlignment" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- ======================================================== -->
+
+      <!-- This is for drawing the radio button, selected/normal state. -->
+      <ImagerySection name="selected_normal">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="RadioActiveNormal" dimension="Width" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="RadioActiveNormal" />
+            <VertFormatProperty name="BoxVertAlignment" />
+            <HorzFormatProperty type="BoxHorzAlignment" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This is for drawing the radio button, selected/hover state. -->
+      <ImagerySection name="selected_hover">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="RadioActiveHover" dimension="Width" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="RadioActiveHover" />
+            <VertFormatProperty name="BoxVertAlignment" />
+            <HorzFormatProperty type="BoxHorzAlignment" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This is for drawing the radio button, selected/pushed state. -->
+      <ImagerySection name="selected_pushed">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="RadioActivePushed" dimension="Width" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="RadioActivePushed" />
+            <VertFormatProperty name="BoxVertAlignment" />
+            <HorzFormatProperty type="BoxHorzAlignment" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This is for drawing the radio button, selected/disabled state. -->
+      <ImagerySection name="selected_disabled">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width"><ImageDim imageset="ArkanaLook" image="RadioActiveDisabled" dimension="Width" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="RadioActiveDisabled" />
+            <VertFormatProperty name="BoxVertAlignment" />
+            <HorzFormatProperty type="BoxHorzAlignment" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <!-- Normal -->
+      <StateImagery name="Normal">
+         <Layer><Section section="unselected_normal" /></Layer>
+         <Layer><Section section="labelUnselected"><ColourProperty name="TextColourNormal" /></Section></Layer>
+      </StateImagery>
+
+      <!-- Hover -->
+      <StateImagery name="Hover">
+         <Layer><Section section="unselected_hover" /></Layer>
+         <Layer><Section section="labelUnselected"><ColourProperty name="TextColourHover" /></Section></Layer>
+      </StateImagery>
+
+      <!-- Pushed -->
+      <StateImagery name="Pushed">
+         <Layer><Section section="unselected_pushed" /></Layer>
+         <Layer><Section section="labelUnselected"><ColourProperty name="TextColourPushed" /></Section></Layer>
+      </StateImagery>
+
+      <!-- Disabled -->
+      <StateImagery name="Disabled">
+         <Layer><Section section="unselected_disabled" /></Layer>
+         <Layer><Section section="labelUnselected"><ColourProperty name="TextColourDisabled" /></Section></Layer>
+      </StateImagery>
+
+      <!-- ======================================================== -->
+
+      <!-- Normal -->
+      <StateImagery name="SelectedNormal">
+         <Layer><Section section="selected_normal" /></Layer>
+         <Layer><Section section="labelSelected"><ColourProperty name="TextColourNormalSel" /></Section></Layer>
+      </StateImagery>
+
+      <!-- Hover -->
+      <StateImagery name="SelectedHover">
+         <Layer><Section section="selected_hover" /></Layer>
+         <Layer><Section section="labelSelected"><ColourProperty name="TextColourHoverSel" /></Section></Layer>
+      </StateImagery>
+
+      <!-- Pushed -->
+      <StateImagery name="SelectedPushed">
+         <Layer><Section section="selected_pushed" /></Layer>
+         <Layer><Section section="labelSelected"><ColourProperty name="TextColourPushedSel" /></Section></Layer>
+      </StateImagery>
+
+      <!-- Disabled -->
+      <StateImagery name="SelectedDisabled">
+         <Layer><Section section="selected_disabled" /></Layer>
+         <Layer><Section section="labelSelected"><ColourProperty name="TextColourDisabledSel" /></Section></Layer>
+      </StateImagery>
+
+   </WidgetLook>
+</Falagard>

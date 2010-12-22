@@ -1,0 +1,244 @@
+<?xml version="1.0" ?>
+
+<Falagard>
+   <!--
+   ***************************************************
+   The thumb (thing you move) from the vertical style
+   scrollbar, with a nice decoration. This is the thumb
+   of the kind of scrollbar you see in big places.
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/HorizontalDecoScrollbarThumb">
+      <Property name="HorzFree" value="True" />
+      <Property name="UnifiedMinSize" value="{{0,10},{0,14}}" />
+      <Property name="WantsMultiClickEvents" value="False" />
+      <Property name="InheritsTooltipText" value="True" />
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- The thumb in normal state. -->
+      <ImagerySection name="normal">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width" ><ImageDim imageset="ArkanaLook" image="HDecoScrollbarBarThumbNormal" dimension="Width" /></Dim>
+               <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="HDecoScrollbarBarThumbNormal" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="HDecoScrollbarBarThumbNormal" />
+            <VertFormat type="CentreAligned" />
+            <HorzFormat type="CentreAligned" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- The thumb in hover state. -->
+      <ImagerySection name="hover">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width" ><ImageDim imageset="ArkanaLook" image="HDecoScrollbarBarThumbHover" dimension="Width" /></Dim>
+               <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="HDecoScrollbarBarThumbHover" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="HDecoScrollbarBarThumbHover" />
+            <VertFormat type="CentreAligned" />
+            <HorzFormat type="CentreAligned" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- The thumb in pushed state. -->
+      <ImagerySection name="pushed">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width" ><ImageDim imageset="ArkanaLook" image="HDecoScrollbarBarThumbPushed" dimension="Width" /></Dim>
+               <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="HDecoScrollbarBarThumbPushed" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="HDecoScrollbarBarThumbPushed" />
+            <VertFormat type="CentreAligned" />
+            <HorzFormat type="CentreAligned" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- The thumb in disabled state. -->
+      <ImagerySection name="disabled">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width" ><ImageDim imageset="ArkanaLook" image="HDecoScrollbarBarThumbDisabled" dimension="Width" /></Dim>
+               <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="HDecoScrollbarBarThumbDisabled" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="HDecoScrollbarBarThumbDisabled" />
+            <VertFormat type="CentreAligned" />
+            <HorzFormat type="CentreAligned" />
+         </ImageryComponent>
+      </ImagerySection>
+
+        <StateImagery name="Normal">
+            <Layer><Section section="normal" /></Layer>
+        </StateImagery>
+        <StateImagery name="Hover">
+            <Layer><Section section="hover" /></Layer>
+        </StateImagery>
+        <StateImagery name="Pushed">
+            <Layer><Section section="pushed" /></Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer><Section section="disabled" /></Layer>
+        </StateImagery>
+    </WidgetLook>
+
+   <!--
+   ***************************************************
+   A vertical style scrollbar, with a nice decoration.
+   This is the kind of scrollbar you see in big places.
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/HorizontalDecoScrollbar">
+      <Property name="VerticalScrollbar"     value="False" />
+      <Property name="WantsMultiClickEvents" value="False" />
+
+      <!-- The Named Area sections. This tells CEGUI where to draw the thumb. -->
+      <!-- ****************************************************************** -->
+
+      <!-- The area where the thumb can move within. -->
+      <NamedArea name="ThumbTrackArea">
+         <Area>
+            <Dim type="LeftEdge" >
+               <AbsoluteDim value="0">
+                  <DimOperator op="Add">
+                     <ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_ThumbRegionH" dimension="XPosition">
+                        <DimOperator op="Subtract">
+                           <ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_ThumbRegionH" dimension="Width" />
+                        </DimOperator>
+                     </ImageDim>
+                  </DimOperator>
+               </AbsoluteDim>
+            </Dim>
+            <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_ThumbRegionV" dimension="YPosition" /></Dim>
+            <Dim type="RightEdge" >
+               <UnifiedDim scale="1.0" type="RightEdge">
+                  <DimOperator op="Add">
+                     <ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_ThumbRegionH" dimension="YPosition">
+                        <DimOperator op="Subtract">
+                           <ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_ThumbRegionH" dimension="Height" />
+                        </DimOperator>
+                     </ImageDim>
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="HDecoScrollbarBarThumbNormal" dimension="Height" /></Dim>
+         </Area>
+      </NamedArea>
+
+      <!-- The Childs. This specifies what child windows CEGUI shall create when creathing this widget. -->
+      <!-- ******************************************************************************************** -->
+
+      <!-- The right button child widget, to scroll the bar to the right. -->
+      <Child type="ArkanaLook/SystemButton" nameSuffix="__auto_decbtn__">
+         <Area>
+            <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+            <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_ButtonsY" dimension="YPosition" /></Dim>
+            <Dim type="Width" ><ImageDim imageset="ArkanaLook" image="HDecoScrollbarLeftNormal" dimension="Width" /></Dim>
+            <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="HDecoScrollbarLeftNormal" dimension="Height" /></Dim>
+         </Area>
+         <HorzAlignment type="LeftAligned" />
+         <Property name="ImageNormal"   value="set:ArkanaLook image:HDecoScrollbarLeftNormal"   />
+         <Property name="ImageHover"    value="set:ArkanaLook image:HDecoScrollbarLeftHover"    />
+         <Property name="ImagePushed"   value="set:ArkanaLook image:HDecoScrollbarLeftPushed"   />
+         <Property name="ImageDisabled" value="set:ArkanaLook image:HDecoScrollbarLeftDisabled" />
+         <Property name="MouseButtonDownAutoRepeat" value="True" />
+      </Child>
+
+      <!-- The right button child widget, to scroll the bar to the right. -->
+      <Child type="ArkanaLook/SystemButton" nameSuffix="__auto_incbtn__">
+         <Area>
+            <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+            <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_ButtonsY" dimension="YPosition" /></Dim>
+            <Dim type="Width" ><ImageDim imageset="ArkanaLook" image="HDecoScrollbarRightNormal" dimension="Width" /></Dim>
+            <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="HDecoScrollbarRightNormal" dimension="Height" /></Dim>
+         </Area>
+         <HorzAlignment type="RightAligned" />
+         <Property name="ImageNormal"   value="set:ArkanaLook image:HDecoScrollbarRightNormal"   />
+         <Property name="ImageHover"    value="set:ArkanaLook image:HDecoScrollbarRightHover"    />
+         <Property name="ImagePushed"   value="set:ArkanaLook image:HDecoScrollbarRightPushed"   />
+         <Property name="ImageDisabled" value="set:ArkanaLook image:HDecoScrollbarRightDisabled" />
+         <Property name="MouseButtonDownAutoRepeat" value="True" />
+      </Child>
+
+      <!-- The thumb child widget, the thing you scroll up and down. -->
+      <Child type="ArkanaLook/HorizontalDecoScrollbarThumb" nameSuffix="__auto_thumb__">
+         <Area>
+            <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+            <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+            <Dim type="Width" ><ImageDim imageset="ArkanaLook" image="HDecoScrollbarBarThumbNormal" dimension="Width" /></Dim>
+            <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="HDecoScrollbarBarThumbNormal" dimension="Height" /></Dim>
+         </Area>
+         <Property name="UnifiedMinSize" value="{{0,0},{0,25}}" />
+         <Property name="AlwaysOnTop" value="True" />
+      </Child>
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- This draws the bar in the enabled mode. -->
+      <ImagerySection name="bar_enabled">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge" ><ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_BarRegion" dimension="XPosition" /></Dim>
+               <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_BarRegion" dimension="YPosition" /></Dim>
+               <Dim type="Width" >
+                  <UnifiedDim scale="1.0" type="Width">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_BarRegion" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_BarRegion" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="HDecoScrollbarBarEnabled" />
+            <VertFormat type="CentreAligned" />
+            <HorzFormat type="Stretched" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This draws the bar in the disabled mode. -->
+      <ImagerySection name="bar_disabled">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge" ><ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_BarRegion" dimension="XPosition" /></Dim>
+               <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_BarRegion" dimension="YPosition" /></Dim>
+               <Dim type="Width" >
+                  <UnifiedDim scale="1.0" type="Width">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_BarRegion" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_BarRegion" dimension="Height" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="HDecoScrollbarBarDisabled" />
+            <VertFormat type="CentreAligned" />
+            <HorzFormat type="Stretched" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <!-- Enabled -->
+      <StateImagery name="Enabled">
+         <Layer><Section section="bar_enabled" /></Layer>
+      </StateImagery>
+
+      <!-- Disabled -->
+      <StateImagery name="Disabled">
+         <Layer><Section section="bar_disabled" /></Layer>
+      </StateImagery>
+   </WidgetLook>
+</Falagard>

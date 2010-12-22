@@ -1,0 +1,211 @@
+<?xml version="1.0" ?>
+
+<Falagard>
+   <!--
+   ***************************************************
+   A Simple button with a caption that you can use where
+   you want. minimum size: 39x31
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/Button">
+
+      <!-- The Property definitions. These are properties you can set in your layout/code. -->
+      <!-- ******************************************************************************* -->
+
+      <PropertyDefinition name="TextColourNormal"   initialValue="FFFCD97B" redrawOnWrite="true" />
+      <PropertyDefinition name="TextColourHover"    initialValue="FF1B56A0" redrawOnWrite="true" />
+      <PropertyDefinition name="TextColourPushed"   initialValue="FF1B56A0" redrawOnWrite="true" />
+      <PropertyDefinition name="TextColourDisabled" initialValue="FF7F7F7F" redrawOnWrite="true" />
+      <PropertyDefinition name="VertFormat" initialValue="CentreAligned" redrawOnWrite="true" />
+      <PropertyDefinition name="HorzFormat" initialValue="WordWrapCentreAligned" redrawOnWrite="true" />
+
+      <Property name="UnifiedMinSize" value="{{0,38},{0,30}}" />
+      <Property name="WantsMultiClickEvents" value="False" />
+      <Property name="Font" value="old2" />
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- This is for drawing the label, in every state except pushed. -->
+      <ImagerySection name="label">
+         <TextComponent>
+            <Area>
+               <Dim type="LeftEdge"><ImageDim imageset="ArkanaLook" image="Conf_Button_Textborder" dimension="XPosition" /></Dim>
+               <Dim type="TopEdge"><ImageDim imageset="ArkanaLook" image="Conf_Button_Textborder" dimension="YPosition" /></Dim>
+               <Dim type="RightEdge">
+                  <UnifiedDim scale="1" type="RightEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="Conf_Button_Textborder" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="BottomEdge">
+                  <UnifiedDim scale="1" type="BottomEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="Conf_Button_Textborder" dimension="Height" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+            </Area>
+            <VertFormatProperty name="VertFormat" />
+            <HorzFormatProperty name="HorzFormat" />
+         </TextComponent>
+      </ImagerySection>
+
+      <!-- This is for drawing the label, in the pushed state. -->
+      <ImagerySection name="labelPushed">
+         <TextComponent>
+            <Area>
+               <Dim type="LeftEdge"><ImageDim imageset="ArkanaLook" image="Conf_Button_TextborderPushed" dimension="XPosition" /></Dim>
+               <Dim type="TopEdge"><ImageDim imageset="ArkanaLook" image="Conf_Button_TextborderPushed" dimension="YPosition" /></Dim>
+               <Dim type="RightEdge">
+                  <UnifiedDim scale="1" type="RightEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="Conf_Button_TextborderPushed" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="BottomEdge">
+                  <UnifiedDim scale="1" type="BottomEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="Conf_Button_TextborderPushed" dimension="Height" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+            </Area>
+            <VertFormatProperty name="VertFormat" />
+            <HorzFormatProperty name="HorzFormat" />
+         </TextComponent>
+      </ImagerySection>
+
+      <!-- ======================================================== -->
+
+      <!-- This is for the frame in normal state. -->
+      <ImagerySection name="normalFrame">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner"     imageset="ArkanaLook" image="ButtonNormalTL" />
+            <Image type="TopEdge"           imageset="ArkanaLook" image="ButtonNormalT" />
+            <Image type="TopRightCorner"    imageset="ArkanaLook" image="ButtonNormalTR" />
+            <Image type="RightEdge"         imageset="ArkanaLook" image="ButtonNormalR" />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="ButtonNormalBR" />
+            <Image type="BottomEdge"        imageset="ArkanaLook" image="ButtonNormalB" />
+            <Image type="BottomLeftCorner"  imageset="ArkanaLook" image="ButtonNormalBL" />
+            <Image type="LeftEdge"          imageset="ArkanaLook" image="ButtonNormalL" />
+            <Image type="Background"        imageset="ArkanaLook" image="ButtonNormalBg" />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- ======================================================== -->
+
+      <!-- This is for the frame in hover state. -->
+      <ImagerySection name="hoverFrame">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner"     imageset="ArkanaLook" image="ButtonHoverTL" />
+            <Image type="TopEdge"           imageset="ArkanaLook" image="ButtonHoverT" />
+            <Image type="TopRightCorner"    imageset="ArkanaLook" image="ButtonHoverTR" />
+            <Image type="RightEdge"         imageset="ArkanaLook" image="ButtonHoverR" />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="ButtonHoverBR" />
+            <Image type="BottomEdge"        imageset="ArkanaLook" image="ButtonHoverB" />
+            <Image type="BottomLeftCorner"  imageset="ArkanaLook" image="ButtonHoverBL" />
+            <Image type="LeftEdge"          imageset="ArkanaLook" image="ButtonHoverL" />
+            <Image type="Background"        imageset="ArkanaLook" image="ButtonHoverBg" />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- ========================================================= -->
+
+      <!-- This is for the frame in hover state. -->
+      <ImagerySection name="pushedFrame">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner"     imageset="ArkanaLook" image="ButtonPushedTL" />
+            <Image type="TopEdge"           imageset="ArkanaLook" image="ButtonPushedT" />
+            <Image type="TopRightCorner"    imageset="ArkanaLook" image="ButtonPushedTR" />
+            <Image type="RightEdge"         imageset="ArkanaLook" image="ButtonPushedR" />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="ButtonPushedBR" />
+            <Image type="BottomEdge"        imageset="ArkanaLook" image="ButtonPushedB" />
+            <Image type="BottomLeftCorner"  imageset="ArkanaLook" image="ButtonPushedBL" />
+            <Image type="LeftEdge"          imageset="ArkanaLook" image="ButtonPushedL" />
+            <Image type="Background"        imageset="ArkanaLook" image="ButtonPushedBg" />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- ========================================================= -->
+
+      <!-- This is for the frame in disabled state. -->
+      <ImagerySection name="disabledFrame">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner"     imageset="ArkanaLook" image="ButtonDisabledTL" />
+            <Image type="TopEdge"           imageset="ArkanaLook" image="ButtonDisabledT" />
+            <Image type="TopRightCorner"    imageset="ArkanaLook" image="ButtonDisabledTR" />
+            <Image type="RightEdge"         imageset="ArkanaLook" image="ButtonDisabledR" />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="ButtonDisabledBR" />
+            <Image type="BottomEdge"        imageset="ArkanaLook" image="ButtonDisabledB" />
+            <Image type="BottomLeftCorner"  imageset="ArkanaLook" image="ButtonDisabledBL" />
+            <Image type="LeftEdge"          imageset="ArkanaLook" image="ButtonDisabledL" />
+            <Image type="Background"        imageset="ArkanaLook" image="ButtonDisabledBg" />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <!-- Normal -->
+      <StateImagery name="Normal">
+         <Layer><Section section="normalFrame" /></Layer>
+         <Layer><Section section="label"><ColourProperty name="TextColourNormal" /></Section></Layer>
+      </StateImagery>
+
+      <!-- Hover -->
+      <StateImagery name="Hover">
+         <Layer><Section section="hoverFrame" /></Layer>
+         <Layer><Section section="label"><ColourProperty name="TextColourHover" /></Section></Layer>
+      </StateImagery>
+
+      <!-- Pushed -->
+      <StateImagery name="Pushed">
+         <Layer><Section section="pushedFrame" /></Layer>
+         <Layer><Section section="labelPushed"><ColourProperty name="TextColourPushed" /></Section></Layer>
+      </StateImagery>
+
+      <!-- Disabled -->
+      <StateImagery name="Disabled">
+         <Layer><Section section="disabledFrame" /></Layer>
+         <Layer><Section section="label"><ColourProperty name="TextColourDisabled" /></Section></Layer>
+      </StateImagery>
+
+   </WidgetLook>
+</Falagard>
+

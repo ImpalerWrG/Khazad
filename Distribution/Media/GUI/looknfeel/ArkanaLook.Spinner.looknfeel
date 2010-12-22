@@ -1,0 +1,92 @@
+<?xml version="1.0" ?>
+
+<Falagard>
+   <!--
+   ***************************************************
+   A Simple arkanalook spinner, used to let the user enter.
+   a number, with a up and down button.
+   For perfect representation, the height should be 23 px.
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/Spinner">
+
+      <!-- The Property definitions. These are properties you can set in your layout/code. -->
+      <!-- ******************************************************************************* -->
+
+      <PropertyLinkDefinition name="TextColourNormal" widget="__auto_editbox__" initialValue="FF524423" targetProperty="NormalTextColour" />
+      <PropertyLinkDefinition name="TextColourSelected" widget="__auto_editbox__" initialValue="FF000000" targetProperty="SelectedTextColour" />
+      <PropertyLinkDefinition name="SelectionColourActive" widget="__auto_editbox__" initialValue="AAFFFFFF" targetProperty="SelectionColourActive" />
+      <PropertyLinkDefinition name="SelectionColourInactive" widget="__auto_editbox__" initialValue="AA7F7F7F" targetProperty="SelectionColourInactive" />
+
+      <Property name="UnifiedMinSize" value="{{0,30},{0,24}}" />
+      <Property name="WantsMultiClickEvents" value="False" />
+      <Property name="InheritsTooltipText" value="True" />
+
+      <!-- The Childs. This specifies what child windows CEGUI shall create when creathing this widget. -->
+      <!-- ******************************************************************************************** -->
+
+      <!-- The editbox child. -->
+      <Child  type="ArkanaLook/EditboxNoRightBorder" nameSuffix="__auto_editbox__">
+         <Area>
+            <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+            <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+            <Dim type="RightEdge">
+               <UnifiedDim scale="1" type="RightEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="SystemSpinnerUpNormal" dimension="Width">
+<!--                        <DimOperator op="Subtract">
+                           <AbsoluteDim value="2" />
+                        </DimOperator>-->
+                     </ImageDim>
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
+         </Area>
+      </Child>
+
+      <!-- The up child button. -->
+      <Child  type="ArkanaLook/SystemButton" nameSuffix="__auto_incbtn__">
+         <Area>
+            <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+            <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+            <Dim type="Width"><ImageDim imageset="ArkanaLook" image="SystemSpinnerUpNormal" dimension="Width" /></Dim>
+            <Dim type="Height"><ImageDim imageset="ArkanaLook" image="SystemSpinnerUpNormal" dimension="Height" /></Dim>
+         </Area>
+         <VertAlignment type="TopAligned" />
+         <HorzAlignment type="RightAligned" />
+         <Property name="ImageNormal" value="set:ArkanaLook image:SystemSpinnerUpNormal" />
+         <Property name="ImageHover" value="set:ArkanaLook image:SystemSpinnerUpHover" />
+         <Property name="ImagePushed" value="set:ArkanaLook image:SystemSpinnerUpPushed" />
+         <Property name="ImageDisabled" value="set:ArkanaLook image:SystemSpinnerUpDisabled" />
+      </Child>
+
+      <!-- The down child button. -->
+      <Child  type="ArkanaLook/SystemButton" nameSuffix="__auto_decbtn__">
+         <Area>
+            <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+            <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+            <Dim type="Width"><ImageDim imageset="ArkanaLook" image="SystemSpinnerDownNormal" dimension="Width" /></Dim>
+            <Dim type="Height"><ImageDim imageset="ArkanaLook" image="SystemSpinnerDownNormal" dimension="Height" /></Dim>
+         </Area>
+         <VertAlignment type="BottomAligned" />
+         <HorzAlignment type="RightAligned" />
+         <Property name="ImageNormal" value="set:ArkanaLook image:SystemSpinnerDownNormal" />
+         <Property name="ImageHover" value="set:ArkanaLook image:SystemSpinnerDownHover" />
+         <Property name="ImagePushed" value="set:ArkanaLook image:SystemSpinnerDownPushed" />
+         <Property name="ImageDisabled" value="set:ArkanaLook image:SystemSpinnerDownDisabled" />
+      </Child>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <!-- Enabled -->
+      <StateImagery name="Enabled" />
+
+      <!-- Disabled -->
+      <StateImagery name="Disabled" />
+
+   </WidgetLook>
+</Falagard>
+

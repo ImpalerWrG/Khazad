@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Imageset Name="ArkanaLook" Imagefile="ArkanaLook.png" NativeHorzRes="1024" NativeVertRes="768" AutoScaled="false" >
+    <Image Name="OneWhitePixel" XPos="7" YPos="255" Width="1" Height="1" />
+    <Image Name="OneTransparentPixel" XPos="128" YPos="40" Width="1" Height="1" />
+
+    <!-- Button that is used in the main and submenus -->
+    <!-- ============================================ -->
+    <Image Name="MenuButtonLHover" XPos="0" YPos="48" Width="36" Height="48" />
+    <Image Name="MenuButtonMHover" XPos="36" YPos="48" Width="1" Height="48" />
+    <Image Name="MenuButtonRHover" XPos="37" YPos="48" Width="36" Height="48" />
+    <Image Name="MenuButtonLNormal" XPos="0" YPos="0" Width="36" Height="48" />
+    <Image Name="MenuButtonMNormal" XPos="36" YPos="0" Width="1" Height="48" />
+    <Image Name="MenuButtonRNormal" XPos="37" YPos="0" Width="36" Height="48" />
+    <Image Name="MenuButtonLPushed" XPos="0" YPos="96" Width="36" Height="48" />
+    <Image Name="MenuButtonMPushed" XPos="36" YPos="96" Width="1" Height="48" />
+    <Image Name="MenuButtonRPushed" XPos="37" YPos="96" Width="36" Height="48" />
+    <Image Name="MenuButtonLDisabled" XPos="0" YPos="144" Width="36" Height="48" />
+    <Image Name="MenuButtonMDisabled" XPos="36" YPos="144" Width="1" Height="48" />
+    <Image Name="MenuButtonRDisabled" XPos="37" YPos="144" Width="36" Height="48" />
+
+    <!-- The position of the imaginary rectangle surrounding the button's caption.
+         XPos: The X position of the text's rect relative to the button's x position
+         YPos: The Y position of the text's rect relative to the button's y position
+         Width: This is subtracted to the right of the button.
+         Height: This is subtracted to the height of the button. -->
+    <Image Name="Conf_MenuButton_Text" XPos="0" YPos="0" Width="0" Height="3" />
+
+    <!-- Some system buttons used in other objects -->
+    <!-- ========================================= -->
+    <Image Name="SystemCloseNormal" XPos="73" YPos="57" Width="24" Height="24" />
+    <Image Name="SystemCloseHover" XPos="97" YPos="57" Width="24" Height="24" />
+    <Image Name="SystemClosePushed" XPos="121" YPos="57" Width="24" Height="24" />
+    <Image Name="SystemCloseDisabled" XPos="145" YPos="57" Width="24" Height="24" />
+    <Image Name="SystemSpinnerUpNormal" XPos="18" YPos="201" Width="26" Height="14" />
+    <Image Name="SystemSpinnerDownNormal" XPos="18" YPos="215" Width="26" Height="14" />
+    <Image Name="SystemSpinnerUpHover" XPos="47" YPos="201" Width="26" Height="14" />
+    <Image Name="SystemSpinnerDownHover" XPos="47" YPos="215" Width="26" Height="14" />
+    <Image Name="SystemSpinnerUpPushed" XPos="18" YPos="230" Width="26" Height="14" />
+    <Image Name="SystemSpinnerDownPushed" XPos="18" YPos="244" Width="26" Height="14" />
+    <Image Name="SystemSpinnerUpDisabled" XPos="47" YPos="230" Width="26" Height="14" />
+    <Image Name="SystemSpinnerDownDisabled" XPos="47" YPos="244" Width="26" Height="14" />
+
+    <!-- Frame for FrameWindow and static frame -->
+    <!-- ====================================== -->
+    <Image Name="ActiveWindowBg" XPos="74" YPos="82" Width="128" Height="128" />
+    <Image Name="ActiveWindowL" XPos="73"  YPos="44" Width="6" Height="1" />
+    <Image Name="ActiveWindowR" XPos="185" YPos="44" Width="6" Height="1" />
+    <Image Name="ActiveWindowT" XPos="100" YPos="27" Width="1" Height="6" />
+    <Image Name="ActiveWindowB" XPos="85"  YPos="51" Width="1" Height="6" />
+    <Image Name="ActiveWindowTL" XPos="88"  YPos="47" Width="10" Height="10" />
+    <Image Name="ActiveWindowTR" XPos="99"  YPos="47" Width="10" Height="10" />
+    <Image Name="ActiveWindowBL" XPos="73"  YPos="47" Width="10" Height="10" />
+    <Image Name="ActiveWindowBR" XPos="181" YPos="47" Width="10" Height="10" />
+    <Image Name="ActiveWindowTitlebarBL" XPos="73"  YPos="47" Width="10" Height="10" />
+    <Image Name="ActiveWindowTitlebarBM" XPos="85"  YPos="51" Width="1"  Height="6"  />
+    <Image Name="ActiveWindowTitlebarBR" XPos="181" YPos="47" Width="10" Height="10" />
+    <Image Name="ActiveWindowTitlebarTL" XPos="73"  YPos="0"  Width="25" Height="42" />
+    <Image Name="ActiveWindowTitlebarTM" XPos="99"  YPos="0"  Width="39" Height="33" />
+    <Image Name="ActiveWindowTitlebarTR" XPos="139" YPos="0"  Width="52" Height="42" />
+    <Image Name="DisabledWindowBg" XPos="205" YPos="82" Width="128" Height="128" />
+    <Image Name="DisabledWindowL" XPos="192" YPos="44" Width="6" Height="1" />
+    <Image Name="DisabledWindowR" XPos="304" YPos="44" Width="6" Height="1" />
+    <Image Name="DisabledWindowT" XPos="219" YPos="27" Width="1" Height="6" />
+    <Image Name="DisabledWindowB" XPos="204" YPos="51" Width="1" Height="6" />
+    <Image Name="DisabledWindowTL" XPos="207" YPos="47" Width="10" Height="10" />
+    <Image Name="DisabledWindowTR" XPos="218" YPos="47" Width="10" Height="10" />
+    <Image Name="DisabledWindowBL" XPos="192" YPos="47" Width="10" Height="10" />
+    <Image Name="DisabledWindowBR" XPos="300" YPos="47" Width="10" Height="10" />
+    <Image Name="DisabledWindowTitlebarBL" XPos="192" YPos="47" Width="10" Height="10" />
+    <Image Name="DisabledWindowTitlebarBM" XPos="204" YPos="51" Width="1" Height="6" />
+    <Image Name="DisabledWindowTitlebarBR" XPos="300" YPos="47" Width="10" Height="10" />
+    <Image Name="DisabledWindowTitlebarTL" XPos="192" YPos="00" Width="25" Height="42" />
+    <Image Name="DisabledWindowTitlebarTM" XPos="218" YPos="00" Width="39" Height="33" />
+    <Image Name="DisabledWindowTitlebarTR" XPos="258" YPos="00" Width="52" Height="42" />
+
+    <!-- FrameWindow Properties: -->
+
+    <!-- The client area configurations.
+         XPos: The border on the left
+         YPos: The border on the top
+         Width: The border on the right
+         Height: The border on the bottom -->
+    <Image Name="Conf_FrameWin_ClientWithTitleWithFrame" XPos="6" YPos="33" Width="6" Height="6" />
+    <Image Name="Conf_FrameWin_ClientWithTitleNoFrame" XPos="0" YPos="33" Width="0" Height="0" />
+    <Image Name="Conf_FrameWin_ClientNoTitleWithFrame" XPos="6" YPos="6" Width="6" Height="6" />
+
+    <!-- The position and size of the titlebar.
+         XPos: The X position of the titlebar relative to the window's x position
+         YPos: The Y position of the titlebar relative to the window's y position
+         Width: This is subtracted to the right of the window.
+         Height: This is subtracted to the height of the top left titlebar image. -->
+    <Image Name="Conf_FrameWin_Titlebar" XPos="0" YPos="0" Width="0" Height="0" />
+
+    <!-- The position and size of the titlebar text.
+         XPos: The X position of the titlebar text relative to the titelbar's x position
+         XPos: The Y position of the titlebar text relative to the titelbar's y position
+         Width: This is subtracted to the right of the titlebar.
+         Height: This is subtracted to the height of the titlebar. -->
+    <Image Name="Conf_FrameWin_Titlebar_Text" XPos="25" YPos="0" Width="52" Height="12" />
+
+    <!-- The position and size of the titlebar.
+         XPos: This is subtracted to the right of the window to get the x pos of the right mid border. -->
+    <Image Name="Conf_FrameWin_ActiveWindowR" XPos="6" YPos="0" Width="0" Height="0" />
+
+    <!-- The background configurations.
+         XPos: What is added to the left border width to get the bg left pos.
+         YPos: What is subtracted to the titlebar's bottom to get the bg top pos.
+         Width: This is added to the width of the right border and then the result is subtracted from the window's right edge to get the bg right edge.
+         Height: This is added to the height of the bottom border and then the result is subtracted from the window's bottom edge to get the bg bottom edge. -->
+    <Image Name="Conf_FrameWin_ActiveWindowBG" XPos="0" YPos="10" Width="0" Height="0" />
+
+    <!-- The close button configurations.
+         XPos: This is added to the width of the close button and then the result is subtracted to the window's right border pos to get the close button x pos.
+         YPos: the top edge of the close button relative to the window's top. -->
+    <Image Name="Conf_FrameWin_Close" XPos="9" YPos="9" Width="0" Height="0" />
+
+    <!-- Frame for Editbox, MultiLineEditbox, Listbox, Combobox -->
+    <!-- ====================================================== -->
+    <Image Name="FrameTLNormal" XPos="7"  YPos="217" Width="2" Height="2" />
+    <Image Name="FrameTNormal"  XPos="10" YPos="217" Width="1" Height="2" />
+    <Image Name="FrameTRNormal" XPos="12" YPos="217" Width="2" Height="2" />
+    <Image Name="FrameRNormal"  XPos="12" YPos="220" Width="2" Height="1" />
+    <Image Name="FrameBRNormal" XPos="12" YPos="222" Width="2" Height="2" />
+    <Image Name="FrameBNormal"  XPos="10" YPos="222" Width="1" Height="2" />
+    <Image Name="FrameBLNormal" XPos="7"  YPos="222" Width="2" Height="2" />
+    <Image Name="FrameLNormal"  XPos="7"  YPos="220" Width="2" Height="1" />
+    <Image Name="FrameBgNormal" XPos="10" YPos="220" Width="1" Height="1" />
+
+    <Image Name="FrameTLHover" XPos="7"  YPos="226" Width="2" Height="2" />
+    <Image Name="FrameTHover"  XPos="10" YPos="226" Width="1" Height="2" />
+    <Image Name="FrameTRHover" XPos="12" YPos="226" Width="2" Height="2" />
+    <Image Name="FrameRHover"  XPos="12" YPos="229" Width="2" Height="1" />
+    <Image Name="FrameBRHover" XPos="12" YPos="231" Width="2" Height="2" />
+    <Image Name="FrameBHover"  XPos="10" YPos="231" Width="1" Height="2" />
+    <Image Name="FrameBLHover" XPos="7"  YPos="231" Width="2" Height="2" />
+    <Image Name="FrameLHover"  XPos="7"  YPos="229" Width="2" Height="1" />
+    <Image Name="FrameBgHover" XPos="10" YPos="229" Width="1" Height="1" />
+
+    <Image Name="FrameTLPushed" XPos="7"  YPos="235" Width="2" Height="2" />
+    <Image Name="FrameTPushed"  XPos="10" YPos="235" Width="1" Height="2" />
+    <Image Name="FrameTRPushed" XPos="12" YPos="235" Width="2" Height="2" />
+    <Image Name="FrameRPushed"  XPos="12" YPos="238" Width="2" Height="1" />
+    <Image Name="FrameBRPushed" XPos="12" YPos="240" Width="2" Height="2" />
+    <Image Name="FrameBPushed"  XPos="10" YPos="240" Width="1" Height="2" />
+    <Image Name="FrameBLPushed" XPos="7"  YPos="240" Width="2" Height="2" />
+    <Image Name="FrameLPushed"  XPos="7"  YPos="238" Width="2" Height="1" />
+    <Image Name="FrameBgPushed" XPos="10" YPos="238" Width="1" Height="1" />
+
+    <Image Name="FrameTLDisabled" XPos="7"  YPos="244" Width="2" Height="2" />
+    <Image Name="FrameTDisabled"  XPos="10" YPos="244" Width="1" Height="2" />
+    <Image Name="FrameTRDisabled" XPos="12" YPos="244" Width="2" Height="2" />
+    <Image Name="FrameRDisabled"  XPos="12" YPos="247" Width="2" Height="1" />
+    <Image Name="FrameBRDisabled" XPos="12" YPos="249" Width="2" Height="2" />
+    <Image Name="FrameBDisabled"  XPos="10" YPos="249" Width="1" Height="2" />
+    <Image Name="FrameBLDisabled" XPos="7"  YPos="249" Width="2" Height="2" />
+    <Image Name="FrameLDisabled"  XPos="7"  YPos="247" Width="2" Height="1" />
+    <Image Name="FrameBgDisabled" XPos="10" YPos="247" Width="1" Height="1" />
+
+    <Image Name="FrameBgOpaque" XPos="3" YPos="255" Width="1" Height="1" />
+
+    <Image Name="TextCarat" XPos="7" YPos="255" Width="1" Height="1" />
+
+    <Image Name="ListSelectionBrush" XPos="12" YPos="255" Width="1" Height="1" />
+    <Image Name="MultiLineEditboxSelection" XPos="12" YPos="255" Width="1" Height="1" />
+<!--    <Image Name="MultiLineEditboxSelection" XPos="177" YPos="63" Width="13" Height="13" />-->
+
+<!--    <Image Name="ComboButtonNormal"   XPos="99" YPos="258" Width="22" Height="24" />
+    <Image Name="ComboButtonHover"    XPos="99" YPos="282" Width="22" Height="24" />
+    <Image Name="ComboButtonPushed"   XPos="99" YPos="306" Width="22" Height="24" />
+    <Image Name="ComboButtonDisabled" XPos="99" YPos="330" Width="22" Height="24" />-->
+    <Image Name="ComboButtonNormal"   XPos="99" YPos="258" Width="26" Height="28" />
+    <Image Name="ComboButtonHover"    XPos="99" YPos="286" Width="26" Height="28" />
+    <Image Name="ComboButtonPushed"   XPos="99" YPos="314" Width="26" Height="28" />
+    <Image Name="ComboButtonDisabled" XPos="99" YPos="342" Width="26" Height="28" />
+
+    <!-- Editbox Properties: -->
+
+    <!-- XPos: The border on the left, inside the editbox
+         YPos: The border on the top, inside the editbox
+         Width: The border on the right, inside the editbox
+         Height: The border on the bottom, inside the editbox -->
+    <Image Name="Conf_Editbox_Border" XPos="3" YPos="3" Width="3" Height="3" />
+
+
+    <!-- MultiLineEditbox Properties: -->
+
+    <!-- XPos: The border on the left, inside the MultiLineEditbox
+         YPos: The border on the top, inside the MultiLineEditbox
+         Width: The border on the right, inside the MultiLineEditbox
+         Height: The border on the bottom, inside the MultiLineEditbox
+         Note: The width of the scrollbar is automatically subtracted ! -->
+    <Image Name="Conf_MultiEditbox_Border" XPos="3" YPos="3" Width="3" Height="3" />
+    <!-- XPos: The border on the left, inside the MultiLineEditbox, when there is a horizontal scrollbar.
+         YPos: The border on the top, inside the MultiLineEditbox, when there is a horizontal scrollbar.
+         Width: The border on the right, inside the MultiLineEditbox, when there is a horizontal scrollbar.
+         Height: The border on the bottom, inside the MultiLineEditbox, when there is a horizontal scrollbar.
+         Note: The height of the scrollbar is automatically subtracted ! -->
+    <Image Name="Conf_MultiEditbox_BorderHScroll" XPos="3" YPos="3" Width="3" Height="3" />
+    <!-- XPos: The border on the left, inside the MultiLineEditbox, when there is a vertical scrollbar.
+         YPos: The border on the top, inside the MultiLineEditbox, when there is a vertical scrollbar.
+         Width: The border on the right, inside the MultiLineEditbox, when there is a vertical scrollbar.
+         Height: The border on the bottom, inside the MultiLineEditbox, when there is a vertical scrollbar.
+         Note: The width of the scrollbar is automatically subtracted ! -->
+    <Image Name="Conf_MultiEditbox_BorderVScroll" XPos="3" YPos="3" Width="0" Height="3" />
+    <!-- XPos: The border on the left, inside the MultiLineEditbox, when there is a horizontal & vertical scrollbar.
+         YPos: The border on the top, inside the MultiLineEditbox, when there is a horizontal & vertical scrollbar.
+         Width: The border on the right, inside the MultiLineEditbox, when there is a horizontal & vertical scrollbar.
+         Height: The border on the bottom, inside the MultiLineEditbox, when there is a horizontal & vertical scrollbar.
+         Note: The width and height of the scrollbars are automatically subtracted ! -->
+    <Image Name="Conf_MultiEditbox_BorderHVScroll" XPos="3" YPos="3" Width="0" Height="3" />
+
+    <!-- StaticText Properties: -->
+
+    <!-- XPos: The border on the left, inside the StaticText
+         YPos: The border on the top, inside the StaticText
+         Width: The border on the right, inside the StaticText
+         Height: The border on the bottom, inside the StaticText
+         Note: The width of the scrollbar is automatically subtracted ! -->
+    <Image Name="Conf_StaticText_Border" XPos="4" YPos="4" Width="4" Height="4" />
+    <!-- XPos: The border on the left, inside the StaticText, when there is a horizontal scrollbar.
+         YPos: The border on the top, inside the StaticText, when there is a horizontal scrollbar.
+         Width: The border on the right, inside the StaticText, when there is a horizontal scrollbar.
+         Height: The border on the bottom, inside the StaticText, when there is a horizontal scrollbar.
+         Note: The height of the scrollbar is automatically subtracted ! -->
+    <Image Name="Conf_StaticText_BorderHScroll" XPos="4" YPos="4" Width="4" Height="4" />
+    <!-- XPos: The border on the left, inside the StaticText, when there is a vertical scrollbar.
+         YPos: The border on the top, inside the StaticText, when there is a vertical scrollbar.
+         Width: The border on the right, inside the StaticText, when there is a vertical scrollbar.
+         Height: The border on the bottom, inside the StaticText, when there is a vertical scrollbar.
+         Note: The width of the scrollbar is automatically subtracted ! -->
+    <Image Name="Conf_StaticText_BorderVScroll" XPos="4" YPos="4" Width="4" Height="4" />
+    <!-- XPos: The border on the left, inside the StaticText, when there is a horizontal & vertical scrollbar.
+         YPos: The border on the top, inside the StaticText, when there is a horizontal & vertical scrollbar.
+         Width: The border on the right, inside the StaticText, when there is a horizontal & vertical scrollbar.
+         Height: The border on the bottom, inside the StaticText, when there is a horizontal & vertical scrollbar.
+         Note: The width and height of the scrollbars are automatically subtracted ! -->
+    <Image Name="Conf_StaticText_BorderHVScroll" XPos="4" YPos="4" Width="4" Height="4" />
+
+    <!-- Listbox Properties: -->
+    <!-- XPos: The border on the left, inside the Listbox.
+         YPos: The border on the top, inside the Listbox.
+         Width: The border on the right, inside the Listbox.
+         Height: The border on the bottom, inside the Listbox.
+         Note: The width and height of the scrollbars are automatically subtracted ! -->
+    <Image Name="Conf_Listbox_Border" XPos="4" YPos="4" Width="4" Height="4" />
+
+    <!-- Combobox Properties: -->
+    <!-- XPos: The border on the left, where to begin the editbox.
+         YPos: The border on the top, where to begin the editbox.
+         Width: The widget's right - (button width + this Width proprety) is the right edge of the editbox.
+         Height: The Height of the editbox control. -->
+    <Image Name="Conf_Combobox_Edit" XPos="0" YPos="0" Width="0" Height="28" />
+
+    <!-- XPos: The border on the left, where to begin the dropdown list.
+         YPos: The border on the top, beginning from the editbox bottom, where to begin the dropdown list. In negative sense.
+         Width: The widget's right - this Width proprety is the width of the editbox.
+         Height: The bottom edge of the widget - this Height proprety is the bottom edge of the dropdown list. -->
+    <Image Name="Conf_Combobox_Dropdown" XPos="0" YPos="0" Width="0" Height="0" />
+
+    <!-- XPos: The widget's right border - (the width of the button + this XPos proprety) is the x position of the button.
+         YPos: The border on the top, where to begin the button. -->
+    <Image Name="Conf_Combobox_Button" XPos="0" YPos="0" Width="0" Height="0" />
+
+    <!-- XPos: The border on the left, inside the Combobox
+         YPos: The border on the top, inside the Combobox
+         Width: The border on the right, inside the Combobox
+         Height: The border on the bottom, inside the Combobox
+         Note: The width of the scrollbar is automatically subtracted ! -->
+    <Image Name="Conf_Combobox_Border" XPos="4" YPos="4" Width="4" Height="4" />
+    <!-- XPos: The border on the left, inside the Combobox, when there is a horizontal scrollbar.
+         YPos: The border on the top, inside the Combobox, when there is a horizontal scrollbar.
+         Width: The border on the right, inside the Combobox, when there is a horizontal scrollbar.
+         Height: The border on the bottom, inside the Combobox, when there is a horizontal scrollbar.
+         Note: The height of the scrollbar is automatically subtracted ! -->
+    <Image Name="Conf_Combobox_BorderHScroll" XPos="4" YPos="4" Width="4" Height="4" />
+    <!-- XPos: The border on the left, inside the Combobox, when there is a vertical scrollbar.
+         YPos: The border on the top, inside the Combobox, when there is a vertical scrollbar.
+         Width: The border on the right, inside the Combobox, when there is a vertical scrollbar.
+         Height: The border on the bottom, inside the Combobox, when there is a vertical scrollbar.
+         Note: The width of the scrollbar is automatically subtracted ! -->
+    <Image Name="Conf_Combobox_BorderVScroll" XPos="4" YPos="4" Width="4" Height="4" />
+    <!-- XPos: The border on the left, inside the Combobox, when there is a horizontal & vertical scrollbar.
+         YPos: The border on the top, inside the Combobox, when there is a horizontal & vertical scrollbar.
+         Width: The border on the right, inside the Combobox, when there is a horizontal & vertical scrollbar.
+         Height: The border on the bottom, inside the Combobox, when there is a horizontal & vertical scrollbar.
+         Note: The width and height of the scrollbars are automatically subtracted ! -->
+    <Image Name="Conf_Combobox_BorderHVScroll" XPos="4" YPos="4" Width="4" Height="4" />
+
+    <!-- Decored button -->
+    <!-- ============== -->
+    <Image Name="DecoButtonNormalTL" XPos="0"   YPos="491" Width="9" Height="9" />
+    <Image Name="DecoButtonNormalT"  XPos="10"  YPos="491" Width="1" Height="3" />
+    <Image Name="DecoButtonNormalTR" XPos="12"  YPos="491" Width="9" Height="9" />
+    <Image Name="DecoButtonNormalR"  XPos="18"  YPos="501" Width="3" Height="1" />
+    <Image Name="DecoButtonNormalBR" XPos="12"  YPos="503" Width="9" Height="9" />
+    <Image Name="DecoButtonNormalB"  XPos="10"  YPos="509" Width="1" Height="3" />
+    <Image Name="DecoButtonNormalBL" XPos="0"   YPos="503" Width="9" Height="9" />
+    <Image Name="DecoButtonNormalL"  XPos="0"   YPos="501" Width="3" Height="1" />
+    <Image Name="DecoButtonNormalBg" XPos="205" YPos="82" Width="128" Height="128" />
+
+    <Image Name="DecoButtonHoverTL" XPos="25"  YPos="491" Width="9" Height="9" />
+    <Image Name="DecoButtonHoverT"  XPos="35"  YPos="491" Width="1" Height="7" />
+    <Image Name="DecoButtonHoverTR" XPos="37"  YPos="491" Width="9" Height="9" />
+    <Image Name="DecoButtonHoverR"  XPos="39"  YPos="501" Width="7" Height="1" />
+    <Image Name="DecoButtonHoverBR" XPos="37"  YPos="503" Width="9" Height="9" />
+    <Image Name="DecoButtonHoverB"  XPos="35"  YPos="505" Width="1" Height="7" />
+    <Image Name="DecoButtonHoverBL" XPos="25"  YPos="503" Width="9" Height="9" />
+    <Image Name="DecoButtonHoverL"  XPos="25"  YPos="501" Width="7" Height="1" />
+    <Image Name="DecoButtonHoverBg" XPos="205" YPos="82" Width="128" Height="128" />
+
+    <Image Name="DecoButtonPushedTL" XPos="50"  YPos="491" Width="9" Height="9" />
+    <Image Name="DecoButtonPushedT"  XPos="60"  YPos="491" Width="1" Height="7" />
+    <Image Name="DecoButtonPushedTR" XPos="62"  YPos="491" Width="9" Height="9" />
+    <Image Name="DecoButtonPushedR"  XPos="64"  YPos="501" Width="7" Height="1" />
+    <Image Name="DecoButtonPushedBR" XPos="62"  YPos="503" Width="9" Height="9" />
+    <Image Name="DecoButtonPushedB"  XPos="60"  YPos="505" Width="1" Height="7" />
+    <Image Name="DecoButtonPushedBL" XPos="50"  YPos="503" Width="9" Height="9" />
+    <Image Name="DecoButtonPushedL"  XPos="50"  YPos="501" Width="7" Height="1" />
+    <Image Name="DecoButtonPushedBg" XPos="205" YPos="82" Width="128" Height="128" />
+
+    <Image Name="DecoButtonDisabledTL" XPos="75"  YPos="491" Width="9" Height="9" />
+    <Image Name="DecoButtonDisabledT"  XPos="85"  YPos="491" Width="1" Height="3" />
+    <Image Name="DecoButtonDisabledTR" XPos="87"  YPos="491" Width="9" Height="9" />
+    <Image Name="DecoButtonDisabledR"  XPos="93"  YPos="501" Width="3" Height="1" />
+    <Image Name="DecoButtonDisabledBR" XPos="87"  YPos="503" Width="9" Height="9" />
+    <Image Name="DecoButtonDisabledB"  XPos="85"  YPos="509" Width="1" Height="3" />
+    <Image Name="DecoButtonDisabledBL" XPos="75"  YPos="503" Width="9" Height="9" />
+    <Image Name="DecoButtonDisabledL"  XPos="75"  YPos="501" Width="3" Height="1" />
+    <Image Name="DecoButtonDisabledBg" XPos="205" YPos="82" Width="128" Height="128" />
+
+    <!-- Static Frame -->
+    <!-- ============ -->
+      <!-- XPos: The X position of the text.
+           YPos: the y position of the text -->
+    <Image Name="Conf_StaticFrame_TextPos" XPos="15" YPos="0" Width="0" Height="0" />
+      <!-- Width: The width of the first half of the top border (without the top left edge)
+           Height: The space between end of text and beginning of the second half of the top border. -->
+    <Image Name="Conf_StaticFrame_BorderTL" XPos="0" YPos="0" Width="5" Height="5" />
+
+    <!-- Checkboxes -->
+    <!-- ========== -->
+    <Image Name="CheckboxUnselectedNormal"   XPos="0" YPos="258" Width="24" Height="24" />
+    <Image Name="CheckboxUnselectedHover"    XPos="0" YPos="282" Width="24" Height="24" />
+    <Image Name="CheckboxUnselectedPushed"   XPos="0" YPos="306" Width="24" Height="24" />
+    <Image Name="CheckboxUnselectedDisabled" XPos="0" YPos="330" Width="24" Height="24" />
+    <Image Name="CheckboxSelectedNormal"    XPos="24" YPos="258" Width="24" Height="24" />
+    <Image Name="CheckboxSelectedHover"     XPos="24" YPos="282" Width="24" Height="24" />
+    <Image Name="CheckboxSelectedPushed"    XPos="24" YPos="306" Width="24" Height="24" />
+    <Image Name="CheckboxSelectedDisabled"  XPos="24" YPos="330" Width="24" Height="24" />
+
+    <!-- XPos: The border between the text and the checkbox, in unselected states.
+         YPos: The border between the text and the checkbox, in selected states. -->
+    <Image Name="Conf_Checkbox_Textborder"  XPos="5" YPos="5" Width="0" Height="0" />
+
+    <!-- Vertical DecoScrollbar -->
+    <!-- ====================== -->
+       <!-- The up button -->
+    <Image Name="VDecoScrollbarUpNormal"   XPos="19" YPos="354" Width="14" Height="15" />
+    <Image Name="VDecoScrollbarUpHover"    XPos="19" YPos="370" Width="14" Height="15" />
+    <Image Name="VDecoScrollbarUpPushed"   XPos="19" YPos="386" Width="14" Height="15" />
+    <Image Name="VDecoScrollbarUpDisabled" XPos="19" YPos="402" Width="14" Height="15" />
+       <!-- The down button -->
+    <Image Name="VDecoScrollbarDownNormal"   XPos="36" YPos="354" Width="14" Height="15" />
+    <Image Name="VDecoScrollbarDownHover"    XPos="36" YPos="370" Width="14" Height="15" />
+    <Image Name="VDecoScrollbarDownPushed"   XPos="36" YPos="386" Width="14" Height="15" />
+    <Image Name="VDecoScrollbarDownDisabled" XPos="36" YPos="402" Width="14" Height="15" />
+       <!-- The bar -->
+    <Image Name="VDecoScrollbarBarEnabled"  XPos="0" YPos="400" Width="4" Height="1" />
+    <Image Name="VDecoScrollbarBarDisabled" XPos="6" YPos="400" Width="4" Height="1" />
+       <!-- The Thumb -->
+    <Image Name="VDecoScrollbarBarThumbNormal"   XPos="0" YPos="354" Width="14" Height="10" />
+    <Image Name="VDecoScrollbarBarThumbHover"    XPos="0" YPos="365" Width="14" Height="10" />
+    <Image Name="VDecoScrollbarBarThumbPushed"   XPos="0" YPos="376" Width="14" Height="10" />
+    <Image Name="VDecoScrollbarBarThumbDisabled" XPos="0" YPos="387" Width="14" Height="10" />
+
+    <!-- XPos - Width: The result of 'XPos - Width' is the Y position how much the thumb can be tracked up, relative to the top of the scrollbar.
+         YPos - Height: The result of 'YPos - Height' is the Y position how much the thumb can be tracked down, relative to the bottom of the scrollbar. -->
+    <Image Name="Conf_VDecoScrollbar_ThumbRegionV" XPos="15" YPos="0" Width="0" Height="15" />
+
+    <!-- XPos: The x offset of the thumb. -->
+    <Image Name="Conf_VDecoScrollbar_ThumbRegionH" XPos="0" YPos="0" Width="0" Height="0" />
+
+    <!-- XPos: The offset in X position of the bar. The bar gets drawn horizontally centred.
+         YPos: The offset in Y position of the bar. The bar gets drawn vertically stretched.
+         Width: The Width of the bar. The bar gets drawn horizontally centred.
+         Height: The height that is subtracted from the maximum height the scrollbar could have. -->
+    <Image Name="Conf_VDecoScrollbar_BarRegion" XPos="5" YPos="15" Width="4" Height="30" />
+
+    <!-- XPos: The offset in X position of the buttons. -->
+    <Image Name="Conf_VDecoScrollbar_ButtonsX" XPos="0" YPos="0" Width="0" Height="0" />
+
+    <!-- XPos: The x offset of the scrollbar.
+         YPos: The y offset of the scrollbar.
+         Width: The width that the scrollbar takes if it's child of something.
+         Height: The height that is subtracted from the maximum height the scrollbar could have. -->
+    <Image Name="Conf_VDecoScrollbar_ChildSize" XPos="0" YPos="5" Width="18" Height="10" />
+
+
+    <!-- Horizontal DecoScrollbar -->
+    <!-- ======================== -->
+       <!-- The left button -->
+    <Image Name="HDecoScrollbarLeftNormal"   XPos="82" YPos="354" Width="15" Height="14" />
+    <Image Name="HDecoScrollbarLeftHover"    XPos="82" YPos="369" Width="15" Height="14" />
+    <Image Name="HDecoScrollbarLeftPushed"   XPos="82" YPos="384" Width="15" Height="14" />
+    <Image Name="HDecoScrollbarLeftDisabled" XPos="82" YPos="399" Width="15" Height="14" />
+       <!-- The right button -->
+    <Image Name="HDecoScrollbarRightNormal"   XPos="64" YPos="354" Width="15" Height="14" />
+    <Image Name="HDecoScrollbarRightHover"    XPos="64" YPos="369" Width="15" Height="14" />
+    <Image Name="HDecoScrollbarRightPushed"   XPos="64" YPos="384" Width="15" Height="14" />
+    <Image Name="HDecoScrollbarRightDisabled" XPos="64" YPos="399" Width="15" Height="14" />
+       <!-- The bar -->
+    <Image Name="HDecoScrollbarBarEnabled"  XPos="1" YPos="403" Width="1" Height="4" />
+    <Image Name="HDecoScrollbarBarDisabled" XPos="8" YPos="403" Width="1" Height="4" />
+       <!-- The Thumb -->
+    <Image Name="HDecoScrollbarBarThumbNormal"   XPos="52" YPos="354" Width="10" Height="14" />
+    <Image Name="HDecoScrollbarBarThumbHover"    XPos="52" YPos="369" Width="10" Height="14" />
+    <Image Name="HDecoScrollbarBarThumbPushed"   XPos="52" YPos="384" Width="10" Height="14" />
+    <Image Name="HDecoScrollbarBarThumbDisabled" XPos="52" YPos="399" Width="10" Height="14" />
+
+    <!-- YPos: The y offset of the thumb. -->
+    <Image Name="Conf_HDecoScrollbar_ThumbRegionV" XPos="0" YPos="0" Width="0" Height="0" />
+
+    <!-- XPos - Width: The result of 'XPos - Width' is the X position how much the thumb can be tracked to the left, relative to the left of the scrollbar.
+         YPos - Height: The result of 'YPos - Height' is the X position how much the thumb can be tracked to the right, relative to the right of the scrollbar. -->
+    <Image Name="Conf_HDecoScrollbar_ThumbRegionH" XPos="15" YPos="0" Width="0" Height="15" />
+
+    <!-- XPos: The offset in X position of the bar. The bar gets drawn horizontally stretched.
+         YPos: The offset in Y position of the bar. The bar gets drawn vertically centred.
+         Height: The Height of the bar. The bar gets drawn vertically centred.
+         Width: The Width that is subtracted from the maximum Width the scrollbar could have. -->
+    <Image Name="Conf_HDecoScrollbar_BarRegion" XPos="15" YPos="5" Width="30" Height="4" />
+
+    <!-- YPos: The offset in Y position of the buttons. -->
+    <Image Name="Conf_HDecoScrollbar_ButtonsY" XPos="0" YPos="0" Width="0" Height="0" />
+
+    <!-- XPos: The x offset of the scrollbar.
+         YPos: The y offset of the scrollbar.
+         Width: The width that the scrollbar takes if it's child of something.
+         Height: The height that is subtracted from the maximum height the scrollbar could have. -->
+    <Image Name="Conf_HDecoScrollbar_ChildSize" XPos="5" YPos="0" Width="10" Height="18" />
+
+    <!-- RadioButton -->
+    <!-- =========== -->
+    <Image Name="RadioNormal"   XPos="49" YPos="258" Width="24" Height="24" />
+    <Image Name="RadioHover"    XPos="49" YPos="282" Width="24" Height="24" />
+    <Image Name="RadioPushed"   XPos="49" YPos="306" Width="24" Height="24" />
+    <Image Name="RadioDisabled" XPos="49" YPos="330" Width="24" Height="24" />
+    <Image Name="RadioActiveNormal"   XPos="73" YPos="258" Width="24" Height="24" />
+    <Image Name="RadioActiveHover"    XPos="73" YPos="282" Width="24" Height="24" />
+    <Image Name="RadioActivePushed"   XPos="73" YPos="306" Width="24" Height="24" />
+    <Image Name="RadioActiveDisabled" XPos="73" YPos="330" Width="24" Height="24" />
+
+    <!-- XPos: The border between the text and the radio button, in unselected states.
+         YPos: The border between the text and the radio button, in selected states. -->
+    <Image Name="Conf_Radio_Textborder"  XPos="5" YPos="5" Width="0" Height="0" />
+
+    <!-- Normal button -->
+    <!-- ============= -->
+    <Image Name="ButtonNormalTL" XPos="0"  YPos="418" Width="19" Height="15" />
+    <Image Name="ButtonNormalT"  XPos="21" YPos="418" Width="1"  Height="15" />
+    <Image Name="ButtonNormalTR" XPos="24" YPos="418" Width="19" Height="15" />
+    <Image Name="ButtonNormalR"  XPos="24" YPos="435" Width="19" Height="1"  />
+    <Image Name="ButtonNormalBR" XPos="24" YPos="438" Width="19" Height="15" />
+    <Image Name="ButtonNormalB"  XPos="21" YPos="438" Width="1"  Height="15" />
+    <Image Name="ButtonNormalBL" XPos="0"  YPos="438" Width="19" Height="15" />
+    <Image Name="ButtonNormalL"  XPos="0"  YPos="435" Width="19" Height="1"  />
+    <Image Name="ButtonNormalBg" XPos="21" YPos="435" Width="1"  Height="1"  />
+
+    <Image Name="ButtonHoverTL" XPos="0"  YPos="455" Width="19" Height="15" />
+    <Image Name="ButtonHoverT"  XPos="21" YPos="455" Width="1"  Height="15" />
+    <Image Name="ButtonHoverTR" XPos="24" YPos="455" Width="19" Height="15" />
+    <Image Name="ButtonHoverR"  XPos="24" YPos="472" Width="19" Height="1"  />
+    <Image Name="ButtonHoverBR" XPos="24" YPos="475" Width="19" Height="15" />
+    <Image Name="ButtonHoverB"  XPos="21" YPos="475" Width="1"  Height="15" />
+    <Image Name="ButtonHoverBL" XPos="0"  YPos="475" Width="19" Height="15" />
+    <Image Name="ButtonHoverL"  XPos="0"  YPos="472" Width="19" Height="1"  />
+    <Image Name="ButtonHoverBg" XPos="21" YPos="472" Width="1"  Height="1"  />
+
+    <Image Name="ButtonPushedTL" XPos="48" YPos="418" Width="19" Height="15" />
+    <Image Name="ButtonPushedT"  XPos="69" YPos="418" Width="1"  Height="15" />
+    <Image Name="ButtonPushedTR" XPos="72" YPos="418" Width="19" Height="15" />
+    <Image Name="ButtonPushedR"  XPos="72" YPos="435" Width="19" Height="1"  />
+    <Image Name="ButtonPushedBR" XPos="72" YPos="438" Width="19" Height="15" />
+    <Image Name="ButtonPushedB"  XPos="69" YPos="438" Width="1"  Height="15" />
+    <Image Name="ButtonPushedBL" XPos="48" YPos="438" Width="19" Height="15" />
+    <Image Name="ButtonPushedL"  XPos="48" YPos="435" Width="19" Height="1"  />
+    <Image Name="ButtonPushedBg" XPos="69" YPos="435" Width="1"  Height="1"  />
+
+    <Image Name="ButtonDisabledTL" XPos="48" YPos="455" Width="19" Height="15" />
+    <Image Name="ButtonDisabledT"  XPos="69" YPos="455" Width="1"  Height="15" />
+    <Image Name="ButtonDisabledTR" XPos="72" YPos="455" Width="19" Height="15" />
+    <Image Name="ButtonDisabledR"  XPos="72" YPos="472" Width="19" Height="1"  />
+    <Image Name="ButtonDisabledBR" XPos="72" YPos="475" Width="19" Height="15" />
+    <Image Name="ButtonDisabledB"  XPos="69" YPos="475" Width="1"  Height="15" />
+    <Image Name="ButtonDisabledBL" XPos="48" YPos="475" Width="19" Height="15" />
+    <Image Name="ButtonDisabledL"  XPos="48" YPos="472" Width="19" Height="1"  />
+    <Image Name="ButtonDisabledBg" XPos="69" YPos="472" Width="1"  Height="1"  />
+
+    <Image Name="ButtonDisabledHoverTL" XPos="94"  YPos="418" Width="19" Height="15" />
+    <Image Name="ButtonDisabledHoverT"  XPos="115" YPos="418" Width="1"  Height="15" />
+    <Image Name="ButtonDisabledHoverTR" XPos="118" YPos="418" Width="19" Height="15" />
+    <Image Name="ButtonDisabledHoverR"  XPos="118" YPos="435" Width="19" Height="1"  />
+    <Image Name="ButtonDisabledHoverBR" XPos="118" YPos="438" Width="19" Height="15" />
+    <Image Name="ButtonDisabledHoverB"  XPos="115" YPos="438" Width="1"  Height="15" />
+    <Image Name="ButtonDisabledHoverBL" XPos="94"  YPos="438" Width="19" Height="15" />
+    <Image Name="ButtonDisabledHoverL"  XPos="94"  YPos="435" Width="19" Height="1"  />
+    <Image Name="ButtonDisabledHoverBg" XPos="115" YPos="435" Width="1"  Height="1"  />
+
+    <Image Name="ButtonDisabledPushedTL" XPos="139" YPos="418" Width="19" Height="15" />
+    <Image Name="ButtonDisabledPushedT"  XPos="160" YPos="418" Width="1"  Height="15" />
+    <Image Name="ButtonDisabledPushedTR" XPos="163" YPos="418" Width="19" Height="15" />
+    <Image Name="ButtonDisabledPushedR"  XPos="163" YPos="435" Width="19" Height="1"  />
+    <Image Name="ButtonDisabledPushedBR" XPos="163" YPos="438" Width="19" Height="15" />
+    <Image Name="ButtonDisabledPushedB"  XPos="160" YPos="438" Width="1"  Height="15" />
+    <Image Name="ButtonDisabledPushedBL" XPos="139" YPos="438" Width="19" Height="15" />
+    <Image Name="ButtonDisabledPushedL"  XPos="139" YPos="435" Width="19" Height="1"  />
+    <Image Name="ButtonDisabledPushedBg" XPos="160" YPos="435" Width="1"  Height="1"  />
+
+    <!-- XPos: The border between the text and the radio button, in unselected states.
+         YPos: The border between the text and the radio button, in selected states. -->
+    <Image Name="Conf_Button_Textborder"  XPos="10" YPos="3" Width="10" Height="3" />
+    <!-- XPos: The border between the text and the radio button, in unselected states.
+         YPos: The border between the text and the radio button, in selected states. -->
+    <Image Name="Conf_Button_TextborderPushed"  XPos="11" YPos="4" Width="9" Height="2" />
+
+    <!-- Tooltip -->
+    <!-- ======= -->
+    <Image Name="TooltipTopLeft" XPos="79" YPos="220" Width="4" Height="4" />
+    <Image Name="TooltipTopRight" XPos="103" YPos="220" Width="5" Height="4" />
+    <Image Name="TooltipBottomLeft" XPos="79" YPos="224" Width="4" Height="5" />
+    <Image Name="TooltipBottomRight" XPos="103" YPos="224" Width="5" Height="5" />
+    <Image Name="TooltipLeftEdge" XPos="79" YPos="231" Width="4" Height="6" />
+    <Image Name="TooltipRightEdge" XPos="103" YPos="231" Width="5" Height="6" />
+    <Image Name="TooltipTopEdge" XPos="90" YPos="220" Width="6" Height="4" />
+    <Image Name="TooltipBottomEdge" XPos="90" YPos="224" Width="6" Height="5" />
+    <Image Name="TooltipMiddle" XPos="90" YPos="231" Width="6" Height="6" />
+
+    <!-- StaticText -->
+    <!-- ========== -->
+    <!-- The following are like Frame..Pushed -->
+<!--    <Image Name="StaticTLNormal" XPos="7"  YPos="235" Width="2" Height="2" />
+    <Image Name="StaticTNormal"  XPos="10" YPos="235" Width="1" Height="2" />
+    <Image Name="StaticTRNormal" XPos="12" YPos="235" Width="2" Height="2" />
+    <Image Name="StaticRNormal"  XPos="12" YPos="238" Width="2" Height="1" />
+    <Image Name="StaticBRNormal" XPos="12" YPos="240" Width="2" Height="2" />
+    <Image Name="StaticBNormal"  XPos="10" YPos="240" Width="1" Height="2" />
+    <Image Name="StaticBLNormal" XPos="7"  YPos="240" Width="2" Height="2" />
+    <Image Name="StaticLNormal"  XPos="7"  YPos="238" Width="2" Height="1" />
+    <Image Name="StaticBgNormal" XPos="10" YPos="238" Width="1" Height="1" />-->
+    <!-- The following are like Frame..Disabled -->
+<!--    <Image Name="StaticTLNormal" XPos="7"  YPos="244" Width="2" Height="2" />
+    <Image Name="StaticTNormal"  XPos="10" YPos="244" Width="1" Height="2" />
+    <Image Name="StaticTRNormal" XPos="12" YPos="244" Width="2" Height="2" />
+    <Image Name="StaticRNormal"  XPos="12" YPos="247" Width="2" Height="1" />
+    <Image Name="StaticBRNormal" XPos="12" YPos="249" Width="2" Height="2" />
+    <Image Name="StaticBNormal"  XPos="10" YPos="249" Width="1" Height="2" />
+    <Image Name="StaticBLNormal" XPos="7"  YPos="249" Width="2" Height="2" />
+    <Image Name="StaticLNormal"  XPos="7"  YPos="247" Width="2" Height="1" />
+    <Image Name="StaticBgNormal" XPos="10" YPos="247" Width="1" Height="1" />-->
+    <!-- The following are like Checkbox..Pushed -->
+    <Image Name="StaticTLNormal" XPos="6"  YPos="321" Width="2" Height="2" />
+    <Image Name="StaticTNormal"  XPos="9"  YPos="321" Width="1" Height="2" />
+    <Image Name="StaticTRNormal" XPos="16" YPos="321" Width="2" Height="2" />
+    <Image Name="StaticRNormal"  XPos="16" YPos="317" Width="2" Height="1" />
+    <Image Name="StaticBRNormal" XPos="16" YPos="322" Width="2" Height="2" />
+    <Image Name="StaticBNormal"  XPos="9"  YPos="322" Width="1" Height="2" />
+    <Image Name="StaticBLNormal" XPos="6"  YPos="322" Width="2" Height="2" />
+    <Image Name="StaticLNormal"  XPos="6"  YPos="317" Width="2" Height="1" />
+    <Image Name="StaticBgNormal" XPos="7"  YPos="237" Width="1" Height="1" />
+    <Image Name="StaticTLDisabled" XPos="6"  YPos="345" Width="2" Height="2" />
+    <Image Name="StaticTDisabled"  XPos="9"  YPos="345" Width="1" Height="2" />
+    <Image Name="StaticTRDisabled" XPos="16" YPos="345" Width="2" Height="2" />
+    <Image Name="StaticRDisabled"  XPos="16" YPos="341" Width="2" Height="1" />
+    <Image Name="StaticBRDisabled" XPos="16" YPos="346" Width="2" Height="2" />
+    <Image Name="StaticBDisabled"  XPos="9"  YPos="346" Width="1" Height="2" />
+    <Image Name="StaticBLDisabled" XPos="6"  YPos="346" Width="2" Height="2" />
+    <Image Name="StaticLDisabled"  XPos="6"  YPos="341" Width="2" Height="1" />
+    <Image Name="StaticBgDisabled" XPos="7"  YPos="246" Width="1" Height="1" />
+
+    <!-- Frame for PopupMenu -->
+    <!-- =================== -->
+    <Image Name="PopupMenuFrameTL" XPos="103" YPos="467" Width="20" Height="20" />
+    <Image Name="PopupMenuFrameT"  XPos="125" YPos="467" Width="1"  Height="6"  />
+    <Image Name="PopupMenuFrameTR" XPos="128" YPos="467" Width="20" Height="20" />
+    <Image Name="PopupMenuFrameR"  XPos="142" YPos="489" Width="6"  Height="1"  />
+    <Image Name="PopupMenuFrameBR" XPos="128" YPos="492" Width="20" Height="20" />
+    <Image Name="PopupMenuFrameB"  XPos="125" YPos="506" Width="1"  Height="6"  />
+    <Image Name="PopupMenuFrameBL" XPos="103" YPos="492" Width="20" Height="20" />
+    <Image Name="PopupMenuFrameL"  XPos="103" YPos="489" Width="6"  Height="1"  />
+    <Image Name="PopupMenuFrameBg" XPos="99"  YPos="493" Width="1"  Height="1"  />
+    <Image Name="PopupMenuArrowClosed" XPos="97"  YPos="454" Width="7"  Height="8" />
+    <Image Name="PopupMenuFrameOpened" XPos="106" YPos="454" Width="7"  Height="8" />
+
+    <!-- XPos: The x offset of the background.
+         YPos: The y offset of the background.
+         Width: The right edge - this is the right edge of the background.
+         Height: The bottom edge - this is the bottom edge of the background. -->
+    <Image Name="Conf_PopupMenu_FrameBg" XPos="6" YPos="6" Width="6" Height="6" />
+
+    <!-- XPos: The x offset of the text in a popup menu item.
+         YPos: The y offset of the text in a popup menu item.
+         Width: The right edge - this is the right edge of the background.
+         Height: The bottom edge - this is the bottom edge of the background. -->
+    <Image Name="Conf_PopupMenu_ItemTextBorder" XPos="10" YPos="3" Width="10" Height="3" />
+
+    <!-- Progressbar and BigProgressbar -->
+    <!-- ============================== -->
+    <Image Name="BigProgressBarDisabledLight" XPos="241" YPos="381" Width="261" Height="22" />
+    <Image Name="BigProgressBarEnabledLight" XPos="241" YPos="447" Width="261" Height="22" />
+    <Image Name="BigProgressBarDisabledBg" XPos="231" YPos="404" Width="281" Height="42" />
+    <Image Name="BigProgressBarEnabledBg" XPos="231" YPos="470" Width="281" Height="42" />
+
+    <!-- XPos: The x offset of the progressing light part of the progressbar.
+         YPos: The y offset of the progressing light part of the progressbar.
+         Width: The width of the progressing light part of the progressbar.
+         Height: The height of the progressing light part of the progressbar. -->
+    <Image Name="Conf_BigProgressBar" XPos="10" YPos="10" Width="261" Height="22" />
+
+    <Image Name="ProgressBarDisabledLight" XPos="274" YPos="337" Width="112" Height="12" />
+    <Image Name="ProgressBarEnabledLight" XPos="274" YPos="362" Width="112" Height="12" />
+    <Image Name="ProgressBarDisabledBg" XPos="388" YPos="331" Width="124" Height="24" />
+    <Image Name="ProgressBarEnabledBg" XPos="388" YPos="356" Width="124" Height="24" />
+
+    <!-- XPos: The x offset of the progressing light part of the progressbar.
+         YPos: The y offset of the progressing light part of the progressbar.
+         Width: The width of the progressing light part of the progressbar.
+         Height: The height of the progressing light part of the progressbar. -->
+    <Image Name="Conf_ProgressBar" XPos="7" YPos="7" Width="112" Height="12" />
+</Imageset>

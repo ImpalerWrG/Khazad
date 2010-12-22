@@ -1,0 +1,159 @@
+<?xml version="1.0" ?>
+
+<Falagard>
+   <!--
+   ***************************************************
+   A Simple arkanalook menu button, with a nice decoration.
+   This is the kind of button type you see in the main menu.
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/MenuButton">
+
+      <!-- The Property definitions. These are properties you can set in your layout/code. -->
+      <!-- ******************************************************************************* -->
+
+      <PropertyDefinition name="TextColourNormal"   initialValue="FFFFFFFF" redrawOnWrite="true" />
+      <PropertyDefinition name="TextColourHover"    initialValue="FF1B56A0" redrawOnWrite="true" />
+      <PropertyDefinition name="TextColourPushed"   initialValue="FF1B56A0" redrawOnWrite="true" />
+      <PropertyDefinition name="TextColourDisabled" initialValue="FF7F7F7F" redrawOnWrite="true" />
+
+      <Property name="UnifiedMinSize" value="{{0,72},{0,48}}" />
+      <Property name="WantsMultiClickEvents" value="False" />
+      <Property name="Font" value="old2" />
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- This is the label, just white so the color can be modulated to whatever. -->
+      <ImagerySection name="label">
+         <TextComponent>
+            <Area>
+               <Dim type="LeftEdge"><ImageDim imageset="ArkanaLook" image="Conf_MenuButton_Text" dimension="XPosition" /></Dim>
+               <Dim type="TopEdge"><ImageDim imageset="ArkanaLook" image="Conf_MenuButton_Text" dimension="YPosition" /></Dim>
+               <Dim type="RightEdge">
+                  <UnifiedDim scale="1" type="RightEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="Conf_MenuButton_Text" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="BottomEdge">
+                  <UnifiedDim scale="1" type="BottomEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="Conf_MenuButton_Text" dimension="Height" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+            </Area>
+            <VertFormat type="CentreAligned" />
+            <HorzFormat type="WordWrapCentreAligned" />
+         </TextComponent>
+      </ImagerySection>
+
+      <!-- This is For the normal state. -->
+      <ImagerySection name="normal">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><ImageDim imageset="ArkanaLook" image="MenuButtonLNormal" dimension="Height" /></Dim>
+            </Area>
+            <Image type="LeftEdge" imageset="ArkanaLook" image="MenuButtonLNormal" />
+            <Image type="RightEdge" imageset="ArkanaLook" image="MenuButtonRNormal" />
+            <Image type="Background" imageset="ArkanaLook" image="MenuButtonMNormal" />
+            <VertFormat type="CentreAligned" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- This is For the hover state. -->
+      <ImagerySection name="hover">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><ImageDim imageset="ArkanaLook" image="MenuButtonLHover" dimension="Height" /></Dim>
+            </Area>
+            <Image type="LeftEdge" imageset="ArkanaLook" image="MenuButtonLHover" />
+            <Image type="RightEdge" imageset="ArkanaLook" image="MenuButtonRHover" />
+            <Image type="Background" imageset="ArkanaLook" image="MenuButtonMHover" />
+            <VertFormat type="CentreAligned" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- This is For the pushed state. -->
+      <ImagerySection name="pushed">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><ImageDim imageset="ArkanaLook" image="MenuButtonLPushed" dimension="Height" /></Dim>
+            </Area>
+            <Image type="LeftEdge" imageset="ArkanaLook" image="MenuButtonLPushed" />
+            <Image type="Background" imageset="ArkanaLook" image="MenuButtonMPushed" />
+            <Image type="RightEdge" imageset="ArkanaLook" image="MenuButtonRPushed" />
+            <VertFormat type="CentreAligned" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- This is For the disabled state. -->
+      <ImagerySection name="disabled">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><ImageDim imageset="ArkanaLook" image="MenuButtonLDisabled" dimension="Height" /></Dim>
+            </Area>
+            <Image type="LeftEdge" imageset="ArkanaLook" image="MenuButtonLDisabled" />
+            <Image type="RightEdge" imageset="ArkanaLook" image="MenuButtonRDisabled" />
+            <Image type="Background" imageset="ArkanaLook" image="MenuButtonMDisabled" />
+            <VertFormat type="CentreAligned" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <!-- Normal -->
+      <StateImagery name="Normal">
+         <Layer>
+            <Section section="normal" />
+            <Section section="label"><ColourProperty name="TextColourNormal" /></Section>
+         </Layer>
+      </StateImagery>
+
+      <!-- Hover -->
+      <StateImagery name="Hover">
+         <Layer>
+            <Section section="hover" />
+            <Section section="label"><ColourProperty name="TextColourHover" /></Section>
+         </Layer>
+      </StateImagery>
+
+      <!-- Pushed -->
+      <StateImagery name="Pushed">
+         <Layer>
+            <Section section="pushed" />
+            <Section section="label"><ColourProperty name="TextColourPushed" /></Section>
+         </Layer>
+      </StateImagery>
+
+      <!-- Disabled -->
+      <StateImagery name="Disabled">
+         <Layer>
+            <Section section="disabled" />
+            <Section section="label"><ColourProperty name="TextColourDisabled" /></Section>
+         </Layer>
+      </StateImagery>
+
+   </WidgetLook>
+</Falagard>
+

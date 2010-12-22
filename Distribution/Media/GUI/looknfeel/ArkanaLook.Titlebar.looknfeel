@@ -1,0 +1,122 @@
+<?xml version="1.0" ?>
+
+<Falagard>
+   <!--
+   ***************************************************
+   The titlebar part of a arkanalook window.
+   This one also draws the caption, but not the system buttons.
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/Titlebar">
+
+      <!-- The Property definitions. These are properties you can set in your layout/code. -->
+      <!-- ******************************************************************************* -->
+
+      <PropertyDefinition name="CaptionColourActive" initialValue="FFFFFFFF" redrawOnWrite="true" />
+      <PropertyDefinition name="CaptionColourInactive" initialValue="FFFFFFFF" redrawOnWrite="true" />
+      <PropertyDefinition name="CaptionColourDisabled" initialValue="FF7F7F7F" redrawOnWrite="true" />
+
+      <Property name="UnifiedMinSize" value="{{0,116},{0,42}}" />
+      <Property name="WantsMultiClickEvents" value="True" />
+      <Property name="Font" value="old2" />
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- This is the title, just white so the color can be modulated to whatever. -->
+      <ImagerySection name="title">
+         <TextComponent>
+            <Area>
+               <Dim type="LeftEdge"><ImageDim imageset="ArkanaLook" image="Conf_FrameWin_Titlebar_Text" dimension="XPosition" /></Dim>
+               <Dim type="TopEdge"><ImageDim imageset="ArkanaLook" image="Conf_FrameWin_Titlebar_Text" dimension="YPosition" /></Dim>
+               <Dim type="RightEdge">
+                  <UnifiedDim scale="1" type="RightEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="Conf_FrameWin_Titlebar_Text" dimension="Width" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+               <Dim type="BottomEdge">
+                  <UnifiedDim scale="1" type="BottomEdge">
+                     <DimOperator op="Subtract">
+                        <ImageDim imageset="ArkanaLook" image="Conf_FrameWin_Titlebar_Text" dimension="Height" />
+                     </DimOperator>
+                  </UnifiedDim>
+               </Dim>
+            </Area>
+            <VertFormat type="CentreAligned" />
+            <HorzFormat type="WordWrapCentreAligned" />
+         </TextComponent>
+      </ImagerySection>
+
+      <!-- This is For the active state. -->
+      <ImagerySection name="active">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="Height"><ImageDim imageset="ArkanaLook" image="ActiveWindowTitlebarTL" dimension="Height" /></Dim>
+            </Area>
+            <Image type="LeftEdge" imageset="ArkanaLook" image="ActiveWindowTitlebarTL" />
+            <Image type="RightEdge" imageset="ArkanaLook" image="ActiveWindowTitlebarTR" />
+            <Image type="Background" imageset="ArkanaLook" image="ActiveWindowTitlebarTM" />
+            <VertFormat type="TopAligned" />
+            <HorzFormat type="Tiled" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- This is For the disabled state. -->
+      <ImagerySection name="disabled">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="Height"><ImageDim imageset="ArkanaLook" image="DisabledWindowTitlebarTL" dimension="Height" /></Dim>
+            </Area>
+            <Image type="LeftEdge" imageset="ArkanaLook" image="DisabledWindowTitlebarTL" />
+            <Image type="RightEdge" imageset="ArkanaLook" image="DisabledWindowTitlebarTR" />
+            <Image type="Background" imageset="ArkanaLook" image="DisabledWindowTitlebarTM" />
+            <VertFormat type="TopAligned" />
+            <HorzFormat type="Tiled" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <!-- Active -->
+      <StateImagery name="Active">
+         <Layer>
+            <Section section="active" />
+            <Section section="title">
+               <ColourProperty name="CaptionColourActive" />
+            </Section>
+         </Layer>
+      </StateImagery>
+
+      <!-- Inactive -->
+      <StateImagery name="Inactive">
+         <Layer>
+            <Section section="active" />
+            <Section section="title">
+               <ColourProperty name="CaptionColourInactive" />
+            </Section>
+         </Layer>
+      </StateImagery>
+
+      <!-- Disabled -->
+      <StateImagery name="Disabled">
+         <Layer>
+            <Section section="disabled" />
+            <Section section="title">
+               <ColourProperty name="CaptionColourDisabled" />
+            </Section>
+         </Layer>
+      </StateImagery>
+
+   </WidgetLook>
+</Falagard>
+

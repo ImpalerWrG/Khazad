@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+
+<Falagard>
+   <!--
+   ***************************************************
+   Just simple image, nothing more.
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/Image">
+
+      <!-- The Property definitions. These are properties you can set in your layout/code. -->
+      <!-- ******************************************************************************* -->
+
+      <PropertyDefinition name="ImageEnabled" initialValue="set:FTSUI image:DirIcon2" redrawOnWrite="true" />
+      <PropertyDefinition name="ImageDisabled" initialValue="set:FTSUI image:DirIcon2" redrawOnWrite="true" />
+      <PropertyDefinition name="VertFormat" initialValue="CentreAligned" redrawOnWrite="true" />
+      <PropertyDefinition name="HorzFormat" initialValue="CentreAligned" redrawOnWrite="true" />
+
+      <Property name="WantsMultiClickEvents" value="False" />
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- This section draws the enabled image and that's all. -->
+      <ImagerySection name="image_enabled">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width"><UnifiedDim scale="1" type="Width" /></Dim>
+               <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <ImageProperty name="ImageEnabled" />
+            <VertFormatProperty name="VertFormat" />
+            <HorzFormatProperty name="HorzFormat" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <ImagerySection name="image_disabled">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width"><UnifiedDim scale="1" type="Width" /></Dim>
+               <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <ImageProperty name="ImageDisabled" />
+            <VertFormatProperty name="VertFormat" />
+            <HorzFormatProperty name="HorzFormat" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <!-- Enabled -->
+      <StateImagery name="Enabled">
+         <Layer>
+            <Section section="image_enabled" />
+         </Layer>
+      </StateImagery>
+
+      <!-- Disabled -->
+      <StateImagery name="Disabled">
+         <Layer>
+            <Section section="image_disabled" />
+         </Layer>
+      </StateImagery>
+
+   </WidgetLook>
+</Falagard>
+

@@ -1,0 +1,316 @@
+<?xml version="1.0" ?>
+<Falagard>
+   <!--
+   ***************************************************
+   A static text, that is more then just a little text.
+   To display just a little text, prefer using Label.
+   the StaticText also has scrollbars, background,
+   border etc.
+   ***************************************************
+   -->
+    <WidgetLook name="ArkanaLook/StaticText">
+      <!-- The Property definitions. These are properties you can set in your layout/code. -->
+      <!-- ******************************************************************************* -->
+
+      <Property name="FrameEnabled" value="True" />
+      <Property name="BackgroundEnabled" value="True" />
+      <Property name="Font" value="normal2" />
+      <Property name="InheritsTooltipText" value="True" />
+
+      <!-- The Named Area sections. This tells CEGUI where to draw widgets. -->
+      <!-- **************************************************************** -->
+
+      <!-- Where to render the text when there is a frame and no scrollbars. -->
+      <NamedArea name="WithFrameTextRenderArea">
+         <Area>
+            <Dim type="LeftEdge"><ImageDim imageset="ArkanaLook" image="Conf_MultiEditbox_Border" dimension="XPosition" /></Dim>
+            <Dim type="TopEdge"><ImageDim imageset="ArkanaLook" image="Conf_MultiEditbox_Border" dimension="YPosition" /></Dim>
+            <Dim type="RightEdge">
+               <UnifiedDim scale="1" type="RightEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_MultiEditbox_Border" dimension="Width" />
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="BottomEdge">
+               <UnifiedDim scale="1" type="BottomEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_MultiEditbox_Border" dimension="Height" />
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+         </Area>
+      </NamedArea>
+
+      <!-- Where to render the text when there is a frame and a horizontal scrollbar. -->
+      <NamedArea name="WithFrameTextRenderAreaHScroll">
+         <Area>
+            <Dim type="LeftEdge"><ImageDim imageset="ArkanaLook" image="Conf_MultiEditbox_BorderHScroll" dimension="XPosition" /></Dim>
+            <Dim type="TopEdge"><ImageDim imageset="ArkanaLook" image="Conf_MultiEditbox_BorderHScroll" dimension="YPosition" /></Dim>
+            <Dim type="RightEdge">
+               <UnifiedDim scale="1" type="RightEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_MultiEditbox_BorderHScroll" dimension="Width" />
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="BottomEdge">
+               <UnifiedDim scale="1" type="BottomEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_MultiEditbox_BorderHScroll" dimension="Height">
+                        <DimOperator op="Add">
+                           <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                        </DimOperator>
+                     </ImageDim>
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+         </Area>
+      </NamedArea>
+
+      <!-- Where to render the text when there is a frame and a vertical scrollbar. -->
+      <NamedArea name="WithFrameTextRenderAreaVScroll">
+         <Area>
+            <Dim type="LeftEdge"><ImageDim imageset="ArkanaLook" image="Conf_MultiEditbox_BorderVScroll" dimension="XPosition" /></Dim>
+            <Dim type="TopEdge"><ImageDim imageset="ArkanaLook" image="Conf_MultiEditbox_BorderVScroll" dimension="YPosition" /></Dim>
+            <Dim type="RightEdge">
+               <UnifiedDim scale="1" type="RightEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_MultiEditbox_BorderVScroll" dimension="Width">
+                        <DimOperator op="Add">
+                           <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                        </DimOperator>
+                     </ImageDim>
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="BottomEdge">
+               <UnifiedDim scale="1" type="BottomEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_MultiEditbox_BorderVScroll" dimension="Height" />
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+         </Area>
+      </NamedArea>
+
+      <!-- Where to render the text when there is a frame and a horizontal and a vertical scrollbar. -->
+      <NamedArea name="WithFrameTextRenderAreaHVScroll">
+         <Area>
+            <Dim type="LeftEdge"><ImageDim imageset="ArkanaLook" image="Conf_MultiEditbox_BorderHVScroll" dimension="XPosition" /></Dim>
+            <Dim type="TopEdge"><ImageDim imageset="ArkanaLook" image="Conf_MultiEditbox_BorderHVScroll" dimension="YPosition" /></Dim>
+            <Dim type="RightEdge">
+               <UnifiedDim scale="1" type="RightEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_MultiEditbox_BorderHVScroll" dimension="Width">
+                        <DimOperator op="Add">
+                           <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                        </DimOperator>
+                     </ImageDim>
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="BottomEdge">
+               <UnifiedDim scale="1" type="BottomEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_MultiEditbox_BorderHVScroll" dimension="Height">
+                        <DimOperator op="Add">
+                           <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                        </DimOperator>
+                     </ImageDim>
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+         </Area>
+      </NamedArea>
+
+      <!-- Where to render the text when there is no frame and no scrollbars. -->
+      <NamedArea name="NoFrameTextRenderArea">
+         <Area>
+            <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+            <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+            <Dim type="RightEdge" ><UnifiedDim scale="1" type="RightEdge" /></Dim>
+            <Dim type="BottomEdge" ><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+         </Area>
+      </NamedArea>
+
+      <!-- Where to render the text when there is no frame and a horizontal scrollbar. -->
+      <NamedArea name="NoFrameTextRenderAreaHScroll">
+         <Area>
+            <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+            <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+            <Dim type="RightEdge" ><UnifiedDim scale="1" type="RightEdge" /></Dim>
+            <Dim type="BottomEdge" >
+               <UnifiedDim scale="1" type="BottomEdge">
+                  <DimOperator op="Subtract">
+                     <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+         </Area>
+      </NamedArea>
+
+      <!-- Where to render the text when there is no frame and a vertical scrollbar. -->
+      <NamedArea name="NoFrameTextRenderAreaVScroll">
+         <Area>
+            <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+            <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+            <Dim type="RightEdge" >
+               <UnifiedDim scale="1" type="RightEdge">
+                  <DimOperator op="Subtract">
+                     <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="BottomEdge" ><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+         </Area>
+      </NamedArea>
+
+      <!-- Where to render the text when there is no frame and a horizontal and a vertical scrollbar. -->
+      <NamedArea name="NoFrameTextRenderAreaHVScroll">
+         <Area>
+            <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+            <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+            <Dim type="RightEdge" >
+               <UnifiedDim scale="1" type="RightEdge">
+                  <DimOperator op="Subtract">
+                     <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="BottomEdge" >
+               <UnifiedDim scale="1" type="BottomEdge">
+                  <DimOperator op="Subtract">
+                     <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+         </Area>
+      </NamedArea>
+
+      <!-- The Childs. This specifies what child windows CEGUI shall create when creathing this widget. -->
+      <!-- ******************************************************************************************** -->
+
+      <!-- The horizontal scrollbar widget. -->
+      <Child  type="ArkanaLook/HorizontalDecoScrollbar" nameSuffix="__auto_hscrollbar__">
+         <Area>
+            <Dim type="LeftEdge" ><ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_ChildSize" dimension="XPosition" /></Dim>
+            <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_ChildSize" dimension="YPosition" /></Dim>
+            <Dim type="Width" >
+               <UnifiedDim scale="1" type="Width">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_ChildSize" dimension="Width">
+                        <DimOperator op="Add">
+                           <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                        </DimOperator>
+                     </ImageDim>
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_ChildSize" dimension="Height" /></Dim>
+         </Area>
+         <VertAlignment type="BottomAligned" />
+      </Child>
+
+      <!-- The vertical scrollbar widget. -->
+      <Child  type="ArkanaLook/VerticalDecoScrollbar" nameSuffix="__auto_vscrollbar__">
+         <Area>
+            <Dim type="LeftEdge" ><ImageDim imageset="ArkanaLook" image="Conf_VDecoScrollbar_ChildSize" dimension="XPosition" /></Dim>
+            <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_VDecoScrollbar_ChildSize" dimension="YPosition" /></Dim>
+            <Dim type="Width" ><ImageDim imageset="ArkanaLook" image="Conf_VDecoScrollbar_ChildSize" dimension="Width" /></Dim>
+            <Dim type="Height" >
+               <UnifiedDim scale="1" type="Height">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_VDecoScrollbar_ChildSize" dimension="Height" />
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+         </Area>
+         <HorzAlignment type="RightAligned" />
+      </Child>
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- Draws the editbox using the normal graphics. -->
+      <ImagerySection name="normal">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" offset="0" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" offset="0" type="BottomEdge" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner"     imageset="ArkanaLook" image="StaticTLNormal" />
+            <Image type="TopEdge"           imageset="ArkanaLook" image="StaticTNormal"  />
+            <Image type="TopRightCorner"    imageset="ArkanaLook" image="StaticTRNormal" />
+            <Image type="RightEdge"         imageset="ArkanaLook" image="StaticRNormal"  />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="StaticBRNormal" />
+            <Image type="BottomEdge"        imageset="ArkanaLook" image="StaticBNormal"  />
+            <Image type="BottomLeftCorner"  imageset="ArkanaLook" image="StaticBLNormal" />
+            <Image type="LeftEdge"          imageset="ArkanaLook" image="StaticLNormal"  />
+            <Image type="Background"        imageset="ArkanaLook" image="StaticBgNormal" />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- Draws the editbox using the disabled graphics. -->
+      <ImagerySection name="disabled">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" offset="0" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" offset="0" type="BottomEdge" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner"     imageset="ArkanaLook" image="StaticTLDisabled" />
+            <Image type="TopEdge"           imageset="ArkanaLook" image="StaticTDisabled"  />
+            <Image type="TopRightCorner"    imageset="ArkanaLook" image="StaticTRDisabled" />
+            <Image type="RightEdge"         imageset="ArkanaLook" image="StaticRDisabled"  />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="StaticBRDisabled" />
+            <Image type="BottomEdge"        imageset="ArkanaLook" image="StaticBDisabled"  />
+            <Image type="BottomLeftCorner"  imageset="ArkanaLook" image="StaticBLDisabled" />
+            <Image type="LeftEdge"          imageset="ArkanaLook" image="StaticLDisabled"  />
+            <Image type="Background"        imageset="ArkanaLook" image="StaticBgDisabled" />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <StateImagery name="Enabled">
+<!--          <Layer><Section section="normal" /></Layer> -->
+      </StateImagery>
+      <StateImagery name="Disabled">
+<!--          <Layer><Section section="disabled" /></Layer> -->
+      </StateImagery>
+      <StateImagery name="EnabledFrame">
+<!--          <Layer><Section section="normal" /></Layer> -->
+      </StateImagery>
+      <StateImagery name="DisabledFrame">
+<!--          <Layer><Section section="disabled" /></Layer> -->
+      </StateImagery>
+      <StateImagery name="WithFrameEnabledBackground">
+<!--          <Layer><Section look="ArkanaLook/StaticShared" section="background" /></Layer> -->
+         <Layer><Section section="normal" /></Layer>
+      </StateImagery>
+      <StateImagery name="WithFrameDisabledBackground">
+<!--          <Layer><Section look="ArkanaLook/StaticShared" section="background" /></Layer> -->
+         <Layer><Section section="disabled" /></Layer>
+      </StateImagery>
+      <StateImagery name="NoFrameEnabledBackground">
+<!--          <Layer><Section look="ArkanaLook/StaticShared" section="background_noframe" /></Layer> -->
+<!--          <Layer><Section section="normal" /></Layer> -->
+      </StateImagery>
+      <StateImagery name="NoFrameDisabledBackground">
+<!--          <Layer><Section look="ArkanaLook/StaticShared" section="background_noframe" /></Layer> -->
+<!--          <Layer><Section section="disabled" /></Layer> -->
+      </StateImagery>
+   </WidgetLook>
+
+</Falagard>
+

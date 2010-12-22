@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+
+<Falagard>
+   <!--
+   ***************************************************
+   Just simple text, nothing more.
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/ShadowedLabel">
+
+      <!-- The Property definitions. These are properties you can set in your layout/code. -->
+      <!-- ******************************************************************************* -->
+
+      <PropertyDefinition name="TextColourNormal" initialValue="FF524423" redrawOnWrite="true" />
+      <PropertyDefinition name="ShadowColourNormal" initialValue="FF000000" redrawOnWrite="true" />
+      <PropertyDefinition name="TextColourDisabled" initialValue="FF000000" redrawOnWrite="true" />
+      <PropertyDefinition name="ShadowColourDisabled" initialValue="FF1C1C1C" redrawOnWrite="true" />
+      <PropertyDefinition name="VertFormat" initialValue="CentreAligned" redrawOnWrite="true" />
+      <PropertyDefinition name="HorzFormat" initialValue="LeftAligned" redrawOnWrite="true" />
+
+      <Property name="WantsMultiClickEvents" value="False" />
+      <Property name="Font" value="old2" />
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- This section draws the text and that's all. -->
+      <ImagerySection name="label">
+         <TextComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width"><UnifiedDim scale="1" type="Width" /></Dim>
+               <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <VertFormatProperty name="VertFormat" />
+            <HorzFormatProperty name="HorzFormat" />
+         </TextComponent>
+      </ImagerySection>
+
+      <!-- This section draws the text's shadow and that's all. -->
+      <ImagerySection name="shadow">
+         <TextComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="1" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="1" /></Dim>
+               <Dim type="Width"><UnifiedDim scale="1" type="Width" /></Dim>
+               <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <VertFormatProperty name="VertFormat" />
+            <HorzFormatProperty name="HorzFormat" />
+         </TextComponent>
+      </ImagerySection>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <!-- Enabled -->
+      <StateImagery name="Enabled">
+         <Layer>
+            <Section section="shadow">
+               <ColourProperty name="ShadowColourNormal" />
+            </Section>
+         </Layer>
+         <Layer>
+            <Section section="label">
+               <ColourProperty name="TextColourNormal" />
+            </Section>
+         </Layer>
+      </StateImagery>
+
+      <!-- Disabled -->
+      <StateImagery name="Disabled">
+         <Layer>
+            <Section section="shadow">
+               <ColourProperty name="ShadowColourDisabled" />
+            </Section>
+         </Layer>
+         <Layer>
+            <Section section="label">
+               <ColourProperty name="TextColourDisabled" />
+            </Section>
+         </Layer>
+      </StateImagery>
+
+   </WidgetLook>
+</Falagard>
+

@@ -1,0 +1,166 @@
+<?xml version="1.0" ?>
+
+<Falagard>
+   <!--
+   ***************************************************
+   A Simple arkanalook one-line editbox.
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/Editbox">
+
+      <!-- The Property definitions. These are properties you can set in your layout/code. -->
+      <!-- ******************************************************************************* -->
+
+      <PropertyDefinition name="NormalTextColour" initialValue="FF524423" redrawOnWrite="true" />
+      <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" />
+      <PropertyDefinition name="SelectionColourActive" initialValue="AAFFFFFF" redrawOnWrite="true" />
+      <PropertyDefinition name="SelectionColourInactive" initialValue="AA7F7F7F" redrawOnWrite="true" />
+
+      <Property name="UnifiedMinSize" value="{{0,5},{0,30}}" />
+      <Property name="WantsMultiClickEvents" value="True" />
+      <Property name="Font" value="normalNoCol" />
+
+      <!-- The Named Area sections. This tells CEGUI where to draw text. -->
+      <!-- ************************************************************* -->
+
+      <!-- You can configure these borders using the entries in the imageset. -->
+      <NamedArea name="TextArea">
+         <Area>
+            <Dim type="LeftEdge"><ImageDim imageset="ArkanaLook" image="Conf_Editbox_Border" dimension="XPosition" /></Dim>
+            <Dim type="TopEdge"><ImageDim imageset="ArkanaLook" image="Conf_Editbox_Border" dimension="YPosition" /></Dim>
+            <Dim type="RightEdge">
+               <UnifiedDim scale="1" type="RightEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_Editbox_Border" dimension="Width" />
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="BottomEdge">
+               <UnifiedDim scale="1" type="BottomEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_Editbox_Border" dimension="Height" />
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+         </Area>
+      </NamedArea>
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- This section is needed by CEGUI to know how to draw the (text) cursor. -->
+      <ImagerySection name="Carat">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width"><AbsoluteDim value="1" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="TextCarat" />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- Fills in a rect with a white color. modulated to create the selection brush. -->
+      <ImagerySection name="FillRect">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="OneWhitePixel" />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- Draws the editbox using the normal graphics. -->
+      <ImagerySection name="normal">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" offset="0" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" offset="0" type="BottomEdge" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner"     imageset="ArkanaLook" image="FrameTLNormal" />
+            <Image type="TopEdge"           imageset="ArkanaLook" image="FrameTNormal"  />
+            <Image type="TopRightCorner"    imageset="ArkanaLook" image="FrameTRNormal" />
+            <Image type="RightEdge"         imageset="ArkanaLook" image="FrameRNormal"  />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="FrameBRNormal" />
+            <Image type="BottomEdge"        imageset="ArkanaLook" image="FrameBNormal"  />
+            <Image type="BottomLeftCorner"  imageset="ArkanaLook" image="FrameBLNormal" />
+            <Image type="LeftEdge"          imageset="ArkanaLook" image="FrameLNormal"  />
+            <Image type="Background"        imageset="ArkanaLook" image="FrameBgNormal" />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- Draws the editbox using the disabled graphics. -->
+      <ImagerySection name="disabled">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" offset="0" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" offset="0" type="BottomEdge" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner"     imageset="ArkanaLook" image="FrameTLDisabled" />
+            <Image type="TopEdge"           imageset="ArkanaLook" image="FrameTDisabled"  />
+            <Image type="TopRightCorner"    imageset="ArkanaLook" image="FrameTRDisabled" />
+            <Image type="RightEdge"         imageset="ArkanaLook" image="FrameRDisabled"  />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="FrameBRDisabled" />
+            <Image type="BottomEdge"        imageset="ArkanaLook" image="FrameBDisabled"  />
+            <Image type="BottomLeftCorner"  imageset="ArkanaLook" image="FrameBLDisabled" />
+            <Image type="LeftEdge"          imageset="ArkanaLook" image="FrameLDisabled"  />
+            <Image type="Background"        imageset="ArkanaLook" image="FrameBgDisabled" />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <!-- Enabled -->
+      <StateImagery name="Enabled">
+         <Layer><Section section="normal" /></Layer>
+      </StateImagery>
+
+      <!-- Disabled -->
+      <StateImagery name="Disabled">
+         <Layer><Section section="disabled" /></Layer>
+      </StateImagery>
+
+      <!-- ReadOnly -->
+      <StateImagery name="ReadOnly">
+         <Layer><Section section="normal" /></Layer>
+      </StateImagery>
+
+      <!-- ActiveSelection -->
+      <StateImagery name="ActiveSelection">
+         <Layer>
+            <Section section="FillRect">
+               <ColourProperty name="SelectionColourActive" />
+            </Section>
+         </Layer>
+      </StateImagery>
+
+      <!-- InactiveSelection -->
+      <StateImagery name="InactiveSelection">
+         <Layer>
+            <Section section="FillRect">
+               <ColourProperty name="SelectionColourInactive" />
+            </Section>
+         </Layer>
+      </StateImagery>
+
+   </WidgetLook>
+</Falagard>
+

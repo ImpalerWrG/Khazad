@@ -1,0 +1,227 @@
+<?xml version="1.0" ?>
+
+<Falagard>
+   <!--
+   ***************************************************
+   A Combobox dropdown list, this is the list that drops
+   down when a combobox has been clicked.
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/ComboDropList">
+
+      <Property name="WantsMultiClickEvents" value="False" />
+      <Property name="InheritsTooltipText" value="True" />
+
+      <!-- The Named Area sections. This tells CEGUI where to draw widgets. -->
+      <!-- **************************************************************** -->
+
+      <!-- Where to draw the items when there is no scrollbar. -->
+      <NamedArea name="ItemRenderingArea">
+         <Area>
+            <Dim type="LeftEdge" ><ImageDim imageset="ArkanaLook" image="Conf_Combobox_Border" dimension="XPosition" /></Dim>
+            <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_Combobox_Border" dimension="YPosition" /></Dim>
+            <Dim type="RightEdge" >
+               <UnifiedDim scale="1" type="RightEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_Combobox_Border" dimension="Width" />
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="BottomEdge" >
+               <UnifiedDim scale="1" type="BottomEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_Combobox_Border" dimension="Height" />
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+         </Area>
+      </NamedArea>
+
+      <!-- Where to draw the items when there is a horizontal scrollbar. -->
+      <NamedArea name="ItemRenderingAreaHScroll">
+         <Area>
+            <Dim type="LeftEdge" ><ImageDim imageset="ArkanaLook" image="Conf_Combobox_BorderHScroll" dimension="XPosition" /></Dim>
+            <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_Combobox_BorderHScroll" dimension="YPosition" /></Dim>
+            <Dim type="RightEdge" >
+               <UnifiedDim scale="1" type="RightEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_Combobox_BorderHScroll" dimension="Width" />
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="BottomEdge" >
+               <UnifiedDim scale="1" type="BottomEdge">
+                  <DimOperator op="Subtract">
+                     <WidgetDim widget="__auto_hscrollbar__" dimension="Height">
+                        <DimOperator op="Subtract">
+                           <ImageDim imageset="ArkanaLook" image="Conf_Combobox_BorderHScroll" dimension="Height" />
+                        </DimOperator>
+                     </WidgetDim>
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+         </Area>
+      </NamedArea>
+
+      <!-- Where to draw the items when there is a vertical scrollbar. -->
+      <NamedArea name="ItemRenderingAreaVScroll">
+         <Area>
+            <Dim type="LeftEdge" ><ImageDim imageset="ArkanaLook" image="Conf_Combobox_BorderVScroll" dimension="XPosition" /></Dim>
+            <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_Combobox_BorderVScroll" dimension="YPosition" /></Dim>
+            <Dim type="RightEdge" >
+               <UnifiedDim scale="1" type="RightEdge">
+                  <DimOperator op="Subtract">
+                     <WidgetDim widget="__auto_vscrollbar__" dimension="Width">
+                        <DimOperator op="Subtract">
+                           <ImageDim imageset="ArkanaLook" image="Conf_Combobox_BorderVScroll" dimension="Width" />
+                        </DimOperator>
+                     </WidgetDim>
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="BottomEdge" >
+               <UnifiedDim scale="1" type="BottomEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_Combobox_BorderVScroll" dimension="Height" />
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+         </Area>
+      </NamedArea>
+
+      <!-- Where to draw the items when there is a vertical and a horizontal scrollbar. -->
+      <NamedArea name="ItemRenderingAreaHVScroll">
+         <Area>
+            <Dim type="LeftEdge" ><ImageDim imageset="ArkanaLook" image="Conf_Combobox_BorderHVScroll" dimension="Width" /></Dim>
+            <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_Combobox_BorderHVScroll" dimension="Height" /></Dim>
+            <Dim type="RightEdge" >
+               <UnifiedDim scale="1" type="RightEdge">
+                  <DimOperator op="Subtract">
+                     <WidgetDim widget="__auto_vscrollbar__" dimension="Width">
+                        <DimOperator op="Subtract">
+                           <ImageDim imageset="ArkanaLook" image="Conf_Combobox_BorderHVScroll" dimension="Width" />
+                        </DimOperator>
+                     </WidgetDim>
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="BottomEdge" >
+               <UnifiedDim scale="1" type="BottomEdge">
+                  <DimOperator op="Subtract">
+                     <WidgetDim widget="__auto_hscrollbar__" dimension="Height">
+                        <DimOperator op="Subtract">
+                           <ImageDim imageset="ArkanaLook" image="Conf_Combobox_BorderHVScroll" dimension="Height" />
+                        </DimOperator>
+                     </WidgetDim>
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+         </Area>
+      </NamedArea>
+
+      <!-- The Childs. This specifies what child windows CEGUI shall create when creathing this widget. -->
+      <!-- ******************************************************************************************** -->
+
+      <!-- The horizontal scrollbar child widget. -->
+      <Child  type="ArkanaLook/HorizontalDecoScrollbar" nameSuffix="__auto_hscrollbar__">
+         <Area>
+            <Dim type="LeftEdge" ><ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_ChildSize" dimension="XPosition" /></Dim>
+            <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_ChildSize" dimension="YPosition" /></Dim>
+            <Dim type="Width" >
+               <UnifiedDim scale="1" type="Width">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_ChildSize" dimension="Width">
+                        <DimOperator op="Add">
+                           <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                        </DimOperator>
+                     </ImageDim>
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="Conf_HDecoScrollbar_ChildSize" dimension="Height" /></Dim>
+         </Area>
+         <VertAlignment type="BottomAligned" />
+      </Child>
+
+      <!-- The vertical scrollbar child. -->
+      <Child  type="ArkanaLook/VerticalDecoScrollbar" nameSuffix="__auto_vscrollbar__">
+         <Area>
+            <Dim type="LeftEdge" ><ImageDim imageset="ArkanaLook" image="Conf_VDecoScrollbar_ChildSize" dimension="XPosition" /></Dim>
+            <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_VDecoScrollbar_ChildSize" dimension="YPosition" /></Dim>
+            <Dim type="Width" ><ImageDim imageset="ArkanaLook" image="Conf_VDecoScrollbar_ChildSize" dimension="Width" /></Dim>
+            <Dim type="Height" >
+               <UnifiedDim scale="1" type="Height">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_VDecoScrollbar_ChildSize" dimension="Height" />
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+         </Area>
+         <HorzAlignment type="RightAligned" />
+      </Child>
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- The main section, this is the whole dropdown box in enabled mode. -->
+      <ImagerySection name="enabled">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+               <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner"     imageset="ArkanaLook" image="FrameTLNormal" />
+            <Image type="TopEdge"           imageset="ArkanaLook" image="FrameTNormal"  />
+            <Image type="TopRightCorner"    imageset="ArkanaLook" image="FrameTRNormal" />
+            <Image type="RightEdge"         imageset="ArkanaLook" image="FrameRNormal"  />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="FrameBRNormal" />
+            <Image type="BottomEdge"        imageset="ArkanaLook" image="FrameBNormal"  />
+            <Image type="BottomLeftCorner"  imageset="ArkanaLook" image="FrameBLNormal" />
+            <Image type="LeftEdge"          imageset="ArkanaLook" image="FrameLNormal"  />
+            <Image type="Background"        imageset="ArkanaLook" image="FrameBgOpaque" />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- The main section, this is the whole dropdown box in disabled mode. -->
+      <ImagerySection name="disabled">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+               <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner"     imageset="ArkanaLook" image="FrameTLDisabled" />
+            <Image type="TopEdge"           imageset="ArkanaLook" image="FrameTDisabled"  />
+            <Image type="TopRightCorner"    imageset="ArkanaLook" image="FrameTRDisabled" />
+            <Image type="RightEdge"         imageset="ArkanaLook" image="FrameRDisabled"  />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="FrameBRDisabled" />
+            <Image type="BottomEdge"        imageset="ArkanaLook" image="FrameBDisabled"  />
+            <Image type="BottomLeftCorner"  imageset="ArkanaLook" image="FrameBLDisabled" />
+            <Image type="LeftEdge"          imageset="ArkanaLook" image="FrameLDisabled"  />
+            <Image type="Background"        imageset="ArkanaLook" image="FrameBgOpaque"   />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <!-- Enabled -->
+      <StateImagery name="Enabled">
+         <Layer><Section section="enabled" /></Layer>
+      </StateImagery>
+
+      <!-- Disabled -->
+      <StateImagery name="Disabled">
+         <Layer><Section section="disabled" /></Layer>
+      </StateImagery>
+
+   </WidgetLook>
+</Falagard>

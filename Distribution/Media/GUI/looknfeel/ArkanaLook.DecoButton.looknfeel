@@ -1,0 +1,277 @@
+<?xml version="1.0" ?>
+
+<Falagard>
+   <!--
+   ***************************************************
+   A Simple decorated button, like the ones in-game.
+   This version has only a picture, to also have a label
+   see the "DecoButtonTxt" one.
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/DecoButton">
+
+      <!-- The Property definitions. These are properties you can set in your layout/code. -->
+      <!-- ******************************************************************************* -->
+
+      <PropertyDefinition name="ImageNormal" initialValue="set:ArkanaLook image:SystemCloseNormal" redrawOnWrite="true" />
+      <PropertyDefinition name="ImageHover" initialValue="set:ArkanaLook image:SystemCloseHover" redrawOnWrite="true" />
+      <PropertyDefinition name="ImagePushed" initialValue="set:ArkanaLook image:SystemClosePushed" redrawOnWrite="true" />
+      <PropertyDefinition name="ImageDisabled" initialValue="set:ArkanaLook image:SystemCloseDisabled" redrawOnWrite="true" />
+      <PropertyDefinition name="VertFormat" initialValue="CentreAligned" redrawOnWrite="true" />
+      <PropertyDefinition name="HorzFormat" initialValue="CentreAligned" redrawOnWrite="true" />
+
+      <Property name="UnifiedMinSize" value="{{0,19},{0,19}}" />
+      <Property name="WantsMultiClickEvents" value="False" />
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- This is for drawing just the background, in normal state. -->
+      <ImagerySection name="normalBG">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="1" /></Dim>
+               <Dim type="TopEdge"> <AbsoluteDim value="1" /></Dim>
+               <Dim type="RightEdge"> <UnifiedDim scale="1" offset="-1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" offset="-1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="DecoButtonNormalBg" />
+            <VertFormat type="Tiled" />
+            <HorzFormat type="Tiled" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This is for the frame in normal state. -->
+      <ImagerySection name="normalFrame">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner"     imageset="ArkanaLook" image="DecoButtonNormalTL" />
+            <Image type="TopEdge"           imageset="ArkanaLook" image="DecoButtonNormalT" />
+            <Image type="TopRightCorner"    imageset="ArkanaLook" image="DecoButtonNormalTR" />
+            <Image type="RightEdge"         imageset="ArkanaLook" image="DecoButtonNormalR" />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="DecoButtonNormalBR" />
+            <Image type="BottomEdge"        imageset="ArkanaLook" image="DecoButtonNormalB" />
+            <Image type="BottomLeftCorner"  imageset="ArkanaLook" image="DecoButtonNormalBL" />
+            <Image type="LeftEdge"          imageset="ArkanaLook" image="DecoButtonNormalL" />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- Finally, this is for the picture in normal state. -->
+      <ImagerySection name="normalImg">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <ImageProperty      name="ImageNormal" />
+            <VertFormatProperty name="VertFormat" />
+            <HorzFormatProperty name="HorzFormat" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- ======================================================== -->
+
+      <!-- This is for drawing just the background, in hover state. -->
+      <ImagerySection name="hoverBG">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="1" /></Dim>
+               <Dim type="TopEdge"> <AbsoluteDim value="1" /></Dim>
+               <Dim type="RightEdge"> <UnifiedDim scale="1" offset="-1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" offset="-1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="DecoButtonHoverBg" />
+            <VertFormat type="Tiled" />
+            <HorzFormat type="Tiled" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This is for the frame in hover state. -->
+      <ImagerySection name="hoverFrame">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner"     imageset="ArkanaLook" image="DecoButtonHoverTL" />
+            <Image type="TopEdge"           imageset="ArkanaLook" image="DecoButtonHoverT" />
+            <Image type="TopRightCorner"    imageset="ArkanaLook" image="DecoButtonHoverTR" />
+            <Image type="RightEdge"         imageset="ArkanaLook" image="DecoButtonHoverR" />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="DecoButtonHoverBR" />
+            <Image type="BottomEdge"        imageset="ArkanaLook" image="DecoButtonHoverB" />
+            <Image type="BottomLeftCorner"  imageset="ArkanaLook" image="DecoButtonHoverBL" />
+            <Image type="LeftEdge"          imageset="ArkanaLook" image="DecoButtonHoverL" />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- Finally, this is for the picture in hover state. -->
+      <ImagerySection name="hoverImg">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <ImageProperty      name="ImageHover" />
+            <VertFormatProperty name="VertFormat" />
+            <HorzFormatProperty name="HorzFormat" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- ========================================================= -->
+
+      <!-- This is for drawing just the background, in pushed state. -->
+      <ImagerySection name="pushedBG">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="1" /></Dim>
+               <Dim type="TopEdge"> <AbsoluteDim value="1" /></Dim>
+               <Dim type="RightEdge"> <UnifiedDim scale="1" offset="-1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" offset="-1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="DecoButtonPushedBg" />
+            <VertFormat type="Tiled" />
+            <HorzFormat type="Tiled" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This is for the frame in hover state. -->
+      <ImagerySection name="pushedFrame">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner"     imageset="ArkanaLook" image="DecoButtonPushedTL" />
+            <Image type="TopEdge"           imageset="ArkanaLook" image="DecoButtonPushedT" />
+            <Image type="TopRightCorner"    imageset="ArkanaLook" image="DecoButtonPushedTR" />
+            <Image type="RightEdge"         imageset="ArkanaLook" image="DecoButtonPushedR" />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="DecoButtonPushedBR" />
+            <Image type="BottomEdge"        imageset="ArkanaLook" image="DecoButtonPushedB" />
+            <Image type="BottomLeftCorner"  imageset="ArkanaLook" image="DecoButtonPushedBL" />
+            <Image type="LeftEdge"          imageset="ArkanaLook" image="DecoButtonPushedL" />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- Finally, this is for the picture in pushed state. -->
+      <ImagerySection name="pushedImg">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <ImageProperty      name="ImagePushed" />
+            <VertFormatProperty name="VertFormat" />
+            <HorzFormatProperty name="HorzFormat" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- ========================================================= -->
+
+      <!-- This is for drawing just the background, in disabled state. -->
+      <ImagerySection name="disabledBG">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="1" /></Dim>
+               <Dim type="TopEdge"> <AbsoluteDim value="1" /></Dim>
+               <Dim type="RightEdge"> <UnifiedDim scale="1" offset="-1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" offset="-1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image imageset="ArkanaLook" image="DecoButtonDisabledBg" />
+            <VertFormat type="Tiled" />
+            <HorzFormat type="Tiled" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This is for the frame in disabled state. -->
+      <ImagerySection name="disabledFrame">
+         <FrameComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <Image type="TopLeftCorner"     imageset="ArkanaLook" image="DecoButtonDisabledTL" />
+            <Image type="TopEdge"           imageset="ArkanaLook" image="DecoButtonDisabledT" />
+            <Image type="TopRightCorner"    imageset="ArkanaLook" image="DecoButtonDisabledTR" />
+            <Image type="RightEdge"         imageset="ArkanaLook" image="DecoButtonDisabledR" />
+            <Image type="BottomRightCorner" imageset="ArkanaLook" image="DecoButtonDisabledBR" />
+            <Image type="BottomEdge"        imageset="ArkanaLook" image="DecoButtonDisabledB" />
+            <Image type="BottomLeftCorner"  imageset="ArkanaLook" image="DecoButtonDisabledBL" />
+            <Image type="LeftEdge"          imageset="ArkanaLook" image="DecoButtonDisabledL" />
+            <VertFormat type="Stretched" />
+            <HorzFormat type="Stretched" />
+         </FrameComponent>
+      </ImagerySection>
+
+      <!-- Finally, this is for the picture in disabled state. -->
+      <ImagerySection name="disabledImg">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+               <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+               <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+            </Area>
+            <ImageProperty      name="ImageDisabled" />
+            <VertFormatProperty name="VertFormat" />
+            <HorzFormatProperty name="HorzFormat" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <!-- Normal -->
+      <StateImagery name="Normal">
+         <Layer><Section section="normalBG" /></Layer>
+         <Layer><Section section="normalImg" /></Layer>
+         <Layer><Section section="normalFrame" /></Layer>
+      </StateImagery>
+
+      <!-- Hover -->
+      <StateImagery name="Hover">
+         <Layer><Section section="hoverBG" /></Layer>
+         <Layer><Section section="hoverImg" /></Layer>
+         <Layer><Section section="hoverFrame" /></Layer>
+      </StateImagery>
+
+      <!-- Pushed -->
+      <StateImagery name="Pushed">
+         <Layer><Section section="pushedBG" /></Layer>
+         <Layer><Section section="pushedImg" /></Layer>
+         <Layer><Section section="pushedFrame" /></Layer>
+      </StateImagery>
+
+      <!-- Disabled -->
+      <StateImagery name="Disabled">
+         <Layer><Section section="disabledBG" /></Layer>
+         <Layer><Section section="disabledImg" /></Layer>
+         <Layer><Section section="disabledFrame" /></Layer>
+      </StateImagery>
+
+   </WidgetLook>
+</Falagard>
+

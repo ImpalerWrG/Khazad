@@ -1,0 +1,121 @@
+<?xml version="1.0" ?>
+
+<Falagard>
+   <!--
+   ***************************************************
+   A Simple arkanalook menu button, with a nice decoration.
+   This is the kind of button type you see in the main menu.
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/SystemButton">
+
+      <!-- The Property definitions. These are properties you can set in your layout/code. -->
+      <!-- ******************************************************************************* -->
+
+      <PropertyDefinition name="ImageNormal" initialValue="set:ArkanaLook image:SystemCloseNormal" redrawOnWrite="true" />
+      <PropertyDefinition name="ImageHover" initialValue="set:ArkanaLook image:SystemCloseHover" redrawOnWrite="true" />
+      <PropertyDefinition name="ImagePushed" initialValue="set:ArkanaLook image:SystemClosePushed" redrawOnWrite="true" />
+      <PropertyDefinition name="ImageDisabled" initialValue="set:ArkanaLook image:SystemCloseDisabled" redrawOnWrite="true" />
+      <PropertyDefinition name="VertFormat" initialValue="TopAligned" redrawOnWrite="true" />
+      <PropertyDefinition name="HorzFormat" initialValue="LeftAligned" redrawOnWrite="true" />
+
+      <Property name="WantsMultiClickEvents" value="False" />
+
+      <!-- The Imagery sections. This specifies how a section is drawn. -->
+      <!-- ************************************************************ -->
+
+      <!-- This is For the normal state. -->
+      <ImagerySection name="normal">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+               <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <ImageProperty name="ImageNormal" />
+            <VertFormatProperty name="VertFormat" />
+            <HorzFormatProperty name="HorzFormat" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This is For the hover state. -->
+      <ImagerySection name="hover">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+               <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <ImageProperty name="ImageHover" />
+            <VertFormatProperty name="VertFormat" />
+            <HorzFormatProperty name="HorzFormat" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This is For the pushed state. -->
+      <ImagerySection name="pushed">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+               <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <ImageProperty name="ImagePushed" />
+            <VertFormatProperty name="VertFormat" />
+            <HorzFormatProperty name="HorzFormat" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- This is For the disabled state. -->
+      <ImagerySection name="disabled">
+         <ImageryComponent>
+            <Area>
+               <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+               <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+               <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+            <ImageProperty name="ImageDisabled" />
+            <VertFormatProperty name="VertFormat" />
+            <HorzFormatProperty name="HorzFormat" />
+         </ImageryComponent>
+      </ImagerySection>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <!-- Normal -->
+      <StateImagery name="Normal">
+         <Layer>
+            <Section section="normal" />
+         </Layer>
+      </StateImagery>
+
+      <!-- Hover -->
+      <StateImagery name="Hover">
+         <Layer>
+            <Section section="hover" />
+         </Layer>
+      </StateImagery>
+
+      <!-- Pushed -->
+      <StateImagery name="Pushed">
+         <Layer>
+            <Section section="pushed" />
+         </Layer>
+      </StateImagery>
+
+      <!-- Disabled -->
+      <StateImagery name="Disabled">
+         <Layer>
+            <Section section="disabled" />
+         </Layer>
+      </StateImagery>
+
+   </WidgetLook>
+</Falagard>
+

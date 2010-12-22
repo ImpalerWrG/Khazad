@@ -1,0 +1,76 @@
+<?xml version="1.0" ?>
+<GUIScheme Name="ArkanaLook">
+    <Imageset Name="ArkanaLook" Filename="ArkanaLook.imageset" />
+	<Imageset Name="Vanilla-Images" Filename="Vanilla.imageset" />
+
+	<Font Filename="Carolingia.font" />
+	
+    <LookNFeel Filename="ArkanaLook.MenuButton.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.Button.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.Editbox.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.EditboxNoRightBorder.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.MultiLineEditbox.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.SystemButton.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.Titlebar.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.FrameWindow.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.Spinner.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.ContainerBox.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.StaticFrame.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.StaticFrameNoText.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.Image.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.Label.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.ShadowedLabel.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.DecoButton.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.DecoButtonTxt.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.Listbox.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.Combobox.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.ComboDropList.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.Tooltip.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.StaticText.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.PopupMenu.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.MenuItem.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.Progressbar.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.BigProgressbar.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.CheckboxLabelLeft.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.CheckboxLabelRight.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.RadioButtonLabelLeft.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.RadioButtonLabelRight.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.VerticalDecoScrollbar.looknfeel" />
+    <LookNFeel Filename="ArkanaLook.HorizontalDecoScrollbar.looknfeel" />
+
+    <WindowRendererSet Filename="CEGUIFalagardWRBase" />
+    <FalagardMapping WindowType="ArkanaLook/MenuButton"         TargetType="CEGUI/PushButton"       Renderer="Falagard/Button"           LookNFeel="ArkanaLook/MenuButton"            />
+    <FalagardMapping WindowType="ArkanaLook/Button"             TargetType="CEGUI/PushButton"       Renderer="Falagard/Button"           LookNFeel="ArkanaLook/Button"                />
+    <FalagardMapping WindowType="ArkanaLook/Editbox"            TargetType="CEGUI/Editbox"          Renderer="Falagard/Editbox"          LookNFeel="ArkanaLook/Editbox"               />
+    <FalagardMapping WindowType="ArkanaLook/EditboxNoRightBorder" TargetType="CEGUI/Editbox"        Renderer="Falagard/Editbox"          LookNFeel="ArkanaLook/EditboxNoRightBorder"  />
+    <FalagardMapping WindowType="ArkanaLook/MultiLineEditbox"   TargetType="CEGUI/MultiLineEditbox" Renderer="Falagard/MultiLineEditbox" LookNFeel="ArkanaLook/MultiLineEditbox"      />
+    <FalagardMapping WindowType="ArkanaLook/SystemButton"       TargetType="CEGUI/PushButton"       Renderer="Falagard/SystemButton"     LookNFeel="ArkanaLook/SystemButton"          />
+    <FalagardMapping WindowType="ArkanaLook/Titlebar"           TargetType="CEGUI/Titlebar"         Renderer="Falagard/Titlebar"         LookNFeel="ArkanaLook/Titlebar"              />
+    <FalagardMapping WindowType="ArkanaLook/FrameWindow"        TargetType="CEGUI/FrameWindow"      Renderer="Falagard/FrameWindow"      LookNFeel="ArkanaLook/FrameWindow"           />
+    <FalagardMapping WindowType="ArkanaLook/Spinner"            TargetType="CEGUI/Spinner"          Renderer="Falagard/Default"          LookNFeel="ArkanaLook/Spinner"               />
+    <FalagardMapping WindowType="ArkanaLook/ContainerBox"       TargetType="DefaultWindow"          Renderer="Falagard/Default"          LookNFeel="ArkanaLook/ContainerBox"          />
+    <FalagardMapping WindowType="ArkanaLook/StaticFrame"        TargetType="DefaultWindow"          Renderer="Falagard/Default"          LookNFeel="ArkanaLook/StaticFrame"           />
+    <FalagardMapping WindowType="ArkanaLook/StaticFrameNoText"  TargetType="DefaultWindow"          Renderer="Falagard/Default"          LookNFeel="ArkanaLook/StaticFrameNoText"     />
+    <FalagardMapping WindowType="ArkanaLook/Image"              TargetType="DefaultWindow"          Renderer="Falagard/Default"          LookNFeel="ArkanaLook/Image"                 />
+    <FalagardMapping WindowType="ArkanaLook/Label"              TargetType="DefaultWindow"          Renderer="Falagard/Default"          LookNFeel="ArkanaLook/Label"                 />
+    <FalagardMapping WindowType="ArkanaLook/ShadowedLabel"      TargetType="DefaultWindow"          Renderer="Falagard/Default"          LookNFeel="ArkanaLook/ShadowedLabel"         />
+    <FalagardMapping WindowType="ArkanaLook/DecoButton"         TargetType="CEGUI/PushButton"       Renderer="Falagard/Button"           LookNFeel="ArkanaLook/DecoButton"            />
+    <FalagardMapping WindowType="ArkanaLook/DecoButtonTxt"      TargetType="CEGUI/PushButton"       Renderer="Falagard/Button"           LookNFeel="ArkanaLook/DecoButtonTxt"         />
+    <FalagardMapping WindowType="ArkanaLook/Listbox"            TargetType="CEGUI/Listbox"          Renderer="Falagard/Listbox"          LookNFeel="ArkanaLook/Listbox"               />
+    <FalagardMapping WindowType="ArkanaLook/ComboDropList"      TargetType="CEGUI/ComboDropList"    Renderer="Falagard/Listbox"          LookNFeel="ArkanaLook/ComboDropList"         />
+    <FalagardMapping WindowType="ArkanaLook/Combobox"           TargetType="CEGUI/Combobox"         Renderer="Falagard/Default"          LookNFeel="ArkanaLook/Combobox"              />
+    <FalagardMapping WindowType="ArkanaLook/Tooltip"            TargetType="CEGUI/Tooltip"          Renderer="Falagard/Tooltip"          LookNFeel="ArkanaLook/Tooltip"               />
+    <FalagardMapping WindowType="ArkanaLook/StaticText"         TargetType="DefaultWindow"          Renderer="Falagard/StaticText"       LookNFeel="ArkanaLook/StaticText"            />
+    <FalagardMapping WindowType="ArkanaLook/PopupMenu"          TargetType="CEGUI/PopupMenu"        Renderer="Falagard/PopupMenu"        LookNFeel="ArkanaLook/PopupMenu"             />
+    <FalagardMapping WindowType="ArkanaLook/MenuItem"           TargetType="CEGUI/MenuItem"         Renderer="Falagard/MenuItem"         LookNFeel="ArkanaLook/MenuItem"              />
+    <FalagardMapping WindowType="ArkanaLook/Progressbar"        TargetType="CEGUI/ProgressBar"      Renderer="Arkana/ProgressBar"        LookNFeel="ArkanaLook/Progressbar"           />
+    <FalagardMapping WindowType="ArkanaLook/BigProgressbar"     TargetType="CEGUI/ProgressBar"      Renderer="Arkana/ProgressBar"        LookNFeel="ArkanaLook/BigProgressbar"        />
+    <FalagardMapping WindowType="ArkanaLook/CheckboxLabelLeft"  TargetType="CEGUI/Checkbox"         Renderer="Falagard/ToggleButton"     LookNFeel="ArkanaLook/CheckboxLabelLeft"     />
+    <FalagardMapping WindowType="ArkanaLook/CheckboxLabelRight" TargetType="CEGUI/Checkbox"         Renderer="Falagard/ToggleButton"     LookNFeel="ArkanaLook/CheckboxLabelRight"    />
+    <FalagardMapping WindowType="ArkanaLook/RadioButtonLabelLeft"         TargetType="CEGUI/RadioButton" Renderer="Falagard/ToggleButton"  LookNFeel="ArkanaLook/RadioButtonLabelLeft"         />
+    <FalagardMapping WindowType="ArkanaLook/RadioButtonLabelRight"        TargetType="CEGUI/RadioButton" Renderer="Falagard/ToggleButton"  LookNFeel="ArkanaLook/RadioButtonLabelRight"        />
+    <FalagardMapping WindowType="ArkanaLook/VerticalDecoScrollbar"        TargetType="CEGUI/Scrollbar"   Renderer="Falagard/Scrollbar"     LookNFeel="ArkanaLook/VerticalDecoScrollbar"        />
+    <FalagardMapping WindowType="ArkanaLook/VerticalDecoScrollbarThumb"   TargetType="CEGUI/Thumb"       Renderer="Falagard/Button"        LookNFeel="ArkanaLook/VerticalDecoScrollbarThumb"   />
+    <FalagardMapping WindowType="ArkanaLook/HorizontalDecoScrollbar"      TargetType="CEGUI/Scrollbar"   Renderer="Falagard/Scrollbar"     LookNFeel="ArkanaLook/HorizontalDecoScrollbar"      />
+    <FalagardMapping WindowType="ArkanaLook/HorizontalDecoScrollbarThumb" TargetType="CEGUI/Thumb"       Renderer="Falagard/Button"        LookNFeel="ArkanaLook/HorizontalDecoScrollbarThumb" />
+</GUIScheme>

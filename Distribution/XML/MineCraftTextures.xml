@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Textures xmlns="namespace">
+	<TextureGrid>
+		<TextureSize Height="32" Width="32"/>
+		<GridSize Height="16" Width="16"/>
+		<File Path="Media/Textures/terrain-BW.png"/>
+		<Textures>
+			<Texture>
+				<Name Label="TEXTURE_DIRT_1"/>
+				<GridLocation X="2" Y="0"/>
+			</Texture>
+			<Texture>
+				<Name Label="TEXTURE_IGNIOUS_2"/>
+				<GridLocation X="1" Y="1"/>
+			</Texture>
+			<Texture>
+				<Name Label="TEXTURE_GENERIC_ROCK"/>
+				<GridLocation X="0" Y="0"/>
+			</Texture>
+			<Texture>
+				<Name Label="TEXTURE_ROCK_2"/>
+				<GridLocation X="1" Y="0"/>
+			</Texture>
+			<Texture>
+				<Name Label="TEXTURE_GRASS_5"/>
+				<GridLocation X="0" Y="9"/>
+			</Texture>
+		</Textures>
+	</TextureGrid>
+</Textures>

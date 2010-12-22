@@ -1,0 +1,106 @@
+<?xml version="1.0" ?>
+
+<Falagard>
+   <!--
+   ***************************************************
+   A Combobox that is the editbox with a button and a
+   list that drops down.
+   ***************************************************
+   -->
+
+   <WidgetLook name="ArkanaLook/Combobox">
+
+      <!-- The Property definitions. These are properties you can set in your layout/code. -->
+      <!-- ******************************************************************************* -->
+
+      <PropertyLinkDefinition name="EditTextColourNormal" widget="__auto_editbox__" targetProperty="NormalTextColour" initialValue="FF524423" />
+      <PropertyLinkDefinition name="EditTextColourSelected" widget="__auto_editbox__" targetProperty="SelectedTextColour" initialValue="FF000000" />
+      <PropertyLinkDefinition name="EditSelectionColourActive" widget="__auto_editbox__" targetProperty="SelectionColourActive" initialValue="AAFFFFFF" />
+      <PropertyLinkDefinition name="EditSelectionColourInactive" widget="__auto_editbox__" targetProperty="SelectionColourInactive" initialValue="AA7F7F7F" />
+      <PropertyLinkDefinition name="ButtonImageNormal" widget="__auto_button__" targetProperty="ImageNormal" initialValue="set:ArkanaLook image:ComboButtonNormal" />
+      <PropertyLinkDefinition name="ButtonImageHover" widget="__auto_button__" targetProperty="ImageHover" initialValue="set:ArkanaLook image:ComboButtonHover" />
+      <PropertyLinkDefinition name="ButtonImagePushed" widget="__auto_button__" targetProperty="ImagePushed" initialValue="set:ArkanaLook image:ComboButtonPushed" />
+      <PropertyLinkDefinition name="ButtonImageDisabled" widget="__auto_button__" targetProperty="ImageDisabled" initialValue="set:ArkanaLook image:ComboButtonDisabled" />
+
+      <Property name="UnifiedMinSize" value="{{0,48},{0,24}}" />
+      <Property name="WantsMultiClickEvents" value="False" />
+      <Property name="InheritsTooltipText" value="True" />
+
+      <!-- The Childs. This specifies what child windows CEGUI shall create when creathing this widget. -->
+      <!-- ******************************************************************************************** -->
+
+      <!-- The editbox child. -->
+      <Child  type="ArkanaLook/EditboxNoRightBorder" nameSuffix="__auto_editbox__">
+         <Area>
+            <Dim type="LeftEdge" ><ImageDim imageset="ArkanaLook" image="Conf_Combobox_Edit" dimension="XPosition"/></Dim>
+            <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_Combobox_Edit" dimension="YPosition"/></Dim>
+            <Dim type="RightEdge" >
+               <UnifiedDim scale="1" type="RightEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="ComboButtonNormal" dimension="Width">
+                        <DimOperator op="Subtract">
+                           <ImageDim imageset="ArkanaLook" image="Conf_Combobox_Edit" dimension="Width"/>
+                        </DimOperator>
+                     </ImageDim>
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="Conf_Combobox_Edit" dimension="Height" /></Dim>
+         </Area>
+      </Child>
+
+      <!-- The list child that drops down. -->
+      <Child  type="ArkanaLook/ComboDropList" nameSuffix="__auto_droplist__">
+         <Area>
+            <Dim type="LeftEdge" ><ImageDim imageset="ArkanaLook" image="Conf_Combobox_Dropdown" dimension="XPosition"/></Dim>
+            <Dim type="TopEdge" >
+               <WidgetDim widget="__auto_editbox__" dimension="BottomEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_Combobox_Dropdown" dimension="YPosition"/>
+                  </DimOperator>
+               </WidgetDim>
+            </Dim>
+            <Dim type="Width" >
+               <UnifiedDim scale="1" type="Width">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_Combobox_Dropdown" dimension="Width"/>
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="BottomEdge" >
+               <UnifiedDim scale="1" type="BottomEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="Conf_Combobox_Dropdown" dimension="Height"/>
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+         </Area>
+      </Child>
+
+      <!-- The Button child that drops down. -->
+      <Child  type="ArkanaLook/SystemButton" nameSuffix="__auto_button__">
+         <Area>
+            <Dim type="LeftEdge" >
+               <UnifiedDim scale="1" type="RightEdge">
+                  <DimOperator op="Subtract">
+                     <ImageDim imageset="ArkanaLook" image="ComboButtonNormal" dimension="Width">
+                        <DimOperator op="Add">
+                           <ImageDim imageset="ArkanaLook" image="Conf_Combobox_Button" dimension="XPosition"/>
+                        </DimOperator>
+                     </ImageDim>
+                  </DimOperator>
+               </UnifiedDim>
+            </Dim>
+            <Dim type="TopEdge" ><ImageDim imageset="ArkanaLook" image="Conf_Combobox_Button" dimension="YPosition"/></Dim>
+            <Dim type="Width" ><ImageDim imageset="ArkanaLook" image="ComboButtonNormal" dimension="Width"/></Dim>
+            <Dim type="Height" ><ImageDim imageset="ArkanaLook" image="ComboButtonNormal" dimension="Height"/></Dim>
+         </Area>
+      </Child>
+
+      <!-- The Imagery states. This specifies what sections are drawn in wich state. -->
+      <!-- ************************************************************************* -->
+
+      <StateImagery name="Enabled" />
+      <StateImagery name="Disabled" />
+   </WidgetLook>
+</Falagard>

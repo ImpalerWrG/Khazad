@@ -3,11 +3,11 @@
 <GUILayout >
     <Window Type="DefaultWindow" Name="GameSetupScreen" >
         <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
-        <Window Type="Vanilla/Button" Name="GameSetupScreen/BeginGameButton" >
+        <Window Type="ArkanaLook/Button" Name="GameSetupScreen/BeginGameButton" >
             <Property Name="Text" Value="Begin Game" />
             <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.65,0},{0.7,0},{0.70,0}}" />
         </Window>
-        <Window Type="Vanilla/StaticText" Name="GameSetupScreen/Title" >
+        <Window Type="ArkanaLook/Label" Name="GameSetupScreen/Title" >
             <Property Name="Text" Value="Game Setup" />
             <Property Name="HorzExtent" Value="77" />
             <Property Name="VertExtent" Value="24.6366" />
