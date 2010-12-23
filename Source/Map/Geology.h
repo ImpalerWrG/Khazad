@@ -58,7 +58,7 @@ public:
     Geology();
     ~Geology();
 
-    bool Init(int32_t Seed);
+    bool Init(const char* Seed);
 
     void SetArea(int32_t X, int32_t Y);
 

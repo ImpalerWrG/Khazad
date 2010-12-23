@@ -98,10 +98,11 @@
 		<Name Label="MATERIAL_DARK_GRASS"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
 		<PrimaryColor label="GRASS_DARK"/>
-		<BorderColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_FOREST_GREEN"/>
 		<ColorMode mode="overlay"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GRASS_1"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_GRASS_5"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GRASS_5"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_GRASS_2"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_GRASS_3"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_GRASS_4"/>
@@ -111,10 +112,11 @@
 		<Name Label="MATERIAL_BRIGHT_GRASS"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
 		<PrimaryColor label="GRASS_BRIGHT"/>
-		<BorderColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_DARK_GREEN"/>
 		<ColorMode mode="overlay"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GRASS_1"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_GRASS_5"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GRASS_5"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_GRASS_2"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_GRASS_3"/>
 			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_GRASS_4"/>

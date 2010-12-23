@@ -126,87 +126,102 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
 {
     GUI->injectKeyPress(arg);
 
+    if (Game::isInstance())
+    {
+        switch (arg.key)
+        {
+            case OIS::KC_UP:
+            {
+                RENDERER->getActiveCamera()->ElevateCamera(1);
+                break;
+            }
+
+            case OIS::KC_DOWN:
+            {
+                RENDERER->getActiveCamera()->ElevateCamera(-1);
+                break;
+            }
+
+            case OIS::KC_D:
+            {
+                RENDERER->getActiveCamera()->SetDefaultView();
+
+                //GUI->DirtyActiveScreen();
+
+                break;
+            }
+
+            case OIS::KC_T:
+            {
+                const OIS::MouseState &State = MouseObject->getMouseState();
+
+                Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(State.X.abs / float(State.width), State.Y.abs / float(State.height));
+                MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
+
+                GAME->SpawnTree(ClickCoordinates);
+
+                break;
+            }
+
+            case OIS::KC_P:
+            {
+                const OIS::MouseState &State = MouseObject->getMouseState();
+
+                Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(State.X.abs / float(State.width), State.Y.abs / float(State.height));
+                MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
+
+                GAME->SpawnPawn(ClickCoordinates);
+
+                break;
+            }
+
+            case OIS::KC_R:
+            {
+                const OIS::MouseState &State = MouseObject->getMouseState();
+
+                Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(State.X.abs / float(State.width), State.Y.abs / float(State.height));
+                MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
+
+                GAME->getMap()->Fill(ClickCoordinates, DATA->getLabelIndex("MATERIAL_OBSIDIAN"));
+
+                break;
+            }
+
+            case OIS::KC_ADD:
+            {
+                GAME->changeTickRate(1);
+                break;
+            }
+
+            case OIS::KC_SUBTRACT:
+            case OIS::KC_MINUS:
+            {
+                GAME->changeTickRate(-1);
+                break;
+            }
+
+            case OIS::KC_SPACE:
+            {
+                GAME->togglePause();
+                break;
+            }
+
+            default:
+            break;
+        }
+    }
+
     switch (arg.key)
     {
-        case OIS::KC_UP:
+        case OIS::KC_GRAVE:
         {
-            RENDERER->getActiveCamera()->ElevateCamera(1);
-            break;
-        }
-
-        case OIS::KC_DOWN:
-        {
-            RENDERER->getActiveCamera()->ElevateCamera(-1);
-            break;
-        }
-
-        case OIS::KC_D:
-        {
-            RENDERER->getActiveCamera()->SetDefaultView();
-            break;
-        }
-
-        case OIS::KC_T:
-        {
-            const OIS::MouseState &State = MouseObject->getMouseState();
-
-            Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(State.X.abs / float(State.width), State.Y.abs / float(State.height), -HALFCUBE);
-            MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
-
-            GAME->SpawnTree(ClickCoordinates);
-            break;
-        }
-
-        case OIS::KC_P:
-        {
-            const OIS::MouseState &State = MouseObject->getMouseState();
-
-            Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(State.X.abs / float(State.width), State.Y.abs / float(State.height), -HALFCUBE);
-            MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
-
-            GAME->SpawnPawn(ClickCoordinates);
-            break;
-        }
-
-        case OIS::KC_R:
-        {
-            const OIS::MouseState &State = MouseObject->getMouseState();
-
-            Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(State.X.abs / float(State.width), State.Y.abs / float(State.height), -HALFCUBE);
-            MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
-
-            GAME->getMap()->Fill(ClickCoordinates, DATA->getLabelIndex("MATERIAL_OBSIDIAN"));
+            RENDERER->ToggleOverlay();
             break;
         }
 
         case OIS::KC_SYSRQ:
         {
             RENDERER->TakeScreenShoot();
-            break;
-        }
-
-        case OIS::KC_ADD:
-        {
-            GAME->changeTickRate(1);
-            break;
-        }
-
-        case OIS::KC_SUBTRACT:
-        case OIS::KC_MINUS:
-        {
-            GAME->changeTickRate(-1);
-            break;
-        }
-
-        case OIS::KC_SPACE:
-        {
-            GAME->togglePause();
-            break;
-        }
-
-        case OIS::KC_GRAVE:
-        {
-            RENDERER->ToggleOverlay();
             break;
         }
 
@@ -280,7 +295,7 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
     {
         if (Game::isInstance())
         {
-            Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height), -HALFCUBE);
+            Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height));
             MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
             Zone* ClickedZone = GAME->getMap()->getZoneAt(ClickCoordinates);
 

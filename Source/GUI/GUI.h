@@ -43,8 +43,9 @@ public:
     bool isContinueRunning()        { return ContinueRunning; }
     void TerminateRunning()         { ContinueRunning = false; }
 
-    void ShowScreen(ScreenType);
-
+    void ShowScreen(ScreenType TargetScreen);
+    void DirtyActiveScreen();
+    void DirtyTargetScreen(ScreenType TargetScreen)  { ScreenList[TargetScreen]->SetDirty(); }
 
 	CEGUI::WindowManager* getWindowManager()        { return CEGUIWindowManager; }
 	CEGUI::System* getSystem()                      { return CEGUISystem; }

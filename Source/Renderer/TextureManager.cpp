@@ -129,13 +129,25 @@ Ogre::MaterialPtr TextureManager::makeStaticMaterial(Ogre::Image* NewImage, cons
 
     Ogre::TexturePtr NewTex = Ogre::TextureManager::getSingleton().loadImage(MaterialName, "General", *NewImage, Ogre::TEX_TYPE_2D, Ogre::MIP_UNLIMITED, 1.0, true, Ogre::PF_A8R8G8B8);
     //FirstPass->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
-    Ogre::TextureUnitState* TextureUnit = FirstPass->createTextureUnitState();
 
+    Ogre::ColourValue lSelfIllumnationColour(0.0f, 0.0f, 0.0f, 1.0f);
+    FirstPass->setSelfIllumination(lSelfIllumnationColour);
 
-    FirstPass->setLightingEnabled(false);
+    Ogre::ColourValue lDiffuseColour(1.0f, 1.0f, 1.0f, 1.0f);
+	FirstPass->setDiffuse(lDiffuseColour);
+
+    Ogre::ColourValue lAmbientColour(1.0f, 1.0f, 1.0f, 1.0f);
+	FirstPass->setAmbient(lAmbientColour);
+
+	Ogre::ColourValue lSpecularColour(0.0f, 0.0f, 0.0f, 1.0f);
+    FirstPass->setSpecular(lSpecularColour);
+
+    FirstPass->setShininess(0.0f);
+
     FirstPass->setAlphaRejectSettings(Ogre::CMPF_GREATER, 0, false);
 
-    //TextureUnit->setTextureFiltering(Ogre::TFO_NONE);
+    Ogre::TextureUnitState* TextureUnit = FirstPass->createTextureUnitState();
+    TextureUnit->setTextureFiltering(Ogre::TFO_NONE);
     TextureUnit->setTextureName(MaterialName, Ogre::TEX_TYPE_2D);
 
     return NewMaterial;

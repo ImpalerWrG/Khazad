@@ -37,12 +37,14 @@ Geology::~Geology()
 
 }
 
-bool Geology::Init(int32_t Seed)
+bool Geology::Init(const char* SeedString)
 {
+    boost::hash< const char* > SeedHash;
+
     Ogre::Plane RockLayer = Ogre::Plane(Ogre::Vector3(0, 0, 1), 1);
     int RockType = 42;
 
-    MasterSeed = Seed;
+    MasterSeed = 42; //SeedHash(SeedString);
 
     RandGenerator = new RandomNumberGenerator();
     RandGenerator->Init();
@@ -323,9 +325,9 @@ void Geology::GenerateCellHeight(int32_t X, int32_t Y, float heightScale, float 
 
 int16_t Geology::getRockTypeAtCoordinates(CubeCoordinates Target, int32_t Zlevel)
 {
-    static uint16_t RockType0 = DATA->getLabelIndex("MATERIAL_GRANITE");
-    static uint16_t RockType1 = DATA->getLabelIndex("MATERIAL_SANDSTONE");
-    static uint16_t RockType2 = DATA->getLabelIndex("MATERIAL_LIMESTONE");
+    static uint16_t RockType0 = DATA->getLabelIndex("MATERIAL_DARK_GRASS");
+    static uint16_t RockType1 = DATA->getLabelIndex("MATERIAL_BRIGHT_GRASS");
+    static uint16_t RockType2 = DATA->getLabelIndex("MATERIAL_GRANITE");
 
     if (Zlevel > Height[Target.X][Target.Y])
     {
@@ -359,14 +361,18 @@ TileShape Geology::getTileShapeAtCoordinates(CubeCoordinates CubeTarget, int32_t
     Remainder = Height[CubeTarget.X + 1][CubeTarget.Y + 1] - ((float) Zlevel);
     int8_t NECornerHeight = Remainder < 0.0 ? 0 : roundf(min(Remainder, 1.0f) * HEIGHT_FRACTIONS) + 1;
 
-    if (((NECornerHeight <= SECornerHeight) && (NECornerHeight <= NWCornerHeight))  &&  ((SWCornerHeight >= SECornerHeight) && (SWCornerHeight >= NWCornerHeight)))  // Break quad along a NW-SE line
+
+    if (NECornerHeight == 0 || SWCornerHeight == 0)
     {
         return getTileShapeFromCornerHeight(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, true);
     }
-    else
+
+    if (SECornerHeight == 0 || NWCornerHeight == 0)
     {
-        return getTileShapeFromCornerHeight(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, true);
+        return getTileShapeFromCornerHeight(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, false);
     }
+
+    return getTileShapeFromCornerHeight(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, true);
 }
 
 void Geology::LoadCellData(Cell* TargetCell)

@@ -209,11 +209,11 @@
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<BorderColor label="COLOR_DARK_GREY"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_GENERIC_ROCK"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GENERIC_ROCK"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_GENERIC_ROCK"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_GENERIC_ROCK"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_GENERIC_ROCK"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>

@@ -36,7 +36,7 @@ bool GUIManager::Init()
     CEGUI::WidgetLookManager::setDefaultResourceGroup("looknfeels");
     CEGUI::WindowManager::setDefaultResourceGroup("layouts");
 
-    CEGUI::SchemeManager::getSingleton().create("VanillaSkin.scheme");
+    CEGUI::SchemeManager::getSingleton().create("ArkanaLook.scheme");
 
     CEGUISystem = &CEGUI::System::getSingleton();
 
@@ -45,7 +45,6 @@ bool GUIManager::Init()
 
 
     CEGUIWindowManager = &CEGUI::WindowManager::getSingleton();
-
 
 	// Initialize Screens here matching them to their Enum
 
@@ -79,6 +78,16 @@ void GUIManager::ShowScreen(ScreenType TargetScreen)
     }
 }
 
+void GUIManager::DirtyActiveScreen()
+{
+    if (ActiveScreen != NO_SCREEN)
+    {
+        ScreenList[ActiveScreen]->SetDirty();
+    }
+}
+
+//-----------------INPUT INJECTION--------------------//
+
 bool GUIManager::injectMouseMove(int X, int Y, int Z)
 {
 	return CEGUISystem->injectMouseMove(X, Y) & CEGUISystem->injectMouseWheelChange(Z);
@@ -97,6 +106,8 @@ bool GUIManager::injectMouseRelease(int X, int Y, OIS::MouseButtonID ID)
 
 bool GUIManager::injectKeyPress(OIS::KeyEvent Event)
 {
+    CEGUISystem->injectChar(Event.text);
+
     return CEGUISystem->injectKeyDown(Event.key);
 }
 

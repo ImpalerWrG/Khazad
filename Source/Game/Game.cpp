@@ -28,16 +28,16 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 DECLARE_SINGLETON(Game)
 
-bool Game::Init()
+bool Game::Init(uint16_t X, uint16_t Y, const char* SeedString)
 {
     MapGeology = new Geology();
-    MapGeology->Init(42);
-    MapGeology->GenerateWorldHeightMap(3, 3);
+    MapGeology->Init(SeedString);
+    MapGeology->GenerateWorldHeightMap(X, Y);
 
 	MainMap = new Map();
 	MainMap->Init();
 
-	BuildMapChunk(0, 0, 3, 3);
+	BuildMapChunk(0, 0, X, Y);
 
 	Path = new PathManager();
 	Path->Init();
@@ -69,7 +69,7 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
     {
         for (int32_t y = Y; y < SizeY; y++)
         {
-            MapGeology->GenerateCellHeight(x, y, 2.0, 0.4);
+            MapGeology->GenerateCellHeight(x, y, 2.0, 0.8);
 
             for (int16_t z = MapGeology->getCellBottomZLevel() - 1; z <= MapGeology->getCellTopZLevel() + 1; z++)
             {

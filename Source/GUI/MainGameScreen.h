@@ -13,6 +13,8 @@ public:
 
     ~MainGameScreen();
 
+    void SetDirty();
+
 private:
 
     bool ExitPressed(const CEGUI::EventArgs& pEventArgs);

@@ -27,10 +27,9 @@ bool Renderer::Init()
         OgreRoot = new Ogre::Root("plugins.windows.cfg");
     #endif
 
-    //OgreRoot = new Ogre::Root();
-
     setupRenderSystem();
     setupScene();
+    createSunLight();
     createCamera();
 
     defineResources();
@@ -98,8 +97,23 @@ void Renderer::setupScene()
     OgreSceneManager = OgreRoot->createSceneManager(Ogre::ST_GENERIC, "Default SceneManager");
     OgreRenderWindow = OgreRoot->getAutoCreatedWindow();
 
-    OgreSceneManager->setAmbientLight(Ogre::ColourValue(1, 1, 1));
     OgreSceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
+}
+
+void Renderer::createSunLight()
+{
+    OgreSceneManager->setAmbientLight(Ogre::ColourValue(0.1, 0.1, 0.1));
+
+    Ogre::Light* SunLight = OgreSceneManager->createLight();
+    SunLight->setType(Ogre::Light::LT_DIRECTIONAL);
+
+    SunLight->setDiffuseColour(1.0f, 1.0f, 1.0f);
+    SunLight->setSpecularColour(1.0f, 1.0f, 1.0f);
+
+    SunLight->setDirection(Ogre::Vector3(0, -1, -1));  // Down and slightly off at an angle
+
+    Ogre::SceneNode* SunLightSceneNode = getRootNode()->createChildSceneNode();
+    SunLightSceneNode->attachObject(SunLight);
 }
 
 void Renderer::createCamera()

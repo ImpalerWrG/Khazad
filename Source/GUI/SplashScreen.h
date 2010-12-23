@@ -16,7 +16,7 @@ public:
 
     ~SplashScreen();
 
-    void ShowScreen();
+    void SetDirty();
 
 private:
 

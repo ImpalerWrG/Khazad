@@ -41,6 +41,7 @@ private:
 
     void defineResources();
     void setupRenderSystem();
+    void createSunLight();
 
     void createRenderWindow();
     void initializeResourceGroups();

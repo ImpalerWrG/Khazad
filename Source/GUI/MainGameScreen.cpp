@@ -33,22 +33,17 @@ bool MainGameScreen::Init()
     catch(CEGUI::Exception &e)
     {
     }
-
-
-/*
-    CEGUI::Window* wnd = (CEGUI::DefaultWindow*) GUI->getWindowManager()->createWindow("Vanilla/StaticText", (CEGUI::utf8*)"MyWindow");
-
-    wnd->setPosition(CEGUI::UVector2(CEGUI::UDim(0.0f, 0.0f), CEGUI::UDim(0.0f, 0.0f)));
-    wnd->setSize(CEGUI::UVector2(CEGUI::UDim(0.4f, 10.0f), CEGUI::UDim(0.4f, 10.0f)));
-    //CEGUI::DefaultWindow* staticText = static_cast<CEGUI::DefaultWindow*> (GUI->getWindowManager()->getWindow("StaticText"));
-    wnd->setText("Red Static Text");
-    wnd->show();
-    */
-
 }
 
 MainGameScreen::~MainGameScreen()
 {
+
+}
+
+void MainGameScreen::SetDirty()
+{
+    CEGUI::Window* Title = GUI->getWindowManager()->getWindow("MainGameScreen/Title");
+    Title->setText( "Hello World!" );
 
 }
 

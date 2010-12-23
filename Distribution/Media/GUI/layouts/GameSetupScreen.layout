@@ -3,15 +3,77 @@
 <GUILayout >
     <Window Type="DefaultWindow" Name="GameSetupScreen" >
         <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
-        <Window Type="ArkanaLook/Button" Name="GameSetupScreen/BeginGameButton" >
-            <Property Name="Text" Value="Begin Game" />
-            <Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.65,0},{0.7,0},{0.70,0}}" />
-        </Window>
-        <Window Type="ArkanaLook/Label" Name="GameSetupScreen/Title" >
-            <Property Name="Text" Value="Game Setup" />
-            <Property Name="HorzExtent" Value="77" />
-            <Property Name="VertExtent" Value="24.6366" />
-            <Property Name="UnifiedAreaRect" Value="{{0.43813,0},{0.330967,0},{0.521943,0},{0.414504,0}}" />
+        <Window Type="ArkanaLook/ContainerBox" Name="GameSetupScreenWindow/" >
+            <Property Name="UnifiedAreaRect" Value="{{-0.0423828,0},{0.226823,0},{0.609961,0},{0.724222,0}}" />
+            <Property Name="HorizontalAlignment" Value="Centre" />
+            <Window Type="ArkanaLook/StaticText" Name="GameSetupScreenWindow/Title" >
+                <Property Name="Font" Value="Carolingia-10" />
+                <Property Name="Text" Value="GAME SETUP" />
+                <Property Name="HorzFormatting" Value="HorzCentred" />
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{0.163717,0}}" />
+            </Window>
+            <Window Type="ArkanaLook/Button" Name="GameSetupScreenWindow/BeginGameButton" >
+                <Property Name="Font" Value="Carolingia-10" />
+                <Property Name="Text" Value="Begin Game" />
+                <Property Name="UnifiedAreaRect" Value="{{0.244251,0},{0.832241,0},{0.734095,0},{0.882241,0}}" />
+            </Window>
+            <Window Type="DefaultWindow" Name="GameSetupScreenWindow/XSpinnerWindow" >
+                <Property Name="UnifiedAreaRect" Value="{{0.0497005,0},{0.227226,0},{0.233832,0},{0.553142,0}}" />
+                <Window Type="ArkanaLook/Spinner" Name="GameSetupScreenWindow/XSpinnerWindow/XSpinner" >
+                    <Property Name="StepSize" Value="1" />
+                    <Property Name="CurrentValue" Value="0" />
+                    <Property Name="MaximumValue" Value="32767" />
+                    <Property Name="MinimumValue" Value="-32768" />
+                    <Property Name="UnifiedAreaRect" Value="{{0,10},{0.5,0},{1,-10},{1,-10}}" />
+                </Window>
+                <Window Type="ArkanaLook/Label" Name="GameSetupScreenWindow/XSpinnerWindow/XLabel" >
+                    <Property Name="Font" Value="Carolingia-10" />
+                    <Property Name="Text" Value="East-West" />
+                    <Property Name="UnifiedAreaRect" Value="{{0,10},{0,10},{1,-10},{0.339123,0}}" />
+                </Window>
+            </Window>
+            <Window Type="DefaultWindow" Name="GameSetupScreenWindow/YSpinnerWindow" >
+                <Property Name="UnifiedAreaRect" Value="{{0.25988,0},{0.227488,0},{0.458982,0},{0.553405,0}}" />
+                <Window Type="ArkanaLook/Spinner" Name="GameSetupScreenWindow/YSpinnerWindow/YSpinner" >
+                    <Property Name="StepSize" Value="1" />
+                    <Property Name="CurrentValue" Value="0" />
+                    <Property Name="MaximumValue" Value="32767" />
+                    <Property Name="MinimumValue" Value="-32768" />
+                    <Property Name="UnifiedAreaRect" Value="{{0,10},{0.5,0},{1,-10},{1,-10}}" />
+                </Window>
+                <Window Type="ArkanaLook/Label" Name="GameSetupScreenWindow/YSpinnerWindow/YLabel" >
+                    <Property Name="Font" Value="Carolingia-10" />
+                    <Property Name="Text" Value="North-South" />
+                    <Property Name="UnifiedAreaRect" Value="{{0,10},{0,10},{1,-10},{0.389123,0}}" />
+                </Window>
+            </Window>
+            <Window Type="DefaultWindow" Name="GameSetupScreenWindow/MapAreaWindow" >
+                <Property Name="UnifiedAreaRect" Value="{{0.0688622,0},{0.573298,0},{0.443114,0},{0.77356,0}}" />
+                <Window Type="ArkanaLook/Label" Name="GameSetupScreenWindow/MapAreaWindow/MapSizeLabel" >
+                    <Property Name="Font" Value="Carolingia-10" />
+                    <Property Name="Text" Value="Map Area" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.00675463,0},{0.362942,0},{0.451425,0},{0.735601,0}}" />
+                </Window>
+                <Window Type="ArkanaLook/Label" Name="GameSetupScreenWindow/MapAreaWindow/AreaDisplayValue" >
+                    <Property Name="Font" Value="Carolingia-10" />
+                    <Property Name="Text" Value="0" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.568,0},{0.365359,0},{0.974,0},{0.706861,0}}" />
+                </Window>
+            </Window>
+            <Window Type="DefaultWindow" Name="GameSetupScreenWindow/SeedWindow" >
+                <Property Name="UnifiedAreaRect" Value="{{0.652695,0},{0.25131,0},{0.934132,0},{0.600786,0}}" />
+                <Window Type="ArkanaLook/Editbox" Name="GameSetupScreenWindow/SeedWindow/SeedEditBox" >
+                    <Property Name="Font" Value="Carolingia-10" />
+                    <Property Name="MaxTextLength" Value="32" />
+                    <Property Name="UnifiedAreaRect" Value="{{0,0},{0.44424,0},{1,0},{0.783195,0}}" />
+                    <Property Name="TextParsingEnabled" Value="False" />
+                </Window>
+                <Window Type="ArkanaLook/Label" Name="GameSetupScreenWindow/SeedWindow/SeedLabel" >
+                    <Property Name="Font" Value="Carolingia-10" />
+                    <Property Name="Text" Value="Seed Value" />
+                    <Property Name="UnifiedAreaRect" Value="{{0.172959,0},{0.16523,0},{0.852249,0},{0.344629,0}}" />
+                </Window>
+            </Window>
         </Window>
     </Window>
 </GUILayout>

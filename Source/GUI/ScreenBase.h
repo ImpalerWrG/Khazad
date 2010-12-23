@@ -17,11 +17,15 @@ public:
 
     virtual bool Init()                  { };
 
+    virtual void SetDirty()              { };
+
     CEGUI::Window* getRootWindow()       { return RootWindow; }
 
 protected:
 
     CEGUI::Window* RootWindow;
+
+    bool Dirty;
 };
 
 #endif  // SCREENBASE__HEADER

@@ -24,6 +24,12 @@ SplashScreen::~SplashScreen()
     delete RootWindow;
 }
 
+void SplashScreen::SetDirty()
+{
+
+
+}
+
 bool SplashScreen::ExitPressed(const CEGUI::EventArgs& pEventArgs)
 {
     GUI->TerminateRunning();

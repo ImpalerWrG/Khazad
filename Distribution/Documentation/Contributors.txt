@@ -18,11 +18,12 @@ Artists:                Davion (Main Logo)
 						
 						Carl "Surt" Olsson (OpenGameArt.org)
 
+						moOshiE (http://arkana-fts.org via OpenGameArt.org) - ArkanaLook CEGUI lookandfeel
 Testers:                
 
-Libraries:              OpenGL - Copyright Silicon Graphics, Inc.
-                        SDL - Copyright (GNU LESSER GENERAL PUBLIC LICENSE Version 2.1)
+Libraries:              
+                        OGRE - 
+						Crazy Eddie's GUI - 
                         GLUT - Copyright 1997 by Nate Robins & Mark Kilgard
-                        Guichan - BSD Copyright (Berkeley Software Distribution) 2004, 2005, 2006, 2007 Olof Naessén and Per Larsson
                         TinyXML - Coppyright (zlib/libpng License) 2000-2006 Lee Thomason (www.grinninglizard.com), https://sourceforge.net/projects/tinyxml/
                         DevIL - Copyright (GNU LESSER GENERAL PUBLIC LICENSE Version 2.1) 2000-2009 Denton Woods

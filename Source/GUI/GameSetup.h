@@ -16,9 +16,12 @@ public:
 
     ~GameSetupScreen();
 
+    void SetDirty();
+
 private:
 
     bool BeginGamePressed(const CEGUI::EventArgs& pEventArgs);
+    bool UpdateMapArea(const CEGUI::EventArgs& pEventArgs);
 };
 
 #endif  // GAMESETUP__HEADER

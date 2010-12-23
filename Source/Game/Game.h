@@ -38,7 +38,7 @@ DECLARE_SINGLETON_CLASS(Game)
 public:
 
 	~Game();
-	bool Init();
+	bool Init(uint16_t X, uint16_t Y, const char* Seed);
 	bool Run();
 
     bool BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height);
