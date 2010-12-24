@@ -329,11 +329,6 @@ int16_t Geology::getRockTypeAtCoordinates(CubeCoordinates Target, int32_t Zlevel
     static uint16_t RockType1 = DATA->getLabelIndex("MATERIAL_BRIGHT_GRASS");
     static uint16_t RockType2 = DATA->getLabelIndex("MATERIAL_GRANITE");
 
-    if (Zlevel > Height[Target.X][Target.Y])
-    {
-        return INVALID_INDEX;
-    }
-
     if (Zlevel > 4)
     {
         return RockType1;
@@ -347,19 +342,25 @@ int16_t Geology::getRockTypeAtCoordinates(CubeCoordinates Target, int32_t Zlevel
 
 TileShape Geology::getTileShapeAtCoordinates(CubeCoordinates CubeTarget, int32_t Zlevel)
 {
+    if (CubeTarget.X == 7 && CubeTarget.Y == 6 && Zlevel == 0)
+    {
+        bool Debug = true;
+    }
+
+
     float Remainder;
 
     Remainder = Height[CubeTarget.X][CubeTarget.Y] - ((float) Zlevel);
-    int8_t SWCornerHeight = Remainder < 0.0 ? 0 : roundf(min(Remainder, 1.0f) * HEIGHT_FRACTIONS) + 1;
+    int8_t SWCornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, 0.0f), (float) HEIGHT_FRACTIONS + 1);
 
     Remainder = Height[CubeTarget.X + 1][CubeTarget.Y] - ((float) Zlevel);
-    int8_t SECornerHeight = Remainder < 0.0 ? 0 : roundf(min(Remainder, 1.0f) * HEIGHT_FRACTIONS) + 1;
+    int8_t SECornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, 0.0f), (float) HEIGHT_FRACTIONS + 1);
 
     Remainder = Height[CubeTarget.X][CubeTarget.Y + 1] - ((float) Zlevel);
-    int8_t NWCornerHeight = Remainder < 0.0 ? 0 : roundf(min(Remainder, 1.0f) * HEIGHT_FRACTIONS) + 1;
+    int8_t NWCornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, 0.0f), (float) HEIGHT_FRACTIONS + 1);
 
     Remainder = Height[CubeTarget.X + 1][CubeTarget.Y + 1] - ((float) Zlevel);
-    int8_t NECornerHeight = Remainder < 0.0 ? 0 : roundf(min(Remainder, 1.0f) * HEIGHT_FRACTIONS) + 1;
+    int8_t NECornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, 0.0f), (float) HEIGHT_FRACTIONS + 1);
 
 
     if (NECornerHeight == 0 || SWCornerHeight == 0)

@@ -17,7 +17,10 @@ public:
 
 private:
 
-    bool ExitPressed(const CEGUI::EventArgs& pEventArgs);
+    bool GameOptionsOpen(const CEGUI::EventArgs& pEventArgs);
+    bool GameOptionsClose(const CEGUI::EventArgs& pEventArgs);
+
+    bool ExitGame(const CEGUI::EventArgs& pEventArgs);
     bool DepthSliderMoved(const CEGUI::EventArgs& pEventArgs);
 
 };

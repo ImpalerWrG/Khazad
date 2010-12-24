@@ -4,6 +4,9 @@
 #include <ImageManager.h>
 #include <Renderer.h>
 #include <Camera.h>
+#include <Zone.h>
+#include <Game.h>
+#include <Map.h>
 
 
 MainGameScreen::MainGameScreen()
@@ -17,10 +20,22 @@ bool MainGameScreen::Init()
 
     try
     {
-        CEGUI::Window* ExitButton = GUI->getWindowManager()->getWindow("MainGameScreen/ExitButton");
+        CEGUI::Window* GameOptionsButton = GUI->getWindowManager()->getWindow("MainGameScreen/TopBar/GameOptionsButton");
+        if (GameOptionsButton != NULL)
+        {
+            GameOptionsButton->subscribeEvent(CEGUI::PushButton::EventMouseClick, CEGUI::Event::Subscriber(&MainGameScreen::GameOptionsOpen, this));
+        }
+
+        CEGUI::Window* GameOptionsWindow = GUI->getWindowManager()->getWindow("MainGameScreen/GameOptionsWindow");
+        if (GameOptionsWindow != NULL)
+        {
+            GameOptionsWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&MainGameScreen::GameOptionsClose, this));
+        }
+
+        CEGUI::Window* ExitButton = GUI->getWindowManager()->getWindow("MainGameScreen/GameOptionsWindow/ExitButton");
         if (ExitButton != NULL)
         {
-            ExitButton->subscribeEvent(CEGUI::PushButton::EventMouseClick, CEGUI::Event::Subscriber(&MainGameScreen::ExitPressed, this));
+            ExitButton->subscribeEvent(CEGUI::PushButton::EventMouseClick, CEGUI::Event::Subscriber(&MainGameScreen::ExitGame, this));
         }
 
         CEGUI::Window* DepthSlider = GUI->getWindowManager()->getWindow("MainGameScreen/DepthScroller");
@@ -42,12 +57,38 @@ MainGameScreen::~MainGameScreen()
 
 void MainGameScreen::SetDirty()
 {
-    CEGUI::Window* Title = GUI->getWindowManager()->getWindow("MainGameScreen/Title");
-    Title->setText( "Hello World!" );
+    Zone* ActiveZone = GAME->getMap()->getActiveZone();
 
+    if (ActiveZone != NULL)
+    {
+        MapCoordinates Location = ActiveZone->getLocation();
+
+        char buffer[32];
+
+        sprintf(buffer, "X %i  Y %i  Z %i", Location.X, Location.Y, Location.Z);
+        CEGUI::Window* LocationDisplay = GUI->getWindowManager()->getWindow("MainGameScreen/SelectionWindow/LocationWindow/LocationDisplay");
+        LocationDisplay->setText(buffer);
+
+        TileShape Shape = GAME->getMap()->getCubeShape(Location);
+        sprintf(buffer, "%i", (uint16_t) Shape);
+        CEGUI::Window* TileTypeDisplay = GUI->getWindowManager()->getWindow("MainGameScreen/SelectionWindow/TileTypeWindow/TileTypeDisplay");
+        TileTypeDisplay->setText(buffer);
+    }
 }
 
-bool MainGameScreen::ExitPressed(const CEGUI::EventArgs& pEventArgs)
+bool MainGameScreen::GameOptionsOpen(const CEGUI::EventArgs& pEventArgs)
+{
+    CEGUI::Window* GameOptionsWindow = GUI->getWindowManager()->getWindow("MainGameScreen/GameOptionsWindow");
+    GameOptionsWindow->setVisible(true);
+}
+
+bool MainGameScreen::GameOptionsClose(const CEGUI::EventArgs& pEventArgs)
+{
+    CEGUI::Window* GameOptionsWindow = GUI->getWindowManager()->getWindow("MainGameScreen/GameOptionsWindow");
+    GameOptionsWindow->setVisible(false);
+}
+
+bool MainGameScreen::ExitGame(const CEGUI::EventArgs& pEventArgs)
 {
     GUI->TerminateRunning();
 }

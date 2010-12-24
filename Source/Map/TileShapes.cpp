@@ -569,8 +569,87 @@ void CreateSlopedTiles()
                     ManualObject->normal( ( Vertex2 - Vertex1 ).crossProduct( ( Vertex0 - Vertex1 ) ).normalisedCopy());
                     ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
 
-                    ManualObject->triangle(3, 4, 5);  // NW->SW->SE
+                    if (Triangle1)
+                    {
+                        ManualObject->triangle(3, 4, 5);  // NW->SW->SE
+                    }
+                    else
+                    {
+                        ManualObject->triangle(0, 1, 2);  // NW->SW->SE
+                    }
+
                     Triangle2 = true;
+                }
+
+                if ((Triangle1 ^ Triangle2) && (NorthWestCorner > 1 || SouthEastCorner > 1))  // One True and One False
+                {
+                    Ogre::Vector3 Normal;
+
+                    if (Triangle1)
+                    {
+                        Normal = Ogre::Vector3::NEGATIVE_UNIT_X + Ogre::Vector3::NEGATIVE_UNIT_Y;
+                    }
+                    else
+                    {
+                        Normal = Ogre::Vector3::UNIT_X + Ogre::Vector3::UNIT_Y;
+                    }
+
+                    Ogre::Vector3 Vertex4 = Ogre::Vector3( HALFCUBE, -HALFCUBE, -HALFCUBE);
+                    Ogre::Vector3 Vertex5 = Ogre::Vector3(-HALFCUBE,  HALFCUBE, -HALFCUBE);
+
+                    ManualObject->position(Vertex2);  // North West  3
+                    ManualObject->colour(Ogre::ColourValue::White);
+                    ManualObject->normal(Normal);
+                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+                    ManualObject->position(Vertex1);  // South East  4
+                    ManualObject->colour(Ogre::ColourValue::White);
+                    ManualObject->normal(Normal);
+                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+
+                    ManualObject->position(Vertex4);  // North West Bottom  5
+                    ManualObject->colour(Ogre::ColourValue::White);
+                    ManualObject->normal(Normal);
+                    ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+
+                    ManualObject->position(Vertex5);  // South East Bottom  6
+                    ManualObject->colour(Ogre::ColourValue::White);
+                    ManualObject->normal(Normal);
+                    ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+
+
+                    if (Triangle1)
+                    {
+                        if (NorthWestCorner > 1)
+                        {
+                            ManualObject->triangle(4, 3, 5);  // NW->SW->NW Bottom
+                        }
+                        else
+                        {
+                            ManualObject->triangle(4, 3, 6);  // NW->SW->SW Bottom
+                        }
+
+                        if (SouthEastCorner > 1)
+                        {
+                            ManualObject->triangle(3, 6, 5);  // SW->SW Bottom->NW Bottom
+                        }
+                    }
+                    else
+                    {
+                        if (SouthEastCorner > 1)
+                        {
+                            ManualObject->triangle(3, 4, 6);  // NW->SW->NW Bottom
+                        }
+                        else
+                        {
+                            ManualObject->triangle(3, 4, 5);  // NW->SW->SW Bottom
+                        }
+
+                        if (NorthWestCorner > 1)
+                        {
+                            ManualObject->triangle(4, 5, 6);  // SW->SW Bottom->NW Bottom
+                        }
+                    }
                 }
             }
             else
@@ -613,7 +692,14 @@ void CreateSlopedTiles()
                     ManualObject->normal(( Vertex0 - Vertex3 ).crossProduct( ( Vertex1 - Vertex3 ) ).normalisedCopy());
                     ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
 
-                    ManualObject->triangle(3, 4, 5);  // SW->SE->NE
+                    if (Triangle1)
+                    {
+                        ManualObject->triangle(3, 4, 5);  // SW->SE->NE
+                    }
+                    else
+                    {
+                        ManualObject->triangle(0, 1, 2);  // SW->SE->NE
+                    }
                     Triangle2 = true;
                 }
             }
@@ -637,6 +723,12 @@ TileShape getTileShapeFromCornerHeight(uint8_t SWCorner, uint8_t SECorner, uint8
     uint16_t Shape = 0;
     uint16_t Sum = SWCorner + SECorner + NWCorner + NECorner;
 
+
+    if (SWCorner == 0 && SECorner == 2 && NWCorner == 2 && NECorner == 0)
+    {
+        bool debug = true;
+    }
+
     if (SplittingLine)
     {
         if (SWCorner == 0 || NECorner == 0)
@@ -649,10 +741,14 @@ TileShape getTileShapeFromCornerHeight(uint8_t SWCorner, uint8_t SECorner, uint8
             {
                 return TILESHAPE_EMPTY;
             }
+            if (SWCorner == 0 && NECorner == 0)
+            {
+                return TILESHAPE_EMPTY;
+            }
         }
         else
         {
-            if ( NWCorner == 0 || SECorner == 0)
+            if (NWCorner == 0 || SECorner == 0)
             {
                 return TILESHAPE_EMPTY;
             }
@@ -660,6 +756,7 @@ TileShape getTileShapeFromCornerHeight(uint8_t SWCorner, uint8_t SECorner, uint8
             {
                 return TILESHAPE_EMPTY;
             }
+
         }
     }
     else
@@ -671,6 +768,10 @@ TileShape getTileShapeFromCornerHeight(uint8_t SWCorner, uint8_t SECorner, uint8
                 return TILESHAPE_EMPTY;
             }
             if (SWCorner == 0 || NECorner == 0)
+            {
+                return TILESHAPE_EMPTY;
+            }
+            if (NWCorner == 0 && SECorner == 0)
             {
                 return TILESHAPE_EMPTY;
             }

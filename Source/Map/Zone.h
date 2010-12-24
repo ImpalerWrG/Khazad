@@ -21,9 +21,12 @@ public:
 
     void setActive(bool ActiveState);
 
+    MapCoordinates getLocation()        { return Location; }
+
 private:
 
     // Multiple Boxes for irregular areas, custome wireframes for cleaner apearance?
+    MapCoordinates Location;
 
     Ogre::AxisAlignedBox AxialBox;
     Ogre::SceneNode* BoxNode;

@@ -60,7 +60,19 @@ bool GameSetupScreen::Init()
 
 void GameSetupScreen::SetDirty()
 {
+    CEGUI::ProgressBar* MapBuildProgress = static_cast<CEGUI::ProgressBar*> (GUI->getWindowManager()->getWindow("GameSetupScreenWindow/ProgressBar"));
 
+    if (Game::isInstance())
+    {
+        float Progress = GAME->getProgress();
+        MapBuildProgress->setProgress(Progress);
+
+        if (Progress == 1.0)
+        {
+            GUI->ShowScreen(SCREEN_MAIN_GAME);
+            GAME->setPause(false);
+        }
+    }
 }
 
 GameSetupScreen::~GameSetupScreen()
@@ -88,9 +100,12 @@ bool GameSetupScreen::BeginGamePressed(const CEGUI::EventArgs& pEventArgs)
 
     CEGUI::Editbox* SeedEditBox = static_cast<CEGUI::Editbox*> (GUI->getWindowManager()->getWindow("GameSetupScreenWindow/SeedWindow/SeedEditBox"));
 
+    CEGUI::Window* BeginGameButton = GUI->getWindowManager()->getWindow("GameSetupScreenWindow/BeginGameButton");
+    BeginGameButton->setVisible(false);
+
+    CEGUI::Window* MapBuildProgress = GUI->getWindowManager()->getWindow("GameSetupScreenWindow/ProgressBar");
+    MapBuildProgress->setVisible(true);
 
     GAME->CreateInstance();
     GAME->Init(Xspinner->getCurrentValue(), Yspinner->getCurrentValue(), SeedEditBox->getText().c_str());
-
-    GUI->ShowScreen(SCREEN_MAIN_GAME);
 }

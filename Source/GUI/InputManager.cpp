@@ -273,6 +273,7 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
                     Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height));
 
                     ActiveZone->MoveZone(MapCoordinates(FocusPoint));
+                    GUI->DirtyActiveScreen();
                 }
                 else
                 {
@@ -308,11 +309,14 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
                     Zone* NewZone = new Zone(ClickCoordinates);
                     GAME->getMap()->addZone(NewZone);
                     GAME->getMap()->setActiveZone(NewZone);
+
+                    GUI->DirtyActiveScreen();
                 }
             }
             else // Single Left Click
             {
                 GAME->getMap()->setActiveZone(ClickedZone);
+                GUI->DirtyActiveScreen();
             }
         }
     }

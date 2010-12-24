@@ -6,8 +6,10 @@
 
 Zone::Zone(MapCoordinates SpawnLocation)
 {
-    Ogre::Vector3 Min = Ogre::Vector3(SpawnLocation.X - HALFCUBE, SpawnLocation.Y - HALFCUBE, SpawnLocation.Z - HALFCUBE);
-    Ogre::Vector3 Max = Ogre::Vector3(SpawnLocation.X + HALFCUBE, SpawnLocation.Y + HALFCUBE, SpawnLocation.Z + HALFCUBE);
+    Location = SpawnLocation;
+
+    Ogre::Vector3 Min = Ogre::Vector3(Location.X - HALFCUBE, Location.Y - HALFCUBE, Location.Z - HALFCUBE);
+    Ogre::Vector3 Max = Ogre::Vector3(Location.X + HALFCUBE, Location.Y + HALFCUBE, Location.Z + HALFCUBE);
 
     AxialBox = Ogre::AxisAlignedBox(Min, Max);
     Active = false;
@@ -28,11 +30,14 @@ Zone::~Zone()
 
 void Zone::MoveZone(MapCoordinates NewLocation)
 {
-    BoxNode->setPosition(NewLocation.X, NewLocation.Y, NewLocation.Z);
+    Location = NewLocation;
+    BoxNode->setPosition(Location.X, Location.Y, Location.Z);
 }
 
 void Zone::TranslateZone(Direction TranslationDirection, int Distance)
 {
+    Location.TranslateMapCoordinates(TranslationDirection, Distance);
+
     BoxNode->translate(DirectionToVector(TranslationDirection) * Distance);
 }
 

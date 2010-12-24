@@ -25,6 +25,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 #include <PathManager.h>
 #include <Cell.h>
 
+#include <GUI.h>
 
 DECLARE_SINGLETON(Game)
 
@@ -51,7 +52,7 @@ Game::Game()
 {
 	TickRate = 10;
 
-	Pause = false;
+	Pause = true;
 }
 
 Game::~Game()
@@ -63,6 +64,9 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
 {
     int16_t SizeX = X + Width;
     int16_t SizeY = Y + Height;
+
+    float ProgressSize = SizeX * SizeY;
+    float ProgressCount = 0;
 
     // Create and add Cells with shape and material data
     for (int32_t x = X; x < SizeX; x++)
@@ -80,6 +84,9 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
                 MainMap->insertCell(NewCell, TargetCellCoordinates);
                 MapGeology->LoadCellData(NewCell);
             }
+            ProgressCount++;
+            ProgressAmount = ProgressCount / ProgressSize;
+            GUI->DirtyActiveScreen();
         }
     }
 

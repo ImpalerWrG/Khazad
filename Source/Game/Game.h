@@ -58,6 +58,8 @@ public:
     Geology* getGeology()       { return MapGeology; }
     PathManager* getPath()      { return Path; }
 
+    float getProgress()             { return ProgressAmount; }
+
 protected:
 
     uint32_t TickRate;     // Simulation Rate;
@@ -66,6 +68,8 @@ protected:
     Map* MainMap;
     Geology* MapGeology;
     PathManager* Path;
+
+    float ProgressAmount;
 };
 
 #define GAME (Game::GetInstance())
