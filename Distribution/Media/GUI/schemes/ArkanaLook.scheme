@@ -63,8 +63,8 @@
     <FalagardMapping WindowType="ArkanaLook/StaticText"         TargetType="DefaultWindow"          Renderer="Falagard/StaticText"       LookNFeel="ArkanaLook/StaticText"            />
     <FalagardMapping WindowType="ArkanaLook/PopupMenu"          TargetType="CEGUI/PopupMenu"        Renderer="Falagard/PopupMenu"        LookNFeel="ArkanaLook/PopupMenu"             />
     <FalagardMapping WindowType="ArkanaLook/MenuItem"           TargetType="CEGUI/MenuItem"         Renderer="Falagard/MenuItem"         LookNFeel="ArkanaLook/MenuItem"              />
-    <FalagardMapping WindowType="ArkanaLook/Progressbar"        TargetType="CEGUI/ProgressBar"      Renderer="Arkana/ProgressBar"        LookNFeel="ArkanaLook/Progressbar"           />
-    <FalagardMapping WindowType="ArkanaLook/BigProgressbar"     TargetType="CEGUI/ProgressBar"      Renderer="Arkana/ProgressBar"        LookNFeel="ArkanaLook/BigProgressbar"        />
+    <FalagardMapping WindowType="ArkanaLook/Progressbar"        TargetType="CEGUI/ProgressBar"      Renderer="Falagard/ProgressBar"      LookNFeel="ArkanaLook/Progressbar"           />
+    <FalagardMapping WindowType="ArkanaLook/BigProgressbar"     TargetType="CEGUI/ProgressBar"      Renderer="Falagard/ProgressBar"      LookNFeel="ArkanaLook/BigProgressbar"        />
     <FalagardMapping WindowType="ArkanaLook/CheckboxLabelLeft"  TargetType="CEGUI/Checkbox"         Renderer="Falagard/ToggleButton"     LookNFeel="ArkanaLook/CheckboxLabelLeft"     />
     <FalagardMapping WindowType="ArkanaLook/CheckboxLabelRight" TargetType="CEGUI/Checkbox"         Renderer="Falagard/ToggleButton"     LookNFeel="ArkanaLook/CheckboxLabelRight"    />
     <FalagardMapping WindowType="ArkanaLook/RadioButtonLabelLeft"         TargetType="CEGUI/RadioButton" Renderer="Falagard/ToggleButton"  LookNFeel="ArkanaLook/RadioButtonLabelLeft"         />

@@ -15,13 +15,5 @@
 			<Property Name="ScrollPosition" Value="50" />
 			<Property Name="UnifiedAreaRect" Value="{{1.0,-25},{0,0},{1.0,0},{1.0,0}}" />
 		</Window>
-		<Window Type="ArkanaLook/Label" Name="MainGameScreen/Title" >
-			<Property Name="Text" Value="KHAZAD" />
-			<Property Name="AlwaysOnTop" Value="True" />
-			<Property Name="FrameEnabled" Value="False" />
-			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-			<Property Name="UnifiedAreaRect" Value="{{0.3,0},{0.1,0},{0.7,0},{0.2,0}}" />
-			<Property Name="BackgroundEnabled" Value="False" />
-		</Window>
     </Window>
 </GUILayout>

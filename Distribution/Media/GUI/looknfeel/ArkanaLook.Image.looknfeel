@@ -12,8 +12,8 @@
       <!-- The Property definitions. These are properties you can set in your layout/code. -->
       <!-- ******************************************************************************* -->
 
-      <PropertyDefinition name="ImageEnabled" initialValue="set:FTSUI image:DirIcon2" redrawOnWrite="true" />
-      <PropertyDefinition name="ImageDisabled" initialValue="set:FTSUI image:DirIcon2" redrawOnWrite="true" />
+      <PropertyDefinition name="ImageEnabled" initialValue="" redrawOnWrite="true" />
+      <PropertyDefinition name="ImageDisabled" initialValue="" redrawOnWrite="true" />
       <PropertyDefinition name="VertFormat" initialValue="CentreAligned" redrawOnWrite="true" />
       <PropertyDefinition name="HorzFormat" initialValue="CentreAligned" redrawOnWrite="true" />
 

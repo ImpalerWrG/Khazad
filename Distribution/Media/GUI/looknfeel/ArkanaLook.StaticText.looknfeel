@@ -14,7 +14,6 @@
 
       <Property name="FrameEnabled" value="True" />
       <Property name="BackgroundEnabled" value="True" />
-      <Property name="Font" value="normal2" />
       <Property name="InheritsTooltipText" value="True" />
 
       <!-- The Named Area sections. This tells CEGUI where to draw widgets. -->

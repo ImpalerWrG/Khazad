@@ -20,8 +20,6 @@
         </Window>
         <Window Type="ArkanaLook/StaticText" Name="SplashScreen/Title" >
             <Property Name="Text" Value="Khazad" />
-            <Property Name="HorzExtent" Value="77" />
-            <Property Name="VertExtent" Value="24.6366" />
             <Property Name="UnifiedAreaRect" Value="{{0.43813,0},{0.330967,0},{0.521943,0},{0.414504,0}}" />
         </Window>
     </Window>

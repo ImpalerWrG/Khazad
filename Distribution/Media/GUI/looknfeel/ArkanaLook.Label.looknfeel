@@ -18,7 +18,6 @@
       <PropertyDefinition name="HorzFormat" initialValue="LeftAligned" redrawOnWrite="true" />
 
       <Property name="WantsMultiClickEvents" value="False" />
-      <Property name="Font" value="old2" />
 
       <!-- The Imagery sections. This specifies how a section is drawn. -->
       <!-- ************************************************************ -->

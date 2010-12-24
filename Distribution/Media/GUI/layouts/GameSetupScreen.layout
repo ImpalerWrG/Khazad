@@ -4,18 +4,22 @@
     <Window Type="DefaultWindow" Name="GameSetupScreen" >
         <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
         <Window Type="ArkanaLook/ContainerBox" Name="GameSetupScreenWindow/" >
-            <Property Name="UnifiedAreaRect" Value="{{-0.0423828,0},{0.226823,0},{0.609961,0},{0.724222,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0,10},{0.226823,0},{0.6,0},{0.724222,0}}" />
             <Property Name="HorizontalAlignment" Value="Centre" />
             <Window Type="ArkanaLook/StaticText" Name="GameSetupScreenWindow/Title" >
                 <Property Name="Font" Value="Carolingia-10" />
                 <Property Name="Text" Value="GAME SETUP" />
+                <Property Name="HorzExtent" Value="128" />
+                <Property Name="VertExtent" Value="20.0483" />
+                <Property Name="FrameEnabled" Value="False" />
                 <Property Name="HorzFormatting" Value="HorzCentred" />
                 <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{0.163717,0}}" />
             </Window>
             <Window Type="ArkanaLook/Button" Name="GameSetupScreenWindow/BeginGameButton" >
                 <Property Name="Font" Value="Carolingia-10" />
                 <Property Name="Text" Value="Begin Game" />
-                <Property Name="UnifiedAreaRect" Value="{{0.244251,0},{0.832241,0},{0.734095,0},{0.882241,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0.832241,0},{0.5,0},{0.882241,0}}" />
+                <Property Name="HorizontalAlignment" Value="Centre" />
             </Window>
             <Window Type="DefaultWindow" Name="GameSetupScreenWindow/XSpinnerWindow" >
                 <Property Name="UnifiedAreaRect" Value="{{0.0497005,0},{0.227226,0},{0.233832,0},{0.553142,0}}" />
@@ -24,7 +28,7 @@
                     <Property Name="CurrentValue" Value="0" />
                     <Property Name="MaximumValue" Value="32767" />
                     <Property Name="MinimumValue" Value="-32768" />
-                    <Property Name="UnifiedAreaRect" Value="{{0,10},{0.5,0},{1,-10},{1,-10}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0,10},{0.588353,0},{1,-10},{1,-10}}" />
                 </Window>
                 <Window Type="ArkanaLook/Label" Name="GameSetupScreenWindow/XSpinnerWindow/XLabel" >
                     <Property Name="Font" Value="Carolingia-10" />
@@ -39,7 +43,7 @@
                     <Property Name="CurrentValue" Value="0" />
                     <Property Name="MaximumValue" Value="32767" />
                     <Property Name="MinimumValue" Value="-32768" />
-                    <Property Name="UnifiedAreaRect" Value="{{0,10},{0.5,0},{1,-10},{1,-10}}" />
+                    <Property Name="UnifiedAreaRect" Value="{{0,10},{0.588353,0},{1,-10},{1,-10}}" />
                 </Window>
                 <Window Type="ArkanaLook/Label" Name="GameSetupScreenWindow/YSpinnerWindow/YLabel" >
                     <Property Name="Font" Value="Carolingia-10" />
@@ -73,6 +77,13 @@
                     <Property Name="Text" Value="Seed Value" />
                     <Property Name="UnifiedAreaRect" Value="{{0.172959,0},{0.16523,0},{0.852249,0},{0.344629,0}}" />
                 </Window>
+            </Window>
+            <Window Type="ArkanaLook/BigProgressbar" Name="GameSetupScreenWindow/ProgressBar" >
+                <Property Name="Visible" Value="False" />
+                <Property Name="StepSize" Value="0.01" />
+                <Property Name="CurrentProgress" Value="0" />
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0.817543,0},{0,0},{0.859156,0}}" />
+                <Property Name="HorizontalAlignment" Value="Centre" />
             </Window>
         </Window>
     </Window>

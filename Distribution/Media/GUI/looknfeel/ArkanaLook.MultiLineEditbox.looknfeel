@@ -19,7 +19,6 @@
       <Property name="UnifiedMinSize" value="{{0,5},{0,5}}" />
       <Property name="WantsMultiClickEvents" value="True" />
       <Property name="SelectionBrushImage" value="set:ArkanaLook image:ListSelectionBrush" />
-      <Property name="Font" value="normalNoCol" />
 
       <!-- The Named Area sections. This tells CEGUI where to draw text. -->
       <!-- ************************************************************* -->
