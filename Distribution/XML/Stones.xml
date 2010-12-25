@@ -89,7 +89,7 @@
 		<!--<SecondaryColor label="COLOR_PINK"/>-->
 		<BorderColor label="COLOR_TAN"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LAYERED"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SAND_2"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>

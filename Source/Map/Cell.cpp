@@ -199,7 +199,7 @@ void Cell::BuildStaticGeometry()
     if (!RENDERER->getSceneManager()->hasStaticGeometry(buffer))
     {
         CellGeometry = RENDERER->getSceneManager()->createStaticGeometry(buffer);
-        CellGeometry->setCastShadows(false);
+        //CellGeometry->setCastShadows(false);
     }
     else
     {
@@ -209,8 +209,30 @@ void Cell::BuildStaticGeometry()
 
     CellGeometry->addSceneNode(CellSceneNode);
 
-    CellSceneNode->setVisible(false);
     CellGeometry->build();
+
+    DestroyAllAttachedEntities(CellSceneNode);
+}
+
+void Cell::DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode)
+{
+   // Destroy all the attached objects
+   Ogre::SceneNode::ObjectIterator Nodeit = TargetNode->getAttachedObjectIterator();
+
+   while (Nodeit.hasMoreElements())
+   {
+      Ogre::MovableObject* Object = static_cast<Ogre::MovableObject*> (Nodeit.getNext());
+      TargetNode->getCreator()->destroyMovableObject(Object);
+   }
+
+   // Recurse to child SceneNodes
+   Ogre::SceneNode::ChildNodeIterator itChild = TargetNode->getChildIterator();
+
+   while (itChild.hasMoreElements())
+   {
+      Ogre::SceneNode* ChildNode = static_cast<Ogre::SceneNode*> (itChild.getNext());
+      DestroyAllAttachedEntities(ChildNode);
+   }
 }
 
 /*

@@ -44,6 +44,8 @@ public:
     void BuildFaceData();
     void BuildStaticGeometry();
 
+    void DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode);
+
     Ogre::Vector3 getCubePosition(CubeCoordinates Coordinates);
     uint16_t TranslateCubeToIndex(CubeCoordinates Coordinates);
     MapCoordinates TranslateCubeToMap(CubeCoordinates Coordinates);

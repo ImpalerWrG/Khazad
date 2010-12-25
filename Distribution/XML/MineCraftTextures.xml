@@ -25,6 +25,10 @@
 				<Name Label="TEXTURE_GRASS_5"/>
 				<GridLocation X="0" Y="9"/>
 			</Texture>
+			<Texture>
+				<Name Label="TEXTURE_SAND_2"/>
+				<GridLocation X="2" Y="1"/>
+			</Texture>
 		</Textures>
 	</TextureGrid>
 </Textures>

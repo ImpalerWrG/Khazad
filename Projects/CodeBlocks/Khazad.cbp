@@ -124,9 +124,10 @@
 			<Add directory="..\..\Source\Map" />
 			<Add directory="..\..\Source\Game" />
 			<Add directory="..\..\Source\Pathing" />
-			<Add directory="..\..\DevIL\include" />
+			<Add directory="..\..\Source\Terrain" />
 			<Add directory="..\..\Boost" />
 			<Add directory="..\..\CEGUI\include" />
+			<Add directory="..\..\DevIL\include" />
 		</Compiler>
 		<Linker>
 			<Add option="-static-libgcc" />
@@ -187,8 +188,6 @@
 		<Unit filename="..\..\Source\Map\Coordinates.h" />
 		<Unit filename="..\..\Source\Map\Face.cpp" />
 		<Unit filename="..\..\Source\Map\Face.h" />
-		<Unit filename="..\..\Source\Map\Geology.cpp" />
-		<Unit filename="..\..\Source\Map\Geology.h" />
 		<Unit filename="..\..\Source\Map\Map.cpp" />
 		<Unit filename="..\..\Source\Map\Map.h" />
 		<Unit filename="..\..\Source\Map\TileShapes.cpp" />
@@ -222,6 +221,10 @@
 		<Unit filename="..\..\Source\Renderer\Renderer.h" />
 		<Unit filename="..\..\Source\Renderer\TextureManager.cpp" />
 		<Unit filename="..\..\Source\Renderer\TextureManager.h" />
+		<Unit filename="..\..\Source\Terrain\Geology.cpp" />
+		<Unit filename="..\..\Source\Terrain\Geology.h" />
+		<Unit filename="..\..\Source\Terrain\Noise.cpp" />
+		<Unit filename="..\..\Source\Terrain\Noise.h" />
 		<Unit filename="..\..\Source\TinyXML\tinystr.cpp" />
 		<Unit filename="..\..\Source\TinyXML\tinystr.h" />
 		<Unit filename="..\..\Source\TinyXML\tinyxml.cpp" />
