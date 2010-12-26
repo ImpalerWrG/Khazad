@@ -86,7 +86,7 @@ void GUIManager::DirtyActiveScreen()
     }
 }
 
-//-----------------INPUT INJECTION--------------------//
+//-----------------MOUSE INPUT INJECTION--------------------//
 
 bool GUIManager::injectMouseMove(int X, int Y, int Z)
 {
@@ -103,10 +103,13 @@ bool GUIManager::injectMouseRelease(int X, int Y, OIS::MouseButtonID ID)
     return CEGUISystem->injectMouseButtonUp((CEGUI::MouseButton)ID);
 }
 
+//-----------------KEYBOARD INPUT INJECTION--------------------//
 
 bool GUIManager::injectKeyPress(OIS::KeyEvent Event)
 {
     CEGUISystem->injectChar(Event.text);
+
+    ScreenList[ActiveScreen]->ProcessKeyPress(Event);
 
     return CEGUISystem->injectKeyDown(Event.key);
 }
@@ -114,6 +117,8 @@ bool GUIManager::injectKeyPress(OIS::KeyEvent Event)
 bool GUIManager::injectKeyRelease(OIS::KeyEvent Event)
 {
     CEGUISystem->injectChar(Event.text);
+
+    ScreenList[ActiveScreen]->ProcessKeyRelease(Event);
 
     return CEGUISystem->injectKeyUp(Event.key);
 }

@@ -24,6 +24,8 @@ private:
     bool OptionsPressed(const CEGUI::EventArgs& pEventArgs);
     bool NewGamePressed(const CEGUI::EventArgs& pEventArgs);
 
+    bool ProcessKeyPress(OIS::KeyEvent Event);
+    bool ProcessKeyRelease(OIS::KeyEvent Event);
 };
 
 #endif  // SPLASH__HEADER

@@ -109,3 +109,13 @@ bool GameSetupScreen::BeginGamePressed(const CEGUI::EventArgs& pEventArgs)
     GAME->CreateInstance();
     GAME->Init(Xspinner->getCurrentValue(), Yspinner->getCurrentValue(), SeedEditBox->getText().c_str());
 }
+
+bool GameSetupScreen::ProcessKeyPress(OIS::KeyEvent Event)
+{
+    return true;
+}
+
+bool GameSetupScreen::ProcessKeyRelease(OIS::KeyEvent Event)
+{
+    return true;
+}

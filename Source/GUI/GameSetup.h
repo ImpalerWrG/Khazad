@@ -22,6 +22,9 @@ private:
 
     bool BeginGamePressed(const CEGUI::EventArgs& pEventArgs);
     bool UpdateMapArea(const CEGUI::EventArgs& pEventArgs);
+
+    bool ProcessKeyPress(OIS::KeyEvent Event);
+    bool ProcessKeyRelease(OIS::KeyEvent Event);
 };
 
 #endif  // GAMESETUP__HEADER

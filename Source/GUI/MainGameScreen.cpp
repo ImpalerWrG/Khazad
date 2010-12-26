@@ -104,3 +104,25 @@ bool MainGameScreen::DepthSliderMoved(const CEGUI::EventArgs& pEventArgs)
     //RENDERER->getActiveCamera()->ElevateCamera(1);
 
 }
+
+bool MainGameScreen::ProcessKeyPress(OIS::KeyEvent Event)
+{
+    switch (Event.key)
+    {
+        case OIS::KC_ESCAPE:
+        {
+            GameOptionsOpen(CEGUI::EventArgs());
+            break;
+        }
+
+        default:
+        break;
+    }
+
+    return true;
+}
+
+bool MainGameScreen::ProcessKeyRelease(OIS::KeyEvent Event)
+{
+    return true;
+}

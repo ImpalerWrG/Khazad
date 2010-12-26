@@ -5,6 +5,8 @@
 
 #include <CEGUI.h>
 
+#include <OIS.h>
+
 
 class ScreenBase
 {
@@ -20,6 +22,9 @@ public:
     virtual void SetDirty()              { };
 
     CEGUI::Window* getRootWindow()       { return RootWindow; }
+
+    virtual bool ProcessKeyPress(OIS::KeyEvent Event)           { };
+    virtual bool ProcessKeyRelease(OIS::KeyEvent Event)         { };
 
 protected:
 

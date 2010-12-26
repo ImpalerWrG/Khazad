@@ -44,3 +44,13 @@ bool SplashScreen::NewGamePressed(const CEGUI::EventArgs& pEventArgs)
 {
     GUI->ShowScreen(SCREEN_GAME_SETUP);
 }
+
+bool SplashScreen::ProcessKeyPress(OIS::KeyEvent Event)
+{
+    return true;
+}
+
+bool SplashScreen::ProcessKeyRelease(OIS::KeyEvent Event)
+{
+    return true;
+}
