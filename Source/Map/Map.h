@@ -61,7 +61,7 @@ public:
     bool isCubeSloped(MapCoordinates Coordinates) const;
 
     void setCubeShape(MapCoordinates Coordinates, TileShape NewShape);
-    TileShape getCubeShape(MapCoordinates Coordinates) const;
+    inline TileShape getCubeShape(MapCoordinates Coordinates) const;
 
     void setCubeMaterial(MapCoordinates Coordinates, int16_t MaterialID);
     inline int16_t getCubeMaterial(MapCoordinates Coordinates) const;
@@ -111,13 +111,13 @@ public:
     uint32_t getFaceCount() const             { return FaceCount; }
 
 
-    MapCoordinates getRayIntersection(Ogre::Ray MouseRay) const;
+    MapCoordinates getRayIntersection(Ogre::Ray MouseRay);
     //MapCoordinates getMapCenter() const;
 
     Zone* getZone() const;
     void addZone(Zone* NewZone);
     void setActiveZone(Zone* ActivatedZone);
-    Zone* getActiveZone()                          { return ActiveZone; }
+    Zone* getActiveZone() const                    { return ActiveZone; }
     void DeactivateZone()                          { ActiveZone = NULL; }
 
     Zone* getZoneAt(MapCoordinates TestCoordinates);
@@ -138,6 +138,8 @@ protected:
     Zone* ActiveZone;
 
     uint32_t FaceCount;
+
+    MapCoordinates LastRayTestResult;  // Used to smoothout Map Picking
 };
 
 #endif // MAP__HEADER

@@ -135,7 +135,7 @@ void Cell::setCubeShape(CubeCoordinates Coordinates, TileShape NewShape)
     if (NewShape != CubeShapeTypes[Coordinates.X][Coordinates.Y])
     {
         CubeShapeTypes[Coordinates.X][Coordinates.Y] = NewShape;
-        setCubeSolid(Coordinates, NewShape == TILESHAPE_WALL);
+        setCubeSolid(Coordinates, NewShape == TILESHAPE_SOLID);
 
         setNeedsReBuild(true);
     }
@@ -154,7 +154,7 @@ void Cell::BuildFaceData()
             int16_t CubeMaterial = getCubeMaterial(TargetCubeCoordinates);
             int16_t CubeSurface = getCubeSurface(TargetCubeCoordinates);
 
-            if (CubeShape == TILESHAPE_WALL)
+            if (CubeShape == TILESHAPE_SOLID)
             {
                 for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
                 {
@@ -180,7 +180,7 @@ void Cell::BuildFaceData()
                 setActive(true);
             }
 
-            if (CubeShape > TILESHAPE_EMPTY && CubeShape < TILESHAPE_WALL)
+            if (CubeShape > TILESHAPE_EMPTY && CubeShape < TILESHAPE_SOLID)
             {
                 addSlope(TargetCubeCoordinates, (TileShape) CubeShape);
             }
@@ -509,7 +509,7 @@ uint16_t Cell::TranslateCubeToIndex(CubeCoordinates Coordinates)
 bool Cell::isCubeSloped(CubeCoordinates Coordinates)
 {
     TileShape CubeShape = getCubeShape(Coordinates);
-    return (CubeShape > TILESHAPE_EMPTY && CubeShape < TILESHAPE_WALL);
+    return (CubeShape > TILESHAPE_EMPTY && CubeShape < TILESHAPE_SOLID);
 }
 
 void Cell::DrawCellCage()

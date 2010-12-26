@@ -491,13 +491,13 @@ void CreateSlopedTiles()
 {
     Ogre::ManualObject* ManualObject;
 
-    for (TileShape Shape = TILESHAPE_START; Shape < TILESHAPE_WALL; ++Shape)
+    for (TileShape Shape = TILESHAPE_START; Shape < TILESHAPE_SOLID; ++Shape)
     {
         ManualObject = RENDERER->getSceneManager()->createManualObject("ManualRampTile");
         ManualObject->setDynamic(false);
 
         uint16_t HeightData = (uint16_t) Shape;
-        uint16_t Divisor = ((uint16_t) TILESHAPE_WALL) + 1;
+        uint16_t Divisor = ((uint16_t) TILESHAPE_SOLID) + 1;
 
         bool Triangle1 = false;
         bool Triangle2 = false;

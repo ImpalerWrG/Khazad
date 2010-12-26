@@ -15,7 +15,7 @@ enum TileShape
 
     // implicit ramp shape combinations
 
-    TILESHAPE_WALL = ((HEIGHT_FRACTIONS + 2) * (HEIGHT_FRACTIONS + 2) * (HEIGHT_FRACTIONS + 2) * (HEIGHT_FRACTIONS + 2) * 2) - 1,
+    TILESHAPE_SOLID = ((HEIGHT_FRACTIONS + 2) * (HEIGHT_FRACTIONS + 2) * (HEIGHT_FRACTIONS + 2) * (HEIGHT_FRACTIONS + 2) * 2) - 1,
 
     // Add other tile shapes here but increment NUM
     NUM_TILESHAPES,

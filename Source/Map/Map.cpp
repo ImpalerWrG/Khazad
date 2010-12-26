@@ -559,7 +559,6 @@ void Map::Dig(MapCoordinates Coordinates)
 
 void Map::Fill(MapCoordinates Coordinates, int16_t MaterialID)
 {
-    static int16_t WallID = DATA->getLabelIndex("TILESHAPE_WALL");
     static int16_t RoughWallID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
     static int16_t RoughFloorID = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
@@ -567,7 +566,7 @@ void Map::Fill(MapCoordinates Coordinates, int16_t MaterialID)
     {
         if (!isCubeSolid(Coordinates) && !isCubeSloped(Coordinates))
         {
-            setCubeShape(Coordinates, TILESHAPE_WALL);
+            setCubeShape(Coordinates, TILESHAPE_SOLID);
             setCubeMaterial(Coordinates, MaterialID);
 
             for(Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
@@ -606,7 +605,7 @@ void Map::Fill(MapCoordinates Coordinates, int16_t MaterialID)
     }
 }
 
-MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay) const
+MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay)
 {
     Ogre::Plane TestPlane;
     TestPlane.normal = Ogre::Vector3::UNIT_Z;
@@ -619,9 +618,19 @@ MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay) const
 
         if (result.first) // Was an intersection found
         {
-            return MapCoordinates(MouseRay.getPoint(result.second));  // Convert Vector3 to MapCoordinates
+            MapCoordinates TestCoords = MapCoordinates(MouseRay.getPoint(result.second));
+            if (isCubeInited(TestCoords))
+            {
+                TileShape Shape = getCubeShape(TestCoords);
+                if (Shape != TILESHAPE_EMPTY && Shape != TILESHAPE_SOLID)
+                {
+                    LastRayTestResult = TestCoords;
+                    return TestCoords;
+                }
+            }
         }
     }
+    return LastRayTestResult;
 }
 
 /*

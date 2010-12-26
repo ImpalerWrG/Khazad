@@ -270,9 +270,9 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
                 {
                     Zone* ActiveZone = GAME->getMap()->getActiveZone();
 
-                    Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height));
+                    MapCoordinates Location = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height)));
 
-                    ActiveZone->MoveZone(MapCoordinates(FocusPoint));
+                    ActiveZone->MoveZone(Location);
                     GUI->DirtyActiveScreen();
                 }
                 else
@@ -296,9 +296,9 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
     {
         if (Game::isInstance())
         {
-            Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height));
-            MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
-            Zone* ClickedZone = GAME->getMap()->getZoneAt(ClickCoordinates);
+            MapCoordinates Location = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height)));
+
+            Zone* ClickedZone = GAME->getMap()->getZoneAt(Location);
 
             if ((RENDERER->getRoot()->getTimer()->getMillisecondsCPU() - DoubleClickTime) < 250)  // Left DoubleClick
             {
@@ -306,7 +306,7 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
 
                 if (ClickedZone == NULL)
                 {
-                    Zone* NewZone = new Zone(ClickCoordinates);
+                    Zone* NewZone = new Zone(Location);
                     GAME->getMap()->addZone(NewZone);
                     GAME->getMap()->setActiveZone(NewZone);
 
