@@ -2,21 +2,13 @@
 #include <algorithm>
 
 
-#include "grid.h"
+#include <grid.h>
 #include <Game.h>
 #include <Cell.h>
-#include <DataManager.h>
 
 
 KhazadGrid::KhazadGrid(Map* TargetMap)
 {
-    int16_t FLOOR_ID = DATA->getLabelIndex("TILESHAPE_FLOOR");
-    int16_t RAMP_ID = DATA->getLabelIndex("TILESHAPE_RAMP");
-    int16_t STAIR_ID = DATA->getLabelIndex("TILESHAPE_STAIR");
-    int16_t TREE_ID = DATA->getLabelIndex("TILESHAPE_TREE");
-    int16_t BOULDER_ID = DATA->getLabelIndex("TILESHAPE_BOULDER");
-    int16_t STAIRDOWN_ID = DATA->getLabelIndex("TILESHAPE_DOWN_STAIR");
-
     std::map<uint64_t, Cell*>* TargetCells = TargetMap->getCellMap();
     for (std::map<uint64_t, Cell*>::iterator it = TargetCells->begin(); it != TargetCells->end(); ++it)
     {
@@ -31,10 +23,10 @@ KhazadGrid::KhazadGrid(Map* TargetMap)
             {
                 for (TargetCubeCoords.Y = 0; TargetCubeCoords.Y < CELLEDGESIZE; TargetCubeCoords.Y++)
                 {
-                    TileShape TileShapeID = TargetCell->getCubeShape(TargetCubeCoords);
+                    TileShape Shape = TargetCell->getCubeShape(TargetCubeCoords);
                     uint32_t Flags = 0;
 
-                    if (TileShapeID == TILESHAPE_FLOOR)
+                    if (Shape > TILESHAPE_EMPTY && Shape < TILESHAPE_WALL)
                     {
                         //Flags |= (1 << (int) DIRECTION_NONE);
                         for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
@@ -51,41 +43,31 @@ KhazadGrid::KhazadGrid(Map* TargetMap)
 
                             TileShape AdjacentTileShape = TargetMap->getCubeShape(AdjacentTileCoords);
 
-                            if (AdjacentTileShape == FLOOR_ID || AdjacentTileShape == RAMP_ID || AdjacentTileShape == STAIR_ID || AdjacentTileShape == STAIRDOWN_ID)
+                            if (AdjacentTileShape != TILESHAPE_EMPTY || AdjacentTileShape != TILESHAPE_WALL)
                             {
                                 if (DirectionType == DIRECTION_DOWN)
                                 {
-                                    //only go down to stairs from down stairs
-                                    if ((TileShapeID == STAIRDOWN_ID) && (AdjacentTileShape ==  STAIR_ID))
-                                    {
-                                        Flags |= (1 << (int) DirectionType);
-                                    }
                                 }
                                 else if (DirectionType == DIRECTION_UP)
                                 {
-                                    //only stairs go straight up
-                                    if ((AdjacentTileShape == STAIRDOWN_ID) && (TileShapeID ==  STAIR_ID))
-                                    {
-                                        Flags |= (1 << (int) DirectionType);
-                                    }
                                 }
                                 else if (DirectionType >= NUM_COMPASS_DIRECTIONS)
                                 {
                                     if (isDirectionPositive(DirectionType))
                                     {
-                                        //only ramps go up-diagonal
+                                        /*Figure out ramps
                                         if (TileShapeID == RAMP_ID)
                                         {
                                             Flags |= (1 << (int) DirectionType);
-                                        }
+                                        }*/
                                     }
                                     else
                                     {
-                                        //only can go down-diagonal to ramp
+                                        /*only can go down-diagonal to ramp
                                         if (AdjacentTileShape == RAMP_ID)
                                         {
                                             Flags |= (1 << (int) DirectionType);
-                                        }
+                                        }*/
                                     }
                                 }
                                 else

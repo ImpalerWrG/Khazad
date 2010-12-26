@@ -32,6 +32,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 Map::Map()
 {
     Initialized = false;
+    CellNeedsRebuild = true;
 
     FaceCount = 0;
 
@@ -64,6 +65,21 @@ Cell* Map::getCell(CellCoordinates TestCoords) const
     std::map<uint64_t, Cell*>::const_iterator SearchResult = Cells.find(TestCoords.Key());
 
     return SearchResult == Cells.end() ? NULL : SearchResult->second;
+}
+
+void Map::RefreshCellGeometry()
+{
+    if (CellNeedsRebuild)
+    {
+        for (std::map<uint64_t, Cell*>::const_iterator it = Cells.begin(); it != Cells.end(); it++)
+        {
+            if (it->second->getNeedsReBuild())
+            {
+                it->second->BuildStaticGeometry();
+            }
+        }
+    }
+    setNeedsReBuild(false);
 }
 
 bool Map::insertCell(Cell* NewCell, CellCoordinates TargetCoordinates)
@@ -103,13 +119,18 @@ bool Map::isCubeInited(MapCoordinates Coordinates) const
     return getCubeOwner(Coordinates) != NULL;
 }
 
-void Map::setCellNeedsReDraw(CellCoordinates Coordinates, bool NewValue)
+void Map::setCellNeedsReBuild(CellCoordinates Coordinates, bool NewValue)
 {
     Cell* TargetCell = getCell(Coordinates);
 
     if (TargetCell != NULL)
     {
-        TargetCell->setNeedsRedraw(NewValue);
+        TargetCell->setNeedsReBuild(NewValue);
+
+        if (NewValue)
+        {
+            setNeedsReBuild(true);
+        }
     }
 }
 
@@ -465,24 +486,6 @@ void Map::setCubeSolid(MapCoordinates Coordinates, bool NewValue)
     {
         TargetCell->setCubeSolid(CubeCoordinates(Coordinates), NewValue);
     }
-}
-
-void Map::DigSlope(MapCoordinates Coordinates)
-{
-    static int16_t RampID = DATA->getLabelIndex("TILESHAPE_RAMP");
-
-    Dig(Coordinates);
-
-    // reveal tiles around
-    for(Direction DirectionType = COMPASS_DIRECTIONS_START; DirectionType < NUM_COMPASS_DIRECTIONS; ++DirectionType)
-    {
-        setCubeHidden(MapCoordinates(Coordinates, DirectionType), false);
-    }
-
-    //setCubeShape(Coordinates, RampID);
-
-    setCubeMaterial(Coordinates, getFaceMaterial(Coordinates, DIRECTION_DOWN));
-    setCubeSurfaceType(Coordinates, getFaceSurfaceType(Coordinates, DIRECTION_DOWN));
 }
 
 void Map::Dig(MapCoordinates Coordinates)

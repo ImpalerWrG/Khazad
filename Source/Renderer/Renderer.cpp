@@ -3,19 +3,16 @@
 #include <Singleton.h>
 
 #include <Camera.h>
+#include <Timer.h>
+#include <Game.h>
 
-#include <GUI.h>
-//#include <ImageManager.h>
-//#include <DataManager.h>
-#include <Camera.h>
-
-//using namespace Ogre;
 
 DECLARE_SINGLETON(Renderer)
 
 Renderer::Renderer()
 {
     OgreDebugOverlay = NULL;
+    RenderTimer = new Timer(50);
 }
 
 bool Renderer::Init()
@@ -35,6 +32,8 @@ bool Renderer::Init()
     defineResources();
     initializeResourceGroups();
 
+    RenderTimer->Start();
+
     return true;
 }
 
@@ -45,6 +44,8 @@ Renderer::~Renderer()
 
 void Renderer::RenderFrame()
 {
+    RenderTimer->Unpause();
+
     if (OgreDebugOverlay != NULL && OgreDebugOverlay->isVisible())
     {
         UpdateOverlay();
@@ -53,6 +54,8 @@ void Renderer::RenderFrame()
     OgreRoot->renderOneFrame();
 
     OgreRoot->_fireFrameStarted();
+
+    RenderTimer->Pause();
 }
 
 void Renderer::defineResources()
@@ -171,6 +174,12 @@ void Renderer::UpdateOverlay()
     Ogre::OverlayElement* guiBatches = Ogre::OverlayManager::getSingleton().getOverlayElement("Core/NumBatches");
     guiBatches->setCaption(batches + Ogre::StringConverter::toString(stats.batchCount));
 
+    double GameAgerage = GAME->getGameTimer()->getAverage();
+    double RenderAgerage = RenderTimer->getAverage();
+    double Total = GameAgerage + RenderAgerage;
+    char buffer[32];
+    sprintf(buffer, "GameAvg %.2f%          RenderAvg %.2f%", (GameAgerage / Total) * 100.0f, (RenderAgerage / Total) * 100.0f);
+
 	Ogre::OverlayElement* guiDbg = Ogre::OverlayManager::getSingleton().getOverlayElement("Core/DebugText");
-	guiDbg->setCaption("");
+	guiDbg->setCaption(buffer);
 }

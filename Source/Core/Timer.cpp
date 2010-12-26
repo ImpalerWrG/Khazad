@@ -3,7 +3,7 @@
 #include <Timer.h>
 #include <Renderer.h>
 
-Timer::Timer(uint32_t Size)
+Timer::Timer(uint16_t Size)
 {
 	StartTime = 0;
 	PausedTime = 0;
@@ -34,9 +34,9 @@ void Timer::Start()
     SamplingPause = 0;
 }
 
-const uint32_t Timer::Stop()
+const uint64_t Timer::Stop()
 {
-    uint32_t Elapsed = getElapsed();
+    uint64_t Elapsed = getElapsed();
 
 	started = false;
 	paused = false;
@@ -47,7 +47,7 @@ const uint32_t Timer::Stop()
     return Elapsed;
 }
 
-const uint32_t Timer::getElapsed()
+const uint64_t Timer::getElapsed()
 {
 	if (started)
 	{
@@ -93,7 +93,7 @@ void Timer::Unpause()
 	}
 }
 
-void Timer::SetSampleSize(uint32_t Size)
+void Timer::SetSampleSize(uint16_t Size)
 {
     SampleSize = Size;
     if (SampleSize == 0)
@@ -108,9 +108,9 @@ void Timer::SetSampleSize(uint32_t Size)
         delete AcumulationArray;
     }
 
-    AcumulationArray = new uint32_t[SampleSize];
+    AcumulationArray = new uint64_t[SampleSize];
 
-    for (uint32_t i = 0; i < SampleSize; i++)
+    for (uint16_t i = 0; i < SampleSize; i++)
     {
         AcumulationArray[i] = 0;
     }
@@ -118,16 +118,16 @@ void Timer::SetSampleSize(uint32_t Size)
 
 void Timer::doAverage()
 {
-    uint32_t Total = 0;
-    for(uint32_t i = 0; i < SampleSize; i++)
+    uint64_t Total = 0;
+    for(uint16_t i = 0; i < SampleSize; i++)
     {
         Total += AcumulationArray[i];
     }
 
-    AverageTime = (float)Total / (float)SampleSize;
+    AverageTime = (double)Total / (double)SampleSize;
 }
 
-float Timer::getAverage()
+double Timer::getAverage()
 {
     return AverageTime;
 }

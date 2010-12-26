@@ -241,8 +241,7 @@ Ogre::Vector3 Camera::getMouseRayIntersection(float MouseX, float MouseY)
     RayQuery->setSortByDistance(true);
 
     //RayQuery->setQueryTypeMask(SceneManager::FX_TYPE_MASK);  // Select Billboards
-    RayQuery->setQueryTypeMask(Ogre::SceneManager::ENTITY_TYPE_MASK);  // Select Terrain (made of Entities)
-    //RayQuery->setQueryMask();
+    RayQuery->setQueryTypeMask(Ogre::SceneManager::STATICGEOMETRY_TYPE_MASK);  // Select Terrain (made of Static Geometry)
 
     Ogre::RaySceneQueryResult &result = RayQuery->execute();
 

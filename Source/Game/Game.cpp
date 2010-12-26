@@ -24,6 +24,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 #include <Geology.h>
 #include <PathManager.h>
 #include <Cell.h>
+#include <Timer.h>
 
 #include <GUI.h>
 
@@ -45,12 +46,16 @@ bool Game::Init(uint16_t X, uint16_t Y, const char* SeedString)
 	Path->CreateMapAbstraction(MainMap);
 	Path->InitializeTestingSuite();
 
+    GameTimer->Start();
+
 	return true;
 }
 
 Game::Game()
 {
 	TickRate = 10;
+
+    GameTimer = new Timer(50);
 
 	Pause = true;
 }
@@ -81,6 +86,8 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
                 Cell* NewCell = new Cell();
                 NewCell->setCellPosition(TargetCellCoordinates);
 
+                NewCell->InitializeCell(MainMap);
+
                 MainMap->insertCell(NewCell, TargetCellCoordinates);
                 MapGeology->LoadCellData(NewCell);
             }
@@ -93,8 +100,7 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
     // Initialize Faces for the cells
     for (std::map<uint64_t, Cell*>::iterator CellIterator = MainMap->getCellMap()->begin() ; CellIterator != MainMap->getCellMap()->end(); ++CellIterator )
     {
-        CellIterator->second->InitializeCell(MainMap);
-        CellIterator->second->BuildStaticGeometry();
+        CellIterator->second->BuildFaceData();
     }
 
     return true;
@@ -102,6 +108,8 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
 
 bool Game::Run()
 {
+    GameTimer->Unpause();
+
 	if (!Pause)
 	{
 		for(uint32_t i = TickRate; i > 0; i--)
@@ -110,7 +118,13 @@ bool Game::Run()
 
 			// Update map? other none actor based logics?
 		}
+        if (MainMap != NULL)
+        {
+            MainMap->RefreshCellGeometry();
+        }
 	}
+
+    GameTimer->Pause();
 
 	return true;
 }

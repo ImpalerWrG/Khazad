@@ -153,10 +153,6 @@
 		<File Path="Media/Textures/Bark.png"/>
 	</Texture>
 	<Texture>
-		<Name Label="TEXTURE_BOULDER"/>
-		<File Path="Media/Textures/boulder.png"/>
-	</Texture>
-	<Texture>
 		<Name Label="TEXTURE_MATT"/>
 		<File Path="Media/Textures/Matt.png"/>
 	</Texture>

@@ -36,7 +36,6 @@ public:
     //void UpdateRenderLists(WallDisplayMode Mode);
     void LoadCellData(Geology* MapGeology);
 
-    // sync with DF if applicable
     bool Update();
 
     void DrawCellCage();
@@ -101,7 +100,6 @@ public:
     Face* addFace(CubeCoordinates Coordinates, Direction DirectionType);
 
 
-    void DigSlope(CubeCoordinates Coordinates);
     void Dig(CubeCoordinates Coordinates);
 
 
@@ -111,8 +109,8 @@ public:
     inline bool isLiquidActive()                        { return ActiveLiquid; }
     inline void setLiquidActive(bool NewValue)          { ActiveLiquid = NewValue; }
 
-    inline bool getNeedsRedraw()                        { return NeedsRedraw; }
-    inline void setNeedsRedraw(bool NewValue)           { NeedsRedraw = NewValue; }
+    inline bool getNeedsReBuild()                       { return NeedsReBuild; }
+    inline void setNeedsReBuild(bool NewValue)          { NeedsReBuild = NewValue;  ParentMap->setNeedsReBuild(true); }
 
     void addBuilding(Building* NewBuilding)             { buildings.push_back(NewBuilding); }
     void addTree(Tree* NewTree)                         { trees.push_back(NewTree); }
@@ -120,14 +118,14 @@ public:
     CellCoordinates getCellCoordinates()                { return thisCellCoordinates; }
     Ogre::Vector3 getPosition()                         { return CellSceneNode->getPosition(); }
 
-    //std::map<int16_t, vector <vertex>* > Geometry;
 
     int addActor(Actor* NewActor);
     void removeActor(int Index);
 
 protected:
 
-    bool NeedsRedraw; //TODO maintain a vector of cells that need redraw instead
+    bool NeedsReBuild;
+
     bool Active;
     bool ActiveLiquid;
     bool Initialized;

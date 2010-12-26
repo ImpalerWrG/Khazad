@@ -28,6 +28,7 @@ class Tree;
 class Map;
 class PathManager;
 class Geology;
+class Timer;
 
 class MapCoordinates;
 
@@ -59,11 +60,14 @@ public:
     PathManager* getPath()      { return Path; }
 
     float getProgress()             { return ProgressAmount; }
+    Timer* getGameTimer()            { return GameTimer; }
 
 protected:
 
     uint32_t TickRate;     // Simulation Rate;
     bool Pause;
+
+    Timer* GameTimer;
 
     Map* MainMap;
     Geology* MapGeology;

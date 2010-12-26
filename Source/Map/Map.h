@@ -49,10 +49,14 @@ public:
 	Cell* getCubeOwner(MapCoordinates) const;
 
     std::map<uint64_t, Cell*>* getCellMap();
+
+    void RefreshCellGeometry();
+
     bool insertCell(Cell* NewCell, CellCoordinates TargetCoordinates);
 
     bool isCubeInited(MapCoordinates) const;
-    void setCellNeedsReDraw(CellCoordinates, bool NewValue);
+    void setCellNeedsReBuild(CellCoordinates, bool NewValue);
+    void setNeedsReBuild(bool NewValue)       { CellNeedsRebuild = NewValue; }
 
     bool isCubeSloped(MapCoordinates Coordinates) const;
 
@@ -100,7 +104,6 @@ public:
 
     void ReleaseMap();
 
-    void DigSlope(MapCoordinates Coordinates);
     void Dig(MapCoordinates Coordinates);
     void Fill(MapCoordinates Coordinates, int16_t MaterialID);
 
@@ -121,6 +124,7 @@ public:
 
 protected:
 
+    bool CellNeedsRebuild;
     bool Initialized;
     bool MapLoaded;
 

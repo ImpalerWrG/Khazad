@@ -5,9 +5,9 @@
 #include <Singleton.h>
 
 #include <Ogre.h>
-//#include <Camera.h>
 
 class Camera;
+class Timer;
 
 class Renderer
 {
@@ -32,10 +32,12 @@ public:
     void UpdateOverlay();
 
     void TakeScreenShoot();
+    Timer* getRenderTimer()                       { return RenderTimer; }
 
 private:
 
     Ogre::Root* OgreRoot;
+
     Ogre::SceneManager* OgreSceneManager;
     Ogre::RenderWindow* OgreRenderWindow;
 
@@ -55,6 +57,8 @@ private:
 
     Ogre::Overlay*			OgreDebugOverlay;
 	Ogre::Overlay*			OgreInfoOverlay;
+
+	Timer* RenderTimer;
 };
 
 #define RENDERER (Renderer::GetInstance())

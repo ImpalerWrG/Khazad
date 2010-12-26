@@ -3,6 +3,10 @@
 <GUILayout >
     <Window Type="DefaultWindow" Name="MainGameScreen" >
         <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1.00651,0}}" />
+        <Window Type="ArkanaLook/Image" Name="MainGameScreen/TopBar/PauseButton" >
+			<Property Name="Image" Value="set:ArkanaLook image:full_image" />
+            <Property Name="UnifiedAreaRect" Value="{{0,138},{0.126779,0},{0,188},{0.926779,0}}" />
+        </Window>
         <Window Type="ArkanaLook/VerticalDecoScrollbar" Name="MainGameScreen/DepthScroller" >
             <Property Name="PageSize" Value="10" />
             <Property Name="StepSize" Value="1" />
@@ -15,7 +19,7 @@
             <Property Name="UnifiedAreaRect" Value="{{0,-7},{0,0},{1,0},{0,50}}" />
             <Window Type="ArkanaLook/Button" Name="MainGameScreen/TopBar/GameOptionsButton" >
                 <Property Name="Text" Value="Game Options" />
-                <Property Name="UnifiedAreaRect" Value="{{0,15},{0,0},{0.15,0},{0.5,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,65},{0,0},{0.15,0},{0.5,0}}" />
                 <Property Name="VerticalAlignment" Value="Centre" />
             </Window>
             <Window Type="ArkanaLook/Button" Name="MainGameScreen/TopBar/Button2" >
@@ -30,11 +34,11 @@
             </Window>
         </Window>
         <Window Type="ArkanaLook/ContainerBox" Name="MainGameScreen/BottomBar" >
+            <Property Name="Visible" Value="False" />
             <Property Name="UnifiedAreaRect" Value="{{0,0},{1,-50},{1,0},{1,0}}" />
         </Window>
         <Window Type="ArkanaLook/FrameWindow" Name="MainGameScreen/GameOptionsWindow" >
             <Property Name="Text" Value="GAME OPTIONS" />
-            <Property Name="Visible" Value="False" />
             <Property Name="TitleFont" Value="Carolingia-10" />
             <Property Name="SizingEnabled" Value="False" />
             <Property Name="TitlebarEnabled" Value="True" />
@@ -64,7 +68,7 @@
             <Property Name="TitlebarEnabled" Value="True" />
             <Property Name="UnifiedAreaRect" Value="{{0.636523,0},{0.223286,0},{0.886523,0},{0.548318,0}}" />
             <Window Type="DefaultWindow" Name="MainGameScreen/SelectionWindow/LocationWindow" >
-                <Property Name="UnifiedAreaRect" Value="{{0.0,0},{0.201492,0},{1.0,0},{0.451492,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0.201492,0},{1,0},{0.451492,0}}" />
                 <Window Type="ArkanaLook/StaticText" Name="MainGameScreen/SelectionWindow/LocationWindow/LocationLabel" >
                     <Property Name="Text" Value="Location" />
                     <Property Name="HorzExtent" Value="66" />
@@ -82,7 +86,7 @@
                 </Window>
             </Window>
             <Window Type="DefaultWindow" Name="MainGameScreen/SelectionWindow/TileTypeWindow" >
-                <Property Name="UnifiedAreaRect" Value="{{0.0,0},{0.454477,0},{1.0,0},{0.704477,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0.454477,0},{1,0},{0.704477,0}}" />
                 <Window Type="ArkanaLook/StaticText" Name="MainGameScreen/SelectionWindow/TileTypeWindow/TileTypeLabel" >
                     <Property Name="Text" Value="Tile Type" />
                     <Property Name="HorzExtent" Value="79" />

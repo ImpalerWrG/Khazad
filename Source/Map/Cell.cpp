@@ -43,10 +43,9 @@ Cell::~Cell()
 bool Cell::InitializeCell(Map* Parent)
 {
     Initialized = true;
-    NeedsRedraw = true;
+    NeedsReBuild = true;
 
     ParentMap = Parent;
-    BuildFaceData();
 
     return true;
 }
@@ -138,7 +137,7 @@ void Cell::setCubeShape(CubeCoordinates Coordinates, TileShape NewShape)
         CubeShapeTypes[Coordinates.X][Coordinates.Y] = NewShape;
         setCubeSolid(Coordinates, NewShape == TILESHAPE_WALL);
 
-        setNeedsRedraw(true);
+        setNeedsReBuild(true);
     }
 }
 
@@ -208,10 +207,13 @@ void Cell::BuildStaticGeometry()
     }
 
     CellGeometry->addSceneNode(CellSceneNode);
+    CellGeometry->setCastShadows(false);
 
     CellGeometry->build();
 
     DestroyAllAttachedEntities(CellSceneNode);
+
+    NeedsReBuild = false;
 }
 
 void Cell::DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode)
@@ -431,7 +433,7 @@ bool Cell::removeFace(CubeCoordinates TargetCoordinates, Direction DirectionType
             delete Faces.find(Key)->second;
             Faces.erase(Key);
 
-            setNeedsRedraw(true);
+            setNeedsReBuild(true);
             return true;
         }
     }

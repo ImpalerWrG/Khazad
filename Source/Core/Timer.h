@@ -8,34 +8,35 @@ class Timer
 {
 public:
 
-	Timer(uint32_t Size = 1);
+	Timer(uint16_t Size = 1);
 	~Timer();
 
 	void Start();
-	const uint32_t Stop();
+	const uint64_t Stop();
 
 	void Pause();
 	void Unpause();
 
-	void SetSampleSize(uint32_t Size);
+	void SetSampleSize(uint16_t Size);
 
-	const uint32_t getElapsed();
+	const uint64_t getElapsed();
 
 	void doAverage();
-    float getAverage();
+    double getAverage();
 
 protected:
 
-	uint32_t StartTime;
-	uint32_t PausedTime;
+	uint64_t StartTime;
+	uint64_t PausedTime;
 
-    uint32_t SampleSize;
-    uint32_t SampleIndex;
-    uint32_t SamplingPause;
+    uint16_t SampleSize;
+    uint16_t SampleIndex;
+
+    uint64_t SamplingPause;
 
     float AverageTime;
 
-    uint32_t* AcumulationArray;
+    uint64_t* AcumulationArray;
 
 	bool started;
 	bool paused;
