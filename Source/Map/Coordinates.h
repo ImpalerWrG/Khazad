@@ -552,29 +552,8 @@ struct FaceCoordinates
 
     FaceCoordinates(CubeCoordinates SourceCoords, Direction DirectionComponent)
     {
-        /*
-        if (isDirectionPositive(DirectionComponent))  // True for East, South and Top some of which will require calls to other Cells
-        {
-            SourceCoords.TranslateMapCoordinates(DirectionComponent);
-            Set(SourceCoords, OppositeDirection(DirectionComponent));
-        }
-        else
-        {
-        */
-            Set(SourceCoords, DirectionComponent);
-        //}
+        Set(SourceCoords, DirectionComponent);
     };
-
-    /*
-    inline FaceCoordinates& OpposingFace(const FaceCoordinates& SourceCoords)
-    {
-        Coordinates = SourceCoords.Coordinates;
-        //Coordinates.TranslateMapCoordinates(OppositeDirection(SourceCoords.FaceDirection));
-        FaceDirection = OppositeDirection(SourceCoords.FaceDirection);
-
-        return * this;
-    };
-    */
 
     FaceCoordinates& operator= (const FaceCoordinates& ArgumentCoordinates)
     {

@@ -179,7 +179,18 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
 
                 MapCoordinates ClickCoordinates = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(State.X.abs / float(State.width), State.Y.abs / float(State.height)));
 
-                GAME->getMap()->Fill(ClickCoordinates, DATA->getLabelIndex("MATERIAL_OBSIDIAN"));
+                GAME->getMap()->setFaceMaterial(ClickCoordinates, DIRECTION_NONE, DATA->getLabelIndex("MATERIAL_OBSIDIAN"));
+
+                break;
+            }
+
+            case OIS::KC_X:
+            {
+                const OIS::MouseState &State = MouseObject->getMouseState();
+
+                MapCoordinates ClickCoordinates = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(State.X.abs / float(State.width), State.Y.abs / float(State.height)));
+
+                GAME->getMap()->setCubeShape(ClickCoordinates, TILESHAPE_EMPTY);
 
                 break;
             }

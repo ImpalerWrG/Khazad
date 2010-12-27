@@ -22,7 +22,7 @@ public:
 
     int16_t getFaceMaterialType()           { return MaterialTypeID; }
     int16_t getFaceSurfaceType()            { return SurfaceTypeID; }
-    int16_t getFaceShapeType()              { return ShapeType; }
+    TileShape getFaceShapeType()            { return ShapeType; }
 
 private:
 

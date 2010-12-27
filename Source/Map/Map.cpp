@@ -240,12 +240,12 @@ inline int16_t Map::getCubeMaterial(MapCoordinates Coordinates) const
 
 void Map::setFaceMaterial(MapCoordinates TargetMapCoordinates, Direction DirectionType, int16_t MaterialID)
 {
-    Face* TargetFace = getFace(TargetMapCoordinates, DirectionType);
+    std::pair< MapCoordinates, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
-    if (TargetFace != NULL)
+    Cell* TargetCell = getCell(CellCoordinates(ConvertedValues.first));
+    if (TargetCell != NULL)
     {
-        TargetFace->setFaceMaterialType(MaterialID);
-        // TODO Set needs draw on Cell??
+        TargetCell->setFaceMaterialType(FaceCoordinates(CubeCoordinates(ConvertedValues.first), ConvertedValues.second), MaterialID);
     }
 }
 
@@ -258,12 +258,12 @@ inline int16_t Map::getFaceMaterial(MapCoordinates TargetMapCoordinates, Directi
 
 void Map::setFaceSurfaceType(MapCoordinates TargetMapCoordinates, Direction DirectionType, int16_t SurfaceID)
 {
-    Face* TargetFace = getFace(TargetMapCoordinates, DirectionType);
+    std::pair< MapCoordinates, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
-    if (TargetFace != NULL)
+    Cell* TargetCell = getCell(CellCoordinates(ConvertedValues.first));
+    if (TargetCell != NULL)
     {
-        TargetFace->setFaceSurfaceType(SurfaceID);
-        // TODO Set needs draw on Cell??
+        TargetCell->setFaceSurfaceType(FaceCoordinates(CubeCoordinates(ConvertedValues.first), ConvertedValues.second), SurfaceID);
     }
 }
 

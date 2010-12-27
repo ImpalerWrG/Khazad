@@ -10,8 +10,6 @@
 
 Cell::Cell()
 {
-    Active = false;
-    ActiveLiquid = false;
     Initialized = false;
 
     for(uint8_t i = 0; i < CELLEDGESIZE; i++)
@@ -27,7 +25,6 @@ Cell::Cell()
     SubTerranean.reset();
     SkyView.reset();
     SunLit.reset();
-    LiquidType.reset();
 
     CellSceneNode = RENDERER->getRootNode()->createChildSceneNode();
 }
@@ -66,7 +63,9 @@ void Cell::setCubeShape(CubeCoordinates Coordinates, TileShape NewShape)
 {
     if (NewShape != CubeShapeTypes[Coordinates.Index])
     {
+        setFaceShape(FaceCoordinates(Coordinates, DIRECTION_NONE), NewShape);
         CubeShapeTypes[Coordinates.Index] = NewShape;
+
         setNeedsReBuild(true);
     }
 }
@@ -128,12 +127,16 @@ void Cell::BuildStaticGeometry()
     else
     {
         CellGeometry = RENDERER->getSceneManager()->getStaticGeometry(buffer);
-        CellGeometry->destroy();
+        CellGeometry->reset();
     }
 
     // Iterate all Faces and RefreshEntites;
     for (std::map<uint16_t, Face*>::iterator it = Faces.begin(); it != Faces.end(); it++)
     {
+        if (it->second->getFaceMaterialType() == 118)
+        {
+            bool debug = true;
+        }
         it->second->RefreshEntity();
     }
 
@@ -166,16 +169,17 @@ void Cell::DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode)
     {
         Ogre::SceneNode* ChildNode = static_cast<Ogre::SceneNode*> (itChild.getNext());
         DestroyAllAttachedEntities(ChildNode);
+        ChildNode->getCreator()->destroySceneNode(ChildNode);
     }
 }
 
-int16_t Cell::getFaceMaterialType(FaceCoordinates TargetCoordinates)
+int16_t Cell::getFaceMaterialType(FaceCoordinates TargetCoordinates) const
 {
     Face* TargetFace = getFace(TargetCoordinates);
     return TargetFace != NULL ? TargetFace->getFaceMaterialType() : INVALID_INDEX;
 }
 
-int16_t Cell::getFaceSurfaceType(FaceCoordinates TargetCoordinates)
+int16_t Cell::getFaceSurfaceType(FaceCoordinates TargetCoordinates) const
 {
     Face* TargetFace = getFace(TargetCoordinates);
     return TargetFace != NULL ? TargetFace->getFaceSurfaceType() : INVALID_INDEX;
@@ -188,6 +192,7 @@ bool Cell::setFaceMaterialType(FaceCoordinates TargetCoordinates, int16_t Materi
     if (TargetFace != NULL)
     {
         TargetFace->setFaceMaterialType(MaterialTypeID);
+        setNeedsReBuild(true);
         return true;
     }
     return false;
@@ -200,7 +205,36 @@ bool Cell::setFaceSurfaceType(FaceCoordinates TargetCoordinates, int16_t Surface
     if (TargetFace != NULL)
     {
         TargetFace->setFaceSurfaceType(SurfaceTypeID);
+        setNeedsReBuild(true);
         return true;
+    }
+    return false;
+}
+
+TileShape Cell::getFaceShape(FaceCoordinates TargetCoordinates) const
+{
+    Face* TargetFace = getFace(TargetCoordinates);
+    return TargetFace != NULL ? TargetFace->getFaceShapeType() : NUM_TILESHAPES;
+}
+
+bool Cell::setFaceShape(FaceCoordinates TargetCoordinates, TileShape NewShape)
+{
+    Face* TargetFace = getFace(TargetCoordinates);
+
+    if (TargetFace != NULL)
+    {
+        if ((NewShape == TILESHAPE_EMPTY || NewShape == TILESHAPE_SOLID) && TargetCoordinates.FaceDirection == DIRECTION_NONE)
+        {
+            removeFace(TargetCoordinates);
+            setNeedsReBuild(true);
+            return true;
+        }
+        else
+        {
+            TargetFace->setShapeType(NewShape);
+            setNeedsReBuild(true);
+            return true;
+        }
     }
     return false;
 }
@@ -237,7 +271,7 @@ Face* Cell::addFace(FaceCoordinates TargetCoordinates)
     }
 }
 
-Ogre::Vector3 Cell::getCubePosition(CubeCoordinates Coordinates)
+Ogre::Vector3 Cell::getCubePosition(CubeCoordinates Coordinates) const
 {
     float X = CellSceneNode->getPosition().x - (float)(CELLEDGESIZE / 2) + (float)Coordinates.X + (float)HALFCUBE;
     float Y = CellSceneNode->getPosition().y - (float)(CELLEDGESIZE / 2) + (float)Coordinates.Y + (float)HALFCUBE;
@@ -245,18 +279,7 @@ Ogre::Vector3 Cell::getCubePosition(CubeCoordinates Coordinates)
 	return Ogre::Vector3(X, Y, CellSceneNode->getPosition().z);
 }
 
-MapCoordinates Cell::TranslateCubeToMap(CubeCoordinates Coordinates)
-{
-    MapCoordinates NewCoordinates;
-
-    NewCoordinates.X = (thisCellCoordinates.X * CELLEDGESIZE) + Coordinates.X;
-    NewCoordinates.Y = (thisCellCoordinates.Y * CELLEDGESIZE) + Coordinates.Y;
-    NewCoordinates.Z = thisCellCoordinates.Z;
-
-    return NewCoordinates;
-}
-
-bool Cell::isCubeSloped(CubeCoordinates Coordinates)
+bool Cell::isCubeSloped(CubeCoordinates Coordinates) const
 {
     TileShape CubeShape = getCubeShape(Coordinates);
     return (CubeShape > TILESHAPE_EMPTY && CubeShape < TILESHAPE_SOLID);
