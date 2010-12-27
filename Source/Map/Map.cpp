@@ -34,8 +34,6 @@ Map::Map()
     Initialized = false;
     CellNeedsRebuild = true;
 
-    FaceCount = 0;
-
     HighestCell = 0;
     LowestCell = 0;
 
@@ -144,115 +142,66 @@ void Map::Save(string filename)
     return;
 }
 
-Face* Map::getFace(MapCoordinates Coordinates, Direction DirectionType) const
+std::pair< MapCoordinates, Direction > Map::FaceCoordinateConvertion(MapCoordinates TargetMapCoordinates, Direction DirectionType) const
 {
-    MapCoordinates TargetMapCoordinates = Coordinates;
-    Direction TargetFace = DirectionType;
-
-    if (isDirectionPositive(DirectionType)) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
+    if (isDirectionPositive(DirectionType))  // True for East, South and Top some of which will require Translation of the Cube and Inversion of Direction
     {
-        // Do something for edge of Map cases??
         TargetMapCoordinates.TranslateMapCoordinates(DirectionType);
-        TargetFace = OppositeDirection(TargetFace);
-    }
-
-    CellCoordinates TargetCellCoordinates = CellCoordinates(TargetMapCoordinates);
-    Cell* TargetCell = getCell(TargetCellCoordinates);
-
-    if (TargetCell != NULL)
-    {
-        return TargetCell->getFace(CubeCoordinates(TargetMapCoordinates), TargetFace);
-    }
-    return NULL;
-}
-
-bool Map::hasFace(MapCoordinates Coordinates, Direction DirectionType) const
-{
-    MapCoordinates TargetMapCoordinates = Coordinates;
-    Direction TargetFace = DirectionType;
-
-    if (isDirectionPositive(DirectionType)) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
-    {
-        // Do something for edge of Map cases??
-        TargetMapCoordinates.TranslateMapCoordinates(DirectionType);
-        TargetFace = OppositeDirection(TargetFace);
-    }
-
-    CellCoordinates TargetCellCoordinates = CellCoordinates(TargetMapCoordinates);
-    Cell* TargetCell = getCell(TargetCellCoordinates);
-
-    if (TargetCell != NULL)
-    {
-        return TargetCell->hasFace(CubeCoordinates(TargetMapCoordinates), TargetFace);
-    }
-    return false;
-}
-
-bool Map::removeFace(MapCoordinates Coordinates, Direction DirectionType)
-{
-    MapCoordinates TargetMapCoordinates = Coordinates;
-    Direction TargetFace = DirectionType;
-
-    if (isDirectionPositive(DirectionType)) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
-    {
-        // Do something for edge of Map cases??
-        TargetMapCoordinates.TranslateMapCoordinates(DirectionType);
-        TargetFace = OppositeDirection(TargetFace);
-    }
-
-    CellCoordinates TargetCellCoordinates = CellCoordinates(TargetMapCoordinates);
-    Cell* TargetCell = getCell(TargetCellCoordinates);
-
-    if (TargetCell != NULL)
-    {
-        return TargetCell->removeFace(CubeCoordinates(TargetMapCoordinates), TargetFace);
-    }
-
-    return false;
-}
-
-Face* Map::addFace(MapCoordinates Coordinates, Direction DirectionType)
-{
-    MapCoordinates TargetMapCoordinates = Coordinates;
-    Direction TargetFace = DirectionType;
-
-    if (isDirectionPositive(DirectionType)) // East, South and Top Directions get translated to adjacent Cells avoiding a bounce back call
-    {
-        // Do something for edge of Map cases??
-        TargetMapCoordinates.TranslateMapCoordinates(DirectionType);
-        TargetFace = OppositeDirection(TargetFace);
-    }
-
-    CellCoordinates TargetCellCoordinates = CellCoordinates(TargetMapCoordinates);
-    Cell* TargetCell = getCell(TargetCellCoordinates);
-
-    if (TargetCell != NULL)
-    {
-        return TargetCell->addFace(CubeCoordinates(TargetMapCoordinates), TargetFace);
+        return make_pair(TargetMapCoordinates, OppositeDirection(DirectionType));
     }
     else
     {
-        Cell* NewCell = new Cell();
-        NewCell->setCellPosition(TargetCellCoordinates);
+        return make_pair(TargetMapCoordinates, DirectionType);
+    }
+}
 
-        insertCell(NewCell, TargetCellCoordinates);
-        //NewCell->LoadCellData(MapGeology);
+Face* Map::getFace(MapCoordinates TargetMapCoordinates, Direction DirectionType) const
+{
+    std::pair< MapCoordinates, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
-        return NewCell->addFace(CubeCoordinates(TargetMapCoordinates), TargetFace);
+    Cell* TargetCell = getCell(CellCoordinates(ConvertedValues.first));
+    return TargetCell != NULL ? TargetCell->getFace(FaceCoordinates(CubeCoordinates(ConvertedValues.first), ConvertedValues.second)) : NULL;
+}
+
+bool Map::hasFace(MapCoordinates TargetMapCoordinates, Direction DirectionType) const
+{
+    std::pair< MapCoordinates, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
+
+    Cell* TargetCell = getCell(CellCoordinates(ConvertedValues.first));
+    return TargetCell != NULL ? TargetCell->hasFace(FaceCoordinates(CubeCoordinates(ConvertedValues.first), ConvertedValues.second)) : false;
+}
+
+bool Map::removeFace(MapCoordinates TargetMapCoordinates, Direction DirectionType)
+{
+    std::pair< MapCoordinates, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
+
+    Cell* TargetCell = getCell(CellCoordinates(ConvertedValues.first));
+    return TargetCell != NULL ? TargetCell->removeFace(FaceCoordinates(CubeCoordinates(ConvertedValues.first), ConvertedValues.second)) : false;
+}
+
+Face* Map::addFace(MapCoordinates TargetMapCoordinates, Direction DirectionType)
+{
+    std::pair< MapCoordinates, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
+
+    Cell* TargetCell = getCell(CellCoordinates(ConvertedValues.first));
+    if (TargetCell == NULL)
+    {
+        TargetCell = new Cell();
+
+        // Properly Initialize?
+
+        TargetCell->setCellPosition(CellCoordinates(ConvertedValues.first));
+        insertCell(TargetCell, CellCoordinates(ConvertedValues.first));
     }
 
-    return NULL;
+    return TargetCell->getFace(FaceCoordinates(CubeCoordinates(ConvertedValues.first), ConvertedValues.second));
 }
 
 bool Map::isCubeSloped(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
-    if(TargetCell != NULL)
-    {
-        return TargetCell->isCubeSloped(CubeCoordinates(Coordinates));
-    }
-    return false;
+    return TargetCell != NULL ? TargetCell->isCubeSloped(CubeCoordinates(Coordinates)) : false;
 }
 
 void Map::setCubeShape(MapCoordinates Coordinates, TileShape NewShape)
@@ -269,11 +218,7 @@ TileShape Map::getCubeShape(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
-    if (TargetCell != NULL)
-    {
-        return TargetCell->getCubeShape(CubeCoordinates(Coordinates));
-    }
-    return NUM_TILESHAPES;
+    return TargetCell != NULL ? TargetCell->getCubeShape(CubeCoordinates(Coordinates)) : NUM_TILESHAPES;
 }
 
 void Map::setCubeMaterial(MapCoordinates Coordinates, int16_t MaterialID)
@@ -290,97 +235,43 @@ inline int16_t Map::getCubeMaterial(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
-    if (TargetCell != NULL)
-    {
-        return TargetCell->getCubeMaterial(CubeCoordinates(Coordinates));
-    }
-    return INVALID_INDEX;
+    return TargetCell != NULL ? TargetCell->getCubeMaterial(CubeCoordinates(Coordinates)) : INVALID_INDEX;
 }
 
-void Map::setCubeSurfaceType(MapCoordinates Coordinates, int16_t SurfaceID)
+void Map::setFaceMaterial(MapCoordinates TargetMapCoordinates, Direction DirectionType, int16_t MaterialID)
 {
-    Cell* TargetCell = getCubeOwner(Coordinates);
-
-    if (TargetCell != NULL)
-    {
-        TargetCell->setCubeSurface(CubeCoordinates(Coordinates), SurfaceID);
-    }
-}
-
-inline int16_t Map::getCubeSurfaceType(MapCoordinates Coordinates) const
-{
-    Cell* TargetCell = getCubeOwner(Coordinates);
-
-    if (TargetCell != NULL)
-    {
-        return TargetCell->getCubeSurface(CubeCoordinates(Coordinates));
-    }
-    return INVALID_INDEX;
-}
-
-void Map::setFaceMaterial(MapCoordinates Coordinates, Direction DirectionType, int16_t MaterialID)
-{
-    Face* TargetFace = getFace(Coordinates, DirectionType);
+    Face* TargetFace = getFace(TargetMapCoordinates, DirectionType);
 
     if (TargetFace != NULL)
     {
         TargetFace->setFaceMaterialType(MaterialID);
-
         // TODO Set needs draw on Cell??
     }
 }
 
-inline int16_t Map::getFaceMaterial(MapCoordinates Coordinates, Direction DirectionType) const
+inline int16_t Map::getFaceMaterial(MapCoordinates TargetMapCoordinates, Direction DirectionType) const
 {
-    Face* TargetFace = getFace(Coordinates, DirectionType);
+    Face* TargetFace = getFace(TargetMapCoordinates, DirectionType);
 
-    if (TargetFace != NULL)
-    {
-        return TargetFace->getFaceMaterialType();
-    }
-    return INVALID_INDEX;
+    return TargetFace != NULL ? TargetFace->getFaceMaterialType() : INVALID_INDEX;
 }
 
-void Map::setFaceSurfaceType(MapCoordinates Coordinates, Direction DirectionType, int16_t SurfaceID)
+void Map::setFaceSurfaceType(MapCoordinates TargetMapCoordinates, Direction DirectionType, int16_t SurfaceID)
 {
-    Face* TargetFace = getFace(Coordinates, DirectionType);
+    Face* TargetFace = getFace(TargetMapCoordinates, DirectionType);
 
     if (TargetFace != NULL)
     {
-        TargetFace->setFaceSurfaceType(SurfaceID, DirectionType);
+        TargetFace->setFaceSurfaceType(SurfaceID);
         // TODO Set needs draw on Cell??
     }
 }
 
-void Map::setBothFaceSurfaceTypes(MapCoordinates Coordinates, Direction DirectionType, int16_t SurfaceID)
+inline int16_t Map::getFaceSurfaceType(MapCoordinates TargetMapCoordinates, Direction DirectionType) const
 {
-    Face* TargetFace = getFace(Coordinates, DirectionType);
+    Face* TargetFace = getFace(TargetMapCoordinates, DirectionType);
 
-    if (TargetFace != NULL)
-    {
-        TargetFace->setFaceSurfaceType(SurfaceID, DirectionType);
-        TargetFace->setFaceSurfaceType(SurfaceID, OppositeDirection(DirectionType));
-
-        // TODO Set needs draw on Cell??
-    }
-}
-
-inline int16_t Map::getFaceSurfaceType(MapCoordinates Coordinates, Direction DirectionType) const
-{
-    Face* TargetFace = getFace(Coordinates, DirectionType);
-
-    if (TargetFace != NULL)
-    {
-        if (isDirectionPositive(DirectionType))
-        {
-            return TargetFace->getNegativeAxisSurfaceType();
-        }
-        else
-        {
-            return TargetFace->getPositiveAxisSurfateType();
-        }
-    }
-    return INVALID_INDEX;
+    return TargetFace != NULL ? TargetFace->getFaceSurfaceType() : INVALID_INDEX;
 }
 
 bool Map::isCubeHidden(MapCoordinates Coordinates) const
@@ -467,27 +358,6 @@ void Map::setCubeSunLit(MapCoordinates Coordinates, bool NewValue)
     }
 }
 
-bool Map::isCubeSolid(MapCoordinates Coordinates) const
-{
-    Cell* TargetCell = getCubeOwner(Coordinates);
-
-    if(TargetCell != NULL)
-    {
-        return TargetCell->isCubeSolid(CubeCoordinates(Coordinates));
-    }
-    return false;
-}
-
-void Map::setCubeSolid(MapCoordinates Coordinates, bool NewValue)
-{
-    Cell* TargetCell = getCubeOwner(Coordinates);
-
-    if(TargetCell != NULL)
-    {
-        TargetCell->setCubeSolid(CubeCoordinates(Coordinates), NewValue);
-    }
-}
-
 void Map::Dig(MapCoordinates Coordinates)
 {
     static int16_t FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
@@ -496,16 +366,17 @@ void Map::Dig(MapCoordinates Coordinates)
 
     if (isCubeInited(Coordinates))
     {
-        if(isCubeSolid(Coordinates) || isCubeSloped(Coordinates))
+        TileShape Shape = getCubeShape(Coordinates);
+        if (Shape != TILESHAPE_EMPTY)
         {
-            for(Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
+            for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
             {
                 MapCoordinates ModifiedCoordinates = Coordinates;
                 ModifiedCoordinates.TranslateMapCoordinates(DirectionType);
 
                 if (DirectionType == DIRECTION_DOWN)
                 {
-                    if (isCubeSolid(ModifiedCoordinates))
+                    if (Shape != TILESHAPE_EMPTY)
                     {
                         Face* TargetFace = getFace(Coordinates, DirectionType);
                         if (TargetFace == NULL)
@@ -514,8 +385,7 @@ void Map::Dig(MapCoordinates Coordinates)
                         }
 
                         TargetFace->setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
-                        TargetFace->setFaceSurfaceType(RoughFloorID, DirectionType);
-                        TargetFace->setFaceSurfaceType(RoughFloorID, OppositeDirection(DirectionType));
+                        TargetFace->setFaceSurfaceType(RoughFloorID);
                     }
                     else
                     {
@@ -524,7 +394,7 @@ void Map::Dig(MapCoordinates Coordinates)
                 }
                 else
                 {
-                    if (isCubeSolid(ModifiedCoordinates))
+                    if (Shape != TILESHAPE_EMPTY)
                     {
                         Face* TargetFace = getFace(Coordinates, DirectionType);
                         if (TargetFace == NULL)
@@ -533,8 +403,7 @@ void Map::Dig(MapCoordinates Coordinates)
                         }
 
                         TargetFace->setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
-                        TargetFace->setFaceSurfaceType(RoughWallID, DirectionType);
-                        TargetFace->setFaceSurfaceType(RoughWallID, OppositeDirection(DirectionType));
+                        TargetFace->setFaceSurfaceType(RoughWallID);
                     }
                     else
                     {
@@ -564,7 +433,8 @@ void Map::Fill(MapCoordinates Coordinates, int16_t MaterialID)
 
     if (isCubeInited(Coordinates))
     {
-        if (!isCubeSolid(Coordinates) && !isCubeSloped(Coordinates))
+        TileShape Shape = getCubeShape(Coordinates);
+        if (Shape != TILESHAPE_SOLID)
         {
             setCubeShape(Coordinates, TILESHAPE_SOLID);
             setCubeMaterial(Coordinates, MaterialID);
@@ -573,8 +443,9 @@ void Map::Fill(MapCoordinates Coordinates, int16_t MaterialID)
             {
                 MapCoordinates ModifiedCoordinates = Coordinates;
                 ModifiedCoordinates.TranslateMapCoordinates(DirectionType);
+                TileShape AdjacentShape = getCubeShape(ModifiedCoordinates);
 
-                if (!isCubeSolid(ModifiedCoordinates) || !isCubeInited(ModifiedCoordinates))  //((AxisFromDirection(DirectionType) == AXIS_Z) && (!)))
+                if (AdjacentShape != TILESHAPE_EMPTY || !isCubeInited(ModifiedCoordinates))  //((AxisFromDirection(DirectionType) == AXIS_Z) && (!)))
                 {
                     Face* TargetFace = getFace(Coordinates, DirectionType);
                     if (TargetFace == NULL)
@@ -587,12 +458,12 @@ void Map::Fill(MapCoordinates Coordinates, int16_t MaterialID)
                         if (DirectionType == DIRECTION_UP)
                         {
                             TargetFace->setFaceMaterialType(MaterialID);
-                            TargetFace->setFaceSurfaceType(RoughFloorID, DirectionType);
+                            TargetFace->setFaceSurfaceType(RoughFloorID);
                         }
                         else
                         {
                             TargetFace->setFaceMaterialType(MaterialID);
-                            TargetFace->setFaceSurfaceType(RoughWallID, DirectionType);
+                            TargetFace->setFaceSurfaceType(RoughWallID);
                         }
                     }
                 }
@@ -613,7 +484,7 @@ MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay)
 
     for (int32_t i = HighestCell; i > LowestCell; i--) // Drill down testing each Z level
     {
-        TestPlane.d = (-i - HALFCUBE);
+        TestPlane.d = (-i + HALFCUBE);
         std::pair<bool, Ogre::Real> result = MouseRay.intersects(TestPlane);
 
         if (result.first) // Was an intersection found

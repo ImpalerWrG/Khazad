@@ -4,7 +4,7 @@
 #define CELLEDGESIZE 16
 #define CELLBITSHIFT 4
 #define CELLBITFLAG 15
-#define CELLSPERBLOCK 256
+#define CUBESPERCELL 256
 #define HALFCUBE 0.5
 
 #ifdef _MSC_VER
@@ -61,7 +61,8 @@ enum Direction
 	DIRECTION_DOWN_NORTHEAST,
 	DIRECTION_UP_SOUTHWEST,
 
-	DIRECTION_NONE,
+	DIRECTION_NONE,          // Lack of Direction, Center of Cube
+	DIRECTION_UNKNOWN,       // Truly Undefined Direction
 
     CARDINAL_DIRECTIONS_START = 2,  // North, South, East and West
 	NUM_CARDINAL_DIRECTIONS = 6,
@@ -308,18 +309,31 @@ struct MapCoordinates
         TranslateMapCoordinates(DirectionType);
     };
 
-    inline MapCoordinates(int32_t NewX, int32_t NewY, int32_t NewZ)
+    inline MapCoordinates(int32_t NewX, int32_t NewY, int16_t NewZ)
     {
         Set(NewX, NewY, NewZ);
     };
 
-    inline void Set(int32_t NewX, int32_t NewY, int32_t NewZ)
+    inline void Set(int32_t NewX, int32_t NewY, int16_t NewZ)
     {
-        X = NewX;
-        Y = NewY;
-        Z = NewZ;
+        X = NewX;   Y = NewY;   Z = NewZ;
     };
 
+    inline void Set(Axis AxialComponent, int32_t NewValue)
+    {
+        switch (AxialComponent)
+        {
+            case AXIS_Z:
+                Z = NewValue;
+                break;
+            case AXIS_Y:
+                Y = NewValue;
+                break;
+            case AXIS_X:
+                X = NewValue;
+                break;
+        }
+    }
     inline MapCoordinates& operator= (const MapCoordinates& ArgumentCoordinates)
     {
         X = ArgumentCoordinates.X;
@@ -364,34 +378,20 @@ struct MapCoordinates
         return false;  // All values equal thus not less than
     };
 
-    int32_t operator[](unsigned i) const
+    int32_t operator[] (Axis AxialComponent) const
     {
-      switch (i)
-      {
-        case 0:
-          return X;
-        case 1:
-          return Y;
-        case 2:
-          return Z;
-      }
-      return X;
-    }
-
-    void set(unsigned i, int32_t val)
-    {
-      switch (i)
-      {
-        case 0:
-          X = val;
-          break;
-        case 1:
-          Y = val;
-          break;
-        case 2:
-          Z = val;
-          break;
-      }
+        switch (AxialComponent)
+        {
+            case AXIS_Z:
+                return Z;
+            case AXIS_Y:
+                return Y;
+            case AXIS_X:
+                return X;
+			default:
+				return 0;
+        }
+        return 0;
     }
 
     struct hash
@@ -410,7 +410,7 @@ struct MapCoordinates
 
     int32_t X;
     int32_t Y;
-    int32_t Z;
+    int16_t Z;
 };
 
 struct CellCoordinates
@@ -471,7 +471,9 @@ struct CellCoordinates
 
     uint64_t Key()
     {
-        uint64_t Key = X;
+        uint64_t Key = 0;
+
+        Key += X;
         Key <<= 16;
         Key += Y;
         Key <<= 16;
@@ -511,6 +513,20 @@ struct CubeCoordinates
         return *this;
     };
 
+    CubeCoordinates& operator++()
+    {
+        Index++;    X = Index >> CELLBITSHIFT;   Y = Index & CELLBITFLAG;
+
+        return *this;
+    }
+
+    void Set(uint8_t NewX, uint8_t NewY)
+    {
+        X = NewX;       Y = NewY;
+
+        Index = (X << CELLBITSHIFT) + Y;
+    };
+
     CubeCoordinates(MapCoordinates SourceCoordinates)
     {
         X = SourceCoordinates.X & CELLBITFLAG;
@@ -526,28 +542,75 @@ struct CubeCoordinates
     uint8_t Index;
 };
 
-struct FaceCoordinates: public MapCoordinates
+struct FaceCoordinates
 {
     FaceCoordinates()
     {
-        X = Y = Z = 0;
-        FaceDirection = DIRECTION_DOWN;
-        Possitive = true;
+        Coordinates.Set(0, 0);
+        FaceDirection = DIRECTION_UNKNOWN;
     };
 
-    FaceCoordinates(MapCoordinates SourceCoords, Direction DirectionComponent, bool isPossitive)
+    FaceCoordinates(CubeCoordinates SourceCoords, Direction DirectionComponent)
     {
-        Set(SourceCoords.X, SourceCoords.Y, SourceCoords.Z);
-        FaceDirection = DirectionComponent;
-        Possitive = isPossitive;
+        /*
+        if (isDirectionPositive(DirectionComponent))  // True for East, South and Top some of which will require calls to other Cells
+        {
+            SourceCoords.TranslateMapCoordinates(DirectionComponent);
+            Set(SourceCoords, OppositeDirection(DirectionComponent));
+        }
+        else
+        {
+        */
+            Set(SourceCoords, DirectionComponent);
+        //}
     };
 
-    int32_t X;
-    int32_t Y;
-    int32_t Z;
+    /*
+    inline FaceCoordinates& OpposingFace(const FaceCoordinates& SourceCoords)
+    {
+        Coordinates = SourceCoords.Coordinates;
+        //Coordinates.TranslateMapCoordinates(OppositeDirection(SourceCoords.FaceDirection));
+        FaceDirection = OppositeDirection(SourceCoords.FaceDirection);
 
+        return * this;
+    };
+    */
+
+    FaceCoordinates& operator= (const FaceCoordinates& ArgumentCoordinates)
+    {
+        Coordinates = ArgumentCoordinates.Coordinates;
+        FaceDirection = ArgumentCoordinates.FaceDirection;
+
+        return *this;
+    };
+
+    inline void Set(CubeCoordinates TargetCoords, Direction DirectionComponent)
+    {
+        Coordinates = TargetCoords;
+        FaceDirection = DirectionComponent;
+    };
+
+    inline void Set(int32_t NewX, int32_t NewY, int16_t NewZ, Direction DirectionComponent)
+    {
+        Coordinates.X = NewX;   Coordinates.Y = NewY;
+        FaceDirection = DirectionComponent;
+    };
+
+    uint16_t FaceKey()
+    {
+        uint16_t Key = Coordinates.Index;
+        Key <<= CELLBITSHIFT * 2;
+
+        if (FaceDirection != DIRECTION_NONE)
+        {
+            Key += uint16_t (FaceDirection) + 1;
+        }
+
+        return Key;
+    }
+
+    CubeCoordinates Coordinates;
     Direction FaceDirection;
-    bool Possitive;
 };
 
 #endif // COORDINATES__HEADER

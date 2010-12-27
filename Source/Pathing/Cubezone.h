@@ -36,7 +36,7 @@ public:
 
     zone* findContainingZone(const MapCoordinates &p)
     {
-        MapCoordinates q(p[0]/length,p[1]/length,p[2]/length);
+        MapCoordinates q(p[AXIS_X]/length,p[AXIS_Y]/length,p[AXIS_Z]/length);
         if (zl.find(q)!= zl.end())
             return zl[q];
         else
@@ -80,7 +80,7 @@ public:
         if (((gridZone*)z)->zbn_.size() == 0)
         {
           //this is an empty zone, so we can probably delete it
-          MapCoordinates q(p[0]/length,p[1]/length,p[2]);
+          MapCoordinates q(p[AXIS_X]/length,p[AXIS_Y]/length,p[AXIS_Z]);
           iterator it = zl.find(q);
           assert(it != zl.end());
           zl.erase(it);
@@ -92,15 +92,14 @@ public:
     {
         zl.clear();
         //zl.reserve(G_->max(0)*G_->max(1)*G_->max(2)/length/length+1);
-        for (int z = G_->min(2); z < G_->max(2); z++)
+        for (int z = G_->min(AXIS_Z); z < G_->max(AXIS_Z); z++)
         {
-            for (int y = G_->min(1);  y < G_->max(1); y+=length)
+            for (int y = G_->min(AXIS_Y);  y < G_->max(AXIS_Y); y+=length)
             {
-                for (int x = G_->min(0); x < G_->max(0); x+=length)
+                for (int x = G_->min(AXIS_X); x < G_->max(AXIS_X); x+=length)
                 {
                     MapCoordinates tul(x,y,z);
                     createZone(tul);
-
                 }
             }
         }
@@ -119,19 +118,25 @@ public:
       zone *z = findContainingZone(p);
       if ((G_->contains(p)) && (z == NULL))
       {
-        MapCoordinates tul(length*floor(p[0]/length),length*floor(p[1]/length),length*floor(p[2]/length));
-        MapCoordinates blr(tul[0]+length-1,tul[1]+length-1,tul[2]+length-1);
+        MapCoordinates tul(length*floor(p[AXIS_X]/length),length*floor(p[AXIS_Y]/length),length*floor(p[AXIS_Z]/length));
+        MapCoordinates blr(tul[AXIS_X]+length-1,tul[AXIS_Y]+length-1,tul[AXIS_Z]+length-1);
         z = pz = new gridZone(tul,blr);
         //create a zone
-        zl[MapCoordinates(p[0]/length,p[1]/length,p[2]/length)] = pz;
+        zl[MapCoordinates(p[AXIS_X]/length,p[AXIS_Y]/length,p[AXIS_Z]/length)] = pz;
         //for each element in the zone
         for (unsigned v = 0; v < length; v++)
+        {
             for (unsigned u = 0; u < length; u++)
+            {
                 for (unsigned w = 0; w < length; w++)
+                {
                     {
-                        MapCoordinates p(tul[0]+u,tul[1]+v,tul[2]);
+                        MapCoordinates p(tul[AXIS_X]+u,tul[AXIS_Y]+v,tul[AXIS_Z]);
                         AddLeavingEdges(pz, p);
                     }
+                }
+            }
+        }
       }
       return z;
     }
@@ -156,7 +161,7 @@ public:
                 {
                     pz->connect(nz,p,NeiboringCoordinates,G_->getEdgeCost(p,dir));
 #ifdef ZONE_DEBUG
-                    printf("(%2d,%2d,%2d)->(%2d,%2d,%2d)\n",p[0],p[1],p[2],NeiboringCoordinates[0],NeiboringCoordinates[1],NeiboringCoordinates[2]);
+                    printf("(%2d,%2d,%2d)->(%2d,%2d,%2d)\n", p[AXIS_X], p[AXIS_Y], p[AXIS_Z], NeiboringCoordinates[AXIS_X], NeiboringCoordinates[AXIS_Y], NeiboringCoordinates[AXIS_Z]);
                     pz->checkValid();
                     nz->checkValid();
 #endif

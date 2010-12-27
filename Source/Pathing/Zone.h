@@ -118,7 +118,9 @@ public:
         {
             adjacentNode *an = *it;
             if (!(*an == *an->node_))
-                fprintf(stderr,"Assertion failed: (%2d,%2d,%2d)->(%2d,%2d,%2d) at (%2d,%2d,%2d)\n",(*an)[0],(*an)[1],(*an)[2],(*an->node_)[0],(*an->node_)[1],(*an->node_)[2], (*this)[0],(*this)[1],(*this)[2]);
+            {
+                fprintf(stderr,"Assertion failed: (%2d,%2d,%2d)->(%2d,%2d,%2d) at (%2d,%2d,%2d)\n",(*an)[AXIS_X],(*an)[AXIS_Y],(*an)[AXIS_Z],(*an->node_)[AXIS_X],(*an->node_)[AXIS_Y],(*an->node_)[AXIS_Z], (*this)[AXIS_X],(*this)[AXIS_Y],(*this)[AXIS_Z]);
+            }
             assert(*an == *an->node_);
         }
     }
@@ -148,8 +150,8 @@ struct ZonedGridGraph : public gridInterface
         return true;
     }
 
-    virtual int max(unsigned dim) const { return grid_->max(dim); }
-    virtual int min(unsigned dim) const { return grid_->min(dim); }
+    virtual int max(Axis AxisType) const { return grid_->max(AxisType); }
+    virtual int min(Axis AxisType) const { return grid_->min(AxisType); }
 
 private:
     const gridInterface * grid_;

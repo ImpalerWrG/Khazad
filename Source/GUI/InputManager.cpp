@@ -155,8 +155,7 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
             {
                 const OIS::MouseState &State = MouseObject->getMouseState();
 
-                Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(State.X.abs / float(State.width), State.Y.abs / float(State.height));
-                MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
+                MapCoordinates ClickCoordinates = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(State.X.abs / float(State.width), State.Y.abs / float(State.height)));
 
                 GAME->SpawnTree(ClickCoordinates);
 
@@ -167,8 +166,7 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
             {
                 const OIS::MouseState &State = MouseObject->getMouseState();
 
-                Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(State.X.abs / float(State.width), State.Y.abs / float(State.height));
-                MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
+                MapCoordinates ClickCoordinates = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(State.X.abs / float(State.width), State.Y.abs / float(State.height)));
 
                 GAME->SpawnPawn(ClickCoordinates);
 
@@ -179,8 +177,7 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
             {
                 const OIS::MouseState &State = MouseObject->getMouseState();
 
-                Ogre::Vector3 FocusPoint = RENDERER->getActiveCamera()->getMouseRayIntersection(State.X.abs / float(State.width), State.Y.abs / float(State.height));
-                MapCoordinates ClickCoordinates = MapCoordinates(FocusPoint);
+                MapCoordinates ClickCoordinates = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(State.X.abs / float(State.width), State.Y.abs / float(State.height)));
 
                 GAME->getMap()->Fill(ClickCoordinates, DATA->getLabelIndex("MATERIAL_OBSIDIAN"));
 

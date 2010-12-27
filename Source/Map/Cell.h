@@ -46,58 +46,50 @@ public:
     void DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode);
 
     Ogre::Vector3 getCubePosition(CubeCoordinates Coordinates);
-    uint16_t TranslateCubeToIndex(CubeCoordinates Coordinates);
     MapCoordinates TranslateCubeToMap(CubeCoordinates Coordinates);
 
     void setCubeShape(CubeCoordinates Coordinates, TileShape NewShape);
-    inline TileShape getCubeShape(CubeCoordinates Coordinates) const             { return CubeShapeTypes[Coordinates.X][Coordinates.Y]; }
+    inline TileShape getCubeShape(CubeCoordinates Coordinates) const             { return CubeShapeTypes[Coordinates.Index]; }
 
-    void setCubeMaterial(CubeCoordinates Coordinates, int16_t MaterialID)      { CubeMaterialTypes[Coordinates.X][Coordinates.Y] = MaterialID; }
-    inline int16_t getCubeMaterial(CubeCoordinates Coordinates) const          { return CubeMaterialTypes[Coordinates.X][Coordinates.Y]; }
-
-    void setCubeSurface(CubeCoordinates Coordinates, int16_t SurfaceID)        { CubeSurfaceTypes[Coordinates.X][Coordinates.Y] = SurfaceID; }
-    inline int16_t getCubeSurface(CubeCoordinates Coordinates) const           { return CubeSurfaceTypes[Coordinates.X][Coordinates.Y]; }
+    void setCubeMaterial(CubeCoordinates Coordinates, int16_t MaterialID)      { CubeMaterialTypes[Coordinates.Index] = MaterialID; }
+    inline int16_t getCubeMaterial(CubeCoordinates Coordinates) const          { return CubeMaterialTypes[Coordinates.Index]; }
 
     bool isCubeSloped(CubeCoordinates Coordinates);
     void addSlope(CubeCoordinates Coordinates, TileShape NewShape);
 
-    inline bool isCubeHidden(CubeCoordinates Coordinates)                         { return Hidden.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
-    inline void setCubeHidden(CubeCoordinates Coordinates, bool NewValue)         { Hidden.set(((Coordinates.X * CELLEDGESIZE) + Coordinates.Y), NewValue); }
+    inline bool isCubeHidden(CubeCoordinates Coordinates)                         { return Hidden.test(Coordinates.Index); }
+    inline void setCubeHidden(CubeCoordinates Coordinates, bool NewValue)         { Hidden.set(Coordinates.Index, NewValue); }
 
-    inline bool isCubeSubTerranean(CubeCoordinates Coordinates)                   { return SubTerranean.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
-    inline void setCubeSubTerranean(CubeCoordinates Coordinates, bool NewValue)   { SubTerranean.set(((Coordinates.X * CELLEDGESIZE) + Coordinates.Y), NewValue); }
+    inline bool isCubeSubTerranean(CubeCoordinates Coordinates)                   { return SubTerranean.test(Coordinates.Index); }
+    inline void setCubeSubTerranean(CubeCoordinates Coordinates, bool NewValue)   { SubTerranean.set(Coordinates.Index, NewValue); }
 
-    inline bool isCubeSkyView(CubeCoordinates Coordinates)                        { return SkyView.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
-    inline void setCubeSkyView(CubeCoordinates Coordinates, bool NewValue)        { SkyView.set(((Coordinates.X * CELLEDGESIZE) + Coordinates.Y), NewValue); }
+    inline bool isCubeSkyView(CubeCoordinates Coordinates)                        { return SkyView.test(Coordinates.Index); }
+    inline void setCubeSkyView(CubeCoordinates Coordinates, bool NewValue)        { SkyView.set(Coordinates.Index, NewValue); }
 
-    inline bool isCubeSunLit(CubeCoordinates Coordinates)                         { return SunLit.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
-    inline void setCubeSunLit(CubeCoordinates Coordinates, bool NewValue)         { SunLit.set(((Coordinates.X * CELLEDGESIZE) + Coordinates.Y), NewValue); }
+    inline bool isCubeSunLit(CubeCoordinates Coordinates)                         { return SunLit.test(Coordinates.Index); }
+    inline void setCubeSunLit(CubeCoordinates Coordinates, bool NewValue)         { SunLit.set(Coordinates.Index, NewValue); }
 
-    inline bool isCubeSolid(CubeCoordinates Coordinates)                          { return Solid.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
-    inline void setCubeSolid(CubeCoordinates Coordinates, bool NewValue)          { Solid.set(((Coordinates.X * CELLEDGESIZE) + Coordinates.Y), NewValue); }
-
-    inline bool isCubeDrawn(CubeCoordinates Coordinates)                          { return Drawn.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
-    inline void setCubeDrawn(CubeCoordinates Coordinates, bool NewValue)          { Drawn.set(((Coordinates.X * CELLEDGESIZE) + Coordinates.Y), NewValue); }
+    inline bool isCubeDrawn(CubeCoordinates Coordinates)                          { return Drawn.test(Coordinates.Index); }
+    inline void setCubeDrawn(CubeCoordinates Coordinates, bool NewValue)          { Drawn.set(Coordinates.Index, NewValue); }
 
 
     void setLiquid(CubeCoordinates Coordinates, bool liquidtype, uint8_t NewValue);
-    inline uint8_t getLiquidLevel(CubeCoordinates Coordinates)                           { return LiquidLevel[Coordinates.X][Coordinates.Y]; }
-    inline bool getLiquidType(CubeCoordinates Coordinates)                             { return LiquidType.test((Coordinates.X * CELLEDGESIZE) + Coordinates.Y); }
+    inline uint8_t getLiquidLevel(CubeCoordinates Coordinates)                             { return LiquidLevel[Coordinates.Index]; }
+    inline bool getLiquidType(CubeCoordinates Coordinates)                                 { return LiquidType.test(Coordinates.Index); }
 
-    inline uint32_t GenerateFaceKey(CubeCoordinates Coordinates, Direction DirectionType);
 
-    Face* getFace(CubeCoordinates Coordinates, Direction DirectionType);
-    bool hasFace(CubeCoordinates Coordinates, Direction DirectionType);
 
-    int16_t getFaceMaterialType(CubeCoordinates Coordinates, Direction DirectionType);
-    bool setFaceMaterialType(CubeCoordinates Coordinates, Direction DirectionType, int16_t MaterialTypeID);
+    Face* getFace(FaceCoordinates TargetCoordinates)      { return Faces.find(TargetCoordinates.FaceKey())->second; }
+    bool hasFace(FaceCoordinates TargetCoordinates)       { return Faces.find(TargetCoordinates.FaceKey()) != Faces.end(); }
 
-    int16_t getFaceSurfaceType(CubeCoordinates Coordinates, Direction DirectionType);
-    bool setFaceSurfaceType(CubeCoordinates Coordinates, Direction DirectionType, int16_t SurfaceTypeID);
-    bool setBothFaceSurfaces(CubeCoordinates Coordinates, Direction DirectionType, int16_t SurfaceTypeID);
+    int16_t getFaceMaterialType(FaceCoordinates TargetCoordinates);
+    bool setFaceMaterialType(FaceCoordinates TargetCoordinates, int16_t MaterialTypeID);
 
-    bool removeFace(CubeCoordinates Coordinates, Direction DirectionType);
-    Face* addFace(CubeCoordinates Coordinates, Direction DirectionType);
+    int16_t getFaceSurfaceType(FaceCoordinates TargetCoordinates);
+    bool setFaceSurfaceType(FaceCoordinates TargetCoordinates, int16_t SurfaceTypeID);
+
+    bool removeFace(FaceCoordinates TargetCoordinates);
+    Face* addFace(FaceCoordinates TargetCoordinates);
 
 
     void Dig(CubeCoordinates Coordinates);
@@ -130,31 +122,26 @@ protected:
     bool ActiveLiquid;
     bool Initialized;
 
-    // VBOs by texture and target
-    //std::map<int16_t, ROstore > ROs;
 
     uint16_t TriangleCount;
 
     // Data specific to each Cube
-    TileShape CubeShapeTypes[CELLEDGESIZE][CELLEDGESIZE];
-    int16_t CubeMaterialTypes[CELLEDGESIZE][CELLEDGESIZE];
-    int16_t CubeSurfaceTypes[CELLEDGESIZE][CELLEDGESIZE];
+    TileShape CubeShapeTypes[CUBESPERCELL];
+    int16_t CubeMaterialTypes[CUBESPERCELL];
 
     // Bit values for each Cube
-    bitset<(CELLEDGESIZE * CELLEDGESIZE)> Hidden;
-    bitset<(CELLEDGESIZE * CELLEDGESIZE)> SubTerranean;
-    bitset<(CELLEDGESIZE * CELLEDGESIZE)> SkyView;
-    bitset<(CELLEDGESIZE * CELLEDGESIZE)> SunLit;
-    bitset<(CELLEDGESIZE * CELLEDGESIZE)> Solid;
-
-    bitset<(CELLEDGESIZE * CELLEDGESIZE)> Drawn;
+    bitset<(CUBESPERCELL)> Hidden;
+    bitset<(CUBESPERCELL)> SubTerranean;
+    bitset<(CUBESPERCELL)> SkyView;
+    bitset<(CUBESPERCELL)> SunLit;
+    bitset<(CUBESPERCELL)> Drawn;
 
     // Liquid Data for each Cube
-    bitset<(CELLEDGESIZE * CELLEDGESIZE)> LiquidType; // Allow more liquid types?
-    uint8_t LiquidLevel[CELLEDGESIZE][CELLEDGESIZE];
+    bitset<(CUBESPERCELL)> LiquidType; // Allow more liquid types?
+    uint8_t LiquidLevel[CUBESPERCELL];
 
     // Keeps all Faces between Cubes, shares three sides with other Cubes to avoid doubling
-    std::map<uint32_t, Face*> Faces;
+    std::map<uint16_t, Face*> Faces;
 
     std::vector <Building*> buildings;
     std::vector <Tree*> trees;

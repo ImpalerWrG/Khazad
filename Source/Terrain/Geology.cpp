@@ -381,32 +381,26 @@ TileShape Geology::getTileShapeAtCoordinates(CubeCoordinates CubeTarget, int32_t
 void Geology::LoadCellData(Cell* TargetCell)
 {
     CellCoordinates TargetCoordinates = TargetCell->getCellCoordinates();
-    CubeCoordinates TargetCubeCoordinates = CubeCoordinates(0, 0);
 
-    static int16_t RoughWallID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
-
-    for (TargetCubeCoordinates.X = 0; TargetCubeCoordinates.X < CELLEDGESIZE; TargetCubeCoordinates.X += 1)
+    for (CubeCoordinates TargetCubeCoordinates; TargetCubeCoordinates.Index < (CUBESPERCELL - 1); ++TargetCubeCoordinates)
     {
-        for (TargetCubeCoordinates.Y = 0; TargetCubeCoordinates.Y < CELLEDGESIZE; TargetCubeCoordinates.Y += 1)
+        TileShape Shape = getTileShapeAtCoordinates(TargetCubeCoordinates, TargetCoordinates.Z);
+
+        if (Shape != TILESHAPE_EMPTY)
         {
-            TileShape Shape = getTileShapeAtCoordinates(TargetCubeCoordinates, TargetCoordinates.Z);
+            int16_t MaterialType = getRockTypeAtCoordinates(TargetCubeCoordinates, TargetCoordinates.Z);
+            TargetCell->setCubeMaterial(TargetCubeCoordinates, MaterialType);
 
-            if (Shape != TILESHAPE_EMPTY)
-            {
-                int16_t MaterialType = getRockTypeAtCoordinates(TargetCubeCoordinates, TargetCoordinates.Z);
-                TargetCell->setCubeMaterial(TargetCubeCoordinates, MaterialType);
-
-                if (MaterialType != INVALID_INDEX)
-                {
-                    TargetCell->setCubeShape(TargetCubeCoordinates, Shape);
-                    TargetCell->setCubeSurface(TargetCubeCoordinates, RoughWallID);
-                }
-            }
-            else
+            if (MaterialType != INVALID_INDEX)
             {
                 TargetCell->setCubeShape(TargetCubeCoordinates, Shape);
-                TargetCell->setCubeMaterial(TargetCubeCoordinates, INVALID_INDEX);
+                //TargetCell->setCubeSurface(TargetCubeCoordinates, RoughWallID);
             }
+        }
+        else
+        {
+            TargetCell->setCubeShape(TargetCubeCoordinates, Shape);
+            TargetCell->setCubeMaterial(TargetCubeCoordinates, INVALID_INDEX);
         }
     }
 }

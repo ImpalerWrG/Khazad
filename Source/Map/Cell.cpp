@@ -18,10 +18,8 @@ Cell::Cell()
     {
         for(uint8_t j = 0; j < CELLEDGESIZE; j++)
         {
-            CubeShapeTypes[i][j] = TILESHAPE_EMPTY;
-            CubeMaterialTypes[i][j] = INVALID_INDEX;
-            CubeSurfaceTypes[i][j] = INVALID_INDEX;
-            LiquidLevel[i][j] = 0;
+            CubeShapeTypes[(i * CELLEDGESIZE) + j] = TILESHAPE_EMPTY;
+            CubeMaterialTypes[(i * CELLEDGESIZE) + j] = INVALID_INDEX;
         }
     }
 
@@ -29,7 +27,6 @@ Cell::Cell()
     SubTerranean.reset();
     SkyView.reset();
     SunLit.reset();
-    Solid.reset();
     LiquidType.reset();
 
     CellSceneNode = RENDERER->getRootNode()->createChildSceneNode();
@@ -65,127 +62,56 @@ bool Cell::Update()
     return true;
 }
 
-/*
-void Cell::Render(CameraOrientation CurrentOrientation)
-{
-    for( map<int16_t, ROstore >::iterator it = ROs.begin(); it != ROs.end(); ++it)
-    {
-        TEXTURE->BindTexture(it->first);
-        if(it->second.normal)
-        {
-            RENDERER->CallRenderObject(it->second.normal);
-        }
-    }
-    for(uint32_t i = 0; i< trees.size(); i++)
-    {
-        //trees[i]->Draw(CurrentOrientation);
-    }
-
-    for(uint32_t i = 0; i< buildings.size(); i++)
-    {
-        //buildings[i]->Draw(CurrentOrientation);
-    }
-
-    for(uint32_t i = 0; i < LocalActors.size(); i++)
-    {
-        LocalActors[i]->Draw(CurrentOrientation);
-    }
-
-
-    // HACK!!! get these into the RenderObject
-    CubeCoordinates TargetCubeCoordinates;
-
-    for (TargetCubeCoordinates.X = 0; TargetCubeCoordinates.X < CELLEDGESIZE; TargetCubeCoordinates.X += 1)
-    {
-        for (TargetCubeCoordinates.Y = 0; TargetCubeCoordinates.Y < CELLEDGESIZE; TargetCubeCoordinates.Y += 1)
-        {
-            if (isCubeDrawn(TargetCubeCoordinates))
-            {
-                int16_t ModelID = DATA->getTileShapeData(getCubeShape(TargetCubeCoordinates))->getModelID();
-                if (ModelID != INVALID_INDEX)
-                {
-                    Model* model = MODEL->getModel(ModelID);
-                    float Scale = DATA->getModelData(ModelID)->getScalar();
-
-                    if (model != NULL)
-                    {
-                        glPushMatrix();
-
-                            glTranslatef(TargetCubeCoordinates.X, TargetCubeCoordinates.Y, -HALFCUBE);
-                            glScalef(Scale, Scale, Scale);
-
-                            int16_t MaterialID = getCubeMaterial(TargetCubeCoordinates);
-                            TEXTURE->BindTexture(TEXTURE->MapTexture(MaterialID,  TEXTURE->PickImageTexture(MaterialID, getCubeSurface(TargetCubeCoordinates))));
-                            model->Render();
-
-
-                        glPopMatrix();
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-*/
-
 void Cell::setCubeShape(CubeCoordinates Coordinates, TileShape NewShape)
 {
-    if (NewShape != CubeShapeTypes[Coordinates.X][Coordinates.Y])
+    if (NewShape != CubeShapeTypes[Coordinates.Index])
     {
-        CubeShapeTypes[Coordinates.X][Coordinates.Y] = NewShape;
-        setCubeSolid(Coordinates, NewShape == TILESHAPE_SOLID);
-
+        CubeShapeTypes[Coordinates.Index] = NewShape;
         setNeedsReBuild(true);
     }
 }
 
 void Cell::BuildFaceData()
 {
-    CubeCoordinates TargetCubeCoordinates;
     MapCoordinates TargetMapCoordinates;
+    bool Debug = true;
 
-    for (TargetCubeCoordinates.X = 0; TargetCubeCoordinates.X < CELLEDGESIZE; TargetCubeCoordinates.X += 1)
+    for (CubeCoordinates TargetCubeCoordinates; TargetCubeCoordinates.Index < (CUBESPERCELL - 1); ++TargetCubeCoordinates)
     {
-        for (TargetCubeCoordinates.Y = 0; TargetCubeCoordinates.Y < CELLEDGESIZE; TargetCubeCoordinates.Y += 1)
+        TileShape CubeShape = getCubeShape(TargetCubeCoordinates);
+        int16_t CubeMaterial = getCubeMaterial(TargetCubeCoordinates);
+
+        static int16_t CubeSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
+
+        if (CubeShape != TILESHAPE_EMPTY)
         {
-            TileShape CubeShape = getCubeShape(TargetCubeCoordinates);
-            int16_t CubeMaterial = getCubeMaterial(TargetCubeCoordinates);
-            int16_t CubeSurface = getCubeSurface(TargetCubeCoordinates);
-
-            if (CubeShape == TILESHAPE_SOLID)
+            for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
             {
-                for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
+                FaceCoordinates FaceLocation = FaceCoordinates(TargetCubeCoordinates, DirectionType);
+
+                if (ParentMap->isCubeInited(TargetMapCoordinates))
                 {
-                    TargetMapCoordinates = TranslateCubeToMap(TargetCubeCoordinates);
-                    TargetMapCoordinates.TranslateMapCoordinates(DirectionType);
-
-                    if (ParentMap->isCubeInited(TargetMapCoordinates))
+                    if (ParentMap->getCubeShape(TargetMapCoordinates) == TILESHAPE_EMPTY)
                     {
-                        if (ParentMap->getCubeShape(TargetMapCoordinates) == TILESHAPE_EMPTY)
-                        {
-                            Face* NewFace = addFace(TargetCubeCoordinates, DirectionType);
+                        //Face* NewFace = addFace(TargetCubeCoordinates, DirectionType);
 
-                            NewFace->setFaceMaterialType(CubeMaterial);
-
-                            NewFace->setFaceSurfaceType(CubeSurface, DirectionType);
-                        }
+                        //NewFace->setFaceMaterialType(CubeMaterial);
+                        //NewFace->setFaceSurfaceType(CubeSurface, DirectionType);
                     }
                 }
             }
+        }
 
-            if (getLiquidLevel(TargetCubeCoordinates) != 0)
-            {
-                setActive(true);
-            }
+        if (CubeShape > TILESHAPE_EMPTY && CubeShape < TILESHAPE_SOLID)
+        {
+            Face* NewFace = addFace(FaceCoordinates(TargetCubeCoordinates, DIRECTION_NONE));
 
-            if (CubeShape > TILESHAPE_EMPTY && CubeShape < TILESHAPE_SOLID)
-            {
-                addSlope(TargetCubeCoordinates, (TileShape) CubeShape);
-            }
+            NewFace->setFaceMaterialType(CubeMaterial);
+            NewFace->setFaceSurfaceType(CubeSurface);
+            NewFace->setShapeType(CubeShape);
         }
     }
+    Debug = false;
 }
 
 void Cell::BuildStaticGeometry()
@@ -198,13 +124,19 @@ void Cell::BuildStaticGeometry()
     if (!RENDERER->getSceneManager()->hasStaticGeometry(buffer))
     {
         CellGeometry = RENDERER->getSceneManager()->createStaticGeometry(buffer);
-        //CellGeometry->setCastShadows(false);
     }
     else
     {
         CellGeometry = RENDERER->getSceneManager()->getStaticGeometry(buffer);
         CellGeometry->destroy();
     }
+
+    // Iterate all Faces and RefreshEntites;
+    for (std::map<uint16_t, Face*>::iterator it = Faces.begin(); it != Faces.end(); it++)
+    {
+        it->second->RefreshEntity();
+    }
+
 
     CellGeometry->addSceneNode(CellSceneNode);
     CellGeometry->setCastShadows(false);
@@ -218,170 +150,40 @@ void Cell::BuildStaticGeometry()
 
 void Cell::DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode)
 {
-   // Destroy all the attached objects
-   Ogre::SceneNode::ObjectIterator Nodeit = TargetNode->getAttachedObjectIterator();
+    // Destroy all the attached objects
+    Ogre::SceneNode::ObjectIterator Nodeit = TargetNode->getAttachedObjectIterator();
 
-   while (Nodeit.hasMoreElements())
-   {
-      Ogre::MovableObject* Object = static_cast<Ogre::MovableObject*> (Nodeit.getNext());
-      TargetNode->getCreator()->destroyMovableObject(Object);
-   }
-
-   // Recurse to child SceneNodes
-   Ogre::SceneNode::ChildNodeIterator itChild = TargetNode->getChildIterator();
-
-   while (itChild.hasMoreElements())
-   {
-      Ogre::SceneNode* ChildNode = static_cast<Ogre::SceneNode*> (itChild.getNext());
-      DestroyAllAttachedEntities(ChildNode);
-   }
-}
-
-/*
-void Cell::UpdateRenderLists(WallDisplayMode Mode)
-{
-    //maps between texture and vertex vectors
-    Geometry.clear();
-
-    if(Initialized)
+    while (Nodeit.hasMoreElements())
     {
-        CubeCoordinates TargetCubeCoordinates;
-
-        for (TargetCubeCoordinates.X = 0; TargetCubeCoordinates.X < CELLEDGESIZE; TargetCubeCoordinates.X += 1)
-        {
-            for (TargetCubeCoordinates.Y = 0; TargetCubeCoordinates.Y < CELLEDGESIZE; TargetCubeCoordinates.Y += 1)
-            {
-                setCubeDrawn(TargetCubeCoordinates, RENDERER->isCubeDrawn(TranslateCubeToMap(TargetCubeCoordinates)));
-
-                if (isCubeDrawn(TargetCubeCoordinates))
-                {
-                    if(isCubeSloped(TargetCubeCoordinates))
-                    {
-                        DrawSlope(TargetCubeCoordinates);
-                    }
-                    DrawFaces(TargetCubeCoordinates);
-                }
-            }
-        }
-
-        //TODO: only regenerate changed ones
-        // destroy old
-        ClearROs();
-        // for each material in normal geometry
-        for( map<int16_t, vector <vertex>* >::iterator it = Geometry.begin(); it != Geometry.end(); ++it)
-        {
-            int16_t Texture = it->first;
-            vector <vertex>* vertices = it->second;
-
-            // generate VBOs out of vertex arrays
-            RenderObject * RO = RENDERER->CreateRenderObject(vertices);
-            delete vertices;
-            // create descriptor
-            ROstore tempRO;
-            if(ROs.count(Texture))
-            {
-                tempRO = ROs[Texture];
-                tempRO.normal = RO;
-            }
-            else
-            {
-                tempRO= ROstore(RO);
-            }
-            ROs[Texture] = tempRO;
-        }
+        Ogre::MovableObject* Object = static_cast<Ogre::MovableObject*> (Nodeit.getNext());
+        TargetNode->getCreator()->destroyMovableObject(Object);
     }
 
-    Geometry.clear();
-}
-*/
+    // Recurse to child SceneNodes
+    Ogre::SceneNode::ChildNodeIterator itChild = TargetNode->getChildIterator();
 
-void Cell::setLiquid(CubeCoordinates Coordinates, bool liquidtype, uint8_t NewValue)
-{
-    LiquidType.set(TranslateCubeToIndex(Coordinates), liquidtype);
-    LiquidLevel[Coordinates.X][Coordinates.Y] = NewValue;
-}
-
-inline uint32_t Cell::GenerateFaceKey(CubeCoordinates Coordinates, Direction DirectionType)
-{
-    uint32_t Key = Coordinates.Y;
-    Key <<= 8;
-    Key += Coordinates.X;
-    Key <<= 8;
-    Key += DirectionType;
-
-    return Key;
-}
-
-Face* Cell::getFace(CubeCoordinates TargetCoordinates, Direction DirectionType)
-{
-    if (isDirectionPositive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
+    while (itChild.hasMoreElements())
     {
-        MapCoordinates TargetCoordinates = TranslateCubeToMap(TargetCoordinates);
-        TargetCoordinates.TranslateMapCoordinates(DirectionType);
-        return ParentMap->getFace(TargetCoordinates, OppositeDirection(DirectionType));
-    }
-    else  // All West, North and Bottom Faces will be within this Cell
-    {
-        uint32_t Key = GenerateFaceKey(TargetCoordinates, DirectionType);
-
-        if (Faces.find(Key) == Faces.end())
-        {
-            return NULL;
-        }
-        else
-        {
-            return Faces.find(Key)->second;
-        }
+        Ogre::SceneNode* ChildNode = static_cast<Ogre::SceneNode*> (itChild.getNext());
+        DestroyAllAttachedEntities(ChildNode);
     }
 }
 
-bool Cell::hasFace(CubeCoordinates TargetCoordinates, Direction DirectionType)
+int16_t Cell::getFaceMaterialType(FaceCoordinates TargetCoordinates)
 {
-    if (isDirectionPositive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
-    {
-        MapCoordinates TargetCoordinates = TranslateCubeToMap(TargetCoordinates);
-        TargetCoordinates.TranslateMapCoordinates(DirectionType);
-        return ParentMap->hasFace(TargetCoordinates, OppositeDirection(DirectionType));
-    }
-    else  // All West, North and Bottom Faces will be within this Cell
-    {
-        uint32_t Key = GenerateFaceKey(TargetCoordinates, DirectionType);
-
-        return Faces.find(Key) != Faces.end();
-    }
+    Face* TargetFace = getFace(TargetCoordinates);
+    return TargetFace != NULL ? TargetFace->getFaceMaterialType() : INVALID_INDEX;
 }
 
-int16_t Cell::getFaceMaterialType(CubeCoordinates Coordinates, Direction DirectionType)
+int16_t Cell::getFaceSurfaceType(FaceCoordinates TargetCoordinates)
 {
-    Face* TargetFace = getFace(Coordinates, DirectionType);
-
-    if (TargetFace != NULL)
-    {
-        return TargetFace->getFaceMaterialType();
-    }
-    return INVALID_INDEX;
+    Face* TargetFace = getFace(TargetCoordinates);
+    return TargetFace != NULL ? TargetFace->getFaceSurfaceType() : INVALID_INDEX;
 }
 
-int16_t Cell::getFaceSurfaceType(CubeCoordinates Coordinates, Direction DirectionType)
+bool Cell::setFaceMaterialType(FaceCoordinates TargetCoordinates, int16_t MaterialTypeID)
 {
-    Face* TargetFace = getFace(Coordinates, DirectionType);
-
-    if (TargetFace != NULL)
-    {
-        if (isDirectionPositive(DirectionType))
-        {
-            return TargetFace->getPositiveAxisSurfateType();
-        }
-        else
-        {
-            return TargetFace->getNegativeAxisSurfaceType();
-        }
-    }
-}
-
-bool Cell::setFaceMaterialType(CubeCoordinates Coordinates, Direction DirectionType, int16_t MaterialTypeID)
-{
-    Face* TargetFace = getFace(Coordinates, DirectionType);
+    Face* TargetFace = getFace(TargetCoordinates);
 
     if (TargetFace != NULL)
     {
@@ -391,95 +193,48 @@ bool Cell::setFaceMaterialType(CubeCoordinates Coordinates, Direction DirectionT
     return false;
 }
 
-bool Cell::setFaceSurfaceType(CubeCoordinates Coordinates, Direction DirectionType, int16_t SurfaceTypeID)
+bool Cell::setFaceSurfaceType(FaceCoordinates TargetCoordinates, int16_t SurfaceTypeID)
 {
-    Face* TargetFace = getFace(Coordinates, DirectionType);
+    Face* TargetFace = getFace(TargetCoordinates);
 
     if (TargetFace != NULL)
     {
-        TargetFace->setFaceSurfaceType(SurfaceTypeID, DirectionType);
+        TargetFace->setFaceSurfaceType(SurfaceTypeID);
         return true;
     }
     return false;
 }
 
-bool Cell::setBothFaceSurfaces(CubeCoordinates Coordinates, Direction DirectionType, int16_t SurfaceTypeID)
+bool Cell::removeFace(FaceCoordinates TargetCoordinates)
 {
-    Face* TargetFace = getFace(Coordinates, DirectionType);
+    uint16_t Key = TargetCoordinates.FaceKey();
 
-    if (TargetFace != NULL)
+    if (Faces.find(Key) != Faces.end())
     {
-        TargetFace->setFaceSurfaceType(SurfaceTypeID, DirectionType);
-        TargetFace->setFaceSurfaceType(SurfaceTypeID, OppositeDirection(DirectionType));
+        delete Faces.find(Key)->second;
+        Faces.erase(Key);
+
+        setNeedsReBuild(true);
         return true;
     }
     return false;
 }
 
-bool Cell::removeFace(CubeCoordinates TargetCoordinates, Direction DirectionType)
+Face* Cell::addFace(FaceCoordinates TargetCoordinates)
 {
-    if (isDirectionPositive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
+    uint16_t Key = TargetCoordinates.FaceKey();
+
+    if (Faces.find(Key) == Faces.end())
     {
-        MapCoordinates TargetCoordinates = TranslateCubeToMap(TargetCoordinates);
-        TargetCoordinates.TranslateMapCoordinates(DirectionType);
-        return ParentMap->removeFace(TargetCoordinates, OppositeDirection(DirectionType));
+        Face* NewFace = new Face(CellSceneNode, TargetCoordinates.Coordinates);
+        Faces[Key] = NewFace;
+
+        return NewFace;
     }
-    else  // All West, North and Bottom Faces will be within this Cell
+    else
     {
-        uint32_t Key = GenerateFaceKey(TargetCoordinates, DirectionType);
-
-        if (Faces.find(Key) != Faces.end())
-        {
-            delete Faces.find(Key)->second;
-            Faces.erase(Key);
-
-            setNeedsReBuild(true);
-            return true;
-        }
+        return Faces.find(Key)->second;
     }
-    return false;
-}
-
-Face* Cell::addFace(CubeCoordinates Coordinates, Direction DirectionType)
-{
-    if (isDirectionPositive(DirectionType))  // True for East, South and Top some of which will require calls to other Cells
-    {
-        MapCoordinates TargetCoordinates = TranslateCubeToMap(Coordinates);
-        TargetCoordinates.TranslateMapCoordinates(DirectionType);
-        return ParentMap->addFace(TargetCoordinates, OppositeDirection(DirectionType));
-    }
-    else  // All West, North and Bottom Faces will be within this Cell
-    {
-        uint32_t Key = GenerateFaceKey(Coordinates, DirectionType);
-
-        if (Faces.find(Key) == Faces.end())
-        {
-            Ogre::SceneNode* NewFaceNode = CellSceneNode->createChildSceneNode();
-            NewFaceNode->setPosition(Coordinates.X - (CELLEDGESIZE / 2) + HALFCUBE, Coordinates.Y - (CELLEDGESIZE / 2) + HALFCUBE, 0);
-            Face* NewFace = new Face(NewFaceNode, DirectionType);
-            Faces[Key] = NewFace;
-
-            return NewFace;
-        }
-        else
-        {
-            return Faces.find(Key)->second;
-        }
-    }
-}
-
-void Cell::addSlope(CubeCoordinates Coordinates, TileShape NewShape)
-{
-    Ogre::SceneNode* NewSlopeNode = CellSceneNode->createChildSceneNode();
-    NewSlopeNode->setPosition(Coordinates.X - (CELLEDGESIZE / 2) + HALFCUBE, Coordinates.Y - (CELLEDGESIZE / 2) + HALFCUBE, 0);
-
-    char buffer[64];
-    sprintf(buffer, "Slope%i", (uint16_t) NewShape);
-
-    Ogre::Entity* NewSlope = RENDERER->getSceneManager()->createEntity(buffer);
-    NewSlope->setMaterial(TEXTURE->getOgreMaterial(getCubeMaterial(Coordinates), getCubeSurface(Coordinates)));
-
-    NewSlopeNode->attachObject(NewSlope);
 }
 
 Ogre::Vector3 Cell::getCubePosition(CubeCoordinates Coordinates)
@@ -499,11 +254,6 @@ MapCoordinates Cell::TranslateCubeToMap(CubeCoordinates Coordinates)
     NewCoordinates.Z = thisCellCoordinates.Z;
 
     return NewCoordinates;
-}
-
-uint16_t Cell::TranslateCubeToIndex(CubeCoordinates Coordinates)
-{
-    return (Coordinates.X * CELLEDGESIZE) + Coordinates.Y;
 }
 
 bool Cell::isCubeSloped(CubeCoordinates Coordinates)

@@ -193,12 +193,17 @@ void KhazadGrid::setDirectionFlags(const MapCoordinates& MapCoords, DirectionFla
 
     CubeCoordinates CubeCoords = CubeCoordinates(MapCoords);
     TargetCell->DirectionMatrix[CubeCoords.X][CubeCoords.Y] = Flags;
-    for (int i = 0; i < 3; i++)
+
+    for (Axis i = AXIS_START; i < NUM_AXIS; ++i)
     {
         if (MapCoords[i] > maxlen[i])
-            maxlen.set(i,MapCoords[i]);
+        {
+            maxlen.Set(i, MapCoords[i]);
+        }
         if (MapCoords[i] < minlen[i])
-            minlen.set(i,MapCoords[i]);
+        {
+            minlen.Set(i, MapCoords[i]);
+        }
     }
 }
 

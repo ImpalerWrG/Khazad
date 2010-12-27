@@ -66,8 +66,10 @@ public:
     void setCubeMaterial(MapCoordinates Coordinates, int16_t MaterialID);
     inline int16_t getCubeMaterial(MapCoordinates Coordinates) const;
 
-    void setCubeSurfaceType(MapCoordinates Coordinates, int16_t SurfaceID);
-    inline int16_t getCubeSurfaceType(MapCoordinates Coordinates) const;
+    // -----------------FACE CALLS DIRECTED TO CELLS------------
+
+    std::pair< MapCoordinates, Direction > FaceCoordinateConvertion(MapCoordinates TargetMapCoordinates, Direction DirectionType) const;
+
 
     Face* getFace(MapCoordinates Coordinates, Direction DirectionType) const;
     bool hasFace(MapCoordinates Coordinates, Direction DirectionType) const;
@@ -80,7 +82,6 @@ public:
 
     void setFaceSurfaceType(MapCoordinates Coordinates, Direction DirectionType, int16_t SurfaceID);
     inline int16_t getFaceSurfaceType(MapCoordinates Coordinates, Direction DirectionType) const;
-    void setBothFaceSurfaceTypes(MapCoordinates Coordinates, Direction DirectionType, int16_t SurfaceID);
 
 
     bool isCubeHidden(MapCoordinates Coordinates) const;
@@ -95,9 +96,6 @@ public:
     bool isCubeSunLit(MapCoordinates Coordinates) const;
     void setCubeSunLit(MapCoordinates Coordinates, bool NewValue);
 
-    bool isCubeSolid(MapCoordinates Coordinates) const;
-    void setCubeSolid(MapCoordinates Coordinates, bool NewValue);
-
 
     bool Load(std::string filename);
     void Save(std::string filename);
@@ -108,7 +106,6 @@ public:
     void Fill(MapCoordinates Coordinates, int16_t MaterialID);
 
     uint32_t getCellCount() const             { return Cells.size(); }
-    uint32_t getFaceCount() const             { return FaceCount; }
 
 
     MapCoordinates getRayIntersection(Ogre::Ray MouseRay);

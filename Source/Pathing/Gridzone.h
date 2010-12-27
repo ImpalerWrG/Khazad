@@ -31,7 +31,7 @@ public:
 
     bool contains(const MapCoordinates &p) const
     {
-        for (unsigned i = 0; i < 3; ++i)
+        for (Axis i = AXIS_START; i < NUM_AXIAL_DIRECTIONS; ++i)
         {
             if (p[i] > blr_[i])
             {
@@ -158,7 +158,7 @@ public:
 
     zone* findContainingZone(const MapCoordinates &p)
     {
-        MapCoordinates q(p[0]/length,p[1]/length,p[2]);
+        MapCoordinates q(p[AXIS_X]/length,p[AXIS_Y]/length,p[AXIS_Z]);
         if (zl.find(q)!= zl.end())
             return zl[q];
         else
@@ -204,7 +204,7 @@ public:
         if (((gridZone*)z)->zbn_.size() == 0)
         {
           //this is an empty zone, so we can probably delete it
-          MapCoordinates q(p[0]/length,p[1]/length,p[2]);
+          MapCoordinates q(p[AXIS_X]/length,p[AXIS_Y]/length,p[AXIS_Z]);
           iterator it = zl.find(q);
           assert(it != zl.end());
           zl.erase(it);
@@ -216,13 +216,13 @@ public:
     {
         zl.clear();
         //zl.reserve(G_->max(0)*G_->max(1)*G_->max(2)/length/length+1);
-        for (int z = G_->min(2); z < G_->max(2); z++)
+        for (int z = G_->min(AXIS_Z); z < G_->max(AXIS_Z); z++)
         {
-            for (int y = G_->min(1);  y < G_->max(1); y+=length)
+            for (int y = G_->min(AXIS_Y);  y < G_->max(AXIS_Y); y+=length)
             {
-                for (int x = G_->min(0); x < G_->max(0); x+=length)
+                for (int x = G_->min(AXIS_X); x < G_->max(AXIS_X); x+=length)
                 {
-                    MapCoordinates p(x,y,z);
+                    MapCoordinates p(x, y, z);
                     createZone(p);
                 }
             }
@@ -238,27 +238,29 @@ public:
 
     zone *createZone(MapCoordinates p)
     {
-      gridZone *pz;
-      zone *z = findContainingZone(p);
-      if ((G_->contains(p)) && (z == NULL))
-      {
-        MapCoordinates tul(length*floor(p[0]/length),length*floor(p[1]/length),p[2]);
-        MapCoordinates blr(tul[0]+length-1,tul[1]+length-1,tul[2]);
-        z = pz = new gridZone(tul,blr);
-        //create a zone
-        zl[MapCoordinates(p[0]/length,p[1]/length,p[2])] = pz;
-        //for each element in the zone
-        for (unsigned v = 0; v < length; v++)
-            for (unsigned u = 0; u < length; u++)
+        gridZone *pz;
+        zone *z = findContainingZone(p);
+        if ((G_->contains(p)) && (z == NULL))
+        {
+            MapCoordinates tul(length * floor(p[AXIS_X]/length), length * floor(p[AXIS_Y]/length), p[AXIS_Z]);
+            MapCoordinates blr(tul[AXIS_X] + length - 1, tul[AXIS_Y] + length - 1, tul[AXIS_Z]);
+            z = pz = new gridZone(tul, blr);
+            //create a zone
+            zl[MapCoordinates(p[AXIS_X]/length, p[AXIS_Y]/length, p[AXIS_Z])] = pz;
+            //for each element in the zone
+            for (unsigned v = 0; v < length; v++)
+            {
+                for (unsigned u = 0; u < length; u++)
                 {
-                    MapCoordinates p(tul[0]+u,tul[1]+v,tul[2]);
-                    AddLeavingEdges(pz, p);
+                    {
+                        MapCoordinates p(tul[AXIS_X]+u,tul[AXIS_Y]+v,tul[AXIS_Z]);
+                        AddLeavingEdges(pz, p);
+                    }
                 }
-      }
-      return z;
+            }
+        }
+        return z;
     }
-
-
 
     void AddLeavingEdges(zone *pz, const MapCoordinates &p)
     {

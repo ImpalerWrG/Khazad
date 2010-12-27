@@ -4,38 +4,35 @@
 #include <stdafx.h>
 
 #include <Coordinates.h>
+#include <TileShapes.h>
 #include <Ogre.h>
 
 class Face
 {
 public:
 
-	Face(Ogre::SceneNode* NewPosition, Direction DirectionType);
+	Face(Ogre::SceneNode* CellSceneNode, CubeCoordinates TargetCoordinates);
 	~Face();
 
 	void setFaceMaterialType(int16_t NewMaterialTypeID);
-	void setFaceSurfaceType(int16_t NewSurfaceTypeID, Direction DirectionType);
+	void setFaceSurfaceType(int16_t NewSurfaceTypeID);
+	void setShapeType(TileShape NewShape);
 
-    void InitPositiveFace(Direction DirectionType);
-    void InitNegativeFace(Direction DirectionType);
+    void RefreshEntity();
 
     int16_t getFaceMaterialType()           { return MaterialTypeID; }
-    int16_t getPositiveAxisSurfateType()    { return PositiveAxisSurfaceTypeID; }
-    int16_t getNegativeAxisSurfaceType()    { return NegativeAxisSurfaceTypeID; }
+    int16_t getFaceSurfaceType()            { return SurfaceTypeID; }
+    int16_t getFaceShapeType()              { return ShapeType; }
 
 private:
 
-    Axis FaceAxis;
+    TileShape ShapeType;
 
-    int16_t PositiveAxisSurfaceTypeID;
-    int16_t NegativeAxisSurfaceTypeID;
+    Ogre::SceneNode* CellNode;
+    CubeCoordinates LocationCoordinates;
 
+    int16_t SurfaceTypeID;
     int16_t MaterialTypeID;
-
-    Ogre::Entity* OgreEntityPositive;
-    Ogre::Entity* OgreEntityNegative;
-
-    Ogre::SceneNode* PositionNode;
 };
 
 #endif // FACE__HEADER

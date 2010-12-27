@@ -39,6 +39,7 @@
         </Window>
         <Window Type="ArkanaLook/FrameWindow" Name="MainGameScreen/GameOptionsWindow" >
             <Property Name="Text" Value="GAME OPTIONS" />
+            <Property Name="Visible" Value="False" />
             <Property Name="TitleFont" Value="Carolingia-10" />
             <Property Name="SizingEnabled" Value="False" />
             <Property Name="TitlebarEnabled" Value="True" />

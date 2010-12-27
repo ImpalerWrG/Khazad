@@ -17,8 +17,8 @@ struct gridInterface  // Virtural Base class
 
     virtual float getEdgeCost(const MapCoordinates &TestCoords, Direction DirectionType) const = 0;
 
-    virtual int max(unsigned dim) const = 0;
-    virtual int min(unsigned dim) const = 0;
+    virtual int max(Axis AxialComponent) const = 0;
+    virtual int min(Axis AxialComponent) const = 0;
 
     virtual DirectionFlags getDirectionFlags(const MapCoordinates &TargetCoords) const = 0;
     virtual bool isPathPossible(const MapCoordinates StartCoords, const MapCoordinates GoalCoords) = 0;
@@ -68,8 +68,8 @@ public:
 
     bool contains(const MapCoordinates &TestCoords) const;
 
-    int max(unsigned dim) const         { return maxlen[dim]; }
-    int min(unsigned dim) const         { return minlen[dim]; }
+    int max(Axis AxialComponent) const         { return maxlen[AxialComponent]; }
+    int min(Axis AxialComponent) const         { return minlen[AxialComponent]; }
 
     GridCell* getCell(CellCoordinates TestCoords) const;
     GridCell* addCell(CellCoordinates TargetCoords);
