@@ -17,71 +17,70 @@ KhazadGrid::KhazadGrid(Map* TargetMap)
             Cell* TargetCell = it->second;
             CellCoordinates CellCoords = TargetCell->getCellCoordinates();
             GridCell* NewGridCell = addCell(CellCoords);
-            CubeCoordinates TargetCubeCoords = CubeCoordinates(0, 0);
 
-            for (TargetCubeCoords.X = 0; TargetCubeCoords.X < CELLEDGESIZE; TargetCubeCoords.X++)
+            CubeCoordinates TargetCube = 0;
+            do
             {
-                for (TargetCubeCoords.Y = 0; TargetCubeCoords.Y < CELLEDGESIZE; TargetCubeCoords.Y++)
+                TileShape Shape = TargetCell->getCubeShape(TargetCube);
+                uint32_t Flags = 0;
+
+                if (Shape > TILESHAPE_EMPTY && Shape < TILESHAPE_SOLID)
                 {
-                    TileShape Shape = TargetCell->getCubeShape(TargetCubeCoords);
-                    uint32_t Flags = 0;
-
-                    if (Shape > TILESHAPE_EMPTY && Shape < TILESHAPE_SOLID)
+                    //Flags |= (1 << (int) DIRECTION_NONE);
+                    for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
                     {
-                        //Flags |= (1 << (int) DIRECTION_NONE);
-                        for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
+                        MapCoordinates AdjacentTileCoords = MapCoordinates(CellCoords, TargetCube);
+                        AdjacentTileCoords.TranslateMapCoordinates(DirectionType);
+
+                        //see if we've done this already..
+                        if (getDirectionFlags(AdjacentTileCoords) & (1 << (int) OppositeDirection(DirectionType)))
                         {
-                            MapCoordinates AdjacentTileCoords = MapCoordinates(CellCoords, TargetCubeCoords);
-                            AdjacentTileCoords.TranslateMapCoordinates(DirectionType);
+                            Flags |= (1 << (int) DirectionType);
+                            continue;
+                        }
 
-                            //see if we've done this already..
-                            if (getDirectionFlags(AdjacentTileCoords) & (1 << (int) OppositeDirection(DirectionType)))
+                        TileShape AdjacentTileShape = TargetMap->getCubeShape(AdjacentTileCoords);
+
+                        if (AdjacentTileShape != TILESHAPE_EMPTY || AdjacentTileShape != TILESHAPE_SOLID)
+                        {
+                            if (DirectionType == DIRECTION_DOWN)
                             {
-                                Flags |= (1 << (int) DirectionType);
-                                continue;
                             }
-
-                            TileShape AdjacentTileShape = TargetMap->getCubeShape(AdjacentTileCoords);
-
-                            if (AdjacentTileShape != TILESHAPE_EMPTY || AdjacentTileShape != TILESHAPE_SOLID)
+                            else if (DirectionType == DIRECTION_UP)
                             {
-                                if (DirectionType == DIRECTION_DOWN)
+                            }
+                            else if (DirectionType >= NUM_COMPASS_DIRECTIONS)
+                            {
+                                if (isDirectionPositive(DirectionType))
                                 {
-                                }
-                                else if (DirectionType == DIRECTION_UP)
-                                {
-                                }
-                                else if (DirectionType >= NUM_COMPASS_DIRECTIONS)
-                                {
-                                    if (isDirectionPositive(DirectionType))
+                                    /*Figure out ramps
+                                    if (TileShapeID == RAMP_ID)
                                     {
-                                        /*Figure out ramps
-                                        if (TileShapeID == RAMP_ID)
-                                        {
-                                            Flags |= (1 << (int) DirectionType);
-                                        }*/
-                                    }
-                                    else
-                                    {
-                                        /*only can go down-diagonal to ramp
-                                        if (AdjacentTileShape == RAMP_ID)
-                                        {
-                                            Flags |= (1 << (int) DirectionType);
-                                        }*/
-                                    }
+                                        Flags |= (1 << (int) DirectionType);
+                                    }*/
                                 }
                                 else
                                 {
-                                    //If no vertical direction, we only care that this tile is passable
-                                    Flags |= (1 << (int) DirectionType);
+                                    /*only can go down-diagonal to ramp
+                                    if (AdjacentTileShape == RAMP_ID)
+                                    {
+                                        Flags |= (1 << (int) DirectionType);
+                                    }*/
                                 }
+                            }
+                            else
+                            {
+                                //If no vertical direction, we only care that this tile is passable
+                                Flags |= (1 << (int) DirectionType);
                             }
                         }
                     }
 
-                    NewGridCell->DirectionMatrix[TargetCubeCoords.X][TargetCubeCoords.Y] = Flags;
+                    NewGridCell->DirectionMatrix[TargetCube] = Flags;
                 }
+                TargetCube++;
             }
+            while (TargetCube != 0);  // End Loop when Byte rolls over
         }
     }
 
@@ -91,63 +90,60 @@ KhazadGrid::KhazadGrid(Map* TargetMap)
 void KhazadGrid::BuildConnectivityZones()
 {
     int ZoneCounter = 0;
-    CubeCoordinates TargetCubeCoords;
 
     // Loop to do connectivity
     for (std::map<uint64_t, GridCell*>::iterator it = Cells.begin(); it != Cells.end(); ++it)
     {
-        if (it->second != NULL)
+        GridCell* TargetCell = it->second;
+        if (TargetCell != NULL)
         {
-            GridCell* TargetCell = it->second;
             CellCoordinates CellCoords = TargetCell->thisCellCoodinates;
-            //ZoneCounter++;
 
-            for (TargetCubeCoords.X = 0; TargetCubeCoords.X < CELLEDGESIZE; TargetCubeCoords.X++)
+            CubeCoordinates TargetCube = 0;
+            do
             {
-                for (TargetCubeCoords.Y = 0; TargetCubeCoords.Y < CELLEDGESIZE; TargetCubeCoords.Y++)
+                uint32_t Flags = getDirectionFlags(MapCoordinates(CellCoords, TargetCube));
+
+                if (Flags != 0)
                 {
-                    //uint32_t Flags = TargetCell->DirectionMatrix[TargetCubeCoords.X][TargetCubeCoords.Y];
-                    uint32_t Flags = getDirectionFlags(MapCoordinates(CellCoords, TargetCubeCoords));
-
-                    if (Flags != 0)
+                    if (TargetCell->ConnectivityZone[TargetCube] == 0) // Start a new zone if not connected to another zone
                     {
-                        if (TargetCell->ConnectivityZone[TargetCubeCoords.X][TargetCubeCoords.Y] == 0) // Start a new zone if not connected to another zone
-                        {
-                            ZoneCounter++; // First zone will be 1, 0 will indicate unititialized
-                            TargetCell->ConnectivityZone[TargetCubeCoords.X][TargetCubeCoords.Y] = ZoneCounter;
-                        }
-                         // Push this current zone onto the adjacent area
-                        int CurrentZoneIndex = TargetCell->ConnectivityZone[TargetCubeCoords.X][TargetCubeCoords.Y];
+                        ZoneCounter++; // First zone will be 1, 0 will indicate unititialized
+                        TargetCell->ConnectivityZone[TargetCube] = ZoneCounter;
+                    }
+                     // Push this current zone onto the adjacent area
+                    int CurrentZoneIndex = TargetCell->ConnectivityZone[TargetCube];
 
-                        for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
+                    for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
+                    {
+                        if (Flags & (1 << (int) DirectionType))
                         {
-                            if (Flags & (1 << (int) DirectionType))
+                            // Find the Zone that the adjcent Tile has
+                            MapCoordinates AdjacentTileCoords = MapCoordinates(CellCoords, TargetCube);
+                            AdjacentTileCoords.TranslateMapCoordinates(DirectionType);
+                            int AdjacentZoneIndex = getConnectivityZone(AdjacentTileCoords);
+
+                            if (AdjacentZoneIndex == 0) // The other location is unititialized
                             {
-                                // Find the Zone that the adjcent Tile has
-                                MapCoordinates AdjacentTileCoords = MapCoordinates(CellCoords, TargetCubeCoords);
-                                AdjacentTileCoords.TranslateMapCoordinates(DirectionType);
-                                int AdjacentZoneIndex = getConnectivityZone(AdjacentTileCoords);
-
-                                if (AdjacentZoneIndex == 0) // The other location is unititialized
+                                setConnectivityZone(AdjacentTileCoords, CurrentZoneIndex); // Push this current zone onto the adjacent area
+                            }
+                            else
+                            {
+                                if (AdjacentZoneIndex != CurrentZoneIndex) // A different zone update the Connectivity Map
                                 {
-                                    setConnectivityZone(AdjacentTileCoords, CurrentZoneIndex); // Push this current zone onto the adjacent area
-                                }
-                                else
-                                {
-                                    if (AdjacentZoneIndex != CurrentZoneIndex) // A different zone update the Connectivity Map
-                                    {
-                                        ChangeConnectivityMap(CurrentZoneIndex, AdjacentZoneIndex, 1);  // Add one connection between zones
-                                    }
+                                    ChangeConnectivityMap(CurrentZoneIndex, AdjacentZoneIndex, 1);  // Add one connection between zones
                                 }
                             }
                         }
                     }
-                    else
-                    {
-                        TargetCell->ConnectivityZone[TargetCubeCoords.X][TargetCubeCoords.Y] = 0;
-                    }
                 }
+                else
+                {
+                    TargetCell->ConnectivityZone[TargetCube] = 0;
+                }
+                TargetCube++;
             }
+            while (TargetCube != 0);  // End Loop when Byte rolls over
         }
     }
 
@@ -159,8 +155,7 @@ DirectionFlags KhazadGrid::getDirectionFlags(const MapCoordinates &TargetCoords)
     GridCell* TargetCell = getCell(CellCoordinates(TargetCoords));
     if (TargetCell != NULL)
     {
-        CubeCoordinates CubeCoords = CubeCoordinates(TargetCoords);
-        return TargetCell->DirectionMatrix[CubeCoords.X][CubeCoords.Y];
+        return TargetCell->DirectionMatrix[TargetCoords.Cube()];
     }
     return (DirectionFlags) 0;  // No connectivity because Cell is invalid
 }
@@ -170,8 +165,7 @@ int KhazadGrid::getConnectivityZone(const MapCoordinates &TargetCoords) const
     GridCell* TargetCell = getCell(CellCoordinates(TargetCoords));
     if (TargetCell != NULL)
     {
-        CubeCoordinates CubeCoords = CubeCoordinates(TargetCoords);
-        return TargetCell->ConnectivityZone[CubeCoords.X][CubeCoords.Y];
+        return TargetCell->ConnectivityZone[TargetCoords.Cube()];
     }
     return 0;  // No connectivity zone because Cell is invalid
 }
@@ -181,8 +175,7 @@ void KhazadGrid::setConnectivityZone(const MapCoordinates &TargetCoords, int New
     GridCell* TargetCell = getCell(CellCoordinates(TargetCoords));
     if (TargetCell != NULL)
     {
-        CubeCoordinates CubeCoords = CubeCoordinates(TargetCoords);
-        TargetCell->ConnectivityZone[CubeCoords.X][CubeCoords.Y] = NewZone;
+        TargetCell->ConnectivityZone[TargetCoords.Cube()] = NewZone;
     }
 }
 
@@ -191,8 +184,7 @@ void KhazadGrid::setDirectionFlags(const MapCoordinates& MapCoords, DirectionFla
     //find the Target cell (add if necessary)
     GridCell* TargetCell = addCell(CellCoordinates(MapCoords));
 
-    CubeCoordinates CubeCoords = CubeCoordinates(MapCoords);
-    TargetCell->DirectionMatrix[CubeCoords.X][CubeCoords.Y] = Flags;
+    TargetCell->DirectionMatrix[MapCoords.Cube()] = Flags;
 
     for (Axis i = AXIS_START; i < NUM_AXIS; ++i)
     {

@@ -21,7 +21,7 @@ void Face::RefreshEntity()
     if (SurfaceTypeID != INVALID_INDEX && MaterialTypeID != INVALID_INDEX && ShapeType != NUM_TILESHAPES)
     {
         Ogre::SceneNode* NewNode = CellNode->createChildSceneNode();
-        NewNode->setPosition(LocationCoordinates.X - (CELLEDGESIZE / 2) + HALFCUBE, LocationCoordinates.Y - (CELLEDGESIZE / 2) + HALFCUBE, 0);
+        NewNode->setPosition((LocationCoordinates >> CELLBITSHIFT) - (CELLEDGESIZE / 2) + HALFCUBE, (LocationCoordinates & CELLBITFLAG) - (CELLEDGESIZE / 2) + HALFCUBE, 0);
 
         char buffer[64];
         sprintf(buffer, "Slope%i", (uint16_t) ShapeType);

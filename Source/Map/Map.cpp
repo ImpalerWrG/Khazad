@@ -160,7 +160,7 @@ Face* Map::getFace(MapCoordinates TargetMapCoordinates, Direction DirectionType)
     std::pair< MapCoordinates, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
     Cell* TargetCell = getCell(CellCoordinates(ConvertedValues.first));
-    return TargetCell != NULL ? TargetCell->getFace(FaceCoordinates(CubeCoordinates(ConvertedValues.first), ConvertedValues.second)) : NULL;
+    return TargetCell != NULL ? TargetCell->getFace(FaceCoordinates(ConvertedValues.first.Cube(), ConvertedValues.second)) : NULL;
 }
 
 bool Map::hasFace(MapCoordinates TargetMapCoordinates, Direction DirectionType) const
@@ -168,7 +168,7 @@ bool Map::hasFace(MapCoordinates TargetMapCoordinates, Direction DirectionType) 
     std::pair< MapCoordinates, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
     Cell* TargetCell = getCell(CellCoordinates(ConvertedValues.first));
-    return TargetCell != NULL ? TargetCell->hasFace(FaceCoordinates(CubeCoordinates(ConvertedValues.first), ConvertedValues.second)) : false;
+    return TargetCell != NULL ? TargetCell->hasFace(FaceCoordinates(ConvertedValues.first.Cube(), ConvertedValues.second)) : false;
 }
 
 bool Map::removeFace(MapCoordinates TargetMapCoordinates, Direction DirectionType)
@@ -176,7 +176,7 @@ bool Map::removeFace(MapCoordinates TargetMapCoordinates, Direction DirectionTyp
     std::pair< MapCoordinates, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
     Cell* TargetCell = getCell(CellCoordinates(ConvertedValues.first));
-    return TargetCell != NULL ? TargetCell->removeFace(FaceCoordinates(CubeCoordinates(ConvertedValues.first), ConvertedValues.second)) : false;
+    return TargetCell != NULL ? TargetCell->removeFace(FaceCoordinates(ConvertedValues.first.Cube(), ConvertedValues.second)) : false;
 }
 
 Face* Map::addFace(MapCoordinates TargetMapCoordinates, Direction DirectionType)
@@ -194,14 +194,14 @@ Face* Map::addFace(MapCoordinates TargetMapCoordinates, Direction DirectionType)
         insertCell(TargetCell, CellCoordinates(ConvertedValues.first));
     }
 
-    return TargetCell->getFace(FaceCoordinates(CubeCoordinates(ConvertedValues.first), ConvertedValues.second));
+    return TargetCell->getFace(FaceCoordinates(ConvertedValues.first.Cube(), ConvertedValues.second));
 }
 
 bool Map::isCubeSloped(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
-    return TargetCell != NULL ? TargetCell->isCubeSloped(CubeCoordinates(Coordinates)) : false;
+    return TargetCell != NULL ? TargetCell->isCubeSloped(Coordinates.Cube()) : false;
 }
 
 void Map::setCubeShape(MapCoordinates Coordinates, TileShape NewShape)
@@ -210,7 +210,7 @@ void Map::setCubeShape(MapCoordinates Coordinates, TileShape NewShape)
 
     if (TargetCell != NULL)
     {
-        TargetCell->setCubeShape(CubeCoordinates(Coordinates), NewShape);
+        TargetCell->setCubeShape(Coordinates.Cube(), NewShape);
     }
 }
 
@@ -218,7 +218,7 @@ TileShape Map::getCubeShape(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
-    return TargetCell != NULL ? TargetCell->getCubeShape(CubeCoordinates(Coordinates)) : NUM_TILESHAPES;
+    return TargetCell != NULL ? TargetCell->getCubeShape(Coordinates.Cube()) : NUM_TILESHAPES;
 }
 
 void Map::setCubeMaterial(MapCoordinates Coordinates, int16_t MaterialID)
@@ -227,7 +227,7 @@ void Map::setCubeMaterial(MapCoordinates Coordinates, int16_t MaterialID)
 
     if (TargetCell != NULL)
     {
-        TargetCell->setCubeMaterial(CubeCoordinates(Coordinates), MaterialID);
+        TargetCell->setCubeMaterial(Coordinates.Cube(), MaterialID);
     }
 }
 
@@ -235,7 +235,7 @@ inline int16_t Map::getCubeMaterial(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
-    return TargetCell != NULL ? TargetCell->getCubeMaterial(CubeCoordinates(Coordinates)) : INVALID_INDEX;
+    return TargetCell != NULL ? TargetCell->getCubeMaterial(Coordinates.Cube()) : INVALID_INDEX;
 }
 
 void Map::setFaceMaterial(MapCoordinates TargetMapCoordinates, Direction DirectionType, int16_t MaterialID)
@@ -245,7 +245,7 @@ void Map::setFaceMaterial(MapCoordinates TargetMapCoordinates, Direction Directi
     Cell* TargetCell = getCell(CellCoordinates(ConvertedValues.first));
     if (TargetCell != NULL)
     {
-        TargetCell->setFaceMaterialType(FaceCoordinates(CubeCoordinates(ConvertedValues.first), ConvertedValues.second), MaterialID);
+        TargetCell->setFaceMaterialType(FaceCoordinates(ConvertedValues.first.Cube(), ConvertedValues.second), MaterialID);
     }
 }
 
@@ -263,7 +263,7 @@ void Map::setFaceSurfaceType(MapCoordinates TargetMapCoordinates, Direction Dire
     Cell* TargetCell = getCell(CellCoordinates(ConvertedValues.first));
     if (TargetCell != NULL)
     {
-        TargetCell->setFaceSurfaceType(FaceCoordinates(CubeCoordinates(ConvertedValues.first), ConvertedValues.second), SurfaceID);
+        TargetCell->setFaceSurfaceType(FaceCoordinates(ConvertedValues.first.Cube(), ConvertedValues.second), SurfaceID);
     }
 }
 
@@ -280,7 +280,7 @@ bool Map::isCubeHidden(MapCoordinates Coordinates) const
 
     if(TargetCell != NULL)
     {
-        return TargetCell->isCubeHidden(CubeCoordinates(Coordinates));
+        return TargetCell->isCubeHidden(Coordinates.Cube());
     }
     return false;
 }
@@ -291,7 +291,7 @@ void Map::setCubeHidden(MapCoordinates Coordinates, bool NewValue)
 
     if(TargetCell != NULL)
     {
-        TargetCell->setCubeHidden(CubeCoordinates(Coordinates), NewValue);
+        TargetCell->setCubeHidden(Coordinates.Cube(), NewValue);
     }
 }
 
@@ -301,7 +301,7 @@ bool Map::isCubeSubTerranean(MapCoordinates Coordinates) const
 
     if(TargetCell != NULL)
     {
-        return TargetCell->isCubeSubTerranean(CubeCoordinates(Coordinates));
+        return TargetCell->isCubeSubTerranean(Coordinates.Cube());
     }
     return false;
 }
@@ -312,7 +312,7 @@ void Map::setCubeSubTerranean(MapCoordinates Coordinates, bool NewValue)
 
     if(TargetCell != NULL)
     {
-        TargetCell->setCubeSubTerranean(CubeCoordinates(Coordinates), NewValue);
+        TargetCell->setCubeSubTerranean(Coordinates.Cube(), NewValue);
     }
 }
 
@@ -322,7 +322,7 @@ bool Map::isCubeSkyView(MapCoordinates Coordinates) const
 
     if(TargetCell != NULL)
     {
-        return TargetCell->isCubeSkyView(CubeCoordinates(Coordinates));
+        return TargetCell->isCubeSkyView(Coordinates.Cube());
     }
     return false;
 }
@@ -333,7 +333,7 @@ void Map::setCubeSkyView(MapCoordinates Coordinates, bool NewValue)
 
     if(TargetCell != NULL)
     {
-        TargetCell->setCubeSkyView(CubeCoordinates(Coordinates), NewValue);
+        TargetCell->setCubeSkyView(Coordinates.Cube(), NewValue);
     }
 }
 
@@ -343,7 +343,7 @@ bool Map::isCubeSunLit(MapCoordinates Coordinates) const
 
     if(TargetCell != NULL)
     {
-        return TargetCell->isCubeSunLit(CubeCoordinates(Coordinates));
+        return TargetCell->isCubeSunLit(Coordinates.Cube());
     }
     return false;
 }
@@ -354,7 +354,7 @@ void Map::setCubeSunLit(MapCoordinates Coordinates, bool NewValue)
 
     if(TargetCell != NULL)
     {
-        TargetCell->setCubeSunLit(CubeCoordinates(Coordinates), NewValue);
+        TargetCell->setCubeSunLit(Coordinates.Cube(), NewValue);
     }
 }
 

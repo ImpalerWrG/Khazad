@@ -344,24 +344,18 @@ int16_t Geology::getRockTypeAtCoordinates(CubeCoordinates Target, int32_t Zlevel
 
 TileShape Geology::getTileShapeAtCoordinates(CubeCoordinates CubeTarget, int32_t Zlevel)
 {
-    if (CubeTarget.X == 7 && CubeTarget.Y == 6 && Zlevel == 0)
-    {
-        bool Debug = true;
-    }
-
-
     float Remainder;
 
-    Remainder = Height[CubeTarget.X][CubeTarget.Y] - ((float) Zlevel);
+    Remainder = Height[(CubeTarget >> CELLBITSHIFT)][(CubeTarget & CELLBITFLAG)] - ((float) Zlevel);
     int8_t SWCornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, 0.0f), (float) HEIGHT_FRACTIONS + 1);
 
-    Remainder = Height[CubeTarget.X + 1][CubeTarget.Y] - ((float) Zlevel);
+    Remainder = Height[(CubeTarget >> CELLBITSHIFT) + 1][(CubeTarget & CELLBITFLAG)] - ((float) Zlevel);
     int8_t SECornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, 0.0f), (float) HEIGHT_FRACTIONS + 1);
 
-    Remainder = Height[CubeTarget.X][CubeTarget.Y + 1] - ((float) Zlevel);
+    Remainder = Height[(CubeTarget >> CELLBITSHIFT)][(CubeTarget & CELLBITFLAG) + 1] - ((float) Zlevel);
     int8_t NWCornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, 0.0f), (float) HEIGHT_FRACTIONS + 1);
 
-    Remainder = Height[CubeTarget.X + 1][CubeTarget.Y + 1] - ((float) Zlevel);
+    Remainder = Height[(CubeTarget >> CELLBITSHIFT) + 1][(CubeTarget & CELLBITFLAG) + 1] - ((float) Zlevel);
     int8_t NECornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, 0.0f), (float) HEIGHT_FRACTIONS + 1);
 
 
@@ -382,25 +376,28 @@ void Geology::LoadCellData(Cell* TargetCell)
 {
     CellCoordinates TargetCoordinates = TargetCell->getCellCoordinates();
 
-    for (CubeCoordinates TargetCubeCoordinates; TargetCubeCoordinates.Index < (CUBESPERCELL - 1); ++TargetCubeCoordinates)
+    CubeCoordinates TargetCube = 0;
+    do
     {
-        TileShape Shape = getTileShapeAtCoordinates(TargetCubeCoordinates, TargetCoordinates.Z);
+        TileShape Shape = getTileShapeAtCoordinates(TargetCube, TargetCoordinates.Z);
 
         if (Shape != TILESHAPE_EMPTY)
         {
-            int16_t MaterialType = getRockTypeAtCoordinates(TargetCubeCoordinates, TargetCoordinates.Z);
-            TargetCell->setCubeMaterial(TargetCubeCoordinates, MaterialType);
+            int16_t MaterialType = getRockTypeAtCoordinates(TargetCube, TargetCoordinates.Z);
+            TargetCell->setCubeMaterial(TargetCube, MaterialType);
 
             if (MaterialType != INVALID_INDEX)
             {
-                TargetCell->setCubeShape(TargetCubeCoordinates, Shape);
+                TargetCell->setCubeShape(TargetCube, Shape);
                 //TargetCell->setCubeSurface(TargetCubeCoordinates, RoughWallID);
             }
         }
         else
         {
-            TargetCell->setCubeShape(TargetCubeCoordinates, Shape);
-            TargetCell->setCubeMaterial(TargetCubeCoordinates, INVALID_INDEX);
+            TargetCell->setCubeShape(TargetCube, Shape);
+            TargetCell->setCubeMaterial(TargetCube, INVALID_INDEX);
         }
+        TargetCube++;
     }
+    while (TargetCube != 0);  // End Loop when Byte rolls over
 }

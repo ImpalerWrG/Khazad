@@ -165,7 +165,8 @@ inline Ogre::Vector3 DirectionToVector(Direction DirectionType)
     return Ogre::Vector3::ZERO;  // TODO finish for remaining directions
 };
 
-struct CubeCoordinates;
+typedef uint8_t CubeCoordinates;  // Holds one of the 256 locations inside a Cell
+
 struct CellCoordinates;
 
 struct MapCoordinates
@@ -334,6 +335,12 @@ struct MapCoordinates
                 break;
         }
     }
+
+    inline CubeCoordinates Cube() const
+    {
+        return ((X & CELLBITFLAG) << CELLBITSHIFT) + (Y & CELLBITFLAG);
+    };
+
     inline MapCoordinates& operator= (const MapCoordinates& ArgumentCoordinates)
     {
         X = ArgumentCoordinates.X;
@@ -413,13 +420,11 @@ struct MapCoordinates
     int16_t Z;
 };
 
-struct CellCoordinates
+struct CellCoordinates  // Holds the relative Relative position of Map Cells, 6 Bytes
 {
     CellCoordinates()
     {
-        X = 0;
-        Y = 0;
-        Z = 0;
+        X = Y = Z = 0;
     };
 
     CellCoordinates(int16_t NewX, int16_t NewY, int16_t NewZ)
@@ -452,19 +457,19 @@ struct CellCoordinates
     {
         if (SourceCoordinates.X >= 0)
         {
-            X = SourceCoordinates.X / CELLEDGESIZE;
+            X = (SourceCoordinates.X >> CELLBITSHIFT);
         }
         else
         {
-            X = SourceCoordinates.X / CELLEDGESIZE - 1; //truncate to negative infinity
+            X = (SourceCoordinates.X >> CELLBITSHIFT) - 1; //truncate to negative infinity
         }
         if (SourceCoordinates.Y >= 0)
         {
-            Y = SourceCoordinates.Y / CELLEDGESIZE;
+            Y = (SourceCoordinates.Y >> CELLBITSHIFT);
         }
         else
         {
-            Y = SourceCoordinates.Y / CELLEDGESIZE - 1; //truncate to negative infinity
+            Y = (SourceCoordinates.Y >> CELLBITSHIFT) - 1; //truncate to negative infinity
         }
         Z = SourceCoordinates.Z;
     };
@@ -487,6 +492,8 @@ struct CellCoordinates
     int16_t Z;
 };
 
+
+/*
 struct CubeCoordinates
 {
     CubeCoordinates()
@@ -541,12 +548,13 @@ struct CubeCoordinates
 
     uint8_t Index;
 };
+*/
 
 struct FaceCoordinates
 {
     FaceCoordinates()
     {
-        Coordinates.Set(0, 0);
+        Coordinates = 0;
         FaceDirection = DIRECTION_UNKNOWN;
     };
 
@@ -571,13 +579,13 @@ struct FaceCoordinates
 
     inline void Set(int32_t NewX, int32_t NewY, int16_t NewZ, Direction DirectionComponent)
     {
-        Coordinates.X = NewX;   Coordinates.Y = NewY;
+        Coordinates = (NewX >> CELLBITSHIFT) + NewY;
         FaceDirection = DirectionComponent;
     };
 
     uint16_t FaceKey()
     {
-        uint16_t Key = Coordinates.Index;
+        uint16_t Key = Coordinates;
         Key <<= CELLBITSHIFT * 2;
 
         if (FaceDirection != DIRECTION_NONE)

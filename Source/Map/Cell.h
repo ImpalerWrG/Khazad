@@ -48,27 +48,27 @@ public:
     Ogre::Vector3 getCubePosition(CubeCoordinates Coordinates) const;
 
     void setCubeShape(CubeCoordinates Coordinates, TileShape NewShape);
-    inline TileShape getCubeShape(CubeCoordinates Coordinates) const             { return CubeShapeTypes[Coordinates.Index]; }
+    inline TileShape getCubeShape(CubeCoordinates Coordinates) const             { return CubeShapeTypes[Coordinates]; }
 
-    void setCubeMaterial(CubeCoordinates Coordinates, int16_t MaterialID)      { CubeMaterialTypes[Coordinates.Index] = MaterialID; }
-    inline int16_t getCubeMaterial(CubeCoordinates Coordinates) const          { return CubeMaterialTypes[Coordinates.Index]; }
+    void setCubeMaterial(CubeCoordinates Coordinates, int16_t MaterialID)      { CubeMaterialTypes[Coordinates] = MaterialID; }
+    inline int16_t getCubeMaterial(CubeCoordinates Coordinates) const          { return CubeMaterialTypes[Coordinates]; }
 
     bool isCubeSloped(CubeCoordinates Coordinates) const;
 
-    inline bool isCubeHidden(CubeCoordinates Coordinates)                         { return Hidden.test(Coordinates.Index); }
-    inline void setCubeHidden(CubeCoordinates Coordinates, bool NewValue)         { Hidden.set(Coordinates.Index, NewValue); }
+    inline bool isCubeHidden(CubeCoordinates Coordinates)                         { return Hidden.test(Coordinates); }
+    inline void setCubeHidden(CubeCoordinates Coordinates, bool NewValue)         { Hidden.set(Coordinates, NewValue); }
 
-    inline bool isCubeSubTerranean(CubeCoordinates Coordinates)                   { return SubTerranean.test(Coordinates.Index); }
-    inline void setCubeSubTerranean(CubeCoordinates Coordinates, bool NewValue)   { SubTerranean.set(Coordinates.Index, NewValue); }
+    inline bool isCubeSubTerranean(CubeCoordinates Coordinates)                   { return SubTerranean.test(Coordinates); }
+    inline void setCubeSubTerranean(CubeCoordinates Coordinates, bool NewValue)   { SubTerranean.set(Coordinates, NewValue); }
 
-    inline bool isCubeSkyView(CubeCoordinates Coordinates)                        { return SkyView.test(Coordinates.Index); }
-    inline void setCubeSkyView(CubeCoordinates Coordinates, bool NewValue)        { SkyView.set(Coordinates.Index, NewValue); }
+    inline bool isCubeSkyView(CubeCoordinates Coordinates)                        { return SkyView.test(Coordinates); }
+    inline void setCubeSkyView(CubeCoordinates Coordinates, bool NewValue)        { SkyView.set(Coordinates, NewValue); }
 
-    inline bool isCubeSunLit(CubeCoordinates Coordinates)                         { return SunLit.test(Coordinates.Index); }
-    inline void setCubeSunLit(CubeCoordinates Coordinates, bool NewValue)         { SunLit.set(Coordinates.Index, NewValue); }
+    inline bool isCubeSunLit(CubeCoordinates Coordinates)                         { return SunLit.test(Coordinates); }
+    inline void setCubeSunLit(CubeCoordinates Coordinates, bool NewValue)         { SunLit.set(Coordinates, NewValue); }
 
-    inline bool isCubeDrawn(CubeCoordinates Coordinates)                          { return Drawn.test(Coordinates.Index); }
-    inline void setCubeDrawn(CubeCoordinates Coordinates, bool NewValue)          { Drawn.set(Coordinates.Index, NewValue); }
+    inline bool isCubeDrawn(CubeCoordinates Coordinates)                          { return Drawn.test(Coordinates); }
+    inline void setCubeDrawn(CubeCoordinates Coordinates, bool NewValue)          { Drawn.set(Coordinates, NewValue); }
 
 
 

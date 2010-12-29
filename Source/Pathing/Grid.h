@@ -41,8 +41,8 @@ struct GridCell
         return thisCellCoodinates;
     }
 
-    DirectionFlags DirectionMatrix[CELLEDGESIZE][CELLEDGESIZE];
-    int ConnectivityZone[CELLEDGESIZE][CELLEDGESIZE];
+    DirectionFlags DirectionMatrix[CUBESPERCELL];
+    int ConnectivityZone[CUBESPERCELL];
 
     CellCoordinates thisCellCoodinates;
 };

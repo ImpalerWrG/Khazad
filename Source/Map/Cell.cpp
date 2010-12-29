@@ -61,10 +61,10 @@ bool Cell::Update()
 
 void Cell::setCubeShape(CubeCoordinates Coordinates, TileShape NewShape)
 {
-    if (NewShape != CubeShapeTypes[Coordinates.Index])
+    if (NewShape != CubeShapeTypes[Coordinates])
     {
         setFaceShape(FaceCoordinates(Coordinates, DIRECTION_NONE), NewShape);
-        CubeShapeTypes[Coordinates.Index] = NewShape;
+        CubeShapeTypes[Coordinates] = NewShape;
 
         setNeedsReBuild(true);
     }
@@ -75,10 +75,11 @@ void Cell::BuildFaceData()
     MapCoordinates TargetMapCoordinates;
     bool Debug = true;
 
-    for (CubeCoordinates TargetCubeCoordinates; TargetCubeCoordinates.Index < (CUBESPERCELL - 1); ++TargetCubeCoordinates)
+    CubeCoordinates TargetCube = 0;
+    do
     {
-        TileShape CubeShape = getCubeShape(TargetCubeCoordinates);
-        int16_t CubeMaterial = getCubeMaterial(TargetCubeCoordinates);
+        TileShape CubeShape = getCubeShape(TargetCube);
+        int16_t CubeMaterial = getCubeMaterial(TargetCube);
 
         static int16_t CubeSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
 
@@ -86,7 +87,7 @@ void Cell::BuildFaceData()
         {
             for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
             {
-                FaceCoordinates FaceLocation = FaceCoordinates(TargetCubeCoordinates, DirectionType);
+                FaceCoordinates FaceLocation = FaceCoordinates(TargetCube, DirectionType);
 
                 if (ParentMap->isCubeInited(TargetMapCoordinates))
                 {
@@ -103,13 +104,16 @@ void Cell::BuildFaceData()
 
         if (CubeShape > TILESHAPE_EMPTY && CubeShape < TILESHAPE_SOLID)
         {
-            Face* NewFace = addFace(FaceCoordinates(TargetCubeCoordinates, DIRECTION_NONE));
+            Face* NewFace = addFace(FaceCoordinates(TargetCube, DIRECTION_NONE));
 
             NewFace->setFaceMaterialType(CubeMaterial);
             NewFace->setFaceSurfaceType(CubeSurface);
             NewFace->setShapeType(CubeShape);
         }
+        TargetCube++;
     }
+    while (TargetCube != 0);  // End Loop when Byte rolls over
+
     Debug = false;
 }
 
@@ -273,8 +277,8 @@ Face* Cell::addFace(FaceCoordinates TargetCoordinates)
 
 Ogre::Vector3 Cell::getCubePosition(CubeCoordinates Coordinates) const
 {
-    float X = CellSceneNode->getPosition().x - (float)(CELLEDGESIZE / 2) + (float)Coordinates.X + (float)HALFCUBE;
-    float Y = CellSceneNode->getPosition().y - (float)(CELLEDGESIZE / 2) + (float)Coordinates.Y + (float)HALFCUBE;
+    float X = CellSceneNode->getPosition().x - (float)(CELLEDGESIZE / 2) + (float) (Coordinates >> CELLBITSHIFT) + (float)HALFCUBE;
+    float Y = CellSceneNode->getPosition().y - (float)(CELLEDGESIZE / 2) + (float) (Coordinates & CELLBITFLAG) + (float)HALFCUBE;
 
 	return Ogre::Vector3(X, Y, CellSceneNode->getPosition().z);
 }

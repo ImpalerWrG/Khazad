@@ -38,7 +38,7 @@ bool Actor::Init(MapCoordinates SpawnLocation, Ogre::MaterialPtr Mat, float Widt
 void Actor::setLocation(MapCoordinates NewPosition)
 {
     LocationCoordinates = NewPosition;
-    CurrentCubeCoordinates = CubeCoordinates(NewPosition);
+    CurrentCubeCoordinates = NewPosition.Cube();
 
     CellCoordinates NewCellCoords = CellCoordinates(NewPosition);
     Cell* NewCell = GAME->getMap()->getCell(NewCellCoords);

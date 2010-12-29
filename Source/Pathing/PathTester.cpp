@@ -47,19 +47,18 @@ void PathTester::CollectTestCoords()
             Cell* TargetCell = it->second;
             CellCoordinates CellCoords = TargetCell->getCellCoordinates();
 
-            CubeCoordinates TargetCubeCoords;
-            for (TargetCubeCoords.X = 0; TargetCubeCoords.X < CELLEDGESIZE; TargetCubeCoords.X++)
+            CubeCoordinates TargetCube = 0;
+            do
             {
-                for (TargetCubeCoords.Y = 0; TargetCubeCoords.Y < CELLEDGESIZE; TargetCubeCoords.Y++)
-                {
-                    MapCoordinates TestCoordinates = MapCoordinates(CellCoords, TargetCubeCoords);
+                MapCoordinates TestCoordinates = MapCoordinates(CellCoords, TargetCube);
 
-                    if (ParentManager->contains(TestCoordinates) && ParentManager->getDirectionFlags(TestCoordinates) != 0)
-                    {
-                        TestCoords.push_back(TestCoordinates);
-                    }
+                if (ParentManager->contains(TestCoordinates) && ParentManager->getDirectionFlags(TestCoordinates) != 0)
+                {
+                    TestCoords.push_back(TestCoordinates);
                 }
+                TargetCube++;
             }
+            while (TargetCube != 0);  // End Loop when Byte rolls over
         }
     }
 }

@@ -10,7 +10,7 @@
 Building::Building(MapCoordinates NewCoordinates, uint8_t Xlength, uint8_t Ylength, int16_t MaterialID, int16_t BuildingID)
 {
     MapCoords = NewCoordinates;
-    CubeCoords = CubeCoordinates(MapCoords);
+    CubeCoords = MapCoords.Cube();
 
     LengthX = Xlength + 1;
     LengthY = Ylength + 1;
