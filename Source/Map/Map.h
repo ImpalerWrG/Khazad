@@ -60,8 +60,8 @@ public:
 
     bool isCubeSloped(MapCoordinates Coordinates) const;
 
-    void setCubeShape(MapCoordinates Coordinates, TileShape NewShape);
-    inline TileShape getCubeShape(MapCoordinates Coordinates) const;
+    void setCubeShape(MapCoordinates Coordinates, CubeShape NewShape);
+    inline CubeShape getCubeShape(MapCoordinates Coordinates) const;
 
     void setCubeMaterial(MapCoordinates Coordinates, int16_t MaterialID);
     inline int16_t getCubeMaterial(MapCoordinates Coordinates) const;

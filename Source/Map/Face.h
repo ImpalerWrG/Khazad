@@ -16,17 +16,17 @@ public:
 
 	void setFaceMaterialType(int16_t NewMaterialTypeID);
 	void setFaceSurfaceType(int16_t NewSurfaceTypeID);
-	void setShapeType(TileShape NewShape);
+	void setShapeType(CubeShape NewShape);
 
     void RefreshEntity();
 
     int16_t getFaceMaterialType()           { return MaterialTypeID; }
     int16_t getFaceSurfaceType()            { return SurfaceTypeID; }
-    TileShape getFaceShapeType()            { return ShapeType; }
+    CubeShape getFaceShapeType()            { return ShapeType; }
 
 private:
 
-    TileShape ShapeType;
+    CubeShape ShapeType;
 
     Ogre::SceneNode* CellNode;
     CubeCoordinates LocationCoordinates;

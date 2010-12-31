@@ -342,34 +342,34 @@ int16_t Geology::getRockTypeAtCoordinates(CubeCoordinates Target, int32_t Zlevel
     return RockType0;
 }
 
-TileShape Geology::getTileShapeAtCoordinates(CubeCoordinates CubeTarget, int32_t Zlevel)
+CubeShape Geology::getCubeShapeAtCoordinates(CubeCoordinates CubeTarget, int32_t Zlevel)
 {
     float Remainder;
 
     Remainder = Height[(CubeTarget >> CELLBITSHIFT)][(CubeTarget & CELLBITFLAG)] - ((float) Zlevel);
-    int8_t SWCornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, 0.0f), (float) HEIGHT_FRACTIONS + 1);
+    int8_t SWCornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, (float) BELOW_CUBE_HEIGHT), (float) ABOVE_CUBE_HEIGHT);
 
     Remainder = Height[(CubeTarget >> CELLBITSHIFT) + 1][(CubeTarget & CELLBITFLAG)] - ((float) Zlevel);
-    int8_t SECornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, 0.0f), (float) HEIGHT_FRACTIONS + 1);
+    int8_t SECornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, (float) BELOW_CUBE_HEIGHT), (float) ABOVE_CUBE_HEIGHT);
 
     Remainder = Height[(CubeTarget >> CELLBITSHIFT)][(CubeTarget & CELLBITFLAG) + 1] - ((float) Zlevel);
-    int8_t NWCornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, 0.0f), (float) HEIGHT_FRACTIONS + 1);
+    int8_t NWCornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, (float) BELOW_CUBE_HEIGHT), (float) ABOVE_CUBE_HEIGHT);
 
     Remainder = Height[(CubeTarget >> CELLBITSHIFT) + 1][(CubeTarget & CELLBITFLAG) + 1] - ((float) Zlevel);
-    int8_t NECornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, 0.0f), (float) HEIGHT_FRACTIONS + 1);
+    int8_t NECornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, (float) BELOW_CUBE_HEIGHT), (float) ABOVE_CUBE_HEIGHT);
 
 
-    if (NECornerHeight == 0 || SWCornerHeight == 0)
+    if (NECornerHeight == BELOW_CUBE_HEIGHT || SWCornerHeight == BELOW_CUBE_HEIGHT || NECornerHeight == ABOVE_CUBE_HEIGHT || SWCornerHeight == ABOVE_CUBE_HEIGHT)
     {
-        return getTileShapeFromCornerHeight(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, true);
+        return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, 1);
     }
 
-    if (SECornerHeight == 0 || NWCornerHeight == 0)
+    if (SECornerHeight == BELOW_CUBE_HEIGHT || NWCornerHeight == BELOW_CUBE_HEIGHT || SECornerHeight == ABOVE_CUBE_HEIGHT || NWCornerHeight == ABOVE_CUBE_HEIGHT)
     {
-        return getTileShapeFromCornerHeight(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, false);
+        return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, 0);
     }
 
-    return getTileShapeFromCornerHeight(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, true);
+    return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, RandGenerator->Roll(0, 1));
 }
 
 void Geology::LoadCellData(Cell* TargetCell)
@@ -379,9 +379,9 @@ void Geology::LoadCellData(Cell* TargetCell)
     CubeCoordinates TargetCube = 0;
     do
     {
-        TileShape Shape = getTileShapeAtCoordinates(TargetCube, TargetCoordinates.Z);
+        CubeShape Shape = getCubeShapeAtCoordinates(TargetCube, TargetCoordinates.Z);
 
-        if (Shape != TILESHAPE_EMPTY)
+        if (!Shape.isEmpty())
         {
             int16_t MaterialType = getRockTypeAtCoordinates(TargetCube, TargetCoordinates.Z);
             TargetCell->setCubeMaterial(TargetCube, MaterialType);

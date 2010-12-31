@@ -21,10 +21,10 @@ KhazadGrid::KhazadGrid(Map* TargetMap)
             CubeCoordinates TargetCube = 0;
             do
             {
-                TileShape Shape = TargetCell->getCubeShape(TargetCube);
+                CubeShape Shape = TargetCell->getCubeShape(TargetCube);
                 uint32_t Flags = 0;
 
-                if (Shape > TILESHAPE_EMPTY && Shape < TILESHAPE_SOLID)
+                if (!Shape.isEmpty() && !Shape.isSolid())
                 {
                     //Flags |= (1 << (int) DIRECTION_NONE);
                     for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
@@ -39,9 +39,9 @@ KhazadGrid::KhazadGrid(Map* TargetMap)
                             continue;
                         }
 
-                        TileShape AdjacentTileShape = TargetMap->getCubeShape(AdjacentTileCoords);
+                        CubeShape AdjacentCubeShape = TargetMap->getCubeShape(AdjacentTileCoords);
 
-                        if (AdjacentTileShape != TILESHAPE_EMPTY || AdjacentTileShape != TILESHAPE_SOLID)
+                        if (!AdjacentCubeShape.isEmpty() || !AdjacentCubeShape.isSolid())
                         {
                             if (DirectionType == DIRECTION_DOWN)
                             {

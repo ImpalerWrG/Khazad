@@ -190,7 +190,7 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
 
                 MapCoordinates ClickCoordinates = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(State.X.abs / float(State.width), State.Y.abs / float(State.height)));
 
-                GAME->getMap()->setCubeShape(ClickCoordinates, TILESHAPE_EMPTY);
+                GAME->getMap()->setCubeShape(ClickCoordinates, CubeShape(false));
 
                 break;
             }

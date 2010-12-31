@@ -16,7 +16,7 @@ Cell::Cell()
     {
         for(uint8_t j = 0; j < CELLEDGESIZE; j++)
         {
-            CubeShapeTypes[(i * CELLEDGESIZE) + j] = TILESHAPE_EMPTY;
+            CubeShapeTypes[(i * CELLEDGESIZE) + j] = CubeShape(false);
             CubeMaterialTypes[(i * CELLEDGESIZE) + j] = INVALID_INDEX;
         }
     }
@@ -59,7 +59,7 @@ bool Cell::Update()
     return true;
 }
 
-void Cell::setCubeShape(CubeCoordinates Coordinates, TileShape NewShape)
+void Cell::setCubeShape(CubeCoordinates Coordinates, CubeShape NewShape)
 {
     if (NewShape != CubeShapeTypes[Coordinates])
     {
@@ -78,12 +78,12 @@ void Cell::BuildFaceData()
     CubeCoordinates TargetCube = 0;
     do
     {
-        TileShape CubeShape = getCubeShape(TargetCube);
+        CubeShape Shape = getCubeShape(TargetCube);
         int16_t CubeMaterial = getCubeMaterial(TargetCube);
 
         static int16_t CubeSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
 
-        if (CubeShape != TILESHAPE_EMPTY)
+        if (!Shape.isEmpty())
         {
             for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
             {
@@ -91,7 +91,7 @@ void Cell::BuildFaceData()
 
                 if (ParentMap->isCubeInited(TargetMapCoordinates))
                 {
-                    if (ParentMap->getCubeShape(TargetMapCoordinates) == TILESHAPE_EMPTY)
+                    if (ParentMap->getCubeShape(TargetMapCoordinates).isEmpty())
                     {
                         //Face* NewFace = addFace(TargetCubeCoordinates, DirectionType);
 
@@ -102,13 +102,13 @@ void Cell::BuildFaceData()
             }
         }
 
-        if (CubeShape > TILESHAPE_EMPTY && CubeShape < TILESHAPE_SOLID)
+        if (!Shape.isEmpty() && !Shape.isSolid())
         {
             Face* NewFace = addFace(FaceCoordinates(TargetCube, DIRECTION_NONE));
 
             NewFace->setFaceMaterialType(CubeMaterial);
             NewFace->setFaceSurfaceType(CubeSurface);
-            NewFace->setShapeType(CubeShape);
+            NewFace->setShapeType(Shape);
         }
         TargetCube++;
     }
@@ -137,10 +137,6 @@ void Cell::BuildStaticGeometry()
     // Iterate all Faces and RefreshEntites;
     for (std::map<uint16_t, Face*>::iterator it = Faces.begin(); it != Faces.end(); it++)
     {
-        if (it->second->getFaceMaterialType() == 118)
-        {
-            bool debug = true;
-        }
         it->second->RefreshEntity();
     }
 
@@ -215,19 +211,19 @@ bool Cell::setFaceSurfaceType(FaceCoordinates TargetCoordinates, int16_t Surface
     return false;
 }
 
-TileShape Cell::getFaceShape(FaceCoordinates TargetCoordinates) const
+CubeShape Cell::getFaceShape(FaceCoordinates TargetCoordinates) const
 {
     Face* TargetFace = getFace(TargetCoordinates);
-    return TargetFace != NULL ? TargetFace->getFaceShapeType() : NUM_TILESHAPES;
+    return TargetFace != NULL ? TargetFace->getFaceShapeType() : CubeShape(false);
 }
 
-bool Cell::setFaceShape(FaceCoordinates TargetCoordinates, TileShape NewShape)
+bool Cell::setFaceShape(FaceCoordinates TargetCoordinates, CubeShape NewShape)
 {
     Face* TargetFace = getFace(TargetCoordinates);
 
     if (TargetFace != NULL)
     {
-        if ((NewShape == TILESHAPE_EMPTY || NewShape == TILESHAPE_SOLID) && TargetCoordinates.FaceDirection == DIRECTION_NONE)
+        if ((NewShape.isSolid() || NewShape.isEmpty()) && TargetCoordinates.FaceDirection == DIRECTION_NONE)
         {
             removeFace(TargetCoordinates);
             setNeedsReBuild(true);
@@ -285,8 +281,8 @@ Ogre::Vector3 Cell::getCubePosition(CubeCoordinates Coordinates) const
 
 bool Cell::isCubeSloped(CubeCoordinates Coordinates) const
 {
-    TileShape CubeShape = getCubeShape(Coordinates);
-    return (CubeShape > TILESHAPE_EMPTY && CubeShape < TILESHAPE_SOLID);
+    CubeShape Shape = getCubeShape(Coordinates);
+    return (!Shape.isEmpty() && !Shape.isSolid());
 }
 
 void Cell::DrawCellCage()

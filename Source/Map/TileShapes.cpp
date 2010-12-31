@@ -13,9 +13,10 @@ void CreateAllEntities()
 
 void CreateFaceTiles()
 {
+    /*
     Ogre::ManualObject* ManualObject;
 
-    for (FaceShape Shape = FACESHAPE_START; Shape < NUM_FACESHAPES; ++Shape)
+    for (FaceShape Shape = FaceShape(); !Shape.isSolid(); Shape++)
     {
         ManualObject = RENDERER->getSceneManager()->createManualObject("ManualFaceTile");
         ManualObject->setDynamic(false);
@@ -81,6 +82,7 @@ void CreateFaceTiles()
         ManualObject->convertToMesh(buffer);
         RENDERER->getSceneManager()->destroyManualObject(ManualObject);
     }
+    */
 }
 
 void CreateFlatTiles()
@@ -491,243 +493,245 @@ void CreateSlopedTiles()
 {
     Ogre::ManualObject* ManualObject;
 
-    for (TileShape Shape = TILESHAPE_START; Shape < TILESHAPE_SOLID; ++Shape)
+    for (uint8_t SW = BELOW_CUBE_HEIGHT; SW <= ABOVE_CUBE_HEIGHT; ++SW)
     {
-        ManualObject = RENDERER->getSceneManager()->createManualObject("ManualRampTile");
-        ManualObject->setDynamic(false);
-
-        uint16_t HeightData = (uint16_t) Shape;
-        uint16_t Divisor = ((uint16_t) TILESHAPE_SOLID) + 1;
-
-        bool Triangle1 = false;
-        bool Triangle2 = false;
-
-        Divisor /= (HEIGHT_FRACTIONS + 2);
-        float NorthEastCorner = HeightData / Divisor;
-        HeightData %= Divisor;
-
-        Divisor /= (HEIGHT_FRACTIONS + 2);
-        float NorthWestCorner = HeightData / Divisor;
-        HeightData %= Divisor;
-
-        Divisor /= (HEIGHT_FRACTIONS + 2);
-        float SouthEastCorner = HeightData / Divisor;
-        HeightData %= Divisor;
-
-        Divisor /= (HEIGHT_FRACTIONS + 2);
-        float SouthWestCorner = HeightData / Divisor;
-        HeightData %= Divisor;
-
-        Divisor /= 2;
-        bool Split = HeightData / Divisor;
-
-
-        ManualObject->begin("BaseWhite", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+        for (uint8_t SE = BELOW_CUBE_HEIGHT; SE <= ABOVE_CUBE_HEIGHT; ++SE)
         {
-            Ogre::Vector3 Vertex0 = Ogre::Vector3(-HALFCUBE, -HALFCUBE, ((SouthWestCorner - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
-            Ogre::Vector3 Vertex1 = Ogre::Vector3( HALFCUBE, -HALFCUBE, ((SouthEastCorner - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
-            Ogre::Vector3 Vertex2 = Ogre::Vector3(-HALFCUBE,  HALFCUBE, ((NorthWestCorner - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
-            Ogre::Vector3 Vertex3 = Ogre::Vector3( HALFCUBE,  HALFCUBE, ((NorthEastCorner - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
-
-            if (Split)
+            for (uint8_t NW = BELOW_CUBE_HEIGHT; NW <= ABOVE_CUBE_HEIGHT; ++NW)
             {
-                if (SouthEastCorner > 0 && NorthEastCorner > 0 && NorthWestCorner > 0)
+                for (uint8_t NE = BELOW_CUBE_HEIGHT; NE <= ABOVE_CUBE_HEIGHT; ++NE)
                 {
-                    ManualObject->position(Vertex1);  // South East
-                    ManualObject->colour(Ogre::ColourValue::White);
-                    ManualObject->normal( ( Vertex3 - Vertex1 ).crossProduct( ( Vertex2 - Vertex1 ) ).normalisedCopy());
-                    ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
-
-                    ManualObject->position(Vertex3);  // North East
-                    ManualObject->colour(Ogre::ColourValue::White);
-                    ManualObject->normal( ( Vertex2 - Vertex3 ).crossProduct( ( Vertex1 - Vertex3 ) ).normalisedCopy());
-                    ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
-
-                    ManualObject->position(Vertex2);  // North West
-                    ManualObject->colour(Ogre::ColourValue::White);
-                    ManualObject->normal( ( Vertex1 - Vertex2 ).crossProduct( ( Vertex3 - Vertex2 ) ).normalisedCopy());
-                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
-
-                    ManualObject->triangle(0, 1, 2);  // SE->NE->NW
-                    Triangle1 = true;
-                }
-
-                if (NorthWestCorner > 0 && SouthWestCorner > 0 && SouthEastCorner > 0)
-                {
-                    ManualObject->position(Vertex2);  // North West
-                    ManualObject->colour(Ogre::ColourValue::White);
-                    ManualObject->normal( ( Vertex0 - Vertex2 ).crossProduct( ( Vertex1 - Vertex2 ) ).normalisedCopy());
-                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
-
-                    ManualObject->position(Vertex0);  // South West
-                    ManualObject->colour(Ogre::ColourValue::White);
-                    ManualObject->normal( ( Vertex1 - Vertex0 ).crossProduct( ( Vertex2 - Vertex0 ) ).normalisedCopy());
-                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
-
-                    ManualObject->position(Vertex1);  // South East
-                    ManualObject->colour(Ogre::ColourValue::White);
-                    ManualObject->normal( ( Vertex2 - Vertex1 ).crossProduct( ( Vertex0 - Vertex1 ) ).normalisedCopy());
-                    ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
-
-                    if (Triangle1)
+                    for (uint8_t Split = 0; Split <= 1; Split++)
                     {
-                        ManualObject->triangle(3, 4, 5);  // NW->SW->SE
-                    }
-                    else
-                    {
-                        ManualObject->triangle(0, 1, 2);  // NW->SW->SE
-                    }
+                        ManualObject = RENDERER->getSceneManager()->createManualObject("ManualRampTile");
+                        ManualObject->setDynamic(false);
 
-                    Triangle2 = true;
-                }
+                        bool Triangle1 = false;
+                        bool Triangle2 = false;
 
-                if ((Triangle1 ^ Triangle2) && (NorthWestCorner > 1 || SouthEastCorner > 1))  // One True and One False
-                {
-                    Ogre::Vector3 Normal;
-
-                    if (Triangle1)
-                    {
-                        Normal = Ogre::Vector3::NEGATIVE_UNIT_X + Ogre::Vector3::NEGATIVE_UNIT_Y;
-                    }
-                    else
-                    {
-                        Normal = Ogre::Vector3::UNIT_X + Ogre::Vector3::UNIT_Y;
-                    }
-
-                    Ogre::Vector3 Vertex4 = Ogre::Vector3( HALFCUBE, -HALFCUBE, -HALFCUBE);
-                    Ogre::Vector3 Vertex5 = Ogre::Vector3(-HALFCUBE,  HALFCUBE, -HALFCUBE);
-
-                    ManualObject->position(Vertex2);  // North West  3
-                    ManualObject->colour(Ogre::ColourValue::White);
-                    ManualObject->normal(Normal);
-                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
-
-                    ManualObject->position(Vertex1);  // South East  4
-                    ManualObject->colour(Ogre::ColourValue::White);
-                    ManualObject->normal(Normal);
-                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
-
-                    ManualObject->position(Vertex4);  // North West Bottom  5
-                    ManualObject->colour(Ogre::ColourValue::White);
-                    ManualObject->normal(Normal);
-                    ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
-
-                    ManualObject->position(Vertex5);  // South East Bottom  6
-                    ManualObject->colour(Ogre::ColourValue::White);
-                    ManualObject->normal(Normal);
-                    ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+                        float NorthEastCorner = NE;
+                        float NorthWestCorner = NW;
+                        float SouthEastCorner = SE;
+                        float SouthWestCorner = SW;
 
 
-                    if (Triangle1)
-                    {
-                        if (NorthWestCorner > 1)
+                        ManualObject->begin("BaseWhite", Ogre::RenderOperation::OT_TRIANGLE_LIST);
                         {
-                            ManualObject->triangle(4, 3, 5);  // NW->SW->NW Bottom
-                        }
-                        else
-                        {
-                            ManualObject->triangle(4, 3, 6);  // NW->SW->SW Bottom
+                            Ogre::Vector3 Vertex0 = Ogre::Vector3(-HALFCUBE, -HALFCUBE, ((SouthWestCorner - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
+                            Ogre::Vector3 Vertex1 = Ogre::Vector3( HALFCUBE, -HALFCUBE, ((SouthEastCorner - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
+                            Ogre::Vector3 Vertex2 = Ogre::Vector3(-HALFCUBE,  HALFCUBE, ((NorthWestCorner - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
+                            Ogre::Vector3 Vertex3 = Ogre::Vector3( HALFCUBE,  HALFCUBE, ((NorthEastCorner - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
+
+                            if (Split)
+                            {
+                                if (SouthEastCorner > CUBE_BOTTOM_HEIGHT || NorthEastCorner > CUBE_BOTTOM_HEIGHT || NorthWestCorner > CUBE_BOTTOM_HEIGHT)
+                                {
+                                    if (SouthEastCorner < ABOVE_CUBE_HEIGHT && NorthEastCorner < ABOVE_CUBE_HEIGHT && NorthWestCorner < ABOVE_CUBE_HEIGHT)
+                                    {
+                                        ManualObject->position(Vertex1);  // South East
+                                        ManualObject->colour(Ogre::ColourValue::White);
+                                        ManualObject->normal( ( Vertex3 - Vertex1 ).crossProduct( ( Vertex2 - Vertex1 ) ).normalisedCopy());
+                                        ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+
+                                        ManualObject->position(Vertex3);  // North East
+                                        ManualObject->colour(Ogre::ColourValue::White);
+                                        ManualObject->normal( ( Vertex2 - Vertex3 ).crossProduct( ( Vertex1 - Vertex3 ) ).normalisedCopy());
+                                        ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
+
+                                        ManualObject->position(Vertex2);  // North West
+                                        ManualObject->colour(Ogre::ColourValue::White);
+                                        ManualObject->normal( ( Vertex1 - Vertex2 ).crossProduct( ( Vertex3 - Vertex2 ) ).normalisedCopy());
+                                        ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+                                        ManualObject->triangle(0, 1, 2);  // SE->NE->NW
+                                        Triangle1 = true;
+                                    }
+                                }
+
+                                if (NorthWestCorner > CUBE_BOTTOM_HEIGHT || SouthWestCorner > CUBE_BOTTOM_HEIGHT || SouthEastCorner > CUBE_BOTTOM_HEIGHT)
+                                {
+                                    if (NorthWestCorner < ABOVE_CUBE_HEIGHT && SouthWestCorner < ABOVE_CUBE_HEIGHT && SouthEastCorner < ABOVE_CUBE_HEIGHT)
+                                    {
+                                        ManualObject->position(Vertex2);  // North West
+                                        ManualObject->colour(Ogre::ColourValue::White);
+                                        ManualObject->normal( ( Vertex0 - Vertex2 ).crossProduct( ( Vertex1 - Vertex2 ) ).normalisedCopy());
+                                        ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+                                        ManualObject->position(Vertex0);  // South West
+                                        ManualObject->colour(Ogre::ColourValue::White);
+                                        ManualObject->normal( ( Vertex1 - Vertex0 ).crossProduct( ( Vertex2 - Vertex0 ) ).normalisedCopy());
+                                        ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+
+                                        ManualObject->position(Vertex1);  // South East
+                                        ManualObject->colour(Ogre::ColourValue::White);
+                                        ManualObject->normal( ( Vertex2 - Vertex1 ).crossProduct( ( Vertex0 - Vertex1 ) ).normalisedCopy());
+                                        ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+
+                                        if (Triangle1)
+                                        {
+                                            ManualObject->triangle(3, 4, 5);  // NW->SW->SE
+                                        }
+                                        else
+                                        {
+                                            ManualObject->triangle(0, 1, 2);  // NW->SW->SE
+                                        }
+
+                                        Triangle2 = true;
+                                    }
+                                }
+
+                                if ((Triangle1 ^ Triangle2) && ((NorthWestCorner > CUBE_BOTTOM_HEIGHT || SouthEastCorner > CUBE_BOTTOM_HEIGHT) && (NorthWestCorner < CUBE_TOP_HEIGHT || SouthEastCorner < CUBE_TOP_HEIGHT)))  // One True and One False
+                                {
+                                    Ogre::Vector3 Normal;
+
+                                    if (Triangle1)
+                                    {
+                                        Normal = Ogre::Vector3::NEGATIVE_UNIT_X + Ogre::Vector3::NEGATIVE_UNIT_Y;
+                                    }
+                                    else
+                                    {
+                                        Normal = Ogre::Vector3::UNIT_X + Ogre::Vector3::UNIT_Y;
+                                    }
+
+                                    Ogre::Vector3 Vertex4 = Ogre::Vector3( HALFCUBE, -HALFCUBE, -HALFCUBE);
+                                    Ogre::Vector3 Vertex5 = Ogre::Vector3(-HALFCUBE,  HALFCUBE, -HALFCUBE);
+
+                                    ManualObject->position(Vertex2);  // North West  3
+                                    ManualObject->colour(Ogre::ColourValue::White);
+                                    ManualObject->normal(Normal);
+                                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+                                    ManualObject->position(Vertex1);  // South East  4
+                                    ManualObject->colour(Ogre::ColourValue::White);
+                                    ManualObject->normal(Normal);
+                                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+
+                                    ManualObject->position(Vertex4);  // North West Bottom  5
+                                    ManualObject->colour(Ogre::ColourValue::White);
+                                    ManualObject->normal(Normal);
+                                    ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+
+                                    ManualObject->position(Vertex5);  // South East Bottom  6
+                                    ManualObject->colour(Ogre::ColourValue::White);
+                                    ManualObject->normal(Normal);
+                                    ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+
+
+                                    if (Triangle1)
+                                    {
+                                        if (NorthWestCorner > 1)
+                                        {
+                                            ManualObject->triangle(4, 3, 5);  // NW->SW->NW Bottom
+                                        }
+                                        else
+                                        {
+                                            ManualObject->triangle(4, 3, 6);  // NW->SW->SW Bottom
+                                        }
+
+                                        if (SouthEastCorner > 1)
+                                        {
+                                            ManualObject->triangle(3, 6, 5);  // SW->SW Bottom->NW Bottom
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (SouthEastCorner > 1)
+                                        {
+                                            ManualObject->triangle(3, 4, 6);  // NW->SW->NW Bottom
+                                        }
+                                        else
+                                        {
+                                            ManualObject->triangle(3, 4, 5);  // NW->SW->SW Bottom
+                                        }
+
+                                        if (NorthWestCorner > 1)
+                                        {
+                                            ManualObject->triangle(4, 5, 6);  // SW->SW Bottom->NW Bottom
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (NorthEastCorner > CUBE_BOTTOM_HEIGHT || NorthWestCorner > CUBE_BOTTOM_HEIGHT || SouthWestCorner > CUBE_BOTTOM_HEIGHT)
+                                {
+                                    if (NorthEastCorner < ABOVE_CUBE_HEIGHT && NorthWestCorner < ABOVE_CUBE_HEIGHT && SouthWestCorner < ABOVE_CUBE_HEIGHT)
+                                    {
+                                        ManualObject->position(Vertex3);  // North East
+                                        ManualObject->colour(Ogre::ColourValue::White);
+                                        ManualObject->normal( ( Vertex2 - Vertex3 ).crossProduct( ( Vertex0 - Vertex3 ) ).normalisedCopy());
+                                        ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
+
+                                        ManualObject->position(Vertex2);  // North West
+                                        ManualObject->colour(Ogre::ColourValue::White);
+                                        ManualObject->normal( ( Vertex0 - Vertex2 ).crossProduct( ( Vertex3 - Vertex2 ) ).normalisedCopy());
+                                        ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+                                        ManualObject->position(Vertex0);  // South West
+                                        ManualObject->colour(Ogre::ColourValue::White);
+                                        ManualObject->normal( ( Vertex3 - Vertex0 ).crossProduct( ( Vertex2 - Vertex0 ) ).normalisedCopy());
+                                        ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+
+                                        ManualObject->triangle(0, 1, 2);  // NE->NW->SW
+                                        Triangle1 = true;
+                                    }
+                                }
+
+                                if (SouthWestCorner > CUBE_BOTTOM_HEIGHT || SouthEastCorner > CUBE_BOTTOM_HEIGHT || NorthEastCorner > CUBE_BOTTOM_HEIGHT)
+                                {
+                                    if (SouthWestCorner < ABOVE_CUBE_HEIGHT && SouthEastCorner < ABOVE_CUBE_HEIGHT && NorthEastCorner < ABOVE_CUBE_HEIGHT)
+                                    {
+                                        ManualObject->position(Vertex0);  // South West
+                                        ManualObject->colour(Ogre::ColourValue::White);
+                                        ManualObject->normal( ( Vertex1 - Vertex0 ).crossProduct( ( Vertex3 - Vertex0 ) ).normalisedCopy());
+                                        ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+
+                                        ManualObject->position(Vertex1);  // South East
+                                        ManualObject->colour(Ogre::ColourValue::White);
+                                        ManualObject->normal(( Vertex3 - Vertex1 ).crossProduct( ( Vertex0 - Vertex1 ) ).normalisedCopy());
+                                        ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+
+                                        ManualObject->position(Vertex3);  // North East
+                                        ManualObject->colour(Ogre::ColourValue::White);
+                                        ManualObject->normal(( Vertex0 - Vertex3 ).crossProduct( ( Vertex1 - Vertex3 ) ).normalisedCopy());
+                                        ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
+
+                                        if (Triangle1)
+                                        {
+                                            ManualObject->triangle(3, 4, 5);  // SW->SE->NE
+                                        }
+                                        else
+                                        {
+                                            ManualObject->triangle(0, 1, 2);  // SW->SE->NE
+                                        }
+                                        Triangle2 = true;
+                                    }
+                                }
+                            }
                         }
 
-                        if (SouthEastCorner > 1)
+                        if (Triangle1 || Triangle2)
                         {
-                            ManualObject->triangle(3, 6, 5);  // SW->SW Bottom->NW Bottom
-                        }
-                    }
-                    else
-                    {
-                        if (SouthEastCorner > 1)
-                        {
-                            ManualObject->triangle(3, 4, 6);  // NW->SW->NW Bottom
-                        }
-                        else
-                        {
-                            ManualObject->triangle(3, 4, 5);  // NW->SW->SW Bottom
+                            CubeShape NewCube = CubeShape(SW, SE, NW, NE, Split);
+
+                            char buffer[64];
+                            sprintf(buffer, "Slope%i", NewCube.Key());
+
+                            ManualObject->end();
+                            ManualObject->convertToMesh(buffer);
                         }
 
-                        if (NorthWestCorner > 1)
-                        {
-                            ManualObject->triangle(4, 5, 6);  // SW->SW Bottom->NW Bottom
-                        }
+                        RENDERER->getSceneManager()->destroyManualObject(ManualObject);
                     }
                 }
             }
-            else
-            {
-                if (NorthEastCorner > 0 && NorthWestCorner > 0 && SouthWestCorner > 0)
-                {
-                    ManualObject->position(Vertex3);  // North East
-                    ManualObject->colour(Ogre::ColourValue::White);
-                    ManualObject->normal( ( Vertex2 - Vertex3 ).crossProduct( ( Vertex0 - Vertex3 ) ).normalisedCopy());
-                    ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
-
-                    ManualObject->position(Vertex2);  // North West
-                    ManualObject->colour(Ogre::ColourValue::White);
-                    ManualObject->normal( ( Vertex0 - Vertex2 ).crossProduct( ( Vertex3 - Vertex2 ) ).normalisedCopy());
-                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
-
-                    ManualObject->position(Vertex0);  // South West
-                    ManualObject->colour(Ogre::ColourValue::White);
-                    ManualObject->normal( ( Vertex3 - Vertex0 ).crossProduct( ( Vertex2 - Vertex0 ) ).normalisedCopy());
-                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
-
-                    ManualObject->triangle(0, 1, 2);  // NE->NW->SW
-                    Triangle1 = true;
-                }
-
-                if (SouthWestCorner > 0 && SouthEastCorner > 0 && NorthEastCorner > 0)
-                {
-                    ManualObject->position(Vertex0);  // South West
-                    ManualObject->colour(Ogre::ColourValue::White);
-                    ManualObject->normal( ( Vertex1 - Vertex0 ).crossProduct( ( Vertex3 - Vertex0 ) ).normalisedCopy());
-                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
-
-                    ManualObject->position(Vertex1);  // South East
-                    ManualObject->colour(Ogre::ColourValue::White);
-                    ManualObject->normal(( Vertex3 - Vertex1 ).crossProduct( ( Vertex0 - Vertex1 ) ).normalisedCopy());
-                    ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
-
-                    ManualObject->position(Vertex3);  // North East
-                    ManualObject->colour(Ogre::ColourValue::White);
-                    ManualObject->normal(( Vertex0 - Vertex3 ).crossProduct( ( Vertex1 - Vertex3 ) ).normalisedCopy());
-                    ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
-
-                    if (Triangle1)
-                    {
-                        ManualObject->triangle(3, 4, 5);  // SW->SE->NE
-                    }
-                    else
-                    {
-                        ManualObject->triangle(0, 1, 2);  // SW->SE->NE
-                    }
-                    Triangle2 = true;
-                }
-            }
         }
-
-        if (Triangle1 || Triangle2)
-        {
-            char buffer[64];
-            sprintf(buffer, "Slope%i", (uint16_t) Shape);
-
-            ManualObject->end();
-            ManualObject->convertToMesh(buffer);
-        }
-
-        RENDERER->getSceneManager()->destroyManualObject(ManualObject);
     }
 }
 
-TileShape getTileShapeFromCornerHeight(uint8_t SWCorner, uint8_t SECorner, uint8_t NWCorner, uint8_t NECorner, bool SplittingLine)
+CubeShape getTileShapeFromCornerHeight(uint8_t SWCorner, uint8_t SECorner, uint8_t NWCorner, uint8_t NECorner, bool SplittingLine)
 {
-    uint16_t Shape = 0;
     uint16_t Sum = SWCorner + SECorner + NWCorner + NECorner;
-
-
-    if (SWCorner == 0 && SECorner == 2 && NWCorner == 2 && NECorner == 0)
-    {
-        bool debug = true;
-    }
 
     if (SplittingLine)
     {
@@ -735,26 +739,26 @@ TileShape getTileShapeFromCornerHeight(uint8_t SWCorner, uint8_t SECorner, uint8
         {
             if (Sum <= 3)
             {
-                return TILESHAPE_EMPTY;
+                return CubeShape(false);
             }
             if (NWCorner == 0 || SECorner == 0)
             {
-                return TILESHAPE_EMPTY;
+                return CubeShape(false);
             }
             if (SWCorner == 0 && NECorner == 0)
             {
-                return TILESHAPE_EMPTY;
+                return CubeShape(false);
             }
         }
         else
         {
             if (NWCorner == 0 || SECorner == 0)
             {
-                return TILESHAPE_EMPTY;
+                return CubeShape(false);
             }
             if (Sum <= 4)
             {
-                return TILESHAPE_EMPTY;
+                return CubeShape(false);
             }
 
         }
@@ -765,52 +769,31 @@ TileShape getTileShapeFromCornerHeight(uint8_t SWCorner, uint8_t SECorner, uint8
         {
             if (Sum <= 3)
             {
-                return TILESHAPE_EMPTY;
+                return CubeShape(false);;
             }
             if (SWCorner == 0 || NECorner == 0)
             {
-                return TILESHAPE_EMPTY;
+                return CubeShape(false);;
             }
             if (NWCorner == 0 && SECorner == 0)
             {
-                return TILESHAPE_EMPTY;
+                return CubeShape(false);;
             }
         }
         else
         {
             if (SWCorner == 0 || NECorner == 0)
             {
-                return TILESHAPE_EMPTY;
+                return CubeShape(false);;
             }
             if (Sum <= 4)
             {
-                return TILESHAPE_EMPTY;
+                return CubeShape(false);;
             }
         }
     }
 
-    //if (((NECorner <= SECorner) && (NECorner <= NWCorner))  &&  ((SWCorner >= SECorner) && (SWCorner >= NWCorner)))  // Break quad along a NW-SE line
-
-    uint16_t Multiplier = 1;
-
-    if (SplittingLine)
-    {
-        Shape += 1;  // Bit 0 holds the triangle split value, 1 is NW-SE splitting, 0 indicates the alternative SW-NE split
-    }
-    Multiplier *= 2;
-
-    Shape += SWCorner * Multiplier;
-    Multiplier *= (HEIGHT_FRACTIONS + 2);
-
-    Shape += SECorner * Multiplier;
-    Multiplier *= (HEIGHT_FRACTIONS + 2);
-
-    Shape += NWCorner * Multiplier;
-    Multiplier *= (HEIGHT_FRACTIONS + 2);
-
-    Shape += NECorner * Multiplier;
-
-    return (TileShape) Shape;
+    return CubeShape(SWCorner, SECorner, NWCorner, NECorner, (uint8_t) SplittingLine);
 }
 
 FaceShape getFaceShapeFromCornerHeight(Direction DirectionType, uint8_t NegativeCorner, uint8_t PossitiveCorner)

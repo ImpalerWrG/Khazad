@@ -32,6 +32,15 @@ private:
     Ogre::SceneNode* BoxNode;
 
     bool Active;
+
+    /* Redesign
+    std::vector< Cell* > Cells  // Pointer to each Cell in which the Zone exists
+
+    std::vector< bitset< CUBESPERCELL > > isZone;  // parrellel vector of booleans flagging the individual Cubes in Cells as part of Zone
+
+    when expanding a zone, the Map::isZone flag is set
+
+    */
 };
 
 #endif // ZONE__HEADER

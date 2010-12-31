@@ -69,8 +69,8 @@ void MainGameScreen::SetDirty()
         CEGUI::Window* LocationDisplay = GUI->getWindowManager()->getWindow("MainGameScreen/SelectionWindow/LocationWindow/LocationDisplay");
         LocationDisplay->setText(buffer);
 
-        TileShape Shape = GAME->getMap()->getCubeShape(Location);
-        sprintf(buffer, "%i", (uint16_t) Shape);
+        CubeShape Shape = GAME->getMap()->getCubeShape(Location);
+        sprintf(buffer, "SW%i SE%i NW%i NE%i ", Shape.SouthWestCorner, Shape.SouthEastCorner, Shape.NorthWestCorner, Shape.NorthEastCorner);
         CEGUI::Window* TileTypeDisplay = GUI->getWindowManager()->getWindow("MainGameScreen/SelectionWindow/TileTypeWindow/TileTypeDisplay");
         TileTypeDisplay->setText(buffer);
     }

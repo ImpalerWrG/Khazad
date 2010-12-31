@@ -11,25 +11,28 @@ Face::Face(Ogre::SceneNode* CellSceneNode, CubeCoordinates TargetCoordinates)
 	SurfaceTypeID = INVALID_INDEX;
 	MaterialTypeID = INVALID_INDEX;
 
-    ShapeType = NUM_TILESHAPES;
+    ShapeType = CubeShape(false);
     CellNode = CellSceneNode;
 	LocationCoordinates = TargetCoordinates;
 }
 
 void Face::RefreshEntity()
 {
-    if (SurfaceTypeID != INVALID_INDEX && MaterialTypeID != INVALID_INDEX && ShapeType != NUM_TILESHAPES)
+    if (SurfaceTypeID != INVALID_INDEX && MaterialTypeID != INVALID_INDEX && !ShapeType.isEmpty() && !ShapeType.isSolid())
     {
         Ogre::SceneNode* NewNode = CellNode->createChildSceneNode();
         NewNode->setPosition((LocationCoordinates >> CELLBITSHIFT) - (CELLEDGESIZE / 2) + HALFCUBE, (LocationCoordinates & CELLBITFLAG) - (CELLEDGESIZE / 2) + HALFCUBE, 0);
 
         char buffer[64];
-        sprintf(buffer, "Slope%i", (uint16_t) ShapeType);
+        sprintf(buffer, "Slope%i", ShapeType.Key());
 
-        Ogre::Entity* NewEntity = RENDERER->getSceneManager()->createEntity(buffer);
-        NewEntity->setMaterial(TEXTURE->getOgreMaterial(MaterialTypeID, SurfaceTypeID));
+        if(!Ogre::MeshManager::getSingleton().getByName(buffer).isNull())
+        {
+            Ogre::Entity* NewEntity = RENDERER->getSceneManager()->createEntity(buffer);
+            NewEntity->setMaterial(TEXTURE->getOgreMaterial(MaterialTypeID, SurfaceTypeID));
 
-        NewNode->attachObject(NewEntity);
+            NewNode->attachObject(NewEntity);
+        }
     }
 
 
@@ -81,7 +84,7 @@ void Face::setFaceSurfaceType(int16_t NewSurfaceTypeID)
     }
 }
 
-void Face::setShapeType(TileShape NewShape)
+void Face::setShapeType(CubeShape NewShape)
 {
     if (NewShape != ShapeType)
     {

@@ -204,7 +204,7 @@ bool Map::isCubeSloped(MapCoordinates Coordinates) const
     return TargetCell != NULL ? TargetCell->isCubeSloped(Coordinates.Cube()) : false;
 }
 
-void Map::setCubeShape(MapCoordinates Coordinates, TileShape NewShape)
+void Map::setCubeShape(MapCoordinates Coordinates, CubeShape NewShape)
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
@@ -214,11 +214,11 @@ void Map::setCubeShape(MapCoordinates Coordinates, TileShape NewShape)
     }
 }
 
-TileShape Map::getCubeShape(MapCoordinates Coordinates) const
+CubeShape Map::getCubeShape(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
-    return TargetCell != NULL ? TargetCell->getCubeShape(Coordinates.Cube()) : NUM_TILESHAPES;
+    return TargetCell != NULL ? TargetCell->getCubeShape(Coordinates.Cube()) : CubeShape(false);
 }
 
 void Map::setCubeMaterial(MapCoordinates Coordinates, int16_t MaterialID)
@@ -366,8 +366,8 @@ void Map::Dig(MapCoordinates Coordinates)
 
     if (isCubeInited(Coordinates))
     {
-        TileShape Shape = getCubeShape(Coordinates);
-        if (Shape != TILESHAPE_EMPTY)
+        CubeShape Shape = getCubeShape(Coordinates);
+        if (!Shape.isEmpty())
         {
             for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
             {
@@ -376,7 +376,7 @@ void Map::Dig(MapCoordinates Coordinates)
 
                 if (DirectionType == DIRECTION_DOWN)
                 {
-                    if (Shape != TILESHAPE_EMPTY)
+                    if (!Shape.isEmpty())
                     {
                         Face* TargetFace = getFace(Coordinates, DirectionType);
                         if (TargetFace == NULL)
@@ -394,7 +394,7 @@ void Map::Dig(MapCoordinates Coordinates)
                 }
                 else
                 {
-                    if (Shape != TILESHAPE_EMPTY)
+                    if (!Shape.isEmpty())
                     {
                         Face* TargetFace = getFace(Coordinates, DirectionType);
                         if (TargetFace == NULL)
@@ -413,7 +413,7 @@ void Map::Dig(MapCoordinates Coordinates)
             }
 
             setCubeHidden(Coordinates, false);
-            setCubeShape(Coordinates, TILESHAPE_FLOOR);
+            setCubeShape(Coordinates, CubeShape(false));
 
             setCubeMaterial(Coordinates, INVALID_INDEX);
         }
@@ -433,19 +433,19 @@ void Map::Fill(MapCoordinates Coordinates, int16_t MaterialID)
 
     if (isCubeInited(Coordinates))
     {
-        TileShape Shape = getCubeShape(Coordinates);
-        if (Shape != TILESHAPE_SOLID)
+        CubeShape Shape = getCubeShape(Coordinates);
+        if (!Shape.isSolid())
         {
-            setCubeShape(Coordinates, TILESHAPE_SOLID);
+            setCubeShape(Coordinates, CubeShape(true));
             setCubeMaterial(Coordinates, MaterialID);
 
             for(Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
             {
                 MapCoordinates ModifiedCoordinates = Coordinates;
                 ModifiedCoordinates.TranslateMapCoordinates(DirectionType);
-                TileShape AdjacentShape = getCubeShape(ModifiedCoordinates);
+                CubeShape AdjacentShape = getCubeShape(ModifiedCoordinates);
 
-                if (AdjacentShape != TILESHAPE_EMPTY || !isCubeInited(ModifiedCoordinates))  //((AxisFromDirection(DirectionType) == AXIS_Z) && (!)))
+                if (!AdjacentShape.isEmpty() || !isCubeInited(ModifiedCoordinates))  //((AxisFromDirection(DirectionType) == AXIS_Z) && (!)))
                 {
                     Face* TargetFace = getFace(Coordinates, DirectionType);
                     if (TargetFace == NULL)
@@ -492,8 +492,8 @@ MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay)
             MapCoordinates TestCoords = MapCoordinates(MouseRay.getPoint(result.second));
             if (isCubeInited(TestCoords))
             {
-                TileShape Shape = getCubeShape(TestCoords);
-                if (Shape != TILESHAPE_EMPTY && Shape != TILESHAPE_SOLID)
+                CubeShape Shape = getCubeShape(TestCoords);
+                if (!Shape.isEmpty() && !Shape.isSolid())
                 {
                     LastRayTestResult = TestCoords;
                     return TestCoords;

@@ -492,64 +492,6 @@ struct CellCoordinates  // Holds the relative Relative position of Map Cells, 6 
     int16_t Z;
 };
 
-
-/*
-struct CubeCoordinates
-{
-    CubeCoordinates()
-    {
-        X = 0;
-        Y = 0;
-        Index = 0;
-    };
-
-    CubeCoordinates(uint8_t NewX, uint8_t NewY)
-    {
-        X = NewX;   Y = NewY;
-
-        Index = (NewX << CELLBITSHIFT) + NewY;
-    };
-
-    CubeCoordinates& operator= (const CubeCoordinates& ArgumentCoordinates)
-    {
-        X = ArgumentCoordinates.X;
-        Y = ArgumentCoordinates.Y;
-
-        Index = ArgumentCoordinates.Index;
-
-        return *this;
-    };
-
-    CubeCoordinates& operator++()
-    {
-        Index++;    X = Index >> CELLBITSHIFT;   Y = Index & CELLBITFLAG;
-
-        return *this;
-    }
-
-    void Set(uint8_t NewX, uint8_t NewY)
-    {
-        X = NewX;       Y = NewY;
-
-        Index = (X << CELLBITSHIFT) + Y;
-    };
-
-    CubeCoordinates(MapCoordinates SourceCoordinates)
-    {
-        X = SourceCoordinates.X & CELLBITFLAG;
-        Y = SourceCoordinates.Y & CELLBITFLAG;
-
-        Index = (X << CELLBITSHIFT) + Y;
-    };
-
-
-    uint8_t X;
-    uint8_t Y;
-
-    uint8_t Index;
-};
-*/
-
 struct FaceCoordinates
 {
     FaceCoordinates()
@@ -594,7 +536,7 @@ struct FaceCoordinates
         }
 
         return Key;
-    }
+    };
 
     CubeCoordinates Coordinates;
     Direction FaceDirection;

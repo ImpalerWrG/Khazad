@@ -47,8 +47,8 @@ public:
 
     Ogre::Vector3 getCubePosition(CubeCoordinates Coordinates) const;
 
-    void setCubeShape(CubeCoordinates Coordinates, TileShape NewShape);
-    inline TileShape getCubeShape(CubeCoordinates Coordinates) const             { return CubeShapeTypes[Coordinates]; }
+    void setCubeShape(CubeCoordinates Coordinates, CubeShape NewShape);
+    inline CubeShape getCubeShape(CubeCoordinates Coordinates) const             { return CubeShapeTypes[Coordinates]; }
 
     void setCubeMaterial(CubeCoordinates Coordinates, int16_t MaterialID)      { CubeMaterialTypes[Coordinates] = MaterialID; }
     inline int16_t getCubeMaterial(CubeCoordinates Coordinates) const          { return CubeMaterialTypes[Coordinates]; }
@@ -67,8 +67,8 @@ public:
     inline bool isCubeSunLit(CubeCoordinates Coordinates)                         { return SunLit.test(Coordinates); }
     inline void setCubeSunLit(CubeCoordinates Coordinates, bool NewValue)         { SunLit.set(Coordinates, NewValue); }
 
-    inline bool isCubeDrawn(CubeCoordinates Coordinates)                          { return Drawn.test(Coordinates); }
-    inline void setCubeDrawn(CubeCoordinates Coordinates, bool NewValue)          { Drawn.set(Coordinates, NewValue); }
+    inline bool isCubeZone(CubeCoordinates Coordinates)                          { return Zone.test(Coordinates); }
+    inline void setCubeZone(CubeCoordinates Coordinates, bool NewValue)          { Zone.set(Coordinates, NewValue); }
 
 
 
@@ -83,8 +83,8 @@ public:
     int16_t getFaceSurfaceType(FaceCoordinates TargetCoordinates) const;
     bool setFaceSurfaceType(FaceCoordinates TargetCoordinates, int16_t SurfaceTypeID);
 
-    TileShape getFaceShape(FaceCoordinates TargetCoordinates) const;
-    bool setFaceShape(FaceCoordinates TargetCoordinates, TileShape NewShape);
+    CubeShape getFaceShape(FaceCoordinates TargetCoordinates) const;
+    bool setFaceShape(FaceCoordinates TargetCoordinates, CubeShape NewShape);
 
     bool removeFace(FaceCoordinates TargetCoordinates);
     Face* addFace(FaceCoordinates TargetCoordinates);
@@ -116,15 +116,16 @@ protected:
     uint16_t TriangleCount;
 
     // Data specific to each Cube
-    TileShape CubeShapeTypes[CUBESPERCELL];
+    CubeShape CubeShapeTypes[CUBESPERCELL];
     int16_t CubeMaterialTypes[CUBESPERCELL];
 
     // Bit values for each Cube
-    bitset<(CUBESPERCELL)> Hidden;
-    bitset<(CUBESPERCELL)> SubTerranean;
-    bitset<(CUBESPERCELL)> SkyView;
-    bitset<(CUBESPERCELL)> SunLit;
-    bitset<(CUBESPERCELL)> Drawn;
+    bitset<CUBESPERCELL> Hidden;
+    bitset<CUBESPERCELL> SubTerranean;
+    bitset<CUBESPERCELL> SkyView;
+    bitset<CUBESPERCELL> SunLit;
+    bitset<CUBESPERCELL> Zone;
+
 
     // Keeps all Faces between and inside Cubes
     std::map<uint16_t, Face*> Faces;
