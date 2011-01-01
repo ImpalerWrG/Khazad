@@ -11,9 +11,6 @@
 #include <Timer.h>
 
 
-
-//using namespace Ogre;
-
 bool Init()
 {
 

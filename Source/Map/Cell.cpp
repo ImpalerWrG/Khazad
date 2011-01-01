@@ -10,16 +10,10 @@
 
 Cell::Cell()
 {
-    Initialized = false;
+    CubeShape EmptyCube = CubeShape(false);
+    CubeShapeTypes.assign(EmptyCube);
 
-    for(uint8_t i = 0; i < CELLEDGESIZE; i++)
-    {
-        for(uint8_t j = 0; j < CELLEDGESIZE; j++)
-        {
-            CubeShapeTypes[(i * CELLEDGESIZE) + j] = CubeShape(false);
-            CubeMaterialTypes[(i * CELLEDGESIZE) + j] = INVALID_INDEX;
-        }
-    }
+    CubeMaterialTypes.assign(INVALID_INDEX);
 
     Hidden.reset();
     SubTerranean.reset();
@@ -36,7 +30,6 @@ Cell::~Cell()
 
 bool Cell::InitializeCell(Map* Parent)
 {
-    Initialized = true;
     NeedsReBuild = true;
 
     ParentMap = Parent;

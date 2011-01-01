@@ -9,6 +9,7 @@
 #include <OgreVector3.h>
 
 #include <bitset>
+#include <boost/array.hpp>
 
 class Building;
 class Tree;
@@ -25,15 +26,9 @@ public:
     ~Cell();
 
     bool InitializeCell(Map* ParentMap);
-    bool isInitialized()    { return Initialized; }
 
     void setCellPosition(CellCoordinates Coordinates);
 
-
-    //void Render(CameraOrientation CurrentOrientation);
-
-    // update VBOs
-    //void UpdateRenderLists(WallDisplayMode Mode);
     void LoadCellData(Geology* MapGeology);
 
     bool Update();
@@ -110,33 +105,27 @@ protected:
 
     bool NeedsReBuild;
 
-    bool Initialized;
-
-
-    uint16_t TriangleCount;
-
-    // Data specific to each Cube
-    CubeShape CubeShapeTypes[CUBESPERCELL];
-    int16_t CubeMaterialTypes[CUBESPERCELL];
+    // Larger DataValues specific to each Cube
+    boost::array< CubeShape, CUBESPERCELL > CubeShapeTypes;
+    boost::array< int16_t, CUBESPERCELL > CubeMaterialTypes;
 
     // Bit values for each Cube
-    bitset<CUBESPERCELL> Hidden;
-    bitset<CUBESPERCELL> SubTerranean;
-    bitset<CUBESPERCELL> SkyView;
-    bitset<CUBESPERCELL> SunLit;
-    bitset<CUBESPERCELL> Zone;
-
+    std::bitset< CUBESPERCELL > Hidden;
+    std::bitset< CUBESPERCELL > SubTerranean;
+    std::bitset< CUBESPERCELL > SkyView;
+    std::bitset< CUBESPERCELL > SunLit;
+    std::bitset< CUBESPERCELL > Zone;
 
     // Keeps all Faces between and inside Cubes
     std::map<uint16_t, Face*> Faces;
 
+    // Game Objects located in the Cell for easy reference
     std::vector <Building*> buildings;
     std::vector <Tree*> trees;
     std::vector <Actor*> LocalActors;
 
     // Exact spacial Coordinates of the center of the cell, used for rendering
     Ogre::SceneNode* CellSceneNode;
-
 
     // The global position of this cell relative to other cells
     CellCoordinates thisCellCoordinates;
