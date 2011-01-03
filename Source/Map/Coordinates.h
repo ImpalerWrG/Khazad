@@ -301,6 +301,9 @@ struct MapCoordinates
                 break;
             case DIRECTION_NONE:
                 break;
+
+            default:
+                break;
         }
     };
 
@@ -332,6 +335,9 @@ struct MapCoordinates
                 break;
             case AXIS_X:
                 X = NewValue;
+                break;
+
+            default:
                 break;
         }
     }
@@ -519,7 +525,7 @@ struct FaceCoordinates
         FaceDirection = DirectionComponent;
     };
 
-    inline void Set(int32_t NewX, int32_t NewY, int16_t NewZ, Direction DirectionComponent)
+    inline void Set(int32_t NewX, int32_t NewY, Direction DirectionComponent)
     {
         Coordinates = (NewX >> CELLBITSHIFT) + NewY;
         FaceDirection = DirectionComponent;

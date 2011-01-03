@@ -65,10 +65,14 @@ void Cell::setCubeShape(CubeCoordinates Coordinates, CubeShape NewShape)
 {
     if (NewShape != CubeShapeTypes[Coordinates])
     {
-        setFaceShape(FaceCoordinates(Coordinates, DIRECTION_NONE), NewShape);
         CubeShapeTypes[Coordinates] = NewShape;
-
         setNeedsReBuild(true);
+
+        Face* TargetFace = getFace(FaceCoordinates(Coordinates, DIRECTION_NONE));
+        if (TargetFace != NULL)
+        {
+            setFaceShape(FaceCoordinates(Coordinates, DIRECTION_NONE), FaceShape(NewShape, DIRECTION_NONE));
+        }
     }
 }
 
@@ -110,7 +114,7 @@ void Cell::BuildFaceData()
 
             NewFace->setFaceMaterialType(CubeMaterial);
             NewFace->setFaceSurfaceType(CubeSurface);
-            NewFace->setShapeType(Shape);
+            NewFace->setFaceShapeType(FaceShape(Shape, DIRECTION_NONE));
         }
         TargetCube++;
     }
@@ -203,30 +207,21 @@ bool Cell::setFaceSurfaceType(FaceCoordinates TargetCoordinates, int16_t Surface
     return false;
 }
 
-CubeShape Cell::getFaceShape(FaceCoordinates TargetCoordinates) const
+FaceShape Cell::getFaceShape(FaceCoordinates TargetCoordinates) const
 {
     Face* TargetFace = getFace(TargetCoordinates);
-    return TargetFace != NULL ? TargetFace->getFaceShapeType() : CubeShape(false);
+    return TargetFace != NULL ? TargetFace->getFaceShapeType() : FaceShape(CubeShape(false), DIRECTION_NONE);
 }
 
-bool Cell::setFaceShape(FaceCoordinates TargetCoordinates, CubeShape NewShape)
+bool Cell::setFaceShape(FaceCoordinates TargetCoordinates, FaceShape NewShape)
 {
     Face* TargetFace = getFace(TargetCoordinates);
 
     if (TargetFace != NULL)
     {
-        if ((NewShape.isSolid() || NewShape.isEmpty()) && TargetCoordinates.FaceDirection == DIRECTION_NONE)
-        {
-            removeFace(TargetCoordinates);
-            setNeedsReBuild(true);
-            return true;
-        }
-        else
-        {
-            TargetFace->setShapeType(NewShape);
-            setNeedsReBuild(true);
-            return true;
-        }
+        TargetFace->setFaceShapeType(NewShape);
+        setNeedsReBuild(true);
+        return true;
     }
     return false;
 }
@@ -252,7 +247,7 @@ Face* Cell::addFace(FaceCoordinates TargetCoordinates)
 
     if (Faces.find(Key) == Faces.end())
     {
-        Face* NewFace = new Face(CellSceneNode, TargetCoordinates.Coordinates);
+        Face* NewFace = new Face(CellSceneNode, TargetCoordinates.Coordinates, TargetCoordinates.FaceDirection);
         Faces[Key] = NewFace;
 
         return NewFace;

@@ -78,8 +78,8 @@ public:
     int16_t getFaceSurfaceType(FaceCoordinates TargetCoordinates) const;
     bool setFaceSurfaceType(FaceCoordinates TargetCoordinates, int16_t SurfaceTypeID);
 
-    CubeShape getFaceShape(FaceCoordinates TargetCoordinates) const;
-    bool setFaceShape(FaceCoordinates TargetCoordinates, CubeShape NewShape);
+    FaceShape getFaceShape(FaceCoordinates TargetCoordinates) const;
+    bool setFaceShape(FaceCoordinates TargetCoordinates, FaceShape NewShape);
 
     bool removeFace(FaceCoordinates TargetCoordinates);
     Face* addFace(FaceCoordinates TargetCoordinates);

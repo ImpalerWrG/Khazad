@@ -79,50 +79,6 @@ struct CubeShape
         return Flags & 1;
     }
 
-    CubeShape& operator++()
-    {
-        if (SouthWestHeight() < HEIGHT_FRACTIONS + 2)
-        {
-            SouthWestCorner++;
-        }
-        else if (SouthEastHeight() < HEIGHT_FRACTIONS + 2)
-        {
-            SouthWestCorner = 0;
-            SouthEastCorner++;
-        }
-        else if (NorthWestHeight() < HEIGHT_FRACTIONS + 2)
-        {
-            SouthWestCorner = 0;
-            SouthEastCorner = 0;
-            NorthWestCorner++;
-        }
-        else if (NorthEastHeight() < HEIGHT_FRACTIONS + 2)
-        {
-            SouthWestCorner = 0;
-            SouthEastCorner = 0;
-            NorthWestCorner = 0;
-            NorthEastCorner++;
-        }
-        else if (Flags)
-        {
-            SouthWestCorner = 0;
-            SouthEastCorner = 0;
-            NorthWestCorner = 0;
-            NorthEastCorner = 0;
-            Flags = 1;
-        }
-        else
-        {
-            SouthWestCorner = 0;
-            SouthEastCorner = 0;
-            NorthWestCorner = 0;
-            NorthEastCorner = 0;
-            Flags = 0;
-        }
-
-        return *this;
-    }
-
     bool operator== (const CubeShape& ArgumentShape)
     {
         return SouthWestCorner == ArgumentShape.SouthWestCorner && SouthEastCorner == ArgumentShape.SouthEastCorner && NorthWestCorner == ArgumentShape.NorthWestCorner && NorthEastCorner == ArgumentShape.NorthEastCorner;
@@ -133,15 +89,6 @@ struct CubeShape
         return SouthWestCorner != ArgumentShape.SouthWestCorner || SouthEastCorner != ArgumentShape.SouthEastCorner || NorthWestCorner != ArgumentShape.NorthWestCorner || NorthEastCorner != ArgumentShape.NorthEastCorner;
     }
 
-    uint32_t Key()
-    {
-        uint32_t Key = 0;
-
-        Key = ((SouthWestCorner & 15) << 16) + ((SouthEastCorner & 15) << 12) + ((NorthWestCorner & 15) << 8) + ((NorthEastCorner & 15) << 4) + Flags;
-
-        return Key;
-    }
-
     uint8_t Flags;       // Which direction the Triangles split along and other possible Flags
 
     uint8_t SouthWestCorner;  // SouthWest and SouthEast packed bits
@@ -150,36 +97,79 @@ struct CubeShape
     uint8_t NorthEastCorner;  // NorthWest and SouthEast packed bits
 };
 
-enum FaceShape  // Describes vertical faces between cubes, 2 bits of Directedion, 2 bits for each face height
+struct FaceShape
 {
-    FACESHAPE_EMPTY = 0,
+    FaceShape()
+    {
+        CubeComponent = CubeShape(false);
+        FaceDirection = DIRECTION_UNKNOWN;
+    }
 
-    // implicit face shape combinations
+    FaceShape(CubeShape ShapeType, Direction DirectionType)
+    {
+        CubeComponent = ShapeType;
+        FaceDirection = DirectionType;
+    }
 
-    FACESHAPE_SOUTH = 15,
+    bool operator== (const FaceShape& ArgumentShape)
+    {
+        return CubeComponent == ArgumentShape.CubeComponent && FaceDirection == ArgumentShape.FaceDirection;
+    }
 
-    FACESHAPE_NORTH = 32,
+    bool operator!= (const FaceShape& ArgumentShape)
+    {
+        return CubeComponent != ArgumentShape.CubeComponent || FaceDirection != ArgumentShape.FaceDirection;
+    }
 
-    FACESHAPE_WEST = 47,
+    void getName(char* buffer)
+    {
+        if (FaceDirection == DIRECTION_NONE)
+        {
+            uint32_t Hash = ((CubeComponent.SouthWestCorner & 15) << 16) + ((CubeComponent.SouthEastCorner & 15) << 12) + ((CubeComponent.NorthWestCorner & 15) << 8) + ((CubeComponent.NorthEastCorner & 15) << 4) + CubeComponent.Flags;
 
-    FACESHAPE_EAST = 63,
+            sprintf(buffer, "Slope%i", Hash);
+        }
+        else
+        {
+            switch (FaceDirection)
+            {
+                uint32_t Hash;
 
-    // Add other tile shapes here but increment NUM
-    NUM_FACESHAPES = 64,
-    FACESHAPE_START = 0
+                case DIRECTION_NORTH:
+                    Hash = ((CubeComponent.NorthWestCorner & 15) << 8) + ((CubeComponent.NorthEastCorner & 15) << 4);
+                    sprintf(buffer, "NorthFace%i", Hash);
+                    break;
+
+                case DIRECTION_SOUTH:
+                    Hash = ((CubeComponent.SouthWestCorner & 15) << 8) + ((CubeComponent.SouthEastCorner & 15) << 4);
+                    sprintf(buffer, "SouthFace%i", Hash);
+                    break;
+
+                case DIRECTION_EAST:
+                    Hash = ((CubeComponent.NorthEastCorner & 15) << 8) + ((CubeComponent.SouthEastCorner & 15) << 4);
+                    sprintf(buffer, "EastFace%i", Hash);
+                    break;
+
+                case DIRECTION_WEST:
+                    Hash = ((CubeComponent.NorthWestCorner & 15) << 8) + ((CubeComponent.SouthWestCorner & 15) << 4);
+                    sprintf(buffer, "WestFace%i", Hash);
+                    break;
+
+                default:
+                    sprintf(buffer, "NoFace");
+            }
+        }
+    }
+
+    CubeShape CubeComponent;
+
+    Direction FaceDirection;
 };
 
-
 void CreateAllEntities();
-
-void CreateFlatTiles();
 
 void CreateFaceTiles();
 
 void CreateSlopedTiles();
-
-CubeShape getTileShapeFromCornerHeight(uint8_t SWCorner, uint8_t SECorner, uint8_t NWCorner, uint8_t NECorner, bool SplittingLine);
-
-FaceShape getFaceShapeFromCornerHeight(Direction DirectionType, uint8_t NegativeCorner, uint8_t PossitiveCorner);
 
 #endif // TILESHAPE__HEADER

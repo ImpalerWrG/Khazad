@@ -194,7 +194,7 @@ Face* Map::addFace(MapCoordinates TargetMapCoordinates, Direction DirectionType)
         insertCell(TargetCell, CellCoordinates(ConvertedValues.first));
     }
 
-    return TargetCell->getFace(FaceCoordinates(ConvertedValues.first.Cube(), ConvertedValues.second));
+    return TargetCell->addFace(FaceCoordinates(ConvertedValues.first.Cube(), ConvertedValues.second));
 }
 
 bool Map::isCubeSloped(MapCoordinates Coordinates) const
@@ -358,75 +358,7 @@ void Map::setCubeSunLit(MapCoordinates Coordinates, bool NewValue)
     }
 }
 
-void Map::Dig(MapCoordinates Coordinates)
-{
-    static int16_t FloorID = DATA->getLabelIndex("TILESHAPE_FLOOR");
-    static int16_t RoughWallID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
-    static int16_t RoughFloorID = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
-
-    if (isCubeInited(Coordinates))
-    {
-        CubeShape Shape = getCubeShape(Coordinates);
-        if (!Shape.isEmpty())
-        {
-            for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
-            {
-                MapCoordinates ModifiedCoordinates = Coordinates;
-                ModifiedCoordinates.TranslateMapCoordinates(DirectionType);
-
-                if (DirectionType == DIRECTION_DOWN)
-                {
-                    if (!Shape.isEmpty())
-                    {
-                        Face* TargetFace = getFace(Coordinates, DirectionType);
-                        if (TargetFace == NULL)
-                        {
-                            TargetFace = addFace(Coordinates, DIRECTION_DOWN);
-                        }
-
-                        TargetFace->setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
-                        TargetFace->setFaceSurfaceType(RoughFloorID);
-                    }
-                    else
-                    {
-                        removeFace(Coordinates, DirectionType);
-                    }
-                }
-                else
-                {
-                    if (!Shape.isEmpty())
-                    {
-                        Face* TargetFace = getFace(Coordinates, DirectionType);
-                        if (TargetFace == NULL)
-                        {
-                            TargetFace = addFace(Coordinates, DirectionType);
-                        }
-
-                        TargetFace->setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
-                        TargetFace->setFaceSurfaceType(RoughWallID);
-                    }
-                    else
-                    {
-                        removeFace(Coordinates, DirectionType);
-                    }
-                }
-            }
-
-            setCubeHidden(Coordinates, false);
-            setCubeShape(Coordinates, CubeShape(false));
-
-            setCubeMaterial(Coordinates, INVALID_INDEX);
-        }
-
-        // reveal tiles around
-        for(Direction DirectionType = COMPASS_DIRECTIONS_START; DirectionType < NUM_COMPASS_DIRECTIONS; ++DirectionType)
-        {
-            setCubeHidden(MapCoordinates(Coordinates, DirectionType), false);
-        }
-    }
-}
-
-void Map::Fill(MapCoordinates Coordinates, int16_t MaterialID)
+void Map::UpdateCubeShape(MapCoordinates Coordinates, CubeShape NewShape)
 {
     static int16_t RoughWallID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
     static int16_t RoughFloorID = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
@@ -434,44 +366,62 @@ void Map::Fill(MapCoordinates Coordinates, int16_t MaterialID)
     if (isCubeInited(Coordinates))
     {
         CubeShape Shape = getCubeShape(Coordinates);
-        if (!Shape.isSolid())
+        if (Shape != NewShape)
         {
-            setCubeShape(Coordinates, CubeShape(true));
-            setCubeMaterial(Coordinates, MaterialID);
-
-            for(Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
+            setCubeShape(Coordinates, NewShape);
+            for (Direction DirectionType = CARDINAL_DIRECTIONS_START; DirectionType < NUM_CARDINAL_DIRECTIONS; ++DirectionType)
             {
                 MapCoordinates ModifiedCoordinates = Coordinates;
                 ModifiedCoordinates.TranslateMapCoordinates(DirectionType);
                 CubeShape AdjacentShape = getCubeShape(ModifiedCoordinates);
 
-                if (!AdjacentShape.isEmpty() || !isCubeInited(ModifiedCoordinates))  //((AxisFromDirection(DirectionType) == AXIS_Z) && (!)))
+                if (NewShape.isEmpty() && !AdjacentShape.isEmpty())
                 {
+                    setCubeMaterial(Coordinates, INVALID_INDEX);
+
+                    Face* TargetFace = getFace(ModifiedCoordinates, OppositeDirection(DirectionType));
+                    if (TargetFace == NULL)
+                    {
+                        TargetFace = addFace(ModifiedCoordinates, OppositeDirection(DirectionType));
+                    }
+
+                    TargetFace->setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
+                    TargetFace->setFaceShapeType(FaceShape(AdjacentShape, OppositeDirection(DirectionType)));
+                    TargetFace->setFaceSurfaceType(RoughWallID);
+                }
+                else
+                {
+                    //removeFace(ModifiedCoordinates, OppositeDirection(DirectionType));
+                }
+
+                /*
+                if (!NewShape.isEmpty() && AdjacentShape.isEmpty())
+                {
+
                     Face* TargetFace = getFace(Coordinates, DirectionType);
                     if (TargetFace == NULL)
                     {
                         TargetFace = addFace(Coordinates, DirectionType);
                     }
 
-                    if (TargetFace != NULL)
-                    {
-                        if (DirectionType == DIRECTION_UP)
-                        {
-                            TargetFace->setFaceMaterialType(MaterialID);
-                            TargetFace->setFaceSurfaceType(RoughFloorID);
-                        }
-                        else
-                        {
-                            TargetFace->setFaceMaterialType(MaterialID);
-                            TargetFace->setFaceSurfaceType(RoughWallID);
-                        }
-                    }
+                    TargetFace->setFaceMaterialType(getCubeMaterial(Coordinates));
+                    TargetFace->setFaceShapeType(FaceShape(NewShape, DirectionType));
+                    TargetFace->setFaceSurfaceType(RoughWallID);
                 }
                 else
                 {
-                    removeFace(Coordinates, DirectionType);
+                    //removeFace(Coordinates, DirectionType);
                 }
+                */
             }
+
+            setCubeHidden(Coordinates, false);
+        }
+
+        // reveal tiles around
+        for(Direction DirectionType = COMPASS_DIRECTIONS_START; DirectionType < NUM_COMPASS_DIRECTIONS; ++DirectionType)
+        {
+            setCubeHidden(MapCoordinates(Coordinates, DirectionType), false);
         }
     }
 }

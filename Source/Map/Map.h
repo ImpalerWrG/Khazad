@@ -102,8 +102,7 @@ public:
 
     void ReleaseMap();
 
-    void Dig(MapCoordinates Coordinates);
-    void Fill(MapCoordinates Coordinates, int16_t MaterialID);
+    void UpdateCubeShape(MapCoordinates Coordinates, CubeShape NewShape);
 
     uint32_t getCellCount() const             { return Cells.size(); }
 

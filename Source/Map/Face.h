@@ -11,22 +11,22 @@ class Face
 {
 public:
 
-	Face(Ogre::SceneNode* CellSceneNode, CubeCoordinates TargetCoordinates);
+	Face(Ogre::SceneNode* CellSceneNode, CubeCoordinates TargetCoordinates, Direction DirectionType);
 	~Face();
 
 	void setFaceMaterialType(int16_t NewMaterialTypeID);
 	void setFaceSurfaceType(int16_t NewSurfaceTypeID);
-	void setShapeType(CubeShape NewShape);
+	void setFaceShapeType(FaceShape NewShape);
 
     void RefreshEntity();
 
     int16_t getFaceMaterialType()           { return MaterialTypeID; }
     int16_t getFaceSurfaceType()            { return SurfaceTypeID; }
-    CubeShape getFaceShapeType()            { return ShapeType; }
+    FaceShape getFaceShapeType()            { return FaceType; }
 
 private:
 
-    CubeShape ShapeType;
+    FaceShape FaceType;
 
     Ogre::SceneNode* CellNode;
     CubeCoordinates LocationCoordinates;

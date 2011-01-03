@@ -6,25 +6,25 @@
 #include <Renderer.h>
 
 
-Face::Face(Ogre::SceneNode* CellSceneNode, CubeCoordinates TargetCoordinates)
+Face::Face(Ogre::SceneNode* CellSceneNode, CubeCoordinates TargetCoordinates, Direction DirectionType)
 {
 	SurfaceTypeID = INVALID_INDEX;
 	MaterialTypeID = INVALID_INDEX;
 
-    ShapeType = CubeShape(false);
+    FaceType = FaceShape(CubeShape(false), DirectionType);
     CellNode = CellSceneNode;
 	LocationCoordinates = TargetCoordinates;
 }
 
 void Face::RefreshEntity()
 {
-    if (SurfaceTypeID != INVALID_INDEX && MaterialTypeID != INVALID_INDEX && !ShapeType.isEmpty() && !ShapeType.isSolid())
+    if (SurfaceTypeID != INVALID_INDEX && MaterialTypeID != INVALID_INDEX && !FaceType.CubeComponent.isEmpty() && !FaceType.CubeComponent.isSolid())
     {
         Ogre::SceneNode* NewNode = CellNode->createChildSceneNode();
         NewNode->setPosition((LocationCoordinates >> CELLBITSHIFT) - (CELLEDGESIZE / 2) + HALFCUBE, (LocationCoordinates & CELLBITFLAG) - (CELLEDGESIZE / 2) + HALFCUBE, 0);
 
         char buffer[64];
-        sprintf(buffer, "Slope%i", ShapeType.Key());
+        FaceType.getName(buffer);
 
         if(!Ogre::MeshManager::getSingleton().getByName(buffer).isNull())
         {
@@ -34,29 +34,6 @@ void Face::RefreshEntity()
             NewNode->attachObject(NewEntity);
         }
     }
-
-
-
-    /*
-    if (DirectionType == DIRECTION_UP)
-    {
-        OgreEntityPositive = RENDERER->getSceneManager()->createEntity("UpTile");
-        OgreEntityPositive->setCastShadows(false);
-        PositionNode->attachObject(OgreEntityPositive);
-    }
-    if (DirectionType == DIRECTION_NORTH)
-    {
-        OgreEntityPositive = RENDERER->getSceneManager()->createEntity("NorthTile");
-        OgreEntityPositive->setCastShadows(false);
-        PositionNode->attachObject(OgreEntityPositive);
-    }
-    if (DirectionType == DIRECTION_EAST)
-    {
-        OgreEntityPositive = RENDERER->getSceneManager()->createEntity("EastTile");
-        OgreEntityPositive->setCastShadows(false);
-        PositionNode->attachObject(OgreEntityPositive);
-    }
-    */
 }
 
 Face::~Face()
@@ -84,11 +61,11 @@ void Face::setFaceSurfaceType(int16_t NewSurfaceTypeID)
     }
 }
 
-void Face::setShapeType(CubeShape NewShape)
+void Face::setFaceShapeType(FaceShape NewShape)
 {
-    if (NewShape != ShapeType)
+    if (NewShape != FaceType)
     {
-        ShapeType = NewShape;
+        FaceType = NewShape;
 
 		//Set Cell needsRedraw
     }
