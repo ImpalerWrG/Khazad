@@ -3,17 +3,21 @@
 <GUILayout >
     <Window Type="DefaultWindow" Name="MainGameScreen" >
         <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1.00651,0}}" />
-        <Window Type="ArkanaLook/Image" Name="MainGameScreen/TopBar/PauseButton" >
-			<Property Name="Image" Value="set:ArkanaLook image:full_image" />
-            <Property Name="UnifiedAreaRect" Value="{{0,138},{0.126779,0},{0,188},{0.926779,0}}" />
-        </Window>
-        <Window Type="ArkanaLook/VerticalDecoScrollbar" Name="MainGameScreen/DepthScroller" >
-            <Property Name="PageSize" Value="10" />
+        <Window Type="ArkanaLook/VerticalDecoScrollbar" Name="MainGameScreen/DepthScrollerTop" >
+            <Property Name="PageSize" Value="1" />
             <Property Name="StepSize" Value="1" />
             <Property Name="OverlapSize" Value="0" />
-            <Property Name="DocumentSize" Value="100" />
-            <Property Name="ScrollPosition" Value="50" />
+            <Property Name="DocumentSize" Value="1" />
+            <Property Name="ScrollPosition" Value="0" />
             <Property Name="UnifiedAreaRect" Value="{{1,-25},{0,50},{1,0},{1,-50}}" />
+        </Window>
+        <Window Type="ArkanaLook/VerticalDecoScrollbar" Name="MainGameScreen/DepthScrollerBottom" >
+            <Property Name="PageSize" Value="1" />
+            <Property Name="StepSize" Value="1" />
+            <Property Name="OverlapSize" Value="0" />
+            <Property Name="DocumentSize" Value="1" />
+            <Property Name="ScrollPosition" Value="0" />
+            <Property Name="UnifiedAreaRect" Value="{{1,-53},{0,53},{0.972656,0},{1,-47}}" />
         </Window>
         <Window Type="ArkanaLook/ContainerBox" Name="MainGameScreen/TopBar" >
             <Property Name="UnifiedAreaRect" Value="{{0,-7},{0,0},{1,0},{0,50}}" />

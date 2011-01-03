@@ -61,7 +61,7 @@ public:
     bool isCubeSloped(MapCoordinates Coordinates) const;
 
     void setCubeShape(MapCoordinates Coordinates, CubeShape NewShape);
-    inline CubeShape getCubeShape(MapCoordinates Coordinates) const;
+    CubeShape getCubeShape(MapCoordinates Coordinates) const;
 
     void setCubeMaterial(MapCoordinates Coordinates, int16_t MaterialID);
     inline int16_t getCubeMaterial(MapCoordinates Coordinates) const;
@@ -107,9 +107,14 @@ public:
 
     uint32_t getCellCount() const             { return Cells.size(); }
 
+    Ogre::SceneNode* getZlevelNode(int32_t Zlevel);
+    void setSliceLevels(int32_t Top, int32_t Bottom);
 
     MapCoordinates getRayIntersection(Ogre::Ray MouseRay);
     //MapCoordinates getMapCenter() const;
+
+    int32_t getHighest()                            { return HighestCell; }
+    int32_t getLowest()                             { return LowestCell; }
 
     Zone* getZone() const;
     void addZone(Zone* NewZone);
@@ -127,14 +132,14 @@ protected:
 
     std::map<uint64_t, Cell*> Cells;
 
-    uint32_t HighestCell;
-    uint32_t LowestCell;
+    std::vector< Ogre::SceneNode* > ZLevelSpindle;   // Organizes the Root Node for each Zlevel
+
+    int32_t HighestCell;
+    int32_t LowestCell;
 
     std::vector<Zone*> Zones;
 
     Zone* ActiveZone;
-
-    uint32_t FaceCount;
 
     MapCoordinates LastRayTestResult;  // Used to smoothout Map Picking
 };

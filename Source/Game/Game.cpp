@@ -84,9 +84,9 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
             {
                 CellCoordinates TargetCellCoordinates = CellCoordinates(x, y, z);
                 Cell* NewCell = new Cell();
-                NewCell->setCellPosition(TargetCellCoordinates);
 
                 NewCell->InitializeCell(MainMap);
+                NewCell->setCellPosition(TargetCellCoordinates);
 
                 MainMap->insertCell(NewCell, TargetCellCoordinates);
                 MapGeology->LoadCellData(NewCell);

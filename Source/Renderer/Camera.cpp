@@ -2,6 +2,8 @@
 
 #include <Ogre.h>
 #include <Renderer.h>
+#include <Game.h>
+#include <Map.h>
 
 
 Camera::Camera()
@@ -121,9 +123,9 @@ void Camera::ChangeViewLevel(int32_t Change)
 {
     if (Change != 0)
     {
-        /*
-        int ZMax = MAP->getMapSizeZ();
+        int32_t ZMax = GAME->getMap()->getHighest() - GAME->getMap()->getLowest();
         ///FIXME: possible off-by-one errors?
+
         if(SliceTop + Change > ZMax)
         {
             Change = ZMax - SliceTop;
@@ -136,10 +138,28 @@ void Camera::ChangeViewLevel(int32_t Change)
         SliceBottom += Change;
         ViewLevels = SliceTop - SliceBottom;
 
-        UI->setZSliders(SliceTop,SliceBottom);
-        //generateViewFrustum();
-        */
+        //UI->setZSliders(SliceTop, SliceBottom);
+
+        GAME->getMap()->setSliceLevels(SliceTop, SliceBottom);
     }
+}
+
+void Camera::SetSlice(int16_t newTop, int16_t newBottome)
+{
+    SliceTop = newTop;
+    if(SliceBottom >= SliceTop)
+    {
+        SliceBottom = SliceTop - 1;
+    }
+
+    SliceBottom = newBottome;
+    if(SliceTop <= SliceBottom)
+    {
+        SliceTop = SliceBottom + 1;
+    }
+    ViewLevels = SliceTop - SliceBottom;
+
+    GAME->getMap()->setSliceLevels(SliceTop, SliceBottom);
 }
 
 void Camera::SetSliceTop(int16_t newValue)
@@ -150,7 +170,8 @@ void Camera::SetSliceTop(int16_t newValue)
         SliceBottom = SliceTop - 1;
     }
     ViewLevels = SliceTop - SliceBottom;
-    //generateViewFrustum();
+
+    GAME->getMap()->setSliceLevels(SliceTop, SliceBottom);
 }
 
 void Camera::SetSliceBottom(int16_t newValue)
@@ -161,7 +182,8 @@ void Camera::SetSliceBottom(int16_t newValue)
         SliceTop = SliceBottom + 1;
     }
     ViewLevels = SliceTop - SliceBottom;
-    //generateViewFrustum();
+
+    GAME->getMap()->setSliceLevels(SliceTop, SliceBottom);
 }
 
 bool Camera::InSlice(int16_t Zlevel)

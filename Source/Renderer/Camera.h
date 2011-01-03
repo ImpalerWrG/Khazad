@@ -23,6 +23,7 @@ public:
     void TranslateCamera(float X, float Y);
 
     void ChangeViewLevel(int32_t Change);
+    void SetSlice(int16_t newTop, int16_t newBottome);
     void SetSliceTop(int16_t newValue);
     void SetSliceBottom(int16_t newValue);
 

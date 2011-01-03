@@ -476,6 +476,75 @@ void Map::Fill(MapCoordinates Coordinates, int16_t MaterialID)
     }
 }
 
+Ogre::SceneNode* Map::getZlevelNode(int32_t Zlevel)
+{
+    if (Zlevel - LowestCell < 0)
+    {
+        Ogre::SceneNode* NewZLevelNode;
+        do
+        {
+            if (ZLevelSpindle.size() == 0)
+            {
+                HighestCell = LowestCell = Zlevel;
+            }
+
+            NewZLevelNode = RENDERER->getRootNode()->createChildSceneNode();
+            NewZLevelNode->setPosition(0, 0, LowestCell--);
+            ZLevelSpindle.insert(ZLevelSpindle.begin(), NewZLevelNode);
+        }
+        while (Zlevel - LowestCell < 0);
+
+        return NewZLevelNode;
+    }
+
+    if (Zlevel >= ZLevelSpindle.size() + LowestCell)
+    {
+        Ogre::SceneNode* NewZLevelNode;
+        do
+        {
+            if (ZLevelSpindle.size() == 0)
+            {
+                HighestCell = LowestCell = Zlevel;
+            }
+
+            NewZLevelNode = RENDERER->getRootNode()->createChildSceneNode();
+            NewZLevelNode->setPosition(0, 0, HighestCell++);
+            ZLevelSpindle.push_back(NewZLevelNode);
+        }
+        while (Zlevel >= ZLevelSpindle.size() + LowestCell);
+
+        return NewZLevelNode;
+    }
+
+    return ZLevelSpindle[Zlevel - LowestCell];
+}
+
+void Map::setSliceLevels(int32_t Top, int32_t Bottom)
+{
+    for (std::vector< Ogre::SceneNode* >::iterator it = ZLevelSpindle.begin(); it != ZLevelSpindle.end(); it++)
+    {
+        (*it)->setVisible(false);
+    }
+
+    for (uint32_t i = Bottom; i <= Top; i++)
+    {
+        getZlevelNode(i)->setVisible(true);
+    }
+
+    for (std::map<uint64_t, Cell*>::const_iterator it = Cells.begin(); it != Cells.end(); it++)
+    {
+        int32_t ZLevel = it->second->getCellCoordinates().Z;
+        if (ZLevel > Top || ZLevel < Bottom)
+        {
+            it->second->getCellGeometry()->setVisible(false);
+        }
+        else
+        {
+            it->second->getCellGeometry()->setVisible(true);
+        }
+    }
+}
+
 MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay)
 {
     Ogre::Plane TestPlane;

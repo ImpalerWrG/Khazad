@@ -43,7 +43,7 @@ public:
     Ogre::Vector3 getCubePosition(CubeCoordinates Coordinates) const;
 
     void setCubeShape(CubeCoordinates Coordinates, CubeShape NewShape);
-    inline CubeShape getCubeShape(CubeCoordinates Coordinates) const             { return CubeShapeTypes[Coordinates]; }
+    CubeShape getCubeShape(CubeCoordinates Coordinates) const                  { return CubeShapeTypes[Coordinates]; }
 
     void setCubeMaterial(CubeCoordinates Coordinates, int16_t MaterialID)      { CubeMaterialTypes[Coordinates] = MaterialID; }
     inline int16_t getCubeMaterial(CubeCoordinates Coordinates) const          { return CubeMaterialTypes[Coordinates]; }
@@ -97,6 +97,7 @@ public:
     CellCoordinates getCellCoordinates()                { return thisCellCoordinates; }
     Ogre::Vector3 getPosition()                         { return CellSceneNode->getPosition(); }
 
+    Ogre::StaticGeometry* getCellGeometry()             { return CellGeometry; }
 
     int addActor(Actor* NewActor);
     void removeActor(int Index);
@@ -126,6 +127,7 @@ protected:
 
     // Exact spacial Coordinates of the center of the cell, used for rendering
     Ogre::SceneNode* CellSceneNode;
+    Ogre::StaticGeometry* CellGeometry;
 
     // The global position of this cell relative to other cells
     CellCoordinates thisCellCoordinates;

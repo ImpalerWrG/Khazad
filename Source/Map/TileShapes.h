@@ -138,6 +138,8 @@ struct CubeShape
         uint32_t Key = 0;
 
         Key = ((SouthWestCorner & 15) << 16) + ((SouthEastCorner & 15) << 12) + ((NorthWestCorner & 15) << 8) + ((NorthEastCorner & 15) << 4) + Flags;
+
+        return Key;
     }
 
     uint8_t Flags;       // Which direction the Triangles split along and other possible Flags

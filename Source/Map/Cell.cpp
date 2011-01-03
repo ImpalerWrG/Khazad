@@ -19,8 +19,6 @@ Cell::Cell()
     SubTerranean.reset();
     SkyView.reset();
     SunLit.reset();
-
-    CellSceneNode = RENDERER->getRootNode()->createChildSceneNode();
 }
 
 Cell::~Cell()
@@ -39,12 +37,23 @@ bool Cell::InitializeCell(Map* Parent)
 
 void Cell::setCellPosition(CellCoordinates Coordinates)
 {
+    thisCellCoordinates = Coordinates;
+
     float x = (float) (Coordinates.X * CELLEDGESIZE) + (CELLEDGESIZE / 2) - HALFCUBE;
     float y = (float) (Coordinates.Y * CELLEDGESIZE) + (CELLEDGESIZE / 2) - HALFCUBE;
-    float z = (float) Coordinates.Z;
 
-    CellSceneNode->setPosition(x, y, z);
-    thisCellCoordinates = Coordinates;
+    Ogre::SceneNode* ZNode = ParentMap->getZlevelNode(thisCellCoordinates.Z);
+    CellSceneNode = ZNode->createChildSceneNode();
+
+    CellSceneNode->setPosition(x, y, 0);
+
+    char buffer[64];
+    sprintf(buffer, "Cell%i-%i-%i",  thisCellCoordinates.X, thisCellCoordinates.Y, thisCellCoordinates.Z);
+
+    if (!RENDERER->getSceneManager()->hasStaticGeometry(buffer))
+    {
+        CellGeometry = RENDERER->getSceneManager()->createStaticGeometry(buffer);
+    }
 }
 
 bool Cell::Update()
@@ -112,36 +121,26 @@ void Cell::BuildFaceData()
 
 void Cell::BuildStaticGeometry()
 {
-    char buffer[64];
-    sprintf(buffer, "Cell%i-%i-%i",  thisCellCoordinates.X, thisCellCoordinates.Y, thisCellCoordinates.Z);
-
-    Ogre::StaticGeometry* CellGeometry;
-
-    if (!RENDERER->getSceneManager()->hasStaticGeometry(buffer))
+    if (CellGeometry != NULL)
     {
-        CellGeometry = RENDERER->getSceneManager()->createStaticGeometry(buffer);
-    }
-    else
-    {
-        CellGeometry = RENDERER->getSceneManager()->getStaticGeometry(buffer);
         CellGeometry->reset();
+
+        // Iterate all Faces and RefreshEntites;
+        for (std::map<uint16_t, Face*>::iterator it = Faces.begin(); it != Faces.end(); it++)
+        {
+            it->second->RefreshEntity();
+        }
+
+        CellGeometry->addSceneNode(CellSceneNode);
+        CellGeometry->setCastShadows(false);
+
+        CellGeometry->build();
+
+        DestroyAllAttachedEntities(CellSceneNode);
+        //CellSceneNode->attachObject(CellGeometry);
+
+        NeedsReBuild = false;
     }
-
-    // Iterate all Faces and RefreshEntites;
-    for (std::map<uint16_t, Face*>::iterator it = Faces.begin(); it != Faces.end(); it++)
-    {
-        it->second->RefreshEntity();
-    }
-
-
-    CellGeometry->addSceneNode(CellSceneNode);
-    CellGeometry->setCastShadows(false);
-
-    CellGeometry->build();
-
-    DestroyAllAttachedEntities(CellSceneNode);
-
-    NeedsReBuild = false;
 }
 
 void Cell::DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode)
