@@ -88,7 +88,6 @@ void MainGameScreen::SetDirty()
     {
         int32_t ZMax = GAME->getMap()->getHighest() - GAME->getMap()->getLowest();
         DepthSliderTop->setDocumentSize(ZMax);
-        //DepthSliderTop->setScrollPosition(0);
     }
 
     CEGUI::Scrollbar* DepthSliderBottom = static_cast<CEGUI::Scrollbar*> (GUI->getWindowManager()->getWindow("MainGameScreen/DepthScrollerBottom"));
@@ -96,7 +95,6 @@ void MainGameScreen::SetDirty()
     {
         int32_t ZMax = GAME->getMap()->getHighest() - GAME->getMap()->getLowest();
         DepthSliderBottom->setDocumentSize(ZMax);
-        //DepthSliderBottom->setScrollPosition(ZMax);
     }
 }
 

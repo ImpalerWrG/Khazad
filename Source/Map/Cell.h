@@ -31,8 +31,6 @@ public:
 
     void LoadCellData(Geology* MapGeology);
 
-    bool Update();
-
     void DrawCellCage();
 
     void BuildFaceData();

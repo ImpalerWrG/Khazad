@@ -103,13 +103,14 @@ public:
     void ReleaseMap();
 
     void UpdateCubeShape(MapCoordinates Coordinates, CubeShape NewShape);
+    void UpdateFace(MapCoordinates TargetCoordinates, Direction DirectionType);
 
     uint32_t getCellCount() const             { return Cells.size(); }
 
     Ogre::SceneNode* getZlevelNode(int32_t Zlevel);
     void setSliceLevels(int32_t Top, int32_t Bottom);
 
-    MapCoordinates getRayIntersection(Ogre::Ray MouseRay);
+    MapCoordinates getRayIntersection(Ogre::Ray MouseRay, uint16_t Top, uint16_t Bottom);
     //MapCoordinates getMapCenter() const;
 
     int32_t getHighest()                            { return HighestCell; }

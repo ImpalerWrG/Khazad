@@ -24,8 +24,11 @@ public:
 
     void ChangeViewLevel(int32_t Change);
     void SetSlice(int16_t newTop, int16_t newBottome);
+
     void SetSliceTop(int16_t newValue);
+    uint16_t getSliceTop()                              { return SliceTop; }
     void SetSliceBottom(int16_t newValue);
+    uint16_t getSliceBottom()                           { return SliceBottom; }
 
     bool InSlice(int16_t Zlevel);
     float getShading(int16_t Zlevel);

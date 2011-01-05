@@ -115,7 +115,7 @@ inline int DirectionValueOnAxis(Direction DirectionType, Axis TestAxis)
 {
     if (DirectionType <= NUM_AXIAL_DIRECTIONS)
     {
-        if (TestAxis == (DirectionType << 1))
+        if (TestAxis == (DirectionType >> 1))
         {
             if (DirectionType & 1)
             {

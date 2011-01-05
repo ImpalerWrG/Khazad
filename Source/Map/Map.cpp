@@ -360,69 +360,84 @@ void Map::setCubeSunLit(MapCoordinates Coordinates, bool NewValue)
 
 void Map::UpdateCubeShape(MapCoordinates Coordinates, CubeShape NewShape)
 {
-    static int16_t RoughWallID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
-    static int16_t RoughFloorID = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
-
     if (isCubeInited(Coordinates))
     {
         CubeShape Shape = getCubeShape(Coordinates);
         if (Shape != NewShape)
         {
             setCubeShape(Coordinates, NewShape);
+            if (NewShape.isEmpty())
+            {
+                setCubeMaterial(Coordinates, INVALID_INDEX);
+            }
+
             for (Direction DirectionType = CARDINAL_DIRECTIONS_START; DirectionType < NUM_CARDINAL_DIRECTIONS; ++DirectionType)
             {
-                MapCoordinates ModifiedCoordinates = Coordinates;
-                ModifiedCoordinates.TranslateMapCoordinates(DirectionType);
-                CubeShape AdjacentShape = getCubeShape(ModifiedCoordinates);
-
-                if (NewShape.isEmpty() && !AdjacentShape.isEmpty())
-                {
-                    setCubeMaterial(Coordinates, INVALID_INDEX);
-
-                    Face* TargetFace = getFace(ModifiedCoordinates, OppositeDirection(DirectionType));
-                    if (TargetFace == NULL)
-                    {
-                        TargetFace = addFace(ModifiedCoordinates, OppositeDirection(DirectionType));
-                    }
-
-                    TargetFace->setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
-                    TargetFace->setFaceShapeType(FaceShape(AdjacentShape, OppositeDirection(DirectionType)));
-                    TargetFace->setFaceSurfaceType(RoughWallID);
-                }
-                else
-                {
-                    //removeFace(ModifiedCoordinates, OppositeDirection(DirectionType));
-                }
-
-                /*
-                if (!NewShape.isEmpty() && AdjacentShape.isEmpty())
-                {
-
-                    Face* TargetFace = getFace(Coordinates, DirectionType);
-                    if (TargetFace == NULL)
-                    {
-                        TargetFace = addFace(Coordinates, DirectionType);
-                    }
-
-                    TargetFace->setFaceMaterialType(getCubeMaterial(Coordinates));
-                    TargetFace->setFaceShapeType(FaceShape(NewShape, DirectionType));
-                    TargetFace->setFaceSurfaceType(RoughWallID);
-                }
-                else
-                {
-                    //removeFace(Coordinates, DirectionType);
-                }
-                */
+                UpdateFace(Coordinates, DirectionType);
             }
+            UpdateFace(Coordinates, DIRECTION_NONE);
 
             setCubeHidden(Coordinates, false);
         }
 
         // reveal tiles around
-        for(Direction DirectionType = COMPASS_DIRECTIONS_START; DirectionType < NUM_COMPASS_DIRECTIONS; ++DirectionType)
+        //for(Direction DirectionType = COMPASS_DIRECTIONS_START; DirectionType < NUM_COMPASS_DIRECTIONS; ++DirectionType)
+        //{
+        //    setCubeHidden(MapCoordinates(Coordinates, DirectionType), false);
+        //}
+    }
+}
+
+void Map::UpdateFace(MapCoordinates TargetCoordinates, Direction DirectionType)
+{
+    static int16_t RoughWallID = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
+    static int16_t RoughFloorID = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
+
+    if (DirectionType != DIRECTION_NONE)
+    {
+        MapCoordinates ModifiedCoordinates = TargetCoordinates;
+        ModifiedCoordinates.TranslateMapCoordinates(DirectionType);
+
+        if (!isCubeInited(ModifiedCoordinates))
         {
-            setCubeHidden(MapCoordinates(Coordinates, DirectionType), false);
+            // Init it
         }
+
+        CubeShape SourceShape = getCubeShape(TargetCoordinates);
+        CubeShape AdjacentShape = getCubeShape(ModifiedCoordinates);
+
+        if (SourceShape.isEmpty() && !AdjacentShape.isEmpty())
+        {
+            Face* TargetFace = getFace(TargetCoordinates, DirectionType);
+            if (TargetFace == NULL)
+            {
+                TargetFace = addFace(TargetCoordinates, DirectionType);
+            }
+
+            TargetFace->setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
+            TargetFace->setFaceShapeType(FaceShape(AdjacentShape, OppositeDirection(DirectionType)));
+            TargetFace->setFaceSurfaceType(RoughWallID);
+        }
+        else
+        {
+            removeFace(TargetCoordinates, DirectionType);
+        }
+        setCellNeedsReBuild(CellCoordinates(ModifiedCoordinates), true);
+    }
+    else
+    {
+        Face* TargetFace = getFace(TargetCoordinates, DIRECTION_NONE);
+        if (TargetFace == NULL)
+        {
+            TargetFace = addFace(TargetCoordinates, DIRECTION_NONE);
+            // Dirty Cell if edge case
+        }
+
+        TargetFace->setFaceMaterialType(getCubeMaterial(TargetCoordinates));
+        TargetFace->setFaceShapeType(FaceShape(getCubeShape(TargetCoordinates), DIRECTION_NONE));
+        TargetFace->setFaceSurfaceType(RoughFloorID);
+
+        setCellNeedsReBuild(CellCoordinates(TargetCoordinates), true);
     }
 }
 
@@ -495,13 +510,13 @@ void Map::setSliceLevels(int32_t Top, int32_t Bottom)
     }
 }
 
-MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay)
+MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay, uint16_t Top, uint16_t Bottom)
 {
     Ogre::Plane TestPlane;
     TestPlane.normal = Ogre::Vector3::UNIT_Z;
     TestPlane.d = -HighestCell;
 
-    for (int32_t i = HighestCell; i > LowestCell; i--) // Drill down testing each Z level
+    for (int32_t i = Top; i >= Bottom; i--) // Drill down testing each Z level
     {
         TestPlane.d = (-i + HALFCUBE);
         std::pair<bool, Ogre::Real> result = MouseRay.intersects(TestPlane);

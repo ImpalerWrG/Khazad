@@ -155,7 +155,7 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
             {
                 const OIS::MouseState &State = MouseObject->getMouseState();
 
-                MapCoordinates ClickCoordinates = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(State.X.abs / float(State.width), State.Y.abs / float(State.height)));
+                MapCoordinates ClickCoordinates = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(State.X.abs / float(State.width), State.Y.abs / float(State.height)), RENDERER->getActiveCamera()->getSliceTop(), RENDERER->getActiveCamera()->getSliceBottom());
 
                 GAME->SpawnTree(ClickCoordinates);
 
@@ -166,7 +166,7 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
             {
                 const OIS::MouseState &State = MouseObject->getMouseState();
 
-                MapCoordinates ClickCoordinates = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(State.X.abs / float(State.width), State.Y.abs / float(State.height)));
+                MapCoordinates ClickCoordinates = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(State.X.abs / float(State.width), State.Y.abs / float(State.height)), RENDERER->getActiveCamera()->getSliceTop(), RENDERER->getActiveCamera()->getSliceBottom());
 
                 GAME->SpawnPawn(ClickCoordinates);
 
@@ -177,7 +177,7 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
             {
                 const OIS::MouseState &State = MouseObject->getMouseState();
 
-                MapCoordinates ClickCoordinates = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(State.X.abs / float(State.width), State.Y.abs / float(State.height)));
+                MapCoordinates ClickCoordinates = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(State.X.abs / float(State.width), State.Y.abs / float(State.height)), RENDERER->getActiveCamera()->getSliceTop(), RENDERER->getActiveCamera()->getSliceBottom());
 
                 GAME->getMap()->setFaceMaterial(ClickCoordinates, DIRECTION_NONE, DATA->getLabelIndex("MATERIAL_OBSIDIAN"));
 
@@ -188,10 +188,9 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
             {
                 const OIS::MouseState &State = MouseObject->getMouseState();
 
-                MapCoordinates ClickCoordinates = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(State.X.abs / float(State.width), State.Y.abs / float(State.height)));
+                MapCoordinates ClickCoordinates = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(State.X.abs / float(State.width), State.Y.abs / float(State.height)), RENDERER->getActiveCamera()->getSliceTop(), RENDERER->getActiveCamera()->getSliceBottom());
 
                 GAME->getMap()->UpdateCubeShape(ClickCoordinates, CubeShape(false));
-
 
                 break;
             }
@@ -279,7 +278,7 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
                 {
                     Zone* ActiveZone = GAME->getMap()->getActiveZone();
 
-                    MapCoordinates Location = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height)));
+                    MapCoordinates Location = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height)), RENDERER->getActiveCamera()->getSliceTop(), RENDERER->getActiveCamera()->getSliceBottom());
 
                     ActiveZone->MoveZone(Location);
                     GUI->DirtyActiveScreen();
@@ -305,7 +304,7 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
     {
         if (Game::isInstance())
         {
-            MapCoordinates Location = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height)));
+            MapCoordinates Location = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height)), RENDERER->getActiveCamera()->getSliceTop(), RENDERER->getActiveCamera()->getSliceBottom());
 
             Zone* ClickedZone = GAME->getMap()->getZoneAt(Location);
 
@@ -319,6 +318,7 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
                     GAME->getMap()->addZone(NewZone);
                     GAME->getMap()->setActiveZone(NewZone);
 
+                    RENDERER->getActiveCamera()->FocusAt(Ogre::Vector3(Location.X, Location.Y, Location.Z));
                     GUI->DirtyActiveScreen();
                 }
             }

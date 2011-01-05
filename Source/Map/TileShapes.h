@@ -172,4 +172,7 @@ void CreateFaceTiles();
 
 void CreateSlopedTiles();
 
+void CreateOther();
+
+
 #endif // TILESHAPE__HEADER

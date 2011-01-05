@@ -56,11 +56,6 @@ void Cell::setCellPosition(CellCoordinates Coordinates)
     }
 }
 
-bool Cell::Update()
-{
-    return true;
-}
-
 void Cell::setCubeShape(CubeCoordinates Coordinates, CubeShape NewShape)
 {
     if (NewShape != CubeShapeTypes[Coordinates])

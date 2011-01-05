@@ -21,12 +21,26 @@ void Face::RefreshEntity()
     if (SurfaceTypeID != INVALID_INDEX && MaterialTypeID != INVALID_INDEX && !FaceType.CubeComponent.isEmpty() && !FaceType.CubeComponent.isSolid())
     {
         Ogre::SceneNode* NewNode = CellNode->createChildSceneNode();
-        NewNode->setPosition((LocationCoordinates >> CELLBITSHIFT) - (CELLEDGESIZE / 2) + HALFCUBE, (LocationCoordinates & CELLBITFLAG) - (CELLEDGESIZE / 2) + HALFCUBE, 0);
+
+        int16_t X = (LocationCoordinates >> CELLBITSHIFT);
+        int16_t Y = (LocationCoordinates & CELLBITFLAG);
+
+        if (DirectionValueOnAxis(FaceType.FaceDirection, AXIS_X) == 1)
+        {
+            X -= 1;
+        }
+
+        if (DirectionValueOnAxis(FaceType.FaceDirection, AXIS_Y) == 1)
+        {
+            Y -= 1;
+        }
+
+        NewNode->setPosition(X - (CELLEDGESIZE / 2) + HALFCUBE, Y - (CELLEDGESIZE / 2) + HALFCUBE, 0);
 
         char buffer[64];
         FaceType.getName(buffer);
 
-        if(!Ogre::MeshManager::getSingleton().getByName(buffer).isNull())
+        if (!Ogre::MeshManager::getSingleton().getByName(buffer).isNull())
         {
             Ogre::Entity* NewEntity = RENDERER->getSceneManager()->createEntity(buffer);
             NewEntity->setMaterial(TEXTURE->getOgreMaterial(MaterialTypeID, SurfaceTypeID));
