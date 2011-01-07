@@ -10,7 +10,7 @@
 
 Cell::Cell()
 {
-    CubeShape EmptyCube = CubeShape(false);
+    CubeShape EmptyCube = CubeShape(BELOW_CUBE_HEIGHT);
     CubeShapeTypes.assign(EmptyCube);
 
     CubeMaterialTypes.assign(INVALID_INDEX);
@@ -82,36 +82,56 @@ void Cell::BuildFaceData()
         CubeShape Shape = getCubeShape(TargetCube);
         int16_t CubeMaterial = getCubeMaterial(TargetCube);
 
-        static int16_t CubeSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
+        static int16_t WallSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
+        static int16_t FloorSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
-        if (!Shape.isEmpty())
+        for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
         {
-            for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
+            FaceCoordinates FaceLocation = FaceCoordinates(TargetCube, DirectionType);
+            MapCoordinates ModifiedCoordinates = MapCoordinates(thisCellCoordinates, TargetCube);
+            ModifiedCoordinates.TranslateMapCoordinates(DirectionType);
+
+            if (true) //(ParentMap->isCubeInited(ModifiedCoordinates))
             {
-                FaceCoordinates FaceLocation = FaceCoordinates(TargetCube, DirectionType);
+                CubeShape AdjacentShape = ParentMap->getCubeShape(ModifiedCoordinates);
 
-                if (ParentMap->isCubeInited(TargetMapCoordinates))
+                if (AdjacentShape.isEmpty())
                 {
-                    if (ParentMap->getCubeShape(TargetMapCoordinates).isEmpty())
+                    if (DirectionType == DIRECTION_UP && Shape.hasCeiling())
                     {
-                        //Face* NewFace = addFace(TargetCubeCoordinates, DirectionType);
+                        Face* NewFace = ParentMap->addFace(MapCoordinates(thisCellCoordinates, TargetCube), DirectionType);
 
-                        //NewFace->setFaceMaterialType(CubeMaterial);
-                        //NewFace->setFaceSurfaceType(CubeSurface, DirectionType);
+                        NewFace->setFaceMaterialType(CubeMaterial);
+                        NewFace->setFaceSurfaceType(FloorSurface);
+                        NewFace->setFaceShapeType(FaceShape(Shape, DirectionType));
+                    }
+                }
+
+                if (AdjacentShape.isSolid())
+                {
+                    if (DirectionType == DIRECTION_DOWN && Shape.hasFloor())
+                    {
+                        Face* NewFace = ParentMap->addFace(MapCoordinates(thisCellCoordinates, TargetCube), DirectionType);
+
+                        NewFace->setFaceMaterialType(ParentMap->getCubeMaterial(ModifiedCoordinates));
+                        NewFace->setFaceSurfaceType(FloorSurface);
+                        NewFace->setFaceShapeType(FaceShape(Shape, DirectionType));
                     }
                 }
             }
+
+            if (!Shape.isEmpty() && !Shape.isSolid())
+            {
+                Face* NewFace = addFace(FaceCoordinates(TargetCube, DIRECTION_NONE));
+
+                NewFace->setFaceMaterialType(CubeMaterial);
+                NewFace->setFaceSurfaceType(FloorSurface);
+                NewFace->setFaceShapeType(FaceShape(Shape, DIRECTION_NONE));
+            }
         }
 
-        if (!Shape.isEmpty() && !Shape.isSolid())
-        {
-            Face* NewFace = addFace(FaceCoordinates(TargetCube, DIRECTION_NONE));
-
-            NewFace->setFaceMaterialType(CubeMaterial);
-            NewFace->setFaceSurfaceType(CubeSurface);
-            NewFace->setFaceShapeType(FaceShape(Shape, DIRECTION_NONE));
-        }
         TargetCube++;
+
     }
     while (TargetCube != 0);  // End Loop when Byte rolls over
 

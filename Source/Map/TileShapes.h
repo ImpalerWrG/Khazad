@@ -16,7 +16,12 @@ struct CubeShape
 {
     CubeShape()
     {
-        CubeShape(false);
+        CubeShape(CUBE_TOP_HEIGHT);
+    }
+
+    CubeShape(uint8_t NewHeight)
+    {
+        SouthWestCorner = SouthEastCorner = NorthEastCorner = NorthWestCorner = NewHeight;
     }
 
     CubeShape(uint8_t SWCornerHeight, uint8_t SECornerHeight, uint8_t NWCornerHeight, uint8_t NECornerHeight, uint8_t NewFlags)
@@ -30,28 +35,70 @@ struct CubeShape
         NorthEastCorner = NECornerHeight;
     }
 
-    CubeShape(bool Solid)
-    {
-        if (Solid)
-        {
-            SouthWestCorner = SouthEastCorner = NorthEastCorner = NorthWestCorner = ABOVE_CUBE_HEIGHT;
-            Flags = 0;
-        }
-        else
-        {
-            SouthWestCorner = SouthEastCorner = NorthEastCorner = NorthWestCorner = BELOW_CUBE_HEIGHT;
-            Flags = 0;
-        }
-    }
-
     bool isSolid()
     {
-        return (SouthWestCorner >= HEIGHT_FRACTIONS + 2) && (SouthEastCorner >= HEIGHT_FRACTIONS + 2) && (NorthWestCorner >= HEIGHT_FRACTIONS + 2) && (NorthEastCorner >= HEIGHT_FRACTIONS + 2);
+        return (SouthWestCorner >= CUBE_TOP_HEIGHT) && (SouthEastCorner >= CUBE_TOP_HEIGHT) && (NorthWestCorner >= CUBE_TOP_HEIGHT) && (NorthEastCorner >= CUBE_TOP_HEIGHT);
     }
 
     bool isEmpty()
     {
-        return (SouthWestCorner <= 1) && (SouthEastCorner <= 1) && (NorthWestCorner <= 1) && (NorthEastCorner <= 1);
+        return (SouthWestCorner <= CUBE_BOTTOM_HEIGHT) && (SouthEastCorner <= CUBE_BOTTOM_HEIGHT) && (NorthWestCorner <= CUBE_BOTTOM_HEIGHT) && (NorthEastCorner <= CUBE_BOTTOM_HEIGHT);
+    }
+
+    bool hasFloor()
+    {
+       if (split())
+       {
+            if (SouthEastCorner == CUBE_BOTTOM_HEIGHT && NorthEastCorner == CUBE_BOTTOM_HEIGHT && NorthWestCorner == CUBE_BOTTOM_HEIGHT)
+            {
+                return true;
+            }
+            if (NorthWestCorner == CUBE_BOTTOM_HEIGHT && SouthWestCorner == CUBE_BOTTOM_HEIGHT && SouthEastCorner == CUBE_BOTTOM_HEIGHT)
+            {
+                return true;
+            }
+            return false;
+       }
+       else
+       {
+            if (NorthEastCorner == CUBE_BOTTOM_HEIGHT && NorthWestCorner == CUBE_BOTTOM_HEIGHT && SouthWestCorner == CUBE_BOTTOM_HEIGHT)
+            {
+                return true;
+            }
+            if (SouthWestCorner == CUBE_BOTTOM_HEIGHT && SouthEastCorner == CUBE_BOTTOM_HEIGHT && NorthEastCorner == CUBE_BOTTOM_HEIGHT)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
+
+    bool hasCeiling()
+    {
+       if (split())
+       {
+            if (SouthEastCorner == CUBE_TOP_HEIGHT && NorthEastCorner == CUBE_TOP_HEIGHT && NorthWestCorner == CUBE_TOP_HEIGHT)
+            {
+                return true;
+            }
+            if (NorthWestCorner == CUBE_TOP_HEIGHT && SouthWestCorner == CUBE_TOP_HEIGHT && SouthEastCorner == CUBE_TOP_HEIGHT)
+            {
+                return true;
+            }
+            return false;
+       }
+       else
+       {
+            if (NorthEastCorner == CUBE_TOP_HEIGHT && NorthWestCorner == CUBE_TOP_HEIGHT && SouthWestCorner == CUBE_TOP_HEIGHT)
+            {
+                return true;
+            }
+            if (SouthWestCorner == CUBE_TOP_HEIGHT && SouthEastCorner == CUBE_TOP_HEIGHT && NorthEastCorner == CUBE_TOP_HEIGHT)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 
     inline uint8_t SouthWestHeight() const
@@ -101,7 +148,7 @@ struct FaceShape
 {
     FaceShape()
     {
-        CubeComponent = CubeShape(false);
+        CubeComponent = CubeShape(BELOW_CUBE_HEIGHT);
         FaceDirection = DIRECTION_UNKNOWN;
     }
 
@@ -135,6 +182,16 @@ struct FaceShape
             {
                 uint32_t Hash;
 
+                case DIRECTION_UP:
+                    Hash = ((CubeComponent.SouthWestCorner & 15) << 16) + ((CubeComponent.SouthEastCorner & 15) << 12) + ((CubeComponent.NorthWestCorner & 15) << 8) + ((CubeComponent.NorthEastCorner & 15) << 4) + CubeComponent.Flags;
+                    sprintf(buffer, "UpFace%i", Hash);
+                    break;
+
+                case DIRECTION_DOWN:
+                    Hash = ((CubeComponent.SouthWestCorner & 15) << 16) + ((CubeComponent.SouthEastCorner & 15) << 12) + ((CubeComponent.NorthWestCorner & 15) << 8) + ((CubeComponent.NorthEastCorner & 15) << 4) + CubeComponent.Flags;
+                    sprintf(buffer, "DownFace%i", Hash);
+                    break;
+
                 case DIRECTION_NORTH:
                     Hash = ((CubeComponent.NorthWestCorner & 15) << 8) + ((CubeComponent.NorthEastCorner & 15) << 4);
                     sprintf(buffer, "NorthFace%i", Hash);
@@ -167,6 +224,8 @@ struct FaceShape
 };
 
 void CreateAllEntities();
+
+void CreateFlatTiles();
 
 void CreateFaceTiles();
 

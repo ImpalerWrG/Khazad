@@ -218,7 +218,7 @@ CubeShape Map::getCubeShape(MapCoordinates Coordinates) const
 {
     Cell* TargetCell = getCubeOwner(Coordinates);
 
-    return TargetCell != NULL ? TargetCell->getCubeShape(Coordinates.Cube()) : CubeShape(false);
+    return TargetCell != NULL ? TargetCell->getCubeShape(Coordinates.Cube()) : CubeShape(BELOW_CUBE_HEIGHT);
 }
 
 void Map::setCubeMaterial(MapCoordinates Coordinates, int16_t MaterialID)
@@ -371,7 +371,7 @@ void Map::UpdateCubeShape(MapCoordinates Coordinates, CubeShape NewShape)
                 setCubeMaterial(Coordinates, INVALID_INDEX);
             }
 
-            for (Direction DirectionType = CARDINAL_DIRECTIONS_START; DirectionType < NUM_CARDINAL_DIRECTIONS; ++DirectionType)
+            for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
             {
                 UpdateFace(Coordinates, DirectionType);
             }
@@ -422,6 +422,39 @@ void Map::UpdateFace(MapCoordinates TargetCoordinates, Direction DirectionType)
         {
             removeFace(TargetCoordinates, DirectionType);
         }
+
+        if (AdjacentShape.isEmpty())
+        {
+            if (DirectionType == DIRECTION_UP && SourceShape.hasCeiling())
+            {
+                Face* TargetFace = getFace(TargetCoordinates, DirectionType);
+                if (TargetFace == NULL)
+                {
+                    TargetFace = addFace(TargetCoordinates, DirectionType);
+                }
+
+                TargetFace->setFaceMaterialType(getCubeMaterial(TargetCoordinates));
+                TargetFace->setFaceSurfaceType(RoughFloorID);
+                TargetFace->setFaceShapeType(FaceShape(SourceShape, DirectionType));
+            }
+        }
+
+        if (AdjacentShape.isSolid())
+        {
+            if (DirectionType == DIRECTION_DOWN && SourceShape.hasFloor())
+            {
+                Face* TargetFace = getFace(TargetCoordinates, DirectionType);
+                if (TargetFace == NULL)
+                {
+                    TargetFace = addFace(TargetCoordinates, DirectionType);
+                }
+
+                TargetFace->setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
+                TargetFace->setFaceSurfaceType(RoughFloorID);
+                TargetFace->setFaceShapeType(FaceShape(SourceShape, DirectionType));
+            }
+        }
+
         setCellNeedsReBuild(CellCoordinates(ModifiedCoordinates), true);
     }
     else
@@ -527,7 +560,7 @@ MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay, uint16_t Top, uint16_
             if (isCubeInited(TestCoords))
             {
                 CubeShape Shape = getCubeShape(TestCoords);
-                if (!Shape.isEmpty() && !Shape.isSolid())
+                if (!Shape.isEmpty())
                 {
                     LastRayTestResult = TestCoords;
                     return TestCoords;

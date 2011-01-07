@@ -33,10 +33,8 @@ public:
 
     void DrawCellCage();
 
-    void BuildFaceData();
-    void BuildStaticGeometry();
 
-    void DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode);
+    //----------------CUBE ACESS--------------//
 
     Ogre::Vector3 getCubePosition(CubeCoordinates Coordinates) const;
 
@@ -45,6 +43,7 @@ public:
 
     void setCubeMaterial(CubeCoordinates Coordinates, int16_t MaterialID)      { CubeMaterialTypes[Coordinates] = MaterialID; }
     inline int16_t getCubeMaterial(CubeCoordinates Coordinates) const          { return CubeMaterialTypes[Coordinates]; }
+
 
     bool isCubeSloped(CubeCoordinates Coordinates) const;
 
@@ -64,8 +63,7 @@ public:
     inline void setCubeZone(CubeCoordinates Coordinates, bool NewValue)          { Zone.set(Coordinates, NewValue); }
 
 
-
-
+    //----------------FACE ACESS---------------//
 
     Face* getFace(FaceCoordinates TargetCoordinates) const      { return Faces.find(TargetCoordinates.FaceKey())->second; }
     bool hasFace(FaceCoordinates TargetCoordinates) const       { return Faces.find(TargetCoordinates.FaceKey()) != Faces.end(); }
@@ -83,22 +81,29 @@ public:
     Face* addFace(FaceCoordinates TargetCoordinates);
 
 
-    void Dig(CubeCoordinates Coordinates);
+    //-----------GEOMETRY COMPRESSION----------//
 
+    void BuildFaceData();
+    void BuildStaticGeometry();
+
+    void DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode);
 
     inline bool getNeedsReBuild()                       { return NeedsReBuild; }
     inline void setNeedsReBuild(bool NewValue)          { NeedsReBuild = NewValue;  ParentMap->setNeedsReBuild(true); }
-
-    void addBuilding(Building* NewBuilding)             { buildings.push_back(NewBuilding); }
-    void addTree(Tree* NewTree)                         { trees.push_back(NewTree); }
 
     CellCoordinates getCellCoordinates()                { return thisCellCoordinates; }
     Ogre::Vector3 getPosition()                         { return CellSceneNode->getPosition(); }
 
     Ogre::StaticGeometry* getCellGeometry()             { return CellGeometry; }
 
+
+    //-------------LOCAL OBJECTS--------------//
+
     int addActor(Actor* NewActor);
     void removeActor(int Index);
+
+    void addBuilding(Building* NewBuilding)             { buildings.push_back(NewBuilding); }
+    void addTree(Tree* NewTree)                         { trees.push_back(NewTree); }
 
 protected:
 

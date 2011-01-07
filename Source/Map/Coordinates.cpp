@@ -9,7 +9,7 @@
 
 MapCoordinates::MapCoordinates(CellCoordinates CellCoords, CubeCoordinates CubeCoords)
 {
-    X = (CellCoords.X * CELLEDGESIZE) + (CubeCoords << CELLBITSHIFT);
+    X = (CellCoords.X * CELLEDGESIZE) + (CubeCoords >> CELLBITSHIFT);
     Y = (CellCoords.Y * CELLEDGESIZE) + (CubeCoords & CELLBITFLAG);
     Z = CellCoords.Z;
 }

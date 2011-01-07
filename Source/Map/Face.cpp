@@ -18,12 +18,13 @@ Face::Face(Ogre::SceneNode* CellSceneNode, CubeCoordinates TargetCoordinates, Di
 
 void Face::RefreshEntity()
 {
-    if (SurfaceTypeID != INVALID_INDEX && MaterialTypeID != INVALID_INDEX && !FaceType.CubeComponent.isEmpty() && !FaceType.CubeComponent.isSolid())
+    if (SurfaceTypeID != INVALID_INDEX && MaterialTypeID != INVALID_INDEX) // && !FaceType.CubeComponent.isSolid())
     {
         Ogre::SceneNode* NewNode = CellNode->createChildSceneNode();
 
         int16_t X = (LocationCoordinates >> CELLBITSHIFT);
         int16_t Y = (LocationCoordinates & CELLBITFLAG);
+        int16_t Z = 0;
 
         if (DirectionValueOnAxis(FaceType.FaceDirection, AXIS_X) == 1)
         {
@@ -35,7 +36,12 @@ void Face::RefreshEntity()
             Y -= 1;
         }
 
-        NewNode->setPosition(X - (CELLEDGESIZE / 2) + HALFCUBE, Y - (CELLEDGESIZE / 2) + HALFCUBE, 0);
+        if (DirectionValueOnAxis(FaceType.FaceDirection, AXIS_Z) == 1)
+        {
+            Z -= 1;
+        }
+
+        NewNode->setPosition(X - (CELLEDGESIZE / 2) + HALFCUBE, Y - (CELLEDGESIZE / 2) + HALFCUBE, Z);
 
         char buffer[64];
         FaceType.getName(buffer);
