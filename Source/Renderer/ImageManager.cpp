@@ -3,6 +3,8 @@
 #include <ImageManager.h>
 #include <DataManager.h>
 
+#include <Ogre.h>
+
 
 DECLARE_SINGLETON(ImageManager)
 
@@ -67,6 +69,11 @@ bool ImageManager::Init()
     for(uint32_t i = 0; i < DATA->getNumTextureSheets(); ++i)
     {
         TextureSheetData* Sheet = DATA->getTextureSheetData(i);
+
+        char buffer[64];
+        sprintf(buffer, "Loading ImageSheet %s", (char*) Sheet->getPath());
+
+        Ogre::LogManager::getSingleton().getLog("Khazad.log")->logMessage(buffer);
         ILuint DevilID = loadImage(Sheet->getPath(), false);
 
         std::vector<TextureData*> Textures = DATA->getTextureSheetData(i)->TextureList;

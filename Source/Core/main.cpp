@@ -53,19 +53,19 @@ int main(int argc, char **argv)
         Khazadlog->logMessage("-=RENDER INITIALIZING=- ...");
         RENDERER->CreateInstance();
         RENDERER->Init();
-        Khazadlog->logMessage("RENDER DONE\n");
+        Khazadlog->logMessage("RENDER DONE");
 
         // CEGUI with OGRE Platform
         Khazadlog->logMessage("-=GUI INITIALIZING=- ...");
         GUI->CreateInstance();
         GUI->Init();
-        Khazadlog->logMessage("GUI DONE\n");
+        Khazadlog->logMessage("GUI DONE");
 
         // OIS injection into GUI
         Khazadlog->logMessage("-=INPUT INITIALIZING=- ...");
         INPUT->CreateInstance();
         INPUT->Init();
-        Khazadlog->logMessage("INPUT DONE\n");
+        Khazadlog->logMessage("INPUT DONE");
 
         //return 0; // Errors durring Initialization, Abort
 

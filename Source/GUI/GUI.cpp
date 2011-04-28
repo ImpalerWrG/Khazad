@@ -21,6 +21,9 @@ GUIManager::GUIManager()
 
 bool GUIManager::Init()
 {
+    new CEGUI::DefaultLogger();
+    CEGUI::Logger::getSingleton().setLogFilename("CEGUI.log");
+
     GUIRenderer = &CEGUI::OgreRenderer::bootstrapSystem();
 
     Ogre::ResourceGroupManager::getSingleton().addResourceLocation("Media/GUI/schemes", "FileSystem", "schemes");

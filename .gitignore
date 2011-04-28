@@ -12,7 +12,7 @@ DevIL/*
 boost_1_44_0/*
 
 #CEGUI SDK
-CEGUI/*
+CEGUI-SDK-0.7.5-mingw/*
 Dependencies/*
 
 
@@ -32,6 +32,7 @@ Distribution/Khazad.exe
 
 
 # Log files
+Distribution/Khazad.log
 Distribution/Ogre.log
 Distribution/CEGUI.log
 Distribution/ogre.cfg
