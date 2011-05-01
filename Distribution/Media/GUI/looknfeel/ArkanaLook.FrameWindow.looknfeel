@@ -22,7 +22,7 @@
       <PropertyLinkDefinition name="TitleColourActive" widget="__auto_titlebar__" initialValue="FFFFFFFF" targetProperty="CaptionColourActive" />
       <PropertyLinkDefinition name="TitleColourInactive" widget="__auto_titlebar__" initialValue="FFFFFFFF" targetProperty="CaptionColourInactive" />
       <PropertyLinkDefinition name="TitleColourDisabled" widget="__auto_titlebar__" initialValue="FF7F7F7F" targetProperty="CaptionColourDisabled" />
-      <PropertyLinkDefinition name="TitleFont" widget="__auto_titlebar__" initialValue="old2" targetProperty="Font" />
+      <PropertyLinkDefinition name="TitleFont" widget="__auto_titlebar__" initialValue="Carolingia-10" targetProperty="Font" />
 
       <Property name="UnifiedMinSize" value="{{0,24},{0,24}}" />
       <Property name="WantsMultiClickEvents" value="True" />
@@ -111,7 +111,7 @@
 
       <!-- The titlebar child widget. -->
       <Child type="ArkanaLook/Titlebar" nameSuffix="__auto_titlebar__">
-         <Area>
+        <Area>
             <Dim type="LeftEdge"><ImageDim imageset="ArkanaLook" image="Conf_FrameWin_Titlebar" dimension="XPosition" /></Dim>
             <Dim type="TopEdge"><ImageDim imageset="ArkanaLook" image="Conf_FrameWin_Titlebar" dimension="YPosition" /></Dim>
             <Dim type="Width">
@@ -127,9 +127,9 @@
                      <ImageDim imageset="ArkanaLook" image="Conf_FrameWin_Titlebar" dimension="Height" />
                   </DimOperator>
                </ImageDim>
-	    </Dim>
-         </Area>
-         <Property name="AlwaysOnTop" value="False" />
+			</Dim>
+        </Area>
+        <Property name="AlwaysOnTop" value="False" />
       </Child>
 
       <!-- The Close button child widget on the titlebar. -->

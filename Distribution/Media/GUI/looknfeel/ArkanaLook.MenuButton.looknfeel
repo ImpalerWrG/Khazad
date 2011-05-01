@@ -20,7 +20,7 @@
 
       <Property name="UnifiedMinSize" value="{{0,72},{0,48}}" />
       <Property name="WantsMultiClickEvents" value="False" />
-      <Property name="Font" value="old2" />
+      <Property name="Font" value="Carolingia-10" />
 
       <!-- The Imagery sections. This specifies how a section is drawn. -->
       <!-- ************************************************************ -->

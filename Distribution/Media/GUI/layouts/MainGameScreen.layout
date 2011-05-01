@@ -23,7 +23,7 @@
             <Property Name="UnifiedAreaRect" Value="{{0,-7},{0,0},{1,0},{0,50}}" />
             <Window Type="ArkanaLook/Button" Name="MainGameScreen/TopBar/GameOptionsButton" >
                 <Property Name="Text" Value="Game Options" />
-                <Property Name="UnifiedAreaRect" Value="{{0,65},{0,0},{0.15,0},{0.5,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,20},{0,0},{0.153306,0},{0.5,0}}" />
                 <Property Name="VerticalAlignment" Value="Centre" />
             </Window>
             <Window Type="ArkanaLook/Button" Name="MainGameScreen/TopBar/Button2" >
@@ -44,7 +44,6 @@
         <Window Type="ArkanaLook/FrameWindow" Name="MainGameScreen/GameOptionsWindow" >
             <Property Name="Text" Value="GAME OPTIONS" />
             <Property Name="Visible" Value="False" />
-            <Property Name="TitleFont" Value="Carolingia-10" />
             <Property Name="SizingEnabled" Value="False" />
             <Property Name="TitlebarEnabled" Value="True" />
             <Property Name="UnifiedAreaRect" Value="{{0,0},{0.365459,0},{0.25,0},{0.675485,0}}" />
@@ -69,22 +68,21 @@
             </Window>
         </Window>
         <Window Type="ArkanaLook/FrameWindow" Name="MainGameScreen/SelectionWindow" >
-            <Property Name="TitleFont" Value="Carolingia-10" />
             <Property Name="TitlebarEnabled" Value="True" />
-            <Property Name="UnifiedAreaRect" Value="{{0.636523,0},{0.223286,0},{0.886523,0},{0.548318,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.545614,0},{0.223286,0},{0.886523,0},{0.548318,0}}" />
             <Window Type="DefaultWindow" Name="MainGameScreen/SelectionWindow/LocationWindow" >
                 <Property Name="UnifiedAreaRect" Value="{{0,0},{0.201492,0},{1,0},{0.451492,0}}" />
                 <Window Type="ArkanaLook/StaticText" Name="MainGameScreen/SelectionWindow/LocationWindow/LocationLabel" >
                     <Property Name="Text" Value="Location" />
-                    <Property Name="HorzExtent" Value="66" />
-                    <Property Name="VertExtent" Value="20.0483" />
+                    <Property Name="HorzExtent" Value="40" />
+                    <Property Name="VertExtent" Value="13.3656" />
                     <Property Name="FrameEnabled" Value="False" />
                     <Property Name="UnifiedAreaRect" Value="{{0.0351563,0},{0.127611,0},{0.508594,0},{0.743781,0}}" />
                 </Window>
                 <Window Type="ArkanaLook/StaticText" Name="MainGameScreen/SelectionWindow/LocationWindow/LocationDisplay" >
                     <Property Name="Text" Value="X Y Z" />
-                    <Property Name="HorzExtent" Value="47" />
-                    <Property Name="VertExtent" Value="20.0483" />
+                    <Property Name="HorzExtent" Value="29" />
+                    <Property Name="VertExtent" Value="13.3656" />
                     <Property Name="FrameEnabled" Value="False" />
                     <Property Name="HorzFormatting" Value="RightAligned" />
                     <Property Name="UnifiedAreaRect" Value="{{0.378125,0},{0.220398,0},{0.932813,0},{0.693284,0}}" />
@@ -94,15 +92,15 @@
                 <Property Name="UnifiedAreaRect" Value="{{0,0},{0.454477,0},{1,0},{0.704477,0}}" />
                 <Window Type="ArkanaLook/StaticText" Name="MainGameScreen/SelectionWindow/TileTypeWindow/TileTypeLabel" >
                     <Property Name="Text" Value="Tile Type" />
-                    <Property Name="HorzExtent" Value="79" />
-                    <Property Name="VertExtent" Value="20.0483" />
+                    <Property Name="HorzExtent" Value="49" />
+                    <Property Name="VertExtent" Value="13.3656" />
                     <Property Name="FrameEnabled" Value="False" />
                     <Property Name="UnifiedAreaRect" Value="{{0.0351563,0},{0.127611,0},{0.508593,0},{0.743781,0}}" />
                 </Window>
                 <Window Type="ArkanaLook/StaticText" Name="MainGameScreen/SelectionWindow/TileTypeWindow/TileTypeDisplay" >
                     <Property Name="Text" Value="X Y Z" />
-                    <Property Name="HorzExtent" Value="47" />
-                    <Property Name="VertExtent" Value="20.0483" />
+                    <Property Name="HorzExtent" Value="29" />
+                    <Property Name="VertExtent" Value="13.3656" />
                     <Property Name="FrameEnabled" Value="False" />
                     <Property Name="HorzFormatting" Value="RightAligned" />
                     <Property Name="UnifiedAreaRect" Value="{{0.366406,0},{0.204478,0},{0.921094,0},{0.677364,0}}" />

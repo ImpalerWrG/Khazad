@@ -81,7 +81,7 @@
          YPos: The border on the top
          Width: The border on the right
          Height: The border on the bottom -->
-    <Image Name="Conf_FrameWin_ClientWithTitleWithFrame" XPos="6" YPos="33" Width="6" Height="6" />
+    <Image Name="Conf_FrameWin_ClientWithTitleWithFrame" XPos="0" YPos="0" Width="0" Height="6" />
     <Image Name="Conf_FrameWin_ClientWithTitleNoFrame" XPos="0" YPos="33" Width="0" Height="0" />
     <Image Name="Conf_FrameWin_ClientNoTitleWithFrame" XPos="6" YPos="6" Width="6" Height="6" />
 
