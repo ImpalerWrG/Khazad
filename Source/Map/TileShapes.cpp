@@ -382,7 +382,7 @@ void CreateSlopedTiles()
                                     }
                                 }
 
-                            /*
+                                // Vertical face inside Cube when on one triangle is drawn
                                 if ((Triangle1 ^ Triangle2) && ((NorthWestCorner > CUBE_BOTTOM_HEIGHT || SouthEastCorner > CUBE_BOTTOM_HEIGHT) && (NorthWestCorner < CUBE_TOP_HEIGHT || SouthEastCorner < CUBE_TOP_HEIGHT)))  // One True and One False
                                 {
                                     Ogre::Vector3 Normal;
@@ -391,7 +391,7 @@ void CreateSlopedTiles()
                                     {
                                         Normal = Ogre::Vector3::NEGATIVE_UNIT_X + Ogre::Vector3::NEGATIVE_UNIT_Y;
                                     }
-                                    else
+                                    if (Triangle2)
                                     {
                                         Normal = Ogre::Vector3::UNIT_X + Ogre::Vector3::UNIT_Y;
                                     }
@@ -402,17 +402,17 @@ void CreateSlopedTiles()
                                     ManualObject->position(Vertex2);  // North West  3
                                     ManualObject->colour(Ogre::ColourValue::White);
                                     ManualObject->normal(Normal);
-                                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+                                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
 
                                     ManualObject->position(Vertex1);  // South East  4
                                     ManualObject->colour(Ogre::ColourValue::White);
                                     ManualObject->normal(Normal);
-                                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+                                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
 
                                     ManualObject->position(Vertex4);  // North West Bottom  5
                                     ManualObject->colour(Ogre::ColourValue::White);
                                     ManualObject->normal(Normal);
-                                    ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+                                    ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
 
                                     ManualObject->position(Vertex5);  // South East Bottom  6
                                     ManualObject->colour(Ogre::ColourValue::White);
@@ -422,38 +422,38 @@ void CreateSlopedTiles()
 
                                     if (Triangle1)
                                     {
-                                        if (NorthWestCorner > 1)
+                                        if (NorthWestCorner > CUBE_BOTTOM_HEIGHT)
                                         {
-                                            ManualObject->triangle(4, 3, 5);  // NW->SW->NW Bottom
+                                            ManualObject->triangle(4, 3, 5);  // NW->SE->NW Bottom
                                         }
                                         else
                                         {
-                                            ManualObject->triangle(4, 3, 6);  // NW->SW->SW Bottom
+                                            ManualObject->triangle(4, 3, 6);  // NW->SE->SE Bottom
                                         }
 
-                                        if (SouthEastCorner > 1)
+                                        if (SouthEastCorner > CUBE_BOTTOM_HEIGHT)
                                         {
-                                            ManualObject->triangle(3, 6, 5);  // SW->SW Bottom->NW Bottom
+                                            ManualObject->triangle(3, 6, 5);  // SE->SE Bottom->NW Bottom
                                         }
                                     }
-                                    else
+
+                                    if (Triangle2)
                                     {
-                                        if (SouthEastCorner > 1)
+                                        if (SouthEastCorner > CUBE_BOTTOM_HEIGHT)
                                         {
-                                            ManualObject->triangle(3, 4, 6);  // NW->SW->NW Bottom
+                                            ManualObject->triangle(6, 4, 3);  // SE->SE Bottom->NW
                                         }
                                         else
                                         {
-                                            ManualObject->triangle(3, 4, 5);  // NW->SW->SW Bottom
+                                            ManualObject->triangle(5, 4, 3);  // SW->NW Bottom->NW
                                         }
 
-                                        if (NorthWestCorner > 1)
+                                        if (NorthWestCorner > CUBE_BOTTOM_HEIGHT)
                                         {
-                                            ManualObject->triangle(4, 5, 6);  // SW->SW Bottom->NW Bottom
+                                            ManualObject->triangle(6, 5, 4);  // SW Bottom->NW Bottom->SW
                                         }
                                     }
                                 }
-                                */
                             }
                             else
                             {
@@ -521,6 +521,78 @@ void CreateSlopedTiles()
                                                 }
                                                 Triangle2 = true;
                                             }
+                                        }
+                                    }
+                                }
+
+                                // Vertical face inside Cube when on one triangle is drawn
+                                if ((Triangle1 ^ Triangle2) && ((NorthEastCorner > CUBE_BOTTOM_HEIGHT || SouthWestCorner > CUBE_BOTTOM_HEIGHT) && (NorthEastCorner < CUBE_TOP_HEIGHT || SouthWestCorner < CUBE_TOP_HEIGHT)))  // One True and One False
+                                {
+                                    Ogre::Vector3 Normal;
+
+                                    if (Triangle1)
+                                    {
+                                        Normal = Ogre::Vector3::UNIT_X + Ogre::Vector3::NEGATIVE_UNIT_Y;
+                                    }
+                                    if (Triangle2)
+                                    {
+                                        Normal = Ogre::Vector3::NEGATIVE_UNIT_X + Ogre::Vector3::UNIT_Y;
+                                    }
+
+                                    Ogre::Vector3 Vertex4 = Ogre::Vector3( -HALFCUBE, -HALFCUBE, -HALFCUBE);
+                                    Ogre::Vector3 Vertex5 = Ogre::Vector3( HALFCUBE, HALFCUBE, -HALFCUBE);
+
+                                    ManualObject->position(Vertex3);  // North East  3
+                                    ManualObject->colour(Ogre::ColourValue::White);
+                                    ManualObject->normal(Normal);
+                                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+
+                                    ManualObject->position(Vertex0);  // South West  4
+                                    ManualObject->colour(Ogre::ColourValue::White);
+                                    ManualObject->normal(Normal);
+                                    ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+
+                                    ManualObject->position(Vertex4);  // North East Bottom  5
+                                    ManualObject->colour(Ogre::ColourValue::White);
+                                    ManualObject->normal(Normal);
+                                    ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
+
+                                    ManualObject->position(Vertex5);  // South West Bottom  6
+                                    ManualObject->colour(Ogre::ColourValue::White);
+                                    ManualObject->normal(Normal);
+                                    ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+
+
+                                    if (Triangle1)
+                                    {
+                                        if (NorthEastCorner > CUBE_BOTTOM_HEIGHT)
+                                        {
+                                            ManualObject->triangle(5, 3, 4);  // NE Bottom->NE->SW
+                                        }
+                                        else
+                                        {
+                                            ManualObject->triangle(3, 4, 6);  // NE->SW->SW Bottom
+                                        }
+
+                                        if (SouthWestCorner > CUBE_BOTTOM_HEIGHT)
+                                        {
+                                            ManualObject->triangle(3, 5, 6);  // NE Bottom->NE->SW Bottom
+                                        }
+                                    }
+                                    if (Triangle2)
+                                    {
+                                        if (SouthWestCorner > CUBE_BOTTOM_HEIGHT)
+                                        {
+                                            ManualObject->triangle(4, 3, 5);  // SW->NE->NE Bottom
+                                        }
+                                        else
+                                        {
+                                            ManualObject->triangle(6, 4, 3);  // SW Bottom->SW->NE
+                                        }
+
+                                        if (NorthEastCorner > CUBE_BOTTOM_HEIGHT)
+                                        {
+                                            ManualObject->triangle(6, 5, 3);  // NE Bottom->SW Bottom->NE
                                         }
                                     }
                                 }
