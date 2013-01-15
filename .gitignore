@@ -3,16 +3,19 @@ obj/*
 
 
 # Ogre SDK
-OgreSDK_mingw_v1-7-2/*
+OgreSDK_MinGW_v1-7-2/*
+OgreSDK_MinGW_v1-8-1/*
 
 # DevIL SDK
 DevIL/*
 
 # Boost
 boost_1_44_0/*
+boost_1_51_0/*
 
 #CEGUI SDK
-CEGUI-SDK-0.7.5-mingw/*
+CEGUI-SDK-0.7.5-MinGW/*
+CEGUI-SDK-0.7.9-MinGW/*
 Dependencies/*
 
 

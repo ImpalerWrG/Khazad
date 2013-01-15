@@ -82,6 +82,7 @@ void Cell::BuildFaceData()
         CubeShape Shape = getCubeShape(TargetCube);
         int16_t CubeMaterial = getCubeMaterial(TargetCube);
 
+        static int16_t NEHEMaterial = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
         static int16_t WallSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
         static int16_t FloorSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
@@ -91,20 +92,22 @@ void Cell::BuildFaceData()
             MapCoordinates ModifiedCoordinates = MapCoordinates(thisCellCoordinates, TargetCube);
             ModifiedCoordinates.TranslateMapCoordinates(DirectionType);
 
-            if (true) //(ParentMap->isCubeInited(ModifiedCoordinates))
+            if (!Shape.isEmpty()) //(ParentMap->isCubeInited(ModifiedCoordinates))
             {
                 CubeShape AdjacentShape = ParentMap->getCubeShape(ModifiedCoordinates);
 
-                if (AdjacentShape.isEmpty())
+                if (ParentMap->isCubeInited(ModifiedCoordinates) && AdjacentShape.isEmpty())
                 {
-                    if (DirectionType == DIRECTION_UP && Shape.hasCeiling())
+                    if (DirectionType == DIRECTION_UP && !Shape.hasCeiling())
                     {
-                        Face* NewFace = ParentMap->addFace(MapCoordinates(thisCellCoordinates, TargetCube), DirectionType);
-
-                        NewFace->setFaceMaterialType(CubeMaterial);
-                        NewFace->setFaceSurfaceType(FloorSurface);
-                        NewFace->setFaceShapeType(FaceShape(Shape, DirectionType));
+                        continue;
                     }
+
+                    Face* NewFace = ParentMap->addFace(MapCoordinates(thisCellCoordinates, TargetCube), DirectionType);
+
+                    NewFace->setFaceMaterialType(CubeMaterial);
+                    NewFace->setFaceSurfaceType(WallSurface);
+                    NewFace->setFaceShapeType(FaceShape(Shape, DirectionType));
                 }
 
                 if (AdjacentShape.isSolid())
@@ -134,8 +137,6 @@ void Cell::BuildFaceData()
 
     }
     while (TargetCube != 0);  // End Loop when Byte rolls over
-
-    Debug = false;
 }
 
 void Cell::BuildStaticGeometry()

@@ -45,7 +45,7 @@ void CreateFlatTiles()
                                 Ogre::Vector3 Vertex2 = Ogre::Vector3(-HALFCUBE,  HALFCUBE, ((NorthWestCorner - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
                                 Ogre::Vector3 Vertex3 = Ogre::Vector3( HALFCUBE,  HALFCUBE, ((NorthEastCorner - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
 
-                                if (Split)
+                                if (Split) // Split along NW-SE line
                                 {
                                     if ((SouthEastCorner == CUBE_BOTTOM_HEIGHT && NorthEastCorner == CUBE_BOTTOM_HEIGHT && NorthWestCorner == CUBE_BOTTOM_HEIGHT) || (SouthEastCorner == CUBE_TOP_HEIGHT && NorthEastCorner == CUBE_TOP_HEIGHT && NorthWestCorner == CUBE_TOP_HEIGHT))
                                     {
@@ -97,7 +97,7 @@ void CreateFlatTiles()
                                         Triangle2 = true;
                                     }
                                 }
-                                else
+                                else // Split along SW-NE line
                                 {
                                     if ((NorthEastCorner == CUBE_BOTTOM_HEIGHT && NorthWestCorner == CUBE_BOTTOM_HEIGHT && SouthWestCorner == CUBE_BOTTOM_HEIGHT) || (NorthEastCorner == CUBE_TOP_HEIGHT && NorthWestCorner == CUBE_TOP_HEIGHT && SouthWestCorner == CUBE_TOP_HEIGHT))
                                     {
@@ -281,13 +281,13 @@ void CreateSlopedTiles()
 {
     Ogre::ManualObject* ManualObject;
 
-    for (uint8_t SW = BELOW_CUBE_HEIGHT; SW <= ABOVE_CUBE_HEIGHT; ++SW)
+    for (uint8_t SouthWestCorner = BELOW_CUBE_HEIGHT; SouthWestCorner <= ABOVE_CUBE_HEIGHT; ++SouthWestCorner)
     {
-        for (uint8_t SE = BELOW_CUBE_HEIGHT; SE <= ABOVE_CUBE_HEIGHT; ++SE)
+        for (uint8_t SouthEastCorner = BELOW_CUBE_HEIGHT; SouthEastCorner <= ABOVE_CUBE_HEIGHT; ++SouthEastCorner)
         {
-            for (uint8_t NW = BELOW_CUBE_HEIGHT; NW <= ABOVE_CUBE_HEIGHT; ++NW)
+            for (uint8_t NorthWestCorner = BELOW_CUBE_HEIGHT; NorthWestCorner <= ABOVE_CUBE_HEIGHT; ++NorthWestCorner)
             {
-                for (uint8_t NE = BELOW_CUBE_HEIGHT; NE <= ABOVE_CUBE_HEIGHT; ++NE)
+                for (uint8_t NorthEastCorner = BELOW_CUBE_HEIGHT; NorthEastCorner <= ABOVE_CUBE_HEIGHT; ++NorthEastCorner)
                 {
                     for (uint8_t Split = 0; Split <= 1; Split++)
                     {
@@ -297,18 +297,37 @@ void CreateSlopedTiles()
                         bool Triangle1 = false;
                         bool Triangle2 = false;
 
-                        float NorthEastCorner = NE;
-                        float NorthWestCorner = NW;
-                        float SouthEastCorner = SE;
-                        float SouthWestCorner = SW;
+                        float NE = NorthEastCorner;
+                        float NW = NorthWestCorner;
+                        float SE = SouthEastCorner;
+                        float SW = SouthWestCorner;
 
 
                         ManualObject->begin("BaseWhite", Ogre::RenderOperation::OT_TRIANGLE_LIST);
                         {
-                            Ogre::Vector3 Vertex0 = Ogre::Vector3(-HALFCUBE, -HALFCUBE, ((SouthWestCorner - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
-                            Ogre::Vector3 Vertex1 = Ogre::Vector3( HALFCUBE, -HALFCUBE, ((SouthEastCorner - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
-                            Ogre::Vector3 Vertex2 = Ogre::Vector3(-HALFCUBE,  HALFCUBE, ((NorthWestCorner - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
-                            Ogre::Vector3 Vertex3 = Ogre::Vector3( HALFCUBE,  HALFCUBE, ((NorthEastCorner - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
+                            Ogre::Vector3 Vertex0 = Ogre::Vector3(-HALFCUBE, -HALFCUBE, ((SW - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
+                            Ogre::Vector3 Vertex1 = Ogre::Vector3( HALFCUBE, -HALFCUBE, ((SE - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
+                            Ogre::Vector3 Vertex2 = Ogre::Vector3(-HALFCUBE,  HALFCUBE, ((NW - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
+                            Ogre::Vector3 Vertex3 = Ogre::Vector3( HALFCUBE,  HALFCUBE, ((NE - 1) / HEIGHT_FRACTIONS) -HALFCUBE);
+
+
+                            if (SouthWestCorner == ABOVE_CUBE_HEIGHT)
+                            {
+                                Vertex0 = Ogre::Vector3( -HALFCUBE, -HALFCUBE, HALFCUBE);
+                            }
+                            if (SouthEastCorner == ABOVE_CUBE_HEIGHT)
+                            {
+                                Vertex1 = Ogre::Vector3( HALFCUBE, -HALFCUBE, HALFCUBE);
+                            }
+                            if (NorthEastCorner == ABOVE_CUBE_HEIGHT)
+                            {
+                                Vertex3 = Ogre::Vector3( HALFCUBE, HALFCUBE, HALFCUBE);
+                            }
+                            if (NorthWestCorner == ABOVE_CUBE_HEIGHT)
+                            {
+                                Vertex2 = Ogre::Vector3( -HALFCUBE, HALFCUBE, HALFCUBE);
+                            }
+
 
                             if (Split) // Split along the NW-SE line
                             {
@@ -317,29 +336,25 @@ void CreateSlopedTiles()
                                 {
                                     if (SouthEastCorner > CUBE_BOTTOM_HEIGHT || NorthEastCorner > CUBE_BOTTOM_HEIGHT || NorthWestCorner > CUBE_BOTTOM_HEIGHT)
                                     {
-
-                                        if (SouthEastCorner < ABOVE_CUBE_HEIGHT && NorthEastCorner < ABOVE_CUBE_HEIGHT && NorthWestCorner < ABOVE_CUBE_HEIGHT)
+                                        if (SouthEastCorner < CUBE_TOP_HEIGHT || NorthEastCorner < CUBE_TOP_HEIGHT || NorthWestCorner < CUBE_TOP_HEIGHT)
                                         {
-                                            if (SouthEastCorner < CUBE_TOP_HEIGHT || NorthEastCorner < CUBE_TOP_HEIGHT || NorthWestCorner < CUBE_TOP_HEIGHT)
-                                            {
-                                                ManualObject->position(Vertex1);  // South East
-                                                ManualObject->colour(Ogre::ColourValue::White);
-                                                ManualObject->normal( ( Vertex3 - Vertex1 ).crossProduct( ( Vertex2 - Vertex1 ) ).normalisedCopy());
-                                                ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
+                                            ManualObject->position(Vertex1);  // South East
+                                            ManualObject->colour(Ogre::ColourValue::White);
+                                            ManualObject->normal( ( Vertex3 - Vertex1 ).crossProduct( ( Vertex2 - Vertex1 ) ).normalisedCopy());
+                                            ManualObject->textureCoord(Ogre::Vector2(1.0f, 0.0f));
 
-                                                ManualObject->position(Vertex3);  // North East
-                                                ManualObject->colour(Ogre::ColourValue::White);
-                                                ManualObject->normal( ( Vertex2 - Vertex3 ).crossProduct( ( Vertex1 - Vertex3 ) ).normalisedCopy());
-                                                ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
+                                            ManualObject->position(Vertex3);  // North East
+                                            ManualObject->colour(Ogre::ColourValue::White);
+                                            ManualObject->normal( ( Vertex2 - Vertex3 ).crossProduct( ( Vertex1 - Vertex3 ) ).normalisedCopy());
+                                            ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
 
-                                                ManualObject->position(Vertex2);  // North West
-                                                ManualObject->colour(Ogre::ColourValue::White);
-                                                ManualObject->normal( ( Vertex1 - Vertex2 ).crossProduct( ( Vertex3 - Vertex2 ) ).normalisedCopy());
-                                                ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+                                            ManualObject->position(Vertex2);  // North West
+                                            ManualObject->colour(Ogre::ColourValue::White);
+                                            ManualObject->normal( ( Vertex1 - Vertex2 ).crossProduct( ( Vertex3 - Vertex2 ) ).normalisedCopy());
+                                            ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
 
-                                                ManualObject->triangle(0, 1, 2);  // SE->NE->NW
-                                                Triangle1 = true;
-                                            }
+                                            ManualObject->triangle(0, 1, 2);  // SE->NE->NW
+                                            Triangle1 = true;
                                         }
                                     }
                                 }
@@ -350,7 +365,7 @@ void CreateSlopedTiles()
                                     if (NorthWestCorner > CUBE_BOTTOM_HEIGHT || SouthWestCorner > CUBE_BOTTOM_HEIGHT || SouthEastCorner > CUBE_BOTTOM_HEIGHT)
                                     {
 
-                                        if (NorthWestCorner < ABOVE_CUBE_HEIGHT && SouthWestCorner < ABOVE_CUBE_HEIGHT && SouthEastCorner < ABOVE_CUBE_HEIGHT)
+                                        if (true) //(NorthWestCorner < ABOVE_CUBE_HEIGHT && SouthWestCorner < ABOVE_CUBE_HEIGHT && SouthEastCorner < ABOVE_CUBE_HEIGHT)
                                         {
                                             if (NorthWestCorner < CUBE_TOP_HEIGHT || SouthWestCorner < CUBE_TOP_HEIGHT || SouthEastCorner < CUBE_TOP_HEIGHT)
                                             {
@@ -384,7 +399,7 @@ void CreateSlopedTiles()
                                     }
                                 }
 
-                                // Vertical face inside Cube when on one triangle is drawn
+                                // Vertical face inside Cube when only one triangle is drawn
                                 if ((Triangle1 ^ Triangle2) && ((NorthWestCorner > CUBE_BOTTOM_HEIGHT || SouthEastCorner > CUBE_BOTTOM_HEIGHT) && (NorthWestCorner < CUBE_TOP_HEIGHT || SouthEastCorner < CUBE_TOP_HEIGHT)))  // One True and One False
                                 {
                                     Ogre::Vector3 Normal;
@@ -455,7 +470,7 @@ void CreateSlopedTiles()
                                     if (NorthEastCorner > CUBE_BOTTOM_HEIGHT || NorthWestCorner > CUBE_BOTTOM_HEIGHT || SouthWestCorner > CUBE_BOTTOM_HEIGHT)
                                     {
 
-                                        if (NorthEastCorner < ABOVE_CUBE_HEIGHT && NorthWestCorner < ABOVE_CUBE_HEIGHT && SouthWestCorner < ABOVE_CUBE_HEIGHT)
+                                        if (true)//(NorthEastCorner < ABOVE_CUBE_HEIGHT && NorthWestCorner < ABOVE_CUBE_HEIGHT && SouthWestCorner < ABOVE_CUBE_HEIGHT)
                                         {
                                             if (NorthEastCorner < CUBE_TOP_HEIGHT || NorthWestCorner < CUBE_TOP_HEIGHT || SouthWestCorner < CUBE_TOP_HEIGHT)
                                             {
@@ -486,7 +501,7 @@ void CreateSlopedTiles()
                                 {
                                     if (SouthWestCorner > CUBE_BOTTOM_HEIGHT || SouthEastCorner > CUBE_BOTTOM_HEIGHT || NorthEastCorner > CUBE_BOTTOM_HEIGHT)
                                     {
-                                        if (SouthWestCorner < ABOVE_CUBE_HEIGHT && SouthEastCorner < ABOVE_CUBE_HEIGHT && NorthEastCorner < ABOVE_CUBE_HEIGHT)
+                                        if (true) //(SouthWestCorner < ABOVE_CUBE_HEIGHT && SouthEastCorner < ABOVE_CUBE_HEIGHT && NorthEastCorner < ABOVE_CUBE_HEIGHT)
                                         {
                                             if (SouthWestCorner < CUBE_TOP_HEIGHT || SouthEastCorner < CUBE_TOP_HEIGHT || NorthEastCorner < CUBE_TOP_HEIGHT)
                                             {
@@ -519,7 +534,7 @@ void CreateSlopedTiles()
                                     }
                                 }
 
-                                // Vertical face inside Cube when on one triangle is drawn
+                                // Vertical face inside Cube when only one triangle is drawn
                                 if ((Triangle1 ^ Triangle2) && ((NorthEastCorner > CUBE_BOTTOM_HEIGHT || SouthWestCorner > CUBE_BOTTOM_HEIGHT) && (NorthEastCorner < CUBE_TOP_HEIGHT || SouthWestCorner < CUBE_TOP_HEIGHT)))  // One True and One False
                                 {
                                     Ogre::Vector3 Normal;

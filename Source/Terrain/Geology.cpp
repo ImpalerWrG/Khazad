@@ -361,12 +361,22 @@ CubeShape Geology::getCubeShapeAtCoordinates(CubeCoordinates CubeTarget, int32_t
 
     if (NECornerHeight == BELOW_CUBE_HEIGHT || SWCornerHeight == BELOW_CUBE_HEIGHT || NECornerHeight == ABOVE_CUBE_HEIGHT || SWCornerHeight == ABOVE_CUBE_HEIGHT)
     {
-        return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, 1);
+        if (NECornerHeight >= CUBE_TOP_HEIGHT && SWCornerHeight >= CUBE_TOP_HEIGHT)
+        {
+            return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, 0);
+        } else {
+            return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, 1);
+        }
     }
 
     if (SECornerHeight == BELOW_CUBE_HEIGHT || NWCornerHeight == BELOW_CUBE_HEIGHT || SECornerHeight == ABOVE_CUBE_HEIGHT || NWCornerHeight == ABOVE_CUBE_HEIGHT)
     {
-        return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, 0);
+        if (SECornerHeight >= CUBE_TOP_HEIGHT && NWCornerHeight >= CUBE_TOP_HEIGHT)
+        {
+            return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, 1);
+        } else {
+            return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, 0);
+        }
     }
 
     return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, RandGenerator->Roll(0, 1));
