@@ -77,6 +77,7 @@ void Cell::BuildFaceData()
     bool Debug = true;
 
     CubeCoordinates TargetCube = 0;
+    CubeCoordinates DebugCube = ((12 & CELLBITFLAG) << CELLBITSHIFT) + (9 & CELLBITFLAG);
     do
     {
         CubeShape Shape = getCubeShape(TargetCube);
@@ -86,28 +87,31 @@ void Cell::BuildFaceData()
         static int16_t WallSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
         static int16_t FloorSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
+        if (TargetCube == DebugCube && thisCellCoordinates.Z == 6)
+        {
+            int debug = 1;
+        }
+
         for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
         {
             FaceCoordinates FaceLocation = FaceCoordinates(TargetCube, DirectionType);
             MapCoordinates ModifiedCoordinates = MapCoordinates(thisCellCoordinates, TargetCube);
             ModifiedCoordinates.TranslateMapCoordinates(DirectionType);
 
+            CubeShape AdjacentShape = ParentMap->getCubeShape(ModifiedCoordinates);
+
             if (!Shape.isEmpty()) //(ParentMap->isCubeInited(ModifiedCoordinates))
             {
-                CubeShape AdjacentShape = ParentMap->getCubeShape(ModifiedCoordinates);
-
                 if (ParentMap->isCubeInited(ModifiedCoordinates) && AdjacentShape.isEmpty())
                 {
-                    if (DirectionType == DIRECTION_UP && !Shape.hasCeiling())
+                    if (Shape.hasFace(DirectionType))
                     {
-                        continue;
+                        Face* NewFace = ParentMap->addFace(MapCoordinates(thisCellCoordinates, TargetCube), DirectionType);
+
+                        NewFace->setFaceMaterialType(CubeMaterial);
+                        NewFace->setFaceSurfaceType(WallSurface);
+                        NewFace->setFaceShapeType(FaceShape(Shape, DirectionType));
                     }
-
-                    Face* NewFace = ParentMap->addFace(MapCoordinates(thisCellCoordinates, TargetCube), DirectionType);
-
-                    NewFace->setFaceMaterialType(CubeMaterial);
-                    NewFace->setFaceSurfaceType(WallSurface);
-                    NewFace->setFaceShapeType(FaceShape(Shape, DirectionType));
                 }
 
                 if (AdjacentShape.isSolid())
@@ -122,15 +126,15 @@ void Cell::BuildFaceData()
                     }
                 }
             }
+        }
 
-            if (!Shape.isEmpty() && !Shape.isSolid())
-            {
-                Face* NewFace = addFace(FaceCoordinates(TargetCube, DIRECTION_NONE));
+        if (!Shape.isEmpty() && !Shape.isSolid())
+        {
+            Face* NewFace = addFace(FaceCoordinates(TargetCube, DIRECTION_NONE));
 
-                NewFace->setFaceMaterialType(CubeMaterial);
-                NewFace->setFaceSurfaceType(FloorSurface);
-                NewFace->setFaceShapeType(FaceShape(Shape, DIRECTION_NONE));
-            }
+            NewFace->setFaceMaterialType(CubeMaterial);
+            NewFace->setFaceSurfaceType(FloorSurface);
+            NewFace->setFaceShapeType(FaceShape(Shape, DIRECTION_NONE));
         }
 
         TargetCube++;

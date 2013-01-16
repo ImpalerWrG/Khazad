@@ -41,10 +41,10 @@ bool Game::Init(uint16_t X, uint16_t Y, const char* SeedString)
 
 	BuildMapChunk(0, 0, X, Y);
 
-	Path = new PathManager();
-	Path->Init();
-	Path->CreateMapAbstraction(MainMap);
-	Path->InitializeTestingSuite();
+ 	//Path = new PathManager();
+	//Path->Init();
+	//Path->CreateMapAbstraction(MainMap);
+	//Path->InitializeTestingSuite();
 
     GameTimer->Start();
 
@@ -78,7 +78,7 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
     {
         for (int32_t y = Y; y < SizeY; y++)
         {
-            MapGeology->GenerateCellHeight(x, y, 4.0, 0.8);
+            MapGeology->GenerateCellHeight(x, y, 4.0, 0.3);
 
             for (int16_t z = MapGeology->getCellBottomZLevel() - 1; z <= MapGeology->getCellTopZLevel() + 1; z++)
             {
@@ -101,6 +101,7 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
     for (std::map<uint64_t, Cell*>::iterator CellIterator = MainMap->getCellMap()->begin() ; CellIterator != MainMap->getCellMap()->end(); ++CellIterator )
     {
         CellIterator->second->BuildFaceData();
+        GUI->DirtyActiveScreen();
     }
 
     return true;

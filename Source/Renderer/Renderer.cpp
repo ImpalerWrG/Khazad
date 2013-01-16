@@ -105,7 +105,7 @@ void Renderer::setupScene()
 
 void Renderer::createSunLight()
 {
-    OgreSceneManager->setAmbientLight(Ogre::ColourValue(0.1, 0.1, 0.1));
+    OgreSceneManager->setAmbientLight(Ogre::ColourValue(0.3, 0.3, 0.3));
 
     Ogre::Light* SunLight = OgreSceneManager->createLight();
     SunLight->setType(Ogre::Light::LT_DIRECTIONAL);

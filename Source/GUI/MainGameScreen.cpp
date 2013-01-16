@@ -78,9 +78,20 @@ void MainGameScreen::SetDirty()
         LocationDisplay->setText(buffer);
 
         CubeShape Shape = GAME->getMap()->getCubeShape(Location);
+
         sprintf(buffer, "SW%i SE%i NW%i NE%i ", Shape.SouthWestCorner, Shape.SouthEastCorner, Shape.NorthWestCorner, Shape.NorthEastCorner);
         CEGUI::Window* TileTypeDisplay = GUI->getWindowManager()->getWindow("MainGameScreen/SelectionWindow/TileTypeWindow/TileTypeDisplay");
         TileTypeDisplay->setText(buffer);
+
+        if (Shape.isEmpty()) {
+            sprintf(buffer, "Empty");
+            CEGUI::Window* TileFullDisplay = GUI->getWindowManager()->getWindow("MainGameScreen/SelectionWindow/TileFullnessDisplay");
+            TileFullDisplay->setText(buffer);
+        } else {
+            sprintf(buffer, "NOT Empty");
+            CEGUI::Window* TileFullDisplay = GUI->getWindowManager()->getWindow("MainGameScreen/SelectionWindow/TileFullnessDisplay");
+            TileFullDisplay->setText(buffer);
+        }
     }
 
     CEGUI::Scrollbar* DepthSliderTop = static_cast<CEGUI::Scrollbar*> (GUI->getWindowManager()->getWindow("MainGameScreen/DepthScrollerTop"));

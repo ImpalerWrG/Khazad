@@ -42,7 +42,53 @@ struct CubeShape
 
     bool isEmpty()
     {
-        return (SouthWestCorner <= CUBE_BOTTOM_HEIGHT) && (SouthEastCorner <= CUBE_BOTTOM_HEIGHT) && (NorthWestCorner <= CUBE_BOTTOM_HEIGHT) && (NorthEastCorner <= CUBE_BOTTOM_HEIGHT);
+        //if ((SouthWestCorner <= CUBE_BOTTOM_HEIGHT) && (SouthEastCorner <= CUBE_BOTTOM_HEIGHT) && (NorthWestCorner <= CUBE_BOTTOM_HEIGHT) && (NorthEastCorner <= CUBE_BOTTOM_HEIGHT))
+        //{
+        //    return true;
+        //}
+        if (split()) {
+            //if  (NorthEastCorner < CUBE_BOTTOM_HEIGHT) && (SouthEastCorner < CUBE_BOTTOM_HEIGHT) &&
+        }
+
+        int Counter = 0;
+
+        if (SouthWestCorner < CUBE_BOTTOM_HEIGHT)
+            Counter++;
+        if (SouthEastCorner < CUBE_BOTTOM_HEIGHT)
+            Counter++;
+        if (NorthEastCorner < CUBE_BOTTOM_HEIGHT)
+            Counter++;
+        if (NorthWestCorner < CUBE_BOTTOM_HEIGHT)
+            Counter++;
+
+        if (Counter >= 2) {
+            return true;
+        }
+        /*
+        } else {
+            if (
+            if (((SouthWestCorner >= CUBE_TOP_HEIGHT || SouthWestCorner <= CUBE_BOTTOM_HEIGHT) || (NorthEastCorner <= CUBE_BOTTOM_HEIGHT || NorthEastCorner >= CUBE_TOP_HEIGHT)) && ((SouthEastCorner >= CUBE_TOP_HEIGHT || SouthEastCorner <= CUBE_BOTTOM_HEIGHT) || (NorthWestCorner <= CUBE_BOTTOM_HEIGHT || NorthWestCorner >= CUBE_TOP_HEIGHT)))
+            {
+                return true;
+            }
+        */
+        return false;
+    }
+
+    bool hasFace(Direction DirectionType)
+    {
+        if (DirectionType == DIRECTION_DOWN)
+            return hasFloor();
+        if (DirectionType == DIRECTION_UP)
+            return hasCeiling();
+        if (DirectionType == DIRECTION_EAST)
+            return (SouthEastCorner >= CUBE_BOTTOM_HEIGHT && NorthEastCorner >= CUBE_BOTTOM_HEIGHT);
+        if (DirectionType == DIRECTION_WEST)
+            return (SouthWestCorner >= CUBE_BOTTOM_HEIGHT && NorthWestCorner >= CUBE_BOTTOM_HEIGHT);
+        if (DirectionType == DIRECTION_NORTH)
+            return (NorthEastCorner >= CUBE_BOTTOM_HEIGHT && NorthWestCorner >= CUBE_BOTTOM_HEIGHT);
+        if (DirectionType == DIRECTION_SOUTH)
+            return (SouthEastCorner >= CUBE_BOTTOM_HEIGHT && SouthWestCorner >= CUBE_BOTTOM_HEIGHT);
     }
 
     bool hasFloor()
