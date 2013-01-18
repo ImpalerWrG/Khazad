@@ -289,7 +289,7 @@ void CreateSlopedTiles()
             {
                 for (uint8_t NorthEastCorner = BELOW_CUBE_HEIGHT; NorthEastCorner <= ABOVE_CUBE_HEIGHT; ++NorthEastCorner)
                 {
-                    if (NorthEastCorner == ABOVE_CUBE_HEIGHT && NorthWestCorner == ABOVE_CUBE_HEIGHT && SouthEastCorner  == ABOVE_CUBE_HEIGHT  && SouthWestCorner == BELOW_CUBE_HEIGHT)
+                    if (NorthEastCorner == 2 && NorthWestCorner == 1 && SouthEastCorner  == 0  && SouthWestCorner == 5)
                     {
                         int debug = 1;
                     }
@@ -523,29 +523,25 @@ void CreateSlopedTiles()
                                 {
                                     if (NorthEastCorner > CUBE_BOTTOM_HEIGHT || NorthWestCorner > CUBE_BOTTOM_HEIGHT || SouthWestCorner > CUBE_BOTTOM_HEIGHT)
                                     {
-
-                                        if (true)//(NorthEastCorner < ABOVE_CUBE_HEIGHT && NorthWestCorner < ABOVE_CUBE_HEIGHT && SouthWestCorner < ABOVE_CUBE_HEIGHT)
+                                        if (NorthEastCorner < CUBE_TOP_HEIGHT || NorthWestCorner < CUBE_TOP_HEIGHT || SouthWestCorner < CUBE_TOP_HEIGHT)
                                         {
-                                            if (NorthEastCorner < CUBE_TOP_HEIGHT || NorthWestCorner < CUBE_TOP_HEIGHT || SouthWestCorner < CUBE_TOP_HEIGHT)
-                                            {
-                                                ManualObject->position(Vertex3);  // North East
-                                                ManualObject->colour(Ogre::ColourValue::White);
-                                                ManualObject->normal( ( Vertex2 - Vertex3 ).crossProduct( ( Vertex0 - Vertex3 ) ).normalisedCopy());
-                                                ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
+                                            ManualObject->position(Vertex3);  // North East
+                                            ManualObject->colour(Ogre::ColourValue::White);
+                                            ManualObject->normal( ( Vertex2 - Vertex3 ).crossProduct( ( Vertex0 - Vertex3 ) ).normalisedCopy());
+                                            ManualObject->textureCoord(Ogre::Vector2(1.0f, 1.0f));
 
-                                                ManualObject->position(Vertex2);  // North West
-                                                ManualObject->colour(Ogre::ColourValue::White);
-                                                ManualObject->normal( ( Vertex0 - Vertex2 ).crossProduct( ( Vertex3 - Vertex2 ) ).normalisedCopy());
-                                                ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+                                            ManualObject->position(Vertex2);  // North West
+                                            ManualObject->colour(Ogre::ColourValue::White);
+                                            ManualObject->normal( ( Vertex0 - Vertex2 ).crossProduct( ( Vertex3 - Vertex2 ) ).normalisedCopy());
+                                            ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
 
-                                                ManualObject->position(Vertex0);  // South West
-                                                ManualObject->colour(Ogre::ColourValue::White);
-                                                ManualObject->normal( ( Vertex3 - Vertex0 ).crossProduct( ( Vertex2 - Vertex0 ) ).normalisedCopy());
-                                                ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+                                            ManualObject->position(Vertex0);  // South West
+                                            ManualObject->colour(Ogre::ColourValue::White);
+                                            ManualObject->normal( ( Vertex3 - Vertex0 ).crossProduct( ( Vertex2 - Vertex0 ) ).normalisedCopy());
+                                            ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
 
-                                                ManualObject->triangle(0, 1, 2);  // NE->NW->SW
-                                                Triangle1 = true;
-                                            }
+                                            ManualObject->triangle(0, 1, 2);  // NE->NW->SW
+                                            Triangle1 = true;
                                         }
                                     }
                                 }

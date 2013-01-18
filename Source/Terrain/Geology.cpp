@@ -347,24 +347,27 @@ CubeShape Geology::getCubeShapeAtCoordinates(CubeCoordinates CubeTarget, int32_t
     float Remainder;
 
     Remainder = Height[(CubeTarget >> CELLBITSHIFT)][(CubeTarget & CELLBITFLAG)] - ((float) Zlevel);
-    int8_t SWCornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, (float) BELOW_CUBE_HEIGHT), (float) ABOVE_CUBE_HEIGHT);
+    int8_t SWCornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, (float) BELOW_CUBE_HEIGHT), (float) CUBE_TOP_HEIGHT);
 
     Remainder = Height[(CubeTarget >> CELLBITSHIFT) + 1][(CubeTarget & CELLBITFLAG)] - ((float) Zlevel);
-    int8_t SECornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, (float) BELOW_CUBE_HEIGHT), (float) ABOVE_CUBE_HEIGHT);
+    int8_t SECornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, (float) BELOW_CUBE_HEIGHT), (float) CUBE_TOP_HEIGHT);
 
     Remainder = Height[(CubeTarget >> CELLBITSHIFT)][(CubeTarget & CELLBITFLAG) + 1] - ((float) Zlevel);
-    int8_t NWCornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, (float) BELOW_CUBE_HEIGHT), (float) ABOVE_CUBE_HEIGHT);
+    int8_t NWCornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, (float) BELOW_CUBE_HEIGHT), (float) CUBE_TOP_HEIGHT);
 
     Remainder = Height[(CubeTarget >> CELLBITSHIFT) + 1][(CubeTarget & CELLBITFLAG) + 1] - ((float) Zlevel);
-    int8_t NECornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, (float) BELOW_CUBE_HEIGHT), (float) ABOVE_CUBE_HEIGHT);
+    int8_t NECornerHeight = min(max(roundf(Remainder * HEIGHT_FRACTIONS) + 1, (float) BELOW_CUBE_HEIGHT), (float) CUBE_TOP_HEIGHT);
 
+    bool Split = RandGenerator->Roll(0, 1);
 
     if (NECornerHeight == BELOW_CUBE_HEIGHT || SWCornerHeight == BELOW_CUBE_HEIGHT || NECornerHeight == ABOVE_CUBE_HEIGHT || SWCornerHeight == ABOVE_CUBE_HEIGHT)
     {
         if (NECornerHeight >= CUBE_TOP_HEIGHT && SWCornerHeight >= CUBE_TOP_HEIGHT)
         {
+            //Split = false;
             return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, 0);
         } else {
+            //Split = true;
             return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, 1);
         }
     }
@@ -373,13 +376,16 @@ CubeShape Geology::getCubeShapeAtCoordinates(CubeCoordinates CubeTarget, int32_t
     {
         if (SECornerHeight >= CUBE_TOP_HEIGHT && NWCornerHeight >= CUBE_TOP_HEIGHT)
         {
+            //Split = true;
             return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, 1);
         } else {
+            //Split = false;
             return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, 0);
         }
     }
 
-    return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, RandGenerator->Roll(0, 1));
+    return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, Split);
+    //return CubeShape(min((int) SWCornerHeight, CUBE_TOP_HEIGHT), min((int) SECornerHeight, CUBE_TOP_HEIGHT), min((int) NWCornerHeight, CUBE_TOP_HEIGHT), min((int) NECornerHeight, CUBE_TOP_HEIGHT), Split);
 }
 
 void Geology::LoadCellData(Cell* TargetCell)
