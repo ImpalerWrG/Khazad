@@ -439,7 +439,7 @@ void Map::UpdateFace(MapCoordinates TargetCoordinates, Direction DirectionType)
             }
         }
 
-        if (AdjacentShape.isSolid())
+        if (!AdjacentShape.isEmpty())
         {
             if (DirectionType == DIRECTION_DOWN && SourceShape.hasFloor())
             {

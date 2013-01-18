@@ -360,32 +360,19 @@ CubeShape Geology::getCubeShapeAtCoordinates(CubeCoordinates CubeTarget, int32_t
 
     bool Split = RandGenerator->Roll(0, 1);
 
-    if (NECornerHeight == BELOW_CUBE_HEIGHT || SWCornerHeight == BELOW_CUBE_HEIGHT || NECornerHeight == ABOVE_CUBE_HEIGHT || SWCornerHeight == ABOVE_CUBE_HEIGHT)
-    {
-        if (NECornerHeight >= CUBE_TOP_HEIGHT && SWCornerHeight >= CUBE_TOP_HEIGHT)
-        {
-            //Split = false;
-            return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, 0);
-        } else {
-            //Split = true;
-            return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, 1);
-        }
-    }
+    if (NWCornerHeight == CUBE_TOP_HEIGHT && SECornerHeight == CUBE_TOP_HEIGHT)
+        Split = 1;
 
-    if (SECornerHeight == BELOW_CUBE_HEIGHT || NWCornerHeight == BELOW_CUBE_HEIGHT || SECornerHeight == ABOVE_CUBE_HEIGHT || NWCornerHeight == ABOVE_CUBE_HEIGHT)
-    {
-        if (SECornerHeight >= CUBE_TOP_HEIGHT && NWCornerHeight >= CUBE_TOP_HEIGHT)
-        {
-            //Split = true;
-            return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, 1);
-        } else {
-            //Split = false;
-            return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, 0);
-        }
-    }
+    if (SWCornerHeight == CUBE_TOP_HEIGHT && NECornerHeight == CUBE_TOP_HEIGHT)
+        Split = 0;
+
+    if (SWCornerHeight == BELOW_CUBE_HEIGHT || NECornerHeight == BELOW_CUBE_HEIGHT)
+        Split = 1;
+
+    if (SECornerHeight == BELOW_CUBE_HEIGHT || NWCornerHeight == BELOW_CUBE_HEIGHT)
+        Split = 0;
 
     return CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, Split);
-    //return CubeShape(min((int) SWCornerHeight, CUBE_TOP_HEIGHT), min((int) SECornerHeight, CUBE_TOP_HEIGHT), min((int) NWCornerHeight, CUBE_TOP_HEIGHT), min((int) NECornerHeight, CUBE_TOP_HEIGHT), Split);
 }
 
 void Geology::LoadCellData(Cell* TargetCell)

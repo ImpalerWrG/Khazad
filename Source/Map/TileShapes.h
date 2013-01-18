@@ -42,14 +42,6 @@ struct CubeShape
 
     bool isEmpty()
     {
-        //if ((SouthWestCorner <= CUBE_BOTTOM_HEIGHT) && (SouthEastCorner <= CUBE_BOTTOM_HEIGHT) && (NorthWestCorner <= CUBE_BOTTOM_HEIGHT) && (NorthEastCorner <= CUBE_BOTTOM_HEIGHT))
-        //{
-        //    return true;
-        //}
-        if (split()) {
-            //if  (NorthEastCorner < CUBE_BOTTOM_HEIGHT) && (SouthEastCorner < CUBE_BOTTOM_HEIGHT) &&
-        }
-
         int Counter = 0;
 
         if (SouthWestCorner < CUBE_BOTTOM_HEIGHT)
@@ -64,14 +56,7 @@ struct CubeShape
         if (Counter >= 2) {
             return true;
         }
-        /*
-        } else {
-            if (
-            if (((SouthWestCorner >= CUBE_TOP_HEIGHT || SouthWestCorner <= CUBE_BOTTOM_HEIGHT) || (NorthEastCorner <= CUBE_BOTTOM_HEIGHT || NorthEastCorner >= CUBE_TOP_HEIGHT)) && ((SouthEastCorner >= CUBE_TOP_HEIGHT || SouthEastCorner <= CUBE_BOTTOM_HEIGHT) || (NorthWestCorner <= CUBE_BOTTOM_HEIGHT || NorthWestCorner >= CUBE_TOP_HEIGHT)))
-            {
-                return true;
-            }
-        */
+
         return false;
     }
 

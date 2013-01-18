@@ -77,7 +77,7 @@ void Cell::BuildFaceData()
     bool Debug = true;
 
     CubeCoordinates TargetCube = 0;
-    CubeCoordinates DebugCube = ((12 & CELLBITFLAG) << CELLBITSHIFT) + (9 & CELLBITFLAG);
+    CubeCoordinates DebugCube = ((7 & CELLBITFLAG) << CELLBITSHIFT) + (6 & CELLBITFLAG);
     do
     {
         CubeShape Shape = getCubeShape(TargetCube);
@@ -87,7 +87,7 @@ void Cell::BuildFaceData()
         static int16_t WallSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
         static int16_t FloorSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
-        if (TargetCube == DebugCube && thisCellCoordinates.Z == 6)
+        if (TargetCube == DebugCube && thisCellCoordinates.Z == 8)
         {
             int debug = 1;
         }
@@ -114,7 +114,7 @@ void Cell::BuildFaceData()
                     }
                 }
 
-                if (AdjacentShape.isSolid())
+                if (!AdjacentShape.isEmpty())
                 {
                     if (DirectionType == DIRECTION_DOWN && Shape.hasFloor())
                     {

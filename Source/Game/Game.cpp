@@ -78,7 +78,7 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
     {
         for (int32_t y = Y; y < SizeY; y++)
         {
-            MapGeology->GenerateCellHeight(x, y, 4.0, 0.3);
+            MapGeology->GenerateCellHeight(x, y, 4.0, 2.0);
 
             for (int16_t z = MapGeology->getCellBottomZLevel() - 1; z <= MapGeology->getCellTopZLevel() + 1; z++)
             {
