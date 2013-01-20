@@ -50,6 +50,7 @@ void Face::RefreshEntity()
         {
             Ogre::Entity* NewEntity = RENDERER->getSceneManager()->createEntity(buffer);
             NewEntity->setMaterial(TEXTURE->getOgreMaterial(MaterialTypeID, SurfaceTypeID));
+            //NewEntity->setMaterialName("BaseWhite");
 
             NewNode->attachObject(NewEntity);
         }

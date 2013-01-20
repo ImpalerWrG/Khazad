@@ -77,7 +77,6 @@ void Cell::BuildFaceData()
     bool Debug = true;
 
     CubeCoordinates TargetCube = 0;
-    CubeCoordinates DebugCube = ((7 & CELLBITFLAG) << CELLBITSHIFT) + (6 & CELLBITFLAG);
     do
     {
         CubeShape Shape = getCubeShape(TargetCube);
@@ -86,11 +85,6 @@ void Cell::BuildFaceData()
         static int16_t NEHEMaterial = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
         static int16_t WallSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
         static int16_t FloorSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
-
-        if (TargetCube == DebugCube && thisCellCoordinates.Z == 8)
-        {
-            int debug = 1;
-        }
 
         for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
         {
@@ -143,7 +137,7 @@ void Cell::BuildFaceData()
     while (TargetCube != 0);  // End Loop when Byte rolls over
 }
 
-void Cell::BuildStaticGeometry()
+void Cell::BuildStaticGeometry(Ogre::SceneNode* ZNode)
 {
     if (CellGeometry != NULL)
     {
@@ -155,13 +149,13 @@ void Cell::BuildStaticGeometry()
             it->second->RefreshEntity();
         }
 
-        CellGeometry->addSceneNode(CellSceneNode);
+        CellGeometry->addSceneNode(ZNode);
         CellGeometry->setCastShadows(false);
 
         CellGeometry->build();
 
         DestroyAllAttachedEntities(CellSceneNode);
-        //CellSceneNode->attachObject(CellGeometry);
+        ZNode->removeChild(CellSceneNode);
 
         NeedsReBuild = false;
     }

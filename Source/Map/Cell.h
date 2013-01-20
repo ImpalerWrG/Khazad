@@ -84,7 +84,7 @@ public:
     //-----------GEOMETRY COMPRESSION----------//
 
     void BuildFaceData();
-    void BuildStaticGeometry();
+    void BuildStaticGeometry(Ogre::SceneNode* ZNode);
 
     void DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode);
 

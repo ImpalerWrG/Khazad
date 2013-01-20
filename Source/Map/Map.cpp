@@ -69,14 +69,24 @@ void Map::RefreshCellGeometry()
 {
     if (CellNeedsRebuild)
     {
+        Ogre::StaticGeometry* MapGeometry = RENDERER->getSceneManager()->createStaticGeometry("WholeMap");
+
+        for (std::vector< Ogre::SceneNode* >::iterator it = ZLevelSpindle.begin(); it != ZLevelSpindle.end(); it++)
+        {
+            (*it)->setVisible(false);
+        }
+
         for (std::map<uint64_t, Cell*>::const_iterator it = Cells.begin(); it != Cells.end(); it++)
         {
             if (it->second->getNeedsReBuild())
             {
-                it->second->BuildStaticGeometry();
+                Ogre::SceneNode* ZNode = getZlevelNode(it->second->getCellCoordinates().Z);
+
+                it->second->BuildStaticGeometry(ZNode);  //Rebuild individual cells
             }
         }
     }
+
     setNeedsReBuild(false);
 }
 
@@ -401,12 +411,13 @@ void Map::UpdateFace(MapCoordinates TargetCoordinates, Direction DirectionType)
         if (!isCubeInited(ModifiedCoordinates))
         {
             // Init it
+            return;
         }
 
         CubeShape SourceShape = getCubeShape(TargetCoordinates);
         CubeShape AdjacentShape = getCubeShape(ModifiedCoordinates);
 
-        if (SourceShape.isEmpty() && !AdjacentShape.isEmpty())
+        if (/*SourceShape.isEmpty() &&*/ !AdjacentShape.isEmpty())
         {
             Face* TargetFace = getFace(TargetCoordinates, DirectionType);
             if (TargetFace == NULL)
@@ -521,12 +532,12 @@ void Map::setSliceLevels(int32_t Top, int32_t Bottom)
 {
     for (std::vector< Ogre::SceneNode* >::iterator it = ZLevelSpindle.begin(); it != ZLevelSpindle.end(); it++)
     {
-        (*it)->setVisible(false);
+        (*it)->setVisible(false); //Hide everything to reset
     }
 
     for (uint32_t i = Bottom; i <= Top; i++)
     {
-        getZlevelNode(i)->setVisible(true);
+        getZlevelNode(i)->setVisible(true); //Show Slice
     }
 
     for (std::map<uint64_t, Cell*>::const_iterator it = Cells.begin(); it != Cells.end(); it++)
