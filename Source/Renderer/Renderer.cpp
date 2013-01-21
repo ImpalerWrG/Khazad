@@ -133,6 +133,11 @@ void Renderer::TakeScreenShoot()
     OgreRenderWindow->writeContentsToFile("ScreenShoot.png");
 }
 
+void Renderer::FocusActiveCameraAt(Ogre::Vector3 Point)
+{
+    getActiveCamera()->FocusAt(Point);
+}
+
 void Renderer::ToggleOverlay()
 {
     OgreDebugOverlay = Ogre::OverlayManager::getSingleton().getByName("Core/DebugOverlay");

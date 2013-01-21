@@ -31,6 +31,8 @@ public:
     void ToggleOverlay();
     void UpdateOverlay();
 
+    void FocusActiveCameraAt(Ogre::Vector3 Point);
+
     void TakeScreenShoot();
     Timer* getRenderTimer()                       { return RenderTimer; }
 

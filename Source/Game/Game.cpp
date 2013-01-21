@@ -40,6 +40,7 @@ bool Game::Init(uint16_t X, uint16_t Y, const char* SeedString)
 	MainMap->Init();
 
 	BuildMapChunk(0, 0, X, Y);
+    RENDERER->FocusActiveCameraAt(Ogre::Vector3(X * 8, Y * 8, 0));
 
  	//Path = new PathManager();
 	//Path->Init();
