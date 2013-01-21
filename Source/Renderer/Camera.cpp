@@ -155,7 +155,7 @@ void Camera::SetSlice(int16_t newTop, int16_t newBottome)
     SliceBottom = newBottome;
     if(SliceTop <= SliceBottom)
     {
-        SliceTop = SliceBottom + 1;
+        //SliceTop = SliceBottom + 1;
     }
     ViewLevels = SliceTop - SliceBottom;
 

@@ -41,15 +41,17 @@ bool MainGameScreen::Init()
         CEGUI::Scrollbar* DepthSliderTop = static_cast<CEGUI::Scrollbar*> (GUI->getWindowManager()->getWindow("MainGameScreen/DepthScrollerTop"));
         if (DepthSliderTop != NULL)
         {
-            DepthSliderTop->subscribeEvent(CEGUI::Scrollbar::EventScrollPositionChanged, CEGUI::Event::Subscriber(&MainGameScreen::DepthSliderMoved, this));
+            DepthSliderTop->setDocumentSize(1000);
             DepthSliderTop->setScrollPosition(0);
+            DepthSliderTop->subscribeEvent(CEGUI::Scrollbar::EventScrollPositionChanged, CEGUI::Event::Subscriber(&MainGameScreen::DepthSliderMoved, this));
         }
 
         CEGUI::Scrollbar* DepthSliderBottom = static_cast<CEGUI::Scrollbar*> (GUI->getWindowManager()->getWindow("MainGameScreen/DepthScrollerBottom"));
         if (DepthSliderBottom != NULL)
         {
+            DepthSliderBottom->setDocumentSize(1000);
+            DepthSliderBottom->setScrollPosition(1000);
             DepthSliderBottom->subscribeEvent(CEGUI::Scrollbar::EventScrollPositionChanged, CEGUI::Event::Subscriber(&MainGameScreen::DepthSliderMoved, this));
-            DepthSliderBottom->setScrollPosition(100);
         }
     }
 
@@ -105,7 +107,14 @@ void MainGameScreen::SetDirty()
     if (DepthSliderBottom != NULL)
     {
         int32_t ZMax = GAME->getMap()->getHighest() - GAME->getMap()->getLowest();
-        DepthSliderBottom->setDocumentSize(ZMax);
+        float OldPosition = DepthSliderBottom->getScrollPosition();
+        if (OldPosition > ZMax)
+        {
+            DepthSliderBottom->setDocumentSize(ZMax);
+            DepthSliderBottom->setScrollPosition(ZMax);
+        } else {
+            DepthSliderBottom->setScrollPosition(ZMax);
+        }
     }
 }
 
@@ -134,13 +143,9 @@ bool MainGameScreen::DepthSliderMoved(const CEGUI::EventArgs& pEventArgs)
     if (DepthSliderTop != NULL && DepthSliderBottom != NULL)
     {
         int32_t ZMax = GAME->getMap()->getHighest() - GAME->getMap()->getLowest();
-
-        float Top = CEGUI::PropertyHelper::stringToFloat(DepthSliderTop->getProperty("ScrollPosition"));
-        float Bottom = CEGUI::PropertyHelper::stringToFloat(DepthSliderBottom->getProperty("ScrollPosition"));
-
-        RENDERER->getActiveCamera()->SetSlice(ZMax - Top, ZMax - Bottom);
-        return true;
+        RENDERER->getActiveCamera()->SetSlice(ZMax - DepthSliderTop->getScrollPosition(), ZMax - DepthSliderBottom->getScrollPosition());
     }
+    return true;
 }
 
 bool MainGameScreen::ProcessKeyPress(OIS::KeyEvent Event)
