@@ -146,7 +146,7 @@ void Cell::BuildStaticGeometry(Ogre::SceneNode* ZNode)
         // Iterate all Faces and RefreshEntites;
         for (std::map<uint16_t, Face*>::iterator it = Faces.begin(); it != Faces.end(); it++)
         {
-            it->second->RefreshEntity();
+            it->second->RefreshEntity(CellSceneNode);
         }
 
         CellGeometry->addSceneNode(ZNode);
@@ -155,7 +155,6 @@ void Cell::BuildStaticGeometry(Ogre::SceneNode* ZNode)
         CellGeometry->build();
 
         DestroyAllAttachedEntities(CellSceneNode);
-        ZNode->removeChild(CellSceneNode);
 
         NeedsReBuild = false;
     }

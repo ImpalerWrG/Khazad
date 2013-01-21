@@ -12,11 +12,10 @@ Face::Face(Ogre::SceneNode* CellSceneNode, CubeCoordinates TargetCoordinates, Di
 	MaterialTypeID = INVALID_INDEX;
 
     FaceType = FaceShape(CubeShape(false), DirectionType);
-    CellNode = CellSceneNode;
 	LocationCoordinates = TargetCoordinates;
 }
 
-void Face::RefreshEntity()
+void Face::RefreshEntity(Ogre::SceneNode* CellNode)
 {
     if (SurfaceTypeID != INVALID_INDEX && MaterialTypeID != INVALID_INDEX) // && !FaceType.CubeComponent.isSolid())
     {

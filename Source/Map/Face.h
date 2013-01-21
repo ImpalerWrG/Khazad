@@ -18,7 +18,7 @@ public:
 	void setFaceSurfaceType(int16_t NewSurfaceTypeID);
 	void setFaceShapeType(FaceShape NewShape);
 
-    void RefreshEntity();
+    void RefreshEntity(Ogre::SceneNode* CellNode);
 
     int16_t getFaceMaterialType()           { return MaterialTypeID; }
     int16_t getFaceSurfaceType()            { return SurfaceTypeID; }
@@ -27,8 +27,6 @@ public:
 private:
 
     FaceShape FaceType;
-
-    Ogre::SceneNode* CellNode;
     CubeCoordinates LocationCoordinates;
 
     int16_t SurfaceTypeID;

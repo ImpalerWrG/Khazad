@@ -69,8 +69,6 @@ void Map::RefreshCellGeometry()
 {
     if (CellNeedsRebuild)
     {
-        Ogre::StaticGeometry* MapGeometry = RENDERER->getSceneManager()->createStaticGeometry("WholeMap");
-
         for (std::vector< Ogre::SceneNode* >::iterator it = ZLevelSpindle.begin(); it != ZLevelSpindle.end(); it++)
         {
             (*it)->setVisible(false);
