@@ -94,9 +94,9 @@ void Cell::BuildFaceData()
 
             CubeShape AdjacentShape = ParentMap->getCubeShape(ModifiedCoordinates);
 
-            if (!Shape.isEmpty()) //(ParentMap->isCubeInited(ModifiedCoordinates))
+            if (!Shape.isSky())
             {
-                if (ParentMap->isCubeInited(ModifiedCoordinates) && AdjacentShape.isEmpty())
+                if (ParentMap->isCubeInited(ModifiedCoordinates) && AdjacentShape.isSky())
                 {
                     if (Shape.hasFace(DirectionType))
                     {

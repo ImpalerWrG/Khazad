@@ -42,6 +42,11 @@ struct CubeShape
 
     bool isEmpty()
     {
+        return (SouthWestCorner <= CUBE_BOTTOM_HEIGHT) && (SouthEastCorner <= CUBE_BOTTOM_HEIGHT) && (NorthWestCorner <= CUBE_BOTTOM_HEIGHT) && (NorthEastCorner <= CUBE_BOTTOM_HEIGHT);
+    }
+
+    bool isSky()
+    {
         int Counter = 0;
 
         if (SouthWestCorner < CUBE_BOTTOM_HEIGHT)
@@ -67,13 +72,13 @@ struct CubeShape
         if (DirectionType == DIRECTION_UP)
             return hasCeiling();
         if (DirectionType == DIRECTION_EAST)
-            return (SouthEastCorner >= CUBE_BOTTOM_HEIGHT && NorthEastCorner >= CUBE_BOTTOM_HEIGHT);
+            return (SouthEastCorner > CUBE_BOTTOM_HEIGHT || NorthEastCorner > CUBE_BOTTOM_HEIGHT);
         if (DirectionType == DIRECTION_WEST)
-            return (SouthWestCorner >= CUBE_BOTTOM_HEIGHT && NorthWestCorner >= CUBE_BOTTOM_HEIGHT);
+            return (SouthWestCorner > CUBE_BOTTOM_HEIGHT || NorthWestCorner > CUBE_BOTTOM_HEIGHT);
         if (DirectionType == DIRECTION_NORTH)
-            return (NorthEastCorner >= CUBE_BOTTOM_HEIGHT && NorthWestCorner >= CUBE_BOTTOM_HEIGHT);
+            return (NorthEastCorner > CUBE_BOTTOM_HEIGHT || NorthWestCorner > CUBE_BOTTOM_HEIGHT);
         if (DirectionType == DIRECTION_SOUTH)
-            return (SouthEastCorner >= CUBE_BOTTOM_HEIGHT && SouthWestCorner >= CUBE_BOTTOM_HEIGHT);
+            return (SouthEastCorner > CUBE_BOTTOM_HEIGHT || SouthWestCorner > CUBE_BOTTOM_HEIGHT);
     }
 
     bool hasFloor()
