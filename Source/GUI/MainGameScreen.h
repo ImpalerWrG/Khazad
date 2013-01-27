@@ -23,6 +23,9 @@ private:
     bool ExitGame(const CEGUI::EventArgs& pEventArgs);
     bool DepthSliderMoved(const CEGUI::EventArgs& pEventArgs);
 
+    bool PausePressed(const CEGUI::EventArgs& pEventArgs);
+    bool PlayPressed(const CEGUI::EventArgs& pEventArgs);
+
     bool ProcessKeyPress(OIS::KeyEvent Event);
     bool ProcessKeyRelease(OIS::KeyEvent Event);
 };

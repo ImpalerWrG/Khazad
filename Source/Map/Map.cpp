@@ -553,11 +553,11 @@ void Map::setSliceLevels(int32_t Top, int32_t Bottom)
         int32_t ZLevel = it->second->getCellCoordinates().Z;
         if (ZLevel > Top || ZLevel < Bottom)
         {
-            it->second->getCellGeometry()->setVisible(false);
+            it->second->setVisible(false);
         }
         else
         {
-            it->second->getCellGeometry()->setVisible(true);
+            it->second->setVisible(true);
         }
     }
 }

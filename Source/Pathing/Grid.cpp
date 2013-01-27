@@ -24,9 +24,13 @@ KhazadGrid::KhazadGrid(Map* TargetMap)
                 CubeShape Shape = TargetCell->getCubeShape(TargetCube);
                 uint32_t Flags = 0;
 
-                if (!Shape.isEmpty() && !Shape.isSolid())
+                if (!Shape.isSky() && !Shape.isSolid())
                 {
-                    //Flags |= (1 << (int) DIRECTION_NONE);
+                    MapCoordinates OverheadTileCoords = MapCoordinates(CellCoords, TargetCube);
+                    OverheadTileCoords.TranslateMapCoordinates(DIRECTION_UP);
+                    CubeShape OverheadCube = TargetMap->getCubeShape(OverheadTileCoords);
+                    bool OverheadPassable = OverheadCube.isSky();
+
                     for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
                     {
                         MapCoordinates AdjacentTileCoords = MapCoordinates(CellCoords, TargetCube);
@@ -41,35 +45,15 @@ KhazadGrid::KhazadGrid(Map* TargetMap)
 
                         CubeShape AdjacentCubeShape = TargetMap->getCubeShape(AdjacentTileCoords);
 
-                        if (!AdjacentCubeShape.isEmpty() || !AdjacentCubeShape.isSolid())
+                        if (!AdjacentCubeShape.isSky() && !AdjacentCubeShape.isSolid())
                         {
-                            if (DirectionType == DIRECTION_DOWN)
+                            if (DirectionValueOnAxis(DirectionType, AXIS_Z) == 1)
                             {
-                            }
-                            else if (DirectionType == DIRECTION_UP)
-                            {
-                            }
-                            else if (DirectionType >= NUM_COMPASS_DIRECTIONS)
-                            {
-                                if (isDirectionPositive(DirectionType))
+                                if (OverheadPassable)
                                 {
-                                    /*Figure out ramps
-                                    if (TileShapeID == RAMP_ID)
-                                    {
-                                        Flags |= (1 << (int) DirectionType);
-                                    }*/
+                                    Flags |= (1 << (int) DirectionType);
                                 }
-                                else
-                                {
-                                    /*only can go down-diagonal to ramp
-                                    if (AdjacentTileShape == RAMP_ID)
-                                    {
-                                        Flags |= (1 << (int) DirectionType);
-                                    }*/
-                                }
-                            }
-                            else
-                            {
+                            } else {
                                 //If no vertical direction, we only care that this tile is passable
                                 Flags |= (1 << (int) DirectionType);
                             }

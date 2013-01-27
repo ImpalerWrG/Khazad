@@ -293,6 +293,9 @@ void Cell::DrawCellCage()
 int Cell::addActor(Actor* NewActor)
 {
     LocalActors.push_back(NewActor);
+    CellSceneNode->addChild(NewActor->getNode());
+    NewActor->setVisible(Visible);
+
     return LocalActors.size() - 1;
 }
 
@@ -305,6 +308,7 @@ void Cell::removeActor(int Index)
         if (LastActor != NULL)
         {
             LastActor->setCellActorIndex(Index);
+            CellSceneNode->removeChild(LastActor->getNode());
         }
         LocalActors[Index] = LastActor;
 

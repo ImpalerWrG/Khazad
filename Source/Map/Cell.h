@@ -95,6 +95,7 @@ public:
     Ogre::Vector3 getPosition()                         { return CellSceneNode->getPosition(); }
 
     Ogre::StaticGeometry* getCellGeometry()             { return CellGeometry; }
+    inline void setVisible(bool NewVisibility)          { Visible = NewVisibility; CellGeometry->setVisible(NewVisibility); }
 
 
     //-------------LOCAL OBJECTS--------------//
@@ -108,6 +109,7 @@ public:
 protected:
 
     bool NeedsReBuild;
+    bool Visible;
 
     // Larger DataValues specific to each Cube
     boost::array< CubeShape, CUBESPERCELL > CubeShapeTypes;

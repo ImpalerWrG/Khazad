@@ -3,7 +3,6 @@
 
 #include <stdafx.h>
 
-//#include <OgreVector3.h>
 
 class Cell;
 
@@ -28,9 +27,10 @@ public:
     MapCoordinates getLocationCoordinates()            { return LocationCoordinates; }
     void setLocation(MapCoordinates NewPosition);
 
+    Ogre::SceneNode* getNode()          { return ActorNode; }
 
 	bool isVisible()                    { return Visible; }
-	void setVisible(bool NewValue)      { Visible = NewValue; }
+	void setVisible(bool NewValue);
 
 	bool isHidden()                     { return Hidden; }
 	void setHidden(bool NewValue)       { Hidden = NewValue; }
@@ -42,8 +42,6 @@ protected:
 	MapCoordinates LocationCoordinates;     // The location for gameplay logic purposes
 
     Cell* CurrentCell;
-	//CellCoordinates CurrentCellCoordinates; // Cell that this Actor is currently in
-	CubeCoordinates CurrentCubeCoordinates; // CubeLocation within the Cell
 
     int CellActorIndex;
 

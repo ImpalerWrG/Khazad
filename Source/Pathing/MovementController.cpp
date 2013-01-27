@@ -106,6 +106,12 @@ Direction MovementController::getNextStep()  // Next movement step for the ajent
             return DIRECTION_NONE;
         }
         break;
+
+        case PATH_BEHAVIOR_TRAPPED:     // Agent is Trapped unable to reach a desired area
+        {
+            return DIRECTION_NONE;
+        }
+        break;
     }
 }
 

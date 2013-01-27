@@ -42,10 +42,10 @@ bool Game::Init(uint16_t X, uint16_t Y, const char* SeedString)
 	BuildMapChunk(0, 0, X, Y);
     RENDERER->FocusActiveCameraAt(Ogre::Vector3(X * CELLEDGESIZE / 2, Y * CELLEDGESIZE / 2, 0));
 
- 	//Path = new PathManager();
-	//Path->Init();
-	//Path->CreateMapAbstraction(MainMap);
-	//Path->InitializeTestingSuite();
+ 	Path = new PathManager();
+	Path->Init();
+	Path->CreateMapAbstraction(MainMap);
+	Path->InitializeTestingSuite();
 
     GameTimer->Start();
 
@@ -54,7 +54,7 @@ bool Game::Init(uint16_t X, uint16_t Y, const char* SeedString)
 
 Game::Game()
 {
-	TickRate = 10;
+	TickRate = 100;
 
     GameTimer = new Timer(50);
 

@@ -8,6 +8,7 @@
 #include <Game.h>
 #include <Map.h>
 
+#include <PathManager.h>
 
 MainGameScreen::MainGameScreen()
 {
@@ -53,6 +54,18 @@ bool MainGameScreen::Init()
             DepthSliderBottom->setScrollPosition(1000);
             DepthSliderBottom->subscribeEvent(CEGUI::Scrollbar::EventScrollPositionChanged, CEGUI::Event::Subscriber(&MainGameScreen::DepthSliderMoved, this));
         }
+
+        CEGUI::Window* PauseButton = GUI->getWindowManager()->getWindow("MainGameScreen/TopBar/PauseButton");
+        if (PauseButton != NULL)
+        {
+            PauseButton->subscribeEvent(CEGUI::PushButton::EventMouseClick, CEGUI::Event::Subscriber(&MainGameScreen::MainGameScreen::PausePressed, this));
+        }
+
+        CEGUI::Window* PlayButton = GUI->getWindowManager()->getWindow("MainGameScreen/TopBar/PlayButton");
+        if (PauseButton != NULL)
+        {
+            PlayButton->subscribeEvent(CEGUI::PushButton::EventMouseClick, CEGUI::Event::Subscriber(&MainGameScreen::MainGameScreen::PlayPressed, this));
+        }
     }
 
     catch(CEGUI::Exception &e)
@@ -85,15 +98,11 @@ void MainGameScreen::SetDirty()
         CEGUI::Window* TileTypeDisplay = GUI->getWindowManager()->getWindow("MainGameScreen/SelectionWindow/TileTypeWindow/TileTypeDisplay");
         TileTypeDisplay->setText(buffer);
 
-        if (Shape.isEmpty()) {
-            sprintf(buffer, "Empty");
-            CEGUI::Window* TileFullDisplay = GUI->getWindowManager()->getWindow("MainGameScreen/SelectionWindow/TileFullnessDisplay");
-            TileFullDisplay->setText(buffer);
-        } else {
-            sprintf(buffer, "NOT Empty");
-            CEGUI::Window* TileFullDisplay = GUI->getWindowManager()->getWindow("MainGameScreen/SelectionWindow/TileFullnessDisplay");
-            TileFullDisplay->setText(buffer);
-        }
+        uint32_t zone = GAME->getPath()->getZoneEquivilency(Location);
+        sprintf(buffer, "Zone %i", zone);
+        CEGUI::Window* TileFullDisplay = GUI->getWindowManager()->getWindow("MainGameScreen/SelectionWindow/TileFullnessDisplay");
+        TileFullDisplay->setText(buffer);
+
     }
 
     CEGUI::Scrollbar* DepthSliderTop = static_cast<CEGUI::Scrollbar*> (GUI->getWindowManager()->getWindow("MainGameScreen/DepthScrollerTop"));
@@ -146,6 +155,16 @@ bool MainGameScreen::DepthSliderMoved(const CEGUI::EventArgs& pEventArgs)
         RENDERER->getActiveCamera()->SetSlice(ZMax - DepthSliderTop->getScrollPosition(), ZMax - DepthSliderBottom->getScrollPosition());
     }
     return true;
+}
+
+bool MainGameScreen::PlayPressed(const CEGUI::EventArgs& pEventArgs)
+{
+    GAME->setTickRate(100);
+}
+
+bool MainGameScreen::PausePressed(const CEGUI::EventArgs& pEventArgs)
+{
+    GAME->setTickRate(0);
 }
 
 bool MainGameScreen::ProcessKeyPress(OIS::KeyEvent Event)

@@ -1,3 +1,20 @@
+/* Copyright 2010 Kenneth Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
 #include <Pawn.h>
 
 #include <DataManager.h>
@@ -13,6 +30,7 @@
 Pawn::Pawn()
 {
     Moving = false;
+    Controller = NULL;
     CurrentMovementDirection = DIRECTION_NONE;
 }
 
@@ -53,7 +71,7 @@ CoolDown Pawn::AttemptMove(Direction MovementDirection)
 
         Moving = true;
         float Speed = 1.0;
-        MovementCoolDown = EdgeCost / ( Speed / 1000.0);
+        MovementCoolDown = EdgeCost / (Speed / 1000.0);
         MovementStarted = TEMPORAL->getCurrentTimeTick();
 
         float AnimationSpeed = 0.5;
@@ -77,7 +95,7 @@ void Pawn::setAnimationType(ANIMATION_TYPE_INDEX NewAnimationType)
     AnimationStartIndex = CurrentFrame = DATA->getAnimationGroupData(AnimationGroupID)->getAnimationStart(NewAnimationType);
 	AnimationLoopLength = DATA->getAnimationGroupData(AnimationGroupID)->getAnimationLength(NewAnimationType);
 
-	ActorBillboard->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setCurrentFrame(CurrentFrame);
+	//ActorBillboard->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setCurrentFrame(CurrentFrame);
 }
 
 void Pawn::AdvanceFrame()
@@ -97,7 +115,7 @@ CoolDown Pawn::Update()
 
     if (Moving)
     {
-        AdvanceFrame();
+        //AdvanceFrame();
         MoveRenderPosition(RenderLocationChange);
 
         if (UpdateTick >= (MovementStarted + MovementCoolDown))  // Done
@@ -113,13 +131,18 @@ CoolDown Pawn::Update()
     {
         if (LocationCoordinates == DestinationCoordinates)
         {
-            DestinationCoordinates = GAME->getPath()->getTester()->getRandomPassableCoordinate();  // This needs to get DIFFERENT coords each time
-
-            while (!Controller->isDestinationReachable(DestinationCoordinates))
+            if (GAME->getPath()->getDirectionFlags(LocationCoordinates) != 0) //Is the current location impassable
             {
-                DestinationCoordinates = GAME->getPath()->getTester()->getRandomPassableCoordinate();
+                DestinationCoordinates = GAME->getPath()->getTester()->getRandomPassableCoordinate();  // This needs to get DIFFERENT coords each time
+
+                while (!Controller->isDestinationReachable(DestinationCoordinates))
+                {
+                    DestinationCoordinates = GAME->getPath()->getTester()->getRandomPassableCoordinate();
+                }
+                Controller->ChangeDestination(DestinationCoordinates);
+            } else {
+                Controller->setBehaviorMode(PATH_BEHAVIOR_HALT);
             }
-            Controller->ChangeDestination(DestinationCoordinates);
         }
 
         CurrentMovementDirection = Controller->getNextStep();

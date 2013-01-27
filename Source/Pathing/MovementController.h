@@ -18,7 +18,8 @@ enum MovementBehavior
     PATH_BEHAVIOR_FLEE_ADJENT,       // Agent runs away from another adjent
     PATH_BEHAVIOR_SEAK_ADJENT,       // Agent moves directly onto another ajent
     PATH_BEHAVIOR_ROUTE_TO_LOCATION, // Agent follows a path to a specific location
-    PATH_BEHAVIOR_ROUTE_TO_AREA      // Agent follows a path to the closest location in an area
+    PATH_BEHAVIOR_ROUTE_TO_AREA,     // Agent follows a path to the closest location in an area
+    PATH_BEHAVIOR_TRAPPED            // Agent is trapped
 };
 
 class MovementController

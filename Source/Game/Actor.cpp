@@ -23,12 +23,13 @@ bool Actor::Init(MapCoordinates SpawnLocation, Ogre::MaterialPtr Mat, float Widt
     ActorBillboard = RENDERER->getSceneManager()->createBillboardSet(1);
 
     ActorBillboard->setDefaultDimensions(Width, Height);
-    ActorBillboard->createBillboard(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z + ((Height - 1.0) / 2));
+    ActorBillboard->createBillboard(0, 0, ((Height - 1.0) / 2));
 
     ActorBillboard->setMaterialName(Mat->getName());
 
-	ActorNode = RENDERER->getSceneManager()->getRootSceneNode()->createChildSceneNode();
+	ActorNode = RENDERER->getSceneManager()->createSceneNode();
     ActorNode->attachObject(ActorBillboard);
+    ActorNode->setVisible(false);
 
     setLocation(SpawnLocation);
 
@@ -38,12 +39,13 @@ bool Actor::Init(MapCoordinates SpawnLocation, Ogre::MaterialPtr Mat, float Widt
 void Actor::setLocation(MapCoordinates NewPosition)
 {
     LocationCoordinates = NewPosition;
-    CurrentCubeCoordinates = NewPosition.Cube();
 
     CellCoordinates NewCellCoords = CellCoordinates(NewPosition);
     Cell* NewCell = GAME->getMap()->getCell(NewCellCoords);
+    CubeCoordinates Cube = NewPosition.Cube();
 
-    ActorNode->setPosition(NewPosition.X, NewPosition.Y, NewPosition.Z);
+    float X = (float) (Cube >> CELLBITSHIFT) + (float)HALFCUBE - (float)(CELLEDGESIZE / 2);
+    float Y = (float) (Cube & CELLBITFLAG) + (float)HALFCUBE - (float)(CELLEDGESIZE / 2);
 
     if (CurrentCell != NewCell)
     {
@@ -58,6 +60,7 @@ void Actor::setLocation(MapCoordinates NewPosition)
             CurrentCell = NewCell;
         }
     }
+    ActorNode->setPosition(X, Y, 0);
 }
 
 void Actor::setRenderPosition(Ogre::Vector3 NewPosition)
@@ -70,3 +73,7 @@ void Actor::MoveRenderPosition(Ogre::Vector3 Translation)
     ActorNode->translate(Translation);
 }
 
+void Actor::setVisible(bool NewValue)
+{
+    Visible = NewValue; ActorNode->setVisible(NewValue);
+}
