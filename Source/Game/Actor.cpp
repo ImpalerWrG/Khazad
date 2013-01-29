@@ -51,12 +51,12 @@ void Actor::setLocation(MapCoordinates NewPosition)
     {
         if (CurrentCell != NULL)
         {
-            CurrentCell->removeActor(CellActorIndex);
+            CurrentCell->removeActor(this);
         }
 
         if (NewCell != NULL)
         {
-            CellActorIndex = NewCell->addActor(this);
+            NewCell->addActor(this);
             CurrentCell = NewCell;
         }
     }

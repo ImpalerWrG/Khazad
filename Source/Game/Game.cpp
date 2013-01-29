@@ -54,7 +54,7 @@ bool Game::Init(uint16_t X, uint16_t Y, const char* SeedString)
 
 Game::Game()
 {
-	TickRate = 100;
+	TickRate = 1000;
 
     GameTimer = new Timer(50);
 

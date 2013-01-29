@@ -137,7 +137,7 @@ void Cell::BuildFaceData()
     while (TargetCube != 0);  // End Loop when Byte rolls over
 }
 
-void Cell::BuildStaticGeometry(Ogre::SceneNode* ZNode)
+void Cell::BuildStaticGeometry()
 {
     if (CellGeometry != NULL)
     {
@@ -146,16 +146,11 @@ void Cell::BuildStaticGeometry(Ogre::SceneNode* ZNode)
         // Iterate all Faces and RefreshEntites;
         for (std::map<uint16_t, Face*>::iterator it = Faces.begin(); it != Faces.end(); it++)
         {
-            it->second->RefreshEntity(CellSceneNode);
+            it->second->RefreshEntity(CellGeometry, thisCellCoordinates);
         }
 
-        CellGeometry->addSceneNode(ZNode);
-        CellGeometry->setCastShadows(false);
-
+        CellGeometry->setCastShadows(true);
         CellGeometry->build();
-
-        DestroyAllAttachedEntities(CellSceneNode);
-
         NeedsReBuild = false;
     }
 }
@@ -260,7 +255,7 @@ Face* Cell::addFace(FaceCoordinates TargetCoordinates)
 
     if (Faces.find(Key) == Faces.end())
     {
-        Face* NewFace = new Face(CellSceneNode, TargetCoordinates.Coordinates, TargetCoordinates.FaceDirection);
+        Face* NewFace = new Face(TargetCoordinates.Coordinates, TargetCoordinates.FaceDirection);
         Faces[Key] = NewFace;
 
         return NewFace;
@@ -290,29 +285,12 @@ void Cell::DrawCellCage()
     //RENDERER->DrawCage(AdjustedPoint, CELLEDGESIZE, CELLEDGESIZE, 1.0, true, 1, 1, 1);
 }
 
-int Cell::addActor(Actor* NewActor)
+void Cell::addActor(Actor* NewActor)
 {
-    LocalActors.push_back(NewActor);
+    //LocalActors.push_back(NewActor);
     CellSceneNode->addChild(NewActor->getNode());
     NewActor->setVisible(Visible);
 
-    return LocalActors.size() - 1;
-}
-
-void Cell::removeActor(int Index)
-{
-    if (LocalActors.size() != 0)
-    {
-        Actor* LastActor = LocalActors.back();
-
-        if (LastActor != NULL)
-        {
-            LastActor->setCellActorIndex(Index);
-            CellSceneNode->removeChild(LastActor->getNode());
-        }
-        LocalActors[Index] = LastActor;
-
-        LocalActors.pop_back();
-    }
+    //return LocalActors.size() - 1;
 }
 

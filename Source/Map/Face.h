@@ -11,14 +11,14 @@ class Face
 {
 public:
 
-	Face(Ogre::SceneNode* CellSceneNode, CubeCoordinates TargetCoordinates, Direction DirectionType);
+	Face(CubeCoordinates TargetCoordinates, Direction DirectionType);
 	~Face();
 
 	void setFaceMaterialType(int16_t NewMaterialTypeID);
 	void setFaceSurfaceType(int16_t NewSurfaceTypeID);
 	void setFaceShapeType(FaceShape NewShape);
 
-    void RefreshEntity(Ogre::SceneNode* CellNode);
+    void RefreshEntity(Ogre::StaticGeometry* CellGeometry, CellCoordinates CellPosition);
 
     int16_t getFaceMaterialType()           { return MaterialTypeID; }
     int16_t getFaceSurfaceType()            { return SurfaceTypeID; }

@@ -6,7 +6,7 @@
 #include <Renderer.h>
 
 
-Face::Face(Ogre::SceneNode* CellSceneNode, CubeCoordinates TargetCoordinates, Direction DirectionType)
+Face::Face(CubeCoordinates TargetCoordinates, Direction DirectionType)
 {
 	SurfaceTypeID = INVALID_INDEX;
 	MaterialTypeID = INVALID_INDEX;
@@ -15,15 +15,13 @@ Face::Face(Ogre::SceneNode* CellSceneNode, CubeCoordinates TargetCoordinates, Di
 	LocationCoordinates = TargetCoordinates;
 }
 
-void Face::RefreshEntity(Ogre::SceneNode* CellNode)
+void Face::RefreshEntity(Ogre::StaticGeometry* CellGeometry, CellCoordinates CellPosition)
 {
     if (SurfaceTypeID != INVALID_INDEX && MaterialTypeID != INVALID_INDEX) // && !FaceType.CubeComponent.isSolid())
     {
-        Ogre::SceneNode* NewNode = CellNode->createChildSceneNode();
-
-        int16_t X = (LocationCoordinates >> CELLBITSHIFT);
-        int16_t Y = (LocationCoordinates & CELLBITFLAG);
-        int16_t Z = 0;
+        int16_t X = (CellPosition.X * CELLEDGESIZE) + (LocationCoordinates >> CELLBITSHIFT);
+        int16_t Y = (CellPosition.Y * CELLEDGESIZE) + (LocationCoordinates & CELLBITFLAG);
+        int16_t Z = CellPosition.Z;
 
         if (DirectionValueOnAxis(FaceType.FaceDirection, AXIS_X) == 1)
         {
@@ -40,8 +38,6 @@ void Face::RefreshEntity(Ogre::SceneNode* CellNode)
             Z -= 1;
         }
 
-        NewNode->setPosition(X - (CELLEDGESIZE / 2) + HALFCUBE, Y - (CELLEDGESIZE / 2) + HALFCUBE, Z);
-
         char buffer[64];
         FaceType.getName(buffer);
 
@@ -49,9 +45,8 @@ void Face::RefreshEntity(Ogre::SceneNode* CellNode)
         {
             Ogre::Entity* NewEntity = RENDERER->getSceneManager()->createEntity(buffer);
             NewEntity->setMaterial(TEXTURE->getOgreMaterial(MaterialTypeID, SurfaceTypeID));
-            //NewEntity->setMaterialName("BaseWhite");
-
-            NewNode->attachObject(NewEntity);
+            CellGeometry->addEntity(NewEntity, Ogre::Vector3(X, Y, Z));
+            //delete Entity???
         }
     }
 }
@@ -89,4 +84,3 @@ void Face::setFaceShapeType(FaceShape NewShape)
 
 		//Set Cell needsRedraw
     }
-}

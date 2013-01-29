@@ -69,11 +69,6 @@ void Map::RefreshCellGeometry()
 {
     if (CellNeedsRebuild)
     {
-        for (std::vector< Ogre::SceneNode* >::iterator it = ZLevelSpindle.begin(); it != ZLevelSpindle.end(); it++)
-        {
-            (*it)->setVisible(false);
-        }
-
         for (std::map<uint64_t, Cell*>::const_iterator it = Cells.begin(); it != Cells.end(); it++)
         {
             if (it->second->getNeedsReBuild())

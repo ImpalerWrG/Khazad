@@ -142,6 +142,8 @@ CoolDown Pawn::Update()
                 Controller->ChangeDestination(DestinationCoordinates);
             } else {
                 Controller->setBehaviorMode(PATH_BEHAVIOR_HALT);
+                Moving = false;
+                return 100;
             }
         }
 
@@ -149,7 +151,7 @@ CoolDown Pawn::Update()
 
         if (CurrentMovementDirection != DIRECTION_NONE)
         {
-            AttemptMove(CurrentMovementDirection);
+            return AttemptMove(CurrentMovementDirection);
         }
     }
 

@@ -84,7 +84,7 @@ public:
     //-----------GEOMETRY COMPRESSION----------//
 
     void BuildFaceData();
-    void BuildStaticGeometry(Ogre::SceneNode* ZNode);
+    void BuildStaticGeometry();
 
     void DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode);
 
@@ -95,13 +95,13 @@ public:
     Ogre::Vector3 getPosition()                         { return CellSceneNode->getPosition(); }
 
     Ogre::StaticGeometry* getCellGeometry()             { return CellGeometry; }
-    inline void setVisible(bool NewVisibility)          { Visible = NewVisibility; CellGeometry->setVisible(NewVisibility); }
+    inline void setVisible(bool NewVisibility)          { CellSceneNode->setVisible(NewVisibility); Visible = NewVisibility; CellGeometry->setVisible(NewVisibility); }
 
 
     //-------------LOCAL OBJECTS--------------//
 
-    int addActor(Actor* NewActor);
-    void removeActor(int Index);
+    void addActor(Actor* NewActor);
+    void removeActor(Actor* NewActor);
 
     void addBuilding(Building* NewBuilding)             { buildings.push_back(NewBuilding); }
     void addTree(Tree* NewTree)                         { trees.push_back(NewTree); }
@@ -135,9 +135,3 @@ protected:
     Ogre::StaticGeometry* CellGeometry;
 
     // The global position of this cell relative to other cells
-    CellCoordinates thisCellCoordinates;
-
-    Map* ParentMap;
-};
-
-#endif // CELL__HEADER

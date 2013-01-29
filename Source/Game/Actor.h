@@ -35,15 +35,11 @@ public:
 	bool isHidden()                     { return Hidden; }
 	void setHidden(bool NewValue)       { Hidden = NewValue; }
 
-    void setCellActorIndex(int NewValue)    { CellActorIndex = NewValue; }
-
 protected:
 
 	MapCoordinates LocationCoordinates;     // The location for gameplay logic purposes
 
     Cell* CurrentCell;
-
-    int CellActorIndex;
 
     Ogre::SceneNode* ActorNode;
     Ogre::BillboardSet* ActorBillboard;

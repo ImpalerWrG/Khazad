@@ -88,15 +88,21 @@ PathWalker* VectorPath::getPathWalker()
 
 VectorPathWalker::VectorPathWalker(VectorPath* SourcePath)
 {
-    TargetPath = SourcePath;
-    Reset();
+    if (SourcePath != NULL)
+    {
+        TargetPath = SourcePath;
+        Reset();
+    }
 }
 
 void VectorPathWalker::Reset()
 {
-    MagnitudeCountDown = TargetPath->Magnitudes[0];  // Prime the counter with the first legs magnitude
+    if (TargetPath != NULL)
+    {
+        MagnitudeCountDown = TargetPath->Magnitudes[0];  // Prime the counter with the first legs magnitude
+        StepCoordinates = TargetPath->StartCoordinates;
+    }
     LegCounter = 0;
-    StepCoordinates = TargetPath->StartCoordinates;
     CurrentStep = 0;
 }
 
