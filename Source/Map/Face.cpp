@@ -84,3 +84,4 @@ void Face::setFaceShapeType(FaceShape NewShape)
 
 		//Set Cell needsRedraw
     }
+}

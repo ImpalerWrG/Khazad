@@ -135,3 +135,10 @@ protected:
     Ogre::StaticGeometry* CellGeometry;
 
     // The global position of this cell relative to other cells
+    CellCoordinates thisCellCoordinates;
+
+    Map* ParentMap;
+
+};
+
+#endif // CELL__HEADER

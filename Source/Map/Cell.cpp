@@ -294,3 +294,7 @@ void Cell::addActor(Actor* NewActor)
     //return LocalActors.size() - 1;
 }
 
+void Cell::removeActor(Actor* DepartingActor)
+{
+    CellSceneNode->removeChild(DepartingActor->getNode());
+}

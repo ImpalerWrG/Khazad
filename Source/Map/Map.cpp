@@ -73,9 +73,7 @@ void Map::RefreshCellGeometry()
         {
             if (it->second->getNeedsReBuild())
             {
-                Ogre::SceneNode* ZNode = getZlevelNode(it->second->getCellCoordinates().Z);
-
-                it->second->BuildStaticGeometry(ZNode);  //Rebuild individual cells
+                it->second->BuildStaticGeometry();  //Rebuild individual cells
             }
         }
     }
