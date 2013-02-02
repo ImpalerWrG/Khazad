@@ -239,6 +239,12 @@
 		<Unit filename="../../Source/Game/Temporal.h" />
 		<Unit filename="../../Source/Game/Tree.cpp" />
 		<Unit filename="../../Source/Game/Tree.h" />
+		<Unit filename="../../Source/Game/Job.cpp" />
+		<Unit filename="../../Source/Game/job.h" />
+		<Unit filename="../../Source/Game/Settlment.cpp" />
+		<Unit filename="../../Source/Game/Settlment.h" />
+		<Unit filename="../../Source/Game/Citizen.cpp" />
+		<Unit filename="../../Source/Game/Citizen.h" />
 		<Unit filename="../../Source/Map/Cell.cpp" />
 		<Unit filename="../../Source/Map/Cell.h" />
 		<Unit filename="../../Source/Map/Coordinates.cpp" />

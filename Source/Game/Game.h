@@ -29,6 +29,7 @@ class Map;
 class PathManager;
 class Geology;
 class Timer;
+class Settlment;
 
 class MapCoordinates;
 
@@ -72,6 +73,7 @@ protected:
     Map* MainMap;
     Geology* MapGeology;
     PathManager* Path;
+    Settlment* TheSettlment;
 
     float ProgressAmount;
 };

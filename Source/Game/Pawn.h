@@ -56,6 +56,22 @@ protected:
 	uint16_t AnimationLoopLength;
 
     MovementController* Controller;
+
+    uint8_t Strength;
+    uint8_t Dextarity;
+    uint8_t Flexibility;
+    uint8_t Endurance;
+    uint8_t Vitality;
+    uint8_t Reflexes;
+    uint8_t Speed;
+
+    uint8_t Logic;
+    uint8_t Perception;
+    uint8_t Charisma;
+    uint8_t Memory;
+    uint8_t Judgement;
+    uint8_t Willpower;
+    uint8_t Intuition;
 };
 
 #endif // PAWN__HEADER
