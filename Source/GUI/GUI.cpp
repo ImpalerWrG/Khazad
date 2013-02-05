@@ -44,6 +44,7 @@ bool GUIManager::Init()
     CEGUISystem = &CEGUI::System::getSingleton();
 
     CEGUISystem->setDefaultMouseCursor("Vanilla-Images", "MouseArrow");
+    CEGUISystem->setMouseClickEventGenerationEnabled(true);
     //CEGUISystem->setDefaultFont("Blackletter-10");
 
 
@@ -124,4 +125,9 @@ bool GUIManager::injectKeyRelease(OIS::KeyEvent Event)
     ScreenList[ActiveScreen]->ProcessKeyRelease(Event);
 
     return CEGUISystem->injectKeyUp(Event.key);
+}
+
+bool GUIManager::injectTimePulse(float TimeElapsed)
+{
+    CEGUISystem->injectTimePulse(TimeElapsed);
 }

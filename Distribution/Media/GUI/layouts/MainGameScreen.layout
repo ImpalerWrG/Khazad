@@ -3,6 +3,7 @@
 <GUILayout >
     <Window Type="DefaultWindow" Name="MainGameScreen" >
         <Property Name="UnifiedAreaRect" Value="{{-0.000766861,0},{0.00147929,0},{0.999233,0},{1.00799,0}}" />
+		<Property Name="MousePassThroughEnabled" Value="True" />
         <Window Type="ArkanaLook/VerticalDecoScrollbar" Name="MainGameScreen/DepthScrollerTop" >
             <Property Name="PageSize" Value="1" />
             <Property Name="StepSize" Value="1" />
@@ -37,13 +38,13 @@
                 <Property Name="VerticalAlignment" Value="Centre" />
             </Window>
             <Window Type="ArkanaLook/Button" Name="MainGameScreen/TopBar/PauseButton" >
-                <Property Name="Text" >Pause</Property>
+                <Property Name="Text" Value="Pause" />
                 <Property Name="UnifiedAreaRect" Value="{{-0.0143601,0},{0,0},{0.0896013,0},{0.5,0}}" />
                 <Property Name="VerticalAlignment" Value="Centre" />
                 <Property Name="HorizontalAlignment" Value="Right" />
             </Window>
             <Window Type="ArkanaLook/Button" Name="MainGameScreen/TopBar/PlayButton" >
-                <Property Name="Text" >Play</Property>
+                <Property Name="Text" Value="Play" />
                 <Property Name="UnifiedAreaRect" Value="{{-0.132148,0},{0,0},{-0.015338,0},{0.5,0}}" />
                 <Property Name="VerticalAlignment" Value="Centre" />
                 <Property Name="HorizontalAlignment" Value="Right" />
@@ -135,6 +136,15 @@
                     <Property Name="HorzFormatting" Value="RightAligned" />
                     <Property Name="UnifiedAreaRect" Value="{{0.366406,0},{0.472225,0},{0.921094,0},{0.945111,0}}" />
                 </Window>
+            </Window>
+        </Window>
+        <Window Type="DefaultWindow" Name="MainGameScreen/BottomWindow" >
+            <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{0,300},{0,64}}" />
+            <Property Name="VerticalAlignment" Value="Bottom" />
+            <Property Name="HorizontalAlignment" Value="Centre" />
+            <Window Type="ArkanaLook/Button" Name="MainGameScreen/BottomWindow/DigButton" >
+                <Property Name="Text" Value="DiG" />
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{0,100},{0.9,0}}" />
             </Window>
         </Window>
     </Window>

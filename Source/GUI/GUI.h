@@ -40,6 +40,8 @@ public:
     bool injectKeyPress(OIS::KeyEvent Key);
     bool injectKeyRelease(OIS::KeyEvent Key);
 
+	bool injectTimePulse(float TimeElapsed);
+
     bool isContinueRunning()        { return ContinueRunning; }
     void TerminateRunning()         { ContinueRunning = false; }
 

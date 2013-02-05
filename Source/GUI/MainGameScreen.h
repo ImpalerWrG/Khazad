@@ -25,6 +25,7 @@ private:
 
     bool PausePressed(const CEGUI::EventArgs& pEventArgs);
     bool PlayPressed(const CEGUI::EventArgs& pEventArgs);
+    bool DigPressed(const CEGUI::EventArgs& pEventArgs);
 
     bool ProcessKeyPress(OIS::KeyEvent Event);
     bool ProcessKeyRelease(OIS::KeyEvent Event);

@@ -16,20 +16,23 @@ public:
     void MoveZone(MapCoordinates NewLocation);
     void TranslateZone(Direction TranslationDirection, int Distance);
     void MorphZone(Direction MorphDirection, int ValueChange);
-
+    void Morph2Coordinate(MapCoordinates NewLocation);
+    void reBuildAxialBox();
     bool isCoordinateInZone(MapCoordinates TestCoordinates);
 
     void setActive(bool ActiveState);
 
-    MapCoordinates getLocation()        { return Location; }
+    MapCoordinates getLocation()        { return OriginLocation; }
 
 private:
 
     // Multiple Boxes for irregular areas, custome wireframes for cleaner apearance?
-    MapCoordinates Location;
+    MapCoordinates OriginLocation;
+    MapCoordinates TerminalLocation;
 
-    Ogre::AxisAlignedBox AxialBox;
+    Ogre::AxisAlignedBox* AxialBox;
     Ogre::SceneNode* BoxNode;
+    Ogre::ManualObject* ManualWireFrame;
 
     bool Active;
 

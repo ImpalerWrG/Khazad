@@ -269,5 +269,6 @@ void CreateSlopedTiles();
 
 void CreateOther();
 
+Ogre::ManualObject* WireFrame(bool, Ogre::ManualObject* Manual, Ogre::AxisAlignedBox* Box, Ogre::ColourValue Color);
 
 #endif // TILESHAPE__HEADER

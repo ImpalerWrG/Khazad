@@ -4,7 +4,6 @@
 
 #include <Pawn.h>
 #include <Job.h>
-#include <Task.h>
 
 class Citizen : public Pawn
 {

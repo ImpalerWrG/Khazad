@@ -142,15 +142,6 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
                 break;
             }
 
-            case OIS::KC_D:
-            {
-                RENDERER->getActiveCamera()->SetDefaultView();
-
-                //GUI->DirtyActiveScreen();
-
-                break;
-            }
-
             case OIS::KC_T:
             {
                 const OIS::MouseState &State = MouseObject->getMouseState();
@@ -197,14 +188,14 @@ bool InputManager::keyPressed(const OIS::KeyEvent &arg)
 
             case OIS::KC_ADD:
             {
-                GAME->changeTickRate(1);
+                GAME->changeTickRate(10);
                 break;
             }
 
             case OIS::KC_SUBTRACT:
             case OIS::KC_MINUS:
             {
-                GAME->changeTickRate(-1);
+                GAME->changeTickRate(-10);
                 break;
             }
 
@@ -249,7 +240,8 @@ bool InputManager::keyReleased(const OIS::KeyEvent &arg)
 // MouseListener
 bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
 {
-    GUI->injectMouseMove(arg.state.X.rel, arg.state.Y.rel, 0);
+    if(GUI->injectMouseMove(arg.state.X.rel, arg.state.Y.rel, 0))
+        return true;
 
     {
         if (arg.state.Z.rel != 0)
@@ -272,16 +264,35 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
 
         if (Game::isInstance())
         {
+            if (MouseObject->getMouseState().buttonDown(OIS::MB_Left))
+            {
+                if(GAME->isZoneing())
+                {
+                    Zone* ActiveZone = GAME->getMap()->getActiveZone();
+                    if (ActiveZone)
+                    {
+                        if (MouseObject->getMouseState().buttonDown(OIS::MB_Right))  // Morph Z axis
+                        {
+
+                        } else { // Only Morph in XY plane
+                            MapCoordinates Location = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height)), ActiveZone->getLocation().Z, ActiveZone->getLocation().Z);
+                            ActiveZone->Morph2Coordinate(Location);
+                        }
+                    }
+                }
+            }
+
+
             if (MouseObject->getMouseState().buttonDown(OIS::MB_Right))
             {
                 if (GAME->getMap()->getActiveZone() != NULL)
                 {
-                    Zone* ActiveZone = GAME->getMap()->getActiveZone();
+                    //Zone* ActiveZone = GAME->getMap()->getActiveZone();
 
-                    MapCoordinates Location = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height)), RENDERER->getActiveCamera()->getSliceTop(), RENDERER->getActiveCamera()->getSliceBottom());
+                    //MapCoordinates Location = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height)), RENDERER->getActiveCamera()->getSliceTop(), RENDERER->getActiveCamera()->getSliceBottom());
 
-                    ActiveZone->MoveZone(Location);
-                    GUI->DirtyActiveScreen();
+                    //ActiveZone->MoveZone(Location);
+                    //GUI->DirtyActiveScreen();
                 }
                 else
                 {
@@ -296,7 +307,8 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
 
 bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
-    GUI->injectMousePress(0, 0, id);
+    if(GUI->injectMousePress(0, 0, id))
+        return true;
 
     const OIS::MouseState &State = MouseObject->getMouseState();
 
@@ -306,8 +318,27 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
         {
             MapCoordinates Location = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height)), RENDERER->getActiveCamera()->getSliceTop(), RENDERER->getActiveCamera()->getSliceBottom());
 
-            Zone* ClickedZone = GAME->getMap()->getZoneAt(Location);
+            if ((RENDERER->getRoot()->getTimer()->getMillisecondsCPU() - DoubleClickTime) < 250)  // Left DoubleClick
+            {
+                RENDERER->getActiveCamera()->FocusAt(Ogre::Vector3(Location.X, Location.Y, Location.Z));
+            }
 
+            if (GAME->isZoneing())
+            {
+                if (GAME->getMap()->getActiveZone() == NULL)
+                {
+                    Zone* NewZone = new Zone(Location);
+                    GAME->getMap()->addZone(NewZone);
+                    GAME->getMap()->setActiveZone(NewZone);
+
+                    GUI->DirtyActiveScreen();
+                }
+            } else {
+                //Zone* ClickedZone = GAME->getMap()->getZoneAt(Location);
+                // Select the location?
+            }
+
+            /*
             if ((RENDERER->getRoot()->getTimer()->getMillisecondsCPU() - DoubleClickTime) < 250)  // Left DoubleClick
             {
                 bool Doubleclick = true;
@@ -327,6 +358,7 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
                 GAME->getMap()->setActiveZone(ClickedZone);
                 GUI->DirtyActiveScreen();
             }
+            */
         }
     }
 
@@ -335,11 +367,18 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
 
 bool InputManager::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
-    GUI->injectMouseRelease(0, 0, id);
+    if(GUI->injectMouseRelease(0, 0, id))
+        return true;
 
     if (id == OIS::MB_Left)
     {
         DoubleClickTime = RENDERER->getRoot()->getTimer()->getMillisecondsCPU();
+
+        if (Game::isInstance() && GAME->isZoneing())
+        {
+            // Initialize the active zone telling game its done?
+            GAME->getMap()->setActiveZone(NULL);
+        }
     }
 
     return true;

@@ -763,7 +763,6 @@ void CreateOther()
     ManualObject->convertToMesh("AxialMarker");
     RENDERER->getSceneManager()->destroyManualObject(ManualObject);
 
-
     // A 3 pronged marker to show the XYZ axies
     ManualObject = RENDERER->getSceneManager()->createManualObject("ManualWireFrame");
     ManualObject->setDynamic(true);
@@ -840,37 +839,49 @@ void CreateOther()
     RENDERER->getSceneManager()->destroyManualObject(ManualObject);
 
 
-    // A 3 pronged marker to show the XYZ axies
-    ManualObject = RENDERER->getSceneManager()->createManualObject("ManualWireFrame");
+}
+
+Ogre::ManualObject* WireFrame(bool Update, Ogre::ManualObject* ManualObject, Ogre::AxisAlignedBox* Box, Ogre::ColourValue Color)
+{
+    // A simple Axis aligned Wire Box
     ManualObject->setDynamic(true);
 
-    ManualObject->begin("BaseWhiteNoLighting",Ogre::RenderOperation::OT_LINE_LIST);
+    Ogre::Vector3 Max = Box->getMaximum();
+    Ogre::Vector3 Min = Box->getMinimum();
+
+    if (Update)
+    {
+        ManualObject->beginUpdate(0);
+    } else {
+        ManualObject->begin("BaseWhiteNoLighting",Ogre::RenderOperation::OT_LINE_LIST);
+    }
+
     {
         // TOP
-        ManualObject->position(HALFCUBE, HALFCUBE, HALFCUBE);
-        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+        ManualObject->position(Max.x - Min.x, Max.y - Min.y, Max.z - Min.z);
+        ManualObject->colour(Color);
 
-        ManualObject->position(HALFCUBE, -HALFCUBE, HALFCUBE);
-        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+        ManualObject->position(Max.x - Min.x, 0, Max.z - Min.z);
+        ManualObject->colour(Color);
 
-        ManualObject->position(-HALFCUBE, -HALFCUBE, HALFCUBE);
-        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+        ManualObject->position(0, 0, Max.z - Min.z);
+        ManualObject->colour(Color);
 
-        ManualObject->position(-HALFCUBE, HALFCUBE, HALFCUBE);
-        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+        ManualObject->position(0, Max.y - Min.y, Max.z - Min.z);
+        ManualObject->colour(Color);
 
         // BOTTOM
-        ManualObject->position(HALFCUBE, HALFCUBE, -HALFCUBE);
-        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+        ManualObject->position(Max.x - Min.x, Max.y - Min.y, 0);
+        ManualObject->colour(Color);
 
-        ManualObject->position(HALFCUBE, -HALFCUBE, -HALFCUBE);
-        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+        ManualObject->position(Max.x - Min.x, 0, 0);
+        ManualObject->colour(Color);
 
-        ManualObject->position(-HALFCUBE, -HALFCUBE, -HALFCUBE);
-        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+        ManualObject->position(0, 0, 0);
+        ManualObject->colour(Color);
 
-        ManualObject->position(-HALFCUBE, HALFCUBE, -HALFCUBE);
-        ManualObject->colour(Ogre::ColourValue(1.0, 1.0, 0.0, 1.0));
+        ManualObject->position(0, Max.y - Min.y, 0);
+        ManualObject->colour(Color);
 
         // TOP
         ManualObject->index(0);
@@ -913,6 +924,5 @@ void CreateOther()
     }
 
     ManualObject->end();
-    ManualObject->convertToMesh("YellowWireFrame");
-    RENDERER->getSceneManager()->destroyManualObject(ManualObject);
+    return ManualObject;
 }

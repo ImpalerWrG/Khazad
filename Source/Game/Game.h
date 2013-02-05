@@ -56,6 +56,9 @@ public:
     void togglePause()              { Pause = !Pause; }
     void setPause(bool NewState)    { Pause = NewState; }
 
+    bool isZoneing()                 { return Zoneing; }
+    void setZoneing(bool NewValue)   { Zoneing = NewValue; }
+
     Map* getMap()               { return MainMap; }
     Geology* getGeology()       { return MapGeology; }
     PathManager* getPath()      { return Path; }
@@ -67,6 +70,7 @@ protected:
 
     uint32_t TickRate;     // Simulation Rate;
     bool Pause;
+    bool Zoneing;           // User is Designating a Zone
 
     Timer* GameTimer;
 

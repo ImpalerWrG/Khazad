@@ -42,6 +42,8 @@ bool Game::Init(uint16_t X, uint16_t Y, const char* SeedString)
 	BuildMapChunk(0, 0, X, Y);
     RENDERER->FocusActiveCameraAt(Ogre::Vector3(X * CELLEDGESIZE / 2, Y * CELLEDGESIZE / 2, 0));
 
+    Zoneing = false;
+
  	Path = new PathManager();
 	Path->Init();
 	Path->CreateMapAbstraction(MainMap);

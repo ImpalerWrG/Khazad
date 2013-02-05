@@ -66,6 +66,13 @@ bool MainGameScreen::Init()
         {
             PlayButton->subscribeEvent(CEGUI::PushButton::EventMouseClick, CEGUI::Event::Subscriber(&MainGameScreen::MainGameScreen::PlayPressed, this));
         }
+
+        CEGUI::Window* DigButton = GUI->getWindowManager()->getWindow("MainGameScreen/BottomWindow/DigButton");
+        if (DigButton != NULL)
+        {
+            DigButton->subscribeEvent(CEGUI::PushButton::EventMouseClick, CEGUI::Event::Subscriber(&MainGameScreen::MainGameScreen::DigPressed, this));
+        }
+
     }
 
     catch(CEGUI::Exception &e)
@@ -131,12 +138,14 @@ bool MainGameScreen::GameOptionsOpen(const CEGUI::EventArgs& pEventArgs)
 {
     CEGUI::Window* GameOptionsWindow = GUI->getWindowManager()->getWindow("MainGameScreen/GameOptionsWindow");
     GameOptionsWindow->setVisible(true);
+    return true;
 }
 
 bool MainGameScreen::GameOptionsClose(const CEGUI::EventArgs& pEventArgs)
 {
     CEGUI::Window* GameOptionsWindow = GUI->getWindowManager()->getWindow("MainGameScreen/GameOptionsWindow");
     GameOptionsWindow->setVisible(false);
+    return true;
 }
 
 bool MainGameScreen::ExitGame(const CEGUI::EventArgs& pEventArgs)
@@ -159,12 +168,20 @@ bool MainGameScreen::DepthSliderMoved(const CEGUI::EventArgs& pEventArgs)
 
 bool MainGameScreen::PlayPressed(const CEGUI::EventArgs& pEventArgs)
 {
-    GAME->setTickRate(100);
+    GAME->setPause(false);
+    return true;
 }
 
 bool MainGameScreen::PausePressed(const CEGUI::EventArgs& pEventArgs)
 {
-    GAME->setTickRate(0);
+    GAME->setPause(true);
+    return true;
+}
+
+bool MainGameScreen::DigPressed(const CEGUI::EventArgs& pEventArgs)
+{
+    GAME->setZoneing(true);
+    return true;
 }
 
 bool MainGameScreen::ProcessKeyPress(OIS::KeyEvent Event)
