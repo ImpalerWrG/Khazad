@@ -1,6 +1,7 @@
 #include <MainGameScreen.h>
 
 #include <GUI.h>
+#include <InputManager.h>
 #include <ImageManager.h>
 #include <Renderer.h>
 #include <Camera.h>
@@ -87,11 +88,12 @@ MainGameScreen::~MainGameScreen()
 
 void MainGameScreen::SetDirty()
 {
-    Zone* ActiveZone = GAME->getMap()->getActiveZone();
+	/*
+    DragSelection* ActiveSelection = INPUT->getActiveZone();
 
-    if (ActiveZone != NULL)
+    if (ActiveSelection != NULL)
     {
-        MapCoordinates Location = ActiveZone->getLocation();
+        MapCoordinates Location = ActiveSelection->getLocation();
 
         char buffer[32];
 
@@ -110,7 +112,7 @@ void MainGameScreen::SetDirty()
         CEGUI::Window* TileFullDisplay = GUI->getWindowManager()->getWindow("MainGameScreen/SelectionWindow/TileFullnessDisplay");
         TileFullDisplay->setText(buffer);
 
-    }
+    }*/
 
     CEGUI::Scrollbar* DepthSliderTop = static_cast<CEGUI::Scrollbar*> (GUI->getWindowManager()->getWindow("MainGameScreen/DepthScrollerTop"));
     if (DepthSliderTop != NULL)

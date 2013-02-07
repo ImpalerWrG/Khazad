@@ -35,6 +35,8 @@ public:
 
     void setPitchLock(bool NewLock)                 { PitchLock = NewLock; }
     bool getPitchLock()                             { return PitchLock; }
+    Ogre::Degree getPitch()							{ return TiltNode->getOrientation().getPitch(); }
+	float getTranslationFactor()					{ return TranslationFactor; }
 
     Ogre::Vector3 getMouseRayIntersection(float X, float Y, float Z);
     Ogre::Vector3 getMouseRayIntersection(float X, float Y);

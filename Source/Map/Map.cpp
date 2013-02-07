@@ -38,8 +38,6 @@ Map::Map()
     LowestCell = 0;
 
     CreateAllEntities();
-
-    ActiveZone = NULL;
 }
 
 Map::~Map()
@@ -619,19 +617,4 @@ Zone* Map::getZoneAt(MapCoordinates TestCoordinates)
         }
     }
     return NULL;
-}
-
-void Map::setActiveZone(Zone* ActivatedZone)
-{
-    if(ActiveZone != NULL)
-    {
-        ActiveZone->setActive(false);
-    }
-
-    ActiveZone = ActivatedZone;
-
-    if(ActiveZone != NULL)
-    {
-        ActivatedZone->setActive(true);
-    }
 }

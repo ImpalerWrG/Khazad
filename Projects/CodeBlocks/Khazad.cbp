@@ -223,6 +223,8 @@
 		<Unit filename="../../Source/GUI/MainGameScreen.cpp" />
 		<Unit filename="../../Source/GUI/MainGameScreen.h" />
 		<Unit filename="../../Source/GUI/ScreenBase.h" />
+		<Unit filename="../../Source/GUI/Selection.cpp" />
+		<Unit filename="../../Source/GUI/Selection.h" />
 		<Unit filename="../../Source/GUI/SplashScreen.cpp" />
 		<Unit filename="../../Source/GUI/SplashScreen.h" />
 		<Unit filename="../../Source/Game/Actor.cpp" />

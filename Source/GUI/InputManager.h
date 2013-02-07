@@ -7,6 +7,8 @@
 #include <Ogre.h>
 #include <OIS.h>
 
+class VolumeSelection;
+class MapCoordinates;
 
 class InputManager :  public OIS::KeyListener, public OIS::MouseListener, public OIS::JoyStickListener, public Ogre::FrameListener
 {
@@ -48,6 +50,10 @@ private:
     OIS::JoyStick* JoyStickObject;
 
     OIS::InputManager* InputManagerObject;
+
+	VolumeSelection* ActiveVolumeSelection;
+
+    bool SelectionMode;
 };
 
 #define INPUT (InputManager::GetInstance())

@@ -111,17 +111,12 @@ public:
     void setSliceLevels(int32_t Top, int32_t Bottom);
 
     MapCoordinates getRayIntersection(Ogre::Ray MouseRay, uint16_t Top, uint16_t Bottom);
-    //MapCoordinates getMapCenter() const;
 
     int32_t getHighest()                            { return HighestCell; }
     int32_t getLowest()                             { return LowestCell; }
 
     Zone* getZone() const;
     void addZone(Zone* NewZone);
-    void setActiveZone(Zone* ActivatedZone);
-    Zone* getActiveZone() const                    { return ActiveZone; }
-    void DeactivateZone()                          { ActiveZone = NULL; }
-
     Zone* getZoneAt(MapCoordinates TestCoordinates);
 
 protected:
@@ -138,8 +133,6 @@ protected:
     int32_t LowestCell;
 
     std::vector<Zone*> Zones;
-
-    Zone* ActiveZone;
 
     MapCoordinates LastRayTestResult;  // Used to smoothout Map Picking
 };

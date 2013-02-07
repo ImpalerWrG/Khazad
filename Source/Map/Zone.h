@@ -6,6 +6,7 @@
 #include <Coordinates.h>
 #include <Ogre.h>
 
+
 class Zone
 {
 public:
@@ -21,6 +22,7 @@ public:
     bool isCoordinateInZone(MapCoordinates TestCoordinates);
 
     void setActive(bool ActiveState);
+    void changeZscalar(float Zchange);
 
     MapCoordinates getLocation()        { return OriginLocation; }
 
@@ -36,6 +38,7 @@ private:
 
     bool Active;
 
+	float Zscalar;
     /* Redesign
     std::vector< Cell* > Cells  // Pointer to each Cell in which the Zone exists
 

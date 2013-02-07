@@ -7,6 +7,7 @@
 
 Zone::Zone(MapCoordinates SpawnLocation)
 {
+	Zscalar = 0;
     OriginLocation = SpawnLocation;
     TerminalLocation = SpawnLocation;
 
@@ -100,7 +101,16 @@ void Zone::setActive(bool ActiveState)
         }
         else
         {
-            BoxNode->setVisible(true);
+            BoxNode->setVisible(false);
         }
     }
+}
+
+void Zone::changeZscalar(float Zchange)
+{
+	Zscalar += Zchange;
+	//int Whole = Zscalar;
+	//Zscalar -= Whole;
+	TerminalLocation.Z = OriginLocation.Z + Zscalar;
+	reBuildAxialBox();
 }

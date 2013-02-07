@@ -5,7 +5,7 @@
 #include <Camera.h>
 #include <Game.h>
 #include <Map.h>
-#include <Zone.h>
+#include <Selection.h>
 #include <Coordinates.h>
 #include <DataManager.h>
 
@@ -266,17 +266,21 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
         {
             if (MouseObject->getMouseState().buttonDown(OIS::MB_Left))
             {
-                if(GAME->isZoneing())
+                if(SelectionMode)
                 {
-                    Zone* ActiveZone = GAME->getMap()->getActiveZone();
-                    if (ActiveZone)
+                    if (ActiveVolumeSelection != NULL)
                     {
                         if (MouseObject->getMouseState().buttonDown(OIS::MB_Right))  // Morph Z axis
                         {
-
+                        	Ogre::Degree CameraPitch = RENDERER->getActiveCamera()->getPitch();
+                        	Ogre::Real MouseY = arg.state.Y.rel * RENDERER->getActiveCamera()->getTranslationFactor();
+                        	Ogre::Real Angle = CameraPitch.valueRadians();
+                        	Ogre::Real Ratio = Ogre::Math::Sin(Angle);
+							Ogre::Real ZChange =  MouseY / Ratio;
+							ActiveVolumeSelection->changeZscalar(MouseY * -1);
                         } else { // Only Morph in XY plane
-                            MapCoordinates Location = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height)), ActiveZone->getLocation().Z, ActiveZone->getLocation().Z);
-                            ActiveZone->Morph2Coordinate(Location);
+                            MapCoordinates Location = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height)), ActiveVolumeSelection->getLocation().Z, ActiveVolumeSelection->getLocation().Z);
+                            ActiveVolumeSelection->Morph2Coordinate(Location);
                         }
                     }
                 }
@@ -285,7 +289,7 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
 
             if (MouseObject->getMouseState().buttonDown(OIS::MB_Right))
             {
-                if (GAME->getMap()->getActiveZone() != NULL)
+                if (ActiveVolumeSelection != NULL)
                 {
                     //Zone* ActiveZone = GAME->getMap()->getActiveZone();
 
@@ -323,13 +327,13 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
                 RENDERER->getActiveCamera()->FocusAt(Ogre::Vector3(Location.X, Location.Y, Location.Z));
             }
 
-            if (GAME->isZoneing())
+            if (SelectionMode)
             {
-                if (GAME->getMap()->getActiveZone() == NULL)
+                if (ActiveVolumeSelection != NULL)
                 {
-                    Zone* NewZone = new Zone(Location);
-                    GAME->getMap()->addZone(NewZone);
-                    GAME->getMap()->setActiveZone(NewZone);
+                    VolumeSelection* NewZone = new VolumeSelection(Location);
+                    //GAME->getMap()->addZone(NewZone);
+                    //GAME->getMap()->setActiveZone(NewZone);
 
                     GUI->DirtyActiveScreen();
                 }
@@ -374,10 +378,11 @@ bool InputManager::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID 
     {
         DoubleClickTime = RENDERER->getRoot()->getTimer()->getMillisecondsCPU();
 
-        if (Game::isInstance() && GAME->isZoneing())
+        if (Game::isInstance() && SelectionMode)
         {
             // Initialize the active zone telling game its done?
-            GAME->getMap()->setActiveZone(NULL);
+            //GAME->getMap()->setActiveZone(NULL);
+            ActiveVolumeSelection = NULL;
         }
     }
 
