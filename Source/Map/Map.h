@@ -30,7 +30,7 @@ class Cell;
 class Geology;
 class Face;
 class Zone;
-
+class VolumeSelection;
 
 class Map
 {
@@ -117,6 +117,7 @@ public:
 
     Zone* getZone() const;
     void addZone(Zone* NewZone);
+    Zone* createZone(std::vector<VolumeSelection*> Volumes);
     Zone* getZoneAt(MapCoordinates TestCoordinates);
 
 protected:

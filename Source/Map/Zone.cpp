@@ -2,115 +2,61 @@
 
 #include <Renderer.h>
 #include <Coordinates.h>
-#include <TileShapes.h>
+#include <Selection.h>
+#include <bitset>
 
-
-Zone::Zone(MapCoordinates SpawnLocation)
+Zone::Zone(std::vector<VolumeSelection*> Volumes)
 {
-	Zscalar = 0;
-    OriginLocation = SpawnLocation;
-    TerminalLocation = SpawnLocation;
-
-    BoxNode = RENDERER->getRootNode()->createChildSceneNode();
-    ManualWireFrame = NULL;
-    AxialBox = new Ogre::AxisAlignedBox();
-    reBuildAxialBox();
-    Active = false;
+	for (int i =0; i < Volumes.size(); i++)
+	{
+		addSelection(Volumes[i]);
+	}
 }
 
 Zone::~Zone()
 {
-    //RENDERER->getSceneManager()->
-    RENDERER->getSceneManager()->destroyManualObject(ManualWireFrame);
+	for (std::map< uint64_t, bitset <CUBESPERCELL>* >::iterator it = ZoneMap.begin(); it != ZoneMap.end(); it++)
+	{
+		delete it->second;
+	}
 }
 
-void Zone::MoveZone(MapCoordinates NewLocation)
+void Zone::addSelection(VolumeSelection* Selection)
 {
-    OriginLocation = NewLocation;
-    //BoxNode->setPosition(Location.X, Location.Y, Location.Z);
-}
+	MapCoordinates Origin = Selection->OriginLocation;
+	MapCoordinates Terminal = Selection->TerminalLocation;
 
-void Zone::TranslateZone(Direction TranslationDirection, int Distance)
-{
-    OriginLocation.TranslateMapCoordinates(TranslationDirection, Distance);
-    TerminalLocation.TranslateMapCoordinates(TranslationDirection, Distance);
+	for (int x = Origin.X; x < Terminal.X; x++)
+	{
+		for (int y = Origin.Y; y < Terminal.Y; y++)
+		{
+			for (int z = Origin.Z; z < Terminal.Z; z++)
+			{
+				MapCoordinates ZoneCube = MapCoordinates(x, y, z);
+				CellCoordinates ZoneCell = CellCoordinates(ZoneCube);
 
-    BoxNode->translate(DirectionToVector(TranslationDirection) * Distance);
-}
-
-void Zone::MorphZone(Direction MorphDirection, int ValueChange)
-{
-    Ogre::Vector3 MorphVector = DirectionToVector(MorphDirection);
-
-    if (isDirectionPositive(MorphDirection))
-    {
-        Ogre::Vector3 OldMax = AxialBox->getMaximum();
-        AxialBox->setMaximum(OldMax + MorphVector);
-    }
-    else
-    {
-        Ogre::Vector3 OldMin = AxialBox->getMaximum();
-        AxialBox->setMinimum(OldMin + MorphVector);
-    }
-}
-
-void Zone::Morph2Coordinate(MapCoordinates NewLocation)
-{
-    TerminalLocation = NewLocation;
-    reBuildAxialBox();
+				std::map< uint64_t, bitset <CUBESPERCELL>* >::iterator it = ZoneMap.find(ZoneCell.Key());
+				if (it != ZoneMap.end())
+				{
+					bitset<CUBESPERCELL>* Bits = it->second;
+					Bits->set(ZoneCube.Cube(), true);
+				} else {
+					bitset<CUBESPERCELL>* Bits = new bitset<CUBESPERCELL>;
+					Bits->set(ZoneCube.Cube(), true);
+					ZoneMap[ZoneCell.Key()] = Bits;
+				}
+			}
+		}
+	}
 }
 
 bool Zone::isCoordinateInZone(MapCoordinates TestCoordinates)
 {
-    // TODO use MapCoordinates rather then AAB and replicated logic of intersect in integer math
-    return AxialBox->intersects(Ogre::Vector3(TestCoordinates.X, TestCoordinates.Y, TestCoordinates.Z));
-}
-
-void Zone::reBuildAxialBox()
-{
-    AxialBox->setMinimumX(min(OriginLocation.X, TerminalLocation.X) - HALFCUBE);
-    AxialBox->setMinimumY(min(OriginLocation.Y, TerminalLocation.Y) - HALFCUBE);
-    AxialBox->setMinimumZ(min(OriginLocation.Z, TerminalLocation.Z) - HALFCUBE);
-
-    AxialBox->setMaximumX(max(OriginLocation.X, TerminalLocation.X) + HALFCUBE);
-    AxialBox->setMaximumY(max(OriginLocation.Y, TerminalLocation.Y) + HALFCUBE);
-    AxialBox->setMaximumZ(max(OriginLocation.Z, TerminalLocation.Z) + HALFCUBE);
-
-    if (ManualWireFrame == NULL)
-    {
-        ManualWireFrame = RENDERER->getSceneManager()->createManualObject();
-        WireFrame(false, ManualWireFrame, AxialBox, Ogre::ColourValue (1.0, 1.0, 0.0, 1.0)); // Not an update
-        BoxNode->attachObject(ManualWireFrame);
-    } else {
-        WireFrame(true, ManualWireFrame, AxialBox, Ogre::ColourValue (1.0, 1.0, 0.0, 1.0));  // Updating
-    }
-
-    ManualWireFrame->setCastShadows(false);
-    BoxNode->setPosition(AxialBox->getMinimum());
-}
-
-void Zone::setActive(bool ActiveState)
-{
-    if (ActiveState != Active)
-    {
-        Active = ActiveState;
-
-        if (Active)
-        {
-            BoxNode->setVisible(true);
-        }
-        else
-        {
-            BoxNode->setVisible(false);
-        }
-    }
-}
-
-void Zone::changeZscalar(float Zchange)
-{
-	Zscalar += Zchange;
-	//int Whole = Zscalar;
-	//Zscalar -= Whole;
-	TerminalLocation.Z = OriginLocation.Z + Zscalar;
-	reBuildAxialBox();
+	std::map< uint64_t, bitset <CUBESPERCELL>* >::iterator it = ZoneMap.find(CellCoordinates(TestCoordinates).Key());
+	if (it != ZoneMap.end())
+	{
+		return it->second->test(TestCoordinates.Cube());
+	} else {
+		return false;
+	}
 }

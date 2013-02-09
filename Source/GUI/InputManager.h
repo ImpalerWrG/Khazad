@@ -37,6 +37,9 @@ public:
     virtual bool buttonReleased(const OIS::JoyStickEvent &arg, int button);
     virtual bool axisMoved(const OIS::JoyStickEvent &arg, int axis);
 
+	void formZone();
+	void setSelectionMode(bool isSelectionMode)       { SelectionMode = isSelectionMode; }
+
     void ResetMouse();
 
     void windowResized(Ogre::RenderWindow* rw);
@@ -52,6 +55,7 @@ private:
     OIS::InputManager* InputManagerObject;
 
 	VolumeSelection* ActiveVolumeSelection;
+	std::vector< VolumeSelection* > InactiveVolumeSelections;
 
     bool SelectionMode;
 };

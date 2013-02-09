@@ -34,6 +34,12 @@ bool MainGameScreen::Init()
             GameOptionsWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&MainGameScreen::GameOptionsClose, this));
         }
 
+        CEGUI::Window* ZoneButton = GUI->getWindowManager()->getWindow("MainGameScreen/TopBar/ZoneButton");
+        if (ZoneButton != NULL)
+        {
+            ZoneButton->subscribeEvent(CEGUI::FrameWindow::EventMouseClick, CEGUI::Event::Subscriber(&MainGameScreen::ZoneButtonClick, this));
+        }
+
         CEGUI::Window* ExitButton = GUI->getWindowManager()->getWindow("MainGameScreen/GameOptionsWindow/ExitButton");
         if (ExitButton != NULL)
         {
@@ -182,8 +188,14 @@ bool MainGameScreen::PausePressed(const CEGUI::EventArgs& pEventArgs)
 
 bool MainGameScreen::DigPressed(const CEGUI::EventArgs& pEventArgs)
 {
-    GAME->setZoneing(true);
+    INPUT->setSelectionMode(true);
     return true;
+}
+
+bool MainGameScreen::ZoneButtonClick(const CEGUI::EventArgs& pEventArgs)
+{
+	INPUT->formZone();
+	return true;
 }
 
 bool MainGameScreen::ProcessKeyPress(OIS::KeyEvent Event)

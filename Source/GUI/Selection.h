@@ -9,6 +9,8 @@
 
 class VolumeSelection
 {
+friend class Zone;
+
 public:
 
 	VolumeSelection(MapCoordinates SpawnLocation);
@@ -24,11 +26,10 @@ public:
     void setActive(bool ActiveState);
     void changeZscalar(float Zchange);
 
-    MapCoordinates getLocation()        { return OriginLocation; }
+    MapCoordinates getOriginLocation()        { return OriginLocation; }
 
 private:
 
-    // Multiple Boxes for irregular areas, custome wireframes for cleaner apearance?
     MapCoordinates OriginLocation;
     MapCoordinates TerminalLocation;
 
@@ -39,14 +40,6 @@ private:
     bool Active;
 
 	float Zscalar;
-    /* Redesign
-    std::vector< Cell* > Cells  // Pointer to each Cell in which the Zone exists
-
-    std::vector< bitset< CUBESPERCELL > > isZone;  // parrellel vector of booleans flagging the individual Cubes in Cells as part of Zone
-
-    when expanding a zone, the Map::isZone flag is set
-
-    */
 };
 
 #endif // SELECTION__HEADER

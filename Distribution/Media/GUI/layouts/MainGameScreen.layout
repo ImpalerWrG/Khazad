@@ -27,12 +27,12 @@
                 <Property Name="UnifiedAreaRect" Value="{{0,20},{0,0},{0.153306,0},{0.5,0}}" />
                 <Property Name="VerticalAlignment" Value="Centre" />
             </Window>
-            <Window Type="ArkanaLook/Button" Name="MainGameScreen/TopBar/Button2" >
+            <Window Type="ArkanaLook/Button" Name="MainGameScreen/TopBar/ZoneButton" >
                 <Property Name="Text" Value="Zones" />
                 <Property Name="UnifiedAreaRect" Value="{{0.15,15},{0,0},{0.3,0},{0.5,0}}" />
                 <Property Name="VerticalAlignment" Value="Centre" />
             </Window>
-            <Window Type="ArkanaLook/Button" Name="MainGameScreen/TopBar/Button3" >
+            <Window Type="ArkanaLook/Button" Name="MainGameScreen/TopBar/OrdersButton" >
                 <Property Name="Text" Value="Orders" />
                 <Property Name="UnifiedAreaRect" Value="{{0.3,15},{0,0},{0.45,0},{0.5,0}}" />
                 <Property Name="VerticalAlignment" Value="Centre" />

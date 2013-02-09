@@ -279,7 +279,7 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
 							Ogre::Real ZChange =  MouseY / Ratio;
 							ActiveVolumeSelection->changeZscalar(MouseY * -1);
                         } else { // Only Morph in XY plane
-                            MapCoordinates Location = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height)), ActiveVolumeSelection->getLocation().Z, ActiveVolumeSelection->getLocation().Z);
+                            MapCoordinates Location = GAME->getMap()->getRayIntersection(RENDERER->getActiveCamera()->getMouseRay(arg.state.X.abs / float(arg.state.width), arg.state.Y.abs / float(arg.state.height)), ActiveVolumeSelection->getOriginLocation().Z, ActiveVolumeSelection->getOriginLocation().Z);
                             ActiveVolumeSelection->Morph2Coordinate(Location);
                         }
                     }
@@ -332,9 +332,6 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
                 if (ActiveVolumeSelection != NULL)
                 {
                     VolumeSelection* NewZone = new VolumeSelection(Location);
-                    //GAME->getMap()->addZone(NewZone);
-                    //GAME->getMap()->setActiveZone(NewZone);
-
                     GUI->DirtyActiveScreen();
                 }
             } else {
@@ -369,6 +366,11 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
     return true;
 }
 
+void InputManager::formZone()
+{
+	GAME->getMap()->createZone(InactiveVolumeSelections);
+}
+
 bool InputManager::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id)
 {
     if(GUI->injectMouseRelease(0, 0, id))
@@ -378,12 +380,11 @@ bool InputManager::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID 
     {
         DoubleClickTime = RENDERER->getRoot()->getTimer()->getMillisecondsCPU();
 
-        if (Game::isInstance() && SelectionMode)
-        {
-            // Initialize the active zone telling game its done?
-            //GAME->getMap()->setActiveZone(NULL);
-            ActiveVolumeSelection = NULL;
-        }
+		if (SelectionMode)
+		{
+ 			ActiveVolumeSelection->setActive(false);
+			InactiveVolumeSelections.push_back(ActiveVolumeSelection);
+		}
     }
 
     return true;

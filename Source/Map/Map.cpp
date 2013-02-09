@@ -607,6 +607,13 @@ void Map::addZone(Zone* NewZone)
     Zones.push_back(NewZone);
 }
 
+Zone* Map::createZone(std::vector< VolumeSelection* > Volumes)
+{
+	Zone* NewZone = new Zone(Volumes);
+    Zones.push_back(NewZone);
+    return NewZone;
+}
+
 Zone* Map::getZoneAt(MapCoordinates TestCoordinates)
 {
     for(uint32_t ZoneIndex = 0; ZoneIndex != Zones.size(); ZoneIndex++)
