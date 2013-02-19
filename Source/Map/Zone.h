@@ -22,15 +22,7 @@ public:
 
 private:
 
-    // Multiple Boxes for irregular areas, custome wireframes for cleaner apearance?
-    //Ogre::ManualObject* ManualWireFrame;
-
-    bool Active;
-
 	std::map< uint64_t, bitset <CUBESPERCELL>* > ZoneMap;
-
-    std::vector< CellCoordinates > Cells; 			// Coordinates of each Cell in which the Zone exists
-    std::vector< bitset <CUBESPERCELL> > isZone;	// parrellel vector of booleans flagging the individual Cubes in Cells as part of Zone
 };
 
 #endif // ZONE__HEADER
