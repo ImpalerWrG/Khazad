@@ -4,8 +4,8 @@
 #include <stdafx.h>
 
 #include <Coordinates.h>
-#include <Ogre.h>
 
+class WireFrame;
 
 class VolumeSelection
 {
@@ -20,7 +20,6 @@ public:
     void TranslateZone(Direction TranslationDirection, int Distance);
     void MorphZone(Direction MorphDirection, int ValueChange);
     void Morph2Coordinate(MapCoordinates NewLocation);
-    void reBuildAxialBox();
     bool isCoordinateInZone(MapCoordinates TestCoordinates);
 
     void setActive(bool ActiveState);
@@ -33,9 +32,7 @@ private:
     MapCoordinates OriginLocation;
     MapCoordinates TerminalLocation;
 
-    Ogre::AxisAlignedBox* AxialBox;
-    Ogre::SceneNode* BoxNode;
-    Ogre::ManualObject* ManualWireFrame;
+    WireFrame* WireFrameRender;
 
     bool Active;
 

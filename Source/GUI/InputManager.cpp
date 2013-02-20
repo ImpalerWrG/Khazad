@@ -13,7 +13,8 @@ DECLARE_SINGLETON(InputManager)
 
 InputManager::InputManager()
 {
-
+	SelectionMode = false;
+	ActiveVolumeSelection = NULL;
 }
 
 bool InputManager::Init()
@@ -266,7 +267,7 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &arg)
         {
             if (MouseObject->getMouseState().buttonDown(OIS::MB_Left))
             {
-                if(SelectionMode)
+                if (SelectionMode)
                 {
                     if (ActiveVolumeSelection != NULL)
                     {
@@ -329,9 +330,10 @@ bool InputManager::mousePressed(const OIS::MouseEvent &arg, OIS::MouseButtonID i
 
             if (SelectionMode)
             {
-                if (ActiveVolumeSelection != NULL)
+                if (ActiveVolumeSelection == NULL)
                 {
-                    VolumeSelection* NewZone = new VolumeSelection(Location);
+                    VolumeSelection* NewSelection = new VolumeSelection(Location);
+                    ActiveVolumeSelection = NewSelection;
                     GUI->DirtyActiveScreen();
                 }
             } else {
@@ -380,10 +382,11 @@ bool InputManager::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID 
     {
         DoubleClickTime = RENDERER->getRoot()->getTimer()->getMillisecondsCPU();
 
-		if (SelectionMode)
+		if (SelectionMode && ActiveVolumeSelection != NULL)
 		{
  			ActiveVolumeSelection->setActive(false);
 			InactiveVolumeSelections.push_back(ActiveVolumeSelection);
+ 			ActiveVolumeSelection = NULL;
 		}
     }
 

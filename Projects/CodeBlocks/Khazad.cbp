@@ -286,6 +286,8 @@
 		<Unit filename="../../Source/Renderer/Renderer.h" />
 		<Unit filename="../../Source/Renderer/TextureManager.cpp" />
 		<Unit filename="../../Source/Renderer/TextureManager.h" />
+		<Unit filename="../../Source/Renderer/WireFrame.cpp" />
+		<Unit filename="../../Source/Renderer/WireFrame.h" />
 		<Unit filename="../../Source/Terrain/Geology.cpp" />
 		<Unit filename="../../Source/Terrain/Geology.h" />
 		<Unit filename="../../Source/Terrain/Noise.cpp" />

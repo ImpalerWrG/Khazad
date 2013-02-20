@@ -1,4 +1,4 @@
-#include <WireFrame.h>>
+#include <WireFrame.h>
 #include <TileShapes.h>
 #include <Coordinates.h>
 
@@ -8,7 +8,6 @@ WireFrame::WireFrame(MapCoordinates Location)
 {
 	Color = Ogre::ColourValue::White;
 	Min = Max = Location;
-	setShape(Min, Max);
 
 	Node = RENDERER->getRootNode()->createChildSceneNode();
 	ManualObject = RENDERER->getSceneManager()->createManualObject();
@@ -17,12 +16,12 @@ WireFrame::WireFrame(MapCoordinates Location)
     ManualObject->setCastShadows(false);
 
 	Node->attachObject(ManualObject);
-	draw(false);  // Construct
+	setShape(Min, Max, false);
 }
 
 WireFrame::~WireFrame()
 {
-    RENDERER->getSceneManager()->destroyManualObject(ManualObject);
+	RENDERER->getSceneManager()->destroyManualObject(ManualObject);
 	RENDERER->getSceneManager()->destroySceneNode(Node);
 }
 
@@ -36,17 +35,17 @@ void WireFrame::setColor(float R, float G, float B)
 
 void WireFrame::setShape(MapCoordinates NewMin, MapCoordinates NewMax, bool update)
 {
-	Min.X = min(NewMin.X, NewMax.X) - HALFCUBE;
-	Min.Y = min(NewMin.Y, NewMax.Y) - HALFCUBE;
-	Min.Z = min(NewMin.Z, NewMax.Z) - HALFCUBE;
+	Min.X = min(NewMin.X, NewMax.X);
+	Min.Y = min(NewMin.Y, NewMax.Y);
+	Min.Z = min(NewMin.Z, NewMax.Z);
 
-    Max.X = max(NewMin.X, NewMax.X) + HALFCUBE;
-    Max.X = max(NewMin.Y, NewMax.Y) + HALFCUBE;
-    Max.X = max(NewMin.Z, NewMax.Z) + HALFCUBE;
+	Max.X = max(NewMin.X, NewMax.X) + 1;
+	Max.Y = max(NewMin.Y, NewMax.Y) + 1;
+	Max.Z = max(NewMin.Z, NewMax.Z) + 1;
 
-    Node->setPosition(Min.X, Min.Y, Min.Z);
+	Node->setPosition(Min.X - HALFCUBE, Min.Y - HALFCUBE, Min.Z - HALFCUBE);
 
-    draw(update);
+	draw(update);
 }
 
 void WireFrame::draw(bool Update)
@@ -126,5 +125,4 @@ void WireFrame::draw(bool Update)
     }
 
     ManualObject->end();
-    return ManualObject;
 }

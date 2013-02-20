@@ -16,6 +16,7 @@ public:
 	void setColor(float R, float G, float B);
 	//void setShape(MapCoordinates Max);
 	void setShape(MapCoordinates Min, MapCoordinates Max, bool update = true);
+	void setVisible(bool visible)     { Node->setVisible(visible); }
 	void draw(bool update);
 
 private:
