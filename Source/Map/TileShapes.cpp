@@ -12,10 +12,10 @@ Ogre::MeshPtr CreateFlatFace(FaceShape Shape)
 	bool Triangle1 = false;
 	bool Triangle2 = false;
 
-	uint8_t NorthEastCorner = Shape.CubeComponent.NorthEastCorner;
-	uint8_t NorthWestCorner = Shape.CubeComponent.NorthWestCorner;
-	uint8_t SouthEastCorner = Shape.CubeComponent.SouthEastCorner;
-	uint8_t SouthWestCorner = Shape.CubeComponent.SouthWestCorner;
+	uint8_t NorthEastCorner = Shape.CubeComponent.NorthEastCorner();
+	uint8_t NorthWestCorner = Shape.CubeComponent.NorthWestCorner();
+	uint8_t SouthEastCorner = Shape.CubeComponent.SouthEastCorner();
+	uint8_t SouthWestCorner = Shape.CubeComponent.SouthWestCorner();
 
 	ManualObject->begin("BaseWhite", Ogre::RenderOperation::OT_TRIANGLE_LIST);
 	{
@@ -165,25 +165,25 @@ Ogre::MeshPtr CreateSideFace(FaceShape Shape)
 		{
 			case DIRECTION_SOUTH:
 				XLeft = -HALFCUBE;  YLeft = -HALFCUBE;  XRight =  HALFCUBE;  YRight = -HALFCUBE;
-				LeftCorner = Cube.SouthWestCorner;   RightCorner = Cube.SouthEastCorner;
+				LeftCorner = Cube.SouthWestCorner();   RightCorner = Cube.SouthEastCorner();
 				Normal = Ogre::Vector3::NEGATIVE_UNIT_Y;
 				break;
 
 			case DIRECTION_NORTH:
 				XLeft =  HALFCUBE;  YLeft =  HALFCUBE;  XRight = -HALFCUBE;  YRight =  HALFCUBE;
-				LeftCorner = Cube.NorthEastCorner;  RightCorner = Cube.NorthWestCorner;
+				LeftCorner = Cube.NorthEastCorner();  RightCorner = Cube.NorthWestCorner();
 				Normal = Ogre::Vector3::UNIT_Y;
 				break;
 
 			case DIRECTION_WEST:
 				XLeft = -HALFCUBE;  YLeft =  HALFCUBE;  XRight = -HALFCUBE;  YRight = -HALFCUBE;
-				LeftCorner = Cube.NorthWestCorner;  RightCorner = Cube.SouthWestCorner;
+				LeftCorner = Cube.NorthWestCorner();  RightCorner = Cube.SouthWestCorner();
 				Normal = Ogre::Vector3::NEGATIVE_UNIT_X;
 				break;
 
 			case DIRECTION_EAST:
 				XLeft =  HALFCUBE;  YLeft = -HALFCUBE;  XRight =  HALFCUBE;  YRight =  HALFCUBE;
-				LeftCorner = Cube.SouthEastCorner;  RightCorner = Cube.NorthEastCorner;
+				LeftCorner = Cube.SouthEastCorner();  RightCorner = Cube.NorthEastCorner();
 				Normal = Ogre::Vector3::UNIT_X;
 				break;
 
@@ -251,10 +251,10 @@ Ogre::MeshPtr CreateSlopeFace(FaceShape Shape)
 	bool Triangle1 = false;
 	bool Triangle2 = false;
 
-	uint8_t NorthEastCorner = Shape.CubeComponent.NorthEastCorner;
-	uint8_t NorthWestCorner = Shape.CubeComponent.NorthWestCorner;
-	uint8_t SouthEastCorner = Shape.CubeComponent.SouthEastCorner;
-	uint8_t SouthWestCorner = Shape.CubeComponent.SouthWestCorner;
+	uint8_t NorthEastCorner = Shape.CubeComponent.NorthEastCorner();
+	uint8_t NorthWestCorner = Shape.CubeComponent.NorthWestCorner();
+	uint8_t SouthEastCorner = Shape.CubeComponent.SouthEastCorner();
+	uint8_t SouthWestCorner = Shape.CubeComponent.SouthWestCorner();
 
 	ManualObject->begin("BaseWhite", Ogre::RenderOperation::OT_TRIANGLE_LIST);
 	{
