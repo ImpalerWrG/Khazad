@@ -284,6 +284,10 @@
 		<Unit filename="../../Source/Renderer/ImageManager.h" />
 		<Unit filename="../../Source/Renderer/Renderer.cpp" />
 		<Unit filename="../../Source/Renderer/Renderer.h" />
+		<Unit filename="../../Source/Renderer/ShapeManager.cpp" />
+		<Unit filename="../../Source/Renderer/ShapeManager.h" />
+		<Unit filename="../../Source/Renderer/TerrainRender.cpp" />
+		<Unit filename="../../Source/Renderer/TerrainRender.h" />
 		<Unit filename="../../Source/Renderer/TextureManager.cpp" />
 		<Unit filename="../../Source/Renderer/TextureManager.h" />
 		<Unit filename="../../Source/Renderer/WireFrame.cpp" />

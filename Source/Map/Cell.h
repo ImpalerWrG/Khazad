@@ -36,8 +36,6 @@ public:
 
     //----------------CUBE ACESS--------------//
 
-    Ogre::Vector3 getCubePosition(CubeCoordinates Coordinates) const;
-
     void setCubeShape(CubeCoordinates Coordinates, CubeShape NewShape);
     CubeShape getCubeShape(CubeCoordinates Coordinates) const                  { return CubeShapeTypes[Coordinates]; }
 

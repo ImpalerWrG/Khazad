@@ -25,7 +25,6 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 #include <Renderer.h>
 #include <TileShapes.h>
 
-
 class Cell;
 class Geology;
 class Face;

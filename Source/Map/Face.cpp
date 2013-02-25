@@ -4,6 +4,7 @@
 #include <TextureManager.h>
 #include <DataManager.h>
 #include <Renderer.h>
+#include <ShapeManager.h>
 
 
 Face::Face(CubeCoordinates TargetCoordinates, Direction DirectionType)
@@ -17,7 +18,7 @@ Face::Face(CubeCoordinates TargetCoordinates, Direction DirectionType)
 
 void Face::RefreshEntity(Ogre::StaticGeometry* CellGeometry, CellCoordinates CellPosition)
 {
-    if (SurfaceTypeID != INVALID_INDEX && MaterialTypeID != INVALID_INDEX) // && !FaceType.CubeComponent.isSolid())
+    if (SurfaceTypeID != INVALID_INDEX && MaterialTypeID != INVALID_INDEX)
     {
         int16_t X = (CellPosition.X * CELLEDGESIZE) + (LocationCoordinates >> CELLBITSHIFT);
         int16_t Y = (CellPosition.Y * CELLEDGESIZE) + (LocationCoordinates & CELLBITFLAG);
@@ -38,15 +39,13 @@ void Face::RefreshEntity(Ogre::StaticGeometry* CellGeometry, CellCoordinates Cel
             Z -= 1;
         }
 
-        char buffer[64];
-        FaceType.getName(buffer);
-
-        if (!Ogre::MeshManager::getSingleton().getByName(buffer).isNull())
+		Ogre::MeshPtr FaceMesh = SHAPE->getFaceMesh(FaceType);
+		if (!FaceMesh.isNull())
         {
-            Ogre::Entity* NewEntity = RENDERER->getSceneManager()->createEntity(buffer);
+			Ogre::Entity* NewEntity = RENDERER->getSceneManager()->createEntity(FaceMesh);
             NewEntity->setMaterial(TEXTURE->getOgreMaterial(MaterialTypeID, SurfaceTypeID));
             CellGeometry->addEntity(NewEntity, Ogre::Vector3(X, Y, Z));
-            //delete Entity???
+			RENDERER->getSceneManager()->destroyEntity(NewEntity);
         }
     }
 }

@@ -20,7 +20,6 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 
 #include <DataManager.h>
-#include <Renderer.h>
 
 #include <Geology.h>
 #include <Cell.h>
@@ -36,8 +35,6 @@ Map::Map()
 
     HighestCell = 0;
     LowestCell = 0;
-
-    CreateAllEntities();
 }
 
 Map::~Map()

@@ -266,32 +266,16 @@ Face* Cell::addFace(FaceCoordinates TargetCoordinates)
     }
 }
 
-Ogre::Vector3 Cell::getCubePosition(CubeCoordinates Coordinates) const
-{
-    float X = CellSceneNode->getPosition().x - (float)(CELLEDGESIZE / 2) + (float) (Coordinates >> CELLBITSHIFT) + (float)HALFCUBE;
-    float Y = CellSceneNode->getPosition().y - (float)(CELLEDGESIZE / 2) + (float) (Coordinates & CELLBITFLAG) + (float)HALFCUBE;
-
-	return Ogre::Vector3(X, Y, CellSceneNode->getPosition().z);
-}
-
 bool Cell::isCubeSloped(CubeCoordinates Coordinates) const
 {
     CubeShape Shape = getCubeShape(Coordinates);
     return (!Shape.isEmpty() && !Shape.isSolid());
 }
 
-void Cell::DrawCellCage()
-{
-    //RENDERER->DrawCage(AdjustedPoint, CELLEDGESIZE, CELLEDGESIZE, 1.0, true, 1, 1, 1);
-}
-
 void Cell::addActor(Actor* NewActor)
 {
-    //LocalActors.push_back(NewActor);
     CellSceneNode->addChild(NewActor->getNode());
     NewActor->setVisible(Visible);
-
-    //return LocalActors.size() - 1;
 }
 
 void Cell::removeActor(Actor* DepartingActor)
