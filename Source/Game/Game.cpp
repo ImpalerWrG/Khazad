@@ -26,11 +26,26 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 #include <Cell.h>
 #include <Timer.h>
 
+#include <boost/thread.hpp>
+#include <boost/bind.hpp>
+#include <boost/date_time.hpp>
+#include <boost/chrono/system_clocks.hpp>
+
+#include <boost/iostreams/filtering_stream.hpp>
+#include <boost/iostreams/filter/zlib.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/serialization/version.hpp>
+
+#include <fstream>
+
 #include <GUI.h>
+
+#define BOOST_THREAD_USE_LIB
 
 DECLARE_SINGLETON(Game)
 
-bool Game::Init(uint16_t X, uint16_t Y, const char* SeedString)
+bool Game::InitializeGame(uint16_t X, uint16_t Y, const char* SeedString)
 {
     MapGeology = new Geology();
     MapGeology->Init(SeedString);
@@ -39,16 +54,13 @@ bool Game::Init(uint16_t X, uint16_t Y, const char* SeedString)
 	MainMap = new Map();
 	MainMap->Init();
 
-	BuildMapChunk(0, 0, X, Y);
-    RENDERER->FocusActiveCameraAt(Ogre::Vector3(X * CELLEDGESIZE / 2, Y * CELLEDGESIZE / 2, 0));
-
-    Zoneing = false;
-
  	Path = new PathManager();
 	Path->Init();
-	Path->CreateMapAbstraction(MainMap);
-	Path->InitializeTestingSuite();
 
+	boost::thread_group Builder;
+	Builder.create_thread( boost::bind(&Game::BuildMapChunk, this, 0, 0, X, Y));
+
+    Zoneing = false;
     GameTimer->Start();
 
 	return true;
@@ -57,15 +69,57 @@ bool Game::Init(uint16_t X, uint16_t Y, const char* SeedString)
 Game::Game()
 {
 	TickRate = 1000;
-
     GameTimer = new Timer(50);
-
 	Pause = true;
 }
 
 Game::~Game()
 {
 
+}
+
+void Game::SaveGame(const std::string& filename)
+{
+	Pause = true;
+	try {
+		std::ofstream rawStream(filename.c_str(), std::ios::binary);
+		if (rawStream.is_open())
+		{
+			//boost::iostreams::filtering_ostream stream;
+			//boost::iostreams::zlib_params paramaters(6); // Compression level
+			//stream.push(boost::iostreams::zlib_compressor(paramaters));
+			//stream.push(rawStream);
+
+			boost::archive::binary_oarchive SaveArchive(rawStream);
+			SaveArchive << this;
+
+			rawStream.close();
+		} else {
+			// FILE not Opened?
+		}
+	} catch (const std::exception& e) {
+
+	}
+}
+
+void Game::LoadGame(const std::string& filename)
+{
+
+}
+
+template<class Archive>
+void Game::serialize(Archive & Arc, const unsigned int version)
+{
+    Arc& TickRate;
+    Arc& Pause;
+    Arc& Zoneing;
+
+    Arc& GameTimer;
+
+    //Arc& MainMap;
+    //Arc& MapGeology;
+    //Arc& Path;
+    //Arc& TheSettlment;
 }
 
 bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
@@ -81,7 +135,7 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
     {
         for (int32_t y = Y; y < SizeY; y++)
         {
-            MapGeology->GenerateCellHeight(x, y, 4.0, 2.0);
+            MapGeology->GenerateCellHeight(x, y, 10.0, 2.0);
 
             for (int16_t z = MapGeology->getCellBottomZLevel() - 1; z <= MapGeology->getCellTopZLevel() + 1; z++)
             {
@@ -94,17 +148,23 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
                 MainMap->insertCell(NewCell, TargetCellCoordinates);
                 MapGeology->LoadCellData(NewCell);
             }
-            ProgressCount++;
-            ProgressAmount = ProgressCount / ProgressSize;
         }
     }
 
     // Initialize Faces for the cells
+	ProgressSize = MainMap->getCellMap()->size();
     for (std::map<uint64_t, Cell*>::iterator CellIterator = MainMap->getCellMap()->begin() ; CellIterator != MainMap->getCellMap()->end(); ++CellIterator )
     {
         CellIterator->second->BuildFaceData();
+		ProgressCount++;
+		ProgressAmount = ProgressCount / ProgressSize;
+		GUI->DirtyActiveScreen();
     }
 
+	//Path->CreateMapAbstraction(MainMap);
+	//Path->InitializeTestingSuite();
+
+    RENDERER->FocusActiveCameraAt(Ogre::Vector3(X * CELLEDGESIZE / 2, Y * CELLEDGESIZE / 2, 0));
     GUI->DirtyActiveScreen();
 
     return true;
@@ -136,18 +196,14 @@ bool Game::Run()
 Pawn* Game::SpawnPawn(MapCoordinates SpawnCoordinates)
 {
 	Pawn* NewPawn = new Pawn();
-
 	NewPawn->Init(SpawnCoordinates);
-
 	return NewPawn;
 }
 
 Tree* Game::SpawnTree(MapCoordinates SpawnCoordinates)
 {
 	Tree* NewTree = new Tree();
-
 	NewTree->Init(DATA->getLabelIndex("TREE_OAK"), SpawnCoordinates, true);
-
 	return NewTree;
 }
 

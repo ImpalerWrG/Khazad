@@ -142,6 +142,30 @@ void MainGameScreen::SetDirty()
     }
 }
 
+void MainGameScreen::resetDeepthSliders()
+{
+    CEGUI::Scrollbar* DepthSliderTop = static_cast<CEGUI::Scrollbar*> (GUI->getWindowManager()->getWindow("MainGameScreen/DepthScrollerTop"));
+    if (DepthSliderTop != NULL)
+    {
+        int32_t ZMax = GAME->getMap()->getHighest() - GAME->getMap()->getLowest();
+        DepthSliderTop->setDocumentSize(ZMax);
+    }
+
+    CEGUI::Scrollbar* DepthSliderBottom = static_cast<CEGUI::Scrollbar*> (GUI->getWindowManager()->getWindow("MainGameScreen/DepthScrollerBottom"));
+    if (DepthSliderBottom != NULL)
+    {
+        int32_t ZMax = GAME->getMap()->getHighest() - GAME->getMap()->getLowest();
+        float OldPosition = DepthSliderBottom->getScrollPosition();
+        if (OldPosition > ZMax)
+        {
+            DepthSliderBottom->setDocumentSize(ZMax);
+            DepthSliderBottom->setScrollPosition(ZMax);
+        } else {
+            DepthSliderBottom->setScrollPosition(ZMax);
+        }
+    }
+}
+
 bool MainGameScreen::GameOptionsOpen(const CEGUI::EventArgs& pEventArgs)
 {
     CEGUI::Window* GameOptionsWindow = GUI->getWindowManager()->getWindow("MainGameScreen/GameOptionsWindow");

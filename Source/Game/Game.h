@@ -22,6 +22,9 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 #include <Singleton.h>
 
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+
 class Actor;
 class Pawn;
 class Tree;
@@ -37,11 +40,19 @@ class Game
 {
 DECLARE_SINGLETON_CLASS(Game)
 
+friend class boost::serialization::access;
+
 public:
 
 	~Game();
-	bool Init(uint16_t X, uint16_t Y, const char* Seed);
+	bool InitializeGame(uint16_t X, uint16_t Y, const char* Seed);
 	bool Run();
+
+	void SaveGame(const std::string& filename);
+	void LoadGame(const std::string& filename);
+
+	template<class Archive>
+    void serialize(Archive & Arc, const unsigned int version);
 
     bool BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height);
 

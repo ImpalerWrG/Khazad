@@ -21,8 +21,10 @@ private:
     bool GameOptionsClose(const CEGUI::EventArgs& pEventArgs);
 
     bool ExitGame(const CEGUI::EventArgs& pEventArgs);
-    bool DepthSliderMoved(const CEGUI::EventArgs& pEventArgs);
 
+	void resetDeepthSliders();
+
+    bool DepthSliderMoved(const CEGUI::EventArgs& pEventArgs);
     bool PausePressed(const CEGUI::EventArgs& pEventArgs);
     bool PlayPressed(const CEGUI::EventArgs& pEventArgs);
     bool DigPressed(const CEGUI::EventArgs& pEventArgs);

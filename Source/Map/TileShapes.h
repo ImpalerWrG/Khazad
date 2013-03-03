@@ -10,7 +10,6 @@
 #define CUBE_BOTTOM_HEIGHT 1
 #define HEIGHT_FRACTIONS 3
 #define CUBE_TOP_HEIGHT 4
-#define ABOVE_CUBE_HEIGHT 5
 
 // BitPacking  SWW SEE NWW NEE FLAG
 //             FED CBA 987 654 3210

@@ -36,7 +36,7 @@ int main(int argc, char **argv)
         Ogre::Log *log = Ogre::LogManager::getSingleton().createLog("Ogre.log", true, true, false);
         Ogre::Log *Khazadlog = Ogre::LogManager::getSingleton().createLog("Khazad.log", false, true, false);
 
-        Ogre::LogManager::getSingletonPtr()->logMessage("Starting Geom main routine...");
+        Ogre::LogManager::getSingletonPtr()->logMessage("Starting Initialization routines...");
 
         // XML Data loading
         Khazadlog->logMessage("-=DATA INITIALIZING=- ...");
@@ -75,7 +75,7 @@ int main(int argc, char **argv)
     Khazadlog->logMessage("Starting timers ...");
 
 
-    printf("Init done. Entering main loop.\n");
+    printf("initialization Complete. Entering main loop.\n");
 	while(Continue) // While program isn't done
 	{
         Ogre::WindowEventUtilities::messagePump();

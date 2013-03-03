@@ -3,9 +3,16 @@
 
 #include <stdafx.h>
 
+#include "boost/serialization/export.hpp"
+#include <boost/serialization/serialization.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
 
 class Timer
 {
+friend class boost::serialization::access;
+
 public:
 
 	Timer(uint16_t Size = 1);
@@ -24,6 +31,25 @@ public:
 	void doAverage();
     double getAverage();
 
+	template<class Archive>
+	void serialize(Archive & Arc, const unsigned int version)
+	{
+		Arc& StartTime;
+		Arc& PausedTime;
+
+		Arc& SampleSize;
+		Arc& SampleIndex;
+
+		Arc& SamplingPause;
+
+		Arc& AverageTime;
+
+		Arc& AcumulationVector;
+
+		Arc& started;
+		Arc& paused;
+	};
+
 protected:
 
 	uint64_t StartTime;
@@ -36,7 +62,7 @@ protected:
 
     float AverageTime;
 
-    uint64_t* AcumulationArray;
+    std::vector<uint64_t> AcumulationVector;
 
 	bool started;
 	bool paused;

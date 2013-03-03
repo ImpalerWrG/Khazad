@@ -69,6 +69,7 @@ void Map::RefreshCellGeometry()
             if (it->second->getNeedsReBuild())
             {
                 it->second->BuildStaticGeometry();  //Rebuild individual cells
+                return;
             }
         }
     }

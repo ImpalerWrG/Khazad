@@ -107,9 +107,7 @@ bool GameSetupScreen::BeginGamePressed(const CEGUI::EventArgs& pEventArgs)
     MapBuildProgress->setVisible(true);
 
     GAME->CreateInstance();
-    GAME->Init(Xspinner->getCurrentValue(), Yspinner->getCurrentValue(), SeedEditBox->getText().c_str());
-
-    GUI->DirtyTargetScreen(SCREEN_MAIN_GAME);
+    GAME->InitializeGame(Xspinner->getCurrentValue(), Yspinner->getCurrentValue(), SeedEditBox->getText().c_str());
 }
 
 bool GameSetupScreen::ProcessKeyPress(OIS::KeyEvent Event)

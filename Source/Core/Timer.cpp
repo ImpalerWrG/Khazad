@@ -12,16 +12,12 @@ Timer::Timer(uint16_t Size)
     AverageTime = 0;
     SamplingPause = 0;
 
-    AcumulationArray = NULL;
     SetSampleSize(Size);
 }
 
 Timer::~Timer()
 {
-    if (AcumulationArray != NULL)
-    {
-        delete AcumulationArray;
-    }
+
 }
 
 void Timer::Start()
@@ -65,31 +61,29 @@ const uint64_t Timer::getElapsed()
 
 void Timer::Pause()
 {
-	if(( started == true ) && ( paused == false ))
+	if ((started == true) && (paused == false))
 	{
 		paused = true;
-        AcumulationArray[SampleIndex] = RENDERER->getRoot()->getTimer()->getMillisecondsCPU() - (StartTime + SamplingPause);
-
+        AcumulationVector.push_back(RENDERER->getRoot()->getTimer()->getMillisecondsCPU() - (StartTime + SamplingPause));
         PausedTime = RENDERER->getRoot()->getTimer()->getMillisecondsCPU() - StartTime;
 
         SampleIndex++;
-
         if(SampleIndex == SampleSize)
         {
             doAverage();
-            SampleIndex = 0;
         }
 	}
 }
 
 void Timer::Unpause()
 {
-	if( paused == true )
+	if (paused == true)
 	{
 		paused = false;
 		StartTime = RENDERER->getRoot()->getTimer()->getMillisecondsCPU() - PausedTime;
 		SamplingPause = PausedTime;
 		PausedTime = 0;
+		AcumulationVector.clear();
 	}
 }
 
@@ -102,28 +96,16 @@ void Timer::SetSampleSize(uint16_t Size)
     }
     SampleIndex = 0;
     SamplingPause = 0;
-
-    if (AcumulationArray != NULL)
-    {
-        delete AcumulationArray;
-    }
-
-    AcumulationArray = new uint64_t[SampleSize];
-
-    for (uint16_t i = 0; i < SampleSize; i++)
-    {
-        AcumulationArray[i] = 0;
-    }
 }
 
 void Timer::doAverage()
 {
     uint64_t Total = 0;
-    for(uint16_t i = 0; i < SampleSize; i++)
+    for (uint16_t i = 0; i < SampleSize; i++)
     {
-        Total += AcumulationArray[i];
+        Total += AcumulationVector[i];
     }
-
+	SampleIndex = 0;
     AverageTime = (double)Total / (double)SampleSize;
 }
 

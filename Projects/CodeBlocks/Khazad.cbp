@@ -122,6 +122,7 @@
 			<Add option="-fident" />
 			<Add option="-static-libgcc" />
 			<Add option="-static-libstdc++" />
+			<Add option="-DBOOST_THREAD_USE_LIB" />
 			<Add directory="../../Source/Core" />
 			<Add directory="../../Source/GUI" />
 			<Add directory="../../Source/Renderer" />
@@ -145,6 +146,9 @@
 			<Add library="OIS" />
 			<Add library="CEGUIBase" />
 			<Add library="CEGUIOgreRenderer" />
+			<Add library="libboost_thread-mgw47-mt-1_51" />
+			<Add library="libboost_chrono-mgw47-mt-1_51" />
+			<Add library="libboost_serialization-mgw47-mt-1_51" />
 		</Linker>
 		<Unit filename="../../Distribution/Media/GUI/fonts/Carolingia.font" />
 		<Unit filename="../../Distribution/Media/GUI/imagesets/ArkanaLook.imageset" />
