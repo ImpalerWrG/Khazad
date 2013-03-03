@@ -161,8 +161,8 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
 		GUI->DirtyActiveScreen();
     }
 
-	//Path->CreateMapAbstraction(MainMap);
-	//Path->InitializeTestingSuite();
+	Path->CreateMapAbstraction(MainMap);
+	Path->InitializeTestingSuite();
 
     RENDERER->FocusActiveCameraAt(Ogre::Vector3(X * CELLEDGESIZE / 2, Y * CELLEDGESIZE / 2, 0));
     GUI->DirtyActiveScreen();

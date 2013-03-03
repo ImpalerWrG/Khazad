@@ -64,7 +64,7 @@ void Timer::Pause()
 	if ((started == true) && (paused == false))
 	{
 		paused = true;
-        AcumulationVector.push_back(RENDERER->getRoot()->getTimer()->getMillisecondsCPU() - (StartTime + SamplingPause));
+        AcumulationVector[SampleIndex] = RENDERER->getRoot()->getTimer()->getMillisecondsCPU() - (StartTime + SamplingPause);
         PausedTime = RENDERER->getRoot()->getTimer()->getMillisecondsCPU() - StartTime;
 
         SampleIndex++;
@@ -83,7 +83,6 @@ void Timer::Unpause()
 		StartTime = RENDERER->getRoot()->getTimer()->getMillisecondsCPU() - PausedTime;
 		SamplingPause = PausedTime;
 		PausedTime = 0;
-		AcumulationVector.clear();
 	}
 }
 
@@ -94,6 +93,9 @@ void Timer::SetSampleSize(uint16_t Size)
     {
         SampleSize = 1;
     }
+    AcumulationVector.clear();
+    AcumulationVector.reserve(SampleSize);
+
     SampleIndex = 0;
     SamplingPause = 0;
 }
@@ -106,6 +108,7 @@ void Timer::doAverage()
         Total += AcumulationVector[i];
     }
 	SampleIndex = 0;
+	AcumulationVector.clear();
     AverageTime = (double)Total / (double)SampleSize;
 }
 

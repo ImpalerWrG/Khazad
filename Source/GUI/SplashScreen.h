@@ -23,6 +23,8 @@ private:
     bool ExitPressed(const CEGUI::EventArgs& pEventArgs);
     bool OptionsPressed(const CEGUI::EventArgs& pEventArgs);
     bool NewGamePressed(const CEGUI::EventArgs& pEventArgs);
+    bool LoadGamePressed(const CEGUI::EventArgs& pEventArgs);
+    bool LoadGame(const CEGUI::EventArgs& pEventArgs);
 
     bool ProcessKeyPress(OIS::KeyEvent Event);
     bool ProcessKeyRelease(OIS::KeyEvent Event);
