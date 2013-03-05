@@ -10,6 +10,12 @@
 #include <Map.h>
 
 #include <PathManager.h>
+#include <PathTester.h>
+
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
 
 MainGameScreen::MainGameScreen()
 {
@@ -40,10 +46,22 @@ bool MainGameScreen::Init()
             ZoneButton->subscribeEvent(CEGUI::FrameWindow::EventMouseClick, CEGUI::Event::Subscriber(&MainGameScreen::ZoneButtonClick, this));
         }
 
+        CEGUI::Window* SaveButton = GUI->getWindowManager()->getWindow("MainGameScreen/GameOptionsWindow/SaveGameButton");
+        if (SaveButton != NULL)
+        {
+            SaveButton->subscribeEvent(CEGUI::PushButton::EventMouseClick, CEGUI::Event::Subscriber(&MainGameScreen::SaveGame, this));
+        }
+
         CEGUI::Window* ExitButton = GUI->getWindowManager()->getWindow("MainGameScreen/GameOptionsWindow/ExitButton");
         if (ExitButton != NULL)
         {
             ExitButton->subscribeEvent(CEGUI::PushButton::EventMouseClick, CEGUI::Event::Subscriber(&MainGameScreen::ExitGame, this));
+        }
+
+        CEGUI::Window* TestSuiteButton = GUI->getWindowManager()->getWindow("MainGameScreen/PathProfileWindow/RunSuiteButton");
+        if (TestSuiteButton != NULL)
+        {
+            TestSuiteButton->subscribeEvent(CEGUI::PushButton::EventMouseClick, CEGUI::Event::Subscriber(&MainGameScreen::RunSuitePressed, this));
         }
 
         CEGUI::Scrollbar* DepthSliderTop = static_cast<CEGUI::Scrollbar*> (GUI->getWindowManager()->getWindow("MainGameScreen/DepthScrollerTop"));
@@ -94,52 +112,7 @@ MainGameScreen::~MainGameScreen()
 
 void MainGameScreen::SetDirty()
 {
-	/*
-    DragSelection* ActiveSelection = INPUT->getActiveZone();
-
-    if (ActiveSelection != NULL)
-    {
-        MapCoordinates Location = ActiveSelection->getLocation();
-
-        char buffer[32];
-
-        sprintf(buffer, "X %i  Y %i  Z %i", Location.X, Location.Y, Location.Z);
-        CEGUI::Window* LocationDisplay = GUI->getWindowManager()->getWindow("MainGameScreen/SelectionWindow/LocationWindow/LocationDisplay");
-        LocationDisplay->setText(buffer);
-
-        CubeShape Shape = GAME->getMap()->getCubeShape(Location);
-
-        sprintf(buffer, "SW%i SE%i NW%i NE%i ", Shape.SouthWestCorner, Shape.SouthEastCorner, Shape.NorthWestCorner, Shape.NorthEastCorner);
-        CEGUI::Window* TileTypeDisplay = GUI->getWindowManager()->getWindow("MainGameScreen/SelectionWindow/TileTypeWindow/TileTypeDisplay");
-        TileTypeDisplay->setText(buffer);
-
-        uint32_t zone = GAME->getPath()->getZoneEquivilency(Location);
-        sprintf(buffer, "Zone %i", zone);
-        CEGUI::Window* TileFullDisplay = GUI->getWindowManager()->getWindow("MainGameScreen/SelectionWindow/TileFullnessDisplay");
-        TileFullDisplay->setText(buffer);
-
-    }*/
-
-    CEGUI::Scrollbar* DepthSliderTop = static_cast<CEGUI::Scrollbar*> (GUI->getWindowManager()->getWindow("MainGameScreen/DepthScrollerTop"));
-    if (DepthSliderTop != NULL)
-    {
-        int32_t ZMax = GAME->getMap()->getHighest() - GAME->getMap()->getLowest();
-        DepthSliderTop->setDocumentSize(ZMax);
-    }
-
-    CEGUI::Scrollbar* DepthSliderBottom = static_cast<CEGUI::Scrollbar*> (GUI->getWindowManager()->getWindow("MainGameScreen/DepthScrollerBottom"));
-    if (DepthSliderBottom != NULL)
-    {
-        int32_t ZMax = GAME->getMap()->getHighest() - GAME->getMap()->getLowest();
-        float OldPosition = DepthSliderBottom->getScrollPosition();
-        if (OldPosition > ZMax)
-        {
-            DepthSliderBottom->setDocumentSize(ZMax);
-            DepthSliderBottom->setScrollPosition(ZMax);
-        } else {
-            DepthSliderBottom->setScrollPosition(ZMax);
-        }
-    }
+	resetDeepthSliders();
 }
 
 void MainGameScreen::resetDeepthSliders()
@@ -168,6 +141,7 @@ void MainGameScreen::resetDeepthSliders()
 
 bool MainGameScreen::GameOptionsOpen(const CEGUI::EventArgs& pEventArgs)
 {
+    GAME->setPause(true);
     CEGUI::Window* GameOptionsWindow = GUI->getWindowManager()->getWindow("MainGameScreen/GameOptionsWindow");
     GameOptionsWindow->setVisible(true);
     return true;
@@ -183,6 +157,34 @@ bool MainGameScreen::GameOptionsClose(const CEGUI::EventArgs& pEventArgs)
 bool MainGameScreen::ExitGame(const CEGUI::EventArgs& pEventArgs)
 {
     GUI->TerminateRunning();
+}
+
+bool MainGameScreen::SaveGame(const CEGUI::EventArgs& pEventArgs)
+{
+	string filename("FirstSave.khav");
+
+	try {
+		boost::filesystem::path SaveDirectory("Saves");
+		boost::filesystem::path SaveFile(SaveDirectory / filename);
+		boost::filesystem::basic_ofstream<char> rawStream(SaveFile, std::ios::binary);
+		if (rawStream.is_open())
+		{
+			//boost::iostreams::filtering_ostream Compressedstream;
+			//boost::iostreams::zlib_params paramaters(6); // Compression level
+			//Compressedstream.push(boost::iostreams::zlib_compressor(paramaters));
+			//Compressedstream.push(rawStream);
+
+			boost::archive::binary_oarchive SaveArchive(rawStream);
+			Game* THEGAME = GAME->GetInstance();
+			SaveArchive << THEGAME;
+
+			rawStream.close();
+		} else {
+			// FILE not Opened?
+		}
+	} catch (const std::exception& e) {
+		//Do something
+	}
 }
 
 bool MainGameScreen::DepthSliderMoved(const CEGUI::EventArgs& pEventArgs)
@@ -221,6 +223,63 @@ bool MainGameScreen::ZoneButtonClick(const CEGUI::EventArgs& pEventArgs)
 	INPUT->formZone();
 	return true;
 }
+
+bool MainGameScreen::RunSuitePressed(const CEGUI::EventArgs& pEventArgs)
+{
+	vector<int> Systems;
+	Systems.push_back(0);
+	GAME->getPath()->getTester()->RunPathTestSuites(Systems);
+
+	GroupProfile* TestResults = GAME->getPath()->getTester()->getCurrentGroupProfile();
+
+    CEGUI::Window* RawWindow = GUI->getWindowManager()->getWindow("MainGameScreen/PathProfileWindow/DataList");
+	CEGUI::Listbox* DataListbox = (CEGUI::Listbox*) RawWindow;
+
+	char buffer[64] ;
+	CEGUI::ListboxTextItem* newItem;
+
+	sprintf(buffer, "TotalPathSteps     %i", TestResults->TotalPathSteps);
+	newItem = new CEGUI::ListboxTextItem(buffer);
+	DataListbox->addItem(newItem);
+
+	sprintf(buffer, "TotalPathLength    %f", TestResults->TotalPathLength);
+	newItem = new CEGUI::ListboxTextItem(buffer);
+	DataListbox->addItem(newItem);
+
+	sprintf(buffer, "TotalGraphReads    %i", TestResults->TotalGraphReads);
+	newItem = new CEGUI::ListboxTextItem(buffer);
+	DataListbox->addItem(newItem);
+
+	sprintf(buffer, "TotalNodesExpanded %i", TestResults->TotalNodesExpanded);
+	newItem = new CEGUI::ListboxTextItem(buffer);
+	DataListbox->addItem(newItem);
+
+	sprintf(buffer, "TotalCacheHits     %i", TestResults->TotalCacheHits);
+	newItem = new CEGUI::ListboxTextItem(buffer);
+	DataListbox->addItem(newItem);
+
+	sprintf(buffer, "TotalTimeCost      %i", TestResults->TotalTimeCost);
+	newItem = new CEGUI::ListboxTextItem(buffer);
+	DataListbox->addItem(newItem);
+
+	sprintf(buffer, "GraphReadEfficency  %f", TestResults->GraphReadEfficency);
+	newItem = new CEGUI::ListboxTextItem(buffer);
+	DataListbox->addItem(newItem);
+
+	sprintf(buffer, "NodeSearchEfficency %f", TestResults->NodeSearchEfficency);
+	newItem = new CEGUI::ListboxTextItem(buffer);
+	DataListbox->addItem(newItem);
+
+	sprintf(buffer, "CacheEfficency      %f", TestResults->CacheEfficency);
+	newItem = new CEGUI::ListboxTextItem(buffer);
+	DataListbox->addItem(newItem);
+
+	sprintf(buffer, "TimeCostEfficency   %f", TestResults->TimeCostEfficency);
+	newItem = new CEGUI::ListboxTextItem(buffer);
+	DataListbox->addItem(newItem);
+}
+
+// KEY PROCESSING
 
 bool MainGameScreen::ProcessKeyPress(OIS::KeyEvent Event)
 {

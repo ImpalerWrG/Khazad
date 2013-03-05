@@ -25,6 +25,9 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 #include <Renderer.h>
 #include <TileShapes.h>
 
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+
 class Cell;
 class Geology;
 class Face;
@@ -33,6 +36,7 @@ class VolumeSelection;
 
 class Map
 {
+friend class boost::serialization::access;
 
 public:
 
@@ -135,6 +139,25 @@ protected:
     std::vector<Zone*> Zones;
 
     MapCoordinates LastRayTestResult;  // Used to smoothout Map Picking
+
+    template<class Archive>
+	void serialize(Archive & Arc, const unsigned int version)
+	{
+		Arc& CellNeedsRebuild;
+		Arc& Initialized;
+		Arc& MapLoaded;
+
+		//Arc& std::map<uint64_t, Cell*> Cells;
+
+		//Arc& std::vector< Ogre::SceneNode* > ZLevelSpindle;   // Organizes the Root Node for each Zlevel
+
+		Arc& HighestCell;
+		Arc& LowestCell;
+
+		//Arc& Zones;
+
+		//Arc& LastRayTestResult;  // Used to smoothout Map Picking
+	};
 };
 
 #endif // MAP__HEADER

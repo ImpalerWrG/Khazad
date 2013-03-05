@@ -21,6 +21,7 @@ private:
     bool GameOptionsClose(const CEGUI::EventArgs& pEventArgs);
 
     bool ExitGame(const CEGUI::EventArgs& pEventArgs);
+    bool SaveGame(const CEGUI::EventArgs& pEventArgs);
 
 	void resetDeepthSliders();
 
@@ -29,6 +30,7 @@ private:
     bool PlayPressed(const CEGUI::EventArgs& pEventArgs);
     bool DigPressed(const CEGUI::EventArgs& pEventArgs);
 	bool ZoneButtonClick(const CEGUI::EventArgs& pEventArgs);
+	bool RunSuitePressed(const CEGUI::EventArgs& pEventArgs);
 
     bool ProcessKeyPress(OIS::KeyEvent Event);
     bool ProcessKeyRelease(OIS::KeyEvent Event);

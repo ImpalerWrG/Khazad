@@ -48,12 +48,6 @@ public:
 	bool InitializeGame(uint16_t X, uint16_t Y, const char* Seed);
 	bool Run();
 
-	void SaveGame(const std::string& filename);
-	void LoadGame(const std::string& filename);
-
-	template<class Archive>
-    void serialize(Archive & Arc, const unsigned int version);
-
     bool BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height);
 
     Pawn* SpawnPawn(MapCoordinates SpawnCoordinates);
@@ -91,6 +85,21 @@ protected:
     Settlment* TheSettlment;
 
     float ProgressAmount;
+
+	template<class Archive>
+	void serialize(Archive & Arc, const unsigned int version)
+	{
+		Arc& TickRate;
+		Arc& Pause;
+		Arc& Zoneing;
+
+		//Arc& GameTimer;
+
+		Arc& MainMap;
+		//Arc& MapGeology;
+		//Arc& Path;
+		//Arc& TheSettlment;
+	};
 };
 
 #define GAME (Game::GetInstance())

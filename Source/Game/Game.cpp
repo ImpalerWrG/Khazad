@@ -37,7 +37,8 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/serialization/version.hpp>
 
-#include <fstream>
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 
 #include <GUI.h>
 
@@ -76,50 +77,6 @@ Game::Game()
 Game::~Game()
 {
 
-}
-
-void Game::SaveGame(const std::string& filename)
-{
-	Pause = true;
-	try {
-		std::ofstream rawStream(filename.c_str(), std::ios::binary);
-		if (rawStream.is_open())
-		{
-			//boost::iostreams::filtering_ostream stream;
-			//boost::iostreams::zlib_params paramaters(6); // Compression level
-			//stream.push(boost::iostreams::zlib_compressor(paramaters));
-			//stream.push(rawStream);
-
-			boost::archive::binary_oarchive SaveArchive(rawStream);
-			SaveArchive << this;
-
-			rawStream.close();
-		} else {
-			// FILE not Opened?
-		}
-	} catch (const std::exception& e) {
-
-	}
-}
-
-void Game::LoadGame(const std::string& filename)
-{
-
-}
-
-template<class Archive>
-void Game::serialize(Archive & Arc, const unsigned int version)
-{
-    Arc& TickRate;
-    Arc& Pause;
-    Arc& Zoneing;
-
-    Arc& GameTimer;
-
-    //Arc& MainMap;
-    //Arc& MapGeology;
-    //Arc& Path;
-    //Arc& TheSettlment;
 }
 
 bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)

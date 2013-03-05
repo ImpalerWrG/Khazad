@@ -32,6 +32,7 @@ bool PathTester::Init(PathManager* Parent)
     PathDice = new RandomNumberGenerator();
 
     CollectTestCoords();
+    CreateTestSuite(42, 1000);
 
     return true;
 }
