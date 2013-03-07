@@ -1,6 +1,8 @@
 #ifndef COORDINATES__HEADER
 #define COORDINATES__HEADER
 
+#include <Direction.h>
+
 #define CELLEDGESIZE 16
 #define CELLBITSHIFT 4
 #define CELLBITFLAG 15
@@ -13,157 +15,6 @@
 #include <stdint.h>
 #endif
 
-#include <OgreVector3.h>
-
-enum Axis
-{
-    AXIS_Z,   // Vertical
-    AXIS_Y,   // North/South
-    AXIS_X,   // East/West
-
-    NUM_AXIS,
-    AXIS_START = 0
-};
-
-inline Axis &operator++ (Axis &OldAxis)      { return OldAxis = Axis(OldAxis + 1); }
-inline Axis &operator-- (Axis &OldAxis)      { return OldAxis = Axis(OldAxis - 1); }
-
-enum Direction
-{
-    DIRECTION_DOWN,
-	DIRECTION_UP,
-
-	DIRECTION_SOUTH,
-	DIRECTION_NORTH,
-	DIRECTION_WEST,
-	DIRECTION_EAST,
-
-	DIRECTION_SOUTHEAST,
-    DIRECTION_NORTHWEST,
-	DIRECTION_SOUTHWEST,
-	DIRECTION_NORTHEAST,
-
-	DIRECTION_DOWN_SOUTH,
-	DIRECTION_UP_NORTH,
-	DIRECTION_DOWN_WEST,
-	DIRECTION_UP_EAST,
-	DIRECTION_DOWN_NORTH,
-	DIRECTION_UP_SOUTH,
-	DIRECTION_DOWN_EAST,
-	DIRECTION_UP_WEST,
-
-	DIRECTION_DOWN_SOUTHEAST,
-    DIRECTION_UP_NORTHWEST,
-	DIRECTION_DOWN_SOUTHWEST,
-	DIRECTION_UP_NORTHEAST,
-    DIRECTION_DOWN_NORTHWEST,
-	DIRECTION_UP_SOUTHEAST,
-	DIRECTION_DOWN_NORTHEAST,
-	DIRECTION_UP_SOUTHWEST,
-
-	DIRECTION_NONE,          // Lack of Direction, Center of Cube
-	DIRECTION_UNKNOWN,       // Truly Undefined Direction
-
-    CARDINAL_DIRECTIONS_START = 2,  // North, South, East and West
-	NUM_CARDINAL_DIRECTIONS = 6,
-
-	COMPASS_DIRECTIONS_START = 2,   // The 8 points of a compass
-	NUM_COMPASS_DIRECTIONS = 10,
-
-	AXIAL_DIRECTIONS_START = 0,     // Cardinal Directions pluss Up and Down
-	NUM_AXIAL_DIRECTIONS = 6,
-
-	ANGULAR_DIRECTIONS_START = 0,  // All Possible Directions
-	NUM_ANGULAR_DIRECTIONS = 26
-};
-
-inline Direction &operator++ (Direction &OldDirection)      { return OldDirection = Direction(OldDirection + 1); }
-inline Direction &operator-- (Direction &OldDirection)      { return OldDirection = Direction(OldDirection - 1); }
-
-inline Axis AxisFromDirection(Direction DirectionType)
-{
-    if (DirectionType < NUM_AXIAL_DIRECTIONS)
-    {
-        return (Axis) ((int) DirectionType >> 1);
-    }
-    return NUM_AXIS;
-}
-
-inline Direction DirectionFromAxis(Axis AxisType, bool Possitive)
-{
-    if (Possitive)
-    {
-        return (Direction) ((int) AxisType << 1);
-    }
-    else
-    {
-        return (Direction) (((int) AxisType << 1) + 1);
-    }
-}
-
-inline Direction OppositeDirection(Direction DirectionType)
-{
-    return  (Direction) ((int) DirectionType ^ 1);  // Flips the last bit
-}
-
-inline bool isDirectionPositive(Direction DirectionType)
-{
-    return DirectionType & 1;  // Referes to Z axis for Directions that span the Z axis
-}
-
-inline int DirectionValueOnAxis(Direction DirectionType, Axis TestAxis)
-{
-    if (DirectionType <= NUM_AXIAL_DIRECTIONS)
-    {
-        if (TestAxis == (DirectionType >> 1))
-        {
-            if (DirectionType & 1)
-            {
-                return 1;  // On Axis and positive
-            }
-            else
-            {
-                return -1; // On Axis and negative
-            }
-        }
-        else
-        {
-            return 0;  // Not on Axis
-        }
-    }
-    return 0;  // TODO finish for remaining directions
-};
-
-inline Ogre::Vector3 DirectionToVector(Direction DirectionType)
-{
-    if (DirectionType <= NUM_AXIAL_DIRECTIONS)
-    {
-        switch (DirectionType)
-        {
-            case DIRECTION_UP:
-                return Ogre::Vector3::UNIT_Z;
-
-            case DIRECTION_DOWN:
-                return Ogre::Vector3::NEGATIVE_UNIT_Z;
-
-            case DIRECTION_NORTH:
-                return Ogre::Vector3::UNIT_Y;
-
-            case DIRECTION_SOUTH:
-                return Ogre::Vector3::NEGATIVE_UNIT_Y;
-
-            case DIRECTION_EAST:
-                return Ogre::Vector3::UNIT_X;
-
-            case DIRECTION_WEST:
-                return Ogre::Vector3::NEGATIVE_UNIT_X;
-
-            default:
-                return Ogre::Vector3::ZERO;
-        }
-    }
-    return Ogre::Vector3::ZERO;  // TODO finish for remaining directions
-};
 
 typedef uint8_t CubeCoordinates;  // Holds one of the 256 locations inside a Cell
 
@@ -176,135 +27,13 @@ struct MapCoordinates
         X = Y = Z = 0;
     };
 
-    MapCoordinates(Ogre::Vector3 Point)
-    {
-        X = Point.x + HALFCUBE;
-        Y = Point.y + HALFCUBE;
-        Z = Point.z + HALFCUBE;
-    };
-
     MapCoordinates(CellCoordinates CellCoords, CubeCoordinates CubeCoords);
 
     inline void TranslateMapCoordinates(Direction DirectionType, int Length = 1)
     {
-        switch (DirectionType)
-        {
-            case DIRECTION_UP:
-                Z += Length;
-                break;
-            case DIRECTION_DOWN:
-                Z -= Length;
-                break;
-
-            case DIRECTION_NORTH:
-                Y += Length;
-                break;
-            case DIRECTION_SOUTH:
-                Y -= Length;
-                break;
-            case DIRECTION_EAST:
-                X += Length;
-                break;
-            case DIRECTION_WEST:
-                X -= Length;
-                break;
-
-            case DIRECTION_NORTHWEST:
-                Y += Length;
-                X -= Length;
-                break;
-            case DIRECTION_SOUTHEAST:
-                Y -= Length;
-                X += Length;
-                break;
-            case DIRECTION_NORTHEAST:
-                Y += Length;
-                X += Length;
-                break;
-            case DIRECTION_SOUTHWEST:
-                Y -= Length;
-                X -= Length;
-                break;
-
-            case DIRECTION_UP_NORTH:
-                Z += Length;
-                Y += Length;
-                break;
-            case DIRECTION_DOWN_SOUTH:
-                Z -= Length;
-                Y -= Length;
-                break;
-            case DIRECTION_UP_EAST:
-                Z += Length;
-                X += Length;
-                break;
-            case DIRECTION_DOWN_WEST:
-                Z -= Length;
-                X -= Length;
-                break;
-            case DIRECTION_DOWN_NORTH:
-                Z -= Length;
-                Y += Length;
-                break;
-            case DIRECTION_UP_SOUTH:
-                Z += Length;
-                Y -= Length;
-                break;
-            case DIRECTION_DOWN_EAST:
-                Z -= Length;
-                X += Length;
-                break;
-            case DIRECTION_UP_WEST:
-                Z += Length;
-                X -= Length;
-                break;
-
-            case DIRECTION_UP_NORTHWEST:
-                X -= Length;
-                Y += Length;
-                Z += Length;
-                break;
-            case DIRECTION_DOWN_SOUTHEAST:
-                X += Length;
-                Y -= Length;
-                Z -= Length;
-                break;
-            case DIRECTION_UP_NORTHEAST:
-                X += Length;
-                Y += Length;
-                Z += Length;
-                break;
-            case DIRECTION_DOWN_SOUTHWEST:
-                X -= Length;
-                Y -= Length;
-                Z -= Length;
-                break;
-            case DIRECTION_UP_SOUTHEAST:
-                X += Length;
-                Y -= Length;
-                Z += Length;
-                break;
-            case DIRECTION_DOWN_NORTHWEST:
-                X -= Length;
-                Y += Length;
-                Z -= Length;
-                break;
-            case DIRECTION_UP_SOUTHWEST:
-                X -= Length;
-                Y -= Length;
-                Z += Length;
-                break;
-            case DIRECTION_DOWN_NORTHEAST:
-                X += Length;
-                Y += Length;
-                Z -= Length;
-                break;
-            case DIRECTION_NONE:
-                break;
-
-            default:
-                break;
-        }
+    	X += DirectionType.ValueonAxis(AXIS_X);
+    	Y += DirectionType.ValueonAxis(AXIS_Y);
+    	Z += DirectionType.ValueonAxis(AXIS_Z);
     };
 
     inline MapCoordinates(MapCoordinates SourceCoords, Direction DirectionType)
@@ -347,7 +76,7 @@ struct MapCoordinates
         return ((X & CELLBITFLAG) << CELLBITSHIFT) + (Y & CELLBITFLAG);
     };
 
-    inline MapCoordinates& operator= (const MapCoordinates& ArgumentCoordinates)
+    inline MapCoordinates& operator=(const MapCoordinates& ArgumentCoordinates)
     {
         X = ArgumentCoordinates.X;
         Y = ArgumentCoordinates.Y;
@@ -356,18 +85,18 @@ struct MapCoordinates
         return *this;
     };
 
-    inline bool operator == (const MapCoordinates& ArgumentCoordinates) const
+    inline bool operator==(const MapCoordinates& ArgumentCoordinates) const
     {
         return (X == ArgumentCoordinates.X && Y == ArgumentCoordinates.Y && Z == ArgumentCoordinates.Z);
     };
 
-    inline bool operator < (const MapCoordinates& ArgumentCoordinates) const
+    inline bool operator<(const MapCoordinates& ArgumentCoordinates) const
     {
-        if (X < ArgumentCoordinates.X)
+		if (Z < ArgumentCoordinates.Z)
         {
             return true;
         }
-        if (X > ArgumentCoordinates.X)
+        if (Z > ArgumentCoordinates.Z)
         {
             return false;
         }
@@ -379,11 +108,11 @@ struct MapCoordinates
         {
             return false;
         }
-        if (Z < ArgumentCoordinates.Z)
+        if (X < ArgumentCoordinates.X)
         {
             return true;
         }
-        if (Z > ArgumentCoordinates.Z)
+        if (X > ArgumentCoordinates.X)
         {
             return false;
         }
@@ -533,15 +262,7 @@ struct FaceCoordinates
 
     uint16_t FaceKey()
     {
-        uint16_t Key = Coordinates;
-        Key <<= CELLBITSHIFT * 2;
-
-        if (FaceDirection != DIRECTION_NONE)
-        {
-            Key += uint16_t (FaceDirection) + 1;
-        }
-
-        return Key;
+        return (FaceDirection.Data << 8) + Coordinates;
     };
 
     CubeCoordinates Coordinates;

@@ -161,7 +161,7 @@ Ogre::MeshPtr CreateSideFace(FaceShape Shape)
 		uint8_t LeftCorner, RightCorner;
 		Ogre::Vector3 Normal;
 
-		switch (Shape.FaceDirection)
+		switch (Shape.FaceDirection.Data)
 		{
 			case DIRECTION_SOUTH:
 				XLeft = -HALFCUBE;  YLeft = -HALFCUBE;  XRight =  HALFCUBE;  YRight = -HALFCUBE;

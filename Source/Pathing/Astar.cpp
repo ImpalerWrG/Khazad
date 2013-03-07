@@ -139,9 +139,9 @@ inline bool AStar::ExpandNode()
     DirectionFlags TestDirections = SearchGraph->getDirectionFlags(TestCoordinates);
 
     // Check all Neibors
-    for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
+	for (uint8_t i = 0, DirectionType = Direction::ANGULAR_DIRECTIONS[i]; i < NUM_ANGULAR_DIRECTIONS; ++i, DirectionType = Direction::ANGULAR_DIRECTIONS[i])
     {
-        if (TestDirections & (1 << (int) DirectionType))  // Connectivity is valid for this direction
+        if (TestDirections & (1 << i))  // Connectivity is valid for this direction
         {
             NeiboringCoordinates = TestCoordinates;
             NeiboringCoordinates.TranslateMapCoordinates(DirectionType);

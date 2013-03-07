@@ -3,7 +3,6 @@
 #include <Renderer.h>
 #include <Coordinates.h>
 #include <Selection.h>
-#include <bitset>
 
 Zone::Zone(std::vector<VolumeSelection*> Volumes)
 {

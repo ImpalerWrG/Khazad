@@ -143,12 +143,12 @@ public:
 
     void AddLeavingEdges(zone *pz, const MapCoordinates &p)
     {
-        for (Direction dir = ANGULAR_DIRECTIONS_START; dir < NUM_ANGULAR_DIRECTIONS; ++dir)
+        for (uint8_t i = 0, DirectionType = Direction::ANGULAR_DIRECTIONS[i]; i < NUM_ANGULAR_DIRECTIONS; ++i, DirectionType = Direction::ANGULAR_DIRECTIONS[i])
         {
-          if (G_->getEdgeCost(p,dir) >= 0)
+          if (G_->getEdgeCost(p, DirectionType) >= 0)
           {
             MapCoordinates NeiboringCoordinates = p;
-            NeiboringCoordinates.TranslateMapCoordinates(dir);
+            NeiboringCoordinates.TranslateMapCoordinates(DirectionType);
             //assert(G_->edgeCost(p,neigh)>0);
             //assert(G_->edgeCost(p,p)>=0);
             //assert(G_->edgeCost(neigh,neigh)>0);
@@ -159,7 +159,7 @@ public:
                 gridZone *nz = (gridZone*) findContainingZone(NeiboringCoordinates);
                 if (nz != NULL)
                 {
-                    pz->connect(nz,p,NeiboringCoordinates,G_->getEdgeCost(p,dir));
+                    pz->connect(nz,p,NeiboringCoordinates,G_->getEdgeCost(p, DirectionType));
 #ifdef ZONE_DEBUG
                     printf("(%2d,%2d,%2d)->(%2d,%2d,%2d)\n", p[AXIS_X], p[AXIS_Y], p[AXIS_Z], NeiboringCoordinates[AXIS_X], NeiboringCoordinates[AXIS_Y], NeiboringCoordinates[AXIS_Z]);
                     pz->checkValid();

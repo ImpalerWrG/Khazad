@@ -31,15 +31,15 @@ KhazadGrid::KhazadGrid(Map* TargetMap)
                     CubeShape OverheadCube = TargetMap->getCubeShape(OverheadTileCoords);
                     bool OverheadPassable = OverheadCube.isSky();
 
-                    for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
+                    for (uint8_t i = 0; i < NUM_ANGULAR_DIRECTIONS; ++i)
                     {
                         MapCoordinates AdjacentTileCoords = MapCoordinates(CellCoords, TargetCube);
-                        AdjacentTileCoords.TranslateMapCoordinates(DirectionType);
+                        AdjacentTileCoords.TranslateMapCoordinates(Direction(Direction::ANGULAR_DIRECTIONS[i]));
 
                         //see if we've done this already..
-                        if (getDirectionFlags(AdjacentTileCoords) & (1 << (int) OppositeDirection(DirectionType)))
+                        if (getDirectionFlags(AdjacentTileCoords) & (1 << i))
                         {
-                            Flags |= (1 << (int) DirectionType);
+                            Flags |= (1 << i);
                             continue;
                         }
 
@@ -47,15 +47,15 @@ KhazadGrid::KhazadGrid(Map* TargetMap)
 
                         if (!AdjacentCubeShape.isSky() && !AdjacentCubeShape.isSolid())
                         {
-                            if (DirectionValueOnAxis(DirectionType, AXIS_Z) == 1)
+                            if (Direction(Direction::ANGULAR_DIRECTIONS[i]).ValueonAxis(AXIS_Z) == 1)
                             {
                                 if (OverheadPassable)
                                 {
-                                    Flags |= (1 << (int) DirectionType);
+                                    Flags |= (1 << i);
                                 }
                             } else {
                                 //If no vertical direction, we only care that this tile is passable
-                                Flags |= (1 << (int) DirectionType);
+                                Flags |= (1 << i);
                             }
                         }
                     }
@@ -98,13 +98,13 @@ void KhazadGrid::BuildConnectivityZones()
                      // Push this current zone onto the adjacent area
                     int CurrentZoneIndex = TargetCell->ConnectivityZone[TargetCube];
 
-                    for (Direction DirectionType = ANGULAR_DIRECTIONS_START; DirectionType < NUM_ANGULAR_DIRECTIONS; ++DirectionType)
+                    for (uint8_t i = 0; i < NUM_ANGULAR_DIRECTIONS; ++i)
                     {
-                        if (Flags & (1 << (int) DirectionType))
+                        if (Flags & (1 << i))
                         {
                             // Find the Zone that the adjcent Tile has
                             MapCoordinates AdjacentTileCoords = MapCoordinates(CellCoords, TargetCube);
-                            AdjacentTileCoords.TranslateMapCoordinates(DirectionType);
+                            AdjacentTileCoords.TranslateMapCoordinates(Direction::ANGULAR_DIRECTIONS[i]);
                             int AdjacentZoneIndex = getConnectivityZone(AdjacentTileCoords);
 
                             if (AdjacentZoneIndex == 0) // The other location is unititialized
@@ -262,14 +262,19 @@ GridCell* KhazadGrid::addCell(CellCoordinates TargetCoords)
 
 float KhazadGrid::getEdgeCost(const MapCoordinates &TestCoords, Direction DirectionType) const
 {
-    if (getDirectionFlags(TestCoords) & (1 << (int) DirectionType))
+    if (getDirectionFlags(TestCoords) & (DirectionType.Index()))
     {
-        if (DirectionType < CARDINAL_DIRECTIONS_START) // True for Up and Down
+        if (DirectionType.ValueonAxis(AXIS_Z) != 0) // True for Up and Down
             return 2;
-        if (DirectionType < NUM_CARDINAL_DIRECTIONS) // N, S, E, W
+
+        bool X = DirectionType.ValueonAxis(AXIS_X) != 0;
+        bool Y = DirectionType.ValueonAxis(AXIS_Y) != 0;
+
+        if (X ^ Y) // N, S, E, W
             return 1;
-        if (DirectionType < NUM_COMPASS_DIRECTIONS) // NE, SE, NW, SW
+        if (X & Y)
             return M_SQRT2;
+
         if (DirectionType == DIRECTION_NONE)
             return 0;
         return 2;  // All other z axis diagonals

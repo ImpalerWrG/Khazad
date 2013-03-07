@@ -2,6 +2,7 @@
 #define ZONE__HEADER
 
 #include <stdafx.h>
+#include <bitset>
 
 #include <Coordinates.h>
 
@@ -22,7 +23,7 @@ public:
 
 private:
 
-	std::map< uint64_t, bitset <CUBESPERCELL>* > ZoneMap;
+	std::map< uint64_t, std::bitset<CUBESPERCELL>* > ZoneMap;
 };
 
 #endif // ZONE__HEADER

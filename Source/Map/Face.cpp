@@ -24,17 +24,17 @@ void Face::RefreshEntity(Ogre::StaticGeometry* CellGeometry, CellCoordinates Cel
         int16_t Y = (CellPosition.Y * CELLEDGESIZE) + (LocationCoordinates & CELLBITFLAG);
         int16_t Z = CellPosition.Z;
 
-        if (DirectionValueOnAxis(FaceType.FaceDirection, AXIS_X) == 1)
+        if (FaceType.FaceDirection.ValueonAxis(AXIS_X) == 1)
         {
             X -= 1;
         }
 
-        if (DirectionValueOnAxis(FaceType.FaceDirection, AXIS_Y) == 1)
+        if (FaceType.FaceDirection.ValueonAxis(AXIS_Y) == 1)
         {
             Y -= 1;
         }
 
-        if (DirectionValueOnAxis(FaceType.FaceDirection, AXIS_Z) == 1)
+        if (FaceType.FaceDirection.ValueonAxis(AXIS_Z) == 1)
         {
             Z -= 1;
         }

@@ -9,6 +9,7 @@ class Cell;
 #include <Coordinates.h>
 #include <Temporal.h>
 
+#include <Ogre.h>
 
 class Actor: virtual public Temporal
 {

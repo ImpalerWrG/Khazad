@@ -234,9 +234,7 @@ struct FaceShape
 
 	uint32_t Key()
 	{
-		uint8_t Dir = FaceDirection;
-		uint32_t Hash = ((Dir & 15) << 16) + CubeComponent.Data;
-		return Hash;
+		return (CubeComponent.Data << 16) + FaceDirection.Data;
 	}
 
     CubeShape CubeComponent;

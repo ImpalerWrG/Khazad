@@ -86,7 +86,7 @@ void Cell::BuildFaceData()
         static int16_t WallSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
         static int16_t FloorSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
-        for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
+        for (uint8_t i = 0, DirectionType = Direction::AXIAL_DIRECTIONS[i]; i < NUM_AXIAL_DIRECTIONS; ++i, DirectionType = Direction::AXIAL_DIRECTIONS[i])
         {
             FaceCoordinates FaceLocation = FaceCoordinates(TargetCube, DirectionType);
             MapCoordinates ModifiedCoordinates = MapCoordinates(thisCellCoordinates, TargetCube);

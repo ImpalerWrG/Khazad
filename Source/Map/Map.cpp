@@ -141,10 +141,10 @@ void Map::Save(string filename)
 
 std::pair< MapCoordinates, Direction > Map::FaceCoordinateConvertion(MapCoordinates TargetMapCoordinates, Direction DirectionType) const
 {
-    if (isDirectionPositive(DirectionType))  // True for East, South and Top some of which will require Translation of the Cube and Inversion of Direction
+    if (DirectionType.Positive())  // True for East, South and Top some of which will require Translation of the Cube and Inversion of Direction
     {
         TargetMapCoordinates.TranslateMapCoordinates(DirectionType);
-        return make_pair(TargetMapCoordinates, OppositeDirection(DirectionType));
+        return make_pair(TargetMapCoordinates, DirectionType.Invert());
     }
     else
     {
@@ -368,7 +368,7 @@ void Map::UpdateCubeShape(MapCoordinates Coordinates, CubeShape NewShape)
                 setCubeMaterial(Coordinates, INVALID_INDEX);
             }
 
-            for (Direction DirectionType = AXIAL_DIRECTIONS_START; DirectionType < NUM_AXIAL_DIRECTIONS; ++DirectionType)
+            for (uint8_t i = 0, DirectionType = Direction::AXIAL_DIRECTIONS[i]; i < NUM_AXIAL_DIRECTIONS; ++i, DirectionType = Direction::AXIAL_DIRECTIONS[i])
             {
                 UpdateFace(Coordinates, DirectionType);
             }
@@ -403,7 +403,7 @@ void Map::UpdateFace(MapCoordinates TargetCoordinates, Direction DirectionType)
     CubeShape AdjacentShape = getCubeShape(ModifiedCoordinates);
     Face* TargetFace = getFace(TargetCoordinates, DirectionType);
 
-    switch (DirectionType) {
+    switch (DirectionType.Data) {
 
         case DIRECTION_NONE:
             if (!SourceShape.isEmpty() && !SourceShape.isSolid())
@@ -468,7 +468,7 @@ void Map::UpdateFace(MapCoordinates TargetCoordinates, Direction DirectionType)
                 }
 
                 TargetFace->setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
-                TargetFace->setFaceShapeType(FaceShape(AdjacentShape, OppositeDirection(DirectionType)));
+                TargetFace->setFaceShapeType(FaceShape(AdjacentShape, DirectionType.Invert()));
                 TargetFace->setFaceSurfaceType(RoughWallID);
             } else {
                 removeFace(TargetCoordinates, DirectionType);
@@ -564,7 +564,8 @@ MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay, uint16_t Top, uint16_
 
         if (result.first) // Was an intersection found
         {
-            MapCoordinates TestCoords = MapCoordinates(MouseRay.getPoint(result.second));
+            Ogre::Vector3 Intersection = MouseRay.getPoint(result.second);
+            MapCoordinates TestCoords = MapCoordinates(Intersection.x, Intersection.y, Intersection.z);
             if (isCubeInited(TestCoords))
             {
                 CubeShape Shape = getCubeShape(TestCoords);
@@ -578,19 +579,6 @@ MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay, uint16_t Top, uint16_
     }
     return LastRayTestResult;
 }
-
-/*
-MapCoordinates Map::getMapCenter() const
-{
-    MapCoordinates CenterPoint;
-
-    CenterPoint.X = getMapSizeX() / 2;
-    CenterPoint.Y = getMapSizeY() / 2;
-    CenterPoint.Z = getMapSizeZ();
-
-    return CenterPoint;
-}
-*/
 
 void Map::ReleaseMap()
 {
