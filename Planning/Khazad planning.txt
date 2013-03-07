@@ -99,3 +99,19 @@ The Golden Age:  Height of wealth and power
 The Age of War:  War between dwarves and elves, new Orc threats
 The Age of Heors:  Man becomes dominant but are friendly with Dwarves, elves reduced to wood elves
 The Age of Man:  Victorian level technology, Dwarves are a remnent in a world of men
+
+Improve Hold in multiple directions that Dwarves value
+
+Wealth:  Treashure hoarding
+Age:  Plain old enduring, modified by recording of history by Scolars
+Skill:  Having large numbers of elite crafters
+Reputation:  Political connections with other Holds, fufilling oaths/taking revenge for insults
+Lawfullness:  Punish criminals, low crimes rates
+Wisdom:  Low deaths?  Religions observance (Piety?)
+Glory:  Victory in battles, local or forign
+
+Cumulative of the above: Honor
+
+Individuals, families and Clans accumulate the same values and all get compiled to produce the Holds
+overall values.  These 7 values act as the primary players success feed-back indicatiors and quasi-goals
+while it is possible to succeed at all it is extreamly difficult because many choices are  
