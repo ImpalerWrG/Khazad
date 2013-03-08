@@ -28,6 +28,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 #include <boost/unordered_map.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
+#include <boost/serialization/map.hpp>
 
 class Cell;
 class Geology;
@@ -52,7 +53,7 @@ public:
 	Cell* getCell(CellCoordinates) const;
 	Cell* getCubeOwner(MapCoordinates) const;
 
-	boost::unordered_map<uint64_t, Cell*>* getCellMap()		{ return &Cells; };
+	std::map<uint64_t, Cell*>* getCellMap()		{ return &Cells; };
 
     void RefreshCellGeometry();
 
@@ -130,7 +131,7 @@ protected:
     bool Initialized;
     bool MapLoaded;
 
-    boost::unordered_map<uint64_t, Cell*> Cells;
+    std::map<uint64_t, Cell*> Cells;
 
     std::vector< Ogre::SceneNode* > ZLevelSpindle;   // Organizes the Root Node for each Zlevel
 

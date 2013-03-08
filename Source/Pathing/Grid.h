@@ -7,8 +7,6 @@
 #include <string.h>
 #include <Coordinates.h>
 
-#include <boost/unordered_map.hpp>
-
 class Map;
 
 typedef uint32_t DirectionFlags;  // Bitfield for all directions
@@ -87,7 +85,7 @@ public:
 
 private:
 
-    boost::unordered_map<uint64_t, GridCell*> Cells;
+    std::map<uint64_t, GridCell*> Cells;
 
     MapCoordinates maxlen;
     MapCoordinates minlen;
