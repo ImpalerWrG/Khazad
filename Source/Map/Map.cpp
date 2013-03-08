@@ -55,7 +55,7 @@ bool Map::Init()
 
 Cell* Map::getCell(CellCoordinates TestCoords) const
 {
-    std::map<uint64_t, Cell*>::const_iterator SearchResult = Cells.find(TestCoords.Key());
+    boost::unordered_map<uint64_t, Cell*>::const_iterator SearchResult = Cells.find(TestCoords.Key());
 
     return SearchResult == Cells.end() ? NULL : SearchResult->second;
 }
@@ -64,7 +64,7 @@ void Map::RefreshCellGeometry()
 {
     if (CellNeedsRebuild)
     {
-        for (std::map<uint64_t, Cell*>::const_iterator it = Cells.begin(); it != Cells.end(); it++)
+        for (boost::unordered_map<uint64_t, Cell*>::const_iterator it = Cells.begin(); it != Cells.end(); it++)
         {
             if (it->second->getNeedsReBuild())
             {
@@ -95,11 +95,6 @@ bool Map::insertCell(Cell* NewCell, CellCoordinates TargetCoordinates)
         return true;
     }
     return false;  // A Cell already exists at that spot
-}
-
-std::map<uint64_t, Cell*>* Map::getCellMap()
-{
-    return &Cells;
 }
 
 Cell* Map::getCubeOwner(MapCoordinates Coordinates) const
@@ -537,7 +532,7 @@ void Map::setSliceLevels(int32_t Top, int32_t Bottom)
         getZlevelNode(i)->setVisible(true); //Show Slice
     }
 
-    for (std::map<uint64_t, Cell*>::const_iterator it = Cells.begin(); it != Cells.end(); it++)
+    for (boost::unordered_map<uint64_t, Cell*>::const_iterator it = Cells.begin(); it != Cells.end(); it++)
     {
         int32_t ZLevel = it->second->getCellCoordinates().Z;
         if (ZLevel > Top || ZLevel < Bottom)

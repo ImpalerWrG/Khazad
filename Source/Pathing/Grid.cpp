@@ -9,8 +9,8 @@
 
 KhazadGrid::KhazadGrid(Map* TargetMap)
 {
-    std::map<uint64_t, Cell*>* TargetCells = TargetMap->getCellMap();
-    for (std::map<uint64_t, Cell*>::iterator it = TargetCells->begin(); it != TargetCells->end(); ++it)
+    boost::unordered_map<uint64_t, Cell*>* TargetCells = TargetMap->getCellMap();
+    for (boost::unordered_map<uint64_t, Cell*>::iterator it = TargetCells->begin(); it != TargetCells->end(); ++it)
     {
         if (it->second != NULL)
         {
@@ -76,7 +76,7 @@ void KhazadGrid::BuildConnectivityZones()
     int ZoneCounter = 0;
 
     // Loop to do connectivity
-    for (std::map<uint64_t, GridCell*>::iterator it = Cells.begin(); it != Cells.end(); ++it)
+    for (boost::unordered_map<uint64_t, GridCell*>::iterator it = Cells.begin(); it != Cells.end(); ++it)
     {
         GridCell* TargetCell = it->second;
         if (TargetCell != NULL)

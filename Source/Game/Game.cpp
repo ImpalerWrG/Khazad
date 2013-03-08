@@ -26,6 +26,8 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 #include <Cell.h>
 #include <Timer.h>
 
+#include <boost/unordered_map.hpp>
+
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
 #include <boost/date_time.hpp>
@@ -110,7 +112,7 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
 
     // Initialize Faces for the cells
 	ProgressSize = MainMap->getCellMap()->size();
-    for (std::map<uint64_t, Cell*>::iterator CellIterator = MainMap->getCellMap()->begin() ; CellIterator != MainMap->getCellMap()->end(); ++CellIterator )
+    for (boost::unordered_map<uint64_t, Cell*>::iterator CellIterator = MainMap->getCellMap()->begin() ; CellIterator != MainMap->getCellMap()->end(); ++CellIterator )
     {
         CellIterator->second->BuildFaceData();
 		ProgressCount++;

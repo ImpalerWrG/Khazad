@@ -9,6 +9,7 @@
 #include <Random.h>
 #include <map>
 
+#include <boost/unordered_map.hpp>
 
 PathTester::PathTester()
 {
@@ -39,9 +40,9 @@ bool PathTester::Init(PathManager* Parent)
 
 void PathTester::CollectTestCoords()
 {
-    std::map<uint64_t, Cell*>* TargetCells = GAME->getMap()->getCellMap();
+    boost::unordered_map<uint64_t, Cell*>* TargetCells = GAME->getMap()->getCellMap();
 
-    for (std::map<uint64_t, Cell*>::iterator it = TargetCells->begin(); it != TargetCells->end(); ++it)
+    for (boost::unordered_map<uint64_t, Cell*>::iterator it = TargetCells->begin(); it != TargetCells->end(); ++it)
     {
         if (it->second != NULL)
         {

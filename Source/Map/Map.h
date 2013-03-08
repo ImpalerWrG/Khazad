@@ -25,6 +25,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 #include <Renderer.h>
 #include <TileShapes.h>
 
+#include <boost/unordered_map.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 
@@ -51,7 +52,7 @@ public:
 	Cell* getCell(CellCoordinates) const;
 	Cell* getCubeOwner(MapCoordinates) const;
 
-    std::map<uint64_t, Cell*>* getCellMap();
+	boost::unordered_map<uint64_t, Cell*>* getCellMap()		{ return &Cells; };
 
     void RefreshCellGeometry();
 
@@ -129,7 +130,7 @@ protected:
     bool Initialized;
     bool MapLoaded;
 
-    std::map<uint64_t, Cell*> Cells;
+    boost::unordered_map<uint64_t, Cell*> Cells;
 
     std::vector< Ogre::SceneNode* > ZLevelSpindle;   // Organizes the Root Node for each Zlevel
 
