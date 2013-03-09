@@ -9,11 +9,8 @@
 #define CUBESPERCELL 256
 #define HALFCUBE 0.5
 
-#ifdef _MSC_VER
-#include <stdint_win.h>
-#else
-#include <stdint.h>
-#endif
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
 
 
 typedef uint8_t CubeCoordinates;  // Holds one of the 256 locations inside a Cell
@@ -22,6 +19,8 @@ struct CellCoordinates;
 
 struct MapCoordinates
 {
+friend class boost::serialization::access;
+
     MapCoordinates()
     {
         X = Y = Z = 0;
@@ -153,10 +152,20 @@ struct MapCoordinates
     int32_t X;
     int32_t Y;
     int16_t Z;
+
+	template<class Archive>
+	void serialize(Archive & Arc, const unsigned int version)
+	{
+		Arc& X;
+		Arc& Y;
+		Arc& Z;
+	};
 };
 
 struct CellCoordinates  // Holds the relative Relative position of Map Cells, 6 Bytes
 {
+friend class boost::serialization::access;
+
     CellCoordinates()
     {
         X = Y = Z = 0;
@@ -225,10 +234,20 @@ struct CellCoordinates  // Holds the relative Relative position of Map Cells, 6 
     int16_t X;
     int16_t Y;
     int16_t Z;
+
+	template<class Archive>
+	void serialize(Archive & Arc, const unsigned int version)
+	{
+		Arc& X;
+		Arc& Y;
+		Arc& Z;
+	};
 };
 
 struct FaceCoordinates
 {
+friend class boost::serialization::access;
+
     FaceCoordinates()
     {
         Coordinates = 0;
@@ -267,6 +286,13 @@ struct FaceCoordinates
 
     CubeCoordinates Coordinates;
     Direction FaceDirection;
+
+	template<class Archive>
+	void serialize(Archive & Arc, const unsigned int version)
+	{
+		Arc& Coordinates;
+		Arc& FaceDirection;
+	};
 };
 
 #endif // COORDINATES__HEADER

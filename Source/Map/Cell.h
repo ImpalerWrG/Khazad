@@ -4,6 +4,7 @@
 #include <stdafx.h>
 
 #include <Map.h>
+#include <Face.h>
 #include <Renderer.h>
 
 #include <OgreVector3.h>
@@ -11,14 +12,21 @@
 #include <bitset>
 #include <boost/array.hpp>
 
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/serialization/map.hpp>
+
 class Building;
 class Tree;
 class Actor;
-
+class Map;
+class Face;
+class Geology;
 
 
 class Cell
 {
+friend class boost::serialization::access;
 
 public:
 
@@ -87,7 +95,7 @@ public:
     void DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode);
 
     inline bool getNeedsReBuild()                       { return NeedsReBuild; }
-    inline void setNeedsReBuild(bool NewValue)          { NeedsReBuild = NewValue;  ParentMap->setNeedsReBuild(true); }
+    void setNeedsReBuild(bool NewValue);
 
     CellCoordinates getCellCoordinates()                { return thisCellCoordinates; }
     Ogre::Vector3 getPosition()                         { return CellSceneNode->getPosition(); }
@@ -137,6 +145,17 @@ protected:
 
     Map* ParentMap;
 
+    template<class Archive>
+	void serialize(Archive & Arc, const unsigned int version)
+	{
+		Arc& NeedsReBuild;
+		Arc& Visible;
+
+		Arc& CubeShapeTypes;
+		Arc& CubeMaterialTypes;
+
+		Arc& Faces;
+	};
 };
 
 #endif // CELL__HEADER

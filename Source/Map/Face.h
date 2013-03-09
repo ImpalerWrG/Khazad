@@ -7,8 +7,13 @@
 #include <TileShapes.h>
 #include <Ogre.h>
 
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+
 class Face
 {
+friend class boost::serialization::access;
+
 public:
 
 	Face(CubeCoordinates TargetCoordinates, Direction DirectionType);
@@ -31,6 +36,16 @@ private:
 
     int16_t SurfaceTypeID;
     int16_t MaterialTypeID;
+
+	template<class Archive>
+	void serialize(Archive & Arc, const unsigned int version)
+	{
+		Arc& FaceType;
+		Arc& LocationCoordinates;
+
+		Arc& SurfaceTypeID;
+		Arc& MaterialTypeID;
+	};
 };
 
 #endif // FACE__HEADER

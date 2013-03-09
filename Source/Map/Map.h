@@ -24,6 +24,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 #include <Coordinates.h>
 #include <Renderer.h>
 #include <TileShapes.h>
+#include <Cell.h>
 
 #include <boost/unordered_map.hpp>
 #include <boost/archive/binary_iarchive.hpp>
@@ -149,7 +150,7 @@ protected:
 		Arc& Initialized;
 		Arc& MapLoaded;
 
-		//Arc& std::map<uint64_t, Cell*> Cells;
+		Arc& Cells;
 
 		//Arc& std::vector< Ogre::SceneNode* > ZLevelSpindle;   // Organizes the Root Node for each Zlevel
 

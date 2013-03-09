@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+
 enum Axis
 {
     AXIS_Z,   // Vertical
@@ -68,6 +71,8 @@ inline Axis &operator-- (Axis &OldAxis)      { return OldAxis = Axis(OldAxis - 1
 
 struct Direction
 {
+friend class boost::serialization::access;
+
 	Direction()
 	{
 		Data = DIRECTION_UNKNOWN;
@@ -163,6 +168,12 @@ struct Direction
 	};
 
     uint8_t Data;
+
+    template<class Archive>
+	void serialize(Archive & Arc, const unsigned int version)
+	{
+		Arc& Data;
+	};
 
 	static uint8_t const CARDINAL_DIRECTIONS[];
 	static uint8_t const COMPASS_DIRECTIONS[];

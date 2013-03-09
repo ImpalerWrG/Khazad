@@ -177,6 +177,15 @@ void Cell::DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode)
     }
 }
 
+void Cell::setNeedsReBuild(bool NewValue)
+{
+	NeedsReBuild = NewValue;
+	if (NewValue)
+	{
+		ParentMap->setNeedsReBuild(true);
+	}
+}
+
 int16_t Cell::getFaceMaterialType(FaceCoordinates TargetCoordinates) const
 {
     Face* TargetFace = getFace(TargetCoordinates);
