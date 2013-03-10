@@ -51,20 +51,17 @@ public:
     bool isInitialized()        { return Initialized; }
     bool isMapLoaded()          { return MapLoaded; }
 
+
+    // --------------------CELL MANAGMENT--------------------
+
 	Cell* getCell(CellCoordinates) const;
 	Cell* getCubeOwner(MapCoordinates) const;
 
 	std::map<uint64_t, Cell*>* getCellMap()		{ return &Cells; };
 
-    void RefreshCellGeometry();
-
     bool insertCell(Cell* NewCell, CellCoordinates TargetCoordinates);
 
     bool isCubeInited(MapCoordinates) const;
-    void setCellNeedsReBuild(CellCoordinates, bool NewValue);
-    void setNeedsReBuild(bool NewValue)       { CellNeedsRebuild = NewValue; }
-
-    bool isCubeSloped(MapCoordinates Coordinates) const;
 
     void setCubeShape(MapCoordinates Coordinates, CubeShape NewShape);
     CubeShape getCubeShape(MapCoordinates Coordinates) const;
@@ -102,19 +99,11 @@ public:
     bool isCubeSunLit(MapCoordinates Coordinates) const;
     void setCubeSunLit(MapCoordinates Coordinates, bool NewValue);
 
-
-    bool Load(std::string filename);
-    void Save(std::string filename);
-
+	void InvokeRendering();
     void ReleaseMap();
 
     void UpdateCubeShape(MapCoordinates Coordinates, CubeShape NewShape);
     void UpdateFace(MapCoordinates TargetCoordinates, Direction DirectionType);
-
-    uint32_t getCellCount() const             { return Cells.size(); }
-
-    Ogre::SceneNode* getZlevelNode(int32_t Zlevel);
-    void setSliceLevels(int32_t Top, int32_t Bottom);
 
     MapCoordinates getRayIntersection(Ogre::Ray MouseRay, uint16_t Top, uint16_t Bottom);
 
@@ -128,13 +117,10 @@ public:
 
 protected:
 
-    bool CellNeedsRebuild;
     bool Initialized;
     bool MapLoaded;
 
     std::map<uint64_t, Cell*> Cells;
-
-    std::vector< Ogre::SceneNode* > ZLevelSpindle;   // Organizes the Root Node for each Zlevel
 
     int32_t HighestCell;
     int32_t LowestCell;
@@ -146,20 +132,13 @@ protected:
     template<class Archive>
 	void serialize(Archive & Arc, const unsigned int version)
 	{
-		Arc& CellNeedsRebuild;
 		Arc& Initialized;
 		Arc& MapLoaded;
 
 		Arc& Cells;
 
-		//Arc& std::vector< Ogre::SceneNode* > ZLevelSpindle;   // Organizes the Root Node for each Zlevel
-
 		Arc& HighestCell;
 		Arc& LowestCell;
-
-		//Arc& Zones;
-
-		//Arc& LastRayTestResult;  // Used to smoothout Map Picking
 	};
 };
 

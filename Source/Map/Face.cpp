@@ -6,6 +6,13 @@
 #include <Renderer.h>
 #include <ShapeManager.h>
 
+Face::Face()
+{
+	SurfaceTypeID = INVALID_INDEX;
+	MaterialTypeID = INVALID_INDEX;
+
+    FaceType = FaceShape(CubeShape(false), DIRECTION_UNKNOWN);
+}
 
 Face::Face(CubeCoordinates TargetCoordinates, Direction DirectionType)
 {

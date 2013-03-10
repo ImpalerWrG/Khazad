@@ -140,7 +140,7 @@ void Camera::ChangeViewLevel(int32_t Change)
 
         //UI->setZSliders(SliceTop, SliceBottom);
 
-        GAME->getMap()->setSliceLevels(SliceTop, SliceBottom);
+        RENDERER->setSliceLevels(SliceTop, SliceBottom);
     }
 }
 
@@ -159,7 +159,7 @@ void Camera::SetSlice(int16_t newTop, int16_t newBottome)
     }
     ViewLevels = SliceTop - SliceBottom;
 
-    GAME->getMap()->setSliceLevels(SliceTop, SliceBottom);
+    RENDERER->setSliceLevels(SliceTop, SliceBottom);
 }
 
 void Camera::SetSliceTop(int16_t newValue)
@@ -171,7 +171,7 @@ void Camera::SetSliceTop(int16_t newValue)
     }
     ViewLevels = SliceTop - SliceBottom;
 
-    GAME->getMap()->setSliceLevels(SliceTop, SliceBottom);
+    RENDERER->setSliceLevels(SliceTop, SliceBottom);
 }
 
 void Camera::SetSliceBottom(int16_t newValue)
@@ -183,7 +183,7 @@ void Camera::SetSliceBottom(int16_t newValue)
     }
     ViewLevels = SliceTop - SliceBottom;
 
-    GAME->getMap()->setSliceLevels(SliceTop, SliceBottom);
+    RENDERER->setSliceLevels(SliceTop, SliceBottom);
 }
 
 bool Camera::InSlice(int16_t Zlevel)

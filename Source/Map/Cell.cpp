@@ -1,24 +1,29 @@
 #include <Cell.h>
 
+#include <Game.h>
 #include <Map.h>
 #include <Face.h>
 #include <Actor.h>
 #include <DataManager.h>
+
 #include <Renderer.h>
 #include <TextureManager.h>
+#include <TerrainRender.h>
 
 
 Cell::Cell()
 {
     CubeShape EmptyCube = CubeShape(BELOW_CUBE_HEIGHT);
-    CubeShapeTypes.assign(EmptyCube);
 
+    CubeShapeTypes.assign(EmptyCube);
     CubeMaterialTypes.assign(INVALID_INDEX);
 
     Hidden.reset();
     SubTerranean.reset();
     SkyView.reset();
     SunLit.reset();
+
+	Render = NULL;
 }
 
 Cell::~Cell()
@@ -26,34 +31,15 @@ Cell::~Cell()
 
 }
 
-bool Cell::InitializeCell(Map* Parent)
-{
-    NeedsReBuild = true;
-
-    ParentMap = Parent;
-
-    return true;
-}
-
 void Cell::setCellPosition(CellCoordinates Coordinates)
 {
     thisCellCoordinates = Coordinates;
-
-    float x = (float) (Coordinates.X * CELLEDGESIZE) + (CELLEDGESIZE / 2) - HALFCUBE;
-    float y = (float) (Coordinates.Y * CELLEDGESIZE) + (CELLEDGESIZE / 2) - HALFCUBE;
-
-    Ogre::SceneNode* ZNode = ParentMap->getZlevelNode(thisCellCoordinates.Z);
-    CellSceneNode = ZNode->createChildSceneNode();
-
-    CellSceneNode->setPosition(x, y, 0);
-
-    char buffer[64];
-    sprintf(buffer, "Cell%i-%i-%i",  thisCellCoordinates.X, thisCellCoordinates.Y, thisCellCoordinates.Z);
-
-    if (!RENDERER->getSceneManager()->hasStaticGeometry(buffer))
-    {
-        CellGeometry = RENDERER->getSceneManager()->createStaticGeometry(buffer);
-    }
+    if (Render == NULL)
+	{
+		Render = new TerrainRendering(this);
+	} else {
+		//Render->
+	}
 }
 
 void Cell::setCubeShape(CubeCoordinates Coordinates, CubeShape NewShape)
@@ -61,7 +47,7 @@ void Cell::setCubeShape(CubeCoordinates Coordinates, CubeShape NewShape)
     if (NewShape != CubeShapeTypes[Coordinates])
     {
         CubeShapeTypes[Coordinates] = NewShape;
-        setNeedsReBuild(true);
+        Render->setNeedsReRendering();
 
         Face* TargetFace = getFace(FaceCoordinates(Coordinates, DIRECTION_NONE));
         if (TargetFace != NULL)
@@ -73,6 +59,7 @@ void Cell::setCubeShape(CubeCoordinates Coordinates, CubeShape NewShape)
 
 void Cell::BuildFaceData()
 {
+	Map* ParentMap = GAME->getMap();
     MapCoordinates TargetMapCoordinates;
     bool Debug = true;
 
@@ -135,55 +122,7 @@ void Cell::BuildFaceData()
 
     }
     while (TargetCube != 0);  // End Loop when Byte rolls over
-}
-
-void Cell::BuildStaticGeometry()
-{
-    if (CellGeometry != NULL)
-    {
-        CellGeometry->reset();
-
-        // Iterate all Faces and RefreshEntites;
-        for (std::map<uint16_t, Face*>::iterator it = Faces.begin(); it != Faces.end(); it++)
-        {
-            it->second->RefreshEntity(CellGeometry, thisCellCoordinates);
-        }
-
-        CellGeometry->setCastShadows(true);
-        CellGeometry->build();
-        NeedsReBuild = false;
-    }
-}
-
-void Cell::DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode)
-{
-    // Destroy all the attached objects
-    Ogre::SceneNode::ObjectIterator Nodeit = TargetNode->getAttachedObjectIterator();
-
-    while (Nodeit.hasMoreElements())
-    {
-        Ogre::MovableObject* Object = static_cast<Ogre::MovableObject*> (Nodeit.getNext());
-        TargetNode->getCreator()->destroyMovableObject(Object);
-    }
-
-    // Recurse to child SceneNodes
-    Ogre::SceneNode::ChildNodeIterator itChild = TargetNode->getChildIterator();
-
-    while (itChild.hasMoreElements())
-    {
-        Ogre::SceneNode* ChildNode = static_cast<Ogre::SceneNode*> (itChild.getNext());
-        DestroyAllAttachedEntities(ChildNode);
-        ChildNode->getCreator()->destroySceneNode(ChildNode);
-    }
-}
-
-void Cell::setNeedsReBuild(bool NewValue)
-{
-	NeedsReBuild = NewValue;
-	if (NewValue)
-	{
-		ParentMap->setNeedsReBuild(true);
-	}
+	Render->setNeedsReRendering();
 }
 
 int16_t Cell::getFaceMaterialType(FaceCoordinates TargetCoordinates) const
@@ -205,7 +144,7 @@ bool Cell::setFaceMaterialType(FaceCoordinates TargetCoordinates, int16_t Materi
     if (TargetFace != NULL)
     {
         TargetFace->setFaceMaterialType(MaterialTypeID);
-        setNeedsReBuild(true);
+        Render->setNeedsReRendering();
         return true;
     }
     return false;
@@ -218,7 +157,7 @@ bool Cell::setFaceSurfaceType(FaceCoordinates TargetCoordinates, int16_t Surface
     if (TargetFace != NULL)
     {
         TargetFace->setFaceSurfaceType(SurfaceTypeID);
-        setNeedsReBuild(true);
+        Render->setNeedsReRendering();
         return true;
     }
     return false;
@@ -237,7 +176,7 @@ bool Cell::setFaceShape(FaceCoordinates TargetCoordinates, FaceShape NewShape)
     if (TargetFace != NULL)
     {
         TargetFace->setFaceShapeType(NewShape);
-        setNeedsReBuild(true);
+        Render->setNeedsReRendering();
         return true;
     }
     return false;
@@ -252,7 +191,7 @@ bool Cell::removeFace(FaceCoordinates TargetCoordinates)
         delete Faces.find(Key)->second;
         Faces.erase(Key);
 
-        setNeedsReBuild(true);
+        Render->setNeedsReRendering();
         return true;
     }
     return false;
@@ -275,19 +214,14 @@ Face* Cell::addFace(FaceCoordinates TargetCoordinates)
     }
 }
 
-bool Cell::isCubeSloped(CubeCoordinates Coordinates) const
-{
-    CubeShape Shape = getCubeShape(Coordinates);
-    return (!Shape.isEmpty() && !Shape.isSolid());
-}
-
 void Cell::addActor(Actor* NewActor)
 {
-    CellSceneNode->addChild(NewActor->getNode());
-    NewActor->setVisible(Visible);
+	//Render->
+    //CellSceneNode->addChild(NewActor->getNode());
+    //NewActor->setVisible(Visible);
 }
 
 void Cell::removeActor(Actor* DepartingActor)
 {
-    CellSceneNode->removeChild(DepartingActor->getNode());
+    //CellSceneNode->removeChild(DepartingActor->getNode());
 }

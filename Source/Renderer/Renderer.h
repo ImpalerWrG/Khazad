@@ -6,6 +6,7 @@
 
 #include <Ogre.h>
 
+class TerrainRendering;
 class Camera;
 class Timer;
 
@@ -20,11 +21,18 @@ public:
     ~Renderer();
 
     void RenderFrame();
+	void RefreshTerrainGeometry();
+
+	void setDirtyNonresponsive(bool newValue)		{}
+	void addDirtyTerrain(TerrainRendering* Dirty) 	{ DirtyTerrain.insert(Dirty); }
 
     Ogre::Root* getRoot()                         { return OgreRoot; }
     Ogre::SceneManager* getSceneManager()         { return OgreSceneManager; }
     Ogre::SceneNode* getRootNode()                { return OgreSceneManager->getRootSceneNode(); }
     Ogre::RenderWindow* getWindow()               { return OgreRenderWindow; }
+
+    Ogre::SceneNode* getZlevelNode(int32_t Zlevel);
+    void setSliceLevels(int32_t Top, int32_t Bottom);
 
     Camera* getActiveCamera()                     { return Cameras[ActiveCameraIndex]; }
 
@@ -51,11 +59,14 @@ private:
     void initializeResourceGroups();
 
     void setupScene();
-
     void createCamera();
 
     std::vector<Camera*> Cameras;
     uint16_t ActiveCameraIndex;
+
+    std::set<TerrainRendering*> DirtyTerrain;
+
+    std::vector< Ogre::SceneNode* > ZLevelSpindle;   // Organizes the Root Node for each Zlevel
 
     Ogre::Overlay*			OgreDebugOverlay;
 	Ogre::Overlay*			OgreInfoOverlay;

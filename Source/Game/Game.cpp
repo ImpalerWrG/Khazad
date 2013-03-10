@@ -99,9 +99,7 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
                 CellCoordinates TargetCellCoordinates = CellCoordinates(x, y, z);
                 Cell* NewCell = new Cell();
 
-                NewCell->InitializeCell(MainMap);
                 NewCell->setCellPosition(TargetCellCoordinates);
-
                 MainMap->insertCell(NewCell, TargetCellCoordinates);
                 MapGeology->LoadCellData(NewCell);
             }
@@ -122,6 +120,7 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
 	Path->InitializeTestingSuite();
 
     RENDERER->FocusActiveCameraAt(Ogre::Vector3(X * CELLEDGESIZE / 2, Y * CELLEDGESIZE / 2, 0));
+    //MainMap->InvokeRendering();
     GUI->DirtyActiveScreen();
 
     return true;
@@ -139,10 +138,6 @@ bool Game::Run()
 
 			// Update map? other none actor based logics?
 		}
-        if (MainMap != NULL)
-        {
-            MainMap->RefreshCellGeometry();
-        }
 	}
 
     GameTimer->Pause();

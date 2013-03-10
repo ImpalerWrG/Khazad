@@ -5,23 +5,22 @@
 
 #include <Map.h>
 #include <Face.h>
-#include <Renderer.h>
-
-#include <OgreVector3.h>
 
 #include <bitset>
 #include <boost/array.hpp>
 
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
+
 #include <boost/serialization/map.hpp>
+#include <boost/serialization/bitset.hpp>
 
 class Building;
 class Tree;
 class Actor;
 class Map;
 class Face;
-class Geology;
+class TerrainRendering;
 
 
 class Cell
@@ -32,14 +31,6 @@ public:
 
     Cell();
     ~Cell();
-
-    bool InitializeCell(Map* ParentMap);
-
-    void setCellPosition(CellCoordinates Coordinates);
-
-    void LoadCellData(Geology* MapGeology);
-
-    void DrawCellCage();
 
 
     //----------------CUBE ACESS--------------//
@@ -71,6 +62,8 @@ public:
 
     //----------------FACE ACESS---------------//
 
+	std::map<uint16_t, Face*> getFaceMap()						{ return Faces; }
+
     Face* getFace(FaceCoordinates TargetCoordinates) const      { return Faces.find(TargetCoordinates.FaceKey())->second; }
     bool hasFace(FaceCoordinates TargetCoordinates) const       { return Faces.find(TargetCoordinates.FaceKey()) != Faces.end(); }
 
@@ -90,18 +83,10 @@ public:
     //-----------GEOMETRY COMPRESSION----------//
 
     void BuildFaceData();
-    void BuildStaticGeometry();
-
-    void DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode);
-
-    inline bool getNeedsReBuild()                       { return NeedsReBuild; }
-    void setNeedsReBuild(bool NewValue);
+    void setNeedsReRendering(bool NewValue);
 
     CellCoordinates getCellCoordinates()                { return thisCellCoordinates; }
-    Ogre::Vector3 getPosition()                         { return CellSceneNode->getPosition(); }
-
-    Ogre::StaticGeometry* getCellGeometry()             { return CellGeometry; }
-    inline void setVisible(bool NewVisibility)          { CellSceneNode->setVisible(NewVisibility); Visible = NewVisibility; CellGeometry->setVisible(NewVisibility); }
+    void setCellPosition(CellCoordinates Coordinates);
 
 
     //-------------LOCAL OBJECTS--------------//
@@ -113,9 +98,6 @@ public:
     void addTree(Tree* NewTree)                         { trees.push_back(NewTree); }
 
 protected:
-
-    bool NeedsReBuild;
-    bool Visible;
 
     // Larger DataValues specific to each Cube
     boost::array< CubeShape, CUBESPERCELL > CubeShapeTypes;
@@ -136,25 +118,27 @@ protected:
     std::vector <Tree*> trees;
     std::vector <Actor*> LocalActors;
 
-    // Exact spacial Coordinates of the center of the cell, used for rendering
-    Ogre::SceneNode* CellSceneNode;
-    Ogre::StaticGeometry* CellGeometry;
-
     // The global position of this cell relative to other cells
     CellCoordinates thisCellCoordinates;
 
-    Map* ParentMap;
+	// Class that handles all rendering implementation
+	TerrainRendering* Render;
 
     template<class Archive>
 	void serialize(Archive & Arc, const unsigned int version)
 	{
-		Arc& NeedsReBuild;
-		Arc& Visible;
-
 		Arc& CubeShapeTypes;
 		Arc& CubeMaterialTypes;
 
+		Arc& Hidden;
+		Arc& SubTerranean;
+		Arc& SkyView;
+		Arc& SunLit;
+		Arc& Zone;
+
 		Arc& Faces;
+
+		Arc& thisCellCoordinates;
 	};
 };
 

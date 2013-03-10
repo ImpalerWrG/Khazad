@@ -1,9 +1,14 @@
 #include <SplashScreen.h>
 
 #include <GUI.h>
+#include <Game.h>
+#include <Map.h>
+#include <Face.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
+
+#include <boost/archive/binary_iarchive.hpp>
 
 SplashScreen::SplashScreen()
 {
@@ -72,7 +77,7 @@ bool SplashScreen::LoadGamePressed(const CEGUI::EventArgs& pEventArgs)
 			{
 				CEGUI::ListboxTextItem* newItem = new CEGUI::ListboxTextItem(it->filename().string());
 				boost::filesystem::path PathPointer = it->filename();
-				boost::filesystem::path* SavedPath = new boost::filesystem::path(PathPointer);
+				boost::filesystem::path* SavedPath = new boost::filesystem::path(savdirectiory / PathPointer);
 				// TODO harmless memory lead of paths here, remove?
 				newItem->setUserData(SavedPath);
 
@@ -97,10 +102,18 @@ bool SplashScreen::LoadGame(const CEGUI::EventArgs& pEventArgs)
 	CEGUI::ListboxItem* selectedItem = FileListBox->getFirstSelectedItem();
 	CEGUI::ListboxTextItem* TextItem = (CEGUI::ListboxTextItem*) selectedItem;
 	boost::filesystem::path* LoadPath = (boost::filesystem::path*) TextItem->getUserData();
+	boost::filesystem::path testpath = *LoadPath;
 
 	try {
 		boost::filesystem::basic_ifstream<char> rawStream(*LoadPath, std::ios::binary);
-		// Thow this at GAME
+		if (rawStream.is_open())
+		{
+			boost::archive::binary_iarchive LoadArchive(rawStream);
+			Game* THEGAME = GAME->GetInstance();
+			LoadArchive >> THEGAME;
+
+			GUI->ShowScreen(SCREEN_MAIN_GAME);
+		}
 	} catch (const std::exception& e) {
 		// Report Exception
 	}

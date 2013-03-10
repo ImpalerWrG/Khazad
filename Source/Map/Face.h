@@ -16,6 +16,7 @@ friend class boost::serialization::access;
 
 public:
 
+	Face();
 	Face(CubeCoordinates TargetCoordinates, Direction DirectionType);
 	~Face();
 

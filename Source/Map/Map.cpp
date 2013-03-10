@@ -31,8 +31,6 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 Map::Map()
 {
     Initialized = false;
-    CellNeedsRebuild = true;
-
     HighestCell = 0;
     LowestCell = 0;
 }
@@ -58,23 +56,6 @@ Cell* Map::getCell(CellCoordinates TestCoords) const
     std::map<uint64_t, Cell*>::const_iterator SearchResult = Cells.find(TestCoords.Key());
 
     return SearchResult == Cells.end() ? NULL : SearchResult->second;
-}
-
-void Map::RefreshCellGeometry()
-{
-    if (CellNeedsRebuild)
-    {
-        for (std::map<uint64_t, Cell*>::const_iterator it = Cells.begin(); it != Cells.end(); it++)
-        {
-            if (it->second->getNeedsReBuild())
-            {
-                it->second->BuildStaticGeometry();  //Rebuild individual cells
-                return;
-            }
-        }
-    }
-
-    setNeedsReBuild(false);
 }
 
 bool Map::insertCell(Cell* NewCell, CellCoordinates TargetCoordinates)
@@ -107,31 +88,6 @@ Cell* Map::getCubeOwner(MapCoordinates Coordinates) const
 bool Map::isCubeInited(MapCoordinates Coordinates) const
 {
     return getCubeOwner(Coordinates) != NULL;
-}
-
-void Map::setCellNeedsReBuild(CellCoordinates Coordinates, bool NewValue)
-{
-    Cell* TargetCell = getCell(Coordinates);
-
-    if (TargetCell != NULL)
-    {
-        TargetCell->setNeedsReBuild(NewValue);
-
-        if (NewValue)
-        {
-            setNeedsReBuild(true);
-        }
-    }
-}
-
-bool Map::Load(string filename)
-{
-    return false;
-}
-
-void Map::Save(string filename)
-{
-    return;
 }
 
 std::pair< MapCoordinates, Direction > Map::FaceCoordinateConvertion(MapCoordinates TargetMapCoordinates, Direction DirectionType) const
@@ -187,13 +143,6 @@ Face* Map::addFace(MapCoordinates TargetMapCoordinates, Direction DirectionType)
     }
 
     return TargetCell->addFace(FaceCoordinates(ConvertedValues.first.Cube(), ConvertedValues.second));
-}
-
-bool Map::isCubeSloped(MapCoordinates Coordinates) const
-{
-    Cell* TargetCell = getCubeOwner(Coordinates);
-
-    return TargetCell != NULL ? TargetCell->isCubeSloped(Coordinates.Cube()) : false;
 }
 
 void Map::setCubeShape(MapCoordinates Coordinates, CubeShape NewShape)
@@ -413,7 +362,6 @@ void Map::UpdateFace(MapCoordinates TargetCoordinates, Direction DirectionType)
                 TargetFace->setFaceShapeType(FaceShape(getCubeShape(TargetCoordinates), DIRECTION_NONE));
                 TargetFace->setFaceSurfaceType(RoughFloorID);
 
-                setCellNeedsReBuild(CellCoordinates(TargetCoordinates), true);
             } else {
                 removeFace(TargetCoordinates, DirectionType);
             }
@@ -473,77 +421,6 @@ void Map::UpdateFace(MapCoordinates TargetCoordinates, Direction DirectionType)
         default:
             break;
     }
-
-    setCellNeedsReBuild(CellCoordinates(ModifiedCoordinates), true);
-}
-
-Ogre::SceneNode* Map::getZlevelNode(int32_t Zlevel)
-{
-    if (Zlevel - LowestCell < 0)
-    {
-        Ogre::SceneNode* NewZLevelNode;
-        do
-        {
-            if (ZLevelSpindle.size() == 0)
-            {
-                HighestCell = LowestCell = Zlevel;
-            }
-
-            NewZLevelNode = RENDERER->getRootNode()->createChildSceneNode();
-            NewZLevelNode->setPosition(0, 0, LowestCell--);
-            ZLevelSpindle.insert(ZLevelSpindle.begin(), NewZLevelNode);
-        }
-        while (Zlevel - LowestCell < 0);
-
-        return NewZLevelNode;
-    }
-
-    if (Zlevel >= ZLevelSpindle.size() + LowestCell)
-    {
-        Ogre::SceneNode* NewZLevelNode;
-        do
-        {
-            if (ZLevelSpindle.size() == 0)
-            {
-                HighestCell = LowestCell = Zlevel;
-            }
-
-            NewZLevelNode = RENDERER->getRootNode()->createChildSceneNode();
-            NewZLevelNode->setPosition(0, 0, HighestCell++);
-            ZLevelSpindle.push_back(NewZLevelNode);
-        }
-        while (Zlevel >= ZLevelSpindle.size() + LowestCell);
-
-        return NewZLevelNode;
-    }
-
-    return ZLevelSpindle[Zlevel - LowestCell];
-}
-
-void Map::setSliceLevels(int32_t Top, int32_t Bottom)
-{
-    for (std::vector< Ogre::SceneNode* >::iterator it = ZLevelSpindle.begin(); it != ZLevelSpindle.end(); it++)
-    {
-        (*it)->setVisible(false); //Hide everything to reset
-    }
-
-    for (uint32_t i = Bottom; i <= Top; i++)
-    {
-        getZlevelNode(i)->setVisible(true); //Show Slice
-    }
-
-    for (std::map<uint64_t, Cell*>::const_iterator it = Cells.begin(); it != Cells.end(); it++)
-    {
-        int32_t ZLevel = it->second->getCellCoordinates().Z;
-        if (ZLevel > Top || ZLevel < Bottom)
-        {
-            it->second->setVisible(false);
-        }
-        else
-        {
-            it->second->setVisible(true);
-        }
-    }
 }
 
 MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay, uint16_t Top, uint16_t Bottom)
@@ -573,6 +450,14 @@ MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay, uint16_t Top, uint16_
         }
     }
     return LastRayTestResult;
+}
+
+void Map::InvokeRendering()
+{
+	for (std::map<uint64_t, Cell*>::iterator it = Cells.begin(); it != Cells.end(); it++)
+	{
+		//it->second->setNeedsReRendering();
+	}
 }
 
 void Map::ReleaseMap()
