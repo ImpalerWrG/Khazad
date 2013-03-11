@@ -45,14 +45,14 @@ int16_t TextureManager::PickImageTexture(int16_t MaterialID, int16_t SurfaceType
             if (TextureID == INVALID_INDEX)
             {
                 cerr << "bad material/surface combination, no texture. MaterialClassID: " << MaterialClassID << " SurfaceTypeID: " << SurfaceTypeID << endl;
-                return  DATA->getLabelIndex("TEXTURE_NEHE");
+                return  DATA->getLabelIndex("TEXTURE_DEFAULT");
             }
             else
             {
                 return TextureID;
             }
         }
-        return  DATA->getLabelIndex("TEXTURE_NEHE");
+        return  DATA->getLabelIndex("TEXTURE_DEFAULT");
     }
 }
 
