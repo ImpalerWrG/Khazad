@@ -26,6 +26,6 @@
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_SPRITE_DWARF_6"/>
-		<File Path="Media/Textures/Sprites/dwarf_0006 .png"/>
+		<File Path="Media/Textures/Sprites/dwarf_0006.png"/>
 	</Texture>
 </Textures>

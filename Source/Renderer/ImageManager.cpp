@@ -36,17 +36,24 @@ bool ImageManager::Init()
     //ilutRenderer(ILUT_DIRECT3D9);
 
     //ilutEnable(ILUT_OPENGL_CONV);
-
     //ilEnable(IL_CONV_PAL);
 
     ilClearColour(0, 0, 0, 0);
+
+	int DefaultIndex = DATA->getLabelIndex("TEXTURE_DEFAULT");
+	ILuint DefaultID = loadImage(DATA->getTextureData(DefaultIndex)->getPath());
 
     for(uint32_t i = 0; i < DATA->getNumTextures(); ++i)
     {
         if (DATA->getTextureData(i)->isLoneTexture())
         {
             ILuint DevilID = loadImage(DATA->getTextureData(i)->getPath(), false);
-            DATA->getTextureData(i)->setDevILID(DevilID);
+            if (DevilID != -1)
+			{
+            	DATA->getTextureData(i)->setDevILID(DevilID);
+			} else {
+            	DATA->getTextureData(i)->setDevILID(DefaultID);
+			}
         }
     }
 
@@ -55,33 +62,39 @@ bool ImageManager::Init()
         TextureGridData* Grid = DATA->getTextureGridData(i);
         ILuint DevilID = loadImage(Grid->getPath(), false);
 
-        uint16_t w = Grid->getTextureWidth();
-        uint16_t h = Grid->getTextureHeight();
+		uint16_t w = Grid->getTextureWidth();
+		uint16_t h = Grid->getTextureHeight();
 
-        std::vector<TextureData*> Textures = DATA->getTextureGridData(i)->TextureList;
-        for (int j = 0; j < Textures.size(); j++)
-        {
-            ILuint NewID = ClipImage(DevilID, Textures[j]->getX(), Textures[j]->getY(), w, h);
-            Textures[j]->setDevILID(NewID);
-        }
+		std::vector<TextureData*> Textures = DATA->getTextureGridData(i)->TextureList;
+		for (int j = 0; j < Textures.size(); j++)
+		{
+			if (DevilID != -1)
+			{
+				ILuint NewID = ClipImage(DevilID, Textures[j]->getX(), Textures[j]->getY(), w, h);
+				Textures[j]->setDevILID(NewID);
+			} else {
+				Textures[j]->setDevILID(DefaultID);
+			}
+		}
     }
+
 
     for(uint32_t i = 0; i < DATA->getNumTextureSheets(); ++i)
     {
         TextureSheetData* Sheet = DATA->getTextureSheetData(i);
-
-        char buffer[64];
-        sprintf(buffer, "Loading ImageSheet %s", (char*) Sheet->getPath());
-
-        Ogre::LogManager::getSingleton().getLog("Khazad.log")->logMessage(buffer);
         ILuint DevilID = loadImage(Sheet->getPath(), false);
 
-        std::vector<TextureData*> Textures = DATA->getTextureSheetData(i)->TextureList;
-        for (int j = 0; j < Textures.size(); j++)
-        {
-            ILuint NewID = ClipImage(DevilID, Textures[j]->getX(), Textures[j]->getY(), Textures[j]->getW(), Textures[j]->getH());
-            Textures[j]->setDevILID(NewID);
-        }
+		std::vector<TextureData*> Textures = DATA->getTextureSheetData(i)->TextureList;
+		for (int j = 0; j < Textures.size(); j++)
+		{
+			if (DevilID != -1)
+			{
+				ILuint NewID = ClipImage(DevilID, Textures[j]->getX(), Textures[j]->getY(), Textures[j]->getW(), Textures[j]->getH());
+				Textures[j]->setDevILID(NewID);
+			} else {
+				Textures[j]->setDevILID(DefaultID);
+			}
+		}
     }
 
     return true;
@@ -93,10 +106,17 @@ ILuint ImageManager::loadImage(char* filepath, bool ColorKey)
     ilGenImages(1, &ImageID);
     ilBindImage(ImageID);
 
-    printf("Loading Image file: %s\n", filepath);
-    if(!ilLoadImage(filepath))
+	char buffer[64];
+
+    if (!ilLoadImage(filepath))
     {
-        cerr << "Couldn't load image " << filepath << endl;
+		sprintf(buffer, "Failed to load Image file: %s", filepath);
+		Ogre::LogManager::getSingleton().getLog("Khazad.log")->logMessage(buffer);
+
+         return -1;
+    } else {
+		sprintf(buffer, "Loading Image file: %s", filepath);
+		Ogre::LogManager::getSingleton().getLog("Khazad.log")->logMessage(buffer);
     }
 
     /*

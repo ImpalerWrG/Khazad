@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Textures xmlns="namespace">
 	<Texture>
-		<Name Label="TEXTURE_NEHE"/>
+		<Name Label="TEXTURE_DEFAULT"/>
 		<File Path="Media/Textures/nehe.png"/>
 	</Texture>
 	<Texture>
