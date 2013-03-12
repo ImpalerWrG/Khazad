@@ -6,7 +6,7 @@
 #include <Astar.h>
 
 #include <Path.h>
-#include <grid.h>
+#include <Grid.h>
 #include <Pool.h>
 #include <Node.h>
 #include <Heuristics.h>

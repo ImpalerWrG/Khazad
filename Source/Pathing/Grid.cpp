@@ -2,7 +2,7 @@
 #include <algorithm>
 
 
-#include <grid.h>
+#include <Grid.h>
 #include <Game.h>
 #include <Cell.h>
 
