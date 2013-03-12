@@ -8,20 +8,7 @@
 #include <ImageManager.h>
 #include <GUI.h>
 #include <Game.h>
-#include <Timer.h>
 
-
-bool Init()
-{
-
-
-    return true;
-}
-
-void CleanUp()
-{
-
-}
 
 #if OGRE_PLATFORM == PLATFORM_WIN32 || OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -61,21 +48,17 @@ int main(int argc, char **argv)
         GUI->Init();
         Khazadlog->logMessage("GUI DONE");
 
-        // OIS injection into GUI
+        // OIS mouse and keyboard injection into GUI
         Khazadlog->logMessage("-=INPUT INITIALIZING=- ...");
         INPUT->CreateInstance();
         INPUT->Init();
         Khazadlog->logMessage("INPUT DONE");
 
-        //return 0; // Errors durring Initialization, Abort
 
 
     bool Continue = true;
+    Khazadlog->logMessage("Starting MainLoop ...");
 
-    Khazadlog->logMessage("Starting timers ...");
-
-
-    printf("initialization Complete. Entering main loop.\n");
 	while(Continue) // While program isn't done
 	{
         Ogre::WindowEventUtilities::messagePump();
@@ -91,9 +74,7 @@ int main(int argc, char **argv)
 
 	} // Program done, exiting
 
-	CleanUp();
-
-    Khazadlog->logMessage("EXITING");
+    Khazadlog->logMessage("EXITING CLEANLY");
 
 	return 0;
 }

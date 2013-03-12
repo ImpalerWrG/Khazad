@@ -37,6 +37,18 @@
 					<Add directory="../../DevIL/lib" />
 					<Add directory="../../CEGUI-SDK-0.7.9-mingw/lib/release" />
 					<Add directory="../../OgreSDK_MinGW_v1-8-1/boost/lib" />
+					<Add library="DevIL" />
+					<Add library="ILU" />
+					<Add library="ILUT" />
+					<Add library="OgreMain" />
+					<Add library="OIS" />
+					<Add library="CEGUIBase" />
+					<Add library="CEGUIOgreRenderer" />
+					<Add library="libboost_system-mgw47-mt-1_51" />
+					<Add library="libboost_thread-mgw47-mt-1_51" />
+					<Add library="libboost_chrono-mgw47-mt-1_51" />
+					<Add library="libboost_serialization-mgw47-mt-1_51" />
+					<Add library="libboost_filesystem-mgw47-mt-1_51" />
 				</Linker>
 			</Target>
 			<Target title="Windows Release">
@@ -69,6 +81,18 @@
 					<Add directory="../../OgreSDK_MinGW_v1-8-1/bin/release" />
 					<Add directory="../../DevIL/lib" />
 					<Add directory="../../OgreSDK_MinGW_v1-8-1/boost/lib" />
+					<Add library="DevIL" />
+					<Add library="ILU" />
+					<Add library="ILUT" />
+					<Add library="OgreMain" />
+					<Add library="OIS" />
+					<Add library="CEGUIBase" />
+					<Add library="CEGUIOgreRenderer" />
+					<Add library="libboost_system-mgw47-mt-1_51" />
+					<Add library="libboost_thread-mgw47-mt-1_51" />
+					<Add library="libboost_chrono-mgw47-mt-1_51" />
+					<Add library="libboost_serialization-mgw47-mt-1_51" />
+					<Add library="libboost_filesystem-mgw47-mt-1_51" />
 				</Linker>
 			</Target>
 			<Target title="Linux Debug">
