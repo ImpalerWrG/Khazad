@@ -456,7 +456,7 @@ void Map::InvokeRendering()
 {
 	for (std::map<uint64_t, Cell*>::iterator it = Cells.begin(); it != Cells.end(); it++)
 	{
-		//it->second->setNeedsReRendering();
+		it->second->setNeedsReRendering();
 	}
 }
 

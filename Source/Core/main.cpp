@@ -50,10 +50,10 @@ int main(int argc, char **argv)
         Khazadlog->logMessage("IMAGE DONE");
 
         // OGRE Renderer
-        Khazadlog->logMessage("-=RENDER INITIALIZING=- ...");
+        Khazadlog->logMessage("-=RENDERER INITIALIZING=- ...");
         RENDERER->CreateInstance();
-        RENDERER->Init();
-        Khazadlog->logMessage("RENDER DONE");
+        RENDERER->InitializeRenderer();
+        Khazadlog->logMessage("RENDERER DONE");
 
         // CEGUI with OGRE Platform
         Khazadlog->logMessage("-=GUI INITIALIZING=- ...");

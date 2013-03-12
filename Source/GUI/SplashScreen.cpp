@@ -113,6 +113,7 @@ bool SplashScreen::LoadGame(const CEGUI::EventArgs& pEventArgs)
 			LoadArchive >> THEGAME;
 
 			GUI->ShowScreen(SCREEN_MAIN_GAME);
+			GAME->getMap()->InvokeRendering();
 		}
 	} catch (const std::exception& e) {
 		// Report Exception

@@ -28,8 +28,6 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
-#include <boost/date_time.hpp>
-#include <boost/chrono/system_clocks.hpp>
 
 #include <boost/iostreams/filtering_stream.hpp>
 #include <boost/iostreams/filter/zlib.hpp>

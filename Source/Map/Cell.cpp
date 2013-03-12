@@ -47,7 +47,7 @@ void Cell::setCubeShape(CubeCoordinates Coordinates, CubeShape NewShape)
     if (NewShape != CubeShapeTypes[Coordinates])
     {
         CubeShapeTypes[Coordinates] = NewShape;
-        Render->setNeedsReRendering();
+        Render->setDirty();
 
         Face* TargetFace = getFace(FaceCoordinates(Coordinates, DIRECTION_NONE));
         if (TargetFace != NULL)
@@ -69,7 +69,7 @@ void Cell::BuildFaceData()
         CubeShape Shape = getCubeShape(TargetCube);
         int16_t CubeMaterial = getCubeMaterial(TargetCube);
 
-        static int16_t NEHEMaterial = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
+        //static int16_t NEHEMaterial = DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
         static int16_t WallSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
         static int16_t FloorSurface = DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
@@ -122,7 +122,7 @@ void Cell::BuildFaceData()
 
     }
     while (TargetCube != 0);  // End Loop when Byte rolls over
-	Render->setNeedsReRendering();
+	Render->setDirty();
 }
 
 int16_t Cell::getFaceMaterialType(FaceCoordinates TargetCoordinates) const
@@ -144,7 +144,7 @@ bool Cell::setFaceMaterialType(FaceCoordinates TargetCoordinates, int16_t Materi
     if (TargetFace != NULL)
     {
         TargetFace->setFaceMaterialType(MaterialTypeID);
-        Render->setNeedsReRendering();
+        Render->setDirty();
         return true;
     }
     return false;
@@ -157,7 +157,7 @@ bool Cell::setFaceSurfaceType(FaceCoordinates TargetCoordinates, int16_t Surface
     if (TargetFace != NULL)
     {
         TargetFace->setFaceSurfaceType(SurfaceTypeID);
-        Render->setNeedsReRendering();
+        Render->setDirty();
         return true;
     }
     return false;
@@ -176,7 +176,7 @@ bool Cell::setFaceShape(FaceCoordinates TargetCoordinates, FaceShape NewShape)
     if (TargetFace != NULL)
     {
         TargetFace->setFaceShapeType(NewShape);
-        Render->setNeedsReRendering();
+        Render->setDirty();
         return true;
     }
     return false;
@@ -191,7 +191,7 @@ bool Cell::removeFace(FaceCoordinates TargetCoordinates)
         delete Faces.find(Key)->second;
         Faces.erase(Key);
 
-        Render->setNeedsReRendering();
+        Render->setDirty();
         return true;
     }
     return false;
@@ -224,4 +224,9 @@ void Cell::addActor(Actor* NewActor)
 void Cell::removeActor(Actor* DepartingActor)
 {
     //CellSceneNode->removeChild(DepartingActor->getNode());
+}
+
+void Cell::setNeedsReRendering()
+{
+	Render->setDirty();
 }

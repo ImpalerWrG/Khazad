@@ -17,7 +17,7 @@ Renderer::Renderer()
     RenderTimer = new Timer(50);
 }
 
-bool Renderer::Init()
+bool Renderer::InitializeRenderer()
 {
     // TODO replace with entirely manual plugin loading
     #ifdef LINUX_BUILD
@@ -44,63 +44,14 @@ Renderer::~Renderer()
 
 }
 
-Ogre::SceneNode* Renderer::getZlevelNode(int32_t Zlevel)
-{
-	int32_t HighestCell = GAME->getMap()->getHighest();
-	int32_t LowestCell = GAME->getMap()->getLowest();
-
-    if (Zlevel - LowestCell < 0)
-    {
-        Ogre::SceneNode* NewZLevelNode;
-        do
-        {
-            if (ZLevelSpindle.size() == 0)
-            {
-                HighestCell = LowestCell = Zlevel;
-            }
-
-            NewZLevelNode = RENDERER->getRootNode()->createChildSceneNode();
-            NewZLevelNode->setPosition(0, 0, LowestCell--);
-            ZLevelSpindle.insert(ZLevelSpindle.begin(), NewZLevelNode);
-        }
-        while (Zlevel - LowestCell < 0);
-
-        return NewZLevelNode;
-    }
-
-    if (Zlevel >= ZLevelSpindle.size() + LowestCell)
-    {
-        Ogre::SceneNode* NewZLevelNode;
-        do
-        {
-            if (ZLevelSpindle.size() == 0)
-            {
-                HighestCell = LowestCell = Zlevel;
-            }
-
-            NewZLevelNode = RENDERER->getRootNode()->createChildSceneNode();
-            NewZLevelNode->setPosition(0, 0, HighestCell++);
-            ZLevelSpindle.push_back(NewZLevelNode);
-        }
-        while (Zlevel >= ZLevelSpindle.size() + LowestCell);
-
-        return NewZLevelNode;
-    }
-
-    return ZLevelSpindle[Zlevel - LowestCell];
-}
-
 void Renderer::setSliceLevels(int32_t Top, int32_t Bottom)
 {
-    for (std::vector< Ogre::SceneNode* >::iterator it = ZLevelSpindle.begin(); it != ZLevelSpindle.end(); it++)
-    {
-        (*it)->setVisible(false); //Hide everything to reset
-    }
-
-    for (uint32_t i = Bottom; i <= Top; i++)
-    {
-        getZlevelNode(i)->setVisible(true); //Show Slice
-    }
+	for (std::vector<TerrainRendering*>::iterator it = TerrainRenders.begin(); it != TerrainRenders.end(); ++it)
+	{
+		TerrainRendering* TargetRender = *it;
+		int Z = TargetRender->getCellSceneNode()->getPosition().z;
+		TargetRender->setVisible(Z > Bottom && Z <= Top);
+	}
 }
 
 void Renderer::RenderFrame()
@@ -123,13 +74,19 @@ void Renderer::RenderFrame()
 
 void Renderer::RefreshTerrainGeometry()
 {
-	int x = DirtyTerrain.size();
-	if (!DirtyTerrain.empty())
+	for (std::vector<TerrainRendering*>::iterator it = TerrainRenders.begin(); it != TerrainRenders.end(); ++it)
 	{
-		std::set<TerrainRendering*>::iterator it = DirtyTerrain.begin();
-		(*it)->BuildFaceGeometry();
-		DirtyTerrain.erase(it);
+		TerrainRendering* TargetRender = *it;
+		if (TargetRender->isDirty())
+		{
+			TargetRender->BuildFaceGeometry();
+		}
 	}
+}
+
+void Renderer::registerTerrainRender(TerrainRendering* NewTerrain)
+{
+	TerrainRenders.push_back(NewTerrain);
 }
 
 void Renderer::defineResources()

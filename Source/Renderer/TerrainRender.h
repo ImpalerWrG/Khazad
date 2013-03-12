@@ -19,14 +19,18 @@ public:
 
 	void BuildFaceGeometry();
     Ogre::StaticGeometry* getCellGeometry()             { return CellGeometry; }
+    Ogre::SceneNode* getCellSceneNode()					{ return CellSceneNode; }
 
 	void setVisible(bool NewVisibility);
-	void setNeedsReRendering();
+
+	inline bool isDirty()										{ return Dirty; }
+	inline void setDirty()										{ Dirty = true; }
 
     void DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode);
 
 private:
 
+	bool Dirty;
 	bool Visible;
 	Cell* ParentCell;
 

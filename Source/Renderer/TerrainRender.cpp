@@ -10,13 +10,13 @@ TerrainRendering::TerrainRendering(Cell* TargetCell)
 {
 	ParentCell = TargetCell;
 	CellCoordinates Coords = ParentCell->getCellCoordinates();
-    Ogre::SceneNode* ZNode = RENDERER->getZlevelNode(Coords.Z);
-    CellSceneNode = ZNode->createChildSceneNode();
+	CellSceneNode = RENDERER->getRootNode()->createChildSceneNode();
 
 	float x = (float) (Coords.X * CELLEDGESIZE) + (CELLEDGESIZE / 2) - HALFCUBE;
     float y = (float) (Coords.Y * CELLEDGESIZE) + (CELLEDGESIZE / 2) - HALFCUBE;
+    float z = (float) (Coords.Z);
 
-    CellSceneNode->setPosition(x, y, 0);
+    CellSceneNode->setPosition(x, y, z);
 
     char buffer[64];
     sprintf(buffer, "Cell%i-%i-%i",  Coords.X, Coords.Y, Coords.Z);
@@ -25,6 +25,7 @@ TerrainRendering::TerrainRendering(Cell* TargetCell)
     {
         CellGeometry = RENDERER->getSceneManager()->createStaticGeometry(buffer);
     }
+    RENDERER->registerTerrainRender(this);
 }
 
 void TerrainRendering::BuildFaceGeometry()
@@ -43,16 +44,13 @@ void TerrainRendering::BuildFaceGeometry()
         CellGeometry->setCastShadows(true);
         CellGeometry->build();
     }
-}
-
-void TerrainRendering::setNeedsReRendering()
-{
-	RENDERER->addDirtyTerrain(this);
+    Dirty = false;
 }
 
 void TerrainRendering::setVisible(bool NewVisibility)
 {
 	Visible = NewVisibility;
+	CellSceneNode->setVisible(NewVisibility);
 	CellGeometry->setVisible(NewVisibility);
 }
 

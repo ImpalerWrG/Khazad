@@ -83,7 +83,7 @@ public:
     //-----------GEOMETRY COMPRESSION----------//
 
     void BuildFaceData();
-    void setNeedsReRendering(bool NewValue);
+    void setNeedsReRendering();
 
     CellCoordinates getCellCoordinates()                { return thisCellCoordinates; }
     void setCellPosition(CellCoordinates Coordinates);
