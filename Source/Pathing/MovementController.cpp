@@ -3,7 +3,7 @@
 
 #include <MovementController.h>
 
-#include <grid.h>
+#include <Grid.h>
 #include <PathManager.h>
 
 #include <Random.h>

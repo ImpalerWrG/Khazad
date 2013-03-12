@@ -8,7 +8,7 @@
 
 #include "Heuristics.h"
 #include "Node.h"
-#include "grid.h"
+#include "Grid.h"
 #include "Path.h"
 
 class zoneBorderNode;
@@ -158,8 +158,8 @@ private:
     const zone *z_;
 };
 
-#include "gridzone.h"
-#include "cubezone.h"
+#include "Gridzone.h"
+#include "Cubezone.h"
 
 class AStarZoneNode : public Node
 {

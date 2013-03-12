@@ -5,7 +5,7 @@
 #include <MovementController.h>
 #include <Singleton.h>
 #include <Map.h>
-#include <grid.h>
+#include <Grid.h>
 #include <Astar.h>
 #include <Heuristics.h>
 #include <PathTester.h>

@@ -1,5 +1,5 @@
 
-#include "zone.h"
+#include "Zone.h"
 
 adjacentNode::adjacentNode(zoneBorderNode *n, float c) : MapCoordinates(*n), node_(n), cost_(c) {}
 

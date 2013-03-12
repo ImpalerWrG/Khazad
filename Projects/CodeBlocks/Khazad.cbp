@@ -86,9 +86,22 @@
 					<Add directory="/usr/local/include/OGRE" />
 					<Add directory="/usr/local/include/CEGUI" />
 					<Add directory="/usr/local/include/CEGUI/RendererModules/Ogre" />
+					<Add directory="/usr/include/OGRE/" />
+					<Add directory="/usr/include/OIS/" />
+					<Add directory="/usr/include/CEGUI/" />
+					<Add directory="/usr/include/CEGUI/RendererModules/Ogre/" />
 				</Compiler>
 				<Linker>
 					<Add option="-Wl" />
+					<Add library="OgreMain" />
+					<Add library="CEGUIBase" />
+					<Add library="CEGUIOgreRenderer" />
+					<Add library="OIS" />
+					<Add library="boost_system" />
+					<Add library="boost_thread" />
+					<Add library="boost_serialization" />
+					<Add library="boost_filesystem" />
+					<Add library="ILU" />
 					<Add directory="/usr/local/lib" />
 				</Linker>
 			</Target>
@@ -138,18 +151,6 @@
 		</Compiler>
 		<Linker>
 			<Add option="-static-libgcc" />
-			<Add library="DevIL" />
-			<Add library="ILU" />
-			<Add library="ILUT" />
-			<Add library="libboost_system-mgw47-mt-1_51" />
-			<Add library="OgreMain" />
-			<Add library="OIS" />
-			<Add library="CEGUIBase" />
-			<Add library="CEGUIOgreRenderer" />
-			<Add library="libboost_thread-mgw47-mt-1_51" />
-			<Add library="libboost_chrono-mgw47-mt-1_51" />
-			<Add library="libboost_serialization-mgw47-mt-1_51" />
-			<Add library="libboost_filesystem-mgw47-mt-1_51" />
 		</Linker>
 		<Unit filename="../../Distribution/Media/GUI/fonts/Carolingia.font" />
 		<Unit filename="../../Distribution/Media/GUI/imagesets/ArkanaLook.imageset" />
