@@ -41,9 +41,6 @@ public:
     void setCubeMaterial(CubeCoordinates Coordinates, int16_t MaterialID)      { CubeMaterialTypes[Coordinates] = MaterialID; }
     inline int16_t getCubeMaterial(CubeCoordinates Coordinates) const          { return CubeMaterialTypes[Coordinates]; }
 
-
-    bool isCubeSloped(CubeCoordinates Coordinates) const;
-
     inline bool isCubeHidden(CubeCoordinates Coordinates)                         { return Hidden.test(Coordinates); }
     inline void setCubeHidden(CubeCoordinates Coordinates, bool NewValue)         { Hidden.set(Coordinates, NewValue); }
 
@@ -83,6 +80,7 @@ public:
     //-----------GEOMETRY COMPRESSION----------//
 
     void BuildFaceData();
+    void RegisterWithRendering();
     void setNeedsReRendering();
 
     CellCoordinates getCellCoordinates()                { return thisCellCoordinates; }

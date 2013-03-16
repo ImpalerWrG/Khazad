@@ -35,13 +35,14 @@ KhazadGrid::KhazadGrid(Map* TargetMap)
                     {
                         MapCoordinates AdjacentTileCoords = MapCoordinates(CellCoords, TargetCube);
                         AdjacentTileCoords.TranslateMapCoordinates(Direction(Direction::ANGULAR_DIRECTIONS[i]));
+                        //Direction InvertedDirection = Direction(Direction::ANGULAR_DIRECTIONS[i]).Invert();
 
                         //see if we've done this already..
-                        if (getDirectionFlags(AdjacentTileCoords) & (1 << i))
-                        {
-                            Flags |= (1 << i);
-                            continue;
-                        }
+                        //if (getDirectionFlags(AdjacentTileCoords) & (1 << InvertedDirection.Index()))
+                        //{
+                        //    Flags |= (1 << i);
+                        //    continue;
+                        //}
 
                         CubeShape AdjacentCubeShape = TargetMap->getCubeShape(AdjacentTileCoords);
 
@@ -262,7 +263,10 @@ GridCell* KhazadGrid::addCell(CellCoordinates TargetCoords)
 
 float KhazadGrid::getEdgeCost(const MapCoordinates &TestCoords, Direction DirectionType) const
 {
-    if (getDirectionFlags(TestCoords) & (DirectionType.Index()))
+	uint32_t Index = DirectionType.Index();
+	uint32_t Flags = getDirectionFlags(TestCoords);
+
+    if (Flags & (1 << Index))
     {
         if (DirectionType.ValueonAxis(AXIS_Z) != 0) // True for Up and Down
             return 2;

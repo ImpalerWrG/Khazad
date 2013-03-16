@@ -452,11 +452,11 @@ MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay, uint16_t Top, uint16_
     return LastRayTestResult;
 }
 
-void Map::InvokeRendering()
+void Map::RegisterWithRendering()
 {
 	for (std::map<uint64_t, Cell*>::iterator it = Cells.begin(); it != Cells.end(); it++)
 	{
-		it->second->setNeedsReRendering();
+		it->second->RegisterWithRendering();
 	}
 }
 

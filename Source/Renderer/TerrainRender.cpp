@@ -3,6 +3,7 @@
 #include <TileShapes.h>
 #include <Coordinates.h>
 #include <Face.h>
+#include <Actor.h>
 
 #include <Renderer.h>
 
@@ -25,6 +26,10 @@ TerrainRendering::TerrainRendering(Cell* TargetCell)
     {
         CellGeometry = RENDERER->getSceneManager()->createStaticGeometry(buffer);
     }
+}
+
+void TerrainRendering::RegisterWithRendering()
+{
     RENDERER->registerTerrainRender(this);
 }
 
@@ -76,3 +81,13 @@ void TerrainRendering::DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode)
     }
 }
 
+void TerrainRendering::RemoveActor(Actor* OldActor)
+{
+    CellSceneNode->removeChild(OldActor->getNode());
+}
+
+void TerrainRendering::AddActor(Actor* NewActor)
+{
+	NewActor->getNode()->setVisible(Visible);
+	CellSceneNode->addChild(NewActor->getNode());
+}

@@ -41,7 +41,7 @@ Pawn::~Pawn()
 
 bool Pawn::Init(MapCoordinates SpawnLocation)
 {
-    Ogre::MaterialPtr MatPointer = TEXTURE->makeAnimatedMaterial(DATA->getLabelIndex("ANIMATION_HUMAN"), DATA->getLabelIndex("COLOR_BROWN"));
+    Ogre::MaterialPtr MatPointer = TEXTURE->makeAnimatedMaterial(DATA->getLabelIndex("ANIMATION_CAT"), DATA->getLabelIndex("COLOR_BROWN"));
 
     Actor::Init(SpawnLocation, MatPointer, 1.0, 1.5);
 
@@ -51,7 +51,7 @@ bool Pawn::Init(MapCoordinates SpawnLocation)
 
 	Controller->setBehaviorMode(PATH_BEHAVIOR_ROUTE_TO_LOCATION);
 
-	AnimationGroupID = DATA->getLabelIndex("ANIMATION_HUMAN");
+	AnimationGroupID = DATA->getLabelIndex("ANIMATION_CAT");
 	setAnimationType(DATA->getLabelIndex("ANIMATION_TYPE_IDLE"));
 
 	//Ogre::TextureUnitState* TexUnit = Mat->getTechnique(0)->getPass(0)->getTextureUnitState(0);
@@ -86,6 +86,9 @@ CoolDown Pawn::AttemptMove(Direction MovementDirection)
         RenderLocationChange = RenderLocationChange / FramesToMove;
         return FrameCooldown;
         // Reduce magnitude proportional to cooldown
+    } else {
+    	Moving = false;
+    	// Unexpected obstacle
     }
     return 1;
 }

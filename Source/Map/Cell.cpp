@@ -125,6 +125,11 @@ void Cell::BuildFaceData()
 	Render->setDirty();
 }
 
+void Cell::RegisterWithRendering()
+{
+	Render->RegisterWithRendering();
+}
+
 int16_t Cell::getFaceMaterialType(FaceCoordinates TargetCoordinates) const
 {
     Face* TargetFace = getFace(TargetCoordinates);
@@ -216,14 +221,12 @@ Face* Cell::addFace(FaceCoordinates TargetCoordinates)
 
 void Cell::addActor(Actor* NewActor)
 {
-	//Render->
-    //CellSceneNode->addChild(NewActor->getNode());
-    //NewActor->setVisible(Visible);
+	Render->AddActor(NewActor);
 }
 
 void Cell::removeActor(Actor* DepartingActor)
 {
-    //CellSceneNode->removeChild(DepartingActor->getNode());
+	Render->RemoveActor(DepartingActor);
 }
 
 void Cell::setNeedsReRendering()

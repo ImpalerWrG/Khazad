@@ -21,10 +21,14 @@ public:
     Ogre::StaticGeometry* getCellGeometry()             { return CellGeometry; }
     Ogre::SceneNode* getCellSceneNode()					{ return CellSceneNode; }
 
+	void RegisterWithRendering();
 	void setVisible(bool NewVisibility);
 
 	inline bool isDirty()										{ return Dirty; }
 	inline void setDirty()										{ Dirty = true; }
+
+	void RemoveActor(Actor* OldActor);
+	void AddActor(Actor* NewActor);
 
     void DestroyAllAttachedEntities(Ogre::SceneNode* TargetNode);
 

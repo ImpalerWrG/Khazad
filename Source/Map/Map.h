@@ -99,7 +99,7 @@ public:
     bool isCubeSunLit(MapCoordinates Coordinates) const;
     void setCubeSunLit(MapCoordinates Coordinates, bool NewValue);
 
-	void InvokeRendering();
+	void RegisterWithRendering();
     void ReleaseMap();
 
     void UpdateCubeShape(MapCoordinates Coordinates, CubeShape NewShape);
