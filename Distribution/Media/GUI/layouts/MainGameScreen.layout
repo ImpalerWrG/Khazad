@@ -59,24 +59,31 @@
             <Property Name="Visible" Value="False" />
             <Property Name="SizingEnabled" Value="False" />
             <Property Name="TitlebarEnabled" Value="True" />
-            <Property Name="UnifiedAreaRect" Value="{{0,0},{0.365459,0},{0.25,0},{0.675485,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{0,300},{0,250}}" />
+            <Property Name="VerticalAlignment" Value="Centre" />
             <Property Name="HorizontalAlignment" Value="Centre" />
             <Window Type="ArkanaLook/Button" Name="MainGameScreen/GameOptionsWindow/ExitButton" >
                 <Property Name="Text" Value="Exit Game" />
                 <Property Name="AlwaysOnTop" Value="True" />
-                <Property Name="UnifiedAreaRect" Value="{{0,0},{0.800195,0},{0.814777,0},{0.850195,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0.800195,0},{0.815,0},{0.850195,0}}" />
                 <Property Name="HorizontalAlignment" Value="Centre" />
             </Window>
             <Window Type="ArkanaLook/Button" Name="MainGameScreen/GameOptionsWindow/SaveGameButton" >
                 <Property Name="Text" Value="Save Game" />
                 <Property Name="AlwaysOnTop" Value="True" />
-                <Property Name="UnifiedAreaRect" Value="{{0,0},{0.248523,0},{0.815449,0},{0.298523,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0.248523,0},{0.815,0},{0.298523,0}}" />
                 <Property Name="HorizontalAlignment" Value="Centre" />
             </Window>
             <Window Type="ArkanaLook/Button" Name="MainGameScreen/GameOptionsWindow/LoadGameButton" >
                 <Property Name="Text" Value="Load Game" />
                 <Property Name="AlwaysOnTop" Value="True" />
-                <Property Name="UnifiedAreaRect" Value="{{0,0},{0.441374,0},{0.81231,0},{0.491374,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0.441374,0},{0.815,0},{0.491374,0}}" />
+                <Property Name="HorizontalAlignment" Value="Centre" />
+            </Window>
+            <Window Type="ArkanaLook/Button" Name="MainGameScreen/GameOptionsWindow/PathProfilerButton" >
+                <Property Name="Text" Value="Path Profiling" />
+                <Property Name="AlwaysOnTop" Value="True" />
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0.631205,0},{0.815,0},{0.681205,0}}" />
                 <Property Name="HorizontalAlignment" Value="Centre" />
             </Window>
         </Window>
@@ -130,7 +137,7 @@
                 </Window>
                 <Window Type="ArkanaLook/StaticText" Name="MainGameScreen/SelectionWindow/TileFullnessDisplay" >
                     <Property Name="Text" Value="Fullness" />
-                    <Property Name="HorzExtent" Value="85" />
+                    <Property Name="HorzExtent" Value="84" />
                     <Property Name="VertExtent" Value="17.6433" />
                     <Property Name="FrameEnabled" Value="False" />
                     <Property Name="HorzFormatting" Value="RightAligned" />
@@ -148,8 +155,12 @@
             </Window>
         </Window>
         <Window Type="ArkanaLook/FrameWindow" Name="MainGameScreen/PathProfileWindow" >
+            <Property Name="Text" Value="PATHING PROFILER" />
+            <Property Name="Visible" Value="False" />
             <Property Name="TitlebarEnabled" Value="True" />
-            <Property Name="UnifiedAreaRect" Value="{{0.489396,0},{0.121905,0},{0.938619,0},{0.726186,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{0,600},{0,450}}" />
+            <Property Name="VerticalAlignment" Value="Centre" />
+            <Property Name="HorizontalAlignment" Value="Centre" />
             <Window Type="ArkanaLook/Listbox" Name="MainGameScreen/PathProfileWindow/DataList" >
                 <Property Name="UnifiedAreaRect" Value="{{0.0656937,0},{0.410565,0},{0.95,0},{0.949999,0}}" />
             </Window>

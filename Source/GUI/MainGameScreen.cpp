@@ -40,6 +40,12 @@ bool MainGameScreen::Init()
             GameOptionsWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&MainGameScreen::GameOptionsClose, this));
         }
 
+        CEGUI::Window* PathTesterWindow = GUI->getWindowManager()->getWindow("MainGameScreen/PathProfileWindow");
+        if (PathTesterWindow != NULL)
+        {
+            PathTesterWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&MainGameScreen::PathProfilerClose, this));
+        }
+
         CEGUI::Window* ZoneButton = GUI->getWindowManager()->getWindow("MainGameScreen/TopBar/ZoneButton");
         if (ZoneButton != NULL)
         {
@@ -50,6 +56,12 @@ bool MainGameScreen::Init()
         if (SaveButton != NULL)
         {
             SaveButton->subscribeEvent(CEGUI::PushButton::EventMouseClick, CEGUI::Event::Subscriber(&MainGameScreen::SaveGame, this));
+        }
+
+        CEGUI::Window* PathProfileButton = GUI->getWindowManager()->getWindow("MainGameScreen/GameOptionsWindow/PathProfilerButton");
+        if (PathProfileButton != NULL)
+        {
+            PathProfileButton->subscribeEvent(CEGUI::PushButton::EventMouseClick, CEGUI::Event::Subscriber(&MainGameScreen::PathProfilerOpen, this));
         }
 
         CEGUI::Window* ExitButton = GUI->getWindowManager()->getWindow("MainGameScreen/GameOptionsWindow/ExitButton");
@@ -144,6 +156,7 @@ bool MainGameScreen::GameOptionsOpen(const CEGUI::EventArgs& pEventArgs)
     GAME->setPause(true);
     CEGUI::Window* GameOptionsWindow = GUI->getWindowManager()->getWindow("MainGameScreen/GameOptionsWindow");
     GameOptionsWindow->setVisible(true);
+    GameOptionsWindow->moveToFront();
     return true;
 }
 
@@ -151,6 +164,22 @@ bool MainGameScreen::GameOptionsClose(const CEGUI::EventArgs& pEventArgs)
 {
     CEGUI::Window* GameOptionsWindow = GUI->getWindowManager()->getWindow("MainGameScreen/GameOptionsWindow");
     GameOptionsWindow->setVisible(false);
+    return true;
+}
+
+bool MainGameScreen::PathProfilerOpen(const CEGUI::EventArgs& pEventArgs)
+{
+    GAME->setPause(true);
+    CEGUI::Window* PathProfileWindow = GUI->getWindowManager()->getWindow("MainGameScreen/PathProfileWindow");
+    PathProfileWindow->setVisible(true);
+    PathProfileWindow->moveToFront();
+    return true;
+}
+
+bool MainGameScreen::PathProfilerClose(const CEGUI::EventArgs& pEventArgs)
+{
+    CEGUI::Window* PathProfileWindow = GUI->getWindowManager()->getWindow("MainGameScreen/PathProfileWindow");
+    PathProfileWindow->setVisible(false);
     return true;
 }
 

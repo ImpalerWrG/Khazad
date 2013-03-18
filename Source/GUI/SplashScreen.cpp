@@ -91,7 +91,7 @@ bool SplashScreen::LoadGamePressed(const CEGUI::EventArgs& pEventArgs)
 
 	CEGUI::Window* LoadWindow = GUI->getWindowManager()->getWindow("SplashScreen/LoadGameWindow");
 	LoadWindow->setVisible(true);
-	LoadWindow->setAlwaysOnTop(true);
+	LoadWindow->moveToFront();
 }
 
 bool SplashScreen::LoadGame(const CEGUI::EventArgs& pEventArgs)

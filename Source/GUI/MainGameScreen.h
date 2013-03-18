@@ -20,6 +20,9 @@ private:
     bool GameOptionsOpen(const CEGUI::EventArgs& pEventArgs);
     bool GameOptionsClose(const CEGUI::EventArgs& pEventArgs);
 
+	bool PathProfilerOpen(const CEGUI::EventArgs& pEventArgs);
+	bool PathProfilerClose(const CEGUI::EventArgs& pEventArgs);
+
     bool ExitGame(const CEGUI::EventArgs& pEventArgs);
     bool SaveGame(const CEGUI::EventArgs& pEventArgs);
 
