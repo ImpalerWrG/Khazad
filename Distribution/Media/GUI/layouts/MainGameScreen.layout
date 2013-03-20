@@ -2,7 +2,7 @@
 
 <GUILayout >
     <Window Type="DefaultWindow" Name="MainGameScreen" >
-        <Property Name="UnifiedAreaRect" Value="{{-0.000766861,0},{0.00147929,0},{0.999233,0},{1.00799,0}}" />
+        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
         <Property Name="MousePassThroughEnabled" Value="True" />
         <Window Type="ArkanaLook/VerticalDecoScrollbar" Name="MainGameScreen/DepthScrollerTop" >
             <Property Name="PageSize" Value="1" />
@@ -162,43 +162,61 @@
             <Property Name="VerticalAlignment" Value="Centre" />
             <Property Name="HorizontalAlignment" Value="Centre" />
             <Window Type="ArkanaLook/Listbox" Name="MainGameScreen/PathProfileWindow/DataList" >
-                <Property Name="UnifiedAreaRect" Value="{{0.0656937,0},{0.410565,0},{0.95,0},{0.949999,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0656937,0},{0.391458,0},{0.95,0},{0.847118,0}}" />
             </Window>
             <Window Type="ArkanaLook/Button" Name="MainGameScreen/PathProfileWindow/RunSuiteButton" >
                 <Property Name="Text" Value="Run PathFinding TestSuite" />
-                <Property Name="UnifiedAreaRect" Value="{{0.0708647,0},{0.126732,0},{0.435032,0},{0.242987,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0638826,0},{0.116444,0},{0.42805,0},{0.219471,0}}" />
             </Window>
             <Window Type="ArkanaLook/BigProgressbar" Name="MainGameScreen/PathProfileWindow/TestProgressBar" >
                 <Property Name="StepSize" Value="0.01" />
                 <Property Name="CurrentProgress" Value="0" />
-                <Property Name="UnifiedAreaRect" Value="{{0.468721,0},{0.129792,0},{0.520155,0},{0.188044,0}}" />
-            </Window>
-            <Window Type="ArkanaLook/Editbox" Name="MainGameScreen/PathProfileWindow/SystemEditBox" >
-                <Property Name="MaxTextLength" Value="1073741823" />
-                <Property Name="UnifiedAreaRect" Value="{{0.248408,0},{0.287505,0},{0.365266,0},{0.372568,0}}" />
-                <Property Name="TextParsingEnabled" Value="False" />
-            </Window>
-            <Window Type="ArkanaLook/Editbox" Name="MainGameScreen/PathProfileWindow/SeedEditBox" >
-                <Property Name="MaxTextLength" Value="1073741823" />
-                <Property Name="UnifiedAreaRect" Value="{{0.543056,0},{0.287524,0},{0.65492,0},{0.372587,0}}" />
-                <Property Name="TextParsingEnabled" Value="False" />
-            </Window>
-            <Window Type="ArkanaLook/Editbox" Name="MainGameScreen/PathProfileWindow/IterationsEditBox" >
-                <Property Name="MaxTextLength" Value="1073741823" />
-                <Property Name="UnifiedAreaRect" Value="{{0.829382,0},{0.280046,0},{0.949567,0},{0.365109,0}}" />
-                <Property Name="TextParsingEnabled" Value="False" />
+                <Property Name="UnifiedAreaRect" Value="{{0.471048,0},{0.123913,0},{0.522483,0},{0.182165,0}}" />
             </Window>
             <Window Type="ArkanaLook/Label" Name="MainGameScreen/PathProfileWindow/SystemEditLabel" >
                 <Property Name="Text" Value="System" />
-                <Property Name="UnifiedAreaRect" Value="{{0.0818369,0},{0.282468,0},{0.256945,0},{0.375029,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0818369,0},{0.261892,0},{0.256945,0},{0.354453,0}}" />
             </Window>
             <Window Type="ArkanaLook/Label" Name="MainGameScreen/PathProfileWindow/SeedEditLabel" >
                 <Property Name="Text" Value="Seed" />
-                <Property Name="UnifiedAreaRect" Value="{{0.418092,0},{0.287485,0},{0.528293,0},{0.380045,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.418092,0},{0.271318,0},{0.528293,0},{0.363878,0}}" />
             </Window>
             <Window Type="ArkanaLook/Label" Name="MainGameScreen/PathProfileWindow/SizeEditLabel" >
                 <Property Name="Text" Value="Size" />
-                <Property Name="UnifiedAreaRect" Value="{{0.716068,0},{0.290003,0},{0.821276,0},{0.382564,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.71762,0},{0.275306,0},{0.822828,0},{0.367867,0}}" />
+            </Window>
+            <Window Type="ArkanaLook/Button" Name="MainGameScreen/PathProfileWindow/SetStart" >
+                <Property Name="Text" Value="Set Manual Start" />
+                <Property Name="UnifiedAreaRect" Value="{{0.0702101,0},{0.883598,0},{0.320208,0},{0.96458,0}}" />
+            </Window>
+            <Window Type="ArkanaLook/Button" Name="MainGameScreen/PathProfileWindow/SetGoal" >
+                <Property Name="Text" Value="Set Manual Goal" />
+                <Property Name="UnifiedAreaRect" Value="{{0.693406,0},{0.877543,0},{0.943407,0},{0.959995,0}}" />
+            </Window>
+            <Window Type="ArkanaLook/Button" Name="MainGameScreen/PathProfileWindow/RunManualTestButton" >
+                <Property Name="Text" Value="Run Manual Test" />
+                <Property Name="UnifiedAreaRect" Value="{{0.386036,0},{0.883539,0},{0.636035,0},{0.963052,0}}" />
+            </Window>
+            <Window Type="ArkanaLook/Spinner" Name="MainGameScreen/PathProfileWindow/SystemSpinner" >
+                <Property Name="StepSize" Value="1" />
+                <Property Name="CurrentValue" Value="0" />
+                <Property Name="MaximumValue" Value="32767" />
+                <Property Name="MinimumValue" Value="0" />
+                <Property Name="UnifiedAreaRect" Value="{{0.245539,0},{0.266314,0},{0.372962,0},{0.351704,0}}" />
+            </Window>
+            <Window Type="ArkanaLook/Spinner" Name="MainGameScreen/PathProfileWindow/SeedSpinner" >
+                <Property Name="StepSize" Value="1" />
+                <Property Name="CurrentValue" Value="42" />
+                <Property Name="MaximumValue" Value="32767" />
+                <Property Name="MinimumValue" Value="-32768" />
+                <Property Name="UnifiedAreaRect" Value="{{0.52595,0},{0.264874,0},{0.653375,0},{0.350263,0}}" />
+            </Window>
+            <Window Type="ArkanaLook/Spinner" Name="MainGameScreen/PathProfileWindow/SizeSpinner" >
+                <Property Name="StepSize" Value="100" />
+                <Property Name="CurrentValue" Value="1000" />
+                <Property Name="MaximumValue" Value="32767" />
+                <Property Name="MinimumValue" Value="0" />
+                <Property Name="UnifiedAreaRect" Value="{{0.807373,0},{0.267666,0},{0.952643,0},{0.357465,0}}" />
             </Window>
         </Window>
     </Window>

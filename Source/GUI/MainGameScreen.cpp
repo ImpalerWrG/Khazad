@@ -255,14 +255,22 @@ bool MainGameScreen::ZoneButtonClick(const CEGUI::EventArgs& pEventArgs)
 
 bool MainGameScreen::RunSuitePressed(const CEGUI::EventArgs& pEventArgs)
 {
+
+    CEGUI::Spinner* SystemSpinner = static_cast<CEGUI::Spinner*> (GUI->getWindowManager()->getWindow("MainGameScreen/PathProfileWindow/SystemSpinner"));
+    CEGUI::Spinner* SeedSpinner = static_cast<CEGUI::Spinner*> (GUI->getWindowManager()->getWindow("MainGameScreen/PathProfileWindow/SeedSpinner"));
+    CEGUI::Spinner* SizeSpinner = static_cast<CEGUI::Spinner*> (GUI->getWindowManager()->getWindow("MainGameScreen/PathProfileWindow/SizeSpinner"));
+
 	vector<int> Systems;
-	Systems.push_back(0);
+	Systems.push_back(SystemSpinner->getCurrentValue());
+
+	GAME->getPath()->getTester()->CreateTestSuite(SeedSpinner->getCurrentValue(), SizeSpinner->getCurrentValue());
 	GAME->getPath()->getTester()->RunPathTestSuites(Systems);
 
 	GroupProfile* TestResults = GAME->getPath()->getTester()->getCurrentGroupProfile();
 
     CEGUI::Window* RawWindow = GUI->getWindowManager()->getWindow("MainGameScreen/PathProfileWindow/DataList");
 	CEGUI::Listbox* DataListbox = (CEGUI::Listbox*) RawWindow;
+	DataListbox->resetList();
 
 	char buffer[64] ;
 	CEGUI::ListboxTextItem* newItem;
