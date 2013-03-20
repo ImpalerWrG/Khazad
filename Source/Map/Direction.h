@@ -26,41 +26,41 @@ inline Axis &operator-- (Axis &OldAxis)      { return OldAxis = Axis(OldAxis - 1
 #define ZEROMASK 219
 #define XORMASK 73
 
-#define DIRECTION_NONE 0
-#define DIRECTION_UP 1
-#define DIRECTION_DOWN 2
+#define DIRECTION_NONE 0					// Index -1
+#define DIRECTION_UP 1						// Index 0
+#define DIRECTION_DOWN 2					// Index 1
 
-#define DIRECTION_NORTH 8
-#define DIRECTION_UP_NORTH 9
-#define DIRECTION_DOWN_NORTH 10
+#define DIRECTION_NORTH 8					// Index 2
+#define DIRECTION_UP_NORTH 9				// Index 3
+#define DIRECTION_DOWN_NORTH 10				// Index 4
 
-#define DIRECTION_SOUTH 16
-#define DIRECTION_UP_SOUTH 17
-#define DIRECTION_DOWN_SOUTH 18
+#define DIRECTION_SOUTH 16					// Index 5
+#define DIRECTION_UP_SOUTH 17				// Index 6
+#define DIRECTION_DOWN_SOUTH 18				// Index 7
 
-#define DIRECTION_EAST 64
-#define DIRECTION_UP_EAST 65
-#define DIRECTION_DOWN_EAST 66
+#define DIRECTION_EAST 64					// Index 8
+#define DIRECTION_UP_EAST 65				// Index 9
+#define DIRECTION_DOWN_EAST 66				// Index 10
 
-#define DIRECTION_NORTHEAST 72
-#define DIRECTION_UP_NORTHEAST 73
-#define DIRECTION_DOWN_NORTHEAST 74
+#define DIRECTION_NORTHEAST 72				// Index 11
+#define DIRECTION_UP_NORTHEAST 73			// Index 12
+#define DIRECTION_DOWN_NORTHEAST 74			// Index 13
 
-#define DIRECTION_SOUTHEAST 80
-#define DIRECTION_UP_SOUTHEAST 81
-#define DIRECTION_DOWN_SOUTHEAST 82
+#define DIRECTION_SOUTHEAST 80				// Index 14
+#define DIRECTION_UP_SOUTHEAST 81			// Index 15
+#define DIRECTION_DOWN_SOUTHEAST 82			// Index 16
 
-#define DIRECTION_WEST 128
-#define DIRECTION_UP_WEST 129
-#define DIRECTION_DOWN_WEST 130
+#define DIRECTION_WEST 128					// Index 17
+#define DIRECTION_UP_WEST 129				// Index 18
+#define DIRECTION_DOWN_WEST 130				// Index 19
 
-#define DIRECTION_NORTHWEST 136
-#define DIRECTION_UP_NORTHWEST 137
-#define DIRECTION_DOWN_NORTHWEST 138
+#define DIRECTION_NORTHWEST 136				// Index 20
+#define DIRECTION_UP_NORTHWEST 137			// Index 21
+#define DIRECTION_DOWN_NORTHWEST 138		// Index 22
 
-#define DIRECTION_SOUTHWEST 144
-#define DIRECTION_UP_SOUTHWEST 145
-#define DIRECTION_DOWN_SOUTHWEST 146
+#define DIRECTION_SOUTHWEST 144				// Index 23
+#define DIRECTION_UP_SOUTHWEST 145			// Index 24
+#define DIRECTION_DOWN_SOUTHWEST 146		// Index 25
 
 #define DIRECTION_UNKNOWN 36
 
@@ -85,15 +85,17 @@ friend class boost::serialization::access;
 
 	inline void rectify() // Rectifies 11 values back into 00
 	{
-		Data = (Data + ((Data ^ (Data >> 1)) & XORMASK)) & ZEROMASK;
+		Data &= ZEROMASK;
+
+		uint8_t Temp1 = Data & XORMASK;
+		uint8_t Temp2 = (~(Data ^ (Data >> 1))) & XORMASK;
+
+		Data = (Data + (Temp1 & Temp2)) & ZEROMASK;
 	};
 
 	inline Direction& Invert()
 	{
-		Direction newDir = *this;
-		newDir.Data = ~newDir.Data;     //Flip all bits, this will turn 00 into 11
-		newDir.Data &= ZEROMASK; //nessary?
-
+		Direction newDir = Direction(~Data); //Flip all bits, this will turn 00 into 11
 		newDir.rectify();
 		return newDir;
 	};
@@ -164,7 +166,7 @@ friend class boost::serialization::access;
 		uint8_t Y = (((Data >> 3) & 3) * 3);
 		uint8_t X = (((Data >> 6) & 3) * 9);
 
-		return X + Y + Z;
+		return X + Y + Z - 1;
 	};
 
     uint8_t Data;
