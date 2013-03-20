@@ -3,6 +3,7 @@
 
 #include <Path.h>
 
+// FullPath
 
 FullPath::FullPath(float PathLength, std::vector<MapCoordinates> Course)
 {
@@ -19,7 +20,7 @@ PathWalker* FullPath::getPathWalker()
     return new FullPathWalker(this);
 }
 
-
+// FullPath Walker
 
 FullPathWalker::FullPathWalker(FullPath* SourcePath)
 {
@@ -47,6 +48,7 @@ Direction FullPathWalker::NextDirection()
     return DIRECTION_NONE;
 }
 
+// VectorPath
 
 VectorPath::VectorPath(float PathLength, std::vector<Direction> RawDirections, MapCoordinates StartCoords, MapCoordinates GoalCoords)
 {
@@ -57,12 +59,12 @@ VectorPath::VectorPath(float PathLength, std::vector<Direction> RawDirections, M
     // Compress the raw directions into legs
     if (RawDirections.size() > 0)
     {
-        int MagnitudeCounter = 1;
+        uint8_t MagnitudeCounter = 1;
         Direction CurrentDirection = RawDirections[0];
 
         for (int i = 1; i < RawDirections.size(); i++)
         {
-            if (RawDirections[i] != CurrentDirection)
+            if (MagnitudeCounter == 255 || RawDirections[i] != CurrentDirection)
             {
                 Directions.push_back(CurrentDirection);
                 Magnitudes.push_back(MagnitudeCounter);
@@ -85,6 +87,7 @@ PathWalker* VectorPath::getPathWalker()
     return new VectorPathWalker(this);
 }
 
+// VectorPath Walker
 
 VectorPathWalker::VectorPathWalker(VectorPath* SourcePath)
 {
@@ -99,7 +102,12 @@ void VectorPathWalker::Reset()
 {
     if (TargetPath != NULL)
     {
-        MagnitudeCountDown = TargetPath->Magnitudes[0];  // Prime the counter with the first legs magnitude
+    	if (TargetPath->Magnitudes.size() > 0)
+		{
+			MagnitudeCountDown = TargetPath->Magnitudes[0];  // Prime the counter with the first legs magnitude
+		} else {
+			MagnitudeCountDown = 0;
+		}
         StepCoordinates = TargetPath->StartCoordinates;
     }
     LegCounter = 0;

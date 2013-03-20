@@ -61,7 +61,7 @@ public:
     PathWalker* getPathWalker();
 
     std::vector<Direction> Directions;
-    std::vector<int> Magnitudes;
+    std::vector<uint8_t> Magnitudes;
 };
 
 class VectorPathWalker: public PathWalker
@@ -77,8 +77,8 @@ public:
 private:
 
     MapCoordinates StepCoordinates;
-    int MagnitudeCountDown;
-    int LegCounter;
+    uint8_t MagnitudeCountDown;
+    uint16_t LegCounter;
 
     VectorPath* TargetPath;
 };

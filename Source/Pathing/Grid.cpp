@@ -35,14 +35,14 @@ KhazadGrid::KhazadGrid(Map* TargetMap)
                     {
                         MapCoordinates AdjacentTileCoords = MapCoordinates(CellCoords, TargetCube);
                         AdjacentTileCoords.TranslateMapCoordinates(Direction(Direction::ANGULAR_DIRECTIONS[i]));
-                        //Direction InvertedDirection = Direction(Direction::ANGULAR_DIRECTIONS[i]).Invert();
+                        Direction InvertedDirection = Direction(Direction::ANGULAR_DIRECTIONS[i]).Invert();
 
-                        //see if we've done this already..
-                        //if (getDirectionFlags(AdjacentTileCoords) & (1 << InvertedDirection.Index()))
-                        //{
-                        //    Flags |= (1 << i);
-                        //    continue;
-                        //}
+                        // if we've done this already..
+                        if (getDirectionFlags(AdjacentTileCoords) & (1 << InvertedDirection.Index()))
+                        {
+                            Flags |= (1 << i);
+                            continue;
+                        }
 
                         CubeShape AdjacentCubeShape = TargetMap->getCubeShape(AdjacentTileCoords);
 
