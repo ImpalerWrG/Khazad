@@ -214,13 +214,13 @@ Ogre::MeshPtr CreateSideFace(FaceShape Shape)
 		ManualObject->normal(Normal);
 		ManualObject->textureCoord(Ogre::Vector2(1.0f, Right));
 
-		if (LeftCorner != BELOW_CUBE_HEIGHT)
+		if (LeftCorner != BELOW_CUBE_HEIGHT && RightCorner != BELOW_CUBE_HEIGHT)
 		{
 			ManualObject->triangle(3, 1, 0);
 			Triangle = true;
 		}
 
-		if (LeftCorner != BELOW_CUBE_HEIGHT && RightCorner != BELOW_CUBE_HEIGHT)
+		if (LeftCorner != BELOW_CUBE_HEIGHT && RightCorner > CUBE_BOTTOM_HEIGHT)
 		{
 			ManualObject->triangle(0, 2, 3);
 			Triangle = true;
@@ -351,12 +351,12 @@ Ogre::MeshPtr CreateSlopeFace(FaceShape Shape)
 					ManualObject->position(Vertex2);  // North West  3
 					ManualObject->colour(Ogre::ColourValue::White);
 					ManualObject->normal(Normal);
-					ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+					ManualObject->textureCoord(Ogre::Vector2(1.0 - ((float) NorthWestCorner / HEIGHT_FRACTIONS), 0.0f));
 
 					ManualObject->position(Vertex1);  // South East  4
 					ManualObject->colour(Ogre::ColourValue::White);
 					ManualObject->normal(Normal);
-					ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+					ManualObject->textureCoord(Ogre::Vector2(1.0 - ((float) SouthEastCorner / HEIGHT_FRACTIONS), 1.0f));
 
 					ManualObject->position(Vertex4);  // North West Bottom  5
 					ManualObject->colour(Ogre::ColourValue::White);
@@ -532,12 +532,12 @@ Ogre::MeshPtr CreateSlopeFace(FaceShape Shape)
 					ManualObject->position(Vertex3);  // North East  3
 					ManualObject->colour(Ogre::ColourValue::White);
 					ManualObject->normal(Normal);
-					ManualObject->textureCoord(Ogre::Vector2(0.0f, 0.0f));
+					ManualObject->textureCoord(Ogre::Vector2(1.0 - ((float) NorthEastCorner / HEIGHT_FRACTIONS), 0.0f));
 
 					ManualObject->position(Vertex0);  // South West  4
 					ManualObject->colour(Ogre::ColourValue::White);
 					ManualObject->normal(Normal);
-					ManualObject->textureCoord(Ogre::Vector2(0.0f, 1.0f));
+					ManualObject->textureCoord(Ogre::Vector2(1.0 - ((float) SouthWestCorner / HEIGHT_FRACTIONS), 1.0f));
 
 					ManualObject->position(Vertex4);  // North East Bottom  5
 					ManualObject->colour(Ogre::ColourValue::White);

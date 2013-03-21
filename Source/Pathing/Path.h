@@ -22,7 +22,7 @@ public:
     float Length;   // The travel cost of the path
     int StepCount;  // The number of individual steps in the path
 
-    int SizeLimit;      // Largest size of adjent that can use this path
+    int SizeLimit;      // Largest size of pawn that can use this path
     int MovementFlags;  // Booleans flags for terrain passable flags
 
     virtual PathWalker* getPathWalker() = 0;
