@@ -91,3 +91,19 @@ void Face::setFaceShapeType(FaceShape NewShape)
 		//Set Cell needsRedraw
     }
 }
+
+void Face::Save(boost::filesystem::basic_ofstream<char>& Stream) const
+{
+	Stream.write((char*)&FaceType, sizeof(FaceType));
+	Stream.write((char*)&LocationCoordinates, sizeof(LocationCoordinates));
+	Stream.write((char*)&SurfaceTypeID, sizeof(SurfaceTypeID));
+	Stream.write((char*)&MaterialTypeID, sizeof(MaterialTypeID));
+}
+
+void Face::Load(boost::filesystem::basic_ifstream<char>& Stream)
+{
+	Stream.read((char*)&FaceType, sizeof(FaceType));
+	Stream.read((char*)&LocationCoordinates, sizeof(LocationCoordinates));
+	Stream.read((char*)&SurfaceTypeID, sizeof(SurfaceTypeID));
+	Stream.read((char*)&MaterialTypeID, sizeof(MaterialTypeID));
+}

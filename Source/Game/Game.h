@@ -22,8 +22,8 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 #include <Singleton.h>
 
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 
 class Actor;
 class Pawn;
@@ -39,8 +39,6 @@ class MapCoordinates;
 class Game
 {
 DECLARE_SINGLETON_CLASS(Game)
-
-friend class boost::serialization::access;
 
 public:
 
@@ -71,6 +69,9 @@ public:
     float getProgress()             { return ProgressAmount; }
     Timer* getGameTimer()            { return GameTimer; }
 
+    void Save(boost::filesystem::basic_ofstream<char>& Stream) const;
+    void Load(boost::filesystem::basic_ifstream<char>& Stream);
+
 protected:
 
     uint32_t TickRate;     // Simulation Rate;
@@ -85,21 +86,6 @@ protected:
     Settlment* TheSettlment;
 
     float ProgressAmount;
-
-	template<class Archive>
-	void serialize(Archive & Arc, const unsigned int version)
-	{
-		Arc& TickRate;
-		Arc& Pause;
-		Arc& Zoneing;
-
-		//Arc& GameTimer;
-
-		Arc& MainMap;
-		//Arc& MapGeology;
-		//Arc& Path;
-		//Arc& TheSettlment;
-	};
 };
 
 #define GAME (Game::GetInstance())

@@ -53,13 +53,14 @@ bool Map::Init()
 
 Cell* Map::getCell(CellCoordinates TestCoords) const
 {
-    std::map<uint64_t, Cell*>::const_iterator SearchResult = Cells.find(TestCoords.Key());
+    boost::unordered_map<uint64_t, Cell*>::const_iterator SearchResult = Cells.find(TestCoords.Key());
 
     return SearchResult == Cells.end() ? NULL : SearchResult->second;
 }
 
-bool Map::insertCell(Cell* NewCell, CellCoordinates TargetCoordinates)
+bool Map::insertCell(Cell* NewCell)
 {
+	CellCoordinates TargetCoordinates = NewCell->getCellCoordinates();
     if (getCell(TargetCoordinates) == NULL)
     {
         Cells[TargetCoordinates.Key()] = NewCell;
@@ -139,7 +140,7 @@ Face* Map::addFace(MapCoordinates TargetMapCoordinates, Direction DirectionType)
         // Properly Initialize?
 
         TargetCell->setCellPosition(CellCoordinates(ConvertedValues.first));
-        insertCell(TargetCell, CellCoordinates(ConvertedValues.first));
+        insertCell(TargetCell);
     }
 
     return TargetCell->addFace(FaceCoordinates(ConvertedValues.first.Cube(), ConvertedValues.second));
@@ -454,7 +455,7 @@ MapCoordinates Map::getRayIntersection(Ogre::Ray MouseRay, uint16_t Top, uint16_
 
 void Map::RegisterWithRendering()
 {
-	for (std::map<uint64_t, Cell*>::iterator it = Cells.begin(); it != Cells.end(); it++)
+	for (boost::unordered_map<uint64_t, Cell*>::iterator it = Cells.begin(); it != Cells.end(); it++)
 	{
 		it->second->RegisterWithRendering();
 	}
@@ -491,3 +492,38 @@ Zone* Map::getZoneAt(MapCoordinates TestCoordinates)
     }
     return NULL;
 }
+
+void Map::Save(boost::filesystem::basic_ofstream<char>& Stream) const
+{
+	Stream.write((char*)&Initialized, sizeof(Initialized));
+	Stream.write((char*)&MapLoaded, sizeof(MapLoaded));
+
+	Stream.write((char*)&HighestCell, sizeof(HighestCell));
+	Stream.write((char*)&LowestCell, sizeof(LowestCell));
+
+	uint32_t CellCount = Cells.size();
+	Stream.write((char*)&CellCount, sizeof(CellCount));
+	for (boost::unordered_map<uint64_t, Cell*>::const_iterator it = Cells.begin(); it != Cells.end(); it++)
+	{
+		it->second->Save(Stream);
+	}
+}
+
+void Map::Load(boost::filesystem::basic_ifstream<char>& Stream)
+{
+	Stream.read((char*)&Initialized, sizeof(Initialized));
+	Stream.read((char*)&MapLoaded, sizeof(MapLoaded));
+
+	Stream.read((char*)&HighestCell, sizeof(HighestCell));
+	Stream.read((char*)&LowestCell, sizeof(LowestCell));
+
+	uint32_t CellCount;
+	Stream.read((char*)&CellCount, sizeof(CellCount));
+	for (int i = 0; i < CellCount; i++)
+	{
+		Cell* NewCell = new Cell();
+		NewCell->Load(Stream);
+		insertCell((NewCell));
+	}
+}
+

@@ -233,3 +233,51 @@ void Cell::setNeedsReRendering()
 {
 	Render->setDirty();
 }
+
+void Cell::Save(boost::filesystem::basic_ofstream<char>& Stream) const
+{
+	Stream.write((char*)&thisCellCoordinates.X, sizeof(thisCellCoordinates.X));
+	Stream.write((char*)&thisCellCoordinates.Y, sizeof(thisCellCoordinates.Y));
+	Stream.write((char*)&thisCellCoordinates.Z, sizeof(thisCellCoordinates.Z));
+
+	for (int i = 0; i < CUBESPERCELL; i++)
+	{
+		Stream.write((char*)&CubeShapeTypes[i], sizeof(CubeShapeTypes[i]));
+		Stream.write((char*)&CubeMaterialTypes[i], sizeof(CubeMaterialTypes[i]));
+	}
+
+	int16_t FaceCount = Faces.size();
+	Stream.write((char*)&FaceCount, sizeof(FaceCount));
+	for (std::map<uint16_t, Face*>::const_iterator it = Faces.begin(); it != Faces.end(); it++)
+	{
+		uint16_t Key = it->first;
+		Stream.write((char*)&Key, sizeof(Key));
+		it->second->Save(Stream);
+	}
+}
+
+void Cell::Load(boost::filesystem::basic_ifstream<char>& Stream)
+{
+	Stream.read((char*)&thisCellCoordinates.X, sizeof(thisCellCoordinates.X));
+	Stream.read((char*)&thisCellCoordinates.Y, sizeof(thisCellCoordinates.Y));
+	Stream.read((char*)&thisCellCoordinates.Z, sizeof(thisCellCoordinates.Z));
+
+	for (int i = 0; i < CUBESPERCELL; i++)
+	{
+		Stream.read((char*)&CubeShapeTypes[i], sizeof(CubeShapeTypes[i]));
+		Stream.read((char*)&CubeMaterialTypes[i], sizeof(CubeMaterialTypes[i]));
+	}
+
+	int16_t FaceCount;
+	Stream.read((char*)&FaceCount, sizeof(FaceCount));
+	for (int i = 0; i < FaceCount; i++)
+	{
+		uint16_t Key;
+		Stream.read((char*)&Key, sizeof(Key));
+		Face* NewFace = new Face();
+		NewFace->Load(Stream);
+		Faces[Key] = NewFace;
+	}
+
+	Render = new TerrainRendering(this);
+}

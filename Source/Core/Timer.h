@@ -3,15 +3,9 @@
 
 #include <stdafx.h>
 
-#include "boost/serialization/export.hpp"
-#include <boost/serialization/serialization.hpp>
-#include <boost/serialization/vector.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
 
 class Timer
 {
-friend class boost::serialization::access;
 
 public:
 

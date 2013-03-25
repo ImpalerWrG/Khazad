@@ -3,29 +3,24 @@
 
 #include <stdafx.h>
 
-#include <Map.h>
 #include <Face.h>
 
 #include <bitset>
 #include <boost/array.hpp>
+#include <boost/unordered_map.hpp>
 
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-
-#include <boost/serialization/map.hpp>
-#include <boost/serialization/bitset.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 
 class Building;
 class Tree;
 class Actor;
-class Map;
 class Face;
 class TerrainRendering;
 
 
 class Cell
 {
-friend class boost::serialization::access;
 
 public:
 
@@ -95,6 +90,10 @@ public:
     void addBuilding(Building* NewBuilding)             { buildings.push_back(NewBuilding); }
     void addTree(Tree* NewTree)                         { trees.push_back(NewTree); }
 
+
+    void Save(boost::filesystem::basic_ofstream<char>& Stream) const;
+    void Load(boost::filesystem::basic_ifstream<char>& Stream);
+
 protected:
 
     // Larger DataValues specific to each Cube
@@ -121,23 +120,6 @@ protected:
 
 	// Class that handles all rendering implementation
 	TerrainRendering* Render;
-
-    template<class Archive>
-	void serialize(Archive & Arc, const unsigned int version)
-	{
-		Arc& CubeShapeTypes;
-		Arc& CubeMaterialTypes;
-
-		Arc& Hidden;
-		Arc& SubTerranean;
-		Arc& SkyView;
-		Arc& SunLit;
-		Arc& Zone;
-
-		Arc& Faces;
-
-		Arc& thisCellCoordinates;
-	};
 };
 
 #endif // CELL__HEADER

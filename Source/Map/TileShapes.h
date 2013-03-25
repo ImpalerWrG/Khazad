@@ -6,9 +6,6 @@
 #include <Coordinates.h>
 #include <Ogre.h>
 
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-
 #define BELOW_CUBE_HEIGHT 0
 #define CUBE_BOTTOM_HEIGHT 1
 #define HEIGHT_FRACTIONS 3
@@ -32,7 +29,6 @@
 
 struct CubeShape
 {
-friend class boost::serialization::access;
 
     CubeShape()
     {
@@ -221,7 +217,6 @@ friend class boost::serialization::access;
 
 struct FaceShape
 {
-friend class boost::serialization::access;
 
     FaceShape()
     {

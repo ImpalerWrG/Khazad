@@ -27,9 +27,9 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 #include <Cell.h>
 
 #include <boost/unordered_map.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/serialization/map.hpp>
+
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 
 class Cell;
 class Geology;
@@ -39,7 +39,6 @@ class VolumeSelection;
 
 class Map
 {
-friend class boost::serialization::access;
 
 public:
 
@@ -57,9 +56,9 @@ public:
 	Cell* getCell(CellCoordinates) const;
 	Cell* getCubeOwner(MapCoordinates) const;
 
-	std::map<uint64_t, Cell*>* getCellMap()		{ return &Cells; };
+	boost::unordered_map<uint64_t, Cell*>* getCellMap()		{ return &Cells; };
 
-    bool insertCell(Cell* NewCell, CellCoordinates TargetCoordinates);
+    bool insertCell(Cell* NewCell);
 
     bool isCubeInited(MapCoordinates) const;
 
@@ -115,12 +114,15 @@ public:
     Zone* createZone(std::vector<VolumeSelection*> Volumes);
     Zone* getZoneAt(MapCoordinates TestCoordinates);
 
+    void Save(boost::filesystem::basic_ofstream<char>& Stream) const;
+    void Load(boost::filesystem::basic_ifstream<char>& Stream);
+
 protected:
 
     bool Initialized;
     bool MapLoaded;
 
-    std::map<uint64_t, Cell*> Cells;
+    boost::unordered_map<uint64_t, Cell*> Cells;
 
     int32_t HighestCell;
     int32_t LowestCell;
@@ -128,18 +130,6 @@ protected:
     std::vector<Zone*> Zones;
 
     MapCoordinates LastRayTestResult;  // Used to smoothout Map Picking
-
-    template<class Archive>
-	void serialize(Archive & Arc, const unsigned int version)
-	{
-		Arc& Initialized;
-		Arc& MapLoaded;
-
-		Arc& Cells;
-
-		Arc& HighestCell;
-		Arc& LowestCell;
-	};
 };
 
 #endif // MAP__HEADER

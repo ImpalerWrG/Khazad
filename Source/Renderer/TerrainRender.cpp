@@ -7,6 +7,8 @@
 
 #include <Renderer.h>
 
+#include <boost/unordered_map.hpp>
+
 TerrainRendering::TerrainRendering(Cell* TargetCell)
 {
 	ParentCell = TargetCell;

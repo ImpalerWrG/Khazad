@@ -14,8 +14,7 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/iostreams/filtering_stream.hpp>
+//#include <boost/iostreams/filtering_stream.hpp>
 
 MainGameScreen::MainGameScreen()
 {
@@ -198,15 +197,7 @@ bool MainGameScreen::SaveGame(const CEGUI::EventArgs& pEventArgs)
 		boost::filesystem::basic_ofstream<char> rawStream(SaveFile, std::ios::binary);
 		if (rawStream.is_open())
 		{
-			//boost::iostreams::filtering_ostream Compressedstream;
-			//boost::iostreams::zlib_params paramaters(6); // Compression level
-			//Compressedstream.push(boost::iostreams::zlib_compressor(paramaters));
-			//Compressedstream.push(rawStream);
-
-			boost::archive::binary_oarchive SaveArchive(rawStream);
-			Game* THEGAME = GAME->GetInstance();
-			SaveArchive << THEGAME;
-
+			GAME->Save(rawStream);
 			rawStream.close();
 		} else {
 			// FILE not Opened?

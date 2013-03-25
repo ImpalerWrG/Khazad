@@ -98,7 +98,7 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
                 Cell* NewCell = new Cell();
 
                 NewCell->setCellPosition(TargetCellCoordinates);
-                MainMap->insertCell(NewCell, TargetCellCoordinates);
+                MainMap->insertCell(NewCell);
                 MapGeology->LoadCellData(NewCell);
             }
         }
@@ -106,7 +106,7 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
 
     // Initialize Faces for the cells
 	ProgressSize = MainMap->getCellMap()->size();
-    for (std::map<uint64_t, Cell*>::iterator CellIterator = MainMap->getCellMap()->begin() ; CellIterator != MainMap->getCellMap()->end(); ++CellIterator )
+    for (boost::unordered_map<uint64_t, Cell*>::iterator CellIterator = MainMap->getCellMap()->begin() ; CellIterator != MainMap->getCellMap()->end(); ++CellIterator )
     {
         CellIterator->second->BuildFaceData();
 		ProgressCount++;
@@ -171,3 +171,23 @@ void Game::setTickRate(uint32_t NewRate)
 {
 	TickRate = NewRate;
 }
+
+void Game::Save(boost::filesystem::basic_ofstream<char>& Stream) const
+{
+	Stream.write((char*)&TickRate, sizeof(TickRate));
+	Stream.write((char*)&Pause, sizeof(Pause));
+	Stream.write((char*)&Zoneing, sizeof(Zoneing));
+
+	MainMap->Save(Stream);
+}
+
+void Game::Load(boost::filesystem::basic_ifstream<char>& Stream)
+{
+	Stream.read((char*)&TickRate, sizeof(TickRate));
+	Stream.read((char*)&Pause, sizeof(Pause));
+	Stream.read((char*)&Zoneing, sizeof(Zoneing));
+
+	MainMap = new Map();
+	MainMap->Load(Stream);
+}
+

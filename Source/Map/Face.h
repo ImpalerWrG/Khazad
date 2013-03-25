@@ -7,12 +7,11 @@
 #include <TileShapes.h>
 #include <Ogre.h>
 
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 
 class Face
 {
-friend class boost::serialization::access;
 
 public:
 
@@ -30,6 +29,9 @@ public:
     int16_t getFaceSurfaceType()            { return SurfaceTypeID; }
     FaceShape getFaceShapeType()            { return FaceType; }
 
+    void Save(boost::filesystem::basic_ofstream<char>& Stream) const;
+    void Load(boost::filesystem::basic_ifstream<char>& Stream);
+
 private:
 
     FaceShape FaceType;
@@ -37,16 +39,6 @@ private:
 
     int16_t SurfaceTypeID;
     int16_t MaterialTypeID;
-
-	template<class Archive>
-	void serialize(Archive & Arc, const unsigned int version)
-	{
-		Arc& FaceType;
-		Arc& LocationCoordinates;
-
-		Arc& SurfaceTypeID;
-		Arc& MaterialTypeID;
-	};
 };
 
 #endif // FACE__HEADER

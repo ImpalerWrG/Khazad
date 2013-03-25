@@ -5,12 +5,13 @@
 #include <Grid.h>
 #include <Game.h>
 #include <Cell.h>
+#include <Map.h>
 
 
 KhazadGrid::KhazadGrid(Map* TargetMap)
 {
-    std::map<uint64_t, Cell*>* TargetCells = TargetMap->getCellMap();
-    for (std::map<uint64_t, Cell*>::iterator it = TargetCells->begin(); it != TargetCells->end(); ++it)
+    boost::unordered_map<uint64_t, Cell*>* TargetCells = TargetMap->getCellMap();
+    for (boost::unordered_map<uint64_t, Cell*>::iterator it = TargetCells->begin(); it != TargetCells->end(); ++it)
     {
         if (it->second != NULL)
         {

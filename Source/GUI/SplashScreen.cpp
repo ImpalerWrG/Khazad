@@ -8,8 +8,6 @@
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 
-#include <boost/archive/binary_iarchive.hpp>
-
 SplashScreen::SplashScreen()
 {
 
@@ -108,10 +106,7 @@ bool SplashScreen::LoadGame(const CEGUI::EventArgs& pEventArgs)
 		boost::filesystem::basic_ifstream<char> rawStream(*LoadPath, std::ios::binary);
 		if (rawStream.is_open())
 		{
-			boost::archive::binary_iarchive LoadArchive(rawStream);
-			Game* THEGAME = GAME->GetInstance();
-			LoadArchive >> THEGAME;
-
+			GAME->Load(rawStream);
 			GUI->ShowScreen(SCREEN_MAIN_GAME);
 			GAME->getMap()->RegisterWithRendering();
 		}

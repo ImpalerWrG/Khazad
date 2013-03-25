@@ -2,9 +2,11 @@
 
 #include <Cell.h>
 #include <Game.h>
+#include <Map.h>
 
 #include <TextureManager.h>
 #include <DataManager.h>
+#include <Renderer.h>
 
 Actor::Actor()
 {
