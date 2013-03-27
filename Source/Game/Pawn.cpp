@@ -72,7 +72,7 @@ CoolDown Pawn::AttemptMove(Direction MovementDirection)
         Moving = true;
         float Speed = 1.0;
         MovementCoolDown = EdgeCost / (Speed / 1000.0);
-        MovementStarted = TEMPORAL->getCurrentTimeTick();
+        MovementStarted = GAME->getTemporal()->getCurrentTimeTick();
 
         float AnimationSpeed = 0.5;
         float FramesToMove = AnimationLoopLength * AnimationSpeed * EdgeCost;
@@ -113,7 +113,7 @@ void Pawn::AdvanceFrame()
 
 CoolDown Pawn::Update()
 {
-    UpdateTick = TEMPORAL->getCurrentTimeTick();   // Record the current Tick
+    UpdateTick = GAME->getTemporal()->getCurrentTimeTick();   // Record the current Tick
 
 
     if (Moving)
@@ -168,7 +168,7 @@ Ogre::Vector3 Pawn::getRenderPosition()
 
 Ogre::Vector3 Pawn::getRederPositionMovementAdjustment()
 {
-    uint32_t MovementMultiplier = TEMPORAL->getCurrentTimeTick() - UpdateTick;
+    uint32_t MovementMultiplier = GAME->getTemporal()->getCurrentTimeTick() - UpdateTick;
     return RenderLocationChange * MovementMultiplier;
 }
 

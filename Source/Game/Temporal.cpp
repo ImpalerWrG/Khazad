@@ -17,14 +17,15 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 
 #include <Temporal.h>
+#include <Game.h>
 
 
 // TEMPORAL
 
 Temporal::Temporal()
 {
-    UniqueID = TEMPORAL->getNextUniqueID();
-	TEMPORAL->AddTemporal(this, 1);  // Will set CurrentBucket
+    UniqueID = GAME->getTemporal()->getNextUniqueID();
+	GAME->getTemporal()->AddTemporal(this, 1);  // Will set CurrentBucket
 }
 
 Temporal::~Temporal()
@@ -41,7 +42,7 @@ void Temporal::ResetCooldown(CoolDown NewCoolDown)
 
 void Temporal::Retire()
 {
-    TEMPORAL->RetireTemporal(this);
+    GAME->getTemporal()->RetireTemporal(this);
 }
 
 // BUCKET
@@ -84,8 +85,6 @@ Carrosel::~Carrosel()
 }
 
 // TEMPORAL MANAGER
-
-DECLARE_SINGLETON(TemporalManager)
 
 TemporalManager::TemporalManager()
 {

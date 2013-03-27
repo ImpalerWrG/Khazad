@@ -8,6 +8,8 @@
 #include <TileShapes.h>
 #include <Ogre.h>
 
+#include <boost/unordered_map.hpp>
+
 class ShapeManager
 {
 	DECLARE_SINGLETON_CLASS(ShapeManager)
@@ -20,7 +22,7 @@ public:
 
 private:
 
-	std::map<uint32_t, Ogre::MeshPtr> FaceEntityMap;
+	boost::unordered_map<uint32_t, Ogre::MeshPtr> FaceEntityMap;
 
 };
 

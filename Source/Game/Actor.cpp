@@ -12,7 +12,6 @@ Actor::Actor()
 {
     Visible = false;
     Hidden = false;
-    CurrentCell = NULL;
 }
 
 Actor::~Actor()
@@ -49,17 +48,18 @@ void Actor::setLocation(MapCoordinates NewPosition)
     float X = (float) (Cube >> CELLBITSHIFT) + (float)HALFCUBE - (float)(CELLEDGESIZE / 2);
     float Y = (float) (Cube & CELLBITFLAG) + (float)HALFCUBE - (float)(CELLEDGESIZE / 2);
 
-    if (CurrentCell != NewCell)
+    if (CurrentCell != NewCell->getCellCoordinates())
     {
-        if (CurrentCell != NULL)
-        {
-            CurrentCell->removeActor(this);
-        }
+		Cell* OldCell = GAME->getMap()->getCell(CurrentCell);
+		if (OldCell != NULL)
+		{
+			OldCell->removeActor(this);
+		}
 
         if (NewCell != NULL)
         {
             NewCell->addActor(this);
-            CurrentCell = NewCell;
+            CurrentCell = NewCell->getCellCoordinates();
         }
     }
     ActorNode->setPosition(X, Y, 0);

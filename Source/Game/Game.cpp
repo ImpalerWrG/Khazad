@@ -46,8 +46,10 @@ DECLARE_SINGLETON(Game)
 
 bool Game::InitializeGame(uint16_t X, uint16_t Y, const char* SeedString)
 {
+	TempManager = new TemporalManager();
+
     MapGeology = new Geology();
-    MapGeology->Init(SeedString);
+    MapGeology->InitializeGeology(SeedString);
     MapGeology->GenerateWorldHeightMap(X, Y);
 
 	MainMap = new Map();
@@ -124,6 +126,11 @@ bool Game::BuildMapChunk(int16_t X, int16_t Y, int8_t Width, int8_t Height)
     return true;
 }
 
+uint32_t Game::getCurrentTick()
+{
+	return TempManager->getCurrentTimeTick();
+}
+
 bool Game::Run()
 {
     GameTimer->Unpause();
@@ -132,7 +139,7 @@ bool Game::Run()
 	{
 		for(uint32_t i = TickRate; i > 0; i--)
 		{
-			TEMPORAL->UpdateTick();
+			TempManager->UpdateTick();
 
 			// Update map? other none actor based logics?
 		}

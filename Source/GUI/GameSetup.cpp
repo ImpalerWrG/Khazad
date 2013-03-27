@@ -40,6 +40,7 @@ bool GameSetupScreen::Init()
         {
             SeedEditBox->setReadOnly(false);
             SeedEditBox->setTextMasked(false);
+            SeedEditBox->setText("Khazad");
         }
 
         CEGUI::Window* BeginGameButton = GUI->getWindowManager()->getWindow("GameSetupScreenWindow/BeginGameButton");

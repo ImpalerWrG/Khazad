@@ -30,6 +30,7 @@ class Pawn;
 class Tree;
 class Map;
 class PathManager;
+class TemporalManager;
 class Geology;
 class Timer;
 class Settlment;
@@ -55,6 +56,7 @@ public:
     void setTickRate(uint32_t NewRate);
 
     uint32_t getTickRate()       { return TickRate; }
+    uint32_t getCurrentTick();
 
     void togglePause()              { Pause = !Pause; }
     void setPause(bool NewState)    { Pause = NewState; }
@@ -65,6 +67,7 @@ public:
     Map* getMap()               { return MainMap; }
     Geology* getGeology()       { return MapGeology; }
     PathManager* getPath()      { return Path; }
+    TemporalManager* getTemporal() { return TempManager; }
 
     float getProgress()             { return ProgressAmount; }
     Timer* getGameTimer()            { return GameTimer; }
@@ -84,6 +87,7 @@ protected:
     Geology* MapGeology;
     PathManager* Path;
     Settlment* TheSettlment;
+    TemporalManager* TempManager;
 
     float ProgressAmount;
 };

@@ -212,8 +212,11 @@ void Renderer::UpdateOverlay()
 
     double GameAgerage = GAME->getGameTimer()->getAverage();
     double RenderAgerage = RenderTimer->getAverage();
+    int TickCount = GAME->getCurrentTick();
     double Total = GameAgerage + RenderAgerage;
+
     char buffer[32];
+    //sprintf(buffer, "Tick Number %i", TickCount);
     sprintf(buffer, "GameAvg %.2f%          RenderAvg %.2f%", (GameAgerage / Total) * 100.0f, (RenderAgerage / Total) * 100.0f);
 
 	Ogre::OverlayElement* guiDbg = Ogre::OverlayManager::getSingleton().getOverlayElement("Core/DebugText");

@@ -21,7 +21,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 Temporal encapsulates the ability to be updated each game time-ticks,
 and is intended as a virtual base class for game objects.
 
-A Singlton TemporalManager tracks time ticks and should be called in the
+A TemporalManager tracks time ticks and should be called in the
 main logic loop as many times as nessary to create the desidred 'speed',
 Each UpdateTick call will advance one Tick and update the apropriate
 Entities.
@@ -34,7 +34,7 @@ A retired Temporal will be deleted at the end of the next update not
 durring the update cycle to prevent a 'shoots first' paradox.  Likewise
 new Entities will recive their first update durring the next full Tick,
 Entities created durring a Tick will not update on that Tick.  New Entites
-are update before Retired ones are deleted so Initializing from a retired
+are updated before Retired ones are deleted so Initializing from a retired
 parent Temporal is valid.
 
 Entities require an Update function which returns the number of Ticks
@@ -60,8 +60,6 @@ performance will come from Entites that have long and consistent Cooldowns. */
 
 #include <stdafx.h>
 
-#include <Singleton.h>
-
 typedef uint16_t CoolDown; // Determines the maximum value of a cooldown
 typedef uint32_t Tick;     // Determines the maximum game time ticks
 
@@ -71,7 +69,7 @@ class Carrosel;
 class TemporalManager;
 
 
-class Temporal
+class Temporal  // Virtual Baseclass for all objects in the game that recive update calls
 {
 friend class TemporalManager;
 
@@ -121,12 +119,12 @@ public:
 
 class TemporalManager
 {
-DECLARE_SINGLETON_CLASS(TemporalManager)
 
 friend class Temporal;
 
 public:
 
+    TemporalManager();
     ~TemporalManager();
 
     void UpdateTick();
@@ -153,7 +151,5 @@ protected:
 
     uint32_t UniqueIDCounter;
 };
-
-#define TEMPORAL (TemporalManager::GetInstance())
 
 #endif  // TEMPORAL__HEADER

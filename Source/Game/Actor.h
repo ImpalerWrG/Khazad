@@ -40,7 +40,7 @@ protected:
 
 	MapCoordinates LocationCoordinates;     // The location for gameplay logic purposes
 
-    Cell* CurrentCell;
+    CellCoordinates CurrentCell;
 
     Ogre::SceneNode* ActorNode;
     Ogre::BillboardSet* ActorBillboard;
