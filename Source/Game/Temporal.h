@@ -19,7 +19,10 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 /*------------------------TEMPORAL---------------------------
 
 Temporal encapsulates the ability to be updated each game time-ticks,
-and is intended as a virtual base class for game objects.
+and is intended as a virtual base class for game objects.  Temporal
+derived objects essentially exist in time and are capable of self
+initiated change over time.  Objects that will be changed only by
+outside effects do not need to be Temporal.
 
 A TemporalManager tracks time ticks and should be called in the
 main logic loop as many times as nessary to create the desidred 'speed',
@@ -77,8 +80,8 @@ public:
 
 	Temporal();
 
-    void ResetCooldown(CoolDown NewCoolDown);
-    void Retire();  // Will be destructed
+	void ResetCooldown(CoolDown NewCoolDown);
+	void Retire();  // Will be destructed
 
 protected:
 
@@ -93,15 +96,15 @@ class Bucket  // An unsorted group of Entities that will be updated together
 {
 friend class Carrosel;
 
-    Bucket();
-    ~Bucket();
+	Bucket();
+	~Bucket();
 
-    void add(Temporal* NewTemporal);
+	void add(Temporal* NewTemporal);
 
 
 public:
 
-    std::vector<Temporal*> TemporalVector;
+	std::vector<Temporal*> TemporalVector;
 };
 
 class Carrosel  // A group of Buckets holding unsyncronized entities with the same CoolDown time
@@ -110,11 +113,11 @@ friend class TemporalManager;
 
 public:
 
-    Carrosel(CoolDown CarroselSize);
-    ~Carrosel();
+	Carrosel(CoolDown CarroselSize);
+	~Carrosel();
 
-    Bucket** Buckets;
-    CoolDown BucketCount; // ? nessary
+	Bucket** Buckets;
+	CoolDown BucketCount; // ? nessary
 };
 
 class TemporalManager
@@ -124,32 +127,32 @@ friend class Temporal;
 
 public:
 
-    TemporalManager();
-    ~TemporalManager();
+	TemporalManager();
+	~TemporalManager();
 
-    void UpdateTick();
-    Tick getCurrentTimeTick()   { return CurrentGameTick; }
-    bool isTickInProgress();
+	void UpdateTick();
+	Tick getCurrentTimeTick()   { return CurrentGameTick; }
+	bool isTickInProgress();
 
-    uint32_t getNextUniqueID()      { return UniqueIDCounter++; }
+	uint32_t getNextUniqueID()      { return UniqueIDCounter++; }
 
 protected:
 
-    // Called only from the Temporal constructor and destructors
-    bool AddTemporal(Temporal* NewTemporal, CoolDown NewCoolDown);
-    bool RetireTemporal(Temporal* TargetTemporal);
+	// Called only from the Temporal constructor and destructors
+	bool AddTemporal(Temporal* NewTemporal, CoolDown NewCoolDown);
+	bool RetireTemporal(Temporal* TargetTemporal);
 
-    Carrosel* getCarosel(CoolDown TargetCoolDown);
+	Carrosel* getCarosel(CoolDown TargetCoolDown);
 
-    Tick CurrentGameTick;
-    std::map<CoolDown, Carrosel*> CarroselMap;
+	Tick CurrentGameTick;
+	std::map<CoolDown, Carrosel*> CarroselMap;
 
-    std::vector<Temporal*> ReIndexedTemporalBuffer;
-    std::vector<CoolDown> ReIndexedTemporalCoolDown;
+	std::vector<Temporal*> ReIndexedTemporalBuffer;
+	std::vector<CoolDown> ReIndexedTemporalCoolDown;
 
-    std::vector<Temporal*> RetiredTemporalBuffer;
+	std::vector<Temporal*> RetiredTemporalBuffer;
 
-    uint32_t UniqueIDCounter;
+	uint32_t UniqueIDCounter;
 };
 
 #endif  // TEMPORAL__HEADER

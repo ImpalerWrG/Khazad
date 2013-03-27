@@ -13,7 +13,7 @@ Furniture::~Furniture()
 
 }
 
-bool Furniture::Init()
+bool Furniture::InitializeFurniture()
 {
 	return true;
 }

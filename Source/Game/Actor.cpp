@@ -39,6 +39,7 @@ bool Actor::Init(MapCoordinates SpawnLocation, Ogre::MaterialPtr Mat, float Widt
 
 void Actor::setLocation(MapCoordinates NewPosition)
 {
+	CellCoordinates OldCoordinates = CellCoordinates(LocationCoordinates);
     LocationCoordinates = NewPosition;
 
     CellCoordinates NewCellCoords = CellCoordinates(NewPosition);
@@ -48,9 +49,9 @@ void Actor::setLocation(MapCoordinates NewPosition)
     float X = (float) (Cube >> CELLBITSHIFT) + (float)HALFCUBE - (float)(CELLEDGESIZE / 2);
     float Y = (float) (Cube & CELLBITFLAG) + (float)HALFCUBE - (float)(CELLEDGESIZE / 2);
 
-    if (CurrentCell != NewCell->getCellCoordinates())
+    if (OldCoordinates != NewCell->getCellCoordinates())
     {
-		Cell* OldCell = GAME->getMap()->getCell(CurrentCell);
+		Cell* OldCell = GAME->getMap()->getCell(OldCoordinates);
 		if (OldCell != NULL)
 		{
 			OldCell->removeActor(this);
@@ -59,7 +60,6 @@ void Actor::setLocation(MapCoordinates NewPosition)
         if (NewCell != NULL)
         {
             NewCell->addActor(this);
-            CurrentCell = NewCell->getCellCoordinates();
         }
     }
     ActorNode->setPosition(X, Y, 0);
