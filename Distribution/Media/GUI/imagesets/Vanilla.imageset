@@ -1,4 +1,0 @@
-<?xml version="1.0" ?>
-<Imageset Name="Vanilla-Images" Imagefile="vanilla.tga" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
-	<Image Name="MouseArrow" XPos="69" YPos="7" Width="17" Height="25" />
-</Imageset>
