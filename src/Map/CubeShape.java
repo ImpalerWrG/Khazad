@@ -103,55 +103,33 @@ public class CubeShape {
     }
 
     public boolean hasFloor() {
-       if (split())
-       {
+       if (split()) {
             if (SouthEastCorner() == CUBE_BOTTOM_HEIGHT && NorthEastCorner() == CUBE_BOTTOM_HEIGHT && NorthWestCorner() == CUBE_BOTTOM_HEIGHT)
-            {
                 return true;
-            }
             if (NorthWestCorner() == CUBE_BOTTOM_HEIGHT && SouthWestCorner() == CUBE_BOTTOM_HEIGHT && SouthEastCorner() == CUBE_BOTTOM_HEIGHT)
-            {
                 return true;
-            }
             return false;
-       }
-       else
-       {
+       } else {
             if (NorthEastCorner() == CUBE_BOTTOM_HEIGHT && NorthWestCorner() == CUBE_BOTTOM_HEIGHT && SouthWestCorner() == CUBE_BOTTOM_HEIGHT)
-            {
                 return true;
-            }
             if (SouthWestCorner() == CUBE_BOTTOM_HEIGHT && SouthEastCorner() == CUBE_BOTTOM_HEIGHT && NorthEastCorner() == CUBE_BOTTOM_HEIGHT)
-            {
                 return true;
-            }
             return false;
         }
     }
 
     public boolean hasCeiling() {
-       if (split())
-       {
+       if (split()) {
             if (SouthEastCorner() == CUBE_TOP_HEIGHT && NorthEastCorner() == CUBE_TOP_HEIGHT && NorthWestCorner() == CUBE_TOP_HEIGHT)
-            {
                 return true;
-            }
             if (NorthWestCorner() == CUBE_TOP_HEIGHT && SouthWestCorner() == CUBE_TOP_HEIGHT && SouthEastCorner() == CUBE_TOP_HEIGHT)
-            {
                 return true;
-            }
             return false;
-       }
-       else
-       {
+       } else {
             if (NorthEastCorner() == CUBE_TOP_HEIGHT && NorthWestCorner() == CUBE_TOP_HEIGHT && SouthWestCorner() == CUBE_TOP_HEIGHT)
-            {
                 return true;
-            }
             if (SouthWestCorner() == CUBE_TOP_HEIGHT && SouthEastCorner() == CUBE_TOP_HEIGHT && NorthEastCorner() == CUBE_TOP_HEIGHT)
-            {
                 return true;
-            }
             return false;
         }
     }
@@ -204,4 +182,11 @@ public class CubeShape {
 		return Data != ArgumentShape.Data;
     }
 
+	public float centerHeight() {
+		if (split()) {
+			return (((NorthWestCorner() + SouthEastCorner()) / 2) * HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+		} else {
+			return (((SouthWestCorner() + NorthEastCorner()) / 2) * HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;			
+		}
+	}
 }

@@ -20,20 +20,8 @@ public class Pawn extends Actor {
 	boolean Moving;
 	Direction CurrentMovementDirection;
 
-	//float FrameCooldown;
-	int MovementDuration;
+	int MovementDuration = 1;
 	long MovementStarted;
-	//long UpdateTick;
-
-	MapCoordinate DestinationCoordinates;
-
-	//Ogre::Vector3 RenderLocation;
-	Vector3f RenderLocationChange;
-
-	//uint16_t AnimationGroupID;
-	//uint16_t AnimationStartIndex;
-	//uint16_t CurrentFrame;
-	//uint16_t AnimationLoopLength;
 
 	Navigator PathNavigator;
 
@@ -60,9 +48,8 @@ public class Pawn extends Actor {
 		PathNavigator.setBehaviorMode(Navigator.MovementBehavior.PATH_BEHAVIOR_ROUTE_TO_LOCATION);
 
 		CurrentMovementDirection = Direction.DIRECTION_NONE;
-		RenderLocationChange = new Vector3f();
 		
-		Speed = 1;
+		Speed = 5;  // 5 is normal dwarven speed
 		RandomRoute();
 	}
 	
@@ -73,15 +60,9 @@ public class Pawn extends Actor {
 			MapCoordinate NewLocation = new MapCoordinate(LocationCoordinates, MovementDirection);
 
 			Moving = true;
-			MovementDuration = (int) (EdgeCost / Speed);
+			MovementDuration = (int) (EdgeCost / (Speed / 5) * 12);
 			MovementStarted = TemporalManager.getSingleton().getCurrentTimeTick();
 
-			// Create Vector directly from a MovementDirection?
-			RenderLocationChange.x = NewLocation.X - LocationCoordinates.X;
-			RenderLocationChange.y = NewLocation.Y - LocationCoordinates.Y;
-			RenderLocationChange.z = NewLocation.Z - LocationCoordinates.Z;
-
-			RenderLocationChange = RenderLocationChange.divide(MovementDuration);
 			return MovementDuration;
 			// Reduce magnitude proportional to cooldown
 		} else {
@@ -89,21 +70,6 @@ public class Pawn extends Actor {
 			// Unexpected obstacle
 		}
 		return 1;
-	}
-
-	//void setAnimationType(ANIMATION_TYPE_INDEX NewAnimationType) {
-		//AnimationStartIndex = CurrentFrame = DATA->getAnimationGroupData(AnimationGroupID)->getAnimationStart(NewAnimationType);
-		//AnimationLoopLength = DATA->getAnimationGroupData(AnimationGroupID)->getAnimationLength(NewAnimationType);
-
-		//ActorBillboard->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setCurrentFrame(CurrentFrame);
-	//}
-
-	void AdvanceFrame() {
-		//ActorBillboard->getMaterial()->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setCurrentFrame(CurrentFrame++);  // advance the animation
-
-		//if (CurrentFrame == AnimationLoopLength) {
-		//	CurrentFrame = AnimationStartIndex;
-		//}
 	}
 
 	int UpdatePosition() {
@@ -133,7 +99,7 @@ public class Pawn extends Actor {
 	public void RandomRoute() {
 		PathManager Pathing = PathManager.getSinglton();
 		if (Pathing.getDirectionFlags(LocationCoordinates).cardinality() != 0) {//Is the current location impassable
-			DestinationCoordinates = Pathing.Tester.getRandomPassableCoordinate();  // This needs to get DIFFERENT coords each time
+			MapCoordinate DestinationCoordinates = Pathing.Tester.getRandomPassableCoordinate();  // This needs to get DIFFERENT coords each time
 
 			while (!PathNavigator.isDestinationReachable(DestinationCoordinates)) {
 				DestinationCoordinates = Pathing.Tester.getRandomPassableCoordinate();
@@ -151,14 +117,14 @@ public class Pawn extends Actor {
 		PathNavigator.setLocation(NewLocation);
 	}
 
-	//Vector3f getRenderPosition() {
-	//	return new Vector3f(LocationCoordinates.X, LocationCoordinates.Y, LocationCoordinates.Z).add(getRederPositionMovementAdjustment());
-	//}
-
-	//Vector3f getRederPositionMovementAdjustment() {
-	//	long MovementMultiplier = TemporalManager.getSingleton().getCurrentTimeTick() - UpdateTick;
-	//	return RenderLocationChange.mult(MovementMultiplier);
-	//}
+	public float getMovementFraction() {
+		long CurrentTick = TemporalManager.getSingleton().getCurrentTimeTick();
+		return (CurrentTick - MovementStarted) / ((float) MovementDuration);
+	}
+	
+	public Direction getMovementDirection() {
+		return CurrentMovementDirection;
+	}
 	
 	@Override
 	int Wake() {

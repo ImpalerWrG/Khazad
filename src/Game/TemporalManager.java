@@ -124,7 +124,9 @@ public class TemporalManager extends AbstractAppState implements ActionListener{
 
 		inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_SPACE)); 
 		inputManager.addMapping("Faster", new KeyTrigger(KeyInput.KEY_ADD)); 
+		inputManager.addMapping("Faster", new KeyTrigger(KeyInput.KEY_EQUALS)); 
 		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_MINUS)); 
+		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_SUBTRACT)); 
         inputManager.addListener(this, inputs);
 	}
 
@@ -163,7 +165,11 @@ public class TemporalManager extends AbstractAppState implements ActionListener{
 			for (int i = 0; i < FullTicks; i++) {
 				UpdateTick();
 			}
-			hudText.setText("Tick" + CurrentGameTick);
+			long seconds = CurrentGameTick / 12;
+			long minutes = seconds / 60;
+			long hours = minutes / 60;
+			long days = hours / 24;
+			hudText.setText((hours %24) + ":" + (minutes % 60) + ":" + (seconds % 60));
 		}
     }
 

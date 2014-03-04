@@ -200,7 +200,13 @@ public class TerrainRenderer extends AbstractAppState {
 				target.setRenderingDirty(false);
 			}
 		}
-
+		PopulateActors();
+	}
+	
+	public void PopulateActors() {
+		Game game = state.getState(Game.class);
+		GameMap map = game.getMap();
+		
 		ArrayList<Actor> actors = game.getActors();
 		for (Actor target : actors)
 		{
@@ -208,12 +214,14 @@ public class TerrainRenderer extends AbstractAppState {
 				if (target.isDirty()) {
 					Node actorNode = ActorNodeMap.get(target.getID());
 					if (actorNode == null) {
-						//Box box = new Box(0.7f, 0.7f, 0.7f);
-						//Spatial actorModel = new Geometry("Box", box );
-						//Material mat1 = new Material(assetmanager, "Common/MatDefs/Misc/Unshaded.j3md");
-						//mat1.setColor("Color", ColorRGBA.Blue);
-						//actorModel.setMaterial(mat1);
-						Spatial actorModel = assetmanager.loadModel("Models/Steve Rig/Steve Rig.j3o");
+						
+						Box box = new Box(0.7f, 0.7f, 0.7f);
+						Spatial actorModel = new Geometry("Box", box );
+						Material mat1 = new Material(assetmanager, "Common/MatDefs/Misc/Unshaded.j3md");
+						mat1.setColor("Color", ColorRGBA.Red);
+						actorModel.setMaterial(mat1);
+						
+						//Spatial actorModel = assetmanager.loadModel("Models/Steve Rig/Steve Rig.j3o");
 						actorModel.scale(0.25f, 0.25f, 0.25f);
 						actorModel.rotate(1.5f, 0.0f, 0.0f);
 
@@ -225,8 +233,22 @@ public class TerrainRenderer extends AbstractAppState {
 					MapCoordinate coords = target.getLocation();
 					Node z = getZNodeLight(coords.Z);
 					z.attachChild(actorNode);
-					actorNode.setLocalTranslation(coords.X, coords.Y, 0);
+					Vector3f Offset = new Vector3f();
 					
+					if (target instanceof Pawn) {
+						Pawn PawnTarget = (Pawn) target;
+						float MoveFraction = PawnTarget.getMovementFraction();
+						if (MoveFraction == 1.0)
+							MoveFraction = 0;
+							
+							Direction Moving = PawnTarget.getMovementDirection();
+							Vector3f MoveVec = Moving.toVector();
+							Offset.addLocal(MoveVec.mult(MoveFraction));
+							actorNode.setLocalTranslation(coords.X + Offset.x, coords.Y + Offset.y, + Offset.z);
+						
+					} else {
+						actorNode.setLocalTranslation(coords.X, coords.Y, 0);
+					}					
 				}
 			}
 		}
