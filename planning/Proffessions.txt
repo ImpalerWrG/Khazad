@@ -1,0 +1,224 @@
+Professions work on Branching system similar to EvilGenius minions or A Game of Dwarves.  Three tiers of professions exist, Basic, Intermediate, Advanced.  Choices are 7 for Basic, 6 for Intermediate and 5 for Advanced
+
+
+<Worshipper [WIL][CHA] - Religion, high status>
+
+	Paththeon x6 
+		Paladin
+		Monk
+		Cleric
+		Judge
+</>
+<Thinker [LOG][MEM] - Intelectual pursuits, government, science ect>
+
+	<Healer [INT][CHA] >
+		Chiurgeon
+		Bone Setter
+		Wound Dresser
+		Diagnosis
+		Dentist
+		Barber?
+	</>		
+	<Alchemist [DEX][]>
+		Apothecary - gives medicine
+		Powderer - makes extra black-powder for weapons and blasting
+		Transmuter - converts metals (Mithril/Adimantium?)
+		
+	</>	
+	<Mage [END][]>
+		Sorcerer - mind controlling magic
+		Wizard - 
+		Druid - nature controlling magic
+		Necromancer - death controlling magic
+		
+	</>	
+	<Administrator [VIT][]>
+		Clerk
+		Treasurer?
+		Lawyer
+	</>		
+	<Rogue [FLX][PER] capable of stealthy movement and observation of others>
+		Thief [DEX][STR]
+		Courtier [CHA][VIT]
+		Spy [WIL][JDG]
+		Assassin [SPD][RFL]
+		Fortune-teller [END][INT] - entertainment source
+	</>		
+	<Sage [][] >
+		Herald ? - royal messenger
+		Librarian - store historical records
+		Philosopher - 
+		Cartographer [][] - improved maps on global view
+		Rune Scribe - enhance items with rune magic
+	</>	
+</>
+<Fighter [VIT][REF] - Combat in all forms>
+
+	<Skirmisher [SPD][JDG] - light fast>
+		Berserker [WIL] - maximum aggression
+		Javaliner - bombard with thrown weapons
+	</>	
+	<Warrior [STR][LOG] - Balanced >
+	</>		
+	<Calvary [FLX][MEM] - Mounted combat>
+		Lancer - lances
+		Outrider - scouting skirmishing
+		Messenger - armoured fast travel
+		Hussar - Heavy armoured
+	</>		
+	<Marksman [DEX][PER] - Ranged attack>
+		Archer - Bow
+		SharpShooter
+		Musketeer - Musket
+		Quarreler - Crossbow
+	</>	
+	<Soldier [END][WIL] - Defensive formation fighting>
+		Pike
+		TowerShield
+		
+	</>	
+	<Guard [INT][CHA] - Police>
+	
+		Royal Guard [WIL][SPD] - Guards royalty
+		Constable [FLX][END] - Street cop,
+		Detective [LOG][JDG] - solves crimes
+		Jailer [STR][DEX] - watches dungeons, reduced unhappiness from interacting with prisoners
+		GateKeeper [PER][MEM] - open and close city gates
+	</>	
+</>
+<Crafter [JDG][DEX] - Creates items of value at end of resource chains, most happiness sources>
+
+	<Jeweller>
+		Glass-blower
+		Gem Cutter
+		Coin Minter
+	</>		
+	<Smith>
+		Weaponer
+		Armorer
+		
+				BlackSmith
+				RedSmith
+				WhiteSmith
+				BrightSmith
+		Smelter?
+	</>		
+	<Clothier>
+		Weaver
+		Spinner
+		Tailor
+		Leather worker/Cobbler
+		Dyer
+		Furrier
+	</>	
+	<Carver>
+		Wood Carver / lute-maker
+		Wax Carver
+		Bone Carver
+		Bowyer / Fletcher
+	</>	
+	<Sculptor>
+		Stone Shaper
+		Potter / Glayver?
+	</>		
+	<Artist [][]>
+		Bard/Singer
+		Painter
+		Thespian
+		Poet
+	</>	
+</>
+<Builder [STR][FLX] - Any structure/space/building space creation>
+
+	<Mason>
+		Bricklayer
+		Engraver
+	</>		
+	<Miner>
+		Digger - soil digging
+		Tunneller - rock digging
+		Prospector
+	</>		
+	<Carpenter>
+		Cooper - Barrel making
+		Framer - Timber structures
+		Joiner - Cabinetry
+		Wainwright - wagon and wheel making
+		Shipwright - makes boats for travel and trade
+	</>		
+	<Engineer [LOG]>
+		Mechanic
+		Siege Operator
+		road builder?
+		Architect
+	</>		
+</>
+<Labourer [INT][END] - Most internal domestic jobs and first order resource processing>
+
+	<Cook [][] - Food preperation>
+		Butcher
+		Baker
+		ChesseMaker
+		Brewer
+	</>		
+	<Miller - Food processing>
+		Thresher - grain processing
+		Smoker - preserves food by smoking
+		Tanner - leather making
+	</>		
+	<CareGiver - Domestic work>
+		Nurse - care for wounded
+		Nanny - care for children
+		Midwife - care for pregnant
+		Innkeeper - care for guests
+		Steward - care for royals
+	</>	
+	<Burner>
+		Coaler - makes charcoal
+		Soapier - makes lye & Soap
+		Smelter?
+	</>		
+	<Tinkerer>
+		Paper Maker
+		Candle Maker
+	</>		
+		
+</>
+<Gatherer [PER][SPD] - Collection of raw materials in unsafe areas, a dangerous and low status profession>
+	
+	<Farmer [END][JDG]>
+		fruit/grain/underground?
+		Plower
+		Gong-farmer?
+	</>	
+	<Trader [CHA][LOG]>
+		Pedlar - lone barter, no diplomatic relations necessary
+		Merchant/Teamster? - larger scale, wagon load trade
+		Retailer - runs shops for foreigners in 'Bazaar' zone
+		Sailor - largest scale trade by boat
+	</>	
+	<Woodsman [STR][FLX]>
+		LumberJack
+		Sawyer
+		Forester - replants trees
+	</>		
+	<Hunter [RFL][VIT]>
+		Trapper - hunts by trap setting
+		Animal Trainer - trains tame animals
+		Scouts
+		Falconer - hunts small game and birds with trained Falcon
+	</>		
+	<Forager [MEM][DEX]>
+		Picker? Herbalist - Berry picking
+		Fisher
+		BeeKeeper
+		Scavenger - collects junk
+	</>		
+	<Herder [WIL][INT]>
+		Shepard
+		Milker
+		Groom - cares for mounts
+		Shearer - collects fur
+		Animal Trainer - trains tame animals?
+	</>	
+</>

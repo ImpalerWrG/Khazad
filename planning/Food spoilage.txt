@@ -1,0 +1,25 @@
+
+
+Spoilage levels
+
+Fresh
+Stale
+Rancid
+Rotton - eat only when starving, typically fed to animals
+
+Perishability levels
+
+Highly Perishable - looses a level in a day
+Perishable - loses a level in a week
+Durable - loses a level in a month
+Highly Durable - loses a level in a year
+
+
+4x4 Matrix of food shows player state of food supplies
+
+Persihable food eaten before Durable
+Rancid eaten before Fresh
+
+Player allow/disallow eating some fresh foods for preservation?
+Player rations quantity of food eaten, trading hunger for longer endurance
+Player sets 'throw out' quality level, trading food quantity for happyness
