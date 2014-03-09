@@ -1,16 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package Map;
-
-import java.util.*;
-import Interface.VolumeSelection;
-
-import org.javatuples.Pair;
-
 /* Copyright 2010 Kenneth 'Impaler' Ferland
-free
+
 This file is part of Khazad.
 
 Khazad is free software: you can redistribute it and/or modify
@@ -26,9 +15,21 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
+package Map;
+
+import java.util.*;
+import Interface.VolumeSelection;
+
+import org.javatuples.Pair;
+
 import Data.DataTypes;
 
-
+/**
+ * Master Class for holding the playing Map, holds primaricly Cells in HashMap
+ * structure and pipes changes to the Cells to abstract them away from the rest
+ * of the code base, 
+ * @author Impaler
+ */
 public class GameMap {
 
 	private static GameMap instance = null;

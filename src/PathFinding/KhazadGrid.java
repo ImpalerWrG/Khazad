@@ -269,11 +269,11 @@ public class KhazadGrid implements GridInterface {
 
 	public float getEdgeCost(MapCoordinate TestCoords, Direction DirectionType) {
 		if (isEdge(TestCoords, DirectionType)) {
-			if (DirectionType.Z != 0) // True for Up and Down
+			if (DirectionType.ValueonAxis(Axis.AXIS_Z) != 0) // True for Up and Down
 				return 2;
 
-			boolean X = DirectionType.X != 0;
-			boolean Y = DirectionType.Y != 0;
+			boolean X = DirectionType.ValueonAxis(Axis.AXIS_X) != 0;
+			boolean Y = DirectionType.ValueonAxis(Axis.AXIS_Y) != 0;
 			final float root2 = (float) Math.sqrt(2);
 
 			if (X ^ Y) // N, S, E, W

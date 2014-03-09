@@ -101,21 +101,17 @@ public class TemporalManager extends AbstractAppState implements ActionListener{
 	public void onAction(String name, boolean keyPressed, float tpf) {
         if (this.isEnabled()) {
 			if (name.equals("Pause")) {
-				if (keyPressed) {
+				if (keyPressed)
 					Pause = !Pause;
-				}
 			}
 			if (name.equals("Faster")) {
-				if (keyPressed) {
-					TickRate *= 1.3f;
-				}
+				if (keyPressed) 
+					TickRate *= 2f;
 			}
 			if (name.equals("Slower")) {
-				if (keyPressed) {
-					TickRate /= 1.3f;
-				}
+				if (keyPressed)
+					TickRate /= 2f;
 			}
-
 		}
 	}
 

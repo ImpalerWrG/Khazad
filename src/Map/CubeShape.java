@@ -1,11 +1,25 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* Copyright 2010 Kenneth 'Impaler' Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
 package Map;
 
 /**
- *
+ * Holds corner height values used to determine sloped shapes and Meshes
+ * of map tiles
  * @author Impaler
  */
 public class CubeShape {
@@ -184,9 +198,60 @@ public class CubeShape {
 
 	public float centerHeight() {
 		if (split()) {
-			return (((NorthWestCorner() + SouthEastCorner()) / 2) * HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+			int temp1 = NorthWestCorner();
+			int temp2 = SouthEastCorner();
+			float temp3 = temp1 + temp2 - 2;
+			return ((temp3 / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
 		} else {
-			return (((SouthWestCorner() + NorthEastCorner()) / 2) * HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;			
+			return (((SouthWestCorner() + NorthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;			
 		}
+	}
+	
+	public float DirectionEdgeHeight(Direction DirectionType) {
+		
+		switch(DirectionType) {
+			
+			case DIRECTION_NORTH:
+			case DIRECTION_UP_NORTH:
+			case DIRECTION_DOWN_NORTH:
+				return (((NorthWestCorner() + NorthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;			
+				
+			case DIRECTION_SOUTH:
+			case DIRECTION_UP_SOUTH:
+			case DIRECTION_DOWN_SOUTH:
+				return (((SouthWestCorner() + SouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;			
+				
+			case DIRECTION_EAST:
+			case DIRECTION_UP_EAST:
+			case DIRECTION_DOWN_EAST:
+				return (((NorthEastCorner() + SouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;			
+				
+			case DIRECTION_WEST:
+			case DIRECTION_UP_WEST:
+			case DIRECTION_DOWN_WEST:
+				return (((NorthWestCorner() + SouthWestCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;			
+				
+			case DIRECTION_NORTHWEST:
+			case DIRECTION_UP_NORTHWEST:
+			case DIRECTION_DOWN_NORTHWEST:
+				return ((NorthWestCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				
+			case DIRECTION_SOUTHWEST:
+			case DIRECTION_UP_SOUTHWEST:
+			case DIRECTION_DOWN_SOUTHWEST:
+				return ((SouthWestCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+			
+			case DIRECTION_SOUTHEAST:
+			case DIRECTION_UP_SOUTHEAST:
+			case DIRECTION_DOWN_SOUTHEAST:
+				return ((SouthEastCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+			
+			case DIRECTION_NORTHEAST:
+			case DIRECTION_UP_NORTHEAST:
+			case DIRECTION_DOWN_NORTHEAST:
+				return ((NorthEastCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+		}
+		
+		return 0;
 	}
 }

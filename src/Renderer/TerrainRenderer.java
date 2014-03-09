@@ -15,13 +15,15 @@ import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Box;
+import com.jme3.scene.shape.Sphere;
+import com.jme3.math.FastMath;
 import com.jme3.texture.Image;
 import com.jme3.texture.Texture;
 import java.util.ArrayList;
@@ -94,7 +96,7 @@ public class TerrainRenderer extends AbstractAppState {
 		ColorRGBA Suncolor = ColorRGBA.White;
 		sun.setColor(Suncolor.mult(0.6f));
 		
-		AmbientLight  glow = new AmbientLight();
+		AmbientLight glow = new AmbientLight();
 		glow.setColor(Suncolor.mult(0.8f));
 				
 		
@@ -179,8 +181,6 @@ public class TerrainRenderer extends AbstractAppState {
 				}
 			}
 		}
-		
-		// Actors
 
 		Node ZLight = getZNodeLight(Coords.Z);
 		ZLight.attachChild(GeometryBatchFactory.optimize(LightNode));
@@ -214,14 +214,9 @@ public class TerrainRenderer extends AbstractAppState {
 				if (target.isDirty()) {
 					Node actorNode = ActorNodeMap.get(target.getID());
 					if (actorNode == null) {
-						
-						Box box = new Box(0.7f, 0.7f, 0.7f);
-						Spatial actorModel = new Geometry("Box", box );
-						Material mat1 = new Material(assetmanager, "Common/MatDefs/Misc/Unshaded.j3md");
-						mat1.setColor("Color", ColorRGBA.Red);
-						actorModel.setMaterial(mat1);
-						
-						//Spatial actorModel = assetmanager.loadModel("Models/Steve Rig/Steve Rig.j3o");
+										
+						//Geometry = new Sphere();
+						Spatial actorModel = assetmanager.loadModel("Models/Dwarf/Dwarf.j3o");
 						actorModel.scale(0.25f, 0.25f, 0.25f);
 						actorModel.rotate(1.5f, 0.0f, 0.0f);
 
@@ -238,13 +233,40 @@ public class TerrainRenderer extends AbstractAppState {
 					if (target instanceof Pawn) {
 						Pawn PawnTarget = (Pawn) target;
 						float MoveFraction = PawnTarget.getMovementFraction();
-						if (MoveFraction == 1.0)
-							MoveFraction = 0;
+						Direction MovingDirection = PawnTarget.getMovementDirection();
+						float Height = 0;
+						
+						if (MoveFraction <= 0.5) {
+							CubeShape shape = map.getCubeShape(coords);
+							float CenterHeight = shape.centerHeight();
+							float EdgeHeight = shape.DirectionEdgeHeight(MovingDirection);
+							float CenterFraction = (MoveFraction * 2.0f);
+							float EdgeFraction = 1.0f - CenterFraction;
+							Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);						
+						}
+						
+						if (MoveFraction > 0.5) {
+							MapCoordinate translated = new MapCoordinate(coords, MovingDirection);
+							CubeShape shape = map.getCubeShape(translated);
+							float CenterHeight = shape.centerHeight() + (translated.Z - coords.Z);							
+							float EdgeHeight = shape.DirectionEdgeHeight(MovingDirection.Invert()) + (translated.Z - coords.Z);
+							float CenterFraction = ((MoveFraction - 0.5f) * 2.0f);
+							float EdgeFraction = 1.0f - CenterFraction;
+							Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);						
 							
-							Direction Moving = PawnTarget.getMovementDirection();
-							Vector3f MoveVec = Moving.toVector();
-							Offset.addLocal(MoveVec.mult(MoveFraction));
-							actorNode.setLocalTranslation(coords.X + Offset.x, coords.Y + Offset.y, + Offset.z);
+							if (MoveFraction == 1.0) {
+								MoveFraction = 0;
+							}
+						}
+							
+						Vector3f MoveVec = MovingDirection.toVector();
+						Offset.addLocal(MoveVec.mult(MoveFraction));
+						
+						Quaternion rotation = actorNode.getLocalRotation();
+						rotation.fromAngleAxis(MovingDirection.toDegree() * FastMath.DEG_TO_RAD, Vector3f.UNIT_Z);
+						actorNode.setLocalRotation(rotation);
+												
+						actorNode.setLocalTranslation(coords.X + Offset.x, coords.Y + Offset.y, Height);
 						
 					} else {
 						actorNode.setLocalTranslation(coords.X, coords.Y, 0);

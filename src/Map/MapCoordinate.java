@@ -1,11 +1,26 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* Copyright 2010 Kenneth 'Impaler' Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
 package Map;
 
 /**
- *
+ * Fundemental coordinate for describing the cubic voxel space of the game play
+ * map.  Can be constructed from numerous other coordinate combinations and
+ * translated to adjacent cubes by Direction enums, a very common operation.
  * @author Impaler
  */
 public final class MapCoordinate {
@@ -18,10 +33,9 @@ public final class MapCoordinate {
 	  
 	public int X, Y, Z;
 
-
 	public MapCoordinate() {
 		X = Y = Z = 0;
-	};
+	}
 
 	public MapCoordinate(CellCoordinate CellCoords, byte CubeCoords) {
 		X = (CellCoords.X * CELLEDGESIZE) + ((CubeCoords >> CELLBITSHIFT) & CELLBITFLAG);
@@ -30,15 +44,15 @@ public final class MapCoordinate {
 	}
 
 	public MapCoordinate(MapCoordinate SourceCoords, Direction DirectionType) {
-		X = SourceCoords.X + DirectionType.X;
-		Y = SourceCoords.Y + DirectionType.Y;
-		Z = SourceCoords.Z + DirectionType.Z;
+		X = SourceCoords.X + DirectionType.ValueonAxis(Axis.AXIS_X);
+		Y = SourceCoords.Y + DirectionType.ValueonAxis(Axis.AXIS_Y);
+		Z = SourceCoords.Z + DirectionType.ValueonAxis(Axis.AXIS_Z);
 	}
 
 	public void TranslateMapCoordinates(Direction DirectionType) {
-		X += DirectionType.X;
-		Y += DirectionType.Y;
-		Z += DirectionType.Z;
+		X += DirectionType.ValueonAxis(Axis.AXIS_X);
+		Y += DirectionType.ValueonAxis(Axis.AXIS_Y);
+		Z += DirectionType.ValueonAxis(Axis.AXIS_Z);
 	}
 
 	public void TranslateMapCoordinates(Direction DirectionType, int Length) {
@@ -53,7 +67,7 @@ public final class MapCoordinate {
 
 	public void Set(int NewX, int NewY, int NewZ) {
 		X = NewX;   Y = NewY;   Z = NewZ;
-	};
+	}
 
 	public void Set(Axis AxialComponent, int NewValue) {
 		switch (AxialComponent)
@@ -79,12 +93,6 @@ public final class MapCoordinate {
 		return (byte) (tempx + tempy);
 	}
 
-	//public int Cube(){
-	//	int tempx = (byte) ((X & CELLBITFLAG) << CELLBITSHIFT);
-	//	int tempy = ((byte) (Y & CELLBITFLAG));
-	//	return tempx + tempy;
-	//}
-
 	public void copy(MapCoordinate ArgumentCoordinates) {
 		X = ArgumentCoordinates.X;
 		Y = ArgumentCoordinates.Y;
@@ -104,35 +112,6 @@ public final class MapCoordinate {
 		MapCoordinate Arg = (MapCoordinate) ArgumentCoordinates;
 		return (Arg.X == this.X && Arg.Y == this.Y && Arg.Z == this.Z);
 	}
-
-	public boolean greater(MapCoordinate ArgumentCoordinates) {
-		if (Z < ArgumentCoordinates.Z)
-		{
-			return true;
-		}
-		if (Z > ArgumentCoordinates.Z)
-		{
-			return false;
-		}
-		if (Y < ArgumentCoordinates.Y)
-		{
-			return true;
-		}
-		if (Y > ArgumentCoordinates.Y)
-		{
-			return false;
-		}
-		if (X < ArgumentCoordinates.X)
-		{
-			return true;
-		}
-		if (X > ArgumentCoordinates.X)
-		{
-			return false;
-		}
-
-		return false;  // All values equal thus not less than
-	};
 
 	public int ValueonAxis(Axis AxialComponent) {
 		switch (AxialComponent)

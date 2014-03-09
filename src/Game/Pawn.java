@@ -41,7 +41,7 @@ public class Pawn extends Actor {
 	byte Willpower = 0;
 	byte Intuition = 0;
 
-	Pawn(int id, MapCoordinate SpawnLocation) {
+	public Pawn(int id, MapCoordinate SpawnLocation) {
 		super(id, SpawnLocation);		
 		Moving = false;
 		PathNavigator = new Navigator(SpawnLocation, 1, 1);

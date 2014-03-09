@@ -1,20 +1,35 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* Copyright 2010 Kenneth 'Impaler' Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
 package Map;
 
 import com.jme3.math.Vector3f;
+
 /**
- *
+ * Core Enum for describing directions in cubic map space, all 26 cubes surrounding
+ * a single cube are described as well as None to reference the original cube and
+ * indicate non movement, Destination is used by pathfinding to indicate the end
+ * of a path being reached.
  * @author Impaler
  */
-
-
-// BitPacking  XX 0 YY 0 ZZ
-//             76 5 43 2 10
-
 public enum Direction {
+
+	// BitPacking  XX 0 YY 0 ZZ
+	//             76 5 43 2 10
 
     DIRECTION_NONE  ((byte)0, 0, 0, 0),					// Index -1
     DIRECTION_UP  ((byte)1, 0, 0, 1),					// Index 0
@@ -56,7 +71,7 @@ public enum Direction {
 
 
     public final byte Data;
-	public final int X, Y, Z;
+	private final int[] AxisValues = new int[Axis.values().length];
     
     private static final byte ONEMASK = (byte)18;
     private static final byte ZEROMASK = (byte)219;
@@ -78,7 +93,7 @@ public enum Direction {
         DIRECTION_NORTHWEST,
         DIRECTION_SOUTHWEST,
         DIRECTION_SOUTHEAST,
-        DIRECTION_SOUTHWEST
+        DIRECTION_NORTHEAST
     };
     
     public static final Direction AXIAL_DIRECTIONS[] = {
@@ -120,7 +135,7 @@ public enum Direction {
         DIRECTION_DOWN_SOUTHWEST   
     };
 
-	public static final Direction Opposites [][] = {
+	private static final Direction Opposites [][] = {
 		
 		{DIRECTION_NONE, DIRECTION_NONE},
         {DIRECTION_UP, DIRECTION_DOWN},
@@ -148,18 +163,19 @@ public enum Direction {
         {DIRECTION_DOWN_NORTHWEST, DIRECTION_UP_SOUTHEAST},
         {DIRECTION_SOUTHWEST, DIRECTION_NORTHEAST},
         {DIRECTION_UP_SOUTHWEST, DIRECTION_DOWN_NORTHEAST},
-        {DIRECTION_DOWN_SOUTHWEST, DIRECTION_UP_NORTHEAST}
+        {DIRECTION_DOWN_SOUTHWEST, DIRECTION_UP_NORTHEAST},
+		{DIRECTION_DESTINATION, DIRECTION_NONE}
+
 	};
 	
 	
    Direction(byte Rawvalue, int XAxis, int YAxis, int ZAxis) {
         Data = Rawvalue;
-		X = XAxis;  Y = YAxis;  Z = ZAxis;
-    };
-
-	byte value() {
-		return Data;
-	}
+		
+		AxisValues[Axis.AXIS_X.ordinal()] = XAxis;
+		AxisValues[Axis.AXIS_Y.ordinal()] = YAxis;
+		AxisValues[Axis.AXIS_Z.ordinal()] = ZAxis;
+    }
 	
     public Direction Invert() {		
 		return Opposites[this.ordinal()][1];
@@ -169,14 +185,9 @@ public enum Direction {
         return OtherDirection.Data != Data;
     }
 
-    public byte ValueonAxis(Axis QuerryAxis) {
-        byte temp = (byte) ((Data >> (QuerryAxis.ordinal() * 3)) & 3);
-        if (temp == 1)
-                return 1;
-        if (temp == 2)
-                return -1;
-        return 0;
-    }
+    public int ValueonAxis(Axis QuerryAxis) {
+		return AxisValues[QuerryAxis.ordinal()];
+	}
 
     boolean Positive() {
         int temp = Data;
@@ -205,21 +216,56 @@ public enum Direction {
 
         return false;
     }
-
-    byte Index() {
-        byte Z = (byte) (Data & 3);
-        byte Y = (byte) (((Data >> 3) & 3) * 3);
-        byte X = (byte) (((Data >> 6) & 3) * 9);
-
-        return (byte) (X + Y + Z - 1);
-    }
 	
 	public Vector3f toVector() {
-		Vector3f Vec = new Vector3f();
-		Vec.x = ValueonAxis(Axis.AXIS_X);
-		Vec.y = ValueonAxis(Axis.AXIS_Y);
-		Vec.z = ValueonAxis(Axis.AXIS_Z);
-		return Vec;
+		return new Vector3f(ValueonAxis(Axis.AXIS_X), ValueonAxis(Axis.AXIS_Y), ValueonAxis(Axis.AXIS_Z));
+	}
+	
+	public int toDegree() {
+		
+		switch(this) {
+			
+			case DIRECTION_NORTH:
+			case DIRECTION_UP_NORTH:
+			case DIRECTION_DOWN_NORTH:
+				return 0;
+				
+			case DIRECTION_SOUTH:
+			case DIRECTION_UP_SOUTH:
+			case DIRECTION_DOWN_SOUTH:
+				return 180;
+				
+			case DIRECTION_EAST:
+			case DIRECTION_UP_EAST:
+			case DIRECTION_DOWN_EAST:
+				return 270;
+				
+			case DIRECTION_WEST:
+			case DIRECTION_UP_WEST:
+			case DIRECTION_DOWN_WEST:
+				return 90;
+				
+			case DIRECTION_NORTHWEST:
+			case DIRECTION_UP_NORTHWEST:
+			case DIRECTION_DOWN_NORTHWEST:
+				return 45;
+				
+			case DIRECTION_SOUTHWEST:
+			case DIRECTION_UP_SOUTHWEST:
+			case DIRECTION_DOWN_SOUTHWEST:
+				return 135;
+			
+			case DIRECTION_SOUTHEAST:
+			case DIRECTION_UP_SOUTHEAST:
+			case DIRECTION_DOWN_SOUTHEAST:
+				return 225;
+			
+			case DIRECTION_NORTHEAST:
+			case DIRECTION_UP_NORTHEAST:
+			case DIRECTION_DOWN_NORTHEAST:
+				return 315;
+		}
+		return 0;
 	}
 }
 

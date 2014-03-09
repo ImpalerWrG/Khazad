@@ -1,7 +1,22 @@
+/* Copyright 2010 Kenneth 'Impaler' Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
 package Core;
 
-import Interface.GameCameraState;
-import com.jme3.app.Application;
 import com.jme3.app.StatsAppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
@@ -13,7 +28,6 @@ import Nifty.*;
 import Interface.*;
 import Game.*;
 import Renderer.*;
-import Map.*;
 import PathFinding.PathManager;
 import Sound.Music;
 
@@ -21,18 +35,14 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.util.BufferUtils;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import javax.management.timer.Timer;
 
 /**
- * test
+ * Simple Initialization of gamestates that run just around everything else
+ * A Threadpool is used for speeding up pathfinding and rendering
  * @author Impaler
  */
 public class Main extends SimpleApplication {
-	
-	TerrainRenderer render = null;
 
 	static ScheduledThreadPoolExecutor ExecutionThreadpool;
 
@@ -69,8 +79,7 @@ public class Main extends SimpleApplication {
 		this.stateManager.attach(Pather);
 		
 		// RENDER
-		render = new TerrainRenderer();
-		this.stateManager.attach(render);
+		this.stateManager.attach(new TerrainRenderer());
 		
 		this.stateManager.attach(new GameCameraState());
 		this.stateManager.attach(new Music());

@@ -1,9 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package Map;
-
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
 This file is part of Khazad.
@@ -21,13 +15,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
+package Map;
 
+/**
+ * Extreamly simple Axis system used to build the rest of the Map system
+ * @author Impaler
+ */
 public enum Axis {
     AXIS_Z ((byte)0),	// Vertical
     AXIS_Y ((byte)1),	// North/South
     AXIS_X ((byte)2);	// East/West
 
     private final byte value;
+
     Axis(byte Index) {
             this.value = Index;
     }
