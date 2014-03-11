@@ -5,19 +5,21 @@
 package Game;
 
 /**
- *
+ * Base class for all objects that respond to time
  * @author Impaler
  */
-public abstract class Temporal {
+public abstract class Temporal implements Comparable {
 	
 	int ID;
+	long WakeTick = 1;
 
 	Temporal() {
 		TemporalManager.getSingleton().AddTemporal(this, 1);
 	}
 
-	void ResetCooldown(int NewCoolDown) {
-		// GEt the actor and move to appropriate carosel
+	void ResetWakeTick(long NewWakeTick) {
+		WakeTick = NewWakeTick;
+		// notify Temporal Manager?
 	}
 
 	void Retire() {
@@ -28,5 +30,16 @@ public abstract class Temporal {
 		return ID;
 	}
 
-	abstract int Wake();
+	public int compareTo(Object TargetObject) {
+		Temporal Target = (Temporal) TargetObject;
+		if (WakeTick < Target.WakeTick) {
+			return -1;
+		} else if (WakeTick == Target.WakeTick) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+
+	abstract long Wake(long CurrentTick);
 }

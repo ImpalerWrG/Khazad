@@ -1,14 +1,26 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* Copyright 2010 Kenneth 'Impaler' Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
 package Game;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.PriorityQueue;
 
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
@@ -23,34 +35,12 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.ColorRGBA;
 
 /**
- *
+ * Holds and advances the games time ticks at 12 ticks per simulated second, calls the Wake function of all
+ * Time sensing objects and remaps them for their next wakeup
  * @author Impaler
  */
 public class TemporalManager extends AbstractAppState implements ActionListener{
 	
-	class Bucket {
-		ArrayList<Temporal> Contents;
-		void add(Temporal NewTemporal)
-		{
-			Contents.add(NewTemporal);
-		}
-	}
-
-	class Carrosel {
-	
-		ArrayList<Bucket> Buckets;
-		int BucketCount;
-		
-		Carrosel(int CarroselSize) {
-			BucketCount = CarroselSize;         // Saved for destructor
-			Buckets = new ArrayList<Bucket>(CarroselSize);
-
-			for (Bucket target: Buckets) {
-				target = new Bucket();
-			}
-		}
-	}
-
 	private static TemporalManager Singleton = null;
 	private SimpleApplication app;
 	private AppStateManager state;
@@ -61,15 +51,9 @@ public class TemporalManager extends AbstractAppState implements ActionListener{
 	int TickRate;
 	long CurrentGameTick;
 	float TickRounding;
-	HashMap<Integer, Carrosel> CarroselMap;
-
-	ArrayList<Temporal> ReIndexedTemporalBuffer;
-	ArrayList<Integer> ReIndexedTemporalCoolDown;
-	ArrayList<Temporal> RetiredTemporalBuffer;
 
 	int UniqueIDCounter;
-
-	ArrayList<Temporal> TemporaryTemps; // Temporary Hack
+	PriorityQueue<Temporal> TemporalQueue;
 	
 	private TemporalManager() {
 		TickRate = 100;
@@ -78,7 +62,7 @@ public class TemporalManager extends AbstractAppState implements ActionListener{
 		UniqueIDCounter = 0;
 		Pause = true;
 		
-		TemporaryTemps = new ArrayList<Temporal>();
+		TemporalQueue = new PriorityQueue<Temporal>();
 	}
 
 	public static TemporalManager getSingleton() {
@@ -133,9 +117,17 @@ public class TemporalManager extends AbstractAppState implements ActionListener{
 	public void UpdateTick() {
 		CurrentGameTick++;   // Advance Tick count
 		
-		for (Temporal target: TemporaryTemps) {
-			target.Wake();
-		}
+		Temporal target;
+		target = TemporalQueue.poll();
+		do {	
+			long RewakeTick = target.Wake(CurrentGameTick);
+			if (RewakeTick != -1) {
+				TemporalQueue.add(target);
+			}
+			target = TemporalQueue.poll();
+		} while (target.WakeTick <= CurrentGameTick);	
+
+		TemporalQueue.add(target);
 	}
 	
 	public void changeTickRate(int RateChange) {
@@ -180,100 +172,8 @@ public class TemporalManager extends AbstractAppState implements ActionListener{
 		this.app.getGuiNode().attachChild(hudText);
 	}
 
-	/*
-	void TemporalManager::UpdateTick()
-	{
-		std::map<CoolDown, Carrosel*>::iterator CarroselIterator;
-
-		for (CarroselIterator = CarroselMap.begin(); CarroselIterator != CarroselMap.end(); CarroselIterator++)
-		{
-			CoolDown CurrentCoolDown = CarroselIterator->first;        // CoolDown is the size of this Carosel and how long it takes to 'revolve'
-			Carrosel* TargetCarosel = CarroselIterator->second;
-
-			Bucket* TargetBucket = TargetCarosel->Buckets[(CurrentGameTick + CurrentCoolDown) % CurrentCoolDown];  // Modulus advances to the next bucket each update
-			uint16_t BucketShorteningCounter = 0;
-
-			for (uint32_t i = 0; i < TargetBucket->TemporalVector.size(); i++)
-			{
-				if (TargetBucket->TemporalVector[i] != NULL)  // should Null be allowed?
-				{
-					CoolDown DesiredCoolDown = TargetBucket->TemporalVector[i]->Update();  // The amount of Cooldown the Temporal desires untill its next update
-
-					if (DesiredCoolDown != CurrentCoolDown)  // ReIndex the Temporal
-					{
-						ReIndexedTemporalBuffer.push_back(TargetBucket->TemporalVector[i]);
-						ReIndexedTemporalCoolDown.push_back(DesiredCoolDown);
-
-						TargetBucket->TemporalVector[i] = TargetBucket->TemporalVector.back();  i--; //  Move Last Object into the current slot and remain on it for lext loop
-						TargetBucket->TemporalVector.back() = NULL;
-						BucketShorteningCounter++;
-					}
-				}
-				else
-				{
-					//BucketShorteningCounter++; // No Nulls should slip through
-				}
-			}
-			TargetBucket->TemporalVector.resize(TargetBucket->TemporalVector.size() - BucketShorteningCounter);  //Shrink the Bucket to save space
-		}
-
-
-		// Extract and Destroy Retired
-
-
-
-		// Insert New and Changed
-		for (int i = 0; i < ReIndexedTemporalBuffer.size(); i++)
-		{
-			AddTemporal(ReIndexedTemporalBuffer[i], ReIndexedTemporalCoolDown[i]);
-		}
-
-		// Clear the lists now that all Reinsertions are done
-		ReIndexedTemporalBuffer.clear();
-		ReIndexedTemporalCoolDown.clear();
-
-
-		CurrentGameTick++;   // Advance Tick count
-	}
-
-	Carrosel getCarosel(CoolDown DesiredCoolDown)
-	{
-		std::map<CoolDown, Carrosel*>::iterator CarroselIterator = CarroselMap.find(DesiredCoolDown);
-
-		if (CarroselIterator != CarroselMap.end())
-		{
-			return CarroselIterator->second;
-		}
-		else   // Create and Insert a new Carosel
-		{
-			Carrosel* NewCarosel = new Carrosel(DesiredCoolDown);
-			CarroselMap[DesiredCoolDown] = NewCarosel;
-			return NewCarosel;
-		}
-	}
-*/
 	boolean AddTemporal(Temporal NewTemporal, int NewCoolDown) {
-		/*
-		if (NewCoolDown < 1) {
-			NewCoolDown = 1;
-		}
-		Carrosel TargetCarosel = getCarosel(NewCoolDown);
-		int Bucket = ((CurrentGameTick + NewCoolDown) % NewCoolDown);   // Ensures small Tick count dose not produce false modulus
-
-		TargetCarosel->Buckets[Bucket]->TemporalVector.push_back(NewTemporal);
-		NewTemporal->CurrentBucket = TargetCarosel->Buckets[Bucket];
-
-		* */
-		TemporaryTemps.add(NewTemporal);
+		TemporalQueue.add(NewTemporal);	
 		return true;
 	}
-
-	boolean RetireTemporal(TemporalManager TargetTemporal) {
-		//Bucket* TargetBucket = TargetTemporal->CurrentBucket;
-
-		//for
-		// TODP, retreave and remove pawn
-		return false;
-	}
-
 }

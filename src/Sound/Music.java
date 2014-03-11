@@ -49,10 +49,10 @@ public class Music extends AbstractAppState {
 	public void LoadTrackLocations() {
 		Tracks.add("Sounds/Music/The Fall of Arcana.ogg");
 		Tracks.add("Sounds/Music/Stepping Stones.ogg");
-		Tracks.add("Sounds/Music/Around the Mountain.ogg");		
-		//Tracks.add("Sounds/Music/Crystal Cave.ogg");		
-		Tracks.add("Sounds/Music/Dark Ambience.ogg");		
-		Tracks.add("Sounds/Music/Second Organ.ogg");		
+		Tracks.add("Sounds/Music/Around the Mountain.ogg");
+		//Tracks.add("Sounds/Music/Crystal Cave.ogg");
+		Tracks.add("Sounds/Music/Dark Ambience.ogg");
+		Tracks.add("Sounds/Music/Second Organ.ogg");
 	}
 
 	public String SelectTrack() {

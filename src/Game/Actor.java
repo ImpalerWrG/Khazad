@@ -5,7 +5,6 @@
 package Game;
 
 import Map.MapCoordinate;
-import Map.CellCoordinate;
 import com.jme3.scene.Node;
 
 /**
@@ -96,8 +95,8 @@ public class Actor extends Temporal {
 		}
 	}
 	
-	int Wake() {
-		return 1;
+	long Wake(long CurrentTick) {
+		return CurrentTick + 100;
 	}
 }
 

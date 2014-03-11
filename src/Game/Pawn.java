@@ -53,28 +53,19 @@ public class Pawn extends Actor {
 		RandomRoute();
 	}
 	
-	int AttemptMove(Direction MovementDirection) {
+	long AttemptMove(Direction MovementDirection) {
 		float EdgeCost = PathManager.getSinglton().getEdgeCost(LocationCoordinates, MovementDirection);
-
+		
 		if (EdgeCost != -1) {
-			MapCoordinate NewLocation = new MapCoordinate(LocationCoordinates, MovementDirection);
-
 			Moving = true;
 			MovementDuration = (int) (EdgeCost / (Speed / 5) * 12);
-			MovementStarted = TemporalManager.getSingleton().getCurrentTimeTick();
-
 			return MovementDuration;
-			// Reduce magnitude proportional to cooldown
 		} else {
-			Moving = false;
-			// Unexpected obstacle
+			return 1;  // signal falure to job manager?
 		}
-		return 1;
 	}
 
-	int UpdatePosition() {
-		TemporalManager Time = TemporalManager.getSingleton();
-		long CurrentTick = Time.getCurrentTimeTick();   // Record the current Tick
+	long UpdatePosition(long CurrentTick) {
 
 		if (Moving) {
 			if (CurrentTick >= (MovementStarted + MovementDuration)) { // Done
@@ -82,11 +73,12 @@ public class Pawn extends Actor {
 				setLocation(NewLocation);
 				Moving = false;
 			}
-			return (int) (MovementDuration - (CurrentTick - MovementStarted));
+			return 1;
 		} else {
 			CurrentMovementDirection = PathNavigator.getNextStep();
 			if (CurrentMovementDirection != Direction.DIRECTION_NONE) {
 				if (CurrentMovementDirection != Direction.DIRECTION_DESTINATION) {
+					MovementStarted = CurrentTick;
 					return AttemptMove(CurrentMovementDirection);
 				} else {
 					RandomRoute();
@@ -112,13 +104,12 @@ public class Pawn extends Actor {
 	}
 
 	@Override
-	public void setLocation(MapCoordinate NewLocation) {
+	public final void setLocation(MapCoordinate NewLocation) {
 		super.setLocation(NewLocation);
 		PathNavigator.setLocation(NewLocation);
 	}
 
-	public float getMovementFraction() {
-		long CurrentTick = TemporalManager.getSingleton().getCurrentTimeTick();
+	public float getMovementFraction(long CurrentTick) {
 		return (CurrentTick - MovementStarted) / ((float) MovementDuration);
 	}
 	
@@ -127,8 +118,12 @@ public class Pawn extends Actor {
 	}
 	
 	@Override
-	int Wake() {
-		super.Wake();
-		return UpdatePosition();
+	long Wake(long CurrentTick) {
+		super.Wake(CurrentTick);
+
+		if (CurrentTick >= WakeTick) {
+			WakeTick = CurrentTick + UpdatePosition(CurrentTick);
+		}
+		return WakeTick;
 	}
 }

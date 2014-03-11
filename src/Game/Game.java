@@ -19,26 +19,22 @@ public class Game extends AbstractAppState {
 
     boolean Zoneing;   // User is Designating a Zone
 
-    //Clock GameTimer;
-
     GameMap MainMap;
     Geology MapGeology;
-    //PathManager Path;
-    //Settlment TheSettlment;
+	Settlment GameSettlment;
 
 	ArrayList<Actor> Actors;
 	int ActorIDcounter = 0;
 
     float ProgressAmount;
 
+
 	public Game() {
-		//GameTimer = new Clock(50);
-		
+		GameSettlment = new Settlment();
 		Actors = new ArrayList<Actor>();
 	}
 
 	public boolean InitializeGame(short X, short Y, String SeedString) {
-		//TempManager = new TemporalManager();
 
 		MapGeology = new Geology();
 		MapGeology.Initialize(SeedString);
@@ -50,8 +46,6 @@ public class Game extends AbstractAppState {
 		//Path = new PathManager();
 		//Path.Initialize();
 
-		//boost::thread_group Builder;
-		//Builder.create_thread( boost::bind(&BuildMapChunk, this, 0, 0, X, Y));
 		BuildMapChunk((short) 0, (short) 0, (byte) X, (byte) Y);
 
 		Zoneing = false;

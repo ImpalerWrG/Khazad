@@ -19,12 +19,19 @@ public class Citizen extends Pawn {
 	// personality/ tastes/ other fixed status
 
 	// Proffessions / levels/ skills
-	
-	// Current Tasks
+
+	Task CurrentTask;
+	Job CurrentJob;
 	
 	public Citizen(int id, MapCoordinate SpawnLocation) {
-		super(id, SpawnLocation);		
+		super(id, SpawnLocation);
+		CurrentTask = new Task(Task.TaskType.TASK_IDLE, SpawnLocation);
 	}
 	
-	
+	public void setTask(Task NewTask) {
+		if (CurrentTask != NewTask) {
+			CurrentTask = NewTask;
+			// change behavior to achive task
+		}
+	}
 }

@@ -207,6 +207,8 @@ public class TerrainRenderer extends AbstractAppState {
 		Game game = state.getState(Game.class);
 		GameMap map = game.getMap();
 		
+		long CurrentTick = TemporalManager.getSingleton().getCurrentTimeTick();
+		
 		ArrayList<Actor> actors = game.getActors();
 		for (Actor target : actors)
 		{
@@ -232,7 +234,7 @@ public class TerrainRenderer extends AbstractAppState {
 					
 					if (target instanceof Pawn) {
 						Pawn PawnTarget = (Pawn) target;
-						float MoveFraction = PawnTarget.getMovementFraction();
+						float MoveFraction = PawnTarget.getMovementFraction(CurrentTick);
 						Direction MovingDirection = PawnTarget.getMovementDirection();
 						float Height = 0;
 						
