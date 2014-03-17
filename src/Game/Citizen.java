@@ -4,6 +4,7 @@
  */
 package Game;
 
+import Job.*;
 import Map.MapCoordinate;
 
 /**
@@ -20,18 +21,11 @@ public class Citizen extends Pawn {
 
 	// Proffessions / levels/ skills
 
-	Task CurrentTask;
-	Job CurrentJob;
+	//Job CurrentJob;
 	
 	public Citizen(int id, MapCoordinate SpawnLocation) {
 		super(id, SpawnLocation);
-		CurrentTask = new Task(Task.TaskType.TASK_IDLE, SpawnLocation);
+		CurrentTask = new Task(null, TaskType.TASK_IDLE, SpawnLocation);
 	}
 	
-	public void setTask(Task NewTask) {
-		if (CurrentTask != NewTask) {
-			CurrentTask = NewTask;
-			// change behavior to achive task
-		}
-	}
 }

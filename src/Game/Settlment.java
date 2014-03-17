@@ -4,6 +4,7 @@
  */
 package Game;
 
+import Job.JobManager;
 import java.util.ArrayList;
 
 /**
@@ -12,18 +13,23 @@ import java.util.ArrayList;
  * @author Impaler
  */
 public class Settlment {
-	
-	ArrayList<Citizen> Citizens;
+
+	// Settlment data, wealth, honor, diplomatic status etc
+
+	private ArrayList<Citizen> Citizens;
 	JobManager JobSystem;
-	
+
 	public Settlment() {
 		Citizens = new ArrayList<Citizen>();
 		JobSystem = new JobManager();
 	}
-	
-	public void addCitizen() {
-		
+
+	public void addCitizen(Citizen NewCitizen) {
+		Citizens.add(NewCitizen);
+		JobSystem.addCitizen(NewCitizen);
 	}
 	
-	
+	public JobManager getJobManager() {
+		return JobSystem;
+	}
 }

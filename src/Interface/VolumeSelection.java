@@ -4,7 +4,7 @@
  */
 package Interface;
 
-import Map.*;
+import Map.MapCoordinate;
 /**
  *
  * @author Impaler

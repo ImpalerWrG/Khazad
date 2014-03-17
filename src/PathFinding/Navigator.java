@@ -160,4 +160,9 @@ public class Navigator {
 		return ParentManager.isPathPossible(0, CurrentLocation, TestDestination);
 	}
 
+	public void wipePath() {
+		Destination = null;
+		CurrentPath = null;
+		CurrentPathWalker = null;
+	}
 }

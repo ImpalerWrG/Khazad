@@ -117,10 +117,22 @@ public class Game extends AbstractAppState {
 		return NewPawn;
 	}
 
+	public Citizen SpawnCitizen(MapCoordinate SpawnCoordinates) {
+		Citizen NewCitizen = new Citizen(ActorIDcounter, SpawnCoordinates);
+		ActorIDcounter++;
+		Actors.add(NewCitizen);
+		GameSettlment.addCitizen(NewCitizen);
+		return NewCitizen;
+	}
+
 	public GameMap getMap() {
 		return MainMap;
 	}
 	
+	public Settlment getSettlment() {
+		return GameSettlment;
+	}
+
 	public ArrayList<Actor> getActors() {
 		return Actors;
 	}

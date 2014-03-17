@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package Game;
+package Job;
 
 import Map.MapCoordinate;
+import Map.Direction;
 
 /**
  * Smallest possible unit of work or activity by a Pawn, Jobs are broken down
@@ -12,22 +13,20 @@ import Map.MapCoordinate;
  * @author Impaler
  */
 public class Task {
-	
-	public enum TaskType {
-		TASK_IDLE,
-		TASK_SLEEP,
-		TASK_PICK_UP,
-		TASK_HAUL,
-		TASK_GOTO,
-		TASK_DROP_OFF,
-		TASK_DIG,
-	}
-	
+		
+	public final Job ParentJob;
 	public final TaskType type;
 	public final MapCoordinate worklocation;
+	public final Direction workdirection;
 
-	public Task(TaskType NewType, MapCoordinate location) {
+	public Task(Job Parent, TaskType NewType, MapCoordinate location) {
+		ParentJob = Parent;
 		type = NewType;
 		worklocation = location;
+		workdirection = null;
+	}
+	
+	String getName() {
+		return "A simple task";
 	}
 }

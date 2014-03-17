@@ -21,7 +21,7 @@ import com.jme3.scene.Node;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer;
-import com.jme3.scene.shape.Box;
+import com.jme3.scene.shape.Sphere;
 import com.jme3.texture.Texture;
 import com.jme3.util.BufferUtils;
 
@@ -49,6 +49,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 	private Node rootnode;
 	private Node terrainnode;
+	private Node LookNode;
 
     private SimpleApplication app;
     private GameCamera MainCamera;
@@ -82,21 +83,21 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
         if (app.getInputManager() != null) {
        
             if (MainCamera == null) {
-				Node LookNode = new Node();
+				LookNode = new Node();
 				this.app.getRootNode().attachChild(LookNode);
 				LookNode.setLocalTranslation(1, 2, 3);
 				
-				Box box1 = new Box(0.5f, 0.5f, 0.5f);
-				Geometry blue = new Geometry("Box", box1);
+				Sphere eye = new Sphere(10, 10, 0.5f);
+				Geometry blue = new Geometry("EyeBall", eye);
 				blue.setLocalTranslation(new Vector3f(0, 0, 0));
 				Material mat1 = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-				mat1.setColor("Color", ColorRGBA.Blue);
+				mat1.setColor("Color", ColorRGBA.White);
 				blue.setMaterial(mat1);
 				LookNode.attachChild(blue);
+				LookNode.setCullHint(Spatial.CullHint.Always);										
 				
                 MainCamera = new GameCamera(app.getCamera(), LookNode);
             }
-            //MainCamera.registerWithInput(app.getInputManager());            
         }
 		registerWithInput(app.getInputManager());
 
@@ -181,19 +182,19 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			if (name.equals("LeftClick")) {
 				LeftDown = keyPressed;
 				if (!RightDown && keyPressed) {
-					//MoveBoxCursor();
 				}
 			}
 			if (name.equals("RightClick")) {
 				RightDown = keyPressed;
-				if (RightDown) {
-					//TargetNode.setCullHint(Spatial.CullHint.Never);					
-				} else {
-					//TargetNode.setCullHint(Spatial.CullHint.Always);										
-				}
 			}
+
 			if (name.equals("MiddleClick")) {
 				MiddleDown = keyPressed;
+				if (MiddleDown) {
+					LookNode.setCullHint(Spatial.CullHint.Never);					
+				} else {
+					LookNode.setCullHint(Spatial.CullHint.Always);										
+				}
 			}
 			
 			if (name.equals("ArrowUp") && keyPressed) {
@@ -215,28 +216,28 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		updateMousePosition();
 			
         if (name.equals("mouseLeft")) {
-			if (LeftDown && RightDown) {
+			if (MiddleDown) {
 				MainCamera.RotateCamera(value);
-			}else{
+			} else {
 				if (RightDown)
 					MainCamera.TranslateCamera(CreateTranslationVector());
 			}
         } else if (name.equals("mouseRight")) {
-			if (LeftDown && RightDown) {
+			if (MiddleDown) {
 				MainCamera.RotateCamera(-value);
-			}else{
+			} else {
 				if (RightDown)
 					MainCamera.TranslateCamera(CreateTranslationVector());
 			}
         } else if (name.equals("Up")) {
-			if (LeftDown && RightDown) {
+			if (MiddleDown) {
 				MainCamera.PitchCamera(value);
 			}else{
 				if (RightDown)
 					MainCamera.TranslateCamera(CreateTranslationVector());
 			}
         } else if (name.equals("Down")) {
-			if (LeftDown && RightDown) {
+			if (MiddleDown) {
 				MainCamera.PitchCamera(-value);
 			}else{
 				if (RightDown)
@@ -251,8 +252,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
     public void registerWithInput(InputManager inputManager) {
         String[] inputs = {"LeftClick", "RightClick", "MiddleClick", "Down", "Up", "mouseLeft", "mouseRight", "ZoomIn", "ZoomOut", "ArrowUp", "ArrowDown"};
-
-        //this.inputManager = inputManager;
 
         inputManager.addMapping("Down", new MouseAxisTrigger(1, true));
         inputManager.addMapping("Up", new MouseAxisTrigger(1, false));
@@ -269,7 +268,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
         inputManager.addMapping("ArrowDown", new KeyTrigger(KeyInput.KEY_DOWN));
         
         inputManager.addListener(this, inputs);
-
     }
 
 	public void unregisterInput(InputManager inputManager) {

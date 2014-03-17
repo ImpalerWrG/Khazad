@@ -4,7 +4,8 @@
  */
 package Game;
 
-import com.jme3.math.Vector3f;
+import Job.Task;
+import Core.Dice;
 
 import Map.Direction;
 import Map.MapCoordinate;
@@ -24,6 +25,9 @@ public class Pawn extends Actor {
 	long MovementStarted;
 
 	Navigator PathNavigator;
+	public Task CurrentTask;
+
+	Dice AttributeDice;
 
 	byte Strength = 0;
 	byte Dextarity = 0;
@@ -49,8 +53,10 @@ public class Pawn extends Actor {
 
 		CurrentMovementDirection = Direction.DIRECTION_NONE;
 		
-		Speed = 5;  // 5 is normal dwarven speed
-		RandomRoute();
+		AttributeDice = new Dice();
+		AttributeDice.Seed(id);
+		Speed = 5;
+		//Speed = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4));  // 5 is normal dwarven speed
 	}
 	
 	long AttemptMove(Direction MovementDirection) {
@@ -81,32 +87,50 @@ public class Pawn extends Actor {
 					MovementStarted = CurrentTick;
 					return AttemptMove(CurrentMovementDirection);
 				} else {
-					RandomRoute();
+					CurrentTask = CurrentTask.ParentJob.nextTask(this);
+					PathNavigator.ChangeDestination(CurrentTask.worklocation);
 				}
 			}
 			return 1;
 		}
 	}
 
-	public void RandomRoute() {
-		PathManager Pathing = PathManager.getSinglton();
-		if (Pathing.getDirectionFlags(LocationCoordinates).cardinality() != 0) {//Is the current location impassable
-			MapCoordinate DestinationCoordinates = Pathing.Tester.getRandomPassableCoordinate();  // This needs to get DIFFERENT coords each time
-
-			while (!PathNavigator.isDestinationReachable(DestinationCoordinates)) {
-				DestinationCoordinates = Pathing.Tester.getRandomPassableCoordinate();
-			}
-			PathNavigator.ChangeDestination(DestinationCoordinates);
-		} else {
-			PathNavigator.setBehaviorMode(Navigator.MovementBehavior.PATH_BEHAVIOR_HALT);
-			Moving = false;
-		}
+	public boolean isDestinationReachable(MapCoordinate Destination) {
+		return PathNavigator.isDestinationReachable(Destination);
 	}
 
 	@Override
 	public final void setLocation(MapCoordinate NewLocation) {
 		super.setLocation(NewLocation);
 		PathNavigator.setLocation(NewLocation);
+	}
+
+	public void setTask(Task NewTask) {
+		if (CurrentTask != NewTask) {
+			CurrentTask = NewTask;
+			
+			switch (CurrentTask.type) {
+
+				case TASK_IDLE:
+					break;
+				case TASK_SLEEP:
+					break;
+				case TASK_PICK_UP:
+					break;
+				case TASK_HAUL:
+					break;
+				case TASK_GOTO:
+					PathNavigator.ChangeDestination(CurrentTask.worklocation);
+					break;
+					
+				case TASK_DROP_OFF:
+					break;
+				case TASK_DIG:
+					break;
+			}
+
+			// change behavior to achive task ?
+		}
 	}
 
 	public float getMovementFraction(long CurrentTick) {
@@ -120,9 +144,28 @@ public class Pawn extends Actor {
 	@Override
 	long Wake(long CurrentTick) {
 		super.Wake(CurrentTick);
-
+		
 		if (CurrentTick >= WakeTick) {
-			WakeTick = CurrentTick + UpdatePosition(CurrentTick);
+					
+			switch (CurrentTask.type) {
+
+				case TASK_IDLE:
+					break;
+				case TASK_SLEEP:
+					break;
+				case TASK_PICK_UP:
+					break;
+				case TASK_HAUL:
+					break;
+				case TASK_GOTO:
+					WakeTick = CurrentTick + UpdatePosition(CurrentTick);
+					break;
+					
+				case TASK_DROP_OFF:
+					break;
+				case TASK_DIG:
+					break;
+			}
 		}
 		return WakeTick;
 	}

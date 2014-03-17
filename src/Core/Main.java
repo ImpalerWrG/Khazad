@@ -27,6 +27,7 @@ import com.jme3.renderer.RenderManager;
 import Nifty.*;
 import Interface.*;
 import Game.*;
+import Job.*;
 import Renderer.*;
 import PathFinding.PathManager;
 import Sound.Music;
@@ -67,6 +68,9 @@ public class Main extends SimpleApplication {
 		Game game = new Game();
 		game.InitializeGame((short) 10, (short) 10, "Khazad");
 		this.stateManager.attach(game);
+		JobManager jobs = game.getSettlment().getJobManager();
+		WanderJob newJob = new WanderJob();
+		jobs.addJob(newJob);
 		
 		// TEMPORAL
 		this.stateManager.attach(TemporalManager.getSingleton());
@@ -90,7 +94,7 @@ public class Main extends SimpleApplication {
 		gui.InitializeGUI(this);
 
 		for (int i = 0; i < 1000; i++) {
-			game.SpawnPawn(Pather.Tester.getRandomPassableCoordinate());
+			game.SpawnCitizen(Pather.Tester.getRandomPassableCoordinate());
 		}
 	}
 	
