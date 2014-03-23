@@ -65,7 +65,7 @@ public class KhazadGrid implements GridInterface {
 	public KhazadGrid(GameMap TargetMap) {
 		GridCells = new ConcurrentHashMap<CellCoordinate, GridCell>();
 		ConnectivityMap = new HashMap<Integer, HashMap<Integer, Integer> >();
-		HashMap<CellCoordinate, Cell> cells = TargetMap.getCellMap();
+		ConcurrentHashMap<CellCoordinate, Cell> cells = TargetMap.getCellMap();
 		ConnectivityCache = new ArrayList<Integer>();
 		
 		for (Cell TargetCell : cells.values()) {

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty>
+	<screen id="GameScreen" controller="Nifty.GameScreenController">
+		<layer id="layer" backgroundColor="#0000" childLayout="center">
+			<panel id="panel" height="10%" width="20%" align="left" valign="top" backgroundColor="#f60f" childLayout="center" visibleToMouse="true">
+				<control id="submitButton" type="button" width="90%" height="90%" >
+					<interact onClick="BeginDesignation()" />
+				</control>
+				<text id="text" font="aurulent-sans-16.fnt" color="#000f" text="New Designation" align="center" valign="center" />
+			</panel>
+		</layer>
+	</screen>
+</nifty>

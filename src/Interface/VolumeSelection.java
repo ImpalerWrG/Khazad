@@ -11,12 +11,10 @@ import Map.MapCoordinate;
  */
 public class VolumeSelection {
 	
-	public MapCoordinate OriginLocation;
-    public MapCoordinate TerminalLocation;
+	public MapCoordinate OriginLocation = new MapCoordinate();
+    public MapCoordinate TerminalLocation = new MapCoordinate();
 
-    //WireFrame* WireFrameRender;
-
-    boolean Active;
-
-	float Zscalar;
+	public VolumeSelection() {
+		
+	}
 }

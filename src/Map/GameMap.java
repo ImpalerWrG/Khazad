@@ -17,7 +17,9 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Map;
 
-import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+
 import Interface.VolumeSelection;
 
 import org.javatuples.Pair;
@@ -37,12 +39,12 @@ public class GameMap {
     boolean Initialized;
     boolean MapLoaded;
 
-    HashMap<CellCoordinate, Cell> Cells;
+    ConcurrentHashMap<CellCoordinate, Cell> Cells;
 	
     int HighestCell;
     int LowestCell;
 
-    List<Zone> Zones;
+    ArrayList<Zone> Zones;
 
     MapCoordinate LastRayTestResult;  // Used to smoothout Map Picking
 	
@@ -53,7 +55,7 @@ public class GameMap {
 		HighestCell = 0;
 		LowestCell = 0;
 		
-		Cells = new HashMap<CellCoordinate, Cell>();
+		Cells = new ConcurrentHashMap<CellCoordinate, Cell>();
 	}
 
 	public static GameMap getMap() {
@@ -234,9 +236,7 @@ public class GameMap {
 		Cell TargetCell = getCubeOwner(Coordinates);
 
 		if(TargetCell != null)
-		{
-			TargetCell.setCubeHidden(Coordinates.Cube(), NewValue);
-		}
+			TargetCell.setCubeHidden(Coordinates.Cube(), NewValue);	
 	}
 	/*
 	public boolean isCubeSubTerranean(MapCoordinates Coordinates) {
@@ -448,13 +448,6 @@ public class GameMap {
 		return LastRayTestResult;
 	}*/
 
-	public void RegisterWithRendering() {
-		//for (boost::unordered_map<uint64_t, Cell>::iterator it = Cells.begin(); it != Cells.end(); it++)
-		{
-			//it.second.RegisterWithRendering();
-		}
-	}
-
 	public void ReleaseMap() {
 		MapLoaded = false;
 
@@ -466,14 +459,14 @@ public class GameMap {
 		Zones.add(NewZone);
 	}
 
-	public Zone createZone(List< VolumeSelection > Volumes) {
+	public Zone createZone(ArrayList< VolumeSelection > Volumes) {
 		Zone NewZone = new Zone(Volumes);
 		Zones.add(NewZone);
 		return NewZone;
 	}
 
-	public List<Zone> getZonesAt(MapCoordinate TestCoordinates) {
-		List<Zone> Collection = new ArrayList<Zone>();
+	public ArrayList<Zone> getZonesAt(MapCoordinate TestCoordinates) {
+		ArrayList<Zone> Collection = new ArrayList<Zone>();
 		for(Zone Z : Zones)
 		{
 			if (Z.isCoordinateInZone(TestCoordinates))
@@ -484,7 +477,7 @@ public class GameMap {
 		return Collection;
 	}
 
-	public HashMap getCellMap() {
+	public ConcurrentHashMap getCellMap() {
 		return Cells;
 	}
 /*

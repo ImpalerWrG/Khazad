@@ -28,7 +28,8 @@ import static com.jme3.util.BufferUtils.createFloatBuffer;
 import static com.jme3.util.BufferUtils.createIntBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+
 
 /**
  * Factory for the creation of Meshes that describe the shape of each possible
@@ -37,10 +38,10 @@ import java.util.HashMap;
  */
 public class TileBuilder {
 	
-	HashMap<FaceShape, Mesh> Meshes;	// map tileshape to mesh for retrival
+	ConcurrentHashMap<FaceShape, Mesh> Meshes;	// map tileshape to mesh for retrival
 	
 	public TileBuilder() {
-		Meshes = new HashMap<FaceShape, Mesh>();
+		Meshes = new ConcurrentHashMap<FaceShape, Mesh>();
 	}
 	
 	public Mesh getMesh(FaceShape Shape) {
@@ -52,7 +53,8 @@ public class TileBuilder {
 			if (Shape.FaceDirection == Direction.DIRECTION_NONE)
 			{
 				target = CreateSlopeFace(Shape);
-				Meshes.put(Shape, target);
+				if (target != null) 
+					Meshes.put(Shape, target);
 				return target;
 			} else {
 				if (Shape.FaceDirection == Direction.DIRECTION_DOWN || Shape.FaceDirection == Direction.DIRECTION_UP) 
@@ -60,13 +62,15 @@ public class TileBuilder {
 					if (Shape.CubeComponent.hasFloor() || Shape.CubeComponent.hasCeiling())
 					{
 						target = CreateFlatFace(Shape);
-						Meshes.put(Shape, target);
+						if (target != null)
+							Meshes.put(Shape, target);
 						return target;
 					}
 					return target;
 				} else {
 					target = CreateSideFace(Shape);
-					Meshes.put(Shape, target);
+					if (target != null)
+						Meshes.put(Shape, target);
 					return target;
 				}
 			}

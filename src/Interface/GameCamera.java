@@ -4,12 +4,8 @@
  */
 package Interface;
 
-import Map.MapCoordinate;
-import com.jme3.app.Application;
-import com.jme3.export.InputCapsule;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
-import com.jme3.export.OutputCapsule;
 import com.jme3.input.InputManager;
 
 import com.jme3.scene.control.CameraControl.ControlDirection;
@@ -20,8 +16,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Quaternion;
 import com.jme3.renderer.Camera;
-//import com.jme3.renderer.RenderManager;
-//import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.CameraNode;
 import java.io.IOException;
@@ -29,10 +23,10 @@ import java.io.IOException;
 import com.jme3.collision.CollisionResults;
 
 /**
- * A camera that follows a spatial and can turn around it by dragging the mouse
- * @author nehon
+ * A camera 
+ * @author Impaler
  */
-public class GameCamera{
+public class GameCamera {
 		
     protected Node TargetNode = null;
 	protected Node RotationNode = null;
@@ -40,14 +34,12 @@ public class GameCamera{
 
 	protected CameraNode CamNode = null;
 	
-	protected float zoomFactor;
+	protected float zoomFactor = 20;
 	protected float TranslationFactor;
 
 	protected float zoomSpeed = 0.1f;
     protected float rotationSpeed = 10.0f;
     protected float PitchSpeed = 200.0f;
-	
-	protected MapCoordinate MouseCollision = new MapCoordinate();
 	
     private Camera camera = null;
     private InputManager inputManager;
@@ -59,26 +51,14 @@ public class GameCamera{
 	protected int SliceBottom;
 	protected int ViewLevels;
 
-    private boolean enabled = true;
-
-    /**
-     * Constructs the chase camera, and registers inputs
-     * @param cam the application camera
-     * @param target the spatial to follow
-     * @param inputManager the inputManager of the application to register inputs
-     */
     public GameCamera(Camera cam, final Node target) {
 
-		//this.app = (SimpleApplication) application;
-
-		//this.inputManager = app.getInputManager();
         this.camera = cam;
-		zoomFactor = 20;
+
 		float aspect = (float) camera.getWidth() / camera.getHeight();
 		TranslationFactor = zoomFactor / camera.getWidth() * aspect * 2;
 
 		camera.setParallelProjection(true);
-
 		camera.setFrustum(-1000, 1000, -aspect * zoomFactor, aspect * zoomFactor, zoomFactor, -zoomFactor);
 
 		this.TargetNode = target;
@@ -103,19 +83,12 @@ public class GameCamera{
 		SetSlice(5, -5);
     }
 	
-
 	//rotate the camera around the target on the horizontal plane
     protected void PitchCamera(float value) {
-        if (!enabled) {
-            return;
-        }
 		
-		if (PitchAngle < 80 && value > 0)  // Allow Pitch to increese if not above maximum
-		{
+		if (PitchAngle < 80 && value > 0) { // Allow Pitch to increese if not above maximum
 			PitchAngle += value * PitchSpeed;
-		}
-		else if (PitchAngle > 1 && value < 0) // Allow Pitch to decreese if not below minimum
-		{
+		} else if (PitchAngle > 1 && value < 0) {// Allow Pitch to decreese if not below minimum
 			PitchAngle += value * PitchSpeed;
 		}
 			
@@ -145,11 +118,8 @@ public class GameCamera{
 		CamNode.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);	
     }
 
-    //move the camera toward or away the target
+    //expand or contract frustrum for paralax zooming
     protected void zoomCamera(float value) {
-        if (!enabled) {
-            return;
-        }
 
 		float change = (value * zoomSpeed) + 1;
 				
@@ -171,9 +141,6 @@ public class GameCamera{
 
     //rotate the camera around the target on the Horizonatal XY plane
     protected void RotateCamera(float value) {
-        if (!enabled) {
-            return;
-        }
 		RotationNode.rotate(0, 0, value * rotationSpeed);
 		CamNode.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);		
     }
@@ -292,20 +259,10 @@ public class GameCamera{
 		return results;
 	}
 
-    /**
-     * Write the camera
-     * @param ex the exporter
-     * @throws IOException
-     */
     public void write(JmeExporter ex) throws IOException {
 
     }
 
-    /**
-     * Read the camera
-     * @param im
-     * @throws IOException
-     */
     public void read(JmeImporter im) throws IOException {
 
     }

@@ -8,7 +8,8 @@ import Map.*;
 import Terrain.Geology;
 import Core.Clock;
 import com.jme3.app.state.AbstractAppState;
-import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
 /**
  *
  * @author Impaler
@@ -81,10 +82,10 @@ public class Game extends AbstractAppState {
 		}
 
 		// Initialize Faces for the cells
-		HashMap Cells = MainMap.getCellMap();
+		ConcurrentHashMap Cells = MainMap.getCellMap();
 		ProgressSize = Cells.size();
 		
-		HashMap<CellCoordinate, Cell> CellMap = MainMap.getCellMap();
+		ConcurrentHashMap<CellCoordinate, Cell> CellMap = MainMap.getCellMap();
 		for (Cell TargetCell : CellMap.values())
 		{
 			TargetCell.BuildFaceData();

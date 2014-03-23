@@ -8,14 +8,13 @@ import com.jme3.app.Application;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
-import de.lessvoid.nifty.screen.ScreenController;
 
 
 /**
  *
  * @author Impaler
  */
-public class GUI implements ScreenController {
+public class GUI {
 	
 	private Nifty nifty;
 	private static GUI instance = null;
@@ -31,30 +30,19 @@ public class GUI implements ScreenController {
 	   return instance;
 	}
 
-	
 	public void InitializeGUI(Application app) {
 		
 		NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(app.getAssetManager(), app.getInputManager(), app.getAudioRenderer(), app.getGuiViewPort());
         nifty = niftyDisplay.getNifty();
-		nifty.fromXml("Interface/Nifty/KhazadNiftyGUI.xml", "start", this);
 
+		nifty.registerScreenController(new GameScreenController(nifty));
+		nifty.addXml("Interface/Nifty/GameScreenNifty.xml");
+
+		nifty.registerScreenController(new StartScreenController(nifty));
+		nifty.addXml("Interface/Nifty/StartScreenNifty.xml");
+
+		nifty.gotoScreen("StartScreen");
+		
         app.getGuiViewPort().addProcessor(niftyDisplay);
 	}
-	
-	public void bind(Nifty nifty, Screen screen) {
-        System.out.println("bind( " + screen.getScreenId() + ")");
-    }
-
-    public void onStartScreen() {
-        System.out.println("onStartScreen");
-    }
-
-    public void onEndScreen() {
-        System.out.println("onEndScreen");
-    }
-
-    public void quit(){
-        nifty.gotoScreen("end");
-    }
-	
 }

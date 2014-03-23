@@ -5,7 +5,11 @@
 package Renderer;
 
 import Map.*;
-import Game.*;
+import Game.Game;
+import Game.Actor;
+import Game.Pawn;
+import Game.TemporalManager;
+
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -18,19 +22,18 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Sphere;
+
 import com.jme3.math.FastMath;
 import com.jme3.texture.Image;
 import com.jme3.texture.Texture;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import jme3tools.optimize.GeometryBatchFactory;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+
 /**
  *
  * @author Impaler
@@ -47,20 +50,25 @@ public class TerrainRenderer extends AbstractAppState {
 	Node darkterrainNode;
 	
 	TileBuilder builder;
-	HashMap<CellCoordinate, Node> CellNodeMap;
-	HashMap<Integer, Node> ActorNodeMap;
-	HashMap<Integer, Node> ZMapLight;
-	HashMap<Integer, Node> ZMapDark;
+	ConcurrentHashMap<CellCoordinate, Node> CellNodeMap;
+	ConcurrentHashMap<Integer, Node> ActorNodeMap;
+	ConcurrentHashMap<Integer, Node> ZMapLight;
+	ConcurrentHashMap<Integer, Node> ZMapDark;
 	Material mat = null;
 	
 	boolean SunnyRendering = true;
 	int Top; int Bottom;
-	
-	public TerrainRenderer() {
-		CellNodeMap = new HashMap<CellCoordinate, Node>();
-		ActorNodeMap = new HashMap<Integer, Node>();
-		ZMapLight = new HashMap<Integer, Node>();
-		ZMapDark = new HashMap<Integer, Node>();
+
+	ScheduledThreadPoolExecutor Executor;
+	ArrayList<Future> CellRebuildingFutures;
+
+	public TerrainRenderer(ScheduledThreadPoolExecutor Threadpool) {
+		Executor = Threadpool;
+
+		CellNodeMap = new ConcurrentHashMap<CellCoordinate, Node>();
+		ActorNodeMap = new ConcurrentHashMap<Integer, Node>();
+		ZMapLight = new ConcurrentHashMap<Integer, Node>();
+		ZMapDark = new ConcurrentHashMap<Integer, Node>();
 		builder = new TileBuilder();
 	}
 
@@ -149,60 +157,28 @@ public class TerrainRenderer extends AbstractAppState {
 		return targetnode;
 	}
 
-	public void BuildCellRendering(Cell TargetCell) {
-		
-		CellCoordinate Coords = TargetCell.getCellCoordinates();
-		Node CellNode = getNode(Coords);
-		
-		Node LightNode = (Node) CellNode.getChild("light");
-		Node DarkNode = (Node) CellNode.getChild("dark");
-		
-		// Terrain Faces
-		HashMap<FaceCoordinate, Face> faces = TargetCell.getFaces();
-		Iterator<Map.Entry<FaceCoordinate, Face>> entries = faces.entrySet().iterator();
-		while (entries.hasNext()) {
-			Map.Entry<FaceCoordinate, Face> entry = entries.next();
-			
-			FaceCoordinate coords = entry.getKey();
-			Face targetface = entry.getValue();
-			
-			Mesh facemesh = builder.getMesh(targetface.getFaceShapeType());
-			if (facemesh != null) {
-				Geometry geom = new Geometry("face", facemesh);
-				geom.setLocalTranslation(new Vector3f(coords.getX(), coords.getY(), 0));
-
-				geom.setMaterial(mat);
-				
-				//Cell   coords.Coordinates
-				if (true /*sunlit face*/) {
-					LightNode.attachChild(geom);					
-				} else {
-					DarkNode.attachChild(geom);
-				}
-			}
-		}
-
-		Node ZLight = getZNodeLight(Coords.Z);
-		ZLight.attachChild(GeometryBatchFactory.optimize(LightNode));
-		Node ZDark = getZNodeDark(Coords.Z);	
-		ZDark.attachChild(GeometryBatchFactory.optimize(DarkNode));
-	}
-	
 	public void RebuildDirtyCells() {
 		Game game = state.getState(Game.class);
 		GameMap map = game.getMap();
 		
-		HashMap<CellCoordinate, Cell> cells = map.getCellMap();
-		
+		ConcurrentHashMap<CellCoordinate, Cell> cells = map.getCellMap();		
 		for (Cell target : cells.values()) {
 			if (target.isDirty()) {
-				BuildCellRendering(target);
+				CellCoordinate Coords = target.getCellCoordinates();
+				Node CellNode = getNode(Coords);
+				Node LightNode = (Node) CellNode.getChild("light");
+				Node DarkNode = (Node) CellNode.getChild("dark");
+
+				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, mat);
+				Builder.setNodes(LightNode, DarkNode, getZNodeLight(Coords.Z), getZNodeDark(Coords.Z));
+				Executor.submit(Builder);
+				
 				target.setRenderingDirty(false);
+				break;
 			}
 		}
-		PopulateActors();
 	}
-	
+
 	public void PopulateActors() {
 		Game game = state.getState(Game.class);
 		GameMap map = game.getMap();
@@ -297,7 +273,7 @@ public class TerrainRenderer extends AbstractAppState {
 			} else {
 				target.setCullHint(Spatial.CullHint.Always);				
 			}
-		}	
+		}
 	}
 	
 	public void setSunnyVisibility(boolean newValue) {
@@ -322,6 +298,7 @@ public class TerrainRenderer extends AbstractAppState {
 	@Override
     public void update(float tpf) {
 		RebuildDirtyCells();
+		PopulateActors();
     }
 
 	@Override

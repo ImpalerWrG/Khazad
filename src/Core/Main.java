@@ -66,7 +66,7 @@ public class Main extends SimpleApplication {
 		
 		// GAME
 		Game game = new Game();
-		game.InitializeGame((short) 10, (short) 10, "Khazad");
+		game.InitializeGame((short) 15, (short) 15, "Khazad");
 		this.stateManager.attach(game);
 		JobManager jobs = game.getSettlment().getJobManager();
 		WanderJob newJob = new WanderJob();
@@ -83,7 +83,7 @@ public class Main extends SimpleApplication {
 		this.stateManager.attach(Pather);
 		
 		// RENDER
-		this.stateManager.attach(new TerrainRenderer());
+		this.stateManager.attach(new TerrainRenderer(ExecutionThreadpool));
 		
 		this.stateManager.attach(new GameCameraState());
 		this.stateManager.attach(new Music());
@@ -93,7 +93,7 @@ public class Main extends SimpleApplication {
 		GUI gui = GUI.getGUI();
 		gui.InitializeGUI(this);
 
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 100; i++) {
 			game.SpawnCitizen(Pather.Tester.getRandomPassableCoordinate());
 		}
 	}
