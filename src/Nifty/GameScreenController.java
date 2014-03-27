@@ -4,6 +4,8 @@
  */
 package Nifty;
 
+import com.jme3.app.Application;
+
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
@@ -14,9 +16,11 @@ import de.lessvoid.nifty.screen.ScreenController;
  */
 public class GameScreenController implements ScreenController {
 
+	private Application app;
 	private Nifty nifty;
 
-	public GameScreenController(Nifty Newnifty) {
+	public GameScreenController(Nifty Newnifty, Application app) {
+		this.app = app;
 		this.nifty = Newnifty;
 	}
 

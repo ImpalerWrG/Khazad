@@ -1,16 +1,35 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <nifty>
-	<screen id="StartScreen" controller="Nifty.StartScreenController">
-		<layer id="layer" backgroundColor="#0000" childLayout="center">
-			<panel id="panel" height="25%" width="35%" align="center" valign="center" backgroundColor="#f60f" childLayout="center" visibleToMouse="true">
-			  <interact onClick="quit()"/>
-			  <effect>
-					<onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
-					<onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true"/>
-					<onHover name="pulsate" scaleFactor="0.008" startColor="#f600" endColor="#ffff" post="true"/>
-			  </effect>
-			  <text id="text" font="aurulent-sans-16.fnt" color="#000f" text="Hello from Khazad" align="center" valign="center" />
-			</panel>
-		</layer>
-	</screen>
+  <useStyles filename="nifty-default-styles.xml"/>
+  <useControls filename="nifty-default-controls.xml"/>
+  <screen id="StartScreen" controller="Nifty.ShellScreenController">
+    <layer childLayout="vertical" id="Splash">
+      <panel childLayout="center" height="10%" id="panel0" padding="0px" width="100%"/>
+      <panel childLayout="center" height="35%" id="panel1" width="100%">
+        <image filename="Textures/KhazadLogo.png" height="200px" id="image2" width="200px" x="544" y="124"/>
+		<effect>
+			  <onEndScreen direction="top" inherit="true" length="300" mode="out" name="move" startDelay="0"/>
+		</effect>
+      </panel>
+      <panel childLayout="center" height="30%" id="panel2" padding="10px" width="100%">
+        <panel childLayout="vertical" height="100%" id="panel3" style="nifty-panel-simple" valign="top" width="50%">
+          <control childLayout="center" height="25%" id="button1" label="New Game" name="button" width="100%">
+			  <interact onClick="GameSetup()"/>
+		  </control>
+          <control childLayout="center" height="25%" id="button5" label="Load Game" name="button" width="100%">
+			  <interact onClick="LoadGame()"/>
+		  </control>
+          <control childLayout="center" height="25%" id="button6" label="Options" name="button" width="100%">
+			  <interact onClick="Options()"/>
+		  </control>
+          <control childLayout="center" height="25%" id="button7" label="Quit" name="button" width="100%">
+			  <interact onClick="Quit()"/>
+		  </control>
+        </panel>
+		<effect>
+			  <onEndScreen direction="bottom" inherit="true" length="300" mode="out" name="move" startDelay="0"/>
+		</effect>
+      </panel>
+    </layer>
+  </screen>
 </nifty>

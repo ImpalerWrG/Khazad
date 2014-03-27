@@ -27,15 +27,14 @@ import com.jme3.renderer.RenderManager;
 import Nifty.*;
 import Interface.*;
 import Game.*;
-import Job.*;
 import Renderer.*;
-import PathFinding.PathManager;
 import Sound.Music;
 
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.util.BufferUtils;
+
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
@@ -64,38 +63,17 @@ public class Main extends SimpleApplication {
 		ImageManager Images = ImageManager.getImageManager();
 		Images.Initialize(assetManager);
 		
-		// GAME
-		Game game = new Game();
-		game.InitializeGame((short) 15, (short) 15, "Khazad");
-		this.stateManager.attach(game);
-		JobManager jobs = game.getSettlment().getJobManager();
-		WanderJob newJob = new WanderJob();
-		jobs.addJob(newJob);
-		
+
 		// TEMPORAL
 		this.stateManager.attach(TemporalManager.getSingleton());
-		
-		// PATHING
-		PathManager Pather = PathManager.getSinglton();
-		Pather.initialize(stateManager, this);
-		Pather.CreateMapAbstraction(game.getMap());
-		Pather.AllocateThreadPool(ExecutionThreadpool);
-		this.stateManager.attach(Pather);
 		
 		// RENDER
 		this.stateManager.attach(new TerrainRenderer(ExecutionThreadpool));
 		
 		this.stateManager.attach(new GameCameraState());
 		this.stateManager.attach(new Music());
+		this.stateManager.attach(new GUI(this));
 		
-		//createAxialMarker();
-		
-		GUI gui = GUI.getGUI();
-		gui.InitializeGUI(this);
-
-		for (int i = 0; i < 100; i++) {
-			game.SpawnCitizen(Pather.Tester.getRandomPassableCoordinate());
-		}
 	}
 	
 	public void createAxialMarker() {
@@ -125,6 +103,10 @@ public class Main extends SimpleApplication {
 		box.setMaterial(mat);
 		box.setLocalTranslation(9, 14, 0);
 		rootNode.attachChild(box);
+	}
+
+	public ScheduledThreadPoolExecutor getThreadPool() {
+		return ExecutionThreadpool;
 	}
 
     @Override

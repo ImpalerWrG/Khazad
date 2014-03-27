@@ -157,11 +157,7 @@ public class TerrainRenderer extends AbstractAppState {
 		return targetnode;
 	}
 
-	public void RebuildDirtyCells() {
-		Game game = state.getState(Game.class);
-		GameMap map = game.getMap();
-		
-		ConcurrentHashMap<CellCoordinate, Cell> cells = map.getCellMap();		
+	public void RebuildDirtyCells(ConcurrentHashMap<CellCoordinate, Cell> cells) {
 		for (Cell target : cells.values()) {
 			if (target.isDirty()) {
 				CellCoordinate Coords = target.getCellCoordinates();
@@ -172,11 +168,11 @@ public class TerrainRenderer extends AbstractAppState {
 				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, mat);
 				Builder.setNodes(LightNode, DarkNode, getZNodeLight(Coords.Z), getZNodeDark(Coords.Z));
 				Executor.submit(Builder);
-				
+
 				target.setRenderingDirty(false);
 				break;
 			}
-		}
+		}	
 	}
 
 	public void PopulateActors() {
@@ -296,10 +292,14 @@ public class TerrainRenderer extends AbstractAppState {
 	}
 	
 	@Override
-    public void update(float tpf) {
-		RebuildDirtyCells();
-		PopulateActors();
-    }
+	public void update(float tpf) {		
+		Game game = state.getState(Game.class);
+		if (game != null) {
+			GameMap map = game.getMap();
+			RebuildDirtyCells(map.getCellMap());
+			PopulateActors();
+		}
+	}
 
 	@Override
     public void render(RenderManager rm) {

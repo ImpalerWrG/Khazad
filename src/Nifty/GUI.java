@@ -7,41 +7,36 @@ package Nifty;
 import com.jme3.app.Application;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.screen.Screen;
 
+import com.jme3.app.state.AbstractAppState;
 
 /**
  *
  * @author Impaler
  */
-public class GUI {
+public class GUI extends AbstractAppState {
 	
 	private Nifty nifty;
-	private static GUI instance = null;
+	private Application app;
 	
-	protected GUI() {
+	public GUI(Application app) {
+		this.app = app;
 
-	}
-
-	public static GUI getGUI() {
-	   if(instance == null) {
-		  instance = new GUI();
-	   }
-	   return instance;
-	}
-
-	public void InitializeGUI(Application app) {
-		
 		NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(app.getAssetManager(), app.getInputManager(), app.getAudioRenderer(), app.getGuiViewPort());
         nifty = niftyDisplay.getNifty();
 
-		nifty.registerScreenController(new GameScreenController(nifty));
-		nifty.addXml("Interface/Nifty/GameScreenNifty.xml");
+		//nifty.loadStyleFile("Dwarven.xml");
 
-		nifty.registerScreenController(new StartScreenController(nifty));
+		nifty.registerScreenController(new GameScreenController(nifty, this.app));
+		nifty.registerScreenController(new ShellScreenController(nifty, this.app));
+		
+		nifty.addXml("Interface/Nifty/GameScreenNifty.xml");
 		nifty.addXml("Interface/Nifty/StartScreenNifty.xml");
+		nifty.addXml("Interface/Nifty/SetupScreenNifty.xml");
 
 		nifty.gotoScreen("StartScreen");
+		
+		//nifty.getCurrentScreen().findElementByName("BOB").setStyle(null);
 		
         app.getGuiViewPort().addProcessor(niftyDisplay);
 	}

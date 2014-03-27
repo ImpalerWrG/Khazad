@@ -6,7 +6,6 @@ package PathFinding;
 
 import java.util.ArrayList;
 import java.util.BitSet;
-//import java.util.concurrent.*;
 
 import java.util.concurrent.Future;
 import java.util.concurrent.Executor;
@@ -15,10 +14,14 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import Core.Clock;
+import Core.Main;
 
 import Map.GameMap;
 import Map.MapCoordinate;
 import Map.Direction;
+
+import com.jme3.app.Application;
+import com.jme3.app.state.AppStateManager;
 
 import com.jme3.app.state.AbstractAppState;
 
@@ -63,8 +66,11 @@ public class PathManager extends AbstractAppState {
 		PoolList = new ArrayList<Pool>();
 	}
 
-	public void AllocateThreadPool(ScheduledThreadPoolExecutor Threadpool) {
-		Executor = Threadpool;
+	@Override
+    public void initialize(AppStateManager stateManager, Application app) {
+		super.initialize(stateManager, app);
+		Main core = (Main) app;
+		Executor = core.getThreadPool();
 	}
 
 	public static PathManager getSinglton() {

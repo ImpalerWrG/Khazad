@@ -119,15 +119,17 @@ public class TemporalManager extends AbstractAppState implements ActionListener{
 		
 		Temporal target;
 		target = TemporalQueue.poll();
-		do {	
-			long RewakeTick = target.Wake(CurrentGameTick);
-			if (RewakeTick != -1) {
-				TemporalQueue.add(target);
-			}
-			target = TemporalQueue.poll();
-		} while (target.WakeTick <= CurrentGameTick);	
-
-		TemporalQueue.add(target);
+		if (target != null) {
+			do {	
+				long RewakeTick = target.Wake(CurrentGameTick);
+				if (RewakeTick != -1) {
+					TemporalQueue.add(target);
+				}
+				target = TemporalQueue.poll();
+			} while (target.WakeTick <= CurrentGameTick);	
+		
+			TemporalQueue.add(target);
+		}
 	}
 	
 	public void changeTickRate(int RateChange) {
