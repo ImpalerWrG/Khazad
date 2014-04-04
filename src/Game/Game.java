@@ -6,33 +6,66 @@ package Game;
 
 import Map.*;
 import Terrain.Geology;
-import Core.Clock;
+import Renderer.TerrainRenderer;
+
+import com.jme3.app.Application;
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
+import com.jme3.app.state.AppStateManager;
+
+import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 /**
  *
  * @author Impaler
  */
-public class Game extends AbstractAppState {
+public class Game extends AbstractAppState implements ActionListener {
 
-	//private static Game instance = null;
-
-    boolean Zoneing;   // User is Designating a Zone
+	SimpleApplication app = null;
+	AppStateManager state = null;
 
     GameMap MainMap;
     Geology MapGeology;
 	Settlment GameSettlment;
+	Weather GameWeather;
+
+	boolean Pause;
+	int TickRate;
+	long CurrentGameTick;
+	float TickRounding;
+
+	int UniqueIDCounter;
+	PriorityQueue<Temporal> TemporalQueue;
 
 	ArrayList<Actor> Actors;
 	int ActorIDcounter = 0;
-
-    float ProgressAmount;
 
 
 	public Game() {
 		GameSettlment = new Settlment();
 		Actors = new ArrayList<Actor>();
+		
+		TickRate = 1;
+		TickRounding = 0;
+		CurrentGameTick = 0;
+		UniqueIDCounter = 0;
+		Pause = true;
+
+		TemporalQueue = new PriorityQueue<Temporal>();
+	}
+
+	@Override
+    public void initialize(AppStateManager stateManager, Application app) {
+		super.initialize(stateManager, app);
+        this.app = (SimpleApplication) app;
+		this.state = stateManager;
+		
+		registerWithInput(app.getInputManager());
 	}
 
 	public boolean InitializeGame(short X, short Y, String SeedString) {
@@ -42,15 +75,15 @@ public class Game extends AbstractAppState {
 		MapGeology.GenerateWorldHeightMap(X, Y);
 
 		MainMap = GameMap.getMap();
+
+		//GameWeather = new Weather(this.state.getState(TerrainRenderer.class).getSunTerrainNode());
+		
 		//MainMap.Initialize();
 
 		//Path = new PathManager();
 		//Path.Initialize();
 
 		BuildMapChunk((short) 0, (short) 0, (byte) X, (byte) Y);
-
-		Zoneing = false;
-		//GameTimer.Start();
 
 		return true;
 	}
@@ -90,8 +123,6 @@ public class Game extends AbstractAppState {
 		{
 			TargetCell.BuildFaceData();
 			ProgressCount++;
-			ProgressAmount = ProgressCount / ProgressSize;
-			//GUI.DirtyActiveScreen();
 		}
 
 		//Path.CreateMapAbstraction(MainMap);
@@ -108,6 +139,7 @@ public class Game extends AbstractAppState {
 		Actor NewActor = new Actor(ActorIDcounter, SpawnCoordinates);
 		ActorIDcounter++;
 		Actors.add(NewActor);
+		AddTemporal(NewActor);
 		return NewActor;
 	}
 
@@ -115,6 +147,7 @@ public class Game extends AbstractAppState {
 		Pawn NewPawn = new Pawn(ActorIDcounter, SpawnCoordinates);
 		ActorIDcounter++;
 		Actors.add(NewPawn);
+		AddTemporal(NewPawn);
 		return NewPawn;
 	}
 
@@ -123,7 +156,13 @@ public class Game extends AbstractAppState {
 		ActorIDcounter++;
 		Actors.add(NewCitizen);
 		GameSettlment.addCitizen(NewCitizen);
+		AddTemporal(NewCitizen);
 		return NewCitizen;
+	}
+
+	boolean AddTemporal(Temporal NewTemporal) {
+		TemporalQueue.add(NewTemporal);	
+		return true;
 	}
 
 	public GameMap getMap() {
@@ -137,6 +176,93 @@ public class Game extends AbstractAppState {
 	public ArrayList<Actor> getActors() {
 		return Actors;
 	}
+	
+	public void onAction(String name, boolean keyPressed, float tpf) {
+        if (this.isEnabled()) {
+			if (name.equals("Pause")) {
+				if (keyPressed)
+					Pause = !Pause;
+			}
+			if (name.equals("Faster")) {
+				if (keyPressed) 
+					TickRate *= 4;
+			}
+			if (name.equals("Slower")) {
+				if (keyPressed)
+					TickRate /= 4;
+			}
+		}
+	}
+
+	public void registerWithInput(InputManager inputManager) {
+        String[] inputs = {"Pause", "Faster", "Slower"};
+
+		inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_SPACE)); 
+		inputManager.addMapping("Faster", new KeyTrigger(KeyInput.KEY_ADD)); 
+		inputManager.addMapping("Faster", new KeyTrigger(KeyInput.KEY_EQUALS)); 
+		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_MINUS)); 
+		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_SUBTRACT)); 
+        inputManager.addListener(this, inputs);
+	}
+
+	@Override
+    public void update(float tpf) {
+		if (!Pause) {
+			float TargetTicks = TickRate * tpf * 12;
+			TargetTicks += TickRounding;
+			int FullTicks = (int) TargetTicks;
+			TickRounding = TargetTicks - FullTicks;
+
+			for (int i = 0; i < FullTicks; i++) {
+				UpdateTick();
+			}
+			long seconds = CurrentGameTick / 12;
+			long minutes = seconds / 60;
+			long hours = minutes / 60;
+			long days = hours / 24;
+			//hudText.setText((hours %24) + ":" + (minutes % 60) + ":" + (seconds % 60));
+		}
+    }
+
+	public void UpdateTick() {
+		CurrentGameTick++;   // Advance Tick count
+		
+		Temporal target;
+		target = TemporalQueue.poll();
+		if (target != null) {
+			do {	
+				long RewakeTick = target.Wake(CurrentGameTick);
+				if (RewakeTick != -1) {
+					TemporalQueue.add(target);
+				}
+				target = TemporalQueue.poll();
+			} while (target.WakeTick <= CurrentGameTick);	
+		
+			TemporalQueue.add(target);
+		}
+	}
+
+	public long getCurrentTimeTick() {
+		return CurrentGameTick;
+	}
+
+	public void setTickRate(int NewRate) {
+		TickRate = NewRate;
+	}
+
+	public int getTickRate() {
+		return TickRate;
+	}
+
+	public void Pause(boolean NewPause) {
+		Pause = NewPause;
+	}
+
+	public boolean isPaused() {
+		return Pause;
+	}
+
+
 	/*
 	void Save(boost::filesystem::basic_ofstream<char>& Stream) const
 	{

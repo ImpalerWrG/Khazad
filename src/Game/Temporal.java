@@ -14,7 +14,7 @@ public abstract class Temporal implements Comparable {
 	long WakeTick = 1;
 
 	Temporal() {
-		TemporalManager.getSingleton().AddTemporal(this, 1);
+		
 	}
 
 	void ResetWakeTick(long NewWakeTick) {

@@ -8,7 +8,6 @@ import Map.*;
 import Game.Game;
 import Game.Actor;
 import Game.Pawn;
-import Game.TemporalManager;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -179,7 +178,7 @@ public class TerrainRenderer extends AbstractAppState {
 		Game game = state.getState(Game.class);
 		GameMap map = game.getMap();
 		
-		long CurrentTick = TemporalManager.getSingleton().getCurrentTimeTick();
+		long CurrentTick = game.getCurrentTimeTick();
 		
 		ArrayList<Actor> actors = game.getActors();
 		for (Actor target : actors)
@@ -290,7 +289,15 @@ public class TerrainRenderer extends AbstractAppState {
 	public Node getTerrainNode() {
 		return terrainNode;
 	}
-	
+
+	public Node getSunTerrainNode() {
+		return sunnyterrainNode;
+	}
+
+	public Node getDarkTerrainNode() {
+		return darkterrainNode;
+	}
+
 	@Override
 	public void update(float tpf) {		
 		Game game = state.getState(Game.class);

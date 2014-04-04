@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <nifty>
-  <useStyles filename="nifty-default-styles.xml"/>
-  <useControls filename="nifty-default-controls.xml"/>
-  <screen id="SetupScreen" controller="Nifty.ShellScreenController">
-    <layer childLayout="center" id="SetupLayer">
-      <panel alighn="center" align="center" childLayout="vertical" height="300px" id="MainSetupPanel" style="nifty-panel-simple" width="400px">
-        <control font="aurulent-sans-16.fnt" height="20%" id="label0" name="label" text="New Game Setup" textLineHeight="30px" textMinHeight="40px" width="100%" x="184" y="54"/>
-        <panel childLayout="horizontal" height="40px" id="SeedPanel" padding="5px" width="100%">
-          <control font="aurulent-sans-16.fnt" height="100%" id="label6" name="label" text="Seed" valign="center" width="25%"/>
-          <control height="100%" id="SeedTextField" name="textfield" width="285px"/>
-        </panel>
-        <panel childLayout="horizontal" height="130px" id="panel11" width="100%">
-          <control font="aurulent-sans-16.fnt" height="50px" id="label5" name="label" text="Size X" width="50%" x="0" y="5"/>
-          <control font="aurulent-sans-16.fnt" height="50px" id="label3" name="label" text="Size Y" width="50%" x="253" y="2"/>
-        </panel>
-        <panel childLayout="center" height="20%" id="panel12" width="100%">
-			<control childLayout="center" id="button8" label="Begin Game" name="button" width="150px">
-				<interact onClick="BeginGame()"/>
-			</control>
-        </panel>
-		<effect>
-			  <onEndScreen direction="bottom" inherit="true" length="300" mode="out" name="move" startDelay="0"/>
-		</effect>
-      </panel>
-    </layer>
-  </screen>
+	<useStyles filename="nifty-default-styles.xml"/>
+	<useControls filename="nifty-default-controls.xml"/>
+  
+	<screen controller="Nifty.ShellScreenController" id="SetupScreen">
+		<layer childLayout="center" id="SetupLayer">
+			<panel alighn="center" align="center" childLayout="vertical" height="300px" id="MainSetupPanel" style="nifty-panel-simple" width="400px">
+				<control font="aurulent-sans-16.fnt" height="60px" id="label0" name="label" text="New Game Setup" textLineHeight="30px" textMinHeight="40px" width="100%" x="184" y="54"/>
+				<panel childLayout="horizontal" height="40px" id="SeedPanel" padding="5px" width="100%">
+					<control font="aurulent-sans-16.fnt" height="100%" id="label6" name="label" text="Seed" valign="center" width="25%"/>
+					<control height="100%" id="SeedTextField" name="textfield" width="285px"/>
+				</panel>
+				<panel childLayout="horizontal" height="130px" id="panel11" width="100%">
+					<control font="aurulent-sans-16.fnt" height="50px" id="label5" name="label" text="Size X" width="50%" x="0" y="5"/>
+					<control font="aurulent-sans-16.fnt" height="50px" id="label3" name="label" text="Size Y" width="50%" x="253" y="2"/>
+				</panel>
+				<panel childLayout="horizontal" height="40px" id="panel12" width="100%">
+					<panel childLayout="center" height="89px" id="panel0" width="50%">
+						<control childLayout="center" height="38px" id="CancelButton" label="Cancel" name="button" width="130px">
+							<interact onClick="CancelSetup()"/>
+						</control>
+					</panel>
+					<panel childLayout="center" height="89px" id="panel2" width="50%">
+						<control childLayout="center" height="38px" id="BeginButton" label="Begin Game" name="button" width="130px">
+							<interact onClick="BeginGame()"/>
+						</control>						
+					</panel>
+				</panel>
+				<effect>
+					  <onEndScreen direction="bottom" inherit="true" length="300" mode="out" name="move" startDelay="0"/>
+				</effect>
+			</panel>
+		</layer>
+	</screen>
 </nifty>

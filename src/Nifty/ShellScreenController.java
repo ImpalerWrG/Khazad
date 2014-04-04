@@ -45,23 +45,27 @@ public class ShellScreenController implements ScreenController {
 		app.stop();
     }
 
+	public void CancelSetup() {
+		//nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).setText("");
+		nifty.gotoScreen("StartScreen");
+	}
+
 	public void GameSetup() {
         nifty.gotoScreen("SetupScreen");
 	}
 
 	public void BeginGame() {
 		String Seed = nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).getDisplayedText();
-		
-        nifty.gotoScreen("GameScreen");
+
+		nifty.gotoScreen("GameScreen");
 
 		Game game = new Game();
-		game.InitializeGame((short) 15, (short) 15, Seed);
+		game.InitializeGame((short) 10, (short) 10, Seed);
 		this.app.getStateManager().attach(game);
 		
 		JobManager jobs = game.getSettlment().getJobManager();
 		WanderJob newJob = new WanderJob();
 		jobs.addJob(newJob);
-		
 		
 		// PATHING
 		PathManager Pather = PathManager.getSinglton();
@@ -69,6 +73,7 @@ public class ShellScreenController implements ScreenController {
 		Pather.CreateMapAbstraction(game.getMap());
 		//Pather.AllocateThreadPool(ExecutionThreadpool);
 		this.app.getStateManager().attach(Pather);
+		
 		for (int i = 0; i < 100; i++) {
 			game.SpawnCitizen(Pather.Tester.getRandomPassableCoordinate());
 		}

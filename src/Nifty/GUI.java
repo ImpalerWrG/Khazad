@@ -15,10 +15,10 @@ import com.jme3.app.state.AbstractAppState;
  * @author Impaler
  */
 public class GUI extends AbstractAppState {
-	
+
 	private Nifty nifty;
 	private Application app;
-	
+
 	public GUI(Application app) {
 		this.app = app;
 
@@ -29,14 +29,13 @@ public class GUI extends AbstractAppState {
 
 		nifty.registerScreenController(new GameScreenController(nifty, this.app));
 		nifty.registerScreenController(new ShellScreenController(nifty, this.app));
-		
+		nifty.registerScreenController(new GameTopBarController(nifty, this.app));
+
 		nifty.addXml("Interface/Nifty/GameScreenNifty.xml");
 		nifty.addXml("Interface/Nifty/StartScreenNifty.xml");
 		nifty.addXml("Interface/Nifty/SetupScreenNifty.xml");
-
-		nifty.gotoScreen("StartScreen");
 		
-		//nifty.getCurrentScreen().findElementByName("BOB").setStyle(null);
+		nifty.gotoScreen("StartScreen");
 		
         app.getGuiViewPort().addProcessor(niftyDisplay);
 	}

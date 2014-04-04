@@ -63,10 +63,6 @@ public class Main extends SimpleApplication {
 		ImageManager Images = ImageManager.getImageManager();
 		Images.Initialize(assetManager);
 		
-
-		// TEMPORAL
-		this.stateManager.attach(TemporalManager.getSingleton());
-		
 		// RENDER
 		this.stateManager.attach(new TerrainRenderer(ExecutionThreadpool));
 		
