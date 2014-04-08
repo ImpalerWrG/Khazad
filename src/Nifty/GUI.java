@@ -6,6 +6,7 @@ package Nifty;
 
 import com.jme3.app.Application;
 import com.jme3.niftygui.NiftyJmeDisplay;
+import de.lessvoid.nifty.controls.label.LabelControl;
 import de.lessvoid.nifty.Nifty;
 
 import com.jme3.app.state.AbstractAppState;
@@ -29,7 +30,6 @@ public class GUI extends AbstractAppState {
 
 		nifty.registerScreenController(new GameScreenController(nifty, this.app));
 		nifty.registerScreenController(new ShellScreenController(nifty, this.app));
-		nifty.registerScreenController(new GameTopBarController(nifty, this.app));
 
 		nifty.addXml("Interface/Nifty/GameScreenNifty.xml");
 		nifty.addXml("Interface/Nifty/StartScreenNifty.xml");
@@ -38,5 +38,13 @@ public class GUI extends AbstractAppState {
 		nifty.gotoScreen("StartScreen");
 		
         app.getGuiViewPort().addProcessor(niftyDisplay);
+	}
+	
+	public void UpdateText(String target, String Message) {
+		
+		LabelControl label = nifty.getCurrentScreen().findNiftyControl(target, LabelControl.class);
+		if (label != null) {
+			label.setText(Message);
+		}
 	}
 }

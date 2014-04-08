@@ -4,39 +4,45 @@
 	<useControls filename="nifty-default-controls.xml"/>
 	<screen id="GameScreen" controller="Nifty.GameScreenController">
 		<layer childLayout="vertical" id="layer0">
-			<panel childLayout="horizontal" height="40px" id="TopPanel" width="100%" x="568" y="250" >
-				<panel childLayout="horizontal" id="TopLeftPanel" style="nifty-panel-simple" width="150px" >
+			<panel childLayout="horizontal" height="80px" alighn="top" id="TopPanel" width="100%">
+				<panel childLayout="horizontal" id="TopLeftPanel" style="nifty-panel-simple" height="40px" width="150px">
 					<control childLayout="center" height="100%" id="button0" label="Menu" name="button" width="50px" controller="Nifty.GameScreenController">
 						<interact onClick="Menu()"/>
 					</control>
 				</panel>
 				<panel childLayout="center" id="TopDummyOne">
 					<panel childLayout="center" height="100%" id="TopDummyTwo" width="100%">
-						<panel childLayout="horizontal" height="100%" id="TopMiddlePanel" style="nifty-panel-simple" width="200px" x="297" y="27"/>
+						<panel childLayout="horizontal" id="TopMiddlePanel" style="nifty-panel-simple" width="200px" height="40"/>
 					</panel>
 				</panel>
-				<panel childLayout="horizontal" id="TopRightPanel" style="nifty-panel-simple" width="290px">
-					<control childLayout="center" height="100%" id="Pausebutton" label="Pause" name="button" width="50px" controller="Nifty.GameScreenController">
-						<interact onClick="Pause()"/>
-					</control>
-					<control childLayout="center" height="100%" id="Speed1button" label="x1" name="button" width="30px" controller="Nifty.GameScreenController">
-						<interact onClick="SetSpeed(1)"/>
-					</control>
-					<control childLayout="center" height="100%" id="Speed4button" label="x4" name="button" width="30px" controller="Nifty.GameScreenController">
-						<interact onClick="SetSpeed(4)"/>
-					</control>
-					<control childLayout="center" height="100%" id="Speed16button" label="x16" name="button" width="30px" controller="Nifty.GameScreenController">
-						<interact onClick="SetSpeed(16)"/>
-					</control>
-					<control childLayout="center" height="100%" id="Speed64button" label="x64" name="button" width="40px" controller="Nifty.GameScreenController">
-						<interact onClick="SetSpeed(256)"/>
-					</control>
-					<control childLayout="center" height="100%" id="Speed64button" label="x1024" name="button" width="50px" controller="Nifty.GameScreenController">
-						<interact onClick="SetSpeed(1024)"/>
-					</control>
-					<control childLayout="center" height="100%" id="Speed64button" label="x4096" name="button" width="50px" controller="Nifty.GameScreenController">
-						<interact onClick="SetSpeed(4096)"/>
-					</control>
+				<panel childLayout="vertical" id="TopRightPanel" style="nifty-panel-simple" width="290px" height="60px">
+					<panel childLayout="horizontal" id="SpeedControlPanel" height="30px">
+						<control childLayout="center" id="Pausebutton" label="Pause" name="button" width="50px" controller="Nifty.GameScreenController">
+							<interact onClick="Pause()"/>
+						</control>
+						<control childLayout="center" id="Speed1button" label="x1" name="button" width="25px" controller="Nifty.GameScreenController">
+							<interact onClick="SetSpeed(1)"/>
+						</control>
+						<control childLayout="center" id="Speed4button" label="x4" name="button" width="25px" controller="Nifty.GameScreenController">
+							<interact onClick="SetSpeed(4)"/>
+						</control>
+						<control childLayout="center" id="Speed16button" label="x16" name="button" width="25px" controller="Nifty.GameScreenController">
+							<interact onClick="SetSpeed(16)"/>
+						</control>
+						<control childLayout="center" id="Speed16button" label="x64" name="button" width="25px" controller="Nifty.GameScreenController">
+							<interact onClick="SetSpeed(64)"/>
+						</control>
+						<control childLayout="center" id="Speed256button" label="x256" name="button" width="35px" controller="Nifty.GameScreenController">
+							<interact onClick="SetSpeed(256)"/>
+						</control>
+						<control childLayout="center" id="Speed1024button" label="x1024" name="button" width="45px" controller="Nifty.GameScreenController">
+							<interact onClick="SetSpeed(1024)"/>
+						</control>
+						<control childLayout="center" id="Speed4096button" label="x4096" name="button" width="45px" controller="Nifty.GameScreenController">
+							<interact onClick="SetSpeed(4096)"/>
+						</control>
+					</panel>
+					<control font="aurulent-sans-16.fnt" height="30px" id="Timelabel" name="label" text="The Time" textLineHeight="30px" textMinHeight="30px" width="100%"/>
 				</panel>
 			</panel>
 			<panel childLayout="horizontal" id="MiddlePanel" align="right">
@@ -50,7 +56,7 @@
 						<panel childLayout="center" height="40px" id="panel23" width="100%">
 							<panel childLayout="horizontal" height="100%" id="BottomButtonPanel" style="nifty-panel-simple" width="200px" controller="Nifty.GameBottomBarController">
 								<control childLayout="center" height="100%" id="DiGButton" label="Dig" name="button" width="40px">
-									<interact onClick="ButtonPress()"/>
+									<interact onClick="Dig()"/>
 								</control>
 								<control childLayout="center" height="100%" id="BuildButton" label="Build" name="button" width="40px">
 									<interact onClick="ButtonPress()"/>				

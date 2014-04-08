@@ -6,7 +6,6 @@ package Game;
 
 import Map.*;
 import Terrain.Geology;
-import Renderer.TerrainRenderer;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -38,6 +37,11 @@ public class Game extends AbstractAppState implements ActionListener {
 	int TickRate;
 	long CurrentGameTick;
 	float TickRounding;
+	
+	public long seconds;
+	public long minutes;
+	public long hours;
+	public long days;
 
 	int UniqueIDCounter;
 	PriorityQueue<Temporal> TemporalQueue;
@@ -76,7 +80,8 @@ public class Game extends AbstractAppState implements ActionListener {
 
 		MainMap = GameMap.getMap();
 
-		//GameWeather = new Weather(this.state.getState(TerrainRenderer.class).getSunTerrainNode());
+		GameWeather = new Weather();
+		AddTemporal(GameWeather);
 		
 		//MainMap.Initialize();
 
@@ -173,6 +178,10 @@ public class Game extends AbstractAppState implements ActionListener {
 		return GameSettlment;
 	}
 
+	public Weather getWeather() {
+		return GameWeather;
+	}
+	
 	public ArrayList<Actor> getActors() {
 		return Actors;
 	}
@@ -216,10 +225,11 @@ public class Game extends AbstractAppState implements ActionListener {
 			for (int i = 0; i < FullTicks; i++) {
 				UpdateTick();
 			}
-			long seconds = CurrentGameTick / 12;
-			long minutes = seconds / 60;
-			long hours = minutes / 60;
-			long days = hours / 24;
+			seconds = CurrentGameTick / 12;
+			minutes = seconds / 60;
+			hours = minutes / 60;
+			days = hours / 24;
+			
 			//hudText.setText((hours %24) + ":" + (minutes % 60) + ":" + (seconds % 60));
 		}
     }

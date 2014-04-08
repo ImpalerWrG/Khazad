@@ -13,7 +13,8 @@ import de.lessvoid.nifty.screen.KeyInputHandler;
 import de.lessvoid.nifty.input.NiftyInputEvent;
 import de.lessvoid.nifty.elements.Element;
 
-import Game.Game;;
+import Game.Game;
+import Interface.GameCameraState;
 /**
  *
  * @author Impaler
@@ -47,12 +48,16 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 
 	public boolean keyEvent(NiftyInputEvent event) {
 		if (event != null) {
-			if (event.getCharacter() == ' ') {
+			if (event == NiftyInputEvent.Escape) {
 				if (MenuUp) {
 					closePopup();
 					return true;
+				} else {
+					Menu();
+					return true;
 				}
 			}
+			//if (event == NiftyInputEvent.Activate)
 		}
 		return false;
 	}
@@ -80,6 +85,17 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 		this.app.stop();
 	}
 
+	public void Abandon() {
+		closePopup();
+
+		// Destroy Game object ?
+		nifty.gotoScreen("StartScreen");
+	}
+
+	public void SaveGame() {
+		closePopup();
+	}
+	
 	public void Pause() {
 		Game Time = app.getStateManager().getState(Game.class);
 		Time.Pause(!Time.isPaused());
@@ -91,15 +107,9 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 		Time.Pause(false);
 		Time.setTickRate(speed);
 	}
-
-	public void Abandon() {
-		closePopup();
-
-		// Destroy Game object ?
-		nifty.gotoScreen("StartScreen");
-	}
-
-	public void SaveGame() {
-		closePopup();
+	
+	public void Dig() {
+		GameCameraState Cam = app.getStateManager().getState(GameCameraState.class);
+		Cam.setVolumeSelectionMode(true);
 	}
 }

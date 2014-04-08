@@ -36,17 +36,11 @@ public class ShellInputState extends AbstractAppState {
 		super.setEnabled(enabled);
 		if(enabled){
 			//input.addMapping(null, triggers);
-			input.addMapping("ExitGame", new KeyTrigger(KeyInput.KEY_ESCAPE));
-			input.addMapping("ExitGame", new KeyTrigger(KeyInput.KEY_Q));
-
 			// init stuff that is in use while this state is RUNNING
 
 			input.addListener(actionListener,"ExitGame");
-			input.addListener(analogListener,"Left", "Right", "Rotate");
- 
 		} else {
 		  // take away everything not needed while this state is PAUSED
-
 		}
     }
 

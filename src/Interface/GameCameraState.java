@@ -18,6 +18,9 @@ import com.jme3.math.ColorRGBA;
 
 import com.jme3.scene.Node;
 import com.jme3.math.Vector3f;
+import com.jme3.math.Plane;
+import com.jme3.math.Ray;
+import com.jme3.math.Vector2f;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.scene.shape.Sphere;
@@ -36,7 +39,7 @@ import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.scene.Spatial;
 
 import Renderer.TerrainRenderer;
-import com.jme3.math.Vector2f;
+
 
 /**
  *  Manages the main games parrelel projection Camera 
@@ -66,11 +69,16 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	private float XChange;
 	private float YChange;
 
+	private boolean VolumeSelectMode = false;
 	private boolean SelectingVolume = false;
+	private boolean SurfaceSelectMode = false;
 	private boolean SelectingSurface = false;
+	
+	private Plane SelectionPlane = null;
 
 	private MapCoordinate MouseLocation = new MapCoordinate();
 	private MapCoordinate SelectionOrigin = new MapCoordinate();
+	private MapCoordinate SelectionLocation = new MapCoordinate();
 
 	public VolumeSelection Volume;
 
@@ -152,13 +160,13 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		WireBoxMesh.setMode(Mesh.Mode.Lines);
 		WireBoxMesh.setLineWidth(3);
 		
-		int maxX = Math.max(MouseLocation.X, SelectionOrigin.X);
-		int maxY = Math.max(MouseLocation.Y, SelectionOrigin.Y);
-		int maxZ = Math.max(MouseLocation.Z, SelectionOrigin.Z);
+		int maxX = Math.max(SelectionLocation.X, SelectionOrigin.X);
+		int maxY = Math.max(SelectionLocation.Y, SelectionOrigin.Y);
+		int maxZ = Math.max(SelectionLocation.Z, SelectionOrigin.Z);
 
-		int minX = Math.min(MouseLocation.X, SelectionOrigin.X);
-		int minY = Math.min(MouseLocation.Y, SelectionOrigin.Y);
-		int minZ = Math.min(MouseLocation.Z, SelectionOrigin.Z);
+		int minX = Math.min(SelectionLocation.X, SelectionOrigin.X);
+		int minY = Math.min(SelectionLocation.Y, SelectionOrigin.Y);
+		int minZ = Math.min(SelectionLocation.Z, SelectionOrigin.Z);
 
 		Vector3f [] vertices = new Vector3f[8];
 		vertices[0] = new Vector3f(maxX - minX + MapCoordinate.HALFCUBE, maxY - minY + MapCoordinate.HALFCUBE,  maxZ - minZ + MapCoordinate.HALFCUBE);
@@ -226,11 +234,22 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
         if (this.isEnabled()) {
 			if (name.equals("LeftClick")) {
 				LeftDown = keyPressed;
-				if (!RightDown && keyPressed) {
-				}
+				//if (!RightDown && keyPressed) {
+				//}
+				
+				if (SelectingVolume && !keyPressed)
+					completeVolumeSelection();
+					
+				if (VolumeSelectMode && keyPressed)
+					beginVolumeSelection();
 			}
+			
 			if (name.equals("RightClick")) {
 				RightDown = keyPressed;
+
+				if (VolumeSelectMode) {
+					setVolumeSelectionMode(false);
+				}
 			}
 
 			if (name.equals("MiddleClick")) {
@@ -252,14 +271,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				TerrainRenderer rend = state.getState(TerrainRenderer.class);
 				rend.setSliceLevels(MainCamera.SliceTop, MainCamera.SliceBottom);
 			}
-			
-			if (name.equals("SelectionStart") && keyPressed) {
-				beginVolumeSelection();
-			}
-			
-			if (name.equals("SelectionEnd") && keyPressed) {
-				endVolumeSelection();
-			}
         }
     }
 
@@ -273,7 +284,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				MainCamera.RotateCamera(value);
 			} else {
 				if (RightDown)
-					MainCamera.TranslateCamera(CreateTranslationVector());
+					MainCamera.TranslateCamera(CreateTranslationVector());				
 			}
         } else if (name.equals("mouseRight")) {
 			if (MiddleDown) {
@@ -304,7 +315,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
     }
 
     public void registerWithInput(InputManager inputManager) {
-        String[] inputs = {"LeftClick", "RightClick", "MiddleClick", "Down", "Up", "mouseLeft", "mouseRight", "ZoomIn", "ZoomOut", "ArrowUp", "ArrowDown", "SelectionStart", "SelectionEnd"};
+        String[] inputs = {"LeftClick", "RightClick", "MiddleClick", "Down", "Up", "mouseLeft", "mouseRight", "ZoomIn", "ZoomOut", "ArrowUp", "ArrowDown"};
 
         inputManager.addMapping("Down", new MouseAxisTrigger(1, true));
         inputManager.addMapping("Up", new MouseAxisTrigger(1, false));
@@ -320,9 +331,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
         inputManager.addMapping("ArrowUp", new KeyTrigger(KeyInput.KEY_UP));
         inputManager.addMapping("ArrowDown", new KeyTrigger(KeyInput.KEY_DOWN));
 
-		inputManager.addMapping("SelectionStart", new KeyTrigger(KeyInput.KEY_S));
-		inputManager.addMapping("SelectionEnd", new KeyTrigger(KeyInput.KEY_E));
-
         inputManager.addListener(this, inputs);
     }
 
@@ -331,51 +339,77 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	}
 	
 	public void updateMousePosition() {
-		CollisionResults results = MainCamera.CursorCollision(terrainnode, app.getInputManager().getCursorPosition());
-		
-		if (results.size() > 0) {
-			// The closest collision point is what was truly hit:
-			CollisionResult closest = results.getClosestCollision();
+		TerrainRenderer rend = this.app.getStateManager().getState(TerrainRenderer.class);
+		this.terrainnode = rend.getTerrainNode();
 
-			Vector3f contact = closest.getContactPoint();
-			Vector3f normal = closest.getContactNormal();
-			contact = contact.subtract(normal.mult(.001f));
-
-			int x = Math.round(contact.getX());
-			int y = Math.round(contact.getY());
-			int z = Math.round(contact.getZ());
-			MouseLocation.Set(x, y, z);
-			hudText.setText("X: " + x + "  Y: " + y + "  Z: " + z);
-
-			CursorBox.setLocalTranslation(new Vector3f(x, y, z));
-			this.rootnode.attachChild(CursorBox);
+		if (terrainnode != null) {
 			
 			if (SelectingVolume) {
+				Ray ray = MainCamera.getMouseRay(app.getInputManager().getCursorPosition());
+				Vector3f IntersectLocation = new Vector3f();
+				ray.intersectsWherePlane(SelectionPlane, IntersectLocation);
+				
+				SelectionLocation.Set((int) IntersectLocation.x, (int) IntersectLocation.y, (int) IntersectLocation.z);
+				
 				this.rootnode.detachChild(CursorBox);
 				this.rootnode.detachChild(SelectionBox);					
 				BuildSelectionBox();
 
-				int minX = Math.min(MouseLocation.X, SelectionOrigin.X);
-				int minY = Math.min(MouseLocation.Y, SelectionOrigin.Y);
-				int minZ = Math.min(MouseLocation.Z, SelectionOrigin.Z);
+				int minX = Math.min((int) IntersectLocation.x, SelectionOrigin.X);
+				int minY = Math.min((int) IntersectLocation.y, SelectionOrigin.Y);
+				int minZ = Math.min((int) IntersectLocation.z, SelectionOrigin.Z);
 
 				SelectionBox.setLocalTranslation(new Vector3f(minX, minY, minZ));
-				this.rootnode.attachChild(SelectionBox);
+				this.rootnode.attachChild(SelectionBox);	
 			} else {
-				this.rootnode.detachChild(SelectionBox);	
+			
+				CollisionResults results = new CollisionResults();		
+				terrainnode.collideWith(MainCamera.getMouseRay(app.getInputManager().getCursorPosition()), results);
+
+				if (results.size() > 0) {
+					// The closest collision point is what was truly hit:
+					CollisionResult closest = results.getClosestCollision();
+
+					Vector3f contact = closest.getContactPoint();
+					Vector3f normal = closest.getContactNormal();
+					contact = contact.subtract(normal.mult(.001f));
+
+					int x = Math.round(contact.getX());
+					int y = Math.round(contact.getY());
+					int z = Math.round(contact.getZ());
+					MouseLocation.Set(x, y, z);
+					hudText.setText("X: " + x + "  Y: " + y + "  Z: " + z);
+
+					CursorBox.setLocalTranslation(new Vector3f(x, y, z));
+					this.rootnode.attachChild(CursorBox);
+				}
 			}
-        } else {
-			this.rootnode.detachChild(CursorBox);
-        }
+		}
 	}
 	
+	public void setVolumeSelectionMode(boolean NewMode) {
+		if (NewMode != VolumeSelectMode) {
+			VolumeSelectMode = NewMode;
+			SelectingVolume = false;
+		}
+	}
+
 	public void beginVolumeSelection() {
 		SelectingVolume = true;
-		SelectionOrigin.copy(MouseLocation);		
+		SelectionOrigin.copy(MouseLocation);
+		SelectionPlane = new Plane(Vector3f.UNIT_Z, MouseLocation.Z);
+		this.rootnode.detachChild(SelectionBox);	
 	}
 	
-	public void endVolumeSelection() {
+	public void abortVolumeSelection() {
 		SelectingVolume = false;
+		setVolumeSelectionMode(false);
+		SelectionPlane = null;
+	}
+
+	public void completeVolumeSelection() {
+		SelectingVolume = false;
+		SelectionPlane = null;
 
 		Volume = new VolumeSelection();
 		int maxX = Math.max(MouseLocation.X, SelectionOrigin.X);

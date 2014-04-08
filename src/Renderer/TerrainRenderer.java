@@ -9,6 +9,8 @@ import Game.Game;
 import Game.Actor;
 import Game.Pawn;
 
+import Nifty.GUI;
+
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -44,9 +46,9 @@ public class TerrainRenderer extends AbstractAppState {
 	AssetManager assetmanager = null;
 	ImageManager imagemanager = null;
 	
-	Node terrainNode;
-	Node sunnyterrainNode;
-	Node darkterrainNode;
+	Node terrainNode = null;
+	Node sunnyterrainNode = null;
+	Node darkterrainNode = null;
 	
 	TileBuilder builder;
 	ConcurrentHashMap<CellCoordinate, Node> CellNodeMap;
@@ -76,7 +78,14 @@ public class TerrainRenderer extends AbstractAppState {
 		super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
 		this.state = stateManager;
+		this.assetmanager = app.getAssetManager();
 
+		ImageManager Images = ImageManager.getImageManager();
+		Images.Initialize(assetmanager);
+		imagemanager = Images;
+	}
+	
+	public void attachToGame(Game TargetGame) {
 		terrainNode = new Node();
 		this.app.getRootNode().attachChild(terrainNode);
 		
@@ -84,33 +93,28 @@ public class TerrainRenderer extends AbstractAppState {
 		sunnyterrainNode = new Node();
 		terrainNode.attachChild(darkterrainNode);
 		terrainNode.attachChild(sunnyterrainNode);
-		
-		assetmanager = app.getAssetManager();
-		
-		ImageManager Images = ImageManager.getImageManager();
-		Images.Initialize(assetmanager);
-		imagemanager = Images;
-		
+
 		Texture tex = assetmanager.loadTexture("Textures/grass1.png");
 		Image withBorder = imagemanager.GeneratedOverLayImage(tex.getImage(), 0, 0);
 		tex.setImage(withBorder);
 
 		mat = new Material(assetmanager, "Common/MatDefs/Light/Lighting.j3md");
 		mat.setTexture("DiffuseMap", tex);
-				
-		DirectionalLight sun = new DirectionalLight();
-		sun.setDirection(new Vector3f(1, 1, -1).normalizeLocal());
-		ColorRGBA Suncolor = ColorRGBA.White;
-		sun.setColor(Suncolor.mult(0.6f));
 		
+		ColorRGBA Suncolor = ColorRGBA.White;
 		AmbientLight glow = new AmbientLight();
 		glow.setColor(Suncolor.mult(0.8f));
-				
-		
-		sunnyterrainNode.addLight(sun);
-		terrainNode.addLight(glow);
+
+		TargetGame.getWeather().AttatchSun(sunnyterrainNode);
+		terrainNode.addLight(glow);		
 	}
 	
+	public void detachFromGame() {
+		terrainNode = null;
+		darkterrainNode = null;
+		sunnyterrainNode = null;
+	}
+
 	private Node getNode(CellCoordinate TargetCell) {
 		Node targetnode = CellNodeMap.get(TargetCell);
 		if (targetnode != null) {
@@ -304,7 +308,13 @@ public class TerrainRenderer extends AbstractAppState {
 		if (game != null) {
 			GameMap map = game.getMap();
 			RebuildDirtyCells(map.getCellMap());
-			PopulateActors();
+			//if (game.getTickRate() < 64) {
+				PopulateActors();	
+			//}
+			
+			GUI gui = state.getState(GUI.class);
+			String TimeString = ((game.hours %24) + ":" + (game.minutes % 60) + ":" + (game.seconds % 60));
+			gui.UpdateText("Timelabel", TimeString);
 		}
 	}
 

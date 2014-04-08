@@ -15,6 +15,7 @@ import Game.Game;
 import Job.JobManager;
 import Job.WanderJob;
 import PathFinding.PathManager;
+import Renderer.TerrainRenderer;
 /**
  *
  * @author Impaler
@@ -63,6 +64,8 @@ public class ShellScreenController implements ScreenController {
 		game.InitializeGame((short) 10, (short) 10, Seed);
 		this.app.getStateManager().attach(game);
 		
+		this.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
+
 		JobManager jobs = game.getSettlment().getJobManager();
 		WanderJob newJob = new WanderJob();
 		jobs.addJob(newJob);

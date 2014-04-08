@@ -28,7 +28,7 @@ import com.jme3.collision.CollisionResults;
  */
 public class GameCamera {
 		
-    protected Node TargetNode = null;
+	protected Node TargetNode = null;
 	protected Node RotationNode = null;
 	protected Node PitchNode = null;
 
@@ -38,11 +38,11 @@ public class GameCamera {
 	protected float TranslationFactor;
 
 	protected float zoomSpeed = 0.1f;
-    protected float rotationSpeed = 10.0f;
-    protected float PitchSpeed = 200.0f;
+	protected float rotationSpeed = 10.0f;
+	protected float PitchSpeed = 200.0f;
 	
-    private Camera camera = null;
-    private InputManager inputManager;
+	private Camera camera = null;
+	private InputManager inputManager;
 
 	private float PitchAngle;
 	private boolean PitchLock;
@@ -51,9 +51,9 @@ public class GameCamera {
 	protected int SliceBottom;
 	protected int ViewLevels;
 
-    public GameCamera(Camera cam, final Node target) {
+	public GameCamera(Camera cam, final Node target) {
 
-        this.camera = cam;
+		this.camera = cam;
 
 		float aspect = (float) camera.getWidth() / camera.getHeight();
 		TranslationFactor = zoomFactor / camera.getWidth() * aspect * 2;
@@ -81,10 +81,10 @@ public class GameCamera {
 		CamNode.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);	
 		
 		SetSlice(5, -5);
-    }
+	}
 	
 	//rotate the camera around the target on the horizontal plane
-    protected void PitchCamera(float value) {
+	protected void PitchCamera(float value) {
 		
 		if (PitchAngle < 80 && value > 0) { // Allow Pitch to increese if not above maximum
 			PitchAngle += value * PitchSpeed;
@@ -116,13 +116,11 @@ public class GameCamera {
 		}*/
 		
 		CamNode.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);	
-    }
+	}
 
-    //expand or contract frustrum for paralax zooming
-    protected void zoomCamera(float value) {
-
-		float change = (value * zoomSpeed) + 1;
-				
+	//expand or contract frustrum for paralax zooming
+	protected void zoomCamera(float value) {
+		float change = (value * zoomSpeed) + 1;	
 		if ((zoomFactor < 200 && change > 1) || (zoomFactor > 5 && change < 1))
 		{
 			float aspect = (float) camera.getWidth() / camera.getHeight();
@@ -137,13 +135,13 @@ public class GameCamera {
 
 			camera.setFrustum(-1000, 1000, left, right, top, bottom);
 		}
-    }
+	}
 
-    //rotate the camera around the target on the Horizonatal XY plane
-    protected void RotateCamera(float value) {
+	//rotate the camera around the target on the Horizonatal XY plane
+	protected void RotateCamera(float value) {
 		RotationNode.rotate(0, 0, value * rotationSpeed);
 		CamNode.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);		
-    }
+	}
 
 	protected void TranslateCamera(Vector3f Translation) {
 		TargetNode.move(Translation);
@@ -247,23 +245,17 @@ public class GameCamera {
 		return Minimum;
 	}
 
-	public CollisionResults CursorCollision(Node target, Vector2f click2d) {
-        CollisionResults results = new CollisionResults();
-		
-		//Vector2f click2d = inputManager.getCursorPosition();
-        Vector3f click3d = camera.getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 0f).clone();
-        Vector3f dir = camera.getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d).normalizeLocal();
-        Ray ray = new Ray(click3d, dir);
-		
-        target.collideWith(ray, results);
-		return results;
+	public Ray getMouseRay(Vector2f click2d) {
+		Vector3f click3d = camera.getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 0f).clone();
+		Vector3f dir = camera.getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d).normalizeLocal();
+		return new Ray(click3d, dir);		
 	}
 
-    public void write(JmeExporter ex) throws IOException {
+	public void write(JmeExporter ex) throws IOException {
 
-    }
+	}
 
-    public void read(JmeImporter im) throws IOException {
+	public void read(JmeImporter im) throws IOException {
 
-    }
+	}
 }
