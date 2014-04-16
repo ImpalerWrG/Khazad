@@ -34,12 +34,12 @@ public class ExcavateJob extends Job {
 		MapCoordinate Origin = Selection.OriginLocation;
 		MapCoordinate Terminal = Selection.TerminalLocation;
 
-		for (int x = Origin.X; x < Terminal.X; x++) {
-			for (int y = Origin.Y; y < Terminal.Y; y++) {
-				for (int z = Origin.Z; z < Terminal.Z; z++) {
+		for (int x = Origin.X; x < Terminal.X + 1; x++) {
+			for (int y = Origin.Y; y < Terminal.Y + 1; y++) {
+				for (int z = Origin.Z; z < Terminal.Z + 1; z++) {
 					MapCoordinate ZoneCube = new MapCoordinate(x, y, z);
 					CellCoordinate CellCoords = new CellCoordinate(ZoneCube);
-					byte CubeIndex = ZoneCube.Cube();
+					int CubeIndex = ZoneCube.CubeInt();
 
 					CubeShape[] DesignationShapes = Designations.get(CellCoords);
 					BitSet AccessibleLocation = Accessible.get(CellCoords);
@@ -70,7 +70,7 @@ public class ExcavateJob extends Job {
 	}
 	
 	public float EvaluatePawn(Pawn IdleCitizen) {
-		return 0;
+		return 1.0f;
 	}
 
 }

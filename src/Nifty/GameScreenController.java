@@ -110,6 +110,6 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 	
 	public void Dig() {
 		GameCameraState Cam = app.getStateManager().getState(GameCameraState.class);
-		Cam.setVolumeSelectionMode(true);
+		Cam.setMode(GameCameraState.CameraMode.SELECT_VOLUME);
 	}
 }

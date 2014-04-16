@@ -198,10 +198,7 @@ public class CubeShape {
 
 	public float centerHeight() {
 		if (split()) {
-			int temp1 = NorthWestCorner();
-			int temp2 = SouthEastCorner();
-			float temp3 = temp1 + temp2 - 2;
-			return ((temp3 / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+			return (((NorthWestCorner() + SouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
 		} else {
 			return (((SouthWestCorner() + NorthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;			
 		}

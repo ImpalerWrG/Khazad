@@ -122,21 +122,21 @@ public class GameMap {
 		Pair< MapCoordinate, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
-		return TargetCell != null ? TargetCell.getFace(new FaceCoordinate(ConvertedValues.getValue0().Cube(), ConvertedValues.getValue1())) : null;
+		return TargetCell != null ? TargetCell.getFace(new FaceCoordinate(ConvertedValues.getValue0().CubeIndex(), ConvertedValues.getValue1())) : null;
 	}
 
 	public boolean hasFace(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
 		Pair< MapCoordinate, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
-		return TargetCell != null ? TargetCell.hasFace(new FaceCoordinate(ConvertedValues.getValue0().Cube(), ConvertedValues.getValue1())) : false;
+		return TargetCell != null ? TargetCell.hasFace(new FaceCoordinate(ConvertedValues.getValue0().CubeIndex(), ConvertedValues.getValue1())) : false;
 	}
 
 	public boolean removeFace(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
 		Pair< MapCoordinate, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
-		return TargetCell != null ? TargetCell.removeFace(new FaceCoordinate(ConvertedValues.getValue0().Cube(), ConvertedValues.getValue1())) : false;
+		return TargetCell != null ? TargetCell.removeFace(new FaceCoordinate(ConvertedValues.getValue0().CubeIndex(), ConvertedValues.getValue1())) : false;
 	}
 
 	public Face addFace(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
@@ -153,7 +153,7 @@ public class GameMap {
 			insertCell(TargetCell);
 		}
 
-		return TargetCell.addFace(new FaceCoordinate(ConvertedValues.getValue0().Cube(), ConvertedValues.getValue1()));
+		return TargetCell.addFace(new FaceCoordinate(ConvertedValues.getValue0().CubeIndex(), ConvertedValues.getValue1()));
 	}
 
 	public void setCubeShape(MapCoordinate Coordinates, CubeShape NewShape) {
@@ -161,7 +161,7 @@ public class GameMap {
 
 		if (TargetCell != null)
 		{
-			TargetCell.setCubeShape(Coordinates.Cube(), NewShape);
+			TargetCell.setCubeShape(Coordinates.CubeIndex(), NewShape);
 		}
 	}
 
@@ -169,7 +169,7 @@ public class GameMap {
 		Cell TargetCell = getCubeOwner(Coordinates);
 
 		if (TargetCell != null) {
-			return TargetCell.getCubeShape(Coordinates.Cube());
+			return TargetCell.getCubeShape(Coordinates.CubeIndex());
 		} else {
 			return new CubeShape(CubeShape.BELOW_CUBE_HEIGHT);
 		}
@@ -180,14 +180,14 @@ public class GameMap {
 
 		if (TargetCell != null)
 		{
-			TargetCell.setCubeMaterial(Coordinates.Cube(), MaterialID);
+			TargetCell.setCubeMaterial(Coordinates.CubeIndex(), MaterialID);
 		}
 	}
 
 	public short getCubeMaterial(MapCoordinate Coordinates) {
 		Cell TargetCell = getCubeOwner(Coordinates);
 
-		return TargetCell != null ? TargetCell.getCubeMaterial(Coordinates.Cube()) : DataTypes.INVALID_INDEX;
+		return TargetCell != null ? TargetCell.getCubeMaterial(Coordinates.CubeIndex()) : DataTypes.INVALID_INDEX;
 	}
 
 	public void setFaceMaterial(MapCoordinate TargetMapCoordinates, Direction DirectionType, short MaterialID) {
@@ -196,7 +196,7 @@ public class GameMap {
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
 		if (TargetCell != null)
 		{
-			TargetCell.setFaceMaterialType(new FaceCoordinate(ConvertedValues.getValue0().Cube(), ConvertedValues.getValue1()), MaterialID);
+			TargetCell.setFaceMaterialType(new FaceCoordinate(ConvertedValues.getValue0().CubeIndex(), ConvertedValues.getValue1()), MaterialID);
 		}
 	}
 
@@ -212,7 +212,7 @@ public class GameMap {
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
 		if (TargetCell != null)
 		{
-			TargetCell.setFaceSurfaceType(new FaceCoordinate(ConvertedValues.getValue0().Cube(), ConvertedValues.getValue1()), SurfaceID);
+			TargetCell.setFaceSurfaceType(new FaceCoordinate(ConvertedValues.getValue0().CubeIndex(), ConvertedValues.getValue1()), SurfaceID);
 		}
 	}
 
@@ -227,7 +227,7 @@ public class GameMap {
 
 		if(TargetCell != null)
 		{
-			return TargetCell.isCubeHidden(Coordinates.Cube());
+			return TargetCell.isCubeHidden(Coordinates.CubeIndex());
 		}
 		return false;
 	}
@@ -236,7 +236,7 @@ public class GameMap {
 		Cell TargetCell = getCubeOwner(Coordinates);
 
 		if(TargetCell != null)
-			TargetCell.setCubeHidden(Coordinates.Cube(), NewValue);	
+			TargetCell.setCubeHidden(Coordinates.CubeIndex(), NewValue);	
 	}
 	/*
 	public boolean isCubeSubTerranean(MapCoordinates Coordinates) {

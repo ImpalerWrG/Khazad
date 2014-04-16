@@ -5,7 +5,12 @@
 package Interface;
 
 
+import Game.Game;
+import Job.JobManager;
+import Job.ExcavateJob;
 import Map.MapCoordinate;
+import Map.CubeShape;
+
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -48,6 +53,14 @@ import Renderer.TerrainRenderer;
  */
 public class GameCameraState extends AbstractAppState implements ActionListener, AnalogListener {
 
+	public enum CameraMode {
+		NORMAL,
+		SELECT_VOLUME,
+		SELECTING_VOLUME,
+		SELECT_SURFACE,
+		SELECTING_SURFACE
+	}
+
 	private Node rootnode;
 	private Node terrainnode;
 	private Node LookNode;
@@ -59,26 +72,26 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	BitmapText hudText;
 	private Geometry CursorBox;
 	private Geometry SelectionBox;
-		
+
+	private CameraMode CurrentMode = CameraMode.NORMAL;
+
 	private boolean LeftDown;
 	private boolean RightDown;
 	private boolean MiddleDown;
+	private boolean LShiftDown;
+	private boolean RShiftDown;
+	private boolean Shift;
 
 	private float OldMouseX;
 	private float OldMouseY;
 	private float XChange;
 	private float YChange;
-
-	private boolean VolumeSelectMode = false;
-	private boolean SelectingVolume = false;
-	private boolean SurfaceSelectMode = false;
-	private boolean SelectingSurface = false;
 	
 	private Plane SelectionPlane = null;
 
 	private MapCoordinate MouseLocation = new MapCoordinate();
 	private MapCoordinate SelectionOrigin = new MapCoordinate();
-	private MapCoordinate SelectionLocation = new MapCoordinate();
+	private MapCoordinate SelectionTerminus = new MapCoordinate();
 
 	public VolumeSelection Volume;
 
@@ -160,13 +173,13 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		WireBoxMesh.setMode(Mesh.Mode.Lines);
 		WireBoxMesh.setLineWidth(3);
 		
-		int maxX = Math.max(SelectionLocation.X, SelectionOrigin.X);
-		int maxY = Math.max(SelectionLocation.Y, SelectionOrigin.Y);
-		int maxZ = Math.max(SelectionLocation.Z, SelectionOrigin.Z);
+		int maxX = Math.max(SelectionTerminus.X, SelectionOrigin.X);
+		int maxY = Math.max(SelectionTerminus.Y, SelectionOrigin.Y);
+		int maxZ = Math.max(SelectionTerminus.Z, SelectionOrigin.Z);
 
-		int minX = Math.min(SelectionLocation.X, SelectionOrigin.X);
-		int minY = Math.min(SelectionLocation.Y, SelectionOrigin.Y);
-		int minZ = Math.min(SelectionLocation.Z, SelectionOrigin.Z);
+		int minX = Math.min(SelectionTerminus.X, SelectionOrigin.X);
+		int minY = Math.min(SelectionTerminus.Y, SelectionOrigin.Y);
+		int minZ = Math.min(SelectionTerminus.Z, SelectionOrigin.Z);
 
 		Vector3f [] vertices = new Vector3f[8];
 		vertices[0] = new Vector3f(maxX - minX + MapCoordinate.HALFCUBE, maxY - minY + MapCoordinate.HALFCUBE,  maxZ - minZ + MapCoordinate.HALFCUBE);
@@ -237,18 +250,21 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				//if (!RightDown && keyPressed) {
 				//}
 				
-				if (SelectingVolume && !keyPressed)
+				if (CurrentMode == CameraMode.SELECTING_VOLUME && !keyPressed)
 					completeVolumeSelection();
 					
-				if (VolumeSelectMode && keyPressed)
-					beginVolumeSelection();
+				if (CurrentMode == CameraMode.SELECT_VOLUME && keyPressed)
+					setMode(CameraMode.SELECTING_VOLUME);
 			}
 			
 			if (name.equals("RightClick")) {
 				RightDown = keyPressed;
 
-				if (VolumeSelectMode) {
-					setVolumeSelectionMode(false);
+				if (CurrentMode == CameraMode.SELECT_VOLUME) {
+					setMode(CameraMode.NORMAL);
+				}
+				if (CurrentMode == CameraMode.SELECTING_VOLUME) {
+					setMode(CameraMode.NORMAL);
 				}
 			}
 
@@ -271,11 +287,21 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				TerrainRenderer rend = state.getState(TerrainRenderer.class);
 				rend.setSliceLevels(MainCamera.SliceTop, MainCamera.SliceBottom);
 			}
+			
+			if (name.equals("RShift") && keyPressed) {
+				RShiftDown = keyPressed;
+				Shift = RShiftDown || LShiftDown;
+			}
+
+			if (name.equals("LShift") && keyPressed) {
+				LShiftDown = keyPressed;
+				Shift = RShiftDown || LShiftDown;
+			}
+
         }
     }
 
-    public void onAnalog(String name, float value, float tpf) {
-		
+	private void AnalogNormal(String name, float value, float tpf) {
 		ConvertMouseMovementToVector();
 		updateMousePosition();
 			
@@ -293,14 +319,14 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				if (RightDown)
 					MainCamera.TranslateCamera(CreateTranslationVector());
 			}
-        } else if (name.equals("Up")) {
+        } else if (name.equals("mouseUp")) {
 			if (MiddleDown) {
 				MainCamera.PitchCamera(value);
 			}else{
 				if (RightDown)
 					MainCamera.TranslateCamera(CreateTranslationVector());
 			}
-        } else if (name.equals("Down")) {
+        } else if (name.equals("mouseDown")) {
 			if (MiddleDown) {
 				MainCamera.PitchCamera(-value);
 			}else{
@@ -311,14 +337,104 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
             MainCamera.zoomCamera(value);
         } else if (name.equals("ZoomOut")) {
             MainCamera.zoomCamera(-value);
-        }
+        }		
+	}
+	
+	private void AnalogSelectingVolume(String name, float value, float tpf) {
+		ConvertMouseMovementToVector();
+
+		if (Shift) { // Z axis stretching
+			Vector3f LookVector = MainCamera.TargetNode.getWorldTranslation().subtract(MainCamera.CamNode.getWorldTranslation());
+
+			LookVector.normalizeLocal();
+			float zComp = LookVector.z;
+			LookVector.z = 0;
+			LookVector.normalizeLocal();
+
+			//Vector3f TempUpVector = Vector3f.UNIT_Z;
+
+			//Vector3f CrossProduct = TempUpVector.cross(LookVector);
+			//CrossProduct.normalizeLocal();
+
+			//Vector3f Temp1 = CrossProduct.mult(-XChange).mult(MainCamera.TranslationFactor);  //
+			Vector3f Temp2 = LookVector.mult(-YChange).mult(MainCamera.TranslationFactor).divide(zComp);
+			
+		} else { // XY plane intersection
+			Ray ray = MainCamera.getMouseRay(app.getInputManager().getCursorPosition());
+			Vector3f IntersectLocation = new Vector3f();
+			ray.intersectsWherePlane(SelectionPlane, IntersectLocation);
+
+			SelectionTerminus.Set((int) IntersectLocation.x, (int) IntersectLocation.y, (int) SelectionOrigin.Z);
+
+			this.rootnode.detachChild(CursorBox);
+			this.rootnode.detachChild(SelectionBox);					
+			BuildSelectionBox();
+
+			int minX = Math.min((int) SelectionTerminus.X, SelectionOrigin.X);
+			int minY = Math.min((int) SelectionTerminus.Y, SelectionOrigin.Y);
+			int minZ = Math.min((int) SelectionTerminus.Z, SelectionOrigin.Z);
+
+			SelectionBox.setLocalTranslation(new Vector3f(minX, minY, minZ));
+			this.rootnode.attachChild(SelectionBox);
+		}
+
+        if (name.equals("mouseLeft")) {
+			if (MiddleDown) {
+				MainCamera.RotateCamera(value);
+			} else {
+				if (RightDown)
+					MainCamera.TranslateCamera(CreateTranslationVector());				
+			}
+        } else if (name.equals("mouseRight")) {
+			if (MiddleDown) {
+				MainCamera.RotateCamera(-value);
+			} else {
+				if (RightDown)
+					MainCamera.TranslateCamera(CreateTranslationVector());
+			}
+        } else if (name.equals("mouseUp")) {
+			if (MiddleDown) {
+				MainCamera.PitchCamera(value);
+			}else{
+				if (RightDown)
+					MainCamera.TranslateCamera(CreateTranslationVector());
+			}
+        } else if (name.equals("mouseDown")) {
+			if (MiddleDown) {
+				MainCamera.PitchCamera(-value);
+			}else{
+				if (RightDown)
+					MainCamera.TranslateCamera(CreateTranslationVector());
+			}
+        } else if (name.equals("ZoomIn")) {
+            MainCamera.zoomCamera(value);
+        } else if (name.equals("ZoomOut")) {
+            MainCamera.zoomCamera(-value);
+        }		
+		
+	}
+
+    public void onAnalog(String name, float value, float tpf) {
+		switch (CurrentMode) {
+			case NORMAL:
+				AnalogNormal(name, value, tpf);
+				break;
+				
+			case SELECT_VOLUME:
+				AnalogNormal(name, value, tpf);
+				break;
+
+			case SELECTING_VOLUME:
+				AnalogSelectingVolume(name, value, tpf);
+				break;
+		}
     }
 
     public void registerWithInput(InputManager inputManager) {
-        String[] inputs = {"LeftClick", "RightClick", "MiddleClick", "Down", "Up", "mouseLeft", "mouseRight", "ZoomIn", "ZoomOut", "ArrowUp", "ArrowDown"};
+        String[] inputs = {"LeftClick", "RightClick", "MiddleClick", "mouseDown", "mouseUp", "mouseLeft", "mouseRight", "ZoomIn", "ZoomOut", "ArrowUp", "ArrowDown", "RShift", "LShift"};
 
-        inputManager.addMapping("Down", new MouseAxisTrigger(1, true));
-        inputManager.addMapping("Up", new MouseAxisTrigger(1, false));
+        inputManager.addMapping("mouseDown", new MouseAxisTrigger(1, true));
+        inputManager.addMapping("mouseUp", new MouseAxisTrigger(1, false));
         inputManager.addMapping("ZoomIn", new MouseAxisTrigger(2, true));
         inputManager.addMapping("ZoomOut", new MouseAxisTrigger(2, false));
         inputManager.addMapping("mouseLeft", new MouseAxisTrigger(0, true));
@@ -330,7 +446,9 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
         inputManager.addMapping("ArrowUp", new KeyTrigger(KeyInput.KEY_UP));
         inputManager.addMapping("ArrowDown", new KeyTrigger(KeyInput.KEY_DOWN));
-
+        inputManager.addMapping("RShift", new KeyTrigger(KeyInput.KEY_RSHIFT));
+        inputManager.addMapping("LShift", new KeyTrigger(KeyInput.KEY_LSHIFT));
+		
         inputManager.addListener(this, inputs);
     }
 
@@ -344,84 +462,66 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 		if (terrainnode != null) {
 			
-			if (SelectingVolume) {
-				Ray ray = MainCamera.getMouseRay(app.getInputManager().getCursorPosition());
-				Vector3f IntersectLocation = new Vector3f();
-				ray.intersectsWherePlane(SelectionPlane, IntersectLocation);
-				
-				SelectionLocation.Set((int) IntersectLocation.x, (int) IntersectLocation.y, (int) IntersectLocation.z);
-				
-				this.rootnode.detachChild(CursorBox);
-				this.rootnode.detachChild(SelectionBox);					
-				BuildSelectionBox();
+			CollisionResults results = new CollisionResults();		
+			terrainnode.collideWith(MainCamera.getMouseRay(app.getInputManager().getCursorPosition()), results);
 
-				int minX = Math.min((int) IntersectLocation.x, SelectionOrigin.X);
-				int minY = Math.min((int) IntersectLocation.y, SelectionOrigin.Y);
-				int minZ = Math.min((int) IntersectLocation.z, SelectionOrigin.Z);
+			if (results.size() > 0) {
+				// The closest collision point is what was truly hit:
+				CollisionResult closest = results.getClosestCollision();
 
-				SelectionBox.setLocalTranslation(new Vector3f(minX, minY, minZ));
-				this.rootnode.attachChild(SelectionBox);	
-			} else {
+				Vector3f contact = closest.getContactPoint();
+				Vector3f normal = closest.getContactNormal();
+				contact = contact.subtract(normal.mult(.001f));
+
+				int x = Math.round(contact.getX());
+				int y = Math.round(contact.getY());
+				int z = Math.round(contact.getZ());
+				MouseLocation.Set(x, y, z);
+				hudText.setText("X: " + x + "  Y: " + y + "  Z: " + z);
+
+				CursorBox.setLocalTranslation(new Vector3f(x, y, z));
+				this.rootnode.attachChild(CursorBox);
+			}
+		}
+	}
+
+	public void setMode(CameraMode newMode) {
+		if (CurrentMode != newMode) {
+			CurrentMode = newMode;
 			
-				CollisionResults results = new CollisionResults();		
-				terrainnode.collideWith(MainCamera.getMouseRay(app.getInputManager().getCursorPosition()), results);
-
-				if (results.size() > 0) {
-					// The closest collision point is what was truly hit:
-					CollisionResult closest = results.getClosestCollision();
-
-					Vector3f contact = closest.getContactPoint();
-					Vector3f normal = closest.getContactNormal();
-					contact = contact.subtract(normal.mult(.001f));
-
-					int x = Math.round(contact.getX());
-					int y = Math.round(contact.getY());
-					int z = Math.round(contact.getZ());
-					MouseLocation.Set(x, y, z);
-					hudText.setText("X: " + x + "  Y: " + y + "  Z: " + z);
-
-					CursorBox.setLocalTranslation(new Vector3f(x, y, z));
-					this.rootnode.attachChild(CursorBox);
-				}
+			if (CurrentMode == CameraMode.SELECTING_VOLUME) {
+				SelectionOrigin.copy(MouseLocation);
+				SelectionPlane = new Plane(Vector3f.UNIT_Z, MouseLocation.Z);
+				this.rootnode.detachChild(SelectionBox);	
+			}
+			
+			if (CurrentMode == CameraMode.NORMAL) {
+				SelectionPlane = null;
 			}
 		}
 	}
 	
-	public void setVolumeSelectionMode(boolean NewMode) {
-		if (NewMode != VolumeSelectMode) {
-			VolumeSelectMode = NewMode;
-			SelectingVolume = false;
-		}
-	}
-
-	public void beginVolumeSelection() {
-		SelectingVolume = true;
-		SelectionOrigin.copy(MouseLocation);
-		SelectionPlane = new Plane(Vector3f.UNIT_Z, MouseLocation.Z);
-		this.rootnode.detachChild(SelectionBox);	
-	}
-	
-	public void abortVolumeSelection() {
-		SelectingVolume = false;
-		setVolumeSelectionMode(false);
-		SelectionPlane = null;
-	}
-
 	public void completeVolumeSelection() {
-		SelectingVolume = false;
-		SelectionPlane = null;
 
 		Volume = new VolumeSelection();
-		int maxX = Math.max(MouseLocation.X, SelectionOrigin.X);
-		int maxY = Math.max(MouseLocation.Y, SelectionOrigin.Y);
-		int maxZ = Math.max(MouseLocation.Z, SelectionOrigin.Z);
+		int maxX = Math.max(SelectionTerminus.X, SelectionOrigin.X);
+		int maxY = Math.max(SelectionTerminus.Y, SelectionOrigin.Y);
+		int maxZ = Math.max(SelectionTerminus.Z, SelectionOrigin.Z);
 
-		int minX = Math.min(MouseLocation.X, SelectionOrigin.X);
-		int minY = Math.min(MouseLocation.Y, SelectionOrigin.Y);
-		int minZ = Math.min(MouseLocation.Z, SelectionOrigin.Z);
+		int minX = Math.min(SelectionTerminus.X, SelectionOrigin.X);
+		int minY = Math.min(SelectionTerminus.Y, SelectionOrigin.Y);
+		int minZ = Math.min(SelectionTerminus.Z, SelectionOrigin.Z);
 
 		Volume.OriginLocation.Set(minX, minY, minZ);
 		Volume.TerminalLocation.Set(maxX, maxY, maxZ);
+
+		Game game = state.getState(Game.class);
+		JobManager jobs = game.getSettlment().getJobManager();
+		ExcavateJob newJob = new ExcavateJob();
+		newJob.addDesignations(Volume, new CubeShape(CubeShape.CUBE_BOTTOM_HEIGHT));
+		jobs.addJob(newJob);
+
+		setMode(CameraMode.SELECT_VOLUME);
 	}
 
     @Override

@@ -173,7 +173,7 @@ public class KhazadGrid implements GridInterface {
 	public BitSet getDirectionFlags(MapCoordinate TargetCoords) {
 		GridCell TargetCell = getCell(new CellCoordinate(TargetCoords));
 		if (TargetCell != null) {
-			return TargetCell.getCubeDirections(TargetCoords.Cube() & 0xFF);
+			return TargetCell.getCubeDirections(TargetCoords.CubeIndex() & 0xFF);
 		}
 		return new BitSet();  // No connectivity because Cell is invalid
 	}
@@ -181,7 +181,7 @@ public class KhazadGrid implements GridInterface {
 	public boolean isEdge(MapCoordinate TargetCoords, Direction DirectionType) {
 		GridCell TargetCell = getCell(new CellCoordinate(TargetCoords));
 		if (TargetCell != null) {
-			int Positition = ((TargetCoords.Cube() & 0xFF) * Direction.ANGULAR_DIRECTIONS.length)  + DirectionType.ordinal();
+			int Positition = ((TargetCoords.CubeIndex() & 0xFF) * Direction.ANGULAR_DIRECTIONS.length)  + DirectionType.ordinal();
 			return TargetCell.DirectionMatrix.get(Positition);
 		}
 		return false;
@@ -190,7 +190,7 @@ public class KhazadGrid implements GridInterface {
 	int getConnectivityZone(MapCoordinate TargetCoords) {
 		GridCell TargetCell = getCell(new CellCoordinate(TargetCoords));
 		if (TargetCell != null) {
-			return TargetCell.ConnectivityZone[TargetCoords.Cube() & 0xFF];
+			return TargetCell.ConnectivityZone[TargetCoords.CubeIndex() & 0xFF];
 		}
 		return 0;  // No connectivity zone because Cell is invalid
 	}
@@ -198,7 +198,7 @@ public class KhazadGrid implements GridInterface {
 	void setConnectivityZone(MapCoordinate TargetCoords, int NewZone) {
 		GridCell TargetCell = getCell(new CellCoordinate(TargetCoords));
 		if (TargetCell != null) {
-			TargetCell.ConnectivityZone[TargetCoords.Cube() & 0xFF] = NewZone;
+			TargetCell.ConnectivityZone[TargetCoords.CubeIndex() & 0xFF] = NewZone;
 		}
 	}
 
@@ -206,7 +206,7 @@ public class KhazadGrid implements GridInterface {
 		//find the Target cell (add if necessary)
 		GridCell TargetCell = addCell(new CellCoordinate(MapCoords));
 
-		TargetCell.setCubeDirections(MapCoords.Cube() & 0xFF, Flags);
+		TargetCell.setCubeDirections(MapCoords.CubeIndex() & 0xFF, Flags);
 
 		//for (Axis AxisType: Axis.values()) {
 		//	if (MapCoords[AxisType.ordinal()] > maxlen[AxisType.ordinal()]) {

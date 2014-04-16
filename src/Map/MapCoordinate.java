@@ -87,10 +87,16 @@ public final class MapCoordinate {
 		}
 	}
 
-	public byte Cube(){
+	public byte CubeIndex() {
 		byte tempx = (byte) ((X & CELLBITFLAG) << CELLBITSHIFT);
 		byte tempy = ((byte) (Y & CELLBITFLAG));
 		return (byte) (tempx + tempy);
+	}
+
+	public int CubeInt() {
+		int tempx = (X & CELLBITFLAG) << CELLBITSHIFT;
+		int tempy = Y & CELLBITFLAG;
+		return tempx + tempy;
 	}
 
 	public void copy(MapCoordinate ArgumentCoordinates) {
