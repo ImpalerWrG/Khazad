@@ -8,10 +8,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 
 import java.util.concurrent.Future;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
 
 import Core.Clock;
 import Core.Main;
@@ -51,7 +48,7 @@ public class PathManager extends AbstractAppState {
     //CentralPool<AStarNode> NodeCentralPool;
 	ArrayList<Pool> PoolList;
 	
-	ScheduledThreadPoolExecutor Executor;
+	ExecutorService Executor;
 	
 	
     public PathTester Tester;

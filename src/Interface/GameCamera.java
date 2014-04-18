@@ -20,8 +20,6 @@ import com.jme3.scene.Node;
 import com.jme3.scene.CameraNode;
 import java.io.IOException;
 
-import com.jme3.collision.CollisionResults;
-
 /**
  * A camera 
  * @author Impaler

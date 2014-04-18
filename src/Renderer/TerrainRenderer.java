@@ -32,8 +32,8 @@ import com.jme3.texture.Texture;
 import java.util.ArrayList;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  *
@@ -60,10 +60,10 @@ public class TerrainRenderer extends AbstractAppState {
 	boolean SunnyRendering = true;
 	int Top; int Bottom;
 
-	ScheduledThreadPoolExecutor Executor;
+	ExecutorService Executor;
 	ArrayList<Future> CellRebuildingFutures;
 
-	public TerrainRenderer(ScheduledThreadPoolExecutor Threadpool) {
+	public TerrainRenderer(ExecutorService Threadpool) {
 		Executor = Threadpool;
 
 		CellNodeMap = new ConcurrentHashMap<CellCoordinate, Node>();

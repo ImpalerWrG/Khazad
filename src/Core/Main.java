@@ -35,8 +35,8 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.util.BufferUtils;
 
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 /**
  * Simple Initialization of gamestates that run just around everything else
  * A Threadpool is used for speeding up pathfinding and rendering
@@ -44,7 +44,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  */
 public class Main extends SimpleApplication {
 
-	static ScheduledThreadPoolExecutor ExecutionThreadpool;
+	static ExecutorService pool;
 
     public static void main(String[] args) {	
 		Main Game = new Main();
@@ -52,19 +52,19 @@ public class Main extends SimpleApplication {
     }
 
 	public Main() {
-		super(new ShellInputState(), new StatsAppState());
+		super(new StatsAppState());
 	}
 
     @Override
     public void simpleInitApp() {
 
-		ExecutionThreadpool = new ScheduledThreadPoolExecutor(8);
+		pool = Executors.newFixedThreadPool(8);
 
 		ImageManager Images = ImageManager.getImageManager();
 		Images.Initialize(assetManager);
 		
 		// RENDER
-		this.stateManager.attach(new TerrainRenderer(ExecutionThreadpool));
+		this.stateManager.attach(new TerrainRenderer(pool));
 		
 		this.stateManager.attach(new GameCameraState());
 		this.stateManager.attach(new Music());
@@ -101,8 +101,8 @@ public class Main extends SimpleApplication {
 		rootNode.attachChild(box);
 	}
 
-	public ScheduledThreadPoolExecutor getThreadPool() {
-		return ExecutionThreadpool;
+	public ExecutorService getThreadPool() {
+		return pool;
 	}
 
     @Override
@@ -118,6 +118,6 @@ public class Main extends SimpleApplication {
 	@Override
     public void destroy() {
         super.destroy();
-        ExecutionThreadpool.shutdown();
+        pool.shutdown();
     }
 }
