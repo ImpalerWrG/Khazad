@@ -4,6 +4,7 @@
  */
 package Game;
 
+import Core.Main;
 import Map.*;
 import Terrain.Geology;
 
@@ -16,9 +17,14 @@ import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+
 /**
  *
  * @author Impaler
@@ -49,6 +55,8 @@ public class Game extends AbstractAppState implements ActionListener {
 	ArrayList<Actor> Actors;
 	int ActorIDcounter = 0;
 
+	ExecutorService Executor;
+	Future lastUpdate;
 
 	public Game() {
 		GameSettlment = new Settlment();
@@ -68,7 +76,9 @@ public class Game extends AbstractAppState implements ActionListener {
 		super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
 		this.state = stateManager;
-		
+		Main core = (Main) app;
+		Executor = core.getThreadPool();
+
 		registerWithInput(app.getInputManager());
 	}
 
@@ -217,40 +227,23 @@ public class Game extends AbstractAppState implements ActionListener {
 	@Override
     public void update(float tpf) {
 		if (!Pause) {
-			float TargetTicks = TickRate * tpf * 12;
-			TargetTicks += TickRounding;
-			int FullTicks = (int) TargetTicks;
-			TickRounding = TargetTicks - FullTicks;
+			if(lastUpdate == null || lastUpdate.isDone()) {
+				float TargetTicks = TickRate * tpf * 12;
+				TargetTicks += TickRounding;
+				int FullTicks = (int) TargetTicks;
+				TickRounding = TargetTicks - FullTicks;
 
-			for (int i = 0; i < FullTicks; i++) {
-				UpdateTick();
+				Ticker simulation = new Ticker(this);
+				simulation.windup(FullTicks);
+				lastUpdate = Executor.submit(simulation);
+
+				seconds = CurrentGameTick / 12;
+				minutes = seconds / 60;
+				hours = minutes / 60;
+				days = hours / 24;		
 			}
-			seconds = CurrentGameTick / 12;
-			minutes = seconds / 60;
-			hours = minutes / 60;
-			days = hours / 24;
-			
-			//hudText.setText((hours %24) + ":" + (minutes % 60) + ":" + (seconds % 60));
 		}
     }
-
-	public void UpdateTick() {
-		CurrentGameTick++;   // Advance Tick count
-		
-		Temporal target;
-		target = TemporalQueue.poll();
-		if (target != null) {
-			do {	
-				long RewakeTick = target.Wake(CurrentGameTick);
-				if (RewakeTick != -1) {
-					TemporalQueue.add(target);
-				}
-				target = TemporalQueue.poll();
-			} while (target.WakeTick <= CurrentGameTick);	
-		
-			TemporalQueue.add(target);
-		}
-	}
 
 	public long getCurrentTimeTick() {
 		return CurrentGameTick;
