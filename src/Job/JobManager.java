@@ -5,7 +5,6 @@
 package Job;
 
 import Game.Citizen;
-import Map.MapCoordinate;
 
 import java.util.ArrayList;
 import java.util.HashMap;

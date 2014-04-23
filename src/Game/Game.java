@@ -26,7 +26,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 /**
- *
+ * Game holds all the objects (Map, Settlment, Weather etc) which together make
+ * up the simulation and is were saving and loading of game files is initiate
+ * before being piped to the particular sub-objects.  Game is also responsible
+ * for the simulation logic loop which is called by update each frame, a Ticker
+ * instance is created and submitted to the thread pool to keep the core JME
+ * thread fully devoted to rendering.
+ * 
  * @author Impaler
  */
 public class Game extends AbstractAppState implements ActionListener {

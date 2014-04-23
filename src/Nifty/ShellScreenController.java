@@ -14,7 +14,7 @@ import de.lessvoid.nifty.screen.ScreenController;
 import Game.Game;
 import Job.JobManager;
 import Job.WanderJob;
-import PathFinding.PathManager;
+import PathFinding.PathFinding;
 import Renderer.TerrainRenderer;
 /**
  *
@@ -58,7 +58,7 @@ public class ShellScreenController implements ScreenController {
 	public void BeginGame() {
 		String Seed = nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).getDisplayedText();
 
-		nifty.gotoScreen("GameScreen");
+		//nifty.gotoScreen("GameScreen");
 
 		Game game = new Game();
 		game.InitializeGame((short) 10, (short) 10, Seed);
@@ -71,12 +71,14 @@ public class ShellScreenController implements ScreenController {
 		jobs.addJob(newJob);
 		
 		// PATHING
-		PathManager Pather = PathManager.getSinglton();
+		PathFinding Pather = PathFinding.getSinglton();
 		Pather.initialize(this.app.getStateManager(), this.app);
 		Pather.CreateMapAbstraction(game.getMap());
 		//Pather.AllocateThreadPool(ExecutionThreadpool);
 		this.app.getStateManager().attach(Pather);
 		
+		nifty.gotoScreen("GameScreen");
+
 		for (int i = 0; i < 100; i++) {
 			game.SpawnCitizen(Pather.Tester.getRandomPassableCoordinate());
 		}

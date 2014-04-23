@@ -1,14 +1,28 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* Copyright 2010 Kenneth 'Impaler' Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
 package PathFinding;
 
 import Map.MapCoordinate;
-import Map.Direction;
 
 /**
- *
+ * A collection of common and fast distance Heuristics, a Heuristic is a quick
+ * guess as to the distance between two MapCoordinates.
+ * 
  * @author Impaler
  */
 public interface Heuristic {
@@ -24,7 +38,7 @@ public interface Heuristic {
 	public class MaxDimension implements Heuristic {
 		public float Estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
 			float max = 0;
-			float cost = 0;
+			float cost;
 
 			cost = Math.abs(StartCoord.X - GoalCoord.X);
 			if (cost > max)
@@ -65,7 +79,7 @@ public interface Heuristic {
 
 			final float SquareRootTwo = (float) Math.sqrt(2);
 			
-			if(DiagonalsX < DiagonalsY) {
+			if (DiagonalsX < DiagonalsY) {
 				return (SquareRootTwo * DiagonalsX) + (DiagonalsY - DiagonalsX) + (ZDifference * 2);
 			} else {
 				return (SquareRootTwo * DiagonalsY) + (DiagonalsX - DiagonalsY) + (ZDifference * 2);

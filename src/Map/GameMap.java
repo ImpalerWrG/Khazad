@@ -27,9 +27,10 @@ import org.javatuples.Pair;
 import Data.DataTypes;
 
 /**
- * Master Class for holding the playing Map, holds primaricly Cells in HashMap
- * structure and pipes changes to the Cells to abstract them away from the rest
- * of the code base, 
+ * Master Class for holding the playing Map, holds primaraly Cells in HashMap
+ * structure and pipes changes to the Cells/Faces to abstract them away from the
+ * rest of the code base
+ * 
  * @author Impaler
  */
 public class GameMap {

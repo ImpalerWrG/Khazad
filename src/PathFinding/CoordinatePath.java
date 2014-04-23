@@ -18,25 +18,29 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package PathFinding;
 
 import Map.MapCoordinate;
+import java.util.ArrayList;
 
 /**
- * Abstract Base for the Path representations, all Paths implementations have a
- * corresponding PathWalker class that they will return and which will read
- * from only that type of Path.
- * 
- * Implementations:  CoordinatePath, VectorPath
+ * A simple path representation in the form of a list of MapCoordinates, the
+ * simplest and least compressed form of path representation.  Intended only
+ * for temporary usage, any path intended for caching should be compressed.
  * 
  * @author Impaler
  */
-public abstract class MapPath {
-	   
-	float Length;   // The travel cost of the path
-    int StepCount;  // The number of individual steps in the path
+public class CoordinatePath extends MapPath {
+	
+    ArrayList<MapCoordinate> PathCourse;
 
-	MovementModality MovementType;
+	CoordinatePath(float PathLength, ArrayList<MapCoordinate> Course) {
+		Length = PathLength;
+		PathCourse = Course;
+		StepCount = Course.size() - 1;
 
-	MapCoordinate StartCoordinates, GoalCoordinates;
+		StartCoordinates = PathCourse.get(0);
+		GoalCoordinates = PathCourse.get(StepCount);
+	}
 
-    public abstract PathWalker getPathWalker();
+	public PathWalker getPathWalker() {
+		return new CoordinatePathWalker(this);
+	}
 }
-

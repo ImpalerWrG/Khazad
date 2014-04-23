@@ -10,8 +10,9 @@ import Core.Dice;
 import Map.Direction;
 import Map.MapCoordinate;
 
+import PathFinding.MovementModality;
 import PathFinding.Navigator;
-import PathFinding.PathManager;
+import PathFinding.PathFinding;
 /**
  *
  * @author Impaler
@@ -48,11 +49,12 @@ public class Pawn extends Actor {
 	public Pawn(int id, MapCoordinate SpawnLocation) {
 		super(id, SpawnLocation);		
 		Moving = false;
-		PathNavigator = new Navigator(SpawnLocation, 1, 1);
+
+		PathNavigator = new Navigator(SpawnLocation, new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1));
 		PathNavigator.setBehaviorMode(Navigator.MovementBehavior.PATH_BEHAVIOR_ROUTE_TO_LOCATION);
 
 		CurrentMovementDirection = Direction.DIRECTION_NONE;
-		
+
 		AttributeDice = new Dice();
 		AttributeDice.Seed(id);
 		Speed = 5;
@@ -60,7 +62,7 @@ public class Pawn extends Actor {
 	}
 	
 	long AttemptMove(Direction MovementDirection) {
-		float EdgeCost = PathManager.getSinglton().getEdgeCost(LocationCoordinates, MovementDirection);
+		float EdgeCost = PathFinding.getSinglton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getMovementModality());
 		
 		if (EdgeCost != -1) {
 			Moving = true;
@@ -140,7 +142,11 @@ public class Pawn extends Actor {
 	public Direction getMovementDirection() {
 		return CurrentMovementDirection;
 	}
-	
+
+	public MovementModality getMovementModality() {
+		return PathNavigator.getMovementModality();
+	}
+
 	@Override
 	long Wake(long CurrentTick) {
 		super.Wake(CurrentTick);

@@ -1,7 +1,20 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* Copyright 2010 Kenneth 'Impaler' Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
 package PathFinding;
 
 import java.util.ArrayList;
@@ -14,17 +27,28 @@ import Map.MapCoordinate;
 import Map.Direction;
 
 import java.util.concurrent.Callable;
+
 /**
- *
+ * A simple uni-direction A* implementation, it utilizes it's own Node type
+ * AStarNode which is optimized for this search methodology.  The data structures
+ * are highly optimized, PriorityQueue for Fringe and HashSet for visited Nodes
+ * 
+ * Pathing can be done for a limited number of nodes, or with a zero argument
+ * searching will continue until their is either a complete path or the 
+ * Fringe Queue is exhausted which indicates that no path is possible.  As all
+ * attempts to path should have been proceeded by a connectivity check an 
+ * exhaustion is probably indicative of a flaw in connectivity checking.
+ * 
  * @author Impaler
  */
 public class AStar extends PathAlgorithm implements Callable {
 
-    PriorityQueue<AStarNode> FringeNodes;
-    HashSet<MapCoordinate> VisitedCoordinates;
-    AStarNode CurrentNode;
-    boolean FringeExausted;
-    Pool<AStarNode> NodePool;
+	PriorityQueue<AStarNode> FringeNodes;
+	HashSet<MapCoordinate> VisitedCoordinates;
+
+	AStarNode CurrentNode;
+	boolean FringeExausted;
+	Pool<AStarNode> NodePool;
 	
 
 	AStar(GridInterface TargetSearchGraph) {
@@ -37,7 +61,7 @@ public class AStar extends PathAlgorithm implements Callable {
 
 	public void AssignPoll(Pool TargetPool) {
 		NodePool = TargetPool;
-		NodePool.setFactory(this);	
+		NodePool.setFactory(this);
 	}
 
 	@Override
@@ -102,7 +126,7 @@ public class AStar extends PathAlgorithm implements Callable {
 			if (FinalPathFound)
 				FinalPath = CurrentPath;
 			
-			NodePool.Release();  // Nodes can be released now that a final path has been found
+			NodePool.Release();	 // Nodes can be released now that a final path has been found
 			return CurrentPath;
 		}
 		NodePool.Release();
@@ -117,13 +141,13 @@ public class AStar extends PathAlgorithm implements Callable {
 			return false;
 
 		if (TestCoordinates.equals(GoalCoordinates))
-			return true; //GenerateBestPath();
+			return true;
 
 		// mark as VisitedCoordinates if not already Visited
 		VisitedCoordinates.add(TestCoordinates);
 
 		MapCoordinate NeiboringCoordinates;
-		BitSet TestDirections = SearchGraph.getDirectionFlags(TestCoordinates);
+		BitSet TestDirections = SearchGraph.getDirectionEdgeSet(TestCoordinates);
 
 		// Check all Neibors
 		for (int i = TestDirections.nextSetBit(0); i >= 0; i = TestDirections.nextSetBit(i + 1)) {
@@ -138,7 +162,6 @@ public class AStar extends PathAlgorithm implements Callable {
 				AStarNode NewNode = NodePool.ProvideObject();
 				NewNode.Set(NeiboringCoordinates, CurrentNode, DirectionType, CurrentNode.PathLengthFromStart + EdgeCost, MainHeuristic.Estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic.Estimate(NeiboringCoordinates, GoalCoordinates));
 
-				// Add the new Node to the Fringe
 				FringeNodes.add(NewNode);
 			}
 		}
@@ -146,7 +169,7 @@ public class AStar extends PathAlgorithm implements Callable {
 		return false; // Goal was not found
 	}
 
-	FullPath GenerateFullPath() {
+	CoordinatePath GenerateFullPath() {
 		ExpandedNodes = VisitedCoordinates.size();
 
 		float PathLength = CurrentNode.PathLengthFromStart;
@@ -159,7 +182,7 @@ public class AStar extends PathAlgorithm implements Callable {
 		Course.add(StartCoordinates);
 
 		Collections.reverse(Course);
-		return new FullPath(PathLength, Course);
+		return new CoordinatePath(PathLength, Course);
 	}
 
 	VectorPath GenerateVectorPath() {

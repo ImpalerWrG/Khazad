@@ -1,7 +1,20 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* Copyright 2010 Kenneth 'Impaler' Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
 package PathFinding;
 
 import Map.Cell;
@@ -19,7 +32,17 @@ import Map.Direction;
 import Map.CubeShape;
 
 /**
- *
+ * The primary implementation of Grid for Khazad pathfinding, it uses a GridCell
+ * class the spacially corresponds to the MapCell class for interchangability of
+ * Coordinates, but the GridCell holds a single large BitSet of ~7000 bits that
+ * corresponds to every Coordinates possible edge to neibhors.  Also it records
+ * a connectivity zone for each coordinate.
+ * 
+ * The Grid class then stores a HashMap of these GridCells, again mirroring the
+ * structure used in GameMap, as well as a double HashMap and List which are 
+ * built in a single read pass on the Game Map, this allows for a constant time
+ * connection query but is not dynamic.
+ * 
  * @author Impaler
  */
 public class KhazadGrid implements GridInterface {
@@ -36,7 +59,7 @@ public class KhazadGrid implements GridInterface {
 			ConnectivityZone = new int[MapCoordinate.CUBESPERCELL];	
 		}
 		
-		BitSet getCubeDirections(int Cube) {
+		public BitSet getCubeDirections(int Cube) {
 			return DirectionMatrix.get(Cube * Direction.ANGULAR_DIRECTIONS.length, ((Cube + 1) * Direction.ANGULAR_DIRECTIONS.length));
 		}
 
@@ -51,15 +74,11 @@ public class KhazadGrid implements GridInterface {
 		}
 	}
 	
-	
-	
 	public ConcurrentHashMap<CellCoordinate, GridCell> GridCells;
 
-    //MapCoordinate maxlen;
-    //MapCoordinate minlen;
-
     ArrayList<Integer> ConnectivityCache;
-    HashMap<Integer, HashMap<Integer, Integer> > ConnectivityMap;
+
+	HashMap<Integer, HashMap<Integer, Integer> > ConnectivityMap;
 
 	
 	public KhazadGrid(GameMap TargetMap) {
@@ -92,7 +111,7 @@ public class KhazadGrid implements GridInterface {
 							Direction InvertedDirection = dir.Invert();
 
 							// if we've done this already..
-							if (getDirectionFlags(AdjacentTileCoords).get(InvertedDirection.ordinal())) {
+							if (getDirectionEdgeSet(AdjacentTileCoords).get(InvertedDirection.ordinal())) {
 								Flags.set(dir.ordinal());
 								continue;
 							}
@@ -128,11 +147,11 @@ public class KhazadGrid implements GridInterface {
 		// Loop to do connectivity
 		for (GridCell TargetCell: GridCells.values()) {
 			if (TargetCell != null) {
-				CellCoordinate CellCoords = TargetCell.thisCellCoodinates;
+				CellCoordinate CellCoords = TargetCell.getCellCoordinates();
 
 				byte TargetCube = 0;
 				do {
-					BitSet Flags = getDirectionFlags(new MapCoordinate(CellCoords, TargetCube));
+					BitSet Flags = getDirectionEdgeSet(new MapCoordinate(CellCoords, TargetCube));
 
 					if (Flags.cardinality() > 0) {
 						if (TargetCell.ConnectivityZone[TargetCube & 0xFF] == 0) { // Start a new zone if not connected to another zone
@@ -170,7 +189,7 @@ public class KhazadGrid implements GridInterface {
 		RebuildConnectivityCache(ZoneCounter);
 	}
 
-	public BitSet getDirectionFlags(MapCoordinate TargetCoords) {
+	public BitSet getDirectionEdgeSet(MapCoordinate TargetCoords) {
 		GridCell TargetCell = getCell(new CellCoordinate(TargetCoords));
 		if (TargetCell != null) {
 			return TargetCell.getCubeDirections(TargetCoords.CubeIndex() & 0xFF);
@@ -207,15 +226,6 @@ public class KhazadGrid implements GridInterface {
 		GridCell TargetCell = addCell(new CellCoordinate(MapCoords));
 
 		TargetCell.setCubeDirections(MapCoords.CubeIndex() & 0xFF, Flags);
-
-		//for (Axis AxisType: Axis.values()) {
-		//	if (MapCoords[AxisType.ordinal()] > maxlen[AxisType.ordinal()]) {
-		//		maxlen.Set(AxisType.ordinal(), MapCoords[AxisType.ordinal()]);
-		//	}
-		//	if (MapCoords[AxisType.ordinal()] < minlen[AxisType.ordinal()]) {
-		//		minlen.Set(AxisType.ordinal(), MapCoords[AxisType.ordinal()]);
-		//	}
-		//}
 	}
 
 	HashMap<Integer, Integer> getConnectivtySubMap(int Zone) {
@@ -289,7 +299,7 @@ public class KhazadGrid implements GridInterface {
 		return -1;  // No Edge exists
 	}
 
-	public boolean isPathPossible(MapCoordinate StartCoords, MapCoordinate GoalCoords) {
+	public boolean isPathPossible(MovementModality MovementType, MapCoordinate StartCoords, MapCoordinate GoalCoords) {
 		return getZoneEquivilency(StartCoords) == getZoneEquivilency(GoalCoords);
 	}
 
@@ -316,5 +326,22 @@ public class KhazadGrid implements GridInterface {
 				updateConnectivityCache(i, i);
 			}
 		}
+	}
+	
+	public ArrayList<MapCoordinate> getPassableCoordinates() {
+		ArrayList<MapCoordinate> TestCoords = new ArrayList<MapCoordinate>();
+		for (KhazadGrid.GridCell TargetCell : GridCells.values()) {
+			CellCoordinate CellCoords = TargetCell.getCellCoordinates();
+			//int TargetCube = 0;
+			BitSet DirectionSet;
+			for (int TargetCube = 0; TargetCube < 256; TargetCube++) {
+				DirectionSet = TargetCell.getCubeDirections(TargetCube);
+				if (DirectionSet.cardinality() != 0) {  // Any Valid Edge Exists
+					MapCoordinate TestCoordinates = new MapCoordinate(CellCoords, (byte) TargetCube);
+					TestCoords.add(TestCoordinates);
+				}
+			}
+		}  // End Loop when Byte rolls over
+		return TestCoords;
 	}
 }

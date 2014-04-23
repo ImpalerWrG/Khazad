@@ -6,7 +6,7 @@ package Job;
 
 import Game.Pawn;
 import Map.MapCoordinate;
-import PathFinding.PathManager;
+import PathFinding.PathFinding;
 
 
 /**
@@ -15,13 +15,13 @@ import PathFinding.PathManager;
  */
 public class WanderJob extends Job {
 	
-	PathManager Pathing;
+	PathFinding Pathing;
 	
 	public WanderJob() {
 		super();
 		Name = "Wandering Aimlessly";
 		Type = Job.JobType.JOB_WANDER;
-		Pathing = PathManager.getSinglton();
+		Pathing = PathFinding.getSinglton();
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class WanderJob extends Job {
 
 	public MapCoordinate RandomDestination(Pawn  Wanderer) {
 		MapCoordinate StartLocation = Wanderer.getLocation();
-		if (Pathing.getDirectionFlags(StartLocation).cardinality() != 0) {//Is the current location impassable
+		if (Pathing.getDirectionFlags(StartLocation, Wanderer.getMovementModality()).cardinality() != 0) {//Is the current location impassable
 			MapCoordinate DestinationCoordinates = Pathing.Tester.getRandomPassableCoordinate();  // This needs to get DIFFERENT coords each time
 
 			while (!Wanderer.isDestinationReachable(DestinationCoordinates)) {

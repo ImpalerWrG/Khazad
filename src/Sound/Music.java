@@ -26,7 +26,7 @@ public class Music extends AbstractAppState {
 	
 	Dice RandomGenerator = null;
 	private AudioNode audio_music;
-	float Volume = 0.05f;
+	float Volume = 0.15f;
 	
 	public Music() {
 		

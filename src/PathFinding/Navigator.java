@@ -1,60 +1,75 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* Copyright 2010 Kenneth 'Impaler' Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.	If not, see <http://www.gnu.org/licenses/> */
+
 package PathFinding;
 
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.concurrent.Future;
-//import java.lang.Exception;
 
 import Map.MapCoordinate;
 import Map.Direction;
 import Core.Dice;
 
 /**
- *
+ * Navigator acts as the interface between Pawns (moving things) and the Pathfinding
+ * Engine, the Pawn needs to set the MovementBehavior that it wishes to conduct
+ * and then query for the next Direction to move in.  When pathing to a destination
+ * is selected and a destination set, the Navigator will call the Pathfinding
+ * Engine to find the path and will then instantiate a PathWalker which will be
+ * querried for Directions to provide to the Pawn.
+ * 
  * @author Impaler
  */
-
-
 public class Navigator {
 	
 	public enum MovementBehavior {
-		PATH_BEHAVIOR_HALT,              // Agent stands still
-		PATH_BEHAVIOR_WANDER_DRUNKENLY,  // Agent wanders and ignores all obsticles and hazards
-		PATH_BEHAVIOR_WANDER_AIMLESSLY,  // Agent wanders but will not try to path through walls
-		PATH_BEHAVIOR_WANDER_IN_AREA,    // Agent wanders inside a confined area
-		PATH_BEHAVIOR_FOLLOW_ADJENT,     // Agent stay within a set distance of another ajent
-		PATH_BEHAVIOR_FLEE_ADJENT,       // Agent runs away from another adjent
-		PATH_BEHAVIOR_SEAK_ADJENT,       // Agent moves directly onto another ajent
-		PATH_BEHAVIOR_ROUTE_TO_LOCATION, // Agent follows a path to a specific location
-		PATH_BEHAVIOR_ROUTE_TO_AREA,     // Agent follows a path to the closest location in an area
-		PATH_BEHAVIOR_TRAPPED            // Agent is trapped
+		PATH_BEHAVIOR_HALT,					// Agent stands still
+		PATH_BEHAVIOR_WANDER_DRUNKENLY,		// Agent wanders and ignores all obstacles and hazards
+		PATH_BEHAVIOR_WANDER_AIMLESSLY,		// Agent wanders but will not try to path through walls
+		PATH_BEHAVIOR_WANDER_IN_AREA,		// Agent wanders inside a confined area
+		PATH_BEHAVIOR_FOLLOW_PAWN,			// Agent stay within a set distance of another pawn
+		PATH_BEHAVIOR_FLEE_PAWN,			// Agent runs away from another pawn
+		PATH_BEHAVIOR_SEAK_PAWN,			// Agent moves directly onto another pawn
+		PATH_BEHAVIOR_ROUTE_TO_LOCATION,	// Agent follows a path to a specific location
+		PATH_BEHAVIOR_ROUTE_TO_AREA,		// Agent follows a path to the closest location in an area
+		PATH_BEHAVIOR_TRAPPED				// Agent is trapped
 	};
 
 	Dice DirectionDice;
-    PathManager ParentManager;  // The manager which spawned this controller, all data on the map and paths will come from here
+	PathFinding ParentManager;	// The manager which spawned this controller, all data on the map and paths will come from here
 
-    MovementBehavior CurrentMovementBehavior;
+	MovementBehavior CurrentMovementBehavior;
+	MovementModality Modality;
 
-    int SizeRestriction;
-    int TerrainRestriction;
-
-    MapCoordinate CurrentLocation;
-    MapCoordinate Destination;
+	MapCoordinate CurrentLocation;
+	MapCoordinate Destination;
 
 	Future PathFuture = null;
-    MapPath CurrentPath = null;
-    PathWalker CurrentPathWalker = null;
+	MapPath CurrentPath = null;
+	PathWalker CurrentPathWalker = null;
 
 
-	public Navigator(MapCoordinate SpawnLocation, int AjentSize, int MovementType) {
+	public Navigator(MapCoordinate SpawnLocation, MovementModality MovementType) {
 		CurrentLocation = SpawnLocation;
 		Destination = SpawnLocation;
+		Modality = MovementType;
 
-		ParentManager = PathManager.getSinglton();
+		ParentManager = PathFinding.getSinglton();
 		DirectionDice = new Dice();
 		DirectionDice.Seed(SpawnLocation.hashCode());
 	}
@@ -62,14 +77,15 @@ public class Navigator {
 	public Direction getNextStep() { // Next movement step for the Agent
 		switch(CurrentMovementBehavior)
 		{
-			case PATH_BEHAVIOR_HALT:              // Agent stands still
+			case PATH_BEHAVIOR_HALT:		// Agent stands still
 				return Direction.DIRECTION_NONE;
 
-			case PATH_BEHAVIOR_WANDER_DRUNKENLY:  // Agent wanders and ignores all obsticles and hazards
+			case PATH_BEHAVIOR_WANDER_DRUNKENLY:	// Agent wanders and ignores all obstacles and hazards
 				return Direction.ANGULAR_DIRECTIONS[DirectionDice.Roll(0, Direction.ANGULAR_DIRECTIONS.length - 1)];
 
-			case PATH_BEHAVIOR_WANDER_AIMLESSLY:  // Agent wanders but will not try to path through walls
+			case PATH_BEHAVIOR_WANDER_AIMLESSLY:	// Agent wanders but will not try to path through walls
 			
+				/*
 				BitSet DirectionFlags = ParentManager.getDirectionFlags(CurrentLocation);
 				ArrayList<Integer> ValidDirections = new ArrayList<Integer>();
 
@@ -79,21 +95,21 @@ public class Navigator {
 
 				if (ValidDirections.size() > 0) {
 					return Direction.ANGULAR_DIRECTIONS[DirectionDice.Roll(0, ValidDirections.size() - 1)];
-				}
+				}*/
 
 				return Direction.DIRECTION_NONE;
 			
 
-			case PATH_BEHAVIOR_WANDER_IN_AREA:    // Agent wanders inside a confined area
+			case PATH_BEHAVIOR_WANDER_IN_AREA:	  // Agent wanders inside a confined area
 				return Direction.DIRECTION_NONE;
 
-			case PATH_BEHAVIOR_FOLLOW_ADJENT:     // Agent stay within a set distance of another ajent
+			case PATH_BEHAVIOR_FOLLOW_PAWN:		// Agent stay within a set distance of another pawn
 				return Direction.DIRECTION_NONE;
 
-			case PATH_BEHAVIOR_FLEE_ADJENT:       // Agent runs away from another adjent
+			case PATH_BEHAVIOR_FLEE_PAWN:		// Agent runs away from another pawn
 				return Direction.DIRECTION_NONE;
 
-			case PATH_BEHAVIOR_SEAK_ADJENT:       // Agent moves directly onto another ajent
+			case PATH_BEHAVIOR_SEAK_PAWN:		// Agent moves directly onto another pawn
 				return Direction.DIRECTION_NONE;
 
 			case PATH_BEHAVIOR_ROUTE_TO_LOCATION: // Agent follows a path to a specific location
@@ -114,20 +130,20 @@ public class Navigator {
 					return Direction.DIRECTION_NONE;
 				}
 
-			case PATH_BEHAVIOR_ROUTE_TO_AREA:     // Agent follows a path to the closest location in an area
+			case PATH_BEHAVIOR_ROUTE_TO_AREA:	  // Agent follows a path to the closest location in an area
 				return Direction.DIRECTION_NONE;
 
-			case PATH_BEHAVIOR_TRAPPED:     // Agent is Trapped unable to reach a desired area
+			case PATH_BEHAVIOR_TRAPPED:		// Agent is Trapped unable to reach a desired area
 				return Direction.DIRECTION_NONE;
 		}
 		return Direction.DIRECTION_NONE;
 	}
 
-	public void LastStepInvalid() {  // Tell the Controller the last step order was invalid
+	public void LastStepInvalid() {	 // Tell the Controller the last step order was invalid
 
 	}
 
-	public void setBehaviorMode(MovementBehavior NewBehavior) { // Set Crontroller to different behaviors such as wandering, halted, following, fleeing
+	public void setBehaviorMode(MovementBehavior NewBehavior) {
 		if (CurrentMovementBehavior != NewBehavior)
 			CurrentMovementBehavior = NewBehavior;
 	}
@@ -136,7 +152,7 @@ public class Navigator {
 		if (NewDestination != Destination) {
 			Destination = NewDestination;
 
-			PathFuture = ParentManager.FindFuturePath(0, CurrentLocation, Destination);
+			PathFuture = ParentManager.FindFuturePath(Modality, CurrentLocation, Destination);
 			CurrentPathWalker = null;
 			CurrentPath = null;
 			return true;
@@ -148,6 +164,10 @@ public class Navigator {
 		return Destination;
 	}
 
+	public MovementModality getMovementModality() {
+		return Modality;
+	}
+
 	public void setLocation(MapCoordinate NewLocation) {
 		CurrentLocation = NewLocation;
 	}
@@ -157,7 +177,7 @@ public class Navigator {
 	}
 
 	public boolean isDestinationReachable(MapCoordinate TestDestination) {
-		return ParentManager.isPathPossible(0, CurrentLocation, TestDestination);
+		return ParentManager.isPathPossible(Modality, CurrentLocation, TestDestination);
 	}
 
 	public void wipePath() {

@@ -1,7 +1,20 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* Copyright 2010 Kenneth 'Impaler' Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
 package PathFinding;
 
 import java.util.ArrayList;
@@ -14,7 +27,9 @@ import Map.MapCoordinate;
 import Map.CellCoordinate;
 
 /**
- *
+ * A data agragating class used to statisticly sample the speed and efficency
+ * of Pathfinding algorithms.
+ * 
  * @author Impaler
  */
 
@@ -93,7 +108,7 @@ public class PathTester {
 	}
 	
 	
-	PathManager ParentManager;
+	PathFinding ParentManager;
     Dice PathDice;
 
     MapCoordinate ManualStartCoords, ManualGoalCoords;  // Used for manual testing
@@ -107,11 +122,10 @@ public class PathTester {
     int TestingIterations;
 
 	
-	boolean Initialize(PathManager Parent) {
+	boolean Initialize(PathFinding Parent) {
 		//ProfileGroupList[0] = null;
 		//ProfileGroupList[1] = null;
 
-		TestCoords = new ArrayList<MapCoordinate>(); 
 		StartCoordsList = new ArrayList<MapCoordinate>();  
 		GoalCoordsList = new ArrayList<MapCoordinate>(); 
 	
@@ -127,26 +141,9 @@ public class PathTester {
 	}
 
 	void CollectTestCoords() {
-		ConcurrentHashMap<CellCoordinate, KhazadGrid.GridCell> cells = ParentManager.MapGrid.GridCells;
-		
-		for (KhazadGrid.GridCell TargetCell : cells.values()) {
-			if (TargetCell != null)
-			{
-				CellCoordinate CellCoords = TargetCell.getCellCoordinates();
-
-				byte TargetCube = 0;
-				do
-				{
-					MapCoordinate TestCoordinates = new MapCoordinate(CellCoords, TargetCube);
-
-					if (ParentManager.contains(TestCoordinates) && ParentManager.getDirectionFlags(TestCoordinates).cardinality() != 0) {
-						TestCoords.add(TestCoordinates);
-					}
-					TargetCube++;
-				}
-				while (TargetCube != 0);  // End Loop when Byte rolls over
-			}
-		}
+		MovementModality Basic = new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1);
+		GridInterface BasicGrid = ParentManager.Grids.get(Basic);
+		TestCoords = BasicGrid.getPassableCoordinates();
 	}
 
 	void CreateTestSuite(int Seed, int Iterations) {
@@ -175,7 +172,8 @@ public class PathTester {
 		}
 
 		Profile NewProfile = new Profile();
-		ParentManager.ProfilePath(0, ManualStartCoords, ManualGoalCoords, NewProfile);
+		MovementModality MovementType = new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1);
+		ParentManager.ProfilePath(MovementType, ManualStartCoords, ManualGoalCoords, NewProfile);
 
 		ManualProfileGroup.Profiles.add(NewProfile);
 		ManualPath = NewProfile.ProfiledPath;
@@ -188,18 +186,17 @@ public class PathTester {
 		ProfileGroupList = new GroupProfile[TestSystems.length];
 		for (int i = 0; i < TestSystems.length; i++) {
 			ProfileGroupList[TestSystems[i]] = new GroupProfile();
-			TestSuite(TestingIterations, TestSystems[i], ProfileGroupList[TestSystems[i]], StartCoordsList, GoalCoordsList);
+			//TestSuite(TestingIterations, TestSystems[i], ProfileGroupList[TestSystems[i]], StartCoordsList, GoalCoordsList);
 			CurrentProfileGroup = ProfileGroupList[TestSystems[i]];
 		}
 	}
 
-	void TestSuite(int Iterations, int SystemIndex, GroupProfile SystemProfileGroup, ArrayList<MapCoordinate> StartCoordsList, ArrayList<MapCoordinate> GoalCoordsList) {
+	void TestSuite(int Iterations, MovementModality MovementType, GroupProfile SystemProfileGroup, ArrayList<MapCoordinate> StartCoordsList, ArrayList<MapCoordinate> GoalCoordsList) {
 		for (int i = 0; i < Iterations; ++i) {
 			Profile NewProfile = new Profile();
-			ParentManager.ProfilePath(SystemIndex, StartCoordsList.get(i), GoalCoordsList.get(i), NewProfile);
+			ParentManager.ProfilePath(MovementType, StartCoordsList.get(i), GoalCoordsList.get(i), NewProfile);
 			SystemProfileGroup.Profiles.add(NewProfile);
 		}
-
 		SystemProfileGroup.Analyze();
 	}
 
