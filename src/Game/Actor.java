@@ -1,25 +1,36 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* Copyright 2010 Kenneth 'Impaler' Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
 package Game;
 
 import Map.MapCoordinate;
-import com.jme3.scene.Node;
 
 /**
- *
+ * Base class for any object that has a location on the map and is potentially
+ * visible to the player.
+ * 
+ * Implementations:  Pawn
+ * 
  * @author Impaler
  */
-public class Actor extends Temporal {
+public abstract class Actor extends Temporal {
 
 	// The location for gameplay logic purposes
 	MapCoordinate LocationCoordinates;
-
-	Node ActorNode;
-	//Ogre::BillboardSet* ActorBillboard;
-
-	// TODO Use bitvector in the future
 	
 	boolean Visible;
 	boolean Hidden;
@@ -27,13 +38,6 @@ public class Actor extends Temporal {
 
 	public Actor(int id, MapCoordinate SpawnLocation) {
 		this.ID = id;
-		//ActorBillboard = RENDERER->getSceneManager()->createBillboardSet(1);
-
-		//ActorBillboard->setDefaultDimensions(Width, Height);
-		//ActorBillboard->createBillboard(0, 0, ((Height - 1.0) / 2));
-
-		//ActorBillboard->setMaterialName(Mat->getName());
-		ActorNode = new Node();
 
 		LocationCoordinates = SpawnLocation;
 		Dirty = true;

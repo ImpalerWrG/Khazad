@@ -48,6 +48,8 @@ public class GameCamera {
 	protected int SliceTop;
 	protected int SliceBottom;
 	protected int ViewLevels;
+	
+	protected int ViewMax, ViewMin;
 
 	public GameCamera(Camera cam, final Node target) {
 
@@ -77,8 +79,6 @@ public class GameCamera {
 		PitchAngle = 45;
 		PitchCamera(0);
 		CamNode.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);	
-		
-		SetSlice(5, -5);
 	}
 	
 	//rotate the camera around the target on the horizontal plane
@@ -143,81 +143,6 @@ public class GameCamera {
 
 	protected void TranslateCamera(Vector3f Translation) {
 		TargetNode.move(Translation);
-	}
-	
-	protected void ChangeViewLevel(int Change) {
-		if (Change != 0)
-		{
-			int ZMax = 100; //GAME.getMap().getHighest() - GAME.getMap().getLowest();
-			///FIXME: possible off-by-one errors?
-
-			if(SliceTop + Change > ZMax)
-			{
-				Change = ZMax - SliceTop;
-			}
-			if(SliceBottom + Change < 0)
-			{
-				Change = -SliceBottom;
-			}
-			SliceTop += Change;
-			SliceBottom += Change;
-			ViewLevels = SliceTop - SliceBottom;
-
-			TargetNode.move(0, 0, Change);
-			CamNode.move(0, 0, Change);		
-		}
-	}
-
-	protected void SetSlice(int newTop, int newBottome) {
-		SliceTop = newTop;
-		if(SliceBottom >= SliceTop)
-		{
-			SliceBottom = SliceTop - 1;
-		}
-
-		SliceBottom = newBottome;
-		if(SliceTop <= SliceBottom)
-		{
-			//SliceTop = SliceBottom + 1;
-		}
-		ViewLevels = SliceTop - SliceBottom;
-	}
-
-	protected void SetSliceTop(int newValue) {
-		//TargetNode.move(0, 0, newValue - SliceTop);
-		//CamNode.move(0, 0, newValue - SliceTop);
-
-		SliceTop = newValue;
-		if(SliceBottom >= SliceTop)
-		{
-			SliceBottom = SliceTop - 1;
-		}
-		ViewLevels = SliceTop - SliceBottom;
-	}
-
-	protected void SetSliceBottom(int newValue) {
-		//TargetNode.move(0, 0, newValue - SliceBottom);
-		//CamNode.move(0, 0, newValue - SliceBottom);
-		
-		SliceBottom = newValue;
-		if(SliceTop <= SliceBottom)
-		{
-			SliceTop = SliceBottom + 1;
-		}
-		ViewLevels = SliceTop - SliceBottom;
-	}
-
-	boolean InSlice(int Zlevel) {
-		if (Zlevel <= SliceTop)
-		{
-			float Depth = SliceTop - Zlevel;
-			if (Depth < ViewLevels)
-			{
-				return true;
-			}
-			return false;
-		}
-		return false;
 	}
 
 	float getShading(int Zlevel) {

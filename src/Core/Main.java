@@ -66,10 +66,8 @@ public class Main extends SimpleApplication {
 		// RENDER
 		this.stateManager.attach(new TerrainRenderer(pool));
 		
-		this.stateManager.attach(new GameCameraState());
 		this.stateManager.attach(new Music());
-		this.stateManager.attach(new GUI(this));
-		
+		this.stateManager.attach(new GUI(this));	
 	}
 	
 	public void createAxialMarker() {

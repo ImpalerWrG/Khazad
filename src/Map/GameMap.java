@@ -53,8 +53,8 @@ public class GameMap {
 	protected GameMap() {
 		Initialized = false;
 		MapLoaded = false;
-		HighestCell = 0;
-		LowestCell = 0;
+		HighestCell = -100000000;
+		LowestCell = 10000000;
 		
 		Cells = new ConcurrentHashMap<CellCoordinate, Cell>();
 	}
@@ -72,22 +72,27 @@ public class GameMap {
 
 	public boolean insertCell(Cell NewCell) {
 		CellCoordinate TargetCoordinates = NewCell.getCellCoordinates();
-		if (getCell(TargetCoordinates) == null)
-		{
+		if (getCell(TargetCoordinates) == null) {
 			Cells.put(TargetCoordinates, NewCell);
 
-			if (TargetCoordinates.Z > HighestCell)
-			{
+			if (TargetCoordinates.Z > HighestCell) {
 				HighestCell = TargetCoordinates.Z;
 			}
-			if (TargetCoordinates.Z < LowestCell)
-			{
+			if (TargetCoordinates.Z < LowestCell) {
 				LowestCell = TargetCoordinates.Z;
 			}
 
 			return true;
 		}
 		return false;  // A Cell already exists at that spot
+	}
+
+	public int getHighestCell() {
+		return HighestCell;
+	}
+	
+	public int getLowestCell() {
+		return LowestCell;
 	}
 
 	public Cell getCubeOwner(MapCoordinate Coordinates) {

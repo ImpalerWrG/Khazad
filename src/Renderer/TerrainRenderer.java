@@ -8,6 +8,7 @@ import Map.*;
 import Game.Game;
 import Game.Actor;
 import Game.Pawn;
+import Interface.GameCameraState;
 
 import Nifty.GUI;
 
@@ -311,6 +312,9 @@ public class TerrainRenderer extends AbstractAppState {
 			//if (game.getTickRate() < 64) {
 				PopulateActors();	
 			//}
+			GameCameraState cam = state.getState(GameCameraState.class);
+			setSliceLevels(cam.getSliceTop(), cam.getSliceBottom());
+
 			
 			GUI gui = state.getState(GUI.class);
 			String TimeString = ((game.hours %24) + ":" + (game.minutes % 60) + ":" + (game.seconds % 60));

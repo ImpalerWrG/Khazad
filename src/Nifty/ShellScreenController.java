@@ -16,6 +16,7 @@ import Job.JobManager;
 import Job.WanderJob;
 import PathFinding.PathFinding;
 import Renderer.TerrainRenderer;
+import Interface.GameCameraState;
 /**
  *
  * @author Impaler
@@ -58,13 +59,16 @@ public class ShellScreenController implements ScreenController {
 	public void BeginGame() {
 		String Seed = nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).getDisplayedText();
 
-		//nifty.gotoScreen("GameScreen");
-
 		Game game = new Game();
 		game.InitializeGame((short) 10, (short) 10, Seed);
 		this.app.getStateManager().attach(game);
 		
 		this.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
+		
+		GameCameraState cam = new GameCameraState();
+		this.app.getStateManager().attach(cam);
+		cam.SetViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
+		cam.SetSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
 
 		JobManager jobs = game.getSettlment().getJobManager();
 		WanderJob newJob = new WanderJob();

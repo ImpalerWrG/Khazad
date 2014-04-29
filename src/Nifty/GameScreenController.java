@@ -12,6 +12,9 @@ import de.lessvoid.nifty.screen.ScreenController;
 import de.lessvoid.nifty.screen.KeyInputHandler;
 import de.lessvoid.nifty.input.NiftyInputEvent;
 import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.controls.ScrollbarChangedEvent;
+import de.lessvoid.nifty.controls.Scrollbar;
+import de.lessvoid.nifty.NiftyEventSubscriber;
 
 import Game.Game;
 import Interface.GameCameraState;
@@ -39,7 +42,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
     }
 
     public void onStartScreen() {
-        System.out.println("onStartScreen");
+        System.out.println("GameScreen onStartScreen");
     }
 
     public void onEndScreen() {
@@ -95,7 +98,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 	public void SaveGame() {
 		closePopup();
 	}
-	
+
 	public void Pause() {
 		Game Time = app.getStateManager().getState(Game.class);
 		Time.Pause(!Time.isPaused());
@@ -107,9 +110,27 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 		Time.Pause(false);
 		Time.setTickRate(speed);
 	}
-	
+
 	public void Dig() {
 		GameCameraState Cam = app.getStateManager().getState(GameCameraState.class);
 		Cam.setMode(GameCameraState.CameraMode.SELECT_VOLUME);
+	}
+
+	@NiftyEventSubscriber(id="DepthSlider")
+    public void DepthSliderChanged(final String id, final ScrollbarChangedEvent event) {
+
+		Scrollbar bar = event.getScrollbar();
+		Game game = app.getStateManager().getState(Game.class);
+		int High = game.getMap().getHighestCell();
+		int Low = game.getMap().getLowestCell();
+		bar.setWorldMax(High - Low);
+
+		GameCameraState camera = app.getStateManager().getState(GameCameraState.class);
+		int top = camera.getSliceTop();
+		int bottom = camera.getSliceBottom();
+
+		int value = (int) event.getValue();
+		int slice = camera.getSliceTop() - camera.getSliceBottom();
+		camera.SetSlice(High - value, High - value - slice);
 	}
 }

@@ -95,6 +95,12 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 	public VolumeSelection Volume;
 
+	protected int SliceTop;
+	protected int SliceBottom;
+	protected int ViewLevels;
+	
+	protected int ViewMax, ViewMin;
+
     public GameCameraState() {
     }
 
@@ -278,14 +284,11 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			}
 			
 			if (name.equals("ArrowUp") && keyPressed) {
-				MainCamera.ChangeViewLevel(1);
-				TerrainRenderer rend = state.getState(TerrainRenderer.class);
-				rend.setSliceLevels(MainCamera.SliceTop, MainCamera.SliceBottom);
+				ChangeViewLevel(1);
 			}
+
 			if (name.equals("ArrowDown") && keyPressed) {
-				MainCamera.ChangeViewLevel(-1);
-				TerrainRenderer rend = state.getState(TerrainRenderer.class);
-				rend.setSliceLevels(MainCamera.SliceTop, MainCamera.SliceBottom);
+				ChangeViewLevel(-1);
 			}
 			
 			if (name.equals("RShift") && keyPressed) {
@@ -334,9 +337,17 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 					MainCamera.TranslateCamera(CreateTranslationVector());
 			}
         } else if (name.equals("ZoomIn")) {
-            MainCamera.zoomCamera(value);
+			if (MiddleDown) {
+				ChangeViewLevel(-1);				
+			} else {
+				MainCamera.zoomCamera(value);
+			}
         } else if (name.equals("ZoomOut")) {
-            MainCamera.zoomCamera(-value);
+			if (MiddleDown) {
+				ChangeViewLevel(1);
+			} else {
+				MainCamera.zoomCamera(-value);
+			}
         }		
 	}
 	
@@ -522,6 +533,70 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		jobs.addJob(newJob);
 
 		setMode(CameraMode.SELECT_VOLUME);
+	}
+	
+	public  void SetViewSize(int max, int min) {
+		ViewMax = max;
+		ViewMin = min;
+	}
+
+	public void ChangeViewLevel(int Change) {
+		if (Change != 0) {
+			if(SliceTop + Change > ViewMax) {
+				Change = SliceTop - ViewMax;
+			}
+			if(SliceBottom + Change < ViewMin) {
+				Change = SliceBottom - ViewMin;
+			}
+			SliceTop += Change;
+			SliceBottom += Change;
+			ViewLevels = SliceTop - SliceBottom;
+
+			//TargetNode.move(0, 0, Change);
+			//CamNode.move(0, 0, Change);		
+		}
+	}
+
+	public void SetSlice(int newTop, int newBottome) {
+		SliceTop = newTop;
+		if(SliceBottom >= SliceTop)
+			SliceBottom = SliceTop - 1;
+
+		SliceBottom = newBottome;
+		if(SliceTop <= SliceBottom)
+			SliceTop = SliceBottom + 1;
+
+		ViewLevels = SliceTop - SliceBottom;
+	}
+
+	public void SetSliceTop(int newValue) {
+		//TargetNode.move(0, 0, newValue - SliceTop);
+		//CamNode.move(0, 0, newValue - SliceTop);
+
+		SliceTop = newValue;
+		if(SliceBottom >= SliceTop)
+			SliceBottom = SliceTop - 1;
+		
+		ViewLevels = SliceTop - SliceBottom;
+	}
+
+	public void SetSliceBottom(int newValue) {
+		//TargetNode.move(0, 0, newValue - SliceBottom);
+		//CamNode.move(0, 0, newValue - SliceBottom);
+		
+		SliceBottom = newValue;
+		if(SliceTop <= SliceBottom)
+			SliceTop = SliceBottom + 1;
+		
+		ViewLevels = SliceTop - SliceBottom;
+	}
+
+	public int getSliceTop() {
+		return SliceTop;
+	}
+
+	public int getSliceBottom() {
+		return SliceBottom;
 	}
 
     @Override

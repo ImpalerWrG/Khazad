@@ -46,7 +46,7 @@
 				</panel>
 			</panel>
 			<panel childLayout="horizontal" id="MiddlePanel" align="right">
-				<control name="verticalScrollbar" height="100%" width="50px" id="DepthSlider" worldMax="1000.0" worldPageSize="100.0" initial="10.0" buttonStepSize="10.0" pageStepSize="100.0"/>				
+				<control name="verticalScrollbar" height="100%" width="25px" id="DepthSlider" worldMax="10.0" worldPageSize="1.0" initial="1.0" buttonStepSize="1.0" pageStepSize="1.0"/>				
 			</panel>
 			<panel childLayout="horizontal" height="150px" id="BottomPanel" width="100%">
 				<panel childLayout="absolute" height="100%" id="BottomLeftPanel" style="nifty-panel-simple" width="150px" visibleToMouse="true"/>
