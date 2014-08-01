@@ -16,6 +16,7 @@ import Job.JobManager;
 import Job.WanderJob;
 import PathFinding.PathFinding;
 import Renderer.TerrainRenderer;
+import Renderer.SelectionRenderer;
 import Interface.GameCameraState;
 /**
  *
@@ -64,7 +65,8 @@ public class ShellScreenController implements ScreenController {
 		this.app.getStateManager().attach(game);
 		
 		this.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
-		
+		this.app.getStateManager().attach(new SelectionRenderer());
+
 		GameCameraState cam = new GameCameraState();
 		this.app.getStateManager().attach(cam);
 		cam.SetViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());

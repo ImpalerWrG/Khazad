@@ -6,17 +6,13 @@ package Interface;
 
 
 import Game.Game;
-import Job.JobManager;
-import Job.ExcavateJob;
 import Map.MapCoordinate;
-import Map.CubeShape;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.font.BitmapFont;
-import com.jme3.font.BitmapText;
+
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
 import com.jme3.math.ColorRGBA;
@@ -26,10 +22,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.math.Plane;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
-import com.jme3.scene.Mesh;
-import com.jme3.scene.VertexBuffer;
 import com.jme3.scene.shape.Sphere;
-import com.jme3.util.BufferUtils;
 
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
@@ -69,10 +62,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
     private GameCamera MainCamera;
 	private AppStateManager state; 
 
-	BitmapText hudText;
-	private Geometry CursorBox;
-	private Geometry SelectionBox;
-
 	private CameraMode CurrentMode = CameraMode.NORMAL;
 
 	private boolean LeftDown;
@@ -90,8 +79,8 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	private Plane SelectionPlane = null;
 
 	private MapCoordinate MouseLocation = new MapCoordinate();
-	private MapCoordinate SelectionOrigin = new MapCoordinate();
-	private MapCoordinate SelectionTerminus = new MapCoordinate();
+	public MapCoordinate SelectionOrigin = new MapCoordinate();
+	public MapCoordinate SelectionTerminus = new MapCoordinate();
 
 	public VolumeSelection Volume;
 
@@ -135,90 +124,8 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
         }
 		registerWithInput(app.getInputManager());
 
-		
-		BuildCursorBox();
-		BuildSelectionBox();
-		BuildText();
     }
 	
-	public void BuildCursorBox() {
-		
-		Material mark_mat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-		mark_mat.setColor("Color", ColorRGBA.Red);
-		
-		Mesh WireBoxMesh = new Mesh();
-		WireBoxMesh.setMode(Mesh.Mode.Lines);
-		WireBoxMesh.setLineWidth(3);
-		
-		Vector3f [] vertices = new Vector3f[8];
-		vertices[0] = new Vector3f( MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE);
-		vertices[1] = new Vector3f(-MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE);
-		vertices[2] = new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE);
-		vertices[3] = new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE);
-		
-		vertices[4] = new Vector3f( MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-		vertices[5] = new Vector3f(-MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-		vertices[6] = new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-		vertices[7] = new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-		
-		int [] indexes = { 0,1, 1,2, 2,3, 3,0, 0,4, 1,5, 2,6, 3,7, 4,5, 5,6, 6,7, 7,4 };
-		
-		WireBoxMesh.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
-		WireBoxMesh.setBuffer(VertexBuffer.Type.Index,    3, BufferUtils.createIntBuffer(indexes));
-		WireBoxMesh.updateBound();
-		
-		CursorBox = new Geometry("Camera Mouse Box", WireBoxMesh);		
-		CursorBox.setMaterial(mark_mat);
-	}
-
-	public void BuildSelectionBox() {
-		Material mark_mat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-		mark_mat.setColor("Color", ColorRGBA.Green);
-		
-		Mesh WireBoxMesh = new Mesh();
-		WireBoxMesh.setMode(Mesh.Mode.Lines);
-		WireBoxMesh.setLineWidth(3);
-		
-		int maxX = Math.max(SelectionTerminus.X, SelectionOrigin.X);
-		int maxY = Math.max(SelectionTerminus.Y, SelectionOrigin.Y);
-		int maxZ = Math.max(SelectionTerminus.Z, SelectionOrigin.Z);
-
-		int minX = Math.min(SelectionTerminus.X, SelectionOrigin.X);
-		int minY = Math.min(SelectionTerminus.Y, SelectionOrigin.Y);
-		int minZ = Math.min(SelectionTerminus.Z, SelectionOrigin.Z);
-
-		Vector3f [] vertices = new Vector3f[8];
-		vertices[0] = new Vector3f(maxX - minX + MapCoordinate.HALFCUBE, maxY - minY + MapCoordinate.HALFCUBE,  maxZ - minZ + MapCoordinate.HALFCUBE);
-		vertices[1] = new Vector3f(-MapCoordinate.HALFCUBE,  maxY - minY + MapCoordinate.HALFCUBE,  maxZ - minZ + MapCoordinate.HALFCUBE);
-		vertices[2] = new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE,  maxZ - minZ + MapCoordinate.HALFCUBE);
-		vertices[3] = new Vector3f(maxX - minX + MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE,  maxZ - minZ + MapCoordinate.HALFCUBE);
-		
-		vertices[4] = new Vector3f(maxX - minX +  MapCoordinate.HALFCUBE, maxY - minY + MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-		vertices[5] = new Vector3f(-MapCoordinate.HALFCUBE,  maxY - minY + MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-		vertices[6] = new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-		vertices[7] = new Vector3f(maxX - minX +  MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-		
-		int [] indexes = { 0,1, 1,2, 2,3, 3,0, 0,4, 1,5, 2,6, 3,7, 4,5, 5,6, 6,7, 7,4 };
-		
-		WireBoxMesh.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
-		WireBoxMesh.setBuffer(VertexBuffer.Type.Index,    3, BufferUtils.createIntBuffer(indexes));
-		WireBoxMesh.updateBound();
-		
-		SelectionBox = new Geometry("Camera Mouse Box", WireBoxMesh);		
-		SelectionBox.setMaterial(mark_mat);		
-	}
-
-	public void BuildText() {
-		BitmapFont font = this.app.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
-		
-		hudText = new BitmapText(font, false);          
-		hudText.setSize(font.getCharSet().getRenderedSize());      // font size
-		hudText.setColor(ColorRGBA.Blue);                             // font color
-		hudText.setText("You can write any string here");             // the text
-		hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
-		this.app.getGuiNode().attachChild(hudText);
-	}
-
 	protected void ConvertMouseMovementToVector() {
 		Vector2f Mouse = app.getInputManager().getCursorPosition();
 		
@@ -305,7 +212,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
     }
 
 	private void AnalogNormal(String name, float value, float tpf) {
-		ConvertMouseMovementToVector();
 		updateMousePosition();
 			
         if (name.equals("mouseLeft")) {
@@ -352,7 +258,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	}
 	
 	private void AnalogSelectingVolume(String name, float value, float tpf) {
-		ConvertMouseMovementToVector();
 
 		if (Shift) { // Z axis stretching
 			Vector3f LookVector = MainCamera.TargetNode.getWorldTranslation().subtract(MainCamera.CamNode.getWorldTranslation());
@@ -376,17 +281,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			ray.intersectsWherePlane(SelectionPlane, IntersectLocation);
 
 			SelectionTerminus.Set((int) IntersectLocation.x, (int) IntersectLocation.y, (int) SelectionOrigin.Z);
-
-			this.rootnode.detachChild(CursorBox);
-			this.rootnode.detachChild(SelectionBox);					
-			BuildSelectionBox();
-
-			int minX = Math.min((int) SelectionTerminus.X, SelectionOrigin.X);
-			int minY = Math.min((int) SelectionTerminus.Y, SelectionOrigin.Y);
-			int minZ = Math.min((int) SelectionTerminus.Z, SelectionOrigin.Z);
-
-			SelectionBox.setLocalTranslation(new Vector3f(minX, minY, minZ));
-			this.rootnode.attachChild(SelectionBox);
+			Volume.SetSize(SelectionOrigin, SelectionTerminus);
 		}
 
         if (name.equals("mouseLeft")) {
@@ -426,6 +321,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	}
 
     public void onAnalog(String name, float value, float tpf) {
+		ConvertMouseMovementToVector();
 		switch (CurrentMode) {
 			case NORMAL:
 				AnalogNormal(name, value, tpf);
@@ -471,10 +367,12 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		TerrainRenderer rend = this.app.getStateManager().getState(TerrainRenderer.class);
 		this.terrainnode = rend.getTerrainNode();
 
+		Ray ray = MainCamera.getMouseRay(app.getInputManager().getCursorPosition());
+		Vector3f IntersectLocation = new Vector3f();
+
 		if (terrainnode != null) {
-			
 			CollisionResults results = new CollisionResults();		
-			terrainnode.collideWith(MainCamera.getMouseRay(app.getInputManager().getCursorPosition()), results);
+			terrainnode.collideWith(ray, results);
 
 			if (results.size() > 0) {
 				// The closest collision point is what was truly hit:
@@ -482,18 +380,20 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 				Vector3f contact = closest.getContactPoint();
 				Vector3f normal = closest.getContactNormal();
-				contact = contact.subtract(normal.mult(.001f));
+				IntersectLocation = contact.subtract(normal.mult(.001f));
 
-				int x = Math.round(contact.getX());
-				int y = Math.round(contact.getY());
-				int z = Math.round(contact.getZ());
-				MouseLocation.Set(x, y, z);
-				hudText.setText("X: " + x + "  Y: " + y + "  Z: " + z);
-
-				CursorBox.setLocalTranslation(new Vector3f(x, y, z));
-				this.rootnode.attachChild(CursorBox);
+			} else {	
+				ray.intersectsWherePlane(new Plane(Vector3f.UNIT_Z, getSliceTop()), IntersectLocation);	
 			}
+			int x = Math.round(IntersectLocation.getX());
+			int y = Math.round(IntersectLocation.getY());
+			int z = Math.round(IntersectLocation.getZ());
+			MouseLocation.Set(x, y, z);
 		}
+	}
+
+	public MapCoordinate getMouseLocation() {
+		return MouseLocation;
 	}
 
 	public void setMode(CameraMode newMode) {
@@ -502,8 +402,11 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			
 			if (CurrentMode == CameraMode.SELECTING_VOLUME) {
 				SelectionOrigin.copy(MouseLocation);
+				SelectionTerminus.copy(MouseLocation);
+				Volume = new VolumeSelection(SelectionTerminus, SelectionOrigin);
+				
 				SelectionPlane = new Plane(Vector3f.UNIT_Z, MouseLocation.Z);
-				this.rootnode.detachChild(SelectionBox);	
+				//this.rootnode.detachChild(SelectionBox);	
 			}
 			
 			if (CurrentMode == CameraMode.NORMAL) {
@@ -513,24 +416,9 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	}
 	
 	public void completeVolumeSelection() {
-
-		Volume = new VolumeSelection();
-		int maxX = Math.max(SelectionTerminus.X, SelectionOrigin.X);
-		int maxY = Math.max(SelectionTerminus.Y, SelectionOrigin.Y);
-		int maxZ = Math.max(SelectionTerminus.Z, SelectionOrigin.Z);
-
-		int minX = Math.min(SelectionTerminus.X, SelectionOrigin.X);
-		int minY = Math.min(SelectionTerminus.Y, SelectionOrigin.Y);
-		int minZ = Math.min(SelectionTerminus.Z, SelectionOrigin.Z);
-
-		Volume.OriginLocation.Set(minX, minY, minZ);
-		Volume.TerminalLocation.Set(maxX, maxY, maxZ);
-
 		Game game = state.getState(Game.class);
-		JobManager jobs = game.getSettlment().getJobManager();
-		ExcavateJob newJob = new ExcavateJob();
-		newJob.addDesignations(Volume, new CubeShape(CubeShape.CUBE_BOTTOM_HEIGHT));
-		jobs.addJob(newJob);
+		game.VolumeSelectionCompleted(Volume);
+		Volume = null;
 
 		setMode(CameraMode.SELECT_VOLUME);
 	}
@@ -598,16 +486,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	public int getSliceBottom() {
 		return SliceBottom;
 	}
-
-    @Override
-	public void update(float tpf) {
-
-	}
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        super.setEnabled(enabled); 
-    }
    
     @Override
     public void cleanup() {

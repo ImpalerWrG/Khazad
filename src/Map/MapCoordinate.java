@@ -23,7 +23,7 @@ package Map;
  * translated to adjacent cubes by Direction enums, a very common operation.
  * @author Impaler
  */
-public final class MapCoordinate {
+public final class MapCoordinate implements Cloneable{
 
 	public static final int CELLEDGESIZE = 16;
 	public static final int CELLBITSHIFT = 4;
@@ -103,6 +103,13 @@ public final class MapCoordinate {
 		X = ArgumentCoordinates.X;
 		Y = ArgumentCoordinates.Y;
 		Z = ArgumentCoordinates.Z;
+	}
+
+	@Override
+	public MapCoordinate clone() {
+		MapCoordinate newCoords = new MapCoordinate();
+		newCoords.copy(this);
+		return newCoords;
 	}
 
 	@Override

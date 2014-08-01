@@ -18,10 +18,12 @@ public class JobManager {
 	HashMap<String, Job> JobMap;
 	ArrayList<Citizen> IdleCitizens;
 	//ArrayList<Citizen> WorkingCitizens;
+	ArrayList<Job> NewJobs;
 
 	public JobManager() {
 		JobMap = new HashMap<String, Job>();
 		IdleCitizens = new ArrayList<Citizen>();
+		NewJobs = new ArrayList<Job>();
 	}
 
 	public void addCitizen(Citizen NewCitizen) {
@@ -30,7 +32,7 @@ public class JobManager {
 		// Find the best Job for this Citizen and assign
 		Job BestJob = FindBestJob(NewCitizen);
 		if (BestJob != null) 
-			BestJob.addCitizen(NewCitizen);
+			BestJob.addPawn(NewCitizen);
 	}
 
 	public Job FindBestJob(Citizen TargetCitizen) {
@@ -50,9 +52,34 @@ public class JobManager {
 
 	public void addJob(Job NewJob) {
 		JobMap.put(NewJob.Name, NewJob);
+		
+		NewJobs.add(NewJob);
 	}
 
 	public void assignWorker() {
 		
+	}
+
+	private void RebalanceWorkers() {
+		for (Job job : NewJobs) {
+			int WorkersNeeded = job.Priority - job.Workers.size();
+			if (WorkersNeeded > 0) {
+				for (int i = 0; i < WorkersNeeded; i++) {
+					if (!IdleCitizens.isEmpty()) {
+						int Index = IdleCitizens.size() - 1;
+						job.addPawn(IdleCitizens.get(Index));
+						IdleCitizens.remove(Index);				
+					}
+				}
+			}
+		}
+		NewJobs.clear();
+	}
+
+	public void update() {
+		if (!NewJobs.isEmpty()) {
+			
+			RebalanceWorkers();
+		}
 	}
 }

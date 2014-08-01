@@ -28,38 +28,69 @@ import Interface.VolumeSelection;
 public class Zone {
 
 	HashMap<CellCoordinate, BitSet> ZoneMap;
+	public boolean Dirty;
+	private final int ID;
 
-	public Zone(List<VolumeSelection> Volumes) {
+	public Zone(List<VolumeSelection> Volumes, int ID) {
+		ZoneMap = new HashMap<CellCoordinate, BitSet>();
 		for (VolumeSelection Selection : Volumes) {
 			addSelection(Selection);
 		}
+		this.ID = ID;
+		Dirty = true;
 	}
 
 	public final void addSelection(VolumeSelection Selection) {
 		MapCoordinate Origin = Selection.OriginLocation;
 		MapCoordinate Terminal = Selection.TerminalLocation;
 
-		for (int x = Origin.X; x < Terminal.X; x++)
-		{
-			for (int y = Origin.Y; y < Terminal.Y; y++)
-			{
-				for (int z = Origin.Z; z < Terminal.Z; z++)
-				{
+		for (int x = Origin.X; x <= Terminal.X; x++) {
+			for (int y = Origin.Y; y <= Terminal.Y; y++) {
+				for (int z = Origin.Z; z <= Terminal.Z; z++) {
+
 					MapCoordinate ZoneCube = new MapCoordinate(x, y, z);
 					CellCoordinate ZoneCell = new CellCoordinate(ZoneCube);
 
 					BitSet Target = ZoneMap.get(ZoneCell);
-					if (Target != null)
-					{
-						Target.set(ZoneCube.CubeIndex(), true);
+					if (Target != null) {
+						Target.set(ZoneCube.CubeInt(), true);
 					} else {
 						BitSet Bits = new BitSet(MapCoordinate.CUBESPERCELL);
-						Bits.set(ZoneCube.CubeIndex(), true);
+						Bits.set(ZoneCube.CubeInt(), true);
 						ZoneMap.put(ZoneCell, Bits);
 					}
 				}
 			}
 		}
+		Dirty = true;
+	}
+
+	public final void removeSelection(VolumeSelection Selection) {
+		MapCoordinate Origin = Selection.OriginLocation;
+		MapCoordinate Terminal = Selection.TerminalLocation;
+
+		for (int x = Origin.X; x < Terminal.X; x++) {
+			for (int y = Origin.Y; y < Terminal.Y; y++) {
+				for (int z = Origin.Z; z < Terminal.Z; z++) {
+
+					MapCoordinate ZoneCube = new MapCoordinate(x, y, z);
+					CellCoordinate ZoneCell = new CellCoordinate(ZoneCube);
+
+					BitSet Target = ZoneMap.get(ZoneCell);
+					if (Target != null) {
+						Target.set(ZoneCube.CubeIndex(), false);
+					}
+				}
+			}
+		}
+		
+		for (Map.Entry<CellCoordinate, BitSet> entry : ZoneMap.entrySet()) {
+			BitSet CellBitSet = entry.getValue();
+			if (CellBitSet.cardinality() == 0)
+				ZoneMap.remove(entry.getKey());
+		}
+
+		Dirty = true;		
 	}
 
 	boolean isCoordinateInZone(MapCoordinate TestCoordinates) {
@@ -70,5 +101,13 @@ public class Zone {
 		} else {
 			return false;
 		}
+	}
+	
+	public HashMap<CellCoordinate, BitSet> getZoneMap() {
+		return ZoneMap;
+	}
+
+	public int getID() {
+		return ID;
 	}
 }

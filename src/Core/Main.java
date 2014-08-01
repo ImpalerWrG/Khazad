@@ -25,8 +25,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 
 import Nifty.*;
-import Interface.*;
-import Game.*;
 import Renderer.*;
 import Sound.Music;
 
@@ -37,6 +35,7 @@ import com.jme3.util.BufferUtils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 /**
  * Simple Initialization of gamestates that run just around everything else
  * A Threadpool is used for speeding up pathfinding and rendering

@@ -31,8 +31,9 @@ public abstract class Job {
 		Workers = new ArrayList<Pawn>();
 	}
 	
-	public void addCitizen(Pawn NewCitizen) {
-		Workers.add(NewCitizen);
+	public void addPawn(Pawn NewPawn) {
+		Workers.add(NewPawn);
+		NewPawn.CurrentJob = this;
 	}
 
 	public void releaseCitizen(Pawn OldCitizen) {

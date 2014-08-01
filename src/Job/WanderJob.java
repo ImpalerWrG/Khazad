@@ -25,8 +25,8 @@ public class WanderJob extends Job {
 	}
 
 	@Override
-	public void addCitizen(Pawn NewCitizen) {
-		super.addCitizen(NewCitizen);
+	public void addPawn(Pawn NewCitizen) {
+		super.addPawn(NewCitizen);
 		Task Wandering = nextTask(NewCitizen);
 		NewCitizen.setTask(Wandering);
 	}

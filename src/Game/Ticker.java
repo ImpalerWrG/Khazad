@@ -52,17 +52,20 @@ public class Ticker implements Callable<Object> {
 	public void UpdateTick() {
 		thegame.CurrentGameTick++;   // Advance Tick count
 		
+		thegame.getSettlment().getJobManager().update();
+		
 		Temporal target;
 		target = thegame.TemporalQueue.poll();
 		if (target != null) {
-			do {	
-				long RewakeTick = target.Wake(thegame.CurrentGameTick);
-				if (RewakeTick != -1) {
-					thegame.TemporalQueue.add(target);
-				}
-				target = thegame.TemporalQueue.poll();
-			} while (target.WakeTick <= thegame.CurrentGameTick);	
-		
+			if (target.WakeTick <= thegame.CurrentGameTick) {
+				do {	
+					long RewakeTick = target.Wake(thegame.CurrentGameTick);
+					if (RewakeTick != -1) {
+						thegame.TemporalQueue.add(target);
+					}
+					target = thegame.TemporalQueue.poll();
+				} while (target.WakeTick <= thegame.CurrentGameTick);	
+			}
 			thegame.TemporalQueue.add(target);
 		}
 		

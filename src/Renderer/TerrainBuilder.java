@@ -35,7 +35,6 @@ public class TerrainBuilder implements Callable<Void>  {
 	Application app;
 	
 	Node TerrainLight, TerrainDark, ZLight, ZDark;
-	Spatial Light, Dark;
 	Material TerrainMaterial;
 
 	public TerrainBuilder(Application Parentapp, Cell TargetCell, TileBuilder Tiles, Material mat) {
@@ -73,23 +72,23 @@ public class TerrainBuilder implements Callable<Void>  {
 				
 				//Cell   coords.Coordinates
 				if (true /*sunlit face*/) {
-					TerrainLight.attachChild(geom);					
+					TerrainLight.attachChild(geom);
 				} else {
 					TerrainDark.attachChild(geom);
 				}
 			}
 		}
 
-		Light = GeometryBatchFactory.optimize(TerrainLight);
-		Dark = GeometryBatchFactory.optimize(TerrainDark);
+		GeometryBatchFactory.optimize(TerrainLight);
+		GeometryBatchFactory.optimize(TerrainDark);
 		
 		app.enqueue(new Callable() {
-            public Object call() throws Exception {
-				ZLight.attachChild(Light);
-				ZDark.attachChild(Dark);
-                return null;
-            }
-        });
+			public Object call() throws Exception {	
+				ZLight.attachChild(TerrainLight);
+				ZDark.attachChild(TerrainDark);
+				return null;
+			}
+		});
 		return null;
 	}
 }

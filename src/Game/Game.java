@@ -18,8 +18,11 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Game;
 
 import Core.Main;
+import Job.ExcavateJob;
+import Job.JobManager;
 import Map.*;
 import Terrain.Geology;
+import Interface.VolumeSelection;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -203,6 +206,19 @@ public class Game extends AbstractAppState implements ActionListener {
 		return GameWeather;
 	}
 	
+	public void VolumeSelectionCompleted(VolumeSelection newVolume) {
+		// What dose it mean?  need some kind of priming knowlege
+
+		JobManager jobs = GameSettlment.getJobManager();
+		ExcavateJob newJob = new ExcavateJob(MainMap);
+		ArrayList Volumes = new ArrayList<VolumeSelection>();
+		Volumes.add(newVolume);
+		Zone newZone = getMap().createZone(Volumes);
+		
+		newJob.addDesignations(newVolume, new CubeShape(CubeShape.CUBE_BOTTOM_HEIGHT));
+		jobs.addJob(newJob);
+	}
+
 	public ArrayList<Actor> getActors() {
 		return Actors;
 	}

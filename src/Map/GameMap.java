@@ -46,6 +46,7 @@ public class GameMap {
     int LowestCell;
 
     ArrayList<Zone> Zones;
+	int ZoneCounter = 0;
 
     MapCoordinate LastRayTestResult;  // Used to smoothout Map Picking
 	
@@ -56,6 +57,7 @@ public class GameMap {
 		HighestCell = -100000000;
 		LowestCell = 10000000;
 		
+		Zones = new ArrayList<Zone>();
 		Cells = new ConcurrentHashMap<CellCoordinate, Cell>();
 	}
 
@@ -304,23 +306,18 @@ public class GameMap {
 	*/
 
 	public void UpdateCubeShape(MapCoordinate Coordinates, CubeShape NewShape) {
-		if (isCubeInited(Coordinates))
-		{
+		if (isCubeInited(Coordinates)) {
 			CubeShape Shape = getCubeShape(Coordinates);
-			if (Shape != NewShape)
-			{
+			if (Shape != NewShape) {
 				setCubeShape(Coordinates, NewShape);
-				if (NewShape.isEmpty())
-				{
+				if (NewShape.isEmpty()) {
 					setCubeMaterial(Coordinates, DataTypes.INVALID_INDEX);
 				}
 
-				for (Direction DirectionType : Direction.AXIAL_DIRECTIONS)
-				{
+				for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
 					UpdateFace(Coordinates, DirectionType);
 				}
 				UpdateFace(Coordinates, Direction.DIRECTION_NONE);
-
 				setCubeHidden(Coordinates, false);
 			}
 
@@ -461,26 +458,23 @@ public class GameMap {
 		Zones.clear();
 	}
 
-	public void addZone(Zone NewZone) {
-		Zones.add(NewZone);
-	}
-
-	public Zone createZone(ArrayList< VolumeSelection > Volumes) {
-		Zone NewZone = new Zone(Volumes);
+	public Zone createZone(ArrayList<VolumeSelection> Volumes) {
+		Zone NewZone = new Zone(Volumes, ZoneCounter++);
 		Zones.add(NewZone);
 		return NewZone;
 	}
 
 	public ArrayList<Zone> getZonesAt(MapCoordinate TestCoordinates) {
 		ArrayList<Zone> Collection = new ArrayList<Zone>();
-		for(Zone Z : Zones)
-		{
+		for(Zone Z : Zones) {
 			if (Z.isCoordinateInZone(TestCoordinates))
-			{
 				Collection.add(Z);
-			}
 		}
 		return Collection;
+	}
+	
+	public ArrayList<Zone> getZones() {
+		return Zones;
 	}
 
 	public ConcurrentHashMap getCellMap() {

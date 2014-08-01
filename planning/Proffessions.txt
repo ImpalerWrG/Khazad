@@ -3,13 +3,54 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 
 <Worshipper [WIL][CHA] - Religion, high status>
 
-	Paththeon x6 
-		Paladin
-		Monk
+	Acolyte Thor (male - Martial)
+	Acolyte Odin (male - Wisdom)
+	Acolyte Freya (female - Fertility, Judgement)
+	Acolyte Helga (female - Martial)
+	Acolyte Loki (both - Trickster)
+	Acolyte ??? (male - Forging, Age)
+	
+	Pantheon x6 
+		Paladin - 
+			Valkyrie - female warriors
+			Shield Maiden - female defenders
+			Zealot
+			Templar
+			Crusader
+			Sentinel
+			
+		Monk - Monks duplicate one of the other root professions while creating Piety
+			Friar - wandering
+			Abbot
+			Nun
+			Theurge - magic?
+			Virtuoso
+			Mystic
+			Ascetic
+			
 		Cleric
+			Oracle
+			Savant
+			Apostle
+			Emissary
+			Initiate
+			Devotee
+			Hierophant
+			
 		Judge
+			Seer
+			 Adept
+			Vizier
+			Diviner
+			Judicator
+			Patriarch
+			
+		Inquisitor
+			Justiciar
+			Tempest
+			Exorcist
 </>
-<Thinker [LOG][MEM] - Intelectual pursuits, government, science ect>
+<Thinker (Chancellor/Seneschal) [LOG][MEM] - Intelectual pursuits, government, science ect>
 
 	<Healer [INT][CHA] >
 		Chiurgeon
@@ -33,7 +74,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		
 	</>	
 	<Administrator [VIT][]>
-		Clerk
+		Clerk / Bureaucrat?
 		Treasurer?
 		Lawyer
 	</>		
@@ -52,15 +93,17 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Rune Scribe - enhance items with rune magic
 	</>	
 </>
-<Fighter [VIT][REF] - Combat in all forms>
+<Fighter (Marshal) [VIT][REF] - Combat in all forms>
 
 	<Skirmisher [SPD][JDG] - light fast>
 		Berserker [WIL] - maximum aggression
 		Javaliner - bombard with thrown weapons
+		Sapper - undermine fortifications
+		Grenadier - throws explosives
 	</>	
 	<Warrior [STR][LOG] - Balanced >
 	</>		
-	<Calvary [FLX][MEM] - Mounted combat>
+	<Calvary-Rider [FLX][MEM] - Mounted combat>
 		Lancer - lances
 		Outrider - scouting skirmishing
 		Messenger - armoured fast travel
@@ -72,13 +115,14 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Musketeer - Musket
 		Quarreler - Crossbow
 	</>	
-	<Soldier [END][WIL] - Defensive formation fighting>
+	<Soldier-Defender [END][WIL] - Defensive formation fighting>
 		Pike
+		halberdier
 		TowerShield
+		Legionnaire
 		
 	</>	
 	<Guard [INT][CHA] - Police>
-	
 		Royal Guard [WIL][SPD] - Guards royalty
 		Constable [FLX][END] - Street cop,
 		Detective [LOG][JDG] - solves crimes
@@ -160,6 +204,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Baker
 		ChesseMaker
 		Brewer
+		Scullion/Cleaner
 	</>		
 	<Miller - Food processing>
 		Thresher - grain processing
@@ -194,10 +239,11 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 	<Trader [CHA][LOG]>
 		Pedlar - lone barter, no diplomatic relations necessary
 		Merchant/Teamster? - larger scale, wagon load trade
-		Retailer - runs shops for foreigners in 'Bazaar' zone
+		Grocer - local consumables sales?
+		Mercer - runs shops for foreigners in 'Bazaar' zone
 		Sailor - largest scale trade by boat
 	</>	
-	<Woodsman [STR][FLX]>
+	<Woodsman (Warden) [STR][FLX]>
 		LumberJack
 		Sawyer
 		Forester - replants trees

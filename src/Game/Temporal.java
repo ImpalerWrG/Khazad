@@ -32,16 +32,16 @@ public abstract class Temporal implements Comparable {
 	int ID;
 	long WakeTick = 1;
 
-	Temporal() {
+	public Temporal() {
 		
 	}
 
-	void ResetWakeTick(long NewWakeTick) {
+	public void ResetWakeTick(long NewWakeTick) {
 		WakeTick = NewWakeTick;
 		// notify Temporal Manager?
 	}
 
-	void Retire() {
+	public void Retire() {
 		//GAME->getTemporal()->RetireTemporal(this);
 	}
 

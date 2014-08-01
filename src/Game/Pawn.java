@@ -17,11 +17,14 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Game;
 
+import Job.Job;
 import Job.Task;
 import Core.Dice;
 
 import Map.Direction;
+import Map.GameMap;
 import Map.MapCoordinate;
+import Map.CubeShape;
 
 import PathFinding.MovementModality;
 import PathFinding.Navigator;
@@ -38,11 +41,12 @@ public class Pawn extends Actor {
 	boolean Moving;
 	Direction CurrentMovementDirection;
 
-	int MovementDuration = 1;
-	long MovementStarted;
+	long ActionDuration = 1;
+	long ActionStarted;
 
 	Navigator PathNavigator;
 	public Task CurrentTask;
+	public Job CurrentJob;
 
 	Dice AttributeDice;
 
@@ -77,39 +81,29 @@ public class Pawn extends Actor {
 		//Speed = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4));  // 5 is normal dwarven speed
 	}
 	
-	long AttemptMove(Direction MovementDirection) {
+	public Navigator getNavigator() {
+		return PathNavigator;
+	}
+
+	public long AttemptMove(Direction MovementDirection) {
 		float EdgeCost = PathFinding.getSinglton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getMovementModality());
 		
 		if (EdgeCost != -1) {
-			Moving = true;
-			MovementDuration = (int) (EdgeCost / (Speed / 5) * 12);
-			return MovementDuration;
+			return (int) (EdgeCost / (Speed / 5) * 12);
 		} else {
 			return 1;  // signal falure to job manager?
 		}
 	}
 
-	long UpdatePosition(long CurrentTick) {
+	public long UpdatePosition() {
+		setLocation(new MapCoordinate(LocationCoordinates, CurrentMovementDirection));
+		CurrentMovementDirection = PathNavigator.getNextStep();
 
-		if (Moving) {
-			if (CurrentTick >= (MovementStarted + MovementDuration)) { // Done
-				MapCoordinate NewLocation = new MapCoordinate(LocationCoordinates, CurrentMovementDirection);
-				setLocation(NewLocation);
-				Moving = false;
-			}
+		if (CurrentMovementDirection == Direction.DIRECTION_DESTINATION) {
+			CurrentTask.Completed = true;
 			return 1;
 		} else {
-			CurrentMovementDirection = PathNavigator.getNextStep();
-			if (CurrentMovementDirection != Direction.DIRECTION_NONE) {
-				if (CurrentMovementDirection != Direction.DIRECTION_DESTINATION) {
-					MovementStarted = CurrentTick;
-					return AttemptMove(CurrentMovementDirection);
-				} else {
-					CurrentTask = CurrentTask.ParentJob.nextTask(this);
-					PathNavigator.ChangeDestination(CurrentTask.worklocation);
-				}
-			}
-			return 1;
+			return AttemptMove(CurrentMovementDirection);
 		}
 	}
 
@@ -126,35 +120,17 @@ public class Pawn extends Actor {
 	public void setTask(Task NewTask) {
 		if (CurrentTask != NewTask) {
 			CurrentTask = NewTask;
-			
-			switch (CurrentTask.type) {
-
-				case TASK_IDLE:
-					break;
-				case TASK_SLEEP:
-					break;
-				case TASK_PICK_UP:
-					break;
-				case TASK_HAUL:
-					break;
-				case TASK_GOTO:
-					PathNavigator.ChangeDestination(CurrentTask.worklocation);
-					break;
-					
-				case TASK_DROP_OFF:
-					break;
-				case TASK_DIG:
-					break;
-			}
-
-			// change behavior to achive task ?
 		}
 	}
 
-	public float getMovementFraction(long CurrentTick) {
-		return (CurrentTick - MovementStarted) / ((float) MovementDuration);
+	public float getActionFraction(long CurrentTick) {
+		return (CurrentTick - ActionStarted) / ((float) ActionDuration);
 	}
-	
+
+	public void setMovementDiretion(Direction newDirection) {
+		CurrentMovementDirection = newDirection;
+	}
+
 	public Direction getMovementDirection() {
 		return CurrentMovementDirection;
 	}
@@ -165,30 +141,21 @@ public class Pawn extends Actor {
 
 	@Override
 	long Wake(long CurrentTick) {
-		super.Wake(CurrentTick);
-		
-		if (CurrentTick >= WakeTick) {
-					
-			switch (CurrentTask.type) {
+		//super.Wake(CurrentTick);
 
-				case TASK_IDLE:
-					break;
-				case TASK_SLEEP:
-					break;
-				case TASK_PICK_UP:
-					break;
-				case TASK_HAUL:
-					break;
-				case TASK_GOTO:
-					WakeTick = CurrentTick + UpdatePosition(CurrentTick);
-					break;
-					
-				case TASK_DROP_OFF:
-					break;
-				case TASK_DIG:
-					break;
-			}
+		if (CurrentTask.Completed) {
+			CurrentTask.Finalize(CurrentTick, this);
+			setTask(CurrentTask.ParentJob.nextTask(this));
 		}
+
+		if (!CurrentTask.Begun) {
+			ActionDuration = CurrentTask.Begin(this);
+		} else {
+			ActionDuration = CurrentTask.Continue(this);
+		}
+		ActionStarted = CurrentTick;
+		WakeTick = CurrentTick + ActionDuration;
+
 		return WakeTick;
 	}
 }

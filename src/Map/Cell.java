@@ -279,6 +279,7 @@ public class Cell {
 
     public void setCubeMaterial(byte Coordinates, short MaterialID) {
 		CubeMaterialTypes[Coordinates & 0xFF] = MaterialID; 
+		DirtyRendering = true;
 	}
 
     public short getCubeMaterial(byte Coordinates) {
@@ -290,7 +291,8 @@ public class Cell {
 	}
 
     public void setCubeHidden(byte Coordinates, boolean NewValue) {
-		Hidden.set(Coordinates, NewValue); 
+		Hidden.set(Coordinates & 0xFF, NewValue); 
+		DirtyRendering = true;
 	}
 
 	/*

@@ -117,23 +117,21 @@ public class TerrainRenderer extends AbstractAppState {
 	}
 
 	private Node getNode(CellCoordinate TargetCell) {
-		Node targetnode = CellNodeMap.get(TargetCell);
-		if (targetnode != null) {
-			terrainNode.detachChild(targetnode);
-		}
-			
-		Node CellNode = new Node();
-
-		float x = (float) (TargetCell.X * MapCoordinate.CELLEDGESIZE);
-		float y = (float) (TargetCell.Y * MapCoordinate.CELLEDGESIZE);
-
-		CellNode.move(x, y, 0);
-		Node Dark = new Node("dark");
-		CellNode.attachChild(Dark);
-		Node light = new Node("light");
-		CellNode.attachChild(light);
+		Node CellNode = CellNodeMap.get(TargetCell);
+		if (CellNode == null) {
+			CellNode = new Node();	
 		
-		CellNodeMap.put(TargetCell, CellNode);
+			float x = (float) (TargetCell.X * MapCoordinate.CELLEDGESIZE);
+			float y = (float) (TargetCell.Y * MapCoordinate.CELLEDGESIZE);
+
+			CellNode.move(x, y, 0);
+			Node Dark = new Node("dark");
+			CellNode.attachChild(Dark);
+			Node light = new Node("light");
+			CellNode.attachChild(light);
+
+			CellNodeMap.put(TargetCell, CellNode);
+		}
 		return CellNode;
 	}
 	
@@ -142,7 +140,6 @@ public class TerrainRenderer extends AbstractAppState {
 		if (targetnode == null) {
 
 			targetnode = new Node();
-			sunnyterrainNode.attachChild(targetnode);
 			targetnode.move(0, 0, zlevel);
 			ZMapLight.put(new Integer(zlevel), targetnode);
 		}
@@ -154,7 +151,6 @@ public class TerrainRenderer extends AbstractAppState {
 		if (targetnode == null) {
 
 			targetnode = new Node();
-			darkterrainNode.attachChild(targetnode);
 			targetnode.move(0, 0, zlevel);
 			ZMapDark.put(new Integer(zlevel), targetnode);
 		}
@@ -210,7 +206,7 @@ public class TerrainRenderer extends AbstractAppState {
 					
 					if (target instanceof Pawn) {
 						Pawn PawnTarget = (Pawn) target;
-						float MoveFraction = PawnTarget.getMovementFraction(CurrentTick);
+						float MoveFraction = PawnTarget.getActionFraction(CurrentTick);
 						Direction MovingDirection = PawnTarget.getMovementDirection();
 						float Height = 0;
 						
@@ -224,6 +220,10 @@ public class TerrainRenderer extends AbstractAppState {
 						}
 						
 						if (MoveFraction > 0.5) {
+							if (MoveFraction >= 1.0) {
+								MoveFraction = 0;
+							}							
+							
 							MapCoordinate translated = new MapCoordinate(coords, MovingDirection);
 							CubeShape shape = map.getCubeShape(translated);
 							float CenterHeight = shape.centerHeight() + (translated.Z - coords.Z);							
@@ -231,10 +231,10 @@ public class TerrainRenderer extends AbstractAppState {
 							float CenterFraction = ((MoveFraction - 0.5f) * 2.0f);
 							float EdgeFraction = 1.0f - CenterFraction;
 							Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);						
-							
-							if (MoveFraction == 1.0) {
-								MoveFraction = 0;
-							}
+						}
+						
+						if (MovingDirection == Direction.DIRECTION_DESTINATION) {
+							MoveFraction = 0;
 						}
 							
 						Vector3f MoveVec = MovingDirection.toVector();
@@ -257,21 +257,21 @@ public class TerrainRenderer extends AbstractAppState {
 	public void setSliceLevels(int top, int bottom) {
 		Top = top; Bottom = bottom;
 		
-		for (Node target : ZMapLight.values()) {
-			float Z = target.getLocalTranslation().getZ();
-			if (Z > Bottom && Z <= Top && SunnyRendering) {
-				target.setCullHint(Spatial.CullHint.Never);
+		for (Node targetnode : ZMapLight.values()) {
+			float Z = targetnode.getLocalTranslation().getZ();
+			if (Z <= Top && SunnyRendering) {
+				sunnyterrainNode.attachChild(targetnode);
 			} else {
-				target.setCullHint(Spatial.CullHint.Always);				
+				sunnyterrainNode.detachChild(targetnode);
 			}
 		}
 		
-		for (Node target : ZMapDark.values()) {
-			float Z = target.getLocalTranslation().getZ();
-			if (Z > Bottom && Z <= Top) {
-				target.setCullHint(Spatial.CullHint.Never);
+		for (Node targetnode : ZMapDark.values()) {
+			float Z = targetnode.getLocalTranslation().getZ();
+			if (Z <= Top) {
+				darkterrainNode.attachChild(targetnode);
 			} else {
-				target.setCullHint(Spatial.CullHint.Always);				
+				darkterrainNode.detachChild(targetnode);
 			}
 		}
 	}
@@ -321,13 +321,5 @@ public class TerrainRenderer extends AbstractAppState {
 			gui.UpdateText("Timelabel", TimeString);
 		}
 	}
-
-	@Override
-    public void render(RenderManager rm) {
-    }
-
-	@Override
-    public void postRender(){
-    }
 }
 

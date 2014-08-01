@@ -120,6 +120,7 @@ public class Navigator {
 						if (PathFuture.isDone()) {
 							CurrentPath = (MapPath) PathFuture.get();
 							CurrentPathWalker = CurrentPath.getPathWalker();
+							return CurrentPathWalker.NextDirection();		
 						} else if (PathFuture.isCancelled()){
 							//Set future to null. Maybe we succeed next time...
 							PathFuture = null;

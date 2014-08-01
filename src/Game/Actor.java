@@ -99,8 +99,8 @@ public abstract class Actor extends Temporal {
 		}
 	}
 	
-	long Wake(long CurrentTick) {
-		return CurrentTick + 100;
-	}
+	//long Wake(long CurrentTick) {
+	//	return CurrentTick + 1;
+	//}
 }
 
