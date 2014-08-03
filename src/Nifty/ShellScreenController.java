@@ -85,7 +85,7 @@ public class ShellScreenController implements ScreenController {
 		
 		nifty.gotoScreen("GameScreen");
 
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 1; i++) {
 			game.SpawnCitizen(Pather.Tester.getRandomPassableCoordinate());
 		}
 	}

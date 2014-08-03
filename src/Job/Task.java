@@ -86,9 +86,12 @@ public class Task {
 			case TASK_DROP_OFF:
 				break;
 			case TASK_DIG:
-				GameMap.getMap().UpdateCubeShape(worklocation, new CubeShape((byte) 0));
+				ExcavateJob Excavation = (ExcavateJob) ParentJob;
+				CubeShape DesignatedShape = Excavation.getDesignation(worklocation);
+				GameMap.getMap().UpdateCubeShape(worklocation, DesignatedShape);
 
-				if (GameMap.getMap().getCubeShape(worklocation).isEmpty()) {
+				if (GameMap.getMap().getCubeShape(worklocation).equals(DesignatedShape)) {
+					Excavation.CompleteDesignation(worklocation);
 					Completed = true;
 				} else {
 					return 100;  // Base on material hardness

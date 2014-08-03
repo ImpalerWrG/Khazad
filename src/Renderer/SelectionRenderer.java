@@ -164,7 +164,7 @@ public class SelectionRenderer extends AbstractAppState{
 					ZoneBlock.setLocalTranslation(new Vector3f(MapCoords.X, MapCoords.Y, MapCoords.Z));
 
 					Material BrownMat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-					BrownMat.setColor("Color", ColorRGBA.Orange);
+					BrownMat.setColor("Color", ColorRGBA.Brown);
 					ZoneBlock.setMaterial(BrownMat);
 
 					ZoneNode.attachChild(ZoneBlock);

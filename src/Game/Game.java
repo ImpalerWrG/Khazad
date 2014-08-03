@@ -215,7 +215,7 @@ public class Game extends AbstractAppState implements ActionListener {
 		Volumes.add(newVolume);
 		Zone newZone = getMap().createZone(Volumes);
 		
-		newJob.addDesignations(newVolume, new CubeShape(CubeShape.CUBE_BOTTOM_HEIGHT));
+		newJob.addDesignations(newVolume, newZone, new CubeShape(CubeShape.CUBE_BOTTOM_HEIGHT));
 		jobs.addJob(newJob);
 	}
 

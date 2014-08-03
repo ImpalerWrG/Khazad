@@ -227,8 +227,7 @@ public class Cell {
 	}
 
 	boolean removeFace(FaceCoordinate TargetCoordinates) {
-		if (Faces.containsKey(TargetCoordinates))
-		{
+		if (Faces.containsKey(TargetCoordinates)) {
 			Faces.remove(TargetCoordinates);
 			setRenderingDirty(true);
 			return true;
@@ -241,6 +240,7 @@ public class Cell {
 		if (TargetFace == null) {
 			Face NewFace = new Face(TargetCoordinates.Coordinates, TargetCoordinates.FaceDirection);
 			Faces.put(TargetCoordinates, NewFace);
+			setRenderingDirty(true);
 			return NewFace;
 		}
 		else {

@@ -37,7 +37,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 /**
- *
+ * Rendering class for Terrain, tracks all Scene Nodes that Terrain geometry
+ * attaches too and rebuilds the geometry when Cells are dirty.  Division of
+ * Terrain into light/dark allows easy hiding of surface terrain and restriction
+ * of directional sunlight to appropriate surfaces.
+ * 
  * @author Impaler
  */
 public class TerrainRenderer extends AbstractAppState {
@@ -52,7 +56,8 @@ public class TerrainRenderer extends AbstractAppState {
 	Node darkterrainNode = null;
 	
 	TileBuilder builder;
-	ConcurrentHashMap<CellCoordinate, Node> CellNodeMap;
+	ConcurrentHashMap<CellCoordinate, Node> LightCellNodeMap;
+	ConcurrentHashMap<CellCoordinate, Node> DarkCellNodeMap;
 	ConcurrentHashMap<Integer, Node> ActorNodeMap;
 	ConcurrentHashMap<Integer, Node> ZMapLight;
 	ConcurrentHashMap<Integer, Node> ZMapDark;
@@ -67,7 +72,8 @@ public class TerrainRenderer extends AbstractAppState {
 	public TerrainRenderer(ExecutorService Threadpool) {
 		Executor = Threadpool;
 
-		CellNodeMap = new ConcurrentHashMap<CellCoordinate, Node>();
+		LightCellNodeMap = new ConcurrentHashMap<CellCoordinate, Node>();
+		DarkCellNodeMap = new ConcurrentHashMap<CellCoordinate, Node>();
 		ActorNodeMap = new ConcurrentHashMap<Integer, Node>();
 		ZMapLight = new ConcurrentHashMap<Integer, Node>();
 		ZMapDark = new ConcurrentHashMap<Integer, Node>();
@@ -116,8 +122,8 @@ public class TerrainRenderer extends AbstractAppState {
 		sunnyterrainNode = null;
 	}
 
-	private Node getNode(CellCoordinate TargetCell) {
-		Node CellNode = CellNodeMap.get(TargetCell);
+	private Node getCellNodeLight(CellCoordinate TargetCell) {
+		Node CellNode = LightCellNodeMap.get(TargetCell);
 		if (CellNode == null) {
 			CellNode = new Node();	
 		
@@ -125,16 +131,29 @@ public class TerrainRenderer extends AbstractAppState {
 			float y = (float) (TargetCell.Y * MapCoordinate.CELLEDGESIZE);
 
 			CellNode.move(x, y, 0);
-			Node Dark = new Node("dark");
-			CellNode.attachChild(Dark);
-			Node light = new Node("light");
-			CellNode.attachChild(light);
 
-			CellNodeMap.put(TargetCell, CellNode);
+			getZNodeLight(TargetCell.Z).attachChild(CellNode);
+			LightCellNodeMap.put(TargetCell, CellNode);
 		}
 		return CellNode;
 	}
-	
+
+		private Node getCellNodeDark(CellCoordinate TargetCell) {
+		Node CellNode = DarkCellNodeMap.get(TargetCell);
+		if (CellNode == null) {
+			CellNode = new Node();	
+		
+			float x = (float) (TargetCell.X * MapCoordinate.CELLEDGESIZE);
+			float y = (float) (TargetCell.Y * MapCoordinate.CELLEDGESIZE);
+
+			CellNode.move(x, y, 0);
+
+			getZNodeDark(TargetCell.Z).attachChild(CellNode);
+			DarkCellNodeMap.put(TargetCell, CellNode);
+		}
+		return CellNode;
+	}
+
 	private Node getZNodeLight(int zlevel) {
 		Node targetnode = ZMapLight.get(new Integer(zlevel));
 		if (targetnode == null) {
@@ -161,12 +180,9 @@ public class TerrainRenderer extends AbstractAppState {
 		for (Cell target : cells.values()) {
 			if (target.isDirty()) {
 				CellCoordinate Coords = target.getCellCoordinates();
-				Node CellNode = getNode(Coords);
-				Node LightNode = (Node) CellNode.getChild("light");
-				Node DarkNode = (Node) CellNode.getChild("dark");
 
 				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, mat);
-				Builder.setNodes(LightNode, DarkNode, getZNodeLight(Coords.Z), getZNodeDark(Coords.Z));
+				Builder.setNodes(getCellNodeLight(Coords), getCellNodeDark(Coords));
 				Executor.submit(Builder);
 
 				target.setRenderingDirty(false);

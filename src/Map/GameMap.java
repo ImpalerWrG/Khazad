@@ -308,7 +308,7 @@ public class GameMap {
 	public void UpdateCubeShape(MapCoordinate Coordinates, CubeShape NewShape) {
 		if (isCubeInited(Coordinates)) {
 			CubeShape Shape = getCubeShape(Coordinates);
-			if (Shape != NewShape) {
+			if (!Shape.equals(NewShape)) {
 				setCubeShape(Coordinates, NewShape);
 				if (NewShape.isEmpty()) {
 					setCubeMaterial(Coordinates, DataTypes.INVALID_INDEX);
@@ -333,11 +333,10 @@ public class GameMap {
 		final short RoughWallID = 0; //DATA.getLabelIndex("SURFACETYPE_ROUGH_WALL");
 		final short RoughFloorID = 1; //DATA.getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
-		MapCoordinate ModifiedCoordinates = TargetCoordinates;
+		MapCoordinate ModifiedCoordinates = TargetCoordinates.clone();
 		ModifiedCoordinates.TranslateMapCoordinates(DirectionType);
 
-		if (!isCubeInited(ModifiedCoordinates))
-		{
+		if (!isCubeInited(ModifiedCoordinates)){
 			// Init it
 			return;
 		}
@@ -349,10 +348,8 @@ public class GameMap {
 		switch (DirectionType) {
 
 			case DIRECTION_NONE:
-				if (!SourceShape.isEmpty() && !SourceShape.isSolid())
-				{
-					if (TargetFace == null)
-					{
+				if (!SourceShape.isEmpty() && !SourceShape.isSolid()) {
+					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, Direction.DIRECTION_NONE);
 						// Dirty Cell if edge case
 					}
@@ -367,10 +364,8 @@ public class GameMap {
 				break;
 
 			case DIRECTION_DOWN:
-				if (!AdjacentShape.isEmpty() && SourceShape.hasFloor())
-				{
-					if (TargetFace == null)
-					{
+				if (!AdjacentShape.isEmpty() && SourceShape.hasFloor()) {
+					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, DirectionType);
 					}
 
@@ -383,10 +378,8 @@ public class GameMap {
 				break;
 
 			case DIRECTION_UP:
-				if (AdjacentShape.isEmpty() && SourceShape.hasCeiling())
-				{
-					if (TargetFace == null)
-					{
+				if (AdjacentShape.isEmpty() && SourceShape.hasCeiling()) {
+					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, DirectionType);
 					}
 
@@ -402,10 +395,8 @@ public class GameMap {
 			case DIRECTION_WEST:
 			case DIRECTION_NORTH:
 			case DIRECTION_SOUTH:
-				if (SourceShape.isEmpty() && !AdjacentShape.isEmpty())
-				{
-					if (TargetFace == null)
-					{
+				if (SourceShape.isEmpty() && !AdjacentShape.isEmpty()) {
+					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, DirectionType);
 					}
 

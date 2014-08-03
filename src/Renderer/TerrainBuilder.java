@@ -11,21 +11,24 @@ import Map.CellCoordinate;
 import Map.Face;
 import Map.FaceCoordinate;
 import Map.TileBuilder;
+
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.material.Material;
+import jme3tools.optimize.GeometryBatchFactory;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import jme3tools.optimize.GeometryBatchFactory;
 
 /**
- *
+ * Callable class that creates a optimized mesh for a Cell and swaps it into
+ * the Scene graph.
+ * 
  * @author Impaler
  */
 public class TerrainBuilder implements Callable<Void>  {
@@ -34,7 +37,8 @@ public class TerrainBuilder implements Callable<Void>  {
 	TileBuilder TileSource;
 	Application app;
 	
-	Node TerrainLight, TerrainDark, ZLight, ZDark;
+	Node TerrainLight, TerrainDark, CellLight, CellDark;
+	Spatial LightBuildGeometry, DarkBuildGeometry;
 	Material TerrainMaterial;
 
 	public TerrainBuilder(Application Parentapp, Cell TargetCell, TileBuilder Tiles, Material mat) {
@@ -44,16 +48,16 @@ public class TerrainBuilder implements Callable<Void>  {
 		this.TerrainMaterial = mat;
 	}
 
-	public void setNodes(Node Celllight, Node Celldark, Node Light, Node Dark) {
-		this.TerrainLight = Celllight;
-		this.TerrainDark = Celldark;
-		this.ZLight = Light;
-		this.ZDark = Dark;
+	public void setNodes(Node LightCellNode, Node DarkCellNode) {
+		this.CellLight = LightCellNode;
+		this.CellDark = DarkCellNode;
+		TerrainLight = new Node();
+		TerrainDark = new Node();
 	}
 
 	public Void call() {
 		CellCoordinate Coords = BuildCell.getCellCoordinates();
-		
+
 		// Terrain Faces
 		HashMap<FaceCoordinate, Face> faces = BuildCell.getFaces();
 		Iterator<Map.Entry<FaceCoordinate, Face>> entries = faces.entrySet().iterator();
@@ -80,12 +84,24 @@ public class TerrainBuilder implements Callable<Void>  {
 		}
 
 		GeometryBatchFactory.optimize(TerrainLight);
+		if (TerrainLight.getQuantity() > 0) {
+			LightBuildGeometry = TerrainLight.getChild(0);
+		}
 		GeometryBatchFactory.optimize(TerrainDark);
+		if (TerrainDark.getQuantity() > 0) {
+			DarkBuildGeometry = TerrainDark.getChild(0);
+		}
 		
 		app.enqueue(new Callable() {
-			public Object call() throws Exception {	
-				ZLight.attachChild(TerrainLight);
-				ZDark.attachChild(TerrainDark);
+			public Object call() throws Exception {
+				CellLight.detachAllChildren();
+				if (LightBuildGeometry != null)
+					CellLight.attachChild(LightBuildGeometry);
+				
+				CellDark.detachAllChildren();
+				if (DarkBuildGeometry != null)
+					CellDark.attachChild(DarkBuildGeometry);
+				
 				return null;
 			}
 		});

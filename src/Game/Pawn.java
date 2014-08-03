@@ -152,6 +152,10 @@ public class Pawn extends Actor {
 			ActionDuration = CurrentTask.Begin(this);
 		} else {
 			ActionDuration = CurrentTask.Continue(this);
+			if (CurrentTask.Completed) {
+				CurrentTask.Finalize(CurrentTick, this);
+				setTask(CurrentTask.ParentJob.nextTask(this));
+			}
 		}
 		ActionStarted = CurrentTick;
 		WakeTick = CurrentTick + ActionDuration;

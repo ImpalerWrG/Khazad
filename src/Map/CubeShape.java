@@ -188,8 +188,10 @@ public class CubeShape {
 		return (Data & 1) > 0 ? true : false ;
     }
 
-    public boolean equals(CubeShape ArgumentShape) {
-		return Data == ArgumentShape.Data;
+	@Override
+	public boolean equals(Object ArgumentShape) {
+		CubeShape Arg = (CubeShape) ArgumentShape;
+		return Data == Arg.Data;
     }
 
     public boolean notequal(CubeShape ArgumentShape) {

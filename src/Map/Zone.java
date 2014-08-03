@@ -65,6 +65,16 @@ public class Zone {
 		Dirty = true;
 	}
 
+	public final void addMapCoordinate(MapCoordinate AdditionCoords) {
+		CellCoordinate Targt = new CellCoordinate(AdditionCoords);
+		BitSet Target = ZoneMap.get(Targt);
+		if (Target == null) {
+			Target = new BitSet(MapCoordinate.CUBESPERCELL);
+		}
+		Target.set(AdditionCoords.CubeInt(), true);
+		Dirty = true;
+	}
+
 	public final void removeSelection(VolumeSelection Selection) {
 		MapCoordinate Origin = Selection.OriginLocation;
 		MapCoordinate Terminal = Selection.TerminalLocation;
@@ -93,6 +103,15 @@ public class Zone {
 		Dirty = true;		
 	}
 
+	public final void removeMapCoordinate(MapCoordinate RemovalCoords) {
+		CellCoordinate Targt = new CellCoordinate(RemovalCoords);
+		BitSet Target = ZoneMap.get(Targt);
+		if (Target != null) {
+			Target.clear(RemovalCoords.CubeInt());
+			Dirty = true;
+		}
+	}
+			
 	boolean isCoordinateInZone(MapCoordinate TestCoordinates) {
 		CellCoordinate Targt = new CellCoordinate(TestCoordinates);
 		BitSet Target = ZoneMap.get(Targt);
