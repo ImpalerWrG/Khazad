@@ -165,23 +165,23 @@ public class CubeShape {
     }
 
 	void setSouthWestCorner(byte Height) {
-		Data |= SWMASK;
-		Data &= ((Height << SWSHIFT) & SWMASK);
+		Data &= ~SWMASK;
+		Data |= ((Height << SWSHIFT) & SWMASK);
 	}
 
 	public void setSouthEastCorner(byte Height) {
-		Data |= SEMASK;
-		Data &= ((Height << SESHIFT) & SEMASK);
+		Data &= ~SEMASK;
+		Data |= ((Height << SESHIFT) & SEMASK);
 	}
 
 	public void setNorthWestCorner(byte Height) {
-		Data |= NWMASK;
-		Data &= ((Height << NWSHIFT) & NWMASK);
+		Data &= ~NWMASK;
+		Data |= ((Height << NWSHIFT) & NWMASK);
 	}
 
 	public void setNorthEastCorner(byte Height) {
-		Data |= NEMASK;
-		Data &= ((Height << NESHIFT) & NEMASK);
+		Data &= ~NEMASK;
+		Data |= ((Height << NESHIFT) & NEMASK);
 	}
 
     public boolean split() {
@@ -193,6 +193,17 @@ public class CubeShape {
 		CubeShape Arg = (CubeShape) ArgumentShape;
 		return Data == Arg.Data;
     }
+
+	public void copy(CubeShape ArgumentShape) {
+		Data = ArgumentShape.Data;
+	}
+
+	@Override
+	public CubeShape clone() {
+		CubeShape newShape = new CubeShape();
+		newShape.copy(this);
+		return newShape;
+	}
 
     public boolean notequal(CubeShape ArgumentShape) {
 		return Data != ArgumentShape.Data;

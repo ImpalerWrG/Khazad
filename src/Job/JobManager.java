@@ -5,6 +5,7 @@
 package Job;
 
 import Game.Citizen;
+import Game.Pawn;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,13 +17,13 @@ import java.util.HashMap;
 public class JobManager {
 
 	HashMap<String, Job> JobMap;
-	ArrayList<Citizen> IdleCitizens;
+	ArrayList<Pawn> IdleCitizens;
 	//ArrayList<Citizen> WorkingCitizens;
 	ArrayList<Job> NewJobs;
 
 	public JobManager() {
 		JobMap = new HashMap<String, Job>();
-		IdleCitizens = new ArrayList<Citizen>();
+		IdleCitizens = new ArrayList<Pawn>();
 		NewJobs = new ArrayList<Job>();
 	}
 
@@ -35,7 +36,7 @@ public class JobManager {
 			BestJob.addPawn(NewCitizen);
 	}
 
-	public Job FindBestJob(Citizen TargetCitizen) {
+	public Job FindBestJob(Pawn TargetCitizen) {
 		Job BestJob = null;
 		float BestJobFitness  = 0;
 		for (Job TargetJob: JobMap.values()) {
@@ -52,7 +53,7 @@ public class JobManager {
 
 	public void addJob(Job NewJob) {
 		JobMap.put(NewJob.Name, NewJob);
-		
+		NewJob.Manager = this;
 		NewJobs.add(NewJob);
 	}
 
@@ -74,6 +75,12 @@ public class JobManager {
 			}
 		}
 		NewJobs.clear();
+		
+		for (Pawn citizen : IdleCitizens) {
+			Job job = FindBestJob(citizen);
+			job.addPawn(citizen);
+			IdleCitizens.remove(citizen);
+		}
 	}
 
 	public void update() {

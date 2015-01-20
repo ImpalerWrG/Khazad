@@ -88,7 +88,7 @@ public class Task {
 			case TASK_DIG:
 				ExcavateJob Excavation = (ExcavateJob) ParentJob;
 				CubeShape DesignatedShape = Excavation.getDesignation(worklocation);
-				GameMap.getMap().UpdateCubeShape(worklocation, DesignatedShape);
+				GameMap.getMap().UpdateCubeShape(worklocation, DesignatedShape.clone());
 
 				if (GameMap.getMap().getCubeShape(worklocation).equals(DesignatedShape)) {
 					Excavation.CompleteDesignation(worklocation);

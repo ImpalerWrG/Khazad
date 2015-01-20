@@ -89,6 +89,17 @@ public class GameMap {
 		return false;  // A Cell already exists at that spot
 	}
 
+	public boolean InitializeCell(CellCoordinate Coords) {
+		Cell TargetCell = getCell(Coords);
+		if (TargetCell == null) {
+			TargetCell = new Cell();
+			TargetCell.setCellPosition(Coords);
+			insertCell(TargetCell);
+			return true;
+		}
+		return false;  // A Cell already exists at that spot		
+	}
+
 	public int getHighestCell() {
 		return HighestCell;
 	}
@@ -152,14 +163,7 @@ public class GameMap {
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
 		if (TargetCell == null)
-		{
-			TargetCell = new Cell();
-
-			// Properly Initialize?
-
-			TargetCell.setCellPosition(new CellCoordinate(ConvertedValues.getValue0()));
-			insertCell(TargetCell);
-		}
+			InitializeCell(new CellCoordinate(ConvertedValues.getValue0()));
 
 		return TargetCell.addFace(new FaceCoordinate(ConvertedValues.getValue0().CubeIndex(), ConvertedValues.getValue1()));
 	}
@@ -309,6 +313,28 @@ public class GameMap {
 		if (isCubeInited(Coordinates)) {
 			CubeShape Shape = getCubeShape(Coordinates);
 			if (!Shape.equals(NewShape)) {
+				
+				// check bottoms
+				MapCoordinate belowCube = Coordinates.clone();
+				belowCube.TranslateMapCoordinates(Direction.DIRECTION_DOWN);
+				if (!isCubeInited(belowCube)) {
+					InitializeCell(new CellCoordinate(belowCube));
+				}
+				CubeShape belowShape = getCubeShape(belowCube);
+
+				if (belowShape.NorthEastCorner() < CubeShape.CUBE_TOP_HEIGHT)
+					NewShape.setNorthEastCorner(CubeShape.BELOW_CUBE_HEIGHT);
+
+				if (belowShape.NorthWestCorner() < CubeShape.CUBE_TOP_HEIGHT)
+					NewShape.setNorthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
+
+				if (belowShape.SouthEastCorner() < CubeShape.CUBE_TOP_HEIGHT)
+					NewShape.setSouthEastCorner(CubeShape.BELOW_CUBE_HEIGHT);
+
+				if (belowShape.SouthWestCorner() < CubeShape.CUBE_TOP_HEIGHT)
+					NewShape.setSouthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
+
+						
 				setCubeShape(Coordinates, NewShape);
 				if (NewShape.isEmpty()) {
 					setCubeMaterial(Coordinates, DataTypes.INVALID_INDEX);
@@ -319,6 +345,46 @@ public class GameMap {
 				}
 				UpdateFace(Coordinates, Direction.DIRECTION_NONE);
 				setCubeHidden(Coordinates, false);
+
+				// check and push changes above
+				MapCoordinate aboveCube = Coordinates.clone();
+				aboveCube.TranslateMapCoordinates(Direction.DIRECTION_UP);
+				if (isCubeInited(aboveCube)) {
+					CubeShape aboveShape = getCubeShape(aboveCube).clone();
+
+					if (aboveShape.split()) {
+						if (NewShape.NorthEastCorner() < CubeShape.CUBE_TOP_HEIGHT) {
+							if (aboveShape.NorthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.NorthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
+								aboveShape.setNorthEastCorner(CubeShape.BELOW_CUBE_HEIGHT);
+						}
+
+						if (NewShape.SouthWestCorner() < CubeShape.CUBE_TOP_HEIGHT) {
+							if (aboveShape.SouthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.NorthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
+								aboveShape.setSouthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
+						}
+					} else {
+						if (NewShape.NorthWestCorner() < CubeShape.CUBE_TOP_HEIGHT) {
+							if (aboveShape.NorthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.NorthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
+								aboveShape.setNorthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
+						}
+
+						if (NewShape.SouthEastCorner() < CubeShape.CUBE_TOP_HEIGHT) {
+						if (aboveShape.NorthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
+							aboveShape.setSouthEastCorner(CubeShape.BELOW_CUBE_HEIGHT);
+						}
+					}
+
+					setCubeShape(aboveCube, aboveShape);
+					if (aboveShape.isEmpty()) {
+						setCubeMaterial(aboveCube, DataTypes.INVALID_INDEX);
+					}
+
+					for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
+						UpdateFace(aboveCube, DirectionType);
+					}
+					UpdateFace(aboveCube, Direction.DIRECTION_NONE);
+					setCubeHidden(aboveCube, false);
+				}	
 			}
 
 			// reveal tiles around
@@ -397,7 +463,9 @@ public class GameMap {
 			case DIRECTION_SOUTH:
 				if (SourceShape.isEmpty() && !AdjacentShape.isEmpty()) {
 					if (TargetFace == null) {
-						TargetFace = addFace(TargetCoordinates, DirectionType);
+						MapCoordinate Adjacent = TargetCoordinates.clone();
+						Adjacent.TranslateMapCoordinates(DirectionType);
+						TargetFace = addFace(Adjacent, DirectionType.Invert());
 					}
 
 					TargetFace.setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));

@@ -116,7 +116,6 @@ public class ExcavateJob extends Job {
 
 	public void CompleteDesignation(MapCoordinate Coords) {
 		AccessibleMap.remove(Coords);
-		
 		ExcavationZone.removeMapCoordinate(Coords);
 	}
 
@@ -136,6 +135,7 @@ public class ExcavateJob extends Job {
 	@Override
 	public void releaseCitizen(Pawn OldCitizen) {
 		super.releaseCitizen(OldCitizen);
+		
 	}
 
 	public Task nextTask(Pawn IdlePawn) {
@@ -166,9 +166,11 @@ public class ExcavateJob extends Job {
 			BitSet Assignments = AssignedExcavations.get(CellCoords);
 			Assignments.set(ExcavateCube.CubeInt());	
 			
-			Task newTask = new Task(this, TaskType.TASK_GOTO, ExcavateCube);
+			Task newTask = new Task(this, TaskType.TASK_GOTO, AccsibleCube);
 			return newTask;
 		}
+		
+		releaseCitizen(IdlePawn);
 		return null;	
 	}
 	

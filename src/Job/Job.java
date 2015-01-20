@@ -26,6 +26,7 @@ public abstract class Job {
 
 	String Name;
 	ArrayList<Pawn> Workers;
+	JobManager Manager;
 	
 	public Job() {
 		Workers = new ArrayList<Pawn>();
@@ -38,6 +39,7 @@ public abstract class Job {
 
 	public void releaseCitizen(Pawn OldCitizen) {
 		Workers.remove(OldCitizen);
+		Manager.IdleCitizens.add(OldCitizen);
 	}
 
 	public abstract Task nextTask(Pawn IdleCitizen);

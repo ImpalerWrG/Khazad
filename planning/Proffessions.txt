@@ -1,7 +1,7 @@
 Professions work on Branching system similar to EvilGenius minions or A Game of Dwarves.  Three tiers of professions exist, Basic, Intermediate, Advanced.  Choices are 7 for Basic, 6 for Intermediate and 5 for Advanced
 
 
-<Worshipper [WIL][CHA] - Religion, high status>
+<Worshipper (High Priest) [WIL][CHA] - Religion, high status>
 
 	Acolyte Thor (male - Martial)
 	Acolyte Odin (male - Wisdom)
@@ -11,24 +11,25 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 	Acolyte ??? (male - Forging, Age)
 	
 	Pantheon x6 
-		Paladin - 
+		Paladin - Mixed Cleric/Fighter
 			Valkyrie - female warriors
 			Shield Maiden - female defenders
-			Zealot
-			Templar
-			Crusader
-			Sentinel
+			Zealot - male skirmisher
+			Templar - male marksman
+			Crusader - male Cavalier
+			Sentinel - male guard
 			
 		Monk - Monks duplicate one of the other root professions while creating Piety
 			Friar - wandering
-			Abbot
-			Nun
-			Theurge - magic?
-			Virtuoso
-			Mystic
-			Ascetic
+			Abbot - Builder
+			Nun - Caregivier/Labourer?
+			Theurge - Thinker
+			Virtuoso - Crafter
+			Mystic - 
+			Ascetic - Gatherer
+			Dervish - Fighter
 			
-		Cleric
+		Cleric - primary perform religious services
 			Oracle
 			Savant
 			Apostle
@@ -37,18 +38,20 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 			Devotee
 			Hierophant
 			
-		Judge
+		Judge - pass judgement in courts, banish/expel criminals
 			Seer
-			 Adept
+			Adept
 			Vizier
 			Diviner
 			Judicator
 			Patriarch
 			
-		Inquisitor
+		Inquisitor - Seek out heretics
 			Justiciar
 			Tempest
 			Exorcist
+			
+			Minor allied Diety branch?
 </>
 <Thinker (Chancellor/Seneschal) [LOG][MEM] - Intelectual pursuits, government, science ect>
 
@@ -59,12 +62,14 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Diagnosis
 		Dentist
 		Barber?
+		Pharmacologist/Apothecary - gives medicine
 	</>		
 	<Alchemist [DEX][]>
 		Apothecary - gives medicine
 		Powderer - makes extra black-powder for weapons and blasting
 		Transmuter - converts metals (Mithril/Adimantium?)
-		
+		Philosopher - 
+		Naturalist - finds weaknesses and uses of natural creatures/extracts etc
 	</>	
 	<Mage [END][]>
 		Sorcerer - mind controlling magic
@@ -77,18 +82,18 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Clerk / Bureaucrat?
 		Treasurer?
 		Lawyer
-	</>		
-	<Rogue [FLX][PER] capable of stealthy movement and observation of others>
-		Thief [DEX][STR]
-		Courtier [CHA][VIT]
-		Spy [WIL][JDG]
-		Assassin [SPD][RFL]
+	</>
+	<Rogue (Diplomat) [FLX][PER] capable of stealthy movement and observation of others>
+		Thief [DEX][STR] - collects extra treasure on expeditions
+		Courtier [CHA][VIT] - detect plots against royals, flatter royals?  
+		Spy [WIL][JDG] - Sent to foreign lands for intelligence
+		Assassin [SPD][RFL] - 
+		??? [END][INT]
+	</>
+	<Sage (LoreMaster)[][] >
 		Fortune-teller [END][INT] - entertainment source
-	</>		
-	<Sage [][] >
 		Herald ? - royal messenger
 		Librarian - store historical records
-		Philosopher - 
 		Cartographer [][] - improved maps on global view
 		Rune Scribe - enhance items with rune magic
 	</>	
@@ -100,10 +105,11 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Javaliner - bombard with thrown weapons
 		Sapper - undermine fortifications
 		Grenadier - throws explosives
+		Ranger - stealthy scouting
 	</>	
 	<Warrior [STR][LOG] - Balanced >
 	</>		
-	<Calvary-Rider [FLX][MEM] - Mounted combat>
+	<Calvary-Rider-Cavalier [FLX][MEM] - Mounted combat>
 		Lancer - lances
 		Outrider - scouting skirmishing
 		Messenger - armoured fast travel
@@ -172,7 +178,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Poet
 	</>	
 </>
-<Builder [STR][FLX] - Any structure/space/building space creation>
+<Builder (Architect) [STR][FLX] - Any structure/space/building space creation>
 
 	<Mason>
 		Bricklayer
@@ -184,9 +190,9 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Prospector
 	</>		
 	<Carpenter>
-		Cooper - Barrel making
+		Cooper - Barrel/vessel making
 		Framer - Timber structures
-		Joiner - Cabinetry
+		Joiner - Cabinetry/furniture
 		Wainwright - wagon and wheel making
 		Shipwright - makes boats for travel and trade
 	</>		
@@ -197,9 +203,9 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Architect
 	</>		
 </>
-<Labourer [INT][END] - Most internal domestic jobs and first order resource processing>
+<Labourer (Foreman) [INT][END] - Most internal domestic jobs and first order resource processing>
 
-	<Cook [][] - Food preperation>
+	<Cook (Chef) [][] - Food preperation>
 		Butcher
 		Baker
 		ChesseMaker
@@ -227,7 +233,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Paper Maker
 		Candle Maker
 	</>		
-		
+		Hauler?  Porter?
 </>
 <Gatherer [PER][SPD] - Collection of raw materials in unsafe areas, a dangerous and low status profession>
 	
@@ -248,7 +254,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Sawyer
 		Forester - replants trees
 	</>		
-	<Hunter [RFL][VIT]>
+	<Hunter (Master of the Hunt) [RFL][VIT]>
 		Trapper - hunts by trap setting
 		Animal Trainer - trains tame animals
 		Scouts

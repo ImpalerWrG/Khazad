@@ -139,7 +139,7 @@ public class Cell {
 
 					if (!AdjacentShape.isEmpty())
 					{
-						if (DirectionType == Direction.DIRECTION_DOWN && Shape.hasFloor())
+						if (DirectionType == Direction.DIRECTION_DOWN && Shape.hasFloor() && AdjacentShape.hasCeiling())
 						{
 							Face NewFace = ParentMap.addFace(new MapCoordinate(thisCellCoordinates, TargetCube), DirectionType);
 
