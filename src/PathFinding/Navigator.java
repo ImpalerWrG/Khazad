@@ -85,20 +85,18 @@ public class Navigator {
 
 			case PATH_BEHAVIOR_WANDER_AIMLESSLY:	// Agent wanders but will not try to path through walls
 			
-				/*
-				BitSet DirectionFlags = ParentManager.getDirectionFlags(CurrentLocation);
+				BitSet DirectionFlags = ParentManager.getDirectionFlags(CurrentLocation, Modality);
 				ArrayList<Integer> ValidDirections = new ArrayList<Integer>();
 
-				for (int i = DirectionFlags.nextSetBit(0); i >= 0; i = DirectionFlags.nextSetBit(i + 1)) {
+				for (int i = DirectionFlags.nextSetBit(0); i >= 0; i = DirectionFlags.nextSetBit(i + 1))
 					ValidDirections.add(i);
-				}
 
 				if (ValidDirections.size() > 0) {
-					return Direction.ANGULAR_DIRECTIONS[DirectionDice.Roll(0, ValidDirections.size() - 1)];
-				}*/
+					int Index = ValidDirections.get(DirectionDice.Roll(0, ValidDirections.size() - 1));
+					return Direction.ANGULAR_DIRECTIONS[Index];
+				}
 
 				return Direction.DIRECTION_NONE;
-			
 
 			case PATH_BEHAVIOR_WANDER_IN_AREA:	  // Agent wanders inside a confined area
 				return Direction.DIRECTION_NONE;

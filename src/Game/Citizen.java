@@ -37,8 +37,13 @@ public class Citizen extends Pawn {
 	// Proffessions / levels/ skills
 
 	
-	public Citizen(int id, MapCoordinate SpawnLocation) {
-		super(id, SpawnLocation);
+	public Citizen(int id, int seed, MapCoordinate SpawnLocation) {
+		super(id, seed, SpawnLocation);
 		CurrentTask = new Task(null, TaskType.TASK_IDLE, SpawnLocation);
+	}
+	
+	@Override
+	public Task FindTask() {
+		return super.FindTask();
 	}
 }

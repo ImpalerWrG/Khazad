@@ -9,9 +9,9 @@ Rotton - eat only when starving, typically fed to animals
 
 Perishability levels
 
-Highly Perishable - looses a level in a day
+Highly Perishable - looses a level in a 1-2 day
 Perishable - loses a level in a week
-Durable - loses a level in a month
+Durable - loses a level in a 1-2 month
 Highly Durable - loses a level in a year
 
 
@@ -23,3 +23,41 @@ Rancid eaten before Fresh
 Player allow/disallow eating some fresh foods for preservation?
 Player rations quantity of food eaten, trading hunger for longer endurance
 Player sets 'throw out' quality level, trading food quantity for happyness
+
+
+Milk - HP
+Butter - P
+Yogurt - P
+Soft Cheese - D
+Hard Cheese - HD
+
+Fruit - P
+Dried Fruit - D
+Candied Fruit - HD
+
+Berries - HP
+Jam - HD
+
+Green Vegtables - HP
+Pickled Vegtagles - D
+
+Roots - D
+Pickled Roots - HD
+
+Mushrooms - HP
+Dried Mushrooms - HD
+
+Fish - HP
+Meat - P
+Dried Meat - D
+Dried Fish - D
+Sausage - D
+Hard Sausage - HD
+Pickled Meat - HD
+
+Grain - D
+Flour - HD
+Soft Bread - HP
+Hard Bread - P
+Crackers - D
+

@@ -36,16 +36,18 @@ public class Face {
 		SurfaceTypeID = DataTypes.INVALID_INDEX;
 		MaterialTypeID = DataTypes.INVALID_INDEX;
 		
-		CubeShape Cube = new CubeShape((byte) 0);
-		FaceType = new FaceShape(Cube, Direction.DIRECTION_NONE);
+		CubeShape SourceCube = new CubeShape((byte) 0);
+		CubeShape AdjacentCube = new CubeShape((byte) 0);
+		FaceType = new FaceShape(SourceCube, AdjacentCube, Direction.DIRECTION_NONE);
 	}
 
 	public Face(byte TargetCoordinates, Direction DirectionType) {
 		SurfaceTypeID = DataTypes.INVALID_INDEX;
 		MaterialTypeID = DataTypes.INVALID_INDEX;
 
-		CubeShape Cube = new CubeShape((byte) 0);
-		FaceType = new FaceShape(Cube, DirectionType);
+		CubeShape SourceCube = new CubeShape((byte) 0);
+		CubeShape AdjacentCube = new CubeShape((byte) 0);
+		FaceType = new FaceShape(SourceCube, AdjacentCube, Direction.DIRECTION_NONE);
 		LocationCoordinates = TargetCoordinates;
 	}
 

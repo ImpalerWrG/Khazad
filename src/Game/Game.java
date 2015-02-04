@@ -18,6 +18,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Game;
 
 import Core.Main;
+import Core.Dice;
 import Job.ExcavateJob;
 import Job.JobManager;
 import Map.*;
@@ -56,6 +57,9 @@ public class Game extends AbstractAppState implements ActionListener {
 	SimpleApplication app = null;
 	AppStateManager state = null;
 
+	int MasterSeed;
+	Dice PawnDice = new Dice();
+	
     GameMap MainMap;
     Geology MapGeology;
 	Settlment GameSettlment;
@@ -81,8 +85,6 @@ public class Game extends AbstractAppState implements ActionListener {
 	Future lastUpdate;
 
 	public Game() {
-		GameSettlment = new Settlment();
-		Actors = new ArrayList<Actor>();
 		
 		TickRate = 1;
 		TickRounding = 0;
@@ -105,12 +107,15 @@ public class Game extends AbstractAppState implements ActionListener {
 	}
 
 	public boolean InitializeGame(short X, short Y, String SeedString) {
-
+		MasterSeed = SeedString.hashCode();
+		PawnDice.Seed(MasterSeed);
+				
 		MapGeology = new Geology();
-		MapGeology.Initialize(SeedString);
+		MapGeology.Initialize(MasterSeed);
 		MapGeology.GenerateWorldHeightMap(X, Y);
 
 		MainMap = GameMap.getMap();
+		MainMap.Initialize(MasterSeed);
 
 		GameWeather = new Weather();
 		AddTemporal(GameWeather);
@@ -121,6 +126,9 @@ public class Game extends AbstractAppState implements ActionListener {
 		//Path.Initialize();
 
 		BuildMapChunk((short) 0, (short) 0, (byte) X, (byte) Y);
+
+		GameSettlment = new Settlment();
+		Actors = new ArrayList<Actor>();
 
 		return true;
 	}
@@ -173,7 +181,7 @@ public class Game extends AbstractAppState implements ActionListener {
 	}
 
 	public Pawn SpawnPawn(MapCoordinate SpawnCoordinates) {
-		Pawn NewPawn = new Pawn(ActorIDcounter, SpawnCoordinates);
+		Pawn NewPawn = new Pawn(ActorIDcounter, MasterSeed, SpawnCoordinates);
 		ActorIDcounter++;
 		Actors.add(NewPawn);
 		AddTemporal(NewPawn);
@@ -181,7 +189,7 @@ public class Game extends AbstractAppState implements ActionListener {
 	}
 
 	public Citizen SpawnCitizen(MapCoordinate SpawnCoordinates) {
-		Citizen NewCitizen = new Citizen(ActorIDcounter, SpawnCoordinates);
+		Citizen NewCitizen = new Citizen(ActorIDcounter, PawnDice.Roll(0, MasterSeed), SpawnCoordinates);
 		ActorIDcounter++;
 		Actors.add(NewCitizen);
 		GameSettlment.addCitizen(NewCitizen);

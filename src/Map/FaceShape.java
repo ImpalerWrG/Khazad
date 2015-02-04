@@ -23,24 +23,27 @@ package Map;
  */
 public class FaceShape {
 
-    CubeShape CubeComponent;
+    CubeShape SourceCubeComponent;
+	CubeShape AdjacentCubeComponent;
     Direction FaceDirection;
 	
     public FaceShape() {
-        CubeComponent = new CubeShape(CubeShape.BELOW_CUBE_HEIGHT);
+        SourceCubeComponent = new CubeShape(CubeShape.BELOW_CUBE_HEIGHT);
+        AdjacentCubeComponent = new CubeShape(CubeShape.BELOW_CUBE_HEIGHT);
         FaceDirection = Direction.DIRECTION_DESTINATION;
     }
 
-    public FaceShape(CubeShape ShapeType, Direction DirectionType) {
-        CubeComponent = ShapeType;
+    public FaceShape(CubeShape SourceShapeType, CubeShape AdjacentShapeType, Direction DirectionType) {
+        SourceCubeComponent = SourceShapeType;
+		AdjacentCubeComponent = AdjacentShapeType;
         FaceDirection = DirectionType;
     }
 
     boolean equals(FaceShape ArgumentShape) {
-        return CubeComponent == ArgumentShape.CubeComponent && FaceDirection == ArgumentShape.FaceDirection;
+        return SourceCubeComponent == ArgumentShape.SourceCubeComponent && AdjacentCubeComponent == ArgumentShape.AdjacentCubeComponent && FaceDirection == ArgumentShape.FaceDirection;
     }
 
     boolean notequal(FaceShape ArgumentShape) {
-        return CubeComponent != ArgumentShape.CubeComponent || FaceDirection != ArgumentShape.FaceDirection;
+        return SourceCubeComponent != ArgumentShape.SourceCubeComponent || AdjacentCubeComponent != ArgumentShape.AdjacentCubeComponent || FaceDirection != ArgumentShape.FaceDirection;
     }
 }

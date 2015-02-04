@@ -16,6 +16,7 @@ import Map.MapCoordinate;
 import Map.Direction;
 import Map.CubeShape;
 import Game.Pawn;
+import PathFinding.Navigator;
 
 /**
  * Smallest possible unit of work or activity by a Pawn, Jobs are broken down
@@ -42,8 +43,9 @@ public class Task {
 	}
 	
 	public long Begin(Pawn Host) {
+		Direction MovementDirection;
 		switch (type) {
-
+				
 			case TASK_IDLE:
 				break;
 			case TASK_SLEEP:
@@ -53,8 +55,9 @@ public class Task {
 			case TASK_HAUL:
 				break;
 			case TASK_GOTO:
+				Host.getNavigator().setBehaviorMode(Navigator.MovementBehavior.PATH_BEHAVIOR_ROUTE_TO_LOCATION);
 				Host.getNavigator().ChangeDestination(worklocation);
-				Direction MovementDirection = Host.getNavigator().getNextStep();
+				MovementDirection = Host.getNavigator().getNextStep();
 				Host.setMovementDiretion(MovementDirection);
 				Begun = true;
 
@@ -65,6 +68,14 @@ public class Task {
 			case TASK_DIG:
 				Begun = true;	
 				return 100;  // Base on material hardness
+				
+			case TASK_LOITER:
+				Host.getNavigator().setBehaviorMode(Navigator.MovementBehavior.PATH_BEHAVIOR_WANDER_AIMLESSLY);
+				MovementDirection = Host.getNavigator().getNextStep();
+				Host.setMovementDiretion(MovementDirection);
+				Begun = true;
+				
+				return Host.AttemptMove(MovementDirection);
 		}
 		return 1;
 	}
@@ -88,14 +99,18 @@ public class Task {
 			case TASK_DIG:
 				ExcavateJob Excavation = (ExcavateJob) ParentJob;
 				CubeShape DesignatedShape = Excavation.getDesignation(worklocation);
-				GameMap.getMap().UpdateCubeShape(worklocation, DesignatedShape.clone());
+				GameMap.getMap().ExcavateCube(worklocation, DesignatedShape.clone());
 
-				if (GameMap.getMap().getCubeShape(worklocation).equals(DesignatedShape)) {
+				if (DesignatedShape.ExcavationEquivilent(GameMap.getMap().getCubeShape(worklocation))) {
 					Excavation.CompleteDesignation(worklocation);
 					Completed = true;
 				} else {
 					return 100;  // Base on material hardness
 				}
+				break;
+			case TASK_LOITER:
+				Completed = true;
+				return Host.UpdatePosition();
 		}
 		return 1;
 	}

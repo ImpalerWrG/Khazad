@@ -31,6 +31,10 @@ public class ExcavateJob extends Job {
 	HashMap<CellCoordinate, BitSet> AccessibleExcavations;  // Excavation targets that are accesible
 	HashMap<CellCoordinate, BitSet> AssignedExcavations;
 
+	int DesignationCount = 0;
+	int AccessibleExcavationCount = 0;
+	int AssignedExcavationsCount = 0;
+
 	HashMap<MapCoordinate, MapCoordinate> AccessibleMap; // The locations from which an excatation target is accesible
 	HashMap<Pawn, MapCoordinate> AssignedWorkers;
 
@@ -43,6 +47,7 @@ public class ExcavateJob extends Job {
 		AccessibleExcavations = new HashMap<CellCoordinate, BitSet>();
 		AssignedExcavations = new HashMap<CellCoordinate, BitSet>();
 		
+		Name = "Delving Deeply";
 		//AccesibleQueue = new PriorityQueue<MapCoordinate>();
 		//AccesibleList = new	ArrayList<MapCoordinate>();
 		AccessibleMap = new HashMap<MapCoordinate, MapCoordinate>();
@@ -74,6 +79,7 @@ public class ExcavateJob extends Job {
 							Designations.put(CellCoords, DesignationShapes);
 						}					
 						DesignationShapes[CubeIndex] = NewShape;
+						DesignationCount ++;
 					
 						if (AccessibleLocation == null) {
 							AccessibleLocation = new BitSet(MapCoordinate.CUBESPERCELL);
@@ -88,7 +94,8 @@ public class ExcavateJob extends Job {
 							DirectionFlags = paths.getDirectionFlags(AdjacentcCoords, new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1));
 							if (DirectionFlags.cardinality() != 0) {
 								AccessibleLocation.set(CubeIndex);
-			
+								AccessibleExcavationCount++;
+
 								//AccesibleList.add(TargetCube.clone());
 								AccessibleMap.put(TargetCube.clone(), AdjacentcCoords.clone());
 								break;
@@ -117,6 +124,13 @@ public class ExcavateJob extends Job {
 	public void CompleteDesignation(MapCoordinate Coords) {
 		AccessibleMap.remove(Coords);
 		ExcavationZone.removeMapCoordinate(Coords);
+		
+		DesignationCount--;
+		AccessibleExcavationCount--;
+		AssignedExcavationsCount--;
+		
+		if (DesignationCount == 0)
+			Manager.JobCompleted(this);
 	}
 
 	public boolean isAssigned(MapCoordinate Coords) {
@@ -125,18 +139,18 @@ public class ExcavateJob extends Job {
 		return Assignments.get(Coords.CubeInt());		
 	}
 
+	/*
 	@Override
-	public void addPawn(Pawn NewPawn) {
-		super.addPawn(NewPawn);
-		Task newTask = nextTask(NewPawn);
-		NewPawn.setTask(newTask);
-	}
-
-	@Override
-	public void releaseCitizen(Pawn OldCitizen) {
-		super.releaseCitizen(OldCitizen);
-		
-	}
+	// add worker to job, if it was not already on this job return true
+	public boolean addPawn(Pawn NewPawn) {
+		if (super.addPawn(NewPawn)) {
+			Task newTask = nextTask(NewPawn);
+			NewPawn.setTask(newTask);
+			return true;
+		} else {
+			return false;
+		}
+	}*/
 
 	public Task nextTask(Pawn IdlePawn) {
 		Task OldTask = IdlePawn.CurrentTask;
@@ -148,10 +162,10 @@ public class ExcavateJob extends Job {
 				return newTask;
 			}
 		}
-	
+
 		MapCoordinate ExcavateCube = null;
 		MapCoordinate AccsibleCube = null;
-		
+
 		for (Map.Entry<MapCoordinate, MapCoordinate> entry : AccessibleMap.entrySet()) {
 			// distance test for best location
 			if (!isAssigned(entry.getKey())) {
@@ -164,17 +178,37 @@ public class ExcavateJob extends Job {
 			AssignedWorkers.put(IdlePawn, ExcavateCube);
 			CellCoordinate CellCoords = new CellCoordinate(ExcavateCube);
 			BitSet Assignments = AssignedExcavations.get(CellCoords);
-			Assignments.set(ExcavateCube.CubeInt());	
-			
+			Assignments.set(ExcavateCube.CubeInt());
+			AssignedExcavationsCount++;
+
 			Task newTask = new Task(this, TaskType.TASK_GOTO, AccsibleCube);
 			return newTask;
 		}
-		
-		releaseCitizen(IdlePawn);
-		return null;	
+
+		if (DesignationCount < Workers.size()) {
+			releaseCitizen(IdlePawn);
+			return Manager.IdleCitizen(IdlePawn);
+		} else {
+			IdlePawn.onBreak = true;
+			// Pawn finds job
+			return null;
+		}
 	}
-	
-	public float EvaluatePawn(Pawn IdleCitizen) {
-		return 1.0f;
+
+	public boolean needsWorkers() {
+		if (DesignationCount > Workers.size())
+			return true;
+		return false;
+	}
+
+	public float EvaluatePawn(Pawn CandidateCitizen) {
+		float Evaluation = 0;
+		if (Workers.contains(CandidateCitizen))
+			Evaluation += 1;
+		return Evaluation + 2;
+	}
+
+	public void JobCompleted() {
+		
 	}
 }

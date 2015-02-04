@@ -90,15 +90,13 @@ public class Cell {
 	}
 	
 	public void setCubeShape(byte Coordinates, CubeShape NewShape) {
-		if (NewShape.getData() != CubeShapeTypes[Coordinates & 0xFF])
-		{
+		if (NewShape.getData() != CubeShapeTypes[Coordinates & 0xFF]) {
 			CubeShapeTypes[Coordinates& 0xFF] = NewShape.getData();
 			setRenderingDirty(true);
 
 			Face TargetFace = getFace(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE));
-			if (TargetFace != null)
-			{
-				setFaceShape(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE), new FaceShape(NewShape, Direction.DIRECTION_NONE));
+			if (TargetFace != null) {
+				setFaceShape(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE), new FaceShape(NewShape, null, Direction.DIRECTION_NONE));
 			}
 		}
 	}
@@ -133,7 +131,7 @@ public class Cell {
 
 							NewFace.setFaceMaterialType(CubeMaterial);
 							NewFace.setFaceSurfaceType(WallSurface);
-							NewFace.setFaceShapeType(new FaceShape(Shape, DirectionType));
+							NewFace.setFaceShapeType(new FaceShape(Shape, AdjacentShape, DirectionType));
 						}
 					}
 
@@ -145,7 +143,7 @@ public class Cell {
 
 							NewFace.setFaceMaterialType(ParentMap.getCubeMaterial(ModifiedCoordinates));
 							NewFace.setFaceSurfaceType(FloorSurface);
-							NewFace.setFaceShapeType(new FaceShape(Shape, DirectionType));
+							NewFace.setFaceShapeType(new FaceShape(Shape, AdjacentShape, DirectionType));
 						}
 					}
 				}
@@ -157,7 +155,7 @@ public class Cell {
 
 				NewFace.setFaceMaterialType(CubeMaterial);
 				NewFace.setFaceSurfaceType(FloorSurface);
-				NewFace.setFaceShapeType(new FaceShape(Shape, Direction.DIRECTION_NONE));
+				NewFace.setFaceShapeType(new FaceShape(Shape, null, Direction.DIRECTION_NONE));
 			}
 
 			TargetCube++;
@@ -211,7 +209,7 @@ public class Cell {
 
 	FaceShape getFaceShape(FaceCoordinate TargetCoordinates) {
 		Face TargetFace = getFace(TargetCoordinates);
-		return TargetFace != null ? TargetFace.getFaceShapeType() : new FaceShape(new CubeShape(), Direction.DIRECTION_NONE);
+		return TargetFace != null ? TargetFace.getFaceShapeType() : new FaceShape(new CubeShape(), new CubeShape(), Direction.DIRECTION_NONE);
 	}
 
 	boolean setFaceShape(FaceCoordinate TargetCoordinates, FaceShape NewShape) {

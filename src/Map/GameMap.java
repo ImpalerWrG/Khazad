@@ -17,6 +17,8 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Map;
 
+import Core.Dice;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
 
@@ -45,6 +47,9 @@ public class GameMap {
     int HighestCell;
     int LowestCell;
 
+	int Seed;
+	Dice ExcavateDice = new Dice();
+
     ArrayList<Zone> Zones;
 	int ZoneCounter = 0;
 
@@ -57,6 +62,7 @@ public class GameMap {
 		HighestCell = -100000000;
 		LowestCell = 10000000;
 		
+		ExcavateDice.Seed(Seed);
 		Zones = new ArrayList<Zone>();
 		Cells = new ConcurrentHashMap<CellCoordinate, Cell>();
 	}
@@ -66,6 +72,11 @@ public class GameMap {
 		  instance = new GameMap();
 	   }
 	   return instance;
+	}
+
+	public void Initialize(int MasterSeed) {
+		Seed = MasterSeed;
+		ExcavateDice.Seed(Seed);
 	}
 
 	public Cell getCell(CellCoordinate TestCoords) {
@@ -308,6 +319,44 @@ public class GameMap {
 		}
 	}
 	*/
+	public void ExcavateCube(MapCoordinate Coordinates, CubeShape GoalShape) {
+		int Corner = ExcavateDice.Roll(0, Direction.CARDINAL_DIRECTIONS.length - 1);
+		CubeShape OldShape = getCubeShape(Coordinates);
+		CubeShape IntermediateShape;
+		
+		switch (Corner) {
+			case 0:
+				if (GoalShape.NorthEastCorner() < OldShape.NorthEastCorner()) {
+					IntermediateShape = OldShape.clone();
+					IntermediateShape.setNorthEastCorner((byte) (OldShape.NorthEastCorner() - 1));
+					UpdateCubeShape(Coordinates, IntermediateShape);
+					break;
+				}
+			case 1:
+				if (GoalShape.SouthEastCorner() < OldShape.SouthEastCorner()) {
+					IntermediateShape = OldShape.clone();
+					IntermediateShape.setSouthEastCorner((byte) (OldShape.SouthEastCorner() - 1));
+					UpdateCubeShape(Coordinates, IntermediateShape);
+					break;
+				}
+			case 2:
+				if (GoalShape.NorthWestCorner() < OldShape.NorthWestCorner()) {
+					IntermediateShape = OldShape.clone();
+					IntermediateShape.setNorthWestCorner((byte) (OldShape.NorthWestCorner() - 1));
+					UpdateCubeShape(Coordinates, IntermediateShape);
+					break;
+				}
+			case 3:
+				if (GoalShape.SouthWestCorner() < OldShape.SouthWestCorner()) {
+					IntermediateShape = OldShape.clone();
+					IntermediateShape.setSouthWestCorner((byte) (OldShape.SouthWestCorner() - 1));
+					UpdateCubeShape(Coordinates, IntermediateShape);
+					break;
+				}
+			default:
+				UpdateCubeShape(Coordinates, GoalShape);				
+		}
+	}
 
 	public void UpdateCubeShape(MapCoordinate Coordinates, CubeShape NewShape) {
 		if (isCubeInited(Coordinates)) {
@@ -421,7 +470,7 @@ public class GameMap {
 					}
 
 					TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
-					TargetFace.setFaceShapeType(new FaceShape(getCubeShape(TargetCoordinates), Direction.DIRECTION_NONE));
+					TargetFace.setFaceShapeType(new FaceShape(getCubeShape(TargetCoordinates), null, Direction.DIRECTION_NONE));
 					TargetFace.setFaceSurfaceType(RoughFloorID);
 
 				} else {
@@ -430,28 +479,28 @@ public class GameMap {
 				break;
 
 			case DIRECTION_DOWN:
-				if (!AdjacentShape.isEmpty() && SourceShape.hasFloor()) {
+				if (AdjacentShape.hasCeiling() || SourceShape.hasFloor()) {
 					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, DirectionType);
 					}
 
 					TargetFace.setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
 					TargetFace.setFaceSurfaceType(RoughFloorID);
-					TargetFace.setFaceShapeType(new FaceShape(SourceShape, DirectionType));
+					TargetFace.setFaceShapeType(new FaceShape(SourceShape, AdjacentShape, DirectionType));
 				} else {
 					removeFace(TargetCoordinates, DirectionType);
 				}
 				break;
 
 			case DIRECTION_UP:
-				if (AdjacentShape.isEmpty() && SourceShape.hasCeiling()) {
+				if (AdjacentShape.hasFloor() || SourceShape.hasCeiling()) {
 					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, DirectionType);
 					}
 
 					TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
 					TargetFace.setFaceSurfaceType(RoughFloorID);
-					TargetFace.setFaceShapeType(new FaceShape(SourceShape, DirectionType));
+					TargetFace.setFaceShapeType(new FaceShape(SourceShape, AdjacentShape, DirectionType));
 				} else {
 					removeFace(TargetCoordinates, DirectionType);
 				}
@@ -461,15 +510,14 @@ public class GameMap {
 			case DIRECTION_WEST:
 			case DIRECTION_NORTH:
 			case DIRECTION_SOUTH:
-				if (SourceShape.isEmpty() && !AdjacentShape.isEmpty()) {
+				if (SourceShape.hasFace(DirectionType) || AdjacentShape.hasFace(DirectionType.Invert())) {
 					if (TargetFace == null) {
-						MapCoordinate Adjacent = TargetCoordinates.clone();
-						Adjacent.TranslateMapCoordinates(DirectionType);
-						TargetFace = addFace(Adjacent, DirectionType.Invert());
+						TargetFace = addFace(ModifiedCoordinates, DirectionType.Invert());
 					}
 
 					TargetFace.setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
-					TargetFace.setFaceShapeType(new FaceShape(AdjacentShape, DirectionType.Invert()));
+					//TargetFace.setFaceShapeType(new FaceShape(SourceShape, DirectionType.Invert()));
+					TargetFace.setFaceShapeType(new FaceShape(AdjacentShape, AdjacentShape, DirectionType.Invert()));
 					TargetFace.setFaceSurfaceType(RoughWallID);
 				} else {
 					removeFace(TargetCoordinates, DirectionType);

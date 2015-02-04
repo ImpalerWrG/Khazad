@@ -73,8 +73,6 @@ public class ShellScreenController implements ScreenController {
 		cam.SetSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
 
 		JobManager jobs = game.getSettlment().getJobManager();
-		WanderJob newJob = new WanderJob();
-		jobs.addJob(newJob);
 		
 		// PATHING
 		PathFinding Pather = PathFinding.getSinglton();

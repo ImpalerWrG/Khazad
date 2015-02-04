@@ -20,21 +20,22 @@ public class WanderJob extends Job {
 	public WanderJob() {
 		super();
 		Name = "Wandering Aimlessly";
-		Type = Job.JobType.JOB_WANDER;
+
 		Pathing = PathFinding.getSinglton();
+		Type = Job.JobType.JOB_WANDER;
 	}
 
+	/*
 	@Override
-	public void addPawn(Pawn NewCitizen) {
-		super.addPawn(NewCitizen);
-		Task Wandering = nextTask(NewCitizen);
-		NewCitizen.setTask(Wandering);
-	}
-
-	@Override
-	public void releaseCitizen(Pawn OldCitizen) {
-		super.releaseCitizen(OldCitizen);
-	}
+	public boolean addPawn(Pawn NewPawn) {
+		if (super.addPawn(NewPawn)) {
+			Task newTask = nextTask(NewPawn);
+			NewPawn.setTask(newTask);
+			return true;
+		} else {
+			return false;
+		}
+	}*/
 
 	public Task nextTask(Pawn IdlePawn) {
 		MapCoordinate Destination = RandomDestination(IdlePawn);
@@ -46,8 +47,15 @@ public class WanderJob extends Job {
 		}
 	}
 
-	public float EvaluatePawn(Pawn IdleCitizen) {
-		return 1.0f;
+	public boolean needsWorkers() {
+		return true;
+	}
+
+	public float EvaluatePawn(Pawn CandidateCitizen) {
+		float Evaluation = 0;
+		if (Workers.contains(CandidateCitizen))
+			Evaluation += 1;
+		return Evaluation + 1;
 	}
 
 	public MapCoordinate RandomDestination(Pawn  Wanderer) {

@@ -14,7 +14,7 @@ import Data.DataTypes;
 public class Geology {
 	
 	int RockType = 42;
-	int MasterSeed;
+	int GeologySeed;
 
 	Dice RandomGenerator;
 	Noise NoiseGenerator;
@@ -29,11 +29,11 @@ public class Geology {
     boolean[][] Seeded;
 	
 	
-	public boolean Initialize(String SeedString) {
-		//boost::hash< const char* > SeedHash;
+	public boolean Initialize(int Seed) {
+
 		//Ogre::Plane RockLayer = Ogre::Plane(Ogre::Vector3(0, 0, 1), 1);
 		//LayerBoundries.push_back(make_pair(RockLayer, RockType));
-		MasterSeed = SeedString.hashCode();
+		GeologySeed = Seed;
 
 		RandomGenerator = new Dice();
 		NoiseGenerator = new Noise();
@@ -178,7 +178,7 @@ public class Geology {
 		// Reseed Random Number Generator
 		CellCoordinate HashCell = new CellCoordinate(X, Y, 0);
 
-		RandomGenerator.Seed(MasterSeed);
+		RandomGenerator.Seed(GeologySeed);
 		int FinalSeed = RandomGenerator.Roll(0, 100000) ^ HashCell.hashCode();
 
 		RandomGenerator.Seed(FinalSeed);

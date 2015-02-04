@@ -17,8 +17,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Game;
 
-import Job.Job;
-import Job.Task;
+import Job.*;
 import Core.Dice;
 
 import Map.Direction;
@@ -46,7 +45,9 @@ public class Pawn extends Actor {
 
 	Navigator PathNavigator;
 	public Task CurrentTask;
-	public Job CurrentJob;
+	public Job PrimaryJob;
+	public Job BreakJob;
+	public boolean onBreak;
 
 	Dice AttributeDice;
 
@@ -66,19 +67,32 @@ public class Pawn extends Actor {
 	byte Willpower = 0;
 	byte Intuition = 0;
 
-	public Pawn(int id, MapCoordinate SpawnLocation) {
+	public Pawn(int id, int Seed, MapCoordinate SpawnLocation) {
 		super(id, SpawnLocation);		
+
 		Moving = false;
-
 		PathNavigator = new Navigator(SpawnLocation, new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1));
-		PathNavigator.setBehaviorMode(Navigator.MovementBehavior.PATH_BEHAVIOR_ROUTE_TO_LOCATION);
-
 		CurrentMovementDirection = Direction.DIRECTION_NONE;
 
 		AttributeDice = new Dice();
-		AttributeDice.Seed(id);
-		Speed = 5;
-		//Speed = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4));  // 5 is normal dwarven speed
+		AttributeDice.Seed(id ^ Seed);
+
+		// 5 is median for all attributes
+		Strength = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
+		Dextarity = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
+		Flexibility = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
+		Endurance = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
+		Vitality = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
+		Reflexes = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
+		Speed = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
+
+		Logic = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
+		Perception = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
+		Charisma = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
+		Memory = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
+		Judgement = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
+		Willpower = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
+		Intuition = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 	
 	}
 	
 	public Navigator getNavigator() {
@@ -89,7 +103,7 @@ public class Pawn extends Actor {
 		float EdgeCost = PathFinding.getSinglton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getMovementModality());
 		
 		if (EdgeCost != -1) {
-			return (int) (EdgeCost / (Speed / 5) * 12);
+			return (int) (EdgeCost / ((float) Speed / 5.0) * 12);
 		} else {
 			return 1;  // signal falure to job manager?
 		}
@@ -139,12 +153,19 @@ public class Pawn extends Actor {
 		return PathNavigator.getMovementModality();
 	}
 
+	public Task FindTask() {		
+		PrimaryJob = new LoiterJob();
+		CurrentTask = PrimaryJob.nextTask(this);
+		return CurrentTask;
+	}
+
 	@Override
 	long Wake(long CurrentTick) {
 		//super.Wake(CurrentTick);
 
-		if (CurrentTask.Completed) {
+		if (CurrentTask != null && CurrentTask.Completed) {
 			CurrentTask.Finalize(CurrentTick, this);
+			// check for other needs, leave current Job if nessary
 			setTask(CurrentTask.ParentJob.nextTask(this));
 		}
 

@@ -18,4 +18,5 @@ public enum TaskType {
 	TASK_GOTO,
 	TASK_DROP_OFF,
 	TASK_DIG,
+	TASK_LOITER
 }

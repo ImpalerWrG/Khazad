@@ -212,10 +212,10 @@ public class SelectionRenderer extends AbstractAppState{
 					if (ZoneNode != null)
 						app.getRootNode().detachChild(ZoneNode);
 
-					ZoneNode = BuildZone(targetZone);
-					app.getRootNode().attachChild(ZoneNode);					
-					ZoneGeometries.put(ID, ZoneNode);
-					targetZone.Dirty = false;
+					//ZoneNode = BuildZone(targetZone);
+					//app.getRootNode().attachChild(ZoneNode);					
+					//ZoneGeometries.put(ID, ZoneNode);
+					//targetZone.Dirty = false;
 				}
 			}	
 		}

@@ -1,42 +1,45 @@
 Professions work on Branching system similar to EvilGenius minions or A Game of Dwarves.  Three tiers of professions exist, Basic, Intermediate, Advanced.  Choices are 7 for Basic, 6 for Intermediate and 5 for Advanced
 
 
-<Worshipper (High Priest) [WIL][CHA] - Religion, high status>
+<Worshipper (Concvlave) [WIL][CHA] - Religion, high status>
 
-	Acolyte Thor (male - Martial)
-	Acolyte Odin (male - Wisdom)
-	Acolyte Freya (female - Fertility, Judgement)
-	Acolyte Helga (female - Martial)
-	Acolyte Loki (both - Trickster)
-	Acolyte ??? (male - Forging, Age)
-	
+	<Acolyte of Thor (High Priest of) (male - Martial) >
+		Zealot - Skirmisher Paladin
+		Dervish - Fighter Monk
+		Apostle - Cleric
+	</>		
+	<Acolyte of Odin (High Priest of)(male - Wisdom) >
+		Zealot - Marksman Paladin
+		Mystic - Builder Monk
+		Initiate - Cleric
+	</>		
+	<Acolyte of Freya (High Priest of)(female - Fertility, Judgement) >
+		Shield Maiden - Defender Paladin
+		Nun - Labourer Monk
+		Savant - Cleric
+	</>
+	<Acolyte of Helga (High Priest of)(female - Wisdom, Martial, Prophecy ) >
+		Valkyrie - Warrior Paladin
+		Theurge - Thinker Monk
+		Oracle - Cleric
+	</>		
+	<Acolyte of Loki (High Priest of)(both - Trickster) >
+		Crusader - Cavalier Paladin
+		Ascetic - Gatherer Monk
+		Devotee - Cleric
+	</>		
+	<Acolyte of ??? (High Priest of) (male - Forging, Age) >
+		Sentinel - Guard Paladin
+		Virtuoso - Crafter Monk
+		Emissary - Cleric
+	</>	
 	Pantheon x6 
 		Paladin - Mixed Cleric/Fighter
-			Valkyrie - female warriors
-			Shield Maiden - female defenders
-			Zealot - male skirmisher
-			Templar - male marksman
-			Crusader - male Cavalier
-			Sentinel - male guard
-			
-		Monk - Monks duplicate one of the other root professions while creating Piety
+	
+		Monk (Abbot) - Monks duplicate one of the other root professions while creating Piety
 			Friar - wandering
-			Abbot - Builder
-			Nun - Caregivier/Labourer?
-			Theurge - Thinker
-			Virtuoso - Crafter
-			Mystic - 
-			Ascetic - Gatherer
-			Dervish - Fighter
-			
+
 		Cleric - primary perform religious services
-			Oracle
-			Savant
-			Apostle
-			Emissary
-			Initiate
-			Devotee
-			Hierophant
 			
 		Judge - pass judgement in courts, banish/expel criminals
 			Seer
@@ -55,7 +58,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 </>
 <Thinker (Chancellor/Seneschal) [LOG][MEM] - Intelectual pursuits, government, science ect>
 
-	<Healer [INT][CHA] >
+	<Healer (Chief Physician) [INT][CHA] >
 		Chiurgeon
 		Bone Setter
 		Wound Dresser
@@ -71,43 +74,44 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Philosopher - 
 		Naturalist - finds weaknesses and uses of natural creatures/extracts etc
 	</>	
-	<Mage [END][]>
+	<Mage (Court Magician) [END][]>
 		Sorcerer - mind controlling magic
 		Wizard - 
 		Druid - nature controlling magic
 		Necromancer - death controlling magic
-		
+		???
 	</>	
-	<Administrator [VIT][]>
-		Clerk / Bureaucrat?
-		Treasurer?
-		Lawyer
+	<Administrator (Provost) [VIT][]>
+		Clerk / Bureaucrat? [][] 
+		Treasurer? [][] 
+		Lawyer [][] 
 	</>
 	<Rogue (Diplomat) [FLX][PER] capable of stealthy movement and observation of others>
 		Thief [DEX][STR] - collects extra treasure on expeditions
 		Courtier [CHA][VIT] - detect plots against royals, flatter royals?  
 		Spy [WIL][JDG] - Sent to foreign lands for intelligence
 		Assassin [SPD][RFL] - 
-		??? [END][INT]
+		??? [END][INT] - 
 	</>
-	<Sage (LoreMaster)[][] >
+	<Sage (LoreMaster)[JDG][] >
 		Fortune-teller [END][INT] - entertainment source
-		Herald ? - royal messenger
-		Librarian - store historical records
+		Herald [][] - royal messenger, interpreter
+		Librarian [][] - store historical records
 		Cartographer [][] - improved maps on global view
-		Rune Scribe - enhance items with rune magic
+		Rune Scribe [][] - enhance items with rune magic
 	</>	
 </>
-<Fighter (Marshal) [VIT][REF] - Combat in all forms>
+<Fighter (Grand Marshal) [VIT][REF] - Combat in all forms>
 
 	<Skirmisher [SPD][JDG] - light fast>
-		Berserker [WIL] - maximum aggression
-		Javaliner - bombard with thrown weapons
-		Sapper - undermine fortifications
-		Grenadier - throws explosives
-		Ranger - stealthy scouting
+		Berserker [WIL][CHA] - maximum aggression
+		Javaliner [STR][] - bombard with thrown weapons
+		 [END][VIT] - 
+		Grenadier [DEX][MEM] - throws explosives
+		Ranger [FLX][] - stealthy scouting
 	</>	
 	<Warrior [STR][LOG] - Balanced >
+		???
 	</>		
 	<Calvary-Rider-Cavalier [FLX][MEM] - Mounted combat>
 		Lancer - lances
@@ -128,7 +132,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Legionnaire
 		
 	</>	
-	<Guard [INT][CHA] - Police>
+	<Guard (Captain of the Guard) [INT][CHA] - Police>
 		Royal Guard [WIL][SPD] - Guards royalty
 		Constable [FLX][END] - Street cop,
 		Detective [LOG][JDG] - solves crimes
@@ -136,7 +140,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		GateKeeper [PER][MEM] - open and close city gates
 	</>	
 </>
-<Crafter [JDG][DEX] - Creates items of value at end of resource chains, most happiness sources>
+<Crafter (GuildMaster) [JDG][DEX] - Creates items of value at end of resource chains, most happiness sources>
 
 	<Jeweller>
 		Glass-blower
@@ -160,6 +164,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Leather worker/Cobbler
 		Dyer
 		Furrier
+		Haberdasher 
 	</>	
 	<Carver>
 		Wood Carver / lute-maker
@@ -176,18 +181,23 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Painter
 		Thespian
 		Poet
+		Acrobat
 	</>	
 </>
-<Builder (Architect) [STR][FLX] - Any structure/space/building space creation>
+<Builder (Master Architect) [STR][FLX] - Any structure/space/building space creation>
 
 	<Mason>
 		Bricklayer
 		Engraver
+		Stonecutter
+		
 	</>		
 	<Miner>
 		Digger - soil digging
 		Tunneller - rock digging
-		Prospector
+		Prospector - find ore bodies
+		Sapper - undermine fortifications
+		???
 	</>		
 	<Carpenter>
 		Cooper - Barrel/vessel making
@@ -201,9 +211,11 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Siege Operator
 		road builder?
 		Architect
-	</>		
+	</>	
+	???
+	???
 </>
-<Labourer (Foreman) [INT][END] - Most internal domestic jobs and first order resource processing>
+<Labourer (Foreman/Steward) [INT][END] - Most internal domestic jobs and first order resource processing>
 
 	<Cook (Chef) [][] - Food preperation>
 		Butcher
@@ -229,22 +241,23 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Soapier - makes lye & Soap
 		Smelter?
 	</>		
-	<Tinkerer>
+	<Tinkerer - non durable goods>
 		Paper Maker
 		Candle Maker
+		BookBinder - 
 	</>		
-		Hauler?  Porter?
+	Hauler?  Porter?
 </>
-<Gatherer [PER][SPD] - Collection of raw materials in unsafe areas, a dangerous and low status profession>
+<Gatherer (Reeve) [PER][SPD] - Collection of raw materials in unsafe areas, a dangerous and low status profession>
 	
-	<Farmer [END][JDG]>
+	<Farmer (Gardener) [END][JDG]>
 		fruit/grain/underground?
 		Plower
 		Gong-farmer?
 	</>	
-	<Trader [CHA][LOG]>
+	<Merchant (Trader) [CHA][LOG]>
 		Pedlar - lone barter, no diplomatic relations necessary
-		Merchant/Teamster? - larger scale, wagon load trade
+		Teamster - larger scale, wagon load trade
 		Grocer - local consumables sales?
 		Mercer - runs shops for foreigners in 'Bazaar' zone
 		Sailor - largest scale trade by boat
@@ -262,15 +275,18 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 	</>		
 	<Forager [MEM][DEX]>
 		Picker? Herbalist - Berry picking
-		Fisher
-		BeeKeeper
+		Fisher - 
+		BeeKeeper - 
 		Scavenger - collects junk
 	</>		
-	<Herder [WIL][INT]>
-		Shepard
-		Milker
-		Groom - cares for mounts
-		Shearer - collects fur
-		Animal Trainer - trains tame animals?
+	<Herder (Master of the Herd) [WIL][INT]>
+		<Shepard [VIT][MEM] watches over flocks /> 
+		<Milker [DEX][FLX]- milks domestic animals /> 
+		<Groom [JDG][END]- cares for mounts /> 
+		<Shearer [STR][RFL]- collects fur from domestic animals /> 
+		<AnimalTrainer [LOG][CHA]- trains tame animals /> 
 	</>	
 </>
+
+[SPD]  [END][STR][FLX][DEX]       [VIT][REF]
+[LOG][MEM][CHA]  [JDG] [WIL][INT][PER]

@@ -194,6 +194,17 @@ public class CubeShape {
 		return Data == Arg.Data;
     }
 
+	public boolean ExcavationEquivilent(Object ArgumentShape) {
+		CubeShape Arg = (CubeShape) ArgumentShape;
+		
+		boolean NE = Arg.NorthEastCorner() <= this.NorthEastCorner();
+		boolean SE = Arg.SouthEastCorner() <= this.SouthEastCorner();
+		boolean NW = Arg.NorthWestCorner() <= this.NorthWestCorner();
+		boolean SW = Arg.SouthWestCorner() <= this.SouthWestCorner();
+				
+		return NE && SE && NW && SW;
+	}
+
 	public void copy(CubeShape ArgumentShape) {
 		Data = ArgumentShape.Data;
 	}

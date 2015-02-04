@@ -59,7 +59,7 @@ public class TileBuilder {
 			} else {
 				if (Shape.FaceDirection == Direction.DIRECTION_DOWN || Shape.FaceDirection == Direction.DIRECTION_UP) 
 				{
-					if (Shape.CubeComponent.hasFloor() || Shape.CubeComponent.hasCeiling())
+					if (Shape.SourceCubeComponent.hasFloor() || Shape.SourceCubeComponent.hasCeiling())
 					{
 						target = CreateFlatFace(Shape);
 						if (target != null)
@@ -129,10 +129,10 @@ public class TileBuilder {
 		boolean Triangle1 = false;
 		boolean Triangle2 = false;
 
-		byte NorthEastCorner = Shape.CubeComponent.NorthEastCorner();
-		byte NorthWestCorner = Shape.CubeComponent.NorthWestCorner();
-		byte SouthEastCorner = Shape.CubeComponent.SouthEastCorner();
-		byte SouthWestCorner = Shape.CubeComponent.SouthWestCorner();
+		byte NorthEastCorner = Shape.SourceCubeComponent.NorthEastCorner();
+		byte NorthWestCorner = Shape.SourceCubeComponent.NorthWestCorner();
+		byte SouthEastCorner = Shape.SourceCubeComponent.SouthEastCorner();
+		byte SouthWestCorner = Shape.SourceCubeComponent.SouthWestCorner();
 				
 		ArrayList<Vector3f> Vertices = new ArrayList<Vector3f>(4);
 		ArrayList<Vector3f> Normals = new ArrayList<Vector3f>(4);
@@ -157,7 +157,7 @@ public class TileBuilder {
 			TextureCoords.add(NW, new Vector2f(0.0f, 1.0f));
 			TextureCoords.add(NE, new Vector2f(1.0f, 1.0f));
 			
-			if (Shape.CubeComponent.split()) // Split along NW-SE line
+			if (Shape.SourceCubeComponent.split()) // Split along NW-SE line
 			{
 				if ((SouthEastCorner == CubeShape.CUBE_BOTTOM_HEIGHT && NorthEastCorner == CubeShape.CUBE_BOTTOM_HEIGHT && NorthWestCorner == CubeShape.CUBE_BOTTOM_HEIGHT) || (SouthEastCorner == CubeShape.CUBE_TOP_HEIGHT && NorthEastCorner == CubeShape.CUBE_TOP_HEIGHT && NorthWestCorner == CubeShape.CUBE_TOP_HEIGHT))
 				{
@@ -208,10 +208,10 @@ public class TileBuilder {
  
 	public Mesh CreateSideFace(FaceShape Shape) {
 		
-		byte NorthEastCorner = Shape.CubeComponent.NorthEastCorner();
-		byte NorthWestCorner = Shape.CubeComponent.NorthWestCorner();
-		byte SouthEastCorner = Shape.CubeComponent.SouthEastCorner();
-		byte SouthWestCorner = Shape.CubeComponent.SouthWestCorner();		
+		byte NorthEastCorner = Shape.SourceCubeComponent.NorthEastCorner();
+		byte NorthWestCorner = Shape.SourceCubeComponent.NorthWestCorner();
+		byte SouthEastCorner = Shape.SourceCubeComponent.SouthEastCorner();
+		byte SouthWestCorner = Shape.SourceCubeComponent.SouthWestCorner();		
 		
 				
 		if (NorthWestCorner == CubeShape.CUBE_TOP_HEIGHT && Shape.FaceDirection == Direction.DIRECTION_WEST) {
@@ -225,7 +225,7 @@ public class TileBuilder {
 		ArrayList<Integer> Indexes = new ArrayList<Integer>();	
 
 		boolean Triangle = false;
-		CubeShape Cube = Shape.CubeComponent;
+		CubeShape Cube = Shape.SourceCubeComponent;
 
 		
 		float XLeft = 0; float XRight = 0; float YLeft = 0; float YRight = 0;
@@ -310,10 +310,10 @@ public class TileBuilder {
 		boolean Triangle1 = false;
 		boolean Triangle2 = false;
 
-		byte NorthEastCorner = Shape.CubeComponent.NorthEastCorner();
-		byte NorthWestCorner = Shape.CubeComponent.NorthWestCorner();
-		byte SouthEastCorner = Shape.CubeComponent.SouthEastCorner();
-		byte SouthWestCorner = Shape.CubeComponent.SouthWestCorner();
+		byte NorthEastCorner = Shape.SourceCubeComponent.NorthEastCorner();
+		byte NorthWestCorner = Shape.SourceCubeComponent.NorthWestCorner();
+		byte SouthEastCorner = Shape.SourceCubeComponent.SouthEastCorner();
+		byte SouthWestCorner = Shape.SourceCubeComponent.SouthWestCorner();
 
 		ArrayList<Vector3f> Vertices = new ArrayList<Vector3f>();
 		ArrayList<Vector3f> Normals = new ArrayList<Vector3f>();
@@ -339,7 +339,7 @@ public class TileBuilder {
 			Vector3f X = Vector3f.UNIT_X;
 			Vector3f Y = Vector3f.UNIT_Y;
 
-			if (Shape.CubeComponent.split()) // Split along the NW-SE line
+			if (Shape.SourceCubeComponent.split()) // Split along the NW-SE line
 			{
 				// Triangle1 SE->NE->NW
 				if (SouthEastCorner > CubeShape.BELOW_CUBE_HEIGHT && NorthEastCorner > CubeShape.BELOW_CUBE_HEIGHT && NorthWestCorner > CubeShape.BELOW_CUBE_HEIGHT)
