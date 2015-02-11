@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Files xmlns="https://github.com/ImpalerWrG/Khazad">
+	<File Path="XML\Colors.xml"/>
+	<File Path="XML\Textures.xml"/>
+	<File Path="XML\Models.xml"/>
+	<File Path="XML\Fonts.xml"/>
+	<File Path="XML\Materials.xml"/>
+	<File Path="XML\MaterialClasses.xml"/>
+	<File Path="XML\SurfaceTypes.xml"/>
+	<File Path="XML\Trees.xml"/>
+	<File Path="XML\Buildings.xml"/>
+	<File Path="XML\Ores.xml"/>
+	<File Path="XML\Minerals.xml"/>
+	<File Path="XML\Stones.xml"/>
+	<File Path="XML\Gems.xml"/>
+	<File Path="XML\Soils.xml"/>
+	<File Path="XML\Metals.xml"/>
+	<File Path="XML\SpriteTextures.xml"/>
+	<File Path="XML\Creatures.xml"/>
+	<File Path="XML\AnimationTypes.xml"/>
+	<File Path="XML\TreeTextures.xml"/>
+	<File Path="XML\MineCraftTextures.xml"/>
+	<File Path="XML\Animations.xml"/>
+</Files>

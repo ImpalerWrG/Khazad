@@ -4,7 +4,7 @@
  */
 package Renderer;
 
-import Data.DataTypes;
+import Data.DataManager;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.texture.Texture;
@@ -313,7 +313,7 @@ public class ImageManager {
 			}
 		}
 
-		if (BorderColorID != DataTypes.INVALID_INDEX) {
+		if (BorderColorID != DataManager.INVALID_INDEX) {
 			ApplyBorder(newImage, BorderColorID);
 		}
 
@@ -322,12 +322,12 @@ public class ImageManager {
 
 	public Image GenerateKeeperImage(Image Original, int BorderColorID) {
 		Image NewImage = Original.clone();
-		if (BorderColorID != DataTypes.INVALID_INDEX) {
+		if (BorderColorID != DataManager.INVALID_INDEX) {
 			ApplyBorder(NewImage, BorderColorID);
 		}
 		return NewImage;
 	}
-	
+
 	private void ApplyBorder(Image Original, int BorderColorID) {
         int width = Original.getWidth();
         int height = Original.getHeight();

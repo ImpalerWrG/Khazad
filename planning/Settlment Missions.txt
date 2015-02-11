@@ -1,0 +1,48 @@
+
+
+Fortress - defend an area or vital route, recive troops and supplies from mother hold
+
+Monestary - create most pious and prosperous 
+
+Trading Post - provide as much trading space to sell mother hold produced wares
+
+Refugge - accomadate as many refugee dwarves as possible, similar to current play style of uncontrollable imigration
+
+Colony - create industry and attract imigrants, pay money to mother hold, typical upgrade status from other narrower types
+
+Mine - send specific metal back to mother hold, recive food and other supplies
+
+Farm - send foods specific and general to mother hold
+
+Dungeon - run a prison for criminals and monsters, late ages
+
+Festival? - site for dwarves merryment at specific holy days, large swings in population
+
+Banishment - No formal contact with home, only very infrequent low status migrants
+
+Exploration/look out - Send news/warnings back to mother hold
+
+Hamlet
+Village
+Town
+City
+
+
+
+EXPEDITIONS - send a group of Dwarves off-map to accomplish a task, choose the party members and size and give them equipment/supplies
+
+Colony - Meta game, found colonies with comperable initial resources to your own with yourself in the Parent Hold position
+
+Scouting
+
+Raiding
+
+Diplomacy
+
+Trade
+
+Exploration
+
+Gift
+
+Resource Gathering

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Soils xmlns="https://github.com/ImpalerWrG/Khazad">
+	<MaterialClass>
+		<Name Label="MATERIALCLASS_SOIL"/>
+		<DefaultMaterial label="MATERIAL_SOIL"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_GROUND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GROUND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_GROUND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_GROUND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_GROUND"/>
+		</DefaultSurfaceTextures>
+	</MaterialClass>
+	<Material>
+		<Name Label="MATERIAL_SOIL"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_DARK_BROWN"/>
+		<ColorMode mode="overlay"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GROUND"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAND_TAN"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+<!-- 		<BorderColor label="COLOR_TAN"/> -->
+		<ColorMode mode="overlay" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SAND"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAND_YELLOW"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_KHAKI"/>
+<!-- 		<BorderColor label="COLOR_YELLOW"/> -->
+		<ColorMode mode="overlay" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SAND"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAND_WHITE"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+<!-- 		<BorderColor label="COLOR_WHITE"/> -->
+		<ColorMode mode="overlay" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SAND"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAND_RED"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_BLOOD_RED"/>
+<!-- 		<BorderColor label="COLOR_RED"/> -->
+		<ColorMode mode="overlay" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SAND"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SAND_BLACK"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+<!-- 		<BorderColor label="COLOR_BLACK"/> -->
+		<ColorMode mode="overlay" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SAND"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CLAY"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_RED"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<BorderColor label="COLOR_TAN"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SILTY_CLAY"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_RED"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<BorderColor label="COLOR_DARK_GREY"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SANDY_CLAY"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_MAROON"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<BorderColor label="COLOR_BROWN"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CLAY_LOAM"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_YELLOW"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<BorderColor label="COLOR_BROWN"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SANDY_CLAY_LOAM"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+		<BorderColor label="COLOR_YELLOW"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SILTY_CLAY_LOAM"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_YELLOW"/>
+		<SecondaryColor label="COLOR_LEATHER"/>
+		<BorderColor label="COLOR_LEATHER"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_LOAM"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_LEATHER"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<BorderColor label="COLOR_BROWN"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SANDY_LOAM"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_ORANGE"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<BorderColor label="COLOR_BROWN"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SILT_LOAM"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_YELLOW"/>
+		<SecondaryColor label="COLOR_DARK_ORANGE"/>
+		<BorderColor label="COLOR_DARK_ORANGE"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_LOAMY_SAND"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_YELLOW"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<BorderColor label="COLOR_BLACK"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SILT"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<BorderColor label="COLOR_BROWN"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PEAT"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_FOREST_GREEN"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<BorderColor label="COLOR_BROWN"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PELAGIC_CLAY"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<BorderColor label="COLOR_BROWN"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CALCAREOUS_OOZE"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<BorderColor label="COLOR_DARK_GREY"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SILICEOUS_OOZE"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_SILVER"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
+		</SurfaceTextures>
+	</Material>
+</Soils>

@@ -17,7 +17,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Map;
 
-import Data.DataTypes;
+import Data.DataManager;
 
 /**
  * Describes a Face both its shape, location inside a Cell and it's material
@@ -33,8 +33,8 @@ public class Face {
 	short MaterialTypeID;	
 	
 	public Face() {
-		SurfaceTypeID = DataTypes.INVALID_INDEX;
-		MaterialTypeID = DataTypes.INVALID_INDEX;
+		SurfaceTypeID = DataManager.INVALID_INDEX;
+		MaterialTypeID = DataManager.INVALID_INDEX;
 		
 		CubeShape SourceCube = new CubeShape((byte) 0);
 		CubeShape AdjacentCube = new CubeShape((byte) 0);
@@ -42,8 +42,8 @@ public class Face {
 	}
 
 	public Face(byte TargetCoordinates, Direction DirectionType) {
-		SurfaceTypeID = DataTypes.INVALID_INDEX;
-		MaterialTypeID = DataTypes.INVALID_INDEX;
+		SurfaceTypeID = DataManager.INVALID_INDEX;
+		MaterialTypeID = DataManager.INVALID_INDEX;
 
 		CubeShape SourceCube = new CubeShape((byte) 0);
 		CubeShape AdjacentCube = new CubeShape((byte) 0);

@@ -6,7 +6,7 @@ package Terrain;
 
 import Core.Dice;
 import Map.*;
-import Data.DataTypes;
+import Data.DataManager;
 /**
  *
  * @author Impaler
@@ -408,7 +408,7 @@ public class Geology {
 				short MaterialType = getRockTypeAtCoordinates(TargetCube, TargetCoordinates.Z);
 				TargetCell.setCubeMaterial(TargetCube, MaterialType);
 
-				if (MaterialType != DataTypes.INVALID_INDEX)
+				if (MaterialType != DataManager.INVALID_INDEX)
 				{
 					TargetCell.setCubeShape(TargetCube, Shape);
 					//TargetCell->setCubeSurface(TargetCubeCoordinates, RoughWallID);
@@ -417,7 +417,7 @@ public class Geology {
 			else
 			{
 				TargetCell.setCubeShape(TargetCube, Shape);
-				TargetCell.setCubeMaterial(TargetCube, DataTypes.INVALID_INDEX);
+				TargetCell.setCubeMaterial(TargetCube, DataManager.INVALID_INDEX);
 			}
 			TargetCube++;
 		}

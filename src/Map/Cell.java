@@ -17,7 +17,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Map;
 
-import Data.DataTypes;
+import Data.DataManager;
 
 import java.util.HashMap;
 import java.util.BitSet;
@@ -74,7 +74,7 @@ public class Cell {
 		}
 		
 		for (int i=0; i < CubeMaterialTypes.length; i++ ) {
-			CubeMaterialTypes[i] = DataTypes.INVALID_INDEX;
+			CubeMaterialTypes[i] = DataManager.INVALID_INDEX;
 		}
 
 		DirtyRendering = true;
@@ -114,31 +114,25 @@ public class Cell {
 			final short WallSurface = 1; //DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
 			final short FloorSurface = 2; //DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
-			for (Direction DirectionType : Direction.AXIAL_DIRECTIONS)
-			{
+			for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
 				FaceCoordinate FaceLocation = new FaceCoordinate(TargetCube, DirectionType);
 				MapCoordinate ModifiedCoordinates = ParentMap.getFacingCoordinates(thisCellCoordinates, FaceLocation);
-				
-				CubeShape AdjacentShape = ParentMap.getCubeShape(ModifiedCoordinates);
 
-				if (!Shape.isSky())
-				{
-					if (ParentMap.isCubeInited(ModifiedCoordinates) && AdjacentShape.isSky())
-					{
-						if (Shape.hasFace(DirectionType))
-						{
+				if (ParentMap.isCubeInited(ModifiedCoordinates)) {
+					CubeShape AdjacentShape = ParentMap.getCubeShape(ModifiedCoordinates);
+
+					if (AdjacentShape.isSky()) {
+						if (Shape.hasFace(DirectionType)) {
 							Face NewFace = ParentMap.addFace(new MapCoordinate(thisCellCoordinates, TargetCube), DirectionType);
 
 							NewFace.setFaceMaterialType(CubeMaterial);
 							NewFace.setFaceSurfaceType(WallSurface);
 							NewFace.setFaceShapeType(new FaceShape(Shape, AdjacentShape, DirectionType));
-						}
+						}	
 					}
 
-					if (!AdjacentShape.isEmpty())
-					{
-						if (DirectionType == Direction.DIRECTION_DOWN && Shape.hasFloor() && AdjacentShape.hasCeiling())
-						{
+					if (!AdjacentShape.isEmpty()) {
+						if (DirectionType == Direction.DIRECTION_DOWN && Shape.hasFloor() && AdjacentShape.hasCeiling()) {
 							Face NewFace = ParentMap.addFace(new MapCoordinate(thisCellCoordinates, TargetCube), DirectionType);
 
 							NewFace.setFaceMaterialType(ParentMap.getCubeMaterial(ModifiedCoordinates));
@@ -175,12 +169,12 @@ public class Cell {
 	
 	short getFaceMaterialType(FaceCoordinate TargetCoordinates) {
 		Face TargetFace = getFace(TargetCoordinates);
-		return TargetFace != null ? TargetFace.getFaceMaterialType() : DataTypes.INVALID_INDEX;
+		return TargetFace != null ? TargetFace.getFaceMaterialType() : DataManager.INVALID_INDEX;
 	}
 
 	short getFaceSurfaceType(FaceCoordinate TargetCoordinates) {
 		Face TargetFace = getFace(TargetCoordinates);
-		return TargetFace != null ? TargetFace.getFaceSurfaceType() : DataTypes.INVALID_INDEX;
+		return TargetFace != null ? TargetFace.getFaceSurfaceType() : DataManager.INVALID_INDEX;
 	}
 
 	boolean setFaceMaterialType(FaceCoordinate TargetCoordinates, short MaterialTypeID) {

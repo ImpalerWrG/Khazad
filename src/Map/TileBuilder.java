@@ -212,12 +212,6 @@ public class TileBuilder {
 		byte NorthWestCorner = Shape.SourceCubeComponent.NorthWestCorner();
 		byte SouthEastCorner = Shape.SourceCubeComponent.SouthEastCorner();
 		byte SouthWestCorner = Shape.SourceCubeComponent.SouthWestCorner();		
-		
-				
-		if (NorthWestCorner == CubeShape.CUBE_TOP_HEIGHT && Shape.FaceDirection == Direction.DIRECTION_WEST) {
-			int de = 0;
-			int bug = de;
-		}
 
 		ArrayList<Vector3f> Vertices = new ArrayList<Vector3f>();
 		ArrayList<Vector3f> Normals = new ArrayList<Vector3f>();
@@ -226,10 +220,12 @@ public class TileBuilder {
 
 		boolean Triangle = false;
 		CubeShape Cube = Shape.SourceCubeComponent;
+		CubeShape Adjacent = Shape.AdjacentCubeComponent;
 
 		
 		float XLeft = 0; float XRight = 0; float YLeft = 0; float YRight = 0;
-		int LeftCorner = 0; int RightCorner = 0;
+		int LeftCorner = 0; int LeftAdjacentCorner = 0;
+		int RightCorner = 0; int RightAdjacentCorner = 0;
 		Vector3f Normal = new Vector3f();
 
 		switch (Shape.FaceDirection)
@@ -237,24 +233,28 @@ public class TileBuilder {
 			case DIRECTION_SOUTH:
 				XLeft = -MapCoordinate.HALFCUBE;  YLeft = -MapCoordinate.HALFCUBE;  XRight =  MapCoordinate.HALFCUBE;  YRight = -MapCoordinate.HALFCUBE;
 				LeftCorner = Cube.SouthWestCorner();   RightCorner = Cube.SouthEastCorner();
+				LeftAdjacentCorner = Adjacent.NorthWestCorner();  RightAdjacentCorner = Adjacent.NorthEastCorner();
 				Normal = Vector3f.UNIT_Y.negate();
 				break;
 
 			case DIRECTION_NORTH:
 				XLeft =  MapCoordinate.HALFCUBE;  YLeft =  MapCoordinate.HALFCUBE;  XRight = -MapCoordinate.HALFCUBE;  YRight =  MapCoordinate.HALFCUBE;
 				LeftCorner = Cube.NorthEastCorner();  RightCorner = Cube.NorthWestCorner();
+				LeftAdjacentCorner = Adjacent.SouthEastCorner();  RightAdjacentCorner = Adjacent.SouthWestCorner();
 				Normal = Vector3f.UNIT_Y;
 				break;
 
 			case DIRECTION_WEST:
 				XLeft = -MapCoordinate.HALFCUBE;  YLeft =  MapCoordinate.HALFCUBE;  XRight = -MapCoordinate.HALFCUBE;  YRight = -MapCoordinate.HALFCUBE;
 				LeftCorner = Cube.NorthWestCorner();  RightCorner = Cube.SouthWestCorner();
+				LeftAdjacentCorner = Adjacent.NorthEastCorner();  RightAdjacentCorner = Adjacent.SouthEastCorner();
 				Normal = Vector3f.UNIT_X.negate();
 				break;
 
 			case DIRECTION_EAST:
 				XLeft =  MapCoordinate.HALFCUBE;  YLeft = -MapCoordinate.HALFCUBE;  XRight =  MapCoordinate.HALFCUBE;  YRight =  MapCoordinate.HALFCUBE;
 				LeftCorner = Cube.SouthEastCorner();  RightCorner = Cube.NorthEastCorner();
+				LeftAdjacentCorner = Adjacent.SouthWestCorner();  RightAdjacentCorner = Adjacent.NorthWestCorner();
 				Normal = Vector3f.UNIT_X;
 				break;
 
@@ -262,39 +262,68 @@ public class TileBuilder {
 				break;
 		}
 
-		float Left = (Math.min(Math.max(LeftCorner, CubeShape.CUBE_BOTTOM_HEIGHT), CubeShape.CUBE_TOP_HEIGHT) - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
-		float Right = (Math.min(Math.max(RightCorner, CubeShape.CUBE_BOTTOM_HEIGHT), CubeShape.CUBE_TOP_HEIGHT) - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
+		float LeftTop = Math.max(LeftCorner, LeftAdjacentCorner);
+		LeftTop = (Math.min(CubeShape.CUBE_TOP_HEIGHT, Math.max(CubeShape.CUBE_BOTTOM_HEIGHT, LeftTop)) - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
 
-		Vertices.add(new Vector3f(XLeft,  YLeft, -MapCoordinate.HALFCUBE));  // Left Bottom
-		Normals.add(Normal);
-		TextureCoords.add(new Vector2f(0.0f, 0.0f));
+		float RightTop = Math.max(RightCorner, RightAdjacentCorner);
+		RightTop = (Math.min(CubeShape.CUBE_TOP_HEIGHT, Math.max(CubeShape.CUBE_BOTTOM_HEIGHT, RightTop)) - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
+		
+		float LeftBottom = Math.min(LeftCorner, LeftAdjacentCorner);
+		LeftBottom = (Math.min(CubeShape.CUBE_TOP_HEIGHT, Math.max(CubeShape.CUBE_BOTTOM_HEIGHT, LeftBottom)) - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
+		
+		float RightBottom = Math.min(RightCorner, RightAdjacentCorner);
+		RightBottom = (Math.min(CubeShape.CUBE_TOP_HEIGHT, Math.max(CubeShape.CUBE_BOTTOM_HEIGHT, RightBottom)) - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
 
-		Vertices.add(new Vector3f(XLeft, YLeft, Left - MapCoordinate.HALFCUBE));  // Left Top
-		Normals.add(Normal);
-		TextureCoords.add(new Vector2f(0.0f, Left));
-
-		Vertices.add(new Vector3f(XRight, YRight, -MapCoordinate.HALFCUBE));  // Right Bottom
-		Normals.add(Normal);
-		TextureCoords.add(new Vector2f(1.0f, 0.0f));
-
-		Vertices.add(new Vector3f(XRight, YRight, Right - MapCoordinate.HALFCUBE));  // Right Top
-		Normals.add(Normal);
-		TextureCoords.add(new Vector2f(1.0f, Right));
-
-		if (LeftCorner != CubeShape.BELOW_CUBE_HEIGHT && RightCorner != CubeShape.BELOW_CUBE_HEIGHT)
-		{
-			Indexes.add(3);
-			Indexes.add(1);
-			Indexes.add(0);
-			Triangle = true;
+		if (LeftCorner > LeftAdjacentCorner || RightCorner > RightAdjacentCorner) { 
+			Normal = Normal.negate();			
 		}
+		
+		Vertices.add(new Vector3f(XLeft, YLeft, LeftBottom - MapCoordinate.HALFCUBE));  // Left Bottom
+		Normals.add(Normal);
+		TextureCoords.add(new Vector2f(0.0f, LeftBottom));
 
-		if (LeftCorner != CubeShape.BELOW_CUBE_HEIGHT && RightCorner > CubeShape.CUBE_BOTTOM_HEIGHT)
-		{
-			Indexes.add(0);
-			Indexes.add(2);
-			Indexes.add(3);
-			Triangle = true;
+		Vertices.add(new Vector3f(XLeft, YLeft, LeftTop - MapCoordinate.HALFCUBE));  // Left Top
+		Normals.add(Normal);
+		TextureCoords.add(new Vector2f(0.0f, LeftTop));
+
+		Vertices.add(new Vector3f(XRight, YRight, RightBottom - MapCoordinate.HALFCUBE));  // Right Bottom
+		Normals.add(Normal);
+		TextureCoords.add(new Vector2f(1.0f, RightBottom));
+
+		Vertices.add(new Vector3f(XRight, YRight, RightTop - MapCoordinate.HALFCUBE));  // Right Top
+		Normals.add(Normal);
+		TextureCoords.add(new Vector2f(1.0f, RightTop));
+
+
+		if (LeftCorner > LeftAdjacentCorner || RightCorner > RightAdjacentCorner) { 
+			if (LeftCorner > CubeShape.BELOW_CUBE_HEIGHT && RightCorner != CubeShape.BELOW_CUBE_HEIGHT) {
+				Indexes.add(3);
+				Indexes.add(1);
+				Indexes.add(0);
+				Triangle = true;
+			}
+
+			if (LeftCorner != CubeShape.BELOW_CUBE_HEIGHT && RightCorner > CubeShape.CUBE_BOTTOM_HEIGHT) {
+				Indexes.add(0);
+				Indexes.add(2);
+				Indexes.add(3);
+				Triangle = true;
+			}
+		} else {
+
+			if (LeftAdjacentCorner > CubeShape.BELOW_CUBE_HEIGHT && RightAdjacentCorner != CubeShape.BELOW_CUBE_HEIGHT) {
+				Indexes.add(0);
+				Indexes.add(1);
+				Indexes.add(3);
+				Triangle = true;
+			}
+
+			if (LeftAdjacentCorner != CubeShape.BELOW_CUBE_HEIGHT && RightAdjacentCorner > CubeShape.CUBE_BOTTOM_HEIGHT) {
+				Indexes.add(3);
+				Indexes.add(2);
+				Indexes.add(0);
+				Triangle = true;
+			}
 		}
 		
 

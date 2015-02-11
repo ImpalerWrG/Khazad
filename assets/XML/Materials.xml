@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Materials xmlns="https://github.com/ImpalerWrG/Khazad">
+	<Material>
+		<Name Label="MATERIAL_UNINITIALIZED"/>
+		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
+		<PrimaryColor label="COLOR_BLUE"/>
+		<ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DEFAULT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_DEFAULT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_DEFAULT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_DEFAULT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_DEFAULT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_WALL" Texture="TEXTURE_DEFAULT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_FLOOR" Texture="TEXTURE_DEFAULT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_PEBBLES" Texture="TEXTURE_DEFAULT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_BOULDER" Texture="TEXTURE_DEFAULT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_DEFAULT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_DEFAULT"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BUILDING"/>
+		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
+		<PrimaryColor label="COLOR_YELLOW"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_DEFAULT"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_DEFAULT"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ASHES"/>
+		<MaterialClass label="MATERIALCLASS_ASHES"/>
+		<ColorMode mode="keepimage"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_ASHES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_ASHES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_ASHES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_ASHES"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_WATER"/>
+		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
+		<PrimaryColor label="COLOR_TEAL"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+		<ColorMode mode="gradientmap"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_LIQUID" Texture="TEXTURE_LIQUID"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_EMPTYSPACE"/>
+		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
+		<Texture label="TEXTURE_AIR"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DRIFTWOOD"/>
+		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
+		<ColorMode mode="keepimage" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_DRIFTWOOD"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_LAVA"/>
+		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
+		<PrimaryColor label="COLOR_RED"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+        <ColorMode mode="gradientmap" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_LIQUID" Texture="TEXTURE_LIQUID"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MUD"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_DIRT"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_FARM"/>
+		<MaterialClass label="MATERIALCLASS_SOIL"/>
+		<PrimaryColor label="COLOR_DARK_BROWN"/>
+		<ColorMode mode="overlay"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GROUND"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DARK_GRASS"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+		<PrimaryColor label="GRASS_DARK"/>
+		<BorderColor label="COLOR_FOREST_GREEN"/>
+		<ColorMode mode="overlay"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_GRASS_5"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GRASS_5"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_GRASS_2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_GRASS_3"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_GRASS_4"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_BRIGHT_GRASS"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+		<PrimaryColor label="GRASS_BRIGHT"/>
+		<BorderColor label="COLOR_DARK_GREEN"/>
+		<ColorMode mode="overlay"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_GRASS_5"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GRASS_5"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_GRASS_2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_GRASS_3"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_GRASS_4"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DEAD_GRASS"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+		<PrimaryColor label="COLOR_DARK_BROWN"/>
+		<ColorMode mode="overlay"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GRASS_1"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_GRASS_2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_GRASS_3"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_GRASS_4"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_DRY_GRASS"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+		<PrimaryColor label="COLOR_KHAKI"/>
+		<ColorMode mode="overlay"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GRASS_1"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_GRASS_2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_GRASS_3"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_GRASS_4"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_UNDERGROWTH"/>
+		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
+		<PrimaryColor label="COLOR_KHAKI"/>
+		<ColorMode mode="overlay"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GRASS_1"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_GRASS_2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_GRASS_3"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_GRASS_4"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_RIVER_PEBBLES"/>
+		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_PEBBLES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_PEBBLES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_PEBBLES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_PEBBLES"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_STREAM_PEBBLES"/>
+		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+        <ColorMode mode="overlay" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_PEBBLES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_PEBBLES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_PEBBLES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_PEBBLES"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SNOW"/>
+		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
+		<ColorMode mode="keepimage" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SNOW"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SNOW"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SNOW"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SNOW"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SNOW"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_WALL" Texture="TEXTURE_SNOW"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_FLOOR" Texture="TEXTURE_SNOW"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_PEBBLES" Texture="TEXTURE_SNOW"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_BOULDER" Texture="TEXTURE_SNOW"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_ICE"/>
+		<MaterialClass label="MATERIALCLASS_ICE"/>
+		<PrimaryColor label="COLOR_NAVY_BLUE"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PIT"/>
+		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
+		<Texture label="TEXTURE_PIT"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<BorderColor label="COLOR_SILVER"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GREEN_GLASS"/>
+		<MaterialClass label="MATERIALCLASS_GREEN_GLASS"/>
+		<PrimaryColor label="COLOR_GREEN"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CLEAR_GLASS"/>
+		<MaterialClass label="MATERIALCLASS_CLEAR_GLASS"/>
+		<PrimaryColor label="COLOR_LIGHT_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CRYSTAL_GLASS"/>
+		<MaterialClass label="MATERIALCLASS_CRYSTAL_GLASS"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_LIGHT_GREY"/>
+	</Material>
+</Materials>

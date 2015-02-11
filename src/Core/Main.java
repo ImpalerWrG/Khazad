@@ -27,6 +27,11 @@ import com.jme3.renderer.RenderManager;
 import Nifty.*;
 import Renderer.*;
 import Sound.Music;
+import Data.DataManager;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
@@ -57,11 +62,23 @@ public class Main extends SimpleApplication {
     @Override
     public void simpleInitApp() {
 
+		try {
+			File file = new File("Khazad Error.txt");
+			FileOutputStream fos = new FileOutputStream(file);
+			PrintStream ps = new PrintStream(fos);
+			System.setErr(ps);
+			//throw new Exception("Exception goes to err.txt too");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		pool = Executors.newFixedThreadPool(8);
 
 		ImageManager Images = ImageManager.getImageManager();
 		Images.Initialize(assetManager);
 		
+		DataManager Data = DataManager.getDataManager();
+		Data.Initialize();
+
 		// RENDER
 		this.stateManager.attach(new TerrainRenderer(pool));
 		

@@ -18,6 +18,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Map;
 
 import Core.Dice;
+import Data.DataManager;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
@@ -26,7 +27,6 @@ import Interface.VolumeSelection;
 
 import org.javatuples.Pair;
 
-import Data.DataTypes;
 
 /**
  * Master Class for holding the playing Map, holds primaraly Cells in HashMap
@@ -210,7 +210,7 @@ public class GameMap {
 	public short getCubeMaterial(MapCoordinate Coordinates) {
 		Cell TargetCell = getCubeOwner(Coordinates);
 
-		return TargetCell != null ? TargetCell.getCubeMaterial(Coordinates.CubeIndex()) : DataTypes.INVALID_INDEX;
+		return TargetCell != null ? TargetCell.getCubeMaterial(Coordinates.CubeIndex()) : DataManager.INVALID_INDEX;
 	}
 
 	public void setFaceMaterial(MapCoordinate TargetMapCoordinates, Direction DirectionType, short MaterialID) {
@@ -226,7 +226,7 @@ public class GameMap {
 	public short getFaceMaterial(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
 		Face TargetFace = getFace(TargetMapCoordinates, DirectionType);
 
-		return TargetFace != null ? TargetFace.getFaceMaterialType() : DataTypes.INVALID_INDEX;
+		return TargetFace != null ? TargetFace.getFaceMaterialType() : DataManager.INVALID_INDEX;
 	}
 
 	public void setFaceSurfaceType(MapCoordinate TargetMapCoordinates, Direction DirectionType, short SurfaceID) {
@@ -242,7 +242,7 @@ public class GameMap {
 	public short getFaceSurfaceType(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
 		Face TargetFace = getFace(TargetMapCoordinates, DirectionType);
 
-		return TargetFace != null ? TargetFace.getFaceSurfaceType() : DataTypes.INVALID_INDEX;
+		return TargetFace != null ? TargetFace.getFaceSurfaceType() : DataManager.INVALID_INDEX;
 	}
 
 	public boolean isCubeHidden(MapCoordinate Coordinates) {
@@ -354,7 +354,7 @@ public class GameMap {
 					break;
 				}
 			default:
-				UpdateCubeShape(Coordinates, GoalShape);				
+				//UpdateCubeShape(Coordinates, GoalShape);				
 		}
 	}
 
@@ -386,11 +386,14 @@ public class GameMap {
 						
 				setCubeShape(Coordinates, NewShape);
 				if (NewShape.isEmpty()) {
-					setCubeMaterial(Coordinates, DataTypes.INVALID_INDEX);
+					setCubeMaterial(Coordinates, DataManager.INVALID_INDEX);
 				}
 
 				for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
 					UpdateFace(Coordinates, DirectionType);
+					MapCoordinate AdjacentCoords = Coordinates.clone();
+					AdjacentCoords.TranslateMapCoordinates(DirectionType);
+					UpdateFace(AdjacentCoords, DirectionType.Invert());
 				}
 				UpdateFace(Coordinates, Direction.DIRECTION_NONE);
 				setCubeHidden(Coordinates, false);
@@ -425,7 +428,7 @@ public class GameMap {
 
 					setCubeShape(aboveCube, aboveShape);
 					if (aboveShape.isEmpty()) {
-						setCubeMaterial(aboveCube, DataTypes.INVALID_INDEX);
+						setCubeMaterial(aboveCube, DataManager.INVALID_INDEX);
 					}
 
 					for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
@@ -510,14 +513,13 @@ public class GameMap {
 			case DIRECTION_WEST:
 			case DIRECTION_NORTH:
 			case DIRECTION_SOUTH:
-				if (SourceShape.hasFace(DirectionType) || AdjacentShape.hasFace(DirectionType.Invert())) {
+				if (SourceShape.hasFace(DirectionType)) { // || AdjacentShape.hasFace(DirectionType.Invert())) {
 					if (TargetFace == null) {
-						TargetFace = addFace(ModifiedCoordinates, DirectionType.Invert());
+						TargetFace = addFace(TargetCoordinates, DirectionType);
 					}
 
 					TargetFace.setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
-					//TargetFace.setFaceShapeType(new FaceShape(SourceShape, DirectionType.Invert()));
-					TargetFace.setFaceShapeType(new FaceShape(AdjacentShape, AdjacentShape, DirectionType.Invert()));
+					TargetFace.setFaceShapeType(new FaceShape(SourceShape, AdjacentShape, DirectionType));
 					TargetFace.setFaceSurfaceType(RoughWallID);
 				} else {
 					removeFace(TargetCoordinates, DirectionType);

@@ -1,0 +1,11 @@
+<AnimationTypes xmlns="namespace">
+	<AnimationType>
+		<Name Label="ANIMATION_TYPE_IDLE" />
+	</AnimationType>
+	<AnimationType>
+		<Name Label="ANIMATION_TYPE_WALK" />
+	</AnimationType>
+	<AnimationType>
+		<Name Label="ANIMATION_TYPE_ATTACK" />	
+	</AnimationType>
+</AnimationTypes>

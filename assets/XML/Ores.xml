@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Ores xmlns="https://github.com/ImpalerWrG/Khazad">
+	<MaterialClass>
+		<Name Label="MATERIALCLASS_VEIN_STONE"/>
+		<DefaultMaterial label="MATERIAL_VEIN_STONE"/>
+		<DefaultSurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_STONE_1"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_STONE_2"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_STONE_3"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_STONE_4"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_WALL" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_FLOOR" Texture="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_PEBBLES" Texture="TEXTURE_PEBBLES"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_BOULDER" Texture="TEXTURE_BOULDER"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
+		</DefaultSurfaceTextures>
+	</MaterialClass>
+	<Material>
+		<Name Label="MATERIAL_VEIN_STONE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_GREY"/>
+		<ColorMode mode="overlay"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_MATT"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_HEMATITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_LIMONITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_WHITE"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GARNIERITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_GREEN"/>
+        <ColorMode mode="gradientmap" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GOLD_NUGGETS"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_YELLOW"/>
+        <ColorMode mode="gradientmap" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SILVER_NUGGETS"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+        <ColorMode mode="gradientmap" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_COPPER_NUGGETS"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+        <ColorMode mode="gradientmap" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_MALACHITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_GREEN"/>
+		<SecondaryColor label="COLOR_FOREST_GREEN"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SWIRLY"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_GALENA"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+        <ColorMode mode="gradientmap" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_SPHALERITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+        <ColorMode mode="gradientmap" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CASSITERITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BROWN"/>
+        <ColorMode mode="gradientmap" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_COAL_BITUMINOUS"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_BLACK"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_LIGNITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_BROWN"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_PLATINUM_NUGGETS"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+        <ColorMode mode="gradientmap" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_CINNABAR"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_RED"/>
+		<SecondaryColor label="COLOR_BLACK"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_COBALTITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_BLUE"/>
+        <ColorMode mode="gradientmap" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_TETRAHEDRITE"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_SILVER"/>
+        <ColorMode mode="gradientmap" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
+		<Name Label="MATERIAL_HORN_SILVER"/>
+		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
+		<PrimaryColor label="COLOR_DARK_GREY"/>
+		<SecondaryColor label="COLOR_WHITE"/>
+        <ColorMode mode="gradientmap" />
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+		</SurfaceTextures>
+	</Material>
+</Ores>
