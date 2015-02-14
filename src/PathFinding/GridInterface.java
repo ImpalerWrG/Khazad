@@ -48,7 +48,9 @@ public interface GridInterface {
 
 	boolean isPathPossible(MovementModality MovementType, MapCoordinate StartCoords, MapCoordinate GoalCoords);
 
+	abstract void DirtyMapCoordinate(MapCoordinate[] TargetCoords);
+
 	boolean contains(MapCoordinate TestCoords);
-	
+
 	ArrayList<MapCoordinate> getPassableCoordinates();
 }

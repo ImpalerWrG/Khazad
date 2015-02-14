@@ -19,6 +19,7 @@ package Map;
 
 import Core.Dice;
 import Data.DataManager;
+import PathFinding.PathFinding;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
@@ -179,12 +180,13 @@ public class GameMap {
 		return TargetCell.addFace(new FaceCoordinate(ConvertedValues.getValue0().CubeIndex(), ConvertedValues.getValue1()));
 	}
 
-	public void setCubeShape(MapCoordinate Coordinates, CubeShape NewShape) {
-		Cell TargetCell = getCubeOwner(Coordinates);
+	public void setCubeShape(MapCoordinate Coordinate, CubeShape NewShape) {
+		Cell TargetCell = getCubeOwner(Coordinate);
 
-		if (TargetCell != null)
-		{
-			TargetCell.setCubeShape(Coordinates.CubeIndex(), NewShape);
+		if (TargetCell != null) {
+			TargetCell.setCubeShape(Coordinate.CubeIndex(), NewShape);
+			MapCoordinate[] Coordinates = {Coordinate};
+			PathFinding.getSinglton().EditMapAbstractions(Coordinates);
 		}
 	}
 

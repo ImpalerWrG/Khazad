@@ -75,66 +75,33 @@ public class KhazadGrid implements GridInterface {
 	}
 	
 	public ConcurrentHashMap<CellCoordinate, GridCell> GridCells;
-
+	ArrayList<MapCoordinate> DirtyLocations;
     ArrayList<Integer> ConnectivityCache;
-
 	HashMap<Integer, HashMap<Integer, Integer> > ConnectivityMap;
-
+	MovementModality GridModality;
+	GameMap SourceMap;
 	
-	public KhazadGrid(GameMap TargetMap) {
+	public KhazadGrid(GameMap TargetMap, MovementModality Modality) {
 		GridCells = new ConcurrentHashMap<CellCoordinate, GridCell>();
 		ConnectivityMap = new HashMap<Integer, HashMap<Integer, Integer> >();
 		ConcurrentHashMap<CellCoordinate, Cell> cells = TargetMap.getCellMap();
 		ConnectivityCache = new ArrayList<Integer>();
+		DirtyLocations = new ArrayList<MapCoordinate>();
+		GridModality = Modality;
+		SourceMap = TargetMap;
 		
 		for (Cell TargetCell : cells.values()) {
-			if (TargetCell != null)
-			{
+			if (TargetCell != null) {
 				CellCoordinate CellCoords = TargetCell.getCellCoordinates();
 				GridCell NewGridCell = addCell(CellCoords);
 
 				byte TargetCube = 0;
-				do
-				{
-					CubeShape Shape = TargetCell.getCubeShape((byte) TargetCube);
-					BitSet Flags = new BitSet(MapCoordinate.CUBESPERCELL);
-
-					if (!Shape.isSky() && !Shape.isSolid()) {
-						MapCoordinate OverheadTileCoords = new MapCoordinate(CellCoords, TargetCube);
-						OverheadTileCoords.TranslateMapCoordinates(Direction.DIRECTION_UP);
-						CubeShape OverheadCube = TargetMap.getCubeShape(OverheadTileCoords);
-						boolean OverheadPassable = OverheadCube.isSky();
-
-						for (Direction dir: Direction.ANGULAR_DIRECTIONS) {
-							MapCoordinate AdjacentTileCoords = new MapCoordinate(CellCoords, TargetCube);
-							AdjacentTileCoords.TranslateMapCoordinates(dir);
-							Direction InvertedDirection = dir.Invert();
-
-							// if we've done this already..
-							if (getDirectionEdgeSet(AdjacentTileCoords).get(InvertedDirection.ordinal())) {
-								Flags.set(dir.ordinal());
-								continue;
-							}
-
-							CubeShape AdjacentCubeShape = TargetMap.getCubeShape(AdjacentTileCoords);
-
-							if (!AdjacentCubeShape.isSky() && !AdjacentCubeShape.isSolid()) {
-								if (dir.ValueonAxis(Axis.AXIS_Z) == 1) {
-									if (OverheadPassable) {
-										Flags.set(dir.ordinal());
-									}
-								} else {
-									//If no vertical direction, we only care that this tile is passable
-									Flags.set(dir.ordinal());
-								}
-							}
-						}
-
-						NewGridCell.setCubeDirections(TargetCube & 0xFF, Flags);
-					}
+				do {
+					MapCoordinate TargetCoords = new MapCoordinate(CellCoords, TargetCube);
+					BitSet Flags = BuildConnectivitySet(TargetCoords);
+					NewGridCell.setCubeDirections(TargetCube & 0xFF, Flags);
 					TargetCube++;
-				}
-				while (TargetCube != 0);  // End Loop when Byte rolls over
+				} while (TargetCube != 0);  // End Loop when Byte rolls over
 			}
 		}
 
@@ -189,6 +156,44 @@ public class KhazadGrid implements GridInterface {
 		RebuildConnectivityCache(ZoneCounter);
 	}
 
+	private BitSet BuildConnectivitySet(MapCoordinate TargetCoords) {
+		BitSet Flags = new BitSet(MapCoordinate.CUBESPERCELL);
+		CubeShape TargetShape = SourceMap.getCubeShape(TargetCoords);
+
+		if (!TargetShape.isSky() && !TargetShape.isSolid()) {
+			MapCoordinate OverheadTileCoords = TargetCoords.clone();
+			OverheadTileCoords.TranslateMapCoordinates(Direction.DIRECTION_UP);
+			CubeShape OverheadCube = SourceMap.getCubeShape(OverheadTileCoords);
+			boolean OverheadPassable = !OverheadCube.isSolid();
+
+			for (Direction dir: Direction.ANGULAR_DIRECTIONS) {
+				MapCoordinate AdjacentTileCoords = TargetCoords.clone();
+				AdjacentTileCoords.TranslateMapCoordinates(dir);
+				Direction InvertedDirection = dir.Invert();
+
+				// if we've done this already..
+				if (getDirectionEdgeSet(AdjacentTileCoords).get(InvertedDirection.ordinal())) {
+					Flags.set(dir.ordinal());
+					continue;
+				}
+
+				CubeShape AdjacentCubeShape = SourceMap.getCubeShape(AdjacentTileCoords);
+
+				if (!AdjacentCubeShape.isSky() && !AdjacentCubeShape.isSolid()) {
+					if (dir.ValueonAxis(Axis.AXIS_Z) == 1) {
+						if (OverheadPassable) {
+							Flags.set(dir.ordinal());
+						}
+					} else {
+						//If no vertical direction, we only care that this tile is passable
+						Flags.set(dir.ordinal());
+					}
+				}
+			}
+		}
+		return Flags;
+	}
+			
 	public BitSet getDirectionEdgeSet(MapCoordinate TargetCoords) {
 		GridCell TargetCell = getCell(new CellCoordinate(TargetCoords));
 		if (TargetCell != null) {
@@ -302,6 +307,10 @@ public class KhazadGrid implements GridInterface {
 	public boolean isPathPossible(MovementModality MovementType, MapCoordinate StartCoords, MapCoordinate GoalCoords) {
 		return getZoneEquivilency(StartCoords) == getZoneEquivilency(GoalCoords);
 	}
+
+	 public void DirtyMapCoordinate(MapCoordinate[] TargetCoords) {
+		 Collections.addAll(DirtyLocations, TargetCoords);
+	 }
 
 	int getZoneEquivilency(MapCoordinate TargetCoords) {
 		return ConnectivityCache.get(getConnectivityZone(TargetCoords));

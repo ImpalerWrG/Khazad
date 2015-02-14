@@ -114,16 +114,18 @@ public class PathFinding extends AbstractAppState {
     }
 
 	public void CreateMapAbstraction(GameMap TargetMap) {
-		KhazadGrid MainGrid = new KhazadGrid(TargetMap);
 		MovementModality BasicPawn = new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1);
+		KhazadGrid MainGrid = new KhazadGrid(TargetMap, BasicPawn);
 		Grids.put(BasicPawn, MainGrid);
 
 		Tester = new PathTester();
 		Tester.Initialize(this);		
 	}
 
-	public void EditMapAbstractions() {
-
+	public void EditMapAbstractions(MapCoordinate[] Coordinates) {
+		for (GridInterface Grid : Grids.values()) {
+			Grid.DirtyMapCoordinate(Coordinates.clone());
+		}
 	}
 
 	void DeleteMapAbstractions() {

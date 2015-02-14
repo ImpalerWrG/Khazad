@@ -154,7 +154,7 @@ public class Pawn extends Actor {
 	}
 
 	public Task FindTask() {		
-		PrimaryJob = new LoiterJob();
+		PrimaryJob = new WanderJob();
 		CurrentTask = PrimaryJob.nextTask(this);
 		return CurrentTask;
 	}
