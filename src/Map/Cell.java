@@ -53,7 +53,8 @@ public class Cell {
     // The global position of this cell relative to other cells
     CellCoordinate thisCellCoordinates;
 	
-	boolean DirtyRendering;
+	boolean DirtyTerrainRendering;
+	boolean DirtyPathRendering;
 	
 	
 	public Cell() {
@@ -77,12 +78,13 @@ public class Cell {
 			CubeMaterialTypes[i] = DataManager.INVALID_INDEX;
 		}
 
-		DirtyRendering = true;
+		DirtyTerrainRendering = true;
+		DirtyPathRendering = true;
 	}
 
 	public void setCellPosition(CellCoordinate Coordinates) {
 		thisCellCoordinates = Coordinates;
-		DirtyRendering = true;
+		setNeedsReRendering();
 	}
 
 	public CellCoordinate getCellCoordinates() {
@@ -92,7 +94,7 @@ public class Cell {
 	public void setCubeShape(byte Coordinates, CubeShape NewShape) {
 		if (NewShape.getData() != CubeShapeTypes[Coordinates & 0xFF]) {
 			CubeShapeTypes[Coordinates& 0xFF] = NewShape.getData();
-			setRenderingDirty(true);
+			setNeedsReRendering();
 
 			Face TargetFace = getFace(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE));
 			if (TargetFace != null) {
@@ -156,7 +158,7 @@ public class Cell {
 
 		}
 		while (TargetCube != 0);  // End Loop when Byte rolls over
-		setRenderingDirty(true);
+		setNeedsReRendering();
 	}
 
 	Face getFace(FaceCoordinate TargetCoordinates) {
@@ -183,7 +185,7 @@ public class Cell {
 		if (TargetFace != null)
 		{
 			TargetFace.setFaceMaterialType(MaterialTypeID);
-			setRenderingDirty(true);
+			setNeedsReRendering();
 			return true;
 		}
 		return false;
@@ -195,7 +197,7 @@ public class Cell {
 		if (TargetFace != null)
 		{
 			TargetFace.setFaceSurfaceType(SurfaceTypeID);
-			setRenderingDirty(true);
+			setNeedsReRendering();
 			return true;
 		}
 		return false;
@@ -212,7 +214,7 @@ public class Cell {
 		if (TargetFace != null)
 		{
 			TargetFace.setFaceShapeType(NewShape);
-			setRenderingDirty(true);
+			setNeedsReRendering();
 			return true;
 		}
 		return false;
@@ -221,7 +223,7 @@ public class Cell {
 	boolean removeFace(FaceCoordinate TargetCoordinates) {
 		if (Faces.containsKey(TargetCoordinates)) {
 			Faces.remove(TargetCoordinates);
-			setRenderingDirty(true);
+			setNeedsReRendering();
 			return true;
 		}
 		return false;
@@ -232,7 +234,7 @@ public class Cell {
 		if (TargetFace == null) {
 			Face NewFace = new Face(TargetCoordinates.Coordinates, TargetCoordinates.FaceDirection);
 			Faces.put(TargetCoordinates, NewFace);
-			setRenderingDirty(true);
+			setNeedsReRendering();
 			return NewFace;
 		}
 		else {
@@ -254,24 +256,33 @@ public class Cell {
 	}*/
 
 	public void setNeedsReRendering() {
-		setRenderingDirty(true);
+		setDirtyTerrainRendering(true);
+		setDirtyPathingRendering(true);
 	}
 
-	public void setRenderingDirty(boolean dirty) {
-		DirtyRendering = dirty;
+	public void setDirtyTerrainRendering(boolean dirty) {
+		DirtyTerrainRendering = dirty;
 	}
-	
-	public boolean isDirty() {
-		return DirtyRendering;
+
+	public void setDirtyPathingRendering(boolean dirty) {
+		DirtyPathRendering = dirty;
 	}
-	
+
+	public boolean isTerrainRenderingDirty() {
+		return DirtyTerrainRendering;
+	}
+
+	public boolean isPathingRenderingDirty() {
+		return DirtyPathRendering;
+	}
+
 	public CubeShape getCubeShape(byte Coordinates) {
 		return new CubeShape(CubeShapeTypes[Coordinates & 0xFF]); 
 	}
 
     public void setCubeMaterial(byte Coordinates, short MaterialID) {
 		CubeMaterialTypes[Coordinates & 0xFF] = MaterialID; 
-		DirtyRendering = true;
+		DirtyTerrainRendering = true;
 	}
 
     public short getCubeMaterial(byte Coordinates) {
@@ -284,7 +295,7 @@ public class Cell {
 
     public void setCubeHidden(byte Coordinates, boolean NewValue) {
 		Hidden.set(Coordinates & 0xFF, NewValue); 
-		DirtyRendering = true;
+		DirtyTerrainRendering = true;
 	}
 
 	/*

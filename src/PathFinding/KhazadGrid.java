@@ -20,9 +20,9 @@ package PathFinding;
 import Map.Cell;
 import java.util.BitSet;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import Map.Axis;
 import Map.GameMap;
@@ -58,9 +58,21 @@ public class KhazadGrid implements GridInterface {
 			DirectionMatrix = new BitSet(MapCoordinate.CUBESPERCELL * Direction.ANGULAR_DIRECTIONS.length);
 			ConnectivityZone = new int[MapCoordinate.CUBESPERCELL];	
 		}
-		
+
+		public int getConnectivityZone(int Cube) {
+			return ConnectivityZone[Cube];
+		}
+
+		public void setConnectivityZone(int Cube, int Zone) {
+			ConnectivityZone[Cube] = Zone;
+		}
+
 		public BitSet getCubeDirections(int Cube) {
 			return DirectionMatrix.get(Cube * Direction.ANGULAR_DIRECTIONS.length, ((Cube + 1) * Direction.ANGULAR_DIRECTIONS.length));
+		}
+
+		public void setCubeDirection(int Cube, Direction TargetDirection, boolean newValue) {
+			DirectionMatrix.set((Cube * Direction.ANGULAR_DIRECTIONS.length) + TargetDirection.ordinal(), newValue);
 		}
 
 		void setCubeDirections(int Cube, BitSet ArgumentSet) {
@@ -74,19 +86,19 @@ public class KhazadGrid implements GridInterface {
 		}
 	}
 	
-	public ConcurrentHashMap<CellCoordinate, GridCell> GridCells;
-	ArrayList<MapCoordinate> DirtyLocations;
+	ConcurrentHashMap<CellCoordinate, GridCell> GridCells;
+	ConcurrentLinkedDeque<MapCoordinate> DirtyLocations;
     ArrayList<Integer> ConnectivityCache;
-	HashMap<Integer, HashMap<Integer, Integer> > ConnectivityMap;
+	ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, Integer> > ConnectivityMap;
 	MovementModality GridModality;
 	GameMap SourceMap;
 	
 	public KhazadGrid(GameMap TargetMap, MovementModality Modality) {
 		GridCells = new ConcurrentHashMap<CellCoordinate, GridCell>();
-		ConnectivityMap = new HashMap<Integer, HashMap<Integer, Integer> >();
+		ConnectivityMap = new ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, Integer> >();
 		ConcurrentHashMap<CellCoordinate, Cell> cells = TargetMap.getCellMap();
 		ConnectivityCache = new ArrayList<Integer>();
-		DirtyLocations = new ArrayList<MapCoordinate>();
+		DirtyLocations = new ConcurrentLinkedDeque<MapCoordinate>();
 		GridModality = Modality;
 		SourceMap = TargetMap;
 		
@@ -211,7 +223,7 @@ public class KhazadGrid implements GridInterface {
 		return false;
 	}
 
-	int getConnectivityZone(MapCoordinate TargetCoords) {
+	public int getConnectivityZone(MapCoordinate TargetCoords) {
 		GridCell TargetCell = getCell(new CellCoordinate(TargetCoords));
 		if (TargetCell != null) {
 			return TargetCell.ConnectivityZone[TargetCoords.CubeIndex() & 0xFF];
@@ -233,11 +245,11 @@ public class KhazadGrid implements GridInterface {
 		TargetCell.setCubeDirections(MapCoords.CubeIndex() & 0xFF, Flags);
 	}
 
-	HashMap<Integer, Integer> getConnectivtySubMap(int Zone) {
-		HashMap<Integer, Integer> SubMap = ConnectivityMap.get(Zone);
+	ConcurrentHashMap<Integer, Integer> getConnectivtySubMap(int Zone) {
+		ConcurrentHashMap<Integer, Integer> SubMap = ConnectivityMap.get(Zone);
 
 		if (SubMap == null) {
-			SubMap = new HashMap<Integer, Integer>();
+			SubMap = new ConcurrentHashMap<Integer, Integer>();
 			ConnectivityMap.put(Zone, SubMap);
 			return SubMap;
 		}
@@ -249,7 +261,7 @@ public class KhazadGrid implements GridInterface {
 			return;  // Cannot connect to self
 		}
 
-		HashMap<Integer, Integer> TargetMap = getConnectivtySubMap(FirstZone);
+		ConcurrentHashMap<Integer, Integer> TargetMap = getConnectivtySubMap(FirstZone);
 		Integer it = TargetMap.get(SecondZone);
 
 		if (it == null) {
@@ -308,8 +320,56 @@ public class KhazadGrid implements GridInterface {
 		return getZoneEquivilency(StartCoords) == getZoneEquivilency(GoalCoords);
 	}
 
-	 public void DirtyMapCoordinate(MapCoordinate[] TargetCoords) {
-		 Collections.addAll(DirtyLocations, TargetCoords);
+	 public void DirtyMapCoordinate(MapCoordinate[] DirtyCoords) {
+		 Collections.addAll(DirtyLocations, DirtyCoords);
+		 
+		 do {
+			MapCoordinate TargetCoords = DirtyLocations.poll();
+			BitSet NewConnectivitySet = BuildConnectivitySet(TargetCoords);
+			
+			CellCoordinate TargetCell = new CellCoordinate(TargetCoords);
+			GridCell TargetGridCell = getCell(TargetCell);
+			byte TargetCube = TargetCoords.CubeIndex();
+			BitSet CurrentConnectivity = getDirectionEdgeSet(TargetCoords);
+			int SourceZone = getZoneEquivilency(TargetCoords);
+
+
+			for (Direction dir: Direction.ANGULAR_DIRECTIONS) {
+				MapCoordinate AdjacentTileCoords = TargetCoords.clone();
+				AdjacentTileCoords.TranslateMapCoordinates(dir);
+				Direction InvertedDirection = dir.Invert();
+				
+				TargetCell = new CellCoordinate(AdjacentTileCoords);
+				TargetGridCell = getCell(TargetCell);
+				TargetCube = AdjacentTileCoords.CubeIndex();
+				BitSet AdjacentBitSet = getDirectionEdgeSet(AdjacentTileCoords);
+				boolean NewConnectionValue = NewConnectivitySet.get(dir.ordinal());
+
+				if (NewConnectionValue != CurrentConnectivity.get(dir.ordinal())) {
+					int AdjacentZone = getZoneEquivilency(AdjacentTileCoords);
+					if (NewConnectionValue) { // Connection exists
+						if (SourceZone == 0 && AdjacentZone != 0) {  // Match the zone any adjacent connected zone
+							TargetGridCell.setConnectivityZone(TargetCoords.CubeIndex(), AdjacentZone);
+						}
+
+						if (AdjacentZone == 0 && SourceZone != 0) {  // Alternativly push the existing zone into unitialized space
+							TargetGridCell.setConnectivityZone(AdjacentTileCoords.CubeIndex(), SourceZone);
+						}
+					}
+
+					if (SourceZone != AdjacentZone) {
+						if (NewConnectionValue) {
+							ChangeConnectivityMap(SourceZone, AdjacentZone, 1);
+						} else {
+							ChangeConnectivityMap(SourceZone, AdjacentZone, -1);							
+						}
+					}
+				}
+				TargetGridCell.setCubeDirection(TargetCube & 0xFF, InvertedDirection, NewConnectionValue);				
+			}
+			TargetGridCell.setCubeDirections(TargetCube & 0xFF, NewConnectivitySet);
+
+		 } while (!DirtyLocations.isEmpty());		 
 	 }
 
 	int getZoneEquivilency(MapCoordinate TargetCoords) {
@@ -319,7 +379,7 @@ public class KhazadGrid implements GridInterface {
 	void updateConnectivityCache(int Zone, int ZoneEquivilency) {
 		ConnectivityCache.set(Zone, ZoneEquivilency);
 
-		HashMap<Integer, Integer> TargetMap = getConnectivtySubMap(Zone);
+		ConcurrentHashMap<Integer, Integer> TargetMap = getConnectivtySubMap(Zone);
 		for (Integer i: TargetMap.keySet()) {
 			if (ConnectivityCache.get(i.intValue()) == 0) {
 				updateConnectivityCache(i, ZoneEquivilency);

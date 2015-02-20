@@ -43,6 +43,12 @@ public final class MapCoordinate implements Cloneable{
 		Z = CellCoords.Z;
 	}
 
+	public MapCoordinate(CellCoordinate CellCoords, int X, int Y) {
+		this.X = (CellCoords.X * CELLEDGESIZE) + X;
+		this.Y = (CellCoords.Y * CELLEDGESIZE) + Y;
+		Z = CellCoords.Z;
+	}
+
 	public MapCoordinate(MapCoordinate SourceCoords, Direction DirectionType) {
 		X = SourceCoords.X + DirectionType.ValueonAxis(Axis.AXIS_X);
 		Y = SourceCoords.Y + DirectionType.ValueonAxis(Axis.AXIS_Y);

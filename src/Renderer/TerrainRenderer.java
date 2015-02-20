@@ -68,6 +68,7 @@ public class TerrainRenderer extends AbstractAppState {
 
 	ExecutorService Executor;
 	ArrayList<Future> CellRebuildingFutures;
+	boolean DisplayToggle = true;
 
 	public TerrainRenderer(ExecutorService Threadpool) {
 		Executor = Threadpool;
@@ -122,7 +123,7 @@ public class TerrainRenderer extends AbstractAppState {
 		sunnyterrainNode = null;
 	}
 
-	private Node getCellNodeLight(CellCoordinate TargetCell) {
+	public Node getCellNodeLight(CellCoordinate TargetCell) {
 		Node CellNode = LightCellNodeMap.get(TargetCell);
 		if (CellNode == null) {
 			CellNode = new Node();	
@@ -138,7 +139,7 @@ public class TerrainRenderer extends AbstractAppState {
 		return CellNode;
 	}
 
-		private Node getCellNodeDark(CellCoordinate TargetCell) {
+	public Node getCellNodeDark(CellCoordinate TargetCell) {
 		Node CellNode = DarkCellNodeMap.get(TargetCell);
 		if (CellNode == null) {
 			CellNode = new Node();	
@@ -178,14 +179,14 @@ public class TerrainRenderer extends AbstractAppState {
 
 	public void RebuildDirtyCells(ConcurrentHashMap<CellCoordinate, Cell> cells) {
 		for (Cell target : cells.values()) {
-			if (target.isDirty()) {
+			if (target.isTerrainRenderingDirty()) {
 				CellCoordinate Coords = target.getCellCoordinates();
 
 				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, mat);
 				Builder.setNodes(getCellNodeLight(Coords), getCellNodeDark(Coords));
 				Executor.submit(Builder);
 
-				target.setRenderingDirty(false);
+				target.setDirtyTerrainRendering(false);
 				break;
 			}
 		}	
@@ -215,6 +216,7 @@ public class TerrainRenderer extends AbstractAppState {
 						ActorNodeMap.put(new Integer(target.getID()), actorNode);
 					}
 
+					actorNode.setCullHint(Spatial.CullHint.Never);
 					MapCoordinate coords = target.getLocation();
 					Node z = getZNodeLight(coords.Z);
 					z.attachChild(actorNode);
@@ -270,6 +272,12 @@ public class TerrainRenderer extends AbstractAppState {
 		}
 	}
 	
+	public void HideActors() {
+		for (Node target : ActorNodeMap.values()) {
+			target.setCullHint(Spatial.CullHint.Always);
+		}
+	}
+
 	public void setSliceLevels(int top, int bottom) {
 		Top = top; Bottom = bottom;
 		
@@ -324,10 +332,16 @@ public class TerrainRenderer extends AbstractAppState {
 		Game game = state.getState(Game.class);
 		if (game != null) {
 			GameMap map = game.getMap();
-			RebuildDirtyCells(map.getCellMap());
-			//if (game.getTickRate() < 64) {
+			if (DisplayToggle) {
+				RebuildDirtyCells(map.getCellMap());
+			} else {
+				
+			}
+			if (game.getTickRate() <= 256) {
 				PopulateActors();	
-			//}
+			} else {
+				HideActors();
+			}
 			GameCameraState cam = state.getState(GameCameraState.class);
 			setSliceLevels(cam.getSliceTop(), cam.getSliceBottom());
 

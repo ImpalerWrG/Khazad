@@ -40,7 +40,7 @@ import java.util.Map;
  *
  * @author Impaler
  */
-public class SelectionRenderer extends AbstractAppState{
+public class SelectionRenderer extends AbstractAppState {
 	
 	SimpleApplication app = null;
 	AppStateManager state = null;
@@ -69,32 +69,32 @@ public class SelectionRenderer extends AbstractAppState{
 	}
 
 	public void BuildCursorBox() {
-		
+
 		Material CursorMaterial = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
 		CursorMaterial.setColor("Color", ColorRGBA.Blue);
-		
+
 		Mesh WireBoxMesh = new Mesh();
 		WireBoxMesh.setMode(Mesh.Mode.Lines);
 		WireBoxMesh.setLineWidth(3);
-		
+
 		Vector3f [] vertices = new Vector3f[8];
 		vertices[0] = new Vector3f( MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE);
 		vertices[1] = new Vector3f(-MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE);
 		vertices[2] = new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE);
 		vertices[3] = new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE);
-		
+
 		vertices[4] = new Vector3f( MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
 		vertices[5] = new Vector3f(-MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
 		vertices[6] = new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
 		vertices[7] = new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-		
+
 		int [] indexes = { 0,1, 1,2, 2,3, 3,0, 0,4, 1,5, 2,6, 3,7, 4,5, 5,6, 6,7, 7,4 };
 		
 		WireBoxMesh.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
 		WireBoxMesh.setBuffer(VertexBuffer.Type.Index,    3, BufferUtils.createIntBuffer(indexes));
 		WireBoxMesh.updateBound();
 		
-		CursorBox = new Geometry("Camera Mouse Box", WireBoxMesh);		
+		CursorBox = new Geometry("Camera Mouse Box", WireBoxMesh);
 		CursorBox.setMaterial(CursorMaterial);
 		app.getRootNode().attachChild(CursorBox);
 	}
@@ -129,7 +129,7 @@ public class SelectionRenderer extends AbstractAppState{
 		int [] indexes = { 0,1, 1,2, 2,3, 3,0, 0,4, 1,5, 2,6, 3,7, 4,5, 5,6, 6,7, 7,4 };
 		
 		WireBoxMesh.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
-		WireBoxMesh.setBuffer(VertexBuffer.Type.Index,    3, BufferUtils.createIntBuffer(indexes));
+		WireBoxMesh.setBuffer(VertexBuffer.Type.Index,    2, BufferUtils.createIntBuffer(indexes));
 		WireBoxMesh.updateBound();
 		
 		SelectionBox = new Geometry("Camera Mouse Box", WireBoxMesh);		

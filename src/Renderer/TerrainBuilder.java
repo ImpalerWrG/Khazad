@@ -71,7 +71,6 @@ public class TerrainBuilder implements Callable<Void>  {
 			if (facemesh != null) {
 				Geometry geom = new Geometry("face", facemesh);
 				geom.setLocalTranslation(new Vector3f(coords.getX(), coords.getY(), 0));
-
 				geom.setMaterial(TerrainMaterial);
 				
 				//Cell   coords.Coordinates
@@ -83,22 +82,24 @@ public class TerrainBuilder implements Callable<Void>  {
 			}
 		}
 
-		GeometryBatchFactory.optimize(TerrainLight);
+		GeometryBatchFactory.optimize(TerrainLight, true);
 		if (TerrainLight.getQuantity() > 0) {
 			LightBuildGeometry = TerrainLight.getChild(0);
+			LightBuildGeometry.setName("LightGeometry Cell" + BuildCell.toString());
 		}
-		GeometryBatchFactory.optimize(TerrainDark);
+		GeometryBatchFactory.optimize(TerrainDark, true);
 		if (TerrainDark.getQuantity() > 0) {
 			DarkBuildGeometry = TerrainDark.getChild(0);
+			LightBuildGeometry.setName("DarkGeometry Cell" + BuildCell.toString());
 		}
 		
 		app.enqueue(new Callable() {
 			public Object call() throws Exception {
-				CellLight.detachAllChildren();
+				CellLight.detachChildNamed("LightGeometry Cell" + BuildCell.toString());
 				if (LightBuildGeometry != null)
 					CellLight.attachChild(LightBuildGeometry);
 				
-				CellDark.detachAllChildren();
+				CellDark.detachChildNamed("DarkGeometry Cell" + BuildCell.toString());
 				if (DarkBuildGeometry != null)
 					CellDark.attachChild(DarkBuildGeometry);
 				

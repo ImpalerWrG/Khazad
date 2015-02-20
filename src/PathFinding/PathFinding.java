@@ -227,5 +227,13 @@ public class PathFinding extends AbstractAppState {
 		}
 		return -1;
 	}
+	
+	public int getConnectivityZone(MapCoordinate TestCoords, MovementModality Modality)  {
+		GridInterface TargetGrid = getModalityGrid(Modality);
+		if (TargetGrid != null) {
+			return TargetGrid.getConnectivityZone(TestCoords);
+		}		
+		return 0;
+	}
 }
 

@@ -81,6 +81,7 @@ public class Main extends SimpleApplication {
 
 		// RENDER
 		this.stateManager.attach(new TerrainRenderer(pool));
+		this.stateManager.attach(new PathingRenderer());
 		
 		this.stateManager.attach(new Music());
 		this.stateManager.attach(new GUI(this));	

@@ -65,15 +65,15 @@ public class ExcavateJob extends Job {
 		for (int x = Origin.X; x < Terminal.X + 1; x++) {
 			for (int y = Origin.Y; y < Terminal.Y + 1; y++) {
 				for (int z = Origin.Z; z < Terminal.Z + 1; z++) {
-					MapCoordinate TargetCube = new MapCoordinate(x, y, z);
-					CellCoordinate CellCoords = new CellCoordinate(TargetCube);
-					int CubeIndex = TargetCube.CubeInt();
+					MapCoordinate TargetCoords = new MapCoordinate(x, y, z);
+					CellCoordinate CellCoords = new CellCoordinate(TargetCoords);
+					int CubeIndex = TargetCoords.CubeInt();
 
 					CubeShape[] DesignationShapes = Designations.get(CellCoords);
 					BitSet AccessibleLocation = AccessibleExcavations.get(CellCoords);
 					BitSet AssignedLocations = AssignedExcavations.get(CellCoords);
 
-					if (map.getCubeShape(TargetCube) != NewShape) {
+					if (map.getCubeShape(TargetCoords) != NewShape) {
 						if (DesignationShapes == null) {
 							DesignationShapes = new CubeShape[MapCoordinate.CUBESPERCELL];
 							Designations.put(CellCoords, DesignationShapes);
@@ -86,19 +86,32 @@ public class ExcavateJob extends Job {
 							AccessibleExcavations.put(CellCoords, AccessibleLocation);
 						}
 
+						CubeShape CurrentShape = GameMap.getMap().getCubeShape(TargetCoords);
+
+						if (!CurrentShape.isSolid()) {
+							BitSet DirectionFlags = paths.getDirectionFlags(TargetCoords, new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1));
+							if (DirectionFlags.cardinality() != 0) {
+								AccessibleMap.put(TargetCoords.clone(), TargetCoords.clone());
+								AccessibleExcavationCount++;
+								break;
+							}
+						}
+						
 						// Test for Accesability of this Coordinate
 						BitSet DirectionFlags;
 						for (Direction dir: Direction.AXIAL_DIRECTIONS) {
-							MapCoordinate AdjacentcCoords = TargetCube.clone();
+							MapCoordinate AdjacentcCoords = TargetCoords.clone();
 							AdjacentcCoords.TranslateMapCoordinates(dir);
-							DirectionFlags = paths.getDirectionFlags(AdjacentcCoords, new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1));
-							if (DirectionFlags.cardinality() != 0) {
-								AccessibleLocation.set(CubeIndex);
-								AccessibleExcavationCount++;
-
-								//AccesibleList.add(TargetCube.clone());
-								AccessibleMap.put(TargetCube.clone(), AdjacentcCoords.clone());
-								break;
+							CubeShape AdjacentShape = GameMap.getMap().getCubeShape(AdjacentcCoords);
+							
+							if (AdjacentShape.isEmpty() || (dir == Direction.DIRECTION_DOWN && !AdjacentShape.isSolid())) {
+								DirectionFlags = paths.getDirectionFlags(AdjacentcCoords, new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1));
+								if (DirectionFlags.cardinality() != 0) {
+									AccessibleLocation.set(CubeIndex);
+									AccessibleMap.put(TargetCoords.clone(), AdjacentcCoords.clone());
+									AccessibleExcavationCount++;
+									break;
+								}
 							}
 						}
 

@@ -111,19 +111,18 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				LookNode.setLocalTranslation(1, 2, 3);
 				
 				Sphere eye = new Sphere(10, 10, 0.5f);
-				Geometry blue = new Geometry("EyeBall", eye);
-				blue.setLocalTranslation(new Vector3f(0, 0, 0));
+				Geometry EyeBall = new Geometry("EyeBall", eye);
+				EyeBall.setLocalTranslation(new Vector3f(0, 0, 0));
 				Material mat1 = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
 				mat1.setColor("Color", ColorRGBA.White);
-				blue.setMaterial(mat1);
-				LookNode.attachChild(blue);
+				EyeBall.setMaterial(mat1);
+				LookNode.attachChild(EyeBall);
 				LookNode.setCullHint(Spatial.CullHint.Always);										
 				
                 MainCamera = new GameCamera(app.getCamera(), LookNode);
             }
         }
 		registerWithInput(app.getInputManager());
-
     }
 	
 	protected void ConvertMouseMovementToVector() {

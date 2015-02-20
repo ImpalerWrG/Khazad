@@ -13,10 +13,11 @@ import de.lessvoid.nifty.screen.ScreenController;
 
 import Game.Game;
 import Job.JobManager;
-import Job.WanderJob;
+
 import PathFinding.PathFinding;
 import Renderer.TerrainRenderer;
 import Renderer.SelectionRenderer;
+import Renderer.PathingRenderer;
 import Interface.GameCameraState;
 /**
  *
@@ -66,7 +67,8 @@ public class ShellScreenController implements ScreenController {
 		
 		this.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
 		this.app.getStateManager().attach(new SelectionRenderer());
-
+		this.app.getStateManager().getState(PathingRenderer.class).attachToGame(game);
+		
 		GameCameraState cam = new GameCameraState();
 		this.app.getStateManager().attach(cam);
 		cam.SetViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());

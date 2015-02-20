@@ -46,6 +46,8 @@ public interface GridInterface {
 
 	BitSet getDirectionEdgeSet(MapCoordinate TargetCoords);
 
+	public int getConnectivityZone(MapCoordinate TargetCoords);
+
 	boolean isPathPossible(MovementModality MovementType, MapCoordinate StartCoords, MapCoordinate GoalCoords);
 
 	abstract void DirtyMapCoordinate(MapCoordinate[] TargetCoords);
