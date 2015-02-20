@@ -1,0 +1,82 @@
+
+
+Clothing Sets
+
+Cheap - made with a small amount of plant fiber and very quick to make, the basic default starting clothing
+Work - made with half plant fiber, half leather and more total material then cheap cloths, wears out more slowly and is preferable when doing work, may prevent minor work injuries
+Warm - made with cloth and fur (obtained from fur animals) more total material then cheap clothing, negates or mitigates negative effects of cold allowing dwarfs on the surface in cold climates and winter to be more happy and productive
+Formal - Made with half silk and half plant fiber, more total material and work time then cheap clothing, ingresses the happiness gain from a party or weeding event.  Most dwarfs will desire these once basic needs are met.
+Fancy - Made mostly of silk, even higher material and time required over fancy, Nobles from Mayor level up are unhappy if not waring these, particularly wealthy dwarfs will want these too.
+Royal - Large amounts of silk and some additional fur, no plant fiber, high production time, Highest level nobles will demand these
+
+Weapons
+
+Club
+Spear
+Bow
+Ax
+Pick
+Sword
+Knife
+
+
+
+
+Ladder
+Pot
+Nail
+Lock
+Torch
+Rope
+Backpack
+Bed
+Table
+Chair
+Door
+Hatch
+Chest
+glass bottle
+bucket
+workbench
+Scafolding
+Oil Lamp
+Candelobra
+Mirror
+Brazier
+Paper
+Paint
+Cabinet
+Millstone
+Sharpening stone
+
+
+
+
+
+
+Skill enhancing clothing/items - used for promoting?
+
+spike shooes /crampon
+archer glove
+smith apron
+hand saw
+Compass
+Lantern
+Fishing rod
+Fishing net
+Holy Symbol
+
+
+Promotion Equipment - used to specialize a dwarf down the profession tree
+
+Cloth vestments - Worshipper
+Book/Papper, quil - Thinker
+Helm/Armor - Fighter
+Tools - Crafter
+Pick Malot ? - Builder
+??? - Laborer
+Basket, cloak - Gatherer
+
+Medicine
+
+Tonic - general use for mild sickness, boyd part specific, Heart tonic, liver tonic, kidney tonic
