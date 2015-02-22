@@ -76,9 +76,8 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 		
 		this.vertices = new Vector3f[Direction.ANGULAR_DIRECTIONS.length];
 		
-		for (int i = 0; i < Direction.ANGULAR_DIRECTIONS.length; i++) {
-			Direction dir = Direction.ANGULAR_DIRECTIONS[i];
-			vertices[i] = new Vector3f(dir.ValueonAxis(Axis.AXIS_X) * MapCoordinate.HALFCUBE, dir.ValueonAxis(Axis.AXIS_Y) * MapCoordinate.HALFCUBE, dir.ValueonAxis(Axis.AXIS_Z) * MapCoordinate.HALFCUBE);
+		for (Direction dir: Direction.ANGULAR_DIRECTIONS) {			
+			vertices[dir.ordinal()] = new Vector3f(dir.ValueonAxis(Axis.AXIS_X) * MapCoordinate.HALFCUBE, dir.ValueonAxis(Axis.AXIS_Y) * MapCoordinate.HALFCUBE, dir.ValueonAxis(Axis.AXIS_Z) * MapCoordinate.HALFCUBE);
 		}
 		registerWithInput(app.getInputManager());
 	}
@@ -109,10 +108,7 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
     }
 
 	public Node BuildRendering(Cell TargetCell) {
-		Mesh EdgeWires = new Mesh();
-		EdgeWires.setMode(Mesh.Mode.Lines);
-		EdgeWires.setLineWidth(5);
-		
+
 		Node PathRenderingNode = new Node();
 		MovementModality Mod = new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1);
 		
@@ -121,10 +117,10 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 		for (int x = 0; x < MapCoordinate.CELLEDGESIZE; x++) {
 			for (int y = 0; y < MapCoordinate.CELLEDGESIZE; y++) {
 
-				MapCoordinate Coords = new MapCoordinate(CellCoords, x, y);
-				BitSet Connectivity = Pathing.getDirectionFlags(Coords, Mod);
+				MapCoordinate TargetCoords = new MapCoordinate(CellCoords, x, y);
+				BitSet Connectivity = Pathing.getDirectionFlags(TargetCoords, Mod);
 				
-				int Zone = Pathing.getConnectivityZone(Coords, Mod);
+				int Zone = Pathing.getConnectivityZone(TargetCoords, Mod);
 				Material mat = ZoneMaterials.get(Zone);
 				if (mat == null) {
 					mat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
@@ -133,11 +129,15 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 				}
 
 				if (Connectivity.cardinality() > 0) {
+					Mesh EdgeWires = new Mesh();
+					EdgeWires.setMode(Mesh.Mode.Lines);
+					EdgeWires.setLineWidth(5);
+					
 					ArrayList<Integer> Indexes = new ArrayList<Integer>();
-					for (int i = 0; i < Direction.ANGULAR_DIRECTIONS.length; i++) {
-						if (Pathing.getEdgeCost(Coords, Direction.ANGULAR_DIRECTIONS[i], Mod) != -1) {
+					for (Direction dir: Direction.ANGULAR_DIRECTIONS) {
+						if (Pathing.getEdgeCost(TargetCoords, dir, Mod) != -1) {
 							Indexes.add(0);
-							Indexes.add(i);
+							Indexes.add(dir.ordinal());
 						}
 					}
 
@@ -147,12 +147,12 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 					}
 
 					EdgeWires.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
-					EdgeWires.setBuffer(VertexBuffer.Type.Index,    3, BufferUtils.createIntBuffer(indexes));
+					EdgeWires.setBuffer(VertexBuffer.Type.Index,    2, BufferUtils.createIntBuffer(indexes));
 					EdgeWires.updateBound();
 
 					Geometry Wires = new Geometry("Connection Wires", EdgeWires);		
-					Wires.setLocalTranslation(new Vector3f(x, y, 0));
 					Wires.setMaterial(mat);		
+					Wires.setLocalTranslation(new Vector3f(x, y, 0));
 					PathRenderingNode.attachChild(Wires);
 				}
 			}

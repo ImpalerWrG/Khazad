@@ -172,7 +172,7 @@ public class KhazadGrid implements GridInterface {
 		BitSet Flags = new BitSet(MapCoordinate.CUBESPERCELL);
 		CubeShape TargetShape = SourceMap.getCubeShape(TargetCoords);
 
-		if (!TargetShape.isSky() && !TargetShape.isSolid()) {
+		if (!TargetShape.isSky() && !TargetShape.hasCeiling()) {
 			MapCoordinate OverheadTileCoords = TargetCoords.clone();
 			OverheadTileCoords.TranslateMapCoordinates(Direction.DIRECTION_UP);
 			CubeShape OverheadCube = SourceMap.getCubeShape(OverheadTileCoords);
@@ -181,17 +181,9 @@ public class KhazadGrid implements GridInterface {
 			for (Direction dir: Direction.ANGULAR_DIRECTIONS) {
 				MapCoordinate AdjacentTileCoords = TargetCoords.clone();
 				AdjacentTileCoords.TranslateMapCoordinates(dir);
-				Direction InvertedDirection = dir.Invert();
-
-				// if we've done this already..
-				if (getDirectionEdgeSet(AdjacentTileCoords).get(InvertedDirection.ordinal())) {
-					Flags.set(dir.ordinal());
-					continue;
-				}
-
 				CubeShape AdjacentCubeShape = SourceMap.getCubeShape(AdjacentTileCoords);
 
-				if (!AdjacentCubeShape.isSky() && !AdjacentCubeShape.isSolid()) {
+				if (!AdjacentCubeShape.isSky() && !AdjacentCubeShape.hasCeiling()) {
 					if (dir.ValueonAxis(Axis.AXIS_Z) == 1) {
 						if (OverheadPassable) {
 							Flags.set(dir.ordinal());

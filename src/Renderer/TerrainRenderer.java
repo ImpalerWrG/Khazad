@@ -17,6 +17,11 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.controls.ActionListener;
+
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
@@ -44,7 +49,7 @@ import java.util.concurrent.Future;
  * 
  * @author Impaler
  */
-public class TerrainRenderer extends AbstractAppState {
+public class TerrainRenderer extends AbstractAppState implements ActionListener {
 	
 	SimpleApplication app = null;
 	AppStateManager state = null;
@@ -91,6 +96,8 @@ public class TerrainRenderer extends AbstractAppState {
 		ImageManager Images = ImageManager.getImageManager();
 		Images.Initialize(assetmanager);
 		imagemanager = Images;
+		
+		registerWithInput(app.getInputManager());
 	}
 	
 	public void attachToGame(Game TargetGame) {
@@ -122,6 +129,21 @@ public class TerrainRenderer extends AbstractAppState {
 		darkterrainNode = null;
 		sunnyterrainNode = null;
 	}
+
+	public void onAction(String name, boolean keyPressed, float tpf) {
+        if (this.isEnabled()) {
+			if (name.equals("TerrainRenderToggle") && keyPressed) {
+				DisplayToggle = !DisplayToggle;
+			}
+        }
+    }
+
+	public void registerWithInput(InputManager inputManager) {
+        String[] inputs = {"TerrainRenderToggle"};
+
+        inputManager.addMapping("TerrainRenderToggle", new KeyTrigger(KeyInput.KEY_T));		
+        inputManager.addListener(this, inputs);
+    }
 
 	public Node getCellNodeLight(CellCoordinate TargetCell) {
 		Node CellNode = LightCellNodeMap.get(TargetCell);
@@ -179,9 +201,20 @@ public class TerrainRenderer extends AbstractAppState {
 
 	public void RebuildDirtyCells(ConcurrentHashMap<CellCoordinate, Cell> cells) {
 		for (Cell target : cells.values()) {
-			if (target.isTerrainRenderingDirty()) {
-				CellCoordinate Coords = target.getCellCoordinates();
+			CellCoordinate Coords = target.getCellCoordinates();
 
+			Node CellLight = getCellNodeLight(Coords);
+			Node CellDark = getCellNodeDark(Coords);
+			
+			Spatial light = CellLight.getChild("LightGeometry Cell" + target.toString());
+			Spatial dark = CellDark.getChild("DarkGeometry Cell" + target.toString());
+			
+			if (light != null)
+				light.setCullHint(Spatial.CullHint.Dynamic);
+			if (dark != null)
+				dark.setCullHint(Spatial.CullHint.Dynamic);
+			
+			if (target.isTerrainRenderingDirty()) {
 				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, mat);
 				Builder.setNodes(getCellNodeLight(Coords), getCellNodeDark(Coords));
 				Executor.submit(Builder);
@@ -190,6 +223,23 @@ public class TerrainRenderer extends AbstractAppState {
 				break;
 			}
 		}	
+	}
+
+	public void HideTerrain(ConcurrentHashMap<CellCoordinate, Cell> cells) {
+		for (Cell target : cells.values()) {
+			CellCoordinate Coords = target.getCellCoordinates();
+
+			Node CellLight = getCellNodeLight(Coords);
+			Node CellDark = getCellNodeDark(Coords);
+			
+			Spatial light = CellLight.getChild("LightGeometry Cell" + target.toString());
+			Spatial dark = CellDark.getChild("DarkGeometry Cell" + target.toString());
+
+			if (light != null)
+				light.setCullHint(Spatial.CullHint.Always);
+			if (dark != null)
+				dark.setCullHint(Spatial.CullHint.Always);
+		}
 	}
 
 	public void PopulateActors() {
@@ -335,7 +385,7 @@ public class TerrainRenderer extends AbstractAppState {
 			if (DisplayToggle) {
 				RebuildDirtyCells(map.getCellMap());
 			} else {
-				
+				HideTerrain(map.getCellMap());
 			}
 			if (game.getTickRate() <= 256) {
 				PopulateActors();	
