@@ -5,15 +5,15 @@
 		<Textures>
 			<Texture>
 				<Name Label="TEXTURE_TREE_0"/>
-				<SheetLocation X="64" Y="0" W="32" H="32"/>
+				<SheetLocation X="64" Y="0" Width="32" Height="32"/>
 			</Texture>
 			<Texture>
 				<Name Label="TEXTURE_TREE_1"/>
-				<SheetLocation X="128" Y="0" W="32" H="64"/>
+				<SheetLocation X="128" Y="0" Width="32" Height="64"/>
 			</Texture>
 			<Texture>
 				<Name Label="TEXTURE_TREE_2"/>
-				<SheetLocation X="192" Y="0" W="32" H="64"/>
+				<SheetLocation X="192" Y="0" Width="32" Height="64"/>
 			</Texture>
 		</Textures>
 	</TextureSheet>

@@ -6,17 +6,17 @@
 		<PrimaryColor label="COLOR_NONE"/>
 		<ColorMode mode="keepimage"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DWARF_0"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SPRITE_DWARF_1"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SPRITE_DWARF_2"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SPRITE_DWARF_3"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SPRITE_DWARF_4"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_WALL" Texture="TEXTURE_SPRITE_DWARF_5"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_FLOOR" Texture="TEXTURE_SPRITE_DWARF_6"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_PEBBLES" Texture="TEXTURE_SPRITE_DWARF_0"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_BOULDER" Texture="TEXTURE_SPRITE_DWARF_1"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_SPRITE_DWARF_2"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_SPRITE_DWARF_3"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DWARF_0"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SPRITE_DWARF_1"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_SPRITE_DWARF_2"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_SPRITE_DWARF_3"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_SPRITE_DWARF_4"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_SMOOTH_WALL" Texturelabel="TEXTURE_SPRITE_DWARF_5"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_SMOOTH_FLOOR" Texturelabel="TEXTURE_SPRITE_DWARF_6"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_PEBBLES" Texturelabel="TEXTURE_SPRITE_DWARF_0"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_BOULDER" Texturelabel="TEXTURE_SPRITE_DWARF_1"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_SPRITE_DWARF_2"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_SPRITE_DWARF_3"/>
 		</SurfaceTextures>
 	</Material>
 </Materials>

@@ -2,160 +2,160 @@
 <Textures xmlns="https://github.com/ImpalerWrG/Khazad">
 	<Texture>
 		<Name Label="TEXTURE_DEFAULT"/>
-		<File Path="Media/Textures/nehe.png"/>
+		<File Path="Textures/nehe.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_STONE_1"/>
-		<File Path="Media/Textures/stone1.png"/>
+		<File Path="Textures/stone1.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_STONE_2"/>
-		<File Path="Media/Textures/stone2.png"/>
+		<File Path="Textures/stone2.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_STONE_3"/>
-		<File Path="Media/Textures/stone3.png"/>
+		<File Path="Textures/stone3.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_STONE_4"/>
-		<File Path="Media/Textures/stone4.png"/>
+		<File Path="Textures/stone4.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_PEBBLES"/>
-		<File Path="Media/Textures/pebble.png"/>
+		<File Path="Textures/pebble.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_DIRT"/>
-		<File Path="Media/Textures/Dirt.png"/>
+		<File Path="Textures/Dirt.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_GROUND"/>
-		<File Path="Media/Textures/ground.png"/>
+		<File Path="Textures/ground.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_CLAY"/>
-		<File Path="Media/Textures/Clay1.png"/>
+		<File Path="Textures/Clay1.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_BRICK"/>
-		<File Path="Media/Textures/Brick1.png"/>
+		<File Path="Textures/Brick1.png"/>
 	</Texture>
     <Texture>
         <Name Label="TEXTURE_BRICK2"/>
-        <File Path="Media/Textures/Brick2.png"/>
+        <File Path="Textures/Brick2.png"/>
     </Texture>
 	<Texture>
 		<Name Label="TEXTURE_AIR"/>
-		<File Path="Media/Textures/Air.png"/>
+		<File Path="Textures/Air.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_SAND"/>
-		<File Path="Media/Textures/Sand.png"/>
+		<File Path="Textures/Sand.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_BARK"/>
-		<File Path="Media/Textures/Bark.png"/>
+		<File Path="Textures/Bark.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_MATT"/>
-		<File Path="Media/Textures/Matt.png"/>
+		<File Path="Textures/Matt.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_ICE"/>
-		<File Path="Media/Textures/Ice.png"/>
+		<File Path="Textures/Ice.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_SNOW"/>
-		<File Path="Media/Textures/Snow.png"/>
+		<File Path="Textures/Snow.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_PIT"/>
-		<File Path="Media/Textures/Pit.png"/>
+		<File Path="Textures/Pit.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_ROUGH"/>
-		<File Path="Media/Textures/Rough.png"/>
+		<File Path="Textures/Rough.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_SMOOTH"/>
-		<File Path="Media/Textures/Smooth.png"/>
+		<File Path="Textures/Smooth.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_LIQUID"/>
-		<File Path="Media/Textures/Liquid.png"/>
+		<File Path="Textures/Liquid.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_TILES"/>
-		<File Path="Media/Textures/Tile.png"/>
+		<File Path="Textures/Tile.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_VEINS"/>
-		<File Path="Media/Textures/Veins.png"/>
+		<File Path="Textures/Veins.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_CRYSTALLINE"/>
-		<File Path="Media/Textures/crystallic.png"/>
+		<File Path="Textures/crystallic.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_SWIRLY"/>
-		<File Path="Media/Textures/Swirly.png"/>
+		<File Path="Textures/Swirly.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_BANDED"/>
-		<File Path="Media/Textures/Banded.png"/>
+		<File Path="Textures/Banded.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_LAYERED"/>
-		<File Path="Media/Textures/Layers.png"/>
+		<File Path="Textures/Layers.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_FOLIATED"/>
-		<File Path="Media/Textures/Foliated.png"/>
+		<File Path="Textures/Foliated.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_CARBONATE"/>
-		<File Path="Media/Textures/Carbonate.png"/>
+		<File Path="Textures/Carbonate.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_CUBIC"/>
-		<File Path="Media/Textures/Cubic.png"/>
+		<File Path="Textures/Cubic.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_IGNEOUS_INTRUSIVE"/>
-		<File Path="Media/Textures/Igneous_Intrusive.png"/>
+		<File Path="Textures/Igneous_Intrusive.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_IGNEOUS_EXTRUSIVE"/>
-		<File Path="Media/Textures/Igneous_Extrusive.png"/>
+		<File Path="Textures/Igneous_Extrusive.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_DRIFTWOOD"/>
-		<File Path="Media/Textures/driftwood.png"/>
+		<File Path="Textures/driftwood.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_ASHES"/>
-		<File Path="Media/Textures/ashes.png"/>
+		<File Path="Textures/ashes.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_WOOD_WALL"/>
-		<File Path="Media/Textures/wood_side.png"/>
+		<File Path="Textures/wood_side.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_WOOD_FLOOR"/>
-		<File Path="Media/Textures/wood_floor.png"/>
+		<File Path="Textures/wood_floor.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_ROUGH_GEMS"/>
-		<File Path="Media/Textures/Gems.png"/>
+		<File Path="Textures/Gems.png"/>
 	</Texture>
 	<Texture>
 		<Name Label="TEXTURE_KHAZAD_LOGO"/>
-		<File Path="Media/Textures/KhazadLogo.png"/>
+		<File Path="Textures/KhazadLogo.png"/>
 	</Texture>
 	<TextureGrid>
 		<TextureSize Height="64" Width="64"/>
 		<GridSize Height="9" Width="7"/>
-		<File Path="Media/Textures/grass.png"/>
+		<File Path="Textures/grass.png"/>
 		<Textures>
 			<Texture>
 				<Name Label="TEXTURE_GRASS_1"/>

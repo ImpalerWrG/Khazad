@@ -3,22 +3,20 @@
 		<Name Label="MATERIALCLASS_VEGATATION"/>
 		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_STONE_1"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_STONE_2"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_STONE_3"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_STONE_4"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_STONE_1"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_STONE_2"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_STONE_3"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_STONE_4"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="3"/>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_WOOD"/>
 		<DefaultMaterial label="MATERIAL_GENERIC_WOOD"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_WOOD_WALL"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_WOOD_FLOOR"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_WOOD_WALL"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_WOOD_FLOOR"/>
 		</DefaultSurfaceTextures>
-		<MatGlossIndex int="0"/>
 	</MaterialClass>
 	<Material>
 		<Name Label="MATERIAL_GENERIC_WOOD"/>
@@ -26,7 +24,7 @@
 		<PrimaryColor label="COLOR_BROWN"/>
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_WOOD_FLOOR"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_WOOD_FLOOR"/>
 		</SurfaceTextures>
 	</Material>
 	
@@ -41,7 +39,7 @@
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SAGUARO"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_SAGUARO"/>
 		</SurfaceTextures>
     </Material>
 
@@ -51,14 +49,14 @@
 		<Model label="MODEL_OAK"/>
 		<Trunk material="MATERIAL_OAK_TRUNK"/>
 		<Leaves material="MATERIAL_OAK_LEAVES"/>
-		<Texture Texture="TEXTURE_TREE_0"/>
+		<Texture Texturelabel="TEXTURE_TREE_0"/>
 	</Tree>
     <Material>
         <Name Label="MATERIAL_OAK_BARK"/>
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_OAK_TRUNK"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_OAK_TRUNK"/>
 		</SurfaceTextures>
     </Material>
     <Material>
@@ -66,7 +64,7 @@
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_OAK_LEAVES"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_OAK_LEAVES"/>
 		</SurfaceTextures>
     </Material>
 
@@ -82,7 +80,7 @@
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_MAPLE_TRUNK"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_MAPLE_TRUNK"/>
 		</SurfaceTextures>
     </Material>
     <Material>
@@ -90,7 +88,7 @@
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_MAPLE_LEAVES"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_MAPLE_LEAVES"/>
 		</SurfaceTextures>
     </Material>
 	
@@ -106,7 +104,7 @@
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_BIRCH_TRUNK"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_BIRCH_TRUNK"/>
 		</SurfaceTextures>
     </Material>
     <Material>
@@ -114,7 +112,7 @@
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_BIRCH_LEAVES"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_BIRCH_LEAVES"/>
 		</SurfaceTextures>
     </Material>
 
@@ -129,7 +127,7 @@
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CHESTNUT_TRUNK"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CHESTNUT_TRUNK"/>
 		</SurfaceTextures>
     </Material>
     <Material>
@@ -137,7 +135,7 @@
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CHESTNUT_LEAVES"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CHESTNUT_LEAVES"/>
 		</SurfaceTextures>
     </Material>
 
@@ -152,7 +150,7 @@
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_PALM_TRUNK"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_PALM_TRUNK"/>
 		</SurfaceTextures>
     </Material>
     <Material>
@@ -160,7 +158,7 @@
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_PALM_LEAVES"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_PALM_LEAVES"/>
 		</SurfaceTextures>
     </Material>
 	
@@ -175,7 +173,7 @@
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_PINE_TRUNK"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_PINE_TRUNK"/>
 		</SurfaceTextures>
     </Material>
     <Material>
@@ -183,7 +181,7 @@
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_PINE_LEAVES"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_PINE_LEAVES"/>
 		</SurfaceTextures>
     </Material>
 
@@ -198,7 +196,7 @@
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LARCH_TRUNK"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_LARCH_TRUNK"/>
 		</SurfaceTextures>
     </Material>
     <Material>
@@ -206,7 +204,7 @@
 		<MaterialClass label="MATERIALCLASS_VEGATATION"/>
         <ColorMode mode="keepimage"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_LARCH_LEAVES"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_LARCH_LEAVES"/>
 		</SurfaceTextures>
     </Material>
 	

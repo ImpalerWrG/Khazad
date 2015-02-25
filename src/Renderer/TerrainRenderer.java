@@ -29,6 +29,8 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
+
+import com.jme3.scene.control.LodControl;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
@@ -61,6 +63,8 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 	Node darkterrainNode = null;
 	
 	TileBuilder builder;
+	LodControl TerrainLodControler;
+
 	ConcurrentHashMap<CellCoordinate, Node> LightCellNodeMap;
 	ConcurrentHashMap<CellCoordinate, Node> DarkCellNodeMap;
 	ConcurrentHashMap<Integer, Node> ActorNodeMap;
@@ -108,6 +112,9 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 		sunnyterrainNode = new Node();
 		terrainNode.attachChild(darkterrainNode);
 		terrainNode.attachChild(sunnyterrainNode);
+
+		this.TerrainLodControler = new LodControl();
+		//this.TerrainLodControler.setTrisPerPixel(10);
 
 		Texture tex = assetmanager.loadTexture("Textures/grass1.png");
 		Image withBorder = imagemanager.GeneratedOverLayImage(tex.getImage(), 0, 0);
@@ -215,7 +222,7 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 				dark.setCullHint(Spatial.CullHint.Dynamic);
 			
 			if (target.isTerrainRenderingDirty()) {
-				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, mat);
+				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, mat, TerrainLodControler);
 				Builder.setNodes(getCellNodeLight(Coords), getCellNodeDark(Coords));
 				Executor.submit(Builder);
 
@@ -266,7 +273,7 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 						ActorNodeMap.put(new Integer(target.getID()), actorNode);
 					}
 
-					actorNode.setCullHint(Spatial.CullHint.Never);
+					actorNode.setCullHint(Spatial.CullHint.Dynamic);
 					MapCoordinate coords = target.getLocation();
 					Node z = getZNodeLight(coords.Z);
 					z.attachChild(actorNode);
@@ -357,7 +364,7 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 			for (Node target : ZMapLight.values()) {
 				float Z = target.getLocalTranslation().getZ();
 				if (Z > Bottom && Z <= Top && SunnyRendering) {
-					target.setCullHint(Spatial.CullHint.Never);
+					target.setCullHint(Spatial.CullHint.Dynamic);
 				} else {
 					target.setCullHint(Spatial.CullHint.Always);				
 				}

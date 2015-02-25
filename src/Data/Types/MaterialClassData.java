@@ -19,7 +19,10 @@ package Data.Types;
 
 import Data.DataBase;
 import Data.DataLibrary;
+import Data.DataManager;
+
 import nu.xom.Element;
+import nu.xom.Elements;
 
 /**
  *
@@ -27,15 +30,58 @@ import nu.xom.Element;
  */
 public class MaterialClassData extends DataBase {
 
+	String DefaultMaterialLabel;
+	int DefaultMaterialID;
+
+	String[] SurfaceTypeLabels;
+	String[] SurfaceTextureLabels;
+	short[] SurfaceTypeIDs;
+	short[] SufaceTextueIDs;
+
 	public MaterialClassData() {
 		
 	}
 
-	public boolean LoadData(Element ColorEntry, DataLibrary Library) {
+	public boolean LoadData(Element MaterialClassEntry, DataLibrary Library) {
+		Element Name = MaterialClassEntry.getFirstChildElement("Name", MaterialClassEntry.getNamespaceURI());
+		Library.IndexEntry(Name.getAttributeValue("Label"), this);
+
+		Element DefaultMaterial = MaterialClassEntry.getFirstChildElement("DefaultMaterial", MaterialClassEntry.getNamespaceURI());
+		if (DefaultMaterial != null) {
+			DefaultMaterialLabel = DefaultMaterial.getAttribute("label").getValue();
+		}
+
+		Element SurfaceTexturesElement = MaterialClassEntry.getFirstChildElement("DefaultSurfaceTextures", MaterialClassEntry.getNamespaceURI());
+		if (SurfaceTexturesElement != null){
+			Elements SurfaceTextures = SurfaceTexturesElement.getChildElements();
+
+			SurfaceTypeLabels = new String[SurfaceTextures.size()];
+			SurfaceTypeIDs = new short[SurfaceTextures.size()];
+			SurfaceTextureLabels = new String[SurfaceTextures.size()];
+			SufaceTextueIDs = new short[SurfaceTextures.size()];
+
+			for (int i = 0; i < SurfaceTextures.size(); i++) {
+				Element SurfaceTextureEntry = SurfaceTextures.get(i);
+				SurfaceTextureLabels[i] = SurfaceTextureEntry.getAttribute("Texturelabel").getValue();
+				SurfaceTypeLabels[i] = SurfaceTextureEntry.getAttribute("SurfaceTypelabel").getValue();
+			}
+		}
 		return true;
 	}
 	
-	public boolean PostProcessing() {
+	public boolean PostProcessing() {	
+		DataManager Data = DataManager.getDataManager();
+		if (SurfaceTypeLabels != null) {
+			for (int i = 0; i < SurfaceTypeLabels.length; i++) {
+				SurfaceTypeIDs[i] = Data.getLabelIndex(SurfaceTypeLabels[i]);
+			}
+		}
+		if (SurfaceTextureLabels != null) {
+			for (int i = 0; i < SurfaceTextureLabels.length; i++) {
+				SufaceTextueIDs[i] = Data.getLabelIndex(SurfaceTextureLabels[i]);
+			}
+		}
+		DefaultMaterialID = Data.getLabelIndex(DefaultMaterialLabel);	
 		return true;
 	}
 }

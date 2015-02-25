@@ -4,17 +4,17 @@
 		<Name Label="MATERIALCLASS_VEIN_STONE"/>
 		<DefaultMaterial label="MATERIAL_VEIN_STONE"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_STONE_1"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_STONE_2"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_STONE_3"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_STONE_4"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_WALL" Texture="TEXTURE_SMOOTH"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_FLOOR" Texture="TEXTURE_SMOOTH"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_PEBBLES" Texture="TEXTURE_PEBBLES"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_BOULDER" Texture="TEXTURE_BOULDER"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_STONE_1"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_STONE_2"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_STONE_3"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_STONE_4"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_SMOOTH_WALL" Texturelabel="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_SMOOTH_FLOOR" Texturelabel="TEXTURE_SMOOTH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_PEBBLES" Texturelabel="TEXTURE_PEBBLES"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_BOULDER" Texturelabel="TEXTURE_BOULDER"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_BRICK"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_TILES"/>
 		</DefaultSurfaceTextures>
 	</MaterialClass>
 	<Material>
@@ -23,7 +23,7 @@
 		<PrimaryColor label="COLOR_GREY"/>
 		<ColorMode mode="overlay"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_MATT"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -32,7 +32,7 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -41,7 +41,7 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -51,11 +51,11 @@
 		<SecondaryColor label="COLOR_GREEN"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -65,11 +65,11 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -79,11 +79,11 @@
 		<SecondaryColor label="COLOR_SILVER"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -93,11 +93,11 @@
 		<SecondaryColor label="COLOR_BROWN"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -106,11 +106,11 @@
 		<PrimaryColor label="COLOR_GREEN"/>
 		<SecondaryColor label="COLOR_FOREST_GREEN"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SWIRLY"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SWIRLY"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SWIRLY"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SWIRLY"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_SWIRLY"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -120,11 +120,11 @@
 		<SecondaryColor label="COLOR_SILVER"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -134,11 +134,11 @@
 		<SecondaryColor label="COLOR_BLACK"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -148,11 +148,11 @@
 		<SecondaryColor label="COLOR_BROWN"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -161,7 +161,7 @@
 		<PrimaryColor label="COLOR_BLACK"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -170,7 +170,7 @@
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -180,11 +180,11 @@
 		<SecondaryColor label="COLOR_SILVER"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -193,7 +193,7 @@
 		<PrimaryColor label="COLOR_RED"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -203,11 +203,11 @@
 		<SecondaryColor label="COLOR_BLUE"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -217,11 +217,11 @@
 		<SecondaryColor label="COLOR_SILVER"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -231,11 +231,11 @@
 		<SecondaryColor label="COLOR_WHITE"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 </Ores>

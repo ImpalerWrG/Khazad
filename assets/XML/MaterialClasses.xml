@@ -4,105 +4,105 @@
 		<Name Label="MATERIALCLASS_LEATHER"/>
 		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_SILK_CLOTH"/>
 		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_PLANT_THREAD_CLOTH"/>
 		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_GREEN_GLASS"/>
 		<DefaultMaterial label="MATERIAL_GREEN_GLASS"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK2"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_BRICK2"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_BRICK2"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_BRICK2"/>
 		</DefaultSurfaceTextures>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_CLEAR_GLASS"/>
 		<DefaultMaterial label="MATERIAL_CLEAR_GLASS"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK2"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_BRICK2"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_BRICK2"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_BRICK2"/>
 		</DefaultSurfaceTextures>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_CRYSTAL_GLASS"/>
 		<DefaultMaterial label="MATERIAL_CRYSTAL_GLASS"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK2"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_BRICK2"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_BRICK2"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_BRICK2"/>
 		</DefaultSurfaceTextures>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_ICE"/>
 		<DefaultMaterial label="MATERIAL_ICE"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ICE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_ICE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_ICE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_ICE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_ICE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_WALL" Texture="TEXTURE_ICE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_SMOOTH_FLOOR" Texture="TEXTURE_ICE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_PEBBLES" Texture="TEXTURE_ICE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_BOULDER" Texture="TEXTURE_ICE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_BRICK"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_TILES"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_SMOOTH_WALL" Texturelabel="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_SMOOTH_FLOOR" Texturelabel="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_PEBBLES" Texturelabel="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_BOULDER" Texturelabel="TEXTURE_ICE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_BRICK"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_TILES"/>
 		</DefaultSurfaceTextures>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_CHARCOAL"/>
 		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_POTASH"/>
 		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_ASHES"/>
 		<DefaultMaterial label="MATERIAL_ASHES"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_PEARLASH"/>
 		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
 	</MaterialClass>
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_SOAP"/>
 		<DefaultMaterial label="MATERIAL_UNINITIALIZED"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
 	</MaterialClass>
 	<MaterialClass>

@@ -27,11 +27,23 @@ import nu.xom.Element;
  */
 public class FontData extends DataBase {
 
+	String FilePath;
+	int Size;
+
 	public FontData() {
 		
 	}
 
-	public boolean LoadData(Element ColorEntry, DataLibrary Library) {
+	public boolean LoadData(Element FontEntry, DataLibrary Library) {
+		Element Name = FontEntry.getFirstChildElement("Name", FontEntry.getNamespaceURI());
+		Library.IndexEntry(Name.getAttributeValue("Label"), this);
+
+		Element FileElement = FontEntry.getFirstChildElement("File", FontEntry.getNamespaceURI());
+		FilePath = FileElement.getAttributeValue("Path");
+		
+		Element SizeElement = FontEntry.getFirstChildElement("Size", FontEntry.getNamespaceURI());
+		Size = Integer.parseInt(SizeElement.getAttributeValue("Int"));
+		
 		return true;
 	}
 	

@@ -187,7 +187,7 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 			}
 			
 			if (ConnectivityNode != null) {
-				ConnectivityNode.setCullHint(Spatial.CullHint.Never);
+				ConnectivityNode.setCullHint(Spatial.CullHint.Dynamic);
 			}
 		}	
 	}

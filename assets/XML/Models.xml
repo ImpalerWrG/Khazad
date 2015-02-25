@@ -2,85 +2,85 @@
 <Models xmlns="https://github.com/ImpalerWrG/Khazad">
 	<Model>
 		<Name Label="MODEL_SAGUARO"/>
-		<File Path="Assets/Models/Saguaro/Saguaro.obj"/>
+		<File Path="Models/Saguaro/Saguaro.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_OAK"/>
-		<File Path="Assets/Models/oak/oak_leaves_snow.obj"/>
+		<File Path="Models/oak/oak_leaves_snow.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_MAPLE"/>
-		<File Path="Assets/Models/maple/maple.obj"/>
+		<File Path="Models/maple/maple.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_BIRCH"/>
-		<File Path="Assets/Models/birch/birch.obj"/>
+		<File Path="Models/birch/birch.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_CHESTNUT"/>
-		<File Path="Assets/Models/chestnut/chestnut.obj"/>
+		<File Path="Models/chestnut/chestnut.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_PALM"/>
-		<File Path="Assets/Models/palm/palm.obj"/>
+		<File Path="Models/palm/palm.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_LARCH"/>
-		<File Path="Assets/Models/larch/larch.obj"/>
+		<File Path="Models/larch/larch.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_PINE"/>
-		<File Path="Assets/Models/pine/pine.obj"/>
+		<File Path="Models/pine/pine.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_BOULDER"/>
-		<File Path="Assets/Models/stones/stone04.obj"/>
+		<File Path="Models/stones/stone04.obj"/>
 		<Scale value="1.1"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_CHAIR"/>
-		<File Path="Assets/Models/chair/chair.obj"/>
+		<File Path="Models/chair/chair.obj"/>
 		<Scale value="1.6"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_BIN"/>
-		<File Path="Assets/Models/bin/bin.obj"/>
+		<File Path="Models/bin/bin.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_CAGE"/>
-		<File Path="Assets/Models/cage/cage.obj"/>
+		<File Path="Models/cage/cage.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_LEVER"/>
-		<File Path="Assets/Models/lever/lever.obj"/>
+		<File Path="Models/lever/lever.obj"/>
 		<Scale value="1.7"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_QERN"/>
-		<File Path="Assets/Models/qern/qern.obj"/>
+		<File Path="Models/qern/qern.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_HATCH"/>
-		<File Path="Assets/Models/hatch/hatch.obj"/>
+		<File Path="Models/hatch/hatch.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_MASONS_WORKSHOP"/>
-		<File Path="Assets/Models/masons_workshop/masons_workshop.obj"/>
+		<File Path="Models/masons_workshop/masons_workshop.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_FLOOR_GRATE"/>
-		<File Path="Assets/Models/grates-bars/floor_grate.obj"/>
+		<File Path="Models/grates-bars/floor_grate.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_WALL_GRATE"/>
-		<File Path="Assets/Models/grates-bars/wall_grate.obj"/>
+		<File Path="Models/grates-bars/wall_grate.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_FLOOR_BARS"/>
-		<File Path="Assets/Models/grates-bars/floor_bars.obj"/>
+		<File Path="Models/grates-bars/floor_bars.obj"/>
 	</Model>
 	<Model>
 		<Name Label="MODEL_WALL_BARS"/>
-		<File Path="Assets/Models/grates-bars/wall_bars.obj"/>
+		<File Path="Models/grates-bars/wall_bars.obj"/>
 	</Model>
 </Models>

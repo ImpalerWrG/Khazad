@@ -19,6 +19,8 @@ package Data.Types;
 
 import Data.DataBase;
 import Data.DataLibrary;
+import Data.DataManager;
+
 import nu.xom.Element;
 
 /**
@@ -27,15 +29,27 @@ import nu.xom.Element;
  */
 public class SurfaceTypeData extends DataBase {
 
+	private String TextureLabel;
+	int TextureID;
+	
 	public SurfaceTypeData() {
 		
 	}
 
-	public boolean LoadData(Element ColorEntry, DataLibrary Library) {
-		return true;
+	public boolean LoadData(Element SurfaceTypeEntry, DataLibrary Library) {
+		Element Name = SurfaceTypeEntry.getFirstChildElement("Name", SurfaceTypeEntry.getNamespaceURI());
+		Library.IndexEntry(Name.getAttributeValue("Label"), this);
+
+		Element TextureUsed = SurfaceTypeEntry.getFirstChildElement("TextureUsed", SurfaceTypeEntry.getNamespaceURI());
+		if (TextureUsed != null) {
+			TextureLabel = TextureUsed.getAttribute("label").getValue();
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean PostProcessing() {
+		TextureID = DataManager.getDataManager().getLabelIndex(TextureLabel);
 		return true;
 	}
 }

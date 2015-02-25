@@ -4,11 +4,11 @@
 		<Name Label="MATERIALCLASS_SOIL"/>
 		<DefaultMaterial label="MATERIAL_SOIL"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_GROUND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GROUND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_GROUND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_GROUND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_GROUND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_GROUND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_GROUND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_GROUND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_GROUND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_GROUND"/>
 		</DefaultSurfaceTextures>
 	</MaterialClass>
 	<Material>
@@ -17,7 +17,7 @@
 		<PrimaryColor label="COLOR_DARK_BROWN"/>
 		<ColorMode mode="overlay"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_GROUND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_GROUND"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -27,11 +27,11 @@
 <!-- 		<BorderColor label="COLOR_TAN"/> -->
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_SAND"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -41,11 +41,11 @@
 <!-- 		<BorderColor label="COLOR_YELLOW"/> -->
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_SAND"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -55,11 +55,11 @@
 <!-- 		<BorderColor label="COLOR_WHITE"/> -->
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_SAND"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -69,11 +69,11 @@
 <!-- 		<BorderColor label="COLOR_RED"/> -->
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_SAND"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -83,11 +83,11 @@
 <!-- 		<BorderColor label="COLOR_BLACK"/> -->
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SAND"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_SAND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_SAND"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -97,7 +97,7 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_TAN"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CLAY"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -107,7 +107,7 @@
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<BorderColor label="COLOR_DARK_GREY"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CLAY"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -117,7 +117,7 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CLAY"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -127,7 +127,7 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CLAY"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -137,7 +137,7 @@
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_YELLOW"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -147,7 +147,7 @@
 		<SecondaryColor label="COLOR_LEATHER"/>
 		<BorderColor label="COLOR_LEATHER"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -157,7 +157,7 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -167,7 +167,7 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -177,7 +177,7 @@
 		<SecondaryColor label="COLOR_DARK_ORANGE"/>
 		<BorderColor label="COLOR_DARK_ORANGE"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -187,7 +187,7 @@
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -197,7 +197,7 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -207,7 +207,7 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_DIRT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -217,7 +217,7 @@
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CLAY"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -227,7 +227,7 @@
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<BorderColor label="COLOR_DARK_GREY"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CLAY"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -237,7 +237,7 @@
 		<SecondaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_SILVER"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CLAY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CLAY"/>
 		</SurfaceTextures>
 	</Material>
 </Soils>

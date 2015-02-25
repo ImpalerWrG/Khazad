@@ -19,6 +19,7 @@ package Core;
 
 import com.jme3.app.StatsAppState;
 import com.jme3.app.SimpleApplication;
+import com.jme3.system.AppSettings;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -52,6 +53,14 @@ public class Main extends SimpleApplication {
 
     public static void main(String[] args) {	
 		Main Game = new Main();
+
+		AppSettings setting= new AppSettings(true);
+		setting.setTitle("Khazad");
+		setting.setHeight(600);
+		setting.setWidth(800);
+		//Game.setShowSettings(false); 
+		Game.setSettings(setting);
+
         Game.start();
     }
 

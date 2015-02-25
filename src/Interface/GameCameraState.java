@@ -183,7 +183,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			if (name.equals("MiddleClick")) {
 				MiddleDown = keyPressed;
 				if (MiddleDown) {
-					LookNode.setCullHint(Spatial.CullHint.Never);					
+					LookNode.setCullHint(Spatial.CullHint.Dynamic);					
 				} else {
 					LookNode.setCullHint(Spatial.CullHint.Always);										
 				}

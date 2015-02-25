@@ -32,7 +32,9 @@ public class GameCamera {
 
 	protected CameraNode CamNode = null;
 	
+	protected float maxzoom = 400;
 	protected float zoomFactor = 20;
+	protected float minzoom = 5;
 	protected float TranslationFactor;
 
 	protected float zoomSpeed = 0.1f;
@@ -119,7 +121,7 @@ public class GameCamera {
 	//expand or contract frustrum for paralax zooming
 	protected void zoomCamera(float value) {
 		float change = (value * zoomSpeed) + 1;	
-		if ((zoomFactor < 200 && change > 1) || (zoomFactor > 5 && change < 1))
+		if ((zoomFactor < maxzoom && change > 1) || (zoomFactor > minzoom && change < 1))
 		{
 			float aspect = (float) camera.getWidth() / camera.getHeight();
 			

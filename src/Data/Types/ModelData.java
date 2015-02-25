@@ -27,11 +27,20 @@ import nu.xom.Element;
  */
 public class ModelData extends DataBase {
 
+	String FilePath;
+	
 	public ModelData() {
 		
 	}
 
-	public boolean LoadData(Element ColorEntry, DataLibrary Library) {
+	public boolean LoadData(Element ModelEntry, DataLibrary Library) {
+		Element Name = ModelEntry.getFirstChildElement("Name", ModelEntry.getNamespaceURI());
+		Library.IndexEntry(Name.getAttributeValue("Label"), this);
+
+		Element File = ModelEntry.getFirstChildElement("File", ModelEntry.getNamespaceURI());
+		if (File != null)
+			FilePath = Name.getAttributeValue("Path");
+
 		return true;
 	}
 	

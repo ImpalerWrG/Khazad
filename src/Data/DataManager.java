@@ -95,7 +95,7 @@ public class DataManager {
 
     DataLibrary Colors = new DataLibrary<ColorData>(ColorData.class, this);
     DataLibrary Textures = new DataLibrary<TextureData>(TextureData.class, this);
-    DataLibrary TextureGrids = new DataLibrary<TextureData>(TextureData.class, this);
+    DataLibrary TextureGrids = new DataLibrary<TextureGridData>(TextureGridData.class, this);
     DataLibrary TextureSheets = new DataLibrary<TextureSheetData>(TextureSheetData.class, this);
     DataLibrary AnimationTypes = new DataLibrary<AnimationTypeData>(AnimationTypeData.class, this);
     DataLibrary AnimationGroups = new DataLibrary<AnimationGroupData>(AnimationGroupData.class, this);
@@ -177,7 +177,10 @@ public class DataManager {
         return false;
     }
 
-	short getLabelIndex(String Label) {
+	public short getLabelIndex(String Label) {
+		if (Label == null)
+			return INVALID_INDEX;
+
 		if (Label.matches("NONE"))
 			return INVALID_INDEX;
 

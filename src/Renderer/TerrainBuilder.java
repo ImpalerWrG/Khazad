@@ -16,9 +16,10 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
+import com.jme3.scene.control.LodControl;
 import com.jme3.material.Material;
 import jme3tools.optimize.GeometryBatchFactory;
+import jme3tools.optimize.LodGenerator;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,14 +39,16 @@ public class TerrainBuilder implements Callable<Void>  {
 	Application app;
 	
 	Node TerrainLight, TerrainDark, CellLight, CellDark;
-	Spatial LightBuildGeometry, DarkBuildGeometry;
+	Geometry LightBuildGeometry, DarkBuildGeometry;
 	Material TerrainMaterial;
+	LodControl Controler;
 
-	public TerrainBuilder(Application Parentapp, Cell TargetCell, TileBuilder Tiles, Material mat) {
+	public TerrainBuilder(Application Parentapp, Cell TargetCell, TileBuilder Tiles, Material mat, LodControl controler) {
 		this.app = Parentapp;
 		this.BuildCell = TargetCell;
 		this.TileSource = Tiles;
 		this.TerrainMaterial = mat;
+		this.Controler = controler;
 	}
 
 	public void setNodes(Node LightCellNode, Node DarkCellNode) {
@@ -84,13 +87,23 @@ public class TerrainBuilder implements Callable<Void>  {
 
 		GeometryBatchFactory.optimize(TerrainLight, true);
 		if (TerrainLight.getQuantity() > 0) {
-			LightBuildGeometry = TerrainLight.getChild(0);
+			LightBuildGeometry = (Geometry) TerrainLight.getChild(0);
+			
+			LodGenerator lod = new LodGenerator(LightBuildGeometry);
+			lod.bakeLods(LodGenerator.TriangleReductionMethod.PROPORTIONAL, 0.5f, 0.75f);
+			LightBuildGeometry.addControl(new LodControl());
+			
 			LightBuildGeometry.setName("LightGeometry Cell" + BuildCell.toString());
 		}
 		GeometryBatchFactory.optimize(TerrainDark, true);
 		if (TerrainDark.getQuantity() > 0) {
-			DarkBuildGeometry = TerrainDark.getChild(0);
-			LightBuildGeometry.setName("DarkGeometry Cell" + BuildCell.toString());
+			DarkBuildGeometry = (Geometry) TerrainDark.getChild(0);
+
+			LodGenerator lod = new LodGenerator(DarkBuildGeometry);
+			lod.bakeLods(LodGenerator.TriangleReductionMethod.PROPORTIONAL, 0.5f, 0.75f);
+			DarkBuildGeometry.addControl(new LodControl());
+
+			DarkBuildGeometry.setName("DarkGeometry Cell" + BuildCell.toString());
 		}
 		
 		app.enqueue(new Callable() {

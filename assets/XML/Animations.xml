@@ -36,19 +36,19 @@
 		<Textures>
 			<Texture>
 				<Name Label="TEXTURE_HUMAN_WALK_0"/>
-				<SheetLocation X="192" Y="56" W="32" H="48"/>
+				<SheetLocation X="192" Y="56" Width="32" Height="48"/>
 			</Texture>
 			<Texture>
 				<Name Label="TEXTURE_HUMAN_WALK_1"/>
-				<SheetLocation X="224" Y="56" W="32" H="48"/>
+				<SheetLocation X="224" Y="56" Width="32" Height="48"/>
 			</Texture>
 			<Texture>
 				<Name Label="TEXTURE_HUMAN_WALK_2"/>
-				<SheetLocation X="256" Y="56" W="32" H="48"/>
+				<SheetLocation X="256" Y="56" Width="32" Height="48"/>
 			</Texture>
 			<Texture>
 				<Name Label="TEXTURE_HUMAN_WALK_3"/>
-				<SheetLocation X="288" Y="56" W="32" H="48"/>
+				<SheetLocation X="288" Y="56" Width="32" Height="48"/>
 			</Texture>
 		</Textures>
 	</TextureSheet>

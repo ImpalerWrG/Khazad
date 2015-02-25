@@ -27,11 +27,38 @@ import nu.xom.Element;
  */
 public class TextureData extends DataBase {
 
+	String FilePath;
+	int X, Y; 
+	int Width, Height;
+	
+	boolean LoneTexture = true;
+	
 	public TextureData() {
 		
 	}
 
-	public boolean LoadData(Element ColorEntry, DataLibrary Library) {
+	public boolean LoadData(Element TextureEntry, DataLibrary Library) {
+		Element Name = TextureEntry.getFirstChildElement("Name", TextureEntry.getNamespaceURI());
+		Library.IndexEntry(Name.getAttributeValue("Label"), this);
+
+		Element File = TextureEntry.getFirstChildElement("File", TextureEntry.getNamespaceURI());
+		if (File != null)
+			FilePath = Name.getAttributeValue("Path");
+		
+		Element GridLocation = TextureEntry.getFirstChildElement("GridLocation", TextureEntry.getNamespaceURI());
+		if (GridLocation != null) {
+			X = (short) Integer.parseInt(GridLocation.getAttribute("X").getValue());
+			Y = (short) Integer.parseInt(GridLocation.getAttribute("Y").getValue());
+		}
+
+		Element SheetLocation = TextureEntry.getFirstChildElement("SheetLocation", TextureEntry.getNamespaceURI());
+		if (SheetLocation != null) {
+			X = (short) Integer.parseInt(SheetLocation.getAttribute("X").getValue());
+			Y = (short) Integer.parseInt(SheetLocation.getAttribute("Y").getValue());
+			Width = (short) Integer.parseInt(SheetLocation.getAttribute("Width").getValue());
+			Height = (short) Integer.parseInt(SheetLocation.getAttribute("Height").getValue());
+		}
+		
 		return true;
 	}
 	

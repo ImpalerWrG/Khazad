@@ -19,7 +19,9 @@ package Data.Types;
 
 import Data.DataBase;
 import Data.DataLibrary;
+import Data.DataManager;
 import nu.xom.Element;
+import nu.xom.Elements;
 
 /**
  *
@@ -27,12 +29,33 @@ import nu.xom.Element;
  */
 public class TextureSheetData extends DataBase {
 
+	String FilePath;
+	int TextureWidth, TextureHeight;
+	int GridWidth, GridHeight;
+
 	public TextureSheetData() {
 		
 	}
 
-	public boolean LoadData(Element ColorEntry, DataLibrary Library) {
+	public boolean LoadData(Element TextureSheetEntry, DataLibrary Library) {
+		Element File = TextureSheetEntry.getFirstChildElement("File", TextureSheetEntry.getNamespaceURI());
+		FilePath = File.getAttribute("Path").getValue();
+
+		Element TexturesElement = TextureSheetEntry.getFirstChildElement("Textures", TextureSheetEntry.getNamespaceURI());
+		Elements Textures = TexturesElement.getChildElements();
+		DataLibrary TextureLibrary = DataManager.getDataManager().getTextureDataLibrary();
+		
+		for (int i = 0; i < Textures.size(); i++) {
+			Element TextureEntry = Textures.get(i);
+
+			TextureData NewTexture = new TextureData();
+			NewTexture.LoadData(TextureEntry, TextureLibrary);
+
+			NewTexture.FilePath = this.FilePath;
+			NewTexture.LoneTexture = false;
+		}
 		return true;
+
 	}
 	
 	public boolean PostProcessing() {

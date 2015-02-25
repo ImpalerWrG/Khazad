@@ -4,8 +4,8 @@
 		<Name Label="MATERIALCLASS_METAL"/>
 		<DefaultMaterial label="MATERIAL_IRON"/>
 		<DefaultSurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_WALL" Texture="TEXTURE_MATT"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_CONSTRUCTED_FLOOR" Texture="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_MATT"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_MATT"/>
 		</DefaultSurfaceTextures>
 	</MaterialClass>
 	<Material>

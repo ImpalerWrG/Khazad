@@ -25,15 +25,12 @@ public class ColorData extends DataBase {
 		Library.IndexEntry(Name.getAttributeValue("Label"), this);
 
 		Element Channels = ColorEntry.getFirstChildElement("Channels", ColorEntry.getNamespaceURI());
-
 		if (Channels != null) {
 			Red = (short) Integer.parseInt(Channels.getAttribute("Red").getValue());
 			Green = (short) Integer.parseInt(Channels.getAttribute("Green").getValue());
 			Blue = (short) Integer.parseInt(Channels.getAttribute("Blue").getValue());
-		
 			return true;
 		}
-
 		return false;
 	}
 	

@@ -1,4 +1,5 @@
-<AnimationTypes xmlns="namespace">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AnimationTypes xmlns="https://github.com/ImpalerWrG/Khazad">
 	<AnimationType>
 		<Name Label="ANIMATION_TYPE_IDLE" />
 	</AnimationType>

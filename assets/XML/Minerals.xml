@@ -6,7 +6,7 @@
 		<PrimaryColor label="COLOR_LIGHT_GREY"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -15,7 +15,7 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -24,7 +24,7 @@
 		<PrimaryColor label="COLOR_BLACK"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -33,7 +33,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -42,7 +42,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_MAROON"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -51,7 +51,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -60,7 +60,7 @@
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -69,7 +69,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_NAVY_BLUE"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -79,11 +79,11 @@
 		<SecondaryColor label="COLOR_DARK_GREY"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -92,7 +92,7 @@
 		<PrimaryColor label="COLOR_DARK_RED"/>
 		<SecondaryColor label="COLOR_RED"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -101,7 +101,7 @@
 		<PrimaryColor label="COLOR_YELLOW"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -110,7 +110,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -119,7 +119,7 @@
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -128,7 +128,7 @@
 		<PrimaryColor label="COLOR_RED"/>
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -137,7 +137,7 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_RED"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -146,7 +146,7 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -155,7 +155,7 @@
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -164,7 +164,7 @@
 		<PrimaryColor label="COLOR_MAROON"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>	
 	<Material>
@@ -173,7 +173,7 @@
 		<PrimaryColor label="COLOR_BLACK"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -182,7 +182,7 @@
 		<PrimaryColor label="COLOR_BLACK"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -191,7 +191,7 @@
 		<PrimaryColor label="COLOR_BLACK"/>
 		<SecondaryColor label="COLOR_NAVY_BLUE"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -200,7 +200,7 @@
 		<PrimaryColor label="COLOR_PURPLE"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -209,11 +209,11 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_SALMON"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_SWIRLY"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_SWIRLY"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_SWIRLY"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_SWIRLY"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_SWIRLY"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_SWIRLY"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -223,11 +223,11 @@
 		<SecondaryColor label="COLOR_SILVER"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -236,7 +236,7 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -245,11 +245,11 @@
 		<PrimaryColor label="COLOR_OLIVE"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_IGNEOUS_INTRUSIVE"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -258,7 +258,7 @@
 		<PrimaryColor label="COLOR_BLACK"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -267,7 +267,7 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_PINK"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -276,7 +276,7 @@
 		<PrimaryColor label="COLOR_DARK_GREEN"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -285,7 +285,7 @@
 		<PrimaryColor label="COLOR_PINK"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -294,11 +294,11 @@
 		<PrimaryColor label="COLOR_TEAL"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_CRYSTALLINE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_CRYSTALLINE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_CRYSTALLINE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_CRYSTALLINE"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_CRYSTALLINE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CRYSTALLINE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_CRYSTALLINE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_CRYSTALLINE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_CRYSTALLINE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_CRYSTALLINE"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -307,7 +307,7 @@
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -316,7 +316,7 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -325,7 +325,7 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -334,7 +334,7 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -343,7 +343,7 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -352,7 +352,7 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_LIGHT_GREY"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -361,7 +361,7 @@
 		<PrimaryColor label="COLOR_WHITE"/>
 		<SecondaryColor label="COLOR_BLUE"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -370,7 +370,7 @@
 		<PrimaryColor label="COLOR_LIGHT_GREY"/>
 		<SecondaryColor label="COLOR_WHITE"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_ROUGH"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_ROUGH"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -380,11 +380,11 @@
 		<SecondaryColor label="COLOR_AQUA"/>
         <ColorMode mode="gradientmap" />
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_WALL" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_1" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_2" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_3" Texture="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceType="SURFACETYPE_ROUGH_FLOOR_4" Texture="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_VEINS"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 </Minerals>
