@@ -1,35 +1,59 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <nifty>
-  <useStyles filename="nifty-default-styles.xml"/>
-  <useControls filename="nifty-default-controls.xml"/>
-  <screen id="StartScreen" controller="Nifty.ShellScreenController">
-    <layer childLayout="vertical" id="Splash">
-      <panel childLayout="center" height="10%" id="panel0" padding="0px" width="100%"/>
-      <panel childLayout="center" height="35%" id="panel1" width="100%">
-        <image filename="Textures/KhazadLogo.png" height="200px" id="image2" width="200px" x="544" y="124"/>
-		<effect>
-			  <onEndScreen direction="top" inherit="true" length="300" mode="out" name="move" startDelay="0"/>
-		</effect>
-      </panel>
-      <panel childLayout="center" height="30%" id="panel2" padding="10px" width="100%">
-        <panel childLayout="vertical" height="100%" id="panel3" style="nifty-panel-simple" valign="top" width="50%">
-          <control childLayout="center" height="25%" id="button1" label="New Game" name="button" width="100%">
-			  <interact onClick="GameSetup()"/>
-		  </control>
-          <control childLayout="center" height="25%" id="button5" label="Load Game" name="button" width="100%">
-			  <interact onClick="LoadGame()"/>
-		  </control>
-          <control childLayout="center" height="25%" id="button6" label="Options" name="button" width="100%">
-			  <interact onClick="Options()"/>
-		  </control>
-          <control childLayout="center" height="25%" id="button7" label="Quit" name="button" width="100%">
-			  <interact onClick="Quit()"/>
-		  </control>
-        </panel>
-		<effect>
-			  <onEndScreen direction="bottom" inherit="true" length="300" mode="out" name="move" startDelay="0"/>
-		</effect>
-      </panel>
-    </layer>
-  </screen>
+	<useControls filename="nifty-default-controls.xml"/>
+	<useStyles filename="nifty-default-styles.xml"/>
+	
+	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.ShellScreenController" id="TutorialPopup">
+		<interact onClick="closePopup()" onSecondaryClick="EndTutorial()" onTertiaryClick="EndTutorial()"/>		
+		<panel alighn="center" align="center" childLayout="vertical" height="500px" id="MenuPanel" style="nifty-panel-simple" width="600px">
+			<panel alighn="center" align="center" childLayout="vertical" height="100%" id="QuitPanel" width="100%">
+				<panel alighn="center" align="center" childLayout="vertical" height="90%" id="QuitPanel" width="100%">
+					<control name="label" id="GLabel1" color="#cc0000ff" text="Zoom:  mouse-wheel up/down" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
+					<control name="label" id="GLabel2" color="#cc0000ff" text="Tilt Camera:  hold mouse-wheel down, mouse up/down" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
+					<control name="label" id="GLabel3" color="#cc0000ff" text="Rotate Camera: hold mouse-wheel down, mouse right/left" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
+					<control name="label" id="GLabel5" color="#cc0000ff" text="Pan Camera:  hold right mouse button down, mouse up/down/right/left" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
+					<control name="label" id="GLabel6" color="#cc0000ff" text="Slice Terrain:  scroll bar on right edge of screen" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
+					<control name="label" id="GLabel7" color="#cc0000ff" text="Toggle Terrain rendering: T" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
+					<control name="label" id="GLabel8" color="#cc0000ff" text="Toggle Path grid rendering: P" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
+					<control name="label" id="GLabel9" color="#cc0000ff" text="Set time rate:  button bar top right of screen" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
+					<control name="label" id="GLabel99" color="#cc0000ff" text="ranges from 1x (real time) to 4096 (~6 months game time per real hour)" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
+					<control name="label" id="GLabel10" color="#cc0000ff" text="Pause: Space bar" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
+					<control name="label" id="GLabel4" color="#cc0000ff" text="Dig:  Allows drag-selection of a box shape that will be dug out by Dwarves, WARNING: Very Buggy" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
+				</panel>
+				<panel alighn="center" align="center" childLayout="vertical" height="100%" id="QuitPanel" width="100%">
+					<control childLayout="center" controller="Nifty.GameScreenController" height="10%" id="Quitbutton" label="Done" name="button" width="100%">
+						<interact onClick="EndTutorial()"/>
+					</control>
+				</panel>
+			</panel>
+		</panel>
+	</popup>
+	
+	<screen id="StartScreen" controller="Nifty.ShellScreenController">
+		<layer id="Splash" childLayout="vertical">
+			<panel id="panel0" height="10%" width="100%" childLayout="center" padding="0px"/>
+			<panel id="panel1" height="35%" width="100%" childLayout="center">
+				<image id="image2" height="200px" width="200px" filename="Textures/KhazadLogo.png" y="124" x="544"/>
+			</panel>
+			<panel id="panel2" height="30%" width="100%" childLayout="center" padding="10px">
+				<panel id="panel3" height="100%" style="nifty-panel-simple" width="50%" childLayout="vertical" valign="top">
+ 					<control name="button" id="newgamebutton" height="20%" width="100%" label="New Game" childLayout="center">
+						<interact onClick="GameSetup()"/>
+					</control>
+					<control name="button" id="loadbutton" height="20%" width="100%" label="Load Game" childLayout="center">
+						<interact onClick="LoadGame()"/>
+					</control>
+					<control name="button" id="tutorialbutton" height="20%" width="100%" label="Tutorial" childLayout="center">
+						<interact onClick="BeginTutorial()()"/>
+					</control>
+					<control name="button" id="optionsbutton" height="20%" width="100%" label="Options" childLayout="center">
+						<interact onClick="BeginTutorial()"/>
+					</control>
+					<control name="button" id="quitbutton" height="20%" width="100%" label="Quit" childLayout="center">
+						<interact onClick="Quit()"/>
+					</control>
+				</panel>
+			</panel>
+		</layer>
+	</screen>
 </nifty>

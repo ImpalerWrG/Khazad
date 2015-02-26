@@ -19,6 +19,7 @@ import Renderer.TerrainRenderer;
 import Renderer.SelectionRenderer;
 import Renderer.PathingRenderer;
 import Interface.GameCameraState;
+import de.lessvoid.nifty.elements.Element;
 /**
  *
  * @author Impaler
@@ -27,6 +28,8 @@ public class ShellScreenController implements ScreenController {
 	
 	private Application app;
 	private Nifty nifty;
+
+	Element TutorialPopup = null;
 
 	public ShellScreenController(Nifty Newnifty, Application app) {
 		this.app = app;
@@ -88,5 +91,26 @@ public class ShellScreenController implements ScreenController {
 		for (int i = 0; i < 100; i++) {
 			game.SpawnCitizen(Pather.Tester.getRandomPassableCoordinate());
 		}
+	}
+	
+	public void BeginTutorial() {
+		if (TutorialPopup == null) {
+			TutorialPopup = nifty.createPopup("TutorialPopup");	
+		}
+		nifty.showPopup(nifty.getCurrentScreen(), this.TutorialPopup.getId(), null);
+	}
+
+	public void EndTutorial() {
+		if (TutorialPopup != null) {
+			nifty.closePopup(this.TutorialPopup.getId());
+		}
+	}
+
+	public void BeginCredtis() {
+		
+	}
+	
+	public void EndCredtis() {
+		
 	}
 }
