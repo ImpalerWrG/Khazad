@@ -119,11 +119,6 @@ public class Game extends AbstractAppState implements ActionListener {
 
 		GameWeather = new Weather();
 		AddTemporal(GameWeather);
-		
-		//MainMap.Initialize();
-
-		//Path = new PathManager();
-		//Path.Initialize();
 
 		BuildMapChunk((short) 0, (short) 0, (byte) X, (byte) Y);
 
@@ -141,14 +136,11 @@ public class Game extends AbstractAppState implements ActionListener {
 		float ProgressCount = 0;
 
 		// Create and add Cells with shape and material data
-		for (int x = X; x < SizeX; x++)
-		{
-			for (int y = Y; y < SizeY; y++)
-			{
-				MapGeology.GenerateCellHeight(x, y, (float) 10.0, (float) 2.0);
+		for (int x = X; x < SizeX; x++) {
+			for (int y = Y; y < SizeY; y++) {
+				MapGeology.GenerateCellHeight(x, y, (float) 10.0, (float) 1.0);
 
-				for (int z = MapGeology.getCellBottomZLevel() - 1; z <= MapGeology.getCellTopZLevel() + 1; z++)
-				{
+				for (int z = MapGeology.getCellBottomZLevel() - 2; z <= MapGeology.getCellTopZLevel() + 3; z++) {
 					CellCoordinate TargetCellCoordinates = new CellCoordinate(x, y, z);
 					Cell NewCell = new Cell();
 
@@ -164,18 +156,10 @@ public class Game extends AbstractAppState implements ActionListener {
 		ProgressSize = Cells.size();
 		
 		ConcurrentHashMap<CellCoordinate, Cell> CellMap = MainMap.getCellMap();
-		for (Cell TargetCell : CellMap.values())
-		{
+		for (Cell TargetCell : CellMap.values()) {
 			TargetCell.BuildFaceData();
 			ProgressCount++;
 		}
-
-		//Path.CreateMapAbstraction(MainMap);
-		//Path.InitializeTestingSuite();
-
-		//RENDERER.FocusActiveCameraAt(Ogre::Vector3(X * CELLEDGESIZE / 2, Y * CELLEDGESIZE / 2, 0));
-		//MainMap.RegisterWithRendering();
-		//GUI.DirtyActiveScreen();
 
 		return true;
 	}

@@ -209,30 +209,22 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 	public void RebuildDirtyCells(ConcurrentHashMap<CellCoordinate, Cell> cells) {
 		for (Cell target : cells.values()) {
 			CellCoordinate Coords = target.getCellCoordinates();
-
-			Node CellLight = getCellNodeLight(Coords);
-			Node CellDark = getCellNodeDark(Coords);
-			
-			Spatial light = CellLight.getChild("LightGeometry Cell" + target.toString());
-			Spatial dark = CellDark.getChild("DarkGeometry Cell" + target.toString());
-			
-			if (light != null)
-				light.setCullHint(Spatial.CullHint.Dynamic);
-			if (dark != null)
-				dark.setCullHint(Spatial.CullHint.Dynamic);
-			
+						
 			if (target.isTerrainRenderingDirty()) {
 				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, mat, TerrainLodControler);
 				Builder.setNodes(getCellNodeLight(Coords), getCellNodeDark(Coords));
 				Executor.submit(Builder);
 
 				target.setDirtyTerrainRendering(false);
-				break;
 			}
 		}	
 	}
 
-	public void HideTerrain(ConcurrentHashMap<CellCoordinate, Cell> cells) {
+	public void SetTerrainRendering(ConcurrentHashMap<CellCoordinate, Cell> cells, boolean show) {
+		Spatial.CullHint hint = Spatial.CullHint.Always;
+		if (show == true)
+			hint = Spatial.CullHint.Dynamic;
+		
 		for (Cell target : cells.values()) {
 			CellCoordinate Coords = target.getCellCoordinates();
 
@@ -243,9 +235,9 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 			Spatial dark = CellDark.getChild("DarkGeometry Cell" + target.toString());
 
 			if (light != null)
-				light.setCullHint(Spatial.CullHint.Always);
+				light.setCullHint(hint);
 			if (dark != null)
-				dark.setCullHint(Spatial.CullHint.Always);
+				dark.setCullHint(hint);
 		}
 	}
 
@@ -390,9 +382,10 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 		if (game != null) {
 			GameMap map = game.getMap();
 			if (DisplayToggle) {
+				SetTerrainRendering(map.getCellMap(), true);
 				RebuildDirtyCells(map.getCellMap());
 			} else {
-				HideTerrain(map.getCellMap());
+				SetTerrainRendering(map.getCellMap(), false);
 			}
 			if (game.getTickRate() <= 256) {
 				PopulateActors();	
