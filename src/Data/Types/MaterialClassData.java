@@ -84,4 +84,13 @@ public class MaterialClassData extends DataBase {
 		DefaultMaterialID = Data.getLabelIndex(DefaultMaterialLabel);	
 		return true;
 	}
+	
+	public short getTexture(short SurfaceType) {
+		for (int i = 0; i < SurfaceTypeIDs.length; i++) {
+			if (SurfaceTypeIDs[i] == SurfaceType) {
+				return SufaceTextueIDs[i];
+			}
+		}
+		return DataManager.INVALID_INDEX;
+	}
 }

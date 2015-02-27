@@ -13,7 +13,7 @@ import nu.xom.Element;
  */
 public class ColorData extends DataBase {
 	
-	short Red, Green, Blue;
+	public short Red, Green, Blue;
 
 	public ColorData() {
 	

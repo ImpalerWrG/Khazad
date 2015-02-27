@@ -66,7 +66,7 @@
 	</Color>
 	<Color>
 		<Name Label="COLOR_GREEN"/>
-		<Channels Red="0" Green="128" Blue="0"/>
+		<Channels Red="0" Green="255" Blue="0"/>
 	</Color>
 	<Color>
 		<Name Label="GRASS_BRIGHT"/>

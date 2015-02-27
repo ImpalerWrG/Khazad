@@ -18,6 +18,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Renderer;
 
 import Data.DataManager;
+import Data.Types.ColorData;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.texture.Texture;
@@ -44,10 +45,10 @@ public class ImageManager {
 	}
 
 	public static ImageManager getImageManager() {
-	   if(instance == null) {
-		  instance = new ImageManager();
-	   }
-	   return instance;
+		if(instance == null) {
+			instance = new ImageManager();
+		}
+		return instance;
 	}
 
 	public void Initialize(AssetManager manager) {
@@ -55,23 +56,23 @@ public class ImageManager {
 	}
 
 	private Image convertImage(Image image, Format newFormat) {
-        
+
 		int width = image.getWidth();
-        int height = image.getHeight();
-        ByteBuffer data = BufferUtils.createByteBuffer( (int)Math.ceil(newFormat.getBitsPerPixel() / 8.0) * width * height);
-        Image convertedImage = new Image(newFormat, width, height, data);
-       
-        ImageRaster sourceReader = ImageRaster.create(image);
-        ImageRaster targetWriter = ImageRaster.create(convertedImage);
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                ColorRGBA color = sourceReader.getPixel(x, y);
-                targetWriter.setPixel(x, y, color);
-            }
-        }
-       
-        return convertedImage;
-    }
+		int height = image.getHeight();
+		ByteBuffer data = BufferUtils.createByteBuffer( (int)Math.ceil(newFormat.getBitsPerPixel() / 8.0) * width * height);
+		Image convertedImage = new Image(newFormat, width, height, data);
+
+		ImageRaster sourceReader = ImageRaster.create(image);
+		ImageRaster targetWriter = ImageRaster.create(convertedImage);
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				ColorRGBA color = sourceReader.getPixel(x, y);
+				targetWriter.setPixel(x, y, color);
+			}
+		}
+		
+		return convertedImage;
+	}
 
 	/*
 	boolean Initialize() {
@@ -140,8 +141,7 @@ public class ImageManager {
 	Image loadImage(String filepath, boolean ColorKey) {
 		Texture Tex = assetmanager.loadTexture(filepath);
 
-		if (Tex == null)
-		{
+		if (Tex == null) {
 			//sprintf(buffer, "Failed to load Image file: %s", filepath);
 			//Ogre::LogManager::getSingleton().getLog("Khazad.log")->logMessage(buffer);
 
@@ -149,11 +149,11 @@ public class ImageManager {
 		} else {
 			//sprintf(buffer, "Loading Image file: %s", filepath);
 			//Ogre::LogManager::getSingleton().getLog("Khazad.log")->logMessage(buffer);
-		}		
+		}
 
 		//ilConvertImage(IL_BGRA, IL_UNSIGNED_BYTE);
 
-		if(ColorKey) {
+		if (ColorKey) {
 			//convert color key
 		}
 
@@ -204,17 +204,14 @@ public class ImageManager {
 		}
 	}
 	
-	Image GenerateGradientImage(Image Original, int PrimaryColorID, int SecondaryColorID, int BorderColorID)
-	{
-		ILuint TextureImageID;
-		ilGenImages(1, &TextureImageID);
-		ilBindImage(TextureImageID);
-		ilCopyImage(TextureDevILID);
-		ilConvertImage(IL_LUMINANCE, IL_UNSIGNED_BYTE);  //Load as IL_LUMINANCE to avoid convertion?
+	Image GenerateGradientImage(Image Original, short PrimaryColorID, short SecondaryColorID, short BorderColorID) {
+		Image newImage = Original.clone();
+		ImageRaster sourceReader = ImageRaster.create(Original);
+		ImageRaster targetWriter = ImageRaster.create(newImage);
 
-		uint8_t* TextureImageData = ilGetData();
-		uint32_t width = ilGetInteger(IL_IMAGE_WIDTH);
-		uint32_t height = ilGetInteger(IL_IMAGE_HEIGHT);
+		int width = Original.getWidth();
+		int height = Original.getHeight();
+
 
 		ILuint MaskImageID;
 		ilGenImages(1, &MaskImageID);
@@ -222,16 +219,13 @@ public class ImageManager {
 		ilTexImage(width, height, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
 		uint8_t* MaskImageData = ilGetData();
 
-		ColorData* PrimaryColor = DATA.getColorData(PrimaryColorID);
-		ColorData* SecondaryColor = DATA.getColorData(SecondaryColorID);
+		ColorData PrimaryColor = DataManager.getDataManager().getColorData(PrimaryColorID);
+		ColorData SecondaryColor = DataManager.getDataManager().getColorData(SecondaryColorID);
 
-		uint32_t bpp = ilGetInteger(IL_IMAGE_BYTES_PER_PIXEL);
-		if(SecondaryColor != NULL)
-		{
-			for(uint32_t i = 0; i < width; i++)
-			{
-				for(uint32_t j = 0; j < height; j++)
-				{
+		int bpp = ilGetInteger(IL_IMAGE_BYTES_PER_PIXEL);
+		if (SecondaryColor != null) {
+			for(int i = 0; i < width; i++) {
+				for(int j = 0; j < height; j++) {
 					MaskImageData[(i * width * bpp) + (j * bpp) + 0] = SecondaryColor->getBlue();     // Blue
 					MaskImageData[(i * width * bpp) + (j * bpp) + 1] = SecondaryColor->getGreen();    // Green
 					MaskImageData[(i * width * bpp) + (j * bpp) + 2] = SecondaryColor->getRed();      // Red
@@ -246,12 +240,9 @@ public class ImageManager {
 		ilTexImage(width, height, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
 		uint8_t* NewImageData = ilGetData();
 
-		if(PrimaryColor != NULL)
-		{
-			for(uint32_t i = 0; i < width; i++)
-			{
-				for(uint32_t j = 0; j < height; j++)
-				{
+		if(PrimaryColor != null) {
+			for(int i = 0; i < width; i++) {
+				for(int j = 0; j < height; j++) {
 					NewImageData[(i * width * bpp) + (j * bpp) + 0] = PrimaryColor->getBlue(); // Blue
 					NewImageData[(i * width * bpp) + (j * bpp) + 1] = PrimaryColor->getGreen(); // Green
 					NewImageData[(i * width * bpp) + (j * bpp) + 2] = PrimaryColor->getRed(); // Red
@@ -262,31 +253,26 @@ public class ImageManager {
 
 		ilOverlayImage(MaskImageID, 0, 0, 0);
 
-		if (BorderColorID != DataTypes.INVALID_INDEX)
-		{
+		if (BorderColorID != DataManager.INVALID_INDEX) {
 			ApplyBorder(NewImageID, BorderColorID);
 		}
 
 		return NewImageID;
 	}*/
  
-	public Image GeneratedOverLayImage(Image Original, int PrimaryColorID, int BorderColorID) {
+	public Image GeneratedOverLayImage(Image Original, short PrimaryColorID, short BorderColorID) {
 		Image newImage = Original.clone();
 		ImageRaster sourceReader = ImageRaster.create(Original);
-        ImageRaster targetWriter = ImageRaster.create(newImage);
+		ImageRaster targetWriter = ImageRaster.create(newImage);
 
 		int width = Original.getWidth();
 		int height = Original.getHeight();
 
-		//ColorData PrimaryColor = DATA.getColorData(PrimaryColorID);
-		ColorRGBA PrimaryColor = ColorRGBA.Green;
-
-		if(PrimaryColor != null)
-		{
-			for(int i = 0; i < width; i++)
-			{
-				for(int j = 0; j < height; j++)
-				{
+		ColorData PrimaryColor = DataManager.getDataManager().getColorData(PrimaryColorID);
+		
+		if (PrimaryColor != null) {
+			for (int i = 0; i < width; i++) {
+				for (int j = 0; j < height; j++) {
 					ColorRGBA sourceColor = sourceReader.getPixel(i, j);
 					ColorRGBA newColor = new ColorRGBA();
 					
@@ -294,27 +280,28 @@ public class ImageManager {
 					float Alpha = sourceColor.a;
 					Base /= 3;
 
-					float OriginalBlue = PrimaryColor.getBlue();
-					OriginalBlue /= 255.0;
+					float OriginalBlue = PrimaryColor.Blue / 65025f;
+					float OriginalGreen = PrimaryColor.Green / 65025f;
+					float OriginalRed = PrimaryColor.Red / 65025f;
+
+					//float OriginalBlue = PrimaryColor.getBlue();
+					//OriginalBlue /= 255.0;
 					
-					float OriginalGreen = PrimaryColor.getGreen();
-					OriginalGreen /= 255.0;
+					//float OriginalGreen = PrimaryColor.getGreen();
+					//OriginalGreen /= 255.0;
 
-					float OriginalRed = PrimaryColor.getRed();
-					OriginalRed /= 255.0;
-
+					//float OriginalRed = PrimaryColor.getRed();
+					//OriginalRed /= 255.0;
+					
 					// coloring using overlay mode
-					if(Base >= 0.5)
-					{
+					if (Base >= 0.5) {
 						newColor.b = (float) (1.0 - 2.0 * (1.0 - OriginalBlue) * (1.0 - Base)) * 255;
 						newColor.g = (float) (1.0 - 2.0 * (1.0 - OriginalGreen) * (1.0 - Base)) * 255;
 						newColor.r = (float) (1.0 - 2.0 * (1.0 - OriginalRed) * (1.0 - Base)) * 255;
 						newColor.a = Alpha;
 
 						targetWriter.setPixel(i, j, newColor);
-					}
-					else
-					{
+					} else {
 						newColor.b = (float) (2.0 * OriginalBlue * Base) * 255;
 						newColor.g = (float) (2.0 * OriginalGreen * Base) * 255;
 						newColor.r = (float) (2.0 * OriginalRed * Base) * 255;
@@ -333,7 +320,7 @@ public class ImageManager {
 		return newImage;
 	}
 
-	public Image GenerateKeeperImage(Image Original, int BorderColorID) {
+	public Image GenerateKeeperImage(Image Original, short BorderColorID) {
 		Image NewImage = Original.clone();
 		if (BorderColorID != DataManager.INVALID_INDEX) {
 			ApplyBorder(NewImage, BorderColorID);
@@ -341,34 +328,29 @@ public class ImageManager {
 		return NewImage;
 	}
 
-	private void ApplyBorder(Image Original, int BorderColorID) {
-        int width = Original.getWidth();
-        int height = Original.getHeight();
+	private void ApplyBorder(Image Original, short BorderColorID) {
+		int width = Original.getWidth();
+		int height = Original.getHeight();
 
-        ImageRaster targetWriter = ImageRaster.create(Original);
+		ImageRaster targetWriter = ImageRaster.create(Original);
 
-		byte Red, Green, Blue;
-		//ColorData BorderColor = DATA.getColorData(BorderColorID);
-		ColorRGBA color = ColorRGBA.Black;
-		//Red = BorderColor->getRed();
-		//Green = BorderColor->getGreen();
-		//Blue = BorderColor->getBlue();
+		float Red, Green, Blue;
+		ColorData BorderColor = DataManager.getDataManager().getColorData(BorderColorID);
 
-		if(color != null)
-		{
-			if(targetWriter != null)
-			{
-				for(int i = 0; i < width; i++)
-				{
-					targetWriter.setPixel(i, 0, color);
-					targetWriter.setPixel(i, height - 1, color);
-				}
+		Red = BorderColor.Red / 255f;
+		Green = BorderColor.Green / 255f;
+		Blue = BorderColor.Blue / 255f;
+		ColorRGBA color = new ColorRGBA(Red, Green, Blue, 1.0f);
 
-				for(int j = 0; j < height; j++)
-				{
-					targetWriter.setPixel(width -1, j, color);
-					targetWriter.setPixel(0, j, color);
-				}
+		if(targetWriter != null) {
+			for(int i = 0; i < width; i++) {
+				targetWriter.setPixel(i, 0, color);
+				targetWriter.setPixel(i, height - 1, color);
+			}
+
+			for(int j = 0; j < height; j++) {
+				targetWriter.setPixel(width -1, j, color);
+				targetWriter.setPixel(0, j, color);
 			}
 		}
 	}

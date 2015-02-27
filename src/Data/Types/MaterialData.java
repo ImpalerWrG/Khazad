@@ -34,7 +34,7 @@ public class MaterialData extends DataBase {
 	short PrimaryColorID, SecondaryColorID, BorderColorID;
 
 	String MaterialClasslabel;
-	short MaterialClassID;
+	public short MaterialClassID;
 
 	String[] SurfaceTypeLabels;
 	String[] SurfaceTextureLabels;
@@ -104,5 +104,14 @@ public class MaterialData extends DataBase {
 		}
 
 		return true;
+	}
+	
+	public short getTexture(short SurfaceType) {
+		for (int i = 0; i < SurfaceTypeIDs.length; i++) {
+			if (SurfaceTypeIDs[i] == SurfaceType) {
+				return SufaceTextueIDs[i];
+			}
+		}
+		return DataManager.INVALID_INDEX;
 	}
 }

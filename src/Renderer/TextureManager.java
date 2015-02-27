@@ -17,6 +17,9 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Renderer;
 
+import Data.DataManager;
+import Data.Types.MaterialData;
+
 /**
  *
  * @author Impaler
@@ -28,35 +31,29 @@ public class TextureManager {
 
 	}
 
-	/*
-	int16_t TextureManager::PickImageTexture(int16_t MaterialID, int16_t SurfaceTypeID)
-	{
-		MaterialData* Material = DATA->getMaterialData(MaterialID);
-		int16_t MaterialClassID = Material->getMaterialClass();
+	short PickImageTexture(short MaterialID, short SurfaceTypeID) {
+		DataManager Data = DataManager.getDataManager();
+		MaterialData Material = Data.getMaterialData(MaterialID);
 
-		if (Material->getTexture(SurfaceTypeID) != INVALID_INDEX)
-		{
-			return Material->getTexture((uint16_t) SurfaceTypeID);
-		}
-		else
-		{
-			if (MaterialClassID != INVALID_INDEX)
-			{
-				int16_t TextureID = DATA->getMaterialClassData(MaterialClassID)->getTexture(SurfaceTypeID);
-				if (TextureID == INVALID_INDEX)
-				{
-					cerr << "bad material/surface combination, no texture. MaterialClassID: " << MaterialClassID << " SurfaceTypeID: " << SurfaceTypeID << endl;
-					return  DATA->getLabelIndex("TEXTURE_DEFAULT");
-				}
-				else
-				{
+		short TextureID = Material.getTexture(SurfaceTypeID);
+		short MaterialClassID = Material.MaterialClassID;
+
+		if (TextureID != DataManager.INVALID_INDEX) {
+			return TextureID;
+		} else {
+			if (MaterialClassID != DataManager.INVALID_INDEX) {
+				TextureID = Data.getMaterialClassData(MaterialClassID).getTexture(SurfaceTypeID);
+				if (TextureID == DataManager.INVALID_INDEX) {
+					//cerr << "bad material/surface combination, no texture. MaterialClassID: " << MaterialClassID << " SurfaceTypeID: " << SurfaceTypeID << endl;
+					return  Data.getLabelIndex("TEXTURE_DEFAULT");
+				} else {
 					return TextureID;
 				}
 			}
-			return  DATA->getLabelIndex("TEXTURE_DEFAULT");
+			return  Data.getLabelIndex("TEXTURE_DEFAULT");
 		}
 	}
-
+/*
 	Ogre::MaterialPtr TextureManager::MapTexture(int16_t MaterialID, int16_t TextureID)
 	{
 		if (MaterialID != INVALID_INDEX && TextureID != INVALID_INDEX)
