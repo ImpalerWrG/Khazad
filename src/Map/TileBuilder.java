@@ -270,13 +270,13 @@ public class TileBuilder {
 		
 		float LeftBottom = Math.min(LeftCorner, LeftAdjacentCorner);
 		LeftBottom = (Math.min(CubeShape.CUBE_TOP_HEIGHT, Math.max(CubeShape.CUBE_BOTTOM_HEIGHT, LeftBottom)) - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
-		if (Adjacent.isSky() && !Cube.isSky()) {
+		if (Adjacent.isSky() && Cube.hasFace(Shape.FaceDirection) && !Cube.isSky()) {
 			LeftBottom = (CubeShape.CUBE_BOTTOM_HEIGHT - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
 		}
 		
 		float RightBottom = Math.min(RightCorner, RightAdjacentCorner);
 		RightBottom = (Math.min(CubeShape.CUBE_TOP_HEIGHT, Math.max(CubeShape.CUBE_BOTTOM_HEIGHT, RightBottom)) - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
-		if (Adjacent.isSky() && !Cube.isSky()) {
+		if (Adjacent.isSky() && Cube.hasFace(Shape.FaceDirection) && !Cube.isSky()) {
 			RightBottom = (CubeShape.CUBE_BOTTOM_HEIGHT - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
 		}
 
