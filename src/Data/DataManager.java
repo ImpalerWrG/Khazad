@@ -123,7 +123,7 @@ public class DataManager {
 		GlobalDataTypeMap.put("MaterialClass", MaterialClasses);
 		GlobalDataTypeMap.put("SurfaceType", SurfaceTypes);
 		GlobalDataTypeMap.put("Tree", Trees);
-		GlobalDataTypeMap.put("Building", Buildings);
+		GlobalDataTypeMap.put("Furniture", Buildings);
 
 
 		ArrayList<String> DataFiles = new ArrayList<String>();
@@ -209,6 +209,6 @@ public class DataManager {
 	}
 
 	void addLabel(String Label, short Index) {
-		GlobalLabelMap.put(Index, Label);
+		GlobalLabelMap.put(Label, (int)Index);
 	}
 }

@@ -34,7 +34,7 @@ public class FaceCoordinate {
 		FaceDirection = Direction.DIRECTION_DESTINATION;
 	}
 	
-	FaceCoordinate(byte CubeCoordinates, Direction TargetDirection) {
+	public FaceCoordinate(byte CubeCoordinates, Direction TargetDirection) {
 		Coordinates = CubeCoordinates;
 		FaceDirection = TargetDirection;		
 	}

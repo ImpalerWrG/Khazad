@@ -222,7 +222,7 @@ public class TileBuilder {
 		CubeShape Cube = Shape.SourceCubeComponent;
 		CubeShape Adjacent = Shape.AdjacentCubeComponent;
 
-		
+
 		float XLeft = 0; float XRight = 0; float YLeft = 0; float YRight = 0;
 		int LeftCorner = 0; int LeftAdjacentCorner = 0;
 		int RightCorner = 0; int RightAdjacentCorner = 0;
@@ -270,14 +270,20 @@ public class TileBuilder {
 		
 		float LeftBottom = Math.min(LeftCorner, LeftAdjacentCorner);
 		LeftBottom = (Math.min(CubeShape.CUBE_TOP_HEIGHT, Math.max(CubeShape.CUBE_BOTTOM_HEIGHT, LeftBottom)) - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
+		if (Adjacent.isSky() && !Cube.isSky()) {
+			LeftBottom = (CubeShape.CUBE_BOTTOM_HEIGHT - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
+		}
 		
 		float RightBottom = Math.min(RightCorner, RightAdjacentCorner);
 		RightBottom = (Math.min(CubeShape.CUBE_TOP_HEIGHT, Math.max(CubeShape.CUBE_BOTTOM_HEIGHT, RightBottom)) - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
-
-		if (LeftCorner > LeftAdjacentCorner || RightCorner > RightAdjacentCorner) { 
-			Normal = Normal.negate();			
+		if (Adjacent.isSky() && !Cube.isSky()) {
+			RightBottom = (CubeShape.CUBE_BOTTOM_HEIGHT - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
 		}
-		
+
+		//if (LeftCorner > LeftAdjacentCorner || RightCorner > RightAdjacentCorner) { 
+		//	Normal = Normal.negate();			
+		//}
+
 		Vertices.add(new Vector3f(XLeft, YLeft, LeftBottom - MapCoordinate.HALFCUBE));  // Left Bottom
 		Normals.add(Normal);
 		TextureCoords.add(new Vector2f(0.0f, LeftBottom));
@@ -295,7 +301,7 @@ public class TileBuilder {
 		TextureCoords.add(new Vector2f(1.0f, RightTop));
 
 
-		if (LeftCorner > LeftAdjacentCorner || RightCorner > RightAdjacentCorner) { 
+		if (LeftCorner >= LeftAdjacentCorner || RightCorner >= RightAdjacentCorner) { 
 			if (LeftCorner > CubeShape.BELOW_CUBE_HEIGHT && RightCorner != CubeShape.BELOW_CUBE_HEIGHT) {
 				Indexes.add(3);
 				Indexes.add(1);
@@ -312,17 +318,17 @@ public class TileBuilder {
 		} else {
 
 			if (LeftAdjacentCorner > CubeShape.BELOW_CUBE_HEIGHT && RightAdjacentCorner != CubeShape.BELOW_CUBE_HEIGHT) {
-				Indexes.add(0);
-				Indexes.add(1);
-				Indexes.add(3);
-				Triangle = true;
+				//Indexes.add(0);
+				//Indexes.add(1);
+				//Indexes.add(3);
+				//Triangle = true;
 			}
 
 			if (LeftAdjacentCorner != CubeShape.BELOW_CUBE_HEIGHT && RightAdjacentCorner > CubeShape.CUBE_BOTTOM_HEIGHT) {
-				Indexes.add(3);
-				Indexes.add(2);
-				Indexes.add(0);
-				Triangle = true;
+				//Indexes.add(3);
+				//Indexes.add(2);
+				//Indexes.add(0);
+				//Triangle = true;
 			}
 		}
 		
