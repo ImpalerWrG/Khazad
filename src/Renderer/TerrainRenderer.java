@@ -122,7 +122,6 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 
 		Texture tex = assetmanager.loadTexture("Textures/grass1.png");
 		DataManager Data = DataManager.getDataManager();
-
 		
 		Image withBorder = imagemanager.GeneratedOverLayImage(tex.getImage(), Data.getLabelIndex("COLOR_GREEN"), Data.getLabelIndex("COLOR_BLACK"));
 		tex.setImage(withBorder);
@@ -138,12 +137,6 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 		terrainNode.addLight(glow);		
 	}
 	
-	public void detachFromGame() {
-		terrainNode = null;
-		darkterrainNode = null;
-		sunnyterrainNode = null;
-	}
-
 	public void onAction(String name, boolean keyPressed, float tpf) {
         if (this.isEnabled()) {
 			if (name.equals("TerrainRenderToggle") && keyPressed) {
@@ -159,67 +152,15 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 		inputManager.addListener(this, inputs);
 	}
 
-	public Node getCellNodeLight(CellCoordinate TargetCell) {
-		Node CellNode = LightCellNodeMap.get(TargetCell);
-		if (CellNode == null) {
-			CellNode = new Node();	
-		
-			float x = (float) (TargetCell.X * MapCoordinate.CELLEDGESIZE);
-			float y = (float) (TargetCell.Y * MapCoordinate.CELLEDGESIZE);
-
-			CellNode.move(x, y, 0);
-
-			getZNodeLight(TargetCell.Z).attachChild(CellNode);
-			LightCellNodeMap.put(TargetCell, CellNode);
-		}
-		return CellNode;
-	}
-
-	public Node getCellNodeDark(CellCoordinate TargetCell) {
-		Node CellNode = DarkCellNodeMap.get(TargetCell);
-		if (CellNode == null) {
-			CellNode = new Node();	
-		
-			float x = (float) (TargetCell.X * MapCoordinate.CELLEDGESIZE);
-			float y = (float) (TargetCell.Y * MapCoordinate.CELLEDGESIZE);
-
-			CellNode.move(x, y, 0);
-
-			getZNodeDark(TargetCell.Z).attachChild(CellNode);
-			DarkCellNodeMap.put(TargetCell, CellNode);
-		}
-		return CellNode;
-	}
-
-	public Node getZNodeLight(int zlevel) {
-		Node targetnode = ZMapLight.get(new Integer(zlevel));
-		if (targetnode == null) {
-
-			targetnode = new Node();
-			targetnode.move(0, 0, zlevel);
-			ZMapLight.put(new Integer(zlevel), targetnode);
-		}
-		return targetnode;
-	}
-
-	public Node getZNodeDark(int zlevel) {
-		Node targetnode = ZMapDark.get(new Integer(zlevel));
-		if (targetnode == null) {
-
-			targetnode = new Node();
-			targetnode.move(0, 0, zlevel);
-			ZMapDark.put(new Integer(zlevel), targetnode);
-		}
-		return targetnode;
-	}
-
 	public void RebuildDirtyCells(ConcurrentHashMap<CellCoordinate, Cell> cells) {
 		for (Cell target : cells.values()) {
 			CellCoordinate Coords = target.getCellCoordinates();
 						
 			if (target.isTerrainRenderingDirty()) {
 				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, mat, TerrainLodControler);
-				Builder.setNodes(getCellNodeLight(Coords), getCellNodeDark(Coords));
+				MapRenderer Renderer = state.getState(MapRenderer.class);
+
+				Builder.setNodes(Renderer.getCellNodeLight(Coords), Renderer.getCellNodeDark(Coords));
 				Executor.submit(Builder);
 
 				target.setDirtyTerrainRendering(false);
@@ -235,8 +176,9 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 		for (Cell target : cells.values()) {
 			CellCoordinate Coords = target.getCellCoordinates();
 
-			Node CellLight = getCellNodeLight(Coords);
-			Node CellDark = getCellNodeDark(Coords);
+			MapRenderer Renderer = state.getState(MapRenderer.class);
+			Node CellLight = Renderer.getCellNodeLight(Coords);
+			Node CellDark = Renderer.getCellNodeDark(Coords);
 			
 			Spatial light = CellLight.getChild("LightGeometry Cell" + target.toString());
 			Spatial dark = CellDark.getChild("DarkGeometry Cell" + target.toString());
@@ -246,55 +188,6 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 			if (dark != null)
 				dark.setCullHint(hint);
 		}
-	}
-
-	public void setSliceLevels(int top, int bottom) {
-		Top = top; Bottom = bottom;
-		
-		for (Node targetnode : ZMapLight.values()) {
-			float Z = targetnode.getLocalTranslation().getZ();
-			if (Z <= Top && SunnyRendering) {
-				sunnyterrainNode.attachChild(targetnode);
-			} else {
-				sunnyterrainNode.detachChild(targetnode);
-			}
-		}
-		
-		for (Node targetnode : ZMapDark.values()) {
-			float Z = targetnode.getLocalTranslation().getZ();
-			if (Z <= Top) {
-				darkterrainNode.attachChild(targetnode);
-			} else {
-				darkterrainNode.detachChild(targetnode);
-			}
-		}
-	}
-	
-	public void setSunnyVisibility(boolean newValue) {
-		if (SunnyRendering != newValue) {
-			SunnyRendering = newValue;
-		
-			for (Node target : ZMapLight.values()) {
-				float Z = target.getLocalTranslation().getZ();
-				if (Z > Bottom && Z <= Top && SunnyRendering) {
-					target.setCullHint(Spatial.CullHint.Dynamic);
-				} else {
-					target.setCullHint(Spatial.CullHint.Always);				
-				}
-			}
-		}
-	}
-
-	public Node getTerrainNode() {
-		return terrainNode;
-	}
-
-	public Node getSunTerrainNode() {
-		return sunnyterrainNode;
-	}
-
-	public Node getDarkTerrainNode() {
-		return darkterrainNode;
 	}
 
 	@Override
@@ -308,13 +201,6 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 			} else {
 				SetTerrainRendering(map.getCellMap(), false);
 			}
-			GameCameraState cam = state.getState(GameCameraState.class);
-			setSliceLevels(cam.getSliceTop(), cam.getSliceBottom());
-
-			
-			GUI gui = state.getState(GUI.class);
-			String TimeString = ((game.hours %24) + ":" + (game.minutes % 60) + ":" + (game.seconds % 60));
-			gui.UpdateText("Timelabel", TimeString);
 		}
 	}
 }

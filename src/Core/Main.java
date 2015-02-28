@@ -89,6 +89,7 @@ public class Main extends SimpleApplication {
 		Data.Initialize();
 
 		// RENDER
+		this.stateManager.attach(new MapRenderer());
 		this.stateManager.attach(new TerrainRenderer(pool));
 		this.stateManager.attach(new PathingRenderer());
 		this.stateManager.attach(new ActorRenderer());

@@ -19,6 +19,8 @@ package Renderer;
 
 import Data.DataManager;
 import Data.Types.ColorData;
+import Data.Types.MaterialData;
+import Data.Types.TextureData;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.texture.Texture;
@@ -176,34 +178,33 @@ public class ImageManager {
 
 		return ImageID;
 	}
+*/
+	Image GenerateMaterialImage(short MaterialID, short TextureID) {
+		DataManager Data = DataManager.getDataManager();
+		MaterialData Material = Data.getMaterialData(MaterialID);
+		TextureData Texture = Data.getTextureData(TextureID);
 
-	ILuint ImageManager::GenerateMaterialImage(int16_t MaterialID, int16_t TextureID)
-	{
-		MaterialData* Material = DATA->getMaterialData(MaterialID);
-		TextureData* Texture = DATA->getTextureData(TextureID);
+		//ILuint TextureDevILID = Texture->getDevILID();
+		Image TextureImage = new Image();
 
-		ILuint TextureDevILID = Texture->getDevILID();
+		short PrimaryColorID = Material.PrimaryColorID;
+		short SecondaryColorID = Material.SecondaryColorID;
+		short BorderColorID = Material.BorderColorID;
 
-		int16_t PrimaryColorID = Material->getPrimaryColorID();
-		int16_t SecondaryColorID = Material->getSecondaryColorID();
-		int16_t BorderColorID = Material->getBorderColorID();
+		String colormode = Material.ColorMode;
 
-		string colormode = DATA->getMaterialData(MaterialID)->getColorMode();
-
-		if(colormode == "gradientmap")
-		{
-			return GenerateGradientImage(TextureDevILID, PrimaryColorID, SecondaryColorID, BorderColorID);
+		if(colormode.equals("gradientmap")) {
+			return GenerateGradientImage(TextureImage, PrimaryColorID, SecondaryColorID, BorderColorID);
 		}
-		else if(colormode.empty() || colormode == "overlay")
-		{
-			return GeneratedOverLayImage(TextureDevILID, PrimaryColorID, BorderColorID);
+		else if(colormode.equals("keepimage")) {
+			return GenerateKeeperImage(TextureImage, BorderColorID);
 		}
-		else if(colormode == "keepimage")
-		{
-			return GenerateKeeperImage(TextureDevILID, BorderColorID);
+		else if(colormode.isEmpty() || colormode.equals("overlay")) {
+			return GeneratedOverLayImage(TextureImage, PrimaryColorID, BorderColorID);
 		}
+		return null;
 	}
-	
+
 	Image GenerateGradientImage(Image Original, short PrimaryColorID, short SecondaryColorID, short BorderColorID) {
 		Image newImage = Original.clone();
 		ImageRaster sourceReader = ImageRaster.create(Original);
@@ -212,53 +213,44 @@ public class ImageManager {
 		int width = Original.getWidth();
 		int height = Original.getHeight();
 
-
-		ILuint MaskImageID;
-		ilGenImages(1, &MaskImageID);
-		ilBindImage(MaskImageID);
-		ilTexImage(width, height, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
-		uint8_t* MaskImageData = ilGetData();
-
 		ColorData PrimaryColor = DataManager.getDataManager().getColorData(PrimaryColorID);
 		ColorData SecondaryColor = DataManager.getDataManager().getColorData(SecondaryColorID);
 
-		int bpp = ilGetInteger(IL_IMAGE_BYTES_PER_PIXEL);
+		Image OverlayImage = Original.clone();
 		if (SecondaryColor != null) {
 			for(int i = 0; i < width; i++) {
 				for(int j = 0; j < height; j++) {
-					MaskImageData[(i * width * bpp) + (j * bpp) + 0] = SecondaryColor->getBlue();     // Blue
-					MaskImageData[(i * width * bpp) + (j * bpp) + 1] = SecondaryColor->getGreen();    // Green
-					MaskImageData[(i * width * bpp) + (j * bpp) + 2] = SecondaryColor->getRed();      // Red
-					MaskImageData[(i * width * bpp) + (j * bpp) + 3] = 255 - TextureImageData[(i * width) + j]; // Alpha
+					//MaskImageData[(i * width * bpp) + (j * bpp) + 0] = SecondaryColor->getBlue();     // Blue
+					//MaskImageData[(i * width * bpp) + (j * bpp) + 1] = SecondaryColor->getGreen();    // Green
+					//MaskImageData[(i * width * bpp) + (j * bpp) + 2] = SecondaryColor->getRed();      // Red
+					//MaskImageData[(i * width * bpp) + (j * bpp) + 3] = 255 - TextureImageData[(i * width) + j]; // Alpha
 				}
 			}
 		}
 
-		ILuint NewImageID;
-		ilGenImages(1, &NewImageID);
-		ilBindImage(NewImageID);
-		ilTexImage(width, height, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
-		uint8_t* NewImageData = ilGetData();
-
+		//Image OverlayImage = Original.clone();
 		if(PrimaryColor != null) {
+			ColorRGBA newColor = new ColorRGBA();
+			newColor.r = PrimaryColor.Red / 255;
+			newColor.g = PrimaryColor.Green / 255;
+			newColor.b = PrimaryColor.Blue / 255;
+			newColor.a = 1;
+			
 			for(int i = 0; i < width; i++) {
 				for(int j = 0; j < height; j++) {
-					NewImageData[(i * width * bpp) + (j * bpp) + 0] = PrimaryColor->getBlue(); // Blue
-					NewImageData[(i * width * bpp) + (j * bpp) + 1] = PrimaryColor->getGreen(); // Green
-					NewImageData[(i * width * bpp) + (j * bpp) + 2] = PrimaryColor->getRed(); // Red
-					NewImageData[(i * width * bpp) + (j * bpp) + 3] = 255; // Alpha
+					targetWriter.setPixel(i, j, newColor);
 				}
 			}
 		}
 
-		ilOverlayImage(MaskImageID, 0, 0, 0);
+		//ilOverlayImage(MaskImageID, 0, 0, 0);
 
 		if (BorderColorID != DataManager.INVALID_INDEX) {
-			ApplyBorder(NewImageID, BorderColorID);
+			ApplyBorder(newImage, BorderColorID);
 		}
 
-		return NewImageID;
-	}*/
+		return newImage;
+	}
  
 	public Image GeneratedOverLayImage(Image Original, short PrimaryColorID, short BorderColorID) {
 		Image newImage = Original.clone();
@@ -284,14 +276,6 @@ public class ImageManager {
 					float OriginalGreen = PrimaryColor.Green / 65025f;
 					float OriginalRed = PrimaryColor.Red / 65025f;
 
-					//float OriginalBlue = PrimaryColor.getBlue();
-					//OriginalBlue /= 255.0;
-					
-					//float OriginalGreen = PrimaryColor.getGreen();
-					//OriginalGreen /= 255.0;
-
-					//float OriginalRed = PrimaryColor.getRed();
-					//OriginalRed /= 255.0;
 					
 					// coloring using overlay mode
 					if (Base >= 0.5) {

@@ -36,7 +36,7 @@ import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.scene.Spatial;
 
-import Renderer.TerrainRenderer;
+import Renderer.MapRenderer;
 
 
 /**
@@ -55,7 +55,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	}
 
 	private Node rootnode;
-	private Node terrainnode;
+	private Node Mapnode;
 	private Node LookNode;
 
     private SimpleApplication app;
@@ -100,8 +100,8 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		this.state = stateManager;
 		this.rootnode = this.app.getRootNode();
 
-		TerrainRenderer rend = stateManager.getState(TerrainRenderer.class);
-		this.terrainnode = rend.getTerrainNode();
+		MapRenderer rend = stateManager.getState(MapRenderer.class);
+		this.Mapnode = rend.getMapNode();
 				
         if (app.getInputManager() != null) {
        
@@ -359,19 +359,33 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
     }
 
 	public void unregisterInput(InputManager inputManager) {
-		
+        inputManager.deleteMapping("mouseDown");
+        inputManager.deleteMapping("mouseUp");
+        inputManager.deleteMapping("ZoomIn");
+        inputManager.deleteMapping("ZoomOut");
+        inputManager.deleteMapping("mouseLeft");
+        inputManager.deleteMapping("mouseRight");
+        
+		inputManager.deleteMapping("LeftClick");
+        inputManager.deleteMapping("RightClick");
+        inputManager.deleteMapping("MiddleClick");
+
+        inputManager.deleteMapping("ArrowUp");
+        inputManager.deleteMapping("ArrowDown");
+        inputManager.deleteMapping("RShift");
+        inputManager.deleteMapping("LShift");
 	}
 	
 	public void updateMousePosition() {
-		TerrainRenderer rend = this.app.getStateManager().getState(TerrainRenderer.class);
-		this.terrainnode = rend.getTerrainNode();
+		MapRenderer rend = this.app.getStateManager().getState(MapRenderer.class);
+		this.Mapnode = rend.getMapNode();
 
 		Ray ray = MainCamera.getMouseRay(app.getInputManager().getCursorPosition());
 		Vector3f IntersectLocation = new Vector3f();
 
-		if (terrainnode != null) {
+		if (Mapnode != null) {
 			CollisionResults results = new CollisionResults();		
-			terrainnode.collideWith(ray, results);
+			Mapnode.collideWith(ray, results);
 
 			if (results.size() > 0) {
 				// The closest collision point is what was truly hit:

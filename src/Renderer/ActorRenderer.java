@@ -111,8 +111,8 @@ public class ActorRenderer extends AbstractAppState{
 
 					actorNode.setCullHint(Spatial.CullHint.Dynamic);
 					MapCoordinate coords = target.getLocation();
-					TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
-					Node z = Terrain.getZNodeLight(coords.Z);
+					MapRenderer Renderer = state.getState(MapRenderer.class);
+					Node z = Renderer.getZNodeLight(coords.Z);
 					z.attachChild(actorNode);
 					Vector3f Offset = new Vector3f();
 

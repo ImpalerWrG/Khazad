@@ -20,6 +20,10 @@ package Renderer;
 import Data.DataManager;
 import Data.Types.MaterialData;
 
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.jme3.texture.Texture;
+import com.jme3.texture.Image;
 /**
  *
  * @author Impaler
@@ -27,8 +31,10 @@ import Data.Types.MaterialData;
 
 public class TextureManager {
 
+	ConcurrentHashMap<Integer, Image> TextureMap;
+	
 	TextureManager(){
-
+		TextureMap = new ConcurrentHashMap<Integer, Image>();
 	}
 
 	short PickImageTexture(short MaterialID, short SurfaceTypeID) {
@@ -53,72 +59,57 @@ public class TextureManager {
 			return  Data.getLabelIndex("TEXTURE_DEFAULT");
 		}
 	}
-/*
-	Ogre::MaterialPtr TextureManager::MapTexture(int16_t MaterialID, int16_t TextureID)
-	{
-		if (MaterialID != INVALID_INDEX && TextureID != INVALID_INDEX)
-		{
-			uint32_t Key = MaterialID;
+
+	Image MapTexture(short MaterialID, short TextureID) {
+		DataManager Data = DataManager.getDataManager();
+		if (MaterialID != DataManager.INVALID_INDEX && TextureID != DataManager.INVALID_INDEX) {
+			int Key = MaterialID;
 			Key = Key << 16;
 			Key += TextureID;
 
-			if (TextureMap.find(Key) != TextureMap.end())
-			{
-				return TextureMap.find(Key)->second;
-			}
-			else
-			{
-				char buffer[32];
-				Ogre::MaterialPtr SelectedMaterial = makeStaticMaterial(makeImage(MaterialID, TextureID), getStaticTextureName(buffer, MaterialID, TextureID));
-				if (SelectedMaterial.get() != NULL)
-				{
-					TextureMap[Key] = SelectedMaterial;
+			Image TargetImage = TextureMap.get(Key);
+			if (TargetImage != null) {
+				return TargetImage;
+			} else {
+				Image SelectedMaterial = new Image(); //makeStaticMaterial(makeImage(MaterialID, TextureID), getStaticTextureName(MaterialID, TextureID));
+				if (SelectedMaterial != null) {
+					TextureMap.put(Key, SelectedMaterial);
 					return SelectedMaterial;
 				}
 			}
 		}
-		return Ogre::MaterialPtr(NULL);
+		return null;
 	}
 
-	Ogre::MaterialPtr TextureManager::getOgreMaterial(int16_t MaterialTypeID, int16_t SurfaceTypeID)
-	{
-		int16_t TextureID = PickImageTexture(MaterialTypeID, SurfaceTypeID);
-
+	Image getOgreMaterial(short MaterialTypeID, short SurfaceTypeID) {
+		short TextureID = PickImageTexture(MaterialTypeID, SurfaceTypeID);
 		return MapTexture(MaterialTypeID, TextureID);
 	}
 
-	const char* TextureManager::getStaticMaterialName(char* Buffer, int16_t MaterialTypeID, int16_t TextureID)
-	{
-		sprintf(Buffer, "StaticMat%i-%i",  MaterialTypeID, TextureID);
-		return Buffer;
+	String getStaticMaterialName(short MaterialTypeID, short TextureID) {
+		return new String(); //("StaticMat%i-%i",  MaterialTypeID, TextureID);
 	}
 
-	const char* TextureManager::getStaticTextureName(char* Buffer, int16_t MaterialTypeID, int16_t TextureID)
-	{
-		sprintf(Buffer, "StaticTex%i-%i",  MaterialTypeID, TextureID);
-		return Buffer;
+	String getStaticTextureName(short MaterialTypeID, short TextureID){
+		return new String(); //( "StaticTex%i-%i",  MaterialTypeID, TextureID);
 	}
 
-	Ogre::Image* TextureManager::ConvertToOgreImage(int16_t ImageID)
-	{
-		uint8_t* iData = IMAGE->getImageData(ImageID);
-		uint16_t Width = IMAGE->getImageWidth(ImageID);
-		uint16_t Height = IMAGE->getImageHeight(ImageID);
+	Image ConvertToOgreImage(short ImageID) {
+		//uint8_t* iData = IMAGE->getImageData(ImageID);
+		//uint16_t Width = IMAGE->getImageWidth(ImageID);
+		//uint16_t Height = IMAGE->getImageHeight(ImageID);
 
-		Ogre::Image* NewImage = new Ogre::Image(); // Delete?
-		NewImage->loadDynamicImage(iData, Width, Height, Ogre::PF_A8R8G8B8);
+		Image NewImage = new Image(); // Delete?
+		//NewImage->loadDynamicImage(iData, Width, Height, Ogre::PF_A8R8G8B8);
 
 		return NewImage;
 	}
 
-	Ogre::Image* TextureManager::makeImage(int16_t MaterialTypeID, int16_t TextureID)
-	{
-		uint16_t ImageID = IMAGE->GenerateMaterialImage(MaterialTypeID, TextureID);
-		Ogre::Image* NewImage = ConvertToOgreImage(ImageID);
-
-		return NewImage;
+	Image makeImage(short MaterialTypeID, short TextureID) {
+		ImageManager Imaging = ImageManager.getImageManager();
+		return Imaging.GenerateMaterialImage(MaterialTypeID, TextureID);
 	}
-
+/*
 	Ogre::MaterialPtr TextureManager::makeStaticMaterial(Ogre::Image* NewImage, const char* MaterialName)
 	{
 		Ogre::MaterialPtr NewMaterial = Ogre::MaterialManager::getSingleton().create(MaterialName, "General", true);

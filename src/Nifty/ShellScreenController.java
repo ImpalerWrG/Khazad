@@ -31,6 +31,7 @@ import PathFinding.PathFinding;
 import Renderer.TerrainRenderer;
 import Renderer.SelectionRenderer;
 import Renderer.PathingRenderer;
+import Renderer.MapRenderer;
 import Interface.GameCameraState;
 import de.lessvoid.nifty.elements.Element;
 /**
@@ -81,6 +82,7 @@ public class ShellScreenController implements ScreenController {
 		game.InitializeGame((short) 10, (short) 10, Seed);
 		this.app.getStateManager().attach(game);
 		
+		this.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
 		this.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
 		this.app.getStateManager().attach(new SelectionRenderer());
 		this.app.getStateManager().getState(PathingRenderer.class).attachToGame(game);

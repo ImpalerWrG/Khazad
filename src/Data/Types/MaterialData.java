@@ -31,7 +31,7 @@ import nu.xom.Elements;
 public class MaterialData extends DataBase {
 
 	String PrimaryColorlabel, SecondaryColorlabel, BorderColorlabel;
-	short PrimaryColorID, SecondaryColorID, BorderColorID;
+	public short PrimaryColorID, SecondaryColorID, BorderColorID;
 
 	String MaterialClasslabel;
 	public short MaterialClassID;
@@ -40,6 +40,8 @@ public class MaterialData extends DataBase {
 	String[] SurfaceTextureLabels;
 	short[] SurfaceTypeIDs;
 	short[] SufaceTextueIDs;
+
+	public String ColorMode;
 
 	public MaterialData() {
 		

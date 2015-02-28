@@ -185,8 +185,8 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 		for (Cell target : cells.values()) {
 			CellCoordinate Coords = target.getCellCoordinates();
 
-			TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
-			Node CellNode = Terrain.getCellNodeLight(Coords);
+			MapRenderer Renderer = state.getState(MapRenderer.class);
+			Node CellNode = Renderer.getCellNodeLight(Coords);
 			Spatial ConnectivityNode = CellNode.getChild("Connection Rendering" + Coords.toString());	
 
 			if (target.isPathingRenderingDirty()) {
@@ -208,8 +208,8 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 	void HideConnectivityRendering(ConcurrentHashMap<CellCoordinate, Cell> cells) {
 		for (Cell target : cells.values()) {
 			CellCoordinate Coords = target.getCellCoordinates();
-			TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
-			Node CellNode = Terrain.getCellNodeLight(Coords);
+			MapRenderer Renderer = state.getState(MapRenderer.class);
+			Node CellNode = Renderer.getCellNodeLight(Coords);
 			Spatial ConnectivityNode = CellNode.getChild("Connection Rendering" + Coords.toString());
 
 			if (ConnectivityNode != null) {
