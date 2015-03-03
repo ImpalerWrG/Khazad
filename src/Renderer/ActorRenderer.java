@@ -58,11 +58,7 @@ public class ActorRenderer extends AbstractAppState{
 	AssetManager assetmanager = null;
 	ImageManager imagemanager = null;
 
-	Node terrainNode = null;
-	Node sunnyterrainNode = null;
-	Node darkterrainNode = null;
-
-	LodControl TerrainLodControler;
+	LodControl ActorLodControler;
 	ConcurrentHashMap<Integer, Node> ActorNodeMap;
 
 	boolean DisplayToggle = true;
@@ -77,10 +73,6 @@ public class ActorRenderer extends AbstractAppState{
 		this.app = (SimpleApplication) app;
 		this.state = stateManager;
 		this.assetmanager = app.getAssetManager();
-
-		ImageManager Images = ImageManager.getImageManager();
-		Images.Initialize(assetmanager);
-		imagemanager = Images;
 
 		//registerWithInput(app.getInputManager());
 	}

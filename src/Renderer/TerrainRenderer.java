@@ -60,38 +60,25 @@ import java.util.concurrent.ExecutorService;
  * @author Impaler
  */
 public class TerrainRenderer extends AbstractAppState implements ActionListener {
-	
+
 	SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
-	ImageManager imagemanager = null;
-	
-	Node terrainNode = null;
-	Node sunnyterrainNode = null;
-	Node darkterrainNode = null;
-	
+
+	Game game = null;
+
 	TileBuilder builder;
 	LodControl TerrainLodControler;
 
-	ConcurrentHashMap<CellCoordinate, Node> LightCellNodeMap;
-	ConcurrentHashMap<CellCoordinate, Node> DarkCellNodeMap;
-	ConcurrentHashMap<Integer, Node> ZMapLight;
-	ConcurrentHashMap<Integer, Node> ZMapDark;
 	Material mat = null;
-	
+
 	boolean SunnyRendering = true;
-	int Top; int Bottom;
+	boolean DisplayToggle = true;
 
 	ExecutorService Executor;
-	boolean DisplayToggle = true;
 
 	public TerrainRenderer(ExecutorService Threadpool) {
 		Executor = Threadpool;
-
-		LightCellNodeMap = new ConcurrentHashMap<CellCoordinate, Node>();
-		DarkCellNodeMap = new ConcurrentHashMap<CellCoordinate, Node>();
-		ZMapLight = new ConcurrentHashMap<Integer, Node>();
-		ZMapDark = new ConcurrentHashMap<Integer, Node>();
 		builder = new TileBuilder();
 	}
 
@@ -102,39 +89,21 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 		this.state = stateManager;
 		this.assetmanager = app.getAssetManager();
 
-		ImageManager Images = ImageManager.getImageManager();
-		Images.Initialize(assetmanager);
-		imagemanager = Images;
-		
 		registerWithInput(app.getInputManager());
 	}
 	
 	public void attachToGame(Game TargetGame) {
-		terrainNode = new Node();
-		this.app.getRootNode().attachChild(terrainNode);
-		
-		darkterrainNode = new Node();
-		sunnyterrainNode = new Node();
-		terrainNode.attachChild(darkterrainNode);
-		terrainNode.attachChild(sunnyterrainNode);
-
+		this.game = TargetGame;
 		this.TerrainLodControler = new LodControl();
 
 		Texture tex = assetmanager.loadTexture("Textures/grass1.png");
 		DataManager Data = DataManager.getDataManager();
-		
-		Image withBorder = imagemanager.GeneratedOverLayImage(tex.getImage(), Data.getLabelIndex("COLOR_GREEN"), Data.getLabelIndex("COLOR_BLACK"));
+
+		Image withBorder = ImageManager.getImageManager().GeneratedOverLayImage(tex.getImage(), Data.getLabelIndex("COLOR_GREEN"), Data.getLabelIndex("COLOR_BLACK"));
 		tex.setImage(withBorder);
 
 		mat = new Material(assetmanager, "Common/MatDefs/Light/Lighting.j3md");
 		mat.setTexture("DiffuseMap", tex);
-		
-		ColorRGBA Suncolor = ColorRGBA.White;
-		AmbientLight glow = new AmbientLight();
-		glow.setColor(Suncolor.mult(0.8f));
-
-		TargetGame.getWeather().AttatchSun(sunnyterrainNode);
-		terrainNode.addLight(glow);		
 	}
 	
 	public void onAction(String name, boolean keyPressed, float tpf) {
@@ -192,9 +161,8 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 
 	@Override
 	public void update(float tpf) {		
-		Game game = state.getState(Game.class);
-		if (game != null) {
-			GameMap map = game.getMap();
+		if (this.game != null) {
+			GameMap map = this.game.getMap();
 			if (DisplayToggle) {
 				SetTerrainRendering(map.getCellMap(), true);
 				RebuildDirtyCells(map.getCellMap());

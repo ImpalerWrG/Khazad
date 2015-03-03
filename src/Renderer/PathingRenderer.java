@@ -69,7 +69,7 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
 
-	Game game;
+	Game game = null;
 	PathFinding Pathing;
 	Node PathingNode;
 
@@ -219,8 +219,8 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 	}
 
 	@Override
-	public void update(float tpf) {	
-		if (state.getState(Game.class) != null) {
+	public void update(float tpf) {
+		if (this.game != null) {
 			GameMap map = this.game.getMap();
 			if (DisplayToggle) {
 				RebuildDirtyCells(map.getCellMap());

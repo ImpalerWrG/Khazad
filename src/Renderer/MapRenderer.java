@@ -4,11 +4,11 @@
  */
 package Renderer;
 
-import Data.DataManager;
 import Game.Game;
 import Interface.GameCameraState;
 import Map.CellCoordinate;
 import Map.GameMap;
+
 import Map.MapCoordinate;
 import Map.TileBuilder;
 import Nifty.GUI;
@@ -18,13 +18,12 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.light.AmbientLight;
-import com.jme3.material.Material;
+
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.LodControl;
-import com.jme3.texture.Image;
-import com.jme3.texture.Texture;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -43,7 +42,7 @@ public class MapRenderer extends AbstractAppState{
 	Node darkterrainNode = null;
 	
 	TileBuilder builder;
-	LodControl TerrainLodControler;
+	Game game;
 
 	ConcurrentHashMap<CellCoordinate, Node> LightCellNodeMap;
 	ConcurrentHashMap<CellCoordinate, Node> DarkCellNodeMap;
@@ -54,7 +53,6 @@ public class MapRenderer extends AbstractAppState{
 	int Top; int Bottom;
 
 	public MapRenderer() {
-
 		LightCellNodeMap = new ConcurrentHashMap<CellCoordinate, Node>();
 		DarkCellNodeMap = new ConcurrentHashMap<CellCoordinate, Node>();
 		ZMapLight = new ConcurrentHashMap<Integer, Node>();
@@ -69,15 +67,12 @@ public class MapRenderer extends AbstractAppState{
 		this.state = stateManager;
 		this.assetmanager = app.getAssetManager();
 
-		ImageManager Images = ImageManager.getImageManager();
-		Images.Initialize(assetmanager);
-		imagemanager = Images;
-		
 		//registerWithInput(app.getInputManager());
 	}
 
 	public void attachToGame(Game TargetGame) {
-		MapNode = new Node();
+		this.game = TargetGame;
+		this.MapNode = new Node();
 		this.app.getRootNode().attachChild(MapNode);
 		
 		darkterrainNode = new Node();
@@ -90,13 +85,19 @@ public class MapRenderer extends AbstractAppState{
 		glow.setColor(Suncolor.mult(0.8f));
 
 		TargetGame.getWeather().AttatchSun(sunnyterrainNode);
-		MapNode.addLight(glow);		
+		MapNode.addLight(glow);
 	}
 
 	public void detachFromGame() {
+		this.game = null;
 		MapNode = null;
 		darkterrainNode = null;
 		sunnyterrainNode = null;
+
+		LightCellNodeMap.clear();
+		DarkCellNodeMap.clear();
+		ZMapLight.clear();
+		ZMapDark.clear();
 	}
 
 	public Node getCellNodeLight(CellCoordinate TargetCell) {
@@ -153,7 +154,6 @@ public class MapRenderer extends AbstractAppState{
 		return targetnode;
 	}
 
-	
 	public void setSliceLevels(int top, int bottom) {
 		Top = top; Bottom = bottom;
 		
@@ -205,8 +205,7 @@ public class MapRenderer extends AbstractAppState{
 
 	@Override
 	public void update(float tpf) {		
-		Game game = state.getState(Game.class);
-		if (game != null) {
+		if (this.game != null) {
 			GameCameraState cam = state.getState(GameCameraState.class);
 			setSliceLevels(cam.getSliceTop(), cam.getSliceBottom());
 
