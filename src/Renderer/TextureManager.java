@@ -18,9 +18,14 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Renderer;
 
 import Data.DataManager;
+import Data.DataLibrary;
 import Data.Types.MaterialData;
+import Data.Types.TextureData;
+import com.jme3.asset.AssetManager;
+import com.jme3.asset.AssetNotFoundException;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
 
 import com.jme3.texture.Texture;
 import com.jme3.texture.Image;
@@ -31,10 +36,48 @@ import com.jme3.texture.Image;
 
 public class TextureManager {
 
-	ConcurrentHashMap<Integer, Image> TextureMap;
+	AssetManager assetmanager = null;
 	
-	TextureManager(){
+	ConcurrentHashMap<Integer, Texture> RawTextureMap;
+	ConcurrentHashMap<Integer, Image> TextureMap;
+
+	int ImageCounter = 0;
+	private static TextureManager instance = null;
+
+	
+	protected TextureManager() {
+		RawTextureMap = new ConcurrentHashMap<Integer, Texture>();
 		TextureMap = new ConcurrentHashMap<Integer, Image>();
+	}
+
+	public static TextureManager getTextureManager() {
+		if(instance == null) {
+			instance = new TextureManager();
+		}
+		return instance;
+	}
+
+	public void Initialize(AssetManager manager) {
+		this.assetmanager = manager;
+
+		DataManager Data = DataManager.getDataManager();
+		DataLibrary TextureLibrary = Data.getTextureDataLibrary();
+		ArrayList<TextureData> Textures = TextureLibrary.getEntries();
+		Texture texture = null;
+		
+		for (int i = 0; i < Textures.size(); i++) {
+			TextureData TextureEntry = Textures.get(i);
+			String File = TextureEntry.FilePath;
+			if (File != null) {
+				try {
+					texture = assetmanager.loadTexture(File);
+				} catch (AssetNotFoundException Exception) {
+					System.err.println(Exception.getMessage());	
+				}
+				if (texture != null)
+					RawTextureMap.put(i, texture);
+			}
+		}
 	}
 
 	short PickImageTexture(short MaterialID, short SurfaceTypeID) {
@@ -110,8 +153,7 @@ public class TextureManager {
 		return Imaging.GenerateMaterialImage(MaterialTypeID, TextureID);
 	}
 /*
-	Ogre::MaterialPtr TextureManager::makeStaticMaterial(Ogre::Image* NewImage, const char* MaterialName)
-	{
+	Ogre::MaterialPtr makeStaticMaterial(Image NewImage, String MaterialName) {
 		Ogre::MaterialPtr NewMaterial = Ogre::MaterialManager::getSingleton().create(MaterialName, "General", true);
 		Ogre::Technique* FirstTechnique = NewMaterial->getTechnique(0);
 		Ogre::Pass* FirstPass = FirstTechnique->getPass(0);
@@ -142,7 +184,7 @@ public class TextureManager {
 		return NewMaterial;
 	}
 
-	
+	/*
 	Ogre::MaterialPtr TextureManager::makeLayeredTexture(int16_t* TextureID, int16_t* ColorID)
 	{
 

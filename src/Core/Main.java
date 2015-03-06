@@ -82,11 +82,14 @@ public class Main extends SimpleApplication {
 		}
 		pool = Executors.newFixedThreadPool(8);
 
-		ImageManager Images = ImageManager.getImageManager();
-		Images.Initialize(assetManager);
-		
 		DataManager Data = DataManager.getDataManager();
 		Data.Initialize();
+
+		ImageManager Images = ImageManager.getImageManager();
+		Images.Initialize(assetManager);
+
+		TextureManager Tex = TextureManager.getTextureManager();
+		Tex.Initialize(assetManager);
 
 		// RENDER
 		this.stateManager.attach(new MapRenderer());

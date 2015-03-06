@@ -25,9 +25,9 @@ import nu.xom.Element;
  *
  * @author Impaler
  */
-public class BuildingData extends DataBase {
+public class FurnitureData extends DataBase {
 
-	public BuildingData() {
+	public FurnitureData() {
 		
 	}
 

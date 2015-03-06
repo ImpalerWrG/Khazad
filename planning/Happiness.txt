@@ -1,0 +1,14 @@
+Happiness is one of the key concepts in DF and appears in many other similar games.  In DF the Happiness 'thought' system is very crude and just sums all effects together to produce an overall happiness.  This results in absurdities like a nice stature fully compensating for a dead spouse.
+
+Most players and other developers recognized long ago that a 'Mazlows hierarchy of needs' type system will produce a vastly more realistic results.  This will be the basis for Khazad happiness simulation as well.
+
+The more unique feature is what you GET for making everyone happy.  The traditional reward for the player has been higher productivity from the workers.  But this is too blunt a tool and is frankly 'un-dwarven' a Dwarf works hard regardless of his happiness (as indeed most people do, particularly if the work is menial).  Something both more subtle and realistic is needed.
+
+DF is actually partially redeemed in that it's primary happiness reward is less in-fighting (and by less we mean not having a 'tantrum spiral' that wipes out the whole fortress).  This is actually rather realistic, people who are unhappy will be more likely to get angry and start fights.  
+
+Prison Architect which takes this tantrum-spiral idea and actually makes it work, a high level of 'agitation' to the prisoner population can trigger a riot which is their substitute for an external invasion.  The key change is that having the riot RELIVES tension rather then resulting in a escalating chain reaction.  
+
+In Khazad we want a certain 'smouldering' level of inter-group tension expressed as 'grudges/vendettas' between clans and for these to break out in to some overt acts of small scale violence which then feed into the justice system.  The players reward for having a happy populous is to have less grudges and less frequent flaring up of the ones that do exist.
+
+Notably in the 7 Dwarven virtues which are monitored to give the player some semi-tangible but often contradictory goals to strive for, Happiness is intentionally Excluded, because to Dwarves Happiness is the result OF virtue, not a virtue or goal itself.
+

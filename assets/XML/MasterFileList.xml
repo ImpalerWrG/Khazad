@@ -8,7 +8,7 @@
 	<File Path="XML\MaterialClasses.xml"/>
 	<File Path="XML\SurfaceTypes.xml"/>
 	<File Path="XML\Trees.xml"/>
-	<File Path="XML\Buildings.xml"/>
+	<File Path="XML\Furnitures.xml"/>
 	<File Path="XML\Ores.xml"/>
 	<File Path="XML\Minerals.xml"/>
 	<File Path="XML\Stones.xml"/>
@@ -21,4 +21,6 @@
 	<File Path="XML\TreeTextures.xml"/>
 	<File Path="XML\MineCraftTextures.xml"/>
 	<File Path="XML\Animations.xml"/>
+	<File Path="XML\BasicAttributes.xml"/>
+	<File Path="XML\CreatureSizes.xml"/>
 </Files>

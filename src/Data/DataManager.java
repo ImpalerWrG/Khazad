@@ -95,9 +95,17 @@ public class DataManager {
     public int getNumTrees()										{ return Trees.Entries.size(); }
     public DataLibrary getTreeDataLibrary()							{ return Trees; }
 
-    public BuildingData getBuildingData(short Index)				{ return (BuildingData) Buildings.Entries.get(Index); }
-    public int getNumBuildings()									{ return Buildings.Entries.size(); }
-    public DataLibrary getBuildingDataLibrary()						{ return Buildings; }
+    public FurnitureData getFurnitureData(short Index)				{ return (FurnitureData) Furnitures.Entries.get(Index); }
+    public int getNumFurnitures()									{ return Furnitures.Entries.size(); }
+    public DataLibrary getFurnitureDataLibrary()					{ return Furnitures; }
+
+	public CreatureSizeData getCreatureSizeData(short Index)		{ return (CreatureSizeData) CreatureSizes.Entries.get(Index); }
+    public int getNumCreatureSizes()								{ return CreatureSizes.Entries.size(); }
+    public DataLibrary getCreatureSizeDataLibrary()					{ return CreatureSizes; }
+
+	public BasicAttributeData getBaseAttributeData(short Index)		{ return (BasicAttributeData) BasicAttributes.Entries.get(Index); }
+    public int getNumBaseAttributes()								{ return BasicAttributes.Entries.size(); }
+    public DataLibrary getBaseAttributeDataLibrary()				{ return BasicAttributes; }
 
     // ADD New Data classes gets Here
 
@@ -118,8 +126,10 @@ public class DataManager {
     DataLibrary MaterialClasses = new DataLibrary<MaterialClassData>(MaterialClassData.class, this);
     DataLibrary SurfaceTypes = new DataLibrary<SurfaceTypeData>(SurfaceTypeData.class, this);
     DataLibrary Trees = new DataLibrary<TreeData>(TreeData.class, this);
-    DataLibrary Buildings = new DataLibrary<BuildingData>(BuildingData.class, this);
-
+    DataLibrary Furnitures = new DataLibrary<FurnitureData>(FurnitureData.class, this);
+	DataLibrary CreatureSizes = new DataLibrary<CreatureSizeData>(CreatureSizeData.class, this);
+	DataLibrary BasicAttributes = new DataLibrary<BasicAttributeData>(BasicAttributeData.class, this);
+	
 	public boolean Initialize() {
 		
 		XML = new XMLManager();
@@ -136,7 +146,10 @@ public class DataManager {
 		GlobalDataTypeMap.put("MaterialClass", MaterialClasses);
 		GlobalDataTypeMap.put("SurfaceType", SurfaceTypes);
 		GlobalDataTypeMap.put("Tree", Trees);
-		GlobalDataTypeMap.put("Furniture", Buildings);
+		GlobalDataTypeMap.put("Furniture", Furnitures);
+		GlobalDataTypeMap.put("CreatureSize", CreatureSizes);
+		GlobalDataTypeMap.put("BasicAttribute", BasicAttributes);
+		
 
 
 		ArrayList<String> DataFiles = new ArrayList<String>();

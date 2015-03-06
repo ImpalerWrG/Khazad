@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Furnitures xmlns="https://github.com/ImpalerWrG/Khazad">
+	<Furniture>
+		<Name Label="FURNITURE_ARMOR_STAND"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_BED"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_CHAIR"/>
+		<Model label="MODEL_CHAIR"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_BURIAL_RECEPTICAL"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_DOOR"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_FLOODGATE"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_HATCH"/>
+		<Model label="MODEL_HATCH"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_WALL_GRATE"/>
+		<Model label="MODEL_WALL_GRATE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_FLOOR_GRATE"/>
+		<Model label="MODEL_FLOOR_GRATE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_WALL_BARS"/>
+		<Model label="MODEL_WALL_BARS"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_FLOOR_BARS"/>
+		<Model label="MODEL_FLOOR_BARS"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_CABINET"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_CONTAINER"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_FARM_PLOT"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_WEAPON_RACK"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_STATUE"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_TABLE"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_PAVED_ROAD"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_BRIDGE"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_WELL"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_SIEGE_ENGINE"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_CATAPULT"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_BALLISTA"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_FURNACE"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_GLASS_WINDOW"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_GEM_WINDOW"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_TRADE_DEPOT"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_MECHANISM"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_LEVER"/>
+		<Model label="MODEL_LEVER"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_PRESSURE_PLATE"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_CAGE_TRAP"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_STONE_FALL_TRAP"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_WEAPON_TRAP"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_SPIKE_TRAP"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_ANIMAL_TRAP"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_SCREW_PUMP"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_WATER_WHEEL"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_WINDMILL"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_GEAR_ASSEMBLY"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_HORIZONTAL_AXLE"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_VERTICAL_AXLE"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_SUPPORT"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_CAGE"/>
+		<Model label="MODEL_CAGE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_ARCHERY_TARGET"/>
+		<Model label="NONE"/>
+	</Furniture>
+	<Furniture>
+		<Name Label="FURNITURE_RESTRAINT"/>
+		<Model label="NONE"/>
+	</Furniture>
+</Furnitures>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<BasicAttributes xmlns="https://github.com/ImpalerWrG/Khazad">
+	<BasicAttribute>
+		<Name Label="BASIC_ATTRIBUTE_STRENGTH"/>
+		<Type label="ATTRIBUTE_TYPE_PHYSICAL"/>
+	</BasicAttribute>
+	<BasicAttribute>
+		<Name Label="BASIC_ATTRIBUTE_DEXTERITY"/>
+		<Type label="ATTRIBUTE_TYPE_PHYSICAL"/>
+	</BasicAttribute>
+	<BasicAttribute>
+		<Name Label="BASIC_ATTRIBUTE_FLEXIBILITY"/>
+		<Type label="ATTRIBUTE_TYPE_PHYSICAL"/>
+	</BasicAttribute>
+	<BasicAttribute>
+		<Name Label="BASIC_ATTRIBUTE_ENDURANCE"/>
+		<Type label="ATTRIBUTE_TYPE_PHYSICAL"/>
+	</BasicAttribute>
+	<BasicAttribute>
+		<Name Label="BASIC_ATTRIBUTE_VITALITY"/>
+		<Type label="ATTRIBUTE_TYPE_PHYSICAL"/>
+	</BasicAttribute>
+	<BasicAttribute>
+		<Name Label="BASIC_ATTRIBUTE_REFLEXES"/>
+		<Type label="ATTRIBUTE_TYPE_PHYSICAL"/>
+	</BasicAttribute>
+	<BasicAttribute>
+		<Name Label="BASIC_ATTRIBUTE_SPEED"/>
+		<Type label="ATTRIBUTE_TYPE_PHYSICAL"/>
+	</BasicAttribute>
+	
+	<BasicAttribute>
+		<Name Label="BASIC_ATTRIBUTE_LOGIC"/>
+		<Type label="ATTRIBUTE_TYPE_MENTAL"/>
+	</BasicAttribute>
+	<BasicAttribute>
+		<Name Label="BASIC_ATTRIBUTE_PERCEPTION"/>
+		<Type label="ATTRIBUTE_TYPE_MENTAL"/>
+	</BasicAttribute>
+	<BasicAttribute>
+		<Name Label="BASIC_ATTRIBUTE_CHARISMA"/>
+		<Type label="ATTRIBUTE_TYPE_MENTAL"/>
+	</BasicAttribute>
+	<BasicAttribute>
+		<Name Label="BASIC_ATTRIBUTE_MEMORY"/>
+		<Type label="ATTRIBUTE_TYPE_MENTAL"/>
+	</BasicAttribute>
+	<BasicAttribute>
+		<Name Label="BASIC_ATTRIBUTE_JUDGMENT"/>
+		<Type label="ATTRIBUTE_TYPE_MENTAL"/>
+	</BasicAttribute>
+	<BasicAttribute>
+		<Name Label="BASIC_ATTRIBUTE_WILLPOWER"/>
+		<Type label="ATTRIBUTE_TYPE_MENTAL"/>
+	</BasicAttribute>
+	<BasicAttribute>
+		<Name Label="BASIC_ATTRIBUTE_INTUITION"/>
+		<Type label="ATTRIBUTE_TYPE_MENTAL"/>
+	</BasicAttribute>
+</BasicAttributes>

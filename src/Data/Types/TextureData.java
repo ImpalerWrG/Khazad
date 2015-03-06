@@ -27,11 +27,11 @@ import nu.xom.Element;
  */
 public class TextureData extends DataBase {
 
-	String FilePath;
-	int X, Y; 
-	int Width, Height;
+	public String FilePath;
+	public int X, Y; 
+	public int Width, Height;
 	
-	boolean LoneTexture = true;
+	public boolean LoneTexture = true;
 	
 	public TextureData() {
 		
@@ -43,7 +43,7 @@ public class TextureData extends DataBase {
 
 		Element File = TextureEntry.getFirstChildElement("File", TextureEntry.getNamespaceURI());
 		if (File != null)
-			FilePath = Name.getAttributeValue("Path");
+			FilePath = File.getAttributeValue("Path");
 		
 		Element GridLocation = TextureEntry.getFirstChildElement("GridLocation", TextureEntry.getNamespaceURI());
 		if (GridLocation != null) {

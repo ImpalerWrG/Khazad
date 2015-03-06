@@ -58,4 +58,8 @@ public class DataLibrary<T extends DataBase> {
 		Data.addLabel(Name, (short) Entries.size());
 		Entries.add((T) NewEntry);		
 	}
+	
+	public ArrayList getEntries() {
+		return Entries;
+	}
 }

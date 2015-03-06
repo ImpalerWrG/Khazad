@@ -19,11 +19,11 @@ package Game;
 
 import Job.*;
 import Core.Dice;
+import Data.*;
+import Data.Types.*;
 
 import Map.Direction;
-import Map.GameMap;
 import Map.MapCoordinate;
-import Map.CubeShape;
 
 import PathFinding.MovementModality;
 import PathFinding.Navigator;
@@ -51,21 +51,7 @@ public class Pawn extends Actor {
 
 	Dice AttributeDice;
 
-	byte Strength = 0;
-	byte Dextarity = 0;
-	byte Flexibility = 0;
-	byte Endurance = 0;
-	byte Vitality = 0;
-	byte Reflexes = 0;
-	byte Speed = 0;
-
-	byte Logic = 0;
-	byte Perception = 0;
-	byte Charisma = 0;
-	byte Memory = 0;
-	byte Judgement = 0;
-	byte Willpower = 0;
-	byte Intuition = 0;
+	byte[] BasicAttributes;
 
 	public Pawn(int id, int Seed, MapCoordinate SpawnLocation) {
 		super(id, SpawnLocation);		
@@ -77,33 +63,25 @@ public class Pawn extends Actor {
 		AttributeDice = new Dice();
 		AttributeDice.Seed(id ^ Seed);
 
-		// 5 is median for all attributes
-		Strength = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
-		Dextarity = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
-		Flexibility = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
-		Endurance = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
-		Vitality = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
-		Reflexes = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
-		Speed = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
-
-		Logic = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
-		Perception = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
-		Charisma = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
-		Memory = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
-		Judgement = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
-		Willpower = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
-		Intuition = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 	
+		DataManager Data = DataManager.getDataManager();
+		CreatureSizeData SizeData = Data.getCreatureSizeData(Data.getLabelIndex("CREATURE_SIZE_MEDIUM"));
+		// 7 is median for all attributes for medium size creatures
+		BasicAttributes = new byte[Data.getNumBaseAttributes()];
+		for (int i = 0; i < BasicAttributes.length; i++) {
+			BasicAttributes[i] = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
+			BasicAttributes[i] += SizeData.AttributeModifierVales[i];  //Size class adjustment
+		}
 	}
-	
+
 	public Navigator getNavigator() {
 		return PathNavigator;
 	}
 
 	public long AttemptMove(Direction MovementDirection) {
 		float EdgeCost = PathFinding.getSinglton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getMovementModality());
-		
+		final int speedIndex = DataManager.getDataManager().getLabelIndex("BASIC_ATTRIBUTE_SPEED");
 		if (EdgeCost != -1) {
-			return (int) (EdgeCost / ((float) Speed / 5.0) * 12);
+			return (int) (EdgeCost / ((float) BasicAttributes[speedIndex] / 7.0) * 12);
 		} else {
 			return 1;  // signal falure to job manager?
 		}
@@ -151,6 +129,10 @@ public class Pawn extends Actor {
 
 	public MovementModality getMovementModality() {
 		return PathNavigator.getMovementModality();
+	}
+
+	public byte getBasicAttribute(short AttributeID) {
+		return BasicAttributes[AttributeID];
 	}
 
 	public Task FindTask() {		
