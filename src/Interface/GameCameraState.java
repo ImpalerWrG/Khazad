@@ -1,7 +1,20 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* Copyright 2010 Kenneth 'Impaler' Ferland
+
+This file is part of Khazad.
+
+Khazad is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Khazad is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
 package Interface;
 
 
@@ -58,9 +71,11 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	private Node Mapnode;
 	private Node LookNode;
 
-    private SimpleApplication app;
-    private GameCamera MainCamera;
+	private SimpleApplication app;
+	private GameCamera MainCamera;
 	private AppStateManager state; 
+
+	String[] InputStrings;
 
 	private CameraMode CurrentMode = CameraMode.NORMAL;
 
@@ -71,11 +86,18 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	private boolean RShiftDown;
 	private boolean Shift;
 
+	private boolean RightwardPaning;
+	private boolean LeftwardPaning;
+	private boolean UpwardPaning;
+	private boolean DownwardPaning;
+
+	private int PanningSpeed = 3;
+
 	private float OldMouseX;
 	private float OldMouseY;
 	private float XChange;
 	private float YChange;
-	
+
 	private Plane SelectionPlane = null;
 
 	private MapCoordinate MouseLocation = new MapCoordinate();
@@ -87,29 +109,29 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	protected int SliceTop;
 	protected int SliceBottom;
 	protected int ViewLevels;
-	
+
 	protected int ViewMax, ViewMin;
 
-    public GameCameraState() {
-    }
+	public GameCameraState() {
+	}
 
-    @Override
-    public void initialize(AppStateManager stateManager, Application app) {
-        super.initialize(stateManager, app);
-        this.app = (SimpleApplication) app;
+	@Override
+	public void initialize(AppStateManager stateManager, Application app) {
+		super.initialize(stateManager, app);
+		this.app = (SimpleApplication) app;
 		this.state = stateManager;
 		this.rootnode = this.app.getRootNode();
 
 		MapRenderer rend = stateManager.getState(MapRenderer.class);
 		this.Mapnode = rend.getMapNode();
 				
-        if (app.getInputManager() != null) {
-       
-            if (MainCamera == null) {
+		if (app.getInputManager() != null) {
+
+			if (MainCamera == null) {
 				LookNode = new Node();
 				this.app.getRootNode().attachChild(LookNode);
 				LookNode.setLocalTranslation(1, 2, 3);
-				
+
 				Sphere eye = new Sphere(10, 10, 0.5f);
 				Geometry EyeBall = new Geometry("EyeBall", eye);
 				EyeBall.setLocalTranslation(new Vector3f(0, 0, 0));
@@ -118,24 +140,24 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				EyeBall.setMaterial(mat1);
 				LookNode.attachChild(EyeBall);
 				LookNode.setCullHint(Spatial.CullHint.Always);										
-				
-                MainCamera = new GameCamera(app.getCamera(), LookNode);
-            }
-        }
+
+				MainCamera = new GameCamera(app.getCamera(), LookNode);
+			}
+		}
 		registerWithInput(app.getInputManager());
-    }
-	
+	}
+
 	protected void ConvertMouseMovementToVector() {
 		Vector2f Mouse = app.getInputManager().getCursorPosition();
-		
+
 		XChange = OldMouseX - Mouse.x;
 		YChange = OldMouseY - Mouse.y;
-		
+
 		OldMouseX = Mouse.x;
 		OldMouseY = Mouse.y;
 	}
 
-	protected Vector3f CreateTranslationVector() {
+	protected Vector3f CreateTranslationVector(float X, float Y) {
 		Vector3f LookVector = MainCamera.TargetNode.getWorldTranslation().subtract(MainCamera.CamNode.getWorldTranslation());
 
 		LookVector.normalizeLocal();
@@ -148,27 +170,24 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		Vector3f CrossProduct = TempUpVector.cross(LookVector);
 		CrossProduct.normalizeLocal();
 
-		Vector3f Temp1 = CrossProduct.mult(-XChange).mult(MainCamera.TranslationFactor);  //
-		Vector3f Temp2 = LookVector.mult(-YChange).mult(MainCamera.TranslationFactor).divide(zComp);
+		Vector3f Temp1 = CrossProduct.mult(-X).mult(MainCamera.TranslationFactor);  //
+		Vector3f Temp2 = LookVector.mult(-Y).mult(MainCamera.TranslationFactor).divide(zComp);
 
-		XChange = YChange = 0; // Consume the Mouse movement
 		return Temp1.add(Temp2);
 	}
 
-    public void onAction(String name, boolean keyPressed, float tpf) {
-        if (this.isEnabled()) {
+	public void onAction(String name, boolean keyPressed, float tpf) {
+		if (this.isEnabled()) {
 			if (name.equals("LeftClick")) {
 				LeftDown = keyPressed;
-				//if (!RightDown && keyPressed) {
-				//}
-				
+
 				if (CurrentMode == CameraMode.SELECTING_VOLUME && !keyPressed)
 					completeVolumeSelection();
-					
+
 				if (CurrentMode == CameraMode.SELECT_VOLUME && keyPressed)
 					setMode(CameraMode.SELECTING_VOLUME);
 			}
-			
+
 			if (name.equals("RightClick")) {
 				RightDown = keyPressed;
 
@@ -188,7 +207,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 					LookNode.setCullHint(Spatial.CullHint.Always);										
 				}
 			}
-			
+
 			if (name.equals("ArrowUp") && keyPressed) {
 				ChangeViewLevel(1);
 			}
@@ -196,7 +215,19 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			if (name.equals("ArrowDown") && keyPressed) {
 				ChangeViewLevel(-1);
 			}
+
+			if (name.equals("PanRight"))
+				RightwardPaning = keyPressed;
 			
+			if (name.equals("PanLeft"))
+				LeftwardPaning = keyPressed;
+
+			if (name.equals("PanUp"))
+				UpwardPaning = keyPressed;
+
+			if (name.equals("PanDown"))
+				DownwardPaning = keyPressed;
+
 			if (name.equals("RShift") && keyPressed) {
 				RShiftDown = keyPressed;
 				Shift = RShiftDown || LShiftDown;
@@ -207,53 +238,61 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				Shift = RShiftDown || LShiftDown;
 			}
 
-        }
-    }
+		}
+	}
 
 	private void AnalogNormal(String name, float value, float tpf) {
 		updateMousePosition();
 			
-        if (name.equals("mouseLeft")) {
+		if (name.equals("mouseLeft")) {
 			if (MiddleDown) {
 				MainCamera.RotateCamera(value);
 			} else {
-				if (RightDown)
-					MainCamera.TranslateCamera(CreateTranslationVector());				
+				if (RightDown) {
+					MainCamera.TranslateCamera(CreateTranslationVector(XChange, YChange));				
+					XChange = YChange = 0; // Consume the Mouse movement
+				}
 			}
-        } else if (name.equals("mouseRight")) {
+		} else if (name.equals("mouseRight")) {
 			if (MiddleDown) {
 				MainCamera.RotateCamera(-value);
 			} else {
-				if (RightDown)
-					MainCamera.TranslateCamera(CreateTranslationVector());
+				if (RightDown) {
+					MainCamera.TranslateCamera(CreateTranslationVector(XChange, YChange));
+					XChange = YChange = 0; // Consume the Mouse movement
+				}
 			}
-        } else if (name.equals("mouseUp")) {
+		} else if (name.equals("mouseUp")) {
 			if (MiddleDown) {
 				MainCamera.PitchCamera(value);
 			}else{
-				if (RightDown)
-					MainCamera.TranslateCamera(CreateTranslationVector());
+				if (RightDown) {
+					MainCamera.TranslateCamera(CreateTranslationVector(XChange, YChange));
+					XChange = YChange = 0; // Consume the Mouse movement
+				}
 			}
-        } else if (name.equals("mouseDown")) {
+		} else if (name.equals("mouseDown")) {
 			if (MiddleDown) {
 				MainCamera.PitchCamera(-value);
 			}else{
-				if (RightDown)
-					MainCamera.TranslateCamera(CreateTranslationVector());
+				if (RightDown) {
+					MainCamera.TranslateCamera(CreateTranslationVector(XChange, YChange));
+					XChange = YChange = 0; // Consume the Mouse movement
+				}
 			}
-        } else if (name.equals("ZoomIn")) {
+		} else if (name.equals("ZoomIn")) {
 			if (MiddleDown) {
-				ChangeViewLevel(-1);				
+				ChangeViewLevel(-1);
 			} else {
 				MainCamera.zoomCamera(value);
 			}
-        } else if (name.equals("ZoomOut")) {
+		} else if (name.equals("ZoomOut")) {
 			if (MiddleDown) {
 				ChangeViewLevel(1);
 			} else {
 				MainCamera.zoomCamera(-value);
 			}
-        }		
+		}
 	}
 	
 	private void AnalogSelectingVolume(String name, float value, float tpf) {
@@ -265,14 +304,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			float zComp = LookVector.z;
 			LookVector.z = 0;
 			LookVector.normalizeLocal();
-
-			//Vector3f TempUpVector = Vector3f.UNIT_Z;
-
-			//Vector3f CrossProduct = TempUpVector.cross(LookVector);
-			//CrossProduct.normalizeLocal();
-
-			//Vector3f Temp1 = CrossProduct.mult(-XChange).mult(MainCamera.TranslationFactor);  //
-			Vector3f Temp2 = LookVector.mult(-YChange).mult(MainCamera.TranslationFactor).divide(zComp);
 			
 		} else { // XY plane intersection
 			Ray ray = MainCamera.getMouseRay(app.getInputManager().getCursorPosition());
@@ -283,49 +314,57 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			Volume.SetSize(SelectionOrigin, SelectionTerminus);
 		}
 
-        if (name.equals("mouseLeft")) {
+		if (name.equals("mouseLeft")) {
 			if (MiddleDown) {
 				MainCamera.RotateCamera(value);
 			} else {
-				if (RightDown)
-					MainCamera.TranslateCamera(CreateTranslationVector());				
+				if (RightDown) {
+					MainCamera.TranslateCamera(CreateTranslationVector(XChange, YChange));
+					XChange = YChange = 0; // Consume the Mouse movement		
+				}
 			}
-        } else if (name.equals("mouseRight")) {
+		} else if (name.equals("mouseRight")) {
 			if (MiddleDown) {
 				MainCamera.RotateCamera(-value);
 			} else {
-				if (RightDown)
-					MainCamera.TranslateCamera(CreateTranslationVector());
+				if (RightDown) {
+					MainCamera.TranslateCamera(CreateTranslationVector(XChange, YChange));
+					XChange = YChange = 0; // Consume the Mouse movement
+				}
 			}
-        } else if (name.equals("mouseUp")) {
+		} else if (name.equals("mouseUp")) {
 			if (MiddleDown) {
 				MainCamera.PitchCamera(value);
 			}else{
-				if (RightDown)
-					MainCamera.TranslateCamera(CreateTranslationVector());
+				if (RightDown) {
+					MainCamera.TranslateCamera(CreateTranslationVector(XChange, YChange));
+					XChange = YChange = 0; // Consume the Mouse movement
+				}
 			}
-        } else if (name.equals("mouseDown")) {
+		} else if (name.equals("mouseDown")) {
 			if (MiddleDown) {
 				MainCamera.PitchCamera(-value);
 			}else{
-				if (RightDown)
-					MainCamera.TranslateCamera(CreateTranslationVector());
+				if (RightDown) {
+					MainCamera.TranslateCamera(CreateTranslationVector(XChange, YChange));
+					XChange = YChange = 0; // Consume the Mouse movement
+				}
 			}
-        } else if (name.equals("ZoomIn")) {
-            MainCamera.zoomCamera(value);
-        } else if (name.equals("ZoomOut")) {
-            MainCamera.zoomCamera(-value);
-        }		
+		} else if (name.equals("ZoomIn")) {
+			MainCamera.zoomCamera(value);
+		} else if (name.equals("ZoomOut")) {
+			MainCamera.zoomCamera(-value);
+		}
 		
 	}
 
-    public void onAnalog(String name, float value, float tpf) {
+	public void onAnalog(String name, float value, float tpf) {
 		ConvertMouseMovementToVector();
 		switch (CurrentMode) {
 			case NORMAL:
 				AnalogNormal(name, value, tpf);
 				break;
-				
+
 			case SELECT_VOLUME:
 				AnalogNormal(name, value, tpf);
 				break;
@@ -334,46 +373,43 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				AnalogSelectingVolume(name, value, tpf);
 				break;
 		}
-    }
+	}
 
-    public void registerWithInput(InputManager inputManager) {
-        String[] inputs = {"LeftClick", "RightClick", "MiddleClick", "mouseDown", "mouseUp", "mouseLeft", "mouseRight", "ZoomIn", "ZoomOut", "ArrowUp", "ArrowDown", "RShift", "LShift"};
+	public void registerWithInput(InputManager inputManager) {
+		String[] inputs= {"LeftClick", "RightClick", "MiddleClick", "mouseDown", "mouseUp", "mouseLeft", "mouseRight", "ZoomIn", "ZoomOut", "ArrowUp", "ArrowDown", "RShift", "LShift", "PanUp", "PanDown", "PanRight", "PanLeft"};
+		this.InputStrings = inputs;
 
-        inputManager.addMapping("mouseDown", new MouseAxisTrigger(1, true));
-        inputManager.addMapping("mouseUp", new MouseAxisTrigger(1, false));
-        inputManager.addMapping("ZoomIn", new MouseAxisTrigger(2, true));
-        inputManager.addMapping("ZoomOut", new MouseAxisTrigger(2, false));
-        inputManager.addMapping("mouseLeft", new MouseAxisTrigger(0, true));
-        inputManager.addMapping("mouseRight", new MouseAxisTrigger(0, false));
-        
+		inputManager.addMapping("mouseDown", new MouseAxisTrigger(1, true));
+		inputManager.addMapping("mouseUp", new MouseAxisTrigger(1, false));
+		inputManager.addMapping("ZoomIn", new MouseAxisTrigger(2, true));
+		inputManager.addMapping("ZoomOut", new MouseAxisTrigger(2, false));
+		inputManager.addMapping("mouseLeft", new MouseAxisTrigger(0, true));
+		inputManager.addMapping("mouseRight", new MouseAxisTrigger(0, false));
 		inputManager.addMapping("LeftClick", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-        inputManager.addMapping("RightClick", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
-        inputManager.addMapping("MiddleClick", new MouseButtonTrigger(MouseInput.BUTTON_MIDDLE));
 
-        inputManager.addMapping("ArrowUp", new KeyTrigger(KeyInput.KEY_UP));
-        inputManager.addMapping("ArrowDown", new KeyTrigger(KeyInput.KEY_DOWN));
-        inputManager.addMapping("RShift", new KeyTrigger(KeyInput.KEY_RSHIFT));
-        inputManager.addMapping("LShift", new KeyTrigger(KeyInput.KEY_LSHIFT));
-		
-        inputManager.addListener(this, inputs);
-    }
+		inputManager.addMapping("RightClick", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
+		inputManager.addMapping("MiddleClick", new MouseButtonTrigger(MouseInput.BUTTON_MIDDLE));
+
+		inputManager.addMapping("ArrowUp", new KeyTrigger(KeyInput.KEY_UP));
+		inputManager.addMapping("ArrowUp", new KeyTrigger(KeyInput.KEY_E));
+		inputManager.addMapping("ArrowDown", new KeyTrigger(KeyInput.KEY_DOWN));
+		inputManager.addMapping("ArrowDown", new KeyTrigger(KeyInput.KEY_Q));
+
+		inputManager.addMapping("PanUp", new KeyTrigger(KeyInput.KEY_W));
+		inputManager.addMapping("PanLeft", new KeyTrigger(KeyInput.KEY_A));
+		inputManager.addMapping("PanDown", new KeyTrigger(KeyInput.KEY_S));		
+		inputManager.addMapping("PanRight", new KeyTrigger(KeyInput.KEY_D));
+
+		inputManager.addMapping("RShift", new KeyTrigger(KeyInput.KEY_RSHIFT));
+		inputManager.addMapping("LShift", new KeyTrigger(KeyInput.KEY_LSHIFT));
+
+		inputManager.addListener(this, InputStrings);
+	}
 
 	public void unregisterInput(InputManager inputManager) {
-        inputManager.deleteMapping("mouseDown");
-        inputManager.deleteMapping("mouseUp");
-        inputManager.deleteMapping("ZoomIn");
-        inputManager.deleteMapping("ZoomOut");
-        inputManager.deleteMapping("mouseLeft");
-        inputManager.deleteMapping("mouseRight");
-        
-		inputManager.deleteMapping("LeftClick");
-        inputManager.deleteMapping("RightClick");
-        inputManager.deleteMapping("MiddleClick");
-
-        inputManager.deleteMapping("ArrowUp");
-        inputManager.deleteMapping("ArrowDown");
-        inputManager.deleteMapping("RShift");
-        inputManager.deleteMapping("LShift");
+		for (String inputString : InputStrings) {
+			inputManager.deleteMapping(inputString);
+		}
 	}
 	
 	public void updateMousePosition() {
@@ -395,7 +431,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				Vector3f normal = closest.getContactNormal();
 				IntersectLocation = contact.subtract(normal.mult(.001f));
 
-			} else {	
+			} else {
 				ray.intersectsWherePlane(new Plane(Vector3f.UNIT_Z, getSliceTop()), IntersectLocation);	
 			}
 			int x = Math.round(IntersectLocation.getX());
@@ -412,22 +448,22 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	public void setMode(CameraMode newMode) {
 		if (CurrentMode != newMode) {
 			CurrentMode = newMode;
-			
+
 			if (CurrentMode == CameraMode.SELECTING_VOLUME) {
 				SelectionOrigin.copy(MouseLocation);
 				SelectionTerminus.copy(MouseLocation);
 				Volume = new VolumeSelection(SelectionTerminus, SelectionOrigin);
-				
+
 				SelectionPlane = new Plane(Vector3f.UNIT_Z, MouseLocation.Z);
 				//this.rootnode.detachChild(SelectionBox);	
 			}
-			
+
 			if (CurrentMode == CameraMode.NORMAL) {
 				SelectionPlane = null;
 			}
 		}
 	}
-	
+
 	public void completeVolumeSelection() {
 		Game game = state.getState(Game.class);
 		game.VolumeSelectionCompleted(Volume);
@@ -435,7 +471,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 		setMode(CameraMode.SELECT_VOLUME);
 	}
-	
+
 	public  void SetViewSize(int max, int min) {
 		ViewMax = max;
 		ViewMin = min;
@@ -443,12 +479,12 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 	public void ChangeViewLevel(int Change) {
 		if (Change != 0) {
-			if(SliceTop + Change > ViewMax) {
-				Change = SliceTop - ViewMax;
-			}
-			if(SliceBottom + Change < ViewMin) {
-				Change = SliceBottom - ViewMin;
-			}
+			//if(SliceTop + Change > ViewMax) {
+			//	Change = SliceTop - ViewMax;
+			//}
+			//if(SliceBottom + Change < ViewMin) {
+			//	Change = SliceBottom - ViewMin;
+			//}
 			SliceTop += Change;
 			SliceBottom += Change;
 			ViewLevels = SliceTop - SliceBottom;
@@ -477,18 +513,18 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		SliceTop = newValue;
 		if(SliceBottom >= SliceTop)
 			SliceBottom = SliceTop - 1;
-		
+
 		ViewLevels = SliceTop - SliceBottom;
 	}
 
 	public void SetSliceBottom(int newValue) {
 		//TargetNode.move(0, 0, newValue - SliceBottom);
 		//CamNode.move(0, 0, newValue - SliceBottom);
-		
+
 		SliceBottom = newValue;
 		if(SliceTop <= SliceBottom)
 			SliceTop = SliceBottom + 1;
-		
+
 		ViewLevels = SliceTop - SliceBottom;
 	}
 
@@ -499,12 +535,27 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	public int getSliceBottom() {
 		return SliceBottom;
 	}
-   
-    @Override
-    public void cleanup() {
-        super.cleanup();
 
-        unregisterInput(app.getInputManager());        
-    }
+	
+	@Override
+	public void update(float tpf) {
+		if (RightwardPaning)
+			MainCamera.TranslateCamera(CreateTranslationVector(PanningSpeed, 0));
+
+		if (LeftwardPaning)
+			MainCamera.TranslateCamera(CreateTranslationVector(-PanningSpeed, 0));
+
+		if (UpwardPaning)
+			MainCamera.TranslateCamera(CreateTranslationVector(0, PanningSpeed));
+
+		if (DownwardPaning)
+			MainCamera.TranslateCamera(CreateTranslationVector(0, -PanningSpeed));
+	}
+
+	@Override
+	public void cleanup() {
+		super.cleanup();
+
+		unregisterInput(app.getInputManager());
+	}
 }
-

@@ -15,28 +15,31 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
-package Job;
+package Data.Types;
 
-import Game.Pawn;
+import Data.DataBase;
+import Data.DataLibrary;
+import nu.xom.Element;
 
 /**
  *
  * @author Impaler
  */
-public class LoiterJob extends Job {
+public class BasicAttributeData extends DataBase {
+	
+	public BasicAttributeData() {
 
-	public LoiterJob() {
 	}
 
-	public boolean needsWorkers() {
+	@Override
+	public boolean LoadData(Element AttributeEntry, DataLibrary Library) {
+		Element Name = AttributeEntry.getFirstChildElement("Name", AttributeEntry.getNamespaceURI());
+		Library.IndexEntry(Name.getAttributeValue("Label"), this);
+
 		return false;
 	}
-
-	public Task nextTask(Pawn IdleCitizen) {
-		return new Task(this, TaskType.TASK_LOITER, null);
-	}
-
-	public float EvaluatePawn(Pawn IdleCitizen) {
-		return 0;
+	
+	public boolean PostProcessing() {
+		return true;
 	}
 }
