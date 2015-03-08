@@ -21,14 +21,25 @@ import Data.DataManager;
 import Data.DataLibrary;
 import Data.Types.MaterialData;
 import Data.Types.TextureData;
+import Data.Types.TextureGridData;
+import Data.Types.TextureSheetData;
+
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.AssetNotFoundException;
+import com.jme3.math.ColorRGBA;
+
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
 
+import com.jme3.texture.image.ImageRaster;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Image;
+import java.nio.ByteBuffer;
+import com.jme3.util.BufferUtils;
+
+import javax.imageio.ImageIO;
+
 /**
  *
  * @author Impaler
@@ -38,16 +49,20 @@ public class TextureManager {
 
 	AssetManager assetmanager = null;
 	
-	ConcurrentHashMap<Integer, Texture> RawTextureMap;
-	ConcurrentHashMap<Integer, Image> TextureMap;
+	ConcurrentHashMap<Integer, Image> RawTextureGridMap;
+	ConcurrentHashMap<Integer, Image> RawTextureSheetMap;
+	ConcurrentHashMap<Integer, Image> RawTextureMap;
+	ConcurrentHashMap<Integer, Image> CompletedImageMap;
 
 	int ImageCounter = 0;
 	private static TextureManager instance = null;
 
-	
+
 	protected TextureManager() {
-		RawTextureMap = new ConcurrentHashMap<Integer, Texture>();
-		TextureMap = new ConcurrentHashMap<Integer, Image>();
+		RawTextureGridMap  = new ConcurrentHashMap<Integer, Image>();
+		RawTextureSheetMap = new ConcurrentHashMap<Integer, Image>();
+		RawTextureMap = new ConcurrentHashMap<Integer, Image>();	
+		CompletedImageMap = new ConcurrentHashMap<Integer, Image>();
 	}
 
 	public static TextureManager getTextureManager() {
@@ -62,9 +77,45 @@ public class TextureManager {
 
 		DataManager Data = DataManager.getDataManager();
 		DataLibrary TextureLibrary = Data.getTextureDataLibrary();
+		DataLibrary TextureGridLibrary = Data.getTextureGridDataLibrary();
+		DataLibrary TextureSheetLibrary = Data.getTextureSheetDataLibrary();
+
 		ArrayList<TextureData> Textures = TextureLibrary.getEntries();
+		ArrayList<TextureGridData> TextureGrids = TextureGridLibrary.getEntries();
+		ArrayList<TextureSheetData> TextureSheets = TextureSheetLibrary.getEntries();
+
 		Texture texture = null;
-		
+		for (int i = 0; i < TextureGrids.size(); i++) {
+			TextureGridData TextureGridEntry = TextureGrids.get(i);
+			String File = TextureGridEntry.FilePath;
+			if (File != null) {
+				try {
+					texture = assetmanager.loadTexture(File);
+				} catch (AssetNotFoundException Exception) {
+					System.err.println(Exception.getMessage());	
+				}
+				if (texture != null) {
+					RawTextureGridMap.put(i, texture.getImage());
+					texture = null;
+				}
+			}
+		}
+
+		texture = null;
+		for (int i = 0; i < TextureSheets.size(); i++) {
+			TextureSheetData TextureSheetEntry = TextureSheets.get(i);
+			String File = TextureSheetEntry.FilePath;
+			if (File != null) {
+				try {
+					texture = assetmanager.loadTexture(File);
+				} catch (AssetNotFoundException Exception) {
+					System.err.println(Exception.getMessage());	
+				}
+				if (texture != null)
+					RawTextureSheetMap.put(i, texture.getImage());
+			}
+		}
+
 		for (int i = 0; i < Textures.size(); i++) {
 			TextureData TextureEntry = Textures.get(i);
 			String File = TextureEntry.FilePath;
@@ -75,7 +126,51 @@ public class TextureManager {
 					System.err.println(Exception.getMessage());	
 				}
 				if (texture != null)
-					RawTextureMap.put(i, texture);
+					RawTextureMap.put(i, texture.getImage());
+			} else {
+				int GridID = TextureEntry.GridID;
+				if (GridID != DataManager.INVALID_INDEX) {
+					TextureGridData GridData = DataManager.getDataManager().getTextureGridData(TextureEntry.GridID);
+
+					Image SourceImage = RawTextureGridMap.get(GridID);
+					if (SourceImage != null) {
+						ImageRaster SourceRaster = ImageRaster.create(SourceImage);
+
+						byte[] data = new byte[GridData.TextureWidth * GridData.TextureHeight * SourceImage.getFormat().getBitsPerPixel() * 8];
+						ByteBuffer Buffer = BufferUtils.createByteBuffer(data);
+						Image NewImage = new Image(SourceImage.getFormat(), GridData.TextureWidth, GridData.TextureHeight, Buffer);
+
+						ImageRaster DestinationRastor = ImageRaster.create(NewImage);
+						int XOffset = GridData.TextureWidth * TextureEntry.X;
+						int YOffset = GridData.TextureHeight * TextureEntry.Y;
+
+						for (int x = 0; x < GridData.TextureHeight; x++) {
+							for (int y = 0; y < GridData.TextureWidth; y++) {
+								DestinationRastor.setPixel(x, y, SourceRaster.getPixel(XOffset + x, YOffset + y));
+							}
+						}
+						RawTextureMap.put(i, NewImage);
+					}
+				}
+				int SheetID = TextureEntry.SheetID;
+				if (TextureEntry.SheetID != DataManager.INVALID_INDEX) {
+					Image SourceImage = RawTextureSheetMap.get(SheetID);
+					if (SourceImage != null) {
+						ImageRaster SourceRaster = ImageRaster.create(SourceImage);
+
+						byte[] data = new byte[TextureEntry.Width * TextureEntry.Height * SourceImage.getFormat().getBitsPerPixel() * 8];
+						ByteBuffer Buffer = BufferUtils.createByteBuffer(data);
+						Image NewImage = new Image(SourceImage.getFormat(), TextureEntry.Width, TextureEntry.Height, Buffer);
+						ImageRaster DestinationRastor = ImageRaster.create(NewImage);
+
+						for (int x = 0; x < TextureEntry.Height; x++) {
+							for (int y = 0; y < TextureEntry.Width; y++) {
+								DestinationRastor.setPixel(x, y, SourceRaster.getPixel(TextureEntry.X + x, TextureEntry.Y + y));
+							}
+						}
+						RawTextureMap.put(i, NewImage);
+					}
+				}
 			}
 		}
 	}
@@ -110,13 +205,13 @@ public class TextureManager {
 			Key = Key << 16;
 			Key += TextureID;
 
-			Image TargetImage = TextureMap.get(Key);
+			Image TargetImage = CompletedImageMap.get(Key);
 			if (TargetImage != null) {
 				return TargetImage;
 			} else {
 				Image SelectedMaterial = new Image(); //makeStaticMaterial(makeImage(MaterialID, TextureID), getStaticTextureName(MaterialID, TextureID));
 				if (SelectedMaterial != null) {
-					TextureMap.put(Key, SelectedMaterial);
+					CompletedImageMap.put(Key, SelectedMaterial);
 					return SelectedMaterial;
 				}
 			}

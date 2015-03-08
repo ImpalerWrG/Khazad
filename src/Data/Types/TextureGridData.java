@@ -31,15 +31,17 @@ import nu.xom.Elements;
  */
 public class TextureGridData extends DataBase {
 
-	String FilePath;
-	int TextureWidth, TextureHeight;
-	int GridWidth, GridHeight;
-	
+	public String FilePath;
+	public int TextureWidth, TextureHeight;
+	public int GridWidth, GridHeight;
+
 	public TextureGridData() {
-		
+
 	}
 
 	public boolean LoadData(Element TextureGridEntry, DataLibrary Library) {
+		short GridID = Library.IndexEntry(null, this);
+
 		Element File = TextureGridEntry.getFirstChildElement("File", TextureGridEntry.getNamespaceURI());
 		FilePath = File.getAttribute("Path").getValue();
 		
@@ -54,22 +56,17 @@ public class TextureGridData extends DataBase {
 		Element TexturesElement = TextureGridEntry.getFirstChildElement("Textures", TextureGridEntry.getNamespaceURI());
 		Elements Textures = TexturesElement.getChildElements();
 		DataLibrary TextureLibrary = DataManager.getDataManager().getTextureDataLibrary();
-		
+
 		for (int i = 0; i < Textures.size(); i++) {
 			Element TextureEntry = Textures.get(i);
 
 			TextureData NewTexture = new TextureData();
 			NewTexture.LoadData(TextureEntry, TextureLibrary);
-
-			NewTexture.X *= TextureWidth;
-			NewTexture.Y *= TextureHeight;
-
-			NewTexture.FilePath = this.FilePath;
-			NewTexture.LoneTexture = false;
+			NewTexture.GridID = GridID;
 		}
 		return true;
 	}
-	
+
 	public boolean PostProcessing() {
 		return true;
 	}

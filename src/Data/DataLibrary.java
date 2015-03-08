@@ -24,7 +24,7 @@ import nu.xom.Element;
  * @author Impaler
  */
 public class DataLibrary<T extends DataBase> {
-	
+
 	ArrayList<T> Entries;
 	private Class<T> DataClass;
 	DataManager Data;
@@ -50,16 +50,18 @@ public class DataLibrary<T extends DataBase> {
 			System.err.println(ex.getMessage());
 		}
 		catch (IllegalAccessException ex) {
-		  System.err.println(ex.getMessage());
+			System.err.println(ex.getMessage());
 		}
 	}
-	
-	public void IndexEntry(String Name, T NewEntry) {
-		Data.addLabel(Name, (short) Entries.size());
-		Entries.add((T) NewEntry);		
+
+	public short IndexEntry(String Name, T NewEntry) {
+		if (Name != null)
+			Data.addLabel(Name, (short) Entries.size());
+		Entries.add((T) NewEntry);
+		return (short) (Entries.size() - 1);
 	}
-	
-	public ArrayList getEntries() {
+
+	public ArrayList<T> getEntries() {
 		return Entries;
 	}
 }

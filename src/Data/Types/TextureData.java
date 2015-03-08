@@ -19,6 +19,8 @@ package Data.Types;
 
 import Data.DataBase;
 import Data.DataLibrary;
+import Data.DataManager;
+
 import nu.xom.Element;
 
 /**
@@ -31,7 +33,8 @@ public class TextureData extends DataBase {
 	public int X, Y; 
 	public int Width, Height;
 	
-	public boolean LoneTexture = true;
+	public short GridID = DataManager.INVALID_INDEX;
+	public short SheetID = DataManager.INVALID_INDEX;
 	
 	public TextureData() {
 		

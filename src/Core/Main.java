@@ -39,6 +39,8 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.util.BufferUtils;
 
+import com.jme3.app.state.ScreenshotAppState;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -98,7 +100,9 @@ public class Main extends SimpleApplication {
 		this.stateManager.attach(new ActorRenderer());
 		
 		this.stateManager.attach(new Music());
-		this.stateManager.attach(new GUI(this));	
+		this.stateManager.attach(new GUI(this));
+
+		this.stateManager.attach(new ScreenshotAppState());
 	}
 	
 	public void createAxialMarker() {
