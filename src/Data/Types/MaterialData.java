@@ -44,7 +44,7 @@ public class MaterialData extends DataBase {
 	public String ColorMode;
 
 	public MaterialData() {
-		
+		ColorMode = new String();
 	}
 
 	public boolean LoadData(Element MaterialEntry, DataLibrary Library) {
@@ -67,8 +67,12 @@ public class MaterialData extends DataBase {
 		if (BorderColorElement != null)
 			BorderColorlabel = BorderColorElement.getAttributeValue("label");
 
+		Element ColorModeElement = MaterialEntry.getFirstChildElement("ColorMode", MaterialEntry.getNamespaceURI());
+		if (ColorModeElement != null)
+			ColorMode = ColorModeElement.getAttributeValue("mode");
+
 		Element SurfaceTexturesElement = MaterialEntry.getFirstChildElement("SurfaceTextures", MaterialEntry.getNamespaceURI());
-		if (SurfaceTexturesElement != null){
+		if (SurfaceTexturesElement != null) {
 			Elements SurfaceTextures = SurfaceTexturesElement.getChildElements();
 
 			SurfaceTypeLabels = new String[SurfaceTextures.size()];

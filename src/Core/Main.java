@@ -90,8 +90,8 @@ public class Main extends SimpleApplication {
 		ImageManager Images = ImageManager.getImageManager();
 		Images.Initialize(assetManager);
 
-		TextureManager Tex = TextureManager.getTextureManager();
-		Tex.Initialize(assetManager);
+		//TextureManager Tex = TextureManager.getTextureManager();
+		//Tex.Initialize(assetManager);
 
 		// RENDER
 		this.stateManager.attach(new MapRenderer());
@@ -102,9 +102,9 @@ public class Main extends SimpleApplication {
 		this.stateManager.attach(new Music());
 		this.stateManager.attach(new GUI(this));
 
-		this.stateManager.attach(new ScreenshotAppState());
+		this.stateManager.attach(new ScreenshotAppState(new String()));
 	}
-	
+
 	public void createAxialMarker() {
 		Mesh AxialMarker = new Mesh();
 		AxialMarker.setMode(Mesh.Mode.Lines);

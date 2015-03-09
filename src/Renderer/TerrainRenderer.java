@@ -96,14 +96,18 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 		this.game = TargetGame;
 		this.TerrainLodControler = new LodControl();
 
-		Texture tex = assetmanager.loadTexture("Textures/grass1.png");
+		Texture TerrainTexture = assetmanager.loadTexture("Textures/grass1.png");
 		DataManager Data = DataManager.getDataManager();
+		ImageManager Images = ImageManager.getImageManager();
 
-		Image withBorder = ImageManager.getImageManager().GeneratedOverLayImage(tex.getImage(), Data.getLabelIndex("COLOR_GREEN"), Data.getLabelIndex("COLOR_BLACK"));
-		tex.setImage(withBorder);
+		short MaterialID = Data.getLabelIndex("MATERIAL_DARK_GRASS");
+		short SurfaceID = Data.getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
+		Image TerrainImage = Images.getMaterialImage(MaterialID, SurfaceID);
+		//Images.SaveImage(TerrainImage, "TerrainImage");
+		TerrainTexture.setImage(TerrainImage);
 
 		mat = new Material(assetmanager, "Common/MatDefs/Light/Lighting.j3md");
-		mat.setTexture("DiffuseMap", tex);
+		mat.setTexture("DiffuseMap", TerrainTexture);
 	}
 	
 	public void onAction(String name, boolean keyPressed, float tpf) {

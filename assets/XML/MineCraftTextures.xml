@@ -3,31 +3,31 @@
 	<TextureGrid>
 		<TextureSize Height="32" Width="32"/>
 		<GridSize Height="16" Width="16"/>
-		<File Path="Media/Textures/terrain-BW.png"/>
+		<File Path="Textures/terrain-BW.png"/>
 		<Textures>
 			<Texture>
 				<Name Label="TEXTURE_DIRT_1"/>
-				<GridLocation X="2" Y="0"/>
+				<GridLocation X="2" Y="15"/>
 			</Texture>
 			<Texture>
 				<Name Label="TEXTURE_IGNIOUS_2"/>
-				<GridLocation X="1" Y="1"/>
+				<GridLocation X="1" Y="14"/>
 			</Texture>
 			<Texture>
 				<Name Label="TEXTURE_GENERIC_ROCK"/>
-				<GridLocation X="0" Y="0"/>
+				<GridLocation X="0" Y="15"/>
 			</Texture>
 			<Texture>
 				<Name Label="TEXTURE_ROCK_2"/>
-				<GridLocation X="1" Y="0"/>
+				<GridLocation X="1" Y="15"/>
 			</Texture>
 			<Texture>
 				<Name Label="TEXTURE_GRASS_5"/>
-				<GridLocation X="0" Y="9"/>
+				<GridLocation X="0" Y="6"/>
 			</Texture>
 			<Texture>
 				<Name Label="TEXTURE_SAND_2"/>
-				<GridLocation X="2" Y="1"/>
+				<GridLocation X="2" Y="14"/>
 			</Texture>
 		</Textures>
 	</TextureGrid>

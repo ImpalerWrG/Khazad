@@ -17,10 +17,13 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Renderer;
 
+import Data.DataLibrary;
 import Data.DataManager;
 import Data.Types.ColorData;
 import Data.Types.MaterialData;
 import Data.Types.TextureData;
+import Data.Types.TextureGridData;
+import Data.Types.TextureSheetData;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.texture.Texture;
@@ -30,20 +33,39 @@ import com.jme3.texture.image.ImageRaster;
 import com.jme3.util.BufferUtils;
 import java.nio.ByteBuffer;
 import com.jme3.asset.AssetManager;
+import com.jme3.asset.AssetNotFoundException;
+import com.jme3.system.JmeSystem;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- *
+ * Manager for the material composite Image creation process, add Texture,
+ * TextureGrid and TextureSheet Data Entries are processed and disected to 
+ * individual Images, upon request composits are made using the colors and methods
+ * specified under the Materials Data Entry.
+ * 
  * @author Impaler
  */
 public class ImageManager {
-	
+
 	int ImageCounter = 0;
 	private static ImageManager instance = null;
 	AssetManager assetmanager = null;
 
+	ConcurrentHashMap<Integer, Image> RawTextureGridMap;
+	ConcurrentHashMap<Integer, Image> RawTextureSheetMap;
+	ConcurrentHashMap<Integer, Image> RawTextureMap;
+	ConcurrentHashMap<Integer, Image> CompletedImageMap;
 	
 	protected ImageManager() {
-
+		RawTextureGridMap  = new ConcurrentHashMap<Integer, Image>();
+		RawTextureSheetMap = new ConcurrentHashMap<Integer, Image>();
+		RawTextureMap = new ConcurrentHashMap<Integer, Image>();	
+		CompletedImageMap = new ConcurrentHashMap<Integer, Image>();
 	}
 
 	public static ImageManager getImageManager() {
@@ -55,6 +77,123 @@ public class ImageManager {
 
 	public void Initialize(AssetManager manager) {
 		this.assetmanager = manager;
+
+		DataManager Data = DataManager.getDataManager();
+		DataLibrary TextureLibrary = Data.getTextureDataLibrary();
+		DataLibrary TextureGridLibrary = Data.getTextureGridDataLibrary();
+		DataLibrary TextureSheetLibrary = Data.getTextureSheetDataLibrary();
+
+		ArrayList<TextureData> Textures = TextureLibrary.getEntries();
+		ArrayList<TextureGridData> TextureGrids = TextureGridLibrary.getEntries();
+		ArrayList<TextureSheetData> TextureSheets = TextureSheetLibrary.getEntries();
+
+		Texture texture = null;
+		int DefaultIndex = Data.getLabelIndex("TEXTURE_DEFAULT");
+		TextureData DefaultTexture = Data.getTextureData((short) DefaultIndex);
+		try {
+			texture = assetmanager.loadTexture(DefaultTexture.FilePath);
+		} catch (AssetNotFoundException Exception) {
+			System.err.println(Exception.getMessage());	
+		}
+		Image DefaultImage = texture.getImage();
+		texture = null;
+
+
+		for (int i = 0; i < TextureGrids.size(); i++) {
+			TextureGridData TextureGridEntry = TextureGrids.get(i);
+			String File = TextureGridEntry.FilePath;
+			if (File != null) {
+				try {
+					texture = assetmanager.loadTexture(File);
+				} catch (AssetNotFoundException Exception) {
+					System.err.println(Exception.getMessage());	
+				}
+				if (texture != null) {
+					RawTextureGridMap.put(i, texture.getImage());
+					texture = null;
+				}
+			}
+		}
+
+		texture = null;
+		for (int i = 0; i < TextureSheets.size(); i++) {
+			TextureSheetData TextureSheetEntry = TextureSheets.get(i);
+			String File = TextureSheetEntry.FilePath;
+			if (File != null) {
+				try {
+					texture = assetmanager.loadTexture(File);
+				} catch (AssetNotFoundException Exception) {
+					System.err.println(Exception.getMessage());	
+				}
+				if (texture != null)
+					RawTextureSheetMap.put(i, texture.getImage());
+			}
+		}
+
+		for (int i = 0; i < Textures.size(); i++) {
+			TextureData TextureEntry = Textures.get(i);
+			String File = TextureEntry.FilePath;
+			if (File != null) {
+				try {
+					texture = assetmanager.loadTexture(File);
+				} catch (AssetNotFoundException Exception) {
+					System.err.println(Exception.getMessage());	
+				}
+				if (texture != null)
+					RawTextureMap.put(i, texture.getImage());
+			} else {
+				int GridID = TextureEntry.GridID;
+				if (GridID != DataManager.INVALID_INDEX) {
+					TextureGridData GridData = DataManager.getDataManager().getTextureGridData(TextureEntry.GridID);
+
+					Image SourceImage = RawTextureGridMap.get(GridID);
+					if (SourceImage != null) {
+						RawTextureMap.put(i, ClipImage(SourceImage, TextureEntry.X * GridData.TextureWidth, TextureEntry.Y * GridData.TextureHeight, GridData.TextureWidth, GridData.TextureHeight));
+						//SaveImage(NewImage, new String("Grid" + i));
+					} else {
+						RawTextureMap.put(i, DefaultImage);			
+					}
+				}
+				int SheetID = TextureEntry.SheetID;
+				if (TextureEntry.SheetID != DataManager.INVALID_INDEX) {
+					Image SourceImage = RawTextureSheetMap.get(SheetID);
+					if (SourceImage != null) {						
+						RawTextureMap.put(i, ClipImage(SourceImage, TextureEntry.X, TextureEntry.Y, TextureEntry.Width, TextureEntry.Height));
+						//SaveImage(NewImage, new String("Sheet" + i));
+					} else {
+						RawTextureMap.put(i, DefaultImage);					
+					}
+				}
+			}
+			
+		}
+		RawTextureGridMap.clear();
+		RawTextureSheetMap.clear();
+	}
+
+	public void SaveImage(Image SavedImage, String fileName) {
+		if(SavedImage != null){
+
+			ByteBuffer outBuf = SavedImage.getData(0);
+			String filePath = new String();
+			File file = new File(filePath + "Testing" + File.separator + fileName + ".png").getAbsoluteFile();
+
+			OutputStream outStream = null;
+			try {
+				outStream = new FileOutputStream(file);
+				JmeSystem.writeImageFile(outStream, "png", outBuf, SavedImage.getWidth(), SavedImage.getHeight());
+			} catch (IOException ex) {
+				//logger.log(Level.SEVERE, "Error while saving screenshot", ex);
+			} finally {
+				if (outStream != null){
+					try {
+						outStream.close();
+					} catch (IOException ex) {
+						//logger.log(Level.SEVERE, "Error while saving screenshot", ex);
+					}
+				}
+			}
+		}
 	}
 
 	private Image convertImage(Image image, Format newFormat) {
@@ -76,84 +215,8 @@ public class ImageManager {
 		return convertedImage;
 	}
 
-	/*
-	boolean Initialize() {
-
-		int DefaultIndex = DATA->getLabelIndex("TEXTURE_DEFAULT");
-		ILuint DefaultID = loadImage(DATA->getTextureData(DefaultIndex)->getPath());
-
-		for(uint32_t i = 0; i < DATA->getNumTextures(); ++i)
-		{
-			if (DATA->getTextureData(i)->isLoneTexture())
-			{
-				ILuint DevilID = loadImage(DATA->getTextureData(i)->getPath(), false);
-				if (DevilID != -1)
-				{
-					DATA->getTextureData(i)->setDevILID(DevilID);
-				} else {
-					DATA->getTextureData(i)->setDevILID(DefaultID);
-				}
-			}
-		}
-
-		for(uint32_t i = 0; i < DATA->getNumTextureGrids(); ++i)
-		{
-			TextureGridData* Grid = DATA->getTextureGridData(i);
-			ILuint DevilID = loadImage(Grid->getPath(), false);
-
-			uint16_t w = Grid->getTextureWidth();
-			uint16_t h = Grid->getTextureHeight();
-
-			std::vector<TextureData*> Textures = DATA->getTextureGridData(i)->TextureList;
-			for (int j = 0; j < Textures.size(); j++)
-			{
-				if (DevilID != -1)
-				{
-					ILuint NewID = ClipImage(DevilID, Textures[j]->getX(), Textures[j]->getY(), w, h);
-					Textures[j]->setDevILID(NewID);
-				} else {
-					Textures[j]->setDevILID(DefaultID);
-				}
-			}
-		}
-
-
-		for(uint32_t i = 0; i < DATA->getNumTextureSheets(); ++i)
-		{
-			TextureSheetData* Sheet = DATA->getTextureSheetData(i);
-			ILuint DevilID = loadImage(Sheet->getPath(), false);
-
-			std::vector<TextureData*> Textures = DATA->getTextureSheetData(i)->TextureList;
-			for (int j = 0; j < Textures.size(); j++)
-			{
-				if (DevilID != -1)
-				{
-					ILuint NewID = ClipImage(DevilID, Textures[j]->getX(), Textures[j]->getY(), Textures[j]->getW(), Textures[j]->getH());
-					Textures[j]->setDevILID(NewID);
-				} else {
-					Textures[j]->setDevILID(DefaultID);
-				}
-			}
-		}
-
-		return true;
-	}
-	*/
-	
 	Image loadImage(String filepath, boolean ColorKey) {
 		Texture Tex = assetmanager.loadTexture(filepath);
-
-		if (Tex == null) {
-			//sprintf(buffer, "Failed to load Image file: %s", filepath);
-			//Ogre::LogManager::getSingleton().getLog("Khazad.log")->logMessage(buffer);
-
-			 return null;
-		} else {
-			//sprintf(buffer, "Loading Image file: %s", filepath);
-			//Ogre::LogManager::getSingleton().getLog("Khazad.log")->logMessage(buffer);
-		}
-
-		//ilConvertImage(IL_BGRA, IL_UNSIGNED_BYTE);
 
 		if (ColorKey) {
 			//convert color key
@@ -163,29 +226,78 @@ public class ImageManager {
 		ImageCounter++;
 		return Tex.getImage();
 	}
-	/*
 
-	ILuint ImageManager::ClipImage(ILuint SourceID, ILuint X, ILuint Y, ILuint W, ILuint H)
-	{
-		ILuint ImageID;
-		ilGenImages(1, &ImageID);
-		ilBindImage(ImageID);
-		ilTexImage(W, H, 1, 4, IL_BGRA, IL_UNSIGNED_BYTE, NULL);
+	Image ClipImage(Image SourceImage, int X, int Y, int W, int H) {
+		ImageRaster SourceRaster = ImageRaster.create(SourceImage);
 
-		uint8_t* NewImageData = ilGetData();
-		ilBindImage(SourceID);
-		ilCopyPixels(X, Y, 0, W, H, 1, IL_BGRA, IL_UNSIGNED_BYTE, NewImageData);
+		byte[] data = new byte[W * H * SourceImage.getFormat().getBitsPerPixel() / 8];
+		ByteBuffer Buffer = BufferUtils.createByteBuffer(data);
+		Image NewImage = new Image(SourceImage.getFormat(), W, H, Buffer);
+		ImageRaster DestinationRastor = ImageRaster.create(NewImage);
 
-		return ImageID;
+		for (int x = 0; x < H; x++) {
+			for (int y = 0; y < W; y++) {
+				DestinationRastor.setPixel(x, y, SourceRaster.getPixel(X + x, Y + y));
+			}
+		}
+		return NewImage;
 	}
-*/
-	Image GenerateMaterialImage(short MaterialID, short TextureID) {
+
+	Image getMaterialImage(short MaterialTypeID, short SurfaceTypeID) {
+		short TextureID = PickImageTexture(MaterialTypeID, SurfaceTypeID);
+		return MapTexture(MaterialTypeID, TextureID);
+	}
+	
+	private short PickImageTexture(short MaterialID, short SurfaceTypeID) {
+		DataManager Data = DataManager.getDataManager();
+		MaterialData Material = Data.getMaterialData(MaterialID);
+
+		short TextureID = Material.getTexture(SurfaceTypeID);
+		short MaterialClassID = Material.MaterialClassID;
+
+		if (TextureID != DataManager.INVALID_INDEX) {
+			return TextureID;
+		} else {
+			if (MaterialClassID != DataManager.INVALID_INDEX) {
+				TextureID = Data.getMaterialClassData(MaterialClassID).getTexture(SurfaceTypeID);
+				if (TextureID == DataManager.INVALID_INDEX) {
+					//cerr << "bad material/surface combination, no texture. MaterialClassID: " << MaterialClassID << " SurfaceTypeID: " << SurfaceTypeID << endl;
+					return  Data.getLabelIndex("TEXTURE_DEFAULT");
+				} else {
+					return TextureID;
+				}
+			}
+			return  Data.getLabelIndex("TEXTURE_DEFAULT");
+		}
+	}
+
+	private Image MapTexture(short MaterialID, short TextureID) {
+		DataManager Data = DataManager.getDataManager();
+		if (MaterialID != DataManager.INVALID_INDEX && TextureID != DataManager.INVALID_INDEX) {
+			int Key = MaterialID;
+			Key = Key << 16;
+			Key += TextureID;
+
+			Image TargetImage = CompletedImageMap.get(Key);
+			if (TargetImage != null) {
+				return TargetImage;
+			} else {
+				Image SelectedMaterial = GenerateMaterialImage(MaterialID, TextureID); //, getStaticTextureName(MaterialID, TextureID));
+				if (SelectedMaterial != null) {
+					CompletedImageMap.put(Key, SelectedMaterial);
+					return SelectedMaterial;
+				}
+			}
+		}
+		return null;
+	}
+
+	private Image GenerateMaterialImage(short MaterialID, short TextureID) {
 		DataManager Data = DataManager.getDataManager();
 		MaterialData Material = Data.getMaterialData(MaterialID);
 		TextureData Texture = Data.getTextureData(TextureID);
 
-		//ILuint TextureDevILID = Texture->getDevILID();
-		Image TextureImage = new Image();
+		Image TextureImage = RawTextureMap.get((int)TextureID);
 
 		short PrimaryColorID = Material.PrimaryColorID;
 		short SecondaryColorID = Material.SecondaryColorID;
@@ -205,7 +317,7 @@ public class ImageManager {
 		return null;
 	}
 
-	Image GenerateGradientImage(Image Original, short PrimaryColorID, short SecondaryColorID, short BorderColorID) {
+	private Image GenerateGradientImage(Image Original, short PrimaryColorID, short SecondaryColorID, short BorderColorID) {
 		Image newImage = Original.clone();
 		ImageRaster sourceReader = ImageRaster.create(Original);
 		ImageRaster targetWriter = ImageRaster.create(newImage);
@@ -252,7 +364,7 @@ public class ImageManager {
 		return newImage;
 	}
  
-	public Image GeneratedOverLayImage(Image Original, short PrimaryColorID, short BorderColorID) {
+	private Image GeneratedOverLayImage(Image Original, short PrimaryColorID, short BorderColorID) {
 		Image newImage = Original.clone();
 		ImageRaster sourceReader = ImageRaster.create(Original);
 		ImageRaster targetWriter = ImageRaster.create(newImage);
@@ -304,7 +416,7 @@ public class ImageManager {
 		return newImage;
 	}
 
-	public Image GenerateKeeperImage(Image Original, short BorderColorID) {
+	private Image GenerateKeeperImage(Image Original, short BorderColorID) {
 		Image NewImage = Original.clone();
 		if (BorderColorID != DataManager.INVALID_INDEX) {
 			ApplyBorder(NewImage, BorderColorID);
