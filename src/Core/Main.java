@@ -90,8 +90,8 @@ public class Main extends SimpleApplication {
 		ImageManager Images = ImageManager.getImageManager();
 		Images.Initialize(assetManager);
 
-		//TextureManager Tex = TextureManager.getTextureManager();
-		//Tex.Initialize(assetManager);
+		TextureManager Tex = TextureManager.getTextureManager();
+		Tex.Initialize(assetManager);
 
 		// RENDER
 		this.stateManager.attach(new MapRenderer());
