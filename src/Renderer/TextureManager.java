@@ -17,14 +17,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Renderer;
 
-import Data.DataManager;
-import Data.DataLibrary;
-import Data.Types.MaterialData;
-import Data.Types.TextureData;
-
 import com.jme3.asset.AssetManager;
-import com.jme3.asset.AssetNotFoundException;
-import com.jme3.math.ColorRGBA;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -47,18 +40,24 @@ public class TextureManager {
 	Texture TerrainTexture;
 	Material TerrainMaterial;
 
-	ConcurrentHashMap<Integer, float[]> CoordinateMap;
+	ConcurrentHashMap<Integer, TextureCoordinates> CoordinateMap;
+	boolean[][] AtlasOccupiedMatrix;
 
-	int AtlastWidth, AtlasHeight = 512;
+	int AtlasWidth, AtlasHeight, MinimumUnitSize;
 
 	private static TextureManager instance = null;
 
 	class TextureCoordinates {
-		float[] Coordinates = {0.0f, 0.0f, 0.0f, 0.0f};
+		float Top, Bottom, Left, Right;
 	}
 
 	protected TextureManager() {
-		CoordinateMap = new ConcurrentHashMap<Integer, float[]>();
+		AtlasWidth = 512;
+		AtlasHeight = 512;
+		MinimumUnitSize = 16;
+
+		CoordinateMap = new ConcurrentHashMap<Integer, TextureCoordinates>();
+		AtlasOccupiedMatrix = new boolean[AtlasWidth / MinimumUnitSize][AtlasHeight / MinimumUnitSize];
 	}
 
 	public static TextureManager getTextureManager() {
@@ -72,34 +71,71 @@ public class TextureManager {
 		TerrainMaterial = new Material(manager,"Common/MatDefs/Light/Lighting.j3md");
 
 		int Bytes = Image.Format.RGBA8.getBitsPerPixel() / 8;
-		byte[] data = new byte[AtlastWidth * AtlasHeight * Bytes];
+		byte[] data = new byte[AtlasWidth * AtlasHeight * Bytes];
 		ByteBuffer Buffer = BufferUtils.createByteBuffer(data);
-		Image NewImage = new Image(Image.Format.RGBA8, AtlastWidth, AtlasHeight, Buffer);
+		TerrainImage = new Image(Image.Format.RGBA8, AtlasWidth, AtlasHeight, Buffer);
 
-		TerrainTexture = new Texture2D(NewImage);
+		TerrainTexture = new Texture2D(TerrainImage);
 		TerrainTexture.setMagFilter(Texture.MagFilter.Nearest);
-		
+
 		TerrainMaterial.setTexture("DiffuseMap", TerrainTexture);
 	}
 
-	float[] getTextureCoordinates(short MaterialID, short SurfaceTypeID) {
+	TextureCoordinates getTextureCoordinates(short MaterialID, short SurfaceTypeID) {
 		int Key = MaterialID;
 		Key = Key << 16;
 		Key += SurfaceTypeID;
 
-		float[] Target = CoordinateMap.get(Key);
+		TextureCoordinates Target = CoordinateMap.get(Key);
 		if (Target != null) {
 			return Target;
 		} else {
 			ImageManager Imaging = ImageManager.getImageManager();
 			Image NewImage = Imaging.getMaterialImage(MaterialID, SurfaceTypeID);
-			// Find spot on Atlas insert Image
-			int Index = CoordinateMap.size();
-			
-			
-			CoordinateMap.put(Key, Target);
-			return Target;
+			TextureCoordinates NewCoords = insertImage(NewImage);
+
+			CoordinateMap.put(Key, NewCoords);
+			return NewCoords;
 		}
 	}
-}
+	
+	TextureCoordinates insertImage(Image NewImage) {
+		int ImageWidth = NewImage.getWidth() / MinimumUnitSize;
+		int ImageHeight = NewImage.getHeight() / MinimumUnitSize;
+		boolean Reject;
 
+		for (int x = 0; x < AtlasOccupiedMatrix.length; x++) {
+			for (int y = 0; y < AtlasOccupiedMatrix[0].length; y++) {
+				Reject = false;
+				if (!AtlasOccupiedMatrix[x][y]) { // Not occupied
+					for (int w = 0; w < ImageWidth && !Reject; w++) {
+						for (int h = 0; h < ImageHeight && !Reject; h++) {
+							if (AtlasOccupiedMatrix[x + w][y + h])
+								Reject = true;  // Space occupied, reject candidate
+						}
+					}
+					// Candidate Accepted
+					TextureCoordinates NewCoords = new TextureCoordinates();
+					NewCoords.Top = (y * MinimumUnitSize) / (float) AtlasHeight;
+					NewCoords.Bottom = ((y + ImageHeight) * MinimumUnitSize) / (float) AtlasHeight;
+					NewCoords.Right = ((x + ImageWidth) * MinimumUnitSize) / (float) AtlasWidth;
+					NewCoords.Left = (x * MinimumUnitSize) / (float) AtlasWidth;
+
+					// Copy pixels
+					ImageManager Imaging = ImageManager.getImageManager();
+					Imaging.PasteImage(NewImage, TerrainImage, x * MinimumUnitSize, y * MinimumUnitSize);
+
+					// Mark as Occupied
+					for (int w = 0; w < ImageWidth; w++) {
+						for (int h = 0; h < ImageHeight; h++) {
+							AtlasOccupiedMatrix[x + w][y + h] = true;
+						}
+					}
+
+					return NewCoords;
+				}
+			}
+		}
+		return null;  // No valid location
+	}
+}

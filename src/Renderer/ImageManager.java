@@ -243,6 +243,17 @@ public class ImageManager {
 		return NewImage;
 	}
 
+	void PasteImage(Image SourceImage, Image DestinationImage, int X, int Y) {
+		ImageRaster SourceRaster = ImageRaster.create(SourceImage);
+		ImageRaster DestinationRastor = ImageRaster.create(DestinationImage);
+
+		for (int x = 0; x < SourceImage.getWidth(); x++) {
+			for (int y = 0; y < SourceImage.getHeight(); y++) {
+				DestinationRastor.setPixel(X + x, Y + y, SourceRaster.getPixel(x, y));
+			}
+		}
+	}
+
 	Image getMaterialImage(short MaterialTypeID, short SurfaceTypeID) {
 		short TextureID = PickImageTexture(MaterialTypeID, SurfaceTypeID);
 		return MapTexture(MaterialTypeID, TextureID);
@@ -450,4 +461,25 @@ public class ImageManager {
 			}
 		}
 	}
+	
+	/*
+ * public void setPixel(int x, int y, Color color) {
+        int i = (x + y * width) * 4;
+        data[i] = (byte) color.getRed(); // r
+        data[i + 1] = (byte) color.getGreen(); // g
+        data[i + 2] = (byte) color.getBlue(); // b
+        data[i + 3] = (byte) color.getAlpha(); // a
+    }
+  
+    public void setBackground(Color color) {
+  
+        for (int i = 0; i < width * height * 4; i += 4) {
+            data[i] = (byte) color.getRed(); // r
+            data[i + 1] = (byte) color.getGreen(); // g
+            data[i + 2] = (byte) color.getBlue(); // b
+            data[i + 3] = (byte) color.getAlpha(); // a
+  
+        }
+    } 
+ */
 }
