@@ -2,15 +2,26 @@ This is a list of tasks I'll be working on, most of these items will be adressed
 
 BUG FIXES
 
+- Bad connectivity zone updates on map modification
+
+- Wonky Excavation Job control of Dwarves
 
 NEW FEATURES
 
-- Extend save/load to remaining game objects
-- Add Path-grid connectivity visualization
+- Multiple Texture terrain using Texture Atlasing
+
+
+
+
+
+FUTURE UPDATES:
+
+- Optimized Terrain Mesh construction by whole Cell rather then cube
+
+- Level of Detail rendering optimization of Terrain and Actors
+
 - Add Visialization of manual Path searching, with Node expansion
 
-- Multi-thread Path searching
+- Save and Load Game
 
-FUTURE:
-
-- Multi-thread Static Render building
+- Select Dwarf Window with basic Attributes

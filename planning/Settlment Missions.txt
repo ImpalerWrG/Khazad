@@ -18,7 +18,7 @@ Dungeon - run a prison for criminals and monsters, late ages
 
 Festival? - site for dwarves merryment at specific holy days, large swings in population
 
-Banishment - No formal contact with home, only very infrequent low status migrants
+Banishment - No formal contact with home, only very infrequent low status migrants likely to be unsavory
 
 Exploration/look out - Send news/warnings back to mother hold
 
@@ -46,3 +46,8 @@ Exploration
 Gift
 
 Resource Gathering
+
+Kill Monster Quests
+
+Retrive Artifact Quest
+

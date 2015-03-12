@@ -364,10 +364,10 @@ public class Geology {
 		final short RockType1 = Data.getLabelIndex("MATERIAL_SNOW");
 		final short RockType2 = Data.getLabelIndex("MATERIAL_GRANITE");
 
-		if (Zlevel > 8) {
+		if (Zlevel > 3) {
 			return RockType1;
 		}
-		if (Zlevel > 7) {
+		if (Zlevel > 1) {
 			return RockType2;
 		}
 		return RockType0;
