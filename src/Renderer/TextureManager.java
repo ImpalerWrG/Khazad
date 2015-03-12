@@ -21,11 +21,13 @@ import com.jme3.asset.AssetManager;
 import Data.DataManager;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Semaphore;
 
 import com.jme3.material.Material;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture2D;
 import com.jme3.texture.Image;
+
 import com.jme3.util.BufferUtils;
 import java.nio.ByteBuffer;
 
@@ -45,6 +47,7 @@ public class TextureManager {
 	boolean[][] AtlasOccupiedMatrix;
 
 	int AtlasWidth, AtlasHeight, MinimumUnitSize;
+	Semaphore semaphore;
 
 	private static TextureManager instance = null;
 
@@ -57,6 +60,7 @@ public class TextureManager {
 		AtlasHeight = 512;
 		MinimumUnitSize = 16;
 
+		semaphore = new Semaphore(1);
 		CoordinateMap = new ConcurrentHashMap<Integer, TextureAtlasCoordinates>();
 		AtlasOccupiedMatrix = new boolean[AtlasWidth / MinimumUnitSize][AtlasHeight / MinimumUnitSize];
 	}
@@ -80,35 +84,39 @@ public class TextureManager {
 		TerrainTexture.setMagFilter(Texture.MagFilter.Nearest);
 
 		TerrainMaterial.setTexture("DiffuseMap", TerrainTexture);
-		
-		ImageManager Imaging = ImageManager.getImageManager();
-		DataManager Data = DataManager.getDataManager();
-		Image Default = Imaging.getMaterialImage((short) 0,(short) 0);
-		
-		for (int x = 0; x < AtlasWidth / Default.getWidth(); x++) {
-			for (int y = 0; y < AtlasHeight / Default.getHeight(); y++) {
-				Imaging.PasteImage(Default, TerrainImage, x * Default.getWidth(), y * Default.getHeight());
-			}
-		}
 	}
 
-	TextureAtlasCoordinates getTextureCoordinates(short MaterialID, short SurfaceTypeID) {
-		int Key = MaterialID;
-		Key = Key << 16;
-		Key += SurfaceTypeID;
+	TextureAtlasCoordinates getTextureCoordinates(short MaterialTypeID, short SurfaceTypeID) {
+		TextureAtlasCoordinates Target;
+				
+		try {
+			semaphore.acquire();
+			try {
+				ImageManager Imaging = ImageManager.getImageManager();
+				short TextureID = Imaging.PickImageTexture(MaterialTypeID, SurfaceTypeID);
 
-		TextureAtlasCoordinates Target = CoordinateMap.get(Key);
-		if (Target != null) {
+				int Key = MaterialTypeID;
+				Key = Key << 16;
+				Key += TextureID;				
+				Target = CoordinateMap.get(Key);
+
+				if (Target != null) {
+					return Target;
+				} else {
+					Image NewImage = Imaging.MapTexture(MaterialTypeID, TextureID);
+					Target = insertImage(NewImage);
+					CoordinateMap.put(Key, Target);
+					Imaging.SaveImage(TerrainImage, "Terrain.png");
+				}
+			}	finally {
+				semaphore.release();
+			}
 			return Target;
-		} else {
-			ImageManager Imaging = ImageManager.getImageManager();
-			Image NewImage = Imaging.getMaterialImage(MaterialID, SurfaceTypeID);
-			TextureAtlasCoordinates NewCoords = insertImage(NewImage);
-
-			Imaging.SaveImage(TerrainTexture.getImage(), "Terrain.png");
-			CoordinateMap.put(Key, NewCoords);
-			return NewCoords;
+		
+		} catch (final InterruptedException e) {
+			// handle acquire failure here
 		}
+		return null;
 	}
 
 	TextureAtlasCoordinates insertImage(Image NewImage) {

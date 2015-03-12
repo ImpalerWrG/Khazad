@@ -259,7 +259,7 @@ public class ImageManager {
 		return MapTexture(MaterialTypeID, TextureID);
 	}
 	
-	private short PickImageTexture(short MaterialID, short SurfaceTypeID) {
+	public short PickImageTexture(short MaterialID, short SurfaceTypeID) {
 		DataManager Data = DataManager.getDataManager();
 		MaterialData Material = Data.getMaterialData(MaterialID);
 
@@ -282,7 +282,7 @@ public class ImageManager {
 		}
 	}
 
-	private Image MapTexture(short MaterialID, short TextureID) {
+	public Image MapTexture(short MaterialID, short TextureID) {
 		DataManager Data = DataManager.getDataManager();
 		if (MaterialID != DataManager.INVALID_INDEX && TextureID != DataManager.INVALID_INDEX) {
 			int Key = MaterialID;
