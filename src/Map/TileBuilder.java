@@ -23,6 +23,8 @@ import com.jme3.scene.VertexBuffer.Type;
 import com.jme3.math.Vector3f;
 import com.jme3.math.Vector2f;
 
+import Renderer.TextureManager.TextureAtlasCoordinates;
+
 import java.util.ArrayList;
 import static com.jme3.util.BufferUtils.createFloatBuffer;
 import static com.jme3.util.BufferUtils.createIntBuffer;
@@ -44,39 +46,32 @@ public class TileBuilder {
 		Meshes = new ConcurrentHashMap<FaceShape, Mesh>();
 	}
 	
-	public Mesh getMesh(FaceShape Shape) {
-		
+	public Mesh getMesh(FaceShape Shape, TextureAtlasCoordinates AtlasCoords) {
 		Mesh target = Meshes.get(Shape);
 
-		if (target == null)
-		{
-			if (Shape.FaceDirection == Direction.DIRECTION_NONE)
-			{
-				target = CreateSlopeFace(Shape);
+		if (target == null) {
+			if (Shape.FaceDirection == Direction.DIRECTION_NONE) {
+				target = CreateSlopeFace(Shape, AtlasCoords);
 				if (target != null) 
 					Meshes.put(Shape, target);
 				return target;
 			} else {
-				if (Shape.FaceDirection == Direction.DIRECTION_DOWN || Shape.FaceDirection == Direction.DIRECTION_UP) 
-				{
-					if (Shape.SourceCubeComponent.hasFloor() || Shape.SourceCubeComponent.hasCeiling())
-					{
-						target = CreateFlatFace(Shape);
+				if (Shape.FaceDirection == Direction.DIRECTION_DOWN || Shape.FaceDirection == Direction.DIRECTION_UP) {
+					if (Shape.SourceCubeComponent.hasFloor() || Shape.SourceCubeComponent.hasCeiling()) {
+						target = CreateFlatFace(Shape, AtlasCoords);
 						if (target != null)
 							Meshes.put(Shape, target);
 						return target;
 					}
 					return target;
 				} else {
-					target = CreateSideFace(Shape);
+					target = CreateSideFace(Shape, AtlasCoords);
 					if (target != null)
 						Meshes.put(Shape, target);
 					return target;
 				}
 			}
-		}
-		else
-		{
+		} else {
 			return target;
 		}
 	}
@@ -124,7 +119,7 @@ public class TileBuilder {
 		return ManualObject;
 	}
 	
-	public Mesh CreateFlatFace(FaceShape Shape) {
+	public Mesh CreateFlatFace(FaceShape Shape, TextureAtlasCoordinates AtlasCoords) {
 		
 		boolean Triangle1 = false;
 		boolean Triangle2 = false;
@@ -151,12 +146,18 @@ public class TileBuilder {
 			Normals.add(SE, Vector3f.UNIT_Z);
 			Normals.add(NW, Vector3f.UNIT_Z);
 			Normals.add(NE, Vector3f.UNIT_Z);
+
+
+			float Top = AtlasCoords.Top + ((AtlasCoords.Bottom - AtlasCoords.Top) * 0.0f);
+			float Bottom = AtlasCoords.Top + ((AtlasCoords.Bottom - AtlasCoords.Top) * 1.0f);
+			float Left = AtlasCoords.Left + ((AtlasCoords.Right - AtlasCoords.Left) * 0.0f);
+			float Right = AtlasCoords.Left + ((AtlasCoords.Right - AtlasCoords.Left) * 1.0f);
 			
-			TextureCoords.add(SW, new Vector2f(0.0f, 0.0f));
-			TextureCoords.add(SE, new Vector2f(1.0f, 0.0f));
-			TextureCoords.add(NW, new Vector2f(0.0f, 1.0f));
-			TextureCoords.add(NE, new Vector2f(1.0f, 1.0f));
-			
+			TextureCoords.add(SW, new Vector2f(Left, Bottom));
+			TextureCoords.add(SE, new Vector2f(Right, Bottom));
+			TextureCoords.add(NW, new Vector2f(Left, Top));
+			TextureCoords.add(NE, new Vector2f(Right, Top));
+
 			if (Shape.SourceCubeComponent.split()) // Split along NW-SE line
 			{
 				if ((SouthEastCorner == CubeShape.CUBE_BOTTOM_HEIGHT && NorthEastCorner == CubeShape.CUBE_BOTTOM_HEIGHT && NorthWestCorner == CubeShape.CUBE_BOTTOM_HEIGHT) || (SouthEastCorner == CubeShape.CUBE_TOP_HEIGHT && NorthEastCorner == CubeShape.CUBE_TOP_HEIGHT && NorthWestCorner == CubeShape.CUBE_TOP_HEIGHT))
@@ -206,7 +207,7 @@ public class TileBuilder {
 		}
 	}
  
-	public Mesh CreateSideFace(FaceShape Shape) {
+	public Mesh CreateSideFace(FaceShape Shape, TextureAtlasCoordinates AtlasCoords) {
 		
 		byte NorthEastCorner = Shape.SourceCubeComponent.NorthEastCorner();
 		byte NorthWestCorner = Shape.SourceCubeComponent.NorthWestCorner();
@@ -280,25 +281,30 @@ public class TileBuilder {
 			RightBottom = (CubeShape.CUBE_BOTTOM_HEIGHT - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
 		}
 
-		//if (LeftCorner > LeftAdjacentCorner || RightCorner > RightAdjacentCorner) { 
-		//	Normal = Normal.negate();			
-		//}
+		float Left = AtlasCoords.Left + ((AtlasCoords.Right - AtlasCoords.Left) * 0.0f);
+		float Right = AtlasCoords.Left + ((AtlasCoords.Right - AtlasCoords.Left) * 1.0f);
 
+		LeftBottom = AtlasCoords.Top + ((AtlasCoords.Bottom - AtlasCoords.Top) * LeftBottom);
+		LeftTop = AtlasCoords.Top + ((AtlasCoords.Bottom - AtlasCoords.Top) * LeftTop);
+		RightBottom = AtlasCoords.Top + ((AtlasCoords.Bottom - AtlasCoords.Top) * RightBottom);
+		RightTop = AtlasCoords.Top + ((AtlasCoords.Bottom - AtlasCoords.Top) * RightTop);
+
+	
 		Vertices.add(new Vector3f(XLeft, YLeft, LeftBottom - MapCoordinate.HALFCUBE));  // Left Bottom
 		Normals.add(Normal);
-		TextureCoords.add(new Vector2f(0.0f, LeftBottom));
+		TextureCoords.add(new Vector2f(Left, LeftBottom));
 
 		Vertices.add(new Vector3f(XLeft, YLeft, LeftTop - MapCoordinate.HALFCUBE));  // Left Top
 		Normals.add(Normal);
-		TextureCoords.add(new Vector2f(0.0f, LeftTop));
+		TextureCoords.add(new Vector2f(Left, LeftTop));
 
 		Vertices.add(new Vector3f(XRight, YRight, RightBottom - MapCoordinate.HALFCUBE));  // Right Bottom
 		Normals.add(Normal);
-		TextureCoords.add(new Vector2f(1.0f, RightBottom));
+		TextureCoords.add(new Vector2f(Right, RightBottom));
 
 		Vertices.add(new Vector3f(XRight, YRight, RightTop - MapCoordinate.HALFCUBE));  // Right Top
 		Normals.add(Normal);
-		TextureCoords.add(new Vector2f(1.0f, RightTop));
+		TextureCoords.add(new Vector2f(Right, RightTop));
 
 
 		if (LeftCorner >= LeftAdjacentCorner || RightCorner >= RightAdjacentCorner) { 
@@ -340,7 +346,7 @@ public class TileBuilder {
 		}
 	}
 
-	public Mesh CreateSlopeFace(FaceShape Shape) {
+	public Mesh CreateSlopeFace(FaceShape Shape, TextureAtlasCoordinates AtlasCoords) {
 		
 		boolean Triangle1 = false;
 		boolean Triangle2 = false;
@@ -355,7 +361,17 @@ public class TileBuilder {
 		ArrayList<Vector2f> TextureCoords = new ArrayList<Vector2f>();
 		ArrayList<Integer> Indexes = new ArrayList<Integer>();	
 
+		float Top = AtlasCoords.Top + ((AtlasCoords.Bottom - AtlasCoords.Top) * 0.0f);
+		float Bottom = AtlasCoords.Top + ((AtlasCoords.Bottom - AtlasCoords.Top) * 1.0f);
+		float Left = AtlasCoords.Left + ((AtlasCoords.Right - AtlasCoords.Left) * 0.0f);
+		float Right = AtlasCoords.Left + ((AtlasCoords.Right - AtlasCoords.Left) * 1.0f);
+
 		final int SW = 0;  final int SE = 1;  final int NW = 2;  final int NE = 3;
+
+		//TextureCoords.add(SW, new Vector2f(Left, Bottom));
+		//TextureCoords.add(SE, new Vector2f(Right, Bottom));
+		//TextureCoords.add(NW, new Vector2f(Left, Top));
+		//TextureCoords.add(NE, new Vector2f(Right, Top));
 
 		{
 			Vector3f SWv = new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, (((float) SouthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE);
@@ -385,17 +401,17 @@ public class TileBuilder {
 						{
 							Vertices.add(SEv);
 							Normals.add(new Vector3f( NEv.subtract(SEv).cross( NWv.subtract(SEv)).normalize()));
-							TextureCoords.add(new Vector2f(1.0f, 0.0f));
+							TextureCoords.add(new Vector2f(Right, Bottom));
 							Indexes.add(Vertices.size() - 1);
 
 							Vertices.add(NEv);
 							Normals.add(new Vector3f( NWv.subtract(NEv)).cross( SEv.subtract(NEv) ).normalize());
-							TextureCoords.add(new Vector2f(1.0f, 1.0f));
+							TextureCoords.add(new Vector2f(Right, Top));
 							Indexes.add(Vertices.size() - 1);
 
 							Vertices.add(NWv);
 							Normals.add(new Vector3f( SEv.subtract(NWv)).cross( NEv.subtract(NWv) ).normalize());
-							TextureCoords.add(new Vector2f(0.0f, 1.0f));
+							TextureCoords.add(new Vector2f(Left, Top));
 							Indexes.add(Vertices.size() - 1);
 
 							Triangle1 = true;
@@ -412,17 +428,17 @@ public class TileBuilder {
 						{
 							Vertices.add(new Vector3f(-MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, (((float) NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
 							Normals.add(new Vector3f( SWv.subtract(NWv).cross(SEv.subtract(NWv)).normalize()));
-							TextureCoords.add(new Vector2f(0.0f, 1.0f));
+							TextureCoords.add(new Vector2f(Left, Top));
 							Indexes.add(Vertices.size() - 1);
 
 							Vertices.add(new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, (((float) SouthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
 							Normals.add(new Vector3f( SEv.subtract(SWv)).cross(NWv.subtract(SWv)).normalize());
-							TextureCoords.add(new Vector2f(0.0f, 0.0f));
+							TextureCoords.add(new Vector2f(Left, Bottom));
 							Indexes.add(Vertices.size() - 1);
 
 							Vertices.add(new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, (((float) SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
 							Normals.add(new Vector3f( NWv.subtract(SEv)).cross(SWv.subtract(SEv)).normalize());
-							TextureCoords.add(new Vector2f(1.0f, 0.0f));
+							TextureCoords.add(new Vector2f(Right, Bottom));
 							Indexes.add(Vertices.size() - 1);
 
 							Triangle2 = true;
@@ -617,17 +633,17 @@ public class TileBuilder {
 						{
 							Vertices.add(NEv);  // North East
 							Normals.add( (NWv.subtract(NEv)).cross(SWv.subtract(NEv)).normalize());
-							TextureCoords.add(new Vector2f(1.0f, 1.0f));
+							TextureCoords.add(new Vector2f(Right, Top));
 							Indexes.add(Vertices.size() - 1);
 							
 							Vertices.add(NWv);  // North West
 							Normals.add( (SWv.subtract(NWv)).cross( NEv.subtract(NWv)).normalize());
-							TextureCoords.add(new Vector2f(0.0f, 1.0f));
+							TextureCoords.add(new Vector2f(Left, Top));
 							Indexes.add(Vertices.size() - 1);
 							
 							Vertices.add(SWv);  // South West
 							Normals.add( (NEv.subtract(SWv)).cross( NWv.subtract(SWv)).normalize());
-							TextureCoords.add(new Vector2f(0.0f, 0.0f));
+							TextureCoords.add(new Vector2f(Left, Bottom));
 							Indexes.add(Vertices.size() - 1);
 							
 							Triangle1 = true;
@@ -644,17 +660,17 @@ public class TileBuilder {
 						{
 							Vertices.add(SWv);  // South West
 							Normals.add(( SEv.subtract(SWv)).cross( NEv.subtract(SWv)).normalize());
-							TextureCoords.add(new Vector2f(0.0f, 0.0f));
+							TextureCoords.add(new Vector2f(Left, Bottom));
 							Indexes.add(Vertices.size() - 1);
 
 							Vertices.add(SEv);  // South East
 							Normals.add(( NEv.subtract(SEv)).cross( SWv.subtract(SEv)).normalize());
-							TextureCoords.add(new Vector2f(1.0f, 0.0f));
+							TextureCoords.add(new Vector2f(Right, Bottom));
 							Indexes.add(Vertices.size() - 1);
 
 							Vertices.add(NEv);  // North East
 							Normals.add(( SWv.subtract(NEv)).cross( SEv.subtract(NEv)).normalize());
-							TextureCoords.add(new Vector2f(1.0f, 1.0f));
+							TextureCoords.add(new Vector2f(Right, Top));
 							Indexes.add(Vertices.size() - 1);
 							
 							Triangle2 = true;

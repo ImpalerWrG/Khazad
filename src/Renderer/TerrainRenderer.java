@@ -47,6 +47,7 @@ import com.jme3.scene.Spatial;
 
 import com.jme3.texture.Image;
 import com.jme3.texture.Texture;
+import com.jme3.texture.Texture2D;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -69,8 +70,6 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 
 	TileBuilder builder;
 	LodControl TerrainLodControler;
-
-	Material mat = null;
 
 	boolean SunnyRendering = true;
 	boolean DisplayToggle = true;
@@ -95,17 +94,6 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 	public void attachToGame(Game TargetGame) {
 		this.game = TargetGame;
 		this.TerrainLodControler = new LodControl();
-
-		DataManager Data = DataManager.getDataManager();
-
-		short MaterialID = Data.getLabelIndex("MATERIAL_DARK_GRASS");
-		short SurfaceID = Data.getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
-		
-		TextureManager Textures = TextureManager.getTextureManager();
-		Textures.getTextureCoordinates(MaterialID, SurfaceID);
-		
-		mat = new Material(assetmanager, "Common/MatDefs/Light/Lighting.j3md");
-		mat.setTexture("DiffuseMap", Textures.TerrainTexture);
 	}
 	
 	public void onAction(String name, boolean keyPressed, float tpf) {
@@ -128,7 +116,7 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 			CellCoordinate Coords = target.getCellCoordinates();
 						
 			if (target.isTerrainRenderingDirty()) {
-				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, mat, TerrainLodControler);
+				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, TerrainLodControler);
 				MapRenderer Renderer = state.getState(MapRenderer.class);
 
 				Builder.setNodes(Renderer.getCellNodeLight(Coords), Renderer.getCellNodeDark(Coords));

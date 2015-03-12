@@ -25,6 +25,8 @@ import Map.Face;
 import Map.FaceCoordinate;
 import Map.TileBuilder;
 
+import Renderer.TextureManager.TextureAtlasCoordinates;
+
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
@@ -56,11 +58,11 @@ public class TerrainBuilder implements Callable<Void>  {
 	Material TerrainMaterial;
 	LodControl Controler;
 
-	public TerrainBuilder(Application Parentapp, Cell TargetCell, TileBuilder Tiles, Material mat, LodControl controler) {
+	public TerrainBuilder(Application Parentapp, Cell TargetCell, TileBuilder Tiles, LodControl controler) {
 		this.app = Parentapp;
 		this.BuildCell = TargetCell;
 		this.TileSource = Tiles;
-		this.TerrainMaterial = mat;
+		this.TerrainMaterial = TextureManager.getTextureManager().TerrainMaterial;
 		this.Controler = controler;
 	}
 
@@ -73,6 +75,7 @@ public class TerrainBuilder implements Callable<Void>  {
 
 	public Void call() {
 		CellCoordinate Coords = BuildCell.getCellCoordinates();
+		TextureManager Texturing = TextureManager.getTextureManager();
 
 		// Terrain Faces
 		HashMap<FaceCoordinate, Face> faces = BuildCell.getFaces();
@@ -83,12 +86,13 @@ public class TerrainBuilder implements Callable<Void>  {
 			FaceCoordinate coords = entry.getKey();
 			Face targetface = entry.getValue();
 			
-			Mesh facemesh = TileSource.getMesh(targetface.getFaceShapeType());
+			TextureAtlasCoordinates AtlasCoords = Texturing.getTextureCoordinates(targetface.getFaceMaterialType(), targetface.getFaceSurfaceType());
+			Mesh facemesh = TileSource.getMesh(targetface.getFaceShapeType(), AtlasCoords);
 			if (facemesh != null) {
 				Geometry geom = new Geometry("face", facemesh);
 				geom.setLocalTranslation(new Vector3f(coords.getX(), coords.getY(), 0));
 				geom.setMaterial(TerrainMaterial);
-				
+
 				//Cell   coords.Coordinates
 				if (true /*sunlit face*/) {
 					TerrainLight.attachChild(geom);

@@ -450,8 +450,9 @@ public class GameMap {
 	}
 
 	public void UpdateFace(MapCoordinate TargetCoordinates, Direction DirectionType) {
-		final short RoughWallID = 0; //DATA.getLabelIndex("SURFACETYPE_ROUGH_WALL");
-		final short RoughFloorID = 1; //DATA.getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
+		DataManager Data = DataManager.getDataManager();
+		final short RoughWallID = Data.getLabelIndex("SURFACETYPE_ROUGH_WALL");
+		final short RoughFloorID = Data.getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
 		MapCoordinate ModifiedCoordinates = TargetCoordinates.clone();
 		ModifiedCoordinates.TranslateMapCoordinates(DirectionType);

@@ -18,6 +18,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Renderer;
 
 import com.jme3.asset.AssetManager;
+import Data.DataManager;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -40,15 +41,15 @@ public class TextureManager {
 	Texture TerrainTexture;
 	Material TerrainMaterial;
 
-	ConcurrentHashMap<Integer, TextureCoordinates> CoordinateMap;
+	ConcurrentHashMap<Integer, TextureAtlasCoordinates> CoordinateMap;
 	boolean[][] AtlasOccupiedMatrix;
 
 	int AtlasWidth, AtlasHeight, MinimumUnitSize;
 
 	private static TextureManager instance = null;
 
-	class TextureCoordinates {
-		float Top, Bottom, Left, Right;
+	public class TextureAtlasCoordinates {
+		public float Top, Bottom, Left, Right;
 	}
 
 	protected TextureManager() {
@@ -56,7 +57,7 @@ public class TextureManager {
 		AtlasHeight = 512;
 		MinimumUnitSize = 16;
 
-		CoordinateMap = new ConcurrentHashMap<Integer, TextureCoordinates>();
+		CoordinateMap = new ConcurrentHashMap<Integer, TextureAtlasCoordinates>();
 		AtlasOccupiedMatrix = new boolean[AtlasWidth / MinimumUnitSize][AtlasHeight / MinimumUnitSize];
 	}
 
@@ -79,27 +80,38 @@ public class TextureManager {
 		TerrainTexture.setMagFilter(Texture.MagFilter.Nearest);
 
 		TerrainMaterial.setTexture("DiffuseMap", TerrainTexture);
+		
+		ImageManager Imaging = ImageManager.getImageManager();
+		DataManager Data = DataManager.getDataManager();
+		Image Default = Imaging.getMaterialImage((short) 0,(short) 0);
+		
+		for (int x = 0; x < AtlasWidth / Default.getWidth(); x++) {
+			for (int y = 0; y < AtlasHeight / Default.getHeight(); y++) {
+				Imaging.PasteImage(Default, TerrainImage, x * Default.getWidth(), y * Default.getHeight());
+			}
+		}
 	}
 
-	TextureCoordinates getTextureCoordinates(short MaterialID, short SurfaceTypeID) {
+	TextureAtlasCoordinates getTextureCoordinates(short MaterialID, short SurfaceTypeID) {
 		int Key = MaterialID;
 		Key = Key << 16;
 		Key += SurfaceTypeID;
 
-		TextureCoordinates Target = CoordinateMap.get(Key);
+		TextureAtlasCoordinates Target = CoordinateMap.get(Key);
 		if (Target != null) {
 			return Target;
 		} else {
 			ImageManager Imaging = ImageManager.getImageManager();
 			Image NewImage = Imaging.getMaterialImage(MaterialID, SurfaceTypeID);
-			TextureCoordinates NewCoords = insertImage(NewImage);
+			TextureAtlasCoordinates NewCoords = insertImage(NewImage);
 
+			Imaging.SaveImage(TerrainTexture.getImage(), "Terrain.png");
 			CoordinateMap.put(Key, NewCoords);
 			return NewCoords;
 		}
 	}
-	
-	TextureCoordinates insertImage(Image NewImage) {
+
+	TextureAtlasCoordinates insertImage(Image NewImage) {
 		int ImageWidth = NewImage.getWidth() / MinimumUnitSize;
 		int ImageHeight = NewImage.getHeight() / MinimumUnitSize;
 		boolean Reject;
@@ -115,7 +127,7 @@ public class TextureManager {
 						}
 					}
 					// Candidate Accepted
-					TextureCoordinates NewCoords = new TextureCoordinates();
+					TextureAtlasCoordinates NewCoords = new TextureAtlasCoordinates();
 					NewCoords.Top = (y * MinimumUnitSize) / (float) AtlasHeight;
 					NewCoords.Bottom = ((y + ImageHeight) * MinimumUnitSize) / (float) AtlasHeight;
 					NewCoords.Right = ((x + ImageWidth) * MinimumUnitSize) / (float) AtlasWidth;

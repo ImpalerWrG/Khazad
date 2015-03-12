@@ -112,9 +112,9 @@ public class Cell {
 			CubeShape Shape = getCubeShape(TargetCube);
 			short CubeMaterial = getCubeMaterial(TargetCube);
 
-			final short NEHEMaterial = 0; //DATA->getLabelIndex("MATERIAL_UNINITIALIZED");
-			final short WallSurface = 1; //DATA->getLabelIndex("SURFACETYPE_ROUGH_WALL");
-			final short FloorSurface = 2; //DATA->getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
+			DataManager Data = DataManager.getDataManager();
+			final short WallSurface = Data.getLabelIndex("SURFACETYPE_ROUGH_WALL");
+			final short FloorSurface = Data.getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
 			for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
 				FaceCoordinate FaceLocation = new FaceCoordinate(TargetCube, DirectionType);

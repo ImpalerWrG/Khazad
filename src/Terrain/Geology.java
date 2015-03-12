@@ -359,16 +359,15 @@ public class Geology {
 	}
 
 	public short getRockTypeAtCoordinates(byte Target, int Zlevel) {
-		final short RockType0 = 0; //DATA->getLabelIndex("MATERIAL_BRIGHT_GRASS");
-		final short RockType1 = 1; //DATA->getLabelIndex("MATERIAL_SNOW");
-		final short RockType2 = 2; //DATA->getLabelIndex("MATERIAL_GRANITE");
+		DataManager Data = DataManager.getDataManager();
+		final short RockType0 = Data.getLabelIndex("MATERIAL_DARK_GRASS");
+		final short RockType1 = Data.getLabelIndex("MATERIAL_SNOW");
+		final short RockType2 = Data.getLabelIndex("MATERIAL_GRANITE");
 
-		if (Zlevel > 8)
-		{
+		if (Zlevel > 8) {
 			return RockType1;
 		}
-		if (Zlevel > 7)
-		{
+		if (Zlevel > 7) {
 			return RockType2;
 		}
 		return RockType0;
