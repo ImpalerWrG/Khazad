@@ -47,7 +47,14 @@ public class TileBuilder {
 		ArrayList<Vector3f> Normals;
 		ArrayList<Vector2f> TextureCoords;
 		ArrayList<Integer> Indexes;
-		
+
+		public MeshData() {
+			this.Vertices = new ArrayList<Vector3f>(4);
+			this.Normals = new ArrayList<Vector3f>(4);
+			this.TextureCoords = new ArrayList<Vector2f>(4);
+			this.Indexes = new ArrayList<Integer>(4);
+		}
+
 		public MeshData(ArrayList<Vector3f> Verts, ArrayList<Vector3f> Norms, ArrayList<Vector2f> Textures,  ArrayList<Integer> Indexs) {
 			this.Vertices = Verts;
 			this.Normals = Norms;
@@ -86,13 +93,15 @@ public class TileBuilder {
 					return Finalize(TargetMeshData, AtlasCoords);
 				}
 			}
-			return null;
+			return Finalize(TargetMeshData, AtlasCoords);
 		} else {
 			return Finalize(TargetMeshData, AtlasCoords);
 		}
 	}
 
 	public Mesh Finalize(MeshData Data, TextureAtlasCoordinates AtlasCoords) {
+		if (Data == null || AtlasCoords == null)
+			return null;
 
 		Mesh ManualObject = new Mesh();
 
@@ -138,9 +147,9 @@ public class TileBuilder {
 		ManualObject.updateBound();
 		return ManualObject;
 	}
-	
+
 	public MeshData CreateFlatFace(FaceShape Shape) {
-		
+
 		boolean Triangle1 = false;
 		boolean Triangle2 = false;
 
@@ -154,7 +163,6 @@ public class TileBuilder {
 		ArrayList<Vector2f> TextureCoords = new ArrayList<Vector2f>(4);
 		ArrayList<Integer> Indexes = new ArrayList<Integer>(4);	
 
-		
 			final int SW = 0;  final int SE = 1;  final int NW = 2;  final int NE = 3;
 
 			Vertices.add(SW, new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, ((SouthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
@@ -166,11 +174,11 @@ public class TileBuilder {
 			Normals.add(SE, Vector3f.UNIT_Z);
 			Normals.add(NW, Vector3f.UNIT_Z);
 			Normals.add(NE, Vector3f.UNIT_Z);
-			
+
 			TextureCoords.add(SW, new Vector2f(0.0f, 0.0f));
 			TextureCoords.add(SE, new Vector2f(1.0f, 0.0f));
-			TextureCoords.add(NW, new Vector2f(1.0f, 1.0f));
-			TextureCoords.add(NE, new Vector2f(0.0f, 1.0f));
+			TextureCoords.add(NW, new Vector2f(0.0f, 1.0f));
+			TextureCoords.add(NE, new Vector2f(1.0f, 1.0f));
 
 			if (Shape.SourceCubeComponent.split()) // Split along NW-SE line
 			{
@@ -835,4 +843,3 @@ public class TileBuilder {
 		}
 	}
 }
-

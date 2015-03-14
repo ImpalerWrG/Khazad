@@ -25,6 +25,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.control.LodControl;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Semaphore;
 
 /**
  *
@@ -49,6 +50,8 @@ public class MapRenderer extends AbstractAppState{
 	ConcurrentHashMap<Integer, Node> ZMapLight;
 	ConcurrentHashMap<Integer, Node> ZMapDark;
 
+	Semaphore semaphore;
+	
 	boolean SunnyRendering = true;
 	int Top; int Bottom;
 
@@ -58,6 +61,8 @@ public class MapRenderer extends AbstractAppState{
 		ZMapLight = new ConcurrentHashMap<Integer, Node>();
 		ZMapDark = new ConcurrentHashMap<Integer, Node>();
 		builder = new TileBuilder();
+		
+		semaphore = new Semaphore(1);
 	}
 
 	@Override
@@ -100,18 +105,28 @@ public class MapRenderer extends AbstractAppState{
 		ZMapDark.clear();
 	}
 
-	public Node getCellNodeLight(CellCoordinate TargetCell) {
-		Node CellNode = LightCellNodeMap.get(TargetCell);
-		if (CellNode == null) {
-			CellNode = new Node();	
-		
-			float x = (float) (TargetCell.X * MapCoordinate.CELLEDGESIZE);
-			float y = (float) (TargetCell.Y * MapCoordinate.CELLEDGESIZE);
+	public Node getCellNodeLight(CellCoordinate TargetCoordinates) {
+		Node CellNode = null;
+		try {  // Semaphore prevents multiple copies of the same Cell node from being created
+			semaphore.acquire();
+			try {
+				CellNode = LightCellNodeMap.get(TargetCoordinates);
+				if (CellNode == null) {
+					CellNode = new Node("LightNode" + TargetCoordinates.toString());
+					//CellNode.setName("LightNode" + TargetCoordinates.toString());
 
-			CellNode.move(x, y, 0);
+					float x = (float) (TargetCoordinates.X * MapCoordinate.CELLEDGESIZE);
+					float y = (float) (TargetCoordinates.Y * MapCoordinate.CELLEDGESIZE);
+					CellNode.move(x, y, 0);
 
-			getZNodeLight(TargetCell.Z).attachChild(CellNode);
-			LightCellNodeMap.put(TargetCell, CellNode);
+					getZNodeLight(TargetCoordinates.Z).attachChild(CellNode);
+					LightCellNodeMap.put(TargetCoordinates, CellNode);
+				}
+			}	finally {
+				semaphore.release();
+			}
+		} catch (final InterruptedException e) {
+			e.printStackTrace();
 		}
 		return CellNode;
 	}

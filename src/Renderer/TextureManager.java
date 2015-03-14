@@ -103,18 +103,18 @@ public class TextureManager {
 				if (Target != null) {
 					return Target;
 				} else {
-					Image NewImage = Imaging.MapTexture(MaterialTypeID, TextureID);
+					Image NewImage = Imaging.MapTexture(MaterialTypeID, TextureID);					
 					Target = insertImage(NewImage);
 					CoordinateMap.put(Key, Target);
-					Imaging.SaveImage(TerrainImage, "Terrain.png");
+					//Imaging.SaveImage(TerrainImage, "Terrain.png");
 				}
 			}	finally {
 				semaphore.release();
 			}
 			return Target;
 		
-		} catch (final InterruptedException e) {
-			// handle acquire failure here
+		} catch (final Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}

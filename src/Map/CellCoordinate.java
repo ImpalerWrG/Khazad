@@ -37,20 +37,18 @@ public class CellCoordinate {
 	}
 
 	public CellCoordinate(MapCoordinate SourceCoordinates) {
-        if (SourceCoordinates.X >= 0)
-        {
-            X = (short) (SourceCoordinates.X >> MapCoordinate.CELLBITSHIFT);
-        } else {
-            X = (short) ((SourceCoordinates.X >> MapCoordinate.CELLBITSHIFT) - 1); //truncate to negative infinity
-        }
-        if (SourceCoordinates.Y >= 0)
-        {
-            Y = (short) (SourceCoordinates.Y >> MapCoordinate.CELLBITSHIFT);
-        } else {
-            Y = (short) ((SourceCoordinates.Y >> MapCoordinate.CELLBITSHIFT) - 1); //truncate to negative infinity
-        }
-        Z = (short) SourceCoordinates.Z;
-    }
+		if (SourceCoordinates.X >= 0) {
+			X = (short) (SourceCoordinates.X >> MapCoordinate.CELLBITSHIFT);
+		} else {
+			X = (short) ((SourceCoordinates.X >> MapCoordinate.CELLBITSHIFT) - 1); //truncate to negative infinity
+		}
+		if (SourceCoordinates.Y >= 0) {
+			Y = (short) (SourceCoordinates.Y >> MapCoordinate.CELLBITSHIFT);
+		} else {
+			Y = (short) ((SourceCoordinates.Y >> MapCoordinate.CELLBITSHIFT) - 1); //truncate to negative infinity
+		}
+		Z = (short) SourceCoordinates.Z;
+	}
 
 	public void setequal(CellCoordinate ArgumentCoordinates) {
 		X = ArgumentCoordinates.X;
@@ -65,16 +63,16 @@ public class CellCoordinate {
 	@Override
 	public boolean equals(Object ArgumentCoordinates) {
 		if (ArgumentCoordinates == null)
-            return false;
-        if (ArgumentCoordinates == this)
-            return true;
-        if (!(ArgumentCoordinates instanceof CellCoordinate))
-            return false;
+			return false;
+		if (ArgumentCoordinates == this)
+			return true;
+		if (!(ArgumentCoordinates instanceof CellCoordinate))
+			return false;
 		
 		CellCoordinate Arg = (CellCoordinate) ArgumentCoordinates;
 		return (X == Arg.X && Y == Arg.Y && Z == Arg.Z);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		int Key = 0;
@@ -86,5 +84,10 @@ public class CellCoordinate {
 		Key += Z;
 
 		return Key;
+	}
+	
+	@Override
+	public String toString() {
+		return  "X " + Integer.toString(X) + "Y " + Integer.toString(Y) + "Z " + Integer.toString(Z);
 	}
 }

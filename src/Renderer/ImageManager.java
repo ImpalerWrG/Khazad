@@ -261,6 +261,10 @@ public class ImageManager {
 	
 	public short PickImageTexture(short MaterialID, short SurfaceTypeID) {
 		DataManager Data = DataManager.getDataManager();
+		final short DefaultTextureID = Data.getLabelIndex("TEXTURE_DEFAULT");
+
+		if (MaterialID == DataManager.INVALID_INDEX)
+			return DefaultTextureID;
 		MaterialData Material = Data.getMaterialData(MaterialID);
 
 		short TextureID = Material.getTexture(SurfaceTypeID);
@@ -271,14 +275,10 @@ public class ImageManager {
 		} else {
 			if (MaterialClassID != DataManager.INVALID_INDEX) {
 				TextureID = Data.getMaterialClassData(MaterialClassID).getTexture(SurfaceTypeID);
-				if (TextureID == DataManager.INVALID_INDEX) {
-					//cerr << "bad material/surface combination, no texture. MaterialClassID: " << MaterialClassID << " SurfaceTypeID: " << SurfaceTypeID << endl;
-					return  Data.getLabelIndex("TEXTURE_DEFAULT");
-				} else {
+				if (TextureID != DataManager.INVALID_INDEX)
 					return TextureID;
-				}
 			}
-			return  Data.getLabelIndex("TEXTURE_DEFAULT");
+			return DefaultTextureID;
 		}
 	}
 

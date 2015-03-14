@@ -90,14 +90,14 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 
 		registerWithInput(app.getInputManager());
 	}
-	
+
 	public void attachToGame(Game TargetGame) {
 		this.game = TargetGame;
 		this.TerrainLodControler = new LodControl();
 	}
-	
+
 	public void onAction(String name, boolean keyPressed, float tpf) {
-        if (this.isEnabled()) {
+		if (this.isEnabled()) {
 			if (name.equals("TerrainRenderToggle") && keyPressed) {
 				DisplayToggle = !DisplayToggle;
 			}
@@ -113,9 +113,8 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 
 	public void RebuildDirtyCells(ConcurrentHashMap<CellCoordinate, Cell> cells) {
 		for (Cell target : cells.values()) {
-			CellCoordinate Coords = target.getCellCoordinates();
-						
 			if (target.isTerrainRenderingDirty()) {
+				CellCoordinate Coords = target.getCellCoordinates();
 				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, TerrainLodControler);
 				MapRenderer Renderer = state.getState(MapRenderer.class);
 
@@ -124,7 +123,7 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 
 				target.setDirtyTerrainRendering(false);
 			}
-		}	
+		}
 	}
 
 	public void SetTerrainRendering(ConcurrentHashMap<CellCoordinate, Cell> cells, boolean show) {
@@ -150,7 +149,7 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 	}
 
 	@Override
-	public void update(float tpf) {		
+	public void update(float tpf) {
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
 			if (DisplayToggle) {

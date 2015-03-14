@@ -29,34 +29,32 @@ import java.util.BitSet;
  * @author Impaler
  */
 public class Cell {
-	
-    // Larger DataValues specific to each Cube
+
+	// Larger DataValues specific to each Cube
 	short[] CubeMaterialTypes;
 	short[] CubeShapeTypes;
 
-    // Bit values for each Cube
-    private BitSet Hidden;
-    private BitSet SubTerranean;
-    private BitSet SkyView;
-    private BitSet SunLit;
-    private BitSet Zone;
+	// Bit values for each Cube
+	private BitSet Hidden;
+	private BitSet SubTerranean;
+	private BitSet SkyView;
+	private BitSet SunLit;
+	private BitSet Zone;
 
-    // Keeps all Faces between and inside Cubes
-    private HashMap<FaceCoordinate, Face> Faces;
+	// Keeps all Faces between and inside Cubes
+	private HashMap<FaceCoordinate, Face> Faces;
 	//private HashMap<short, Face> Faces;
 
-    // Game Objects located in the Cell for easy reference
-    //List<Building> buildings;
-    //List<Tree> trees;
-    //List<Actor> LocalActors;
+	// Game Objects located in the Cell for easy reference
+	//List<Actor> LocalActors;
 
-    // The global position of this cell relative to other cells
-    CellCoordinate thisCellCoordinates;
+	// The global position of this cell relative to other cells
+	CellCoordinate thisCellCoordinates;
 	
 	boolean DirtyTerrainRendering;
 	boolean DirtyPathRendering;
-	
-	
+
+
 	public Cell() {
 		CubeShape EmptyCube = new CubeShape(CubeShape.BELOW_CUBE_HEIGHT);
 
@@ -94,12 +92,12 @@ public class Cell {
 	public void setCubeShape(byte Coordinates, CubeShape NewShape) {
 		if (NewShape.getData() != CubeShapeTypes[Coordinates & 0xFF]) {
 			CubeShapeTypes[Coordinates& 0xFF] = NewShape.getData();
-			setNeedsReRendering();
 
 			Face TargetFace = getFace(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE));
 			if (TargetFace != null) {
 				setFaceShape(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE), new FaceShape(NewShape, null, Direction.DIRECTION_NONE));
 			}
+			setNeedsReRendering();
 		}
 	}
 
@@ -165,7 +163,7 @@ public class Cell {
 		return Faces.get(TargetCoordinates);
 	}
 	
-    boolean hasFace(FaceCoordinate TargetCoordinates) { 
+	boolean hasFace(FaceCoordinate TargetCoordinates) { 
 		return Faces.containsKey(TargetCoordinates); 
 	}
 	
@@ -182,8 +180,7 @@ public class Cell {
 	boolean setFaceMaterialType(FaceCoordinate TargetCoordinates, short MaterialTypeID) {
 		Face TargetFace = getFace(TargetCoordinates);
 
-		if (TargetFace != null)
-		{
+		if (TargetFace != null) {
 			TargetFace.setFaceMaterialType(MaterialTypeID);
 			setNeedsReRendering();
 			return true;
@@ -194,8 +191,7 @@ public class Cell {
 	boolean setFaceSurfaceType(FaceCoordinate TargetCoordinates, short SurfaceTypeID) {
 		Face TargetFace = getFace(TargetCoordinates);
 
-		if (TargetFace != null)
-		{
+		if (TargetFace != null) {
 			TargetFace.setFaceSurfaceType(SurfaceTypeID);
 			setNeedsReRendering();
 			return true;
@@ -211,8 +207,7 @@ public class Cell {
 	boolean setFaceShape(FaceCoordinate TargetCoordinates, FaceShape NewShape) {
 		Face TargetFace = getFace(TargetCoordinates);
 
-		if (TargetFace != null)
-		{
+		if (TargetFace != null) {
 			TargetFace.setFaceShapeType(NewShape);
 			setNeedsReRendering();
 			return true;
@@ -236,8 +231,7 @@ public class Cell {
 			Faces.put(TargetCoordinates, NewFace);
 			setNeedsReRendering();
 			return NewFace;
-		}
-		else {
+		} else {
 			return TargetFace;
 		}
 	}
@@ -280,24 +274,28 @@ public class Cell {
 		return new CubeShape(CubeShapeTypes[Coordinates & 0xFF]); 
 	}
 
-    public void setCubeMaterial(byte Coordinates, short MaterialID) {
+	public void setCubeMaterial(byte Coordinates, short MaterialID) {
 		CubeMaterialTypes[Coordinates & 0xFF] = MaterialID; 
 		DirtyTerrainRendering = true;
 	}
 
-    public short getCubeMaterial(byte Coordinates) {
+	public short getCubeMaterial(byte Coordinates) {
 		return CubeMaterialTypes[Coordinates & 0xFF]; 
 	}
 
-    public boolean isCubeHidden(byte Coordinates) {
+	public boolean isCubeHidden(byte Coordinates) {
 		return Hidden.get(Coordinates); 
 	}
 
-    public void setCubeHidden(byte Coordinates, boolean NewValue) {
+	public void setCubeHidden(byte Coordinates, boolean NewValue) {
 		Hidden.set(Coordinates & 0xFF, NewValue); 
 		DirtyTerrainRendering = true;
 	}
 
+	@Override
+	public String toString() {
+		return getClass().getName() + thisCellCoordinates.toString();
+	}
 	/*
     inline bool isCubeSubTerranean(CubeCoordinates Coordinates)                   { return SubTerranean.test(Coordinates); }
     inline void setCubeSubTerranean(CubeCoordinates Coordinates, bool NewValue)   { SubTerranean.set(Coordinates, NewValue); }

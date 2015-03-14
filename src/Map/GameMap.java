@@ -521,7 +521,7 @@ public class GameMap {
 						TargetFace = addFace(TargetCoordinates, DirectionType);
 					}
 
-					TargetFace.setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
+					TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
 					TargetFace.setFaceShapeType(new FaceShape(SourceShape, AdjacentShape, DirectionType));
 					TargetFace.setFaceSurfaceType(RoughWallID);
 				} else {

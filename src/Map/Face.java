@@ -29,9 +29,9 @@ public class Face {
 	FaceShape FaceType;
 	byte LocationCoordinates;
 
-	short SurfaceTypeID;
-	short MaterialTypeID;	
-	
+	private short SurfaceTypeID;
+	private short MaterialTypeID;
+
 	public Face() {
 		SurfaceTypeID = DataManager.INVALID_INDEX;
 		MaterialTypeID = DataManager.INVALID_INDEX;
@@ -51,48 +51,19 @@ public class Face {
 		LocationCoordinates = TargetCoordinates;
 	}
 
-	/*
-	public void RefreshEntity(Ogre::StaticGeometry* CellGeometry, CellCoordinates CellPosition) {
-		if (SurfaceTypeID != INVALID_INDEX && MaterialTypeID != INVALID_INDEX)
-		{
-			short X = (CellPosition.X * MapCoordinates.CELLEDGESIZE) + (LocationCoordinates >> MapCoordinates.CELLBITSHIFT);
-			short Y = (CellPosition.Y * MapCoordinates.CELLEDGESIZE) + (LocationCoordinates & MapCoordinates.CELLBITFLAG);
-			short Z = CellPosition.Z;
-
-			if (FaceType.FaceDirection.ValueonAxis(AXIS_X) == 1) {
-				X -= 1;
-			}
-
-			if (FaceType.FaceDirection.ValueonAxis(AXIS_Y) == 1) {
-				Y -= 1;
-			}
-
-			if (FaceType.FaceDirection.ValueonAxis(AXIS_Z) == 1) {
-				Z -= 1;
-			}
-
-			Ogre::MeshPtr FaceMesh = SHAPE->getFaceMesh(FaceType);
-			if (!FaceMesh.isNull())
-			{
-				Ogre::Entity* NewEntity = RENDERER->getSceneManager()->createEntity(FaceMesh);
-				NewEntity->setMaterial(TEXTURE->getOgreMaterial(MaterialTypeID, SurfaceTypeID));
-				CellGeometry->addEntity(NewEntity, Ogre::Vector3(X, Y, Z));
-				RENDERER->getSceneManager()->destroyEntity(NewEntity);
-			}
-		}
-	}*/
 
 	public void setFaceMaterialType(short NewMaterialTypeID) {
-		if (NewMaterialTypeID != MaterialTypeID)
-		{
+		if (NewMaterialTypeID != MaterialTypeID) {
 			MaterialTypeID = NewMaterialTypeID;
 			//Set Cell needsRedraw
+			if (MaterialTypeID == -1) {
+				int x = 0;
+			}
 		}
 	}
 
 	public void setFaceSurfaceType(short NewSurfaceTypeID) {
-		if (NewSurfaceTypeID != SurfaceTypeID)
-		{
+		if (NewSurfaceTypeID != SurfaceTypeID) {
 			SurfaceTypeID = NewSurfaceTypeID;
 			//Set Cell needsRedraw
 		}
@@ -110,11 +81,11 @@ public class Face {
 		return MaterialTypeID; 
 	}
 
-    public short getFaceSurfaceType() {
+	public short getFaceSurfaceType() {
 		return SurfaceTypeID; 
 	}
 
-    public FaceShape getFaceShapeType() {
+	public FaceShape getFaceShapeType() {
 		return FaceType; 
 	}
 	/*
