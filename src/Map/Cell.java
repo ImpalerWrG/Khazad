@@ -39,14 +39,9 @@ public class Cell {
 	private BitSet SubTerranean;
 	private BitSet SkyView;
 	private BitSet SunLit;
-	private BitSet Zone;
 
 	// Keeps all Faces between and inside Cubes
 	private HashMap<FaceCoordinate, Face> Faces;
-	//private HashMap<short, Face> Faces;
-
-	// Game Objects located in the Cell for easy reference
-	//List<Actor> LocalActors;
 
 	// The global position of this cell relative to other cells
 	CellCoordinate thisCellCoordinates;
@@ -65,9 +60,9 @@ public class Cell {
 		SubTerranean = new BitSet(MapCoordinate.CUBESPERCELL);
 		SkyView = new BitSet(MapCoordinate.CUBESPERCELL);
 		SunLit = new BitSet(MapCoordinate.CUBESPERCELL);
-		
+
 		Faces = new HashMap<FaceCoordinate, Face>();
-	
+
 		for (int i=0; i < CubeShapeTypes.length; i++ ) {
 			CubeShapeTypes[i] = EmptyCube.getData();
 		}
@@ -105,8 +100,7 @@ public class Cell {
 		GameMap ParentMap = GameMap.getMap();
 
 		byte TargetCube = 0;
-		do
-		{
+		do {
 			CubeShape Shape = getCubeShape(TargetCube);
 			short CubeMaterial = getCubeMaterial(TargetCube);
 
@@ -240,15 +234,6 @@ public class Cell {
 		return Faces;
 	}
 
-	/*
-	public void addActor(Actor NewActor) {
-		//Render.AddActor(NewActor);
-	}
-
-	public void removeActor(Actor DepartingActor) {
-		//Render.RemoveActor(DepartingActor);
-	}*/
-
 	public void setNeedsReRendering() {
 		setDirtyTerrainRendering(true);
 		setDirtyPathingRendering(true);
@@ -270,41 +255,27 @@ public class Cell {
 		return DirtyPathRendering;
 	}
 
-	public CubeShape getCubeShape(byte Coordinates) {
-		return new CubeShape(CubeShapeTypes[Coordinates & 0xFF]); 
-	}
+	public CubeShape getCubeShape(byte Coordinates) {return new CubeShape(CubeShapeTypes[Coordinates & 0xFF]);}
 
-	public void setCubeMaterial(byte Coordinates, short MaterialID) {
-		CubeMaterialTypes[Coordinates & 0xFF] = MaterialID; 
-		DirtyTerrainRendering = true;
-	}
+	public short getCubeMaterial(byte Coordinates)							{return CubeMaterialTypes[Coordinates & 0xFF]; }
+	public void setCubeMaterial(byte Coordinates, short MaterialID)			{CubeMaterialTypes[Coordinates & 0xFF] = MaterialID; DirtyTerrainRendering = true;}
 
-	public short getCubeMaterial(byte Coordinates) {
-		return CubeMaterialTypes[Coordinates & 0xFF]; 
-	}
+	public boolean isCubeHidden(byte Coordinates)							{return Hidden.get(Coordinates);}
+	public void setCubeHidden(byte Coordinates, boolean NewValue)			{Hidden.set(Coordinates & 0xFF, NewValue); DirtyTerrainRendering = true;}
 
-	public boolean isCubeHidden(byte Coordinates) {
-		return Hidden.get(Coordinates); 
-	}
+	public boolean isCubeSubTerranean(byte Coordinates)						{ return SubTerranean.get(Coordinates); }
+	public void setCubeSubTerranean(byte Coordinates, boolean NewValue)		{ SubTerranean.set(Coordinates & 0xFF, NewValue); DirtyTerrainRendering = true;}
 
-	public void setCubeHidden(byte Coordinates, boolean NewValue) {
-		Hidden.set(Coordinates & 0xFF, NewValue); 
-		DirtyTerrainRendering = true;
-	}
+	public boolean isCubeSkyView(byte Coordinates)							{ return SkyView.get(Coordinates); }
+	public void setCubeSkyView(byte Coordinates, boolean NewValue)			{ SkyView.set(Coordinates & 0xFF, NewValue); DirtyTerrainRendering = true;}
+
+	public boolean isCubeSunLit(byte Coordinates)							{ return SunLit.get(Coordinates); }
+	public void setCubeSunLit(byte Coordinates, boolean NewValue)			{ SunLit.set(Coordinates & 0xFF, NewValue); DirtyTerrainRendering = true;}
 
 	@Override
 	public String toString() {
 		return getClass().getName() + thisCellCoordinates.toString();
 	}
-	/*
-    inline bool isCubeSubTerranean(CubeCoordinates Coordinates)                   { return SubTerranean.test(Coordinates); }
-    inline void setCubeSubTerranean(CubeCoordinates Coordinates, bool NewValue)   { SubTerranean.set(Coordinates, NewValue); }
-
-    inline bool isCubeSkyView(CubeCoordinates Coordinates)                        { return SkyView.test(Coordinates); }
-    inline void setCubeSkyView(CubeCoordinates Coordinates, bool NewValue)        { SkyView.set(Coordinates, NewValue); }
-
-    inline bool isCubeSunLit(CubeCoordinates Coordinates)                         { return SunLit.test(Coordinates); }
-    inline void setCubeSunLit(CubeCoordinates Coordinates, bool NewValue)         { SunLit.set(Coordinates, NewValue); }
 
     /*
 	void Cell::Save(boost::filesystem::basic_ofstream<char>& Stream) const

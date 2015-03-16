@@ -90,13 +90,17 @@ public class ExcavateJob extends Job {
 						if (DesignationShapes == null) {
 							DesignationShapes = new CubeShape[MapCoordinate.CUBESPERCELL];
 							Designations.put(CellCoords, DesignationShapes);
-						}					
+						}
 						DesignationShapes[CubeIndex] = NewShape;
 						DesignationCount ++;
-					
+
 						if (AccessibleLocation == null) {
 							AccessibleLocation = new BitSet(MapCoordinate.CUBESPERCELL);
 							AccessibleExcavations.put(CellCoords, AccessibleLocation);
+						}
+						if (AssignedLocations == null) {
+							AssignedLocations = new BitSet(MapCoordinate.CUBESPERCELL);
+							AssignedExcavations.put(CellCoords, AssignedLocations);
 						}
 
 						CubeShape CurrentShape = GameMap.getMap().getCubeShape(TargetCoords);
@@ -106,17 +110,17 @@ public class ExcavateJob extends Job {
 							if (DirectionFlags.cardinality() != 0) {
 								AccessibleMap.put(TargetCoords.clone(), TargetCoords.clone());
 								AccessibleExcavationCount++;
-								break;
+								//break;
 							}
 						}
-						
+
 						// Test for Accesability of this Coordinate
 						BitSet DirectionFlags;
 						for (Direction dir: Direction.AXIAL_DIRECTIONS) {
 							MapCoordinate AdjacentcCoords = TargetCoords.clone();
 							AdjacentcCoords.TranslateMapCoordinates(dir);
 							CubeShape AdjacentShape = GameMap.getMap().getCubeShape(AdjacentcCoords);
-							
+
 							if (AdjacentShape.isEmpty() || (dir == Direction.DIRECTION_DOWN && !AdjacentShape.isSolid())) {
 								DirectionFlags = paths.getDirectionFlags(AdjacentcCoords, new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1));
 								if (DirectionFlags.cardinality() != 0) {
@@ -126,11 +130,6 @@ public class ExcavateJob extends Job {
 									break;
 								}
 							}
-						}
-
-						if (AssignedLocations == null) {
-							AssignedLocations = new BitSet(MapCoordinate.CUBESPERCELL);
-							AssignedExcavations.put(CellCoords, AssignedLocations);
 						}
 
 						AccessibleLocation.set(CubeIndex, false);
@@ -231,6 +230,8 @@ public class ExcavateJob extends Job {
 		float Evaluation = 0;
 		if (Workers.contains(CandidateCitizen))
 			Evaluation += 1;
+		
+		// distance test
 		return Evaluation + 2;
 	}
 

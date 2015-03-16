@@ -39,8 +39,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Impaler
  */
 public class TileBuilder {
-	
-	//ConcurrentHashMap<FaceShape, MeshData> MesheDataMap;	// map tileshape to mesh for retrival
+
+	ConcurrentHashMap<FaceShape, MeshData> MesheDataMap;	// map tileshape to mesh for retrival
 
 	private class MeshData {
 		ArrayList<Vector3f> Vertices; 
@@ -64,42 +64,40 @@ public class TileBuilder {
 	}
 
 	public TileBuilder() {
-		//MesheDataMap = new ConcurrentHashMap<FaceShape, MeshData>();
+		MesheDataMap = new ConcurrentHashMap<FaceShape, MeshData>();
 	}
 
 	public Mesh getMesh(FaceShape Shape, TextureAtlasCoordinates AtlasCoords) {
-		//MeshData TargetMeshData = MesheDataMap.get(Shape);
-		MeshData TargetMeshData = null;
+		MeshData TargetMeshData = MesheDataMap.get(Shape);
 
 		if (TargetMeshData == null) {
 			if (Shape.FaceDirection == Direction.DIRECTION_NONE) {
 				TargetMeshData = CreateSlopeFace(Shape);
 				if (TargetMeshData != null) 
-					//MesheDataMap.put(Shape, TargetMeshData);
+					MesheDataMap.put(Shape, TargetMeshData);
 				return Finalize(TargetMeshData, AtlasCoords);
 			} else {
 				if (Shape.FaceDirection == Direction.DIRECTION_DOWN || Shape.FaceDirection == Direction.DIRECTION_UP) {
 					if (Shape.SourceCubeComponent.hasFloor() || Shape.SourceCubeComponent.hasCeiling()) {
 						TargetMeshData = CreateFlatFace(Shape);
 						if (TargetMeshData != null)
-							//MesheDataMap.put(Shape, TargetMeshData);
+							MesheDataMap.put(Shape, TargetMeshData);
 						return Finalize(TargetMeshData, AtlasCoords);
 					}
 					return Finalize(TargetMeshData, AtlasCoords);
 				} else {
 					TargetMeshData = CreateSideFace(Shape);
 					if (TargetMeshData != null)
-						//MesheDataMap.put(Shape, TargetMeshData);
+						MesheDataMap.put(Shape, TargetMeshData);
 					return Finalize(TargetMeshData, AtlasCoords);
 				}
 			}
-			return Finalize(TargetMeshData, AtlasCoords);
 		} else {
 			return Finalize(TargetMeshData, AtlasCoords);
 		}
 	}
 
-	public Mesh Finalize(MeshData Data, TextureAtlasCoordinates AtlasCoords) {
+	private Mesh Finalize(MeshData Data, TextureAtlasCoordinates AtlasCoords) {
 		if (Data == null || AtlasCoords == null)
 			return null;
 
@@ -148,7 +146,7 @@ public class TileBuilder {
 		return ManualObject;
 	}
 
-	public MeshData CreateFlatFace(FaceShape Shape) {
+	private MeshData CreateFlatFace(FaceShape Shape) {
 
 		boolean Triangle1 = false;
 		boolean Triangle2 = false;
@@ -228,7 +226,7 @@ public class TileBuilder {
 		}
 	}
  
-	public MeshData CreateSideFace(FaceShape Shape) {
+	private MeshData CreateSideFace(FaceShape Shape) {
 		
 		byte NorthEastCorner = Shape.SourceCubeComponent.NorthEastCorner();
 		byte NorthWestCorner = Shape.SourceCubeComponent.NorthWestCorner();
@@ -358,7 +356,7 @@ public class TileBuilder {
 		}
 	}
 
-	public MeshData CreateSlopeFace(FaceShape Shape) {
+	private MeshData CreateSlopeFace(FaceShape Shape) {
 		
 		boolean Triangle1 = false;
 		boolean Triangle2 = false;

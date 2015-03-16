@@ -93,10 +93,14 @@ public final class MapCoordinate implements Cloneable{
 		}
 	}
 
-	public byte CubeIndex() {
+	public byte CubeByteIndex() {
 		byte tempx = (byte) ((X & CELLBITFLAG) << CELLBITSHIFT);
 		byte tempy = ((byte) (Y & CELLBITFLAG));
 		return (byte) (tempx + tempy);
+	}
+
+	public int CubeIntIndex() {
+		return  CubeByteIndex() & 0xFF;
 	}
 
 	public int CubeInt() {

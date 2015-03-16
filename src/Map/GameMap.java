@@ -101,15 +101,15 @@ public class GameMap {
 		return false;  // A Cell already exists at that spot
 	}
 
-	public boolean InitializeCell(CellCoordinate Coords) {
+	public Cell InitializeCell(CellCoordinate Coords) {
 		Cell TargetCell = getCell(Coords);
 		if (TargetCell == null) {
 			TargetCell = new Cell();
 			TargetCell.setCellPosition(Coords);
 			insertCell(TargetCell);
-			return true;
+			return TargetCell;
 		}
-		return false;  // A Cell already exists at that spot		
+		return TargetCell;  // A Cell already exists at that spot		
 	}
 
 	public int getHighestCell() {
@@ -153,21 +153,21 @@ public class GameMap {
 		Pair< MapCoordinate, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
-		return TargetCell != null ? TargetCell.getFace(new FaceCoordinate(ConvertedValues.getValue0().CubeIndex(), ConvertedValues.getValue1())) : null;
+		return TargetCell != null ? TargetCell.getFace(new FaceCoordinate(ConvertedValues.getValue0().CubeByteIndex(), ConvertedValues.getValue1())) : null;
 	}
 
 	public boolean hasFace(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
 		Pair< MapCoordinate, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
-		return TargetCell != null ? TargetCell.hasFace(new FaceCoordinate(ConvertedValues.getValue0().CubeIndex(), ConvertedValues.getValue1())) : false;
+		return TargetCell != null ? TargetCell.hasFace(new FaceCoordinate(ConvertedValues.getValue0().CubeByteIndex(), ConvertedValues.getValue1())) : false;
 	}
 
 	public boolean removeFace(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
 		Pair< MapCoordinate, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
-		return TargetCell != null ? TargetCell.removeFace(new FaceCoordinate(ConvertedValues.getValue0().CubeIndex(), ConvertedValues.getValue1())) : false;
+		return TargetCell != null ? TargetCell.removeFace(new FaceCoordinate(ConvertedValues.getValue0().CubeByteIndex(), ConvertedValues.getValue1())) : false;
 	}
 
 	public Face addFace(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
@@ -175,16 +175,16 @@ public class GameMap {
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
 		if (TargetCell == null)
-			InitializeCell(new CellCoordinate(ConvertedValues.getValue0()));
+			TargetCell = InitializeCell(new CellCoordinate(ConvertedValues.getValue0()));
 
-		return TargetCell.addFace(new FaceCoordinate(ConvertedValues.getValue0().CubeIndex(), ConvertedValues.getValue1()));
+		return TargetCell.addFace(new FaceCoordinate(ConvertedValues.getValue0().CubeByteIndex(), ConvertedValues.getValue1()));
 	}
 
 	public void setCubeShape(MapCoordinate Coordinate, CubeShape NewShape) {
 		Cell TargetCell = getCubeOwner(Coordinate);
 
 		if (TargetCell != null) {
-			TargetCell.setCubeShape(Coordinate.CubeIndex(), NewShape);
+			TargetCell.setCubeShape(Coordinate.CubeByteIndex(), NewShape);
 			MapCoordinate[] Coordinates = {Coordinate};
 			PathFinding.getSinglton().EditMapAbstractions(Coordinates);
 		}
@@ -194,7 +194,7 @@ public class GameMap {
 		Cell TargetCell = getCubeOwner(Coordinates);
 
 		if (TargetCell != null) {
-			return TargetCell.getCubeShape(Coordinates.CubeIndex());
+			return TargetCell.getCubeShape(Coordinates.CubeByteIndex());
 		} else {
 			return new CubeShape(CubeShape.BELOW_CUBE_HEIGHT);
 		}
@@ -203,31 +203,27 @@ public class GameMap {
 	public void setCubeMaterial(MapCoordinate Coordinates, short MaterialID) {
 		Cell TargetCell = getCubeOwner(Coordinates);
 
-		if (TargetCell != null)
-		{
-			TargetCell.setCubeMaterial(Coordinates.CubeIndex(), MaterialID);
+		if (TargetCell != null) {
+			TargetCell.setCubeMaterial(Coordinates.CubeByteIndex(), MaterialID);
 		}
 	}
 
 	public short getCubeMaterial(MapCoordinate Coordinates) {
 		Cell TargetCell = getCubeOwner(Coordinates);
-
-		return TargetCell != null ? TargetCell.getCubeMaterial(Coordinates.CubeIndex()) : DataManager.INVALID_INDEX;
+		return TargetCell != null ? TargetCell.getCubeMaterial(Coordinates.CubeByteIndex()) : DataManager.INVALID_INDEX;
 	}
 
 	public void setFaceMaterial(MapCoordinate TargetMapCoordinates, Direction DirectionType, short MaterialID) {
 		Pair< MapCoordinate, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
-		if (TargetCell != null)
-		{
-			TargetCell.setFaceMaterialType(new FaceCoordinate(ConvertedValues.getValue0().CubeIndex(), ConvertedValues.getValue1()), MaterialID);
+		if (TargetCell != null) {
+			TargetCell.setFaceMaterialType(new FaceCoordinate(ConvertedValues.getValue0().CubeByteIndex(), ConvertedValues.getValue1()), MaterialID);
 		}
 	}
 
 	public short getFaceMaterial(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
 		Face TargetFace = getFace(TargetMapCoordinates, DirectionType);
-
 		return TargetFace != null ? TargetFace.getFaceMaterialType() : DataManager.INVALID_INDEX;
 	}
 
@@ -235,33 +231,26 @@ public class GameMap {
 		Pair< MapCoordinate, Direction > ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
-		if (TargetCell != null)
-		{
-			TargetCell.setFaceSurfaceType(new FaceCoordinate(ConvertedValues.getValue0().CubeIndex(), ConvertedValues.getValue1()), SurfaceID);
+		if (TargetCell != null) {
+			TargetCell.setFaceSurfaceType(new FaceCoordinate(ConvertedValues.getValue0().CubeByteIndex(), ConvertedValues.getValue1()), SurfaceID);
 		}
 	}
 
 	public short getFaceSurfaceType(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
 		Face TargetFace = getFace(TargetMapCoordinates, DirectionType);
-
 		return TargetFace != null ? TargetFace.getFaceSurfaceType() : DataManager.INVALID_INDEX;
 	}
 
 	public boolean isCubeHidden(MapCoordinate Coordinates) {
 		Cell TargetCell = getCubeOwner(Coordinates);
-
-		if(TargetCell != null)
-		{
-			return TargetCell.isCubeHidden(Coordinates.CubeIndex());
-		}
-		return false;
+		return TargetCell != null ? TargetCell.isCubeHidden(Coordinates.CubeByteIndex()) : true;
 	}
 
 	public void setCubeHidden(MapCoordinate Coordinates, boolean NewValue) {
 		Cell TargetCell = getCubeOwner(Coordinates);
 
 		if(TargetCell != null)
-			TargetCell.setCubeHidden(Coordinates.CubeIndex(), NewValue);	
+			TargetCell.setCubeHidden(Coordinates.CubeByteIndex(), NewValue);	
 	}
 	/*
 	public boolean isCubeSubTerranean(MapCoordinates Coordinates) {
@@ -405,31 +394,33 @@ public class GameMap {
 				aboveCube.TranslateMapCoordinates(Direction.DIRECTION_UP);
 				if (isCubeInited(aboveCube)) {
 					CubeShape aboveShape = getCubeShape(aboveCube).clone();
+					CubeShape NewAboveShape = aboveShape.clone();
 
 					if (aboveShape.split()) {
 						if (NewShape.NorthEastCorner() < CubeShape.CUBE_TOP_HEIGHT) {
 							if (aboveShape.NorthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.NorthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
-								aboveShape.setNorthEastCorner(CubeShape.BELOW_CUBE_HEIGHT);
+								NewAboveShape.setNorthEastCorner(CubeShape.BELOW_CUBE_HEIGHT);
 						}
 
 						if (NewShape.SouthWestCorner() < CubeShape.CUBE_TOP_HEIGHT) {
 							if (aboveShape.SouthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.NorthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
-								aboveShape.setSouthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
+								NewAboveShape.setSouthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
 						}
 					} else {
 						if (NewShape.NorthWestCorner() < CubeShape.CUBE_TOP_HEIGHT) {
 							if (aboveShape.NorthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.NorthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
-								aboveShape.setNorthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
+								NewAboveShape.setNorthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
 						}
 
 						if (NewShape.SouthEastCorner() < CubeShape.CUBE_TOP_HEIGHT) {
 						if (aboveShape.NorthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
-							aboveShape.setSouthEastCorner(CubeShape.BELOW_CUBE_HEIGHT);
+							NewAboveShape.setSouthEastCorner(CubeShape.BELOW_CUBE_HEIGHT);
 						}
 					}
 
-					setCubeShape(aboveCube, aboveShape);
-					if (aboveShape.isEmpty()) {
+					if (!aboveShape.equals(NewAboveShape))
+						setCubeShape(aboveCube, aboveShape);
+					if (NewAboveShape.isEmpty()) {
 						setCubeMaterial(aboveCube, DataManager.INVALID_INDEX);
 					}
 
@@ -534,35 +525,6 @@ public class GameMap {
 		}
 	}
 
-	/*
-	public MapCoordinates getRayIntersection(Ogre::Ray MouseRay, short Top, short Bottom) {
-		Ogre::Plane TestPlane;
-		TestPlane.normal = Ogre::Vector3::UNIT_Z;
-		TestPlane.d = -HighestCell;
-
-		for (int i = Top; i >= Bottom; i--) // Drill down testing each Z level
-		{
-			TestPlane.d = (-i + HALFCUBE);
-			std::pair<boolean, Ogre::Real> result = MouseRay.intersects(TestPlane);
-
-			if (result.first) // Was an intersection found
-			{
-				Ogre::Vector3 Intersection = MouseRay.getPoint(result.second);
-				MapCoordinates TestCoords = MapCoordinates(Intersection.x, Intersection.y, Intersection.z);
-				if (isCubeInited(TestCoords))
-				{
-					CubeShape Shape = getCubeShape(TestCoords);
-					if (!Shape.isSky())
-					{
-						LastRayTestResult = TestCoords;
-						return TestCoords;
-					}
-				}
-			}
-		}
-		return LastRayTestResult;
-	}*/
-
 	public void ReleaseMap() {
 		MapLoaded = false;
 
@@ -627,5 +589,3 @@ public class GameMap {
 		}
 	}*/
 }
-
-

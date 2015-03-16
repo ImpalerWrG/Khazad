@@ -15,16 +15,18 @@
 		<Name Label="MATERIAL_SOIL"/>
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
 		<PrimaryColor label="COLOR_DARK_BROWN"/>
+		<BorderColor label="COLOR_DARK_BROWN"/>
 		<ColorMode mode="overlay"/>
 		<SurfaceTextures>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_GROUND"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_DIRT_1"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT_1"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_SAND_TAN"/>
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
 		<PrimaryColor label="COLOR_BROWN"/>
-<!-- 		<BorderColor label="COLOR_TAN"/> -->
+		<BorderColor label="COLOR_TAN"/>
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SAND"/>
@@ -38,7 +40,7 @@
 		<Name Label="MATERIAL_SAND_YELLOW"/>
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
 		<PrimaryColor label="COLOR_KHAKI"/>
-<!-- 		<BorderColor label="COLOR_YELLOW"/> -->
+		<BorderColor label="COLOR_YELLOW"/>
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SAND"/>
@@ -52,7 +54,7 @@
 		<Name Label="MATERIAL_SAND_WHITE"/>
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
 		<PrimaryColor label="COLOR_SILVER"/>
-<!-- 		<BorderColor label="COLOR_WHITE"/> -->
+		<BorderColor label="COLOR_WHITE"/>
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SAND"/>
@@ -66,7 +68,7 @@
 		<Name Label="MATERIAL_SAND_RED"/>
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
 		<PrimaryColor label="COLOR_BLOOD_RED"/>
-<!-- 		<BorderColor label="COLOR_RED"/> -->
+		<BorderColor label="COLOR_RED"/>
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SAND"/>
@@ -80,7 +82,7 @@
 		<Name Label="MATERIAL_SAND_BLACK"/>
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
-<!-- 		<BorderColor label="COLOR_BLACK"/> -->
+		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="overlay" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SAND"/>

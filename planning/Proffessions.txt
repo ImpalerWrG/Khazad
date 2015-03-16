@@ -1,34 +1,34 @@
 Professions work on Branching system similar to EvilGenius minions or A Game of Dwarves.  Three tiers of professions exist, Basic, Intermediate, Advanced.  Choices are 7 for Basic, 6 for Intermediate and 5 for Advanced
 
 
-<Worshipper (Concvlave) [WIL][CHA] - Religion, high status>
+<Worshipper (Concvlave) [WIL][CHA] - Religion, high status (Cloak/Cloth, Quil&Ink>
 
-	<Acolyte of Thor (High Priest of) (male - Martial) >
+	<Acolyte of Thor (High Priest of) (male - Martial) (Holy Symbol, Litergy)>
 		Zealot - Skirmisher Paladin
 		Dervish - Fighter Monk
 		Apostle - Cleric
 	</>		
-	<Acolyte of Odin (High Priest of)(male - Wisdom) >
+	<Acolyte of Odin (High Priest of)(male - Wisdom) (Holy Symbol, Litergy)>
 		Zealot - Marksman Paladin
 		Mystic - Builder Monk
 		Initiate - Cleric
 	</>		
-	<Acolyte of Freya (High Priest of)(female - Fertility, Judgement) >
+	<Acolyte of Freya (High Priest of)(female - Fertility, Judgement) (Holy Symbol, Litergy)>
 		Shield Maiden - Defender Paladin
 		Nun - Labourer Monk
 		Savant - Cleric
 	</>
-	<Acolyte of Helga (High Priest of)(female - Wisdom, Martial, Prophecy ) >
+	<Acolyte of Helga (High Priest of)(female - Wisdom, Martial, Prophecy ) (Holy Symbol, Litergy)>
 		Valkyrie - Warrior Paladin
 		Theurge - Thinker Monk
 		Oracle - Cleric
 	</>		
-	<Acolyte of Loki (High Priest of)(both - Trickster) >
+	<Acolyte of Loki (High Priest of)(both - Trickster) (Holy Symbol, Litergy)>
 		Crusader - Cavalier Paladin
 		Ascetic - Gatherer Monk
 		Devotee - Cleric
 	</>		
-	<Acolyte of ??? (High Priest of) (male - Forging, Age) >
+	<Acolyte of ??? (High Priest of) (male - Forging, Age) (Holy Symbol, Litergy)>
 		Sentinel - Guard Paladin
 		Virtuoso - Crafter Monk
 		Emissary - Cleric
@@ -48,6 +48,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 			Diviner
 			Judicator
 			Patriarch
+			Arbiter
 			
 		Inquisitor - Seek out heretics
 			Justiciar
@@ -56,7 +57,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 			
 			Minor allied Diety branch?
 </>
-<Thinker (Chancellor/Seneschal) [LOG][MEM] - Intelectual pursuits, government, science ect>
+<Thinker (Chancellor/Seneschal) [LOG][MEM] - Intelectual pursuits, government, science ect (Quil&Ink, Book)>
 
 	<Healer (Chief Physician) [INT][CHA] >
 		Chiurgeon
@@ -101,29 +102,29 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Rune Scribe [][] - enhance items with rune magic
 	</>	
 </>
-<Fighter (Grand Marshal) [VIT][REF] - Combat in all forms>
+<Fighter (Grand Marshal) [VIT][REF] - Combat in all forms (Helmet, ???)>
 
 	<Skirmisher [SPD][JDG] - light fast>
 		Berserker [WIL][CHA] - maximum aggression
 		Javaliner [STR][] - bombard with thrown weapons
-		 [END][VIT] - 
+		??? [END][VIT] - 
 		Grenadier [DEX][MEM] - throws explosives
 		Ranger [FLX][] - stealthy scouting
 	</>	
 	<Warrior [STR][LOG] - Balanced >
 		???
 	</>		
-	<Calvary-Rider-Cavalier [FLX][MEM] - Mounted combat>
+	<Calvary-Rider-Cavalier [FLX][MEM] - Mounted combat (Saddle, ???)>
 		Lancer - lances
 		Outrider - scouting skirmishing
 		Messenger - armoured fast travel
 		Hussar - Heavy armoured
 	</>		
-	<Marksman [DEX][PER] - Ranged attack>
+	<Marksman-Missilier [DEX][PER] - Ranged attack>
 		Archer - Bow
 		SharpShooter
 		Musketeer - Musket
-		Quarreler - Crossbow
+		Quarreller - Crossbow
 	</>	
 	<Soldier-Defender [END][WIL] - Defensive formation fighting>
 		Pike
@@ -132,7 +133,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Legionnaire
 		
 	</>	
-	<Guard (Captain of the Guard) [INT][CHA] - Police>
+	<Guard (Captain of the Guard) [INT][CHA] - Police (Cudgle, KeyChain)>
 		Royal Guard [WIL][SPD] - Guards royalty
 		Constable [FLX][END] - Street cop,
 		Detective [LOG][JDG] - solves crimes
@@ -140,7 +141,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		GateKeeper [PER][MEM] - open and close city gates
 	</>	
 </>
-<Crafter (GuildMaster) [JDG][DEX] - Creates items of value at end of resource chains, most happiness sources>
+<Crafter (GuildMaster) [JDG][DEX] - Creates items of value at end of resource chains, most happiness sources (ToolBelt?, )>
 
 	<Jeweller>
 		Glass-blower
@@ -184,7 +185,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Acrobat
 	</>	
 </>
-<Builder (Master Architect) [STR][FLX] - Any structure/space/building space creation>
+<Builder (Master Architect) [STR][FLX] - Any structure/space/building space creation (Helmet, ToolBelt?)>
 
 	<Mason>
 		Bricklayer
@@ -215,7 +216,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 	???
 	???
 </>
-<Labourer (Foreman/Steward) [INT][END] - Most internal domestic jobs and first order resource processing>
+<Labourer (Foreman/Steward) [INT][END] - Most internal domestic jobs and first order resource processing (Aprron, ???)>
 
 	<Cook (Chef) [][] - Food preperation>
 		Butcher
@@ -248,7 +249,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 	</>		
 	Hauler?  Porter?
 </>
-<Gatherer (Reeve) [PER][SPD] - Collection of raw materials in unsafe areas, a dangerous and low status profession>
+<Gatherer (Reeve) [PER][SPD] - Collection of raw materials in unsafe areas, a dangerous and low status profession (Cloak, Basket?)>
 	
 	<Farmer (Gardener) [END][JDG]>
 		fruit/grain/underground?

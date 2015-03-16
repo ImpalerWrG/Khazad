@@ -90,6 +90,7 @@ public class TerrainBuilder implements Callable<Void>  {
 				Mesh facemesh = TileSource.getMesh(targetface.getFaceShapeType(), AtlasCoords);
 				if (facemesh != null) {
 					Geometry geom = new Geometry("face", facemesh);
+					geom.scale(1.001f);  //T-Cell junction hack
 					geom.setLocalTranslation(new Vector3f(coords.getX(), coords.getY(), 0));
 					geom.setMaterial(TerrainMaterial);
 

@@ -106,6 +106,7 @@ public class JobManager {
 			//Worker.PrimaryJob = null;
 			IdleCitizen(Worker);
 		}
+		CompletedJob.Workers.clear();
 		JobMap.remove(CompletedJob);
 	}
 

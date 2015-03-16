@@ -88,19 +88,19 @@ public class Zone {
 
 					BitSet Target = ZoneMap.get(ZoneCell);
 					if (Target != null) {
-						Target.set(ZoneCube.CubeIndex(), false);
+						Target.set(ZoneCube.CubeByteIndex(), false);
 					}
 				}
 			}
 		}
-		
+
 		for (Map.Entry<CellCoordinate, BitSet> entry : ZoneMap.entrySet()) {
 			BitSet CellBitSet = entry.getValue();
 			if (CellBitSet.cardinality() == 0)
 				ZoneMap.remove(entry.getKey());
 		}
 
-		Dirty = true;		
+		Dirty = true;
 	}
 
 	public final void removeMapCoordinate(MapCoordinate RemovalCoords) {
@@ -111,17 +111,17 @@ public class Zone {
 			Dirty = true;
 		}
 	}
-			
+
 	boolean isCoordinateInZone(MapCoordinate TestCoordinates) {
 		CellCoordinate Targt = new CellCoordinate(TestCoordinates);
 		BitSet Target = ZoneMap.get(Targt);
 		if (Target != null) {
-			return (Target.get(TestCoordinates.CubeIndex()));
+			return (Target.get(TestCoordinates.CubeByteIndex()));
 		} else {
 			return false;
 		}
 	}
-	
+
 	public HashMap<CellCoordinate, BitSet> getZoneMap() {
 		return ZoneMap;
 	}
