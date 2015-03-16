@@ -55,6 +55,7 @@ public class JobManager {
 		if (CurrentJob != null)
 			TargetCitizen.PrimaryJob.releaseCitizen(TargetCitizen);
 		IdleCitizens.add(TargetCitizen);
+		TargetCitizen.onBreak = false;
 		return TargetCitizen.FindTask();
 	}
 

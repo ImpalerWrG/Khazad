@@ -52,14 +52,14 @@ public class ExcavateJob extends Job {
 	HashMap<Pawn, MapCoordinate> AssignedWorkers;
 
 	Zone ExcavationZone;
-	GameMap map = null;		
+	GameMap map = null;
 	PathFinding paths = PathFinding.getSinglton();
-			
+
 	public ExcavateJob(GameMap map) {
 		Designations = new HashMap<CellCoordinate, CubeShape[]>();
 		AccessibleExcavations = new HashMap<CellCoordinate, BitSet>();
 		AssignedExcavations = new HashMap<CellCoordinate, BitSet>();
-		
+
 		Name = "Delving Deeply";
 		//AccesibleQueue = new PriorityQueue<MapCoordinate>();
 		//AccesibleList = new	ArrayList<MapCoordinate>();
@@ -149,11 +149,11 @@ public class ExcavateJob extends Job {
 	public void CompleteDesignation(MapCoordinate Coords) {
 		AccessibleMap.remove(Coords);
 		ExcavationZone.removeMapCoordinate(Coords);
-		
+
 		DesignationCount--;
 		AccessibleExcavationCount--;
 		AssignedExcavationsCount--;
-		
+
 		if (DesignationCount == 0)
 			Manager.JobCompleted(this);
 	}
@@ -164,25 +164,12 @@ public class ExcavateJob extends Job {
 		return Assignments.get(Coords.CubeInt());		
 	}
 
-	/*
-	@Override
-	// add worker to job, if it was not already on this job return true
-	public boolean addPawn(Pawn NewPawn) {
-		if (super.addPawn(NewPawn)) {
-			Task newTask = nextTask(NewPawn);
-			NewPawn.setTask(newTask);
-			return true;
-		} else {
-			return false;
-		}
-	}*/
-
 	public Task nextTask(Pawn IdlePawn) {
-		Task OldTask = IdlePawn.CurrentTask;
+		Task OldTask = IdlePawn.getTask();
 		if (OldTask.ParentJob == this) {
 			if (OldTask.type == TaskType.TASK_GOTO) {
 				MapCoordinate TargetExcavation = AssignedWorkers.get(IdlePawn);
-				
+
 				Task newTask = new Task(this, TaskType.TASK_DIG, TargetExcavation);
 				return newTask;
 			}
@@ -210,18 +197,16 @@ public class ExcavateJob extends Job {
 			return newTask;
 		}
 
-		if (DesignationCount < Workers.size()) {
-			releaseCitizen(IdlePawn);
+		if (!needsWorkers()) {
 			return Manager.IdleCitizen(IdlePawn);
 		} else {
 			IdlePawn.onBreak = true;
-			// Pawn finds job
-			return null;
+			return IdlePawn.FindTask();
 		}
 	}
 
 	public boolean needsWorkers() {
-		if (DesignationCount > Workers.size())
+		if (AccessibleExcavationCount > AssignedExcavationsCount)
 			return true;
 		return false;
 	}
@@ -230,12 +215,12 @@ public class ExcavateJob extends Job {
 		float Evaluation = 0;
 		if (Workers.contains(CandidateCitizen))
 			Evaluation += 1;
-		
+
 		// distance test
 		return Evaluation + 2;
 	}
 
 	public void JobCompleted() {
-		
+
 	}
 }

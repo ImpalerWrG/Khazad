@@ -59,14 +59,17 @@ public abstract class Job {
 		if (Workers.contains(NewPawn))
 			return false;
 		
-		if (NewPawn.PrimaryJob != null) {
-			NewPawn.PrimaryJob.releaseCitizen(NewPawn);
-		}
-		Workers.add(NewPawn);
-		NewPawn.PrimaryJob = this;
 		Task newTask = nextTask(NewPawn);
-		NewPawn.setTask(newTask);
-		return true;
+		if (newTask != null) {
+			if (NewPawn.PrimaryJob != null)
+				NewPawn.PrimaryJob.releaseCitizen(NewPawn);	
+
+			Workers.add(NewPawn);
+			NewPawn.PrimaryJob = this;
+			NewPawn.setTask(newTask);
+			return true;
+		}
+		return false;
 	}
 
 	public void releaseCitizen(Pawn OldCitizen) {

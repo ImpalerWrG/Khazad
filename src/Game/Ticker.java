@@ -54,6 +54,7 @@ public class Ticker implements Callable<Object> {
 		
 		thegame.getSettlment().getJobManager().update();
 		
+		try {
 		Temporal target;
 		target = thegame.TemporalQueue.poll();
 		if (target != null) {
@@ -69,6 +70,11 @@ public class Ticker implements Callable<Object> {
 			thegame.TemporalQueue.add(target);
 		}
 		
+		} catch (Exception e) {
+			System.err.println(e.getLocalizedMessage());
+			System.err.println(e.getMessage());
+			System.err.println(e.toString());
+		}
 		// Other game logics here
 	}
 }

@@ -86,11 +86,15 @@ public class MapRenderer extends AbstractAppState{
 		MapNode.attachChild(sunnyterrainNode);
 		
 		ColorRGBA Suncolor = ColorRGBA.White;
-		AmbientLight glow = new AmbientLight();
-		glow.setColor(Suncolor.mult(0.8f));
+		AmbientLight Darkglow = new AmbientLight();
+		Darkglow.setColor(Suncolor.mult(1.8f));
+		darkterrainNode.addLight(Darkglow);
+
+		AmbientLight Lightglow = new AmbientLight();
+		Lightglow.setColor(Suncolor.mult(1.8f));
+		sunnyterrainNode.addLight(Lightglow);
 
 		TargetGame.getWeather().AttatchSun(sunnyterrainNode);
-		MapNode.addLight(glow);
 	}
 
 	public void detachFromGame() {

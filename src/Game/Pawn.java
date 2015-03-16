@@ -44,7 +44,7 @@ public class Pawn extends Actor {
 	long ActionStarted;
 
 	Navigator PathNavigator;
-	public Task CurrentTask;
+	private Task CurrentTask;
 	public Job PrimaryJob;
 	public Job BreakJob;
 	public boolean onBreak;
@@ -109,6 +109,8 @@ public class Pawn extends Actor {
 		PathNavigator.setLocation(NewLocation);
 	}
 
+	public Task getTask() {return CurrentTask; }
+
 	public void setTask(Task NewTask) {
 		if (CurrentTask != NewTask) {
 			CurrentTask = NewTask;
@@ -144,24 +146,27 @@ public class Pawn extends Actor {
 	@Override
 	long Wake(long CurrentTick) {
 		//super.Wake(CurrentTick);
-
-		if (CurrentTask != null && CurrentTask.Completed) {
-			CurrentTask.Finalize(CurrentTick, this);
-			// check for other needs, leave current Job if nessary
-			setTask(CurrentTask.ParentJob.nextTask(this));
-		}
-
-		if (!CurrentTask.Begun) {
-			ActionDuration = CurrentTask.Begin(this);
-		} else {
-			ActionDuration = CurrentTask.Continue(this);
+		if (CurrentTask != null) {
 			if (CurrentTask.Completed) {
 				CurrentTask.Finalize(CurrentTick, this);
+				// check for other needs, leave current Job if nessary
 				setTask(CurrentTask.ParentJob.nextTask(this));
 			}
+
+			if (!CurrentTask.Begun) {
+				ActionDuration = CurrentTask.Begin(this);
+			} else {
+				ActionDuration = CurrentTask.Continue(this);
+				if (CurrentTask.Completed) {
+					CurrentTask.Finalize(CurrentTick, this);
+					setTask(CurrentTask.ParentJob.nextTask(this));
+				}
+			}
+			ActionStarted = CurrentTick;
+			WakeTick = CurrentTick + ActionDuration;
+		} else {
+			WakeTick = CurrentTick + 1;		
 		}
-		ActionStarted = CurrentTick;
-		WakeTick = CurrentTick + ActionDuration;
 
 		return WakeTick;
 	}

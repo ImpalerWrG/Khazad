@@ -39,7 +39,7 @@ public class Citizen extends Pawn {
 	
 	public Citizen(int id, int seed, MapCoordinate SpawnLocation) {
 		super(id, seed, SpawnLocation);
-		CurrentTask = new Task(null, TaskType.TASK_IDLE, SpawnLocation);
+		setTask(new Task(null, TaskType.TASK_IDLE, SpawnLocation));
 	}
 	
 	@Override
