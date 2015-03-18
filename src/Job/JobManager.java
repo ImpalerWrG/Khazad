@@ -75,7 +75,7 @@ public class JobManager {
 	}
 
 	public void addJob(Job NewJob) {
-		JobMap.put(NewJob.Name, NewJob);
+		JobMap.put(NewJob.toString(), NewJob);
 		NewJob.Manager = this;
 		JobsDirty = true;
 	}
@@ -108,7 +108,7 @@ public class JobManager {
 			IdleCitizen(Worker);
 		}
 		CompletedJob.Workers.clear();
-		JobMap.remove(CompletedJob);
+		JobMap.remove(CompletedJob.toString());
 	}
 
 	public void update() {

@@ -482,12 +482,12 @@ public class TileBuilder {
 							{
 								Vertices.add(new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, (((float) SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - ((float) SouthEastCorner / CubeShape.HEIGHT_FRACTIONS), 1.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 1.0f));
 								Indexes.add(Vertices.size() - 1);
 								
 								Vertices.add(new Vector3f(-MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, (((float) NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - ((float) NorthWestCorner / CubeShape.HEIGHT_FRACTIONS), 0.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 0.0f));
 								Indexes.add(Vertices.size() - 1);
 								
 								Vertices.add(new Vector3f( -MapCoordinate.HALFCUBE, MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE));  // North West Bottom  5
@@ -511,7 +511,7 @@ public class TileBuilder {
 								
 								Vertices.add(new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, (((float) SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - ((float) SouthEastCorner / CubeShape.HEIGHT_FRACTIONS), 1.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 1.0f));
 								Indexes.add(Vertices.size() - 1);
 								
 								// NW Bottom->SE Bottom->SE
@@ -526,12 +526,12 @@ public class TileBuilder {
 							{
 								Vertices.add(new Vector3f(-MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, (((float) NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - ((float) NorthWestCorner / CubeShape.HEIGHT_FRACTIONS), 0.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 0.0f));
 								Indexes.add(Vertices.size() - 1);
 
 								Vertices.add(new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, (((float) SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - ((float) SouthEastCorner / CubeShape.HEIGHT_FRACTIONS), 1.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 1.0f));
 								Indexes.add(Vertices.size() - 1);
 
 								Vertices.add(new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE));  // South East Bottom  6
@@ -555,7 +555,7 @@ public class TileBuilder {
 								
 								Vertices.add(new Vector3f(-MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, (((float) NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - ((float) NorthWestCorner / CubeShape.HEIGHT_FRACTIONS), 0.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 0.0f));
 								Indexes.add(Vertices.size() - 1);
 
 								//ManualObject->triangle(6, 5, 3);  // SE Bottom->NW Bottom->NW
@@ -702,7 +702,7 @@ public class TileBuilder {
 								
 								Vertices.add(NEv);  // North East  3
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - ((float) NorthEastCorner / CubeShape.HEIGHT_FRACTIONS), 0.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) NorthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 0.0f));
 								Indexes.add(Vertices.size() - 1);
 								
 								// SW Bottom->NE Bottom->NE
@@ -711,12 +711,12 @@ public class TileBuilder {
 							{
 								Vertices.add(NEv);  // North East
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - ((float) NorthEastCorner / CubeShape.HEIGHT_FRACTIONS), 0.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) NorthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 0.0f));
 								Indexes.add(Vertices.size() - 1);
 
 								Vertices.add(SWv);  // South West
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - ((float) SouthWestCorner / CubeShape.HEIGHT_FRACTIONS), 1.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) SouthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 1.0f));
 								Indexes.add(Vertices.size() - 1);
 
 								Vertices.add(SWBv);  // South West Bottom
@@ -735,12 +735,12 @@ public class TileBuilder {
 							{
 								Vertices.add(SWv);  // South West  4
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - ((float) SouthWestCorner / CubeShape.HEIGHT_FRACTIONS), 1.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) SouthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 1.0f));
 								Indexes.add(Vertices.size() - 1);
 								
 								Vertices.add(NEv);  // North East  3
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - ((float) NorthEastCorner / CubeShape.HEIGHT_FRACTIONS), 0.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) NorthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 0.0f));
 								Indexes.add(Vertices.size() - 1);
 
 								Vertices.add(NEBv);  // North East Bottom  5
@@ -764,7 +764,7 @@ public class TileBuilder {
 
 								Vertices.add(SWv);  // South West
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - ((float) SouthWestCorner / CubeShape.HEIGHT_FRACTIONS), 1.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) SouthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 1.0f));
 								Indexes.add(Vertices.size() - 1);
 							
 								// NE Bottom->SW Bottom->SW

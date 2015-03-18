@@ -154,8 +154,14 @@ public class ExcavateJob extends Job {
 		AccessibleExcavationCount--;
 		AssignedExcavationsCount--;
 
+		// test adjacent for new accesability
+
 		if (DesignationCount == 0)
 			Manager.JobCompleted(this);
+
+		if (AccessibleExcavationCount == 0 && AssignedExcavationsCount == 0) {
+			this.Paused = true;
+		}
 	}
 
 	public boolean isAssigned(MapCoordinate Coords) {
