@@ -87,14 +87,11 @@ public class JobManager {
 	private void RebalanceJobs() {
 		if (JobsDirty) {
 			for (Job TargetJob : JobMap.values()) {
-				int WorkersNeeded = TargetJob.Priority - TargetJob.Workers.size();
-				if (WorkersNeeded > 0) {
-					for (int i = 0; i < WorkersNeeded; i++) {
-						if (!IdleCitizens.isEmpty()) {
-							Pawn IdlePawn = IdleCitizens.poll();
-							//IdleJob.releaseCitizen(IdlePawn);
-							TargetJob.addPawn(IdlePawn);
-						}
+				while (TargetJob.needsWorkers()) {
+					if (!IdleCitizens.isEmpty()) {
+						Pawn IdlePawn = IdleCitizens.poll();
+						//IdleJob.releaseCitizen(IdlePawn);
+						TargetJob.addPawn(IdlePawn);
 					}
 				}
 			}

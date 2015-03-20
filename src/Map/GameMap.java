@@ -396,30 +396,28 @@ public class GameMap {
 					CubeShape aboveShape = getCubeShape(aboveCube).clone();
 					CubeShape NewAboveShape = aboveShape.clone();
 
-					if (aboveShape.split()) {
-						if (NewShape.NorthEastCorner() < CubeShape.CUBE_TOP_HEIGHT) {
-							if (aboveShape.NorthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.NorthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
-								NewAboveShape.setNorthEastCorner(CubeShape.BELOW_CUBE_HEIGHT);
-						}
+					if (NewShape.NorthEastCorner() < CubeShape.CUBE_TOP_HEIGHT) {
+						if (aboveShape.NorthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.NorthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
+							NewAboveShape.setNorthEastCorner(CubeShape.BELOW_CUBE_HEIGHT);
+					}
 
-						if (NewShape.SouthWestCorner() < CubeShape.CUBE_TOP_HEIGHT) {
-							if (aboveShape.SouthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.NorthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
-								NewAboveShape.setSouthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
-						}
-					} else {
-						if (NewShape.NorthWestCorner() < CubeShape.CUBE_TOP_HEIGHT) {
-							if (aboveShape.NorthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.NorthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
-								NewAboveShape.setNorthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
-						}
+					if (NewShape.SouthWestCorner() < CubeShape.CUBE_TOP_HEIGHT) {
+						if (aboveShape.SouthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.NorthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
+							NewAboveShape.setSouthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
+					}
 
-						if (NewShape.SouthEastCorner() < CubeShape.CUBE_TOP_HEIGHT) {
-						if (aboveShape.NorthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
+					if (NewShape.NorthWestCorner() < CubeShape.CUBE_TOP_HEIGHT) {
+						if (aboveShape.NorthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.NorthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
+							NewAboveShape.setNorthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
+					}
+
+					if (NewShape.SouthEastCorner() < CubeShape.CUBE_TOP_HEIGHT) {
+						if (aboveShape.NorthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.SouthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
 							NewAboveShape.setSouthEastCorner(CubeShape.BELOW_CUBE_HEIGHT);
-						}
 					}
 
 					if (!aboveShape.equals(NewAboveShape))
-						setCubeShape(aboveCube, aboveShape);
+						setCubeShape(aboveCube, NewAboveShape);
 					if (NewAboveShape.isEmpty()) {
 						setCubeMaterial(aboveCube, DataManager.INVALID_INDEX);
 					}

@@ -54,6 +54,7 @@ public class ExcavateJob extends Job {
 	Zone ExcavationZone;
 	GameMap map = null;
 	PathFinding paths = PathFinding.getSinglton();
+	MovementModality Modality;
 
 	public ExcavateJob(GameMap map) {
 		Designations = new HashMap<CellCoordinate, CubeShape[]>();
@@ -61,11 +62,10 @@ public class ExcavateJob extends Job {
 		AssignedExcavations = new HashMap<CellCoordinate, BitSet>();
 
 		Name = "Delving Deeply";
-		//AccesibleQueue = new PriorityQueue<MapCoordinate>();
-		//AccesibleList = new	ArrayList<MapCoordinate>();
 		AccessibleMap = new HashMap<MapCoordinate, MapCoordinate>();
 		AssignedWorkers = new HashMap<Pawn, MapCoordinate>();
 
+		Modality = new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1);
 		this.map = map;
 		Priority = 10;
 	}
@@ -106,7 +106,7 @@ public class ExcavateJob extends Job {
 						CubeShape CurrentShape = GameMap.getMap().getCubeShape(TargetCoords);
 
 						if (!CurrentShape.isSolid()) {
-							BitSet DirectionFlags = paths.getDirectionFlags(TargetCoords, new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1));
+							BitSet DirectionFlags = paths.getDirectionFlags(TargetCoords, Modality);
 							if (DirectionFlags.cardinality() != 0) {
 								AccessibleMap.put(TargetCoords.clone(), TargetCoords.clone());
 								AccessibleExcavationCount++;
@@ -122,7 +122,7 @@ public class ExcavateJob extends Job {
 							CubeShape AdjacentShape = GameMap.getMap().getCubeShape(AdjacentcCoords);
 
 							if (AdjacentShape.isEmpty() || (dir == Direction.DIRECTION_DOWN && !AdjacentShape.isSolid())) {
-								DirectionFlags = paths.getDirectionFlags(AdjacentcCoords, new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1));
+								DirectionFlags = paths.getDirectionFlags(AdjacentcCoords, Modality);
 								if (DirectionFlags.cardinality() != 0) {
 									AccessibleLocation.set(CubeIndex);
 									AccessibleMap.put(TargetCoords.clone(), AdjacentcCoords.clone());
@@ -143,7 +143,7 @@ public class ExcavateJob extends Job {
 	public CubeShape getDesignation(MapCoordinate Coords) {
 		CellCoordinate CellCoords = new CellCoordinate(Coords);
 		CubeShape[] DesignationShapes = Designations.get(CellCoords);
-		return DesignationShapes[Coords.CubeInt()];
+		return (DesignationShapes != null) ? DesignationShapes[Coords.CubeIntIndex()] : null;
 	}
 
 	public void CompleteDesignation(MapCoordinate Coords) {
@@ -155,12 +155,29 @@ public class ExcavateJob extends Job {
 		AssignedExcavationsCount--;
 
 		// test adjacent for new accesability
+		if (paths.getDirectionFlags(Coords, Modality).cardinality() > 0) {
+			BitSet DirectionFlags;
+			for (Direction dir: Direction.AXIAL_DIRECTIONS) {
+				MapCoordinate AdjacentcCoords = Coords.clone();
+				AdjacentcCoords.TranslateMapCoordinates(dir);
+				CubeShape AdjacentShape = GameMap.getMap().getCubeShape(AdjacentcCoords);
+				CubeShape DesignationShape = getDesignation(AdjacentcCoords);
 
-		if (DesignationCount == 0)
+				if (DesignationShape != null && !DesignationShape.ExcavationEquivilent(AdjacentShape)) {
+					BitSet AccessibleLocation = AccessibleExcavations.get(new CellCoordinate(Coords));
+					AccessibleLocation.set(Coords.CubeIntIndex());
+					AccessibleMap.put(AdjacentcCoords.clone(), Coords.clone());
+					AccessibleExcavationCount++;
+				}
+			}
+		}
+
+		if (DesignationCount == 0) {
 			Manager.JobCompleted(this);
-
-		if (AccessibleExcavationCount == 0 && AssignedExcavationsCount == 0) {
-			this.Paused = true;
+		} else {
+			if (AccessibleExcavationCount == 0 && AssignedExcavationsCount == 0) {
+				this.Paused = true;
+			}
 		}
 	}
 
@@ -189,6 +206,7 @@ public class ExcavateJob extends Job {
 			if (!isAssigned(entry.getKey())) {
 				AccsibleCube = entry.getValue();
 				ExcavateCube = entry.getKey();
+				break;
 			}
 		}
 
@@ -212,9 +230,7 @@ public class ExcavateJob extends Job {
 	}
 
 	public boolean needsWorkers() {
-		if (AccessibleExcavationCount > AssignedExcavationsCount)
-			return true;
-		return false;
+		return (AccessibleExcavationCount > AssignedExcavationsCount) ? true : false;
 	}
 
 	public float EvaluatePawn(Pawn CandidateCitizen) {

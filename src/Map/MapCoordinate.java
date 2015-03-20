@@ -100,7 +100,7 @@ public final class MapCoordinate implements Cloneable{
 	}
 
 	public int CubeIntIndex() {
-		return  CubeByteIndex() & 0xFF;
+		return  ((X & CELLBITFLAG) << CELLBITSHIFT) + (Y & CELLBITFLAG);
 	}
 
 	public int CubeInt() {

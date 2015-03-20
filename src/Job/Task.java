@@ -114,6 +114,14 @@ public class Task {
 				CubeShape DesignatedShape = Excavation.getDesignation(worklocation);
 				GameMap.getMap().ExcavateCube(worklocation, DesignatedShape.clone());
 
+				//Fall down to the new surface
+				CubeShape NewShape = GameMap.getMap().getCubeShape(Host.getLocation());
+				if (NewShape.isSky()) {
+					MapCoordinate Newlocation = Host.getLocation().clone();
+					Newlocation.TranslateMapCoordinates(Direction.DIRECTION_DOWN);
+					Host.setLocation(Newlocation);
+				}
+
 				if (DesignatedShape.ExcavationEquivilent(GameMap.getMap().getCubeShape(worklocation))) {
 					Excavation.CompleteDesignation(worklocation);
 					Completed = true;
