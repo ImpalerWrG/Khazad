@@ -238,9 +238,6 @@ public class Geology {
 		Height[MapCoordinate.CELLEDGESIZE][MapCoordinate.CELLEDGESIZE] = WorldHeight[X + 1][Y + 1];
 		Seeded[MapCoordinate.CELLEDGESIZE][MapCoordinate.CELLEDGESIZE] = true;
 
-		CellTopZ = (short) Math.max(Math.max(Height[0][0], Height[MapCoordinate.CELLEDGESIZE][0]), Math.max(Height[0][MapCoordinate.CELLEDGESIZE], Height[MapCoordinate.CELLEDGESIZE][MapCoordinate.CELLEDGESIZE]));
-		CellBottomZ = (short) Math.min(Math.min(Height[0][0], Height[MapCoordinate.CELLEDGESIZE][0]), Math.min(Height[0][MapCoordinate.CELLEDGESIZE], Height[MapCoordinate.CELLEDGESIZE][MapCoordinate.CELLEDGESIZE]));
-
 
 		// Set initial Fractal value range (scale) and the rate of decrese (ratio)
 			float ratio = (float) Math.pow(2.0, -Roughness);
@@ -282,14 +279,10 @@ public class Geology {
 
 									Height[x][y] = RandomFactor + Average;
 
-									if (Height[x][y] > CellTopZ)
-									{
+									if (((short) Height[x][y]) > CellTopZ)
 										CellTopZ = (short) Height[x][y];
-									}
-									if (Height[x][y] < CellBottomZ)
-									{
+									if (((short) Height[x][y]) < CellBottomZ)
 										CellBottomZ = (short) Height[x][y];
-									}
 								}
 
 									y += stride;
@@ -339,14 +332,10 @@ public class Geology {
 								Height[x][y] = Average + RandomFactor;
 
 								// Record Maximum and Minimum Height
-								if (Height[x][y] > CellTopZ)
-								{
+								if (((short) Height[x][y]) > CellTopZ)
 									CellTopZ = (short) Height[x][y];
-								}
-								if (Height[x][y] < CellBottomZ)
-								{
+								if (((short) Height[x][y]) < CellBottomZ)
 									CellBottomZ = (short) Height[x][y];
-								}
 							}
 							y += stride;
 						}

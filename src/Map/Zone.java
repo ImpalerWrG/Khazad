@@ -53,10 +53,10 @@ public class Zone {
 
 					BitSet Target = ZoneMap.get(ZoneCell);
 					if (Target != null) {
-						Target.set(ZoneCube.CubeInt(), true);
+						Target.set(ZoneCube.CubeIntIndex(), true);
 					} else {
 						BitSet Bits = new BitSet(MapCoordinate.CUBESPERCELL);
-						Bits.set(ZoneCube.CubeInt(), true);
+						Bits.set(ZoneCube.CubeIntIndex(), true);
 						ZoneMap.put(ZoneCell, Bits);
 					}
 				}
@@ -71,7 +71,7 @@ public class Zone {
 		if (Target == null) {
 			Target = new BitSet(MapCoordinate.CUBESPERCELL);
 		}
-		Target.set(AdditionCoords.CubeInt(), true);
+		Target.set(AdditionCoords.CubeIntIndex(), true);
 		Dirty = true;
 	}
 
@@ -107,7 +107,7 @@ public class Zone {
 		CellCoordinate Targt = new CellCoordinate(RemovalCoords);
 		BitSet Target = ZoneMap.get(Targt);
 		if (Target != null) {
-			Target.clear(RemovalCoords.CubeInt());
+			Target.clear(RemovalCoords.CubeIntIndex());
 			Dirty = true;
 		}
 	}

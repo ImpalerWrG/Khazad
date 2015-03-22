@@ -55,6 +55,7 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.BitSet;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import jme3tools.optimize.GeometryBatchFactory;
 
@@ -181,8 +182,8 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 		}
 	}
 	
-	public void RebuildDirtyCells(ConcurrentHashMap<CellCoordinate, Cell> cells) {
-		for (Cell target : cells.values()) {
+	public void RebuildDirtyCells(Collection<Cell> cells) {
+		for (Cell target : cells) {
 			CellCoordinate Coords = target.getCellCoordinates();
 
 			MapRenderer Renderer = state.getState(MapRenderer.class);
@@ -205,8 +206,8 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 		}	
 	}
 	
-	void HideConnectivityRendering(ConcurrentHashMap<CellCoordinate, Cell> cells) {
-		for (Cell target : cells.values()) {
+	void HideConnectivityRendering(Collection<Cell> cells) {
+		for (Cell target : cells) {
 			CellCoordinate Coords = target.getCellCoordinates();
 			MapRenderer Renderer = state.getState(MapRenderer.class);
 			Node CellNode = Renderer.getCellNodeLight(Coords);
@@ -223,9 +224,9 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
 			if (DisplayToggle) {
-				RebuildDirtyCells(map.getCellMap());
+				RebuildDirtyCells(map.getCellCollection());
 			} else {
-				HideConnectivityRendering(map.getCellMap());
+				HideConnectivityRendering(map.getCellCollection());
 			}
 		}
 	}

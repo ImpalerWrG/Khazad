@@ -80,7 +80,7 @@ public class ExcavateJob extends Job {
 				for (int z = Origin.Z; z < Terminal.Z + 1; z++) {
 					MapCoordinate TargetCoords = new MapCoordinate(x, y, z);
 					CellCoordinate CellCoords = new CellCoordinate(TargetCoords);
-					int CubeIndex = TargetCoords.CubeInt();
+					int CubeIndex = TargetCoords.CubeIntIndex();
 
 					CubeShape[] DesignationShapes = Designations.get(CellCoords);
 					BitSet AccessibleLocation = AccessibleExcavations.get(CellCoords);
@@ -184,7 +184,7 @@ public class ExcavateJob extends Job {
 	public boolean isAssigned(MapCoordinate Coords) {
 		CellCoordinate CellCoords = new CellCoordinate(Coords);
 		BitSet Assignments = AssignedExcavations.get(CellCoords);
-		return Assignments.get(Coords.CubeInt());		
+		return Assignments.get(Coords.CubeIntIndex());		
 	}
 
 	public Task nextTask(Pawn IdlePawn) {
@@ -214,7 +214,7 @@ public class ExcavateJob extends Job {
 			AssignedWorkers.put(IdlePawn, ExcavateCube);
 			CellCoordinate CellCoords = new CellCoordinate(ExcavateCube);
 			BitSet Assignments = AssignedExcavations.get(CellCoords);
-			Assignments.set(ExcavateCube.CubeInt());
+			Assignments.set(ExcavateCube.CubeIntIndex());
 			AssignedExcavationsCount++;
 
 			Task newTask = new Task(this, TaskType.TASK_GOTO, AccsibleCube);

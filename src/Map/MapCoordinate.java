@@ -103,12 +103,6 @@ public final class MapCoordinate implements Cloneable{
 		return  ((X & CELLBITFLAG) << CELLBITSHIFT) + (Y & CELLBITFLAG);
 	}
 
-	public int CubeInt() {
-		int tempx = (X & CELLBITFLAG) << CELLBITSHIFT;
-		int tempy = Y & CELLBITFLAG;
-		return tempx + tempy;
-	}
-
 	public void copy(MapCoordinate ArgumentCoordinates) {
 		X = ArgumentCoordinates.X;
 		Y = ArgumentCoordinates.Y;

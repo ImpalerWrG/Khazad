@@ -23,6 +23,7 @@ import PathFinding.PathFinding;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import Interface.VolumeSelection;
 
@@ -40,39 +41,39 @@ public class GameMap {
 
 	private static GameMap instance = null;
 	
-    boolean Initialized;
-    boolean MapLoaded;
+	boolean Initialized;
+	boolean MapLoaded;
 
-    ConcurrentHashMap<CellCoordinate, Cell> Cells;
-	
-    int HighestCell;
-    int LowestCell;
+	ConcurrentHashMap<CellCoordinate, Cell> Cells;
+	ConcurrentHashMap<CellCoordinate, Cell> WeatherCells;
+	ConcurrentHashMap<CellCoordinate, Cell> BasementCells;
+
+	int HighestCell;
+	int LowestCell;
 
 	int Seed;
 	Dice ExcavateDice = new Dice();
 
-    ArrayList<Zone> Zones;
-	int ZoneCounter = 0;
+	ArrayList<Zone> Zones;
 
-    MapCoordinate LastRayTestResult;  // Used to smoothout Map Picking
-	
-	
 	protected GameMap() {
 		Initialized = false;
 		MapLoaded = false;
 		HighestCell = -100000000;
 		LowestCell = 10000000;
-		
+
 		ExcavateDice.Seed(Seed);
 		Zones = new ArrayList<Zone>();
 		Cells = new ConcurrentHashMap<CellCoordinate, Cell>();
+		WeatherCells = new ConcurrentHashMap<CellCoordinate, Cell>();
+		BasementCells = new ConcurrentHashMap<CellCoordinate, Cell>();		
 	}
 
 	public static GameMap getMap() {
-	   if(instance == null) {
-		  instance = new GameMap();
-	   }
-	   return instance;
+		if(instance == null) {
+			instance = new GameMap();
+		}
+		return instance;
 	}
 
 	public void Initialize(int MasterSeed) {
@@ -89,11 +90,36 @@ public class GameMap {
 		if (getCell(TargetCoordinates) == null) {
 			Cells.put(TargetCoordinates, NewCell);
 
-			if (TargetCoordinates.Z > HighestCell) {
+			CellCoordinate AboveCoords = TargetCoordinates.clone();
+			AboveCoords.Z++;
+			Cell AboveCell = Cells.get(AboveCoords);
+
+			CellCoordinate BelowCoords = TargetCoordinates.clone();
+			BelowCoords.Z--;
+			Cell BelowCell = Cells.get(BelowCoords);
+
+			if (TargetCoordinates.Z > HighestCell)
 				HighestCell = TargetCoordinates.Z;
+
+			if (AboveCell == null) {
+				WeatherCells.put(TargetCoordinates, NewCell);
+				//NewCell.WeatherCell = true;
+				if (BelowCell != null) {
+					WeatherCells.remove(BelowCoords);
+					//BelowCell.WeatherCell = false;
+				}
 			}
-			if (TargetCoordinates.Z < LowestCell) {
+			
+			if (TargetCoordinates.Z < LowestCell)
 				LowestCell = TargetCoordinates.Z;
+
+			if (BelowCell == null) {
+				BasementCells.put(TargetCoordinates, NewCell);
+				//NewCell.BasementCell = true;
+				if (AboveCell != null) {
+					BasementCells.remove(AboveCoords);
+					//AboveCell.BasementCell = false;
+				}
 			}
 
 			return true;
@@ -105,7 +131,7 @@ public class GameMap {
 		Cell TargetCell = getCell(Coords);
 		if (TargetCell == null) {
 			TargetCell = new Cell();
-			TargetCell.setCellPosition(Coords);
+			TargetCell.setCellCoordinates(Coords);
 			insertCell(TargetCell);
 			return TargetCell;
 		}
@@ -252,6 +278,38 @@ public class GameMap {
 		if(TargetCell != null)
 			TargetCell.setCubeHidden(Coordinates.CubeByteIndex(), NewValue);	
 	}
+
+	public void GenerateFirstLight() {
+		for (Cell WeatherCell : WeatherCells.values()) {
+			CellCoordinate TargetCoords = WeatherCell.getCellCoordinates();
+			Cell TopCell = Cells.get(TargetCoords);
+			TargetCoords.Z--;
+			Cell BottomCell = Cells.get(TargetCoords);
+
+			boolean LightRemains;
+			byte i = 0;
+
+			do {
+				TopCell.setCubeSunLit(i++, true);
+			} while (i != 0);
+
+			do  {
+				LightRemains = false;
+				i = 0;
+				do {
+					if (TopCell.isCubeSunLit(i) && TopCell.getCubeShape(i).LightPassable(Axis.AXIS_Z)) {
+						BottomCell.setCubeSunLit(i, true);
+						LightRemains = true;
+					}
+					i++;
+				} while (i != 0);
+
+				TopCell = BottomCell;
+				TargetCoords.Z--;
+				BottomCell = Cells.get(TargetCoords);
+			} while (BottomCell != null && LightRemains);
+		}
+	}
 	/*
 	public boolean isCubeSubTerranean(MapCoordinates Coordinates) {
 		Cell TargetCell = getCubeOwner(Coordinates);
@@ -314,7 +372,7 @@ public class GameMap {
 		int Corner = ExcavateDice.Roll(0, Direction.CARDINAL_DIRECTIONS.length - 1);
 		CubeShape OldShape = getCubeShape(Coordinates);
 		CubeShape IntermediateShape;
-		
+
 		switch (Corner) {
 			case 0:
 				if (GoalShape.NorthEastCorner() < OldShape.NorthEastCorner()) {
@@ -374,7 +432,7 @@ public class GameMap {
 				if (belowShape.SouthWestCorner() < CubeShape.CUBE_TOP_HEIGHT)
 					NewShape.setSouthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
 
-						
+
 				setCubeShape(Coordinates, NewShape);
 				if (NewShape.isEmpty()) {
 					setCubeMaterial(Coordinates, DataManager.INVALID_INDEX);
@@ -531,7 +589,7 @@ public class GameMap {
 	}
 
 	public Zone createZone(ArrayList<VolumeSelection> Volumes) {
-		Zone NewZone = new Zone(Volumes, ZoneCounter++);
+		Zone NewZone = new Zone(Volumes, Zones.size());
 		Zones.add(NewZone);
 		return NewZone;
 	}
@@ -549,8 +607,8 @@ public class GameMap {
 		return Zones;
 	}
 
-	public ConcurrentHashMap getCellMap() {
-		return Cells;
+	public Collection<Cell> getCellCollection() {
+		return Cells.values();
 	}
 /*
 	void Save(boost::filesystem::basic_ofstream<char>& Stream)

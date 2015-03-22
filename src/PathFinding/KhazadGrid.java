@@ -96,13 +96,12 @@ public class KhazadGrid implements GridInterface {
 	public KhazadGrid(GameMap TargetMap, MovementModality Modality) {
 		GridCells = new ConcurrentHashMap<CellCoordinate, GridCell>();
 		ConnectivityMap = new ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, Integer> >();
-		ConcurrentHashMap<CellCoordinate, Cell> cells = TargetMap.getCellMap();
 		ConnectivityCache = new ArrayList<Integer>();
 		DirtyLocations = new ConcurrentLinkedDeque<MapCoordinate>();
 		GridModality = Modality;
 		SourceMap = TargetMap;
 
-		for (Cell TargetCell : cells.values()) {
+		for (Cell TargetCell : TargetMap.getCellCollection()) {
 			if (TargetCell != null) {
 				CellCoordinate CellCoords = TargetCell.getCellCoordinates();
 				GridCell NewGridCell = addCell(CellCoords);

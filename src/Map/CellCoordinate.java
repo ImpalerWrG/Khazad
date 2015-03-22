@@ -60,6 +60,19 @@ public class CellCoordinate {
 		return (X != ArgumentCoordinates.X || Y != ArgumentCoordinates.Y || Z != ArgumentCoordinates.Z);
 	}
 
+	public void copy(CellCoordinate ArgumentCoordinates) {
+		X = ArgumentCoordinates.X;
+		Y = ArgumentCoordinates.Y;
+		Z = ArgumentCoordinates.Z;
+	}
+
+	@Override
+	public CellCoordinate clone() {
+		CellCoordinate newCoords = new CellCoordinate();
+		newCoords.copy(this);
+		return newCoords;
+	}
+
 	@Override
 	public boolean equals(Object ArgumentCoordinates) {
 		if (ArgumentCoordinates == null)

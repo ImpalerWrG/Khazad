@@ -44,7 +44,7 @@ public class Cell {
 	private HashMap<FaceCoordinate, Face> Faces;
 
 	// The global position of this cell relative to other cells
-	CellCoordinate thisCellCoordinates;
+	private CellCoordinate thisCellCoordinates;
 	
 	boolean DirtyTerrainRendering;
 	boolean DirtyPathRendering;
@@ -75,13 +75,13 @@ public class Cell {
 		DirtyPathRendering = true;
 	}
 
-	public void setCellPosition(CellCoordinate Coordinates) {
+	public void setCellCoordinates(CellCoordinate Coordinates) {
 		thisCellCoordinates = Coordinates;
-		setNeedsReRendering();
+		setRenderingDirty();
 	}
 
 	public CellCoordinate getCellCoordinates() {
-		return thisCellCoordinates; 
+		return thisCellCoordinates.clone(); 
 	}
 	
 	public void setCubeShape(byte Coordinates, CubeShape NewShape) {
@@ -92,7 +92,7 @@ public class Cell {
 			if (TargetFace != null) {
 				setFaceShape(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE), new FaceShape(NewShape, null, Direction.DIRECTION_NONE));
 			}
-			setNeedsReRendering();
+			setRenderingDirty();
 		}
 	}
 
@@ -150,7 +150,7 @@ public class Cell {
 
 		}
 		while (TargetCube != 0);  // End Loop when Byte rolls over
-		setNeedsReRendering();
+		setRenderingDirty();
 	}
 
 	Face getFace(FaceCoordinate TargetCoordinates) {
@@ -176,7 +176,7 @@ public class Cell {
 
 		if (TargetFace != null) {
 			TargetFace.setFaceMaterialType(MaterialTypeID);
-			setNeedsReRendering();
+			setDirtyTerrainRendering(true);
 			return true;
 		}
 		return false;
@@ -187,7 +187,7 @@ public class Cell {
 
 		if (TargetFace != null) {
 			TargetFace.setFaceSurfaceType(SurfaceTypeID);
-			setNeedsReRendering();
+			setDirtyTerrainRendering(true);
 			return true;
 		}
 		return false;
@@ -203,7 +203,7 @@ public class Cell {
 
 		if (TargetFace != null) {
 			TargetFace.setFaceShapeType(NewShape);
-			setNeedsReRendering();
+			setRenderingDirty();
 			return true;
 		}
 		return false;
@@ -212,7 +212,7 @@ public class Cell {
 	boolean removeFace(FaceCoordinate TargetCoordinates) {
 		if (Faces.containsKey(TargetCoordinates)) {
 			Faces.remove(TargetCoordinates);
-			setNeedsReRendering();
+			setRenderingDirty();
 			return true;
 		}
 		return false;
@@ -223,7 +223,7 @@ public class Cell {
 		if (TargetFace == null) {
 			Face NewFace = new Face(TargetCoordinates.Coordinates, TargetCoordinates.FaceDirection);
 			Faces.put(TargetCoordinates, NewFace);
-			setNeedsReRendering();
+			setRenderingDirty();
 			return NewFace;
 		} else {
 			return TargetFace;
@@ -234,7 +234,7 @@ public class Cell {
 		return Faces;
 	}
 
-	public void setNeedsReRendering() {
+	public void setRenderingDirty() {
 		setDirtyTerrainRendering(true);
 		setDirtyPathingRendering(true);
 	}
@@ -260,16 +260,16 @@ public class Cell {
 	public short getCubeMaterial(byte Coordinates)							{return CubeMaterialTypes[Coordinates & 0xFF]; }
 	public void setCubeMaterial(byte Coordinates, short MaterialID)			{CubeMaterialTypes[Coordinates & 0xFF] = MaterialID; DirtyTerrainRendering = true;}
 
-	public boolean isCubeHidden(byte Coordinates)							{return Hidden.get(Coordinates);}
+	public boolean isCubeHidden(byte Coordinates)							{return Hidden.get(Coordinates & 0xFF);}
 	public void setCubeHidden(byte Coordinates, boolean NewValue)			{Hidden.set(Coordinates & 0xFF, NewValue); DirtyTerrainRendering = true;}
 
-	public boolean isCubeSubTerranean(byte Coordinates)						{ return SubTerranean.get(Coordinates); }
+	public boolean isCubeSubTerranean(byte Coordinates)						{ return SubTerranean.get(Coordinates & 0xFF); }
 	public void setCubeSubTerranean(byte Coordinates, boolean NewValue)		{ SubTerranean.set(Coordinates & 0xFF, NewValue); DirtyTerrainRendering = true;}
 
-	public boolean isCubeSkyView(byte Coordinates)							{ return SkyView.get(Coordinates); }
+	public boolean isCubeSkyView(byte Coordinates)							{ return SkyView.get(Coordinates & 0xFF); }
 	public void setCubeSkyView(byte Coordinates, boolean NewValue)			{ SkyView.set(Coordinates & 0xFF, NewValue); DirtyTerrainRendering = true;}
 
-	public boolean isCubeSunLit(byte Coordinates)							{ return SunLit.get(Coordinates); }
+	public boolean isCubeSunLit(byte Coordinates)							{ return SunLit.get(Coordinates & 0xFF); }
 	public void setCubeSunLit(byte Coordinates, boolean NewValue)			{ SunLit.set(Coordinates & 0xFF, NewValue); DirtyTerrainRendering = true;}
 
 	@Override

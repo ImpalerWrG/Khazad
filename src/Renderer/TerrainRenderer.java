@@ -48,6 +48,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.texture.Image;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture2D;
+import java.util.Collection;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -111,8 +112,8 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 		inputManager.addListener(this, inputs);
 	}
 
-	public void RebuildDirtyCells(ConcurrentHashMap<CellCoordinate, Cell> cells) {
-		for (Cell target : cells.values()) {
+	public void RebuildDirtyCells(Collection<Cell> cells) {
+		for (Cell target : cells) {
 			if (target.isTerrainRenderingDirty()) {
 				CellCoordinate Coords = target.getCellCoordinates();
 				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, TerrainLodControler);
@@ -126,12 +127,12 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 		}
 	}
 
-	public void SetTerrainRendering(ConcurrentHashMap<CellCoordinate, Cell> cells, boolean show) {
+	public void SetTerrainRendering(Collection<Cell> cells, boolean show) {
 		Spatial.CullHint hint = Spatial.CullHint.Always;
 		if (show == true)
 			hint = Spatial.CullHint.Dynamic;
 		
-		for (Cell target : cells.values()) {
+		for (Cell target : cells) {
 			CellCoordinate Coords = target.getCellCoordinates();
 
 			MapRenderer Renderer = state.getState(MapRenderer.class);
@@ -153,10 +154,10 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
 			if (DisplayToggle) {
-				SetTerrainRendering(map.getCellMap(), true);
-				RebuildDirtyCells(map.getCellMap());
+				SetTerrainRendering(map.getCellCollection(), true);
+				RebuildDirtyCells(map.getCellCollection());
 			} else {
-				SetTerrainRendering(map.getCellMap(), false);
+				SetTerrainRendering(map.getCellCollection(), false);
 			}
 		}
 	}

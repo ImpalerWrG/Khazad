@@ -96,9 +96,9 @@ public class Game extends AbstractAppState implements ActionListener {
 	}
 
 	@Override
-    public void initialize(AppStateManager stateManager, Application app) {
+	public void initialize(AppStateManager stateManager, Application app) {
 		super.initialize(stateManager, app);
-        this.app = (SimpleApplication) app;
+		this.app = (SimpleApplication) app;
 		this.state = stateManager;
 		Main core = (Main) app;
 		Executor = core.getThreadPool();
@@ -109,7 +109,7 @@ public class Game extends AbstractAppState implements ActionListener {
 	public boolean InitializeGame(short X, short Y, String SeedString) {
 		MasterSeed = SeedString.hashCode();
 		PawnDice.Seed(MasterSeed);
-				
+
 		MapGeology = new Geology();
 		MapGeology.Initialize(MasterSeed);
 		MapGeology.GenerateWorldHeightMap(X, Y);
@@ -132,33 +132,26 @@ public class Game extends AbstractAppState implements ActionListener {
 		short SizeX = (short) (X + Width);
 		short SizeY = (short) (Y + Height);
 
-		float ProgressSize = SizeX * SizeY;
-		float ProgressCount = 0;
-
 		// Create and add Cells with shape and material data
 		for (int x = X; x < SizeX; x++) {
 			for (int y = Y; y < SizeY; y++) {
 				MapGeology.GenerateCellHeight(x, y, (float) 10.0, (float) 1.0);
 
-				for (int z = MapGeology.getCellBottomZLevel() - 2; z <= MapGeology.getCellTopZLevel() + 3; z++) {
+				for (int z = MapGeology.getCellBottomZLevel() - 2; z <= MapGeology.getCellTopZLevel() + 2; z++) {
 					CellCoordinate TargetCellCoordinates = new CellCoordinate(x, y, z);
 					Cell NewCell = new Cell();
 
-					NewCell.setCellPosition(TargetCellCoordinates);
+					NewCell.setCellCoordinates(TargetCellCoordinates);
 					MainMap.insertCell(NewCell);
 					MapGeology.LoadCellData(NewCell);
 				}
 			}
 		}
 
-		// Initialize Faces for the cells
-		ConcurrentHashMap Cells = MainMap.getCellMap();
-		ProgressSize = Cells.size();
-		
-		ConcurrentHashMap<CellCoordinate, Cell> CellMap = MainMap.getCellMap();
-		for (Cell TargetCell : CellMap.values()) {
+		MainMap.GenerateFirstLight();
+
+		for (Cell TargetCell : MainMap.getCellCollection()) {
 			TargetCell.BuildFaceData();
-			ProgressCount++;
 		}
 
 		return true;
@@ -206,7 +199,7 @@ public class Game extends AbstractAppState implements ActionListener {
 		ArrayList Volumes = new ArrayList<VolumeSelection>();
 		Volumes.add(newVolume);
 		Zone newZone = getMap().createZone(Volumes);
-		
+
 		newJob.addDesignations(newVolume, newZone, new CubeShape(CubeShape.CUBE_BOTTOM_HEIGHT));
 		jobs.addJob(newJob);
 	}
@@ -216,7 +209,7 @@ public class Game extends AbstractAppState implements ActionListener {
 	}
 	
 	public void onAction(String name, boolean keyPressed, float tpf) {
-        if (this.isEnabled()) {
+		if (this.isEnabled()) {
 			if (name.equals("Pause")) {
 				if (keyPressed)
 					Pause = !Pause;
@@ -233,18 +226,18 @@ public class Game extends AbstractAppState implements ActionListener {
 	}
 
 	public void registerWithInput(InputManager inputManager) {
-        String[] inputs = {"Pause", "Faster", "Slower"};
+		String[] inputs = {"Pause", "Faster", "Slower"};
 
 		inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_SPACE)); 
 		inputManager.addMapping("Faster", new KeyTrigger(KeyInput.KEY_ADD)); 
 		inputManager.addMapping("Faster", new KeyTrigger(KeyInput.KEY_EQUALS)); 
 		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_MINUS)); 
 		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_SUBTRACT)); 
-        inputManager.addListener(this, inputs);
+		inputManager.addListener(this, inputs);
 	}
 
 	@Override
-    public void update(float tpf) {
+	public void update(float tpf) {
 		if (!Pause) {
 			if(lastUpdate == null || lastUpdate.isDone()) {
 				float TargetTicks = TickRate * tpf * 12;
@@ -262,7 +255,7 @@ public class Game extends AbstractAppState implements ActionListener {
 				days = hours / 24;		
 			}
 		}
-    }
+	}
 
 	public long getCurrentTimeTick() {
 		return CurrentGameTick;
