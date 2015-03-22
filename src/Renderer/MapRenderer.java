@@ -41,7 +41,7 @@ public class MapRenderer extends AbstractAppState{
 	Node MapNode = null;
 	Node sunnyterrainNode = null;
 	Node darkterrainNode = null;
-	
+
 	TileBuilder builder;
 	Game game;
 
@@ -51,7 +51,6 @@ public class MapRenderer extends AbstractAppState{
 	ConcurrentHashMap<Integer, Node> ZMapDark;
 
 	Semaphore semaphore;
-	
 	boolean SunnyRendering = true;
 	int Top; int Bottom;
 
@@ -61,7 +60,7 @@ public class MapRenderer extends AbstractAppState{
 		ZMapLight = new ConcurrentHashMap<Integer, Node>();
 		ZMapDark = new ConcurrentHashMap<Integer, Node>();
 		builder = new TileBuilder();
-		
+
 		semaphore = new Semaphore(1);
 	}
 
@@ -79,12 +78,12 @@ public class MapRenderer extends AbstractAppState{
 		this.game = TargetGame;
 		this.MapNode = new Node();
 		this.app.getRootNode().attachChild(MapNode);
-		
+
 		darkterrainNode = new Node();
 		sunnyterrainNode = new Node();
 		MapNode.attachChild(darkterrainNode);
 		MapNode.attachChild(sunnyterrainNode);
-		
+
 		ColorRGBA Suncolor = ColorRGBA.White;
 		AmbientLight Darkglow = new AmbientLight();
 		Darkglow.setColor(Suncolor.mult(1.8f));
@@ -117,7 +116,6 @@ public class MapRenderer extends AbstractAppState{
 				CellNode = LightCellNodeMap.get(TargetCoordinates);
 				if (CellNode == null) {
 					CellNode = new Node("LightNode" + TargetCoordinates.toString());
-					//CellNode.setName("LightNode" + TargetCoordinates.toString());
 
 					float x = (float) (TargetCoordinates.X * MapCoordinate.CELLEDGESIZE);
 					float y = (float) (TargetCoordinates.Y * MapCoordinate.CELLEDGESIZE);
@@ -139,7 +137,7 @@ public class MapRenderer extends AbstractAppState{
 		Node CellNode = DarkCellNodeMap.get(TargetCell);
 		if (CellNode == null) {
 			CellNode = new Node();	
-		
+
 			float x = (float) (TargetCell.X * MapCoordinate.CELLEDGESIZE);
 			float y = (float) (TargetCell.Y * MapCoordinate.CELLEDGESIZE);
 
@@ -175,7 +173,7 @@ public class MapRenderer extends AbstractAppState{
 
 	public void setSliceLevels(int top, int bottom) {
 		Top = top; Bottom = bottom;
-		
+
 		for (Node targetnode : ZMapLight.values()) {
 			float Z = targetnode.getLocalTranslation().getZ();
 			if (Z <= Top && SunnyRendering) {
@@ -184,7 +182,7 @@ public class MapRenderer extends AbstractAppState{
 				sunnyterrainNode.detachChild(targetnode);
 			}
 		}
-		
+
 		for (Node targetnode : ZMapDark.values()) {
 			float Z = targetnode.getLocalTranslation().getZ();
 			if (Z <= Top) {
@@ -194,11 +192,11 @@ public class MapRenderer extends AbstractAppState{
 			}
 		}
 	}
-	
+
 	public void setSunnyVisibility(boolean newValue) {
 		if (SunnyRendering != newValue) {
 			SunnyRendering = newValue;
-		
+
 			for (Node target : ZMapLight.values()) {
 				float Z = target.getLocalTranslation().getZ();
 				if (Z > Bottom && Z <= Top && SunnyRendering) {
@@ -210,26 +208,20 @@ public class MapRenderer extends AbstractAppState{
 		}
 	}
 
-	public Node getMapNode() {
-		return MapNode;
-	}
+	public Node getMapNode()			{ return MapNode; }
 
-	public Node getSunTerrainNode() {
-		return sunnyterrainNode;
-	}
+	public Node getSunTerrainNode()		{ return sunnyterrainNode; }
 
-	public Node getDarkTerrainNode() {
-		return darkterrainNode;
-	}
+	public Node getDarkTerrainNode()	{ return darkterrainNode; }
 
 	@Override
-	public void update(float tpf) {		
+	public void update(float tpf) {	
 		if (this.game != null) {
 			GameCameraState cam = state.getState(GameCameraState.class);
 			setSliceLevels(cam.getSliceTop(), cam.getSliceBottom());
 
 			GUI gui = state.getState(GUI.class);
-			String TimeString = ((game.hours %24) + ":" + (game.minutes % 60) + ":" + (game.seconds % 60));
+			String TimeString = ("DAY " + (game.days) + "  -  " + (game.hours %24) + ":" + (game.minutes % 60) + ":" + (game.seconds % 60));
 			gui.UpdateText("Timelabel", TimeString);
 		}
 	}

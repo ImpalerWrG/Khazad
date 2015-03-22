@@ -28,7 +28,15 @@ package Game;
  * @author Impaler
  */
 public abstract class Temporal implements Comparable {
-	
+
+	public static final long TICKS_PER_SECOND = 12;
+	public static final long TICKS_PER_MINUTE = 720;
+	public static final long TICKS_PER_HOUR = 43200;
+	public static final long TICKS_PER_DAY = 1036800;
+	public static final long TICKS_PER_WEEK = 7257600;
+	public static final long TICKS_PER_MONTH = 29030400;
+	public static final long TICKS_PER_YEAR = 348364800;
+
 	int ID;
 	long WakeTick = 1;
 

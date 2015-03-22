@@ -88,7 +88,7 @@ public class Game extends AbstractAppState implements ActionListener {
 		
 		TickRate = 1;
 		TickRounding = 0;
-		CurrentGameTick = 0;
+		CurrentGameTick = Temporal.TICKS_PER_DAY / 2;
 		UniqueIDCounter = 0;
 		Pause = true;
 
@@ -240,7 +240,7 @@ public class Game extends AbstractAppState implements ActionListener {
 	public void update(float tpf) {
 		if (!Pause) {
 			if(lastUpdate == null || lastUpdate.isDone()) {
-				float TargetTicks = TickRate * tpf * 12;
+				float TargetTicks = TickRate * tpf * Temporal.TICKS_PER_SECOND;
 				TargetTicks += TickRounding;
 				int FullTicks = (int) TargetTicks;
 				TickRounding = TargetTicks - FullTicks;
@@ -249,10 +249,10 @@ public class Game extends AbstractAppState implements ActionListener {
 				simulation.windup(FullTicks);
 				lastUpdate = Executor.submit(simulation);
 
-				seconds = CurrentGameTick / 12;
-				minutes = seconds / 60;
-				hours = minutes / 60;
-				days = hours / 24;		
+				seconds = CurrentGameTick / Temporal.TICKS_PER_SECOND;
+				minutes = CurrentGameTick / Temporal.TICKS_PER_MINUTE;
+				hours = CurrentGameTick / Temporal.TICKS_PER_HOUR;
+				days = CurrentGameTick / Temporal.TICKS_PER_DAY;
 			}
 		}
 	}

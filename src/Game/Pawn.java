@@ -81,7 +81,7 @@ public class Pawn extends Actor {
 		float EdgeCost = PathFinding.getSinglton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getMovementModality());
 		final int speedIndex = DataManager.getDataManager().getLabelIndex("BASIC_ATTRIBUTE_SPEED");
 		if (EdgeCost != -1) {
-			return (int) (EdgeCost / ((float) BasicAttributes[speedIndex] / 7.0) * 12);
+			return (int) (EdgeCost / ((float) BasicAttributes[speedIndex] / 7.0) * TICKS_PER_SECOND);
 		} else {
 			return 1;  // signal falure to job manager?
 		}
