@@ -1,0 +1,36 @@
+
+Trap 'Meat Grinder' type arrangments must be avoided, they break the defense game
+
+Traps need power to be multiple firing or resetting in any way
+
+Unpowered traps are manually reset by Dwarves
+
+Enemies have trap detecting and trap disarming abilities
+
+Traps may present a danger to your own Dwarves preventing the spamming of zillions of traps
+
+
+Trap Triggers
+
+Pressure Plate - simple cheap, one space
+Trip Wire - spans multiple tiles (runs between tiles)
+Riddle - Magical placed on doors, your dwarves usually answer correctly
+SightStone - Magic stones sense the presense of a specific type of creature?
+Locks - any door can trigger traps when someone tries to pick the lock or force the door
+
+
+Trap Damage Mechanisms
+
+Pit - simple door opens and drops enemy on to what ever you put down their
+Blades and Weapons
+Arrow firing
+Allarm Bell - awakens Dwarves with a noise
+Flame spitting
+Acid spitting
+glue spitting
+Steam Gas Asphiation
+Toxic Gas Asphiation
+Net thrower
+Temple of Doom giant rock ball
+Flooding with water (link to floodgates)
+Moving Crushing Wall

@@ -15,12 +15,10 @@
 	<File Path="XML\Gems.xml"/>
 	<File Path="XML\Soils.xml"/>
 	<File Path="XML\Metals.xml"/>
-	<File Path="XML\SpriteTextures.xml"/>
 	<File Path="XML\Creatures.xml"/>
 	<File Path="XML\AnimationTypes.xml"/>
 	<File Path="XML\TreeTextures.xml"/>
 	<File Path="XML\MineCraftTextures.xml"/>
-	<File Path="XML\Animations.xml"/>
 	<File Path="XML\BasicAttributes.xml"/>
 	<File Path="XML\CreatureSizes.xml"/>
 </Files>

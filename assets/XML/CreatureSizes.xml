@@ -3,97 +3,97 @@
 	<CreatureSize>
 		<Name Label="CREATURE_SIZE_DIMINIUTIVE"/>
 		<BasicAttributeModifiers>
-			<BasicAttribute label="BASIC_ATTRIBUTE_STRENGTH" Modifier="-1"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="5"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="5"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="1"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_VITALITY" Modifier="-1"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_REFLEXES" Modifier="4"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_SPEED" Modifier="1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_STRENGTH" Modifier="-1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="5"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="5"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_VITALITY" Modifier="-1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_REFLEXES" Modifier="4"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_SPEED" Modifier="1"/>
 		</BasicAttributeModifiers>
 	</CreatureSize>
 	<CreatureSize>
 		<Name Label="CREATURE_SIZE_TINY"/>
 		<BasicAttributeModifiers>
-			<BasicAttribute label="BASIC_ATTRIBUTE_STRENGTH" Modifier="0"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="4"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="4"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="1"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_VITALITY" Modifier="0"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_REFLEXES" Modifier="4"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_SPEED" Modifier="1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_STRENGTH" Modifier="0"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="4"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="4"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_VITALITY" Modifier="0"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_REFLEXES" Modifier="4"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_SPEED" Modifier="1"/>
 		</BasicAttributeModifiers>
 	</CreatureSize>
 	<CreatureSize>
 		<Name Label="CREATURE_SIZE_SMALL"/>
 		<BasicAttributeModifiers>
-			<BasicAttribute label="BASIC_ATTRIBUTE_STRENGTH" Modifier="1"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="3"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="3"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="2"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_VITALITY" Modifier="1"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_REFLEXES" Modifier="3"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_SPEED" Modifier="2"/>	
+			<AttributeModifier label="BASIC_ATTRIBUTE_STRENGTH" Modifier="1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="3"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="3"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="2"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_VITALITY" Modifier="1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_REFLEXES" Modifier="3"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_SPEED" Modifier="2"/>	
 		</BasicAttributeModifiers>
 	</CreatureSize>
 	<CreatureSize>
 		<Name Label="CREATURE_SIZE_MEDIUM"/>
 		<BasicAttributeModifiers>
-			<BasicAttribute label="BASIC_ATTRIBUTE_STRENGTH" Modifier="2"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="2"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="2"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="2"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_VITALITY" Modifier="2"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_REFLEXES" Modifier="2"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_SPEED" Modifier="2"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_STRENGTH" Modifier="2"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="2"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="2"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="2"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_VITALITY" Modifier="2"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_REFLEXES" Modifier="2"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_SPEED" Modifier="2"/>
 		</BasicAttributeModifiers>
 	</CreatureSize>
 	<CreatureSize>
 		<Name Label="CREATURE_SIZE_LARGE"/>
 		<BasicAttributeModifiers>
-			<BasicAttribute label="BASIC_ATTRIBUTE_STRENGTH" Modifier="3"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="1"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="1"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="3"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_VITALITY" Modifier="3"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_REFLEXES" Modifier="1"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_SPEED" Modifier="2"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_STRENGTH" Modifier="3"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="3"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_VITALITY" Modifier="3"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_REFLEXES" Modifier="1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_SPEED" Modifier="2"/>
 		</BasicAttributeModifiers>
 	</CreatureSize>
 	<CreatureSize>
 		<Name Label="CREATURE_SIZE_HUGE"/>
 		<BasicAttributeModifiers>
-			<BasicAttribute label="BASIC_ATTRIBUTE_STRENGTH" Modifier="4"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="1"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="1"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="3"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_VITALITY" Modifier="4"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_REFLEXES" Modifier="0"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_SPEED" Modifier="3"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_STRENGTH" Modifier="4"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="3"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_VITALITY" Modifier="4"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_REFLEXES" Modifier="0"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_SPEED" Modifier="3"/>
 		</BasicAttributeModifiers>
 	</CreatureSize>
 	<CreatureSize>
 		<Name Label="CREATURE_SIZE_GARGANTUAN"/>
 		<BasicAttributeModifiers>
-			<BasicAttribute label="BASIC_ATTRIBUTE_STRENGTH" Modifier="5"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="0"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="0"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="4"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_VITALITY" Modifier="5"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_REFLEXES" Modifier="-1"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_SPEED" Modifier="4"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_STRENGTH" Modifier="5"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="0"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="0"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="4"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_VITALITY" Modifier="5"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_REFLEXES" Modifier="-1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_SPEED" Modifier="4"/>
 		</BasicAttributeModifiers>
 	</CreatureSize>
 	<CreatureSize>
 		<Name Label="CREATURE_SIZE_COLLOSAL"/>
 		<BasicAttributeModifiers>
-			<BasicAttribute label="BASIC_ATTRIBUTE_STRENGTH" Modifier="6"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="-1"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="-1"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="5"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_VITALITY" Modifier="6"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_REFLEXES" Modifier="-1"/>
-			<BasicAttribute label="BASIC_ATTRIBUTE_SPEED" Modifier="5"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_STRENGTH" Modifier="6"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="-1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="-1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="5"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_VITALITY" Modifier="6"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_REFLEXES" Modifier="-1"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_SPEED" Modifier="5"/>
 		</BasicAttributeModifiers>
 	</CreatureSize>
 </CreatureSizes>

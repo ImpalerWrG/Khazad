@@ -7,16 +7,19 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Zealot - Skirmisher Paladin
 		Dervish - Fighter Monk
 		Apostle - Cleric
+		Jagar - Fighting Inquisitor - classic red hat vampire hunter
 	</>		
 	<Acolyte of Odin (High Priest of)(male - Wisdom) (Holy Symbol, Litergy)>
 		Zealot - Marksman Paladin
 		Mystic - Builder Monk
 		Initiate - Cleric
+		Judicator - Domestic judge for civil and religious crimes
 	</>		
 	<Acolyte of Freya (High Priest of)(female - Fertility, Judgement) (Holy Symbol, Litergy)>
 		Shield Maiden - Defender Paladin
 		Nun - Labourer Monk
 		Savant - Cleric
+		Exorcist - magic oriented undead/demon driving out inquisitor
 	</>
 	<Acolyte of Helga (High Priest of)(female - Wisdom, Martial, Prophecy ) (Holy Symbol, Litergy)>
 		Valkyrie - Warrior Paladin
@@ -32,6 +35,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Sentinel - Guard Paladin
 		Virtuoso - Crafter Monk
 		Emissary - Cleric
+		Witness - Watches your dwarves on expeditions, detects sabotage/lies by heretics
 	</>	
 	Pantheon x6 
 		Paladin - Mixed Cleric/Fighter

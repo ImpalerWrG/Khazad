@@ -1,22 +1,132 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Materials xmlns="https://github.com/ImpalerWrG/Khazad">
-	<Material>
-		<Name Label="MATERIAL_DWARF"/>
-		<MaterialClass label="MATERIALCLASS_CREATURE"/>
-		<PrimaryColor label="COLOR_NONE"/>
-		<ColorMode mode="keepimage"/>
-		<SurfaceTextures>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DWARF_0"/>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SPRITE_DWARF_1"/>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_SPRITE_DWARF_2"/>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_SPRITE_DWARF_3"/>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_SPRITE_DWARF_4"/>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_SMOOTH_WALL" Texturelabel="TEXTURE_SPRITE_DWARF_5"/>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_SMOOTH_FLOOR" Texturelabel="TEXTURE_SPRITE_DWARF_6"/>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_PEBBLES" Texturelabel="TEXTURE_SPRITE_DWARF_0"/>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_BOULDER" Texturelabel="TEXTURE_SPRITE_DWARF_1"/>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_SPRITE_DWARF_2"/>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_SPRITE_DWARF_3"/>
-		</SurfaceTextures>
-	</Material>
-</Materials>
+<Creatures xmlns="https://github.com/ImpalerWrG/Khazad">
+	<Creature>
+		<Name Label="CREATURE_DWARF"/>
+		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
+		<LifeSpan value="250"/>
+		<BasicAttributeModifers>
+			<AttributeModifier label="BASIC_ATTRIBUTE_STRENGTH" Modifier="0"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="0"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="0"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_ENDURANCE" Modifier="0"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_VITALITY" Modifier="2"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_REFLEXES" Modifier="0"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_SPEED" Modifier="0"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_LOGIC" Modifier="0"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_PERCEPTION" Modifier="0"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_CHARISMA" Modifier="-2"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_MEMORY" Modifier="0"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_JUDGMENT" Modifier="0"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_WILLPOWER" Modifier="0"/>
+			<AttributeModifier label="BASIC_ATTRIBUTE_INTUITION" Modifier="0"/>
+		</BasicAttributeModifers>
+		<MovementModality>
+			<MovementType label="WALK"/>
+			<MovementType label="CLIMB"/>
+		</MovementModality>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_HUMAN"/>
+		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_ELF"/>
+		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_GNOME"/>
+		<CreatureSize label="CREATURE_SIZE_TINY"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_HOBITS"/>
+		<CreatureSize label="CREATURE_SIZE_SMALL"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_GOBLIN"/>
+		<CreatureSize label="CREATURE_SIZE_SMALL"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_ORC"/>
+		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_KOBOLD"/>
+		<CreatureSize label="CREATURE_SIZE_SMALL"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_GNOLL"/>
+		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_ORC"/>
+		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_OGRE"/>
+		<CreatureSize label="CREATURE_SIZE_LARGE"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_MANTIS"/>
+		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_SPIDERFOLK"/>
+		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_SATYR"/>
+		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_CENTAUR"/>
+		<CreatureSize label="CREATURE_SIZE_LARGE"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_PIXIE"/>
+		<CreatureSize label="CREATURE_SIZE_DIMINIUTIVE"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_SMURF"/>
+		<CreatureSize label="CREATURE_SIZE_DIMINIUTIVE"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_MERFOLK"/>
+		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_HYPSIL"/>
+		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_MYCONID"/>
+		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_ENT"/>
+		<CreatureSize label="CREATURE_SIZE_HUGE"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_DRAGON"/>
+		<CreatureSize label="CREATURE_SIZE_COLLOSAL"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_BEHOLDER"/>
+		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_GARGOYLES"/>
+		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_MEDUSA"/>
+		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_TROLL"/>
+		<CreatureSize label="CREATURE_SIZE_LARGE"/>
+	</Creature>
+	<Creature>
+		<Name Label="CREATURE_MINOTAUR"/>
+		<CreatureSize label="CREATURE_SIZE_LARGE"/>
+	</Creature>
+</Creatures>
