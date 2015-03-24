@@ -19,6 +19,7 @@ package Game;
 
 import Job.*;
 import Map.MapCoordinate;
+import java.io.Serializable;
 
 /**
  * The class representing the actually Dwarves and their livestock which are
@@ -26,7 +27,7 @@ import Map.MapCoordinate;
  * 
  * @author Impaler
  */
-public class Citizen extends Pawn {
+public class Citizen extends Pawn implements Serializable {
 	
 	// Family/clan relationships
 	

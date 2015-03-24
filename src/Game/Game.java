@@ -33,8 +33,10 @@ import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+import java.io.IOException;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
@@ -270,6 +272,11 @@ public class Game extends AbstractAppState implements ActionListener {
 
     public boolean isPaused() {
         return Pause;
+    }
+    
+    public void Save(ObjectOutputStream stream) throws IOException {
+        stream.writeObject(this.Actors);
+        //stream.writeObject(this);
     }
     /*
      void Save(boost::filesystem::basic_ofstream<char>& Stream) const

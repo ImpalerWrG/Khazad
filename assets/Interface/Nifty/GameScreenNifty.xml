@@ -8,7 +8,7 @@
 		<panel alighn="center" align="center" childLayout="vertical" height="300px" id="MenuPanel" style="nifty-panel-simple" width="200px">
 			<panel alighn="center" align="center" childLayout="center" height="100px" id="QuitPanel" width="100%">
 				<control childLayout="center" controller="Nifty.GameScreenController" height="50px" id="Savebutton" label="Save Game" name="button" width="150px">
-					<interact onClick="Save()"/>
+					<interact onClick="SaveGame()"/>
 				</control>
 			</panel>
 			<panel alighn="center" align="center" childLayout="center" height="100px" id="QuitPanel" width="100%">
@@ -23,7 +23,7 @@
 			</panel>
 		</panel>
 	</popup>
-<screen controller="Nifty.GameScreenController" id="GameScreen">
+        <screen controller="Nifty.GameScreenController" id="GameScreen">
 		<layer childLayout="vertical" id="layer0">
 			<panel alighn="top" childLayout="horizontal" height="80px" id="TopPanel" width="100%">
 				<panel childLayout="horizontal" height="60px" id="TopLeftPanel" style="nifty-panel-simple" width="168px">
