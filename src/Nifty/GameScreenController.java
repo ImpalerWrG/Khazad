@@ -158,8 +158,6 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
                 e.printStackTrace();
             }
         }        
-        //Game game = app.getStateManager().getState(Game.class);
-        //game.Save(stream)
         closePopup();
     }
 
