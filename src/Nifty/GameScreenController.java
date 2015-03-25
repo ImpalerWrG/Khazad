@@ -88,8 +88,8 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
             MenuPopup = nifty.createPopup("MenuPopup");
         }
 
-        Game Time = app.getStateManager().getState(Game.class);
-        Time.Pause(true);
+        Game game = app.getStateManager().getState(Game.class);
+        game.Pause(true);
 
         nifty.showPopup(nifty.getCurrentScreen(), this.MenuPopup.getId(), null);
         MenuUp = true;
@@ -141,7 +141,6 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 
             // now write to the save file
             oos = new ObjectOutputStream(new FileOutputStream(saveFile));
-            // get the content in bytes
             Game game = app.getStateManager().getState(Game.class);
             game.Save(oos);
             System.out.println("Done");

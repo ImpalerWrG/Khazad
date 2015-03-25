@@ -23,7 +23,7 @@
 			</panel>
 		</panel>
 	</popup>
-        <screen controller="Nifty.GameScreenController" id="GameScreen">
+	<screen controller="Nifty.GameScreenController" id="GameScreen">
 		<layer childLayout="vertical" id="layer0">
 			<panel alighn="top" childLayout="horizontal" height="80px" id="TopPanel" width="100%">
 				<panel childLayout="horizontal" height="60px" id="TopLeftPanel" style="nifty-panel-simple" width="168px">

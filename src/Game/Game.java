@@ -275,12 +275,15 @@ public class Game extends AbstractAppState implements ActionListener {
     }
 
     public void Save(ObjectOutputStream stream) throws IOException {
+		// TODO write out a version number first
         stream.writeObject(this.Actors);
-        //stream.writeObject(this);
+		// TODO write out other data
     }
     
     public void Load(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		// TODO read the version number and check it is correct
         this.Actors = (ArrayList<Actor>)stream.readObject();
+		// TODO read other data
     }
     /*
      void Save(boost::filesystem::basic_ofstream<char>& Stream) const
