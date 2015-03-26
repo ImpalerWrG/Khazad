@@ -152,7 +152,6 @@ public class ShellScreenController implements ScreenController {
 			String saveGamesFolder = myDocumentsFolder + "\\my games\\Khazad\\";
 			File saveFile = new File(saveGamesFolder + fileName);
 			if (!saveFile.exists()) {
-				// TODO show error message (save does not exist)
 				ShowError(fileName + " save does not exist.");
 				return;
 			}
@@ -183,7 +182,6 @@ public class ShellScreenController implements ScreenController {
 			this.app.getStateManager().attach(Pather);
 
 			nifty.gotoScreen("GameScreen");
-			System.out.println("Done");
 		} catch (IOException e) {
 			// TODO show a better message to the user
 			ShowError(e.getMessage());

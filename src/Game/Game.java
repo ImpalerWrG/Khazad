@@ -284,7 +284,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
     
     public void Load(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		// TODO read the version number and check it is correct
-		MasterSeed = (int)stream.readInt();
+		MasterSeed = stream.readInt();
 		
 		// TODO read other data, rather than recreating it
         PawnDice.Seed(MasterSeed);

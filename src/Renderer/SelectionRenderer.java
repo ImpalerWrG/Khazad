@@ -81,6 +81,13 @@ public class SelectionRenderer extends AbstractAppState implements Serializable 
 		BuildCursorBox();
 		BuildText();
 	}
+	
+	@Override
+	public void cleanup()
+	{
+		super.cleanup();
+		this.app.getGuiNode().detachChild(hudText);
+	}
 
 	public void BuildCursorBox() {
 

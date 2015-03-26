@@ -60,7 +60,7 @@ public class Navigator implements Serializable {
 	MapCoordinate CurrentLocation;
 	MapCoordinate Destination;
 
-	Future PathFuture = null;
+	transient Future PathFuture = null;
 	MapPath CurrentPath = null;
 	PathWalker CurrentPathWalker = null;
 

@@ -16,6 +16,7 @@
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Nifty;
 
+import Core.Main;
 import com.jme3.app.Application;
 
 import de.lessvoid.nifty.Nifty;
@@ -30,6 +31,8 @@ import de.lessvoid.nifty.NiftyEventSubscriber;
 
 import Game.Game;
 import Interface.GameCameraState;
+import Renderer.SelectionRenderer;
+import de.lessvoid.nifty.controls.Label;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -47,6 +50,9 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
     private Nifty nifty;
     boolean MenuUp = false;
     Element MenuPopup = null;
+	Element SaveErrorPopup = null;
+	Element SaveSuccessPopup = null;
+
 
     public GameScreenController(Nifty Newnifty, Application app) {
         this.app = app;
@@ -107,9 +113,19 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
     }
 
     public void Abandon() {
+        // Destroy Game object
+		SelectionRenderer selectionRenderer = app.getStateManager().getState(SelectionRenderer.class);
+		app.getStateManager().detach(selectionRenderer);
+		selectionRenderer.cleanup();
+		
+		Game game = app.getStateManager().getState(Game.class);
+		app.getStateManager().detach(game);
+		game.cleanup();
+		
+		Main core = (Main) app;
+		core.getRootNode().detachAllChildren();
+		
         closePopup();
-
-        // Destroy Game object ?
         nifty.gotoScreen("StartScreen");
     }
 
@@ -143,9 +159,10 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
             oos = new ObjectOutputStream(new FileOutputStream(saveFile));
             Game game = app.getStateManager().getState(Game.class);
             game.Save(oos);
-            System.out.println("Done");
+			ShowSaveSuccess();
+			closePopup();
         } catch (IOException e) {
-            // TODO show a message to the user
+            ShowSaveError(e.getMessage());
             e.printStackTrace();
         } finally {
             try {
@@ -153,13 +170,43 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
                     oos.close();
                 }
             } catch (IOException e) {
-                // TODO show a message to the user
+	            ShowSaveError(e.getMessage());
                 e.printStackTrace();
             }
-        }        
-        closePopup();
+        }                
     }
+	
+	private void ShowSaveError(String errorMessage) {
+		if (SaveErrorPopup == null) {
+			SaveErrorPopup = nifty.createPopup("SaveErrorPopup");
+		}
+		Label errorLabel = SaveErrorPopup.findNiftyControl("SaveErrorLabel", Label.class);
+		if (errorLabel != null) {
+			errorLabel.setText(errorMessage);
+		}
 
+		nifty.showPopup(nifty.getCurrentScreen(), this.SaveErrorPopup.getId(), null);
+	}
+
+	public void CloseSaveError() {
+		if (SaveErrorPopup != null) {
+			nifty.closePopup(this.SaveErrorPopup.getId());
+		}
+	}
+	
+	private void ShowSaveSuccess() {
+		if (SaveSuccessPopup == null) {
+			SaveSuccessPopup = nifty.createPopup("SaveSuccessPopup");
+		}
+		nifty.showPopup(nifty.getCurrentScreen(), this.SaveSuccessPopup.getId(), null);
+	}
+
+	public void CloseSaveSuccess() {
+		if (SaveSuccessPopup != null) {
+			nifty.closePopup(this.SaveSuccessPopup.getId());
+		}
+	}
+	
     public void Pause() {
         Game game = app.getStateManager().getState(Game.class);
         game.Pause(!game.isPaused());
