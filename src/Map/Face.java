@@ -28,6 +28,7 @@ public class Face {
 
 	FaceShape FaceType;
 	byte LocationCoordinates;
+	boolean Sunlit;
 
 	private short SurfaceTypeID;
 	private short MaterialTypeID;
@@ -88,6 +89,9 @@ public class Face {
 	public FaceShape getFaceShapeType() {
 		return FaceType; 
 	}
+
+	public boolean isSunlit() {return this.Sunlit;}
+
 	/*
 	void Save(boost::filesystem::basic_ofstream<char>& Stream) const
 	{

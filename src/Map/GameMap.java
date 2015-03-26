@@ -274,9 +274,8 @@ public class GameMap {
 
 	public void setCubeHidden(MapCoordinate Coordinates, boolean NewValue) {
 		Cell TargetCell = getCubeOwner(Coordinates);
-
 		if(TargetCell != null)
-			TargetCell.setCubeHidden(Coordinates.CubeByteIndex(), NewValue);	
+			TargetCell.setCubeHidden(Coordinates.CubeByteIndex(), NewValue);
 	}
 
 	public void GenerateFirstLight() {
@@ -297,7 +296,7 @@ public class GameMap {
 				LightRemains = false;
 				i = 0;
 				do {
-					if (TopCell.isCubeSunLit(i) && TopCell.getCubeShape(i).LightPassable(Axis.AXIS_Z)) {
+					if (TopCell.isCubeSunLit(i) && !TopCell.getCubeShape(i).hasFace(Direction.DIRECTION_NONE)) {
 						BottomCell.setCubeSunLit(i, true);
 						LightRemains = true;
 					}
@@ -310,64 +309,40 @@ public class GameMap {
 			} while (BottomCell != null && LightRemains);
 		}
 	}
-	/*
-	public boolean isCubeSubTerranean(MapCoordinates Coordinates) {
-		Cell TargetCell = getCubeOwner(Coordinates);
 
-		if(TargetCell != null)
-		{
-			return TargetCell.isCubeSubTerranean(Coordinates.Cube());
-		}
-		return false;
+	public boolean isCubeSubTerranean(MapCoordinate Coordinates) {
+		Cell TargetCell = getCubeOwner(Coordinates);
+		return TargetCell != null ? TargetCell.isCubeSubTerranean(Coordinates.CubeByteIndex()) : false;
 	}
 
-	public void setCubeSubTerranean(MapCoordinates Coordinates, boolean NewValue) {
+	public void setCubeSubTerranean(MapCoordinate Coordinates, boolean NewValue) {
 		Cell TargetCell = getCubeOwner(Coordinates);
-
 		if(TargetCell != null)
-		{
-			TargetCell.setCubeSubTerranean(Coordinates.Cube(), NewValue);
-		}
+			TargetCell.setCubeSubTerranean(Coordinates.CubeByteIndex(), NewValue);
 	}
 
-	public boolean isCubeSkyView(MapCoordinates Coordinates) {
+	public boolean isCubeSkyView(MapCoordinate Coordinates) {
 		Cell TargetCell = getCubeOwner(Coordinates);
-
-		if(TargetCell != null)
-		{
-			return TargetCell.isCubeSkyView(Coordinates.Cube());
-		}
-		return false;
+		return TargetCell != null ? TargetCell.isCubeSkyView(Coordinates.CubeByteIndex()) : false;
 	}
 
-	public void setCubeSkyView(MapCoordinates Coordinates, boolean NewValue) {
+	public void setCubeSkyView(MapCoordinate Coordinates, boolean NewValue) {
 		Cell TargetCell = getCubeOwner(Coordinates);
-
 		if(TargetCell != null)
-		{
-			TargetCell.setCubeSkyView(Coordinates.Cube(), NewValue);
-		}
+			TargetCell.setCubeSkyView(Coordinates.CubeByteIndex(), NewValue);
 	}
 
-	public boolean isCubeSunLit(MapCoordinates Coordinates) {
+	public boolean isCubeSunLit(MapCoordinate Coordinates) {
 		Cell TargetCell = getCubeOwner(Coordinates);
-
-		if(TargetCell != null)
-		{
-			return TargetCell.isCubeSunLit(Coordinates.Cube());
-		}
-		return false;
+		return TargetCell != null ? TargetCell.isCubeSunLit(Coordinates.CubeByteIndex()) : false;
 	}
 
-	public void setCubeSunLit(MapCoordinates Coordinates, boolean NewValue) {
+	public void setCubeSunLit(MapCoordinate Coordinates, boolean NewValue) {
 		Cell TargetCell = getCubeOwner(Coordinates);
-
 		if(TargetCell != null)
-		{
-			TargetCell.setCubeSunLit(Coordinates.Cube(), NewValue);
-		}
+			TargetCell.setCubeSunLit(Coordinates.CubeByteIndex(), NewValue);
 	}
-	*/
+
 	public void ExcavateCube(MapCoordinate Coordinates, CubeShape GoalShape) {
 		int Corner = ExcavateDice.Roll(0, Direction.CARDINAL_DIRECTIONS.length - 1);
 		CubeShape OldShape = getCubeShape(Coordinates);

@@ -128,23 +128,36 @@ public class MapRenderer extends AbstractAppState{
 				semaphore.release();
 			}
 		} catch (final InterruptedException e) {
-			e.printStackTrace();
+			System.err.println(e.getLocalizedMessage());
+			System.err.println(e.getMessage());
+			System.err.println(e.toString());
 		}
 		return CellNode;
 	}
 
 	public Node getCellNodeDark(CellCoordinate TargetCell) {
 		Node CellNode = DarkCellNodeMap.get(TargetCell);
-		if (CellNode == null) {
-			CellNode = new Node();	
+		try {  // Semaphore prevents multiple copies of the same Cell node from being created
+			semaphore.acquire();
+			try {
+				if (CellNode == null) {
+					CellNode = new Node();
 
-			float x = (float) (TargetCell.X * MapCoordinate.CELLEDGESIZE);
-			float y = (float) (TargetCell.Y * MapCoordinate.CELLEDGESIZE);
+					float x = (float) (TargetCell.X * MapCoordinate.CELLEDGESIZE);
+					float y = (float) (TargetCell.Y * MapCoordinate.CELLEDGESIZE);
 
-			CellNode.move(x, y, 0);
+					CellNode.move(x, y, 0);
 
-			getZNodeDark(TargetCell.Z).attachChild(CellNode);
-			DarkCellNodeMap.put(TargetCell, CellNode);
+					getZNodeDark(TargetCell.Z).attachChild(CellNode);
+					DarkCellNodeMap.put(TargetCell, CellNode);
+				}
+			}	finally {
+				semaphore.release();
+			}
+		} catch (final InterruptedException e) {
+			System.err.println(e.getLocalizedMessage());
+			System.err.println(e.getMessage());
+			System.err.println(e.toString());
 		}
 		return CellNode;
 	}

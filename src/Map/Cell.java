@@ -26,6 +26,7 @@ import java.util.BitSet;
  * Primary MapData storage class, holds all data for describing a 16x16 square
  * 1 level high region of the map, each tile is indexed by a byte for array and 
  * bitset based data and HashMaps hold face objects.
+ * 
  * @author Impaler
  */
 public class Cell {
@@ -45,7 +46,7 @@ public class Cell {
 
 	// The global position of this cell relative to other cells
 	private CellCoordinate thisCellCoordinates;
-	
+	// Dirty values, set true on changes, set false by rendering
 	boolean DirtyTerrainRendering;
 	boolean DirtyPathRendering;
 
@@ -110,10 +111,10 @@ public class Cell {
 
 			for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
 				FaceCoordinate FaceLocation = new FaceCoordinate(TargetCube, DirectionType);
-				MapCoordinate ModifiedCoordinates = ParentMap.getFacingCoordinates(thisCellCoordinates, FaceLocation);
+				MapCoordinate AdjacentCoordinates = ParentMap.getFacingCoordinates(thisCellCoordinates, FaceLocation);
 
-				if (ParentMap.isCubeInited(ModifiedCoordinates)) {
-					CubeShape AdjacentShape = ParentMap.getCubeShape(ModifiedCoordinates);
+				if (ParentMap.isCubeInited(AdjacentCoordinates)) {
+					CubeShape AdjacentShape = ParentMap.getCubeShape(AdjacentCoordinates);
 
 					if (AdjacentShape.isSky()) {
 						if (Shape.hasFace(DirectionType)) {
@@ -122,6 +123,8 @@ public class Cell {
 							NewFace.setFaceMaterialType(CubeMaterial);
 							NewFace.setFaceSurfaceType(WallSurface);
 							NewFace.setFaceShapeType(new FaceShape(Shape, AdjacentShape, DirectionType));
+							if (ParentMap.isCubeSunLit(AdjacentCoordinates))
+								NewFace.Sunlit = true;
 						}	
 					}
 
@@ -129,25 +132,26 @@ public class Cell {
 						if (DirectionType == Direction.DIRECTION_DOWN && Shape.hasFloor() && AdjacentShape.hasCeiling()) {
 							Face NewFace = ParentMap.addFace(new MapCoordinate(thisCellCoordinates, TargetCube), DirectionType);
 
-							NewFace.setFaceMaterialType(ParentMap.getCubeMaterial(ModifiedCoordinates));
+							NewFace.setFaceMaterialType(ParentMap.getCubeMaterial(AdjacentCoordinates));
 							NewFace.setFaceSurfaceType(FloorSurface);
 							NewFace.setFaceShapeType(new FaceShape(Shape, AdjacentShape, DirectionType));
+							if (ParentMap.isCubeSunLit(AdjacentCoordinates))
+								NewFace.Sunlit = true;
 						}
 					}
 				}
 			}
 
-			if (!Shape.isEmpty() && !Shape.isSolid())
-			{
+			if (!Shape.isEmpty() && !Shape.isSolid()) {
 				Face NewFace = addFace(new FaceCoordinate(TargetCube, Direction.DIRECTION_NONE));
 
 				NewFace.setFaceMaterialType(CubeMaterial);
 				NewFace.setFaceSurfaceType(FloorSurface);
 				NewFace.setFaceShapeType(new FaceShape(Shape, null, Direction.DIRECTION_NONE));
+				if (isCubeSunLit(TargetCube))
+					NewFace.Sunlit = true;
 			}
-
 			TargetCube++;
-
 		}
 		while (TargetCube != 0);  // End Loop when Byte rolls over
 		setRenderingDirty();
@@ -255,7 +259,7 @@ public class Cell {
 		return DirtyPathRendering;
 	}
 
-	public CubeShape getCubeShape(byte Coordinates) {return new CubeShape(CubeShapeTypes[Coordinates & 0xFF]);}
+	public CubeShape getCubeShape(byte Coordinates)							{return new CubeShape(CubeShapeTypes[Coordinates & 0xFF]);}
 
 	public short getCubeMaterial(byte Coordinates)							{return CubeMaterialTypes[Coordinates & 0xFF]; }
 	public void setCubeMaterial(byte Coordinates, short MaterialID)			{CubeMaterialTypes[Coordinates & 0xFF] = MaterialID; DirtyTerrainRendering = true;}
