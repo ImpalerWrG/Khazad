@@ -25,16 +25,17 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
 import com.jme3.audio.AudioSource;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Impaler
  */
-public class Music extends AbstractAppState {
+public class Music extends AbstractAppState implements Serializable {
 	
 	ArrayList<String> Tracks = null;
-	SimpleApplication app = null;
+	transient SimpleApplication app = null;
 	AssetManager assets = null;
 	
 	Dice RandomGenerator = null;

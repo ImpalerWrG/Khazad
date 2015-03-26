@@ -43,6 +43,7 @@ import com.jme3.scene.shape.Box;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.util.BufferUtils;
+import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -53,9 +54,9 @@ import java.util.Map;
  *
  * @author Impaler
  */
-public class SelectionRenderer extends AbstractAppState {
+public class SelectionRenderer extends AbstractAppState implements Serializable {
 	
-	SimpleApplication app = null;
+	transient SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
 

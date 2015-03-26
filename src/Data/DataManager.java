@@ -23,12 +23,13 @@ import java.util.ArrayList;
 import nu.xom.*;
 
 import Data.Types.*;
+import java.io.Serializable;
 
 /**
  *
  * @author Impaler
  */
-public class DataManager {
+public class DataManager implements Serializable {
 
 	public static final short INVALID_INDEX = -1;
 

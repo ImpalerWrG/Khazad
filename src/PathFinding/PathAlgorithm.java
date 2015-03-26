@@ -18,6 +18,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package PathFinding;
 
 import Map.MapCoordinate;
+import java.io.Serializable;
 
 /**
  * Abstract base for all PathFinding Algorithms, all Algorithms need a Grid
@@ -27,7 +28,7 @@ import Map.MapCoordinate;
  * 
  * @author Impaler
  */
-public abstract class PathAlgorithm<T> {
+public abstract class PathAlgorithm<T> implements Serializable {
 
 	int GraphReads;
     int ExpandedNodes;

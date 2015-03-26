@@ -18,11 +18,12 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Interface;
 
 import Map.MapCoordinate;
+import java.io.Serializable;
 /**
  *
  * @author Impaler
  */
-public class VolumeSelection {
+public class VolumeSelection  implements Serializable {
 	
 	public MapCoordinate OriginLocation = new MapCoordinate();
     public MapCoordinate TerminalLocation = new MapCoordinate();

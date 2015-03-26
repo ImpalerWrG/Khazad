@@ -48,6 +48,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.texture.Image;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture2D;
+import java.io.Serializable;
 import java.util.Collection;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -61,9 +62,9 @@ import java.util.concurrent.ExecutorService;
  * 
  * @author Impaler
  */
-public class TerrainRenderer extends AbstractAppState implements ActionListener {
+public class TerrainRenderer extends AbstractAppState implements ActionListener, Serializable {
 
-	SimpleApplication app = null;
+	transient SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
 

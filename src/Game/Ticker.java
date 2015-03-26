@@ -17,6 +17,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Game;
 
+import java.io.Serializable;
 import java.util.concurrent.Callable;
 
 /**
@@ -28,7 +29,7 @@ import java.util.concurrent.Callable;
  * 
  * @author Impaler
  */
-public class Ticker implements Callable<Object> {
+public class Ticker implements Callable<Object>, Serializable {
 
 	Game thegame;
 	int Tickdown;

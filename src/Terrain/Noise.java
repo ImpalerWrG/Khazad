@@ -17,6 +17,8 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Terrain;
 
+import java.io.Serializable;
+
 /*
  * A speed-improved simplex noise algorithm for 2D, 3D and 4D in Java.
  *
@@ -34,7 +36,7 @@ package Terrain;
  *
  */
 
-public class Noise {  // Simplex noise in 2D, 3D and 4D
+public class Noise implements Serializable {  // Simplex noise in 2D, 3D and 4D
   private static Grad grad3[] = {new Grad(1,1,0),new Grad(-1,1,0),new Grad(1,-1,0),new Grad(-1,-1,0),
                                  new Grad(1,0,1),new Grad(-1,0,1),new Grad(1,0,-1),new Grad(-1,0,-1),
                                  new Grad(0,1,1),new Grad(0,-1,1),new Grad(0,1,-1),new Grad(0,-1,-1)};

@@ -19,6 +19,7 @@ package Job;
 
 import Game.Citizen;
 import Game.Pawn;
+import java.io.Serializable;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Manager for prioritizing and alocating all Jobs and tasks inside a Settlment
  * @author Impaler
  */
-public class JobManager {
+public class JobManager implements Serializable {
 
 	private ConcurrentHashMap<String, Job> JobMap;
 	private ConcurrentLinkedQueue<Pawn> IdleCitizens;

@@ -17,12 +17,14 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Map;
 
+import java.io.Serializable;
+
 /**
  * Used to refrence Cells in HashMaps by relative position, X and Y values are 16
  * times the true Map Coordinate, Z values are equal.
  * @author Impaler
  */
-public class CellCoordinate {
+public class CellCoordinate implements Serializable {
 
 	public short X, Y, Z;
 	

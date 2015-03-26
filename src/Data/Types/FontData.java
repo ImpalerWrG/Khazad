@@ -19,13 +19,14 @@ package Data.Types;
 
 import Data.DataBase;
 import Data.DataLibrary;
+import java.io.Serializable;
 import nu.xom.Element;
 
 /**
  *
  * @author Impaler
  */
-public class FontData extends DataBase {
+public class FontData extends DataBase implements Serializable {
 
 	String FilePath;
 	int Size;

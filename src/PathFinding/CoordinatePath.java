@@ -18,6 +18,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package PathFinding;
 
 import Map.MapCoordinate;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -27,7 +28,7 @@ import java.util.ArrayList;
  * 
  * @author Impaler
  */
-public class CoordinatePath extends MapPath {
+public class CoordinatePath extends MapPath implements Serializable {
 	
     ArrayList<MapCoordinate> PathCourse;
 

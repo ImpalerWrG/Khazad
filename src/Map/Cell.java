@@ -18,6 +18,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Map;
 
 import Data.DataManager;
+import java.io.Serializable;
 
 import java.util.HashMap;
 import java.util.BitSet;
@@ -28,7 +29,7 @@ import java.util.BitSet;
  * bitset based data and HashMaps hold face objects.
  * @author Impaler
  */
-public class Cell {
+public class Cell implements Serializable {
 
 	// Larger DataValues specific to each Cube
 	short[] CubeMaterialTypes;

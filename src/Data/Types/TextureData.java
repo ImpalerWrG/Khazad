@@ -20,6 +20,7 @@ package Data.Types;
 import Data.DataBase;
 import Data.DataLibrary;
 import Data.DataManager;
+import java.io.Serializable;
 
 import nu.xom.Element;
 
@@ -27,7 +28,7 @@ import nu.xom.Element;
  *
  * @author Impaler
  */
-public class TextureData extends DataBase {
+public class TextureData extends DataBase implements Serializable {
 
 	public String FilePath;
 	public int X, Y; 

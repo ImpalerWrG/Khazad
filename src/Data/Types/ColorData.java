@@ -19,12 +19,13 @@ package Data.Types;
 
 import Data.DataBase;
 import Data.DataLibrary;
+import java.io.Serializable;
 import nu.xom.Element;
 /**
  *
  * @author Impaler
  */
-public class ColorData extends DataBase {
+public class ColorData extends DataBase implements Serializable {
 	
 	public short Red, Green, Blue;
 

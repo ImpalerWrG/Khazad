@@ -19,13 +19,14 @@ package Data.Types;
 
 import Data.DataBase;
 import Data.DataLibrary;
+import java.io.Serializable;
 import nu.xom.Element;
 
 /**
  *
  * @author Impaler
  */
-public class BasicAttributeData extends DataBase {
+public class BasicAttributeData extends DataBase implements Serializable {
 	
 	public BasicAttributeData() {
 

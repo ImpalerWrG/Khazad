@@ -18,13 +18,14 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Map;
 
 import Data.DataManager;
+import java.io.Serializable;
 
 /**
  * Describes a Face both its shape, location inside a Cell and it's material
  * for gameplay purposes.
  * @author Impaler
  */
-public class Face {
+public class Face implements Serializable {
 
 	FaceShape FaceType;
 	byte LocationCoordinates;

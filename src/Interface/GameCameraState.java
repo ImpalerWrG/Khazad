@@ -50,6 +50,7 @@ import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.scene.Spatial;
 
 import Renderer.MapRenderer;
+import java.io.Serializable;
 
 
 /**
@@ -57,7 +58,7 @@ import Renderer.MapRenderer;
  *
  *  @author    Impaler
  */
-public class GameCameraState extends AbstractAppState implements ActionListener, AnalogListener {
+public class GameCameraState extends AbstractAppState implements ActionListener, AnalogListener, Serializable {
 
 	public enum CameraMode {
 		NORMAL,
@@ -71,7 +72,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	private Node Mapnode;
 	private Node LookNode;
 
-	private SimpleApplication app;
+	transient private SimpleApplication app;
 	private GameCamera MainCamera;
 	private AppStateManager state; 
 

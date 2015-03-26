@@ -19,12 +19,13 @@ package Terrain;
 import Core.Dice;
 import Map.*;
 import Data.DataManager;
+import java.io.Serializable;
 
 /**
  *
  * @author Impaler
  */
-public class Geology {
+public class Geology implements Serializable {
 
     int RockType = 42;
     int GeologySeed;

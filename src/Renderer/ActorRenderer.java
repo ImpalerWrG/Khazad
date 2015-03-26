@@ -39,6 +39,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.LodControl;
+import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -51,9 +52,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Impaler
  */
 
-public class ActorRenderer extends AbstractAppState{
+public class ActorRenderer extends AbstractAppState implements Serializable{
 
-	SimpleApplication app = null;
+	transient SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
 	ImageManager imagemanager = null;

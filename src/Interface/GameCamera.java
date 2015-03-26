@@ -32,12 +32,13 @@ import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.jme3.scene.CameraNode;
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * A camera 
  * @author Impaler
  */
-public class GameCamera {
+public class GameCamera implements Serializable {
 		
 	protected Node TargetNode = null;
 	protected Node RotationNode = null;

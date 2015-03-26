@@ -50,6 +50,7 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.util.BufferUtils;
+import java.io.Serializable;
 
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -64,14 +65,14 @@ import jme3tools.optimize.GeometryBatchFactory;
  *
  * @author Impaler
  */
-public class PathingRenderer extends AbstractAppState implements ActionListener {
+public class PathingRenderer extends AbstractAppState implements ActionListener, Serializable {
 
-	SimpleApplication app = null;
+	transient SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
 
 	Game game = null;
-	PathFinding Pathing;
+	transient PathFinding Pathing;
 	Node PathingNode;
 
 	HashMap<CellCoordinate, Node> cells;

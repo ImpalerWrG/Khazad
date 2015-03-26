@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -50,7 +51,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  * @author Impaler
  */
-public class ImageManager {
+public class ImageManager implements Serializable {
 
 	int ImageCounter = 0;
 	private static ImageManager instance = null;

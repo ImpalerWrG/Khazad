@@ -21,12 +21,13 @@ import nu.xom.*;
 import java.io.IOException;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  *
  * @author Impaler
  */
-public class XMLManager {
+public class XMLManager implements Serializable {
 	
 	Document LoadFile(String Filename) {
 		Document doc;

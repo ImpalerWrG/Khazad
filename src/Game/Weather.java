@@ -23,6 +23,7 @@ import com.jme3.scene.Node;
 import com.jme3.math.Vector3f;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
+import java.io.Serializable;
 
 /**
  * Holds the state of and simulates the weather and Climate of the Games local 
@@ -30,7 +31,7 @@ import com.jme3.math.Quaternion;
  * 
  * @author Impaler
  */
-public class Weather extends Temporal {
+public class Weather extends Temporal implements Serializable {
 
 	DirectionalLight Sun;
 	Quaternion Rotation;

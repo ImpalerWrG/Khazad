@@ -20,6 +20,7 @@ package Data.Types;
 import Data.DataBase;
 import Data.DataLibrary;
 import Data.DataManager;
+import java.io.Serializable;
 
 import nu.xom.Element;
 import nu.xom.Elements;
@@ -28,7 +29,7 @@ import nu.xom.Elements;
  *
  * @author Impaler
  */
-public class MaterialData extends DataBase {
+public class MaterialData extends DataBase implements Serializable {
 
 	String PrimaryColorlabel, SecondaryColorlabel, BorderColorlabel;
 	public short PrimaryColorID, SecondaryColorID, BorderColorID;

@@ -19,13 +19,14 @@ package Data.Types;
 
 import Data.DataBase;
 import Data.DataLibrary;
+import java.io.Serializable;
 import nu.xom.Element;
 
 /**
  *
  * @author Impaler
  */
-public class ModelData extends DataBase {
+public class ModelData extends DataBase implements Serializable {
 
 	String FilePath;
 	

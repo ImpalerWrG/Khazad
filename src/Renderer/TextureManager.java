@@ -29,6 +29,7 @@ import com.jme3.texture.Texture2D;
 import com.jme3.texture.Image;
 
 import com.jme3.util.BufferUtils;
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 
 
@@ -37,7 +38,7 @@ import java.nio.ByteBuffer;
  * @author Impaler
  */
 
-public class TextureManager {
+public class TextureManager implements Serializable {
 
 	Image TerrainImage;
 	Texture TerrainTexture;

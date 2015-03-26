@@ -20,13 +20,14 @@ package Data.Types;
 import Data.DataBase;
 import Data.DataLibrary;
 import Data.DataManager;
+import java.io.Serializable;
 import nu.xom.Element;
 
 /**
  *
  * @author Impaler
  */
-public class AnimationTypeData extends DataBase {
+public class AnimationTypeData extends DataBase implements Serializable {
 
 	public AnimationTypeData() {
 		

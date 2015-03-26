@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import Interface.VolumeSelection;
+import java.io.Serializable;
 
 import org.javatuples.Pair;
 
@@ -37,7 +38,7 @@ import org.javatuples.Pair;
  * 
  * @author Impaler
  */
-public class GameMap {
+public class GameMap implements Serializable {
 
 	private static GameMap instance = null;
 	

@@ -23,6 +23,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.LodControl;
+import java.io.Serializable;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
@@ -31,9 +32,9 @@ import java.util.concurrent.Semaphore;
  *
  * @author Impaler
  */
-public class MapRenderer extends AbstractAppState{
+public class MapRenderer extends AbstractAppState implements Serializable{
 
-	SimpleApplication app = null;
+	transient SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
 	ImageManager imagemanager = null;

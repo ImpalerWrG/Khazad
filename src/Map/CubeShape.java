@@ -17,12 +17,14 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Map;
 
+import java.io.Serializable;
+
 /**
  * Holds corner height values used to determine sloped shapes and Meshes
  * of map tiles
  * @author Impaler
  */
-public class CubeShape {
+public class CubeShape implements Serializable {
 
 	public static final byte BELOW_CUBE_HEIGHT = 0;
 	public static final byte CUBE_BOTTOM_HEIGHT = 1;

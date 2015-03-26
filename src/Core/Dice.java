@@ -4,12 +4,13 @@
  */
 package Core;
 
+import java.io.Serializable;
 import java.util.Random;
 /**
  *
  * @author Impaler
  */
-public class Dice {
+public class Dice implements Serializable {
     
     public Random Generator;
     

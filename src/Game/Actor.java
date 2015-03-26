@@ -18,6 +18,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Game;
 
 import Map.MapCoordinate;
+import java.io.Serializable;
 
 /**
  * Base class for any object that has a location on the map and is potentially
@@ -27,7 +28,7 @@ import Map.MapCoordinate;
  * 
  * @author Impaler
  */
-public abstract class Actor extends Temporal {
+public abstract class Actor extends Temporal implements Serializable {
 
 	// The location for gameplay logic purposes
 	MapCoordinate LocationCoordinates;

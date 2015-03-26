@@ -32,13 +32,14 @@ import Interface.VolumeSelection;
 import Map.Direction;
 import PathFinding.MovementModality;
 import PathFinding.PathFinding;
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  *
  * @author Impaler
  */
-public class ExcavateJob extends Job {
+public class ExcavateJob extends Job implements Serializable {
 
 	HashMap<CellCoordinate, CubeShape[]> Designations;
 	HashMap<CellCoordinate, BitSet> AccessibleExcavations;  // Excavation targets that are accesible

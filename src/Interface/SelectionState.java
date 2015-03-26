@@ -4,10 +4,12 @@
  */
 package Interface;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Impaler
  */
-public class SelectionState {
+public class SelectionState implements Serializable {
 	
 }

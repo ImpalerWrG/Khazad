@@ -35,6 +35,7 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 
 import com.jme3.app.state.AbstractAppState;
+import java.io.Serializable;
 
 /**
  * Master Controller for all pathfinding operations.  All pathfinding is done on

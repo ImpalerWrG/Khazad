@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
@@ -53,9 +54,9 @@ import java.util.concurrent.Future;
  *
  * @author Impaler
  */
-public class Game extends AbstractAppState implements ActionListener {
+public class Game extends AbstractAppState implements ActionListener, Serializable {
 
-    SimpleApplication app = null;
+    transient SimpleApplication app = null;
     AppStateManager state = null;
     int MasterSeed;
     Dice PawnDice = new Dice();
@@ -276,14 +277,32 @@ public class Game extends AbstractAppState implements ActionListener {
 
     public void Save(ObjectOutputStream stream) throws IOException {
 		// TODO write out a version number first
+		stream.writeInt(this.MasterSeed);
         stream.writeObject(this.Actors);
 		// TODO write out other data
     }
     
     public void Load(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		// TODO read the version number and check it is correct
-        this.Actors = (ArrayList<Actor>)stream.readObject();
-		// TODO read other data
+		MasterSeed = (int)stream.readInt();
+		
+		// TODO read other data, rather than recreating it
+        PawnDice.Seed(MasterSeed);
+
+        MapGeology = new Geology();
+        MapGeology.Initialize(MasterSeed);
+        MapGeology.GenerateWorldHeightMap(10, 10);
+
+        MainMap = GameMap.getMap();
+        MainMap.Initialize(MasterSeed);
+
+        GameWeather = new Weather();
+        AddTemporal(GameWeather);
+
+        BuildMapChunk((short) 0, (short) 0, (byte) 10, (byte) 10);
+
+        GameSettlment = new Settlment();
+        Actors = (ArrayList<Actor>)stream.readObject();
     }
     /*
      void Save(boost::filesystem::basic_ofstream<char>& Stream) const

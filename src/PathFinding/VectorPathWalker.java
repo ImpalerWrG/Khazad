@@ -19,6 +19,7 @@ package PathFinding;
 
 import Map.MapCoordinate;
 import Map.Direction;
+import java.io.Serializable;
 
 /**
  * Basic PathWalker for a VectorPath, it utilizes a simple double nested loop
@@ -26,7 +27,7 @@ import Map.Direction;
  * 
  * @author Impaler
  */
-public class VectorPathWalker implements PathWalker  {
+public class VectorPathWalker implements PathWalker, Serializable  {
 
     private MapCoordinate StepCoordinates;
     private int MagnitudeCountDown;

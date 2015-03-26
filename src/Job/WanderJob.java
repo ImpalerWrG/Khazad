@@ -20,15 +20,16 @@ package Job;
 import Game.Pawn;
 import Map.MapCoordinate;
 import PathFinding.PathFinding;
+import java.io.Serializable;
 
 
 /**
  *
  * @author Impaler
  */
-public class WanderJob extends Job {
+public class WanderJob extends Job implements Serializable {
 	
-	PathFinding Pathing;
+	transient PathFinding Pathing;
 	
 	public WanderJob() {
 		super();

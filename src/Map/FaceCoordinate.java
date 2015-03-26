@@ -17,6 +17,8 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Map;
 
+import java.io.Serializable;
+
 /**
  * Describes the location of a Face, a face is normally the 2D space between 
  * two map cube volumes but slopes can occour inside cubic volumes and are identified
@@ -24,7 +26,7 @@ package Map;
  * a CellCoordinate is thus needed to fully resolve the map location of a Face
  * @author Impaler
  */
-public class FaceCoordinate {
+public class FaceCoordinate implements Serializable {
 	
 	public byte Coordinates;
 	public Direction FaceDirection;

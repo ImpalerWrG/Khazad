@@ -30,13 +30,14 @@ import Map.Direction;
 import Map.CubeShape;
 import Game.Pawn;
 import PathFinding.Navigator;
+import java.io.Serializable;
 
 /**
  * Smallest possible unit of work or activity by a Pawn, Jobs are broken down
  * into a series of individual tasks that can be assigned to Citizens or invaders
  * @author Impaler
  */
-public class Task {
+public class Task implements Serializable {
 		
 	public final Job ParentJob;
 	public final TaskType type;

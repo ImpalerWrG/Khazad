@@ -28,6 +28,7 @@ import Map.MapCoordinate;
 import PathFinding.MovementModality;
 import PathFinding.Navigator;
 import PathFinding.PathFinding;
+import java.io.Serializable;
 
 /**
  * A moving creature, derived from Actor but with the addition of a Navigator object 
@@ -35,7 +36,7 @@ import PathFinding.PathFinding;
  * 
  * @author Impaler
  */
-public class Pawn extends Actor {
+public class Pawn extends Actor implements Serializable {
 
 	boolean Moving;
 	Direction CurrentMovementDirection;

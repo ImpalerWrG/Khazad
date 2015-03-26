@@ -25,6 +25,7 @@ import Core.Dice;
 
 import Map.MapCoordinate;
 import Map.CellCoordinate;
+import java.io.Serializable;
 
 /**
  * A data agragating class used to statisticly sample the speed and efficency
@@ -43,9 +44,9 @@ enum ProfileResultCode
     PATH_CODE_FAILURE_UNKNOWN;
 }
 
-public class PathTester {
+public class PathTester  implements Serializable {
 	
-	protected class Profile { // stores data from profiling
+	protected class Profile  implements Serializable { // stores data from profiling
 		
 		ProfileResultCode ResultCode = ProfileResultCode.PATH_CODE_NO_DATA;
 
@@ -57,7 +58,7 @@ public class PathTester {
 		MapPath ProfiledPath = null;
 	}
 	
-	protected class GroupProfile {
+	protected class GroupProfile  implements Serializable {
 		
 		ArrayList<Profile> Profiles;
 
@@ -108,7 +109,7 @@ public class PathTester {
 	}
 	
 	
-	PathFinding ParentManager;
+	transient PathFinding ParentManager;
     Dice PathDice;
 
     MapCoordinate ManualStartCoords, ManualGoalCoords;  // Used for manual testing

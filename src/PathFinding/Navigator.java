@@ -24,6 +24,7 @@ import java.util.concurrent.Future;
 import Map.MapCoordinate;
 import Map.Direction;
 import Core.Dice;
+import java.io.Serializable;
 
 /**
  * Navigator acts as the interface between Pawns (moving things) and the Pathfinding
@@ -35,7 +36,7 @@ import Core.Dice;
  * 
  * @author Impaler
  */
-public class Navigator {
+public class Navigator implements Serializable {
 	
 	public enum MovementBehavior {
 		PATH_BEHAVIOR_HALT,					// Agent stands still
@@ -51,7 +52,7 @@ public class Navigator {
 	};
 
 	Dice DirectionDice;
-	PathFinding ParentManager;	// The manager which spawned this controller, all data on the map and paths will come from here
+	transient PathFinding ParentManager;	// The manager which spawned this controller, all data on the map and paths will come from here
 
 	MovementBehavior CurrentMovementBehavior;
 	MovementModality Modality;

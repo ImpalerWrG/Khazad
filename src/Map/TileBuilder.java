@@ -28,6 +28,7 @@ import Renderer.TextureManager.TextureAtlasCoordinates;
 import java.util.ArrayList;
 import static com.jme3.util.BufferUtils.createFloatBuffer;
 import static com.jme3.util.BufferUtils.createIntBuffer;
+import java.io.Serializable;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,7 +39,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * cube shape 
  * @author Impaler
  */
-public class TileBuilder {
+public class TileBuilder implements Serializable {
 
 	ConcurrentHashMap<FaceShape, MeshData> MesheDataMap;	// map tileshape to mesh for retrival
 
