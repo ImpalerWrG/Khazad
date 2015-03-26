@@ -28,11 +28,11 @@
 		</panel>
 	</popup>
 	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.ShellScreenController" id="ErrorPopup">
-		<interact onClick="closePopup()" onSecondaryClick="EndTutorial()" onTertiaryClick="EndTutorial()"/>		
-		<panel align="center" childLayout="vertical" height="500px" id="MenuPanel" style="nifty-panel-simple" width="600px">
+		<interact onClick="CloseError()" onSecondaryClick="CloseError()" onTertiaryClick="CloseError()"/>		
+		<panel align="center" childLayout="vertical" height="100px" style="nifty-panel-simple" width="600px">
 			<panel align="center" childLayout="vertical" height="100%" width="100%">
 				<panel align="center" childLayout="vertical" height="90%" width="100%">
-					<text id="ErrorLabel" color="#cc0000ff" text="Error goes here" font="aurulent-sans-16.fnt" width="100%" wrap="true" />
+					<control font="aurulent-sans-16.fnt" height="30px" id="ErrorLabel" name="label" text="Error message goes here" textLineHeight="30px" textMinHeight="30px" width="100%" wrap="true" />
 				</panel>
 				<panel align="center" childLayout="vertical" height="100%" width="100%">
 					<control childLayout="center" controller="Nifty.GameScreenController" height="10%" label="Done" name="button" width="100%">

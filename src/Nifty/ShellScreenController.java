@@ -33,6 +33,7 @@ import Renderer.SelectionRenderer;
 import Renderer.PathingRenderer;
 import Renderer.MapRenderer;
 import Interface.GameCameraState;
+import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.label.LabelControl;
 import de.lessvoid.nifty.elements.Element;
 import java.io.File;
@@ -53,9 +54,9 @@ public class ShellScreenController implements ScreenController {
 	Element TutorialPopup = null;
 	Element ErrorPopup = null;
 
-	public ShellScreenController(Nifty Newnifty, Application app) {
+	public ShellScreenController(Nifty nifty, Application app) {
 		this.app = app;
-		this.nifty = Newnifty;
+		this.nifty = nifty;
 	}
 
 	public void bind(Nifty nifty, Screen screen) {
@@ -158,14 +159,38 @@ public class ShellScreenController implements ScreenController {
 
 			// now read the save file
 			ois = new ObjectInputStream(new FileInputStream(saveFile));
-			Game game = app.getStateManager().getState(Game.class);
+			Game game = new Game();
 			game.Load(ois);
+			this.app.getStateManager().attach(game);
+
+			this.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
+			this.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
+			this.app.getStateManager().attach(new SelectionRenderer());
+			this.app.getStateManager().getState(PathingRenderer.class).attachToGame(game);
+
+			GameCameraState cam = new GameCameraState();
+			this.app.getStateManager().attach(cam);
+			cam.SetViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
+			cam.SetSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
+
+			JobManager jobs = game.getSettlment().getJobManager();
+
+			// PATHING
+			PathFinding Pather = PathFinding.getSinglton();
+			Pather.initialize(this.app.getStateManager(), this.app);
+			Pather.CreateMapAbstraction(game.getMap());
+			//Pather.AllocateThreadPool(ExecutionThreadpool);
+			this.app.getStateManager().attach(Pather);
+
+			nifty.gotoScreen("GameScreen");
 			System.out.println("Done");
 		} catch (IOException e) {
-			// TODO show a message to the user
+			// TODO show a better message to the user
+			ShowError(e.getMessage());
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO show a message to the user
+			// TODO show a better message to the user
+			ShowError(e.getMessage());
 			e.printStackTrace();
 		} finally {
 			try {
@@ -173,29 +198,28 @@ public class ShellScreenController implements ScreenController {
 					ois.close();
 				}
 			} catch (IOException e) {
-				// TODO show a message to the user
+				// TODO show a better message to the user
+				ShowError(e.getMessage());
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	private void ShowError(String errorMessage) {
 		if (ErrorPopup == null) {
 			ErrorPopup = nifty.createPopup("ErrorPopup");
 		}
-		TextField errorLabel;
-		errorLabel = nifty.getCurrentScreen().findNiftyControl("ErrorLabel", TextField.class);
+		Label errorLabel = ErrorPopup.findNiftyControl("ErrorLabel", Label.class);
 		if (errorLabel != null) {
 			errorLabel.setText(errorMessage);
 		}
 
 		nifty.showPopup(nifty.getCurrentScreen(), this.ErrorPopup.getId(), null);
 	}
-	
+
 	public void CloseError() {
 		if (ErrorPopup != null) {
 			nifty.closePopup(this.ErrorPopup.getId());
 		}
 	}
-
 }
