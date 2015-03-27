@@ -31,6 +31,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class CoordinatePathWalker implements PathWalker, Serializable {
+	private static final long serialVersionUID = 1;
 	
 	CoordinatePath TargetPath = null;
 	int CurrentStep = 0;

@@ -24,6 +24,7 @@ import nu.xom.Element;
  * @author Impaler
  */
 public abstract class DataBase implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	public abstract boolean PostProcessing();
 	public abstract boolean LoadData(Element XMLElement, DataLibrary Library);

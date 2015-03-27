@@ -29,6 +29,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public abstract class PathAlgorithm<T> implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	int GraphReads;
     int ExpandedNodes;

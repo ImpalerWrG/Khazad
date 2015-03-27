@@ -31,7 +31,8 @@ import java.io.Serializable;
  * @author Impaler
  */
 public abstract class Actor extends Temporal implements Serializable {
-
+	private static final long serialVersionUID = 1;
+	
 	// The location for gameplay logic purposes
 	MapCoordinate LocationCoordinates;
 	

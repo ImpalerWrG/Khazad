@@ -31,6 +31,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class MovementModality implements Serializable {
+	private static final long serialVersionUID = 1;
 	
 	public enum MovementType {
 		WALK_MOVEMENT,

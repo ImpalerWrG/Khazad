@@ -27,6 +27,8 @@ import java.util.ArrayList;
  */
 
 public class Pool<T> implements Serializable {
+	private static final long serialVersionUID = 1;
+	
 	ArrayList<T> ObjectPool;
 	PathAlgorithm<T> ObjectFactory;
 

@@ -25,6 +25,7 @@ import nu.xom.Element;
  * @author Impaler
  */
 public class DataLibrary<T extends DataBase> implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	ArrayList<T> Entries;
 	private Class<T> DataClass;

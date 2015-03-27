@@ -24,6 +24,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class FaceShape implements Serializable {
+	private static final long serialVersionUID = 1;
 
     CubeShape SourceCubeComponent;
 	CubeShape AdjacentCubeComponent;

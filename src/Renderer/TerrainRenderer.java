@@ -17,7 +17,6 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Renderer;
 
-import Core.Main;
 import Map.*;
 import Game.Game;
 
@@ -37,9 +36,6 @@ import com.jme3.scene.control.LodControl;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
 import java.util.Collection;
 
 import java.util.concurrent.ExecutorService;
@@ -54,14 +50,14 @@ import java.util.concurrent.ExecutorService;
  */
 public class TerrainRenderer extends AbstractAppState implements ActionListener {
 
-	transient SimpleApplication app = null;
-	transient AppStateManager state = null;
-	transient AssetManager assetmanager = null;
+	SimpleApplication app = null;
+	AppStateManager state = null;
+	AssetManager assetmanager = null;
 
-	transient Game game = null;
+	Game game = null;
 
 	TileBuilder builder;
-	transient LodControl TerrainLodControler;
+	LodControl TerrainLodControler;
 
 	boolean SunnyRendering = true;
 	boolean DisplayToggle = true;
@@ -83,16 +79,6 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 		registerWithInput(app.getInputManager());
 	}
 	
-	// this method is used by serialization
-	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
-		// default deserialization
-		ois.defaultReadObject();
-		// fix transients
-		app = Main.app;
-		state = Main.app.getStateManager();
-		assetmanager = Main.app.getAssetManager();
-	}
-
 	public void attachToGame(Game TargetGame) {
 		this.game = TargetGame;
 		this.TerrainLodControler = new LodControl();

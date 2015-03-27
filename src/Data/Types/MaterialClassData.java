@@ -30,6 +30,7 @@ import nu.xom.Elements;
  * @author Impaler
  */
 public class MaterialClassData extends DataBase implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	String DefaultMaterialLabel;
 	int DefaultMaterialID;

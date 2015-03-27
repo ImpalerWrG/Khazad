@@ -37,6 +37,8 @@ import java.io.Serializable;
  */
 
 public class Noise implements Serializable {  // Simplex noise in 2D, 3D and 4D
+  private static final long serialVersionUID = 1;
+	
   private static Grad grad3[] = {new Grad(1,1,0),new Grad(-1,1,0),new Grad(1,-1,0),new Grad(-1,-1,0),
                                  new Grad(1,0,1),new Grad(-1,0,1),new Grad(1,0,-1),new Grad(-1,0,-1),
                                  new Grad(0,1,1),new Grad(0,-1,1),new Grad(0,1,-1),new Grad(0,-1,-1)};

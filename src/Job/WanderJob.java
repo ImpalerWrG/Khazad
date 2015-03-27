@@ -31,6 +31,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class WanderJob extends Job implements Serializable {
+	private static final long serialVersionUID = 1;
 	
 	transient PathFinding Pathing;
 	
@@ -38,7 +39,7 @@ public class WanderJob extends Job implements Serializable {
 		super();
 		Name = "Wandering Aimlessly";
 
-		Pathing = PathFinding.getSinglton();
+		Pathing = PathFinding.getSingleton();
 		Type = Job.JobType.JOB_WANDER;
 	}
 	
@@ -47,7 +48,7 @@ public class WanderJob extends Job implements Serializable {
 		// default deserialization
 		ois.defaultReadObject();
 		// fix transients
-		Pathing = PathFinding.getSinglton();
+		Pathing = PathFinding.getSingleton();
 	}
 
 	/*

@@ -29,6 +29,7 @@ import nu.xom.Elements;
  * @author Impaler
  */
 public class TextureSheetData extends DataBase implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	public String FilePath;
 

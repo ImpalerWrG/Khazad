@@ -30,6 +30,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public abstract class MapPath implements Serializable {
+	private static final long serialVersionUID = 1;
 	   
 	float Length;   // The travel cost of the path
     int StepCount;  // The number of individual steps in the path

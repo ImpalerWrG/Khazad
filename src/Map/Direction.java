@@ -27,7 +27,7 @@ import java.io.Serializable;
  * of a path being reached.
  * @author Impaler
  */
-public enum Direction implements Serializable {
+public enum Direction {
 
 	// BitPacking  XX 0 YY 0 ZZ
 	//             76 5 43 2 10

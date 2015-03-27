@@ -34,7 +34,6 @@ import Renderer.PathingRenderer;
 import Renderer.MapRenderer;
 import Interface.GameCameraState;
 import de.lessvoid.nifty.controls.Label;
-import de.lessvoid.nifty.controls.label.LabelControl;
 import de.lessvoid.nifty.elements.Element;
 import java.io.File;
 import java.io.FileInputStream;
@@ -101,10 +100,10 @@ public class ShellScreenController implements ScreenController {
 		cam.SetViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
 		cam.SetSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
 
-		JobManager jobs = game.getSettlment().getJobManager();
+		JobManager jobs = game.getSettlement().getJobManager();
 
 		// PATHING
-		PathFinding Pather = PathFinding.getSinglton();
+		PathFinding Pather = PathFinding.getSingleton();
 		Pather.initialize(this.app.getStateManager(), this.app);
 		Pather.CreateMapAbstraction(game.getMap());
 		//Pather.AllocateThreadPool(ExecutionThreadpool);
@@ -158,6 +157,15 @@ public class ShellScreenController implements ScreenController {
 
 			// now read the save file
 			ois = new ObjectInputStream(new FileInputStream(saveFile));
+			// first thing should always be the version number, so that we can give helpful error messages.
+			String gameVersion = (String)ois.readObject();
+			if (!gameVersion.equals(Game.version)) {
+				// TODO it might still be possible to load these saves
+				ShowError("Game save is version " + gameVersion + ", current game version is " + Game.version + "." + System.lineSeparator()
+						+ System.lineSeparator()
+						+ "Unfortunately game saves from version " + gameVersion + " are no longer supported, please start a new game.");
+				return;
+			}
 			Game game = (Game)ois.readObject();
 			this.app.getStateManager().attach(game);
 
@@ -171,10 +179,10 @@ public class ShellScreenController implements ScreenController {
 			cam.SetViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
 			cam.SetSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
 
-			JobManager jobs = game.getSettlment().getJobManager();
+			JobManager jobs = game.getSettlement().getJobManager();
 
 			// PATHING
-			PathFinding Pather = PathFinding.getSinglton();
+			PathFinding Pather = PathFinding.getSingleton();
 			Pather.initialize(this.app.getStateManager(), this.app);
 			Pather.CreateMapAbstraction(game.getMap());
 			//Pather.AllocateThreadPool(ExecutionThreadpool);
@@ -183,11 +191,11 @@ public class ShellScreenController implements ScreenController {
 			nifty.gotoScreen("GameScreen");
 		} catch (IOException e) {
 			// TODO show a better message to the user
-			ShowError(e.getMessage());
+			ShowError(e.toString());
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			// TODO show a better message to the user
-			ShowError(e.getMessage());
+			ShowError(e.toString());
 			e.printStackTrace();
 		} finally {
 			try {
@@ -196,7 +204,7 @@ public class ShellScreenController implements ScreenController {
 				}
 			} catch (IOException e) {
 				// TODO show a better message to the user
-				ShowError(e.getMessage());
+				ShowError(e.toString());
 				e.printStackTrace();
 			}
 		}

@@ -27,6 +27,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class FaceCoordinate implements Serializable {
+	private static final long serialVersionUID = 1;
 	
 	public byte Coordinates;
 	public Direction FaceDirection;

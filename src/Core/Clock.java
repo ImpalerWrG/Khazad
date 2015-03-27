@@ -12,6 +12,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class Clock implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	long StartTime;
 	long PausedTime;

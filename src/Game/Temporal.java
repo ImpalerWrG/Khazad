@@ -30,6 +30,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public abstract class Temporal implements Comparable, Serializable {
+	private static final long serialVersionUID = 1;
 
 	public static final long TICKS_PER_SECOND = 12;
 	public static final long TICKS_PER_MINUTE = 720;

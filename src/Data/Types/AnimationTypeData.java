@@ -28,6 +28,7 @@ import nu.xom.Element;
  * @author Impaler
  */
 public class AnimationTypeData extends DataBase implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	public AnimationTypeData() {
 		

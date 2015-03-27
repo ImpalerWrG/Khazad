@@ -29,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Impaler
  */
 public class JobManager implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	private ConcurrentHashMap<String, Job> JobMap;
 	private ConcurrentLinkedQueue<Pawn> IdleCitizens;

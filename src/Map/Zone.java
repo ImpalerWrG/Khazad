@@ -29,6 +29,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class Zone implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	HashMap<CellCoordinate, BitSet> ZoneMap;
 	transient public boolean Dirty;

@@ -26,6 +26,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public final class MapCoordinate implements Cloneable, Serializable{
+	private static final long serialVersionUID = 1;
 
 	public static final int CELLEDGESIZE = 16;
 	public static final int CELLBITSHIFT = 4;

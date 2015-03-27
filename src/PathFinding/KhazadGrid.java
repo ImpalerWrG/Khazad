@@ -47,7 +47,8 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class KhazadGrid implements GridInterface, Serializable {
-
+	private static final long serialVersionUID = 1;
+	
 	protected class GridCell {
 		private BitSet DirectionMatrix;
 		int[] ConnectivityZone;

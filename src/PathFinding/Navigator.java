@@ -39,6 +39,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class Navigator implements Serializable {
+	private static final long serialVersionUID = 1;
 	
 	public enum MovementBehavior {
 		PATH_BEHAVIOR_HALT,					// Agent stands still
@@ -72,7 +73,7 @@ public class Navigator implements Serializable {
 		Destination = SpawnLocation;
 		Modality = MovementType;
 
-		ParentManager = PathFinding.getSinglton();
+		ParentManager = PathFinding.getSingleton();
 		DirectionDice = new Dice();
 		DirectionDice.Seed(SpawnLocation.hashCode());
 	}
@@ -82,7 +83,7 @@ public class Navigator implements Serializable {
 		// default deserialization
 		ois.defaultReadObject();
 		// fix transients
-		ParentManager = PathFinding.getSinglton();
+		ParentManager = PathFinding.getSingleton();
 		PathFuture = ParentManager.FindFuturePath(Modality, CurrentLocation, Destination);
 	}
 

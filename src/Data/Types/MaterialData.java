@@ -30,6 +30,7 @@ import nu.xom.Elements;
  * @author Impaler
  */
 public class MaterialData extends DataBase implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	String PrimaryColorlabel, SecondaryColorlabel, BorderColorlabel;
 	public short PrimaryColorID, SecondaryColorID, BorderColorID;

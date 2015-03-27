@@ -30,6 +30,7 @@ import java.util.ArrayList;
  * @author Impaler
  */
 public class VectorPath extends MapPath implements Serializable {
+	private static final long serialVersionUID = 1;
 	
 	ArrayList<Direction> Directions;
     ArrayList<Integer> Magnitudes;

@@ -11,6 +11,7 @@ import java.util.Random;
  * @author Impaler
  */
 public class Dice implements Serializable {
+	private static final long serialVersionUID = 1;
     
     public Random Generator;
     

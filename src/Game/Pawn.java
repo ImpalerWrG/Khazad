@@ -37,6 +37,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class Pawn extends Actor implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	boolean Moving;
 	Direction CurrentMovementDirection;
@@ -79,7 +80,7 @@ public class Pawn extends Actor implements Serializable {
 	}
 
 	public long AttemptMove(Direction MovementDirection) {
-		float EdgeCost = PathFinding.getSinglton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getMovementModality());
+		float EdgeCost = PathFinding.getSingleton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getMovementModality());
 		final int speedIndex = DataManager.getDataManager().getLabelIndex("BASIC_ATTRIBUTE_SPEED");
 		if (EdgeCost != -1) {
 			return (int) (EdgeCost / ((float) BasicAttributes[speedIndex] / 7.0) * TICKS_PER_SECOND);

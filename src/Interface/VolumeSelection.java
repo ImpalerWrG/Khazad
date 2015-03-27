@@ -18,7 +18,6 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Interface;
 
 import Map.MapCoordinate;
-import java.io.Serializable;
 /**
  *
  * @author Impaler

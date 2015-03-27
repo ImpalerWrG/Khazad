@@ -35,6 +35,7 @@ import nu.xom.Elements;
  * @author Impaler
  */
 public class TextureGridData extends DataBase implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	public String FilePath;
 	public int TextureWidth, TextureHeight;

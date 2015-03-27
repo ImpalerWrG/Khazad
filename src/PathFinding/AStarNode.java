@@ -30,7 +30,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class AStarNode implements Comparable, Serializable {
-
+	private static final long serialVersionUID = 1;
     float TotalCost;
     float TieBreakerValue;
 

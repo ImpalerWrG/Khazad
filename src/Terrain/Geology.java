@@ -26,6 +26,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class Geology implements Serializable {
+	private static final long serialVersionUID = 1;
 
     int RockType = 42;
     int GeologySeed;

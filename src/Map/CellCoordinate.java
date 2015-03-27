@@ -25,6 +25,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class CellCoordinate implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	public short X, Y, Z;
 	

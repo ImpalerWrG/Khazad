@@ -17,7 +17,6 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Renderer;
 
-import Core.Main;
 import Game.Game;
 
 import Map.Axis;
@@ -51,9 +50,6 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.util.BufferUtils;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
 
 import java.util.HashMap;
 import java.util.BitSet;
@@ -69,12 +65,12 @@ import jme3tools.optimize.GeometryBatchFactory;
  */
 public class PathingRenderer extends AbstractAppState implements ActionListener {
 
-	transient SimpleApplication app = null;
-	transient AppStateManager state = null;
-	transient AssetManager assetmanager = null;
+	SimpleApplication app = null;
+	AppStateManager state = null;
+	AssetManager assetmanager = null;
 
-	transient Game game = null;
-	transient PathFinding Pathing;
+	Game game = null;
+	PathFinding Pathing;
 	Node PathingNode;
 
 	HashMap<CellCoordinate, Node> cells;
@@ -99,24 +95,13 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 		registerWithInput(app.getInputManager());
 	}
 	
-	// this method is used by serialization
-	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
-		// default deserialization
-		ois.defaultReadObject();
-		// fix transients
-		app = Main.app;
-		state = Main.app.getStateManager();
-		this.assetmanager = app.getAssetManager();
-		registerWithInput(app.getInputManager());
-	}
-
 	public void attachToGame(Game TargetGame) {
 		this.game = TargetGame;
 
 		PathingNode = new Node("PathingNode");
 		this.app.getRootNode().attachChild(PathingNode);
 		
-		this.Pathing = PathFinding.getSinglton();
+		this.Pathing = PathFinding.getSingleton();
 		ZoneMaterials = new HashMap<Integer, Material>();
 	}
 

@@ -30,6 +30,7 @@ import java.util.concurrent.Callable;
  * @author Impaler
  */
 public class Ticker implements Callable<Object>, Serializable {
+	private static final long serialVersionUID = 1;
 
 	Game thegame;
 	int Tickdown;
@@ -53,7 +54,7 @@ public class Ticker implements Callable<Object>, Serializable {
 	public void UpdateTick() {
 		thegame.CurrentGameTick++;   // Advance Tick count
 		
-		thegame.getSettlment().getJobManager().update();
+		thegame.getSettlement().getJobManager().update();
 		
 		try {
 		Temporal target;

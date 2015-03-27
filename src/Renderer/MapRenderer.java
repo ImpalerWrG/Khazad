@@ -4,7 +4,6 @@
  */
 package Renderer;
 
-import Core.Main;
 import Game.Game;
 import Interface.GameCameraState;
 import Map.CellCoordinate;
@@ -22,9 +21,6 @@ import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
@@ -35,9 +31,9 @@ import java.util.concurrent.Semaphore;
  */
 public class MapRenderer extends AbstractAppState {
 
-	transient SimpleApplication app = null;
-	transient AppStateManager state = null;
-	transient AssetManager assetmanager = null;
+	SimpleApplication app = null;
+	AppStateManager state = null;
+	AssetManager assetmanager = null;
 
 	Node MapNode = null;
 	Node sunnyterrainNode = null;
@@ -63,16 +59,6 @@ public class MapRenderer extends AbstractAppState {
 		builder = new TileBuilder();
 
 		semaphore = new Semaphore(1);
-	}
-	
-	// this method is used by serialization
-	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
-		// default deserialization
-		ois.defaultReadObject();
-		// fix transients
-		app = Main.app;
-		state = Main.app.getStateManager();
-		assetmanager = Main.app.getAssetManager();
 	}
 
 	@Override

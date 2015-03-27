@@ -27,6 +27,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @author Impaler
  */
 public abstract class Job implements Serializable {
+	private static final long serialVersionUID = 1;
 	
 	public enum JobType {
 		JOB_IDLE,

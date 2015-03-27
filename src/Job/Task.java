@@ -38,6 +38,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class Task implements Serializable {
+	private static final long serialVersionUID = 1;
 		
 	public final Job ParentJob;
 	public final TaskType type;

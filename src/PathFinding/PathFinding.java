@@ -51,8 +51,9 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class PathFinding extends AbstractAppState {
+	private static final long serialVersionUID = 1;
 	
-	static PathFinding Singlton = null;
+	static PathFinding Singleton = null;
 	
 	Clock PathingTimer;
 
@@ -92,11 +93,11 @@ public class PathFinding extends AbstractAppState {
 		Executor = core.getThreadPool();
 	}
 
-	public static PathFinding getSinglton() {
-		if (Singlton == null)
-			Singlton = new PathFinding();
+	public static PathFinding getSingleton() {
+		if (Singleton == null)
+			Singleton = new PathFinding();
 		
-		return Singlton;
+		return Singleton;
 	}
 
 	Pool ProvidePool() {  // Simple but effective

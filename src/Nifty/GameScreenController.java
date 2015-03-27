@@ -31,7 +31,10 @@ import de.lessvoid.nifty.NiftyEventSubscriber;
 
 import Game.Game;
 import Interface.GameCameraState;
+import Renderer.MapRenderer;
+import Renderer.PathingRenderer;
 import Renderer.SelectionRenderer;
+import Renderer.TerrainRenderer;
 import de.lessvoid.nifty.controls.Controller;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.xml.xpp3.Attributes;
@@ -144,6 +147,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 		selectionRenderer.cleanup();
 		
 		Game game = app.getStateManager().getState(Game.class);
+		this.app.getStateManager().getState(MapRenderer.class).detachFromGame();
 		app.getStateManager().detach(game);
 		game.cleanup();
 		
@@ -183,11 +187,12 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
             // now write to the save file
             oos = new ObjectOutputStream(new FileOutputStream(saveFile));
             Game game = app.getStateManager().getState(Game.class);
+			oos.writeObject(game.version);
 			oos.writeObject(game);
 			ShowSaveSuccess();
 			closePopup();
         } catch (IOException e) {
-            ShowSaveError(e.getMessage());
+            ShowSaveError(e.toString());
             e.printStackTrace();
         } finally {
             try {
@@ -195,7 +200,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
                     oos.close();
                 }
             } catch (IOException e) {
-	            ShowSaveError(e.getMessage());
+	            ShowSaveError(e.toString());
                 e.printStackTrace();
             }
         }                

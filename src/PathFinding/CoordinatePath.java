@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * @author Impaler
  */
 public class CoordinatePath extends MapPath implements Serializable {
-	
+	private static final long serialVersionUID = 1;
     ArrayList<MapCoordinate> PathCourse;
 
 	CoordinatePath(float PathLength, ArrayList<MapCoordinate> Course) {

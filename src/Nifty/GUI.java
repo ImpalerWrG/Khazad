@@ -23,7 +23,6 @@ import de.lessvoid.nifty.controls.label.LabelControl;
 import de.lessvoid.nifty.Nifty;
 
 import com.jme3.app.state.AbstractAppState;
-import java.io.Serializable;
 
 /**
  *

@@ -31,12 +31,14 @@ public interface Heuristic {
     public float Estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord);
 	
 	public class Manhatten implements Heuristic, Serializable {
+		private static final long serialVersionUID = 1;
 		public float Estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
 			return (float) Math.abs(StartCoord.X - GoalCoord.X) + Math.abs(StartCoord.Y - GoalCoord.Y) +  Math.abs(StartCoord.Z - GoalCoord.Z);
 		}
 	}
 	
 	public class MaxDimension implements Heuristic, Serializable {
+		private static final long serialVersionUID = 1;
 		public float Estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
 			float max = 0;
 			float cost;

@@ -27,6 +27,7 @@ import nu.xom.Element;
  * @author Impaler
  */
 public class FontData extends DataBase implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	String FilePath;
 	int Size;

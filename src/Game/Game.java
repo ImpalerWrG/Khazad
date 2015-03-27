@@ -55,14 +55,16 @@ import java.util.concurrent.Future;
  * @author Impaler
  */
 public class Game extends AbstractAppState implements ActionListener, Serializable {
+	private static final long serialVersionUID = 1;
 
+	public static String version = "0.1";
     transient SimpleApplication app = null;
     transient AppStateManager state = null;
     int MasterSeed;
     Dice PawnDice = new Dice();
     GameMap MainMap;
     Geology MapGeology;
-    Settlment GameSettlment;
+    Settlement GameSettlement;
     Weather GameWeather;
     boolean Pause;
     int TickRate;
@@ -128,7 +130,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 
         BuildMapChunk((short) 0, (short) 0, (byte) X, (byte) Y);
 
-        GameSettlment = new Settlment();
+        GameSettlement = new Settlement();
         Actors = new ArrayList<Actor>();
 
         return true;
@@ -175,7 +177,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
         Citizen NewCitizen = new Citizen(ActorIDcounter, PawnDice.Roll(0, MasterSeed), SpawnCoordinates);
         ActorIDcounter++;
         Actors.add(NewCitizen);
-        GameSettlment.addCitizen(NewCitizen);
+        GameSettlement.addCitizen(NewCitizen);
         AddTemporal(NewCitizen);
         return NewCitizen;
     }
@@ -189,8 +191,8 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
         return MainMap;
     }
 
-    public Settlment getSettlment() {
-        return GameSettlment;
+    public Settlement getSettlement() {
+        return GameSettlement;
     }
 
     public Weather getWeather() {
@@ -200,7 +202,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
     public void VolumeSelectionCompleted(VolumeSelection newVolume) {
         // What dose it mean?  need some kind of priming knowlege
 
-        JobManager jobs = GameSettlment.getJobManager();
+        JobManager jobs = GameSettlement.getJobManager();
         ExcavateJob newJob = new ExcavateJob(MainMap);
         ArrayList Volumes = new ArrayList<VolumeSelection>();
         Volumes.add(newVolume);
@@ -244,7 +246,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
         inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_SUBTRACT));
         inputManager.addListener(this, inputs);
     }
-
+	
     @Override
     public void update(float tpf) {
         if (!Pause) {
@@ -285,52 +287,4 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
     public boolean isPaused() {
         return Pause;
     }
-/*
-    public void Save(ObjectOutputStream stream) throws IOException {
-		// TODO write out a version number first
-		stream.writeObject(this);
-    }
-    
-    public void Load(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-		// TODO read the version number and check it is correct
-		MasterSeed = stream.readInt();
-		
-		// TODO read other data, rather than recreating it
-        PawnDice.Seed(MasterSeed);
-
-        MapGeology = new Geology();
-        MapGeology.Initialize(MasterSeed);
-        MapGeology.GenerateWorldHeightMap(10, 10);
-
-        MainMap = GameMap.getMap();
-        MainMap.Initialize(MasterSeed);
-
-        GameWeather = new Weather();
-        AddTemporal(GameWeather);
-
-        BuildMapChunk((short) 0, (short) 0, (byte) 10, (byte) 10);
-
-        GameSettlment = new Settlment();
-        Actors = (ArrayList<Actor>)stream.readObject();
-    }*/
-    /*
-     void Save(boost::filesystem::basic_ofstream<char>& Stream) const
-     {
-     Stream.write((char*)&TickRate, sizeof(TickRate));
-     Stream.write((char*)&Pause, sizeof(Pause));
-     Stream.write((char*)&Zoneing, sizeof(Zoneing));
-
-     MainMap.Save(Stream);
-     }
-
-     void Load(boost::filesystem::basic_ifstream<char>& Stream)
-     {
-     Stream.read((char*)&TickRate, sizeof(TickRate));
-     Stream.read((char*)&Pause, sizeof(Pause));
-     Stream.read((char*)&Zoneing, sizeof(Zoneing));
-
-     MainMap = new Map();
-     MainMap.Load(Stream);
-     }
-     * */
 }

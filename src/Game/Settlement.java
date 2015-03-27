@@ -22,19 +22,20 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Object representing the players settlment, holds all Citizens, history and
+ * Object representing the players settlement, holds all Citizens, history and
  * work tasks (in the form of the JobManager) being ordered by the player.
  * 
  * @author Impaler
  */
-public class Settlment implements Serializable {
+public class Settlement implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	// Settlment data, wealth, honor, diplomatic status etc
 
 	private ArrayList<Citizen> Citizens;
 	JobManager JobSystem;
 
-	public Settlment() {
+	public Settlement() {
 		Citizens = new ArrayList<Citizen>();
 		JobSystem = new JobManager();
 	}

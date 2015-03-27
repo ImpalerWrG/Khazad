@@ -15,6 +15,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class RouteRequest implements Serializable {
+	private static final long serialVersionUID = 1;
 	
 	MapCoordinate Start;
 	MapCoordinate Goal;

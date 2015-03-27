@@ -25,6 +25,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class CubeShape implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	public static final byte BELOW_CUBE_HEIGHT = 0;
 	public static final byte CUBE_BOTTOM_HEIGHT = 1;

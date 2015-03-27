@@ -40,6 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Impaler
  */
 public class TileBuilder implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	ConcurrentHashMap<FaceShape, MeshData> MesheDataMap;	// map tileshape to mesh for retrival
 

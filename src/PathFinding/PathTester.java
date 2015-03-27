@@ -44,8 +44,10 @@ enum ProfileResultCode
 }
 
 public class PathTester  implements Serializable {
+	private static final long serialVersionUID = 1;
 	
 	protected class Profile  implements Serializable { // stores data from profiling
+		private static final long serialVersionUID = 1;
 		
 		ProfileResultCode ResultCode = ProfileResultCode.PATH_CODE_NO_DATA;
 
@@ -58,6 +60,7 @@ public class PathTester  implements Serializable {
 	}
 	
 	protected class GroupProfile  implements Serializable {
+		private static final long serialVersionUID = 1;
 		
 		ArrayList<Profile> Profiles;
 
@@ -145,7 +148,7 @@ public class PathTester  implements Serializable {
 		// default deserialization
 		ois.defaultReadObject();
 		// fix transients
-		ParentManager = PathFinding.getSinglton();
+		ParentManager = PathFinding.getSingleton();
 	}
 
 	void CollectTestCoords() {

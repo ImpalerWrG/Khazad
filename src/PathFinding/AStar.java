@@ -43,7 +43,8 @@ import java.util.concurrent.Callable;
  * @author Impaler
  */
 public class AStar extends PathAlgorithm implements Callable, Serializable {
-
+	private static final long serialVersionUID = 1;
+	
 	PriorityQueue<AStarNode> FringeNodes;
 	HashSet<MapCoordinate> VisitedCoordinates;
 

@@ -32,7 +32,6 @@ import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.jme3.scene.CameraNode;
 import java.io.IOException;
-import java.io.Serializable;
 
 /**
  * A camera 

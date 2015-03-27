@@ -18,7 +18,6 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Renderer;
 
 import com.jme3.asset.AssetManager;
-import Data.DataManager;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
@@ -29,7 +28,6 @@ import com.jme3.texture.Texture2D;
 import com.jme3.texture.Image;
 
 import com.jme3.util.BufferUtils;
-import java.io.Serializable;
 import java.nio.ByteBuffer;
 
 

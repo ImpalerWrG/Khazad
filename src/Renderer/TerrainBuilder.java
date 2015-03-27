@@ -33,9 +33,7 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.LodControl;
 import com.jme3.material.Material;
-import java.io.Serializable;
 import jme3tools.optimize.GeometryBatchFactory;
-import jme3tools.optimize.LodGenerator;
 
 import java.util.HashMap;
 import java.util.Iterator;

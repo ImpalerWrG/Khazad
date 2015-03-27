@@ -28,6 +28,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class VectorPathWalker implements PathWalker, Serializable  {
+	private static final long serialVersionUID = 1;
 
     private MapCoordinate StepCoordinates;
     private int MagnitudeCountDown;

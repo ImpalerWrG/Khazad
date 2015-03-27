@@ -26,6 +26,7 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class Face implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	FaceShape FaceType;
 	byte LocationCoordinates;
@@ -89,22 +90,4 @@ public class Face implements Serializable {
 	public FaceShape getFaceShapeType() {
 		return FaceType; 
 	}
-	/*
-	void Save(boost::filesystem::basic_ofstream<char>& Stream) const
-	{
-		Stream.write((char*)&FaceType, sizeof(FaceType));
-		Stream.write((char*)&LocationCoordinates, sizeof(LocationCoordinates));
-		Stream.write((char*)&SurfaceTypeID, sizeof(SurfaceTypeID));
-		Stream.write((char*)&MaterialTypeID, sizeof(MaterialTypeID));
-	}
-
-	void Load(boost::filesystem::basic_ifstream<char>& Stream)
-	{
-		Stream.read((char*)&FaceType, sizeof(FaceType));
-		Stream.read((char*)&LocationCoordinates, sizeof(LocationCoordinates));
-		Stream.read((char*)&SurfaceTypeID, sizeof(SurfaceTypeID));
-		Stream.read((char*)&MaterialTypeID, sizeof(MaterialTypeID));
-	}
-	* */
-
 }
