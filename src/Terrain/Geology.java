@@ -349,7 +349,7 @@ public class Geology {
 
 	public short getRockTypeAtCoordinates(byte Target, int Zlevel) {
 		DataManager Data = DataManager.getDataManager();
-		final short RockType0 = Data.getLabelIndex("MATERIAL_DARK_GRASS");
+		final short RockType0 = Data.getLabelIndex("MATERIAL_SOIL");
 		final short RockType1 = Data.getLabelIndex("MATERIAL_SNOW");
 		final short RockType2 = Data.getLabelIndex("MATERIAL_GRANITE");
 
@@ -400,23 +400,18 @@ public class Geology {
 		CellCoordinate TargetCoordinates = TargetCell.getCellCoordinates();
 
 		byte TargetCube = 0;
-		do
-		{
+		do {
 			CubeShape Shape = getCubeShapeAtCoordinates(TargetCube, TargetCoordinates.Z);
 
-			if (!Shape.isEmpty())
-			{
+			if (!Shape.isEmpty()) {
 				short MaterialType = getRockTypeAtCoordinates(TargetCube, TargetCoordinates.Z);
 				TargetCell.setCubeMaterial(TargetCube, MaterialType);
 
-				if (MaterialType != DataManager.INVALID_INDEX)
-				{
+				if (MaterialType != DataManager.INVALID_INDEX) {
 					TargetCell.setCubeShape(TargetCube, Shape);
 					//TargetCell->setCubeSurface(TargetCubeCoordinates, RoughWallID);
 				}
-			}
-			else
-			{
+			} else {
 				TargetCell.setCubeShape(TargetCube, Shape);
 				TargetCell.setCubeMaterial(TargetCube, DataManager.INVALID_INDEX);
 			}

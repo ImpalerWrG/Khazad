@@ -157,6 +157,20 @@ public class Cell {
 		setRenderingDirty();
 	}
 
+	public void GrowGrass() {
+		DataManager Data = DataManager.getDataManager();
+
+		for (Face TargetFace : Faces.values()) {
+			if (TargetFace.Sunlit) {
+				 short MaterialID =  TargetFace.getFaceMaterialType();
+				 int GrowthFactor = Data.getMaterialData(MaterialID).PlantGrowthFactor;
+				 if (GrowthFactor > 0) {
+					TargetFace.setFaceMaterialType(Data.getLabelIndex("MATERIAL_DARK_GRASS"));
+				 }
+			}
+		}
+	}
+
 	Face getFace(FaceCoordinate TargetCoordinates) {
 		return Faces.get(TargetCoordinates);
 	}

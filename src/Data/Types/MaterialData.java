@@ -30,18 +30,20 @@ import nu.xom.Elements;
  */
 public class MaterialData extends DataBase {
 
-	String PrimaryColorlabel, SecondaryColorlabel, BorderColorlabel;
+	private String PrimaryColorlabel, SecondaryColorlabel, BorderColorlabel;
 	public short PrimaryColorID, SecondaryColorID, BorderColorID;
 
-	String MaterialClasslabel;
+	private String MaterialClasslabel;
 	public short MaterialClassID;
 
-	String[] SurfaceTypeLabels;
-	String[] SurfaceTextureLabels;
+	private String[] SurfaceTypeLabels;
+	private String[] SurfaceTextureLabels;
 	short[] SurfaceTypeIDs;
 	short[] SufaceTextueIDs;
 
 	public String ColorMode;
+
+	public int PlantGrowthFactor; 
 
 	public MaterialData() {
 		ColorMode = new String();
@@ -70,6 +72,10 @@ public class MaterialData extends DataBase {
 		Element ColorModeElement = MaterialEntry.getFirstChildElement("ColorMode", MaterialEntry.getNamespaceURI());
 		if (ColorModeElement != null)
 			ColorMode = ColorModeElement.getAttributeValue("mode");
+
+		Element PlantGrowthElement = MaterialEntry.getFirstChildElement("PlantGrowth", MaterialEntry.getNamespaceURI());
+		if (PlantGrowthElement != null)
+			PlantGrowthFactor = Integer.parseInt(PlantGrowthElement.getAttributeValue("growthfactor"));
 
 		Element SurfaceTexturesElement = MaterialEntry.getFirstChildElement("SurfaceTextures", MaterialEntry.getNamespaceURI());
 		if (SurfaceTexturesElement != null) {

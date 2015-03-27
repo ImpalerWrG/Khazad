@@ -3,6 +3,7 @@
 	<MaterialClass>
 		<Name Label="MATERIALCLASS_SOIL"/>
 		<DefaultMaterial label="MATERIAL_SOIL"/>
+		<PlantGrowth growthfactor="100"/>
 		<DefaultSurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_GROUND"/>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_GROUND"/>
@@ -14,9 +15,10 @@
 	<Material>
 		<Name Label="MATERIAL_SOIL"/>
 		<MaterialClass label="MATERIALCLASS_SOIL"/>
-		<PrimaryColor label="COLOR_DARK_BROWN"/>
+		<PrimaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_DARK_BROWN"/>
 		<ColorMode mode="overlay"/>
+		<PlantGrowth growthfactor="100"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_DIRT_1"/>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT_1"/>
@@ -28,6 +30,7 @@
 		<PrimaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_TAN"/>
 		<ColorMode mode="overlay" />
+		<PlantGrowth growthfactor="50"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SAND"/>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_SAND"/>
@@ -42,6 +45,7 @@
 		<PrimaryColor label="COLOR_KHAKI"/>
 		<BorderColor label="COLOR_YELLOW"/>
 		<ColorMode mode="overlay" />
+		<PlantGrowth growthfactor="50"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SAND"/>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_SAND"/>
@@ -56,6 +60,7 @@
 		<PrimaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_WHITE"/>
 		<ColorMode mode="overlay" />
+		<PlantGrowth growthfactor="50"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SAND"/>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_SAND"/>
@@ -70,6 +75,7 @@
 		<PrimaryColor label="COLOR_BLOOD_RED"/>
 		<BorderColor label="COLOR_RED"/>
 		<ColorMode mode="overlay" />
+		<PlantGrowth growthfactor="50"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SAND"/>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_SAND"/>
@@ -84,6 +90,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<BorderColor label="COLOR_BLACK"/>
 		<ColorMode mode="overlay" />
+		<PlantGrowth growthfactor="50"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_SAND"/>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_SAND"/>
@@ -98,6 +105,7 @@
 		<PrimaryColor label="COLOR_RED"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_TAN"/>
+		<PlantGrowth growthfactor="80"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CLAY"/>
 		</SurfaceTextures>
@@ -108,6 +116,7 @@
 		<PrimaryColor label="COLOR_RED"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<BorderColor label="COLOR_DARK_GREY"/>
+		<PlantGrowth growthfactor="90"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CLAY"/>
 		</SurfaceTextures>
@@ -118,6 +127,7 @@
 		<PrimaryColor label="COLOR_MAROON"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
+		<PlantGrowth growthfactor="90"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CLAY"/>
 		</SurfaceTextures>
@@ -128,6 +138,7 @@
 		<PrimaryColor label="COLOR_YELLOW"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
+		<PlantGrowth growthfactor="100"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CLAY"/>
 		</SurfaceTextures>
@@ -138,6 +149,7 @@
 		<PrimaryColor label="COLOR_BROWN"/>
 		<SecondaryColor label="COLOR_YELLOW"/>
 		<BorderColor label="COLOR_YELLOW"/>
+		<PlantGrowth growthfactor="100"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -148,6 +160,7 @@
 		<PrimaryColor label="COLOR_YELLOW"/>
 		<SecondaryColor label="COLOR_LEATHER"/>
 		<BorderColor label="COLOR_LEATHER"/>
+		<PlantGrowth growthfactor="100"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -158,6 +171,7 @@
 		<PrimaryColor label="COLOR_LEATHER"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
+		<PlantGrowth growthfactor="100"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -168,6 +182,7 @@
 		<PrimaryColor label="COLOR_ORANGE"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
+		<PlantGrowth growthfactor="100"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -178,6 +193,7 @@
 		<PrimaryColor label="COLOR_YELLOW"/>
 		<SecondaryColor label="COLOR_DARK_ORANGE"/>
 		<BorderColor label="COLOR_DARK_ORANGE"/>
+		<PlantGrowth growthfactor="100"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -188,6 +204,7 @@
 		<PrimaryColor label="COLOR_YELLOW"/>
 		<SecondaryColor label="COLOR_BLACK"/>
 		<BorderColor label="COLOR_BLACK"/>
+		<PlantGrowth growthfactor="100"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -198,6 +215,7 @@
 		<PrimaryColor label="COLOR_BLACK"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
+		<PlantGrowth growthfactor="100"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -208,6 +226,7 @@
 		<PrimaryColor label="COLOR_FOREST_GREEN"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
+		<PlantGrowth growthfactor="100"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_DIRT"/>
 		</SurfaceTextures>
@@ -218,6 +237,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_BROWN"/>
 		<BorderColor label="COLOR_BROWN"/>
+		<PlantGrowth growthfactor="80"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CLAY"/>
 		</SurfaceTextures>
@@ -228,6 +248,7 @@
 		<PrimaryColor label="COLOR_SILVER"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
 		<BorderColor label="COLOR_DARK_GREY"/>
+		<PlantGrowth growthfactor="50"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CLAY"/>
 		</SurfaceTextures>
@@ -238,6 +259,7 @@
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_SILVER"/>
 		<BorderColor label="COLOR_SILVER"/>
+		<PlantGrowth growthfactor="50"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_CLAY"/>
 		</SurfaceTextures>
