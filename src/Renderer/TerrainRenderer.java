@@ -31,13 +31,11 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.ActionListener;
 
-
 import com.jme3.scene.control.LodControl;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
 import java.util.Collection;
-
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -60,7 +58,8 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 	LodControl TerrainLodControler;
 
 	boolean SunnyRendering = true;
-	boolean DisplayToggle = true;
+	boolean DarkRendering = true;
+	boolean TerrainRendering = true;
 
 	ExecutorService Executor;
 
@@ -87,15 +86,19 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 	public void onAction(String name, boolean keyPressed, float tpf) {
 		if (this.isEnabled()) {
 			if (name.equals("TerrainRenderToggle") && keyPressed) {
-				DisplayToggle = !DisplayToggle;
+				TerrainRendering = !TerrainRendering;
+			}
+			if (name.equals("SunnyRenderToggle") && keyPressed) {
+				SunnyRendering = !SunnyRendering;
 			}
 		}
 	}
 
 	public void registerWithInput(InputManager inputManager) {
-		String[] inputs = {"TerrainRenderToggle"};
+		String[] inputs = {"TerrainRenderToggle", "SunnyRenderToggle"};
 
 		inputManager.addMapping("TerrainRenderToggle", new KeyTrigger(KeyInput.KEY_T));		
+		inputManager.addMapping("SunnyRenderToggle", new KeyTrigger(KeyInput.KEY_L));		
 		inputManager.addListener(this, inputs);
 	}
 
@@ -114,11 +117,19 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 		}
 	}
 
-	public void SetTerrainRendering(Collection<Cell> cells, boolean show) {
-		Spatial.CullHint hint = Spatial.CullHint.Always;
-		if (show == true)
-			hint = Spatial.CullHint.Dynamic;
+	public void SetTerrainRendering(Collection<Cell> cells) {
+		Spatial.CullHint Sunnyhint = Spatial.CullHint.Always;
+		Spatial.CullHint Darkhint = Spatial.CullHint.Always;
 		
+		if (SunnyRendering)
+			Sunnyhint = Spatial.CullHint.Dynamic;
+
+		if (DarkRendering)
+			Darkhint = Spatial.CullHint.Dynamic;
+
+		if (!TerrainRendering)
+			Darkhint = Sunnyhint = Spatial.CullHint.Always;
+			
 		for (Cell target : cells) {
 			CellCoordinate Coords = target.getCellCoordinates();
 
@@ -130,9 +141,9 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 			Spatial dark = CellDark.getChild("DarkGeometry Cell" + target.toString());
 
 			if (light != null)
-				light.setCullHint(hint);
+				light.setCullHint(Sunnyhint);
 			if (dark != null)
-				dark.setCullHint(hint);
+				dark.setCullHint(Darkhint);
 		}
 	}
 
@@ -140,11 +151,11 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 	public void update(float tpf) {
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
-			if (DisplayToggle) {
-				SetTerrainRendering(map.getCellCollection(), true);
+			if (TerrainRendering) {
+				SetTerrainRendering(map.getCellCollection());
 				RebuildDirtyCells(map.getCellCollection());
 			} else {
-				SetTerrainRendering(map.getCellCollection(), false);
+				SetTerrainRendering(map.getCellCollection());
 			}
 		}
 	}

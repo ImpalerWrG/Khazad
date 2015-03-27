@@ -30,6 +30,7 @@ public class Face implements Serializable {
 
 	FaceShape FaceType;
 	byte LocationCoordinates;
+	boolean Sunlit;
 
 	private short SurfaceTypeID;
 	private short MaterialTypeID;
@@ -90,4 +91,7 @@ public class Face implements Serializable {
 	public FaceShape getFaceShapeType() {
 		return FaceType; 
 	}
+
+	public boolean isSunlit() {return this.Sunlit;}
+
 }

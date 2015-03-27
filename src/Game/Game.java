@@ -160,6 +160,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 
         for (Cell TargetCell : MainMap.getCellCollection()) {
             TargetCell.BuildFaceData();
+			TargetCell.GrowGrass();
         }
 
         return true;
