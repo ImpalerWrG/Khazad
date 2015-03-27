@@ -7,7 +7,6 @@ package Renderer;
 import Game.Game;
 import Interface.GameCameraState;
 import Map.CellCoordinate;
-import Map.GameMap;
 
 import Map.MapCoordinate;
 import Map.TileBuilder;
@@ -22,7 +21,6 @@ import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.control.LodControl;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
@@ -31,12 +29,11 @@ import java.util.concurrent.Semaphore;
  *
  * @author Impaler
  */
-public class MapRenderer extends AbstractAppState{
+public class MapRenderer extends AbstractAppState {
 
 	SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
-	ImageManager imagemanager = null;
 
 	Node MapNode = null;
 	Node sunnyterrainNode = null;
@@ -76,11 +73,11 @@ public class MapRenderer extends AbstractAppState{
 
 	public void attachToGame(Game TargetGame) {
 		this.game = TargetGame;
-		this.MapNode = new Node();
+		this.MapNode = new Node("MapNode");
 		this.app.getRootNode().attachChild(MapNode);
 
-		darkterrainNode = new Node();
-		sunnyterrainNode = new Node();
+		darkterrainNode = new Node("DarkTerrainNode");
+		sunnyterrainNode = new Node("SunnyTerrainNode");
 		MapNode.attachChild(darkterrainNode);
 		MapNode.attachChild(sunnyterrainNode);
 
@@ -141,7 +138,7 @@ public class MapRenderer extends AbstractAppState{
 			semaphore.acquire();
 			try {
 				if (CellNode == null) {
-					CellNode = new Node();
+					CellNode = new Node("DarkCellNode");	
 
 					float x = (float) (TargetCell.X * MapCoordinate.CELLEDGESIZE);
 					float y = (float) (TargetCell.Y * MapCoordinate.CELLEDGESIZE);
@@ -166,7 +163,7 @@ public class MapRenderer extends AbstractAppState{
 		Node targetnode = ZMapLight.get(new Integer(zlevel));
 		if (targetnode == null) {
 
-			targetnode = new Node();
+			targetnode = new Node("ZMapLightNode");
 			targetnode.move(0, 0, zlevel);
 			ZMapLight.put(new Integer(zlevel), targetnode);
 		}
@@ -177,7 +174,7 @@ public class MapRenderer extends AbstractAppState{
 		Node targetnode = ZMapDark.get(new Integer(zlevel));
 		if (targetnode == null) {
 
-			targetnode = new Node();
+			targetnode = new Node("ZMapDarkNode");
 			targetnode.move(0, 0, zlevel);
 			ZMapDark.put(new Integer(zlevel), targetnode);
 		}

@@ -69,7 +69,6 @@ public class Music extends AbstractAppState {
 	}
 
 	public String SelectTrack() {
-		String Track = new String();
 		int choice = RandomGenerator.Roll(0, Tracks.size() - 1);
 		return Tracks.get(choice);
 	}

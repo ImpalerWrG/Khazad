@@ -19,6 +19,7 @@ package PathFinding;
 
 import Map.MapCoordinate;
 import Map.Direction;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -28,7 +29,8 @@ import java.util.ArrayList;
  * 
  * @author Impaler
  */
-public class VectorPath extends MapPath {
+public class VectorPath extends MapPath implements Serializable {
+	private static final long serialVersionUID = 1;
 	
 	ArrayList<Direction> Directions;
     ArrayList<Integer> Magnitudes;

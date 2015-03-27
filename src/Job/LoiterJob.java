@@ -18,12 +18,14 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Job;
 
 import Game.Pawn;
+import java.io.Serializable;
 
 /**
  *
  * @author Impaler
  */
-public class LoiterJob extends Job {
+public class LoiterJob extends Job implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	public LoiterJob() {
 	}

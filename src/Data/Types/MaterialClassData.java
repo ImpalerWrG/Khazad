@@ -20,6 +20,7 @@ package Data.Types;
 import Data.DataBase;
 import Data.DataLibrary;
 import Data.DataManager;
+import java.io.Serializable;
 
 import nu.xom.Element;
 import nu.xom.Elements;
@@ -28,7 +29,8 @@ import nu.xom.Elements;
  *
  * @author Impaler
  */
-public class MaterialClassData extends DataBase {
+public class MaterialClassData extends DataBase implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	String DefaultMaterialLabel;
 	int DefaultMaterialID;

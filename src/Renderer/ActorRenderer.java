@@ -51,12 +51,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Impaler
  */
 
-public class ActorRenderer extends AbstractAppState{
+public class ActorRenderer extends AbstractAppState {
 
 	SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
-	ImageManager imagemanager = null;
 
 	LodControl ActorLodControler;
 	ConcurrentHashMap<Integer, Node> ActorNodeMap;
@@ -96,7 +95,7 @@ public class ActorRenderer extends AbstractAppState{
 						actorModel.scale(0.25f, 0.25f, 0.25f);
 						actorModel.rotate(1.5f, 0.0f, 0.0f);
 
-						actorNode = new Node();
+						actorNode = new Node("ActorNode");
 						actorNode.attachChild(actorModel);
 						ActorNodeMap.put(new Integer(target.getID()), actorNode);
 					}

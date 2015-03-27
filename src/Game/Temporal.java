@@ -17,6 +17,8 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Game;
 
+import java.io.Serializable;
+
 /**
  * Base class for all objects that respond to time, all implementations need to 
  * return the future time tick that they wish to recive a future Wake call on as
@@ -27,7 +29,8 @@ package Game;
  * 
  * @author Impaler
  */
-public abstract class Temporal implements Comparable {
+public abstract class Temporal implements Comparable, Serializable {
+	private static final long serialVersionUID = 1;
 
 	public static final long TICKS_PER_SECOND = 12;
 	public static final long TICKS_PER_MINUTE = 720;

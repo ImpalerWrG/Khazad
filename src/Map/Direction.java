@@ -18,6 +18,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Map;
 
 import com.jme3.math.Vector3f;
+import java.io.Serializable;
 
 /**
  * Core Enum for describing directions in cubic map space, all 26 cubes surrounding

@@ -34,7 +34,6 @@ import com.jme3.scene.Node;
 import com.jme3.scene.control.LodControl;
 import com.jme3.material.Material;
 import jme3tools.optimize.GeometryBatchFactory;
-import jme3tools.optimize.LodGenerator;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,7 +46,7 @@ import java.util.concurrent.Callable;
  * 
  * @author Impaler
  */
-public class TerrainBuilder implements Callable<Void>  {
+public class TerrainBuilder implements Callable<Void> {
 	
 	Cell BuildCell;
 	TileBuilder TileSource;
@@ -67,8 +66,8 @@ public class TerrainBuilder implements Callable<Void>  {
 	public void setNodes(Node LightCellNode, Node DarkCellNode) {
 		this.CellLight = LightCellNode;
 		this.CellDark = DarkCellNode;
-		TerrainLight = new Node();
-		TerrainDark = new Node();
+		TerrainLight = new Node("TerrainLight");
+		TerrainDark = new Node("TerrainDark");
 	}
 
 	public Void call() {

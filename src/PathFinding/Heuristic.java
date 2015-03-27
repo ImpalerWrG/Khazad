@@ -18,6 +18,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package PathFinding;
 
 import Map.MapCoordinate;
+import java.io.Serializable;
 
 /**
  * A collection of common and fast distance Heuristics, a Heuristic is a quick
@@ -29,13 +30,15 @@ public interface Heuristic {
 	
     public float Estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord);
 	
-	public class Manhatten implements Heuristic {
+	public class Manhatten implements Heuristic, Serializable {
+		private static final long serialVersionUID = 1;
 		public float Estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
 			return (float) Math.abs(StartCoord.X - GoalCoord.X) + Math.abs(StartCoord.Y - GoalCoord.Y) +  Math.abs(StartCoord.Z - GoalCoord.Z);
 		}
 	}
 	
-	public class MaxDimension implements Heuristic {
+	public class MaxDimension implements Heuristic, Serializable {
+		private static final long serialVersionUID = 1;
 		public float Estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
 			float max = 0;
 			float cost;
@@ -56,7 +59,7 @@ public interface Heuristic {
 		}
 	}
 
-	public class Euclidean implements Heuristic {
+	public class Euclidean implements Heuristic, Serializable {
 		public float Estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
 			float cost = StartCoord.X - GoalCoord.X;
 			float sum = cost * cost;
@@ -70,7 +73,7 @@ public interface Heuristic {
 		}
 	}
 
-	public class Diagonal implements Heuristic {
+	public class Diagonal implements Heuristic, Serializable {
 		public float Estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord)
 		{
 			float DiagonalsX = Math.abs(StartCoord.X - GoalCoord.X);
@@ -87,7 +90,7 @@ public interface Heuristic {
 		}
 	}
 
-	public class StraitLine implements Heuristic {
+	public class StraitLine implements Heuristic, Serializable {
 		public float Estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
 			
 			//float dx1 = current.x - goal.x
@@ -103,7 +106,7 @@ public interface Heuristic {
 		}
 	}
 
-	public class Dijkstra implements Heuristic {
+	public class Dijkstra implements Heuristic, Serializable {
 		public float Estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
 			return 0;
 		}

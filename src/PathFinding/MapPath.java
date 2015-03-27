@@ -18,6 +18,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package PathFinding;
 
 import Map.MapCoordinate;
+import java.io.Serializable;
 
 /**
  * Abstract Base for the Path representations, all Paths implementations have a
@@ -28,7 +29,8 @@ import Map.MapCoordinate;
  * 
  * @author Impaler
  */
-public abstract class MapPath {
+public abstract class MapPath implements Serializable {
+	private static final long serialVersionUID = 1;
 	   
 	float Length;   // The travel cost of the path
     int StepCount;  // The number of individual steps in the path

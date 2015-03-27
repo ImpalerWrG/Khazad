@@ -18,7 +18,9 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Map;
 
 import Core.Dice;
+import Core.Main;
 import Data.DataManager;
+import Game.Game;
 import PathFinding.PathFinding;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import Interface.VolumeSelection;
+import java.io.Serializable;
 
 import org.javatuples.Pair;
 
@@ -37,9 +40,8 @@ import org.javatuples.Pair;
  * 
  * @author Impaler
  */
-public class GameMap {
-
-	private static GameMap instance = null;
+public class GameMap implements Serializable {
+	private static final long serialVersionUID = 1;
 	
 	boolean Initialized;
 	boolean MapLoaded;
@@ -56,7 +58,7 @@ public class GameMap {
 
 	ArrayList<Zone> Zones;
 
-	protected GameMap() {
+	public GameMap() {
 		Initialized = false;
 		MapLoaded = false;
 		HighestCell = -100000000;
@@ -68,12 +70,11 @@ public class GameMap {
 		WeatherCells = new ConcurrentHashMap<CellCoordinate, Cell>();
 		BasementCells = new ConcurrentHashMap<CellCoordinate, Cell>();		
 	}
-
-	public static GameMap getMap() {
-		if(instance == null) {
-			instance = new GameMap();
-		}
-		return instance;
+	
+	public static GameMap getMap()
+	{
+		Game game = Main.app.getStateManager().getState(Game.class);
+		return game.getMap();
 	}
 
 	public void Initialize(int MasterSeed) {
@@ -212,7 +213,7 @@ public class GameMap {
 		if (TargetCell != null) {
 			TargetCell.setCubeShape(Coordinate.CubeByteIndex(), NewShape);
 			MapCoordinate[] Coordinates = {Coordinate};
-			PathFinding.getSinglton().EditMapAbstractions(Coordinates);
+			PathFinding.getSingleton().EditMapAbstractions(Coordinates);
 		}
 	}
 
@@ -585,38 +586,4 @@ public class GameMap {
 	public Collection<Cell> getCellCollection() {
 		return Cells.values();
 	}
-/*
-	void Save(boost::filesystem::basic_ofstream<char>& Stream)
-	{
-		Stream.write((char*)&Initialized, sizeof(Initialized));
-		Stream.write((char*)&MapLoaded, sizeof(MapLoaded));
-
-		Stream.write((char*)&HighestCell, sizeof(HighestCell));
-		Stream.write((char*)&LowestCell, sizeof(LowestCell));
-
-		uint32_t CellCount = Cells.size();
-		Stream.write((char*)&CellCount, sizeof(CellCount));
-		for (boost::unordered_map<uint64_t, Cell>::const_iterator it = Cells.begin(); it != Cells.end(); it++)
-		{
-			it.second.Save(Stream);
-		}
-	}
-
-	void Load(boost::filesystem::basic_ifstream<char>& Stream)
-	{
-		Stream.read((char*)&Initialized, sizeof(Initialized));
-		Stream.read((char*)&MapLoaded, sizeof(MapLoaded));
-
-		Stream.read((char*)&HighestCell, sizeof(HighestCell));
-		Stream.read((char*)&LowestCell, sizeof(LowestCell));
-
-		uint32_t CellCount;
-		Stream.read((char*)&CellCount, sizeof(CellCount));
-		for (int i = 0; i < CellCount; i++)
-		{
-			Cell NewCell = new Cell();
-			NewCell.Load(Stream);
-			insertCell((NewCell));
-		}
-	}*/
 }

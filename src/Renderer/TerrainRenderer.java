@@ -77,7 +77,7 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 
 		registerWithInput(app.getInputManager());
 	}
-
+	
 	public void attachToGame(Game TargetGame) {
 		this.game = TargetGame;
 		this.TerrainLodControler = new LodControl();

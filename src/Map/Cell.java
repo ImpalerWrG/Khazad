@@ -18,6 +18,9 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Map;
 
 import Data.DataManager;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 
 import java.util.HashMap;
 import java.util.BitSet;
@@ -29,7 +32,8 @@ import java.util.BitSet;
  * 
  * @author Impaler
  */
-public class Cell {
+public class Cell implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	// Larger DataValues specific to each Cube
 	short[] CubeMaterialTypes;
@@ -47,8 +51,8 @@ public class Cell {
 	// The global position of this cell relative to other cells
 	private CellCoordinate thisCellCoordinates;
 	// Dirty values, set true on changes, set false by rendering
-	boolean DirtyTerrainRendering;
-	boolean DirtyPathRendering;
+	transient boolean DirtyTerrainRendering;
+	transient boolean DirtyPathRendering;
 
 
 	public Cell() {
@@ -72,6 +76,14 @@ public class Cell {
 			CubeMaterialTypes[i] = DataManager.INVALID_INDEX;
 		}
 
+		DirtyTerrainRendering = true;
+		DirtyPathRendering = true;
+	}
+	
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
 		DirtyTerrainRendering = true;
 		DirtyPathRendering = true;
 	}
@@ -294,54 +306,4 @@ public class Cell {
 	public String toString() {
 		return getClass().getName() + thisCellCoordinates.toString();
 	}
-
-    /*
-	void Cell::Save(boost::filesystem::basic_ofstream<char>& Stream) const
-	{
-		Stream.write((char*)&thisCellCoordinates.X, sizeof(thisCellCoordinates.X));
-		Stream.write((char*)&thisCellCoordinates.Y, sizeof(thisCellCoordinates.Y));
-		Stream.write((char*)&thisCellCoordinates.Z, sizeof(thisCellCoordinates.Z));
-
-		for (int i = 0; i < CUBESPERCELL; i++)
-		{
-			Stream.write((char*)&CubeShapeTypes[i], sizeof(CubeShapeTypes[i]));
-			Stream.write((char*)&CubeMaterialTypes[i], sizeof(CubeMaterialTypes[i]));
-		}
-
-		int16_t FaceCount = Faces.size();
-		Stream.write((char*)&FaceCount, sizeof(FaceCount));
-		for (std::map<uint16_t, Face*>::const_iterator it = Faces.begin(); it != Faces.end(); it++)
-		{
-			uint16_t Key = it->first;
-			Stream.write((char*)&Key, sizeof(Key));
-			it->second->Save(Stream);
-		}
-	}
-
-	void Cell::Load(boost::filesystem::basic_ifstream<char>& Stream)
-	{
-		Stream.read((char*)&thisCellCoordinates.X, sizeof(thisCellCoordinates.X));
-		Stream.read((char*)&thisCellCoordinates.Y, sizeof(thisCellCoordinates.Y));
-		Stream.read((char*)&thisCellCoordinates.Z, sizeof(thisCellCoordinates.Z));
-
-		for (int i = 0; i < CUBESPERCELL; i++)
-		{
-			Stream.read((char*)&CubeShapeTypes[i], sizeof(CubeShapeTypes[i]));
-			Stream.read((char*)&CubeMaterialTypes[i], sizeof(CubeMaterialTypes[i]));
-		}
-
-		int16_t FaceCount;
-		Stream.read((char*)&FaceCount, sizeof(FaceCount));
-		for (int i = 0; i < FaceCount; i++)
-		{
-			uint16_t Key;
-			Stream.read((char*)&Key, sizeof(Key));
-			Face* NewFace = new Face();
-			NewFace->Load(Stream);
-			Faces[Key] = NewFace;
-		}
-
-		Render = new TerrainRendering(this);
-	}
-	* */
 }

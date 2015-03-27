@@ -18,7 +18,6 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Renderer;
 
 import com.jme3.asset.AssetManager;
-import Data.DataManager;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;

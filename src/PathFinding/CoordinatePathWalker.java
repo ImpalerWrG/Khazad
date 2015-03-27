@@ -19,6 +19,7 @@ package PathFinding;
 
 import Map.Direction;
 import Map.MapCoordinate;
+import java.io.Serializable;
 
 /**
  * The walker class for a FullPath, like all walkers it allows multiple Navigators
@@ -29,7 +30,8 @@ import Map.MapCoordinate;
  * 
  * @author Impaler
  */
-public class CoordinatePathWalker implements PathWalker {
+public class CoordinatePathWalker implements PathWalker, Serializable {
+	private static final long serialVersionUID = 1;
 	
 	CoordinatePath TargetPath = null;
 	int CurrentStep = 0;

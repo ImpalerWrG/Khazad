@@ -17,13 +17,16 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Map;
 
+import java.io.Serializable;
+
 /**
  * Fundemental coordinate for describing the cubic voxel space of the game play
  * map.  Can be constructed from numerous other coordinate combinations and
  * translated to adjacent cubes by Direction enums, a very common operation.
  * @author Impaler
  */
-public final class MapCoordinate implements Cloneable{
+public final class MapCoordinate implements Cloneable, Serializable{
+	private static final long serialVersionUID = 1;
 
 	public static final int CELLEDGESIZE = 16;
 	public static final int CELLBITSHIFT = 4;

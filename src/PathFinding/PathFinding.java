@@ -35,6 +35,7 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 
 import com.jme3.app.state.AbstractAppState;
+import java.io.Serializable;
 
 /**
  * Master Controller for all pathfinding operations.  All pathfinding is done on
@@ -50,8 +51,9 @@ import com.jme3.app.state.AbstractAppState;
  * @author Impaler
  */
 public class PathFinding extends AbstractAppState {
+	private static final long serialVersionUID = 1;
 	
-	static PathFinding Singlton = null;
+	static PathFinding Singleton = null;
 	
 	Clock PathingTimer;
 
@@ -91,11 +93,11 @@ public class PathFinding extends AbstractAppState {
 		Executor = core.getThreadPool();
 	}
 
-	public static PathFinding getSinglton() {
-		if (Singlton == null)
-			Singlton = new PathFinding();
+	public static PathFinding getSingleton() {
+		if (Singleton == null)
+			Singleton = new PathFinding();
 		
-		return Singlton;
+		return Singleton;
 	}
 
 	Pool ProvidePool() {  // Simple but effective

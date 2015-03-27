@@ -52,7 +52,6 @@ import com.jme3.scene.VertexBuffer;
 import com.jme3.util.BufferUtils;
 
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.BitSet;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -95,14 +94,14 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 		}
 		registerWithInput(app.getInputManager());
 	}
-
+	
 	public void attachToGame(Game TargetGame) {
 		this.game = TargetGame;
 
-		PathingNode = new Node();
+		PathingNode = new Node("PathingNode");
 		this.app.getRootNode().attachChild(PathingNode);
 		
-		this.Pathing = PathFinding.getSinglton();
+		this.Pathing = PathFinding.getSingleton();
 		ZoneMaterials = new HashMap<Integer, Material>();
 	}
 
@@ -123,7 +122,7 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 
 	public Node BuildRendering(Cell TargetCell) {
 
-		Node PathRenderingNode = new Node();
+		Node PathRenderingNode = new Node("PathRenderingNode");
 		MovementModality Mod = new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1);
 		
 		CellCoordinate CellCoords = TargetCell.getCellCoordinates();

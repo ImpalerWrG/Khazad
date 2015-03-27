@@ -128,7 +128,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		if (app.getInputManager() != null) {
 
 			if (MainCamera == null) {
-				LookNode = new Node();
+				LookNode = new Node("LookNode");
 				this.app.getRootNode().attachChild(LookNode);
 				LookNode.setLocalTranslation(1, 2, 3);
 

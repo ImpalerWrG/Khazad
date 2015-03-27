@@ -30,6 +30,7 @@ import Map.MapCoordinate;
 import Map.CellCoordinate;
 import Map.Direction;
 import Map.CubeShape;
+import java.io.Serializable;
 
 /**
  * The primary implementation of Grid for Khazad pathfinding, it uses a GridCell
@@ -45,8 +46,9 @@ import Map.CubeShape;
  * 
  * @author Impaler
  */
-public class KhazadGrid implements GridInterface {
-
+public class KhazadGrid implements GridInterface, Serializable {
+	private static final long serialVersionUID = 1;
+	
 	protected class GridCell {
 		private BitSet DirectionMatrix;
 		int[] ConnectivityZone;

@@ -23,12 +23,14 @@ import java.util.ArrayList;
 import nu.xom.*;
 
 import Data.Types.*;
+import java.io.Serializable;
 
 /**
  *
  * @author Impaler
  */
-public class DataManager {
+public class DataManager implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	public static final short INVALID_INDEX = -1;
 

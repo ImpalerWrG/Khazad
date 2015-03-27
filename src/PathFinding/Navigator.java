@@ -24,6 +24,9 @@ import java.util.concurrent.Future;
 import Map.MapCoordinate;
 import Map.Direction;
 import Core.Dice;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 
 /**
  * Navigator acts as the interface between Pawns (moving things) and the Pathfinding
@@ -35,7 +38,8 @@ import Core.Dice;
  * 
  * @author Impaler
  */
-public class Navigator {
+public class Navigator implements Serializable {
+	private static final long serialVersionUID = 1;
 	
 	public enum MovementBehavior {
 		PATH_BEHAVIOR_HALT,					// Agent stands still
@@ -51,7 +55,7 @@ public class Navigator {
 	};
 
 	Dice DirectionDice;
-	PathFinding ParentManager;	// The manager which spawned this controller, all data on the map and paths will come from here
+	transient PathFinding ParentManager;	// The manager which spawned this controller, all data on the map and paths will come from here
 
 	MovementBehavior CurrentMovementBehavior;
 	MovementModality Modality;
@@ -59,7 +63,7 @@ public class Navigator {
 	MapCoordinate CurrentLocation;
 	MapCoordinate Destination;
 
-	Future PathFuture = null;
+	transient Future PathFuture = null;
 	MapPath CurrentPath = null;
 	PathWalker CurrentPathWalker = null;
 
@@ -69,10 +73,20 @@ public class Navigator {
 		Destination = SpawnLocation;
 		Modality = MovementType;
 
-		ParentManager = PathFinding.getSinglton();
+		ParentManager = PathFinding.getSingleton();
 		DirectionDice = new Dice();
 		DirectionDice.Seed(SpawnLocation.hashCode());
 	}
+	
+	// this method is used by serialization
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
+		ParentManager = PathFinding.getSingleton();
+		PathFuture = ParentManager.FindFuturePath(Modality, CurrentLocation, Destination);
+	}
+
 
 	public Direction getNextStep() { // Next movement step for the Agent
 		switch(CurrentMovementBehavior)
