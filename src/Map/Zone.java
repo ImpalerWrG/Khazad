@@ -19,6 +19,8 @@ package Map;
 
 import java.util.*;
 import Interface.VolumeSelection;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 /**
@@ -29,7 +31,7 @@ import java.io.Serializable;
 public class Zone implements Serializable {
 
 	HashMap<CellCoordinate, BitSet> ZoneMap;
-	public boolean Dirty;
+	transient public boolean Dirty;
 	private final int ID;
 
 	public Zone(List<VolumeSelection> Volumes, int ID) {
@@ -38,6 +40,13 @@ public class Zone implements Serializable {
 			addSelection(Selection);
 		}
 		this.ID = ID;
+		Dirty = true;
+	}
+	
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
 		Dirty = true;
 	}
 

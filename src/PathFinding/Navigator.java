@@ -24,6 +24,8 @@ import java.util.concurrent.Future;
 import Map.MapCoordinate;
 import Map.Direction;
 import Core.Dice;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 /**
@@ -74,6 +76,16 @@ public class Navigator implements Serializable {
 		DirectionDice = new Dice();
 		DirectionDice.Seed(SpawnLocation.hashCode());
 	}
+	
+	// this method is used by serialization
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
+		ParentManager = PathFinding.getSinglton();
+		PathFuture = ParentManager.FindFuturePath(Modality, CurrentLocation, Destination);
+	}
+
 
 	public Direction getNextStep() { // Next movement step for the Agent
 		switch(CurrentMovementBehavior)

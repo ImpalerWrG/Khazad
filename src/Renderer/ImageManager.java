@@ -51,7 +51,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  * @author Impaler
  */
-public class ImageManager implements Serializable {
+public class ImageManager {
 
 	int ImageCounter = 0;
 	private static ImageManager instance = null;

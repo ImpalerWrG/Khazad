@@ -18,6 +18,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Renderer;
 
 
+import Core.Main;
 import Interface.GameCameraState;
 import Interface.VolumeSelection;
 
@@ -41,8 +42,9 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import com.jme3.util.BufferUtils;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -54,11 +56,11 @@ import java.util.Map;
  *
  * @author Impaler
  */
-public class SelectionRenderer extends AbstractAppState implements Serializable {
+public class SelectionRenderer extends AbstractAppState {
 	
 	transient SimpleApplication app = null;
-	AppStateManager state = null;
-	AssetManager assetmanager = null;
+	transient AppStateManager state = null;
+	transient AssetManager assetmanager = null;
 
 	private Geometry CursorBox;
 	private Geometry SelectionBox;
@@ -80,6 +82,16 @@ public class SelectionRenderer extends AbstractAppState implements Serializable 
 
 		BuildCursorBox();
 		BuildText();
+	}
+	
+	// this method is used by serialization
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
+		app = Main.app;
+		state = Main.app.getStateManager();
+		assetmanager = Main.app.getAssetManager();
 	}
 	
 	@Override
@@ -169,7 +181,7 @@ public class SelectionRenderer extends AbstractAppState implements Serializable 
 	}
 
 	public Node BuildZone(Zone TargetZone) {
-		Node ZoneNode = new Node();
+		Node ZoneNode = new Node("ZoneNode");
 		
 		HashMap<CellCoordinate, BitSet> ZoneMap = TargetZone.getZoneMap();
 		for (Map.Entry<CellCoordinate, BitSet> entry : ZoneMap.entrySet()) {

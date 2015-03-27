@@ -18,13 +18,12 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package PathFinding;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 import Core.Dice;
 
 import Map.MapCoordinate;
-import Map.CellCoordinate;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 /**
@@ -139,6 +138,14 @@ public class PathTester  implements Serializable {
 
 		CollectTestCoords();
 		return true;
+	}
+	
+	// this method is used by serialization
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
+		ParentManager = PathFinding.getSinglton();
 	}
 
 	void CollectTestCoords() {

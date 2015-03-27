@@ -38,7 +38,7 @@ import java.io.Serializable;
  * A camera 
  * @author Impaler
  */
-public class GameCamera implements Serializable {
+public class GameCamera {
 		
 	protected Node TargetNode = null;
 	protected Node RotationNode = null;

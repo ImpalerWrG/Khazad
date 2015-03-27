@@ -38,7 +38,7 @@ import java.nio.ByteBuffer;
  * @author Impaler
  */
 
-public class TextureManager implements Serializable {
+public class TextureManager {
 
 	Image TerrainImage;
 	Texture TerrainTexture;

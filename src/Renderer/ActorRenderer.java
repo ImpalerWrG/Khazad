@@ -17,6 +17,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Renderer;
 
+import Core.Main;
 import Game.Actor;
 import Game.Game;
 import Game.Pawn;
@@ -39,6 +40,8 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.LodControl;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -52,12 +55,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Impaler
  */
 
-public class ActorRenderer extends AbstractAppState implements Serializable{
+public class ActorRenderer extends AbstractAppState {
 
 	transient SimpleApplication app = null;
-	AppStateManager state = null;
-	AssetManager assetmanager = null;
-	ImageManager imagemanager = null;
+	transient AppStateManager state = null;
+	transient AssetManager assetmanager = null;
 
 	LodControl ActorLodControler;
 	ConcurrentHashMap<Integer, Node> ActorNodeMap;
@@ -66,6 +68,16 @@ public class ActorRenderer extends AbstractAppState implements Serializable{
 
 	public ActorRenderer() {
 		ActorNodeMap = new ConcurrentHashMap<Integer, Node>();
+	}
+	
+	// this method is used by serialization
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
+		app = Main.app;
+		this.state = app.getStateManager();
+		this.assetmanager = app.getAssetManager();
 	}
 
 	@Override
@@ -97,7 +109,7 @@ public class ActorRenderer extends AbstractAppState implements Serializable{
 						actorModel.scale(0.25f, 0.25f, 0.25f);
 						actorModel.rotate(1.5f, 0.0f, 0.0f);
 
-						actorNode = new Node();
+						actorNode = new Node("ActorNode");
 						actorNode.attachChild(actorModel);
 						ActorNodeMap.put(new Integer(target.getID()), actorNode);
 					}

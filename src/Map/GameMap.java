@@ -18,7 +18,9 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Map;
 
 import Core.Dice;
+import Core.Main;
 import Data.DataManager;
+import Game.Game;
 import PathFinding.PathFinding;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,8 +42,6 @@ import org.javatuples.Pair;
  */
 public class GameMap implements Serializable {
 
-	private static GameMap instance = null;
-	
 	boolean Initialized;
 	boolean MapLoaded;
 
@@ -57,7 +57,7 @@ public class GameMap implements Serializable {
 
 	ArrayList<Zone> Zones;
 
-	protected GameMap() {
+	public GameMap() {
 		Initialized = false;
 		MapLoaded = false;
 		HighestCell = -100000000;
@@ -69,12 +69,11 @@ public class GameMap implements Serializable {
 		WeatherCells = new ConcurrentHashMap<CellCoordinate, Cell>();
 		BasementCells = new ConcurrentHashMap<CellCoordinate, Cell>();		
 	}
-
-	public static GameMap getMap() {
-		if(instance == null) {
-			instance = new GameMap();
-		}
-		return instance;
+	
+	public static GameMap getMap()
+	{
+		Game game = Main.app.getStateManager().getState(Game.class);
+		return game.getMap();
 	}
 
 	public void Initialize(int MasterSeed) {

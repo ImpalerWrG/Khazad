@@ -88,8 +88,8 @@ public class ShellScreenController implements ScreenController {
 		String Seed = nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).getDisplayedText();
 
 		Game game = new Game();
-		game.InitializeGame((short) 10, (short) 10, Seed);
 		this.app.getStateManager().attach(game);
+		game.InitializeGame((short) 10, (short) 10, Seed);
 
 		this.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
 		this.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
@@ -158,8 +158,7 @@ public class ShellScreenController implements ScreenController {
 
 			// now read the save file
 			ois = new ObjectInputStream(new FileInputStream(saveFile));
-			Game game = new Game();
-			game.Load(ois);
+			Game game = (Game)ois.readObject();
 			this.app.getStateManager().attach(game);
 
 			this.app.getStateManager().getState(MapRenderer.class).attachToGame(game);

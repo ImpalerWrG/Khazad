@@ -18,6 +18,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Interface;
 
 
+import Core.Main;
 import Game.Game;
 import Map.MapCoordinate;
 
@@ -50,6 +51,8 @@ import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.scene.Spatial;
 
 import Renderer.MapRenderer;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 
@@ -58,7 +61,7 @@ import java.io.Serializable;
  *
  *  @author    Impaler
  */
-public class GameCameraState extends AbstractAppState implements ActionListener, AnalogListener, Serializable {
+public class GameCameraState extends AbstractAppState implements ActionListener, AnalogListener {
 
 	public enum CameraMode {
 		NORMAL,
@@ -74,7 +77,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 	transient private SimpleApplication app;
 	private GameCamera MainCamera;
-	private AppStateManager state; 
+	transient private AppStateManager state; 
 
 	String[] InputStrings;
 
@@ -115,6 +118,15 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 	public GameCameraState() {
 	}
+	
+	// this method is used by serialization
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
+		app = Main.app;
+		state = Main.app.getStateManager();
+	}
 
 	@Override
 	public void initialize(AppStateManager stateManager, Application app) {
@@ -129,7 +141,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		if (app.getInputManager() != null) {
 
 			if (MainCamera == null) {
-				LookNode = new Node();
+				LookNode = new Node("LookNode");
 				this.app.getRootNode().attachChild(LookNode);
 				LookNode.setLocalTranslation(1, 2, 3);
 

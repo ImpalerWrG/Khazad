@@ -57,7 +57,7 @@ import java.util.concurrent.Future;
 public class Game extends AbstractAppState implements ActionListener, Serializable {
 
     transient SimpleApplication app = null;
-    AppStateManager state = null;
+    transient AppStateManager state = null;
     int MasterSeed;
     Dice PawnDice = new Dice();
     GameMap MainMap;
@@ -76,8 +76,8 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
     PriorityQueue<Temporal> TemporalQueue;
     ArrayList<Actor> Actors;
     int ActorIDcounter = 0;
-    ExecutorService Executor;
-    Future lastUpdate;
+    transient ExecutorService Executor;
+    transient Future lastUpdate;
 
     public Game() {
 
@@ -100,6 +100,17 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 
         registerWithInput(app.getInputManager());
     }
+	
+	// this method is used by serialization
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
+		app = Main.app;
+		state = Main.app.getStateManager();
+		Executor = Main.app.getThreadPool();
+		lastUpdate = null;
+	}
 
     public boolean InitializeGame(short X, short Y, String SeedString) {
         MasterSeed = SeedString.hashCode();
@@ -109,7 +120,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
         MapGeology.Initialize(MasterSeed);
         MapGeology.GenerateWorldHeightMap(X, Y);
 
-        MainMap = GameMap.getMap();
+        MainMap = new GameMap();
         MainMap.Initialize(MasterSeed);
 
         GameWeather = new Weather();
@@ -274,12 +285,10 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
     public boolean isPaused() {
         return Pause;
     }
-
+/*
     public void Save(ObjectOutputStream stream) throws IOException {
 		// TODO write out a version number first
-		stream.writeInt(this.MasterSeed);
-        stream.writeObject(this.Actors);
-		// TODO write out other data
+		stream.writeObject(this);
     }
     
     public void Load(ObjectInputStream stream) throws IOException, ClassNotFoundException {
@@ -303,7 +312,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 
         GameSettlment = new Settlment();
         Actors = (ArrayList<Actor>)stream.readObject();
-    }
+    }*/
     /*
      void Save(boost::filesystem::basic_ofstream<char>& Stream) const
      {

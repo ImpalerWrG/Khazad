@@ -17,6 +17,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Renderer;
 
+import Core.Main;
 import Game.Game;
 
 import Map.Axis;
@@ -50,10 +51,11 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.util.BufferUtils;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.BitSet;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,13 +67,13 @@ import jme3tools.optimize.GeometryBatchFactory;
  *
  * @author Impaler
  */
-public class PathingRenderer extends AbstractAppState implements ActionListener, Serializable {
+public class PathingRenderer extends AbstractAppState implements ActionListener {
 
 	transient SimpleApplication app = null;
-	AppStateManager state = null;
-	AssetManager assetmanager = null;
+	transient AppStateManager state = null;
+	transient AssetManager assetmanager = null;
 
-	Game game = null;
+	transient Game game = null;
 	transient PathFinding Pathing;
 	Node PathingNode;
 
@@ -96,11 +98,22 @@ public class PathingRenderer extends AbstractAppState implements ActionListener,
 		}
 		registerWithInput(app.getInputManager());
 	}
+	
+	// this method is used by serialization
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
+		app = Main.app;
+		state = Main.app.getStateManager();
+		this.assetmanager = app.getAssetManager();
+		registerWithInput(app.getInputManager());
+	}
 
 	public void attachToGame(Game TargetGame) {
 		this.game = TargetGame;
 
-		PathingNode = new Node();
+		PathingNode = new Node("PathingNode");
 		this.app.getRootNode().attachChild(PathingNode);
 		
 		this.Pathing = PathFinding.getSinglton();
@@ -124,7 +137,7 @@ public class PathingRenderer extends AbstractAppState implements ActionListener,
 
 	public Node BuildRendering(Cell TargetCell) {
 
-		Node PathRenderingNode = new Node();
+		Node PathRenderingNode = new Node("PathRenderingNode");
 		MovementModality Mod = new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1);
 		
 		CellCoordinate CellCoords = TargetCell.getCellCoordinates();

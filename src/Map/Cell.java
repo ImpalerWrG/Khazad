@@ -18,6 +18,8 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Map;
 
 import Data.DataManager;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 import java.util.HashMap;
@@ -47,8 +49,8 @@ public class Cell implements Serializable {
 	// The global position of this cell relative to other cells
 	private CellCoordinate thisCellCoordinates;
 	
-	boolean DirtyTerrainRendering;
-	boolean DirtyPathRendering;
+	transient boolean DirtyTerrainRendering;
+	transient boolean DirtyPathRendering;
 
 
 	public Cell() {
@@ -72,6 +74,14 @@ public class Cell implements Serializable {
 			CubeMaterialTypes[i] = DataManager.INVALID_INDEX;
 		}
 
+		DirtyTerrainRendering = true;
+		DirtyPathRendering = true;
+	}
+	
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
 		DirtyTerrainRendering = true;
 		DirtyPathRendering = true;
 	}

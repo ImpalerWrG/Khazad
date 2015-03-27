@@ -32,11 +32,11 @@ import java.util.ArrayList;
  *
  * @author Impaler
  */
-public class Music extends AbstractAppState implements Serializable {
+public class Music extends AbstractAppState {
 	
 	ArrayList<String> Tracks = null;
 	transient SimpleApplication app = null;
-	AssetManager assets = null;
+	transient AssetManager assets = null;
 	
 	Dice RandomGenerator = null;
 	private AudioNode audio_music;
@@ -70,7 +70,6 @@ public class Music extends AbstractAppState implements Serializable {
 	}
 
 	public String SelectTrack() {
-		String Track = new String();
 		int choice = RandomGenerator.Roll(0, Tracks.size() - 1);
 		return Tracks.get(choice);
 	}

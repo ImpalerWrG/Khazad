@@ -4,10 +4,10 @@
  */
 package Renderer;
 
+import Core.Main;
 import Game.Game;
 import Interface.GameCameraState;
 import Map.CellCoordinate;
-import Map.GameMap;
 
 import Map.MapCoordinate;
 import Map.TileBuilder;
@@ -22,7 +22,8 @@ import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.control.LodControl;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,12 +33,11 @@ import java.util.concurrent.Semaphore;
  *
  * @author Impaler
  */
-public class MapRenderer extends AbstractAppState implements Serializable{
+public class MapRenderer extends AbstractAppState {
 
 	transient SimpleApplication app = null;
-	AppStateManager state = null;
-	AssetManager assetmanager = null;
-	ImageManager imagemanager = null;
+	transient AppStateManager state = null;
+	transient AssetManager assetmanager = null;
 
 	Node MapNode = null;
 	Node sunnyterrainNode = null;
@@ -64,6 +64,16 @@ public class MapRenderer extends AbstractAppState implements Serializable{
 
 		semaphore = new Semaphore(1);
 	}
+	
+	// this method is used by serialization
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
+		app = Main.app;
+		state = Main.app.getStateManager();
+		assetmanager = Main.app.getAssetManager();
+	}
 
 	@Override
 	public void initialize(AppStateManager stateManager, Application app) {
@@ -77,11 +87,11 @@ public class MapRenderer extends AbstractAppState implements Serializable{
 
 	public void attachToGame(Game TargetGame) {
 		this.game = TargetGame;
-		this.MapNode = new Node();
+		this.MapNode = new Node("MapNode");
 		this.app.getRootNode().attachChild(MapNode);
 
-		darkterrainNode = new Node();
-		sunnyterrainNode = new Node();
+		darkterrainNode = new Node("DarkTerrainNode");
+		sunnyterrainNode = new Node("SunnyTerrainNode");
 		MapNode.attachChild(darkterrainNode);
 		MapNode.attachChild(sunnyterrainNode);
 
@@ -137,7 +147,7 @@ public class MapRenderer extends AbstractAppState implements Serializable{
 	public Node getCellNodeDark(CellCoordinate TargetCell) {
 		Node CellNode = DarkCellNodeMap.get(TargetCell);
 		if (CellNode == null) {
-			CellNode = new Node();	
+			CellNode = new Node("DarkCellNode");	
 
 			float x = (float) (TargetCell.X * MapCoordinate.CELLEDGESIZE);
 			float y = (float) (TargetCell.Y * MapCoordinate.CELLEDGESIZE);
@@ -154,7 +164,7 @@ public class MapRenderer extends AbstractAppState implements Serializable{
 		Node targetnode = ZMapLight.get(new Integer(zlevel));
 		if (targetnode == null) {
 
-			targetnode = new Node();
+			targetnode = new Node("ZMapLightNode");
 			targetnode.move(0, 0, zlevel);
 			ZMapLight.put(new Integer(zlevel), targetnode);
 		}
@@ -165,7 +175,7 @@ public class MapRenderer extends AbstractAppState implements Serializable{
 		Node targetnode = ZMapDark.get(new Integer(zlevel));
 		if (targetnode == null) {
 
-			targetnode = new Node();
+			targetnode = new Node("ZMapDarkNode");
 			targetnode.move(0, 0, zlevel);
 			ZMapDark.put(new Integer(zlevel), targetnode);
 		}

@@ -11,12 +11,12 @@
 					<interact onClick="SaveGame()"/>
 				</control>
 			</panel>
-			<panel align="center" childLayout="center" height="100px" id="QuitPanel" width="100%">
+			<panel align="center" childLayout="center" height="100px" width="100%">
 				<control childLayout="center" controller="Nifty.GameScreenController" height="50px" id="Abandonbutton" label="Abandon Game" name="button" width="150px">
 					<interact onClick="Abandon()"/>
 				</control>
 			</panel>
-			<panel align="center" childLayout="center" height="100px" id="QuitPanel" width="100%">
+			<panel align="center" childLayout="center" height="100px" width="100%">
 				<control childLayout="center" controller="Nifty.GameScreenController" height="50px" id="Quitbutton" label="Quit to Desktop" name="button" width="150px">
 					<interact onClick="Quit()"/>
 				</control>
@@ -81,7 +81,7 @@
 						<control childLayout="center" controller="Nifty.GameScreenController" id="Speed16button" label="x16" name="button" width="25px">
 							<interact onClick="SetSpeed(16)"/>
 						</control>
-						<control childLayout="center" controller="Nifty.GameScreenController" id="Speed16button" label="x64" name="button" width="25px">
+						<control childLayout="center" controller="Nifty.GameScreenController" id="Speed64button" label="x64" name="button" width="25px">
 							<interact onClick="SetSpeed(64)"/>
 						</control>
 						<control childLayout="center" controller="Nifty.GameScreenController" id="Speed256button" label="x256" name="button" width="35px">

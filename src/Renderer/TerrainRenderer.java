@@ -17,13 +17,9 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Renderer;
 
+import Core.Main;
 import Map.*;
 import Game.Game;
-import Interface.GameCameraState;
-import Data.DataManager;
-import Data.Types.ColorData;
-
-import Nifty.GUI;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -36,22 +32,16 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.ActionListener;
 
-import com.jme3.light.AmbientLight;
-import com.jme3.light.DirectionalLight;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 
 import com.jme3.scene.control.LodControl;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
-import com.jme3.texture.Image;
-import com.jme3.texture.Texture;
-import com.jme3.texture.Texture2D;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Collection;
 
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -62,16 +52,16 @@ import java.util.concurrent.ExecutorService;
  * 
  * @author Impaler
  */
-public class TerrainRenderer extends AbstractAppState implements ActionListener, Serializable {
+public class TerrainRenderer extends AbstractAppState implements ActionListener {
 
 	transient SimpleApplication app = null;
-	AppStateManager state = null;
-	AssetManager assetmanager = null;
+	transient AppStateManager state = null;
+	transient AssetManager assetmanager = null;
 
-	Game game = null;
+	transient Game game = null;
 
 	TileBuilder builder;
-	LodControl TerrainLodControler;
+	transient LodControl TerrainLodControler;
 
 	boolean SunnyRendering = true;
 	boolean DisplayToggle = true;
@@ -91,6 +81,16 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener,
 		this.assetmanager = app.getAssetManager();
 
 		registerWithInput(app.getInputManager());
+	}
+	
+	// this method is used by serialization
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
+		app = Main.app;
+		state = Main.app.getStateManager();
+		assetmanager = Main.app.getAssetManager();
 	}
 
 	public void attachToGame(Game TargetGame) {

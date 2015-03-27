@@ -18,6 +18,8 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Game;
 
 import Map.MapCoordinate;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 /**
@@ -35,7 +37,7 @@ public abstract class Actor extends Temporal implements Serializable {
 	
 	boolean Visible;
 	boolean Hidden;
-	boolean Dirty;
+	transient boolean Dirty;
 
 	public Actor(int id, MapCoordinate SpawnLocation) {
 		this.ID = id;
@@ -46,6 +48,13 @@ public abstract class Actor extends Temporal implements Serializable {
 
 	public void setLocation(MapCoordinate NewPosition) {
 		LocationCoordinates = NewPosition;
+		Dirty = true;
+	}
+	
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
 		Dirty = true;
 	}
 		/*

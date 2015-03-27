@@ -23,7 +23,7 @@ import java.io.Serializable;
  *
  * @author Impaler
  */
-public class VolumeSelection  implements Serializable {
+public class VolumeSelection {
 	
 	public MapCoordinate OriginLocation = new MapCoordinate();
     public MapCoordinate TerminalLocation = new MapCoordinate();

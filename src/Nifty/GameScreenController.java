@@ -32,11 +32,14 @@ import de.lessvoid.nifty.NiftyEventSubscriber;
 import Game.Game;
 import Interface.GameCameraState;
 import Renderer.SelectionRenderer;
+import de.lessvoid.nifty.controls.Controller;
 import de.lessvoid.nifty.controls.Label;
+import de.lessvoid.xml.xpp3.Attributes;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Properties;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 
@@ -44,7 +47,7 @@ import javax.swing.filechooser.FileSystemView;
  *
  * @author Impaler
  */
-public class GameScreenController implements ScreenController, KeyInputHandler {
+public class GameScreenController implements ScreenController, KeyInputHandler, Controller {
 
     private Application app;
     private Nifty nifty;
@@ -58,12 +61,25 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
         this.app = app;
         this.nifty = Newnifty;
     }
+	
+	public void init(Properties parameter,
+          Attributes controlDefinitionAttributes)
+	{
+	}
 
     public void bind(Nifty nifty, Screen screen) {
         System.out.println("bind( " + screen.getScreenId() + ")");
         screen.addKeyboardInputHandler(new KeyBoardMapping(), this);
         //screen.addPreKeyboardInputHandler(new KeyBoardMapping(), this);
     }
+	
+	public void bind(Nifty nifty,
+          Screen screen,
+          Element element,
+          Properties parameter,
+          Attributes controlDefinitionAttributes)
+	{
+	}
 
     public void onStartScreen() {
         System.out.println("GameScreen onStartScreen");
@@ -88,6 +104,15 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
         }
         return false;
     }
+	
+	public boolean inputEvent(NiftyInputEvent inputEvent)
+	{
+		return false;
+	}
+	
+	public void onFocus(boolean getFocus)
+	{		
+	}
 
     public void Menu() {
         if (MenuPopup == null) {
@@ -158,7 +183,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
             // now write to the save file
             oos = new ObjectOutputStream(new FileOutputStream(saveFile));
             Game game = app.getStateManager().getState(Game.class);
-            game.Save(oos);
+			oos.writeObject(game);
 			ShowSaveSuccess();
 			closePopup();
         } catch (IOException e) {
