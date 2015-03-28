@@ -32,14 +32,14 @@ import nu.xom.Elements;
 public class MaterialData extends DataBase implements Serializable {
 	private static final long serialVersionUID = 1;
 
-	private String PrimaryColorlabel, SecondaryColorlabel, BorderColorlabel;
+	transient private String PrimaryColorlabel, SecondaryColorlabel, BorderColorlabel;
 	public short PrimaryColorID, SecondaryColorID, BorderColorID;
 
-	private String MaterialClasslabel;
+	transient private String MaterialClasslabel;
 	public short MaterialClassID;
 
-	private String[] SurfaceTypeLabels;
-	private String[] SurfaceTextureLabels;
+	transient private String[] SurfaceTypeLabels;
+	transient private String[] SurfaceTextureLabels;
 	short[] SurfaceTypeIDs;
 	short[] SufaceTextueIDs;
 

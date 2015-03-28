@@ -27,6 +27,8 @@ import de.lessvoid.nifty.input.NiftyInputEvent;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.controls.ScrollbarChangedEvent;
 import de.lessvoid.nifty.controls.Scrollbar;
+import de.lessvoid.nifty.controls.Controller;
+import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 
 import Game.Game;
@@ -60,151 +62,141 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 	Element SaveSuccessPopup = null;
 
 
-    public GameScreenController(Nifty Newnifty, Application app) {
-        this.app = app;
-        this.nifty = Newnifty;
-    }
+	public GameScreenController(Nifty Newnifty, Application app) {
+		this.app = app;
+		this.nifty = Newnifty;
+	}
 	
-	public void init(Properties parameter,
-          Attributes controlDefinitionAttributes)
-	{
+	public void init(Properties parameter, Attributes controlDefinitionAttributes) {
 	}
 
-    public void bind(Nifty nifty, Screen screen) {
-        System.out.println("bind( " + screen.getScreenId() + ")");
-        screen.addKeyboardInputHandler(new KeyBoardMapping(), this);
-        //screen.addPreKeyboardInputHandler(new KeyBoardMapping(), this);
-    }
-	
-	public void bind(Nifty nifty,
-          Screen screen,
-          Element element,
-          Properties parameter,
-          Attributes controlDefinitionAttributes)
-	{
+	public void bind(Nifty nifty, Screen screen) {
+		System.out.println("bind( " + screen.getScreenId() + ")");
+		screen.addKeyboardInputHandler(new KeyBoardMapping(), this);
+		//screen.addPreKeyboardInputHandler(new KeyBoardMapping(), this);
 	}
 
-    public void onStartScreen() {
-        System.out.println("GameScreen onStartScreen");
-    }
+	public void bind(Nifty nifty, Screen screen, Element element, Properties parameter, Attributes controlDefinitionAttributes) {
+	}
 
-    public void onEndScreen() {
-        System.out.println("onEndScreen");
-    }
+	public void onStartScreen() {
+		System.out.println("GameScreen onStartScreen");
+	}
 
-    public boolean keyEvent(NiftyInputEvent event) {
-        if (event != null) {
-            if (event == NiftyInputEvent.Escape) {
-                if (MenuUp) {
-                    closePopup();
-                    return true;
-                } else {
-                    Menu();
-                    return true;
-                }
-            }
-            //if (event == NiftyInputEvent.Activate)
-        }
-        return false;
-    }
-	
-	public boolean inputEvent(NiftyInputEvent inputEvent)
-	{
+	public void onEndScreen() {
+		System.out.println("onEndScreen");
+	}
+
+	public boolean keyEvent(NiftyInputEvent event) {
+		if (event != null) {
+			if (event == NiftyInputEvent.Escape) {
+				if (MenuUp) {
+					closePopup();
+					return true;
+				} else {
+					Menu();
+					return true;
+				}
+			}
+			//if (event == NiftyInputEvent.Activate)
+		}
 		return false;
 	}
 	
-	public void onFocus(boolean getFocus)
-	{		
+	public boolean inputEvent(NiftyInputEvent inputEvent) {
+		return false;
 	}
 
-    public void Menu() {
-        if (MenuPopup == null) {
-            MenuPopup = nifty.createPopup("MenuPopup");
-        }
+	public void onFocus(boolean getFocus) {
+	}
 
-        Game game = app.getStateManager().getState(Game.class);
-        game.Pause(true);
+	public void Menu() {
+		if (MenuPopup == null) {
+			MenuPopup = nifty.createPopup("MenuPopup");
+		}
 
-        nifty.showPopup(nifty.getCurrentScreen(), this.MenuPopup.getId(), null);
-        MenuUp = true;
-    }
+		Game game = app.getStateManager().getState(Game.class);
+		game.Pause(true);
 
-    public void closePopup() {
-        if (MenuPopup != null) {
-            nifty.closePopup(this.MenuPopup.getId());
-            MenuUp = false;
-        }
-    }
+		nifty.showPopup(nifty.getCurrentScreen(), this.MenuPopup.getId(), null);
+		MenuUp = true;
+	}
 
-    public void Quit() {
-        this.app.stop();
-    }
+	public void closePopup() {
+		if (MenuPopup != null) {
+			nifty.closePopup(this.MenuPopup.getId());
+			MenuUp = false;
+		}
+	}
 
-    public void Abandon() {
-        // Destroy Game object
+	public void Quit() {
+		this.app.stop();
+	}
+
+	public void Abandon() {
+		// Destroy Game object
 		SelectionRenderer selectionRenderer = app.getStateManager().getState(SelectionRenderer.class);
 		app.getStateManager().detach(selectionRenderer);
 		selectionRenderer.cleanup();
-		
+
 		Game game = app.getStateManager().getState(Game.class);
 		this.app.getStateManager().getState(MapRenderer.class).detachFromGame();
 		app.getStateManager().detach(game);
 		game.cleanup();
-		
+
 		Main core = (Main) app;
 		core.getRootNode().detachAllChildren();
 		
         closePopup();
-        nifty.gotoScreen("StartScreen");
-    }
+		nifty.gotoScreen("StartScreen");
+	}
 
-    public void SaveGame() {
-        // TODO maybe a GUI to pick a save game slot
-        // otherwise, lets just hard code World01.sav for now
+	public void SaveGame() {
+		// TODO maybe a GUI to pick a save game slot
+		// otherwise, lets just hard code World01.sav for now
 
-        String fileName = "World01.sav";
-        ObjectOutputStream  oos = null;
+		String fileName = "World01.sav";
+		ObjectOutputStream	oos = null;
 
-        try {
-            // first, create the my documents\my games\Khazad folder, if it does not already exist.
-            JFileChooser fr = new JFileChooser();
-            FileSystemView fw = fr.getFileSystemView();
-            
-            String myDocumentsFolder = fw.getDefaultDirectory().toString();
-            String saveGamesFolder = myDocumentsFolder + "\\my games\\Khazad\\";
-            File saveGamesFolderFile = new File(saveGamesFolder);
-            if (!saveGamesFolderFile.exists())
-            {
-                saveGamesFolderFile.mkdirs();
-            }
-            
-            // now create the save file, if it does not already exist
-            File saveFile = new File(saveGamesFolder + fileName);
-            if (!saveFile.exists()) {
-                saveFile.createNewFile();
-            }
+		try {
+			// first, create the my documents\my games\Khazad folder, if it does not already exist.
+			JFileChooser fr = new JFileChooser();
+			FileSystemView fw = fr.getFileSystemView();
 
-            // now write to the save file
-            oos = new ObjectOutputStream(new FileOutputStream(saveFile));
-            Game game = app.getStateManager().getState(Game.class);
+			String myDocumentsFolder = fw.getDefaultDirectory().toString();
+			String saveGamesFolder = myDocumentsFolder + "\\my games\\Khazad\\";
+			File saveGamesFolderFile = new File(saveGamesFolder);
+			if (!saveGamesFolderFile.exists()) {
+				saveGamesFolderFile.mkdirs();
+			}
+
+			// now create the save file, if it does not already exist
+			File saveFile = new File(saveGamesFolder + fileName);
+			if (!saveFile.exists()) {
+				saveFile.createNewFile();
+			}
+
+			// now write to the save file
+			oos = new ObjectOutputStream(new FileOutputStream(saveFile));
+			Game game = app.getStateManager().getState(Game.class);
 			oos.writeObject(game.version);
 			oos.writeObject(game);
 			ShowSaveSuccess();
 			closePopup();
-        } catch (IOException e) {
-            ShowSaveError(e.toString());
-            e.printStackTrace();
-        } finally {
-            try {
-                if (oos != null) {
-                    oos.close();
-                }
-            } catch (IOException e) {
-	            ShowSaveError(e.toString());
-                e.printStackTrace();
-            }
-        }                
-    }
+		} catch (IOException e) {
+			ShowSaveError(e.toString());
+			e.printStackTrace();
+		} finally {
+			try {
+				if (oos != null) {
+					oos.close();
+				}
+			} catch (IOException e) {
+				ShowSaveError(e.toString());
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	private void ShowSaveError(String errorMessage) {
 		if (SaveErrorPopup == null) {
@@ -236,39 +228,39 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 			nifty.closePopup(this.SaveSuccessPopup.getId());
 		}
 	}
-	
-    public void Pause() {
-        Game game = app.getStateManager().getState(Game.class);
-        game.Pause(!game.isPaused());
-    }
 
-    public void SetSpeed(String NewSpeed) {
-        int speed = Integer.parseInt(NewSpeed);
-        Game game = app.getStateManager().getState(Game.class);
-        game.Pause(false);
-        game.setTickRate(speed);
-    }
+	public void Pause() {
+		Game game = app.getStateManager().getState(Game.class);
+		game.Pause(!game.isPaused());
+	}
 
-    public void Dig() {
-        GameCameraState Cam = app.getStateManager().getState(GameCameraState.class);
-        Cam.setMode(GameCameraState.CameraMode.SELECT_VOLUME);
-    }
+	public void SetSpeed(String NewSpeed) {
+		int speed = Integer.parseInt(NewSpeed);
+		Game game = app.getStateManager().getState(Game.class);
+		game.Pause(false);
+		game.setTickRate(speed);
+	}
 
-    @NiftyEventSubscriber(id = "DepthSlider")
-    public void DepthSliderChanged(final String id, final ScrollbarChangedEvent event) {
+	public void Dig() {
+		GameCameraState Cam = app.getStateManager().getState(GameCameraState.class);
+		Cam.setMode(GameCameraState.CameraMode.SELECT_VOLUME);
+	}
 
-        Scrollbar bar = event.getScrollbar();
-        Game game = app.getStateManager().getState(Game.class);
-        int High = game.getMap().getHighestCell();
-        int Low = game.getMap().getLowestCell();
-        bar.setWorldMax(High - Low);
+	@NiftyEventSubscriber(id = "DepthSlider")
+	public void DepthSliderChanged(final String id, final ScrollbarChangedEvent event) {
 
-        GameCameraState camera = app.getStateManager().getState(GameCameraState.class);
-        int top = camera.getSliceTop();
-        int bottom = camera.getSliceBottom();
+		Scrollbar bar = event.getScrollbar();
+		Game game = app.getStateManager().getState(Game.class);
+		int High = game.getMap().getHighestCell();
+		int Low = game.getMap().getLowestCell();
+		bar.setWorldMax(High - Low);
 
-        int value = (int) event.getValue();
-        int slice = camera.getSliceTop() - camera.getSliceBottom();
-        camera.SetSlice(High - value, High - value - slice);
-    }
+		GameCameraState camera = app.getStateManager().getState(GameCameraState.class);
+		int top = camera.getSliceTop();
+		int bottom = camera.getSliceBottom();
+
+		int value = (int) event.getValue();
+		int slice = camera.getSliceTop() - camera.getSliceBottom();
+		camera.SetSlice(High - value, High - value - slice);
+	}
 }

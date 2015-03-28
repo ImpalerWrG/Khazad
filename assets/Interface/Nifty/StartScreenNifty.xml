@@ -42,7 +42,7 @@
 				</panel>
 			</panel>
 		</panel>
-	</popup>	
+	</popup>
 	<screen id="StartScreen" controller="Nifty.ShellScreenController">
 		<layer id="Splash" childLayout="vertical">
 			<panel id="panel0" height="10%" width="100%" childLayout="center" padding="0px"/>

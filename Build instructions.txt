@@ -5,4 +5,4 @@ The best way to build this project is to use the jMonkeyEngine 3.0 IDE.  You can
 
 From within the IDE do File, open project. find this folder, and it should open up as a project.
 
-From there it should build (Run menu, build project).  If it is complaining about a missing javatuples-1.2.jar, you should be able to resolve it by finding the jar in the resources/JavaLibraries folder.
+From there it should build (Run menu, build project).  If it is complaining about any missing java libraries, you should be able to resolve it by finding the jar in the resources/JavaLibraries folder.

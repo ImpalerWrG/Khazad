@@ -33,7 +33,7 @@ public class CreatureSizeData extends DataBase implements Serializable {
 	private static final long serialVersionUID = 1;
 
 	byte[] ModifierValues;
-	String[] AttributeLabels;
+	transient String[] AttributeLabels;
 	
 	public byte[] AttributeModifierVales;
 

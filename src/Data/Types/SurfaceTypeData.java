@@ -31,7 +31,7 @@ import nu.xom.Element;
 public class SurfaceTypeData extends DataBase implements Serializable {
 	private static final long serialVersionUID = 1;
 
-	private String TextureLabel;
+	transient private String TextureLabel;
 	int TextureID;
 	
 	public SurfaceTypeData() {
