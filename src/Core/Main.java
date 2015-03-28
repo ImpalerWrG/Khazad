@@ -51,19 +51,20 @@ import java.util.concurrent.Executors;
  */
 public class Main extends SimpleApplication {
 
-	static ExecutorService pool;
+	private static ExecutorService pool;
+	public static Main app;
 
     public static void main(String[] args) {	
-		Main Game = new Main();
+		app = new Main();
 
 		AppSettings setting= new AppSettings(true);
 		setting.setTitle("Khazad");
 		setting.setHeight(600);
 		setting.setWidth(800);
 		//Game.setShowSettings(false); 
-		Game.setSettings(setting);
+		app.setSettings(setting);
 
-        Game.start();
+        app.start();
     }
 
 	public Main() {
@@ -137,7 +138,7 @@ public class Main extends SimpleApplication {
 	public ExecutorService getThreadPool() {
 		return pool;
 	}
-
+	
     @Override
     public void simpleUpdate(float tpf) {
 		

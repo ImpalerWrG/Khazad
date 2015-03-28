@@ -18,6 +18,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Job;
 
 import Game.Pawn;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -25,7 +26,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author Impaler
  */
-public abstract class Job {
+public abstract class Job implements Serializable {
+	private static final long serialVersionUID = 1;
 	
 	public enum JobType {
 		JOB_IDLE,

@@ -19,16 +19,20 @@ package Map;
 
 import java.util.*;
 import Interface.VolumeSelection;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 
 /**
  * Basic description of a volume in the game Map, high efficiency storage by bitset
  * mapped to CellCoordinates to give fast query, zones have no trouble overlapping
  * @author Impaler
  */
-public class Zone {
+public class Zone implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	HashMap<CellCoordinate, BitSet> ZoneMap;
-	public boolean Dirty;
+	transient public boolean Dirty;
 	private final int ID;
 
 	public Zone(List<VolumeSelection> Volumes, int ID) {
@@ -37,6 +41,13 @@ public class Zone {
 			addSelection(Selection);
 		}
 		this.ID = ID;
+		Dirty = true;
+	}
+	
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
 		Dirty = true;
 	}
 

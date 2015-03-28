@@ -41,7 +41,6 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import com.jme3.util.BufferUtils;
 
 import java.util.ArrayList;
@@ -79,6 +78,13 @@ public class SelectionRenderer extends AbstractAppState {
 
 		BuildCursorBox();
 		BuildText();
+	}
+	
+	@Override
+	public void cleanup()
+	{
+		super.cleanup();
+		this.app.getGuiNode().detachChild(hudText);
 	}
 
 	public void BuildCursorBox() {
@@ -161,7 +167,7 @@ public class SelectionRenderer extends AbstractAppState {
 	}
 
 	public Node BuildZone(Zone TargetZone) {
-		Node ZoneNode = new Node();
+		Node ZoneNode = new Node("ZoneNode");
 		
 		HashMap<CellCoordinate, BitSet> ZoneMap = TargetZone.getZoneMap();
 		for (Map.Entry<CellCoordinate, BitSet> entry : ZoneMap.entrySet()) {

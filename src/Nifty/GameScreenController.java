@@ -17,6 +17,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Nifty;
 
+import Core.Main;
 import com.jme3.app.Application;
 
 import de.lessvoid.nifty.Nifty;
@@ -27,40 +28,63 @@ import de.lessvoid.nifty.input.NiftyInputEvent;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.controls.ScrollbarChangedEvent;
 import de.lessvoid.nifty.controls.Scrollbar;
+import de.lessvoid.nifty.controls.Controller;
+import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 
 import Game.Game;
 import Interface.GameCameraState;
+import Renderer.MapRenderer;
+import Renderer.PathingRenderer;
+import Renderer.SelectionRenderer;
+import Renderer.TerrainRenderer;
+import de.lessvoid.xml.xpp3.Attributes;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.Properties;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
+
 /**
  *
  * @author Impaler
  */
-public class GameScreenController implements ScreenController, KeyInputHandler {
+public class GameScreenController implements ScreenController, KeyInputHandler, Controller {
 
 	private Application app;
 	private Nifty nifty;
-	
 	boolean MenuUp = false;
 	Element MenuPopup = null;
+	Element SaveErrorPopup = null;
+	Element SaveSuccessPopup = null;
+
 
 	public GameScreenController(Nifty Newnifty, Application app) {
 		this.app = app;
-		this.nifty = Newnifty;	
+		this.nifty = Newnifty;
+	}
+	
+	public void init(Properties parameter, Attributes controlDefinitionAttributes) {
 	}
 
 	public void bind(Nifty nifty, Screen screen) {
-        System.out.println("bind( " + screen.getScreenId() + ")");
+		System.out.println("bind( " + screen.getScreenId() + ")");
 		screen.addKeyboardInputHandler(new KeyBoardMapping(), this);
 		//screen.addPreKeyboardInputHandler(new KeyBoardMapping(), this);
-    }
+	}
 
-    public void onStartScreen() {
-        System.out.println("GameScreen onStartScreen");
-    }
+	public void bind(Nifty nifty, Screen screen, Element element, Properties parameter, Attributes controlDefinitionAttributes) {
+	}
 
-    public void onEndScreen() {
-        System.out.println("onEndScreen");
-    }
+	public void onStartScreen() {
+		System.out.println("GameScreen onStartScreen");
+	}
+
+	public void onEndScreen() {
+		System.out.println("onEndScreen");
+	}
 
 	public boolean keyEvent(NiftyInputEvent event) {
 		if (event != null) {
@@ -78,13 +102,20 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 		return false;
 	}
 	
+	public boolean inputEvent(NiftyInputEvent inputEvent) {
+		return false;
+	}
+
+	public void onFocus(boolean getFocus) {
+	}
+
 	public void Menu() {
 		if (MenuPopup == null) {
-			MenuPopup = nifty.createPopup("MenuPopup");	
+			MenuPopup = nifty.createPopup("MenuPopup");
 		}
-		
-		Game Time = app.getStateManager().getState(Game.class);
-		Time.Pause(true);
+
+		Game game = app.getStateManager().getState(Game.class);
+		game.Pause(true);
 
 		nifty.showPopup(nifty.getCurrentScreen(), this.MenuPopup.getId(), null);
 		MenuUp = true;
@@ -102,26 +133,111 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 	}
 
 	public void Abandon() {
-		closePopup();
+		// Destroy Game object
+		SelectionRenderer selectionRenderer = app.getStateManager().getState(SelectionRenderer.class);
+		app.getStateManager().detach(selectionRenderer);
+		selectionRenderer.cleanup();
 
-		// Destroy Game object ?
+		Game game = app.getStateManager().getState(Game.class);
+		this.app.getStateManager().getState(MapRenderer.class).detachFromGame();
+		app.getStateManager().detach(game);
+		game.cleanup();
+
+		Main core = (Main) app;
+		core.getRootNode().detachAllChildren();
+		
+		closePopup();
 		nifty.gotoScreen("StartScreen");
 	}
 
 	public void SaveGame() {
-		closePopup();
+		// TODO maybe a GUI to pick a save game slot
+		// otherwise, lets just hard code World01.sav for now
+
+		String fileName = "World01.sav";
+		ObjectOutputStream	oos = null;
+
+		try {
+			// first, create the my documents\my games\Khazad folder, if it does not already exist.
+			JFileChooser fr = new JFileChooser();
+			FileSystemView fw = fr.getFileSystemView();
+
+			String myDocumentsFolder = fw.getDefaultDirectory().toString();
+			String saveGamesFolder = myDocumentsFolder + "\\my games\\Khazad\\";
+			File saveGamesFolderFile = new File(saveGamesFolder);
+			if (!saveGamesFolderFile.exists()) {
+				saveGamesFolderFile.mkdirs();
+			}
+
+			// now create the save file, if it does not already exist
+			File saveFile = new File(saveGamesFolder + fileName);
+			if (!saveFile.exists()) {
+				saveFile.createNewFile();
+			}
+
+			// now write to the save file
+			oos = new ObjectOutputStream(new FileOutputStream(saveFile));
+			Game game = app.getStateManager().getState(Game.class);
+			oos.writeObject(game.version);
+			oos.writeObject(game);
+			ShowSaveSuccess();
+			closePopup();
+		} catch (IOException e) {
+			ShowSaveError(e.toString());
+			e.printStackTrace();
+		} finally {
+			try {
+				if (oos != null) {
+					oos.close();
+				}
+			} catch (IOException e) {
+				ShowSaveError(e.toString());
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void ShowSaveError(String errorMessage) {
+		if (SaveErrorPopup == null) {
+			SaveErrorPopup = nifty.createPopup("SaveErrorPopup");
+		}
+		Label errorLabel = SaveErrorPopup.findNiftyControl("SaveErrorLabel", Label.class);
+		if (errorLabel != null) {
+			errorLabel.setText(errorMessage);
+		}
+
+		nifty.showPopup(nifty.getCurrentScreen(), this.SaveErrorPopup.getId(), null);
+	}
+
+	public void CloseSaveError() {
+		if (SaveErrorPopup != null) {
+			nifty.closePopup(this.SaveErrorPopup.getId());
+		}
+	}
+	
+	private void ShowSaveSuccess() {
+		if (SaveSuccessPopup == null) {
+			SaveSuccessPopup = nifty.createPopup("SaveSuccessPopup");
+		}
+		nifty.showPopup(nifty.getCurrentScreen(), this.SaveSuccessPopup.getId(), null);
+	}
+
+	public void CloseSaveSuccess() {
+		if (SaveSuccessPopup != null) {
+			nifty.closePopup(this.SaveSuccessPopup.getId());
+		}
 	}
 
 	public void Pause() {
-		Game Time = app.getStateManager().getState(Game.class);
-		Time.Pause(!Time.isPaused());
+		Game game = app.getStateManager().getState(Game.class);
+		game.Pause(!game.isPaused());
 	}
 
 	public void SetSpeed(String NewSpeed) {
 		int speed = Integer.parseInt(NewSpeed);
-		Game Time = app.getStateManager().getState(Game.class);
-		Time.Pause(false);
-		Time.setTickRate(speed);
+		Game game = app.getStateManager().getState(Game.class);
+		game.Pause(false);
+		game.setTickRate(speed);
 	}
 
 	public void Dig() {
@@ -129,8 +245,8 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 		Cam.setMode(GameCameraState.CameraMode.SELECT_VOLUME);
 	}
 
-	@NiftyEventSubscriber(id="DepthSlider")
-    public void DepthSliderChanged(final String id, final ScrollbarChangedEvent event) {
+	@NiftyEventSubscriber(id = "DepthSlider")
+	public void DepthSliderChanged(final String id, final ScrollbarChangedEvent event) {
 
 		Scrollbar bar = event.getScrollbar();
 		Game game = app.getStateManager().getState(Game.class);

@@ -1,0 +1,8 @@
+BUILD INSTRUCTIONS
+==================
+
+The best way to build this project is to use the jMonkeyEngine 3.0 IDE.  You can download this for free from jmonkeyengine.org.  It should be possible to build it using other tools, please consult the jMonkeyEngine website for details.
+
+From within the IDE do File, open project. find this folder, and it should open up as a project.
+
+From there it should build (Run menu, build project).  If it is complaining about any missing java libraries, you should be able to resolve it by finding the jar in the resources/JavaLibraries folder.

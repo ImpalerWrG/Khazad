@@ -21,7 +21,12 @@ import Data.*;;
 
 import Data.DataBase;
 import Data.DataLibrary;
+import java.io.Serializable;
 
+import nu.xom.Element;
+import nu.xom.Elements;
+import Data.DataBase;
+import Data.DataLibrary;
 import nu.xom.Element;
 import nu.xom.Elements;
 
@@ -29,7 +34,8 @@ import nu.xom.Elements;
  *
  * @author Impaler
  */
-public class TextureGridData extends DataBase {
+public class TextureGridData extends DataBase implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	public String FilePath;
 	public int TextureWidth, TextureHeight;

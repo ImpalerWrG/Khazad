@@ -34,8 +34,11 @@ import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
@@ -45,47 +48,42 @@ import java.util.concurrent.Future;
 /**
  * Game holds all the objects (Map, Settlment, Weather etc) which together make
  * up the simulation and is were saving and loading of game files is initiate
- * before being piped to the particular sub-objects.  Game is also responsible
+ * before being piped to the particular sub-objects. Game is also responsible
  * for the simulation logic loop which is called by update each frame, a Ticker
  * instance is created and submitted to the thread pool to keep the core JME
  * thread fully devoted to rendering.
- * 
+ *
  * @author Impaler
  */
-public class Game extends AbstractAppState implements ActionListener {
+public class Game extends AbstractAppState implements ActionListener, Serializable {
+	private static final long serialVersionUID = 1;
 
-	SimpleApplication app = null;
-	AppStateManager state = null;
-
+	public static String version = "0.2.2";
+	transient SimpleApplication app = null;
+	transient AppStateManager state = null;
 	int MasterSeed;
 	Dice PawnDice = new Dice();
-	
-    GameMap MainMap;
-    Geology MapGeology;
-	Settlment GameSettlment;
+	GameMap MainMap;
+	Geology MapGeology;
+	Settlement GameSettlement;
 	Weather GameWeather;
-
 	boolean Pause;
 	int TickRate;
 	long CurrentGameTick;
 	float TickRounding;
-	
 	public long seconds;
 	public long minutes;
 	public long hours;
 	public long days;
-
 	int UniqueIDCounter;
 	PriorityQueue<Temporal> TemporalQueue;
-
 	ArrayList<Actor> Actors;
 	int ActorIDcounter = 0;
-
-	ExecutorService Executor;
-	Future lastUpdate;
+	transient ExecutorService Executor;
+	transient Future lastUpdate;
 
 	public Game() {
-		
+
 		TickRate = 1;
 		TickRounding = 0;
 		CurrentGameTick = Temporal.TICKS_PER_DAY / 2;
@@ -106,6 +104,7 @@ public class Game extends AbstractAppState implements ActionListener {
 		registerWithInput(app.getInputManager());
 	}
 
+
 	public boolean InitializeGame(short X, short Y, String SeedString) {
 		MasterSeed = SeedString.hashCode();
 		PawnDice.Seed(MasterSeed);
@@ -114,7 +113,7 @@ public class Game extends AbstractAppState implements ActionListener {
 		MapGeology.Initialize(MasterSeed);
 		MapGeology.GenerateWorldHeightMap(X, Y);
 
-		MainMap = GameMap.getMap();
+		MainMap = new GameMap();
 		MainMap.Initialize(MasterSeed);
 
 		GameWeather = new Weather();
@@ -122,7 +121,7 @@ public class Game extends AbstractAppState implements ActionListener {
 
 		BuildMapChunk((short) 0, (short) 0, (byte) X, (byte) Y);
 
-		GameSettlment = new Settlment();
+		GameSettlement = new Settlement();
 		Actors = new ArrayList<Actor>();
 
 		return true;
@@ -170,32 +169,32 @@ public class Game extends AbstractAppState implements ActionListener {
 		Citizen NewCitizen = new Citizen(ActorIDcounter, PawnDice.Roll(0, MasterSeed), SpawnCoordinates);
 		ActorIDcounter++;
 		Actors.add(NewCitizen);
-		GameSettlment.addCitizen(NewCitizen);
+		GameSettlement.addCitizen(NewCitizen);
 		AddTemporal(NewCitizen);
 		return NewCitizen;
 	}
 
 	boolean AddTemporal(Temporal NewTemporal) {
-		TemporalQueue.add(NewTemporal);	
+		TemporalQueue.add(NewTemporal);
 		return true;
 	}
 
 	public GameMap getMap() {
 		return MainMap;
 	}
-	
-	public Settlment getSettlment() {
-		return GameSettlment;
+
+	public Settlement getSettlement() {
+		return GameSettlement;
 	}
 
 	public Weather getWeather() {
 		return GameWeather;
 	}
-	
+
 	public void VolumeSelectionCompleted(VolumeSelection newVolume) {
 		// What dose it mean?  need some kind of priming knowlege
 
-		JobManager jobs = GameSettlment.getJobManager();
+		JobManager jobs = GameSettlement.getJobManager();
 		ExcavateJob newJob = new ExcavateJob(MainMap);
 		ArrayList Volumes = new ArrayList<VolumeSelection>();
 		Volumes.add(newVolume);
@@ -208,7 +207,7 @@ public class Game extends AbstractAppState implements ActionListener {
 	public ArrayList<Actor> getActors() {
 		return Actors;
 	}
-	
+
 	public void onAction(String name, boolean keyPressed, float tpf) {
 		if (this.isEnabled()) {
 			if (name.equals("Pause")) {
@@ -216,7 +215,7 @@ public class Game extends AbstractAppState implements ActionListener {
 					Pause = !Pause;
 			}
 			if (name.equals("Faster")) {
-				if (keyPressed) 
+				if (keyPressed)
 					TickRate *= 4;
 			}
 			if (name.equals("Slower")) {
@@ -229,18 +228,18 @@ public class Game extends AbstractAppState implements ActionListener {
 	public void registerWithInput(InputManager inputManager) {
 		String[] inputs = {"Pause", "Faster", "Slower"};
 
-		inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_SPACE)); 
-		inputManager.addMapping("Faster", new KeyTrigger(KeyInput.KEY_ADD)); 
-		inputManager.addMapping("Faster", new KeyTrigger(KeyInput.KEY_EQUALS)); 
-		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_MINUS)); 
-		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_SUBTRACT)); 
+		inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_SPACE));
+		inputManager.addMapping("Faster", new KeyTrigger(KeyInput.KEY_ADD));
+		inputManager.addMapping("Faster", new KeyTrigger(KeyInput.KEY_EQUALS));
+		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_MINUS));
+		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_SUBTRACT));
 		inputManager.addListener(this, inputs);
 	}
-
+	
 	@Override
 	public void update(float tpf) {
 		if (!Pause) {
-			if(lastUpdate == null || lastUpdate.isDone()) {
+			if (lastUpdate == null || lastUpdate.isDone()) {
 				float TargetTicks = TickRate * tpf * Temporal.TICKS_PER_SECOND;
 				TargetTicks += TickRounding;
 				int FullTicks = (int) TargetTicks;
@@ -278,26 +277,14 @@ public class Game extends AbstractAppState implements ActionListener {
 		return Pause;
 	}
 
-
-	/*
-	void Save(boost::filesystem::basic_ofstream<char>& Stream) const
-	{
-		Stream.write((char*)&TickRate, sizeof(TickRate));
-		Stream.write((char*)&Pause, sizeof(Pause));
-		Stream.write((char*)&Zoneing, sizeof(Zoneing));
-
-		MainMap.Save(Stream);
+	// this method is used by serialization
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
+		app = Main.app;
+		state = Main.app.getStateManager();
+		Executor = Main.app.getThreadPool();
+		lastUpdate = null;
 	}
-
-	void Load(boost::filesystem::basic_ifstream<char>& Stream)
-	{
-		Stream.read((char*)&TickRate, sizeof(TickRate));
-		Stream.read((char*)&Pause, sizeof(Pause));
-		Stream.read((char*)&Zoneing, sizeof(Zoneing));
-
-		MainMap = new Map();
-		MainMap.Load(Stream);
-	}
-	* */
-
 }

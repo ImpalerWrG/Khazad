@@ -20,28 +20,30 @@ package Terrain;
 import Core.Dice;
 import Map.*;
 import Data.DataManager;
+import java.io.Serializable;
+
 /**
  *
  * @author Impaler
  */
-public class Geology {
-	
+public class Geology implements Serializable {
+	private static final long serialVersionUID = 1;
+
 	int RockType = 42;
 	int GeologySeed;
 
 	Dice RandomGenerator;
 	Noise NoiseGenerator;
-		
+
 	float[][] WorldHeight;
 
 	short CellTopZ;
-    short CellBottomZ;
+	short CellBottomZ;
 
-    float[] Edge;
-    float[][] Height;
-    boolean[][] Seeded;
-	
-	
+	float[] Edge;
+	float[][] Height;
+	boolean[][] Seeded;
+
 	public boolean Initialize(int Seed) {
 
 		//Ogre::Plane RockLayer = Ogre::Plane(Ogre::Vector3(0, 0, 1), 1);
@@ -59,20 +61,20 @@ public class Geology {
 		int WorldSizeY = Y;
 
 		WorldHeight = new float[X + 1][Y + 1];
- 
+
 		Edge = new float[MapCoordinate.CELLEDGESIZE + 1];
 		Height = new float[MapCoordinate.CELLEDGESIZE + 1][MapCoordinate.CELLEDGESIZE + 1];
 		Seeded = new boolean[MapCoordinate.CELLEDGESIZE + 1][MapCoordinate.CELLEDGESIZE + 1];
-	
+
 		int Octives = 9;
-		double lacunarity  = 2.1379201;
+		double lacunarity = 2.1379201;
 		double persistence = 0.036281;
-		
+
 		float height;
-		
+
 		for (int x = 0; x < X + 1; x++) {
 			for (int y = 0; y < Y + 1; y++) {
-				
+
 				double workingX = x;
 				double workingY = y;
 				double result = 0.0;
@@ -88,7 +90,7 @@ public class Geology {
 				WorldHeight[x][y] = (float) result;
 			}
 		}
-		
+
 		/* double PerlinNoise::Total(double i, double j) const
 		{
 			//properties of one octave (changing each loop)
@@ -96,8 +98,7 @@ public class Geology {
 			double _amplitude = 1;
 			double freq = frequency;
 
-			for(int k = 0; k < octaves; k++) 
-			{
+			for(int k = 0; k < octaves; k++) {
 				t += GetValue(j * freq + randomseed, i * freq + randomseed) * _amplitude;
 				_amplitude *= persistence;
 				freq *= 2;
@@ -108,11 +109,11 @@ public class Geology {
 	}
 
 	public short getCellBottomZLevel() {
-		return CellBottomZ; 
+		return CellBottomZ;
 	}
 
-    public short getCellTopZLevel() {
-		return CellTopZ; 
+	public short getCellTopZLevel() {
+		return CellTopZ;
 	}
 
 	public void GenerateCellEdge(float X, float Y, float heightScale, float Roughness) {
@@ -120,19 +121,18 @@ public class Geology {
 		coords.hashCode();
 		RandomGenerator.Seed(coords.hashCode());
 
-		Edge[0] = X;	 Edge[MapCoordinate.CELLEDGESIZE] = Y;
+		Edge[0] = X;
+		Edge[MapCoordinate.CELLEDGESIZE] = Y;
 
-			float ratio = (float) Math.pow(2.0, -Roughness);
-			float scale = heightScale * ratio;
+		float ratio = (float) Math.pow(2.0, -Roughness);
+		float scale = heightScale * ratio;
 
 		/* Seed the endpoints of the array. To enable seamless wrapping,
-		   the endpoints need to be the same point. */
+		 the endpoints need to be the same point. */
 		byte stride = MapCoordinate.CELLEDGESIZE / 2;
 
-		while (stride > 0)
-		{
-			for (byte i = stride; i < MapCoordinate.CELLEDGESIZE; i += stride)
-			{
+		while (stride > 0) {
+			for (byte i = stride; i < MapCoordinate.CELLEDGESIZE; i += stride) {
 				Edge[i] = scale * RandomGenerator.Roll(-1.0f, 1.0f) + ((Edge[i - stride] + Edge[i + stride]) * .5f);
 				/* reduce random number range */
 				scale *= ratio;
@@ -146,10 +146,8 @@ public class Geology {
 		byte size = MapCoordinate.CELLEDGESIZE + 1;
 
 		// Mark edges as Seeded to prevent them from being overwritten
-		for (short x = 0; x < size; x++)
-		{
-			for (short y = 0; y < size; y++)
-			{
+		for (short x = 0; x < size; x++) {
+			for (short y = 0; y < size; y++) {
 				Seeded[x][y] = false;
 				//Height[x][y] = 0.0f;
 			}
@@ -158,32 +156,28 @@ public class Geology {
 		// Edges Initialized to anchor values to create contiguousness
 		GenerateCellEdge(WorldHeight[X][Y], WorldHeight[X + 1][Y], heightScale, Roughness);
 
-		for (short x = 0; x < size; x++)
-		{
+		for (short x = 0; x < size; x++) {
 			Height[x][0] = Edge[x];
 			Seeded[x][0] = true;
 		}
 
 		GenerateCellEdge(WorldHeight[X][Y + 1], WorldHeight[X + 1][Y + 1], heightScale, Roughness);
 
-		for (short x = 0; x < size; x++)
-		{
+		for (short x = 0; x < size; x++) {
 			Height[x][MapCoordinate.CELLEDGESIZE] = Edge[x];
 			Seeded[x][MapCoordinate.CELLEDGESIZE] = true;
 		}
 
 		GenerateCellEdge(WorldHeight[X][Y], WorldHeight[X][Y + 1], heightScale, Roughness);
 
-		for (short y = 0; y < size; y++)
-		{
+		for (short y = 0; y < size; y++) {
 			Height[0][y] = Edge[y];
 			Seeded[0][y] = true;
 		}
 
 		GenerateCellEdge(WorldHeight[X + 1][Y], WorldHeight[X + 1][Y + 1], heightScale, Roughness);
 
-		for (short y = 0; y < size; y++)
-		{
+		for (short y = 0; y < size; y++) {
 			Height[MapCoordinate.CELLEDGESIZE][y] = Edge[y];
 			Seeded[MapCoordinate.CELLEDGESIZE][y] = true;
 		}
@@ -364,7 +358,7 @@ public class Geology {
 
 	public CubeShape getCubeShapeAtCoordinates(byte CubeTarget, int Zlevel) {
 		float Remainder;
-		
+
 		int Target = CubeTarget & 0xFF;
 
 		Remainder = Height[(Target >> MapCoordinate.CELLBITSHIFT)][(Target & MapCoordinate.CELLBITFLAG)] - ((float) Zlevel);
@@ -381,17 +375,21 @@ public class Geology {
 
 		byte Split = (byte) RandomGenerator.Roll(0, 1);
 
-		if (NWCornerHeight == CubeShape.CUBE_TOP_HEIGHT && SECornerHeight == CubeShape.CUBE_TOP_HEIGHT)
+		if (NWCornerHeight == CubeShape.CUBE_TOP_HEIGHT && SECornerHeight == CubeShape.CUBE_TOP_HEIGHT) {
 			Split = 1;
+		}
 
-		if (SWCornerHeight == CubeShape.CUBE_TOP_HEIGHT && NECornerHeight == CubeShape.CUBE_TOP_HEIGHT)
+		if (SWCornerHeight == CubeShape.CUBE_TOP_HEIGHT && NECornerHeight == CubeShape.CUBE_TOP_HEIGHT) {
 			Split = 0;
+		}
 
-		if (SWCornerHeight == CubeShape.BELOW_CUBE_HEIGHT || NECornerHeight == CubeShape.BELOW_CUBE_HEIGHT)
+		if (SWCornerHeight == CubeShape.BELOW_CUBE_HEIGHT || NECornerHeight == CubeShape.BELOW_CUBE_HEIGHT) {
 			Split = 1;
+		}
 
-		if (SECornerHeight == CubeShape.BELOW_CUBE_HEIGHT || NWCornerHeight == CubeShape.BELOW_CUBE_HEIGHT)
+		if (SECornerHeight == CubeShape.BELOW_CUBE_HEIGHT || NWCornerHeight == CubeShape.BELOW_CUBE_HEIGHT) {
 			Split = 0;
+		}
 
 		return new CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, (byte) Split);
 	}
@@ -416,7 +414,6 @@ public class Geology {
 				TargetCell.setCubeMaterial(TargetCube, DataManager.INVALID_INDEX);
 			}
 			TargetCube++;
-		}
-		while (TargetCube != 0);  // End Loop when Byte rolls over
+		} while (TargetCube != 0);  // End Loop when Byte rolls over
 	}
 }

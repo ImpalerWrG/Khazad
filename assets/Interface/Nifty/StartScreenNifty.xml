@@ -2,12 +2,11 @@
 <nifty>
 	<useControls filename="nifty-default-controls.xml"/>
 	<useStyles filename="nifty-default-styles.xml"/>
-	
-	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.ShellScreenController" id="TutorialPopup">
+	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.ShellScreenController" id="TutorialPopup">		
 		<interact onClick="closePopup()" onSecondaryClick="EndTutorial()" onTertiaryClick="EndTutorial()"/>		
-		<panel alighn="center" align="center" childLayout="vertical" height="500px" id="MenuPanel" style="nifty-panel-simple" width="600px">
-			<panel alighn="center" align="center" childLayout="vertical" height="100%" id="QuitPanel" width="100%">
-				<panel alighn="center" align="center" childLayout="vertical" height="90%" id="QuitPanel" width="100%">
+		<panel align="center" childLayout="vertical" height="500px" id="MenuPanel" style="nifty-panel-simple" width="600px">
+			<panel align="center" childLayout="vertical" height="100%" width="100%">
+				<panel align="center" childLayout="vertical" height="90%" width="100%">
 					<control name="label" id="GLabel1" color="#cc0000ff" text="Zoom:  mouse-wheel up/down" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
 					<control name="label" id="GLabel2" color="#cc0000ff" text="Tilt Camera:  hold mouse-wheel down, mouse up/down" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
 					<control name="label" id="GLabel3" color="#cc0000ff" text="Rotate Camera: hold mouse-wheel down, mouse right/left" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
@@ -20,7 +19,7 @@
 					<control name="label" id="GLabel10" color="#cc0000ff" text="Pause: Space bar" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
 					<control name="label" id="GLabel4" color="#cc0000ff" text="Dig:  Allows drag-selection of a box shape that will be dug out by Dwarves, WARNING: Very Buggy" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
 				</panel>
-				<panel alighn="center" align="center" childLayout="vertical" height="100%" id="QuitPanel" width="100%">
+				<panel align="center" childLayout="vertical" height="100%" width="100%">
 					<control childLayout="center" controller="Nifty.GameScreenController" height="10%" id="Quitbutton" label="Done" name="button" width="100%">
 						<interact onClick="EndTutorial()"/>
 					</control>
@@ -28,7 +27,22 @@
 			</panel>
 		</panel>
 	</popup>
-	
+	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.ShellScreenController" id="ErrorPopup">
+		<interact onClick="CloseError()" onSecondaryClick="CloseError()" onTertiaryClick="CloseError()"/>		
+		<panel align="center" childLayout="vertical" height="200px" style="nifty-panel-simple" width="600px">
+			<panel align="center" childLayout="vertical" height="100%" width="100%">
+				<panel align="center" childLayout="vertical" height="90%" width="100%">
+					<control name="label" color="#cc0000ff" text="Problem loading save" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
+					<control font="aurulent-sans-16.fnt" height="30px" id="ErrorLabel" name="label" text="Error message goes here" textLineHeight="30px" textMinHeight="30px" width="100%" wrap="true" />
+				</panel>
+				<panel align="center" childLayout="vertical" height="100%" width="100%">
+					<control childLayout="center" controller="Nifty.GameScreenController" height="20px" label="Done" name="button" width="100%">
+						<interact onClick="CloseError()"/>
+					</control>
+				</panel>
+			</panel>
+		</panel>
+	</popup>
 	<screen id="StartScreen" controller="Nifty.ShellScreenController">
 		<layer id="Splash" childLayout="vertical">
 			<panel id="panel0" height="10%" width="100%" childLayout="center" padding="0px"/>

@@ -6,6 +6,7 @@ package PathFinding;
 
 import Map.MapCoordinate;
 import Map.Zone;
+import java.io.Serializable;
 
 /**
  * Encapsulation of all the data needed for all types of routes that might be
@@ -13,7 +14,8 @@ import Map.Zone;
  * 
  * @author Impaler
  */
-public class RouteRequest {
+public class RouteRequest implements Serializable {
+	private static final long serialVersionUID = 1;
 	
 	MapCoordinate Start;
 	MapCoordinate Goal;

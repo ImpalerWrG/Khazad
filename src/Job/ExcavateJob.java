@@ -19,8 +19,6 @@ package Job;
 
 import java.util.HashMap;
 import java.util.BitSet;
-import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 import Game.Pawn;
 import Map.GameMap;
@@ -32,13 +30,17 @@ import Interface.VolumeSelection;
 import Map.Direction;
 import PathFinding.MovementModality;
 import PathFinding.PathFinding;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  *
  * @author Impaler
  */
-public class ExcavateJob extends Job {
+public class ExcavateJob extends Job implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	HashMap<CellCoordinate, CubeShape[]> Designations;
 	HashMap<CellCoordinate, BitSet> AccessibleExcavations;  // Excavation targets that are accesible
@@ -53,7 +55,7 @@ public class ExcavateJob extends Job {
 
 	Zone ExcavationZone;
 	GameMap map = null;
-	PathFinding paths = PathFinding.getSinglton();
+	transient PathFinding paths;
 	MovementModality Modality;
 
 	public ExcavateJob(GameMap map) {
@@ -68,6 +70,15 @@ public class ExcavateJob extends Job {
 		Modality = new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1);
 		this.map = map;
 		Priority = 10;
+		paths = PathFinding.getSingleton();
+	}
+	
+	// this method is used by serialization
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
+		paths = PathFinding.getSingleton();
 	}
 
 	public void addDesignations(VolumeSelection Selection, Zone SourceZone, CubeShape NewShape) {

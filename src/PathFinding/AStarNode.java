@@ -19,6 +19,7 @@ package PathFinding;
 
 import Map.MapCoordinate;
 import Map.Direction;
+import java.io.Serializable;
 
 /**
  * A simple Node used by the AStar pathing class, it holds data placed in it 
@@ -28,8 +29,8 @@ import Map.Direction;
  * 
  * @author Impaler
  */
-public class AStarNode implements Comparable {
-
+public class AStarNode implements Comparable, Serializable {
+	private static final long serialVersionUID = 1;
     float TotalCost;
     float TieBreakerValue;
 

@@ -17,11 +17,14 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Map;
 
+import java.io.Serializable;
+
 /**
  * Used to determine the Mesh used to build a Rendering of a Cell
  * @author Impaler
  */
-public class FaceShape {
+public class FaceShape implements Serializable {
+	private static final long serialVersionUID = 1;
 
     CubeShape SourceCubeComponent;
 	CubeShape AdjacentCubeComponent;

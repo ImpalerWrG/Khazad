@@ -17,6 +17,7 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package PathFinding;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -25,7 +26,9 @@ import java.util.ArrayList;
  * @author Impaler
  */
 
-public class Pool<T> {
+public class Pool<T> implements Serializable {
+	private static final long serialVersionUID = 1;
+	
 	ArrayList<T> ObjectPool;
 	PathAlgorithm<T> ObjectFactory;
 

@@ -17,6 +17,8 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package PathFinding;
 
+import java.io.Serializable;
+
 /**
  * Encompases all the unique properties of a Pawns mode of movement that
  * may be relevent for pathfinding.  MovementType specifies the kind of surface
@@ -28,7 +30,8 @@ package PathFinding;
  * 
  * @author Impaler
  */
-public class MovementModality {
+public class MovementModality implements Serializable {
+	private static final long serialVersionUID = 1;
 	
 	public enum MovementType {
 		WALK_MOVEMENT,

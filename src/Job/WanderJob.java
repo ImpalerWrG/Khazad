@@ -17,25 +17,38 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Job;
 
+import Core.Main;
 import Game.Pawn;
 import Map.MapCoordinate;
 import PathFinding.PathFinding;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 
 
 /**
  *
  * @author Impaler
  */
-public class WanderJob extends Job {
+public class WanderJob extends Job implements Serializable {
+	private static final long serialVersionUID = 1;
 	
-	PathFinding Pathing;
+	transient PathFinding Pathing;
 	
 	public WanderJob() {
 		super();
 		Name = "Wandering Aimlessly";
 
-		Pathing = PathFinding.getSinglton();
+		Pathing = PathFinding.getSingleton();
 		Type = Job.JobType.JOB_WANDER;
+	}
+	
+	// this method is used by serialization
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
+		Pathing = PathFinding.getSingleton();
 	}
 
 	/*

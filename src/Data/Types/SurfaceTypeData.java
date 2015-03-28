@@ -20,6 +20,7 @@ package Data.Types;
 import Data.DataBase;
 import Data.DataLibrary;
 import Data.DataManager;
+import java.io.Serializable;
 
 import nu.xom.Element;
 
@@ -27,9 +28,10 @@ import nu.xom.Element;
  *
  * @author Impaler
  */
-public class SurfaceTypeData extends DataBase {
+public class SurfaceTypeData extends DataBase implements Serializable {
+	private static final long serialVersionUID = 1;
 
-	private String TextureLabel;
+	transient private String TextureLabel;
 	int TextureID;
 	
 	public SurfaceTypeData() {

@@ -23,26 +23,28 @@ import com.jme3.scene.Node;
 import com.jme3.math.Vector3f;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 
 /**
- * Holds the state of and simulates the weather and Climate of the Games local 
- * map area.  Updates once per minute, currently controls the direction sunlight
- * 
+ * Holds the state of and simulates the weather and Climate of the Games local
+ * map area. Updates once per minute, currently controls the direction sunlight
+ *
  * @author Impaler
  */
-public class Weather extends Temporal {
+public class Weather extends Temporal implements Serializable {
+	private static final long serialVersionUID = 1;
 
-	DirectionalLight Sun;
+	transient DirectionalLight Sun;
 	Quaternion Rotation;
 	Vector3f SunVec;
-	Node SunNode;
 	ColorRGBA Suncolor = ColorRGBA.White;
 
 	public Weather() {
 		Rotation = new Quaternion();
 		Rotation.fromAngleAxis(0.25f * FastMath.PI / 180f, new Vector3f(0, 1, 0));
 
-		SunNode = new Node();
 		SunVec = new Vector3f();
 
 		Sun = new DirectionalLight();
@@ -59,19 +61,31 @@ public class Weather extends Temporal {
 
 	public long Wake(long CurrentTick) {
 		if (CurrentTick >= WakeTick) {
-
 			// Day Rotation
 			SunVec = Rotation.mult(SunVec);
-			Sun.setDirection(SunVec);
-			float Z = SunVec.z;
-			if (Z > 0) {
-				Sun.setColor(Suncolor.mult(0.0f));
-			} else {
-				Sun.setColor(Suncolor.mult((0.6f) * (Z * -1)));
-			}
+			UpdateSun();
 
 			WakeTick = CurrentTick + TICKS_PER_MINUTE;
 		}
 		return WakeTick;
+	}
+
+	private void UpdateSun() {
+		Sun.setDirection(SunVec);
+		float Z = SunVec.z;
+		if (Z > 0) {
+			Sun.setColor(Suncolor.mult(0.0f));
+		} else {
+			Sun.setColor(Suncolor.mult((0.6f) * (Z * -1)));
+		}
+	}
+
+	// this method is used by serialization
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
+		Sun = new DirectionalLight();
+		UpdateSun();
 	}
 }

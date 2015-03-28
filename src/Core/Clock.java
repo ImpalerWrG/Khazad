@@ -6,11 +6,13 @@ package Core;
 
 import com.jme3.system.Timer;
 import com.jme3.system.lwjgl.LwjglTimer;
+import java.io.Serializable;
 /**
  *
  * @author Impaler
  */
-public class Clock {
+public class Clock implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	long StartTime;
 	long PausedTime;

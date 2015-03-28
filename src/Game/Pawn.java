@@ -28,6 +28,7 @@ import Map.MapCoordinate;
 import PathFinding.MovementModality;
 import PathFinding.Navigator;
 import PathFinding.PathFinding;
+import java.io.Serializable;
 
 /**
  * A moving creature, derived from Actor but with the addition of a Navigator object 
@@ -35,7 +36,8 @@ import PathFinding.PathFinding;
  * 
  * @author Impaler
  */
-public class Pawn extends Actor {
+public class Pawn extends Actor implements Serializable {
+	private static final long serialVersionUID = 1;
 
 	boolean Moving;
 	Direction CurrentMovementDirection;
@@ -78,7 +80,7 @@ public class Pawn extends Actor {
 	}
 
 	public long AttemptMove(Direction MovementDirection) {
-		float EdgeCost = PathFinding.getSinglton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getMovementModality());
+		float EdgeCost = PathFinding.getSingleton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getMovementModality());
 		final int speedIndex = DataManager.getDataManager().getLabelIndex("BASIC_ATTRIBUTE_SPEED");
 		if (EdgeCost != -1) {
 			return (int) (EdgeCost / ((float) BasicAttributes[speedIndex] / 7.0) * TICKS_PER_SECOND);
