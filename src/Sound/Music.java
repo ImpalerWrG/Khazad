@@ -18,6 +18,10 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Sound;
 
 import Core.Dice;
+
+import Data.DataManager;
+import Data.Types.MusicData;
+
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -60,12 +64,9 @@ public class Music extends AbstractAppState {
 	}
 
 	public void LoadTrackLocations() {
-		Tracks.add("Sounds/Music/The Fall of Arcana.ogg");
-		Tracks.add("Sounds/Music/Stepping Stones.ogg");
-		Tracks.add("Sounds/Music/Around the Mountain.ogg");
-		//Tracks.add("Sounds/Music/Crystal Cave.ogg");
-		Tracks.add("Sounds/Music/Dark Ambience.ogg");
-		Tracks.add("Sounds/Music/Second Organ.ogg");
+		DataManager Data = DataManager.getDataManager();
+		for (MusicData Entry : (ArrayList<MusicData>) Data.getMusicDataLibrary().getEntries())
+			Tracks.add(Entry.FilePath);
 	}
 
 	public String SelectTrack() {
