@@ -152,7 +152,7 @@ public class PathTester  implements Serializable {
 	}
 
 	void CollectTestCoords() {
-		MovementModality Basic = new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1);
+		MovementModality Basic = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
 		GridInterface BasicGrid = ParentManager.Grids.get(Basic);
 		TestCoords = BasicGrid.getPassableCoordinates();
 	}
@@ -183,7 +183,7 @@ public class PathTester  implements Serializable {
 		}
 
 		Profile NewProfile = new Profile();
-		MovementModality MovementType = new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1);
+		MovementModality MovementType = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
 		ParentManager.ProfilePath(MovementType, ManualStartCoords, ManualGoalCoords, NewProfile);
 
 		ManualProfileGroup.Profiles.add(NewProfile);

@@ -4,7 +4,7 @@
 		<Name Label="CREATURE_DWARF"/>
 		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
 		<LifeSpan value="250"/>
-		<BasicAttributeModifers>
+		<BasicAttributeModifiers>
 			<AttributeModifier label="BASIC_ATTRIBUTE_STRENGTH" Modifier="0"/>
 			<AttributeModifier label="BASIC_ATTRIBUTE_DEXTERITY" Modifier="0"/>
 			<AttributeModifier label="BASIC_ATTRIBUTE_FLEXIBILITY" Modifier="0"/>
@@ -19,10 +19,10 @@
 			<AttributeModifier label="BASIC_ATTRIBUTE_JUDGMENT" Modifier="0"/>
 			<AttributeModifier label="BASIC_ATTRIBUTE_WILLPOWER" Modifier="0"/>
 			<AttributeModifier label="BASIC_ATTRIBUTE_INTUITION" Modifier="0"/>
-		</BasicAttributeModifers>
+		</BasicAttributeModifiers>
 		<MovementModality>
-			<MovementType label="WALK"/>
-			<MovementType label="CLIMB"/>
+			<MovementType label="MOVEMENT_TYPE_WALK" MovementSpeedModifier="1"/>
+			<MovementType label="MOVEMENT_TYPE_CLIMB" MovementSpeedModifier="1"/>
 		</MovementModality>
 	</Creature>
 	<Creature>
@@ -55,10 +55,6 @@
 	</Creature>
 	<Creature>
 		<Name Label="CREATURE_GNOLL"/>
-		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
-	</Creature>
-	<Creature>
-		<Name Label="CREATURE_ORC"/>
 		<CreatureSize label="CREATURE_SIZE_MEDIUM"/>
 	</Creature>
 	<Creature>

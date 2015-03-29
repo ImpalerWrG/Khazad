@@ -123,7 +123,7 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 	public Node BuildRendering(Cell TargetCell) {
 
 		Node PathRenderingNode = new Node("PathRenderingNode");
-		MovementModality Mod = new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1);
+		MovementModality Mod = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
 		
 		CellCoordinate CellCoords = TargetCell.getCellCoordinates();
 		

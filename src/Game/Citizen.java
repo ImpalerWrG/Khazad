@@ -39,8 +39,8 @@ public class Citizen extends Pawn implements Serializable {
 	// Proffessions / levels/ skills
 
 	
-	public Citizen(int id, int seed, MapCoordinate SpawnLocation) {
-		super(id, seed, SpawnLocation);
+	public Citizen(short CreatureTypeID, int id, int seed, MapCoordinate SpawnLocation) {
+		super(CreatureTypeID, id, seed, SpawnLocation);
 		setTask(new Task(null, TaskType.TASK_IDLE, SpawnLocation));
 	}
 	

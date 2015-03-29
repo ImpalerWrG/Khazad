@@ -67,7 +67,7 @@ public class ExcavateJob extends Job implements Serializable {
 		AccessibleMap = new HashMap<MapCoordinate, MapCoordinate>();
 		AssignedWorkers = new HashMap<Pawn, MapCoordinate>();
 
-		Modality = new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1);
+		Modality = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
 		this.map = map;
 		Priority = 10;
 		paths = PathFinding.getSingleton();

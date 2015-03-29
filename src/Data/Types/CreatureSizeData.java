@@ -32,7 +32,7 @@ import nu.xom.Elements;
 public class CreatureSizeData extends DataBase implements Serializable {
 	private static final long serialVersionUID = 1;
 
-	byte[] ModifierValues;
+	transient byte[] ModifierValues;
 	transient String[] AttributeLabels;
 	
 	public byte[] AttributeModifierVales;
