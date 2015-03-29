@@ -42,11 +42,19 @@ public class FaceShape implements Serializable {
         FaceDirection = DirectionType;
     }
 
-    boolean equals(FaceShape ArgumentShape) {
-        return SourceCubeComponent == ArgumentShape.SourceCubeComponent && AdjacentCubeComponent == ArgumentShape.AdjacentCubeComponent && FaceDirection == ArgumentShape.FaceDirection;
-    }
+	boolean equals(FaceShape ArgumentShape) {
+		boolean SourceEqual = SourceCubeComponent.equals(ArgumentShape.SourceCubeComponent);
+		boolean AdjacentEqual = false;
+		if (AdjacentCubeComponent == null) {
+			if (ArgumentShape.AdjacentCubeComponent == null)
+				AdjacentEqual = true;
+		} else {
+			AdjacentEqual = AdjacentCubeComponent.equals(ArgumentShape.AdjacentCubeComponent);
+		}
+		return SourceEqual && AdjacentEqual && FaceDirection == ArgumentShape.FaceDirection;
+	}
 
-    boolean notequal(FaceShape ArgumentShape) {
-        return SourceCubeComponent != ArgumentShape.SourceCubeComponent || AdjacentCubeComponent != ArgumentShape.AdjacentCubeComponent || FaceDirection != ArgumentShape.FaceDirection;
-    }
+	boolean notequal(FaceShape ArgumentShape) {
+		return !SourceCubeComponent.equals(ArgumentShape.SourceCubeComponent) || !AdjacentCubeComponent.equals(ArgumentShape.AdjacentCubeComponent) || FaceDirection != ArgumentShape.FaceDirection;
+	}
 }
