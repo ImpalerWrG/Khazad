@@ -89,12 +89,10 @@ public class JobManager implements Serializable {
 	private void RebalanceJobs() {
 		if (JobsDirty) {
 			for (Job TargetJob : JobMap.values()) {
-				while (TargetJob.needsWorkers()) {
-					if (!IdleCitizens.isEmpty()) {
-						Pawn IdlePawn = IdleCitizens.poll();
-						//IdleJob.releaseCitizen(IdlePawn);
-						TargetJob.addPawn(IdlePawn);
-					}
+				while (TargetJob.needsWorkers() && !IdleCitizens.isEmpty()) {
+					Pawn IdlePawn = IdleCitizens.poll();
+					//IdleJob.releaseCitizen(IdlePawn);
+					TargetJob.addPawn(IdlePawn);
 				}
 			}
 		}
@@ -118,11 +116,11 @@ public class JobManager implements Serializable {
 		if (!IdleCitizens.isEmpty()) {
 			for (Pawn citizen : IdleCitizens) {
 				Job job = FindBestJob(citizen);
-				if (job != null) {
+				if (job != null && job.needsWorkers()) {
 					job.addPawn(IdleCitizens.poll());
 				} else {
 					// find Idle task
-					//citizen.FindTask()
+					//citizen.FindTask();
 				}
 			}
 		}

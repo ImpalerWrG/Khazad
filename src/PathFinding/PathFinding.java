@@ -116,7 +116,7 @@ public class PathFinding extends AbstractAppState {
     }
 
 	public void CreateMapAbstraction(GameMap TargetMap) {
-		MovementModality BasicPawn = new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1);
+		MovementModality BasicPawn = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
 		KhazadGrid MainGrid = new KhazadGrid(TargetMap, BasicPawn);
 		Grids.put(BasicPawn, MainGrid);
 

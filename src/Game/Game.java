@@ -161,16 +161,16 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		return true;
 	}
 
-	public Pawn SpawnPawn(MapCoordinate SpawnCoordinates) {
-		Pawn NewPawn = new Pawn(ActorIDcounter, MasterSeed, SpawnCoordinates);
+	public Pawn SpawnPawn(MapCoordinate SpawnCoordinates, short CreatureTypeID) {
+		Pawn NewPawn = new Pawn(CreatureTypeID, ActorIDcounter, MasterSeed, SpawnCoordinates);
 		ActorIDcounter++;
 		Actors.add(NewPawn);
 		AddTemporal(NewPawn);
 		return NewPawn;
 	}
 
-	public Citizen SpawnCitizen(MapCoordinate SpawnCoordinates) {
-		Citizen NewCitizen = new Citizen(ActorIDcounter, PawnDice.Roll(0, MasterSeed), SpawnCoordinates);
+	public Citizen SpawnCitizen(short CreatureTypeID, MapCoordinate SpawnCoordinates) {
+		Citizen NewCitizen = new Citizen(CreatureTypeID, ActorIDcounter, PawnDice.Roll(0, MasterSeed), SpawnCoordinates);
 		ActorIDcounter++;
 		Actors.add(NewCitizen);
 		GameSettlement.addCitizen(NewCitizen);

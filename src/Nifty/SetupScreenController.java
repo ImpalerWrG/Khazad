@@ -91,8 +91,9 @@ public class SetupScreenController implements ScreenController {
 
 		nifty.gotoScreen("GameScreen");
 
+		short DwarfID = Data.DataManager.getDataManager().getLabelIndex("CREATURE_DWARF");
 		for (int i = 0; i < 100; i++) {
-			game.SpawnCitizen(Pather.Tester.getRandomPassableCoordinate());
+			game.SpawnCitizen(DwarfID, Pather.Tester.getRandomPassableCoordinate());
 		}
 	}
 	

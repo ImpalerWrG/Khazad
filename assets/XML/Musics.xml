@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Musics xmlns="https://github.com/ImpalerWrG/Khazad">
+	<Music>
+		<Name Label="MUSIC_THE_FALL_OF_ARCANA"/>
+		<File Path="Sounds/Music/The Fall of Arcana.ogg"/>
+	</Music>
+	<Music>
+		<Name Label="MUSIC_STEPPING_STONES"/>
+		<File Path="Sounds/Music/Stepping Stones.ogg"/>
+	</Music>
+	<Music>
+		<Name Label="MUSIC_AROUND_THE_MOUNTAIN"/>
+		<File Path="Sounds/Music/Around the Mountain.ogg"/>
+	</Music>
+	<Music>
+		<Name Label="MUSIC_DARK_AMBIENCE"/>
+		<File Path="Sounds/Music/Dark Ambience.ogg"/>
+	</Music>
+	<Music>
+		<Name Label="MUSIC_SECOND_ORGAN"/>
+		<File Path="Sounds/Music/Second Organ.ogg"/>
+	</Music>
+</Musics>

@@ -52,31 +52,29 @@ public class Ticker implements Callable<Object>, Serializable {
 	}
 	
 	public void UpdateTick() {
-		thegame.CurrentGameTick++;   // Advance Tick count
-		
-		thegame.getSettlement().getJobManager().update();
-		
 		try {
-		Temporal target;
-		target = thegame.TemporalQueue.poll();
-		if (target != null) {
-			if (target.WakeTick <= thegame.CurrentGameTick) {
-				do {	
-					long RewakeTick = target.Wake(thegame.CurrentGameTick);
-					if (RewakeTick != -1) {
-						thegame.TemporalQueue.add(target);
-					}
-					target = thegame.TemporalQueue.poll();
-				} while (target.WakeTick <= thegame.CurrentGameTick);	
+			thegame.CurrentGameTick++;   // Advance Tick count
+			thegame.getSettlement().getJobManager().update();
+
+			Temporal target;
+			target = thegame.TemporalQueue.poll();
+			if (target != null) {
+				if (target.WakeTick <= thegame.CurrentGameTick) {
+					do {	
+						long RewakeTick = target.Wake(thegame.CurrentGameTick);
+						if (RewakeTick != -1) {
+							thegame.TemporalQueue.add(target);
+						}
+						target = thegame.TemporalQueue.poll();
+					} while (target.WakeTick <= thegame.CurrentGameTick);	
+				}
+				thegame.TemporalQueue.add(target);
 			}
-			thegame.TemporalQueue.add(target);
-		}
-		
+			// Other game logics here	
 		} catch (Exception e) {
 			System.err.println(e.getLocalizedMessage());
 			System.err.println(e.getMessage());
 			System.err.println(e.toString());
 		}
-		// Other game logics here
 	}
 }

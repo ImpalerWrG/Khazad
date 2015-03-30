@@ -1,6 +1,6 @@
 Professions work on Branching system similar to EvilGenius minions or A Game of Dwarves.  Three tiers of professions exist, Basic, Intermediate, Advanced.  Choices are 7 for Basic, 6 for Intermediate and 5 for Advanced
 
-
+<Commoner - Root generalist proffession>
 <Worshipper (Concvlave) [WIL][CHA] - Religion, high status (Cloak/Cloth, Quil&Ink>
 
 	<Acolyte of Thor (High Priest of) (male - Martial) (Holy Symbol, Litergy)>
@@ -117,6 +117,8 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 	</>	
 	<Warrior [STR][LOG] - Balanced >
 		???
+		Housecarl - 2 handed Ax
+		IronBrekers - 2 handed Hammer
 	</>		
 	<Calvary-Rider-Cavalier [FLX][MEM] - Mounted combat (Saddle, ???)>
 		Lancer - lances
@@ -131,11 +133,11 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Quarreller - Crossbow
 	</>	
 	<Soldier-Defender [END][WIL] - Defensive formation fighting>
-		Pike
-		halberdier
-		TowerShield
-		Legionnaire
-		
+		Pike Guard - Swiss style pike/polearm infantry, formation fighters
+		???
+		TowerShield - 
+		Legionnaire - Romanesque towershild and short sword, very heavy armor 
+		HighLander - mountain defensive, better climb mobility, high ground defence by avalanche and rock throwing
 	</>	
 	<Guard (Captain of the Guard) [INT][CHA] - Police (Cudgle, KeyChain)>
 		Royal Guard [WIL][SPD] - Guards royalty

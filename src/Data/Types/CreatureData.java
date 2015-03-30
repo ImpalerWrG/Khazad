@@ -21,32 +21,36 @@ import Data.DataBase;
 import Data.DataLibrary;
 import Data.DataManager;
 import java.io.Serializable;
-
 import nu.xom.Element;
 import nu.xom.Elements;
-
 /**
  *
  * @author Impaler
  */
-public class CreatureSizeData extends DataBase implements Serializable {
+public class CreatureData extends DataBase implements Serializable {
 	private static final long serialVersionUID = 1;
+	
+	transient private String CreatureSizeLabl;
+	public short SizeID;
 
-	transient byte[] ModifierValues;
-	transient String[] AttributeLabels;
+	transient private byte[] ModifierValues;
+	transient private String[] AttributeLabels;
 	
 	public byte[] AttributeModifierVales;
 
-	public CreatureSizeData() {
+	public CreatureData() {
 	
 	}
 
 	@Override
-	public boolean LoadData(Element CreatureSizeEntry, DataLibrary Library) {
-		Element Name = CreatureSizeEntry.getFirstChildElement("Name", CreatureSizeEntry.getNamespaceURI());
+	public boolean LoadData(Element CreatureEntry, DataLibrary Library) {
+		Element Name = CreatureEntry.getFirstChildElement("Name", CreatureEntry.getNamespaceURI());
 		Library.IndexEntry(Name.getAttributeValue("Label"), this);
-	
-		Element ModifiersElement = CreatureSizeEntry.getFirstChildElement("BasicAttributeModifiers", CreatureSizeEntry.getNamespaceURI());
+
+		Element CreatureSizeElement = CreatureEntry.getFirstChildElement("CreatureSize", CreatureEntry.getNamespaceURI());
+		CreatureSizeLabl = CreatureSizeElement.getAttributeValue("label");
+
+		Element ModifiersElement = CreatureEntry.getFirstChildElement("BasicAttributeModifiers", CreatureEntry.getNamespaceURI());
 		if (ModifiersElement != null){
 			Elements AttributeModifiers = ModifiersElement.getChildElements();
 			AttributeLabels = new String[AttributeModifiers.size()];
@@ -58,17 +62,19 @@ public class CreatureSizeData extends DataBase implements Serializable {
 				ModifierValues[i] = (byte) Integer.parseInt(SurfaceTextureEntry.getAttribute("Modifier").getValue());
 			}
 		}		
-
 		return false;
 	}
 	
 	public boolean PostProcessing() {
 		DataManager Data = DataManager.getDataManager();
+		SizeID = Data.getLabelIndex(CreatureSizeLabl);
+		
 		AttributeModifierVales = new byte[Data.getNumBaseAttributes()];
-
-		for (int i = 0; i < AttributeLabels.length; i++) {
-			short Index = Data.getLabelIndex(AttributeLabels[i]);
-			AttributeModifierVales[Index] = ModifierValues[i];
+		if (AttributeLabels != null) {
+			for (int i = 0; i < AttributeLabels.length; i++) {
+				short Index = Data.getLabelIndex(AttributeLabels[i]);
+				AttributeModifierVales[Index] = ModifierValues[i];
+			}
 		}
 		return true;
 	}

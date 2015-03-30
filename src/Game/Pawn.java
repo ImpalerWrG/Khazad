@@ -39,39 +39,43 @@ import java.io.Serializable;
 public class Pawn extends Actor implements Serializable {
 	private static final long serialVersionUID = 1;
 
+	short CreatureTypeID;
+	
 	boolean Moving;
 	Direction CurrentMovementDirection;
 
 	long ActionDuration = 1;
 	long ActionStarted;
-
+	
 	Navigator PathNavigator;
 	private Task CurrentTask;
 	public Job PrimaryJob;
 	public Job BreakJob;
 	public boolean onBreak;
-
+	// The 14 Basic Attributes
 	Dice AttributeDice;
-
 	byte[] BasicAttributes;
 
-	public Pawn(int id, int Seed, MapCoordinate SpawnLocation) {
+	public Pawn(short CreatureTypeID, int id, int Seed, MapCoordinate SpawnLocation) {
 		super(id, SpawnLocation);		
 
+		this.CreatureTypeID = CreatureTypeID;
 		Moving = false;
-		PathNavigator = new Navigator(SpawnLocation, new MovementModality(MovementModality.MovementType.WALK_MOVEMENT, 1, 1));
+		PathNavigator = new Navigator(SpawnLocation, new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1));
 		CurrentMovementDirection = Direction.DIRECTION_NONE;
 
 		AttributeDice = new Dice();
 		AttributeDice.Seed(id ^ Seed);
 
 		DataManager Data = DataManager.getDataManager();
-		CreatureSizeData SizeData = Data.getCreatureSizeData(Data.getLabelIndex("CREATURE_SIZE_MEDIUM"));
-		// 7 is median for all attributes for medium size creatures
+		CreatureData CreatureDataEntry = Data.getCreatureData(CreatureTypeID);
+		CreatureSizeData CreatureSizeDataEntry = Data.getCreatureSizeData(CreatureDataEntry.SizeID);
+
 		BasicAttributes = new byte[Data.getNumBaseAttributes()];
 		for (int i = 0; i < BasicAttributes.length; i++) {
 			BasicAttributes[i] = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
-			BasicAttributes[i] += SizeData.AttributeModifierVales[i];  //Size class adjustment
+			BasicAttributes[i] += CreatureDataEntry.AttributeModifierVales[i];  //Size class adjustment
+			BasicAttributes[i] += CreatureSizeDataEntry.AttributeModifierVales[i];  //Size class adjustment
 		}
 	}
 
