@@ -3,15 +3,19 @@
 	<useStyles filename="nifty-default-styles.xml"/>
 	<useControls filename="nifty-default-controls.xml"/>
   
-	<screen controller="Nifty.ShellScreenController" id="SetupScreen">
+	<screen controller="Nifty.SetupScreenController" id="SetupScreen">
 		<layer childLayout="center" id="SetupLayer">
-			<panel alighn="center" align="center" childLayout="vertical" height="300px" id="MainSetupPanel" style="nifty-panel-simple" width="400px">
+			<panel align="center" childLayout="vertical" height="300px" id="MainSetupPanel" style="nifty-panel-simple" width="400px">
 				<control font="aurulent-sans-16.fnt" height="60px" id="label0" name="label" text="New Game Setup" textLineHeight="30px" textMinHeight="40px" width="100%" x="184" y="54"/>
-				<panel childLayout="horizontal" height="40px" id="SeedPanel" padding="5px" width="100%">
-					<control font="aurulent-sans-16.fnt" height="100%" id="label6" name="label" text="Seed" valign="center" width="25%"/>
-					<control height="100%" id="SeedTextField" name="textfield" width="285px"/>
+				<panel childLayout="horizontal" height="40px" padding="5px" width="100%">
+					<control font="aurulent-sans-16.fnt" height="100%" name="label" text="Kingdom name" valign="center" width="25%" />
+					<control height="100%" id="KingdomNameTextField" name="textfield" width="285px" maxLength="50" />
 				</panel>
-				<panel childLayout="horizontal" height="130px" id="panel11" width="100%">
+				<panel childLayout="horizontal" height="40px" padding="5px" width="100%">
+					<control font="aurulent-sans-16.fnt" height="100%" id="label6" name="label" text="Seed" valign="center" width="25%"  />
+					<control height="100%" id="SeedTextField" name="textfield" width="285px" maxLength="50"/>
+				</panel>
+				<panel childLayout="horizontal" height="80px" id="panel11" width="100%">
 					<control font="aurulent-sans-16.fnt" height="50px" id="label5" name="label" text="Size X" width="50%" x="0" y="5"/>
 					<control font="aurulent-sans-16.fnt" height="50px" id="label3" name="label" text="Size Y" width="50%" x="253" y="2"/>
 				</panel>
@@ -33,4 +37,20 @@
 			</panel>
 		</layer>
 	</screen>
+	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.SetupScreenController" id="ErrorPopup">
+		<interact onClick="CloseError()" onSecondaryClick="CloseError()" onTertiaryClick="CloseError()"/>		
+		<panel align="center" childLayout="vertical" height="200px" style="nifty-panel-simple" width="600px">
+			<panel align="center" childLayout="vertical" height="100%" width="100%">
+				<panel align="center" childLayout="vertical" height="90%" width="100%">
+					<control name="label" color="#cc0000ff" text="Problem starting game" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
+					<control font="aurulent-sans-16.fnt" height="30px" id="ErrorLabel" name="label" text="Error message goes here" textLineHeight="30px" textMinHeight="30px" width="100%" wrap="true" />
+				</panel>
+				<panel align="center" childLayout="vertical" height="100%" width="100%">
+					<control childLayout="center" controller="Nifty.GameScreenController" height="20px" label="Done" name="button" width="100%">
+						<interact onClick="CloseError()"/>
+					</control>
+				</panel>
+			</panel>
+		</panel>
+	</popup>
 </nifty>

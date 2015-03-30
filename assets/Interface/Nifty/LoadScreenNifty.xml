@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<nifty>
+	<useStyles filename="nifty-default-styles.xml"/>
+	<useControls filename="nifty-default-controls.xml"/>
+  
+	<screen controller="Nifty.LoadGameScreenController" id="LoadGameScreen">
+		<layer childLayout="center" id="layer1">
+			<panel align="center" childLayout="vertical" height="300px" id="LoadGamePanel" style="nifty-panel-simple" width="600px">
+				<control font="aurulent-sans-16.fnt" height="60px" id="LoadGame" name="label" text="Load Game" textLineHeight="30px" textMinHeight="40px" width="100%" x="184" y="54"/>
+				<panel childLayout="horizontal" height="160px" id="SaveGamesPanel1" width="100%">
+					<panel childLayout="center" id="SaveGamesPanel2" width="50%">
+						<control font="aurulent-sans-16.fnt" id="SaveGames" width="90%" name="listBox" selectionMode="Single" 
+							 forceSelection="true" horizontal="off" vertical="on" displayItems="7" />
+					</panel>
+					<panel childLayout="vertical" id="SaveDescriptionBorderPanel" width="50%" height="100%" backgroundColor="#333" padding="2px" >
+						<control font="aurulent-sans-16.fnt" style="nifty-label" color="#cc0"
+								 id="SaveDescription" width="90%" name="label" wrap="true" textHAlign="left" />
+					</panel>
+				</panel>
+				<panel childLayout="horizontal" height="40px" id="ButtonsPanel" width="100%">
+					<panel childLayout="center" height="89px" id="CancelButtonPanel" width="25%">
+						<control childLayout="center" height="38px" id="CancelButton" label="Cancel" name="button" width="130px">
+							<interact onClick="CancelLoadGame()"/>
+						</control>
+					</panel>
+					<panel childLayout="center" height="89px" id="EmptyPanel" width="25%">						
+					</panel>
+					<panel childLayout="center" height="89px" id="DeleteButtonPanel" width="25%">
+						<control childLayout="center" height="38px" id="DeleteButton" label="Delete Game" name="button" width="130px">
+							<interact onClick="DeleteGame()"/>
+						</control>						
+					</panel>
+					<panel childLayout="center" height="89px" id="BeginButtonPanel" width="25%">
+						<control childLayout="center" height="38px" id="BeginButton" label="Load Game" name="button" width="130px">
+							<interact onClick="LoadGame()"/>
+						</control>						
+					</panel>
+				</panel>
+				<effect>
+					<onEndScreen direction="bottom" inherit="true" length="300" mode="out" name="move" startDelay="0"/>
+				</effect>
+			</panel>
+		</layer>
+	</screen>
+	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.LoadGameScreenController" id="ErrorPopup">
+		<interact onClick="CloseError()" onSecondaryClick="CloseError()" onTertiaryClick="CloseError()"/>		
+		<panel align="center" childLayout="vertical" height="200px" style="nifty-panel-simple" width="600px">
+			<panel align="center" childLayout="vertical" height="100%" width="100%">
+				<panel align="center" childLayout="vertical" height="90%" width="100%">
+					<control name="label" color="#cc0000ff" text="Problem starting game" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
+					<control font="aurulent-sans-16.fnt" height="30px" id="ErrorLabel" name="label" text="Error message goes here" textLineHeight="30px" textMinHeight="30px" width="100%" wrap="true" />
+				</panel>
+				<panel align="center" childLayout="vertical" height="100%" width="100%">
+					<control childLayout="center" controller="Nifty.GameScreenController" height="20px" label="Done" name="button" width="100%">
+						<interact onClick="CloseError()"/>
+					</control>
+				</panel>
+			</panel>
+		</panel>
+	</popup>
+</nifty>

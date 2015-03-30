@@ -18,6 +18,7 @@ package Game;
 
 import Core.Main;
 import Core.Dice;
+import Core.Utils;
 import Job.ExcavateJob;
 import Job.JobManager;
 import Map.*;
@@ -80,6 +81,8 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	int ActorIDcounter = 0;
 	transient ExecutorService Executor;
 	transient Future lastUpdate;
+	public transient String kingdomName;
+	public transient String saveGameFileName;
 
 	public Game() {
 
@@ -104,8 +107,10 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	}
 
 
-	public boolean InitializeGame(short X, short Y, String SeedString) {
+	public boolean InitializeGame(short X, short Y, String SeedString, String kingdomName) {
 		MasterSeed = SeedString.hashCode();
+		this.kingdomName = kingdomName;
+		saveGameFileName = null;
 		PawnDice.Seed(MasterSeed);
 
 		MapGeology = new Geology();
@@ -285,5 +290,12 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		state = Main.app.getStateManager();
 		Executor = Main.app.getThreadPool();
 		lastUpdate = null;
+	}
+	
+	public String getTimeString() {
+		String hoursString = Utils.padLeadingZero(hours %25);
+		String minutesString = Utils.padLeadingZero(minutes %60);
+		String secondsString = Utils.padLeadingZero(seconds %60);
+		return "DAY " + days + "  -  " + hoursString + ":" + minutesString + ":" + secondsString;
 	}
 }

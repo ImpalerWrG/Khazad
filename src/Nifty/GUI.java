@@ -42,11 +42,14 @@ public class GUI extends AbstractAppState {
 		//nifty.loadStyleFile("Dwarven.xml");
 
 		nifty.registerScreenController(new GameScreenController(nifty, this.app));
+		nifty.registerScreenController(new LoadGameScreenController(nifty, this.app));		
+		nifty.registerScreenController(new SetupScreenController(nifty, this.app));
 		nifty.registerScreenController(new ShellScreenController(nifty, this.app));
 
 		nifty.addXml("Interface/Nifty/GameScreenNifty.xml");
-		nifty.addXml("Interface/Nifty/StartScreenNifty.xml");
+		nifty.addXml("Interface/Nifty/LoadScreenNifty.xml");
 		nifty.addXml("Interface/Nifty/SetupScreenNifty.xml");
+		nifty.addXml("Interface/Nifty/StartScreenNifty.xml");
 		
 		nifty.gotoScreen("StartScreen");
 		

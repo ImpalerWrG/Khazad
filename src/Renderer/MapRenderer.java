@@ -231,8 +231,7 @@ public class MapRenderer extends AbstractAppState {
 			setSliceLevels(cam.getSliceTop(), cam.getSliceBottom());
 
 			GUI gui = state.getState(GUI.class);
-			String TimeString = ("DAY " + (game.days) + "  -  " + (game.hours %24) + ":" + (game.minutes % 60) + ":" + (game.seconds % 60));
-			gui.UpdateText("Timelabel", TimeString);
+			gui.UpdateText("Timelabel", game.getTimeString());
 		}
 	}
 }

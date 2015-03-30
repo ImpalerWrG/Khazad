@@ -59,61 +59,20 @@ public class ShellScreenController implements ScreenController {
 	}
 
 	public void bind(Nifty nifty, Screen screen) {
-		System.out.println("bind( " + screen.getScreenId() + ")");
 	}
 
 	public void onStartScreen() {
-		System.out.println("onStartScreen");
 	}
 
 	public void onEndScreen() {
-		System.out.println("onEndScreen");
 	}
 
 	public void Quit() {
 		app.stop();
 	}
 
-	public void CancelSetup() {
-		//nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).setText("");
-		nifty.gotoScreen("StartScreen");
-	}
-
 	public void GameSetup() {
 		nifty.gotoScreen("SetupScreen");
-	}
-
-	public void BeginGame() {
-		String Seed = nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).getDisplayedText();
-
-		Game game = new Game();
-		this.app.getStateManager().attach(game);
-		game.InitializeGame((short) 10, (short) 10, Seed);
-
-		this.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
-		this.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
-		this.app.getStateManager().attach(new SelectionRenderer());
-		this.app.getStateManager().getState(PathingRenderer.class).attachToGame(game);
-
-		GameCameraState cam = new GameCameraState();
-		this.app.getStateManager().attach(cam);
-		cam.SetViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
-		cam.SetSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
-
-		JobManager jobs = game.getSettlement().getJobManager();
-
-		// PATHING
-		PathFinding Pather = PathFinding.getSingleton();
-		Pather.initialize(this.app.getStateManager(), this.app);
-		Pather.CreateMapAbstraction(game.getMap());
-		//Pather.AllocateThreadPool(ExecutionThreadpool);
-		this.app.getStateManager().attach(Pather);
-
-		nifty.gotoScreen("GameScreen");
-
-		for (int i = 0; i < 100; i++) {
-			game.SpawnCitizen(Pather.Tester.getRandomPassableCoordinate());
-		}
 	}
 
 	public void BeginTutorial() {
@@ -136,78 +95,8 @@ public class ShellScreenController implements ScreenController {
 	}
 
 	public void LoadGame() {
-		// TODO maybe a GUI to pick a load game slot
-		// otherwise, lets just hard code World01.sav for now
-
-		String fileName = "World01.sav";
-		ObjectInputStream ois = null;
-
-		try {
-			// look in the my documents\my games\Khazad folder for the savegame
-			JFileChooser fr = new JFileChooser();
-			FileSystemView fw = fr.getFileSystemView();
-
-			String myDocumentsFolder = fw.getDefaultDirectory().toString();
-			String saveGamesFolder = myDocumentsFolder + "\\my games\\Khazad\\";
-			File saveFile = new File(saveGamesFolder + fileName);
-			if (!saveFile.exists()) {
-				ShowError(fileName + " save does not exist.");
-				return;
-			}
-
-			// now read the save file
-			ois = new ObjectInputStream(new FileInputStream(saveFile));
-			// first thing should always be the version number, so that we can give helpful error messages.
-			String gameVersion = (String)ois.readObject();
-			if (!gameVersion.equals(Game.version)) {
-				// TODO it might still be possible to load these saves
-				ShowError("Game save is version " + gameVersion + ", current game version is " + Game.version + "." + System.lineSeparator()
-						+ System.lineSeparator()
-						+ "Unfortunately game saves from version " + gameVersion + " are no longer supported, please start a new game.");
-				return;
-			}
-			Game game = (Game)ois.readObject();
-			this.app.getStateManager().attach(game);
-
-			this.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
-			this.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
-			this.app.getStateManager().attach(new SelectionRenderer());
-			this.app.getStateManager().getState(PathingRenderer.class).attachToGame(game);
-
-			GameCameraState cam = new GameCameraState();
-			this.app.getStateManager().attach(cam);
-			cam.SetViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
-			cam.SetSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
-
-			JobManager jobs = game.getSettlement().getJobManager();
-
-			// PATHING
-			PathFinding Pather = PathFinding.getSingleton();
-			Pather.initialize(this.app.getStateManager(), this.app);
-			Pather.CreateMapAbstraction(game.getMap());
-			//Pather.AllocateThreadPool(ExecutionThreadpool);
-			this.app.getStateManager().attach(Pather);
-
-			nifty.gotoScreen("GameScreen");
-		} catch (IOException e) {
-			// TODO show a better message to the user
-			ShowError(e.toString());
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO show a better message to the user
-			ShowError(e.toString());
-			e.printStackTrace();
-		} finally {
-			try {
-				if (ois != null) {
-					ois.close();
-				}
-			} catch (IOException e) {
-				// TODO show a better message to the user
-				ShowError(e.toString());
-				e.printStackTrace();
-			}
-		}
+		nifty.gotoScreen("LoadGameScreen");
+		return;
 	}
 
 	private void ShowError(String errorMessage) {
@@ -225,6 +114,7 @@ public class ShellScreenController implements ScreenController {
 	public void CloseError() {
 		if (ErrorPopup != null) {
 			nifty.closePopup(this.ErrorPopup.getId());
+			ErrorPopup = null;
 		}
 	}
 }
