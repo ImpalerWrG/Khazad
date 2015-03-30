@@ -109,6 +109,10 @@ public class DataManager implements Serializable {
     public int getNumBaseAttributes()								{ return BasicAttributes.Entries.size(); }
     public DataLibrary getBaseAttributeDataLibrary()				{ return BasicAttributes; }
 
+	public MusicData getMusicData(short Index)						{ return (MusicData) Musics.Entries.get(Index); }
+	public int getNumMusics()										{ return Musics.Entries.size(); }
+	public DataLibrary getMusicDataLibrary()						{ return Musics; }
+
     // ADD New Data classes gets Here
 
 	XMLManager XML;
@@ -131,6 +135,7 @@ public class DataManager implements Serializable {
     DataLibrary Furnitures = new DataLibrary<FurnitureData>(FurnitureData.class, this);
 	DataLibrary CreatureSizes = new DataLibrary<CreatureSizeData>(CreatureSizeData.class, this);
 	DataLibrary BasicAttributes = new DataLibrary<BasicAttributeData>(BasicAttributeData.class, this);
+	DataLibrary Musics = new DataLibrary<MusicData>(MusicData.class, this);
 	
 	public boolean Initialize() {
 		
@@ -151,7 +156,7 @@ public class DataManager implements Serializable {
 		GlobalDataTypeMap.put("Furniture", Furnitures);
 		GlobalDataTypeMap.put("CreatureSize", CreatureSizes);
 		GlobalDataTypeMap.put("BasicAttribute", BasicAttributes);
-		
+		GlobalDataTypeMap.put("Music", Musics);	
 
 
 		ArrayList<String> DataFiles = new ArrayList<String>();

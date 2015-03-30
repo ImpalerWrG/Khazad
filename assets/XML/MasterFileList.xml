@@ -21,4 +21,5 @@
 	<File Path="XML\MineCraftTextures.xml"/>
 	<File Path="XML\BasicAttributes.xml"/>
 	<File Path="XML\CreatureSizes.xml"/>
+	<File Path="XML\Musics.xml"/>
 </Files>

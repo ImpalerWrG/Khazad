@@ -381,6 +381,10 @@ public class GameMap implements Serializable {
 			default:
 				//UpdateCubeShape(Coordinates, GoalShape);				
 		}
+		// Always set material to native cube if were excavating
+		Face SloppedFace = getFace(Coordinates, Direction.DIRECTION_NONE);
+		if (SloppedFace != null)
+			SloppedFace.setFaceMaterialType(getCubeMaterial(Coordinates));
 	}
 
 	public void UpdateCubeShape(MapCoordinate Coordinates, CubeShape NewShape) {
@@ -493,43 +497,60 @@ public class GameMap implements Serializable {
 
 			case DIRECTION_NONE:
 				if (!SourceShape.isEmpty() && !SourceShape.isSolid()) {
+					FaceShape NewShape = new FaceShape(getCubeShape(TargetCoordinates), null, Direction.DIRECTION_NONE);					
 					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, Direction.DIRECTION_NONE);
+						TargetFace.setFaceShapeType(NewShape);
+						TargetFace.setFaceSurfaceType(RoughFloorID);
+						TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
 						// Dirty Cell if edge case
+					} else {
+						if (!TargetFace.FaceType.equals(NewShape)) {
+							TargetFace.setFaceShapeType(NewShape);
+							TargetFace.setFaceSurfaceType(RoughFloorID);
+							TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
+						}
 					}
-
-					TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
-					TargetFace.setFaceShapeType(new FaceShape(getCubeShape(TargetCoordinates), null, Direction.DIRECTION_NONE));
-					TargetFace.setFaceSurfaceType(RoughFloorID);
-
 				} else {
 					removeFace(TargetCoordinates, DirectionType);
 				}
 				break;
 
 			case DIRECTION_DOWN:
-				if (AdjacentShape.hasCeiling() || SourceShape.hasFloor()) {
+				if (SourceShape.hasFloor()) {
+					FaceShape NewShape = new FaceShape(SourceShape, AdjacentShape, DirectionType);
 					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, DirectionType);
+						TargetFace.setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
+						TargetFace.setFaceSurfaceType(RoughFloorID);
+						TargetFace.setFaceShapeType(NewShape);
+					} else {
+						if (!TargetFace.FaceType.equals(NewShape)) {
+							TargetFace.setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
+							TargetFace.setFaceSurfaceType(RoughFloorID);
+							TargetFace.setFaceShapeType(NewShape);
+						}
 					}
-
-					TargetFace.setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
-					TargetFace.setFaceSurfaceType(RoughFloorID);
-					TargetFace.setFaceShapeType(new FaceShape(SourceShape, AdjacentShape, DirectionType));
 				} else {
 					removeFace(TargetCoordinates, DirectionType);
 				}
 				break;
 
 			case DIRECTION_UP:
-				if (AdjacentShape.hasFloor() || SourceShape.hasCeiling()) {
+				if (AdjacentShape.hasFloor()) {
+					FaceShape NewShape = new FaceShape(SourceShape, AdjacentShape, DirectionType);
 					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, DirectionType);
+						TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
+						TargetFace.setFaceSurfaceType(RoughFloorID);
+						TargetFace.setFaceShapeType(NewShape);
+					} else {
+						if (!TargetFace.FaceType.equals(NewShape)) {
+							TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
+							TargetFace.setFaceSurfaceType(RoughFloorID);
+							TargetFace.setFaceShapeType(NewShape);
+						}
 					}
-
-					TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
-					TargetFace.setFaceSurfaceType(RoughFloorID);
-					TargetFace.setFaceShapeType(new FaceShape(SourceShape, AdjacentShape, DirectionType));
 				} else {
 					removeFace(TargetCoordinates, DirectionType);
 				}
@@ -539,14 +560,20 @@ public class GameMap implements Serializable {
 			case DIRECTION_WEST:
 			case DIRECTION_NORTH:
 			case DIRECTION_SOUTH:
-				if (SourceShape.hasFace(DirectionType)) { // || AdjacentShape.hasFace(DirectionType.Invert())) {
+				if (SourceShape.hasFace(DirectionType)) {
+					FaceShape NewShape = new FaceShape(SourceShape, AdjacentShape, DirectionType);
 					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, DirectionType);
+						TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
+						TargetFace.setFaceShapeType(NewShape);
+						TargetFace.setFaceSurfaceType(RoughWallID);
+					} else {
+						if (!TargetFace.FaceType.equals(NewShape)) {
+							TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
+							TargetFace.setFaceShapeType(NewShape);
+							TargetFace.setFaceSurfaceType(RoughWallID);
+						}
 					}
-
-					TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
-					TargetFace.setFaceShapeType(new FaceShape(SourceShape, AdjacentShape, DirectionType));
-					TargetFace.setFaceSurfaceType(RoughWallID);
 				} else {
 					removeFace(TargetCoordinates, DirectionType);
 				}

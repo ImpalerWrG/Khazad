@@ -15,6 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
+
 package Data.Types;
 
 import Data.DataBase;
@@ -23,29 +24,30 @@ import java.io.Serializable;
 import nu.xom.Element;
 
 /**
- *
+ * Simple Pathway for Music Files
+ * 
  * @author Impaler
  */
-public class ModelData extends DataBase implements Serializable {
+public class MusicData extends DataBase implements Serializable {
 	private static final long serialVersionUID = 1;
 
-	String FilePath;
+	public String FilePath;
 	
-	public ModelData() {
+	public MusicData() {
 		
 	}
 
-	public boolean LoadData(Element ModelEntry, DataLibrary Library) {
-		Element Name = ModelEntry.getFirstChildElement("Name", ModelEntry.getNamespaceURI());
+	public boolean LoadData(Element MusicEntry, DataLibrary Library) {
+		Element Name = MusicEntry.getFirstChildElement("Name", MusicEntry.getNamespaceURI());
 		Library.IndexEntry(Name.getAttributeValue("Label"), this);
 
-		Element File = ModelEntry.getFirstChildElement("File", ModelEntry.getNamespaceURI());
+		Element File = MusicEntry.getFirstChildElement("File", MusicEntry.getNamespaceURI());
 		if (File != null)
 			FilePath = File.getAttributeValue("Path");
 
 		return true;
 	}
-	
+
 	public boolean PostProcessing() {
 		return true;
 	}
