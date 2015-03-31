@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<nifty>
+	<useStyles filename="nifty-default-styles.xml"/>
+	<useControls filename="nifty-default-controls.xml"/>
+
+	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.PopulationPopupController" id="PopulationPopup">
+		<interact onClick="ClosePopulationPopup()" onSecondaryClick="ClosePopulationPopup()" onTertiaryClick="ClosePopulationPopup()"/>		
+		<panel align="center" childLayout="vertical" height="300px" id="MenuPanel" style="nifty-panel-simple" width="200px">
+		</panel>
+	</popup>
+</nifty>

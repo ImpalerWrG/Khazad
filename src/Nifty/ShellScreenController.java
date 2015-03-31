@@ -17,6 +17,7 @@
 
 package Nifty;
 
+import Core.Main;
 import com.jme3.app.Application;
 
 import de.lessvoid.nifty.Nifty;
@@ -48,17 +49,12 @@ import javax.swing.filechooser.FileSystemView;
  */
 public class ShellScreenController implements ScreenController {
 
-	private Application app;
 	private Nifty nifty;
 	Element TutorialPopup = null;
 	Element ErrorPopup = null;
 
-	public ShellScreenController(Nifty nifty, Application app) {
-		this.app = app;
-		this.nifty = nifty;
-	}
-
 	public void bind(Nifty nifty, Screen screen) {
+		this.nifty = nifty;
 	}
 
 	public void onStartScreen() {
@@ -68,7 +64,7 @@ public class ShellScreenController implements ScreenController {
 	}
 
 	public void Quit() {
-		app.stop();
+		Main.app.stop();
 	}
 
 	public void GameSetup() {
@@ -97,24 +93,5 @@ public class ShellScreenController implements ScreenController {
 	public void LoadGame() {
 		nifty.gotoScreen("LoadGameScreen");
 		return;
-	}
-
-	private void ShowError(String errorMessage) {
-		if (ErrorPopup == null) {
-			ErrorPopup = nifty.createPopup("ErrorPopup");
-		}
-		Label errorLabel = ErrorPopup.findNiftyControl("ErrorLabel", Label.class);
-		if (errorLabel != null) {
-			errorLabel.setText(errorMessage);
-		}
-
-		nifty.showPopup(nifty.getCurrentScreen(), this.ErrorPopup.getId(), null);
-	}
-
-	public void CloseError() {
-		if (ErrorPopup != null) {
-			nifty.closePopup(this.ErrorPopup.getId());
-			ErrorPopup = null;
-		}
 	}
 }
