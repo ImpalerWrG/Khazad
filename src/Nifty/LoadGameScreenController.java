@@ -30,6 +30,7 @@ import java.io.ObjectInputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
@@ -65,7 +66,9 @@ public class LoadGameScreenController implements ScreenController {
 
 	private void refreshSaveGameList() {
 		SaveGames.clear();
-		SaveGames.addAllItems(getSaveGames());
+		ArrayList<SaveGameHeader> saveGames = getSaveGames();
+		Collections.sort(saveGames);
+		SaveGames.addAllItems(saveGames);
 	}
 
 	public void onEndScreen() {
@@ -219,7 +222,7 @@ public class LoadGameScreenController implements ScreenController {
 			Game game = (Game)ois.readObject();
 			// copy a few things from the header into the game (since we don't keep the header)
 			game.kingdomName = saveGameHeader.kingdomName;
-			game.saveGameFileName = saveGameHeader.fileName;
+			game.saveGameFileName = SelectedSaveGameHeader.fileName;
 			
 			// initialize the game
 			this.app.getStateManager().attach(game);
