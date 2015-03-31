@@ -57,14 +57,32 @@
 	<screen controller="Nifty.GameScreenController" id="GameScreen">
 		<layer childLayout="vertical" id="layer0">
 			<panel childLayout="horizontal" height="80px" id="TopPanel" width="100%">
-				<panel childLayout="horizontal" height="60px" id="TopLeftPanel" style="nifty-panel-simple" width="168px">
+				<panel childLayout="horizontal" height="60px" id="TopLeftPanel" style="nifty-panel-simple" width="400px">
 					<control childLayout="center" controller="Nifty.GameScreenController" height="100%" id="button0" label="Menu" name="button" width="50px">
 						<interact onClick="Menu()"/>
+					</control>
+					<control childLayout="center" controller="Nifty.GameScreenController" height="100%"id="KingdomButton" label="Kingdom" name="button" width="60px">
+						<interact onClick="OpenKingdom()"/>
+					</control>
+					<control childLayout="center" controller="Nifty.GameScreenController" height="100%" id="StocksButton" label="Stocks" name="button" width="50px">
+						<interact onClick="OpenStocks()"/>
+					</control>
+					<control childLayout="center" controller="Nifty.GameScreenController" height="100%" id="PopulationButton" label="Population" name="button" width="70px">
+						<interact onClick="OpenPopulation()"/>
+					</control>
+					<control childLayout="center" controller="Nifty.GameScreenController" height="100%" id="MilitaryButton" label="Military" name="button" width="60px">
+						<interact onClick="OpenMilitary()"/>
+					</control>
+					<control childLayout="center" controller="Nifty.GameScreenController" height="100%" id="EventsButton" label="Events" name="button" width="50px">
+						<interact onClick="OpenEvents()"/>
+					</control>
+					<control childLayout="center" controller="Nifty.GameScreenController" height="100%" id="HelpButton" label="Help" name="button" width="50px">
+						<interact onClick="OpenHelp()"/>
 					</control>
 				</panel>
 				<panel childLayout="center" id="TopDummyOne">
 					<panel childLayout="center" height="100%" id="TopDummyTwo" width="100%">
-						<panel childLayout="horizontal" height="40" id="TopMiddlePanel" style="nifty-panel-simple" width="200px"/>
+						<!--<panel childLayout="horizontal" height="40" id="TopMiddlePanel" style="nifty-panel-simple" width="200px"/>-->
 					</panel>
 				</panel>
 				<panel childLayout="vertical" height="60px" id="TopRightPanel" style="nifty-panel-simple" width="290px">
