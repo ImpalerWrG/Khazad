@@ -2,7 +2,7 @@
 <nifty>
 	<useStyles filename="nifty-default-styles.xml"/>
 	<useControls filename="nifty-default-controls.xml"/>
-  
+
 	<screen controller="Nifty.LoadGameScreenController" id="LoadGameScreen">
 		<layer childLayout="center" id="layer1">
 			<panel align="center" childLayout="vertical" height="300px" id="LoadGamePanel" style="nifty-panel-simple" width="600px">
@@ -23,17 +23,17 @@
 							<interact onClick="CancelLoadGame()"/>
 						</control>
 					</panel>
-					<panel childLayout="center" height="89px" id="EmptyPanel" width="25%">						
+					<panel childLayout="center" height="89px" id="EmptyPanel" width="25%">
 					</panel>
 					<panel childLayout="center" height="89px" id="DeleteButtonPanel" width="25%">
 						<control childLayout="center" height="38px" id="DeleteButton" label="Delete Game" name="button" width="130px">
 							<interact onClick="DeleteGame()"/>
-						</control>						
+						</control>
 					</panel>
 					<panel childLayout="center" height="89px" id="BeginButtonPanel" width="25%">
 						<control childLayout="center" height="38px" id="BeginButton" label="Load Game" name="button" width="130px">
 							<interact onClick="LoadGame()"/>
-						</control>						
+						</control>
 					</panel>
 				</panel>
 				<effect>
@@ -43,7 +43,7 @@
 		</layer>
 	</screen>
 	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.LoadGameScreenController" id="ErrorPopup">
-		<interact onClick="CloseError()" onSecondaryClick="CloseError()" onTertiaryClick="CloseError()"/>		
+		<interact onClick="CloseError()" onSecondaryClick="CloseError()" onTertiaryClick="CloseError()"/>
 		<panel align="center" childLayout="vertical" height="200px" style="nifty-panel-simple" width="600px">
 			<panel align="center" childLayout="vertical" height="100%" width="100%">
 				<panel align="center" childLayout="vertical" height="90%" width="100%">
