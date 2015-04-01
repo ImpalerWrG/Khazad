@@ -8,25 +8,25 @@
 			<panel childLayout="horizontal" height="80px" id="TopPanel" width="100%">
 				<panel childLayout="horizontal" height="60px" id="TopLeftPanel" style="nifty-panel-simple" width="400px">
 					<control childLayout="center" height="100%" id="button0" label="Menu" name="button" width="50px">
-						<interact onClick="Menu()"/>
+						<interact onClick="OpenMenuPopup()"/>
 					</control>
 					<control childLayout="center" height="100%"id="KingdomButton" label="Kingdom" name="button" width="60px">
-						<interact onClick="OpenKingdom()"/>
+						<interact onClick="OpenKingdomPopup()"/>
 					</control>
 					<control childLayout="center" height="100%" id="StocksButton" label="Stocks" name="button" width="50px">
-						<interact onClick="OpenStocks()"/>
+						<interact onClick="OpenStocksPopup()"/>
 					</control>
 					<control childLayout="center" height="100%" id="PopulationButton" label="Population" name="button" width="70px">
-						<interact onClick="OpenPopulation()"/>
+						<interact onClick="OpenPopulationPopup()"/>
 					</control>
 					<control childLayout="center" height="100%" id="MilitaryButton" label="Military" name="button" width="60px">
-						<interact onClick="OpenMilitary()"/>
+						<interact onClick="OpenMilitaryPopup()"/>
 					</control>
 					<control childLayout="center" height="100%" id="EventsButton" label="Events" name="button" width="50px">
-						<interact onClick="OpenEvents()"/>
+						<interact onClick="OpenEventsPopup()"/>
 					</control>
 					<control childLayout="center" height="100%" id="HelpButton" label="Help" name="button" width="50px">
-						<interact onClick="OpenHelp()"/>
+						<interact onClick="OpenHelpPopup()"/>
 					</control>
 				</panel>
 				<panel childLayout="center" id="TopDummyOne">

@@ -41,6 +41,7 @@ public class GUI extends AbstractAppState {
 
 		//nifty.loadStyleFile("Dwarven.xml");
 
+		nifty.addXml("Interface/Nifty/ChooseCitizenControl.xml");
 		nifty.addXml("Interface/Nifty/ErrorPopup.xml");
 		nifty.addXml("Interface/Nifty/GameScreenNifty.xml");
 		nifty.addXml("Interface/Nifty/LoadScreenNifty.xml");

@@ -37,7 +37,6 @@ import com.jme3.input.controls.KeyTrigger;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
@@ -65,7 +64,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	Dice PawnDice = new Dice();
 	GameMap MainMap;
 	Geology MapGeology;
-	Settlement GameSettlement;
+	public Settlement GameSettlement;
 	Weather GameWeather;
 	boolean Pause;
 	int TickRate;
@@ -293,7 +292,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	}
 	
 	public String getTimeString() {
-		String hoursString = Utils.padLeadingZero(hours %25);
+		String hoursString = Utils.padLeadingZero(hours %24);
 		String minutesString = Utils.padLeadingZero(minutes %60);
 		String secondsString = Utils.padLeadingZero(seconds %60);
 		return "DAY " + days + "  -  " + hoursString + ":" + minutesString + ":" + secondsString;

@@ -41,6 +41,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 	private Nifty nifty;
 	Screen screen;
 	Element MenuPopup;
+	Element PopulationPopup;
 
 	public void bind(Nifty nifty, Screen screen) {
 		this.nifty = nifty;
@@ -58,20 +59,16 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 		System.out.println("onEndScreen");
 	}
 
-	public void CloseMenuPopup() {
-		if (MenuPopup != null) {
-			nifty.closePopup(MenuPopup.getId());
-			MenuPopup = null;
-		}
-	}
-
 	public boolean keyEvent(NiftyInputEvent event) {
 		if (event != null) {
 			if (event == NiftyInputEvent.Escape) {
+				// if a popup is open, close it, otherwise open the menu
 				if (MenuPopup != null) {
 					CloseMenuPopup();
+				} else if (PopulationPopup != null) {
+					ClosePopulationPopup();
 				} else {
-					Menu();
+					OpenMenuPopup();
 				}
 				return true;
 			}
@@ -80,20 +77,45 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 		return false;
 	}
 
+	public void OpenMenuPopup() {
+		if (MenuPopup == null) {
+			Game game = Main.app.getStateManager().getState(Game.class);
+			game.Pause(true);
+
+			MenuPopup = nifty.createPopup("MenuPopup");
+			nifty.showPopup(screen, MenuPopup.getId(), null);
+		}
+	}
+
+	public void CloseMenuPopup() {
+		if (MenuPopup != null) {
+			nifty.closePopup(MenuPopup.getId());
+			MenuPopup = null;
+		}
+	}
+
+	public void OpenPopulationPopup() {
+		if (PopulationPopup == null) {
+			Game game = Main.app.getStateManager().getState(Game.class);
+			game.Pause(true);
+
+			PopulationPopup = nifty.createPopup("PopulationPopup");
+			nifty.showPopup(screen, PopulationPopup.getId(), null);
+		}
+	}
+
+	public void ClosePopulationPopup() {
+		if (PopulationPopup != null) {
+			nifty.closePopup(PopulationPopup.getId());
+			PopulationPopup = null;
+		}
+	}
+
 	public boolean inputEvent(NiftyInputEvent inputEvent) {
 		return false;
 	}
 
 	public void onFocus(boolean getFocus) {
-	}
-
-	public void Menu() {
-		MenuPopup = nifty.createPopup("MenuPopup");
-
-		Game game = Main.app.getStateManager().getState(Game.class);
-		game.Pause(true);
-
-		nifty.showPopup(screen, MenuPopup.getId(), null);
 	}
 
 	public void Pause() {
@@ -129,13 +151,5 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 		int value = (int) event.getValue();
 		int slice = camera.getSliceTop() - camera.getSliceBottom();
 		camera.SetSlice(High - value, High - value - slice);
-	}
-
-	public void OpenPopulation() {
-		Game game = Main.app.getStateManager().getState(Game.class);
-		game.Pause(true);
-
-		Element populationPopup = nifty.createPopup("PopulationPopup");
-		nifty.showPopup(screen, populationPopup.getId(), null);
 	}
 }

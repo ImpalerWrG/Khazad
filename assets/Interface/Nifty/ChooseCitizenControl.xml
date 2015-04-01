@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<nifty>
+	<useStyles filename="nifty-default-styles.xml"/>
+	<useControls filename="nifty-default-controls.xml"/>
+
+	<controlDefinition name="ChooseCitizenControl" controller="Nifty.ChooseCitizenControlController">
+		<panel id="#ChooseCitizenPanel" style="nifty-panel" align="center" valign="center" width="90%" height="30px" childLayout="horizontal">
+			<control childLayout="center" height="100%" id="#CitizenButton" label="Menu" name="button" width="100px">
+				<interact onClick="OpenCitizen()"/>
+			</control>
+			<control childLayout="center" height="100%" id="#TaskButton" label="Menu" name="button" width="100px">
+				<interact onClick="OpenTask()"/>
+			</control>
+		</panel>
+	</controlDefinition>
+</nifty>

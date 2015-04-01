@@ -55,6 +55,7 @@ public class Pawn extends Actor implements Serializable {
 	// The 14 Basic Attributes
 	Dice AttributeDice;
 	byte[] BasicAttributes;
+	public String name;
 
 	public Pawn(short CreatureTypeID, int id, int Seed, MapCoordinate SpawnLocation) {
 		super(id, SpawnLocation);		

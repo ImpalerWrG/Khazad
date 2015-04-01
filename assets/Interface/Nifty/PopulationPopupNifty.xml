@@ -5,7 +5,7 @@
 
 	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.PopulationPopupController" id="PopulationPopup">
 		<interact onClick="ClosePopulationPopup()" onSecondaryClick="ClosePopulationPopup()" onTertiaryClick="ClosePopulationPopup()"/>		
-		<panel align="center" childLayout="vertical" height="300px" id="MenuPanel" style="nifty-panel-simple" width="200px">
+		<panel align="center" childLayout="vertical" height="80%" id="CitizenPanel" style="nifty-panel-simple" width="200px">
 		</panel>
 	</popup>
 </nifty>
