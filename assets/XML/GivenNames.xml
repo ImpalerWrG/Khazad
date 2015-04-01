@@ -1,0 +1,94 @@
+	<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Names xmlns="https://github.com/ImpalerWrG/Khazad">	
+	<GivenNameGroup>
+		<Name Label="GIVEN_NAMEGROUP_TOLKEINESQUE"/>
+		<GivenNamePrefixes  gender="GENDER_MALE">
+			<GivenNamePrefix text="N" translation=""/>
+			<GivenNamePrefix text="D" translation=""/>
+			<GivenNamePrefix text="R" translation=""/>
+			<GivenNamePrefix text="T" translation=""/>
+			<GivenNamePrefix text="B" translation=""/>
+			<GivenNamePrefix text="V" translation=""/>
+			<GivenNamePrefix text="Ur" translation=""/>
+			<GivenNamePrefix text="Dw" translation=""/>
+			<GivenNamePrefix text="K" translation=""/>
+			<GivenNamePrefix text="Thr" translation=""/>
+			<GivenNamePrefix text="Th" translation=""/>
+			<GivenNamePrefix text="G" translation=""/>
+			<GivenNamePrefix text="Gl" translation=""/>
+			<GivenNamePrefix text="Gr" translation=""/>
+			<GivenNamePrefix text="Fr" translation=""/>
+			<GivenNamePrefix text="F" translation=""/>
+			<GivenNamePrefix text="" translation=""/>
+			<GivenNamePrefix text="Kh" translation=""/>
+			<GivenNamePrefix text="M" translation=""/>
+			<GivenNamePrefix text="Kr" translation=""/>
+			<GivenNamePrefix text="L" translation=""/>
+			<GivenNamePrefix text="S" translation=""/>
+			<GivenNamePrefix text="Dr" translation=""/>
+		</GivenNamePrefixes>
+		</GivenNameMiddles>
+		<GivenNameSufixes  gender="GENDER_MALE">
+			<GivenNameSufix text="ori" translation=""/>
+			<GivenNameSufix text="oin" translation=""/>
+			<GivenNameSufix text="ili" translation=""/>
+			<GivenNameSufix text="alin" translation=""/>
+			<GivenNameSufix text="orin" translation=""/>
+			<GivenNameSufix text="imli" translation=""/>
+			<GivenNameSufix text="ormur" translation=""/>
+			<GivenNameSufix text="ombur" translation=""/>
+			<GivenNameSufix text="urin" translation=""/>
+			<GivenNameSufix text="ain" translation=""/>
+			<GivenNameSufix text="rain" translation=""/>
+			<GivenNameSufix text="loin" translation=""/>
+			<GivenNameSufix text="erin" translation=""/>
+			<GivenNameSufix text="Arin" translation=""/>
+			<GivenNameSufix text="undin" translation=""/>
+			<GivenNameSufix text="walin" translation=""/>
+			<GivenNameSufix text="or" translation=""/>
+			<GivenNameSufix text="is" translation=""/>
+			<GivenNameSufix text="elgar" translation=""/>
+			<GivenNameSufix text="im" translation=""/>
+			<GivenNameSufix text="ibum" translation=""/>
+			<GivenNameSufix text="uri" translation=""/>
+			<GivenNameSufix text="innar" translation=""/>
+			<GivenNameSufix text="en" translation=""/>
+			<GivenNameSufix text="elor" translation=""/>
+			<GivenNameSufix text="indri" translation=""/>
+			<GivenNameSufix text="avor" translation=""/>
+			<GivenNameSufix text="ulin" translation=""/>
+			<GivenNameSufix text="uin" translation=""/>
+			<GivenNameSufix text="ar" translation=""/>
+			<GivenNameSufix text="ofur" translation=""/>
+			<GivenNameSufix text="ury" translation=""/>
+			<GivenNameSufix text="egan" translation=""/>
+			<GivenNameSufix text="ufur" translation=""/>
+			<GivenNameSufix text="omli" translation=""/>
+			<GivenNameSufix text="isil" translation=""/>
+			<GivenNameSufix text="oiran" translation=""/>
+			<GivenNameSufix text="iran" translation=""/>
+			<GivenNameSufix text="ilain," translation=""/>
+			<GivenNameSufix text="agon" translation=""/>
+			<GivenNameSufix text="unbur" translation=""/>
+			<GivenNameSufix text="unri" translation=""/>
+			<GivenNameSufix text="ofdin" translation=""/>
+			<GivenNameSufix text="unain" translation=""/>
+			<GivenNameSufix text="aror" translation=""/>
+			<GivenNameSufix text="ibur" translation=""/>
+			<GivenNameSufix text="ilni" translation=""/>
+			<GivenNameSufix text="uil" translation=""/>
+			<GivenNameSufix text="olin" translation=""/>
+			<GivenNameSufix text="ilin" translation=""/>
+			<GivenNameSufix text="imir" translation=""/>
+			<GivenNameSufix text="uran" translation=""/>
+			<GivenNameSufix text="arnar" translation=""/>
+			<GivenNameSufix text="ilnar" translation=""/>
+			<GivenNameSufix text="ir" translation=""/>
+			<GivenNameSufix text="alvar" translation=""/>
+			<GivenNameSufix text="alkral" translation=""/>
+			<GivenNameSufix text="algrim" translation=""/>
+			<GivenNameSufix text="alli" translation=""/>
+			<GivenNameSufix text="estril" translation=""/>
+		</GivenNameSufixes>	
+	</GivenNameGroup>	
+</Names>

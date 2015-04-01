@@ -1,0 +1,58 @@
+Authorship of CreativeCommons and GPL works of Art
+------------------------------------------
+
+Davion
+------
+Assets\Textures\KhazadLogo.png
+
+
+
+Andrew Vasiliev
+---------------
+
+Textures:
+Assets/Textures/Brick.png
+Assets/Textures/Brick1.png
+Assets/Textures/Brick2.png
+Assets/Textures/clay1.png
+Assets/Textures/clay2.png
+Assets/Textures/clay3.png
+Assets/Textures/Sand.png
+Assets/Textures/Shrub.png
+Assets/Textures/Tiles_engraved_big.png
+Assets/Textures/Tiles_engraved_small.png
+Assets/Textures/Tiles_normal_big.png
+Assets/Textures/Tiles_normal_small.png
+Assets/Textures/grass1.png
+Assets/Textures/grass2.png
+Assets/Textures/grass3.png
+Assets/Textures/grass4.png
+Assets/Textures/ground.png
+Assets/Textures/pebble.png
+Assets/Textures/stone1.png
+Assets/Textures/stone2.png
+Assets/Textures/stone3.png
+Assets/Textures/stone4.png
+Assets/Textures/wood_floor.png
+Assets/Textures/wood_side.png
+Assets/Textures/wood_side2.png
+
+
+MikeeUSA, via opengameart.org
+-------------------------
+
+Around the Mountain.ogg  GPL 2.0
+Second Organ.ogg         GPL 2.0
+
+
+qubodup, Iwan Gabovitch qubodup.net, via opengameart.org
+------------------------
+
+DarkAmbience.ogg  CC-BY 3.0, GPL 3.0,  GPL 2.0
+
+
+matthew.pablo, http://www.matthewpablo.com/services, via opengameart.org
+---------------------------------
+
+The Fall of Arcana.ogg  CC-BY 3.0
+Stepping Stones.ogg     CC-BY 3.0
