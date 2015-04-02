@@ -32,7 +32,7 @@ public class Settlement implements Serializable {
 
 	// Settlment data, wealth, honor, diplomatic status etc
 
-	private ArrayList<Citizen> Citizens;
+	public ArrayList<Citizen> Citizens;
 	JobManager JobSystem;
 
 	public Settlement() {

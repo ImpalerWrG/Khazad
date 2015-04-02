@@ -1,20 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
-
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Terrain;
 
 import Core.Dice;
@@ -191,46 +190,46 @@ public class Geology implements Serializable {
 		RandomGenerator.Seed(FinalSeed);
 
 
-			/* Set up our roughness constants.
-			   Random numbers are always generated in the range 0.0 to 1.0.
-			   'scale' is multiplied by the randum number.
-			   'ratio' is multiplied by 'scale' after each iteration
-			   to effectively reduce the randum number range.
-			   */
+        /* Set up our roughness constants.
+         Random numbers are always generated in the range 0.0 to 1.0.
+         'scale' is multiplied by the randum number.
+         'ratio' is multiplied by 'scale' after each iteration
+         to effectively reduce the randum number range.
+         */
 
-		/* Seed the first four values. For example, in a 4x4 array, we
-		   would initialize the data points indicated by '*':
+        /* Seed the first four values. For example, in a 4x4 array, we
+         would initialize the data points indicated by '*':
 
-			   *   .   .   .   *
+         *   .   .   .   *
 
-			   .   .   .   .   .
+         .   .   .   .   .
 
-			   .   .   .   .   .
+         .   .   .   .   .
 
-			   .   .   .   .   .
+         .   .   .   .   .
 
-			   *   .   .   .   *
+         *   .   .   .   *
 
-		   In terms of the "diamond-square" algorithm, this gives us
-		   "squares".
+         In terms of the "diamond-square" algorithm, this gives us
+         "squares".
 
-		   We want the four corners of the array to have the same
-		   point. This will allow us to tile the arrays next to each other
-		   such that they join seemlessly. */
+         We want the four corners of the array to have the same
+         point. This will allow us to tile the arrays next to each other
+         such that they join seemlessly. */
 
-		byte stride = MapCoordinate.CELLEDGESIZE / 2;
+        byte stride = MapCoordinate.CELLEDGESIZE / 2;
 
-		Height[0][0] = WorldHeight[X][Y];
-		Seeded[0][0] = true;
+        Height[0][0] = WorldHeight[X][Y];
+        Seeded[0][0] = true;
 
-		Height[MapCoordinate.CELLEDGESIZE][0] = WorldHeight[X + 1][Y];
-		Seeded[MapCoordinate.CELLEDGESIZE][0] = true;
+        Height[MapCoordinate.CELLEDGESIZE][0] = WorldHeight[X + 1][Y];
+        Seeded[MapCoordinate.CELLEDGESIZE][0] = true;
 
-		Height[0][MapCoordinate.CELLEDGESIZE] = WorldHeight[X][Y + 1];
-		Seeded[0][MapCoordinate.CELLEDGESIZE] = true;
+        Height[0][MapCoordinate.CELLEDGESIZE] = WorldHeight[X][Y + 1];
+        Seeded[0][MapCoordinate.CELLEDGESIZE] = true;
 
-		Height[MapCoordinate.CELLEDGESIZE][MapCoordinate.CELLEDGESIZE] = WorldHeight[X + 1][Y + 1];
-		Seeded[MapCoordinate.CELLEDGESIZE][MapCoordinate.CELLEDGESIZE] = true;
+        Height[MapCoordinate.CELLEDGESIZE][MapCoordinate.CELLEDGESIZE] = WorldHeight[X + 1][Y + 1];
+        Seeded[MapCoordinate.CELLEDGESIZE][MapCoordinate.CELLEDGESIZE] = true;
 
 
 		// Set initial Fractal value range (scale) and the rate of decrese (ratio)

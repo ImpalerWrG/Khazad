@@ -1,22 +1,23 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Nifty;
 
+import Core.Main;
 import com.jme3.app.Application;
 
 import de.lessvoid.nifty.Nifty;
@@ -48,17 +49,12 @@ import javax.swing.filechooser.FileSystemView;
  */
 public class ShellScreenController implements ScreenController {
 
-	private Application app;
 	private Nifty nifty;
 	Element TutorialPopup = null;
 	Element ErrorPopup = null;
 
-	public ShellScreenController(Nifty nifty, Application app) {
-		this.app = app;
-		this.nifty = nifty;
-	}
-
 	public void bind(Nifty nifty, Screen screen) {
+		this.nifty = nifty;
 	}
 
 	public void onStartScreen() {
@@ -68,7 +64,7 @@ public class ShellScreenController implements ScreenController {
 	}
 
 	public void Quit() {
-		app.stop();
+		Main.app.stop();
 	}
 
 	public void GameSetup() {
@@ -97,24 +93,5 @@ public class ShellScreenController implements ScreenController {
 	public void LoadGame() {
 		nifty.gotoScreen("LoadGameScreen");
 		return;
-	}
-
-	private void ShowError(String errorMessage) {
-		if (ErrorPopup == null) {
-			ErrorPopup = nifty.createPopup("ErrorPopup");
-		}
-		Label errorLabel = ErrorPopup.findNiftyControl("ErrorLabel", Label.class);
-		if (errorLabel != null) {
-			errorLabel.setText(errorMessage);
-		}
-
-		nifty.showPopup(nifty.getCurrentScreen(), this.ErrorPopup.getId(), null);
-	}
-
-	public void CloseError() {
-		if (ErrorPopup != null) {
-			nifty.closePopup(this.ErrorPopup.getId());
-			ErrorPopup = null;
-		}
 	}
 }

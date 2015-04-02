@@ -3,94 +3,61 @@
 	<useStyles filename="nifty-default-styles.xml"/>
 	<useControls filename="nifty-default-controls.xml"/>
 	
-	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.GameScreenController" id="MenuPopup">
-		<interact onClick="closePopup()" onSecondaryClick="closePopup()" onTertiaryClick="closePopup()"/>		
-		<panel align="center" childLayout="vertical" height="300px" id="MenuPanel" style="nifty-panel-simple" width="200px">
-			<panel align="center" childLayout="center" height="100px" id="QuitPanel" width="100%">
-				<control childLayout="center" controller="Nifty.GameScreenController" height="50px" id="Savebutton" label="Save Game" name="button" width="150px">
-					<interact onClick="SaveGame()"/>
-				</control>
-			</panel>
-			<panel align="center" childLayout="center" height="100px" width="100%">
-				<control childLayout="center" controller="Nifty.GameScreenController" height="50px" id="Abandonbutton" label="Abandon Game" name="button" width="150px">
-					<interact onClick="Abandon()"/>
-				</control>
-			</panel>
-			<panel align="center" childLayout="center" height="100px" width="100%">
-				<control childLayout="center" controller="Nifty.GameScreenController" height="50px" id="Quitbutton" label="Quit to Desktop" name="button" width="150px">
-					<interact onClick="Quit()"/>
-				</control>
-			</panel>
-		</panel>
-	</popup>
-	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.GameScreenController" id="SaveErrorPopup">
-		<interact onClick="CloseSaveError()" onSecondaryClick="CloseSaveError()" onTertiaryClick="CloseSaveError()"/>		
-		<panel align="center" childLayout="vertical" height="200px" style="nifty-panel-simple" width="600px">
-			<panel align="center" childLayout="vertical" height="100%" width="100%">
-				<panel align="center" childLayout="vertical" height="90%" width="100%">
-					<control name="label" color="#cc0000ff" text="Problem saving" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
-					<control font="aurulent-sans-16.fnt" height="30px" id="SaveErrorLabel" name="label" text="Error message goes here" textLineHeight="30px" textMinHeight="30px" width="100%" wrap="true" />
-				</panel>
-				<panel align="center" childLayout="vertical" height="100%" width="100%">
-					<control childLayout="center" controller="Nifty.GameScreenController" height="20px" label="Done" name="button" width="100%">
-						<interact onClick="CloseSaveError()"/>
-					</control>
-				</panel>
-			</panel>
-		</panel>
-	</popup>
-	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.GameScreenController" id="SaveSuccessPopup">
-		<interact onClick="CloseSaveSuccess()" onSecondaryClick="CloseSaveSuccess()" onTertiaryClick="CloseSaveSuccess()"/>		
-		<panel align="center" childLayout="vertical" height="200px" style="nifty-panel-simple" width="600px">
-			<panel align="center" childLayout="vertical" height="100%" width="100%">
-				<panel align="center" childLayout="vertical" height="90%" width="100%">
-					<control name="label" color="#cc0000ff" text="Save successful" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
-				</panel>
-				<panel align="center" childLayout="vertical" height="100%" width="100%">
-					<control childLayout="center" controller="Nifty.GameScreenController" height="20px" label="Done" name="button" width="100%">
-						<interact onClick="CloseSaveSuccess()"/>
-					</control>
-				</panel>
-			</panel>
-		</panel>
-	</popup>
 	<screen controller="Nifty.GameScreenController" id="GameScreen">
 		<layer childLayout="vertical" id="layer0">
 			<panel childLayout="horizontal" height="80px" id="TopPanel" width="100%">
-				<panel childLayout="horizontal" height="60px" id="TopLeftPanel" style="nifty-panel-simple" width="168px">
-					<control childLayout="center" controller="Nifty.GameScreenController" height="100%" id="button0" label="Menu" name="button" width="50px">
-						<interact onClick="Menu()"/>
+				<panel childLayout="horizontal" height="60px" id="TopLeftPanel" style="nifty-panel-simple" width="400px">
+					<control childLayout="center" height="100%" id="button0" label="Menu" name="button" width="50px">
+						<interact onClick="OpenMenuPopup()"/>
+					</control>
+					<control childLayout="center" height="100%"id="KingdomButton" label="Kingdom" name="button" width="60px">
+						<interact onClick="OpenKingdomPopup()"/>
+					</control>
+					<control childLayout="center" height="100%" id="StocksButton" label="Stocks" name="button" width="50px">
+						<interact onClick="OpenStocksPopup()"/>
+					</control>
+					<control childLayout="center" height="100%" id="PopulationButton" label="Population" name="button" width="70px">
+						<interact onClick="OpenPopulationPopup()"/>
+					</control>
+					<control childLayout="center" height="100%" id="MilitaryButton" label="Military" name="button" width="60px">
+						<interact onClick="OpenMilitaryPopup()"/>
+					</control>
+					<control childLayout="center" height="100%" id="EventsButton" label="Events" name="button" width="50px">
+						<interact onClick="OpenEventsPopup()"/>
+					</control>
+					<control childLayout="center" height="100%" id="HelpButton" label="Help" name="button" width="50px">
+						<interact onClick="OpenHelpPopup()"/>
 					</control>
 				</panel>
 				<panel childLayout="center" id="TopDummyOne">
 					<panel childLayout="center" height="100%" id="TopDummyTwo" width="100%">
-						<panel childLayout="horizontal" height="40" id="TopMiddlePanel" style="nifty-panel-simple" width="200px"/>
+						<!--<panel childLayout="horizontal" height="40" id="TopMiddlePanel" style="nifty-panel-simple" width="200px"/>-->
 					</panel>
 				</panel>
 				<panel childLayout="vertical" height="60px" id="TopRightPanel" style="nifty-panel-simple" width="290px">
 					<panel childLayout="horizontal" height="30px" id="SpeedControlPanel">
-						<control childLayout="center" controller="Nifty.GameScreenController" id="Pausebutton" label="Pause" name="button" width="50px">
+						<control childLayout="center" id="Pausebutton" label="Pause" name="button" width="50px">
 							<interact onClick="Pause()"/>
 						</control>
-						<control childLayout="center" controller="Nifty.GameScreenController" id="Speed1button" label="x1" name="button" width="25px">
+						<control childLayout="center" id="Speed1button" label="x1" name="button" width="25px">
 							<interact onClick="SetSpeed(1)"/>
 						</control>
-						<control childLayout="center" controller="Nifty.GameScreenController" id="Speed4button" label="x4" name="button" width="25px">
+						<control childLayout="center" id="Speed4button" label="x4" name="button" width="25px">
 							<interact onClick="SetSpeed(4)"/>
 						</control>
-						<control childLayout="center" controller="Nifty.GameScreenController" id="Speed16button" label="x16" name="button" width="25px">
+						<control childLayout="center" id="Speed16button" label="x16" name="button" width="25px">
 							<interact onClick="SetSpeed(16)"/>
 						</control>
-						<control childLayout="center" controller="Nifty.GameScreenController" id="Speed64button" label="x64" name="button" width="25px">
+						<control childLayout="center" id="Speed64button" label="x64" name="button" width="25px">
 							<interact onClick="SetSpeed(64)"/>
 						</control>
-						<control childLayout="center" controller="Nifty.GameScreenController" id="Speed256button" label="x256" name="button" width="35px">
+						<control childLayout="center" id="Speed256button" label="x256" name="button" width="35px">
 							<interact onClick="SetSpeed(256)"/>
 						</control>
-						<control childLayout="center" controller="Nifty.GameScreenController" id="Speed1024button" label="x1024" name="button" width="45px">
+						<control childLayout="center" id="Speed1024button" label="x1024" name="button" width="45px">
 							<interact onClick="SetSpeed(1024)"/>
 						</control>
-						<control childLayout="center" controller="Nifty.GameScreenController" id="Speed4096button" label="x4096" name="button" width="45px">
+						<control childLayout="center" id="Speed4096button" label="x4096" name="button" width="45px">
 							<interact onClick="SetSpeed(4096)"/>
 						</control>
 					</panel>
@@ -106,7 +73,7 @@
 					<panel childLayout="vertical" id="panel6" width="100%" x="319" y="86">
 						<panel childLayout="absolute" id="panel18" width="100%"/>
 						<panel childLayout="center" height="40px" id="panel23" width="100%">
-							<panel childLayout="horizontal" controller="Nifty.GameBottomBarController" height="100%" id="BottomButtonPanel" style="nifty-panel-simple" width="200px">
+							<panel childLayout="horizontal" height="100%" id="BottomButtonPanel" style="nifty-panel-simple" width="200px">
 								<control childLayout="center" height="100%" id="DiGButton" label="Dig" name="button" width="40px">
 									<interact onClick="Dig()"/>
 								</control>

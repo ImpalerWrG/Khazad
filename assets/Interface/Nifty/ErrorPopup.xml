@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<nifty>
+	<useStyles filename="nifty-default-styles.xml"/>
+	<useControls filename="nifty-default-controls.xml"/>
+
+	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.ErrorPopupController" id="ErrorPopup">
+		<interact onClick="CloseErrorPopup()" onSecondaryClick="CloseErrorPopup()" onTertiaryClick="CloseErrorPopup()"/>		
+		<panel align="center" childLayout="vertical" height="200px" style="nifty-panel-simple" width="600px">
+			<panel align="center" childLayout="vertical" height="100%" width="100%">
+				<panel align="center" childLayout="vertical" height="90%" width="100%">
+					<control name="label" color="#cc0000ff" id="ErrorTitleLabel" text="Error title goes here" height="30px" font="aurulent-sans-16.fnt" width="100%"/>
+					<control font="aurulent-sans-16.fnt" height="30px" id="ErrorMessageLabel" name="label" text="Error message goes here" textLineHeight="30px" textMinHeight="30px" width="100%" wrap="true" />
+				</panel>
+				<panel align="center" childLayout="vertical" height="100%" width="100%">
+					<control childLayout="center" height="20px" label="Done" name="button" width="100%" id="CloseErrorPopupButton">
+						<interact onClick="CloseErrorPopup()"/>
+					</control>
+				</panel>
+			</panel>
+		</panel>
+	</popup>
+</nifty>
