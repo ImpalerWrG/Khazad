@@ -11,6 +11,7 @@ import Game.Game;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyIdCreator;
 import de.lessvoid.nifty.controls.Controller;
+import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.ScrollPanel;
 import de.lessvoid.nifty.controls.dynamic.CustomControlCreator;
 import de.lessvoid.nifty.elements.Element;
@@ -30,6 +31,7 @@ public class PopulationPopupController implements Controller {
 	Element popup;
 	Element citizenTableBody;
 	ScrollPanel citizenScrollPanel;
+	Label idleCitizensLabel;
 
 	public void bind(Nifty nifty, Screen screen, Element element, Properties parameter, Attributes controlDefinitionAttributes) {
 		this.nifty = nifty;
@@ -37,6 +39,7 @@ public class PopulationPopupController implements Controller {
 		this.popup = element;
 		this.citizenTableBody = popup.findElementByName("CitizenTableBody");
 		this.citizenScrollPanel = popup.findNiftyControl("CitizenScrollPanel", ScrollPanel.class);
+		this.idleCitizensLabel = popup.findNiftyControl("IdleCitizensLabel", Label.class);		
 		refreshPopulation();
 	}
 
@@ -59,6 +62,7 @@ public class PopulationPopupController implements Controller {
 			addChooseCitizenControl(citizen);
 		}
 		setUpScrollPanel(0, 30, 0, citizenScrollPanel.getHeight() - 30);
+		idleCitizensLabel.setText("Idle citizens: " + game.GameSettlement.getJobManager().getIdleCitizens().size());
 	}
 	
 	private void setUpScrollPanel(float stepSizeX, float stepSizeY, float pageSizeX, float pageSizeY) {

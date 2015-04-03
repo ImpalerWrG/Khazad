@@ -195,8 +195,8 @@ public class LoadGameScreenController implements ScreenController {
 			}
 			Game game = (Game) ois.readObject();
 			// copy a few things from the header into the game (since we don't keep the header)
-			game.kingdomName = saveGameHeader.kingdomName;
-			game.saveGameFileName = SelectedSaveGameHeader.fileName;
+			game.setKingdomName(saveGameHeader.kingdomName);
+			game.setSaveGameFileName(SelectedSaveGameHeader.fileName);
 			nifty.gotoScreen("GameScreen");
 
 			// initialize the game

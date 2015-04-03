@@ -24,6 +24,7 @@ import Job.JobManager;
 import Map.*;
 import Terrain.Geology;
 import Interface.VolumeSelection;
+import Nifty.GameScreenController;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -70,18 +71,19 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	int TickRate;
 	long CurrentGameTick;
 	float TickRounding;
-	public long seconds;
-	public long minutes;
-	public long hours;
-	public long days;
+	private long seconds;
+	private long minutes;
+	private long hours;
+	private long days;
 	int UniqueIDCounter;
 	PriorityQueue<Temporal> TemporalQueue;
 	ArrayList<Actor> Actors;
 	int ActorIDcounter = 0;
 	transient ExecutorService Executor;
 	transient Future lastUpdate;
-	public transient String kingdomName;
-	public transient String saveGameFileName;
+	private transient String kingdomName;
+	private transient String saveGameFileName;
+	private transient GameScreenController gameScreenController;
 
 	public Game() {
 
@@ -108,8 +110,8 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 
 	public boolean InitializeGame(short X, short Y, String SeedString, String kingdomName) {
 		MasterSeed = SeedString.hashCode();
-		this.kingdomName = kingdomName;
-		saveGameFileName = null;
+		this.setKingdomName(kingdomName);
+		setSaveGameFileName(null);
 		PawnDice.Seed(MasterSeed);
 
 		MapGeology = new Geology();
@@ -256,6 +258,11 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 				minutes = CurrentGameTick / Temporal.TICKS_PER_MINUTE;
 				hours = CurrentGameTick / Temporal.TICKS_PER_HOUR;
 				days = CurrentGameTick / Temporal.TICKS_PER_DAY;
+				
+				if (gameScreenController != null) {
+					// update UI with any updated state, since some windows can be open while unpaused.
+					gameScreenController.update();
+				}
 			}
 		}
 	}
@@ -296,5 +303,29 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		String minutesString = Utils.padLeadingZero(minutes %60);
 		String secondsString = Utils.padLeadingZero(seconds %60);
 		return "DAY " + days + "  -  " + hoursString + ":" + minutesString + ":" + secondsString;
+	}
+
+	public String getKingdomName() {
+		return kingdomName;
+	}
+
+	public void setKingdomName(String kingdomName) {
+		this.kingdomName = kingdomName;
+	}
+
+	public String getSaveGameFileName() {
+		return saveGameFileName;
+	}
+
+	public void setSaveGameFileName(String saveGameFileName) {
+		this.saveGameFileName = saveGameFileName;
+	}
+
+	public GameScreenController getGameScreenController() {
+		return gameScreenController;
+	}
+
+	public void setGameScreenController(GameScreenController gameScreenController) {
+		this.gameScreenController = gameScreenController;
 	}
 }

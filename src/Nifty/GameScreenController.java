@@ -33,7 +33,10 @@ import de.lessvoid.nifty.NiftyEventSubscriber;
 import Game.Game;
 import Interface.GameCameraState;
 import de.lessvoid.nifty.NiftyIdCreator;
+import de.lessvoid.nifty.controls.WindowClosedEvent;
 import de.lessvoid.nifty.controls.dynamic.CustomControlCreator;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -46,6 +49,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 	Element MenuPopup;
 	Element PopulationPopup;
 	Element windows;
+	HashMap<String, Updatable> updatables = new HashMap<String, Updatable>();
 
 	public void bind(Nifty nifty, Screen screen) {
 		this.nifty = nifty;
@@ -58,16 +62,25 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 
 	public void onStartScreen() {
 		System.out.println("GameScreen onStartScreen");
+		Game game = Main.app.getStateManager().getState(Game.class);
+		game.setGameScreenController(this);
 	}
 
 	public void onEndScreen() {
 		MenuPopup = null;
 		PopulationPopup = null;
 		// close any open windows
-		for(Element tempElement : windows.getElements()){
+		for (Element tempElement : windows.getElements()) {
 			nifty.removeElement(screen, tempElement);
 		}
+		updatables.clear();
 		System.out.println("onEndScreen");
+	}
+
+	public void update() {
+		for (Updatable updatable : updatables.values()) {
+			updatable.update();
+		}
 	}
 
 	public boolean keyEvent(NiftyInputEvent event) {
@@ -165,19 +178,19 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 		int slice = camera.getSliceTop() - camera.getSliceBottom();
 		camera.SetSlice(High - value, High - value - slice);
 	}
-	
+
 	private void disableMouseWheel() {
 		GameCameraState camera = Main.app.getStateManager().getState(GameCameraState.class);
 		camera.setMouseWheelEnabled(false);
 	}
-	
+
 	private void enableMouseWheel() {
 		GameCameraState camera = Main.app.getStateManager().getState(GameCameraState.class);
 		camera.setMouseWheelEnabled(true);
 	}
-	
+
 	public void spawnCitizenWindow(Citizen citizen) {
-		String windowId = NiftyIdCreator.generate();
+		String windowId = "updatable-" + NiftyIdCreator.generate();
 		CustomControlCreator citizenWindowCreator = new CustomControlCreator(windowId, "CitizenWindow");
 		Element citizenWindow = citizenWindowCreator.create(nifty, screen, windows);
 		// the controller needs to be set on the panel rather than the control, maybe due to the hidden window-content panel
@@ -185,6 +198,12 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 		Element citizenWindowPanel = citizenWindow.findElementByName(windowId + "#CitizenWindow#window-content#CitizenWindow#window-content#CitizenWindowPanel");
 		CitizenWindowController controller = citizenWindowPanel.getControl(CitizenWindowController.class);
 		controller.setCitizen(citizen);
+		updatables.put(windowId, controller);
 	}
 
+	@NiftyEventSubscriber(pattern = "updatable-.*")
+	public void onAnyWindowClose(final String id, final WindowClosedEvent event) {
+		System.out.println("Window Closed " + id);
+		updatables.remove(id);
+	}
 }

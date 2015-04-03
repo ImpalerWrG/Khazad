@@ -10,16 +10,19 @@
 	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.PopulationPopupController" id="PopulationPopup">
 		<interact onClick="ClosePopulationPopup()" onSecondaryClick="ClosePopulationPopup()" onTertiaryClick="ClosePopulationPopup()"/>		
 		<panel align="center" childLayout="vertical" height="80%" id="CitizenPanel" style="nifty-panel-simple" width="600px">
-			<panel align="center" childLayout="horizontal" height="5%" id="CitizenTableHeader" width="100%">
+			<panel align="center" childLayout="horizontal" height="30px" id="IdleCitizensPanel" width="100%">
+				<control name="label" color="#cc0000ff" id="IdleCitizensLabel" height="30px" font="aurulent-sans-16.fnt" width="561px" />
+			</panel>
+			<panel align="center" childLayout="horizontal" height="30px" id="CitizenTableHeader" width="100%">
 				<control name="label" color="#cc0000ff" id="NameLabel" text="Name" height="30px" font="aurulent-sans-16.fnt" width="187px" />
 				<control name="label" color="#cc0000ff" id="JobLabel" text="Current Job" height="30px" font="aurulent-sans-16.fnt" width="187px" />
 				<control name="label" color="#cc0000ff" id="TaskLabel" text="Current Task" height="30px" font="aurulent-sans-16.fnt" width="187px" />
 			</panel>
-			<control id="CitizenScrollPanel" style="nonBrokenScrollPanel" name="scrollPanel" horizontal="false" height="90%" width="100%">
+			<control id="CitizenScrollPanel" style="nonBrokenScrollPanel" name="scrollPanel" horizontal="false" height="*" width="100%">
 				<panel align="center" childLayout="vertical" width="100%" id="CitizenTableBody">
 				</panel>
 			</control>
-			<control childLayout="center" label="Done" name="button" width="100%" height="5%" id="ClosePopulationPopupButton">
+			<control childLayout="center" label="Done" name="button" width="100%" height="30px" id="ClosePopulationPopupButton">
 				<interact onClick="ClosePopulationPopup()"/>
 			</control>
 		</panel>

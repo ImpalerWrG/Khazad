@@ -100,14 +100,14 @@ public class MenuPopupController implements Controller {
 
 			Game game = Main.app.getStateManager().getState(Game.class);
 
-			if (game.saveGameFileName == null) {
+			if (game.getSaveGameFileName() == null) {
 				// find an unused filename
 				HashSet<String> saveFileNames = getFilesInFolder(saveGamesFolderFile);
-				game.saveGameFileName = findUniqueFileName(saveFileNames);
+				game.setSaveGameFileName(findUniqueFileName(saveFileNames));
 			}
 
 			// now create the save file, if it does not already exist
-			File saveFile = new File(saveGamesFolder + game.saveGameFileName);
+			File saveFile = new File(saveGamesFolder + game.getSaveGameFileName());
 			if (!saveFile.exists()) {
 				saveFile.createNewFile();
 			}
@@ -116,7 +116,7 @@ public class MenuPopupController implements Controller {
 			SaveGameHeader saveGameHeader = new SaveGameHeader();
 			saveGameHeader.version = game.version;
 			saveGameHeader.lastPlayed = new Date(); // current time
-			saveGameHeader.kingdomName = game.kingdomName;
+			saveGameHeader.kingdomName = game.getKingdomName();
 			saveGameHeader.timeString = game.getTimeString();
 			oos = new ObjectOutputStream(new FileOutputStream(saveFile));
 			oos.writeObject(saveGameHeader);
