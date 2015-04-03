@@ -41,7 +41,9 @@ public class Citizen extends Pawn implements Serializable {
 	
 	public Citizen(short CreatureTypeID, int id, int seed, MapCoordinate SpawnLocation) {
 		super(CreatureTypeID, id, seed, SpawnLocation);
-		name = "Urist " + id;
+		// TODO randomly generated name
+		setFirstName("Urist");
+		setLastName(Integer.toString(id));
 		setTask(new Task(null, TaskType.TASK_IDLE, SpawnLocation));
 	}
 	

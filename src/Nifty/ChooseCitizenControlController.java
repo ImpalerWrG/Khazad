@@ -7,6 +7,7 @@ package Nifty;
 
 import Game.Citizen;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.Button;
 import de.lessvoid.nifty.controls.Controller;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.input.NiftyInputEvent;
@@ -23,14 +24,28 @@ public class ChooseCitizenControlController implements Controller {
 	Nifty nifty;
 	Screen screen;
 	Element control;
-	String citizenId;
+	Citizen citizen;
 
 	public void bind(Nifty nifty, Screen screen, Element element, Properties parameter, Attributes controlDefinitionAttributes) {
 		this.nifty = nifty;
 		this.screen = screen;
 		this.control = element;
-		// parameters can only be strings
-		this.citizenId = (String)parameter.get("citizenId");
+	}
+	
+	public void setCitizen(Citizen citizen) {
+		this.citizen = citizen;
+		Button citizenButton = control.findNiftyControl(control.getId() + "#CitizenButton", Button.class);
+		if (citizenButton != null) {
+			citizenButton.setText(citizen.getName());
+		}
+		Button jobButton = control.findNiftyControl(control.getId() + "#JobButton", Button.class);
+		if (jobButton != null) {
+			jobButton.setText(citizen.PrimaryJob.getName());
+		}
+		Button taskButton = control.findNiftyControl(control.getId() + "#TaskButton", Button.class);
+		if (taskButton != null) {
+			taskButton.setText(citizen.getTask().getName());
+		}
 	}
 
 	public void init(Properties parameter, Attributes controlDefinitionAttributes) {
@@ -45,12 +60,16 @@ public class ChooseCitizenControlController implements Controller {
 	public boolean inputEvent(NiftyInputEvent inputEvent) {
 		return false;
 	}
-	
-	public void OpenCitizen() {
-		System.out.println("Opening citizen");
+
+	public void openCitizen() {
+		System.out.println("Opening citizen " + citizen.getName());
+	}
+
+	public void openJob() {
+		System.out.println("Opening job " + citizen.PrimaryJob.getName());
 	}
 	
-	public void OpenTask() {
-		System.out.println("Opening task");
+	public void openTask() {
+		System.out.println("Opening task " + citizen.getTask().getName());
 	}
 }

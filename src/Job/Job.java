@@ -94,4 +94,6 @@ public abstract class Job implements Serializable {
 	public abstract Task nextTask(Pawn IdleCitizen);
 	
 	public abstract float EvaluatePawn(Pawn IdleCitizen);
+	
+	public abstract String getName();
 }

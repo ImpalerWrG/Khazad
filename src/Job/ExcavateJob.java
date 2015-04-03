@@ -256,4 +256,9 @@ public class ExcavateJob extends Job implements Serializable {
 	public void JobCompleted() {
 
 	}
+	
+	@Override
+	public String getName() {
+		return "Excavating";
+	}
 }

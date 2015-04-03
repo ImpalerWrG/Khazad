@@ -96,4 +96,9 @@ public class WanderJob extends Job implements Serializable {
 		}
 		return null;
 	}
+	
+	@Override
+	public String getName() {
+		return "Wandering";
+	}
 }

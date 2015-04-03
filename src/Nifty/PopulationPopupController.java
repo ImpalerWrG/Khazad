@@ -9,8 +9,9 @@ import Core.Main;
 import Game.Citizen;
 import Game.Game;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.Button;
 import de.lessvoid.nifty.controls.Controller;
-import de.lessvoid.nifty.controls.NiftyControl;
+import de.lessvoid.nifty.controls.ScrollPanel;
 import de.lessvoid.nifty.controls.dynamic.CustomControlCreator;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.input.NiftyInputEvent;
@@ -27,13 +28,15 @@ public class PopulationPopupController implements Controller {
 	Nifty nifty;
 	Screen screen;
 	Element popup;
-	Element citizenPanel;
+	Element citizenTableBody;
+	ScrollPanel citizenScrollPanel;
 
 	public void bind(Nifty nifty, Screen screen, Element element, Properties parameter, Attributes controlDefinitionAttributes) {
 		this.nifty = nifty;
 		this.screen = screen;
 		this.popup = element;
-		this.citizenPanel = popup.findElementByName("CitizenPanel");
+		this.citizenTableBody = popup.findElementByName("CitizenTableBody");
+		this.citizenScrollPanel = popup.findNiftyControl("CitizenScrollPanel", ScrollPanel.class);
 		refreshPopulation();
 	}
 
@@ -55,12 +58,19 @@ public class PopulationPopupController implements Controller {
 		for (Citizen citizen : game.GameSettlement.Citizens) {
 			addChooseCitizenControl(citizen);
 		}
+		setUpScrollPanel(0, 30, 0, citizenScrollPanel.getHeight() - 30);
 	}
+	
+	private void setUpScrollPanel(float stepSizeX, float stepSizeY, float pageSizeX, float pageSizeY) {
+		citizenScrollPanel.setUp(stepSizeX, stepSizeY, pageSizeX, pageSizeY, ScrollPanel.AutoScroll.OFF);	
+	}
+			
 
 	public void addChooseCitizenControl(Citizen citizen) {
 		String citizenId = String.valueOf(citizen.getID());
 		CustomControlCreator chooseCitizenControlCreator = new CustomControlCreator(citizenId, "ChooseCitizenControl");
-		chooseCitizenControlCreator.parameter("citizenId", citizenId);
-		Element chooseCitizenControl = chooseCitizenControlCreator.create(nifty, screen, citizenPanel);
+		Element chooseCitizenControl = chooseCitizenControlCreator.create(nifty, screen, citizenTableBody);
+		ChooseCitizenControlController controller = chooseCitizenControl.getControl(ChooseCitizenControlController.class);
+		controller.setCitizen(citizen);
 	}
 }

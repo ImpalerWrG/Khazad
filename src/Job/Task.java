@@ -1,19 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Job;
 
@@ -35,16 +35,16 @@ import java.io.Serializable;
 /**
  * Smallest possible unit of work or activity by a Pawn, Jobs are broken down
  * into a series of individual tasks that can be assigned to Citizens or invaders
+ *
  * @author Impaler
  */
 public class Task implements Serializable {
+
 	private static final long serialVersionUID = 1;
-		
 	public final Job ParentJob;
 	public final TaskType type;
 	public final MapCoordinate worklocation;
 	public final Direction workdirection;
-	
 	public boolean Completed;
 	public boolean Begun;
 
@@ -56,11 +56,11 @@ public class Task implements Serializable {
 		Begun = false;
 		Completed = false;
 	}
-	
+
 	public long Begin(Pawn Host) {
 		Direction MovementDirection;
 		switch (type) {
-				
+
 			case TASK_IDLE:
 				break;
 			case TASK_SLEEP:
@@ -77,19 +77,19 @@ public class Task implements Serializable {
 				Begun = true;
 
 				return Host.AttemptMove(MovementDirection);
-				
+
 			case TASK_DROP_OFF:
 				break;
 			case TASK_DIG:
-				Begun = true;	
+				Begun = true;
 				return 100;  // Base on material hardness
-				
+
 			case TASK_LOITER:
 				Host.getNavigator().setBehaviorMode(Navigator.MovementBehavior.PATH_BEHAVIOR_WANDER_AIMLESSLY);
 				MovementDirection = Host.getNavigator().getNextStep();
 				Host.setMovementDiretion(MovementDirection);
 				Begun = true;
-				
+
 				return Host.AttemptMove(MovementDirection);
 		}
 		return 1;
@@ -137,7 +137,7 @@ public class Task implements Serializable {
 		}
 		return 1;
 	}
-	
+
 	public void Finalize(long CurrentTick, Pawn Host) {
 		switch (type) {
 
@@ -159,12 +159,27 @@ public class Task implements Serializable {
 				break;
 		}
 	}
-	
-	public void Interupt(long CurrentTick, Pawn Host) {
 
+	public void Interupt(long CurrentTick, Pawn Host) {
 	}
-	
-	String getName() {
-		return "A simple task";
+
+	public String getName() {
+		switch (type) {
+			case TASK_IDLE:
+				return "Idling";
+			case TASK_SLEEP:
+				return "Sleeping";
+			case TASK_PICK_UP:
+				return "Picking up";
+			case TASK_HAUL:
+				return "Hauling";
+			case TASK_GOTO:
+				return "Moving";
+			case TASK_DROP_OFF:
+				return "Dropping off";
+			case TASK_DIG:
+				return "Digging";
+		}
+		return "Unknown";
 	}
 }

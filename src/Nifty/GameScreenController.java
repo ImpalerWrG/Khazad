@@ -56,6 +56,8 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 	}
 
 	public void onEndScreen() {
+		MenuPopup = null;
+		PopulationPopup = null;
 		System.out.println("onEndScreen");
 	}
 
@@ -78,13 +80,12 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 	}
 
 	public void OpenMenuPopup() {
-		if (MenuPopup == null) {
-			Game game = Main.app.getStateManager().getState(Game.class);
-			game.Pause(true);
+		CloseMenuPopup();
+		Game game = Main.app.getStateManager().getState(Game.class);
+		game.Pause(true);
 
-			MenuPopup = nifty.createPopup("MenuPopup");
-			nifty.showPopup(screen, MenuPopup.getId(), null);
-		}
+		MenuPopup = nifty.createPopup("MenuPopup");
+		nifty.showPopup(screen, MenuPopup.getId(), null);
 	}
 
 	public void CloseMenuPopup() {
@@ -95,13 +96,15 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 	}
 
 	public void OpenPopulationPopup() {
-		if (PopulationPopup == null) {
-			Game game = Main.app.getStateManager().getState(Game.class);
-			game.Pause(true);
+		ClosePopulationPopup();
+		Game game = Main.app.getStateManager().getState(Game.class);
+		game.Pause(true);
+		// prevent mouse wheel interfering with scrolling a menu
+		// TODO there may be a better way of doing this, e.g. nifty not passing the mousewheel event to the game.
+		disableMouseWheel();
 
-			PopulationPopup = nifty.createPopup("PopulationPopup");
-			nifty.showPopup(screen, PopulationPopup.getId(), null);
-		}
+		PopulationPopup = nifty.createPopup("PopulationPopup");
+		nifty.showPopup(screen, PopulationPopup.getId(), null);
 	}
 
 	public void ClosePopulationPopup() {
@@ -109,6 +112,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 			nifty.closePopup(PopulationPopup.getId());
 			PopulationPopup = null;
 		}
+		enableMouseWheel();
 	}
 
 	public boolean inputEvent(NiftyInputEvent inputEvent) {
@@ -152,4 +156,15 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 		int slice = camera.getSliceTop() - camera.getSliceBottom();
 		camera.SetSlice(High - value, High - value - slice);
 	}
+	
+	private void disableMouseWheel() {
+		GameCameraState camera = Main.app.getStateManager().getState(GameCameraState.class);
+		camera.setMouseWheelEnabled(false);
+	}
+	
+	private void enableMouseWheel() {
+		GameCameraState camera = Main.app.getStateManager().getState(GameCameraState.class);
+		camera.setMouseWheelEnabled(true);
+	}
+
 }

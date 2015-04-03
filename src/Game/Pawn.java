@@ -55,7 +55,8 @@ public class Pawn extends Actor implements Serializable {
 	// The 14 Basic Attributes
 	Dice AttributeDice;
 	byte[] BasicAttributes;
-	public String name;
+	private String firstName;
+	private String lastName;
 
 	public Pawn(short CreatureTypeID, int id, int Seed, MapCoordinate SpawnLocation) {
 		super(id, SpawnLocation);		
@@ -177,4 +178,25 @@ public class Pawn extends Actor implements Serializable {
 
 		return WakeTick;
 	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
+	public String getName() {
+		return this.firstName + ' ' + this.lastName;
+	}
+			
 }
