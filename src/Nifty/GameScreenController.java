@@ -18,6 +18,7 @@
 package Nifty;
 
 import Core.Main;
+import Game.Citizen;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
@@ -31,6 +32,8 @@ import de.lessvoid.nifty.NiftyEventSubscriber;
 
 import Game.Game;
 import Interface.GameCameraState;
+import de.lessvoid.nifty.NiftyIdCreator;
+import de.lessvoid.nifty.controls.dynamic.CustomControlCreator;
 
 /**
  *
@@ -42,12 +45,14 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 	Screen screen;
 	Element MenuPopup;
 	Element PopulationPopup;
+	Element windows;
 
 	public void bind(Nifty nifty, Screen screen) {
 		this.nifty = nifty;
 		this.screen = screen;
 		System.out.println("bind( " + screen.getScreenId() + ")");
 		screen.addKeyboardInputHandler(new KeyBoardMapping(), this);
+		windows = screen.findElementByName("windows");
 		//screen.addPreKeyboardInputHandler(new KeyBoardMapping(), this);
 	}
 
@@ -58,6 +63,10 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 	public void onEndScreen() {
 		MenuPopup = null;
 		PopulationPopup = null;
+		// close any open windows
+		for(Element tempElement : windows.getElements()){
+			nifty.removeElement(screen, tempElement);
+		}
 		System.out.println("onEndScreen");
 	}
 
@@ -165,6 +174,17 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 	private void enableMouseWheel() {
 		GameCameraState camera = Main.app.getStateManager().getState(GameCameraState.class);
 		camera.setMouseWheelEnabled(true);
+	}
+	
+	public void spawnCitizenWindow(Citizen citizen) {
+		String windowId = NiftyIdCreator.generate();
+		CustomControlCreator citizenWindowCreator = new CustomControlCreator(windowId, "CitizenWindow");
+		Element citizenWindow = citizenWindowCreator.create(nifty, screen, windows);
+		// the controller needs to be set on the panel rather than the control, maybe due to the hidden window-content panel
+		// there is something bugged about these ID's
+		Element citizenWindowPanel = citizenWindow.findElementByName(windowId + "#CitizenWindow#window-content#CitizenWindow#window-content#CitizenWindowPanel");
+		CitizenWindowController controller = citizenWindowPanel.getControl(CitizenWindowController.class);
+		controller.setCitizen(citizen);
 	}
 
 }

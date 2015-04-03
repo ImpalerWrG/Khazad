@@ -88,5 +88,7 @@
 				<panel childLayout="absolute" height="100%" id="BottomRightPanel" style="nifty-panel-simple" visibleToMouse="true" width="150px"/>
 			</panel>
 		</layer>
+		<layer id="windows" childLayout="absolute">
+		</layer>
 	</screen>
 </nifty>

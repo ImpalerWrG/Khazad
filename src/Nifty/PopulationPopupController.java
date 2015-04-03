@@ -9,7 +9,7 @@ import Core.Main;
 import Game.Citizen;
 import Game.Game;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.controls.Button;
+import de.lessvoid.nifty.NiftyIdCreator;
 import de.lessvoid.nifty.controls.Controller;
 import de.lessvoid.nifty.controls.ScrollPanel;
 import de.lessvoid.nifty.controls.dynamic.CustomControlCreator;
@@ -67,8 +67,7 @@ public class PopulationPopupController implements Controller {
 			
 
 	public void addChooseCitizenControl(Citizen citizen) {
-		String citizenId = String.valueOf(citizen.getID());
-		CustomControlCreator chooseCitizenControlCreator = new CustomControlCreator(citizenId, "ChooseCitizenControl");
+		CustomControlCreator chooseCitizenControlCreator = new CustomControlCreator(NiftyIdCreator.generate(), "ChooseCitizenControl");
 		Element chooseCitizenControl = chooseCitizenControlCreator.create(nifty, screen, citizenTableBody);
 		ChooseCitizenControlController controller = chooseCitizenControl.getControl(ChooseCitizenControlController.class);
 		controller.setCitizen(citizen);

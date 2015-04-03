@@ -25,11 +25,13 @@ public class ChooseCitizenControlController implements Controller {
 	Screen screen;
 	Element control;
 	Citizen citizen;
+	GameScreenController screenController;
 
 	public void bind(Nifty nifty, Screen screen, Element element, Properties parameter, Attributes controlDefinitionAttributes) {
 		this.nifty = nifty;
 		this.screen = screen;
 		this.control = element;
+		this.screenController = (GameScreenController)screen.getScreenController();
 	}
 	
 	public void setCitizen(Citizen citizen) {
@@ -63,13 +65,19 @@ public class ChooseCitizenControlController implements Controller {
 
 	public void openCitizen() {
 		System.out.println("Opening citizen " + citizen.getName());
+		screenController.ClosePopulationPopup();
+		screenController.spawnCitizenWindow(citizen);		
 	}
 
 	public void openJob() {
 		System.out.println("Opening job " + citizen.PrimaryJob.getName());
+		screenController.ClosePopulationPopup();
+		screenController.spawnCitizenWindow(citizen);		
 	}
 	
 	public void openTask() {
 		System.out.println("Opening task " + citizen.getTask().getName());
+		screenController.ClosePopulationPopup();
+		screenController.spawnCitizenWindow(citizen);		
 	}
 }

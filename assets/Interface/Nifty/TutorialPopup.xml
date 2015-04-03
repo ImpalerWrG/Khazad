@@ -4,7 +4,7 @@
 	<useControls filename="nifty-default-controls.xml"/>
 
 	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.TutorialPopupController" id="TutorialPopup">		
-		<interact onClick="EndTutorial()" onSecondaryClick="EndTutorial()" onTertiaryClick="EndTutorial()"/>		
+		<interact onClick="CloseTutorialPopup()" onSecondaryClick="CloseTutorialPopup()" onTertiaryClick="CloseTutorialPopup()"/>		
 		<panel align="center" childLayout="vertical" height="500px" id="MenuPanel" style="nifty-panel-simple" width="600px">
 			<panel align="center" childLayout="vertical" height="100%" width="100%">
 				<panel align="center" childLayout="vertical" height="90%" width="100%">
@@ -22,7 +22,7 @@
 				</panel>
 				<panel align="center" childLayout="vertical" height="100%" width="100%">
 					<control childLayout="center" height="10%" id="Quitbutton" label="Done" name="button" width="100%">
-						<interact onClick="EndTutorial()"/>
+						<interact onClick="CloseTutorialPopup()"/>
 					</control>
 				</panel>
 			</panel>

@@ -78,7 +78,7 @@ public class ShellScreenController implements ScreenController {
 		nifty.showPopup(nifty.getCurrentScreen(), this.TutorialPopup.getId(), null);
 	}
 
-	public void EndTutorial() {
+	public void CloseTutorialPopup() {
 		if (TutorialPopup != null) {
 			nifty.closePopup(this.TutorialPopup.getId());
 		}

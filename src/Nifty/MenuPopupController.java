@@ -37,11 +37,13 @@ public class MenuPopupController implements Controller {
 	Nifty nifty;
 	Screen screen;
 	Element popup;
+	GameScreenController screenController;
 
 	public void bind(Nifty nifty, Screen screen, Element element, Properties parameter, Attributes controlDefinitionAttributes) {
 		this.nifty = nifty;
 		this.screen = screen;
 		this.popup = element;
+		this.screenController = (GameScreenController)screen.getScreenController();
 	}
 
 	public void init(Properties parameter, Attributes controlDefinitionAttributes) {
@@ -74,7 +76,7 @@ public class MenuPopupController implements Controller {
 
 		Main.app.getRootNode().detachAllChildren();
 
-		nifty.closePopup(popup.getId());
+		screenController.CloseMenuPopup();
 		nifty.gotoScreen("StartScreen");
 	}
 
@@ -120,7 +122,7 @@ public class MenuPopupController implements Controller {
 			oos.writeObject(saveGameHeader);
 			oos.writeObject(game);
 			ShowSaveSuccess();
-			nifty.closePopup(popup.getId());
+			screenController.CloseMenuPopup();
 		} catch (Exception e) {
 			ShowSaveError(e.toString());
 			e.printStackTrace();

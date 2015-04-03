@@ -41,8 +41,4 @@ public class TutorialPopupController implements Controller {
 	public boolean inputEvent(NiftyInputEvent inputEvent) {
 		return false;
 	}
-	
-	public void CloseTutorialPopup() {
-		nifty.closePopup(popup.getId());
-	}
 }
