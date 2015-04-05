@@ -106,6 +106,12 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 
 		registerWithInput(app.getInputManager());
 	}
+	
+	@Override
+	public void cleanup() {
+		super.cleanup();
+		app.getInputManager().removeListener(this);
+	}
 
 	public boolean initializeGame(short X, short Y, String SeedString, String kingdomName) {
 		MasterSeed = SeedString.hashCode();
@@ -231,12 +237,6 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 
 	public void registerWithInput(InputManager inputManager) {
 		String[] inputs = {"Pause", "Faster", "Slower"};
-
-		inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_SPACE));
-		inputManager.addMapping("Faster", new KeyTrigger(KeyInput.KEY_ADD));
-		inputManager.addMapping("Faster", new KeyTrigger(KeyInput.KEY_EQUALS));
-		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_MINUS));
-		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_SUBTRACT));
 		inputManager.addListener(this, inputs);
 	}
 

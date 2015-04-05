@@ -369,37 +369,13 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		String[] inputs = {"LeftClick", "RightClick", "MiddleClick", "mouseDown", "mouseUp", "mouseLeft", "mouseRight", "ZoomIn", "ZoomOut", "ArrowUp", "ArrowDown", "RShift", "LShift", "PanUp", "PanDown", "PanRight", "PanLeft"};
 		this.InputStrings = inputs;
 
-		inputManager.addMapping("mouseDown", new MouseAxisTrigger(1, true));
-		inputManager.addMapping("mouseUp", new MouseAxisTrigger(1, false));
-		inputManager.addMapping("ZoomIn", new MouseAxisTrigger(2, true));
-		inputManager.addMapping("ZoomOut", new MouseAxisTrigger(2, false));
-		inputManager.addMapping("mouseLeft", new MouseAxisTrigger(0, true));
-		inputManager.addMapping("mouseRight", new MouseAxisTrigger(0, false));
-		inputManager.addMapping("LeftClick", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
 
-		inputManager.addMapping("RightClick", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
-		inputManager.addMapping("MiddleClick", new MouseButtonTrigger(MouseInput.BUTTON_MIDDLE));
-
-		inputManager.addMapping("ArrowUp", new KeyTrigger(KeyInput.KEY_UP));
-		inputManager.addMapping("ArrowUp", new KeyTrigger(KeyInput.KEY_E));
-		inputManager.addMapping("ArrowDown", new KeyTrigger(KeyInput.KEY_DOWN));
-		inputManager.addMapping("ArrowDown", new KeyTrigger(KeyInput.KEY_Q));
-
-		inputManager.addMapping("PanUp", new KeyTrigger(KeyInput.KEY_W));
-		inputManager.addMapping("PanLeft", new KeyTrigger(KeyInput.KEY_A));
-		inputManager.addMapping("PanDown", new KeyTrigger(KeyInput.KEY_S));
-		inputManager.addMapping("PanRight", new KeyTrigger(KeyInput.KEY_D));
-
-		inputManager.addMapping("RShift", new KeyTrigger(KeyInput.KEY_RSHIFT));
-		inputManager.addMapping("LShift", new KeyTrigger(KeyInput.KEY_LSHIFT));
 
 		inputManager.addListener(this, InputStrings);
 	}
 
 	public void unregisterInput(InputManager inputManager) {
-		for (String inputString : InputStrings) {
-			inputManager.deleteMapping(inputString);
-		}
+		inputManager.removeListener(this);
 	}
 
 	public void updateMousePosition() {

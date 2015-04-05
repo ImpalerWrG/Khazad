@@ -98,10 +98,6 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 
 	public void registerWithInput(InputManager inputManager) {
 		String[] inputs = {"PathingRenderToggle", "TerrainRenderToggle", "SunnyRenderToggle"};
-
-		inputManager.addMapping("PathingRenderToggle", new KeyTrigger(KeyInput.KEY_P));
-		inputManager.addMapping("TerrainRenderToggle", new KeyTrigger(KeyInput.KEY_T));
-		inputManager.addMapping("SunnyRenderToggle", new KeyTrigger(KeyInput.KEY_L));
 		inputManager.addListener(this, inputs);
 	}
 
