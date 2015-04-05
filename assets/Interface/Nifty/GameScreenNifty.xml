@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <nifty>
-	<useStyles filename="nifty-default-styles.xml"/>
+	<useStyles filename="Interface/Styles/nifty-khazad-styles.xml" /> 
 	<useControls filename="nifty-default-controls.xml"/>
 	
 	<screen controller="Nifty.GameScreenController" id="GameScreen">
@@ -10,22 +10,22 @@
 					<control childLayout="center" height="100%" id="button0" label="Menu" name="button" width="50px">
 						<interact onClick="OpenMenuPopup()"/>
 					</control>
-					<control childLayout="center" height="100%"id="KingdomButton" label="Kingdom" name="button" width="60px">
+					<control childLayout="center" height="100%"id="KingdomButton" label="Kingdom" name="button" width="60px" style="disabled-button" >
 						<interact onClick="OpenKingdomPopup()"/>
 					</control>
-					<control childLayout="center" height="100%" id="StocksButton" label="Stocks" name="button" width="50px">
+					<control childLayout="center" height="100%" id="StocksButton" label="Stocks" name="button" width="50px" style="disabled-button">
 						<interact onClick="OpenStocksPopup()"/>
 					</control>
-					<control childLayout="center" height="100%" id="PopulationButton" label="Population" name="button" width="70px">
+					<control childLayout="center" height="100%" id="PopulationButton" label="Population" name="button" width="70px" >
 						<interact onClick="OpenPopulationPopup()"/>
 					</control>
-					<control childLayout="center" height="100%" id="MilitaryButton" label="Military" name="button" width="60px">
+					<control childLayout="center" height="100%" id="MilitaryButton" label="Military" name="button" width="60px" style="disabled-button">
 						<interact onClick="OpenMilitaryPopup()"/>
 					</control>
-					<control childLayout="center" height="100%" id="EventsButton" label="Events" name="button" width="50px">
+					<control childLayout="center" height="100%" id="EventsButton" label="Events" name="button" width="50px" style="disabled-button">
 						<interact onClick="OpenEventsPopup()"/>
 					</control>
-					<control childLayout="center" height="100%" id="HelpButton" label="Help" name="button" width="50px">
+					<control childLayout="center" height="100%" id="HelpButton" label="Help" name="button" width="50px" style="disabled-button">
 						<interact onClick="OpenHelpPopup()"/>
 					</control>
 				</panel>
@@ -77,7 +77,7 @@
 								<control childLayout="center" height="100%" id="DiGButton" label="Dig" name="button" width="40px">
 									<interact onClick="Dig()"/>
 								</control>
-								<control childLayout="center" height="100%" id="BuildButton" label="Build" name="button" width="40px">
+								<control childLayout="center" height="100%" id="BuildButton" label="Build" name="button" width="40px" style="disabled-button">
 									<interact onClick="ButtonPress()"/>				
 								</control>
 							</panel>
