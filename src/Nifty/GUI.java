@@ -57,11 +57,4 @@ public class GUI extends AbstractAppState {
 
 		app.getGuiViewPort().addProcessor(niftyDisplay);
 	}
-
-	public void updateText(String target, String Message) {
-		Label label = nifty.getCurrentScreen().findNiftyControl(target, Label.class);
-		if (label != null) {
-			label.setText(Message);
-		}
-	}
 }

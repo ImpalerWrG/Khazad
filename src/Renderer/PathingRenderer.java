@@ -62,7 +62,7 @@ import jme3tools.optimize.GeometryBatchFactory;
  *
  * @author Impaler
  */
-public class PathingRenderer extends AbstractAppState implements ActionListener {
+public class PathingRenderer extends AbstractAppState {
 
 	SimpleApplication app = null;
 	AppStateManager state = null;
@@ -72,7 +72,7 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 	Node PathingNode;
 	HashMap<CellCoordinate, Node> cells;
 	HashMap<Integer, Material> ZoneMaterials;
-	boolean DisplayToggle = false;
+	private boolean DisplayToggle = false;
 	Vector3f[] vertices;
 
 	@Override
@@ -86,8 +86,7 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 
 		for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
 			vertices[dir.ordinal()] = new Vector3f(dir.getValueonAxis(Axis.AXIS_X) * MapCoordinate.HALFCUBE, dir.getValueonAxis(Axis.AXIS_Y) * MapCoordinate.HALFCUBE, dir.getValueonAxis(Axis.AXIS_Z) * MapCoordinate.HALFCUBE);
-		}
-		registerWithInput(app.getInputManager());
+		}		
 	}
 
 	public void attachToGame(Game TargetGame) {
@@ -98,21 +97,6 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 
 		this.Pathing = PathFinding.getSingleton();
 		ZoneMaterials = new HashMap<Integer, Material>();
-	}
-
-	public void onAction(String name, boolean keyPressed, float tpf) {
-		if (this.isEnabled()) {
-			if (name.equals("PathingRenderToggle") && keyPressed) {
-				DisplayToggle = !DisplayToggle;
-			}
-		}
-	}
-
-	public void registerWithInput(InputManager inputManager) {
-		String[] inputs = {"PathingRenderToggle"};
-
-		inputManager.addMapping("PathingRenderToggle", new KeyTrigger(KeyInput.KEY_P));
-		inputManager.addListener(this, inputs);
 	}
 
 	public Node buildRendering(Cell TargetCell) {
@@ -217,11 +201,25 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 	public void update(float tpf) {
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
-			if (DisplayToggle) {
+			if (getDisplayToggle()) {
 				rebuildDirtyCells(map.getCellCollection());
 			} else {
 				hideConnectivityRendering(map.getCellCollection());
 			}
 		}
+	}
+
+	/**
+	 * @return the DisplayToggle
+	 */
+	public boolean getDisplayToggle() {
+		return DisplayToggle;
+	}
+
+	/**
+	 * @param DisplayToggle the DisplayToggle to set
+	 */
+	public void setDisplayToggle(boolean DisplayToggle) {
+		this.DisplayToggle = DisplayToggle;
 	}
 }

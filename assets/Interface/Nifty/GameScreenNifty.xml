@@ -61,7 +61,7 @@
 							<interact onClick="SetSpeed(4096)"/>
 						</control>
 					</panel>
-					<control font="aurulent-sans-16.fnt" height="30px" id="Timelabel" name="label" text="The Time" textLineHeight="30px" textMinHeight="30px" width="100%"/>
+					<control font="aurulent-sans-16.fnt" height="30px" id="timeLabel" name="label" text="The Time" textLineHeight="30px" textMinHeight="30px" width="100%"/>
 				</panel>
 			</panel>
 			<panel align="right" childLayout="horizontal" id="MiddlePanel">
@@ -85,7 +85,20 @@
 					</panel>
 					<panel childLayout="absolute" height="40px" id="BottomMiddleBottomPanel" style="nifty-panel-simple" width="100%"/>
 				</panel>
-				<panel childLayout="absolute" height="100%" id="BottomRightPanel" style="nifty-panel-simple" visibleToMouse="true" width="150px"/>
+				<panel childLayout="vertical" height="100%" id="BottomRightPanel" style="nifty-panel-simple" visibleToMouse="true" width="150px" >
+					<panel childLayout="horizontal">
+						<text text="Pathing: " style="nifty-label" width="115px" align="left" textVAlign="center" textHAlign="left" color="#000" />
+						<control id="pathingCheckBox" name="checkbox" checked="false" />
+					</panel>   
+					<panel childLayout="horizontal">
+						<text text="Lit surfaces: " style="nifty-label" width="115px" align="left" textVAlign="center" textHAlign="left" color="#000" />
+						<control id="litSurfacesCheckBox" name="checkbox" checked="true" />
+					</panel>   
+					<panel childLayout="horizontal">
+						<text text="Terrain: " style="nifty-label" width="115px" align="left" textVAlign="center" textHAlign="left" color="#000" />
+						<control id="terrainCheckBox" name="checkbox" checked="true" />
+					</panel>   
+				</panel>
 			</panel>
 		</layer>
 		<layer id="windows" childLayout="absolute">

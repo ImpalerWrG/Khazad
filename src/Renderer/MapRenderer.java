@@ -246,9 +246,6 @@ public class MapRenderer extends AbstractAppState {
 		if (this.game != null) {
 			GameCameraState cam = state.getState(GameCameraState.class);
 			setSliceLevels(cam.getSliceTop(), cam.getSliceBottom());
-
-			GUI gui = state.getState(GUI.class);
-			gui.updateText("Timelabel", game.getTimeString());
 		}
 	}
 }

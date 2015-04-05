@@ -32,17 +32,25 @@ import de.lessvoid.nifty.NiftyEventSubscriber;
 
 import Game.Game;
 import Interface.GameCameraState;
+import Renderer.PathingRenderer;
+import Renderer.TerrainRenderer;
+import com.jme3.input.InputManager;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import de.lessvoid.nifty.NiftyIdCreator;
+import de.lessvoid.nifty.controls.CheckBox;
+import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
+import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.WindowClosedEvent;
 import de.lessvoid.nifty.controls.dynamic.CustomControlCreator;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  *
  * @author Impaler
  */
-public class GameScreenController implements ScreenController, KeyInputHandler {
+public class GameScreenController implements ScreenController, KeyInputHandler, ActionListener {
 
 	private Nifty nifty;
 	Screen screen;
@@ -50,6 +58,10 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 	Element PopulationPopup;
 	Element windows;
 	HashMap<String, Updatable> updatables = new HashMap<String, Updatable>();
+	CheckBox pathingCheckBox;
+	CheckBox litSurfacesCheckBox;
+	CheckBox terrainCheckBox;
+	Label timeLabel;
 
 	public void bind(Nifty nifty, Screen screen) {
 		this.nifty = nifty;
@@ -58,12 +70,39 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 		screen.addKeyboardInputHandler(new KeyBoardMapping(), this);
 		windows = screen.findElementByName("windows");
 		//screen.addPreKeyboardInputHandler(new KeyBoardMapping(), this);
+		pathingCheckBox = screen.findNiftyControl("pathingCheckBox", CheckBox.class);
+		litSurfacesCheckBox = screen.findNiftyControl("litSurfacesCheckBox", CheckBox.class);
+		terrainCheckBox = screen.findNiftyControl("terrainCheckBox", CheckBox.class);
+		timeLabel = screen.findNiftyControl("timeLabel", Label.class);
+		registerWithInput(Main.app.getInputManager());
 	}
 
 	public void onStartScreen() {
 		System.out.println("GameScreen onStartScreen");
 		Game game = Main.app.getStateManager().getState(Game.class);
 		game.setGameScreenController(this);
+		timeLabel.setText(game.getTimeString());
+	}
+
+	public void onAction(String name, boolean keyPressed, float tpf) {
+		if (keyPressed) {
+			if (name.equals("PathingRenderToggle")) {
+				pathingCheckBox.toggle();
+			} else if (name.equals("TerrainRenderToggle")) {
+				terrainCheckBox.toggle();
+			} else if (name.equals("SunnyRenderToggle")) {
+				litSurfacesCheckBox.toggle();
+			}
+		}
+	}
+
+	public void registerWithInput(InputManager inputManager) {
+		String[] inputs = {"PathingRenderToggle", "TerrainRenderToggle", "SunnyRenderToggle"};
+
+		inputManager.addMapping("PathingRenderToggle", new KeyTrigger(KeyInput.KEY_P));
+		inputManager.addMapping("TerrainRenderToggle", new KeyTrigger(KeyInput.KEY_T));
+		inputManager.addMapping("SunnyRenderToggle", new KeyTrigger(KeyInput.KEY_L));
+		inputManager.addListener(this, inputs);
 	}
 
 	public void onEndScreen() {
@@ -81,6 +120,8 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 		for (Updatable updatable : updatables.values()) {
 			updatable.update();
 		}
+		Game game = Main.app.getStateManager().getState(Game.class);
+		timeLabel.setText(game.getTimeString());
 	}
 
 	public boolean keyEvent(NiftyInputEvent event) {
@@ -205,5 +246,19 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 	public void onAnyWindowClose(final String id, final WindowClosedEvent event) {
 		System.out.println("Window Closed " + id);
 		updatables.remove(id);
+	}
+
+	@NiftyEventSubscriber(pattern = ".*")
+	public void checkBoxStateChange(final String id, final CheckBoxStateChangedEvent stateChanged) {
+		if (id.equals("pathingCheckBox")) {
+			PathingRenderer pathingRenderer = Main.app.getStateManager().getState(PathingRenderer.class);
+			pathingRenderer.setDisplayToggle(pathingCheckBox.isChecked());
+		} else if (id.equals("litSurfacesCheckBox")) {
+			TerrainRenderer terrainRenderer = Main.app.getStateManager().getState(TerrainRenderer.class);
+			terrainRenderer.setSunnyRendering(litSurfacesCheckBox.isChecked());
+		} else if (id.equals("terrainCheckBox")) {
+			TerrainRenderer terrainRenderer = Main.app.getStateManager().getState(TerrainRenderer.class);
+			terrainRenderer.setTerrainRendering(terrainCheckBox.isChecked());
+		}
 	}
 }
