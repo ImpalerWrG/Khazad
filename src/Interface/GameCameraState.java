@@ -74,6 +74,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	private AppStateManager state;
 	String[] InputStrings;
 	private CameraMode CurrentMode = CameraMode.NORMAL;
+	// Key state tracking Booleans
 	private boolean LeftDown;
 	private boolean RightDown;
 	private boolean MiddleDown;
@@ -84,6 +85,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	private boolean LeftwardPaning;
 	private boolean UpwardPaning;
 	private boolean DownwardPaning;
+
 	private int PanningSpeed = 3;
 	private float OldMouseX;
 	private float OldMouseY;
@@ -135,7 +137,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		registerWithInput(app.getInputManager());
 	}
 
-	protected void ConvertMouseMovementToVector() {
+	protected void convertMouseMovementToVector() {
 		Vector2f Mouse = app.getInputManager().getCursorPosition();
 
 		XChange = OldMouseX - Mouse.x;
@@ -145,7 +147,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		OldMouseY = Mouse.y;
 	}
 
-	protected Vector3f CreateTranslationVector(float X, float Y) {
+	protected Vector3f createTranslationVector(float X, float Y) {
 		Vector3f LookVector = MainCamera.TargetNode.getWorldTranslation().subtract(MainCamera.CamNode.getWorldTranslation());
 
 		LookVector.normalizeLocal();
@@ -197,11 +199,11 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			}
 
 			if (name.equals("ArrowUp") && keyPressed) {
-				ChangeViewLevel(1);
+				changeViewLevel(1);
 			}
 
 			if (name.equals("ArrowDown") && keyPressed) {
-				ChangeViewLevel(-1);
+				changeViewLevel(-1);
 			}
 
 			if (name.equals("PanRight"))
@@ -229,61 +231,61 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		}
 	}
 
-	private void AnalogNormal(String name, float value, float tpf) {
+	private void analogNormal(String name, float value, float tpf) {
 		updateMousePosition();
 
 		if (name.equals("mouseLeft")) {
 			if (MiddleDown) {
-				MainCamera.RotateCamera(value);
+				MainCamera.rotateCamera(value);
 			} else {
 				if (RightDown) {
-					MainCamera.TranslateCamera(CreateTranslationVector(XChange, YChange));
+					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("mouseRight")) {
 			if (MiddleDown) {
-				MainCamera.RotateCamera(-value);
+				MainCamera.rotateCamera(-value);
 			} else {
 				if (RightDown) {
-					MainCamera.TranslateCamera(CreateTranslationVector(XChange, YChange));
+					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("mouseUp")) {
 			if (MiddleDown) {
-				MainCamera.PitchCamera(value);
+				MainCamera.pitchCamera(value);
 			} else {
 				if (RightDown) {
-					MainCamera.TranslateCamera(CreateTranslationVector(XChange, YChange));
+					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("mouseDown")) {
 			if (MiddleDown) {
-				MainCamera.PitchCamera(-value);
+				MainCamera.pitchCamera(-value);
 			} else {
 				if (RightDown) {
-					MainCamera.TranslateCamera(CreateTranslationVector(XChange, YChange));
+					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("ZoomIn")) {
 			if (MiddleDown) {
-				ChangeViewLevel(-1);
+				changeViewLevel(-1);
 			} else if (mouseWheelEnabled) {
 				MainCamera.zoomCamera(value);
 			}
 		} else if (name.equals("ZoomOut")) {
 			if (MiddleDown) {
-				ChangeViewLevel(1);
+				changeViewLevel(1);
 			} else if (mouseWheelEnabled) {
 				MainCamera.zoomCamera(-value);
 			}
 		}
 	}
 
-	private void AnalogSelectingVolume(String name, float value, float tpf) {
+	private void analogSelectingVolume(String name, float value, float tpf) {
 
 		if (Shift) { // Z axis stretching
 			Vector3f LookVector = MainCamera.TargetNode.getWorldTranslation().subtract(MainCamera.CamNode.getWorldTranslation());
@@ -298,43 +300,43 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			Vector3f IntersectLocation = new Vector3f();
 			ray.intersectsWherePlane(SelectionPlane, IntersectLocation);
 
-			SelectionTerminus.Set((int) IntersectLocation.x, (int) IntersectLocation.y, (int) SelectionOrigin.Z);
-			Volume.SetSize(SelectionOrigin, SelectionTerminus);
+			SelectionTerminus.set((int) IntersectLocation.x, (int) IntersectLocation.y, (int) SelectionOrigin.Z);
+			Volume.setSize(SelectionOrigin, SelectionTerminus);
 		}
 
 		if (name.equals("mouseLeft")) {
 			if (MiddleDown) {
-				MainCamera.RotateCamera(value);
+				MainCamera.rotateCamera(value);
 			} else {
 				if (RightDown) {
-					MainCamera.TranslateCamera(CreateTranslationVector(XChange, YChange));
+					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
 					XChange = YChange = 0; // Consume the Mouse movement		
 				}
 			}
 		} else if (name.equals("mouseRight")) {
 			if (MiddleDown) {
-				MainCamera.RotateCamera(-value);
+				MainCamera.rotateCamera(-value);
 			} else {
 				if (RightDown) {
-					MainCamera.TranslateCamera(CreateTranslationVector(XChange, YChange));
+					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("mouseUp")) {
 			if (MiddleDown) {
-				MainCamera.PitchCamera(value);
+				MainCamera.pitchCamera(value);
 			} else {
 				if (RightDown) {
-					MainCamera.TranslateCamera(CreateTranslationVector(XChange, YChange));
+					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("mouseDown")) {
 			if (MiddleDown) {
-				MainCamera.PitchCamera(-value);
+				MainCamera.pitchCamera(-value);
 			} else {
 				if (RightDown) {
-					MainCamera.TranslateCamera(CreateTranslationVector(XChange, YChange));
+					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
@@ -347,18 +349,18 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	}
 
 	public void onAnalog(String name, float value, float tpf) {
-		ConvertMouseMovementToVector();
+		convertMouseMovementToVector();
 		switch (CurrentMode) {
 			case NORMAL:
-				AnalogNormal(name, value, tpf);
+				analogNormal(name, value, tpf);
 				break;
 
 			case SELECT_VOLUME:
-				AnalogNormal(name, value, tpf);
+				analogNormal(name, value, tpf);
 				break;
 
 			case SELECTING_VOLUME:
-				AnalogSelectingVolume(name, value, tpf);
+				analogSelectingVolume(name, value, tpf);
 				break;
 		}
 	}
@@ -425,7 +427,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			int x = Math.round(IntersectLocation.getX());
 			int y = Math.round(IntersectLocation.getY());
 			int z = Math.round(IntersectLocation.getZ());
-			MouseLocation.Set(x, y, z);
+			MouseLocation.set(x, y, z);
 		}
 	}
 
@@ -454,18 +456,18 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 	public void completeVolumeSelection() {
 		Game game = state.getState(Game.class);
-		game.VolumeSelectionCompleted(Volume);
+		game.volumeSelectionCompleted(Volume);
 		Volume = null;
 
 		setMode(CameraMode.SELECT_VOLUME);
 	}
 
-	public void SetViewSize(int max, int min) {
+	public void setViewSize(int max, int min) {
 		ViewMax = max;
 		ViewMin = min;
 	}
 
-	public void ChangeViewLevel(int Change) {
+	public void changeViewLevel(int Change) {
 		if (Change != 0) {
 			//if(SliceTop + Change > ViewMax) {
 			//	Change = SliceTop - ViewMax;
@@ -482,7 +484,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		}
 	}
 
-	public void SetSlice(int newTop, int newBottome) {
+	public void setSlice(int newTop, int newBottome) {
 		SliceTop = newTop;
 		if (SliceBottom >= SliceTop)
 			SliceBottom = SliceTop - 1;
@@ -494,7 +496,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		ViewLevels = SliceTop - SliceBottom;
 	}
 
-	public void SetSliceTop(int newValue) {
+	public void setSliceTop(int newValue) {
 		//TargetNode.move(0, 0, newValue - SliceTop);
 		//CamNode.move(0, 0, newValue - SliceTop);
 
@@ -505,7 +507,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		ViewLevels = SliceTop - SliceBottom;
 	}
 
-	public void SetSliceBottom(int newValue) {
+	public void setSliceBottom(int newValue) {
 		//TargetNode.move(0, 0, newValue - SliceBottom);
 		//CamNode.move(0, 0, newValue - SliceBottom);
 
@@ -527,16 +529,16 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	@Override
 	public void update(float tpf) {
 		if (RightwardPaning)
-			MainCamera.TranslateCamera(CreateTranslationVector(PanningSpeed, 0));
+			MainCamera.translateCamera(createTranslationVector(PanningSpeed, 0));
 
 		if (LeftwardPaning)
-			MainCamera.TranslateCamera(CreateTranslationVector(-PanningSpeed, 0));
+			MainCamera.translateCamera(createTranslationVector(-PanningSpeed, 0));
 
 		if (UpwardPaning)
-			MainCamera.TranslateCamera(CreateTranslationVector(0, PanningSpeed));
+			MainCamera.translateCamera(createTranslationVector(0, PanningSpeed));
 
 		if (DownwardPaning)
-			MainCamera.TranslateCamera(CreateTranslationVector(0, -PanningSpeed));
+			MainCamera.translateCamera(createTranslationVector(0, -PanningSpeed));
 	}
 
 	@Override

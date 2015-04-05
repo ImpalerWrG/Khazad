@@ -1,19 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package PathFinding;
 
@@ -31,27 +31,28 @@ import java.util.concurrent.Callable;
 
 /**
  * A simple uni-direction A* implementation, it utilizes it's own Node type
- * AStarNode which is optimized for this search methodology.  The data structures
+ * AStarNode which is optimized for this search methodology. The data structures
  * are highly optimized, PriorityQueue for Fringe and HashSet for visited Nodes
- * 
+ *
  * Pathing can be done for a limited number of nodes, or with a zero argument
- * searching will continue until their is either a complete path or the 
- * Fringe Queue is exhausted which indicates that no path is possible.  As all
- * attempts to path should have been proceeded by a connectivity check an 
+ * searching will continue until their is either a complete path or the
+ * Fringe Queue is exhausted which indicates that no path is possible. As all
+ * attempts to path should have been proceeded by a connectivity check an
  * exhaustion is probably indicative of a flaw in connectivity checking.
- * 
+ *
  * @author Impaler
  */
 public class AStar extends PathAlgorithm implements Callable, Serializable {
+
 	private static final long serialVersionUID = 1;
-	
+	// Core storage sturctures of AStar
 	PriorityQueue<AStarNode> FringeNodes;
 	HashSet<MapCoordinate> VisitedCoordinates;
-
+	// Values used in iteration loop
 	AStarNode CurrentNode;
 	boolean FringeExausted;
+	// Memory optimizing pool for Node supply
 	Pool<AStarNode> NodePool;
-	
 
 	AStar(GridInterface TargetSearchGraph) {
 		FringeNodes = new PriorityQueue<AStarNode>();
@@ -61,7 +62,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		FinalPath = null;
 	}
 
-	public void AssignPoll(Pool TargetPool) {
+	public void assignNodePool(Pool TargetPool) {
 		NodePool = TargetPool;
 		NodePool.setFactory(this);
 	}
@@ -77,13 +78,13 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		FringeNodes.clear();
 		VisitedCoordinates.clear();
 
-		AStarNode StartNode = NodePool.ProvideObject();
-		StartNode.Set(StartCoordinates, null, Direction.DIRECTION_NONE, 0, MainHeuristic.Estimate(StartCoords, GoalCoords), TieBreakerHeuristic.Estimate(StartCoords, GoalCoords));
+		AStarNode StartNode = NodePool.provide();
+		StartNode.set(StartCoordinates, null, Direction.DIRECTION_NONE, 0, MainHeuristic.estimate(StartCoords, GoalCoords), TieBreakerHeuristic.estimate(StartCoords, GoalCoords));
 
 		FringeNodes.add(StartNode);
 	}
 
-	boolean SearchPath(int NodesToExpand) {
+	boolean searchPath(int NodesToExpand) {
 		if (FringeExausted) {
 			return false; // No more searching can be done
 		}
@@ -91,20 +92,20 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		if (FinalPath == null) {
 			boolean GoalFound;
 			if (NodesToExpand > 0) { // Search for a limited time
-				for(int RemainingNodes = NodesToExpand; RemainingNodes > 0; RemainingNodes--) {
+				for (int RemainingNodes = NodesToExpand; RemainingNodes > 0; RemainingNodes--) {
 					if (FringeNodes.size() == 0) {
 						FringeExausted = true; // Path could not be found
 						return false;
 					}
 
-					if (ExpandNode()) {
+					if (expandNode()) {
 						return true; // Path found, skip to finish
 					}
 				}
 				return false; // Path not yet found
 			} else { // Search untill Path is found or Fringe is exhausted
 				while (FringeNodes.size() != 0) {
-					if (ExpandNode()) {
+					if (expandNode()) {
 						return true;
 					}
 				}
@@ -115,30 +116,30 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		return true;  // Final Path already found don't do any more searching
 	}
 
-	MapPath FindPath(int NodesToExpand) {
+	MapPath findPath(int NodesToExpand) {
 		if (FringeExausted) {
 			return null; // Fringe Exhastion, don't return a useless path
 		}
 
-		boolean FinalPathFound = SearchPath(NodesToExpand);
+		boolean FinalPathFound = searchPath(NodesToExpand);
 
 		if (FinalPath == null) {
-			MapPath CurrentPath = GenerateVectorPath();
+			MapPath CurrentPath = generateVectorPath();
 
 			if (FinalPathFound)
 				FinalPath = CurrentPath;
-			
-			NodePool.Release();	 // Nodes can be released now that a final path has been found
+
+			NodePool.release();	 // Nodes can be released now that a final path has been found
 			return CurrentPath;
 		}
-		NodePool.Release();
+		NodePool.release();
 		return FinalPath;
 	}
 
-	boolean ExpandNode() {
+	boolean expandNode() {
 		CurrentNode = FringeNodes.poll();
 		MapCoordinate TestCoordinates = CurrentNode.LocationCoordinates;
-		
+
 		if (VisitedCoordinates.contains(TestCoordinates))
 			return false;
 
@@ -161,8 +162,8 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 				float EdgeCost = SearchGraph.getEdgeCost(TestCoordinates, DirectionType);
 				GraphReads++;
 
-				AStarNode NewNode = NodePool.ProvideObject();
-				NewNode.Set(NeiboringCoordinates, CurrentNode, DirectionType, CurrentNode.PathLengthFromStart + EdgeCost, MainHeuristic.Estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic.Estimate(NeiboringCoordinates, GoalCoordinates));
+				AStarNode NewNode = NodePool.provide();
+				NewNode.set(NeiboringCoordinates, CurrentNode, DirectionType, CurrentNode.PathLengthFromStart + EdgeCost, MainHeuristic.estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic.estimate(NeiboringCoordinates, GoalCoordinates));
 
 				FringeNodes.add(NewNode);
 			}
@@ -171,7 +172,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		return false; // Goal was not found
 	}
 
-	CoordinatePath GenerateFullPath() {
+	CoordinatePath generateFullPath() {
 		ExpandedNodes = VisitedCoordinates.size();
 
 		float PathLength = CurrentNode.PathLengthFromStart;
@@ -187,7 +188,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		return new CoordinatePath(PathLength, Course);
 	}
 
-	VectorPath GenerateVectorPath() {
+	VectorPath generateVectorPath() {
 		ExpandedNodes = VisitedCoordinates.size();
 
 		float PathLength = CurrentNode.PathLengthFromStart;
@@ -206,8 +207,8 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 	AStarNode provide() {
 		return new AStarNode();
 	}
-	
+
 	public MapPath call() {
-		return FindPath(0);
+		return findPath(0);
 	}
 }

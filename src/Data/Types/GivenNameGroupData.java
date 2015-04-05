@@ -40,7 +40,7 @@ public class GivenNameGroupData extends DataBase implements Serializable {
 	}
 
 	@Override
-	public boolean LoadData(Element GivenNameEntry, DataLibrary Library) {
+	public boolean loadData(Element GivenNameEntry, DataLibrary Library) {
 		Element Name = GivenNameEntry.getFirstChildElement("Name", GivenNameEntry.getNamespaceURI());
 		group = Name.getAttributeValue("Label");
 
@@ -57,11 +57,11 @@ public class GivenNameGroupData extends DataBase implements Serializable {
 		for (int i = 0; i < elementSuffixesChildren.size(); i++) {
 			suffixes[i] = elementSuffixesChildren.get(i).getAttributeValue("text");
 		}
-		Library.IndexEntry(getGroup() + "_" + getGender(), this);
+		Library.indexEntry(getGroup() + "_" + getGender(), this);
 		return false;
 	}
 	
-	public boolean PostProcessing() {
+	public boolean postProcessing() {
 		return true;
 	}
 

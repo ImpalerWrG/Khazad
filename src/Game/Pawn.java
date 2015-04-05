@@ -1,19 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Game;
 
@@ -28,26 +28,27 @@ import Map.MapCoordinate;
 import PathFinding.MovementModality;
 import PathFinding.Navigator;
 import PathFinding.PathFinding;
+
 import java.io.Serializable;
 
 /**
- * A moving creature, derived from Actor but with the addition of a Navigator object 
+ * A moving creature, derived from Actor but with the addition of a Navigator object
  * linking it to the Pathfinding engine and a set of RPG style attributes.
- * 
+ *
  * @author Impaler
  */
 public class Pawn extends Actor implements Serializable {
+
 	private static final long serialVersionUID = 1;
-
 	short CreatureTypeID;
-	
-	boolean Moving;
-	Direction CurrentMovementDirection;
-
+	// Action extension of 
 	long ActionDuration = 1;
 	long ActionStarted;
-	
+	// Movement and Pathfinding
 	Navigator PathNavigator;
+	boolean Moving;
+	Direction CurrentMovementDirection;
+	// Job/Task Managment
 	private Task CurrentTask;
 	public Job PrimaryJob;
 	public Job BreakJob;
@@ -60,7 +61,7 @@ public class Pawn extends Actor implements Serializable {
 	private Gender gender;
 
 	public Pawn(short CreatureTypeID, int id, int Seed, MapCoordinate SpawnLocation) {
-		super(id, SpawnLocation);		
+		super(id, SpawnLocation);
 
 		this.CreatureTypeID = CreatureTypeID;
 		Moving = false;
@@ -68,7 +69,7 @@ public class Pawn extends Actor implements Serializable {
 		CurrentMovementDirection = Direction.DIRECTION_NONE;
 
 		AttributeDice = new Dice();
-		AttributeDice.Seed(id ^ Seed);
+		AttributeDice.seed(id ^ Seed);
 
 		DataManager Data = DataManager.getDataManager();
 		CreatureData CreatureDataEntry = Data.getCreatureData(CreatureTypeID);
@@ -76,11 +77,11 @@ public class Pawn extends Actor implements Serializable {
 
 		BasicAttributes = new byte[Data.getNumBaseAttributes()];
 		for (int i = 0; i < BasicAttributes.length; i++) {
-			BasicAttributes[i] = (byte) (AttributeDice.Roll(1, 4) + AttributeDice.Roll(1, 4)); 
+			BasicAttributes[i] = (byte) (AttributeDice.roll(1, 4) + AttributeDice.roll(1, 4));
 			BasicAttributes[i] += CreatureDataEntry.AttributeModifierVales[i];  //Size class adjustment
 			BasicAttributes[i] += CreatureSizeDataEntry.AttributeModifierVales[i];  //Size class adjustment
 		}
-		if (AttributeDice.Roll(1,2) == 1) {
+		if (AttributeDice.roll(1,2) == 1) {
 			gender = Gender.GENDER_MALE;
 		} else {
 			gender = Gender.GENDER_FEMALE;
@@ -91,7 +92,7 @@ public class Pawn extends Actor implements Serializable {
 		return PathNavigator;
 	}
 
-	public long AttemptMove(Direction MovementDirection) {
+	public long attemptMove(Direction MovementDirection) {
 		float EdgeCost = PathFinding.getSingleton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getMovementModality());
 		final int speedIndex = DataManager.getDataManager().getLabelIndex("BASIC_ATTRIBUTE_SPEED");
 		if (EdgeCost != -1) {
@@ -101,7 +102,7 @@ public class Pawn extends Actor implements Serializable {
 		}
 	}
 
-	public long UpdatePosition() {
+	public long updatePosition() {
 		setLocation(new MapCoordinate(LocationCoordinates, CurrentMovementDirection));
 		CurrentMovementDirection = PathNavigator.getNextStep();
 
@@ -109,7 +110,7 @@ public class Pawn extends Actor implements Serializable {
 			CurrentTask.Completed = true;
 			return 1;
 		} else {
-			return AttemptMove(CurrentMovementDirection);
+			return attemptMove(CurrentMovementDirection);
 		}
 	}
 
@@ -123,7 +124,9 @@ public class Pawn extends Actor implements Serializable {
 		PathNavigator.setLocation(NewLocation);
 	}
 
-	public Task getTask() {return CurrentTask; }
+	public Task getTask() {
+		return CurrentTask;
+	}
 
 	public void setTask(Task NewTask) {
 		if (CurrentTask != NewTask) {
@@ -151,35 +154,35 @@ public class Pawn extends Actor implements Serializable {
 		return BasicAttributes[AttributeID];
 	}
 
-	public Task FindTask() {		
+	public Task findTask() {
 		PrimaryJob = new WanderJob();
 		CurrentTask = PrimaryJob.nextTask(this);
 		return CurrentTask;
 	}
 
 	@Override
-	long Wake(long CurrentTick) {
+	long wake(long CurrentTick) {
 		//super.Wake(CurrentTick);
 		if (CurrentTask != null) {
 			if (CurrentTask.Completed) {
-				CurrentTask.Finalize(CurrentTick, this);
+				CurrentTask.finalizeTask(CurrentTick, this);
 				// check for other needs, leave current Job if nessary
 				setTask(CurrentTask.ParentJob.nextTask(this));
 			}
 
 			if (!CurrentTask.Begun) {
-				ActionDuration = CurrentTask.Begin(this);
+				ActionDuration = CurrentTask.beginTask(this);
 			} else {
-				ActionDuration = CurrentTask.Continue(this);
+				ActionDuration = CurrentTask.continueTask(this);
 				if (CurrentTask.Completed) {
-					CurrentTask.Finalize(CurrentTick, this);
+					CurrentTask.finalizeTask(CurrentTick, this);
 					setTask(CurrentTask.ParentJob.nextTask(this));
 				}
 			}
 			ActionStarted = CurrentTick;
 			WakeTick = CurrentTick + ActionDuration;
 		} else {
-			WakeTick = CurrentTick + 1;		
+			WakeTick = CurrentTick + 1;
 		}
 
 		return WakeTick;

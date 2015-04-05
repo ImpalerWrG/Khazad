@@ -1,19 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Data.Types;
 
@@ -30,23 +30,21 @@ import nu.xom.Elements;
  * @author Impaler
  */
 public class MaterialClassData extends DataBase implements Serializable {
-	private static final long serialVersionUID = 1;
 
+	private static final long serialVersionUID = 1;
 	transient String DefaultMaterialLabel;
 	int DefaultMaterialID;
-
 	transient String[] SurfaceTypeLabels;
 	transient String[] SurfaceTextureLabels;
 	short[] SurfaceTypeIDs;
 	short[] SufaceTextueIDs;
 
 	public MaterialClassData() {
-		
 	}
 
-	public boolean LoadData(Element MaterialClassEntry, DataLibrary Library) {
+	public boolean loadData(Element MaterialClassEntry, DataLibrary Library) {
 		Element Name = MaterialClassEntry.getFirstChildElement("Name", MaterialClassEntry.getNamespaceURI());
-		Library.IndexEntry(Name.getAttributeValue("Label"), this);
+		Library.indexEntry(Name.getAttributeValue("Label"), this);
 
 		Element DefaultMaterial = MaterialClassEntry.getFirstChildElement("DefaultMaterial", MaterialClassEntry.getNamespaceURI());
 		if (DefaultMaterial != null) {
@@ -54,7 +52,7 @@ public class MaterialClassData extends DataBase implements Serializable {
 		}
 
 		Element SurfaceTexturesElement = MaterialClassEntry.getFirstChildElement("DefaultSurfaceTextures", MaterialClassEntry.getNamespaceURI());
-		if (SurfaceTexturesElement != null){
+		if (SurfaceTexturesElement != null) {
 			Elements SurfaceTextures = SurfaceTexturesElement.getChildElements();
 
 			SurfaceTypeLabels = new String[SurfaceTextures.size()];
@@ -70,8 +68,8 @@ public class MaterialClassData extends DataBase implements Serializable {
 		}
 		return true;
 	}
-	
-	public boolean PostProcessing() {	
+
+	public boolean postProcessing() {
 		DataManager Data = DataManager.getDataManager();
 		if (SurfaceTypeLabels != null) {
 			for (int i = 0; i < SurfaceTypeLabels.length; i++) {
@@ -83,10 +81,10 @@ public class MaterialClassData extends DataBase implements Serializable {
 				SufaceTextueIDs[i] = Data.getLabelIndex(SurfaceTextureLabels[i]);
 			}
 		}
-		DefaultMaterialID = Data.getLabelIndex(DefaultMaterialLabel);	
+		DefaultMaterialID = Data.getLabelIndex(DefaultMaterialLabel);
 		return true;
 	}
-	
+
 	public short getTexture(short SurfaceType) {
 		for (int i = 0; i < SurfaceTypeIDs.length; i++) {
 			if (SurfaceTypeIDs[i] == SurfaceType) {

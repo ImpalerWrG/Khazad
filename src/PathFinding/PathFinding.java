@@ -1,19 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package PathFinding;
 
@@ -38,42 +38,35 @@ import com.jme3.app.state.AbstractAppState;
 import java.io.Serializable;
 
 /**
- * Master Controller for all pathfinding operations.  All pathfinding is done on
- * abstractions of the Map structure called Grids rather then the real map, these 
- * abstractions are specialized for a specific Movement Modality.  Map changes 
+ * Master Controller for all pathfinding operations. All pathfinding is done on
+ * abstractions of the Map structure called Grids rather then the real map, these
+ * abstractions are specialized for a specific Movement Modality. Map changes
  * have to be pushed here to keep the Grids accurate.
  *
  * Navagator objects which are embeded in moving entites which then
- * request paths from PathFinder.  Each incoming Path request is matched to an
+ * request paths from PathFinder. Each incoming Path request is matched to an
  * appropriate Grid instance and then an appropriate PathAlgorim instance is
  * created, given the Grid refrence and submitted to the threadPool.
- * 
+ *
  * @author Impaler
  */
 public class PathFinding extends AbstractAppState {
+
 	private static final long serialVersionUID = 1;
-	
 	static PathFinding Singleton = null;
-	
 	Clock PathingTimer;
-
-    //AStar AstarImplementation;
-    PathAlgorithm HeriarchialAstarImplementation;
-
-    //KhazadGrid MapGrid;
+	//AStar AstarImplementation;
+	PathAlgorithm HeriarchialAstarImplementation;
+	//KhazadGrid MapGrid;
 	ConcurrentHashMap<MovementModality, GridInterface> Grids;
-
-    Heuristic ManhattenHeuristic;
-    Heuristic EuclideanHeuristic;
-    Heuristic MaxDimensionHeuristic;
-    Heuristic DijkstraHeuristic;
-    Heuristic DiagonalHeuristic;
-
+	Heuristic ManhattenHeuristic;
+	Heuristic EuclideanHeuristic;
+	Heuristic MaxDimensionHeuristic;
+	Heuristic DijkstraHeuristic;
+	Heuristic DiagonalHeuristic;
 	ArrayList<Pool> PoolList;
-	
 	ExecutorService Executor;
-	
-    public PathTester Tester;
+	public PathTester Tester;
 
 	private PathFinding() {
 		ManhattenHeuristic = new Heuristic.Manhatten();
@@ -87,7 +80,7 @@ public class PathFinding extends AbstractAppState {
 	}
 
 	@Override
-    public void initialize(AppStateManager stateManager, Application app) {
+	public void initialize(AppStateManager stateManager, Application app) {
 		super.initialize(stateManager, app);
 		Main core = (Main) app;
 		Executor = core.getThreadPool();
@@ -96,51 +89,51 @@ public class PathFinding extends AbstractAppState {
 	public static PathFinding getSingleton() {
 		if (Singleton == null)
 			Singleton = new PathFinding();
-		
+
 		return Singleton;
 	}
 
 	Pool ProvidePool() {  // Simple but effective
-        for (Pool TargetPool: PoolList) {
-            if (!TargetPool.isInUse()) {
-                TargetPool.setInUse(true);
-                return TargetPool;
-            }
-        }
+		for (Pool TargetPool : PoolList) {
+			if (!TargetPool.isInUse()) {
+				TargetPool.setInUse(true);
+				return TargetPool;
+			}
+		}
 
-        // No Pools available so Create a new one
-        Pool NewPool = new Pool();
+		// No Pools available so Create a new one
+		Pool NewPool = new Pool();
 		NewPool.setInUse(true);
-        PoolList.add(NewPool);
-        return NewPool;
-    }
+		PoolList.add(NewPool);
+		return NewPool;
+	}
 
-	public void CreateMapAbstraction(GameMap TargetMap) {
+	public void createMapAbstraction(GameMap TargetMap) {
 		MovementModality BasicPawn = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
 		KhazadGrid MainGrid = new KhazadGrid(TargetMap, BasicPawn);
 		Grids.put(BasicPawn, MainGrid);
 
 		Tester = new PathTester();
-		Tester.Initialize(this);		
+		Tester.Initialize(this);
 	}
 
-	public void EditMapAbstractions(MapCoordinate[] Coordinates) {
+	public void editMapAbstractions(MapCoordinate[] Coordinates) {
 		for (GridInterface Grid : Grids.values()) {
-			Grid.DirtyMapCoordinate(Coordinates.clone());
+			Grid.dirtyMapCoordinate(Coordinates.clone());
 		}
 	}
 
-	void DeleteMapAbstractions() {
+	void deleteMapAbstractions() {
 		Grids = null;
 	}
 
-	public Future FindFuturePath(MovementModality MovementType, MapCoordinate StartCoords, MapCoordinate GoalCoords) {
+	public Future findFuturePath(MovementModality MovementType, MapCoordinate StartCoords, MapCoordinate GoalCoords) {
 		GridInterface TargetGrid = getModalityGrid(MovementType);
 		if (TargetGrid != null) {
-			if (TargetGrid.contains(StartCoords) && TargetGrid.contains(GoalCoords)) {	
-				if (isPathPossible(MovementType, StartCoords, GoalCoords)) {	
+			if (TargetGrid.contains(StartCoords) && TargetGrid.contains(GoalCoords)) {
+				if (isPathPossible(MovementType, StartCoords, GoalCoords)) {
 					AStar PathTask = new AStar(TargetGrid);
-					PathTask.AssignPoll(ProvidePool());
+					PathTask.assignNodePool(ProvidePool());
 					PathTask.setModality(MovementType);
 					PathTask.setHeuristics(ManhattenHeuristic, EuclideanHeuristic);
 					PathTask.setEndPoints(StartCoords, GoalCoords);
@@ -149,24 +142,24 @@ public class PathFinding extends AbstractAppState {
 				}
 			}
 		}
-		
+
 		return null;
 	}
 
-	public MapPath ProfilePath(MovementModality MovementType, MapCoordinate StartCoords, MapCoordinate GoalCoords, PathTester.Profile TargetProfile) {
+	public MapPath profilePath(MovementModality MovementType, MapCoordinate StartCoords, MapCoordinate GoalCoords, PathTester.Profile TargetProfile) {
 		GridInterface TargetGrid = getModalityGrid(MovementType);
 		if (TargetGrid != null) {
-			if (TargetGrid.contains(StartCoords) && TargetGrid.contains(GoalCoords)) {	
-				if (isPathPossible(MovementType, StartCoords, GoalCoords)) {	
-					PathingTimer.Start();
-						AStar PathTask = new AStar(TargetGrid);
-						PathTask.AssignPoll(ProvidePool());
-						PathTask.setModality(MovementType);
-						PathTask.setHeuristics(ManhattenHeuristic, EuclideanHeuristic);
-						PathTask.setEndPoints(StartCoords, GoalCoords);
-						MapPath FoundPath = PathTask.call();
+			if (TargetGrid.contains(StartCoords) && TargetGrid.contains(GoalCoords)) {
+				if (isPathPossible(MovementType, StartCoords, GoalCoords)) {
+					PathingTimer.start();
+					AStar PathTask = new AStar(TargetGrid);
+					PathTask.assignNodePool(ProvidePool());
+					PathTask.setModality(MovementType);
+					PathTask.setHeuristics(ManhattenHeuristic, EuclideanHeuristic);
+					PathTask.setEndPoints(StartCoords, GoalCoords);
+					MapPath FoundPath = PathTask.call();
 
-					TargetProfile.PathTimeCost = PathingTimer.Stop();
+					TargetProfile.PathTimeCost = PathingTimer.stop();
 
 					TargetProfile.ProfiledPath = FoundPath;
 
@@ -205,7 +198,7 @@ public class PathFinding extends AbstractAppState {
 	GridInterface getModalityGrid(MovementModality MovementType) {
 		return Grids.get(MovementType);
 	}
-	
+
 	public BitSet getDirectionFlags(MapCoordinate Coordinates, MovementModality Modality) {
 		GridInterface TargetGrid = getModalityGrid(Modality);
 		if (TargetGrid != null) {
@@ -229,13 +222,12 @@ public class PathFinding extends AbstractAppState {
 		}
 		return -1;
 	}
-	
-	public int getConnectivityZone(MapCoordinate TestCoords, MovementModality Modality)  {
+
+	public int getConnectivityZone(MapCoordinate TestCoords, MovementModality Modality) {
 		GridInterface TargetGrid = getModalityGrid(Modality);
 		if (TargetGrid != null) {
 			return TargetGrid.getConnectivityZone(TestCoords);
-		}		
+		}
 		return 0;
 	}
 }
-

@@ -47,14 +47,13 @@ public class SetupScreenController implements ScreenController {
 
 	public void onEndScreen() {
 	}
-	
-	public void CancelSetup() {
+
+	public void cancelSetup() {
 		//nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).setText("");
 		nifty.gotoScreen("StartScreen");
 	}
 
-
-	public void BeginGame() {
+	public void beginGame() {
 		String kingdomName = nifty.getCurrentScreen().findNiftyControl("KingdomNameTextField", TextField.class).getDisplayedText();
 		if (kingdomName.length() == 0) {
 			ErrorPopupController.ShowErrorMessage(nifty, "Problem starting game", "Please enter a kingdom name");
@@ -64,7 +63,7 @@ public class SetupScreenController implements ScreenController {
 
 		Game game = new Game();
 		Main.app.getStateManager().attach(game);
-		game.InitializeGame((short) 10, (short) 10, Seed, kingdomName);
+		game.initializeGame((short) 10, (short) 10, Seed, kingdomName);
 
 		Main.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
 		Main.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
@@ -73,13 +72,13 @@ public class SetupScreenController implements ScreenController {
 
 		GameCameraState cam = new GameCameraState();
 		Main.app.getStateManager().attach(cam);
-		cam.SetViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
-		cam.SetSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
+		cam.setViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
+		cam.setSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
 
 		// PATHING
 		PathFinding Pather = PathFinding.getSingleton();
 		Pather.initialize(Main.app.getStateManager(), Main.app);
-		Pather.CreateMapAbstraction(game.getMap());
+		Pather.createMapAbstraction(game.getMap());
 		//Pather.AllocateThreadPool(ExecutionThreadpool);
 		Main.app.getStateManager().attach(Pather);
 

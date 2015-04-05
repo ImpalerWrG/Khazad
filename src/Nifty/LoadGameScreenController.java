@@ -69,7 +69,7 @@ public class LoadGameScreenController implements ScreenController {
 	public void onEndScreen() {
 	}
 
-	public void CancelLoadGame() {
+	public void cancelLoadGame() {
 		nifty.gotoScreen("StartScreen");
 	}
 
@@ -123,11 +123,11 @@ public class LoadGameScreenController implements ScreenController {
 		List<SaveGameHeader> selection = event.getSelection();
 		if (selection.size() == 1) {
 			SelectedSaveGameHeader = selection.get(0);
-			DisplaySaveGameHeader(SelectedSaveGameHeader);
+			displaySaveGameHeader(SelectedSaveGameHeader);
 		}
 	}
 
-	private void DisplaySaveGameHeader(SaveGameHeader saveGameHeader) {
+	private void displaySaveGameHeader(SaveGameHeader saveGameHeader) {
 		DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.LONG);
 		SimpleDateFormat timeFormatter = new SimpleDateFormat("h:mm a");
 		String lastPlayed = dateFormatter.format(saveGameHeader.lastPlayed) + " " + timeFormatter.format(saveGameHeader.lastPlayed);
@@ -213,8 +213,8 @@ public class LoadGameScreenController implements ScreenController {
 
 			Main.app.getStateManager()
 					.attach(cam);
-			cam.SetViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
-			cam.SetSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
+			cam.setViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
+			cam.setSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
 
 			JobManager jobs = game.getSettlement().getJobManager();
 			// PATHING
@@ -222,7 +222,7 @@ public class LoadGameScreenController implements ScreenController {
 
 			Pather.initialize(
 					Main.app.getStateManager(), Main.app);
-			Pather.CreateMapAbstraction(game.getMap());
+			Pather.createMapAbstraction(game.getMap());
 			//Pather.AllocateThreadPool(ExecutionThreadpool);
 			Main.app.getStateManager()
 					.attach(Pather);

@@ -34,8 +34,8 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class Weather extends Temporal implements Serializable {
-	private static final long serialVersionUID = 1;
 
+	private static final long serialVersionUID = 1;
 	transient DirectionalLight Sun;
 	Quaternion Rotation;
 	Vector3f SunVec;
@@ -57,10 +57,10 @@ public class Weather extends Temporal implements Serializable {
 		ois.defaultReadObject();
 		// fix transients
 		Sun = new DirectionalLight();
-		UpdateSun();
+		updateSun();
 	}
 
-	public void AttatchSun(Node TerrainNode) {
+	public void attatchSun(Node TerrainNode) {
 		SunVec.set(0, 0, -1);
 		SunVec.normalizeLocal();
 		Sun.setDirection(SunVec);
@@ -68,18 +68,18 @@ public class Weather extends Temporal implements Serializable {
 		TerrainNode.addLight(Sun);
 	}
 
-	public long Wake(long CurrentTick) {
+	public long wake(long CurrentTick) {
 		if (CurrentTick >= WakeTick) {
 			// Day Rotation
 			SunVec = Rotation.mult(SunVec);
-			UpdateSun();
+			updateSun();
 
 			WakeTick = CurrentTick + TICKS_PER_MINUTE;
 		}
 		return WakeTick;
 	}
 
-	private void UpdateSun() {
+	private void updateSun() {
 		Sun.setDirection(SunVec);
 		float Z = SunVec.z;
 		if (Z > 0) {

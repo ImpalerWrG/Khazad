@@ -17,13 +17,7 @@
 
 package Job;
 
-import static Job.TaskType.TASK_DIG;
-import static Job.TaskType.TASK_DROP_OFF;
-import static Job.TaskType.TASK_GOTO;
-import static Job.TaskType.TASK_HAUL;
-import static Job.TaskType.TASK_IDLE;
-import static Job.TaskType.TASK_PICK_UP;
-import static Job.TaskType.TASK_SLEEP;
+
 import Map.GameMap;
 import Map.MapCoordinate;
 import Map.Direction;
@@ -39,6 +33,19 @@ import java.io.Serializable;
  * @author Impaler
  */
 public class Task implements Serializable {
+
+	public enum TaskType {
+
+		TASK_IDLE,
+		TASK_TRAPPED,
+		TASK_SLEEP,
+		TASK_PICK_UP,
+		TASK_HAUL,
+		TASK_GOTO,
+		TASK_DROP_OFF,
+		TASK_DIG,
+		TASK_LOITER
+	}
 
 	private static final long serialVersionUID = 1;
 	public final Job ParentJob;
@@ -57,8 +64,12 @@ public class Task implements Serializable {
 		Completed = false;
 	}
 
-	public long Begin(Pawn Host) {
+	public long beginTask(Pawn Host) {
 		Direction MovementDirection;
+				
+				
+				
+				
 		switch (type) {
 
 			case TASK_IDLE:
@@ -71,12 +82,12 @@ public class Task implements Serializable {
 				break;
 			case TASK_GOTO:
 				Host.getNavigator().setBehaviorMode(Navigator.MovementBehavior.PATH_BEHAVIOR_ROUTE_TO_LOCATION);
-				Host.getNavigator().ChangeDestination(worklocation);
+				Host.getNavigator().changeDestination(worklocation);
 				MovementDirection = Host.getNavigator().getNextStep();
 				Host.setMovementDiretion(MovementDirection);
 				Begun = true;
 
-				return Host.AttemptMove(MovementDirection);
+				return Host.attemptMove(MovementDirection);
 
 			case TASK_DROP_OFF:
 				break;
@@ -90,12 +101,12 @@ public class Task implements Serializable {
 				Host.setMovementDiretion(MovementDirection);
 				Begun = true;
 
-				return Host.AttemptMove(MovementDirection);
+				return Host.attemptMove(MovementDirection);
 		}
 		return 1;
 	}
 
-	public long Continue(Pawn Host) {
+	public long continueTask(Pawn Host) {
 		switch (type) {
 
 			case TASK_IDLE:
@@ -107,25 +118,25 @@ public class Task implements Serializable {
 			case TASK_HAUL:
 				break;
 			case TASK_GOTO:
-				return Host.UpdatePosition();
+				return Host.updatePosition();
 
 			case TASK_DROP_OFF:
 				break;
 			case TASK_DIG:
 				ExcavateJob Excavation = (ExcavateJob) ParentJob;
 				CubeShape DesignatedShape = Excavation.getDesignation(worklocation);
-				GameMap.getMap().ExcavateCube(worklocation, DesignatedShape.clone());
+				GameMap.getMap().excavateCube(worklocation, DesignatedShape.clone());
 
 				//Fall down to the new surface
 				CubeShape NewShape = GameMap.getMap().getCubeShape(Host.getLocation());
 				if (NewShape.isSky()) {
 					MapCoordinate Newlocation = Host.getLocation().clone();
-					Newlocation.TranslateMapCoordinates(Direction.DIRECTION_DOWN);
+					Newlocation.translate(Direction.DIRECTION_DOWN);
 					Host.setLocation(Newlocation);
 				}
 
-				if (DesignatedShape.ExcavationEquivilent(GameMap.getMap().getCubeShape(worklocation))) {
-					Excavation.CompleteDesignation(worklocation);
+				if (DesignatedShape.isExcavationEquivilent(GameMap.getMap().getCubeShape(worklocation))) {
+					Excavation.completeDesignation(worklocation);
 					Completed = true;
 				} else {
 					return 100;  // Base on material hardness
@@ -133,12 +144,12 @@ public class Task implements Serializable {
 				break;
 			case TASK_LOITER:
 				Completed = true;
-				return Host.UpdatePosition();
+				return Host.updatePosition();
 		}
 		return 1;
 	}
 
-	public void Finalize(long CurrentTick, Pawn Host) {
+	public void finalizeTask(long CurrentTick, Pawn Host) {
 		switch (type) {
 
 			case TASK_IDLE:
@@ -160,7 +171,7 @@ public class Task implements Serializable {
 		}
 	}
 
-	public void Interupt(long CurrentTick, Pawn Host) {
+	public void interuptTask(long CurrentTick, Pawn Host) {
 	}
 
 	public String getName() {

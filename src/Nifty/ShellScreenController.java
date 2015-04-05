@@ -21,27 +21,10 @@ import Core.Main;
 import com.jme3.app.Application;
 
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-
-import Game.Game;
-import Job.JobManager;
-
-import PathFinding.PathFinding;
-import Renderer.TerrainRenderer;
-import Renderer.SelectionRenderer;
-import Renderer.PathingRenderer;
-import Renderer.MapRenderer;
-import Interface.GameCameraState;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.elements.Element;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileSystemView;
 
 /**
  *
@@ -63,34 +46,34 @@ public class ShellScreenController implements ScreenController {
 	public void onEndScreen() {
 	}
 
-	public void Quit() {
+	public void quit() {
 		Main.app.stop();
 	}
 
-	public void GameSetup() {
+	public void gameSetup() {
 		nifty.gotoScreen("SetupScreen");
 	}
 
-	public void BeginTutorial() {
+	public void beginTutorial() {
 		if (TutorialPopup == null) {
 			TutorialPopup = nifty.createPopup("TutorialPopup");
 		}
 		nifty.showPopup(nifty.getCurrentScreen(), this.TutorialPopup.getId(), null);
 	}
 
-	public void CloseTutorialPopup() {
+	public void EndTutorial() {
 		if (TutorialPopup != null) {
 			nifty.closePopup(this.TutorialPopup.getId());
 		}
 	}
 
-	public void BeginCredtis() {
+	public void beginCredits() {
 	}
 
-	public void EndCredtis() {
+	public void endCredtis() {
 	}
 
-	public void LoadGame() {
+	public void loadGame() {
 		nifty.gotoScreen("LoadGameScreen");
 		return;
 	}

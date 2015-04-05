@@ -1,19 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Data.Types;
 
@@ -30,37 +30,37 @@ import nu.xom.Elements;
  * @author Impaler
  */
 public class MaterialData extends DataBase implements Serializable {
-	private static final long serialVersionUID = 1;
 
+	private static final long serialVersionUID = 1;
+	// Colors used to define this Material
 	transient private String PrimaryColorlabel, SecondaryColorlabel, BorderColorlabel;
 	public short PrimaryColorID, SecondaryColorID, BorderColorID;
-
+	// Class that this Material belongs too
 	transient private String MaterialClasslabel;
 	public short MaterialClassID;
-
+	// Surface Texturing of this Material
 	transient private String[] SurfaceTypeLabels;
 	transient private String[] SurfaceTextureLabels;
-	short[] SurfaceTypeIDs;
-	short[] SufaceTextueIDs;
-
+	private short[] SurfaceTypeIDs;
+	private short[] SufaceTextueIDs;
+	// Other data
 	public String ColorMode;
-
-	public int PlantGrowthFactor; 
+	public int PlantGrowthFactor;
 
 	public MaterialData() {
 		ColorMode = new String();
 	}
 
-	public boolean LoadData(Element MaterialEntry, DataLibrary Library) {
+	public boolean loadData(Element MaterialEntry, DataLibrary Library) {
 		Element Name = MaterialEntry.getFirstChildElement("Name", MaterialEntry.getNamespaceURI());
-		Library.IndexEntry(Name.getAttributeValue("Label"), this);
-	
+		Library.indexEntry(Name.getAttributeValue("Label"), this);
+
 		Element MaterialClassElement = MaterialEntry.getFirstChildElement("MaterialClass", MaterialEntry.getNamespaceURI());
-		if (MaterialClassElement != null) 
+		if (MaterialClassElement != null)
 			MaterialClasslabel = MaterialClassElement.getAttributeValue("label");
 
 		Element PrimaryColorElement = MaterialEntry.getFirstChildElement("PrimaryColor", MaterialEntry.getNamespaceURI());
-		if (PrimaryColorElement != null)		
+		if (PrimaryColorElement != null)
 			PrimaryColorlabel = PrimaryColorElement.getAttributeValue("label");
 
 		Element SecondaryColorElement = MaterialEntry.getFirstChildElement("SecondaryColor", MaterialEntry.getNamespaceURI());
@@ -94,11 +94,11 @@ public class MaterialData extends DataBase implements Serializable {
 				SurfaceTypeLabels[i] = SurfaceTextureEntry.getAttribute("SurfaceTypelabel").getValue();
 			}
 		}
-		
+
 		return true;
 	}
-	
-	public boolean PostProcessing() {
+
+	public boolean postProcessing() {
 		DataManager Data = DataManager.getDataManager();
 
 		MaterialClassID = Data.getLabelIndex(MaterialClasslabel);
@@ -119,7 +119,7 @@ public class MaterialData extends DataBase implements Serializable {
 
 		return true;
 	}
-	
+
 	public short getTexture(short SurfaceType) {
 		for (int i = 0; i < SurfaceTypeIDs.length; i++) {
 			if (SurfaceTypeIDs[i] == SurfaceType) {

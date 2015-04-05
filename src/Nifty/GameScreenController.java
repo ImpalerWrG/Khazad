@@ -149,20 +149,20 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 		game.Pause(!game.isPaused());
 	}
 
-	public void SetSpeed(String NewSpeed) {
+	public void setSpeed(String NewSpeed) {
 		int speed = Integer.parseInt(NewSpeed);
 		Game game = Main.app.getStateManager().getState(Game.class);
 		game.Pause(false);
 		game.setTickRate(speed);
 	}
 
-	public void Dig() {
+	public void dig() {
 		GameCameraState Cam = Main.app.getStateManager().getState(GameCameraState.class);
 		Cam.setMode(GameCameraState.CameraMode.SELECT_VOLUME);
 	}
 
 	@NiftyEventSubscriber(id = "DepthSlider")
-	public void DepthSliderChanged(final String id, final ScrollbarChangedEvent event) {
+	public void depthSliderChanged(final String id, final ScrollbarChangedEvent event) {
 
 		Scrollbar bar = event.getScrollbar();
 		Game game = Main.app.getStateManager().getState(Game.class);
@@ -176,7 +176,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler {
 
 		int value = (int) event.getValue();
 		int slice = camera.getSliceTop() - camera.getSliceBottom();
-		camera.SetSlice(High - value, High - value - slice);
+		camera.setSlice(High - value, High - value - slice);
 	}
 
 	private void disableMouseWheel() {

@@ -1,19 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Renderer;
 
@@ -58,7 +58,6 @@ import java.util.Collection;
 
 import jme3tools.optimize.GeometryBatchFactory;
 
-
 /**
  *
  * @author Impaler
@@ -68,71 +67,67 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 	SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
-
 	Game game = null;
 	PathFinding Pathing;
 	Node PathingNode;
-
 	HashMap<CellCoordinate, Node> cells;
 	HashMap<Integer, Material> ZoneMaterials;
-
 	boolean DisplayToggle = false;
-	
-	Vector3f [] vertices;
+	Vector3f[] vertices;
 
 	@Override
-    public void initialize(AppStateManager stateManager, Application app) {
+	public void initialize(AppStateManager stateManager, Application app) {
 		super.initialize(stateManager, app);
-        this.app = (SimpleApplication) app;
+		this.app = (SimpleApplication) app;
 		this.state = stateManager;
 		this.assetmanager = app.getAssetManager();
-		
+
 		this.vertices = new Vector3f[Direction.ANGULAR_DIRECTIONS.length];
-		
-		for (Direction dir: Direction.ANGULAR_DIRECTIONS) {			
-			vertices[dir.ordinal()] = new Vector3f(dir.ValueonAxis(Axis.AXIS_X) * MapCoordinate.HALFCUBE, dir.ValueonAxis(Axis.AXIS_Y) * MapCoordinate.HALFCUBE, dir.ValueonAxis(Axis.AXIS_Z) * MapCoordinate.HALFCUBE);
+
+		for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
+			vertices[dir.ordinal()] = new Vector3f(dir.getValueonAxis(Axis.AXIS_X) * MapCoordinate.HALFCUBE, dir.getValueonAxis(Axis.AXIS_Y) * MapCoordinate.HALFCUBE, dir.getValueonAxis(Axis.AXIS_Z) * MapCoordinate.HALFCUBE);
 		}
 		registerWithInput(app.getInputManager());
 	}
-	
+
 	public void attachToGame(Game TargetGame) {
 		this.game = TargetGame;
 
 		PathingNode = new Node("PathingNode");
 		this.app.getRootNode().attachChild(PathingNode);
-		
+
 		this.Pathing = PathFinding.getSingleton();
 		ZoneMaterials = new HashMap<Integer, Material>();
 	}
 
 	public void onAction(String name, boolean keyPressed, float tpf) {
-        if (this.isEnabled()) {
+		if (this.isEnabled()) {
 			if (name.equals("PathingRenderToggle") && keyPressed) {
 				DisplayToggle = !DisplayToggle;
 			}
-        }
-    }
+		}
+	}
 
 	public void registerWithInput(InputManager inputManager) {
-        String[] inputs = {"PathingRenderToggle"};
+		String[] inputs = {"PathingRenderToggle"};
 
-        inputManager.addMapping("PathingRenderToggle", new KeyTrigger(KeyInput.KEY_P));		
-        inputManager.addListener(this, inputs);
-    }
+		inputManager.addMapping("PathingRenderToggle", new KeyTrigger(KeyInput.KEY_P));
+		inputManager.addListener(this, inputs);
+	}
 
-	public Node BuildRendering(Cell TargetCell) {
+	public Node buildRendering(Cell TargetCell) {
 
 		Node PathRenderingNode = new Node("PathRenderingNode");
 		MovementModality Mod = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
-		
+
 		CellCoordinate CellCoords = TargetCell.getCellCoordinates();
-		
+
 		for (int x = 0; x < MapCoordinate.CELLEDGESIZE; x++) {
 			for (int y = 0; y < MapCoordinate.CELLEDGESIZE; y++) {
 
 				MapCoordinate TargetCoords = new MapCoordinate(CellCoords, x, y);
 				BitSet Connectivity = Pathing.getDirectionFlags(TargetCoords, Mod);
-				
+
 				int Zone = Pathing.getConnectivityZone(TargetCoords, Mod);
 				Material mat = ZoneMaterials.get(Zone);
 				if (mat == null) {
@@ -145,26 +140,26 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 					Mesh EdgeWires = new Mesh();
 					EdgeWires.setMode(Mesh.Mode.Lines);
 					EdgeWires.setLineWidth(5);
-					
+
 					ArrayList<Integer> Indexes = new ArrayList<Integer>();
-					for (Direction dir: Direction.ANGULAR_DIRECTIONS) {
+					for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
 						if (Pathing.getEdgeCost(TargetCoords, dir, Mod) != -1) {
 							Indexes.add(0);
 							Indexes.add(dir.ordinal());
 						}
 					}
 
-					int [] indexes = new int[Indexes.size()];
+					int[] indexes = new int[Indexes.size()];
 					for (int i = 0; i < Indexes.size(); i++) {
 						indexes[i] = Indexes.get(i).intValue();
 					}
 
 					EdgeWires.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
-					EdgeWires.setBuffer(VertexBuffer.Type.Index,    2, BufferUtils.createIntBuffer(indexes));
+					EdgeWires.setBuffer(VertexBuffer.Type.Index, 2, BufferUtils.createIntBuffer(indexes));
 					EdgeWires.updateBound();
 
-					Geometry Wires = new Geometry("Connection Wires", EdgeWires);		
-					Wires.setMaterial(mat);		
+					Geometry Wires = new Geometry("Connection Wires", EdgeWires);
+					Wires.setMaterial(mat);
 					Wires.setLocalTranslation(new Vector3f(x, y, 0));
 					PathRenderingNode.attachChild(Wires);
 				}
@@ -175,22 +170,22 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 		if (PathRenderingNode.getQuantity() > 0) {
 			Spatial ConnectionRendering = PathRenderingNode.getChild(0);
 			PathRenderingNode.setName("Connection Rendering" + CellCoords.toString());
-			return PathRenderingNode;		
+			return PathRenderingNode;
 		} else {
 			return null;
 		}
 	}
-	
-	public void RebuildDirtyCells(Collection<Cell> cells) {
+
+	public void rebuildDirtyCells(Collection<Cell> cells) {
 		for (Cell target : cells) {
 			CellCoordinate Coords = target.getCellCoordinates();
 
 			MapRenderer Renderer = state.getState(MapRenderer.class);
 			Node CellNode = Renderer.getCellNodeLight(Coords);
-			Spatial ConnectivityNode = CellNode.getChild("Connection Rendering" + Coords.toString());	
+			Spatial ConnectivityNode = CellNode.getChild("Connection Rendering" + Coords.toString());
 
 			if (target.isPathingRenderingDirty()) {
-				Node NewConnectivity = BuildRendering(target);
+				Node NewConnectivity = buildRendering(target);
 				if (ConnectivityNode != null)
 					CellNode.detachChild(ConnectivityNode);
 				if (NewConnectivity != null) {
@@ -198,14 +193,14 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 				}
 				target.setDirtyPathingRendering(false);
 			}
-			
+
 			if (ConnectivityNode != null) {
 				ConnectivityNode.setCullHint(Spatial.CullHint.Dynamic);
 			}
-		}	
+		}
 	}
-	
-	void HideConnectivityRendering(Collection<Cell> cells) {
+
+	void hideConnectivityRendering(Collection<Cell> cells) {
 		for (Cell target : cells) {
 			CellCoordinate Coords = target.getCellCoordinates();
 			MapRenderer Renderer = state.getState(MapRenderer.class);
@@ -223,9 +218,9 @@ public class PathingRenderer extends AbstractAppState implements ActionListener 
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
 			if (DisplayToggle) {
-				RebuildDirtyCells(map.getCellCollection());
+				rebuildDirtyCells(map.getCellCollection());
 			} else {
-				HideConnectivityRendering(map.getCellCollection());
+				hideConnectivityRendering(map.getCellCollection());
 			}
 		}
 	}

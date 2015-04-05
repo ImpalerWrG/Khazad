@@ -1,19 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Renderer;
 
@@ -44,10 +44,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Manager for the material composite Image creation process, add Texture,
- * TextureGrid and TextureSheet Data Entries are processed and disected to 
+ * TextureGrid and TextureSheet Data Entries are processed and disected to
  * individual Images, upon request composits are made using the colors and methods
  * specified under the Materials Data Entry.
- * 
+ *
  * @author Impaler
  */
 public class ImageManager {
@@ -55,27 +55,26 @@ public class ImageManager {
 	int ImageCounter = 0;
 	private static ImageManager instance = null;
 	AssetManager assetmanager = null;
-
 	ConcurrentHashMap<Integer, Image> RawTextureGridMap;
 	ConcurrentHashMap<Integer, Image> RawTextureSheetMap;
 	ConcurrentHashMap<Integer, Image> RawTextureMap;
 	ConcurrentHashMap<Integer, Image> CompletedImageMap;
-	
+
 	protected ImageManager() {
-		RawTextureGridMap  = new ConcurrentHashMap<Integer, Image>();
+		RawTextureGridMap = new ConcurrentHashMap<Integer, Image>();
 		RawTextureSheetMap = new ConcurrentHashMap<Integer, Image>();
-		RawTextureMap = new ConcurrentHashMap<Integer, Image>();	
+		RawTextureMap = new ConcurrentHashMap<Integer, Image>();
 		CompletedImageMap = new ConcurrentHashMap<Integer, Image>();
 	}
 
 	public static ImageManager getImageManager() {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new ImageManager();
 		}
 		return instance;
 	}
 
-	public void Initialize(AssetManager manager) {
+	public void initialize(AssetManager manager) {
 		this.assetmanager = manager;
 
 		DataManager Data = DataManager.getDataManager();
@@ -93,7 +92,7 @@ public class ImageManager {
 		try {
 			texture = assetmanager.loadTexture(DefaultTexture.FilePath);
 		} catch (AssetNotFoundException Exception) {
-			System.err.println(Exception.getMessage());	
+			System.err.println(Exception.getMessage());
 		}
 		Image DefaultImage = texture.getImage();
 		texture = null;
@@ -106,7 +105,7 @@ public class ImageManager {
 				try {
 					texture = assetmanager.loadTexture(File);
 				} catch (AssetNotFoundException Exception) {
-					System.err.println(Exception.getMessage());	
+					System.err.println(Exception.getMessage());
 				}
 				if (texture != null) {
 					RawTextureGridMap.put(i, texture.getImage());
@@ -123,7 +122,7 @@ public class ImageManager {
 				try {
 					texture = assetmanager.loadTexture(File);
 				} catch (AssetNotFoundException Exception) {
-					System.err.println(Exception.getMessage());	
+					System.err.println(Exception.getMessage());
 				}
 				if (texture != null)
 					RawTextureSheetMap.put(i, texture.getImage());
@@ -137,7 +136,7 @@ public class ImageManager {
 				try {
 					texture = assetmanager.loadTexture(File);
 				} catch (AssetNotFoundException Exception) {
-					System.err.println(Exception.getMessage());	
+					System.err.println(Exception.getMessage());
 				}
 				if (texture != null)
 					RawTextureMap.put(i, texture.getImage());
@@ -148,31 +147,31 @@ public class ImageManager {
 
 					Image SourceImage = RawTextureGridMap.get(GridID);
 					if (SourceImage != null) {
-						RawTextureMap.put(i, ClipImage(SourceImage, TextureEntry.X * GridData.TextureWidth, TextureEntry.Y * GridData.TextureHeight, GridData.TextureWidth, GridData.TextureHeight));
+						RawTextureMap.put(i, clipImage(SourceImage, TextureEntry.X * GridData.TextureWidth, TextureEntry.Y * GridData.TextureHeight, GridData.TextureWidth, GridData.TextureHeight));
 						//SaveImage(NewImage, new String("Grid" + i));
 					} else {
-						RawTextureMap.put(i, DefaultImage);			
+						RawTextureMap.put(i, DefaultImage);
 					}
 				}
 				int SheetID = TextureEntry.SheetID;
 				if (TextureEntry.SheetID != DataManager.INVALID_INDEX) {
 					Image SourceImage = RawTextureSheetMap.get(SheetID);
-					if (SourceImage != null) {						
-						RawTextureMap.put(i, ClipImage(SourceImage, TextureEntry.X, TextureEntry.Y, TextureEntry.Width, TextureEntry.Height));
+					if (SourceImage != null) {
+						RawTextureMap.put(i, clipImage(SourceImage, TextureEntry.X, TextureEntry.Y, TextureEntry.Width, TextureEntry.Height));
 						//SaveImage(NewImage, new String("Sheet" + i));
 					} else {
-						RawTextureMap.put(i, DefaultImage);					
+						RawTextureMap.put(i, DefaultImage);
 					}
 				}
 			}
-			
+
 		}
 		RawTextureGridMap.clear();
 		RawTextureSheetMap.clear();
 	}
 
-	public void SaveImage(Image SavedImage, String fileName) {
-		if(SavedImage != null){
+	public void saveImage(Image SavedImage, String fileName) {
+		if (SavedImage != null) {
 
 			ByteBuffer outBuf = SavedImage.getData(0);
 			String filePath = new String();
@@ -185,7 +184,7 @@ public class ImageManager {
 			} catch (IOException ex) {
 				//logger.log(Level.SEVERE, "Error while saving screenshot", ex);
 			} finally {
-				if (outStream != null){
+				if (outStream != null) {
 					try {
 						outStream.close();
 					} catch (IOException ex) {
@@ -200,7 +199,7 @@ public class ImageManager {
 
 		int width = image.getWidth();
 		int height = image.getHeight();
-		ByteBuffer data = BufferUtils.createByteBuffer( (int)Math.ceil(newFormat.getBitsPerPixel() / 8.0) * width * height);
+		ByteBuffer data = BufferUtils.createByteBuffer((int) Math.ceil(newFormat.getBitsPerPixel() / 8.0) * width * height);
 		Image convertedImage = new Image(newFormat, width, height, data);
 
 		ImageRaster sourceReader = ImageRaster.create(image);
@@ -211,7 +210,7 @@ public class ImageManager {
 				targetWriter.setPixel(x, y, color);
 			}
 		}
-		
+
 		return convertedImage;
 	}
 
@@ -227,7 +226,7 @@ public class ImageManager {
 		return Tex.getImage();
 	}
 
-	Image ClipImage(Image SourceImage, int X, int Y, int W, int H) {
+	Image clipImage(Image SourceImage, int X, int Y, int W, int H) {
 		ImageRaster SourceRaster = ImageRaster.create(SourceImage);
 
 		byte[] data = new byte[W * H * SourceImage.getFormat().getBitsPerPixel() / 8];
@@ -243,7 +242,7 @@ public class ImageManager {
 		return NewImage;
 	}
 
-	void PasteImage(Image SourceImage, Image DestinationImage, int X, int Y) {
+	void pasteImage(Image SourceImage, Image DestinationImage, int X, int Y) {
 		ImageRaster SourceRaster = ImageRaster.create(SourceImage);
 		ImageRaster DestinationRastor = ImageRaster.create(DestinationImage);
 
@@ -255,11 +254,11 @@ public class ImageManager {
 	}
 
 	Image getMaterialImage(short MaterialTypeID, short SurfaceTypeID) {
-		short TextureID = PickImageTexture(MaterialTypeID, SurfaceTypeID);
-		return MapTexture(MaterialTypeID, TextureID);
+		short TextureID = pickImageTexture(MaterialTypeID, SurfaceTypeID);
+		return mapTexture(MaterialTypeID, TextureID);
 	}
-	
-	public short PickImageTexture(short MaterialID, short SurfaceTypeID) {
+
+	public short pickImageTexture(short MaterialID, short SurfaceTypeID) {
 		DataManager Data = DataManager.getDataManager();
 		final short DefaultTextureID = Data.getLabelIndex("TEXTURE_DEFAULT");
 
@@ -282,7 +281,7 @@ public class ImageManager {
 		}
 	}
 
-	public Image MapTexture(short MaterialID, short TextureID) {
+	public Image mapTexture(short MaterialID, short TextureID) {
 		DataManager Data = DataManager.getDataManager();
 		if (MaterialID != DataManager.INVALID_INDEX && TextureID != DataManager.INVALID_INDEX) {
 			int Key = MaterialID;
@@ -293,7 +292,7 @@ public class ImageManager {
 			if (TargetImage != null) {
 				return TargetImage;
 			} else {
-				Image SelectedMaterial = GenerateMaterialImage(MaterialID, TextureID); //, getStaticTextureName(MaterialID, TextureID));
+				Image SelectedMaterial = generateMaterialImage(MaterialID, TextureID); //, getStaticTextureName(MaterialID, TextureID));
 				if (SelectedMaterial != null) {
 					CompletedImageMap.put(Key, SelectedMaterial);
 					return SelectedMaterial;
@@ -303,12 +302,12 @@ public class ImageManager {
 		return null;
 	}
 
-	private Image GenerateMaterialImage(short MaterialID, short TextureID) {
+	private Image generateMaterialImage(short MaterialID, short TextureID) {
 		DataManager Data = DataManager.getDataManager();
 		MaterialData Material = Data.getMaterialData(MaterialID);
 		TextureData Texture = Data.getTextureData(TextureID);
 
-		Image TextureImage = RawTextureMap.get((int)TextureID);
+		Image TextureImage = RawTextureMap.get((int) TextureID);
 
 		short PrimaryColorID = Material.PrimaryColorID;
 		short SecondaryColorID = Material.SecondaryColorID;
@@ -316,19 +315,17 @@ public class ImageManager {
 
 		String colormode = Material.ColorMode;
 
-		if(colormode.equals("gradientmap")) {
-			return GenerateGradientImage(TextureImage, PrimaryColorID, SecondaryColorID, BorderColorID);
-		}
-		else if(colormode.equals("keepimage")) {
-			return GenerateKeeperImage(TextureImage, BorderColorID);
-		}
-		else if(colormode.isEmpty() || colormode.equals("overlay")) {
-			return GeneratedOverLayImage(TextureImage, PrimaryColorID, BorderColorID);
+		if (colormode.equals("gradientmap")) {
+			return generateGradientImage(TextureImage, PrimaryColorID, SecondaryColorID, BorderColorID);
+		} else if (colormode.equals("keepimage")) {
+			return generateKeeperImage(TextureImage, BorderColorID);
+		} else if (colormode.isEmpty() || colormode.equals("overlay")) {
+			return generatedOverLayImage(TextureImage, PrimaryColorID, BorderColorID);
 		}
 		return null;
 	}
 
-	private Image GenerateGradientImage(Image Original, short PrimaryColorID, short SecondaryColorID, short BorderColorID) {
+	private Image generateGradientImage(Image Original, short PrimaryColorID, short SecondaryColorID, short BorderColorID) {
 		Image newImage = Original.clone();
 		ImageRaster sourceReader = ImageRaster.create(Original);
 		ImageRaster targetWriter = ImageRaster.create(newImage);
@@ -341,8 +338,8 @@ public class ImageManager {
 
 		Image OverlayImage = Original.clone();
 		if (SecondaryColor != null) {
-			for(int i = 0; i < width; i++) {
-				for(int j = 0; j < height; j++) {
+			for (int i = 0; i < width; i++) {
+				for (int j = 0; j < height; j++) {
 					//MaskImageData[(i * width * bpp) + (j * bpp) + 0] = SecondaryColor->getBlue();     // Blue
 					//MaskImageData[(i * width * bpp) + (j * bpp) + 1] = SecondaryColor->getGreen();    // Green
 					//MaskImageData[(i * width * bpp) + (j * bpp) + 2] = SecondaryColor->getRed();      // Red
@@ -352,15 +349,15 @@ public class ImageManager {
 		}
 
 		//Image OverlayImage = Original.clone();
-		if(PrimaryColor != null) {
+		if (PrimaryColor != null) {
 			ColorRGBA newColor = new ColorRGBA();
 			newColor.r = PrimaryColor.Red / 255;
 			newColor.g = PrimaryColor.Green / 255;
 			newColor.b = PrimaryColor.Blue / 255;
 			newColor.a = 1;
-			
-			for(int i = 0; i < width; i++) {
-				for(int j = 0; j < height; j++) {
+
+			for (int i = 0; i < width; i++) {
+				for (int j = 0; j < height; j++) {
 					targetWriter.setPixel(i, j, newColor);
 				}
 			}
@@ -369,13 +366,13 @@ public class ImageManager {
 		//ilOverlayImage(MaskImageID, 0, 0, 0);
 
 		if (BorderColorID != DataManager.INVALID_INDEX) {
-			ApplyBorder(newImage, BorderColorID);
+			applyBorder(newImage, BorderColorID);
 		}
 
 		return newImage;
 	}
- 
-	private Image GeneratedOverLayImage(Image Original, short PrimaryColorID, short BorderColorID) {
+
+	private Image generatedOverLayImage(Image Original, short PrimaryColorID, short BorderColorID) {
 		Image newImage = Original.clone();
 		ImageRaster sourceReader = ImageRaster.create(Original);
 		ImageRaster targetWriter = ImageRaster.create(newImage);
@@ -384,13 +381,13 @@ public class ImageManager {
 		int height = Original.getHeight();
 
 		ColorData PrimaryColor = DataManager.getDataManager().getColorData(PrimaryColorID);
-		
+
 		if (PrimaryColor != null) {
 			for (int i = 0; i < width; i++) {
 				for (int j = 0; j < height; j++) {
 					ColorRGBA sourceColor = sourceReader.getPixel(i, j);
 					ColorRGBA newColor = new ColorRGBA();
-					
+
 					float Base = sourceColor.getRed() + sourceColor.getBlue() + sourceColor.getGreen();
 					float Alpha = sourceColor.a;
 					Base /= 3;
@@ -399,7 +396,7 @@ public class ImageManager {
 					float OriginalGreen = PrimaryColor.Green / 65025f;
 					float OriginalRed = PrimaryColor.Red / 65025f;
 
-					
+
 					// coloring using overlay mode
 					if (Base >= 0.5) {
 						newColor.b = (float) (1.0 - 2.0 * (1.0 - OriginalBlue) * (1.0 - Base)) * 255;
@@ -413,7 +410,7 @@ public class ImageManager {
 						newColor.g = (float) (2.0 * OriginalGreen * Base) * 255;
 						newColor.r = (float) (2.0 * OriginalRed * Base) * 255;
 						newColor.a = Alpha;
-						
+
 						targetWriter.setPixel(i, j, newColor);
 					}
 				}
@@ -421,21 +418,21 @@ public class ImageManager {
 		}
 
 		if (BorderColorID != DataManager.INVALID_INDEX) {
-			ApplyBorder(newImage, BorderColorID);
+			applyBorder(newImage, BorderColorID);
 		}
 
 		return newImage;
 	}
 
-	private Image GenerateKeeperImage(Image Original, short BorderColorID) {
+	private Image generateKeeperImage(Image Original, short BorderColorID) {
 		Image NewImage = Original.clone();
 		if (BorderColorID != DataManager.INVALID_INDEX) {
-			ApplyBorder(NewImage, BorderColorID);
+			applyBorder(NewImage, BorderColorID);
 		}
 		return NewImage;
 	}
 
-	private void ApplyBorder(Image Original, short BorderColorID) {
+	private void applyBorder(Image Original, short BorderColorID) {
 		int width = Original.getWidth();
 		int height = Original.getHeight();
 
@@ -449,37 +446,16 @@ public class ImageManager {
 		Blue = BorderColor.Blue / 255f;
 		ColorRGBA color = new ColorRGBA(Red, Green, Blue, 1.0f);
 
-		if(targetWriter != null) {
-			for(int i = 0; i < width; i++) {
+		if (targetWriter != null) {
+			for (int i = 0; i < width; i++) {
 				targetWriter.setPixel(i, 0, color);
 				targetWriter.setPixel(i, height - 1, color);
 			}
 
-			for(int j = 0; j < height; j++) {
-				targetWriter.setPixel(width -1, j, color);
+			for (int j = 0; j < height; j++) {
+				targetWriter.setPixel(width - 1, j, color);
 				targetWriter.setPixel(0, j, color);
 			}
 		}
 	}
-	
-	/*
- * public void setPixel(int x, int y, Color color) {
-        int i = (x + y * width) * 4;
-        data[i] = (byte) color.getRed(); // r
-        data[i + 1] = (byte) color.getGreen(); // g
-        data[i + 2] = (byte) color.getBlue(); // b
-        data[i + 3] = (byte) color.getAlpha(); // a
-    }
-  
-    public void setBackground(Color color) {
-  
-        for (int i = 0; i < width * height * 4; i += 4) {
-            data[i] = (byte) color.getRed(); // r
-            data[i + 1] = (byte) color.getGreen(); // g
-            data[i + 2] = (byte) color.getBlue(); // b
-            data[i + 3] = (byte) color.getAlpha(); // a
-  
-        }
-    } 
- */
 }

@@ -43,12 +43,12 @@ public class Citizen extends Pawn implements Serializable {
 		generateName("GIVEN_NAMEGROUP_TOLKEINESQUE");
 		//setFirstName("Urist");
 		//setLastName(Integer.toString(id));
-		setTask(new Task(null, TaskType.TASK_IDLE, SpawnLocation));
+		setTask(new Task(null, Task.TaskType.TASK_IDLE, SpawnLocation));
 	}
 
 	@Override
-	public Task FindTask() {
-		return super.FindTask();
+	public Task findTask() {
+		return super.findTask();
 	}
 
 	private void generateName(String givenNameGroup) {
@@ -60,8 +60,8 @@ public class Citizen extends Pawn implements Serializable {
 			givenNameGroupId = Data.DataManager.getDataManager().getLabelIndex(givenNameGroup + "_GENDER_FEMALE");
 		}
 		GivenNameGroupData givenNameGroupData = data.getGivenNameGroupData(givenNameGroupId);
-		String prefix = givenNameGroupData.getPrefixes()[AttributeDice.Roll(0, givenNameGroupData.getPrefixes().length - 1)];
-		String suffix = givenNameGroupData.getSuffixes()[AttributeDice.Roll(0, givenNameGroupData.getSuffixes().length - 1)];
+		String prefix = givenNameGroupData.getPrefixes()[AttributeDice.roll(0, givenNameGroupData.getPrefixes().length - 1)];
+		String suffix = givenNameGroupData.getSuffixes()[AttributeDice.roll(0, givenNameGroupData.getSuffixes().length - 1)];
 		setFirstName(prefix + suffix);
 		// TODO last names
 		setLastName("");

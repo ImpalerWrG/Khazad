@@ -1,7 +1,20 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* Copyright 2010 Kenneth 'Impaler' Ferland
+
+ This file is part of Khazad.
+
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+
 package Renderer;
 
 import Game.Game;
@@ -34,22 +47,19 @@ public class MapRenderer extends AbstractAppState {
 	SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
-
 	Node MapNode = null;
 	Node sunnyterrainNode = null;
 	Node darkterrainNode = null;
-
 	TileBuilder builder;
 	Game game;
-
 	ConcurrentHashMap<CellCoordinate, Node> LightCellNodeMap;
 	ConcurrentHashMap<CellCoordinate, Node> DarkCellNodeMap;
 	ConcurrentHashMap<Integer, Node> ZMapLight;
 	ConcurrentHashMap<Integer, Node> ZMapDark;
-
 	Semaphore semaphore;
 	boolean SunnyRendering = true;
-	int Top; int Bottom;
+	int Top;
+	int Bottom;
 
 	public MapRenderer() {
 		LightCellNodeMap = new ConcurrentHashMap<CellCoordinate, Node>();
@@ -90,7 +100,7 @@ public class MapRenderer extends AbstractAppState {
 		Lightglow.setColor(Suncolor.mult(1.8f));
 		sunnyterrainNode.addLight(Lightglow);
 
-		TargetGame.getWeather().AttatchSun(sunnyterrainNode);
+		TargetGame.getWeather().attatchSun(sunnyterrainNode);
 	}
 
 	public void detachFromGame() {
@@ -121,7 +131,7 @@ public class MapRenderer extends AbstractAppState {
 					getZNodeLight(TargetCoordinates.Z).attachChild(CellNode);
 					LightCellNodeMap.put(TargetCoordinates, CellNode);
 				}
-			}	finally {
+			} finally {
 				semaphore.release();
 			}
 		} catch (final InterruptedException e) {
@@ -138,7 +148,7 @@ public class MapRenderer extends AbstractAppState {
 			semaphore.acquire();
 			try {
 				if (CellNode == null) {
-					CellNode = new Node("DarkCellNode");	
+					CellNode = new Node("DarkCellNode");
 
 					float x = (float) (TargetCell.X * MapCoordinate.CELLEDGESIZE);
 					float y = (float) (TargetCell.Y * MapCoordinate.CELLEDGESIZE);
@@ -148,7 +158,7 @@ public class MapRenderer extends AbstractAppState {
 					getZNodeDark(TargetCell.Z).attachChild(CellNode);
 					DarkCellNodeMap.put(TargetCell, CellNode);
 				}
-			}	finally {
+			} finally {
 				semaphore.release();
 			}
 		} catch (final InterruptedException e) {
@@ -182,7 +192,8 @@ public class MapRenderer extends AbstractAppState {
 	}
 
 	public void setSliceLevels(int top, int bottom) {
-		Top = top; Bottom = bottom;
+		Top = top;
+		Bottom = bottom;
 
 		for (Node targetnode : ZMapLight.values()) {
 			float Z = targetnode.getLocalTranslation().getZ();
@@ -212,26 +223,32 @@ public class MapRenderer extends AbstractAppState {
 				if (Z > Bottom && Z <= Top && SunnyRendering) {
 					target.setCullHint(Spatial.CullHint.Dynamic);
 				} else {
-					target.setCullHint(Spatial.CullHint.Always);				
+					target.setCullHint(Spatial.CullHint.Always);
 				}
 			}
 		}
 	}
 
-	public Node getMapNode()			{ return MapNode; }
+	public Node getMapNode() {
+		return MapNode;
+	}
 
-	public Node getSunTerrainNode()		{ return sunnyterrainNode; }
+	public Node getSunTerrainNode() {
+		return sunnyterrainNode;
+	}
 
-	public Node getDarkTerrainNode()	{ return darkterrainNode; }
+	public Node getDarkTerrainNode() {
+		return darkterrainNode;
+	}
 
 	@Override
-	public void update(float tpf) {	
+	public void update(float tpf) {
 		if (this.game != null) {
 			GameCameraState cam = state.getState(GameCameraState.class);
 			setSliceLevels(cam.getSliceTop(), cam.getSliceBottom());
 
 			GUI gui = state.getState(GUI.class);
-			gui.UpdateText("Timelabel", game.getTimeString());
+			gui.updateText("Timelabel", game.getTimeString());
 		}
 	}
 }

@@ -1,19 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Map;
 
@@ -22,43 +22,42 @@ import java.io.Serializable;
 /**
  * Holds corner height values used to determine sloped shapes and Meshes
  * of map tiles
+ *
  * @author Impaler
  */
 public class CubeShape implements Serializable {
-	private static final long serialVersionUID = 1;
 
+	private static final long serialVersionUID = 1;
+	// Defined values for determining how many vertical fractions exist in a cube
 	public static final byte BELOW_CUBE_HEIGHT = 0;
 	public static final byte CUBE_BOTTOM_HEIGHT = 1;
 	public static final byte HEIGHT_FRACTIONS = 4;
 	public static final byte CUBE_TOP_HEIGHT = 5;
-
 	// BitPacking  SWW SEE NWW NEE FLAG
 	//             FED CBA 987 654 3210
-
+	// Mask values used to extract values for a corner
 	public static final short SWMASK = (short) 57344;
 	public static final short SEMASK = 7168;
 	public static final short NWMASK = 896;
 	public static final short NEMASK = 112;
-
+	// Names for the specific Flags and the Mask to retrive them
 	public static final short FLAGMASK = 15;
 	public static final short SPLITMASK = 1;
 	public static final short VERTICALMASK = 2;
 	public static final short UNUSED1MASK = 4;
 	public static final short UNUSED2MASK = 8;
-
+	// Shifting values used to extract values for a corner
 	public static final short SWSHIFT = 13;
 	public static final short SESHIFT = 10;
 	public static final short NWSHIFT = 7;
 	public static final short NESHIFT = 4;
-
-	short Data;		// Bit compressed heights of each corner and flags
-
-
+	// Bit compressed heights of each corner and flags
+	short Data;
 
 	public CubeShape(byte SWCornerHeight, byte SECornerHeight, byte NWCornerHeight, byte NECornerHeight, byte NewFlags) {
 		Data = (short) (((SWCornerHeight << SWSHIFT) & SWMASK) | ((SECornerHeight << SESHIFT) & SEMASK) | ((NWCornerHeight << NWSHIFT) & NWMASK) | ((NECornerHeight << NESHIFT) & NEMASK) | (NewFlags & FLAGMASK));
 	}
-	
+
 	public CubeShape(byte NewHeight, byte flags) {
 		this(NewHeight, NewHeight, NewHeight, NewHeight, flags);
 	}
@@ -80,23 +79,23 @@ public class CubeShape implements Serializable {
 	}
 
 	public boolean isSolid() {
-		return (SouthWestCorner() >= CUBE_TOP_HEIGHT) && (SouthEastCorner() >= CUBE_TOP_HEIGHT) && (NorthWestCorner() >= CUBE_TOP_HEIGHT) && (NorthEastCorner() >= CUBE_TOP_HEIGHT);
+		return (getSouthWestCorner() >= CUBE_TOP_HEIGHT) && (getSouthEastCorner() >= CUBE_TOP_HEIGHT) && (getNorthWestCorner() >= CUBE_TOP_HEIGHT) && (getNorthEastCorner() >= CUBE_TOP_HEIGHT);
 	}
 
 	public boolean isEmpty() {
-		return (SouthWestCorner() <= CUBE_BOTTOM_HEIGHT) && (SouthEastCorner() <= CUBE_BOTTOM_HEIGHT) && (NorthWestCorner() <= CUBE_BOTTOM_HEIGHT) && (NorthEastCorner() <= CUBE_BOTTOM_HEIGHT);
+		return (getSouthWestCorner() <= CUBE_BOTTOM_HEIGHT) && (getSouthEastCorner() <= CUBE_BOTTOM_HEIGHT) && (getNorthWestCorner() <= CUBE_BOTTOM_HEIGHT) && (getNorthEastCorner() <= CUBE_BOTTOM_HEIGHT);
 	}
 
 	public boolean isSky() {
 		int Counter = 0;
 
-		if (SouthWestCorner() < CUBE_BOTTOM_HEIGHT)
+		if (getSouthWestCorner() < CUBE_BOTTOM_HEIGHT)
 			Counter++;
-		if (SouthEastCorner() < CUBE_BOTTOM_HEIGHT)
+		if (getSouthEastCorner() < CUBE_BOTTOM_HEIGHT)
 			Counter++;
-		if (NorthEastCorner() < CUBE_BOTTOM_HEIGHT)
+		if (getNorthEastCorner() < CUBE_BOTTOM_HEIGHT)
 			Counter++;
-		if (NorthWestCorner() < CUBE_BOTTOM_HEIGHT)
+		if (getNorthWestCorner() < CUBE_BOTTOM_HEIGHT)
 			Counter++;
 
 		if (Counter >= 2) {
@@ -112,66 +111,66 @@ public class CubeShape implements Serializable {
 		if (DirectionType == Direction.DIRECTION_UP)
 			return hasCeiling();
 		if (DirectionType == Direction.DIRECTION_EAST)
-			return (SouthEastCorner() > CUBE_BOTTOM_HEIGHT || NorthEastCorner() > CUBE_BOTTOM_HEIGHT);
+			return (getSouthEastCorner() > CUBE_BOTTOM_HEIGHT || getNorthEastCorner() > CUBE_BOTTOM_HEIGHT);
 		if (DirectionType == Direction.DIRECTION_WEST)
-			return (SouthWestCorner() > CUBE_BOTTOM_HEIGHT || NorthWestCorner() > CUBE_BOTTOM_HEIGHT);
+			return (getSouthWestCorner() > CUBE_BOTTOM_HEIGHT || getNorthWestCorner() > CUBE_BOTTOM_HEIGHT);
 		if (DirectionType == Direction.DIRECTION_NORTH)
-			return (NorthEastCorner() > CUBE_BOTTOM_HEIGHT || NorthWestCorner() > CUBE_BOTTOM_HEIGHT);
+			return (getNorthEastCorner() > CUBE_BOTTOM_HEIGHT || getNorthWestCorner() > CUBE_BOTTOM_HEIGHT);
 		if (DirectionType == Direction.DIRECTION_SOUTH)
-			return (SouthEastCorner() > CUBE_BOTTOM_HEIGHT || SouthWestCorner() > CUBE_BOTTOM_HEIGHT);
-		
+			return (getSouthEastCorner() > CUBE_BOTTOM_HEIGHT || getSouthWestCorner() > CUBE_BOTTOM_HEIGHT);
+
 		return false;
 	}
 
 	public boolean hasFloor() {
-		if (split()) {
-			if (SouthEastCorner() == CUBE_BOTTOM_HEIGHT && NorthEastCorner() == CUBE_BOTTOM_HEIGHT && NorthWestCorner() == CUBE_BOTTOM_HEIGHT)
+		if (isSplit()) {
+			if (getSouthEastCorner() == CUBE_BOTTOM_HEIGHT && getNorthEastCorner() == CUBE_BOTTOM_HEIGHT && getNorthWestCorner() == CUBE_BOTTOM_HEIGHT)
 				return true;
-			if (NorthWestCorner() == CUBE_BOTTOM_HEIGHT && SouthWestCorner() == CUBE_BOTTOM_HEIGHT && SouthEastCorner() == CUBE_BOTTOM_HEIGHT)
+			if (getNorthWestCorner() == CUBE_BOTTOM_HEIGHT && getSouthWestCorner() == CUBE_BOTTOM_HEIGHT && getSouthEastCorner() == CUBE_BOTTOM_HEIGHT)
 				return true;
 			return false;
 		} else {
-			if (NorthEastCorner() == CUBE_BOTTOM_HEIGHT && NorthWestCorner() == CUBE_BOTTOM_HEIGHT && SouthWestCorner() == CUBE_BOTTOM_HEIGHT)
+			if (getNorthEastCorner() == CUBE_BOTTOM_HEIGHT && getNorthWestCorner() == CUBE_BOTTOM_HEIGHT && getSouthWestCorner() == CUBE_BOTTOM_HEIGHT)
 				return true;
-			if (SouthWestCorner() == CUBE_BOTTOM_HEIGHT && SouthEastCorner() == CUBE_BOTTOM_HEIGHT && NorthEastCorner() == CUBE_BOTTOM_HEIGHT)
+			if (getSouthWestCorner() == CUBE_BOTTOM_HEIGHT && getSouthEastCorner() == CUBE_BOTTOM_HEIGHT && getNorthEastCorner() == CUBE_BOTTOM_HEIGHT)
 				return true;
 			return false;
 		}
 	}
 
 	public boolean hasCeiling() {
-		if (split()) {
-			if (SouthEastCorner() == CUBE_TOP_HEIGHT && NorthEastCorner() == CUBE_TOP_HEIGHT && NorthWestCorner() == CUBE_TOP_HEIGHT)
+		if (isSplit()) {
+			if (getSouthEastCorner() == CUBE_TOP_HEIGHT && getNorthEastCorner() == CUBE_TOP_HEIGHT && getNorthWestCorner() == CUBE_TOP_HEIGHT)
 				return true;
-			if (NorthWestCorner() == CUBE_TOP_HEIGHT && SouthWestCorner() == CUBE_TOP_HEIGHT && SouthEastCorner() == CUBE_TOP_HEIGHT)
+			if (getNorthWestCorner() == CUBE_TOP_HEIGHT && getSouthWestCorner() == CUBE_TOP_HEIGHT && getSouthEastCorner() == CUBE_TOP_HEIGHT)
 				return true;
 			return false;
 		} else {
-			if (NorthEastCorner() == CUBE_TOP_HEIGHT && NorthWestCorner() == CUBE_TOP_HEIGHT && SouthWestCorner() == CUBE_TOP_HEIGHT)
+			if (getNorthEastCorner() == CUBE_TOP_HEIGHT && getNorthWestCorner() == CUBE_TOP_HEIGHT && getSouthWestCorner() == CUBE_TOP_HEIGHT)
 				return true;
-			if (SouthWestCorner() == CUBE_TOP_HEIGHT && SouthEastCorner() == CUBE_TOP_HEIGHT && NorthEastCorner() == CUBE_TOP_HEIGHT)
+			if (getSouthWestCorner() == CUBE_TOP_HEIGHT && getSouthEastCorner() == CUBE_TOP_HEIGHT && getNorthEastCorner() == CUBE_TOP_HEIGHT)
 				return true;
 			return false;
 		}
 	}
 
-	public byte SouthWestCorner() {
+	public byte getSouthWestCorner() {
 		return (byte) (((Data & SWMASK) >> SWSHIFT) & 7);
 	}
 
-	public byte SouthEastCorner() {
+	public byte getSouthEastCorner() {
 		return (byte) (((Data & SEMASK) >> SESHIFT) & 7);
 	}
 
-	public byte NorthWestCorner() {
+	public byte getNorthWestCorner() {
 		return (byte) (((Data & NWMASK) >> NWSHIFT) & 7);
 	}
 
-	public byte NorthEastCorner() {
+	public byte getNorthEastCorner() {
 		return (byte) (((Data & NEMASK) >> NESHIFT) & 7);
 	}
 
-	void setSouthWestCorner(byte Height) {
+	public void setSouthWestCorner(byte Height) {
 		Data &= ~SWMASK;
 		Data |= ((Height << SWSHIFT) & SWMASK);
 	}
@@ -191,8 +190,8 @@ public class CubeShape implements Serializable {
 		Data |= ((Height << NESHIFT) & NEMASK);
 	}
 
-	public boolean split() {
-		return (Data & SPLITMASK) > 0 ? true : false ;
+	public boolean isSplit() {
+		return (Data & SPLITMASK) > 0 ? true : false;
 	}
 
 	@Override
@@ -201,13 +200,13 @@ public class CubeShape implements Serializable {
 		return Data == Arg.Data;
 	}
 
-	public boolean ExcavationEquivilent(Object ArgumentShape) {
+	public boolean isExcavationEquivilent(Object ArgumentShape) {
 		CubeShape Arg = (CubeShape) ArgumentShape;
 
-		boolean NE = Arg.NorthEastCorner() <= this.NorthEastCorner();
-		boolean SE = Arg.SouthEastCorner() <= this.SouthEastCorner();
-		boolean NW = Arg.NorthWestCorner() <= this.NorthWestCorner();
-		boolean SW = Arg.SouthWestCorner() <= this.SouthWestCorner();
+		boolean NE = Arg.getNorthEastCorner() <= this.getNorthEastCorner();
+		boolean SE = Arg.getSouthEastCorner() <= this.getSouthEastCorner();
+		boolean NW = Arg.getNorthWestCorner() <= this.getNorthWestCorner();
+		boolean SW = Arg.getSouthWestCorner() <= this.getSouthWestCorner();
 
 		return NE && SE && NW && SW;
 	}
@@ -227,81 +226,81 @@ public class CubeShape implements Serializable {
 		return Data != ArgumentShape.Data;
 	}
 
-	public float centerHeight() {
-		if (split()) {
-			return (((NorthWestCorner() + SouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+	public float getCenterHeight() {
+		if (isSplit()) {
+			return (((getNorthWestCorner() + getSouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
 		} else {
-			return (((SouthWestCorner() + NorthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;			
+			return (((getSouthWestCorner() + getNorthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
 		}
 	}
 
-	public float DirectionEdgeHeight(Direction DirectionType) {
+	public float getDirectionEdgeHeight(Direction DirectionType) {
 
-		switch(DirectionType) {
+		switch (DirectionType) {
 
 			case DIRECTION_NORTH:
 			case DIRECTION_UP_NORTH:
 			case DIRECTION_DOWN_NORTH:
-				return (((NorthWestCorner() + NorthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;			
+				return (((getNorthWestCorner() + getNorthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
 
 			case DIRECTION_SOUTH:
 			case DIRECTION_UP_SOUTH:
 			case DIRECTION_DOWN_SOUTH:
-				return (((SouthWestCorner() + SouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;			
+				return (((getSouthWestCorner() + getSouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
 
 			case DIRECTION_EAST:
 			case DIRECTION_UP_EAST:
 			case DIRECTION_DOWN_EAST:
-				return (((NorthEastCorner() + SouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;			
+				return (((getNorthEastCorner() + getSouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
 
 			case DIRECTION_WEST:
 			case DIRECTION_UP_WEST:
 			case DIRECTION_DOWN_WEST:
-				return (((NorthWestCorner() + SouthWestCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;			
+				return (((getNorthWestCorner() + getSouthWestCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
 
 			case DIRECTION_NORTHWEST:
 			case DIRECTION_UP_NORTHWEST:
 			case DIRECTION_DOWN_NORTHWEST:
-				return ((NorthWestCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return ((getNorthWestCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
 
 			case DIRECTION_SOUTHWEST:
 			case DIRECTION_UP_SOUTHWEST:
 			case DIRECTION_DOWN_SOUTHWEST:
-				return ((SouthWestCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return ((getSouthWestCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
 
 			case DIRECTION_SOUTHEAST:
 			case DIRECTION_UP_SOUTHEAST:
 			case DIRECTION_DOWN_SOUTHEAST:
-				return ((SouthEastCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return ((getSouthEastCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
 
 			case DIRECTION_NORTHEAST:
 			case DIRECTION_UP_NORTHEAST:
 			case DIRECTION_DOWN_NORTHEAST:
-				return ((NorthEastCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return ((getNorthEastCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
 		}
 
 		return 0;
 	}
-	
-	public boolean LightPassable(Axis LightingAxis) {	
-		switch(LightingAxis){
+
+	public boolean isLightPassable(Axis LightingAxis) {
+		switch (LightingAxis) {
 			case AXIS_X:
 				return false;
 
 			case AXIS_Y:
-			
+
 				return false;
 			case AXIS_Z:
-				if (split()) {
-					if (SouthEastCorner() <= CUBE_BOTTOM_HEIGHT && NorthEastCorner() <= CUBE_BOTTOM_HEIGHT && NorthWestCorner() <= CUBE_BOTTOM_HEIGHT)
+				if (isSplit()) {
+					if (getSouthEastCorner() <= CUBE_BOTTOM_HEIGHT && getNorthEastCorner() <= CUBE_BOTTOM_HEIGHT && getNorthWestCorner() <= CUBE_BOTTOM_HEIGHT)
 						return true;
-					if (NorthWestCorner() <= CUBE_BOTTOM_HEIGHT && SouthWestCorner() == CUBE_BOTTOM_HEIGHT && SouthEastCorner() <= CUBE_BOTTOM_HEIGHT)
+					if (getNorthWestCorner() <= CUBE_BOTTOM_HEIGHT && getSouthWestCorner() == CUBE_BOTTOM_HEIGHT && getSouthEastCorner() <= CUBE_BOTTOM_HEIGHT)
 						return true;
 					return false;
 				} else {
-					if (NorthEastCorner() <= CUBE_BOTTOM_HEIGHT && NorthWestCorner() <= CUBE_BOTTOM_HEIGHT && SouthWestCorner() <= CUBE_BOTTOM_HEIGHT)
+					if (getNorthEastCorner() <= CUBE_BOTTOM_HEIGHT && getNorthWestCorner() <= CUBE_BOTTOM_HEIGHT && getSouthWestCorner() <= CUBE_BOTTOM_HEIGHT)
 						return true;
-					if (SouthWestCorner() <= CUBE_BOTTOM_HEIGHT && SouthEastCorner() <= CUBE_BOTTOM_HEIGHT && NorthEastCorner() <= CUBE_BOTTOM_HEIGHT)
+					if (getSouthWestCorner() <= CUBE_BOTTOM_HEIGHT && getSouthEastCorner() <= CUBE_BOTTOM_HEIGHT && getNorthEastCorner() <= CUBE_BOTTOM_HEIGHT)
 						return true;
 					return false;
 				}

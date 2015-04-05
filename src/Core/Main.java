@@ -1,19 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Core;
 
@@ -45,8 +45,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Simple Initialization of gamestates that run just around everything else
+ * Simple Initialization of gamestates that run just abount everything else
  * A Threadpool is used for speeding up pathfinding and rendering
+ *
  * @author Impaler
  */
 public class Main extends SimpleApplication {
@@ -54,25 +55,25 @@ public class Main extends SimpleApplication {
 	private static ExecutorService pool;
 	public static Main app;
 
-    public static void main(String[] args) {	
+	public static void main(String[] args) {
 		app = new Main();
 
-		AppSettings setting= new AppSettings(true);
+		AppSettings setting = new AppSettings(true);
 		setting.setTitle("Khazad");
 		setting.setHeight(600);
 		setting.setWidth(800);
 		//Game.setShowSettings(false); 
 		app.setSettings(setting);
 
-        app.start();
-    }
+		app.start();
+	}
 
 	public Main() {
 		super(new StatsAppState());
 	}
 
-    @Override
-    public void simpleInitApp() {
+	@Override
+	public void simpleInitApp() {
 
 		try {
 			File file = new File("Khazad Error.txt");
@@ -86,20 +87,20 @@ public class Main extends SimpleApplication {
 		pool = Executors.newFixedThreadPool(8);
 
 		DataManager Data = DataManager.getDataManager();
-		Data.Initialize();
+		Data.initialize();
 
 		ImageManager Images = ImageManager.getImageManager();
-		Images.Initialize(assetManager);
+		Images.initialize(assetManager);
 
 		TextureManager Tex = TextureManager.getTextureManager();
-		Tex.Initialize(assetManager);
+		Tex.initialize(assetManager);
 
 		// RENDER
 		this.stateManager.attach(new MapRenderer());
 		this.stateManager.attach(new TerrainRenderer(pool));
 		this.stateManager.attach(new PathingRenderer());
 		this.stateManager.attach(new ActorRenderer());
-		
+
 		this.stateManager.attach(new Music());
 		this.stateManager.attach(new GUI(this));
 
@@ -110,21 +111,21 @@ public class Main extends SimpleApplication {
 		Mesh AxialMarker = new Mesh();
 		AxialMarker.setMode(Mesh.Mode.Lines);
 		AxialMarker.setLineWidth(3);
-		
-		Vector3f [] vertices = new Vector3f[7];
+
+		Vector3f[] vertices = new Vector3f[7];
 		vertices[0] = new Vector3f(0, 0, 0);
-		
-		vertices[1] = new Vector3f(0,  0,  1);
-		vertices[2] = new Vector3f(0,  0,  -1);
-		vertices[3] = new Vector3f(0,  1,  0);
-		vertices[4] = new Vector3f(0,  -1,  0);
-		vertices[5] = new Vector3f(1,  0,  0);
-		vertices[6] = new Vector3f(-1,  0,  0);
-		
-		int [] indexes = { 0,1, 0,2, 0,3, 0,4, 0,5, 0,6, };
-		
+
+		vertices[1] = new Vector3f(0, 0, 1);
+		vertices[2] = new Vector3f(0, 0, -1);
+		vertices[3] = new Vector3f(0, 1, 0);
+		vertices[4] = new Vector3f(0, -1, 0);
+		vertices[5] = new Vector3f(1, 0, 0);
+		vertices[6] = new Vector3f(-1, 0, 0);
+
+		int[] indexes = {0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6,};
+
 		AxialMarker.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
-		AxialMarker.setBuffer(VertexBuffer.Type.Index,    3, BufferUtils.createIntBuffer(indexes));
+		AxialMarker.setBuffer(VertexBuffer.Type.Index, 3, BufferUtils.createIntBuffer(indexes));
 		AxialMarker.updateBound();
 
 		Geometry box = new Geometry("AxisMarker", AxialMarker);
@@ -138,20 +139,18 @@ public class Main extends SimpleApplication {
 	public ExecutorService getThreadPool() {
 		return pool;
 	}
-	
-    @Override
-    public void simpleUpdate(float tpf) {
-		
-    }
 
-    @Override
-    public void simpleRender(RenderManager rm) {
-        //TODO: add render code
-    }
-	
 	@Override
-    public void destroy() {
-        super.destroy();
-        pool.shutdown();
-    }
+	public void simpleUpdate(float tpf) {
+	}
+
+	@Override
+	public void simpleRender(RenderManager rm) {
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		pool.shutdown();
+	}
 }

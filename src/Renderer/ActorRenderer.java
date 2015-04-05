@@ -1,19 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Renderer;
 
@@ -43,23 +43,19 @@ import com.jme3.scene.control.LodControl;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 /**
  * Rendering class for Actors, used Nodes from the Terrain rendered to attach
  * Actors to the correct locations for rendering and lighting.
- * 
+ *
  * @author Impaler
  */
-
 public class ActorRenderer extends AbstractAppState {
 
 	SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
-
 	LodControl ActorLodControler;
 	ConcurrentHashMap<Integer, Node> ActorNodeMap;
-
 	boolean DisplayToggle = true;
 
 	public ActorRenderer() {
@@ -76,15 +72,14 @@ public class ActorRenderer extends AbstractAppState {
 		//registerWithInput(app.getInputManager());
 	}
 
-	public void PopulateActors() {
+	public void populateActors() {
 		Game game = state.getState(Game.class);
 		GameMap map = game.getMap();
 
 		long CurrentTick = game.getCurrentTimeTick();
 
 		ArrayList<Actor> actors = game.getActors();
-		for (Actor target : actors)
-		{
+		for (Actor target : actors) {
 			if (target != null) {
 				if (target.isDirty()) {
 					Node actorNode = ActorNodeMap.get(target.getID());
@@ -115,11 +110,11 @@ public class ActorRenderer extends AbstractAppState {
 
 						if (MoveFraction <= 0.5) {
 							CubeShape shape = map.getCubeShape(coords);
-							float CenterHeight = shape.centerHeight();
-							float EdgeHeight = shape.DirectionEdgeHeight(MovingDirection);
+							float CenterHeight = shape.getCenterHeight();
+							float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection);
 							float CenterFraction = (MoveFraction * 2.0f);
 							float EdgeFraction = 1.0f - CenterFraction;
-							Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);	
+							Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
 						}
 
 						if (MoveFraction > 0.5) {
@@ -129,11 +124,11 @@ public class ActorRenderer extends AbstractAppState {
 
 							MapCoordinate translated = new MapCoordinate(coords, MovingDirection);
 							CubeShape shape = map.getCubeShape(translated);
-							float CenterHeight = shape.centerHeight() + (translated.Z - coords.Z);
-							float EdgeHeight = shape.DirectionEdgeHeight(MovingDirection.Invert()) + (translated.Z - coords.Z);
+							float CenterHeight = shape.getCenterHeight() + (translated.Z - coords.Z);
+							float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection.invert()) + (translated.Z - coords.Z);
 							float CenterFraction = ((MoveFraction - 0.5f) * 2.0f);
 							float EdgeFraction = 1.0f - CenterFraction;
-							Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);	
+							Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
 						}
 
 						if (MovingDirection == Direction.DIRECTION_DESTINATION) {
@@ -156,23 +151,23 @@ public class ActorRenderer extends AbstractAppState {
 			}
 		}
 	}
-	
-	public void HideActors() {
+
+	public void hideActors() {
 		for (Node target : ActorNodeMap.values()) {
 			target.setCullHint(Spatial.CullHint.Always);
 		}
 	}
 
 	@Override
-	public void update(float tpf) {	
+	public void update(float tpf) {
 		Game game = state.getState(Game.class);
 		if (game != null) {
 			GameMap map = game.getMap();
 
 			if (game.getTickRate() <= 256) {
-				PopulateActors();	
+				populateActors();
 			} else {
-				HideActors();
+				hideActors();
 			}
 		}
 	}
