@@ -4,7 +4,7 @@
 	<useControls filename="nifty-default-controls.xml"/>
 	
 	<style id="nonBrokenScrollPanel#bottom-right">
-	  <attributes width="0px" height="0px" />
+		<attributes width="0px" height="0px" />
 	</style>
 
 	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.PopulationPopupController" id="PopulationPopup">

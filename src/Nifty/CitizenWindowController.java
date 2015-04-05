@@ -29,6 +29,7 @@ public class CitizenWindowController implements Controller, Updatable {
 	GameScreenController screenController;
 	Citizen citizen;
 	Label nameLabel;
+	Label genderLabel;
 	Label jobLabel;
 	Label taskLabel;
 
@@ -39,6 +40,7 @@ public class CitizenWindowController implements Controller, Updatable {
 		this.screenController = (GameScreenController) screen.getScreenController();
 		// there is definitely some sort of bug with these ID's
 		nameLabel = control.findNiftyControl(control.getId() + "#CitizenWindow#window-content#CitizenWindowPanel#NameLabel", Label.class);
+		genderLabel = control.findNiftyControl(control.getId() + "#CitizenWindow#window-content#CitizenWindowPanel#GenderLabel", Label.class);
 		jobLabel = control.findNiftyControl(control.getId() + "#CitizenWindow#window-content#CitizenWindowPanel#JobLabel", Label.class);
 		taskLabel = control.findNiftyControl(control.getId() + "#CitizenWindow#window-content#CitizenWindowPanel#TaskLabel", Label.class);
 	}
@@ -50,6 +52,7 @@ public class CitizenWindowController implements Controller, Updatable {
 
 	public void update() {
 		nameLabel.setText("Name: " + citizen.getName());
+		genderLabel.setText("Gender: " + citizen.getGenderText());
 		jobLabel.setText("Current Job: " + citizen.PrimaryJob.getName());
 		taskLabel.setText("Current Task: " + citizen.getTask().getName());
 	}

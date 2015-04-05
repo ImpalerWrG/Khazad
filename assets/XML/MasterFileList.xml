@@ -13,6 +13,7 @@
 	<File Path="XML\Minerals.xml"/>
 	<File Path="XML\Stones.xml"/>
 	<File Path="XML\Gems.xml"/>
+	<File Path="XML\GivenNames.xml"/>
 	<File Path="XML\Soils.xml"/>
 	<File Path="XML\Metals.xml"/>
 	<File Path="XML\Creatures.xml"/>

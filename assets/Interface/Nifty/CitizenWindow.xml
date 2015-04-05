@@ -4,9 +4,10 @@
 	<useControls filename="nifty-default-controls.xml"/>
 
 	<controlDefinition name="CitizenWindow">
-		<control id="#CitizenWindow" name="window" title="Citizen" width="320px" height="150px" font="aurulent-sans-16.fnt" x="80px" y="80px">	
+		<control id="#CitizenWindow" name="window" title="Citizen" width="320px" height="180px" font="aurulent-sans-16.fnt" x="80px" y="80px">	
 			<panel id="#CitizenWindowPanel" controller="Nifty.CitizenWindowController" childLayout="vertical">		
 				<control name="label" color="#ffffffff" id="#NameLabel" height="30px" font="aurulent-sans-16.fnt" width="100%" textHAlign="left" />
+				<control name="label" color="#ffffffff" id="#GenderLabel" height="30px" font="aurulent-sans-16.fnt" width="100%" textHAlign="left" />
 				<control name="label" color="#ffffffff" id="#JobLabel" height="30px" font="aurulent-sans-16.fnt" width="100%" textHAlign="left" />
 				<control name="label" color="#ffffffff" id="#TaskLabel" height="30px" font="aurulent-sans-16.fnt" width="100%" textHAlign="left" />
 				<control childLayout="center" height="30px" id="#PopulationButton" label="Population" name="button" width="70px">
