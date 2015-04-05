@@ -10,7 +10,7 @@
 					<control childLayout="center" height="100%" id="button0" label="Menu" name="button" width="50px">
 						<interact onClick="OpenMenuPopup()"/>
 					</control>
-					<control childLayout="center" height="100%"id="KingdomButton" label="Kingdom" name="button" width="60px" style="disabled-button" >
+					<control childLayout="center" height="100%" id="KingdomButton" label="Kingdom" name="button" width="60px" style="disabled-button" >
 						<interact onClick="OpenKingdomPopup()"/>
 					</control>
 					<control childLayout="center" height="100%" id="StocksButton" label="Stocks" name="button" width="50px" style="disabled-button">

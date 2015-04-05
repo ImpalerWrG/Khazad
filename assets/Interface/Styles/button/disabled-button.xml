@@ -9,7 +9,6 @@
                     paddingLeft="7px" paddingRight="7px" width="100px" height="23px" childLayout="center"
                     visibleToMouse="false"/>
 		<effect>
-            <onHover name="border" color="#822f" post="true"/>
             <onFocus name="imageOverlay" filename="Interface/Styles/button/disabledButton.png"
                      imageMode="sprite-resize:100,23,1,2,96,2,2,2,96,2,19,2,96,2,2" post="true"/>
             <onEnabled name="renderQuad" startColor="#2228" endColor="#2220" post="true" length="150"/>
@@ -21,10 +20,6 @@
     <!-- style for the button text -->
     <!-- +++++++++++++++++++++++++++++++++++++ -->
     <style id="disabled-button#text" base="button-font">
-        <attributes align="center" valign="center" textHAlign="center" textVAlign="center" visibleToMouse="false"/>
-        <effect>
-            <onEnabled name="textColorAnimated" startColor="#8886" endColor="#eeef" post="false" length="150"/>
-            <onDisabled name="textColorAnimated" startColor="#eeef" endColor="#8886" post="false" length="150"/>
-        </effect>
+        <attributes align="center" valign="center" textHAlign="center" textVAlign="center" visibleToMouse="false" color="#999" />
     </style>
 </nifty-styles>
