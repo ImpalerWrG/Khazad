@@ -42,9 +42,4 @@ public class LoiterJob extends Job implements Serializable {
 	public float evaluatePawn(Pawn IdleCitizen) {
 		return 0;
 	}
-	
-	@Override
-	public String getName() {
-		return "Loitering";
-	}
 }

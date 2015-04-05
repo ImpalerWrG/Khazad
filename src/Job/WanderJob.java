@@ -85,11 +85,6 @@ public class WanderJob extends Job implements Serializable {
 		}
 		return null;
 	}
-	
-	@Override
-	public String getName() {
-		return "Wandering";
-	}
 
 	// this method is used by serialization
 	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {

@@ -258,9 +258,4 @@ public class ExcavateJob extends Job implements Serializable {
 		// fix transients
 		paths = PathFinding.getSingleton();
 	}
-	
-	@Override
-	public String getName() {
-		return "Excavating";
-	}
 }

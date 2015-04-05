@@ -17,6 +17,9 @@
 
 package Interface;
 
+import Core.Main;
+import Game.Actor;
+import Game.Citizen;
 import Game.Game;
 import Map.MapCoordinate;
 
@@ -39,13 +42,8 @@ import com.jme3.scene.shape.Sphere;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
-import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
-import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.controls.MouseAxisTrigger;
-import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.scene.Spatial;
 
 import Renderer.MapRenderer;
@@ -101,6 +99,8 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	protected int ViewLevels;
 	protected int ViewMax, ViewMin;
 	private boolean mouseWheelEnabled = true;
+	
+	private Actor selectedActor;
 
 	public GameCameraState() {
 	}
@@ -176,6 +176,15 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 				if (CurrentMode == CameraMode.SELECT_VOLUME && keyPressed)
 					setMode(CameraMode.SELECTING_VOLUME);
+				
+				if (selectedActor != null && keyPressed) {
+					if (selectedActor instanceof Citizen) {
+						Citizen citizen = (Citizen)selectedActor;
+						// open a window
+						Game game = Main.app.getStateManager().getState(Game.class);
+						game.getGameScreenController().spawnCitizenWindow(citizen);
+					}
+				}
 			}
 
 			if (name.equals("RightClick")) {
@@ -384,6 +393,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 		Ray ray = MainCamera.getMouseRay(app.getInputManager().getCursorPosition());
 		Vector3f IntersectLocation = new Vector3f();
+		selectedActor = null;
 
 		if (Mapnode != null) {
 			CollisionResults results = new CollisionResults();
@@ -392,6 +402,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			if (results.size() > 0) {
 				// The closest collision point is what was truly hit:
 				CollisionResult closest = results.getClosestCollision();
+				identifyNode(closest.getGeometry().getParent());
 
 				Vector3f contact = closest.getContactPoint();
 				Vector3f normal = closest.getContactNormal();
@@ -405,6 +416,24 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			int z = Math.round(IntersectLocation.getZ());
 			MouseLocation.set(x, y, z);
 		}
+	}
+	
+	private void identifyNode(Node node) {
+		if (node == null) {
+			return;
+		}
+		String nodeName = node.getName();
+		if (nodeName.startsWith("ActorNode-")) {
+			// an actor
+			// TODO highlight the actor in some way to show that the mouse is over it
+			int actorId = Integer.parseInt(nodeName.substring(10));
+			Game game = app.getStateManager().getState(Game.class);
+			selectedActor = game.getActors().get(actorId);
+			return;
+		}
+		//System.out.println("Skipped: " + nodeName);
+		// keep searching;
+		identifyNode(node.getParent());
 	}
 
 	public MapCoordinate getMouseLocation() {
@@ -530,5 +559,9 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 	public void setMouseWheelEnabled(boolean mouseWheelEnabled) {
 		this.mouseWheelEnabled = mouseWheelEnabled;
+	}
+	
+	public Actor getSelectedActor() {
+		return selectedActor;
 	}
 }

@@ -32,14 +32,13 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 
 import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.KeyTrigger;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.PriorityQueue;
 
 import java.util.concurrent.ExecutorService;
@@ -58,7 +57,7 @@ import java.util.concurrent.Future;
 public class Game extends AbstractAppState implements ActionListener, Serializable {
 
 	private static final long serialVersionUID = 1;
-	public static String version = "0.2.2";
+	public static String version = "0.2.2a";
 	transient SimpleApplication app = null;
 	transient AppStateManager state = null;
 	int MasterSeed;
@@ -77,7 +76,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	private long days;
 	int UniqueIDCounter;
 	PriorityQueue<Temporal> TemporalQueue;
-	ArrayList<Actor> Actors;
+	HashMap<Integer, Actor> Actors;
 	int ActorIDcounter = 0;
 	transient ExecutorService Executor;
 	transient Future lastUpdate;
@@ -132,7 +131,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		buildMapChunk((short) 0, (short) 0, (byte) X, (byte) Y);
 
 		GameSettlement = new Settlement();
-		Actors = new ArrayList<Actor>();
+		Actors = new HashMap<Integer, Actor>();
 
 		return true;
 	}
@@ -170,7 +169,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	public Pawn spawnPawn(MapCoordinate SpawnCoordinates, short CreatureTypeID) {
 		Pawn NewPawn = new Pawn(CreatureTypeID, ActorIDcounter, MasterSeed, SpawnCoordinates);
 		ActorIDcounter++;
-		Actors.add(NewPawn);
+		Actors.put(NewPawn.getID(), NewPawn);
 		addTemporal(NewPawn);
 		return NewPawn;
 	}
@@ -178,7 +177,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	public Citizen SpawnCitizen(short CreatureTypeID, MapCoordinate SpawnCoordinates) {
 		Citizen NewCitizen = new Citizen(CreatureTypeID, ActorIDcounter, PawnDice.roll(0, MasterSeed), SpawnCoordinates);
 		ActorIDcounter++;
-		Actors.add(NewCitizen);
+		Actors.put(NewCitizen.getID(), NewCitizen);
 		GameSettlement.addCitizen(NewCitizen);
 		addTemporal(NewCitizen);
 		return NewCitizen;
@@ -214,7 +213,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		jobs.addJob(newJob);
 	}
 
-	public ArrayList<Actor> getActors() {
+	public HashMap<Integer, Actor> getActors() {
 		return Actors;
 	}
 

@@ -17,6 +17,7 @@
 
 package Game;
 
+import Core.Utils;
 import Data.DataManager;
 import Data.Types.GivenNameGroupData;
 import Job.*;
@@ -62,7 +63,7 @@ public class Citizen extends Pawn implements Serializable {
 		GivenNameGroupData givenNameGroupData = data.getGivenNameGroupData(givenNameGroupId);
 		String prefix = givenNameGroupData.getPrefixes()[AttributeDice.roll(0, givenNameGroupData.getPrefixes().length - 1)];
 		String suffix = givenNameGroupData.getSuffixes()[AttributeDice.roll(0, givenNameGroupData.getSuffixes().length - 1)];
-		setFirstName(prefix + suffix);
+		setFirstName(Utils.upperCaseFirst(prefix + suffix)); // upper case the first letter in case the prefix is an empty string.
 		// TODO last names
 		setLastName("");
 	}
