@@ -9,6 +9,7 @@ import Core.Main;
 import Core.Utils;
 import Game.Game;
 import Game.SaveGameHeader;
+import Interface.GameCameraState;
 import Renderer.MapRenderer;
 import Renderer.SelectionRenderer;
 import de.lessvoid.nifty.Nifty;
@@ -68,7 +69,11 @@ public class MenuPopupController implements Controller {
 		SelectionRenderer selectionRenderer = Main.app.getStateManager().getState(SelectionRenderer.class);
 		Main.app.getStateManager().detach(selectionRenderer);
 		selectionRenderer.cleanup();
-
+		
+		GameCameraState camera = Main.app.getStateManager().getState(GameCameraState.class);
+		Main.app.getStateManager().detach(camera);
+		camera.cleanup();
+		
 		Game game = Main.app.getStateManager().getState(Game.class);
 		Main.app.getStateManager().getState(MapRenderer.class).detachFromGame();
 		Main.app.getStateManager().detach(game);
