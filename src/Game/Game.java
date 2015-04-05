@@ -1,19 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Game;
 
@@ -57,8 +57,8 @@ import java.util.concurrent.Future;
  * @author Impaler
  */
 public class Game extends AbstractAppState implements ActionListener, Serializable {
-	private static final long serialVersionUID = 1;
 
+	private static final long serialVersionUID = 1;
 	public static String version = "0.2.2";
 	transient SimpleApplication app = null;
 	transient AppStateManager state = null;
@@ -107,24 +107,23 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		registerWithInput(app.getInputManager());
 	}
 
-
-	public boolean InitializeGame(short X, short Y, String SeedString, String kingdomName) {
+	public boolean initializeGame(short X, short Y, String SeedString, String kingdomName) {
 		MasterSeed = SeedString.hashCode();
 		this.kingdomName = kingdomName;
 		saveGameFileName = null;
-		PawnDice.Seed(MasterSeed);
+		PawnDice.seed(MasterSeed);
 
 		MapGeology = new Geology();
-		MapGeology.Initialize(MasterSeed);
-		MapGeology.GenerateWorldHeightMap(X, Y);
+		MapGeology.initialize(MasterSeed);
+		MapGeology.generateWorldHeightMap(X, Y);
 
 		MainMap = new GameMap();
-		MainMap.Initialize(MasterSeed);
+		MainMap.initialize(MasterSeed);
 
 		GameWeather = new Weather();
-		AddTemporal(GameWeather);
+		addTemporal(GameWeather);
 
-		BuildMapChunk((short) 0, (short) 0, (byte) X, (byte) Y);
+		buildMapChunk((short) 0, (short) 0, (byte) X, (byte) Y);
 
 		GameSettlement = new Settlement();
 		Actors = new ArrayList<Actor>();
@@ -132,14 +131,14 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		return true;
 	}
 
-	boolean BuildMapChunk(short X, short Y, byte Width, byte Height) {
+	boolean buildMapChunk(short X, short Y, byte Width, byte Height) {
 		short SizeX = (short) (X + Width);
 		short SizeY = (short) (Y + Height);
 
 		// Create and add Cells with shape and material data
 		for (int x = X; x < SizeX; x++) {
 			for (int y = Y; y < SizeY; y++) {
-				MapGeology.GenerateCellHeight(x, y, (float) 10.0, (float) 1.0);
+				MapGeology.generateCellHeight(x, y, (float) 10.0, (float) 1.0);
 
 				for (int z = MapGeology.getCellBottomZLevel() - 2; z <= MapGeology.getCellTopZLevel() + 2; z++) {
 					CellCoordinate TargetCellCoordinates = new CellCoordinate(x, y, z);
@@ -147,39 +146,39 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 
 					NewCell.setCellCoordinates(TargetCellCoordinates);
 					MainMap.insertCell(NewCell);
-					MapGeology.LoadCellData(NewCell);
+					MapGeology.loadCellData(NewCell);
 				}
 			}
 		}
 
-		MainMap.GenerateFirstLight();
+		MainMap.generateFirstLight();
 
 		for (Cell TargetCell : MainMap.getCellCollection()) {
-			TargetCell.BuildFaceData();
-			TargetCell.GrowGrass();
+			TargetCell.buildFaces();
+			TargetCell.growGrass();
 		}
 
 		return true;
 	}
 
-	public Pawn SpawnPawn(MapCoordinate SpawnCoordinates, short CreatureTypeID) {
+	public Pawn spawnPawn(MapCoordinate SpawnCoordinates, short CreatureTypeID) {
 		Pawn NewPawn = new Pawn(CreatureTypeID, ActorIDcounter, MasterSeed, SpawnCoordinates);
 		ActorIDcounter++;
 		Actors.add(NewPawn);
-		AddTemporal(NewPawn);
+		addTemporal(NewPawn);
 		return NewPawn;
 	}
 
 	public Citizen SpawnCitizen(short CreatureTypeID, MapCoordinate SpawnCoordinates) {
-		Citizen NewCitizen = new Citizen(CreatureTypeID, ActorIDcounter, PawnDice.Roll(0, MasterSeed), SpawnCoordinates);
+		Citizen NewCitizen = new Citizen(CreatureTypeID, ActorIDcounter, PawnDice.roll(0, MasterSeed), SpawnCoordinates);
 		ActorIDcounter++;
 		Actors.add(NewCitizen);
 		GameSettlement.addCitizen(NewCitizen);
-		AddTemporal(NewCitizen);
+		addTemporal(NewCitizen);
 		return NewCitizen;
 	}
 
-	boolean AddTemporal(Temporal NewTemporal) {
+	boolean addTemporal(Temporal NewTemporal) {
 		TemporalQueue.add(NewTemporal);
 		return true;
 	}
@@ -196,7 +195,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		return GameWeather;
 	}
 
-	public void VolumeSelectionCompleted(VolumeSelection newVolume) {
+	public void volumeSelectionCompleted(VolumeSelection newVolume) {
 		// What dose it mean?  need some kind of priming knowlege
 
 		JobManager jobs = GameSettlement.getJobManager();
@@ -240,7 +239,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_SUBTRACT));
 		inputManager.addListener(this, inputs);
 	}
-	
+
 	@Override
 	public void update(float tpf) {
 		if (!Pause) {
@@ -292,11 +291,11 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		Executor = Main.app.getThreadPool();
 		lastUpdate = null;
 	}
-	
+
 	public String getTimeString() {
-		String hoursString = Utils.padLeadingZero(hours %25);
-		String minutesString = Utils.padLeadingZero(minutes %60);
-		String secondsString = Utils.padLeadingZero(seconds %60);
+		String hoursString = Utils.padLeadingZero(hours % 25);
+		String minutesString = Utils.padLeadingZero(minutes % 60);
+		String secondsString = Utils.padLeadingZero(seconds % 60);
 		return "DAY " + days + "  -  " + hoursString + ":" + minutesString + ":" + secondsString;
 	}
 }

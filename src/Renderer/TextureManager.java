@@ -1,19 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Renderer;
 
@@ -30,27 +30,23 @@ import com.jme3.texture.Image;
 import com.jme3.util.BufferUtils;
 import java.nio.ByteBuffer;
 
-
 /**
  *
  * @author Impaler
  */
-
 public class TextureManager {
 
 	Image TerrainImage;
 	Texture TerrainTexture;
 	Material TerrainMaterial;
-
 	ConcurrentHashMap<Integer, TextureAtlasCoordinates> CoordinateMap;
 	boolean[][] AtlasOccupiedMatrix;
-
 	int AtlasWidth, AtlasHeight, MinimumUnitSize;
 	Semaphore semaphore;
-
 	private static TextureManager instance = null;
 
 	public class TextureAtlasCoordinates {
+
 		public float Top, Bottom, Left, Right;
 	}
 
@@ -65,14 +61,14 @@ public class TextureManager {
 	}
 
 	public static TextureManager getTextureManager() {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new TextureManager();
 		}
 		return instance;
 	}
 
-	public void Initialize(AssetManager manager) {
-		TerrainMaterial = new Material(manager,"Common/MatDefs/Light/Lighting.j3md");
+	public void initialize(AssetManager manager) {
+		TerrainMaterial = new Material(manager, "Common/MatDefs/Light/Lighting.j3md");
 
 		int Bytes = Image.Format.RGBA8.getBitsPerPixel() / 8;
 		byte[] data = new byte[AtlasWidth * AtlasHeight * Bytes];
@@ -87,31 +83,31 @@ public class TextureManager {
 
 	TextureAtlasCoordinates getTextureCoordinates(short MaterialTypeID, short SurfaceTypeID) {
 		TextureAtlasCoordinates Target;
-				
+
 		try {
 			semaphore.acquire();
 			try {
 				ImageManager Imaging = ImageManager.getImageManager();
-				short TextureID = Imaging.PickImageTexture(MaterialTypeID, SurfaceTypeID);
+				short TextureID = Imaging.pickImageTexture(MaterialTypeID, SurfaceTypeID);
 
 				int Key = MaterialTypeID;
 				Key = Key << 16;
-				Key += TextureID;				
+				Key += TextureID;
 				Target = CoordinateMap.get(Key);
 
 				if (Target != null) {
 					return Target;
 				} else {
-					Image NewImage = Imaging.MapTexture(MaterialTypeID, TextureID);					
+					Image NewImage = Imaging.mapTexture(MaterialTypeID, TextureID);
 					Target = insertImage(NewImage);
 					CoordinateMap.put(Key, Target);
 					//Imaging.SaveImage(TerrainImage, "Terrain.png");
 				}
-			}	finally {
+			} finally {
 				semaphore.release();
 			}
 			return Target;
-		
+
 		} catch (final Exception e) {
 			e.printStackTrace();
 		}
@@ -142,7 +138,7 @@ public class TextureManager {
 
 					// Copy pixels
 					ImageManager Imaging = ImageManager.getImageManager();
-					Imaging.PasteImage(NewImage, TerrainImage, x * MinimumUnitSize, y * MinimumUnitSize);
+					Imaging.pasteImage(NewImage, TerrainImage, x * MinimumUnitSize, y * MinimumUnitSize);
 
 					// Mark as Occupied
 					for (int w = 0; w < ImageWidth; w++) {

@@ -1,19 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Renderer;
 
@@ -40,10 +40,10 @@ import java.util.concurrent.ExecutorService;
 
 /**
  * Rendering class for Terrain, tracks all Scene Nodes that Terrain geometry
- * attaches too and rebuilds the geometry when Cells are dirty.  Division of
+ * attaches too and rebuilds the geometry when Cells are dirty. Division of
  * Terrain into light/dark allows easy hiding of surface terrain and restriction
  * of directional sunlight to appropriate surfaces.
- * 
+ *
  * @author Impaler
  */
 public class TerrainRenderer extends AbstractAppState implements ActionListener {
@@ -51,16 +51,12 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 	SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
-
 	Game game = null;
-
 	TileBuilder builder;
 	LodControl TerrainLodControler;
-
 	boolean SunnyRendering = true;
 	boolean DarkRendering = true;
 	boolean TerrainRendering = true;
-
 	ExecutorService Executor;
 
 	public TerrainRenderer(ExecutorService Threadpool) {
@@ -77,7 +73,7 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 
 		registerWithInput(app.getInputManager());
 	}
-	
+
 	public void attachToGame(Game TargetGame) {
 		this.game = TargetGame;
 		this.TerrainLodControler = new LodControl();
@@ -97,12 +93,12 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 	public void registerWithInput(InputManager inputManager) {
 		String[] inputs = {"TerrainRenderToggle", "SunnyRenderToggle"};
 
-		inputManager.addMapping("TerrainRenderToggle", new KeyTrigger(KeyInput.KEY_T));		
-		inputManager.addMapping("SunnyRenderToggle", new KeyTrigger(KeyInput.KEY_L));		
+		inputManager.addMapping("TerrainRenderToggle", new KeyTrigger(KeyInput.KEY_T));
+		inputManager.addMapping("SunnyRenderToggle", new KeyTrigger(KeyInput.KEY_L));
 		inputManager.addListener(this, inputs);
 	}
 
-	public void RebuildDirtyCells(Collection<Cell> cells) {
+	public void rebuildDirtyCells(Collection<Cell> cells) {
 		for (Cell target : cells) {
 			if (target.isTerrainRenderingDirty()) {
 				CellCoordinate Coords = target.getCellCoordinates();
@@ -117,10 +113,10 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 		}
 	}
 
-	public void SetTerrainRendering(Collection<Cell> cells) {
+	public void setTerrainRendering(Collection<Cell> cells) {
 		Spatial.CullHint Sunnyhint = Spatial.CullHint.Always;
 		Spatial.CullHint Darkhint = Spatial.CullHint.Always;
-		
+
 		if (SunnyRendering)
 			Sunnyhint = Spatial.CullHint.Dynamic;
 
@@ -129,14 +125,14 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 
 		if (!TerrainRendering)
 			Darkhint = Sunnyhint = Spatial.CullHint.Always;
-			
+
 		for (Cell target : cells) {
 			CellCoordinate Coords = target.getCellCoordinates();
 
 			MapRenderer Renderer = state.getState(MapRenderer.class);
 			Node CellLight = Renderer.getCellNodeLight(Coords);
 			Node CellDark = Renderer.getCellNodeDark(Coords);
-			
+
 			Spatial light = CellLight.getChild("LightGeometry Cell" + target.toString());
 			Spatial dark = CellDark.getChild("DarkGeometry Cell" + target.toString());
 
@@ -152,10 +148,10 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
 			if (TerrainRendering) {
-				SetTerrainRendering(map.getCellCollection());
-				RebuildDirtyCells(map.getCellCollection());
+				setTerrainRendering(map.getCellCollection());
+				rebuildDirtyCells(map.getCellCollection());
 			} else {
-				SetTerrainRendering(map.getCellCollection());
+				setTerrainRendering(map.getCellCollection());
 			}
 		}
 	}

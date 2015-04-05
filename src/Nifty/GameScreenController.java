@@ -1,19 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Nifty;
 
@@ -94,7 +94,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 					closePopup();
 					return true;
 				} else {
-					Menu();
+					menu();
 					return true;
 				}
 			}
@@ -110,7 +110,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 	public void onFocus(boolean getFocus) {
 	}
 
-	public void Menu() {
+	public void menu() {
 		if (MenuPopup == null) {
 			MenuPopup = nifty.createPopup("MenuPopup");
 		}
@@ -129,11 +129,11 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 		}
 	}
 
-	public void Quit() {
+	public void quit() {
 		this.app.stop();
 	}
 
-	public void Abandon() {
+	public void abandon() {
 		// Destroy Game object
 		SelectionRenderer selectionRenderer = app.getStateManager().getState(SelectionRenderer.class);
 		app.getStateManager().detach(selectionRenderer);
@@ -151,7 +151,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 		nifty.gotoScreen("StartScreen");
 	}
 
-	public void SaveGame() {
+	public void saveGame() {
 		// TODO maybe a GUI to pick a save game slot
 		// otherwise, lets just hard code World01.sav for now
 
@@ -192,10 +192,10 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 			oos = new ObjectOutputStream(new FileOutputStream(saveFile));
 			oos.writeObject(saveGameHeader);
 			oos.writeObject(game);
-			ShowSaveSuccess();
+			showSaveSuccess();
 			closePopup();
 		} catch (IOException e) {
-			ShowSaveError(e.toString());
+			showSaveError(e.toString());
 			e.printStackTrace();
 		} finally {
 			try {
@@ -203,7 +203,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 					oos.close();
 				}
 			} catch (IOException e) {
-				ShowSaveError(e.toString());
+				showSaveError(e.toString());
 				e.printStackTrace();
 			}
 		}
@@ -235,7 +235,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 		}
 	}
 
-	private void ShowSaveError(String errorMessage) {
+	private void showSaveError(String errorMessage) {
 		if (SaveErrorPopup == null) {
 			SaveErrorPopup = nifty.createPopup("SaveErrorPopup");
 		}
@@ -247,44 +247,44 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 		nifty.showPopup(nifty.getCurrentScreen(), this.SaveErrorPopup.getId(), null);
 	}
 
-	public void CloseSaveError() {
+	public void closeSaveError() {
 		if (SaveErrorPopup != null) {
 			nifty.closePopup(this.SaveErrorPopup.getId());
 		}
 	}
 
-	private void ShowSaveSuccess() {
+	private void showSaveSuccess() {
 		if (SaveSuccessPopup == null) {
 			SaveSuccessPopup = nifty.createPopup("SaveSuccessPopup");
 		}
 		nifty.showPopup(nifty.getCurrentScreen(), this.SaveSuccessPopup.getId(), null);
 	}
 
-	public void CloseSaveSuccess() {
+	public void closeSaveSuccess() {
 		if (SaveSuccessPopup != null) {
 			nifty.closePopup(this.SaveSuccessPopup.getId());
 		}
 	}
 
-	public void Pause() {
+	public void pause() {
 		Game game = app.getStateManager().getState(Game.class);
 		game.Pause(!game.isPaused());
 	}
 
-	public void SetSpeed(String NewSpeed) {
+	public void setSpeed(String NewSpeed) {
 		int speed = Integer.parseInt(NewSpeed);
 		Game game = app.getStateManager().getState(Game.class);
 		game.Pause(false);
 		game.setTickRate(speed);
 	}
 
-	public void Dig() {
+	public void dig() {
 		GameCameraState Cam = app.getStateManager().getState(GameCameraState.class);
 		Cam.setMode(GameCameraState.CameraMode.SELECT_VOLUME);
 	}
 
 	@NiftyEventSubscriber(id = "DepthSlider")
-	public void DepthSliderChanged(final String id, final ScrollbarChangedEvent event) {
+	public void depthSliderChanged(final String id, final ScrollbarChangedEvent event) {
 
 		Scrollbar bar = event.getScrollbar();
 		Game game = app.getStateManager().getState(Game.class);
@@ -298,6 +298,6 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 
 		int value = (int) event.getValue();
 		int slice = camera.getSliceTop() - camera.getSliceBottom();
-		camera.SetSlice(High - value, High - value - slice);
+		camera.setSlice(High - value, High - value - slice);
 	}
 }

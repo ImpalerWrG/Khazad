@@ -53,24 +53,23 @@ public class SetupScreenController implements ScreenController {
 
 	public void onEndScreen() {
 	}
-	
-	public void CancelSetup() {
+
+	public void cancelSetup() {
 		//nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).setText("");
 		nifty.gotoScreen("StartScreen");
 	}
 
-
-	public void BeginGame() {
+	public void beginGame() {
 		String kingdomName = nifty.getCurrentScreen().findNiftyControl("KingdomNameTextField", TextField.class).getDisplayedText();
 		if (kingdomName.length() == 0) {
-			ShowError("Please enter a kingdom name");
+			showError("Please enter a kingdom name");
 			return;
 		}
 		String Seed = nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).getDisplayedText();
 
 		Game game = new Game();
 		this.app.getStateManager().attach(game);
-		game.InitializeGame((short) 10, (short) 10, Seed, kingdomName);
+		game.initializeGame((short) 10, (short) 10, Seed, kingdomName);
 
 		this.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
 		this.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
@@ -79,13 +78,13 @@ public class SetupScreenController implements ScreenController {
 
 		GameCameraState cam = new GameCameraState();
 		this.app.getStateManager().attach(cam);
-		cam.SetViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
-		cam.SetSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
+		cam.setViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
+		cam.setSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
 
 		// PATHING
 		PathFinding Pather = PathFinding.getSingleton();
 		Pather.initialize(this.app.getStateManager(), this.app);
-		Pather.CreateMapAbstraction(game.getMap());
+		Pather.createMapAbstraction(game.getMap());
 		//Pather.AllocateThreadPool(ExecutionThreadpool);
 		this.app.getStateManager().attach(Pather);
 
@@ -96,8 +95,8 @@ public class SetupScreenController implements ScreenController {
 			game.SpawnCitizen(DwarfID, Pather.Tester.getRandomPassableCoordinate());
 		}
 	}
-	
-	private void ShowError(String errorMessage) {
+
+	private void showError(String errorMessage) {
 		if (ErrorPopup == null) {
 			ErrorPopup = nifty.createPopup("ErrorPopup");
 		}
@@ -109,7 +108,7 @@ public class SetupScreenController implements ScreenController {
 		nifty.showPopup(nifty.getCurrentScreen(), this.ErrorPopup.getId(), null);
 	}
 
-	public void CloseError() {
+	public void closeError() {
 		if (ErrorPopup != null) {
 			nifty.closePopup(this.ErrorPopup.getId());
 			ErrorPopup = null;

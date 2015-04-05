@@ -73,33 +73,33 @@ public class TileBuilder implements Serializable {
 		MeshData TargetMeshData = MesheDataMap.get(Shape);
 
 		if (TargetMeshData == null) {
-			if (Shape.FaceDirection == Direction.DIRECTION_NONE) {
-				TargetMeshData = CreateSlopeFace(Shape);
+			if (Shape.getFaceDirection() == Direction.DIRECTION_NONE) {
+				TargetMeshData = createSlopeFaceMesh(Shape);
 				if (TargetMeshData != null) 
 					MesheDataMap.put(Shape, TargetMeshData);
-				return Finalize(TargetMeshData, AtlasCoords);
+				return finalizeMesh(TargetMeshData, AtlasCoords);
 			} else {
-				if (Shape.FaceDirection == Direction.DIRECTION_DOWN || Shape.FaceDirection == Direction.DIRECTION_UP) {
-					if (Shape.SourceCubeComponent.hasFloor() || Shape.SourceCubeComponent.hasCeiling()) {
-						TargetMeshData = CreateFlatFace(Shape);
+				if (Shape.getFaceDirection() == Direction.DIRECTION_DOWN || Shape.getFaceDirection() == Direction.DIRECTION_UP) {
+					if (Shape.getSourceCubeShape().hasFloor() || Shape.getSourceCubeShape().hasCeiling()) {
+						TargetMeshData = createFlatFaceMesh(Shape);
 						if (TargetMeshData != null)
 							MesheDataMap.put(Shape, TargetMeshData);
-						return Finalize(TargetMeshData, AtlasCoords);
+						return finalizeMesh(TargetMeshData, AtlasCoords);
 					}
-					return Finalize(TargetMeshData, AtlasCoords);
+					return finalizeMesh(TargetMeshData, AtlasCoords);
 				} else {
-					TargetMeshData = CreateSideFace(Shape);
+					TargetMeshData = createSideFaceMesh(Shape);
 					if (TargetMeshData != null)
 						MesheDataMap.put(Shape, TargetMeshData);
-					return Finalize(TargetMeshData, AtlasCoords);
+					return finalizeMesh(TargetMeshData, AtlasCoords);
 				}
 			}
 		} else {
-			return Finalize(TargetMeshData, AtlasCoords);
+			return finalizeMesh(TargetMeshData, AtlasCoords);
 		}
 	}
 
-	private Mesh Finalize(MeshData Data, TextureAtlasCoordinates AtlasCoords) {
+	private Mesh finalizeMesh(MeshData Data, TextureAtlasCoordinates AtlasCoords) {
 		if (Data == null || AtlasCoords == null)
 			return null;
 
@@ -148,15 +148,15 @@ public class TileBuilder implements Serializable {
 		return ManualObject;
 	}
 
-	private MeshData CreateFlatFace(FaceShape Shape) {
+	private MeshData createFlatFaceMesh(FaceShape Shape) {
 
 		boolean Triangle1 = false;
 		boolean Triangle2 = false;
 
-		byte NorthEastCorner = Shape.SourceCubeComponent.NorthEastCorner();
-		byte NorthWestCorner = Shape.SourceCubeComponent.NorthWestCorner();
-		byte SouthEastCorner = Shape.SourceCubeComponent.SouthEastCorner();
-		byte SouthWestCorner = Shape.SourceCubeComponent.SouthWestCorner();
+		byte NorthEastCorner = Shape.getSourceCubeShape().getNorthEastCorner();
+		byte NorthWestCorner = Shape.getSourceCubeShape().getNorthWestCorner();
+		byte SouthEastCorner = Shape.getSourceCubeShape().getSouthEastCorner();
+		byte SouthWestCorner = Shape.getSourceCubeShape().getSouthWestCorner();
 				
 		ArrayList<Vector3f> Vertices = new ArrayList<Vector3f>(4);
 		ArrayList<Vector3f> Normals = new ArrayList<Vector3f>(4);
@@ -180,7 +180,7 @@ public class TileBuilder implements Serializable {
 			TextureCoords.add(NW, new Vector2f(0.0f, 1.0f));
 			TextureCoords.add(NE, new Vector2f(1.0f, 1.0f));
 
-			if (Shape.SourceCubeComponent.split()) // Split along NW-SE line
+			if (Shape.getSourceCubeShape().isSplit()) // Split along NW-SE line
 			{
 				if ((SouthEastCorner == CubeShape.CUBE_BOTTOM_HEIGHT && NorthEastCorner == CubeShape.CUBE_BOTTOM_HEIGHT && NorthWestCorner == CubeShape.CUBE_BOTTOM_HEIGHT) || (SouthEastCorner == CubeShape.CUBE_TOP_HEIGHT && NorthEastCorner == CubeShape.CUBE_TOP_HEIGHT && NorthWestCorner == CubeShape.CUBE_TOP_HEIGHT))
 				{
@@ -228,12 +228,12 @@ public class TileBuilder implements Serializable {
 		}
 	}
  
-	private MeshData CreateSideFace(FaceShape Shape) {
+	private MeshData createSideFaceMesh(FaceShape Shape) {
 		
-		byte NorthEastCorner = Shape.SourceCubeComponent.NorthEastCorner();
-		byte NorthWestCorner = Shape.SourceCubeComponent.NorthWestCorner();
-		byte SouthEastCorner = Shape.SourceCubeComponent.SouthEastCorner();
-		byte SouthWestCorner = Shape.SourceCubeComponent.SouthWestCorner();		
+		byte NorthEastCorner = Shape.getSourceCubeShape().getNorthEastCorner();
+		byte NorthWestCorner = Shape.getSourceCubeShape().getNorthWestCorner();
+		byte SouthEastCorner = Shape.getSourceCubeShape().getSouthEastCorner();
+		byte SouthWestCorner = Shape.getSourceCubeShape().getSouthWestCorner();		
 
 		ArrayList<Vector3f> Vertices = new ArrayList<Vector3f>();
 		ArrayList<Vector3f> Normals = new ArrayList<Vector3f>();
@@ -241,8 +241,8 @@ public class TileBuilder implements Serializable {
 		ArrayList<Integer> Indexes = new ArrayList<Integer>();	
 
 		boolean Triangle = false;
-		CubeShape Cube = Shape.SourceCubeComponent;
-		CubeShape Adjacent = Shape.AdjacentCubeComponent;
+		CubeShape Cube = Shape.getSourceCubeShape();
+		CubeShape Adjacent = Shape.getAdjacentCubeShape();
 
 
 		float XLeft = 0; float XRight = 0; float YLeft = 0; float YRight = 0;
@@ -250,33 +250,33 @@ public class TileBuilder implements Serializable {
 		int RightCorner = 0; int RightAdjacentCorner = 0;
 		Vector3f Normal = new Vector3f();
 
-		switch (Shape.FaceDirection)
+		switch (Shape.getFaceDirection())
 		{
 			case DIRECTION_SOUTH:
 				XLeft = -MapCoordinate.HALFCUBE;  YLeft = -MapCoordinate.HALFCUBE;  XRight =  MapCoordinate.HALFCUBE;  YRight = -MapCoordinate.HALFCUBE;
-				LeftCorner = Cube.SouthWestCorner();   RightCorner = Cube.SouthEastCorner();
-				LeftAdjacentCorner = Adjacent.NorthWestCorner();  RightAdjacentCorner = Adjacent.NorthEastCorner();
+				LeftCorner = Cube.getSouthWestCorner();   RightCorner = Cube.getSouthEastCorner();
+				LeftAdjacentCorner = Adjacent.getNorthWestCorner();  RightAdjacentCorner = Adjacent.getNorthEastCorner();
 				Normal = Vector3f.UNIT_Y.negate();
 				break;
 
 			case DIRECTION_NORTH:
 				XLeft =  MapCoordinate.HALFCUBE;  YLeft =  MapCoordinate.HALFCUBE;  XRight = -MapCoordinate.HALFCUBE;  YRight =  MapCoordinate.HALFCUBE;
-				LeftCorner = Cube.NorthEastCorner();  RightCorner = Cube.NorthWestCorner();
-				LeftAdjacentCorner = Adjacent.SouthEastCorner();  RightAdjacentCorner = Adjacent.SouthWestCorner();
+				LeftCorner = Cube.getNorthEastCorner();  RightCorner = Cube.getNorthWestCorner();
+				LeftAdjacentCorner = Adjacent.getSouthEastCorner();  RightAdjacentCorner = Adjacent.getSouthWestCorner();
 				Normal = Vector3f.UNIT_Y;
 				break;
 
 			case DIRECTION_WEST:
 				XLeft = -MapCoordinate.HALFCUBE;  YLeft =  MapCoordinate.HALFCUBE;  XRight = -MapCoordinate.HALFCUBE;  YRight = -MapCoordinate.HALFCUBE;
-				LeftCorner = Cube.NorthWestCorner();  RightCorner = Cube.SouthWestCorner();
-				LeftAdjacentCorner = Adjacent.NorthEastCorner();  RightAdjacentCorner = Adjacent.SouthEastCorner();
+				LeftCorner = Cube.getNorthWestCorner();  RightCorner = Cube.getSouthWestCorner();
+				LeftAdjacentCorner = Adjacent.getNorthEastCorner();  RightAdjacentCorner = Adjacent.getSouthEastCorner();
 				Normal = Vector3f.UNIT_X.negate();
 				break;
 
 			case DIRECTION_EAST:
 				XLeft =  MapCoordinate.HALFCUBE;  YLeft = -MapCoordinate.HALFCUBE;  XRight =  MapCoordinate.HALFCUBE;  YRight =  MapCoordinate.HALFCUBE;
-				LeftCorner = Cube.SouthEastCorner();  RightCorner = Cube.NorthEastCorner();
-				LeftAdjacentCorner = Adjacent.SouthWestCorner();  RightAdjacentCorner = Adjacent.NorthWestCorner();
+				LeftCorner = Cube.getSouthEastCorner();  RightCorner = Cube.getNorthEastCorner();
+				LeftAdjacentCorner = Adjacent.getSouthWestCorner();  RightAdjacentCorner = Adjacent.getNorthWestCorner();
 				Normal = Vector3f.UNIT_X;
 				break;
 
@@ -292,13 +292,13 @@ public class TileBuilder implements Serializable {
 		
 		float LeftBottom = Math.min(LeftCorner, LeftAdjacentCorner);
 		LeftBottom = (Math.min(CubeShape.CUBE_TOP_HEIGHT, Math.max(CubeShape.CUBE_BOTTOM_HEIGHT, LeftBottom)) - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
-		if (Adjacent.isSky() && Cube.hasFace(Shape.FaceDirection) && !Cube.isSky()) {
+		if (Adjacent.isSky() && Cube.hasFace(Shape.getFaceDirection()) && !Cube.isSky()) {
 			LeftBottom = (CubeShape.CUBE_BOTTOM_HEIGHT - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
 		}
 		
 		float RightBottom = Math.min(RightCorner, RightAdjacentCorner);
 		RightBottom = (Math.min(CubeShape.CUBE_TOP_HEIGHT, Math.max(CubeShape.CUBE_BOTTOM_HEIGHT, RightBottom)) - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
-		if (Adjacent.isSky() && Cube.hasFace(Shape.FaceDirection) && !Cube.isSky()) {
+		if (Adjacent.isSky() && Cube.hasFace(Shape.getFaceDirection()) && !Cube.isSky()) {
 			RightBottom = (CubeShape.CUBE_BOTTOM_HEIGHT - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
 		}
 	
@@ -358,15 +358,15 @@ public class TileBuilder implements Serializable {
 		}
 	}
 
-	private MeshData CreateSlopeFace(FaceShape Shape) {
+	private MeshData createSlopeFaceMesh(FaceShape Shape) {
 		
 		boolean Triangle1 = false;
 		boolean Triangle2 = false;
 
-		byte NorthEastCorner = Shape.SourceCubeComponent.NorthEastCorner();
-		byte NorthWestCorner = Shape.SourceCubeComponent.NorthWestCorner();
-		byte SouthEastCorner = Shape.SourceCubeComponent.SouthEastCorner();
-		byte SouthWestCorner = Shape.SourceCubeComponent.SouthWestCorner();
+		byte NorthEastCorner = Shape.getSourceCubeShape().getNorthEastCorner();
+		byte NorthWestCorner = Shape.getSourceCubeShape().getNorthWestCorner();
+		byte SouthEastCorner = Shape.getSourceCubeShape().getSouthEastCorner();
+		byte SouthWestCorner = Shape.getSourceCubeShape().getSouthWestCorner();
 
 		ArrayList<Vector3f> Vertices = new ArrayList<Vector3f>();
 		ArrayList<Vector3f> Normals = new ArrayList<Vector3f>();
@@ -393,7 +393,7 @@ public class TileBuilder implements Serializable {
 			Vector3f X = Vector3f.UNIT_X;
 			Vector3f Y = Vector3f.UNIT_Y;
 
-			if (Shape.SourceCubeComponent.split()) // Split along the NW-SE line
+			if (Shape.getSourceCubeShape().isSplit()) // Split along the NW-SE line
 			{
 				// Triangle1 SE->NE->NW
 				if (SouthEastCorner > CubeShape.BELOW_CUBE_HEIGHT && NorthEastCorner > CubeShape.BELOW_CUBE_HEIGHT && NorthWestCorner > CubeShape.BELOW_CUBE_HEIGHT)

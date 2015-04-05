@@ -1,46 +1,29 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Nifty;
 
 import com.jme3.app.Application;
 
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-
-import Game.Game;
-import Job.JobManager;
-
-import PathFinding.PathFinding;
-import Renderer.TerrainRenderer;
-import Renderer.SelectionRenderer;
-import Renderer.PathingRenderer;
-import Renderer.MapRenderer;
-import Interface.GameCameraState;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.elements.Element;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileSystemView;
 
 /**
  *
@@ -67,39 +50,39 @@ public class ShellScreenController implements ScreenController {
 	public void onEndScreen() {
 	}
 
-	public void Quit() {
+	public void quit() {
 		app.stop();
 	}
 
-	public void GameSetup() {
+	public void gameSetup() {
 		nifty.gotoScreen("SetupScreen");
 	}
 
-	public void BeginTutorial() {
+	public void beginTutorial() {
 		if (TutorialPopup == null) {
 			TutorialPopup = nifty.createPopup("TutorialPopup");
 		}
 		nifty.showPopup(nifty.getCurrentScreen(), this.TutorialPopup.getId(), null);
 	}
 
-	public void EndTutorial() {
+	public void endTutorial() {
 		if (TutorialPopup != null) {
 			nifty.closePopup(this.TutorialPopup.getId());
 		}
 	}
 
-	public void BeginCredtis() {
+	public void beginCredits() {
 	}
 
-	public void EndCredtis() {
+	public void endCredtis() {
 	}
 
-	public void LoadGame() {
+	public void loadGame() {
 		nifty.gotoScreen("LoadGameScreen");
 		return;
 	}
 
-	private void ShowError(String errorMessage) {
+	private void showError(String errorMessage) {
 		if (ErrorPopup == null) {
 			ErrorPopup = nifty.createPopup("ErrorPopup");
 		}
@@ -111,7 +94,7 @@ public class ShellScreenController implements ScreenController {
 		nifty.showPopup(nifty.getCurrentScreen(), this.ErrorPopup.getId(), null);
 	}
 
-	public void CloseError() {
+	public void closeError() {
 		if (ErrorPopup != null) {
 			nifty.closePopup(this.ErrorPopup.getId());
 			ErrorPopup = null;

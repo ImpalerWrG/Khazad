@@ -13,8 +13,8 @@ import java.util.Date;
  * @author Dallas
  */
 public class SaveGameHeader implements Serializable, Comparable<SaveGameHeader> {
+
 	private static final long serialVersionUID = 1;
-	
 	public String version;
 	public String kingdomName;
 	public String timeString;

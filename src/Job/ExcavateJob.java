@@ -1,19 +1,19 @@
 /* Copyright 2010 Kenneth 'Impaler' Ferland
 
-This file is part of Khazad.
+ This file is part of Khazad.
 
-Khazad is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-Khazad is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Job;
 
@@ -40,19 +40,22 @@ import java.util.Map;
  * @author Impaler
  */
 public class ExcavateJob extends Job implements Serializable {
+
 	private static final long serialVersionUID = 1;
-
+	// The desired final shapes of Cubes
 	HashMap<CellCoordinate, CubeShape[]> Designations;
-	HashMap<CellCoordinate, BitSet> AccessibleExcavations;  // Excavation targets that are accesible
+	// Boolens for Excavation targets that are accesible and assigned respectivly
+	HashMap<CellCoordinate, BitSet> AccessibleExcavations;
 	HashMap<CellCoordinate, BitSet> AssignedExcavations;
-
+	// Counts on each stage of work
 	int DesignationCount = 0;
 	int AccessibleExcavationCount = 0;
 	int AssignedExcavationsCount = 0;
-
-	HashMap<MapCoordinate, MapCoordinate> AccessibleMap; // The locations from which an excatation target is accesible
+	// The locations from which an excatation target is accesible;
+	HashMap<MapCoordinate, MapCoordinate> AccessibleMap;
+	// Which Pawn is assigned to excavate each Coordinate
 	HashMap<Pawn, MapCoordinate> AssignedWorkers;
-
+	// The Zone and other classes needed for accessability checks
 	Zone ExcavationZone;
 	GameMap map = null;
 	transient PathFinding paths;
@@ -72,14 +75,6 @@ public class ExcavateJob extends Job implements Serializable {
 		Priority = 10;
 		paths = PathFinding.getSingleton();
 	}
-	
-	// this method is used by serialization
-	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
-		// default deserialization
-		ois.defaultReadObject();
-		// fix transients
-		paths = PathFinding.getSingleton();
-	}
 
 	public void addDesignations(VolumeSelection Selection, Zone SourceZone, CubeShape NewShape) {
 		this.ExcavationZone = SourceZone;
@@ -91,7 +86,7 @@ public class ExcavateJob extends Job implements Serializable {
 				for (int z = Origin.Z; z < Terminal.Z + 1; z++) {
 					MapCoordinate TargetCoords = new MapCoordinate(x, y, z);
 					CellCoordinate CellCoords = new CellCoordinate(TargetCoords);
-					int CubeIndex = TargetCoords.CubeIntIndex();
+					int CubeIndex = TargetCoords.getCubeIntIndex();
 
 					CubeShape[] DesignationShapes = Designations.get(CellCoords);
 					BitSet AccessibleLocation = AccessibleExcavations.get(CellCoords);
@@ -103,7 +98,7 @@ public class ExcavateJob extends Job implements Serializable {
 							Designations.put(CellCoords, DesignationShapes);
 						}
 						DesignationShapes[CubeIndex] = NewShape;
-						DesignationCount ++;
+						DesignationCount++;
 
 						if (AccessibleLocation == null) {
 							AccessibleLocation = new BitSet(MapCoordinate.CUBESPERCELL);
@@ -127,9 +122,9 @@ public class ExcavateJob extends Job implements Serializable {
 
 						// Test for Accesability of this Coordinate
 						BitSet DirectionFlags;
-						for (Direction dir: Direction.AXIAL_DIRECTIONS) {
+						for (Direction dir : Direction.AXIAL_DIRECTIONS) {
 							MapCoordinate AdjacentcCoords = TargetCoords.clone();
-							AdjacentcCoords.TranslateMapCoordinates(dir);
+							AdjacentcCoords.translate(dir);
 							CubeShape AdjacentShape = GameMap.getMap().getCubeShape(AdjacentcCoords);
 
 							if (AdjacentShape.isEmpty() || (dir == Direction.DIRECTION_DOWN && !AdjacentShape.isSolid())) {
@@ -154,10 +149,10 @@ public class ExcavateJob extends Job implements Serializable {
 	public CubeShape getDesignation(MapCoordinate Coords) {
 		CellCoordinate CellCoords = new CellCoordinate(Coords);
 		CubeShape[] DesignationShapes = Designations.get(CellCoords);
-		return (DesignationShapes != null) ? DesignationShapes[Coords.CubeIntIndex()] : null;
+		return (DesignationShapes != null) ? DesignationShapes[Coords.getCubeIntIndex()] : null;
 	}
 
-	public void CompleteDesignation(MapCoordinate Coords) {
+	public void completeDesignation(MapCoordinate Coords) {
 		AccessibleMap.remove(Coords);
 		ExcavationZone.removeMapCoordinate(Coords);
 
@@ -168,15 +163,15 @@ public class ExcavateJob extends Job implements Serializable {
 		// test adjacent for new accesability
 		if (paths.getDirectionFlags(Coords, Modality).cardinality() > 0) {
 			BitSet DirectionFlags;
-			for (Direction dir: Direction.AXIAL_DIRECTIONS) {
+			for (Direction dir : Direction.AXIAL_DIRECTIONS) {
 				MapCoordinate AdjacentcCoords = Coords.clone();
-				AdjacentcCoords.TranslateMapCoordinates(dir);
+				AdjacentcCoords.translate(dir);
 				CubeShape AdjacentShape = GameMap.getMap().getCubeShape(AdjacentcCoords);
 				CubeShape DesignationShape = getDesignation(AdjacentcCoords);
 
-				if (DesignationShape != null && !DesignationShape.ExcavationEquivilent(AdjacentShape)) {
+				if (DesignationShape != null && !DesignationShape.isExcavationEquivilent(AdjacentShape)) {
 					BitSet AccessibleLocation = AccessibleExcavations.get(new CellCoordinate(Coords));
-					AccessibleLocation.set(Coords.CubeIntIndex());
+					AccessibleLocation.set(Coords.getCubeIntIndex());
 					AccessibleMap.put(AdjacentcCoords.clone(), Coords.clone());
 					AccessibleExcavationCount++;
 				}
@@ -184,7 +179,7 @@ public class ExcavateJob extends Job implements Serializable {
 		}
 
 		if (DesignationCount == 0) {
-			Manager.JobCompleted(this);
+			Manager.terminateJob(this);
 		} else {
 			if (AccessibleExcavationCount == 0 && AssignedExcavationsCount == 0) {
 				this.Paused = true;
@@ -195,16 +190,16 @@ public class ExcavateJob extends Job implements Serializable {
 	public boolean isAssigned(MapCoordinate Coords) {
 		CellCoordinate CellCoords = new CellCoordinate(Coords);
 		BitSet Assignments = AssignedExcavations.get(CellCoords);
-		return Assignments.get(Coords.CubeIntIndex());		
+		return Assignments.get(Coords.getCubeIntIndex());
 	}
 
 	public Task nextTask(Pawn IdlePawn) {
 		Task OldTask = IdlePawn.getTask();
 		if (OldTask.ParentJob == this) {
-			if (OldTask.type == TaskType.TASK_GOTO) {
+			if (OldTask.type == Task.TaskType.TASK_GOTO) {
 				MapCoordinate TargetExcavation = AssignedWorkers.get(IdlePawn);
 
-				Task newTask = new Task(this, TaskType.TASK_DIG, TargetExcavation);
+				Task newTask = new Task(this, Task.TaskType.TASK_DIG, TargetExcavation);
 				return newTask;
 			}
 		}
@@ -225,18 +220,18 @@ public class ExcavateJob extends Job implements Serializable {
 			AssignedWorkers.put(IdlePawn, ExcavateCube);
 			CellCoordinate CellCoords = new CellCoordinate(ExcavateCube);
 			BitSet Assignments = AssignedExcavations.get(CellCoords);
-			Assignments.set(ExcavateCube.CubeIntIndex());
+			Assignments.set(ExcavateCube.getCubeIntIndex());
 			AssignedExcavationsCount++;
 
-			Task newTask = new Task(this, TaskType.TASK_GOTO, AccsibleCube);
+			Task newTask = new Task(this, Task.TaskType.TASK_GOTO, AccsibleCube);
 			return newTask;
 		}
 
 		if (!needsWorkers()) {
-			return Manager.IdleCitizen(IdlePawn);
+			return Manager.idleCitizen(IdlePawn);
 		} else {
 			IdlePawn.onBreak = true;
-			return IdlePawn.FindTask();
+			return IdlePawn.findTask();
 		}
 	}
 
@@ -244,7 +239,7 @@ public class ExcavateJob extends Job implements Serializable {
 		return (AccessibleExcavationCount > AssignedExcavationsCount) ? true : false;
 	}
 
-	public float EvaluatePawn(Pawn CandidateCitizen) {
+	public float evaluatePawn(Pawn CandidateCitizen) {
 		float Evaluation = 0;
 		if (Workers.contains(CandidateCitizen))
 			Evaluation += 1;
@@ -253,7 +248,14 @@ public class ExcavateJob extends Job implements Serializable {
 		return Evaluation + 2;
 	}
 
-	public void JobCompleted() {
+	public void finishJob() {
+	}
 
+	// this method is used by serialization
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
+		paths = PathFinding.getSingleton();
 	}
 }

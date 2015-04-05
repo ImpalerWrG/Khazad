@@ -74,7 +74,7 @@ public class LoadGameScreenController implements ScreenController {
 	public void onEndScreen() {
 	}
 
-	public void CancelLoadGame() {
+	public void cancelLoadGame() {
 		nifty.gotoScreen("StartScreen");
 	}
 
@@ -107,10 +107,10 @@ public class LoadGameScreenController implements ScreenController {
 					}
 				}
 			} catch (IOException e) {
-				ShowError(e.toString());
+				showError(e.toString());
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
-				ShowError(e.toString());
+				showError(e.toString());
 				e.printStackTrace();
 			} finally {
 				try {
@@ -118,7 +118,7 @@ public class LoadGameScreenController implements ScreenController {
 						ois.close();
 					}
 				} catch (IOException e) {
-					ShowError(e.toString());
+					showError(e.toString());
 					e.printStackTrace();
 				}
 			}
@@ -131,11 +131,11 @@ public class LoadGameScreenController implements ScreenController {
 		List<SaveGameHeader> selection = event.getSelection();
 		if (selection.size() == 1) {
 			SelectedSaveGameHeader = selection.get(0);
-			DisplaySaveGameHeader(SelectedSaveGameHeader);
+			displaySaveGameHeader(SelectedSaveGameHeader);
 		}
 	}
 
-	private void DisplaySaveGameHeader(SaveGameHeader saveGameHeader) {
+	private void displaySaveGameHeader(SaveGameHeader saveGameHeader) {
 		DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.LONG);
 		SimpleDateFormat timeFormatter = new SimpleDateFormat("h:mm a");
 		String lastPlayed = dateFormatter.format(saveGameHeader.lastPlayed) + " " + timeFormatter.format(saveGameHeader.lastPlayed);
@@ -148,7 +148,7 @@ public class LoadGameScreenController implements ScreenController {
 				+ "Version: " + saveGameHeader.version);
 	}
 
-	private void ShowError(String errorMessage) {
+	private void showError(String errorMessage) {
 		if (ErrorPopup == null) {
 			ErrorPopup = nifty.createPopup("ErrorPopup");
 		}
@@ -161,30 +161,30 @@ public class LoadGameScreenController implements ScreenController {
 		nifty.showPopup(screen, this.ErrorPopup.getId(), null);
 	}
 
-	public void CloseError() {
+	public void closeError() {
 		if (ErrorPopup != null) {
 			nifty.closePopup(this.ErrorPopup.getId());
 			ErrorPopup = null;
 		}
 	}
 
-	public void DeleteGame() {
+	public void deleteGame() {
 		if (SelectedSaveGameHeader == null) {
-			ShowError("Please select a game to delete.");
+			showError("Please select a game to delete.");
 			return;
 		}
 		// TODO are you sure?
 		File saveFile = getSelectedSaveFile();
 		if (!saveFile.exists()) {
-			ShowError(SelectedSaveGameHeader.fileName + " save does not exist.");
+			showError(SelectedSaveGameHeader.fileName + " save does not exist.");
 			refreshSaveGameList();
 			return;
 		}
 		saveFile.delete();
 		refreshSaveGameList();
 	}
-	
-	private File getSelectedSaveFile() {		
+
+	private File getSelectedSaveFile() {
 		// look in the my documents\my games\Khazad\Worlds folder for the savegame
 		JFileChooser fr = new JFileChooser();
 		FileSystemView fw = fr.getFileSystemView();
@@ -194,16 +194,16 @@ public class LoadGameScreenController implements ScreenController {
 		return new File(saveGamesFolder + SelectedSaveGameHeader.fileName);
 	}
 
-	public void LoadGame() {
+	public void loadGame() {
 		if (SelectedSaveGameHeader == null) {
-			ShowError("Please select a game to load.");
+			showError("Please select a game to load.");
 			return;
 		}
 		ObjectInputStream ois = null;
 		try {
 			File saveFile = getSelectedSaveFile();
 			if (!saveFile.exists()) {
-				ShowError(SelectedSaveGameHeader.fileName + " save does not exist.");
+				showError(SelectedSaveGameHeader.fileName + " save does not exist.");
 				refreshSaveGameList();
 				return;
 			}
@@ -211,56 +211,49 @@ public class LoadGameScreenController implements ScreenController {
 			// now read the save file
 			ois = new ObjectInputStream(new FileInputStream(saveFile));
 			// first thing should always be the version number, so that we can give helpful error messages.
-			SaveGameHeader saveGameHeader = (SaveGameHeader)ois.readObject();
+			SaveGameHeader saveGameHeader = (SaveGameHeader) ois.readObject();
 			if (!saveGameHeader.version.equals(Game.version)) {
 				// TODO it might still be possible to load these saves
-				ShowError("Game save is version " + saveGameHeader.version + ", current game version is " + Game.version + "." + System.lineSeparator()
+				showError("Game save is version " + saveGameHeader.version + ", current game version is " + Game.version + "." + System.lineSeparator()
 						+ System.lineSeparator()
 						+ "Unfortunately game saves from version " + saveGameHeader.version + " are no longer supported, please start a new game.");
 				return;
 			}
-			Game game = (Game)ois.readObject();
+			Game game = (Game) ois.readObject();
 			// copy a few things from the header into the game (since we don't keep the header)
 			game.kingdomName = saveGameHeader.kingdomName;
 			game.saveGameFileName = SelectedSaveGameHeader.fileName;
-			
+
 			// initialize the game
 			this.app.getStateManager().attach(game);
 			this.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
-			this.app.getStateManager()
-					.getState(TerrainRenderer.class).attachToGame(game);
-			this.app.getStateManager()
-					.attach(new SelectionRenderer());
-			this.app.getStateManager()
-					.getState(PathingRenderer.class).attachToGame(game);
+			this.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
+			this.app.getStateManager().attach(new SelectionRenderer());
+			this.app.getStateManager().getState(PathingRenderer.class).attachToGame(game);
 
 			GameCameraState cam = new GameCameraState();
 
-			this.app.getStateManager()
-					.attach(cam);
-			cam.SetViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
-			cam.SetSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
+			this.app.getStateManager().attach(cam);
+			cam.setViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
+			cam.setSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
 
 			JobManager jobs = game.getSettlement().getJobManager();
 			// PATHING
 			PathFinding Pather = PathFinding.getSingleton();
 
-			Pather.initialize(
-					this.app.getStateManager(), this.app);
-			Pather.CreateMapAbstraction(game.getMap());
+			Pather.initialize(this.app.getStateManager(), this.app);
+			Pather.createMapAbstraction(game.getMap());
 			//Pather.AllocateThreadPool(ExecutionThreadpool);
-			this.app.getStateManager()
-					.attach(Pather);
+			this.app.getStateManager().attach(Pather);
 
-			nifty.gotoScreen(
-					"GameScreen");
+			nifty.gotoScreen("GameScreen");
 		} catch (IOException e) {
 			// TODO show a better message to the user
-			ShowError(e.toString());
+			showError(e.toString());
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			// TODO show a better message to the user
-			ShowError(e.toString());
+			showError(e.toString());
 			e.printStackTrace();
 		} finally {
 			try {
@@ -269,7 +262,7 @@ public class LoadGameScreenController implements ScreenController {
 				}
 			} catch (IOException e) {
 				// TODO show a better message to the user
-				ShowError(e.toString());
+				showError(e.toString());
 				e.printStackTrace();
 			}
 		}

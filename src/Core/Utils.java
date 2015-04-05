@@ -10,6 +10,7 @@ package Core;
  * @author Dallas
  */
 public class Utils {
+
 	public static String padLeadingZero(long number) {
 		if (number < 10) {
 			return "0" + Long.toString(number);
