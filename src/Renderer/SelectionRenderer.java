@@ -192,6 +192,10 @@ public class SelectionRenderer extends AbstractAppState {
 	@Override
 	public void update(float tpf) {
 		GameCameraState cam = state.getState(GameCameraState.class);
+		if (cam == null) {
+			// not initialised yet
+			return;
+		}
 		MapCoordinate mouse = cam.getMouseLocation();
 		if (cam.getSelectedActor() == null)
 		{

@@ -17,10 +17,10 @@
 						<interact onClick="LoadGame()"/>
 					</control>
 					<control name="button" id="tutorialbutton" height="20%" width="100%" label="Tutorial" childLayout="center">
-						<interact onClick="BeginTutorial()()"/>
+						<interact onClick="openTutorialPopup()"/>
 					</control>
 					<control name="button" id="optionsbutton" height="20%" width="100%" label="Options" childLayout="center">
-						<interact onClick="BeginTutorial()"/>
+						<interact onClick="openTutorialPopup()"/>
 					</control>
 					<control name="button" id="quitbutton" height="20%" width="100%" label="Quit" childLayout="center">
 						<interact onClick="Quit()"/>

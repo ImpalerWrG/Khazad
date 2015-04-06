@@ -243,8 +243,8 @@ public class MapRenderer extends AbstractAppState {
 
 	@Override
 	public void update(float tpf) {
-		if (this.game != null) {
-			GameCameraState cam = state.getState(GameCameraState.class);
+		GameCameraState cam = state.getState(GameCameraState.class);
+		if (cam != null) {
 			setSliceLevels(cam.getSliceTop(), cam.getSliceBottom());
 		}
 	}

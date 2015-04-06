@@ -25,9 +25,9 @@ import Data.Types.*;
 import Map.Direction;
 import Map.MapCoordinate;
 
-import PathFinding.MovementModality;
-import PathFinding.Navigator;
-import PathFinding.PathFinding;
+import pathFinding.MovementModality;
+import pathFinding.Navigator;
+import pathFinding.PathFinding;
 
 import java.io.Serializable;
 

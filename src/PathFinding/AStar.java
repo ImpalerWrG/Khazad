@@ -15,7 +15,7 @@
  You should have received a copy of the GNU General Public License
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
-package PathFinding;
+package pathFinding;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -130,10 +130,18 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 				FinalPath = CurrentPath;
 
 			NodePool.release();	 // Nodes can be released now that a final path has been found
+			recordPathfindingStatistics();
 			return CurrentPath;
 		}
 		NodePool.release();
+		recordPathfindingStatistics();
 		return FinalPath;
+	}
+	
+	void recordPathfindingStatistics() {
+		PathFinding pathFinding = PathFinding.getSingleton();
+		pathFinding.incrementExpandedNodes(ExpandedNodes);
+		pathFinding.incrementGraphReads(GraphReads);		
 	}
 
 	boolean expandNode() {

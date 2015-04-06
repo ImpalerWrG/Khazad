@@ -19,7 +19,7 @@ package Job;
 
 import Game.Pawn;
 import Map.MapCoordinate;
-import PathFinding.PathFinding;
+import pathFinding.PathFinding;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;

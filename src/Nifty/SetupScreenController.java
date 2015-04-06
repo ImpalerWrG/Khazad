@@ -8,7 +8,7 @@ package Nifty;
 import Core.Main;
 import Game.Game;
 import Interface.GameCameraState;
-import PathFinding.PathFinding;
+import pathFinding.PathFinding;
 import Renderer.MapRenderer;
 import Renderer.PathingRenderer;
 import Renderer.SelectionRenderer;
@@ -54,39 +54,45 @@ public class SetupScreenController implements ScreenController {
 	}
 
 	public void beginGame() {
-		String kingdomName = nifty.getCurrentScreen().findNiftyControl("KingdomNameTextField", TextField.class).getDisplayedText();
-		if (kingdomName.length() == 0) {
-			ErrorPopupController.ShowErrorMessage(nifty, "Problem starting game", "Please enter a kingdom name");
-			return;
+		try
+		{
+			String kingdomName = nifty.getCurrentScreen().findNiftyControl("KingdomNameTextField", TextField.class).getDisplayedText();
+			if (kingdomName.length() == 0) {
+				ErrorPopupController.ShowErrorMessage(nifty, "Problem starting game", "Please enter a kingdom name");
+				return;
+			}
+			String Seed = nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).getDisplayedText();
+
+			Game game = new Game();
+			Main.app.getStateManager().attach(game);
+			game.initializeGame((short) 10, (short) 10, Seed, kingdomName);
+
+			Main.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
+			Main.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
+			Main.app.getStateManager().attach(new SelectionRenderer());
+			PathingRenderer pathingRenderer = Main.app.getStateManager().getState(PathingRenderer.class);
+			pathingRenderer.attachToGame(game);
+
+			GameCameraState cam = new GameCameraState();
+			Main.app.getStateManager().attach(cam);
+			cam.setViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
+			cam.setSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
+
+			// PATHING
+			PathFinding Pather = PathFinding.getSingleton();
+			Pather.initialize(Main.app.getStateManager(), Main.app);
+			Pather.createMapAbstraction(game.getMap());
+			//Pather.AllocateThreadPool(ExecutionThreadpool);
+			Main.app.getStateManager().attach(Pather);
+
+
+			short DwarfID = Data.DataManager.getDataManager().getLabelIndex("CREATURE_DWARF");
+			for (int i = 0; i < 100; i++) {
+				game.SpawnCitizen(DwarfID, Pather.Tester.getRandomPassableCoordinate());
+			}
+			nifty.gotoScreen("GameScreen");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		String Seed = nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).getDisplayedText();
-
-		Game game = new Game();
-		Main.app.getStateManager().attach(game);
-		game.initializeGame((short) 10, (short) 10, Seed, kingdomName);
-
-		Main.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
-		Main.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
-		Main.app.getStateManager().attach(new SelectionRenderer());
-		Main.app.getStateManager().getState(PathingRenderer.class).attachToGame(game);
-
-		GameCameraState cam = new GameCameraState();
-		Main.app.getStateManager().attach(cam);
-		cam.setViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
-		cam.setSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
-
-		// PATHING
-		PathFinding Pather = PathFinding.getSingleton();
-		Pather.initialize(Main.app.getStateManager(), Main.app);
-		Pather.createMapAbstraction(game.getMap());
-		//Pather.AllocateThreadPool(ExecutionThreadpool);
-		Main.app.getStateManager().attach(Pather);
-
-
-		short DwarfID = Data.DataManager.getDataManager().getLabelIndex("CREATURE_DWARF");
-		for (int i = 0; i < 100; i++) {
-			game.SpawnCitizen(DwarfID, Pather.Tester.getRandomPassableCoordinate());
-		}
-		nifty.gotoScreen("GameScreen");
 	}
 }

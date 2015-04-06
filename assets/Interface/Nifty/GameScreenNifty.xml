@@ -85,18 +85,29 @@
 					</panel>
 					<panel childLayout="absolute" height="40px" id="BottomMiddleBottomPanel" style="nifty-panel-simple" width="100%"/>
 				</panel>
-				<panel childLayout="vertical" height="100%" id="BottomRightPanel" style="nifty-panel-simple" visibleToMouse="true" width="150px" >
+				<panel childLayout="vertical" height="100%" id="BottomRightPanel" style="nifty-panel-simple" visibleToMouse="true" width="200px" >
 					<panel childLayout="horizontal">
-						<text text="Pathing: " style="nifty-label" width="115px" align="left" textVAlign="center" textHAlign="left" color="#000" />
+						<text text="Pathing: " style="nifty-label" width="165px" align="left" textVAlign="center" textHAlign="left" color="#000" />
 						<control id="pathingCheckBox" name="checkbox" checked="false" />
 					</panel>   
 					<panel childLayout="horizontal">
-						<text text="Lit surfaces: " style="nifty-label" width="115px" align="left" textVAlign="center" textHAlign="left" color="#000" />
+						<text text="Lit surfaces: " style="nifty-label" width="165px" align="left" textVAlign="center" textHAlign="left" color="#000" />
 						<control id="litSurfacesCheckBox" name="checkbox" checked="true" />
 					</panel>   
 					<panel childLayout="horizontal">
-						<text text="Terrain: " style="nifty-label" width="115px" align="left" textVAlign="center" textHAlign="left" color="#000" />
+						<text text="Terrain: " style="nifty-label" width="165px" align="left" textVAlign="center" textHAlign="left" color="#000" />
 						<control id="terrainCheckBox" name="checkbox" checked="true" />
+					</panel>   
+					<panel childLayout="horizontal">
+						<text text="Pathfinding stats:" style="nifty-label" width="100%" align="left" textVAlign="center" textHAlign="left" color="#000" />
+					</panel>   
+					<panel childLayout="horizontal">
+						<text text="Expanded nodes: " style="nifty-label" height="20px" width="115px" align="left" textVAlign="center" textHAlign="left" color="#000" />
+						<control font="aurulent-sans-16.fnt" height="20px" width="*" id="expandedNodesLabel" name="label" textVAlign="center" textHAlign="left" color="#000" />
+					</panel>   
+					<panel childLayout="horizontal">
+						<text text="Graph reads:" style="nifty-label" height="20px" width="115px" align="left" textVAlign="center" textHAlign="left" color="#000" />
+						<control font="aurulent-sans-16.fnt" height="20px" width="*" id="graphReadsLabel" name="label" textVAlign="center" textHAlign="left" color="#000" />
 					</panel>   
 				</panel>
 			</panel>

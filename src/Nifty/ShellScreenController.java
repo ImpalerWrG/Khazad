@@ -18,12 +18,10 @@
 package Nifty;
 
 import Core.Main;
-import com.jme3.app.Application;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.elements.Element;
 
 /**
@@ -54,14 +52,14 @@ public class ShellScreenController implements ScreenController {
 		nifty.gotoScreen("SetupScreen");
 	}
 
-	public void beginTutorial() {
+	public void openTutorialPopup() {
 		if (TutorialPopup == null) {
 			TutorialPopup = nifty.createPopup("TutorialPopup");
 		}
 		nifty.showPopup(nifty.getCurrentScreen(), this.TutorialPopup.getId(), null);
 	}
 
-	public void EndTutorial() {
+	public void closeTutorialPopup(){
 		if (TutorialPopup != null) {
 			nifty.closePopup(this.TutorialPopup.getId());
 		}
@@ -75,6 +73,5 @@ public class ShellScreenController implements ScreenController {
 
 	public void loadGame() {
 		nifty.gotoScreen("LoadGameScreen");
-		return;
 	}
 }

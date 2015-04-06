@@ -26,8 +26,8 @@ import Map.Direction;
 import Map.GameMap;
 import Map.MapCoordinate;
 
-import PathFinding.PathFinding;
-import PathFinding.MovementModality;
+import pathFinding.PathFinding;
+import pathFinding.MovementModality;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;

@@ -35,16 +35,16 @@ import Interface.GameCameraState;
 import Renderer.PathingRenderer;
 import Renderer.TerrainRenderer;
 import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.KeyTrigger;
 import de.lessvoid.nifty.NiftyIdCreator;
 import de.lessvoid.nifty.controls.CheckBox;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.WindowClosedEvent;
 import de.lessvoid.nifty.controls.dynamic.CustomControlCreator;
+import java.text.NumberFormat;
 import java.util.HashMap;
+import pathFinding.PathFinding;
 
 /**
  *
@@ -62,6 +62,8 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 	CheckBox litSurfacesCheckBox;
 	CheckBox terrainCheckBox;
 	Label timeLabel;
+	Label expandedNodesLabel;
+	Label graphReadsLabel;
 
 	public void bind(Nifty nifty, Screen screen) {
 		this.nifty = nifty;
@@ -74,6 +76,8 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 		litSurfacesCheckBox = screen.findNiftyControl("litSurfacesCheckBox", CheckBox.class);
 		terrainCheckBox = screen.findNiftyControl("terrainCheckBox", CheckBox.class);
 		timeLabel = screen.findNiftyControl("timeLabel", Label.class);
+		expandedNodesLabel = screen.findNiftyControl("expandedNodesLabel", Label.class);
+		graphReadsLabel = screen.findNiftyControl("graphReadsLabel", Label.class);
 		registerWithInput(Main.app.getInputManager());
 	}
 
@@ -118,6 +122,11 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 		}
 		Game game = Main.app.getStateManager().getState(Game.class);
 		timeLabel.setText(game.getTimeString());
+		// update pathfinding statistics
+		PathFinding pathFinding = PathFinding.getSingleton();
+		NumberFormat numberFormat = NumberFormat.getIntegerInstance(); // comma seperated
+		expandedNodesLabel.setText(numberFormat.format(pathFinding.getExpandedNodes()));
+		graphReadsLabel.setText(numberFormat.format(pathFinding.getGraphReads()));
 	}
 
 	public boolean keyEvent(NiftyInputEvent event) {

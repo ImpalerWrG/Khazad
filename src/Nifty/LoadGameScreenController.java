@@ -10,7 +10,7 @@ import Game.Game;
 import Game.SaveGameHeader;
 import Interface.GameCameraState;
 import Job.JobManager;
-import PathFinding.PathFinding;
+import pathFinding.PathFinding;
 import Renderer.MapRenderer;
 import Renderer.PathingRenderer;
 import Renderer.SelectionRenderer;
