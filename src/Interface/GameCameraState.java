@@ -17,6 +17,9 @@
 
 package Interface;
 
+import Core.Main;
+import Game.Actor;
+import Game.Citizen;
 import Game.Game;
 import Map.MapCoordinate;
 
@@ -39,13 +42,8 @@ import com.jme3.scene.shape.Sphere;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
-import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
-import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.controls.MouseAxisTrigger;
-import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.scene.Spatial;
 
 import Renderer.MapRenderer;
@@ -85,7 +83,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	private boolean LeftwardPaning;
 	private boolean UpwardPaning;
 	private boolean DownwardPaning;
-	// 
 	private int PanningSpeed = 3;
 	private float OldMouseX;
 	private float OldMouseY;
@@ -100,6 +97,8 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	protected int SliceBottom;
 	protected int ViewLevels;
 	protected int ViewMax, ViewMin;
+	private boolean mouseWheelEnabled = true;
+	private Actor selectedActor;
 
 	public GameCameraState() {
 	}
@@ -175,6 +174,15 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 				if (CurrentMode == CameraMode.SELECT_VOLUME && keyPressed)
 					setMode(CameraMode.SELECTING_VOLUME);
+
+				if (selectedActor != null && keyPressed) {
+					if (selectedActor instanceof Citizen) {
+						Citizen citizen = (Citizen) selectedActor;
+						// open a window
+						Game game = Main.app.getStateManager().getState(Game.class);
+						game.getGameScreenController().spawnCitizenWindow(citizen);
+					}
+				}
 			}
 
 			if (name.equals("RightClick")) {
@@ -272,13 +280,13 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		} else if (name.equals("ZoomIn")) {
 			if (MiddleDown) {
 				changeViewLevel(-1);
-			} else {
+			} else if (mouseWheelEnabled) {
 				MainCamera.zoomCamera(value);
 			}
 		} else if (name.equals("ZoomOut")) {
 			if (MiddleDown) {
 				changeViewLevel(1);
-			} else {
+			} else if (mouseWheelEnabled) {
 				MainCamera.zoomCamera(-value);
 			}
 		}
@@ -368,37 +376,13 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		String[] inputs = {"LeftClick", "RightClick", "MiddleClick", "mouseDown", "mouseUp", "mouseLeft", "mouseRight", "ZoomIn", "ZoomOut", "ArrowUp", "ArrowDown", "RShift", "LShift", "PanUp", "PanDown", "PanRight", "PanLeft"};
 		this.InputStrings = inputs;
 
-		inputManager.addMapping("mouseDown", new MouseAxisTrigger(1, true));
-		inputManager.addMapping("mouseUp", new MouseAxisTrigger(1, false));
-		inputManager.addMapping("ZoomIn", new MouseAxisTrigger(2, true));
-		inputManager.addMapping("ZoomOut", new MouseAxisTrigger(2, false));
-		inputManager.addMapping("mouseLeft", new MouseAxisTrigger(0, true));
-		inputManager.addMapping("mouseRight", new MouseAxisTrigger(0, false));
-		inputManager.addMapping("LeftClick", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
 
-		inputManager.addMapping("RightClick", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
-		inputManager.addMapping("MiddleClick", new MouseButtonTrigger(MouseInput.BUTTON_MIDDLE));
-
-		inputManager.addMapping("ArrowUp", new KeyTrigger(KeyInput.KEY_UP));
-		inputManager.addMapping("ArrowUp", new KeyTrigger(KeyInput.KEY_E));
-		inputManager.addMapping("ArrowDown", new KeyTrigger(KeyInput.KEY_DOWN));
-		inputManager.addMapping("ArrowDown", new KeyTrigger(KeyInput.KEY_Q));
-
-		inputManager.addMapping("PanUp", new KeyTrigger(KeyInput.KEY_W));
-		inputManager.addMapping("PanLeft", new KeyTrigger(KeyInput.KEY_A));
-		inputManager.addMapping("PanDown", new KeyTrigger(KeyInput.KEY_S));
-		inputManager.addMapping("PanRight", new KeyTrigger(KeyInput.KEY_D));
-
-		inputManager.addMapping("RShift", new KeyTrigger(KeyInput.KEY_RSHIFT));
-		inputManager.addMapping("LShift", new KeyTrigger(KeyInput.KEY_LSHIFT));
 
 		inputManager.addListener(this, InputStrings);
 	}
 
 	public void unregisterInput(InputManager inputManager) {
-		for (String inputString : InputStrings) {
-			inputManager.deleteMapping(inputString);
-		}
+		inputManager.removeListener(this);
 	}
 
 	public void updateMousePosition() {
@@ -407,6 +391,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 		Ray ray = MainCamera.getMouseRay(app.getInputManager().getCursorPosition());
 		Vector3f IntersectLocation = new Vector3f();
+		selectedActor = null;
 
 		if (Mapnode != null) {
 			CollisionResults results = new CollisionResults();
@@ -415,6 +400,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			if (results.size() > 0) {
 				// The closest collision point is what was truly hit:
 				CollisionResult closest = results.getClosestCollision();
+				identifyNode(closest.getGeometry().getParent());
 
 				Vector3f contact = closest.getContactPoint();
 				Vector3f normal = closest.getContactNormal();
@@ -428,6 +414,24 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			int z = Math.round(IntersectLocation.getZ());
 			MouseLocation.set(x, y, z);
 		}
+	}
+
+	private void identifyNode(Node node) {
+		if (node == null) {
+			return;
+		}
+		String nodeName = node.getName();
+		if (nodeName.startsWith("ActorNode-")) {
+			// an actor
+			// TODO highlight the actor in some way to show that the mouse is over it
+			int actorId = Integer.parseInt(nodeName.substring(10));
+			Game game = app.getStateManager().getState(Game.class);
+			selectedActor = game.getActors().get(actorId);
+			return;
+		}
+		//System.out.println("Skipped: " + nodeName);
+		// keep searching;
+		identifyNode(node.getParent());
 	}
 
 	public MapCoordinate getMouseLocation() {
@@ -545,5 +549,26 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		super.cleanup();
 
 		unregisterInput(app.getInputManager());
+	}
+
+	public boolean isMouseWheelEnabled() {
+		return mouseWheelEnabled;
+	}
+
+	public void setMouseWheelEnabled(boolean mouseWheelEnabled) {
+		this.mouseWheelEnabled = mouseWheelEnabled;
+	}
+
+	public Actor getSelectedActor() {
+		return selectedActor;
+	}
+
+	public void pointCameraAt(MapCoordinate mapCoordinate) {
+		// change to the same Z level as the target
+		SliceTop = mapCoordinate.Z;
+		SliceBottom = SliceTop + ViewLevels;
+		// point camera at the target
+		Vector3f target = new Vector3f(mapCoordinate.X, mapCoordinate.Y, mapCoordinate.Z);
+		MainCamera.pointCameraAt(target);
 	}
 }

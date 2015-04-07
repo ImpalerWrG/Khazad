@@ -15,7 +15,7 @@
  You should have received a copy of the GNU General Public License
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
-package PathFinding;
+package pathFinding;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -67,6 +67,9 @@ public class PathFinding extends AbstractAppState {
 	ArrayList<Pool> PoolList;
 	ExecutorService Executor;
 	public PathTester Tester;
+	// pathfinding stats
+	private int GraphReads;
+	private int ExpandedNodes;
 
 	private PathFinding() {
 		ManhattenHeuristic = new Heuristic.Manhatten();
@@ -229,5 +232,29 @@ public class PathFinding extends AbstractAppState {
 			return TargetGrid.getConnectivityZone(TestCoords);
 		}
 		return 0;
+	}
+
+	public int getGraphReads() {
+		return GraphReads;
+	}
+
+	public void setGraphReads(int GraphReads) {
+		this.GraphReads = GraphReads;
+	}
+
+	public void incrementGraphReads(int GraphReads) {
+		this.GraphReads += GraphReads;
+	}
+
+	public int getExpandedNodes() {
+		return ExpandedNodes;
+	}
+
+	public void setExpandedNodes(int ExpandedNodes) {
+		this.ExpandedNodes = ExpandedNodes;
+	}
+
+	public void incrementExpandedNodes(int ExpandedNodes) {
+		this.ExpandedNodes += ExpandedNodes;
 	}
 }

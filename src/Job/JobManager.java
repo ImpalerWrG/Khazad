@@ -124,4 +124,8 @@ public class JobManager implements Serializable {
 			}
 		}
 	}
+
+	public ConcurrentLinkedQueue<Pawn> getIdleCitizens() {
+		return IdleCitizens;
+	}
 }

@@ -51,6 +51,15 @@ public class Weather extends Temporal implements Serializable {
 		Sun.setColor(Suncolor.mult(0.6f));
 	}
 
+	// this method is used by serialization
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		// default deserialization
+		ois.defaultReadObject();
+		// fix transients
+		Sun = new DirectionalLight();
+		updateSun();
+	}
+
 	public void attatchSun(Node TerrainNode) {
 		SunVec.set(0, 0, -1);
 		SunVec.normalizeLocal();
@@ -78,14 +87,5 @@ public class Weather extends Temporal implements Serializable {
 		} else {
 			Sun.setColor(Suncolor.mult((0.6f) * (Z * -1)));
 		}
-	}
-
-	// this method is used by serialization
-	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
-		// default deserialization
-		ois.defaultReadObject();
-		// fix transients
-		Sun = new DirectionalLight();
-		updateSun();
 	}
 }

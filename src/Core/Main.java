@@ -41,6 +41,11 @@ import com.jme3.util.BufferUtils;
 
 import com.jme3.app.state.ScreenshotAppState;
 import com.jme3.asset.plugins.FileLocator;
+import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
+import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.controls.MouseAxisTrigger;
+import com.jme3.input.controls.MouseButtonTrigger;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -100,6 +105,8 @@ public class Main extends SimpleApplication {
 		TextureManager Tex = TextureManager.getTextureManager();
 		Tex.initialize(assetManager);
 
+		initialiseKeyboardMappings();
+
 		// RENDER
 		this.stateManager.attach(new MapRenderer());
 		this.stateManager.attach(new TerrainRenderer(pool));
@@ -109,7 +116,7 @@ public class Main extends SimpleApplication {
 		this.stateManager.attach(new Music());
 		this.stateManager.attach(new GUI(this));
 
-		this.stateManager.attach(new ScreenshotAppState(new String()));
+		this.stateManager.attach(new ScreenshotAppState(new String()));		
 	}
 
 	public void createAxialMarker() {
@@ -169,5 +176,46 @@ public class Main extends SimpleApplication {
 	public void destroy() {
 		super.destroy();
 		pool.shutdown();
+	}
+	
+	public void initialiseKeyboardMappings() {
+		// TODO move this to some key mappings UI
+		
+		// used in GameCameraState
+		inputManager.addMapping("mouseDown", new MouseAxisTrigger(1, true));
+		inputManager.addMapping("mouseUp", new MouseAxisTrigger(1, false));
+		inputManager.addMapping("ZoomIn", new MouseAxisTrigger(2, true));
+		inputManager.addMapping("ZoomOut", new MouseAxisTrigger(2, false));
+		inputManager.addMapping("mouseLeft", new MouseAxisTrigger(0, true));
+		inputManager.addMapping("mouseRight", new MouseAxisTrigger(0, false));
+		inputManager.addMapping("LeftClick", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+
+		inputManager.addMapping("RightClick", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
+		inputManager.addMapping("MiddleClick", new MouseButtonTrigger(MouseInput.BUTTON_MIDDLE));
+
+		inputManager.addMapping("ArrowUp", new KeyTrigger(KeyInput.KEY_UP));
+		inputManager.addMapping("ArrowUp", new KeyTrigger(KeyInput.KEY_E));
+		inputManager.addMapping("ArrowDown", new KeyTrigger(KeyInput.KEY_DOWN));
+		inputManager.addMapping("ArrowDown", new KeyTrigger(KeyInput.KEY_Q));
+
+		inputManager.addMapping("PanUp", new KeyTrigger(KeyInput.KEY_W));
+		inputManager.addMapping("PanLeft", new KeyTrigger(KeyInput.KEY_A));
+		inputManager.addMapping("PanDown", new KeyTrigger(KeyInput.KEY_S));
+		inputManager.addMapping("PanRight", new KeyTrigger(KeyInput.KEY_D));
+
+		inputManager.addMapping("RShift", new KeyTrigger(KeyInput.KEY_RSHIFT));
+		inputManager.addMapping("LShift", new KeyTrigger(KeyInput.KEY_LSHIFT));
+		
+		// used in Game
+		inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_SPACE));
+		inputManager.addMapping("Faster", new KeyTrigger(KeyInput.KEY_ADD));
+		inputManager.addMapping("Faster", new KeyTrigger(KeyInput.KEY_EQUALS));
+		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_MINUS));
+		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_SUBTRACT));
+		
+		// used in GameScreenController		
+		inputManager.addMapping("PathingRenderToggle", new KeyTrigger(KeyInput.KEY_P));
+		inputManager.addMapping("TerrainRenderToggle", new KeyTrigger(KeyInput.KEY_T));
+		inputManager.addMapping("SunnyRenderToggle", new KeyTrigger(KeyInput.KEY_L));
 	}
 }

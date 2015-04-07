@@ -135,6 +135,10 @@ public class GameCamera {
 	protected void translateCamera(Vector3f Translation) {
 		TargetNode.move(Translation);
 	}
+	
+	protected void pointCameraAt(Vector3f target) {
+		TargetNode.setLocalTranslation(target);
+	}
 
 	float getShading(int Zlevel) {
 		final float Minimum = 0.3f;

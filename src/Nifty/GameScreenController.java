@@ -18,8 +18,7 @@
 package Nifty;
 
 import Core.Main;
-import Core.Utils;
-import com.jme3.app.Application;
+import Game.Citizen;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
@@ -32,75 +31,157 @@ import de.lessvoid.nifty.controls.Scrollbar;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 
 import Game.Game;
-import Game.SaveGameHeader;
 import Interface.GameCameraState;
-import Renderer.MapRenderer;
-import Renderer.SelectionRenderer;
-import de.lessvoid.nifty.controls.Controller;
+import Renderer.PathingRenderer;
+import Renderer.TerrainRenderer;
+import com.jme3.input.InputManager;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.math.Vector3f;
+import de.lessvoid.nifty.NiftyIdCreator;
+import de.lessvoid.nifty.controls.CheckBox;
+import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.Label;
-import de.lessvoid.xml.xpp3.Attributes;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Properties;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileSystemView;
+import de.lessvoid.nifty.controls.WindowClosedEvent;
+import de.lessvoid.nifty.controls.dynamic.CustomControlCreator;
+import java.text.NumberFormat;
+import java.util.HashMap;
+import pathFinding.PathFinding;
 
 /**
  *
  * @author Impaler
  */
-public class GameScreenController implements ScreenController, KeyInputHandler, Controller {
+public class GameScreenController implements ScreenController, KeyInputHandler, ActionListener {
 
-	private Application app;
 	private Nifty nifty;
-	boolean MenuUp = false;
-	Element MenuPopup = null;
-	Element SaveErrorPopup = null;
-	Element SaveSuccessPopup = null;
-
-	public GameScreenController(Nifty Newnifty, Application app) {
-		this.app = app;
-		this.nifty = Newnifty;
-	}
-
-	public void init(Properties parameter, Attributes controlDefinitionAttributes) {
-	}
+	Screen screen;
+	Element MenuPopup;
+	Element PopulationPopup;
+	Element windows;
+	HashMap<String, Updatable> updatables = new HashMap<String, Updatable>();
+	CheckBox pathingCheckBox;
+	CheckBox litSurfacesCheckBox;
+	CheckBox terrainCheckBox;
+	Label timeLabel;
+	Label expandedNodesLabel;
+	Label graphReadsLabel;
 
 	public void bind(Nifty nifty, Screen screen) {
+		this.nifty = nifty;
+		this.screen = screen;
 		System.out.println("bind( " + screen.getScreenId() + ")");
 		screen.addKeyboardInputHandler(new KeyBoardMapping(), this);
+		windows = screen.findElementByName("windows");
 		//screen.addPreKeyboardInputHandler(new KeyBoardMapping(), this);
-	}
-
-	public void bind(Nifty nifty, Screen screen, Element element, Properties parameter, Attributes controlDefinitionAttributes) {
+		pathingCheckBox = screen.findNiftyControl("pathingCheckBox", CheckBox.class);
+		litSurfacesCheckBox = screen.findNiftyControl("litSurfacesCheckBox", CheckBox.class);
+		terrainCheckBox = screen.findNiftyControl("terrainCheckBox", CheckBox.class);
+		timeLabel = screen.findNiftyControl("timeLabel", Label.class);
+		expandedNodesLabel = screen.findNiftyControl("expandedNodesLabel", Label.class);
+		graphReadsLabel = screen.findNiftyControl("graphReadsLabel", Label.class);
+		registerWithInput(Main.app.getInputManager());
 	}
 
 	public void onStartScreen() {
 		System.out.println("GameScreen onStartScreen");
+		Game game = Main.app.getStateManager().getState(Game.class);
+		game.setGameScreenController(this);
+		timeLabel.setText(game.getTimeString());
+	}
+
+	public void onAction(String name, boolean keyPressed, float tpf) {
+		if (keyPressed) {
+			if (name.equals("PathingRenderToggle")) {
+				pathingCheckBox.toggle();
+			} else if (name.equals("TerrainRenderToggle")) {
+				terrainCheckBox.toggle();
+			} else if (name.equals("SunnyRenderToggle")) {
+				litSurfacesCheckBox.toggle();
+			}
+		}
+	}
+
+	public void registerWithInput(InputManager inputManager) {
+		String[] inputs = {"PathingRenderToggle", "TerrainRenderToggle", "SunnyRenderToggle"};
+		inputManager.addListener(this, inputs);
 	}
 
 	public void onEndScreen() {
+		MenuPopup = null;
+		PopulationPopup = null;
+		// close any open windows
+		for (Element tempElement : windows.getElements()) {
+			nifty.removeElement(screen, tempElement);
+		}
+		updatables.clear();
 		System.out.println("onEndScreen");
+	}
+
+	public void update() {
+		for (Updatable updatable : updatables.values()) {
+			updatable.update();
+		}
+		Game game = Main.app.getStateManager().getState(Game.class);
+		timeLabel.setText(game.getTimeString());
+		// update pathfinding statistics
+		PathFinding pathFinding = PathFinding.getSingleton();
+		NumberFormat numberFormat = NumberFormat.getIntegerInstance(); // comma seperated
+		expandedNodesLabel.setText(numberFormat.format(pathFinding.getExpandedNodes()));
+		graphReadsLabel.setText(numberFormat.format(pathFinding.getGraphReads()));
 	}
 
 	public boolean keyEvent(NiftyInputEvent event) {
 		if (event != null) {
 			if (event == NiftyInputEvent.Escape) {
-				if (MenuUp) {
-					closePopup();
-					return true;
+				// if a popup is open, close it, otherwise open the menu
+				if (MenuPopup != null) {
+					CloseMenuPopup();
+				} else if (PopulationPopup != null) {
+					ClosePopulationPopup();
 				} else {
-					menu();
-					return true;
+					OpenMenuPopup();
 				}
+				return true;
 			}
 			//if (event == NiftyInputEvent.Activate)
 		}
 		return false;
+	}
+
+	public void OpenMenuPopup() {
+		CloseMenuPopup();
+		Game game = Main.app.getStateManager().getState(Game.class);
+		game.Pause(true);
+
+		MenuPopup = nifty.createPopup("MenuPopup");
+		nifty.showPopup(screen, MenuPopup.getId(), null);
+	}
+
+	public void CloseMenuPopup() {
+		if (MenuPopup != null) {
+			nifty.closePopup(MenuPopup.getId());
+			MenuPopup = null;
+		}
+	}
+
+	public void OpenPopulationPopup() {
+		ClosePopulationPopup();
+		Game game = Main.app.getStateManager().getState(Game.class);
+		game.Pause(true);
+		// prevent mouse wheel interfering with scrolling a menu
+		// TODO there may be a better way of doing this, e.g. nifty not passing the mousewheel event to the game.
+		disableMouseWheel();
+
+		PopulationPopup = nifty.createPopup("PopulationPopup");
+		nifty.showPopup(screen, PopulationPopup.getId(), null);
+	}
+
+	public void ClosePopulationPopup() {
+		if (PopulationPopup != null) {
+			nifty.closePopup(PopulationPopup.getId());
+			PopulationPopup = null;
+		}
+		enableMouseWheel();
 	}
 
 	public boolean inputEvent(NiftyInputEvent inputEvent) {
@@ -110,176 +191,20 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 	public void onFocus(boolean getFocus) {
 	}
 
-	public void menu() {
-		if (MenuPopup == null) {
-			MenuPopup = nifty.createPopup("MenuPopup");
-		}
-
-		Game game = app.getStateManager().getState(Game.class);
-		game.Pause(true);
-
-		nifty.showPopup(nifty.getCurrentScreen(), this.MenuPopup.getId(), null);
-		MenuUp = true;
-	}
-
-	public void closePopup() {
-		if (MenuPopup != null) {
-			nifty.closePopup(this.MenuPopup.getId());
-			MenuUp = false;
-		}
-	}
-
-	public void quit() {
-		this.app.stop();
-	}
-
-	public void abandon() {
-		// Destroy Game object
-		SelectionRenderer selectionRenderer = app.getStateManager().getState(SelectionRenderer.class);
-		app.getStateManager().detach(selectionRenderer);
-		selectionRenderer.cleanup();
-
-		Game game = app.getStateManager().getState(Game.class);
-		this.app.getStateManager().getState(MapRenderer.class).detachFromGame();
-		app.getStateManager().detach(game);
-		game.cleanup();
-
-		Main core = (Main) app;
-		core.getRootNode().detachAllChildren();
-
-		closePopup();
-		nifty.gotoScreen("StartScreen");
-	}
-
-	public void saveGame() {
-		// TODO maybe a GUI to pick a save game slot
-		// otherwise, lets just hard code World01.sav for now
-
-		ObjectOutputStream oos = null;
-
-		try {
-			// first, create the my documents\my games\Khazad\Worlds folder, if it does not already exist.
-			JFileChooser fr = new JFileChooser();
-			FileSystemView fw = fr.getFileSystemView();
-
-			String myDocumentsFolder = fw.getDefaultDirectory().toString();
-			String saveGamesFolder = myDocumentsFolder + "\\my games\\Khazad\\Worlds\\";
-			File saveGamesFolderFile = new File(saveGamesFolder);
-			if (!saveGamesFolderFile.exists()) {
-				saveGamesFolderFile.mkdirs();
-			}
-
-			Game game = app.getStateManager().getState(Game.class);
-
-			if (game.saveGameFileName == null) {
-				// find an unused filename
-				HashSet<String> saveFileNames = getFilesInFolder(saveGamesFolderFile);
-				game.saveGameFileName = findUniqueFileName(saveFileNames);
-			}
-
-			// now create the save file, if it does not already exist
-			File saveFile = new File(saveGamesFolder + game.saveGameFileName);
-			if (!saveFile.exists()) {
-				saveFile.createNewFile();
-			}
-
-			// now write to the save file
-			SaveGameHeader saveGameHeader = new SaveGameHeader();
-			saveGameHeader.version = game.version;
-			saveGameHeader.lastPlayed = new Date(); // current time
-			saveGameHeader.kingdomName = game.kingdomName;
-			saveGameHeader.timeString = game.getTimeString();
-			oos = new ObjectOutputStream(new FileOutputStream(saveFile));
-			oos.writeObject(saveGameHeader);
-			oos.writeObject(game);
-			showSaveSuccess();
-			closePopup();
-		} catch (IOException e) {
-			showSaveError(e.toString());
-			e.printStackTrace();
-		} finally {
-			try {
-				if (oos != null) {
-					oos.close();
-				}
-			} catch (IOException e) {
-				showSaveError(e.toString());
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private HashSet<String> getFilesInFolder(File folder) {
-		HashSet<String> fileNames = new HashSet<String>();
-		// get all the files that end with .sav, and put in a HashSet
-		for (final File fileEntry : folder.listFiles()) {
-			if (!fileEntry.isDirectory()) {
-				String fileEntryName = fileEntry.getName();
-				if (fileEntryName.endsWith(".sav")) {
-					fileNames.add(fileEntryName);
-				}
-			}
-		}
-		return fileNames;
-	}
-
-	private String findUniqueFileName(HashSet<String> saveFileNames) {
-		long saveNumber = 1;
-		while (true) {
-			String saveNumberString = Utils.padLeadingZero(saveNumber);
-			String fileName = "World" + saveNumberString + ".sav";
-			if (!saveFileNames.contains(fileName)) {
-				return fileName;
-			}
-			saveNumber++;
-		}
-	}
-
-	private void showSaveError(String errorMessage) {
-		if (SaveErrorPopup == null) {
-			SaveErrorPopup = nifty.createPopup("SaveErrorPopup");
-		}
-		Label errorLabel = SaveErrorPopup.findNiftyControl("SaveErrorLabel", Label.class);
-		if (errorLabel != null) {
-			errorLabel.setText(errorMessage);
-		}
-
-		nifty.showPopup(nifty.getCurrentScreen(), this.SaveErrorPopup.getId(), null);
-	}
-
-	public void closeSaveError() {
-		if (SaveErrorPopup != null) {
-			nifty.closePopup(this.SaveErrorPopup.getId());
-		}
-	}
-
-	private void showSaveSuccess() {
-		if (SaveSuccessPopup == null) {
-			SaveSuccessPopup = nifty.createPopup("SaveSuccessPopup");
-		}
-		nifty.showPopup(nifty.getCurrentScreen(), this.SaveSuccessPopup.getId(), null);
-	}
-
-	public void closeSaveSuccess() {
-		if (SaveSuccessPopup != null) {
-			nifty.closePopup(this.SaveSuccessPopup.getId());
-		}
-	}
-
-	public void pause() {
-		Game game = app.getStateManager().getState(Game.class);
+	public void Pause() {
+		Game game = Main.app.getStateManager().getState(Game.class);
 		game.Pause(!game.isPaused());
 	}
 
 	public void setSpeed(String NewSpeed) {
 		int speed = Integer.parseInt(NewSpeed);
-		Game game = app.getStateManager().getState(Game.class);
+		Game game = Main.app.getStateManager().getState(Game.class);
 		game.Pause(false);
 		game.setTickRate(speed);
 	}
 
 	public void dig() {
-		GameCameraState Cam = app.getStateManager().getState(GameCameraState.class);
+		GameCameraState Cam = Main.app.getStateManager().getState(GameCameraState.class);
 		Cam.setMode(GameCameraState.CameraMode.SELECT_VOLUME);
 	}
 
@@ -287,17 +212,59 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 	public void depthSliderChanged(final String id, final ScrollbarChangedEvent event) {
 
 		Scrollbar bar = event.getScrollbar();
-		Game game = app.getStateManager().getState(Game.class);
+		Game game = Main.app.getStateManager().getState(Game.class);
 		int High = game.getMap().getHighestCell();
 		int Low = game.getMap().getLowestCell();
 		bar.setWorldMax(High - Low);
 
-		GameCameraState camera = app.getStateManager().getState(GameCameraState.class);
+		GameCameraState camera = Main.app.getStateManager().getState(GameCameraState.class);
 		int top = camera.getSliceTop();
 		int bottom = camera.getSliceBottom();
 
 		int value = (int) event.getValue();
 		int slice = camera.getSliceTop() - camera.getSliceBottom();
 		camera.setSlice(High - value, High - value - slice);
+	}
+
+	private void disableMouseWheel() {
+		GameCameraState camera = Main.app.getStateManager().getState(GameCameraState.class);
+		camera.setMouseWheelEnabled(false);
+	}
+
+	private void enableMouseWheel() {
+		GameCameraState camera = Main.app.getStateManager().getState(GameCameraState.class);
+		camera.setMouseWheelEnabled(true);
+	}
+
+	public void spawnCitizenWindow(Citizen citizen) {
+		String windowId = "updatable-" + NiftyIdCreator.generate();
+		CustomControlCreator citizenWindowCreator = new CustomControlCreator(windowId, "CitizenWindow");
+		Element citizenWindow = citizenWindowCreator.create(nifty, screen, windows);
+		// the controller needs to be set on the panel rather than the control, maybe due to the hidden window-content panel
+		// there is something bugged about these ID's
+		Element citizenWindowPanel = citizenWindow.findElementByName(windowId + "#CitizenWindow#window-content#CitizenWindow#window-content#CitizenWindowPanel");
+		CitizenWindowController controller = citizenWindowPanel.getControl(CitizenWindowController.class);
+		controller.setCitizen(citizen);
+		updatables.put(windowId, controller);
+	}
+
+	@NiftyEventSubscriber(pattern = "updatable-.*")
+	public void onAnyWindowClose(final String id, final WindowClosedEvent event) {
+		System.out.println("Window Closed " + id);
+		updatables.remove(id);
+	}
+
+	@NiftyEventSubscriber(pattern = ".*")
+	public void checkBoxStateChange(final String id, final CheckBoxStateChangedEvent stateChanged) {
+		if (id.equals("pathingCheckBox")) {
+			PathingRenderer pathingRenderer = Main.app.getStateManager().getState(PathingRenderer.class);
+			pathingRenderer.setDisplayToggle(pathingCheckBox.isChecked());
+		} else if (id.equals("litSurfacesCheckBox")) {
+			TerrainRenderer terrainRenderer = Main.app.getStateManager().getState(TerrainRenderer.class);
+			terrainRenderer.setSunnyRendering(litSurfacesCheckBox.isChecked());
+		} else if (id.equals("terrainCheckBox")) {
+			TerrainRenderer terrainRenderer = Main.app.getStateManager().getState(TerrainRenderer.class);
+			terrainRenderer.setTerrainRendering(terrainCheckBox.isChecked());
+		}
 	}
 }

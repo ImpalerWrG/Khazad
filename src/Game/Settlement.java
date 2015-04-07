@@ -31,7 +31,7 @@ public class Settlement implements Serializable {
 
 	private static final long serialVersionUID = 1;
 	// Settlment data, wealth, honor, diplomatic status etc
-	private ArrayList<Citizen> Citizens;
+	public ArrayList<Citizen> Citizens;
 	JobManager JobSystem;
 
 	public Settlement() {

@@ -14,7 +14,6 @@
 
  You should have received a copy of the GNU General Public License
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
-
 package Game;
 
 import Core.Main;
@@ -25,6 +24,7 @@ import Job.JobManager;
 import Map.*;
 import Terrain.Geology;
 import Interface.VolumeSelection;
+import Nifty.GameScreenController;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -32,15 +32,13 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 
 import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.KeyTrigger;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.PriorityQueue;
 
 import java.util.concurrent.ExecutorService;
@@ -59,31 +57,32 @@ import java.util.concurrent.Future;
 public class Game extends AbstractAppState implements ActionListener, Serializable {
 
 	private static final long serialVersionUID = 1;
-	public static String version = "0.2.2";
+	public static String version = "0.2.2a";
 	transient Main app = null;
 	transient AppStateManager state = null;
 	int MasterSeed;
 	Dice PawnDice = new Dice();
 	GameMap MainMap;
 	Geology MapGeology;
-	Settlement GameSettlement;
+	public Settlement GameSettlement;
 	Weather GameWeather;
 	boolean Pause;
 	int TickRate;
 	long CurrentGameTick;
 	float TickRounding;
-	public long seconds;
-	public long minutes;
-	public long hours;
-	public long days;
+	private long seconds;
+	private long minutes;
+	private long hours;
+	private long days;
 	int UniqueIDCounter;
 	PriorityQueue<Temporal> TemporalQueue;
-	ArrayList<Actor> Actors;
+	HashMap<Integer, Actor> Actors;
 	int ActorIDcounter = 0;
 	transient ExecutorService Executor;
 	transient Future lastUpdate;
-	public transient String kingdomName;
-	public transient String saveGameFileName;
+	private transient String kingdomName;
+	private transient String saveGameFileName;
+	private transient GameScreenController gameScreenController;
 
 	public Game() {
 
@@ -106,11 +105,17 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 
 		registerWithInput(app.getInputManager());
 	}
+	
+	@Override
+	public void cleanup() {
+		super.cleanup();
+		app.getInputManager().removeListener(this);
+	}
 
 	public boolean initializeGame(short X, short Y, String SeedString, String kingdomName) {
 		MasterSeed = SeedString.hashCode();
-		this.kingdomName = kingdomName;
-		saveGameFileName = null;
+		this.setKingdomName(kingdomName);
+		setSaveGameFileName(null);
 		PawnDice.seed(MasterSeed);
 
 		MapGeology = new Geology();
@@ -126,7 +131,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		buildMapChunk((short) 0, (short) 0, (byte) X, (byte) Y);
 
 		GameSettlement = new Settlement();
-		Actors = new ArrayList<Actor>();
+		Actors = new HashMap<Integer, Actor>();
 
 		return true;
 	}
@@ -164,7 +169,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	public Pawn spawnPawn(MapCoordinate SpawnCoordinates, short CreatureTypeID) {
 		Pawn NewPawn = new Pawn(CreatureTypeID, ActorIDcounter, MasterSeed, SpawnCoordinates);
 		ActorIDcounter++;
-		Actors.add(NewPawn);
+		Actors.put(NewPawn.getID(), NewPawn);
 		addTemporal(NewPawn);
 		return NewPawn;
 	}
@@ -172,7 +177,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	public Citizen SpawnCitizen(short CreatureTypeID, MapCoordinate SpawnCoordinates) {
 		Citizen NewCitizen = new Citizen(CreatureTypeID, ActorIDcounter, PawnDice.roll(0, MasterSeed), SpawnCoordinates);
 		ActorIDcounter++;
-		Actors.add(NewCitizen);
+		Actors.put(NewCitizen.getID(), NewCitizen);
 		GameSettlement.addCitizen(NewCitizen);
 		addTemporal(NewCitizen);
 		return NewCitizen;
@@ -208,7 +213,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		jobs.addJob(newJob);
 	}
 
-	public ArrayList<Actor> getActors() {
+	public HashMap<Integer, Actor> getActors() {
 		return Actors;
 	}
 
@@ -231,12 +236,6 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 
 	public void registerWithInput(InputManager inputManager) {
 		String[] inputs = {"Pause", "Faster", "Slower"};
-
-		inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_SPACE));
-		inputManager.addMapping("Faster", new KeyTrigger(KeyInput.KEY_ADD));
-		inputManager.addMapping("Faster", new KeyTrigger(KeyInput.KEY_EQUALS));
-		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_MINUS));
-		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_SUBTRACT));
 		inputManager.addListener(this, inputs);
 	}
 
@@ -257,6 +256,11 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 				minutes = CurrentGameTick / Temporal.TICKS_PER_MINUTE;
 				hours = CurrentGameTick / Temporal.TICKS_PER_HOUR;
 				days = CurrentGameTick / Temporal.TICKS_PER_DAY;
+				
+				if (gameScreenController != null) {
+					// update UI with any updated state, since some windows can be open while unpaused.
+					gameScreenController.update();
+				}
 			}
 		}
 	}
@@ -293,9 +297,33 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	}
 
 	public String getTimeString() {
-		String hoursString = Utils.padLeadingZero(hours % 25);
+		String hoursString = Utils.padLeadingZero(hours %24);
 		String minutesString = Utils.padLeadingZero(minutes % 60);
 		String secondsString = Utils.padLeadingZero(seconds % 60);
 		return "DAY " + days + "  -  " + hoursString + ":" + minutesString + ":" + secondsString;
+	}
+
+	public String getKingdomName() {
+		return kingdomName;
+	}
+
+	public void setKingdomName(String kingdomName) {
+		this.kingdomName = kingdomName;
+	}
+
+	public String getSaveGameFileName() {
+		return saveGameFileName;
+	}
+
+	public void setSaveGameFileName(String saveGameFileName) {
+		this.saveGameFileName = saveGameFileName;
+	}
+
+	public GameScreenController getGameScreenController() {
+		return gameScreenController;
+	}
+
+	public void setGameScreenController(GameScreenController gameScreenController) {
+		this.gameScreenController = gameScreenController;
 	}
 }

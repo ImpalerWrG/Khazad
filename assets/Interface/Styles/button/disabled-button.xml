@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty-styles xmlns="http://nifty-gui.lessvoid.com/nifty-gui">
+
+    <!-- +++++++++++++++++++++++++++++++++++++ -->
+    <!-- style for the button background panel -->
+    <!-- +++++++++++++++++++++++++++++++++++++ -->
+    <style id="disabled-button#panel">
+        <attributes backgroundImage="Interface/Styles/button/disabledButton.png" imageMode="sprite-resize:100,23,0,2,96,2,2,2,96,2,19,2,96,2,2"
+                    paddingLeft="7px" paddingRight="7px" width="100px" height="23px" childLayout="center"
+                    visibleToMouse="false"/>
+		<effect>
+            <onFocus name="imageOverlay" filename="Interface/Styles/button/disabledButton.png"
+                     imageMode="sprite-resize:100,23,1,2,96,2,2,2,96,2,19,2,96,2,2" post="true"/>
+            <onEnabled name="renderQuad" startColor="#2228" endColor="#2220" post="true" length="150"/>
+            <onDisabled name="renderQuad" startColor="#2220" endColor="#2228" post="true" length="150"/>
+        </effect>
+    </style>
+
+    <!-- +++++++++++++++++++++++++++++++++++++ -->
+    <!-- style for the button text -->
+    <!-- +++++++++++++++++++++++++++++++++++++ -->
+    <style id="disabled-button#text" base="button-font">
+        <attributes align="center" valign="center" textHAlign="center" textVAlign="center" visibleToMouse="false" color="#999" />
+    </style>
+</nifty-styles>

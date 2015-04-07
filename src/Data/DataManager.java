@@ -251,7 +251,9 @@ public class DataManager implements Serializable {
 	public DataLibrary getCreatureDataLibrary() {
 		return Creatures;
 	}
-	
+	public GivenNameGroupData getGivenNameGroupData(short Index)	{ return (GivenNameGroupData) GivenNameGroups.Entries.get(Index); }
+	public int getNumGivenNameGroups()								{ return GivenNameGroups.Entries.size(); }
+	public DataLibrary getGivenNameGroupDataLibrary()				{ return GivenNameGroups; }
 	// ADD New Data classes gets Here
 	XMLManager XML;
 	// ADD New Data classes Libraries Here
@@ -272,6 +274,8 @@ public class DataManager implements Serializable {
 	DataLibrary BasicAttributes = new DataLibrary<BasicAttributeData>(BasicAttributeData.class, this);
 	DataLibrary Musics = new DataLibrary<MusicData>(MusicData.class, this);
 	DataLibrary Creatures = new DataLibrary<CreatureData>(CreatureData.class, this);
+	DataLibrary GivenNameGroups = new DataLibrary<GivenNameGroupData>(GivenNameGroupData.class, this);
+	
 
 	public boolean initialize() {
 
@@ -294,7 +298,7 @@ public class DataManager implements Serializable {
 		GlobalDataTypeMap.put("BasicAttribute", BasicAttributes);
 		GlobalDataTypeMap.put("Music", Musics);
 		GlobalDataTypeMap.put("Creature", Creatures);
-
+		GlobalDataTypeMap.put("GivenNameGroup", GivenNameGroups);
 
 		ArrayList<String> DataFiles = new ArrayList<String>();
 

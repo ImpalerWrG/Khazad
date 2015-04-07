@@ -21,7 +21,7 @@ import Core.Dice;
 import Core.Main;
 import Data.DataManager;
 import Game.Game;
-import PathFinding.PathFinding;
+import pathFinding.PathFinding;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;

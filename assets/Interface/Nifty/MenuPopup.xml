@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<nifty>
+	<useStyles filename="nifty-default-styles.xml"/>
+	<useControls filename="nifty-default-controls.xml"/>
+
+	<popup backgroundColor="#000a" childLayout="center" controller="Nifty.MenuPopupController" id="MenuPopup" >
+		<interact onClick="CloseMenuPopup()" onSecondaryClick="CloseMenuPopup()" onTertiaryClick="CloseMenuPopup()"/>		
+		<panel align="center" childLayout="vertical" height="300px" id="MenuPanel" style="nifty-panel-simple" width="200px">
+			<panel align="center" childLayout="center" height="100px" id="QuitPanel" width="100%">
+				<control childLayout="center" height="50px" id="Savebutton" label="Save Game" name="button" width="150px">
+					<interact onClick="SaveGame()"/>
+				</control>
+			</panel>
+			<panel align="center" childLayout="center" height="100px" width="100%">
+				<control childLayout="center" height="50px" id="Abandonbutton" label="Abandon Game" name="button" width="150px">
+					<interact onClick="Abandon()"/>
+				</control>
+			</panel>
+			<panel align="center" childLayout="center" height="100px" width="100%">
+				<control childLayout="center" height="50px" id="Quitbutton" label="Quit to Desktop" name="button" width="150px">
+					<interact onClick="Quit()"/>
+				</control>
+			</panel>
+		</panel>
+	</popup>
+</nifty>
