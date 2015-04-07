@@ -36,6 +36,7 @@ import Renderer.PathingRenderer;
 import Renderer.TerrainRenderer;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
+import com.jme3.math.Vector3f;
 import de.lessvoid.nifty.NiftyIdCreator;
 import de.lessvoid.nifty.controls.CheckBox;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;

@@ -83,7 +83,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	private boolean LeftwardPaning;
 	private boolean UpwardPaning;
 	private boolean DownwardPaning;
-
 	private int PanningSpeed = 3;
 	private float OldMouseX;
 	private float OldMouseY;
@@ -99,7 +98,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	protected int ViewLevels;
 	protected int ViewMax, ViewMin;
 	private boolean mouseWheelEnabled = true;
-	
 	private Actor selectedActor;
 
 	public GameCameraState() {
@@ -176,10 +174,10 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 				if (CurrentMode == CameraMode.SELECT_VOLUME && keyPressed)
 					setMode(CameraMode.SELECTING_VOLUME);
-				
+
 				if (selectedActor != null && keyPressed) {
 					if (selectedActor instanceof Citizen) {
-						Citizen citizen = (Citizen)selectedActor;
+						Citizen citizen = (Citizen) selectedActor;
 						// open a window
 						Game game = Main.app.getStateManager().getState(Game.class);
 						game.getGameScreenController().spawnCitizenWindow(citizen);
@@ -417,7 +415,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			MouseLocation.set(x, y, z);
 		}
 	}
-	
+
 	private void identifyNode(Node node) {
 		if (node == null) {
 			return;
@@ -560,8 +558,17 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	public void setMouseWheelEnabled(boolean mouseWheelEnabled) {
 		this.mouseWheelEnabled = mouseWheelEnabled;
 	}
-	
+
 	public Actor getSelectedActor() {
 		return selectedActor;
+	}
+
+	public void pointCameraAt(MapCoordinate mapCoordinate) {
+		// change to the same Z level as the target
+		SliceTop = mapCoordinate.Z;
+		SliceBottom = SliceTop + ViewLevels;
+		// point camera at the target
+		Vector3f target = new Vector3f(mapCoordinate.X, mapCoordinate.Y, mapCoordinate.Z);
+		MainCamera.pointCameraAt(target);
 	}
 }

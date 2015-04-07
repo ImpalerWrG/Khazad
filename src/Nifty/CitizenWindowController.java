@@ -5,7 +5,9 @@
 
 package Nifty;
 
+import Core.Main;
 import Game.Citizen;
+import Interface.GameCameraState;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.Controller;
@@ -39,7 +41,7 @@ public class CitizenWindowController implements Controller, Updatable {
 		this.control = element;
 		this.screenController = (GameScreenController) screen.getScreenController();
 		// there is definitely some sort of bug with these ID's
-		nameLabel = control.findNiftyControl(control.getId() + "#CitizenWindow#window-content#CitizenWindowPanel#NameLabel", Label.class);
+		nameLabel = control.findNiftyControl(control.getId() + "#CitizenWindow#window-content#CitizenWindowPanel#NamePanel#CitizenWindow#window-content#CitizenWindowPanel#NamePanel#NameLabel", Label.class);
 		genderLabel = control.findNiftyControl(control.getId() + "#CitizenWindow#window-content#CitizenWindowPanel#GenderLabel", Label.class);
 		jobLabel = control.findNiftyControl(control.getId() + "#CitizenWindow#window-content#CitizenWindowPanel#JobLabel", Label.class);
 		taskLabel = control.findNiftyControl(control.getId() + "#CitizenWindow#window-content#CitizenWindowPanel#TaskLabel", Label.class);
@@ -70,7 +72,8 @@ public class CitizenWindowController implements Controller, Updatable {
 		return false;
 	}
 
-	public void OpenPopulationPopup() {
-		screenController.OpenPopulationPopup();
+	public void moveToCitizen(){
+		GameCameraState gameCameraState = Main.app.getStateManager().getState(GameCameraState.class);
+		gameCameraState.pointCameraAt(citizen.getLocation());
 	}
 }
