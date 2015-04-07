@@ -40,6 +40,7 @@ import com.jme3.scene.VertexBuffer;
 import com.jme3.util.BufferUtils;
 
 import com.jme3.app.state.ScreenshotAppState;
+import com.jme3.asset.plugins.FileLocator;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -54,6 +55,8 @@ public class Main extends SimpleApplication {
 
 	private static ExecutorService pool;
 	public static Main app;
+	
+	public boolean Focus;
 
 	public static void main(String[] args) {
 		app = new Main();
@@ -62,9 +65,8 @@ public class Main extends SimpleApplication {
 		setting.setTitle("Khazad");
 		setting.setHeight(600);
 		setting.setWidth(800);
-		//Game.setShowSettings(false); 
-		app.setSettings(setting);
 
+		app.setSettings(setting);
 		app.start();
 	}
 
@@ -84,6 +86,9 @@ public class Main extends SimpleApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		app.assetManager.registerLocator("assets/", FileLocator.class);
+		app.setPauseOnLostFocus(false);
+
 		pool = Executors.newFixedThreadPool(8);
 
 		DataManager Data = DataManager.getDataManager();
@@ -146,6 +151,18 @@ public class Main extends SimpleApplication {
 
 	@Override
 	public void simpleRender(RenderManager rm) {
+	}
+
+	@Override
+	public void gainFocus() {
+		Focus = true;
+		super.gainFocus();
+	}
+
+	@Override
+	public void loseFocus() {
+		Focus = false;
+		super.loseFocus();
 	}
 
 	@Override

@@ -60,7 +60,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 
 	private static final long serialVersionUID = 1;
 	public static String version = "0.2.2";
-	transient SimpleApplication app = null;
+	transient Main app = null;
 	transient AppStateManager state = null;
 	int MasterSeed;
 	Dice PawnDice = new Dice();
@@ -99,7 +99,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	@Override
 	public void initialize(AppStateManager stateManager, Application app) {
 		super.initialize(stateManager, app);
-		this.app = (SimpleApplication) app;
+		this.app = (Main) app;
 		this.state = stateManager;
 		Main core = (Main) app;
 		Executor = core.getThreadPool();
@@ -242,7 +242,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 
 	@Override
 	public void update(float tpf) {
-		if (!Pause) {
+		if (!Pause && app.Focus) {
 			if (lastUpdate == null || lastUpdate.isDone()) {
 				float TargetTicks = TickRate * tpf * Temporal.TICKS_PER_SECOND;
 				TargetTicks += TickRounding;
