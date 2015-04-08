@@ -19,10 +19,10 @@ package Nifty;
 
 import com.jme3.app.Application;
 import com.jme3.niftygui.NiftyJmeDisplay;
-import de.lessvoid.nifty.controls.label.LabelControl;
 import de.lessvoid.nifty.Nifty;
 
 import com.jme3.app.state.AbstractAppState;
+import de.lessvoid.nifty.controls.Label;
 
 /**
  * Core initialization fo the Nifty GUI system
@@ -42,25 +42,19 @@ public class GUI extends AbstractAppState {
 
 		//nifty.loadStyleFile("Dwarven.xml");
 
-		nifty.registerScreenController(new GameScreenController(nifty, this.app));
-		nifty.registerScreenController(new LoadGameScreenController(nifty, this.app));
-		nifty.registerScreenController(new SetupScreenController(nifty, this.app));
-		nifty.registerScreenController(new ShellScreenController(nifty, this.app));
-
+		nifty.addXml("Interface/Nifty/ChooseCitizenControl.xml");
+		nifty.addXml("Interface/Nifty/CitizenWindow.xml");
+		nifty.addXml("Interface/Nifty/ErrorPopup.xml");
 		nifty.addXml("Interface/Nifty/GameScreenNifty.xml");
 		nifty.addXml("Interface/Nifty/LoadScreenNifty.xml");
+		nifty.addXml("Interface/Nifty/MenuPopup.xml");
+		nifty.addXml("Interface/Nifty/PopulationPopupNifty.xml");
 		nifty.addXml("Interface/Nifty/SetupScreenNifty.xml");
 		nifty.addXml("Interface/Nifty/StartScreenNifty.xml");
+		nifty.addXml("Interface/Nifty/TutorialPopup.xml");
 
 		nifty.gotoScreen("StartScreen");
 
 		app.getGuiViewPort().addProcessor(niftyDisplay);
-	}
-
-	public void updateText(String target, String Message) {
-		LabelControl label = nifty.getCurrentScreen().findNiftyControl(target, LabelControl.class);
-		if (label != null) {
-			label.setText(Message);
-		}
 	}
 }

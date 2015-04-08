@@ -21,7 +21,7 @@ import Core.Dice;
 import Core.Main;
 import Data.DataManager;
 import Game.Game;
-import PathFinding.PathFinding;
+import PathFinding.PathManager;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
@@ -206,7 +206,7 @@ public class GameMap implements Serializable {
 		if (TargetCell != null) {
 			TargetCell.setCubeShape(Coordinate.getCubeByteIndex(), NewShape);
 			MapCoordinate[] Coordinates = {Coordinate};
-			PathFinding.getSingleton().editMapAbstractions(Coordinates);
+			PathManager.getSingleton().editMapAbstractions(Coordinates);
 		}
 	}
 

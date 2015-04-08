@@ -27,7 +27,7 @@ import Map.MapCoordinate;
 
 import PathFinding.MovementModality;
 import PathFinding.Navigator;
-import PathFinding.PathFinding;
+import PathFinding.PathManager;
 
 import java.io.Serializable;
 
@@ -56,6 +56,9 @@ public class Pawn extends Actor implements Serializable {
 	// The 14 Basic Attributes
 	Dice AttributeDice;
 	byte[] BasicAttributes;
+	private String firstName;
+	private String lastName;
+	private Gender gender;
 
 	public Pawn(short CreatureTypeID, int id, int Seed, MapCoordinate SpawnLocation) {
 		super(id, SpawnLocation);
@@ -78,6 +81,11 @@ public class Pawn extends Actor implements Serializable {
 			BasicAttributes[i] += CreatureDataEntry.AttributeModifierVales[i];  //Size class adjustment
 			BasicAttributes[i] += CreatureSizeDataEntry.AttributeModifierVales[i];  //Size class adjustment
 		}
+		if (AttributeDice.roll(1,3) == 1) {
+			gender = Gender.GENDER_FEMALE;
+		} else {
+			gender = Gender.GENDER_MALE;
+		}
 	}
 
 	public Navigator getNavigator() {
@@ -85,7 +93,7 @@ public class Pawn extends Actor implements Serializable {
 	}
 
 	public long attemptMove(Direction MovementDirection) {
-		float EdgeCost = PathFinding.getSingleton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getMovementModality());
+		float EdgeCost = PathManager.getSingleton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getMovementModality());
 		final int speedIndex = DataManager.getDataManager().getLabelIndex("BASIC_ATTRIBUTE_SPEED");
 		if (EdgeCost != -1) {
 			return (int) (EdgeCost / ((float) BasicAttributes[speedIndex] / 7.0) * TICKS_PER_SECOND);
@@ -178,5 +186,42 @@ public class Pawn extends Actor implements Serializable {
 		}
 
 		return WakeTick;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
+	public String getName() {
+		return this.firstName + ' ' + this.lastName;
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+	public String getGenderText() {
+		if (gender == Gender.GENDER_MALE) {
+			return "Male";
+		} else if (gender == Gender.GENDER_FEMALE) {
+			return "Female";
+		}
+		return "Unknown";
 	}
 }

@@ -29,7 +29,7 @@ import Map.Zone;
 import Interface.VolumeSelection;
 import Map.Direction;
 import PathFinding.MovementModality;
-import PathFinding.PathFinding;
+import PathFinding.PathManager;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -58,7 +58,7 @@ public class ExcavateJob extends Job implements Serializable {
 	// The Zone and other classes needed for accessability checks
 	Zone ExcavationZone;
 	GameMap map = null;
-	transient PathFinding paths;
+	transient PathManager paths;
 	MovementModality Modality;
 
 	public ExcavateJob(GameMap map) {
@@ -73,7 +73,7 @@ public class ExcavateJob extends Job implements Serializable {
 		Modality = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
 		this.map = map;
 		Priority = 10;
-		paths = PathFinding.getSingleton();
+		paths = PathManager.getSingleton();
 	}
 
 	public void addDesignations(VolumeSelection Selection, Zone SourceZone, CubeShape NewShape) {
@@ -256,6 +256,6 @@ public class ExcavateJob extends Job implements Serializable {
 		// default deserialization
 		ois.defaultReadObject();
 		// fix transients
-		paths = PathFinding.getSingleton();
+		paths = PathManager.getSingleton();
 	}
 }

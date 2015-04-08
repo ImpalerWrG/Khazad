@@ -5,16 +5,16 @@
 
 package Nifty;
 
+import Core.Main;
 import Game.Game;
 import Game.SaveGameHeader;
 import Interface.GameCameraState;
 import Job.JobManager;
-import PathFinding.PathFinding;
+import PathFinding.PathManager;
 import Renderer.MapRenderer;
 import Renderer.PathingRenderer;
 import Renderer.SelectionRenderer;
 import Renderer.TerrainRenderer;
-import com.jme3.app.Application;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.Label;
@@ -41,7 +41,6 @@ import javax.swing.filechooser.FileSystemView;
  */
 public class LoadGameScreenController implements ScreenController {
 
-	private Application app;
 	private Nifty nifty;
 	private Screen screen;
 	Element ErrorPopup = null;
@@ -49,12 +48,8 @@ public class LoadGameScreenController implements ScreenController {
 	Label SaveDescription;
 	SaveGameHeader SelectedSaveGameHeader = null;
 
-	public LoadGameScreenController(Nifty nifty, Application app) {
-		this.app = app;
-		this.nifty = nifty;
-	}
-
 	public void bind(Nifty nifty, Screen screen) {
+		this.nifty = nifty;
 		this.screen = screen;
 		this.SaveGames = screen.findNiftyControl("SaveGames", ListBox.class);
 		this.SaveDescription = screen.findNiftyControl("SaveDescription", Label.class);
@@ -106,19 +101,16 @@ public class LoadGameScreenController implements ScreenController {
 						saveGameHeaders.add(saveGameHeader);
 					}
 				}
-			} catch (IOException e) {
-				showError(e.toString());
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				showError(e.toString());
+			} catch (Exception e) {
+				ErrorPopupController.ShowErrorMessage(nifty, "Problem displaying save games", e.toString());
 				e.printStackTrace();
 			} finally {
 				try {
 					if (ois != null) {
 						ois.close();
 					}
-				} catch (IOException e) {
-					showError(e.toString());
+				} catch (Exception e) {
+					ErrorPopupController.ShowErrorMessage(nifty, "Problem displaying save games", e.toString());
 					e.printStackTrace();
 				}
 			}
@@ -148,35 +140,16 @@ public class LoadGameScreenController implements ScreenController {
 				+ "Version: " + saveGameHeader.version);
 	}
 
-	private void showError(String errorMessage) {
-		if (ErrorPopup == null) {
-			ErrorPopup = nifty.createPopup("ErrorPopup");
-		}
-		Label errorLabel = ErrorPopup.findNiftyControl("ErrorLabel", Label.class);
-		if (errorLabel
-				!= null) {
-			errorLabel.setText(errorMessage);
-		}
 
-		nifty.showPopup(screen, this.ErrorPopup.getId(), null);
-	}
-
-	public void closeError() {
-		if (ErrorPopup != null) {
-			nifty.closePopup(this.ErrorPopup.getId());
-			ErrorPopup = null;
-		}
-	}
-
-	public void deleteGame() {
+	public void DeleteGame() {
 		if (SelectedSaveGameHeader == null) {
-			showError("Please select a game to delete.");
+			ErrorPopupController.ShowErrorMessage(nifty, "Problem deleting game", "Please select a game to delete.");
 			return;
 		}
 		// TODO are you sure?
 		File saveFile = getSelectedSaveFile();
 		if (!saveFile.exists()) {
-			showError(SelectedSaveGameHeader.fileName + " save does not exist.");
+			ErrorPopupController.ShowErrorMessage(nifty, "Problem deleting game", SelectedSaveGameHeader.fileName + " save does not exist.");
 			refreshSaveGameList();
 			return;
 		}
@@ -194,16 +167,16 @@ public class LoadGameScreenController implements ScreenController {
 		return new File(saveGamesFolder + SelectedSaveGameHeader.fileName);
 	}
 
-	public void loadGame() {
+	public void LoadGame() {
 		if (SelectedSaveGameHeader == null) {
-			showError("Please select a game to load.");
+			ErrorPopupController.ShowErrorMessage(nifty, "Problem loading game", "Please select a game to load.");
 			return;
 		}
 		ObjectInputStream ois = null;
 		try {
 			File saveFile = getSelectedSaveFile();
 			if (!saveFile.exists()) {
-				showError(SelectedSaveGameHeader.fileName + " save does not exist.");
+				ErrorPopupController.ShowErrorMessage(nifty, "Problem loading game", SelectedSaveGameHeader.fileName + " save does not exist.");
 				refreshSaveGameList();
 				return;
 			}
@@ -214,46 +187,42 @@ public class LoadGameScreenController implements ScreenController {
 			SaveGameHeader saveGameHeader = (SaveGameHeader) ois.readObject();
 			if (!saveGameHeader.version.equals(Game.version)) {
 				// TODO it might still be possible to load these saves
-				showError("Game save is version " + saveGameHeader.version + ", current game version is " + Game.version + "." + System.lineSeparator()
+				ErrorPopupController.ShowErrorMessage(nifty, "Problem loading game",
+						"Game save is version " + saveGameHeader.version + ", current game version is " + Game.version + "." + System.lineSeparator()
 						+ System.lineSeparator()
 						+ "Unfortunately game saves from version " + saveGameHeader.version + " are no longer supported, please start a new game.");
 				return;
 			}
 			Game game = (Game) ois.readObject();
 			// copy a few things from the header into the game (since we don't keep the header)
-			game.kingdomName = saveGameHeader.kingdomName;
-			game.saveGameFileName = SelectedSaveGameHeader.fileName;
+			game.setKingdomName(saveGameHeader.kingdomName);
+			game.setSaveGameFileName(SelectedSaveGameHeader.fileName);
+			nifty.gotoScreen("GameScreen");
 
 			// initialize the game
-			this.app.getStateManager().attach(game);
-			this.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
-			this.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
-			this.app.getStateManager().attach(new SelectionRenderer());
-			this.app.getStateManager().getState(PathingRenderer.class).attachToGame(game);
+			Main.app.getStateManager().attach(game);
+			Main.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
+			Main.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
+			Main.app.getStateManager().attach(new SelectionRenderer());
+			Main.app.getStateManager().getState(PathingRenderer.class).attachToGame(game);
 
 			GameCameraState cam = new GameCameraState();
 
-			this.app.getStateManager().attach(cam);
+			Main.app.getStateManager().attach(cam);
 			cam.setViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
 			cam.setSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
 
 			JobManager jobs = game.getSettlement().getJobManager();
 			// PATHING
-			PathFinding Pather = PathFinding.getSingleton();
+			PathManager Pather = PathManager.getSingleton();
 
-			Pather.initialize(this.app.getStateManager(), this.app);
+			Pather.initialize(Main.app.getStateManager(), Main.app);
 			Pather.createMapAbstraction(game.getMap());
 			//Pather.AllocateThreadPool(ExecutionThreadpool);
-			this.app.getStateManager().attach(Pather);
-
-			nifty.gotoScreen("GameScreen");
-		} catch (IOException e) {
+			Main.app.getStateManager().attach(Pather);
+		} catch (Exception e) {
 			// TODO show a better message to the user
-			showError(e.toString());
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO show a better message to the user
-			showError(e.toString());
+			ErrorPopupController.ShowErrorMessage(nifty, "Problem loading game", e.toString());
 			e.printStackTrace();
 		} finally {
 			try {
@@ -262,7 +231,7 @@ public class LoadGameScreenController implements ScreenController {
 				}
 			} catch (IOException e) {
 				// TODO show a better message to the user
-				showError(e.toString());
+				ErrorPopupController.ShowErrorMessage(nifty, "Problem loading game", e.toString());
 				e.printStackTrace();
 			}
 		}

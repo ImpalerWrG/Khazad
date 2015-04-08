@@ -40,6 +40,7 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial.CullHint;
 import com.jme3.util.BufferUtils;
 
 import java.util.ArrayList;
@@ -191,8 +192,18 @@ public class SelectionRenderer extends AbstractAppState {
 	@Override
 	public void update(float tpf) {
 		GameCameraState cam = state.getState(GameCameraState.class);
+		if (cam == null) {
+			// not initialised yet
+			return;
+		}
 		MapCoordinate mouse = cam.getMouseLocation();
-		CursorBox.setLocalTranslation(new Vector3f(mouse.X, mouse.Y, mouse.Z));
+		if (cam.getSelectedActor() == null) {
+			CursorBox.setLocalTranslation(new Vector3f(mouse.X, mouse.Y, mouse.Z));
+			CursorBox.setCullHint(CullHint.Dynamic);
+		} else {
+			// hide the cursor if over an actor
+			CursorBox.setCullHint(CullHint.Always);
+		}
 
 		Selection = cam.Volume;
 		if (Selection != null) {

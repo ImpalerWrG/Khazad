@@ -41,6 +41,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.control.LodControl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -78,8 +79,8 @@ public class ActorRenderer extends AbstractAppState {
 
 		long CurrentTick = game.getCurrentTimeTick();
 
-		ArrayList<Actor> actors = game.getActors();
-		for (Actor target : actors) {
+		HashMap<Integer, Actor> actors = game.getActors();
+		for (Actor target : actors.values()) {
 			if (target != null) {
 				if (target.isDirty()) {
 					Node actorNode = ActorNodeMap.get(target.getID());
@@ -90,7 +91,7 @@ public class ActorRenderer extends AbstractAppState {
 						actorModel.scale(0.25f, 0.25f, 0.25f);
 						actorModel.rotate(1.5f, 0.0f, 0.0f);
 
-						actorNode = new Node("ActorNode");
+						actorNode = new Node("ActorNode-" + target.getID());
 						actorNode.attachChild(actorModel);
 						ActorNodeMap.put(new Integer(target.getID()), actorNode);
 					}

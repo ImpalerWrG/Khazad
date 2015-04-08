@@ -17,6 +17,9 @@
 
 package Game;
 
+import Core.Utils;
+import Data.DataManager;
+import Data.Types.GivenNameGroupData;
 import Job.*;
 import Map.MapCoordinate;
 import java.io.Serializable;
@@ -37,11 +40,31 @@ public class Citizen extends Pawn implements Serializable {
 	// Proffessions / levels/ skills
 	public Citizen(short CreatureTypeID, int id, int seed, MapCoordinate SpawnLocation) {
 		super(CreatureTypeID, id, seed, SpawnLocation);
+		// TODO randomly generated name
+		generateName("GIVEN_NAMEGROUP_TOLKEINESQUE");
+		//setFirstName("Urist");
+		//setLastName(Integer.toString(id));
 		setTask(new Task(null, Task.TaskType.TASK_IDLE, SpawnLocation));
 	}
 
 	@Override
 	public Task findTask() {
 		return super.findTask();
+	}
+
+	private void generateName(String givenNameGroup) {
+		DataManager data = DataManager.getDataManager();
+		short givenNameGroupId;
+		if (getGender() == Gender.GENDER_MALE) {
+			givenNameGroupId = Data.DataManager.getDataManager().getLabelIndex(givenNameGroup + "_GENDER_MALE");
+		} else {
+			givenNameGroupId = Data.DataManager.getDataManager().getLabelIndex(givenNameGroup + "_GENDER_FEMALE");
+		}
+		GivenNameGroupData givenNameGroupData = data.getGivenNameGroupData(givenNameGroupId);
+		String prefix = givenNameGroupData.getPrefixes()[AttributeDice.roll(0, givenNameGroupData.getPrefixes().length - 1)];
+		String suffix = givenNameGroupData.getSuffixes()[AttributeDice.roll(0, givenNameGroupData.getSuffixes().length - 1)];
+		setFirstName(Utils.upperCaseFirst(prefix + suffix)); // upper case the first letter in case the prefix is an empty string.
+		// TODO last names
+		setLastName("");
 	}
 }

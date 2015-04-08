@@ -104,7 +104,7 @@ public class PathTester implements Serializable {
 		}
 	}
 
-	transient PathFinding ParentManager;
+	transient PathManager ParentManager;
 	Dice PathDice;
 	MapCoordinate ManualStartCoords, ManualGoalCoords;  // Used for manual testing
 	MapPath ManualPath;
@@ -113,10 +113,11 @@ public class PathTester implements Serializable {
 	GroupProfile[] ProfileGroupList;
 	ArrayList<MapCoordinate> TestCoords, StartCoordsList, GoalCoordsList;
 	int TestingIterations;
+	MovementModality Basic;
 
-	boolean Initialize(PathFinding Parent) {
-		//ProfileGroupList[0] = null;
-		//ProfileGroupList[1] = null;
+	boolean Initialize(PathManager Parent) {
+		// TODO get Modality from the Manager
+		Basic = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
 
 		StartCoordsList = new ArrayList<MapCoordinate>();
 		GoalCoordsList = new ArrayList<MapCoordinate>();
@@ -137,11 +138,10 @@ public class PathTester implements Serializable {
 		// default deserialization
 		ois.defaultReadObject();
 		// fix transients
-		ParentManager = PathFinding.getSingleton();
+		ParentManager = PathManager.getSingleton();
 	}
 
 	void collectTestCoords() {
-		MovementModality Basic = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
 		GridInterface BasicGrid = ParentManager.Grids.get(Basic);
 		TestCoords = BasicGrid.getPassableCoordinates();
 	}
@@ -185,7 +185,7 @@ public class PathTester implements Serializable {
 		ProfileGroupList = new GroupProfile[TestSystems.length];
 		for (int i = 0; i < TestSystems.length; i++) {
 			ProfileGroupList[TestSystems[i]] = new GroupProfile();
-			//TestSuite(TestingIterations, TestSystems[i], ProfileGroupList[TestSystems[i]], StartCoordsList, GoalCoordsList);
+			testSuite(TestingIterations, Basic, ProfileGroupList[TestSystems[i]], StartCoordsList, GoalCoordsList);
 			CurrentProfileGroup = ProfileGroupList[TestSystems[i]];
 		}
 	}

@@ -46,7 +46,7 @@ import java.util.concurrent.ExecutorService;
  *
  * @author Impaler
  */
-public class TerrainRenderer extends AbstractAppState implements ActionListener {
+public class TerrainRenderer extends AbstractAppState {
 
 	SimpleApplication app = null;
 	AppStateManager state = null;
@@ -54,9 +54,9 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 	Game game = null;
 	TileBuilder builder;
 	LodControl TerrainLodControler;
-	boolean SunnyRendering = true;
-	boolean DarkRendering = true;
-	boolean TerrainRendering = true;
+	private boolean SunnyRendering = true;
+	private boolean DarkRendering = true;
+	private boolean TerrainRendering = true;
 	ExecutorService Executor;
 
 	public TerrainRenderer(ExecutorService Threadpool) {
@@ -70,32 +70,11 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 		this.app = (SimpleApplication) app;
 		this.state = stateManager;
 		this.assetmanager = app.getAssetManager();
-
-		registerWithInput(app.getInputManager());
 	}
 
 	public void attachToGame(Game TargetGame) {
 		this.game = TargetGame;
 		this.TerrainLodControler = new LodControl();
-	}
-
-	public void onAction(String name, boolean keyPressed, float tpf) {
-		if (this.isEnabled()) {
-			if (name.equals("TerrainRenderToggle") && keyPressed) {
-				TerrainRendering = !TerrainRendering;
-			}
-			if (name.equals("SunnyRenderToggle") && keyPressed) {
-				SunnyRendering = !SunnyRendering;
-			}
-		}
-	}
-
-	public void registerWithInput(InputManager inputManager) {
-		String[] inputs = {"TerrainRenderToggle", "SunnyRenderToggle"};
-
-		inputManager.addMapping("TerrainRenderToggle", new KeyTrigger(KeyInput.KEY_T));
-		inputManager.addMapping("SunnyRenderToggle", new KeyTrigger(KeyInput.KEY_L));
-		inputManager.addListener(this, inputs);
 	}
 
 	public void rebuildDirtyCells(Collection<Cell> cells) {
@@ -117,13 +96,13 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 		Spatial.CullHint Sunnyhint = Spatial.CullHint.Always;
 		Spatial.CullHint Darkhint = Spatial.CullHint.Always;
 
-		if (SunnyRendering)
+		if (getSunnyRendering())
 			Sunnyhint = Spatial.CullHint.Dynamic;
 
-		if (DarkRendering)
+		if (getDarkRendering())
 			Darkhint = Spatial.CullHint.Dynamic;
 
-		if (!TerrainRendering)
+		if (!getTerrainRendering())
 			Darkhint = Sunnyhint = Spatial.CullHint.Always;
 
 		for (Cell target : cells) {
@@ -147,12 +126,39 @@ public class TerrainRenderer extends AbstractAppState implements ActionListener 
 	public void update(float tpf) {
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
-			if (TerrainRendering) {
+			if (getTerrainRendering()) {
 				setTerrainRendering(map.getCellCollection());
 				rebuildDirtyCells(map.getCellCollection());
 			} else {
 				setTerrainRendering(map.getCellCollection());
 			}
 		}
+	}
+
+	public boolean getSunnyRendering() {
+		return SunnyRendering;
+	}
+
+	public void setSunnyRendering(boolean SunnyRendering) {
+		this.SunnyRendering = SunnyRendering;
+	}
+
+	public boolean getDarkRendering() {
+		return DarkRendering;
+	}
+
+	public void setDarkRendering(boolean DarkRendering) {
+		this.DarkRendering = DarkRendering;
+	}
+
+	public boolean getTerrainRendering() {
+		return TerrainRendering;
+	}
+
+	/**
+	 * @param TerrainRendering the TerrainRendering to set
+	 */
+	public void setTerrainRendering(boolean TerrainRendering) {
+		this.TerrainRendering = TerrainRendering;
 	}
 }

@@ -50,10 +50,10 @@ import java.io.Serializable;
  *
  * @author Impaler
  */
-public class PathFinding extends AbstractAppState {
+public class PathManager extends AbstractAppState {
 
 	private static final long serialVersionUID = 1;
-	static PathFinding Singleton = null;
+	static PathManager Singleton = null;
 	Clock PathingTimer;
 	//AStar AstarImplementation;
 	PathAlgorithm HeriarchialAstarImplementation;
@@ -68,7 +68,7 @@ public class PathFinding extends AbstractAppState {
 	ExecutorService Executor;
 	public PathTester Tester;
 
-	private PathFinding() {
+	private PathManager() {
 		ManhattenHeuristic = new Heuristic.Manhatten();
 		EuclideanHeuristic = new Heuristic.Euclidean();
 		MaxDimensionHeuristic = new Heuristic.MaxDimension();
@@ -86,9 +86,9 @@ public class PathFinding extends AbstractAppState {
 		Executor = core.getThreadPool();
 	}
 
-	public static PathFinding getSingleton() {
+	public static PathManager getSingleton() {
 		if (Singleton == null)
-			Singleton = new PathFinding();
+			Singleton = new PathManager();
 
 		return Singleton;
 	}

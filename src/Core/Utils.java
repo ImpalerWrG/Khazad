@@ -18,4 +18,8 @@ public class Utils {
 			return Long.toString(number);
 		}
 	}
+
+	public static String upperCaseFirst(String str) {
+		return str.substring(0,1).toUpperCase() + str.substring(1);
+	}
 }

@@ -57,7 +57,7 @@ public class Navigator implements Serializable {
 	};
 
 	Dice DirectionDice;
-	transient PathFinding ParentManager;	// The manager which spawned this controller, all data on the map and paths will come from here
+	transient PathManager ParentManager;	// The manager which spawned this controller, all data on the map and paths will come from here
 	MovementBehavior CurrentMovementBehavior;
 	MovementModality Modality;
 	MapCoordinate CurrentLocation;
@@ -71,7 +71,7 @@ public class Navigator implements Serializable {
 		Destination = SpawnLocation;
 		Modality = MovementType;
 
-		ParentManager = PathFinding.getSingleton();
+		ParentManager = PathManager.getSingleton();
 		DirectionDice = new Dice();
 		DirectionDice.seed(SpawnLocation.hashCode());
 	}
@@ -81,7 +81,7 @@ public class Navigator implements Serializable {
 		// default deserialization
 		ois.defaultReadObject();
 		// fix transients
-		ParentManager = PathFinding.getSingleton();
+		ParentManager = PathManager.getSingleton();
 		PathFuture = ParentManager.findFuturePath(Modality, CurrentLocation, Destination);
 	}
 

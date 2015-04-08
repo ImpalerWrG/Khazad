@@ -5,15 +5,14 @@
 
 package Nifty;
 
+import Core.Main;
 import Game.Game;
 import Interface.GameCameraState;
-import Job.JobManager;
-import PathFinding.PathFinding;
+import PathFinding.PathManager;
 import Renderer.MapRenderer;
 import Renderer.PathingRenderer;
 import Renderer.SelectionRenderer;
 import Renderer.TerrainRenderer;
-import com.jme3.app.Application;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.TextField;
@@ -27,17 +26,12 @@ import de.lessvoid.nifty.screen.ScreenController;
  */
 public class SetupScreenController implements ScreenController {
 
-	private Application app;
 	private Nifty nifty;
 	Element TutorialPopup = null;
 	Element ErrorPopup = null;
 
-	public SetupScreenController(Nifty nifty, Application app) {
-		this.app = app;
-		this.nifty = nifty;
-	}
-
 	public void bind(Nifty nifty, Screen screen) {
+		this.nifty = nifty;
 	}
 
 	public void onStartScreen() {
@@ -60,58 +54,45 @@ public class SetupScreenController implements ScreenController {
 	}
 
 	public void beginGame() {
-		String kingdomName = nifty.getCurrentScreen().findNiftyControl("KingdomNameTextField", TextField.class).getDisplayedText();
-		if (kingdomName.length() == 0) {
-			showError("Please enter a kingdom name");
-			return;
-		}
-		String Seed = nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).getDisplayedText();
+		try
+		{
+			String kingdomName = nifty.getCurrentScreen().findNiftyControl("KingdomNameTextField", TextField.class).getDisplayedText();
+			if (kingdomName.length() == 0) {
+				ErrorPopupController.ShowErrorMessage(nifty, "Problem starting game", "Please enter a kingdom name");
+				return;
+			}
+			String Seed = nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).getDisplayedText();
 
-		Game game = new Game();
-		this.app.getStateManager().attach(game);
-		game.initializeGame((short) 10, (short) 10, Seed, kingdomName);
+			Game game = new Game();
+			Main.app.getStateManager().attach(game);
+			game.initializeGame((short) 10, (short) 10, Seed, kingdomName);
 
-		this.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
-		this.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
-		this.app.getStateManager().attach(new SelectionRenderer());
-		this.app.getStateManager().getState(PathingRenderer.class).attachToGame(game);
+			Main.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
+			Main.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
+			Main.app.getStateManager().attach(new SelectionRenderer());
+			PathingRenderer pathingRenderer = Main.app.getStateManager().getState(PathingRenderer.class);
+			pathingRenderer.attachToGame(game);
 
-		GameCameraState cam = new GameCameraState();
-		this.app.getStateManager().attach(cam);
-		cam.setViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
-		cam.setSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
+			GameCameraState cam = new GameCameraState();
+			Main.app.getStateManager().attach(cam);
+			cam.setViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
+			cam.setSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
 
-		// PATHING
-		PathFinding Pather = PathFinding.getSingleton();
-		Pather.initialize(this.app.getStateManager(), this.app);
-		Pather.createMapAbstraction(game.getMap());
-		//Pather.AllocateThreadPool(ExecutionThreadpool);
-		this.app.getStateManager().attach(Pather);
+			// PATHING
+			PathManager Pather = PathManager.getSingleton();
+			Pather.initialize(Main.app.getStateManager(), Main.app);
+			Pather.createMapAbstraction(game.getMap());
+			//Pather.AllocateThreadPool(ExecutionThreadpool);
+			Main.app.getStateManager().attach(Pather);
 
-		nifty.gotoScreen("GameScreen");
 
-		short DwarfID = Data.DataManager.getDataManager().getLabelIndex("CREATURE_DWARF");
-		for (int i = 0; i < 100; i++) {
-			game.SpawnCitizen(DwarfID, Pather.Tester.getRandomPassableCoordinate());
-		}
-	}
-
-	private void showError(String errorMessage) {
-		if (ErrorPopup == null) {
-			ErrorPopup = nifty.createPopup("ErrorPopup");
-		}
-		Label errorLabel = ErrorPopup.findNiftyControl("ErrorLabel", Label.class);
-		if (errorLabel != null) {
-			errorLabel.setText(errorMessage);
-		}
-
-		nifty.showPopup(nifty.getCurrentScreen(), this.ErrorPopup.getId(), null);
-	}
-
-	public void closeError() {
-		if (ErrorPopup != null) {
-			nifty.closePopup(this.ErrorPopup.getId());
-			ErrorPopup = null;
+			short DwarfID = Data.DataManager.getDataManager().getLabelIndex("CREATURE_DWARF");
+			for (int i = 0; i < 100; i++) {
+				game.SpawnCitizen(DwarfID, Pather.Tester.getRandomPassableCoordinate());
+			}
+			nifty.gotoScreen("GameScreen");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

@@ -171,6 +171,22 @@ public class Task implements Serializable {
 	}
 
 	public String getName() {
-		return "A simple task";
+		switch (type) {
+			case TASK_IDLE:
+				return "Idling";
+			case TASK_SLEEP:
+				return "Sleeping";
+			case TASK_PICK_UP:
+				return "Picking up";
+			case TASK_HAUL:
+				return "Hauling";
+			case TASK_GOTO:
+				return "Moving";
+			case TASK_DROP_OFF:
+				return "Dropping off";
+			case TASK_DIG:
+				return "Digging";
+		}
+		return "Unknown";
 	}
 }

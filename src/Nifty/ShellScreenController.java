@@ -17,12 +17,11 @@
 
 package Nifty;
 
-import com.jme3.app.Application;
+import Core.Main;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.elements.Element;
 
 /**
@@ -31,17 +30,12 @@ import de.lessvoid.nifty.elements.Element;
  */
 public class ShellScreenController implements ScreenController {
 
-	private Application app;
 	private Nifty nifty;
 	Element TutorialPopup = null;
 	Element ErrorPopup = null;
 
-	public ShellScreenController(Nifty nifty, Application app) {
-		this.app = app;
-		this.nifty = nifty;
-	}
-
 	public void bind(Nifty nifty, Screen screen) {
+		this.nifty = nifty;
 	}
 
 	public void onStartScreen() {
@@ -51,21 +45,21 @@ public class ShellScreenController implements ScreenController {
 	}
 
 	public void quit() {
-		app.stop();
+		Main.app.stop();
 	}
 
 	public void gameSetup() {
 		nifty.gotoScreen("SetupScreen");
 	}
 
-	public void beginTutorial() {
+	public void openTutorialPopup() {
 		if (TutorialPopup == null) {
 			TutorialPopup = nifty.createPopup("TutorialPopup");
 		}
 		nifty.showPopup(nifty.getCurrentScreen(), this.TutorialPopup.getId(), null);
 	}
 
-	public void endTutorial() {
+	public void closeTutorialPopup(){
 		if (TutorialPopup != null) {
 			nifty.closePopup(this.TutorialPopup.getId());
 		}
@@ -79,25 +73,5 @@ public class ShellScreenController implements ScreenController {
 
 	public void loadGame() {
 		nifty.gotoScreen("LoadGameScreen");
-		return;
-	}
-
-	private void showError(String errorMessage) {
-		if (ErrorPopup == null) {
-			ErrorPopup = nifty.createPopup("ErrorPopup");
-		}
-		Label errorLabel = ErrorPopup.findNiftyControl("ErrorLabel", Label.class);
-		if (errorLabel != null) {
-			errorLabel.setText(errorMessage);
-		}
-
-		nifty.showPopup(nifty.getCurrentScreen(), this.ErrorPopup.getId(), null);
-	}
-
-	public void closeError() {
-		if (ErrorPopup != null) {
-			nifty.closePopup(this.ErrorPopup.getId());
-			ErrorPopup = null;
-		}
 	}
 }

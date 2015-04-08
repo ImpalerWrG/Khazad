@@ -19,7 +19,7 @@ package Job;
 
 import Game.Pawn;
 import Map.MapCoordinate;
-import PathFinding.PathFinding;
+import PathFinding.PathManager;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -31,13 +31,13 @@ import java.io.Serializable;
 public class WanderJob extends Job implements Serializable {
 
 	private static final long serialVersionUID = 1;
-	transient PathFinding Pathing;
+	transient PathManager Pathing;
 
 	public WanderJob() {
 		super();
 		Name = "Wandering Aimlessly";
 
-		Pathing = PathFinding.getSingleton();
+		Pathing = PathManager.getSingleton();
 		Type = Job.JobType.JOB_WANDER;
 	}
 
@@ -91,6 +91,6 @@ public class WanderJob extends Job implements Serializable {
 		// default deserialization
 		ois.defaultReadObject();
 		// fix transients
-		Pathing = PathFinding.getSingleton();
+		Pathing = PathManager.getSingleton();
 	}
 }
