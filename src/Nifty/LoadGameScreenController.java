@@ -80,7 +80,7 @@ public class LoadGameScreenController implements ScreenController {
 		JFileChooser fr = new JFileChooser();
 		FileSystemView fw = fr.getFileSystemView();
 		String myDocumentsFolder = fw.getDefaultDirectory().toString();
-		String saveGamesFolder = myDocumentsFolder + "\\my games\\Khazad\\Worlds\\";
+		String saveGamesFolder = myDocumentsFolder + "/my games/Khazad/Worlds/";
 		File saveGamesFolderFile = new File(saveGamesFolder);
 		if (!saveGamesFolderFile.exists()) {
 			// if folder does not exist then there cannot be any saves
@@ -163,7 +163,7 @@ public class LoadGameScreenController implements ScreenController {
 		FileSystemView fw = fr.getFileSystemView();
 
 		String myDocumentsFolder = fw.getDefaultDirectory().toString();
-		String saveGamesFolder = myDocumentsFolder + "\\my games\\Khazad\\Worlds\\";
+		String saveGamesFolder = myDocumentsFolder + "/my games/Khazad/Worlds/";
 		return new File(saveGamesFolder + SelectedSaveGameHeader.fileName);
 	}
 

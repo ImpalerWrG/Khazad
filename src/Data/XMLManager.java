@@ -35,7 +35,7 @@ public class XMLManager implements Serializable {
 		Document doc;
 		try {
 			Builder parser = new Builder();
-			doc = parser.build(new File("assets\\" + Filename));
+			doc = parser.build(new File("assets/" + Filename));
 		} catch (ParsingException ex) {
 			System.err.println(Filename + " is malformed..." + ex.getMessage());
 			return null;

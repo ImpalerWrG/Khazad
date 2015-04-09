@@ -304,7 +304,7 @@ public class DataManager implements Serializable {
 		ArrayList<String> DataFiles = new ArrayList<String>();
 
 		// Safety null checks on documents
-		Document file = XML.loadFile("XML\\MasterFileList.xml");
+		Document file = XML.loadFile("XML/MasterFileList.xml");
 		if (file != null) {
 			Element root = file.getRootElement();
 			Elements entries = root.getChildElements();

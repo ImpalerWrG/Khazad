@@ -97,7 +97,7 @@ public class MenuPopupController implements Controller {
 			FileSystemView fw = fr.getFileSystemView();
 
 			String myDocumentsFolder = fw.getDefaultDirectory().toString();
-			String saveGamesFolder = myDocumentsFolder + "\\my games\\Khazad\\Worlds\\";
+			String saveGamesFolder = myDocumentsFolder + "/my games/Khazad/Worlds/";
 			File saveGamesFolderFile = new File(saveGamesFolder);
 			if (!saveGamesFolderFile.exists()) {
 				saveGamesFolderFile.mkdirs();

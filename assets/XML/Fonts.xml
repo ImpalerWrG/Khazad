@@ -2,17 +2,17 @@
 <Fonts xmlns="https://github.com/ImpalerWrG/Khazad">	
 	<Font>
 		<Name Label="FONT_CELTIC_GARAMOND"/>
-		<File Path="Assets\Fonts\Celtic Garamond.ttf"/>
+		<File Path="Assets/Fonts/Celtic Garamond.ttf"/>
 		<Size Int="20"/>
 	</Font>
 	<Font>
 		<Name Label="FONT_MINIM"/>
-		<File Path="Assets\Fonts\minim.ttf"/>
+		<File Path="Assets/Fonts/minim.ttf"/>
 		<Size Int="25"/>
 	</Font>
 	<Font>
 		<Name Label="FONT_KNIGHTS_TEMPLAR"/>
-		<File Path="Assets\Fonts\Knights Templar.ttf"/>
+		<File Path="Assets/Fonts/Knights Templar.ttf"/>
 		<Size Int="28"/>
 	</Font>
 </Fonts>
