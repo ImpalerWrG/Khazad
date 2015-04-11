@@ -217,6 +217,20 @@
 		</SurfaceTextures>
 	</Material>
 	<Material>
+		<Name Label="MATERIAL_GRANODIORITE"/>
+		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
+		<PrimaryColor label="COLOR_SILVER"/>
+		<SecondaryColor label="COLOR_DARK_GREY"/>
+		<BorderColor label="COLOR_DARK_GREY"/>
+		<SurfaceTextures>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_IGNEOUS_INTRUSIVE"/>
+			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_IGNEOUS_INTRUSIVE"/>
+		</SurfaceTextures>
+	</Material>
+	<Material>
 		<Name Label="MATERIAL_DIORITE"/>
 		<MaterialClass label="MATERIALCLASS_LAYER_STONE"/>
 		<PrimaryColor label="COLOR_LIGHT_GREY"/>

@@ -42,22 +42,23 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TileBuilder implements Serializable {
 	private static final long serialVersionUID = 1;
 
-	ConcurrentHashMap<FaceShape, MeshData> MesheDataMap;	// map tileshape to mesh for retrival
-
-	private class MeshData {
-		ArrayList<Vector3f> Vertices; 
+	ConcurrentHashMap<FaceShape, FaceShapeMeshData> MesheDataMap;	// map tileshape to mesh for retrival
+	Vector3f[][][] CellVerts;
+	
+	public class FaceShapeMeshData {
+		ArrayList<Vector3f> Vertices;
 		ArrayList<Vector3f> Normals;
 		ArrayList<Vector2f> TextureCoords;
 		ArrayList<Integer> Indexes;
 
-		public MeshData() {
+		public FaceShapeMeshData() {
 			this.Vertices = new ArrayList<Vector3f>(4);
 			this.Normals = new ArrayList<Vector3f>(4);
 			this.TextureCoords = new ArrayList<Vector2f>(4);
 			this.Indexes = new ArrayList<Integer>(4);
 		}
 
-		public MeshData(ArrayList<Vector3f> Verts, ArrayList<Vector3f> Norms, ArrayList<Vector2f> Textures,  ArrayList<Integer> Indexs) {
+		public FaceShapeMeshData(ArrayList<Vector3f> Verts, ArrayList<Vector3f> Norms, ArrayList<Vector2f> Textures,  ArrayList<Integer> Indexs) {
 			this.Vertices = Verts;
 			this.Normals = Norms;
 			this.TextureCoords = Textures;
@@ -66,40 +67,56 @@ public class TileBuilder implements Serializable {
 	}
 
 	public TileBuilder() {
-		MesheDataMap = new ConcurrentHashMap<FaceShape, MeshData>();
+		MesheDataMap = new ConcurrentHashMap<FaceShape, FaceShapeMeshData>();
+		CellVerts = new Vector3f[MapCoordinate.CELLEDGESIZE + 1][MapCoordinate.CELLEDGESIZE + 1][CubeShape.HEIGHT_FRACTIONS];
+
+		for (int x = 0; x < (MapCoordinate.CELLEDGESIZE + 1); x++) {
+			for (int y = 0; y < (MapCoordinate.CELLEDGESIZE + 1); y++) {
+				for (int z = 0; z < CubeShape.HEIGHT_FRACTIONS; z++) {
+					float X = x - MapCoordinate.HALFCUBE;
+					float Y = y - MapCoordinate.HALFCUBE;
+					float Z = z / (float) CubeShape.HEIGHT_FRACTIONS;
+					CellVerts[x][y][z] = new Vector3f(X, Y, Z);
+				}
+			}
+		}
 	}
 
-	public Mesh getMesh(FaceShape Shape, TextureAtlasCoordinates AtlasCoords) {
-		MeshData TargetMeshData = MesheDataMap.get(Shape);
+	public FaceShapeMeshData getMeshData(FaceShape Shape) {
+		FaceShapeMeshData TargetMeshData = MesheDataMap.get(Shape);
 
 		if (TargetMeshData == null) {
 			if (Shape.getFaceDirection() == Direction.DIRECTION_NONE) {
 				TargetMeshData = createSlopeFaceMesh(Shape);
 				if (TargetMeshData != null) 
 					MesheDataMap.put(Shape, TargetMeshData);
-				return finalizeMesh(TargetMeshData, AtlasCoords);
+				return TargetMeshData;
 			} else {
 				if (Shape.getFaceDirection() == Direction.DIRECTION_DOWN || Shape.getFaceDirection() == Direction.DIRECTION_UP) {
 					if (Shape.getSourceCubeShape().hasFloor() || Shape.getSourceCubeShape().hasCeiling()) {
 						TargetMeshData = createFlatFaceMesh(Shape);
 						if (TargetMeshData != null)
 							MesheDataMap.put(Shape, TargetMeshData);
-						return finalizeMesh(TargetMeshData, AtlasCoords);
+						return TargetMeshData;
 					}
-					return finalizeMesh(TargetMeshData, AtlasCoords);
+					return TargetMeshData;
 				} else {
 					TargetMeshData = createSideFaceMesh(Shape);
 					if (TargetMeshData != null)
 						MesheDataMap.put(Shape, TargetMeshData);
-					return finalizeMesh(TargetMeshData, AtlasCoords);
+					return TargetMeshData;
 				}
 			}
 		} else {
-			return finalizeMesh(TargetMeshData, AtlasCoords);
-		}
+			return TargetMeshData;
+		}		
 	}
 
-	private Mesh finalizeMesh(MeshData Data, TextureAtlasCoordinates AtlasCoords) {
+	public Mesh getMesh(FaceShape Shape, TextureAtlasCoordinates AtlasCoords) {
+		return finalizeMesh(getMeshData(Shape), AtlasCoords);
+	}
+
+	private Mesh finalizeMesh(FaceShapeMeshData Data, TextureAtlasCoordinates AtlasCoords) {
 		if (Data == null || AtlasCoords == null)
 			return null;
 
@@ -148,7 +165,7 @@ public class TileBuilder implements Serializable {
 		return ManualObject;
 	}
 
-	private MeshData createFlatFaceMesh(FaceShape Shape) {
+	private FaceShapeMeshData createFlatFaceMesh(FaceShape Shape) {
 
 		boolean Triangle1 = false;
 		boolean Triangle2 = false;
@@ -222,13 +239,13 @@ public class TileBuilder implements Serializable {
 			}
 
 		if (Triangle1 || Triangle2) {
-			return new MeshData(Vertices, Normals, TextureCoords, Indexes);
+			return new FaceShapeMeshData(Vertices, Normals, TextureCoords, Indexes);
 		} else {
 			return null;
 		}
 	}
  
-	private MeshData createSideFaceMesh(FaceShape Shape) {
+	private FaceShapeMeshData createSideFaceMesh(FaceShape Shape) {
 		
 		byte NorthEastCorner = Shape.getSourceCubeShape().getNorthEastCorner();
 		byte NorthWestCorner = Shape.getSourceCubeShape().getNorthWestCorner();
@@ -352,13 +369,13 @@ public class TileBuilder implements Serializable {
 		
 
 		if (Triangle) {
-			return new MeshData(Vertices, Normals, TextureCoords, Indexes);
+			return new FaceShapeMeshData(Vertices, Normals, TextureCoords, Indexes);
 		} else {
 			return null;
 		}
 	}
 
-	private MeshData createSlopeFaceMesh(FaceShape Shape) {
+	private FaceShapeMeshData createSlopeFaceMesh(FaceShape Shape) {
 		
 		boolean Triangle1 = false;
 		boolean Triangle2 = false;
@@ -837,7 +854,7 @@ public class TileBuilder implements Serializable {
 		}
 
 		if (Triangle1 || Triangle2) {
-			return new MeshData(Vertices, Normals, TextureCoords, Indexes);
+			return new FaceShapeMeshData(Vertices, Normals, TextureCoords, Indexes);
 		} else {
 			return null;
 		}

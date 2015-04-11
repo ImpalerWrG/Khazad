@@ -25,12 +25,16 @@ import Map.FaceCoordinate;
 import Map.TileBuilder;
 
 import Renderer.TextureManager.TextureAtlasCoordinates;
+import com.jme3.math.Vector2f;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.LodControl;
+import static com.jme3.util.BufferUtils.createFloatBuffer;
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
 
 import jme3tools.optimize.GeometryBatchFactory;
 
@@ -68,8 +72,19 @@ public class TerrainBuilder implements Callable<Void> {
 		TerrainDark = new Node("TerrainDark");
 	}
 
+	public Mesh buildCellMesh() {
+		
+		
+		return null;
+	}
+	
 	public Void call() {
 		TextureManager Texturing = TextureManager.getTextureManager();
+
+		ArrayList<Vector3f> Vertices = new ArrayList<Vector3f>();
+		ArrayList<Vector3f> Normals = new ArrayList<Vector3f>();
+		ArrayList<Vector2f> TextureCoords = new ArrayList<Vector2f>();
+		ArrayList<Integer> Indexes = new ArrayList<Integer>();
 
 		// Terrain Faces
 		HashMap<FaceCoordinate, Face> faces = BuildCell.getFaces();
@@ -82,7 +97,14 @@ public class TerrainBuilder implements Callable<Void> {
 
 			TextureAtlasCoordinates AtlasCoords = Texturing.getTextureCoordinates(targetface.getFaceMaterialType(), targetface.getFaceSurfaceType());
 			Mesh facemesh = TileSource.getMesh(targetface.getFaceShapeType(), AtlasCoords);
+			TileBuilder.FaceShapeMeshData Data = TileSource.getMeshData(targetface.getFaceShapeType());
 			if (facemesh != null) {
+				
+				
+				
+				//FloatBuffer Vertbuff = createFloatBuffer(3 * Data.Vertices.size());
+
+				
 				Geometry geom = new Geometry("face", facemesh);
 				geom.scale(1.001f);  //T-Cell junction hack
 				geom.setLocalTranslation(new Vector3f(coords.getX(), coords.getY(), 0));

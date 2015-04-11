@@ -20,17 +20,6 @@
 		</SurfaceTextures>
 	</Material>
 	<Material>
-		<Name Label="MATERIAL_BUILDING"/>
-		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
-		<PrimaryColor label="COLOR_YELLOW"/>
-		<SecondaryColor label="COLOR_BLACK"/>
-		<ColorMode mode="keepimage"/>
-		<SurfaceTextures>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_WALL" Texturelabel="TEXTURE_DEFAULT"/>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_CONSTRUCTED_FLOOR" Texturelabel="TEXTURE_DEFAULT"/>
-		</SurfaceTextures>
-	</Material>
-	<Material>
 		<Name Label="MATERIAL_ASHES"/>
 		<MaterialClass label="MATERIALCLASS_ASHES"/>
 		<ColorMode mode="keepimage"/>
@@ -83,15 +72,6 @@
 		<SecondaryColor label="COLOR_BLACK"/>
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_DIRT"/>
-		</SurfaceTextures>
-	</Material>
-	<Material>
-		<Name Label="MATERIAL_FARM"/>
-		<MaterialClass label="MATERIALCLASS_SOIL"/>
-		<PrimaryColor label="COLOR_DARK_BROWN"/>
-		<ColorMode mode="overlay"/>
-		<SurfaceTextures>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_GROUND"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -203,14 +183,6 @@
 		<MaterialClass label="MATERIALCLASS_ICE"/>
 		<PrimaryColor label="COLOR_NAVY_BLUE"/>
 		<SecondaryColor label="COLOR_WHITE"/>
-	</Material>
-	<Material>
-		<Name Label="MATERIAL_PIT"/>
-		<MaterialClass label="MATERIALCLASS_EXOTIC"/>
-		<Texture label="TEXTURE_PIT"/>
-		<PrimaryColor label="COLOR_SILVER"/>
-		<SecondaryColor label="COLOR_SILVER"/>
-		<BorderColor label="COLOR_SILVER"/>
 	</Material>
 	<Material>
 		<Name Label="MATERIAL_GREEN_GLASS"/>

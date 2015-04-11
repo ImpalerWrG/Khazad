@@ -77,7 +77,7 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_LIGHT_GREY"/>
 		<SecondaryColor label="COLOR_DARK_GREY"/>
-        <ColorMode mode="gradientmap" />
+		<ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
@@ -214,20 +214,6 @@
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_SWIRLY"/>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_SWIRLY"/>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_SWIRLY"/>
-		</SurfaceTextures>
-	</Material>
-	<Material>
-		<Name Label="MATERIAL_ALUMINUM_NUGGETS"/>
-		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
-		<PrimaryColor label="COLOR_DARK_GREY"/>
-		<SecondaryColor label="COLOR_SILVER"/>
-        <ColorMode mode="gradientmap" />
-		<SurfaceTextures>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_2" Texturelabel="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_3" Texturelabel="TEXTURE_VEINS"/>
-			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_4" Texturelabel="TEXTURE_VEINS"/>
 		</SurfaceTextures>
 	</Material>
 	<Material>
@@ -378,7 +364,7 @@
 		<MaterialClass label="MATERIALCLASS_VEIN_STONE"/>
 		<PrimaryColor label="COLOR_DARK_GREY"/>
 		<SecondaryColor label="COLOR_AQUA"/>
-        <ColorMode mode="gradientmap" />
+		<ColorMode mode="gradientmap" />
 		<SurfaceTextures>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_WALL" Texturelabel="TEXTURE_VEINS"/>
 			<SurfaceTexture SurfaceTypelabel="SURFACETYPE_ROUGH_FLOOR_1" Texturelabel="TEXTURE_VEINS"/>
