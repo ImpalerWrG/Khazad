@@ -18,12 +18,12 @@
 package Renderer;
 
 import Game.Game;
-import Interface.GameCameraState;
-import Map.CellCoordinate;
 
+import Interface.GameCameraState;
+
+import Map.CellCoordinate;
 import Map.MapCoordinate;
-import Map.TileBuilder;
-import Nifty.GUI;
+
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
