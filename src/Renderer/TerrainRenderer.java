@@ -35,6 +35,7 @@ import com.jme3.scene.control.LodControl;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 
@@ -54,8 +55,6 @@ public class TerrainRenderer extends AbstractAppState {
 	Game game = null;
 	TileBuilder builder;
 	LodControl TerrainLodControler;
-	private boolean SunnyRendering = true;
-	private boolean DarkRendering = true;
 	private boolean TerrainRendering = true;
 	ExecutorService Executor;
 
@@ -92,20 +91,31 @@ public class TerrainRenderer extends AbstractAppState {
 		}
 	}
 
-	public void setTerrainRendering(Collection<Cell> cells) {
-		Spatial.CullHint Sunnyhint = Spatial.CullHint.Always;
-		Spatial.CullHint Darkhint = Spatial.CullHint.Always;
+	@Override
+	public void update(float tpf) {
+		if (this.game != null) {
+			GameMap map = this.game.getMap();
+			if (TerrainRendering)
+				rebuildDirtyCells(map.getCellCollection());
+		}
+	}
 
-		if (getSunnyRendering())
-			Sunnyhint = Spatial.CullHint.Dynamic;
+	public boolean getTerrainRendering() {
+		return TerrainRendering;
+	}
 
-		if (getDarkRendering())
-			Darkhint = Spatial.CullHint.Dynamic;
+	/**
+	 * @param TerrainRendering the TerrainRendering to set
+	 */
+	public void setTerrainRendering(boolean NewValue) {
+		this.TerrainRendering = NewValue;
+		Spatial.CullHint hint = Spatial.CullHint.Always;
 
-		if (!getTerrainRendering())
-			Darkhint = Sunnyhint = Spatial.CullHint.Always;
+		if (getTerrainRendering())
+			hint = Spatial.CullHint.Dynamic;
 
-		for (Cell target : cells) {
+		GameMap map = this.game.getMap();
+		for (Cell target : map.getCellCollection()) {
 			CellCoordinate Coords = target.getCellCoordinates();
 
 			MapRenderer Renderer = state.getState(MapRenderer.class);
@@ -116,49 +126,9 @@ public class TerrainRenderer extends AbstractAppState {
 			Spatial dark = CellDark.getChild("DarkGeometry Cell" + target.toString());
 
 			if (light != null)
-				light.setCullHint(Sunnyhint);
+				light.setCullHint(hint);
 			if (dark != null)
-				dark.setCullHint(Darkhint);
+				dark.setCullHint(hint);
 		}
-	}
-
-	@Override
-	public void update(float tpf) {
-		if (this.game != null) {
-			GameMap map = this.game.getMap();
-			if (getTerrainRendering()) {
-				setTerrainRendering(map.getCellCollection());
-				rebuildDirtyCells(map.getCellCollection());
-			} else {
-				setTerrainRendering(map.getCellCollection());
-			}
-		}
-	}
-
-	public boolean getSunnyRendering() {
-		return SunnyRendering;
-	}
-
-	public void setSunnyRendering(boolean SunnyRendering) {
-		this.SunnyRendering = SunnyRendering;
-	}
-
-	public boolean getDarkRendering() {
-		return DarkRendering;
-	}
-
-	public void setDarkRendering(boolean DarkRendering) {
-		this.DarkRendering = DarkRendering;
-	}
-
-	public boolean getTerrainRendering() {
-		return TerrainRendering;
-	}
-
-	/**
-	 * @param TerrainRendering the TerrainRendering to set
-	 */
-	public void setTerrainRendering(boolean TerrainRendering) {
-		this.TerrainRendering = TerrainRendering;
 	}
 }

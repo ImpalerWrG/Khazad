@@ -34,9 +34,10 @@ import Game.Game;
 import Interface.GameCameraState;
 import Renderer.PathingRenderer;
 import Renderer.TerrainRenderer;
+import Renderer.MapRenderer;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
-import com.jme3.math.Vector3f;
+
 import de.lessvoid.nifty.NiftyIdCreator;
 import de.lessvoid.nifty.controls.CheckBox;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
@@ -45,6 +46,7 @@ import de.lessvoid.nifty.controls.WindowClosedEvent;
 import de.lessvoid.nifty.controls.dynamic.CustomControlCreator;
 import java.text.NumberFormat;
 import java.util.HashMap;
+
 import PathFinding.PathManager;
 
 /**
@@ -260,8 +262,8 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 			PathingRenderer pathingRenderer = Main.app.getStateManager().getState(PathingRenderer.class);
 			pathingRenderer.setDisplayToggle(pathingCheckBox.isChecked());
 		} else if (id.equals("litSurfacesCheckBox")) {
-			TerrainRenderer terrainRenderer = Main.app.getStateManager().getState(TerrainRenderer.class);
-			terrainRenderer.setSunnyRendering(litSurfacesCheckBox.isChecked());
+			MapRenderer mapRenderer = Main.app.getStateManager().getState(MapRenderer.class);
+			mapRenderer.setSunnyRendering(litSurfacesCheckBox.isChecked());
 		} else if (id.equals("terrainCheckBox")) {
 			TerrainRenderer terrainRenderer = Main.app.getStateManager().getState(TerrainRenderer.class);
 			terrainRenderer.setTerrainRendering(terrainCheckBox.isChecked());

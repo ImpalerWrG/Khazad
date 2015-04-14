@@ -497,6 +497,13 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			SliceTop = SliceBottom + 1;
 
 		ViewLevels = SliceTop - SliceBottom;
+		
+		if (this.state != null) {
+			MapRenderer render = state.getState(MapRenderer.class);
+			if (render != null) {
+				render.setSliceLevels(SliceTop, SliceBottom);
+			}
+		}
 	}
 
 	public void setSliceTop(int newValue) {
@@ -508,6 +515,13 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			SliceBottom = SliceTop - 1;
 
 		ViewLevels = SliceTop - SliceBottom;
+		
+		if (this.state != null) {
+			MapRenderer render = state.getState(MapRenderer.class);
+			if (render != null) {
+				render.setSliceLevels(SliceTop, SliceBottom);
+			}
+		}
 	}
 
 	public void setSliceBottom(int newValue) {
@@ -519,6 +533,13 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			SliceTop = SliceBottom + 1;
 
 		ViewLevels = SliceTop - SliceBottom;
+		
+		if (this.state != null) {
+			MapRenderer render = state.getState(MapRenderer.class);
+			if (render != null) {
+				render.setSliceLevels(SliceTop, SliceBottom);
+			}
+		}
 	}
 
 	public int getSliceTop() {

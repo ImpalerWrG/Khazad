@@ -58,6 +58,7 @@ public class MapRenderer extends AbstractAppState {
 	ConcurrentHashMap<Integer, Node> ZMapDark;
 	Semaphore semaphore;
 	boolean SunnyRendering = true;
+	boolean DarkRendering = true;
 	int Top;
 	int Bottom;
 
@@ -176,6 +177,7 @@ public class MapRenderer extends AbstractAppState {
 			targetnode = new Node("ZMapLightNode");
 			targetnode.move(0, 0, zlevel);
 			ZMapLight.put(new Integer(zlevel), targetnode);
+			sunnyterrainNode.attachChild(targetnode);
 		}
 		return targetnode;
 	}
@@ -187,6 +189,7 @@ public class MapRenderer extends AbstractAppState {
 			targetnode = new Node("ZMapDarkNode");
 			targetnode.move(0, 0, zlevel);
 			ZMapDark.put(new Integer(zlevel), targetnode);
+			darkterrainNode.attachChild(targetnode);
 		}
 		return targetnode;
 	}
@@ -214,18 +217,21 @@ public class MapRenderer extends AbstractAppState {
 		}
 	}
 
-	public void setSunnyVisibility(boolean newValue) {
-		if (SunnyRendering != newValue) {
-			SunnyRendering = newValue;
+	public void setSunnyRendering(boolean SunnyRendering) {
+		this.SunnyRendering = SunnyRendering;
+		if (SunnyRendering) {
+			sunnyterrainNode.setCullHint(Spatial.CullHint.Dynamic);
+		} else {
+			sunnyterrainNode.setCullHint(Spatial.CullHint.Always);
+		}
+	}
 
-			for (Node target : ZMapLight.values()) {
-				float Z = target.getLocalTranslation().getZ();
-				if (Z > Bottom && Z <= Top && SunnyRendering) {
-					target.setCullHint(Spatial.CullHint.Dynamic);
-				} else {
-					target.setCullHint(Spatial.CullHint.Always);
-				}
-			}
+	public void setDarkRendering(boolean DarkRendering) {
+		this.DarkRendering = DarkRendering;
+		if (DarkRendering) {
+			darkterrainNode.setCullHint(Spatial.CullHint.Dynamic);
+		} else {
+			darkterrainNode.setCullHint(Spatial.CullHint.Always);
 		}
 	}
 
@@ -243,9 +249,5 @@ public class MapRenderer extends AbstractAppState {
 
 	@Override
 	public void update(float tpf) {
-		GameCameraState cam = state.getState(GameCameraState.class);
-		if (cam != null) {
-			setSliceLevels(cam.getSliceTop(), cam.getSliceBottom());
-		}
 	}
 }
