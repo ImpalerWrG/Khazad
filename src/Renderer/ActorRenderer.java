@@ -26,6 +26,8 @@ import Map.Direction;
 import Map.GameMap;
 import Map.MapCoordinate;
 
+import Interface.GameCameraState;
+
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -45,7 +47,7 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Rendering class for Actors, used Nodes from the Terrain rendered to attach
+ * Rendering class for Actors, used Nodes from the Map rendered to attach
  * Actors to the correct locations for rendering and lighting.
  *
  * @author Impaler
@@ -99,8 +101,15 @@ public class ActorRenderer extends AbstractAppState {
 					actorNode.setCullHint(Spatial.CullHint.Dynamic);
 					MapCoordinate coords = target.getLocation();
 					MapRenderer Renderer = state.getState(MapRenderer.class);
-					Node z = Renderer.getZNodeLight(coords.Z);
-					z.attachChild(actorNode);
+					
+					Node zNode;
+					if (map.isCubeSunLit(coords)) {
+						zNode = Renderer.getZNodeLight(coords.Z);
+					} else {
+						zNode = Renderer.getZNodeDark(coords.Z);
+					}
+					
+					zNode.attachChild(actorNode);
 					Vector3f Offset = new Vector3f();
 
 					if (target instanceof Pawn) {
@@ -164,8 +173,9 @@ public class ActorRenderer extends AbstractAppState {
 		Game game = state.getState(Game.class);
 		if (game != null) {
 			GameMap map = game.getMap();
-
-			if (game.getTickRate() <= 256) {
+			GameCameraState cam = state.getState(GameCameraState.class);
+			
+			if (game.getTickRate() <= 256 && cam.getZoom() < 200) {
 				populateActors();
 			} else {
 				hideActors();

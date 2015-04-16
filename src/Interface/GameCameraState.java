@@ -550,6 +550,10 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		return SliceBottom;
 	}
 
+	public float getZoom() {
+		return this.MainCamera.zoomFactor;
+	}
+
 	@Override
 	public void update(float tpf) {
 		if (RightwardPaning)
