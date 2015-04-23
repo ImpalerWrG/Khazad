@@ -52,8 +52,6 @@ public class Cell implements Serializable {
 	transient boolean DirtyPathRendering;
 
 	public Cell() {
-		CubeShape EmptyCube = new CubeShape(CubeShape.BELOW_CUBE_HEIGHT);
-
 		CubeMaterialTypes = new short[MapCoordinate.CUBESPERCELL];
 		CubeShapeTypes = new short[MapCoordinate.CUBESPERCELL];
 
@@ -65,7 +63,7 @@ public class Cell implements Serializable {
 		Faces = new HashMap<FaceCoordinate, Face>();
 
 		for (int i = 0; i < CubeShapeTypes.length; i++) {
-			CubeShapeTypes[i] = EmptyCube.getData();
+			CubeShapeTypes[i] = CubeShape.EMPTY_CUBE_DATA;
 		}
 
 		for (int i = 0; i < CubeMaterialTypes.length; i++) {

@@ -52,6 +52,8 @@ public class CubeShape implements Serializable {
 	public static final short NWSHIFT = 7;
 	public static final short NESHIFT = 4;
 	// Bit compressed heights of each corner and flags
+	
+	public static final short EMPTY_CUBE_DATA = 0;
 	short Data;
 
 	public CubeShape(byte SWCornerHeight, byte SECornerHeight, byte NWCornerHeight, byte NECornerHeight, byte NewFlags) {

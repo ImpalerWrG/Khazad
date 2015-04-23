@@ -27,37 +27,39 @@ import java.io.Serializable;
 public class FaceShape implements Serializable {
 
 	private static final long serialVersionUID = 1;
-	// TODO store as shorts, not objects as in Cell
-	private CubeShape SourceCubeComponent;
-	private CubeShape AdjacentCubeComponent;
+	private short SourceCubeData;
+	private short AdjacentCubeData;
 	private byte FaceDirection;
 
 	public FaceShape() {
-		SourceCubeComponent = new CubeShape(CubeShape.BELOW_CUBE_HEIGHT);
-		AdjacentCubeComponent = new CubeShape(CubeShape.BELOW_CUBE_HEIGHT);
+		SourceCubeData = CubeShape.EMPTY_CUBE_DATA;
+		AdjacentCubeData = CubeShape.EMPTY_CUBE_DATA;
 		FaceDirection = (byte) Direction.DIRECTION_DESTINATION.ordinal();
 	}
 
 	public FaceShape(CubeShape SourceShapeType, CubeShape AdjacentShapeType, Direction DirectionType) {
-		SourceCubeComponent = SourceShapeType;
-		AdjacentCubeComponent = AdjacentShapeType;
+		SourceCubeData = SourceShapeType.Data;
+		if (AdjacentShapeType != null)
+			AdjacentCubeData = AdjacentShapeType.Data;
 		FaceDirection = (byte) DirectionType.ordinal();		
 	}
 
 	boolean equals(FaceShape ArgumentShape) {
-		boolean SourceEqual = SourceCubeComponent.equals(ArgumentShape.SourceCubeComponent);
-		boolean AdjacentEqual = false;
-		if (AdjacentCubeComponent == null) {
-			if (ArgumentShape.AdjacentCubeComponent == null)
-				AdjacentEqual = true;
+		boolean AdjacentEqual, SourceEqual, FaceEqual;
+		if (ArgumentShape != null) {
+			AdjacentEqual = ArgumentShape.AdjacentCubeData == AdjacentCubeData;
+			SourceEqual = SourceCubeData == ArgumentShape.SourceCubeData;
+			FaceEqual = FaceDirection == ArgumentShape.FaceDirection;
 		} else {
-			AdjacentEqual = AdjacentCubeComponent.equals(ArgumentShape.AdjacentCubeComponent);
+			AdjacentEqual = AdjacentCubeData == CubeShape.EMPTY_CUBE_DATA;
+			SourceEqual =  SourceCubeData == CubeShape.EMPTY_CUBE_DATA;
+			FaceEqual = FaceDirection == Direction.DIRECTION_NONE.ordinal();
 		}
-		return SourceEqual && AdjacentEqual && FaceDirection == ArgumentShape.FaceDirection;
+		return SourceEqual && AdjacentEqual && FaceEqual;
 	}
 
 	boolean notequal(FaceShape ArgumentShape) {
-		return !SourceCubeComponent.equals(ArgumentShape.SourceCubeComponent) || !AdjacentCubeComponent.equals(ArgumentShape.AdjacentCubeComponent) || FaceDirection != ArgumentShape.FaceDirection;
+		return SourceCubeData != ArgumentShape.SourceCubeData || AdjacentCubeData != ArgumentShape.AdjacentCubeData || FaceDirection != ArgumentShape.FaceDirection;
 	}
 
 	public Direction getFaceDirection() {
@@ -65,10 +67,10 @@ public class FaceShape implements Serializable {
 	}
 	
 	public CubeShape getSourceCubeShape() {
-		return SourceCubeComponent;
+		return new CubeShape(SourceCubeData);
 	}
 
 	public CubeShape getAdjacentCubeShape() {
-		return AdjacentCubeComponent;
+		return new CubeShape(AdjacentCubeData);
 	}
 }

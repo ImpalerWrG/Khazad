@@ -45,18 +45,25 @@ public class GameCamera {
 	protected Node PitchNode = null;
 	protected CameraNode CamNode = null;
 	// Factor values determining speed of most Camera changes
-	protected float maxzoom = 400;
+	protected final float flatzoom = 400;
+	protected final float maxzoom = 400;
 	protected float zoomFactor = 20;
-	protected float minzoom = 5;
+	protected final float minzoom = 5;
 	protected float TranslationFactor;
-	protected float zoomSpeed = 0.1f;
-	protected float rotationSpeed = 10.0f;
-	protected float PitchSpeed = 200.0f;
+	protected final float zoomSpeed = 0.1f;
+	protected final float rotationSpeed = 10.0f;
+	protected final float PitchSpeed = 200.0f;
 	// The JMonkey Camera object
 	private Camera camera = null;
 	// Current Angles and values for slicing
-	private float PitchAngle;
+	
+	// Pitch, the angle of the Camera relative to the XY plane
+	private float UserPitchAngle;
+	private float ModifiedPitchAngle;
 	private boolean PitchLock;
+	private float MaxPitch = 80;
+	private float MinPitch = .1f;
+	
 	protected int SliceTop;
 	protected int SliceBottom;
 	protected int ViewLevels;
@@ -87,25 +94,30 @@ public class GameCamera {
 		PitchNode.attachChild(CamNode);
 
 		CamNode.setLocalTranslation(0, 0, 10);
-		PitchAngle = 45;
+		UserPitchAngle = 45;
 		pitchCamera(0);
 		CamNode.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);
 	}
 
 	//rotate the camera around the target on the horizontal plane
 	protected void pitchCamera(float value) {
-
-		if (PitchAngle < 80 && value > 0) { // Allow Pitch to increese if not above maximum
-			PitchAngle += value * PitchSpeed;
-		} else if (PitchAngle > 1 && value < 0) {// Allow Pitch to decreese if not below minimum
-			PitchAngle += value * PitchSpeed;
+		if (UserPitchAngle < MaxPitch && value > 0) { // Allow Pitch to increese if not above maximum
+			UserPitchAngle += value * PitchSpeed;
+		} else if (UserPitchAngle > MinPitch && value < 0) {// Allow Pitch to decreese if not below minimum
+			UserPitchAngle += value * PitchSpeed;
 		}
+		updatePitch();
+	}
+	
+	protected void updatePitch() {
+		float flatzoomfraction = (flatzoom - zoomFactor) / flatzoom;
+		this.ModifiedPitchAngle = UserPitchAngle * flatzoomfraction;
 
 		Quaternion pitch = new Quaternion();
-		pitch.fromAngleAxis(FastMath.PI * PitchAngle / 180, new Vector3f(1, 0, 0));
+		pitch.fromAngleAxis(FastMath.PI * this.ModifiedPitchAngle / 180, new Vector3f(1, 0, 0));
 		PitchNode.setLocalRotation(pitch);
 
-		CamNode.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);
+		CamNode.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);		
 	}
 
 	//expand or contract frustrum for paralax zooming
@@ -123,6 +135,7 @@ public class GameCamera {
 			float bottom = -zoomFactor;
 
 			camera.setFrustum(-1000, 1000, left, right, top, bottom);
+			updatePitch();	
 		}
 	}
 
