@@ -17,7 +17,7 @@
 
 package PathFinding;
 
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 import java.io.Serializable;
 
 /**
@@ -28,13 +28,13 @@ import java.io.Serializable;
  */
 public interface Heuristic {
 
-	public float estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord);
+	public float estimate(CubeCoordinate StartCoord, CubeCoordinate GoalCoord);
 
 	public class Manhatten implements Heuristic, Serializable {
 
 		private static final long serialVersionUID = 1;
 
-		public float estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
+		public float estimate(CubeCoordinate StartCoord, CubeCoordinate GoalCoord) {
 			return (float) Math.abs(StartCoord.X - GoalCoord.X) + Math.abs(StartCoord.Y - GoalCoord.Y) + Math.abs(StartCoord.Z - GoalCoord.Z);
 		}
 	}
@@ -43,7 +43,7 @@ public interface Heuristic {
 
 		private static final long serialVersionUID = 1;
 
-		public float estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
+		public float estimate(CubeCoordinate StartCoord, CubeCoordinate GoalCoord) {
 			float max = 0;
 			float cost;
 
@@ -65,7 +65,7 @@ public interface Heuristic {
 
 	public class Euclidean implements Heuristic, Serializable {
 
-		public float estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
+		public float estimate(CubeCoordinate StartCoord, CubeCoordinate GoalCoord) {
 			float cost = StartCoord.X - GoalCoord.X;
 			float sum = cost * cost;
 
@@ -80,7 +80,7 @@ public interface Heuristic {
 
 	public class Diagonal implements Heuristic, Serializable {
 
-		public float estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
+		public float estimate(CubeCoordinate StartCoord, CubeCoordinate GoalCoord) {
 			float DiagonalsX = Math.abs(StartCoord.X - GoalCoord.X);
 			float DiagonalsY = Math.abs(StartCoord.Y - GoalCoord.Y);
 			float ZDifference = Math.abs(StartCoord.Z - GoalCoord.Z);
@@ -97,7 +97,7 @@ public interface Heuristic {
 
 	public class StraitLine implements Heuristic, Serializable {
 
-		public float estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
+		public float estimate(CubeCoordinate StartCoord, CubeCoordinate GoalCoord) {
 
 			//float dx1 = current.x - goal.x
 			//float dy1 = current.y - goal.y
@@ -114,7 +114,7 @@ public interface Heuristic {
 
 	public class Dijkstra implements Heuristic, Serializable {
 
-		public float estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
+		public float estimate(CubeCoordinate StartCoord, CubeCoordinate GoalCoord) {
 			return 0;
 		}
 	}

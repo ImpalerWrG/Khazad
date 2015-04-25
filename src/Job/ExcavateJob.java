@@ -23,7 +23,7 @@ import java.util.BitSet;
 import Game.Pawn;
 import Map.GameMap;
 import Map.CellCoordinate;
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 import Map.CubeShape;
 import Map.Zone;
 import Interface.VolumeSelection;
@@ -52,9 +52,9 @@ public class ExcavateJob extends Job implements Serializable {
 	int AccessibleExcavationCount = 0;
 	int AssignedExcavationsCount = 0;
 	// The locations from which an excatation target is accesible;
-	HashMap<MapCoordinate, MapCoordinate> AccessibleMap;
+	HashMap<CubeCoordinate, CubeCoordinate> AccessibleMap;
 	// Which Pawn is assigned to excavate each Coordinate
-	HashMap<Pawn, MapCoordinate> AssignedWorkers;
+	HashMap<Pawn, CubeCoordinate> AssignedWorkers;
 	// The Zone and other classes needed for accessability checks
 	Zone ExcavationZone;
 	GameMap map = null;
@@ -67,8 +67,8 @@ public class ExcavateJob extends Job implements Serializable {
 		AssignedExcavations = new HashMap<CellCoordinate, BitSet>();
 
 		Name = "Delving Deeply";
-		AccessibleMap = new HashMap<MapCoordinate, MapCoordinate>();
-		AssignedWorkers = new HashMap<Pawn, MapCoordinate>();
+		AccessibleMap = new HashMap<CubeCoordinate, CubeCoordinate>();
+		AssignedWorkers = new HashMap<Pawn, CubeCoordinate>();
 
 		Modality = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
 		this.map = map;
@@ -78,13 +78,13 @@ public class ExcavateJob extends Job implements Serializable {
 
 	public void addDesignations(VolumeSelection Selection, Zone SourceZone, CubeShape NewShape) {
 		this.ExcavationZone = SourceZone;
-		MapCoordinate Origin = Selection.OriginLocation;
-		MapCoordinate Terminal = Selection.TerminalLocation;
+		CubeCoordinate Origin = Selection.OriginLocation;
+		CubeCoordinate Terminal = Selection.TerminalLocation;
 
 		for (int x = Origin.X; x < Terminal.X + 1; x++) {
 			for (int y = Origin.Y; y < Terminal.Y + 1; y++) {
 				for (int z = Origin.Z; z < Terminal.Z + 1; z++) {
-					MapCoordinate TargetCoords = new MapCoordinate(x, y, z);
+					CubeCoordinate TargetCoords = new CubeCoordinate(x, y, z);
 					CellCoordinate CellCoords = new CellCoordinate(TargetCoords);
 					int CubeIndex = TargetCoords.getCubeIntIndex();
 
@@ -94,18 +94,18 @@ public class ExcavateJob extends Job implements Serializable {
 
 					if (map.getCubeShape(TargetCoords) != NewShape) {
 						if (DesignationShapes == null) {
-							DesignationShapes = new CubeShape[MapCoordinate.CUBESPERCELL];
+							DesignationShapes = new CubeShape[CubeCoordinate.CUBESPERCELL];
 							Designations.put(CellCoords, DesignationShapes);
 						}
 						DesignationShapes[CubeIndex] = NewShape;
 						DesignationCount++;
 
 						if (AccessibleLocation == null) {
-							AccessibleLocation = new BitSet(MapCoordinate.CUBESPERCELL);
+							AccessibleLocation = new BitSet(CubeCoordinate.CUBESPERCELL);
 							AccessibleExcavations.put(CellCoords, AccessibleLocation);
 						}
 						if (AssignedLocations == null) {
-							AssignedLocations = new BitSet(MapCoordinate.CUBESPERCELL);
+							AssignedLocations = new BitSet(CubeCoordinate.CUBESPERCELL);
 							AssignedExcavations.put(CellCoords, AssignedLocations);
 						}
 
@@ -123,7 +123,7 @@ public class ExcavateJob extends Job implements Serializable {
 						// Test for Accesability of this Coordinate
 						BitSet DirectionFlags;
 						for (Direction dir : Direction.AXIAL_DIRECTIONS) {
-							MapCoordinate AdjacentcCoords = TargetCoords.clone();
+							CubeCoordinate AdjacentcCoords = TargetCoords.clone();
 							AdjacentcCoords.translate(dir);
 							CubeShape AdjacentShape = GameMap.getMap().getCubeShape(AdjacentcCoords);
 
@@ -146,13 +146,13 @@ public class ExcavateJob extends Job implements Serializable {
 		}
 	}
 
-	public CubeShape getDesignation(MapCoordinate Coords) {
+	public CubeShape getDesignation(CubeCoordinate Coords) {
 		CellCoordinate CellCoords = new CellCoordinate(Coords);
 		CubeShape[] DesignationShapes = Designations.get(CellCoords);
 		return (DesignationShapes != null) ? DesignationShapes[Coords.getCubeIntIndex()] : null;
 	}
 
-	public void completeDesignation(MapCoordinate Coords) {
+	public void completeDesignation(CubeCoordinate Coords) {
 		AccessibleMap.remove(Coords);
 		ExcavationZone.removeMapCoordinate(Coords);
 
@@ -164,7 +164,7 @@ public class ExcavateJob extends Job implements Serializable {
 		if (paths.getDirectionFlags(Coords, Modality).cardinality() > 0) {
 			BitSet DirectionFlags;
 			for (Direction dir : Direction.AXIAL_DIRECTIONS) {
-				MapCoordinate AdjacentcCoords = Coords.clone();
+				CubeCoordinate AdjacentcCoords = Coords.clone();
 				AdjacentcCoords.translate(dir);
 				CubeShape AdjacentShape = GameMap.getMap().getCubeShape(AdjacentcCoords);
 				CubeShape DesignationShape = getDesignation(AdjacentcCoords);
@@ -187,7 +187,7 @@ public class ExcavateJob extends Job implements Serializable {
 		}
 	}
 
-	public boolean isAssigned(MapCoordinate Coords) {
+	public boolean isAssigned(CubeCoordinate Coords) {
 		CellCoordinate CellCoords = new CellCoordinate(Coords);
 		BitSet Assignments = AssignedExcavations.get(CellCoords);
 		return Assignments.get(Coords.getCubeIntIndex());
@@ -197,17 +197,17 @@ public class ExcavateJob extends Job implements Serializable {
 		Task OldTask = IdlePawn.getTask();
 		if (OldTask.ParentJob == this) {
 			if (OldTask.type == Task.TaskType.TASK_GOTO) {
-				MapCoordinate TargetExcavation = AssignedWorkers.get(IdlePawn);
+				CubeCoordinate TargetExcavation = AssignedWorkers.get(IdlePawn);
 
 				Task newTask = new Task(this, Task.TaskType.TASK_DIG, TargetExcavation);
 				return newTask;
 			}
 		}
 
-		MapCoordinate ExcavateCube = null;
-		MapCoordinate AccsibleCube = null;
+		CubeCoordinate ExcavateCube = null;
+		CubeCoordinate AccsibleCube = null;
 
-		for (Map.Entry<MapCoordinate, MapCoordinate> entry : AccessibleMap.entrySet()) {
+		for (Map.Entry<CubeCoordinate, CubeCoordinate> entry : AccessibleMap.entrySet()) {
 			// distance test for best location
 			if (!isAssigned(entry.getKey())) {
 				AccsibleCube = entry.getValue();

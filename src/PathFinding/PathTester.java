@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 import Core.Dice;
 
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -106,12 +106,12 @@ public class PathTester implements Serializable {
 
 	transient PathManager ParentManager;
 	Dice PathDice;
-	MapCoordinate ManualStartCoords, ManualGoalCoords;  // Used for manual testing
+	CubeCoordinate ManualStartCoords, ManualGoalCoords;  // Used for manual testing
 	MapPath ManualPath;
 	GroupProfile ManualProfileGroup;
 	GroupProfile CurrentProfileGroup;
 	GroupProfile[] ProfileGroupList;
-	ArrayList<MapCoordinate> TestCoords, StartCoordsList, GoalCoordsList;
+	ArrayList<CubeCoordinate> TestCoords, StartCoordsList, GoalCoordsList;
 	int TestingIterations;
 	MovementModality Basic;
 
@@ -119,8 +119,8 @@ public class PathTester implements Serializable {
 		// TODO get Modality from the Manager
 		Basic = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
 
-		StartCoordsList = new ArrayList<MapCoordinate>();
-		GoalCoordsList = new ArrayList<MapCoordinate>();
+		StartCoordsList = new ArrayList<CubeCoordinate>();
+		GoalCoordsList = new ArrayList<CubeCoordinate>();
 
 		CurrentProfileGroup = null;
 		ManualProfileGroup = null;
@@ -158,7 +158,7 @@ public class PathTester implements Serializable {
 		}
 	}
 
-	public MapCoordinate getRandomPassableCoordinate() {
+	public CubeCoordinate getRandomPassableCoordinate() {
 		return TestCoords.get(PathDice.roll(0, TestCoords.size() - 1));
 	}
 
@@ -190,7 +190,7 @@ public class PathTester implements Serializable {
 		}
 	}
 
-	void testSuite(int Iterations, MovementModality MovementType, GroupProfile SystemProfileGroup, ArrayList<MapCoordinate> StartCoordsList, ArrayList<MapCoordinate> GoalCoordsList) {
+	void testSuite(int Iterations, MovementModality MovementType, GroupProfile SystemProfileGroup, ArrayList<CubeCoordinate> StartCoordsList, ArrayList<CubeCoordinate> GoalCoordsList) {
 		for (int i = 0; i < Iterations; ++i) {
 			Profile NewProfile = new Profile();
 			ParentManager.profilePath(MovementType, StartCoordsList.get(i), GoalCoordsList.get(i), NewProfile);

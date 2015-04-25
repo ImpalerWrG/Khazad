@@ -21,7 +21,7 @@ import Core.Main;
 import Game.Actor;
 import Game.Citizen;
 import Game.Game;
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -89,9 +89,9 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	private float XChange;
 	private float YChange;
 	private Plane SelectionPlane = null;
-	private MapCoordinate MouseLocation = new MapCoordinate();
-	public MapCoordinate SelectionOrigin = new MapCoordinate();
-	public MapCoordinate SelectionTerminus = new MapCoordinate();
+	private CubeCoordinate MouseLocation = new CubeCoordinate();
+	public CubeCoordinate SelectionOrigin = new CubeCoordinate();
+	public CubeCoordinate SelectionTerminus = new CubeCoordinate();
 	public VolumeSelection Volume;
 	protected int SliceTop;
 	protected int SliceBottom;
@@ -434,7 +434,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		identifyNode(node.getParent());
 	}
 
-	public MapCoordinate getMouseLocation() {
+	public CubeCoordinate getMouseLocation() {
 		return MouseLocation;
 	}
 
@@ -588,7 +588,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		return selectedActor;
 	}
 
-	public void pointCameraAt(MapCoordinate mapCoordinate) {
+	public void pointCameraAt(CubeCoordinate mapCoordinate) {
 		// change to the same Z level as the target
 		SliceTop = mapCoordinate.Z;
 		SliceBottom = SliceTop + ViewLevels;

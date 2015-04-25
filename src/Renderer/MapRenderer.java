@@ -21,7 +21,7 @@ import Game.Game;
 import Interface.GameCameraState;
 import Map.CellCoordinate;
 
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 import Map.TileBuilder;
 import Nifty.GUI;
 import com.jme3.app.Application;
@@ -125,8 +125,8 @@ public class MapRenderer extends AbstractAppState {
 				if (CellNode == null) {
 					CellNode = new Node("LightNode" + TargetCoordinates.toString());
 
-					float x = (float) (TargetCoordinates.X * MapCoordinate.CELLEDGESIZE);
-					float y = (float) (TargetCoordinates.Y * MapCoordinate.CELLEDGESIZE);
+					float x = (float) (TargetCoordinates.X * CubeCoordinate.CELLEDGESIZE);
+					float y = (float) (TargetCoordinates.Y * CubeCoordinate.CELLEDGESIZE);
 					CellNode.move(x, y, 0);
 
 					getZNodeLight(TargetCoordinates.Z).attachChild(CellNode);
@@ -151,8 +151,8 @@ public class MapRenderer extends AbstractAppState {
 				if (CellNode == null) {
 					CellNode = new Node("DarkCellNode");
 
-					float x = (float) (TargetCell.X * MapCoordinate.CELLEDGESIZE);
-					float y = (float) (TargetCell.Y * MapCoordinate.CELLEDGESIZE);
+					float x = (float) (TargetCell.X * CubeCoordinate.CELLEDGESIZE);
+					float y = (float) (TargetCell.Y * CubeCoordinate.CELLEDGESIZE);
 
 					CellNode.move(x, y, 0);
 

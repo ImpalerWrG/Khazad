@@ -53,20 +53,16 @@ public class Geology implements Serializable {
 	}
 
 	public void generateWorldHeightMap(int X, int Y) {
-		int WorldSizeX = X;
-		int WorldSizeY = Y;
-
 		WorldHeight = new float[X + 1][Y + 1];
 
-		Edge = new float[MapCoordinate.CELLEDGESIZE + 1];
-		Height = new float[MapCoordinate.CELLEDGESIZE + 1][MapCoordinate.CELLEDGESIZE + 1];
-		Seeded = new boolean[MapCoordinate.CELLEDGESIZE + 1][MapCoordinate.CELLEDGESIZE + 1];
+		Edge = new float[CubeCoordinate.CELLEDGESIZE + 1];
+		Height = new float[CubeCoordinate.CELLEDGESIZE + 1][CubeCoordinate.CELLEDGESIZE + 1];
+		Seeded = new boolean[CubeCoordinate.CELLEDGESIZE + 1][CubeCoordinate.CELLEDGESIZE + 1];
 
 		int Octives = 9;
 		double lacunarity = 2.1379201;
 		double persistence = 0.036281;
 
-		float height;
 
 		for (int x = 0; x < X + 1; x++) {
 			for (int y = 0; y < Y + 1; y++) {
@@ -118,17 +114,17 @@ public class Geology implements Serializable {
 		RandomGenerator.seed(coords.hashCode());
 
 		Edge[0] = X;
-		Edge[MapCoordinate.CELLEDGESIZE] = Y;
+		Edge[CubeCoordinate.CELLEDGESIZE] = Y;
 
 		float ratio = (float) Math.pow(2.0, -Roughness);
 		float scale = heightScale * ratio;
 
 		/* Seed the endpoints of the array. To enable seamless wrapping,
 		 * the endpoints need to be the same point. */
-		byte stride = MapCoordinate.CELLEDGESIZE / 2;
+		byte stride = CubeCoordinate.CELLEDGESIZE / 2;
 
 		while (stride > 0) {
-			for (byte i = stride; i < MapCoordinate.CELLEDGESIZE; i += stride) {
+			for (byte i = stride; i < CubeCoordinate.CELLEDGESIZE; i += stride) {
 				Edge[i] = scale * RandomGenerator.roll(-1.0f, 1.0f) + ((Edge[i - stride] + Edge[i + stride]) * .5f);
 				/* reduce random number range */
 				scale *= ratio;
@@ -139,7 +135,7 @@ public class Geology implements Serializable {
 	}
 
 	public void generateCellHeight(int X, int Y, float heightScale, float Roughness) {
-		byte size = MapCoordinate.CELLEDGESIZE + 1;
+		byte size = CubeCoordinate.CELLEDGESIZE + 1;
 
 		// Mark edges as Seeded to prevent them from being overwritten
 		for (short x = 0; x < size; x++) {
@@ -160,8 +156,8 @@ public class Geology implements Serializable {
 		generateCellEdge(WorldHeight[X][Y + 1], WorldHeight[X + 1][Y + 1], heightScale, Roughness);
 
 		for (short x = 0; x < size; x++) {
-			Height[x][MapCoordinate.CELLEDGESIZE] = Edge[x];
-			Seeded[x][MapCoordinate.CELLEDGESIZE] = true;
+			Height[x][CubeCoordinate.CELLEDGESIZE] = Edge[x];
+			Seeded[x][CubeCoordinate.CELLEDGESIZE] = true;
 		}
 
 		generateCellEdge(WorldHeight[X][Y], WorldHeight[X][Y + 1], heightScale, Roughness);
@@ -174,8 +170,8 @@ public class Geology implements Serializable {
 		generateCellEdge(WorldHeight[X + 1][Y], WorldHeight[X + 1][Y + 1], heightScale, Roughness);
 
 		for (short y = 0; y < size; y++) {
-			Height[MapCoordinate.CELLEDGESIZE][y] = Edge[y];
-			Seeded[MapCoordinate.CELLEDGESIZE][y] = true;
+			Height[CubeCoordinate.CELLEDGESIZE][y] = Edge[y];
+			Seeded[CubeCoordinate.CELLEDGESIZE][y] = true;
 		}
 
 		// Reseed Random Number Generator
@@ -203,19 +199,19 @@ public class Geology implements Serializable {
 		 * point. This will allow us to tile the arrays next to each other
 		 * such that they join seemlessly. */
 
-		byte stride = MapCoordinate.CELLEDGESIZE / 2;
+		byte stride = CubeCoordinate.CELLEDGESIZE / 2;
 
 		Height[0][0] = WorldHeight[X][Y];
 		Seeded[0][0] = true;
 
-		Height[MapCoordinate.CELLEDGESIZE][0] = WorldHeight[X + 1][Y];
-		Seeded[MapCoordinate.CELLEDGESIZE][0] = true;
+		Height[CubeCoordinate.CELLEDGESIZE][0] = WorldHeight[X + 1][Y];
+		Seeded[CubeCoordinate.CELLEDGESIZE][0] = true;
 
-		Height[0][MapCoordinate.CELLEDGESIZE] = WorldHeight[X][Y + 1];
-		Seeded[0][MapCoordinate.CELLEDGESIZE] = true;
+		Height[0][CubeCoordinate.CELLEDGESIZE] = WorldHeight[X][Y + 1];
+		Seeded[0][CubeCoordinate.CELLEDGESIZE] = true;
 
-		Height[MapCoordinate.CELLEDGESIZE][MapCoordinate.CELLEDGESIZE] = WorldHeight[X + 1][Y + 1];
-		Seeded[MapCoordinate.CELLEDGESIZE][MapCoordinate.CELLEDGESIZE] = true;
+		Height[CubeCoordinate.CELLEDGESIZE][CubeCoordinate.CELLEDGESIZE] = WorldHeight[X + 1][Y + 1];
+		Seeded[CubeCoordinate.CELLEDGESIZE][CubeCoordinate.CELLEDGESIZE] = true;
 
 
 		// Set initial Fractal value range (scale) and the rate of decrese (ratio)
@@ -228,8 +224,8 @@ public class Geology implements Serializable {
 		 * will produce a zero result, terminating the loop. */
 
 		while (stride > 0) {
-			for (short x = stride; x < MapCoordinate.CELLEDGESIZE; x += stride) {
-				for (short y = stride; y < MapCoordinate.CELLEDGESIZE; y += stride) {
+			for (short x = stride; x < CubeCoordinate.CELLEDGESIZE; x += stride) {
+				for (short y = stride; y < CubeCoordinate.CELLEDGESIZE; y += stride) {
 					if (!Seeded[x][y]) {
 						float Average = (float) ((Height[x - stride][y - stride] + Height[x - stride][y + stride] + Height[x + stride][y - stride] + Height[x + stride][y + stride]) * 0.25);
 						float RandomFactor = scale * RandomGenerator.roll(-1.0f, 1.0f);
@@ -253,13 +249,13 @@ public class Geology implements Serializable {
 			 * "oddline" and "stride" to increment j to the desired value.
 			 */
 			short oddline = 0;
-			for (short x = 0; x < MapCoordinate.CELLEDGESIZE; x += stride) {
+			for (short x = 0; x < CubeCoordinate.CELLEDGESIZE; x += stride) {
 				//oddline = (oddline == 0);
 				if (oddline == 0)
 					oddline = 1;
 				else
 					oddline = 0;
-				for (short y = 0; y < MapCoordinate.CELLEDGESIZE; y += stride) {
+				for (short y = 0; y < CubeCoordinate.CELLEDGESIZE; y += stride) {
 					if ((y == 0) && oddline != 0) {
 						y += stride;
 					}
@@ -306,16 +302,16 @@ public class Geology implements Serializable {
 
 		int Target = CubeTarget & 0xFF;
 
-		Remainder = Height[(Target >> MapCoordinate.CELLBITSHIFT)][(Target & MapCoordinate.CELLBITFLAG)] - ((float) Zlevel);
+		Remainder = Height[(Target >> CubeCoordinate.CELLBITSHIFT)][(Target & CubeCoordinate.CELLBITFLAG)] - ((float) Zlevel);
 		byte SWCornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * CubeShape.HEIGHT_FRACTIONS) + 1, (float) CubeShape.BELOW_CUBE_HEIGHT), (float) CubeShape.CUBE_TOP_HEIGHT);
 
-		Remainder = Height[(Target >> MapCoordinate.CELLBITSHIFT) + 1][(Target & MapCoordinate.CELLBITFLAG)] - ((float) Zlevel);
+		Remainder = Height[(Target >> CubeCoordinate.CELLBITSHIFT) + 1][(Target & CubeCoordinate.CELLBITFLAG)] - ((float) Zlevel);
 		byte SECornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * CubeShape.HEIGHT_FRACTIONS) + 1, (float) CubeShape.BELOW_CUBE_HEIGHT), (float) CubeShape.CUBE_TOP_HEIGHT);
 
-		Remainder = Height[(Target >> MapCoordinate.CELLBITSHIFT)][(Target & MapCoordinate.CELLBITFLAG) + 1] - ((float) Zlevel);
+		Remainder = Height[(Target >> CubeCoordinate.CELLBITSHIFT)][(Target & CubeCoordinate.CELLBITFLAG) + 1] - ((float) Zlevel);
 		byte NWCornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * CubeShape.HEIGHT_FRACTIONS) + 1, (float) CubeShape.BELOW_CUBE_HEIGHT), (float) CubeShape.CUBE_TOP_HEIGHT);
 
-		Remainder = Height[(Target >> MapCoordinate.CELLBITSHIFT) + 1][(Target & MapCoordinate.CELLBITFLAG) + 1] - ((float) Zlevel);
+		Remainder = Height[(Target >> CubeCoordinate.CELLBITSHIFT) + 1][(Target & CubeCoordinate.CELLBITFLAG) + 1] - ((float) Zlevel);
 		byte NECornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * CubeShape.HEIGHT_FRACTIONS) + 1, (float) CubeShape.BELOW_CUBE_HEIGHT), (float) CubeShape.CUBE_TOP_HEIGHT);
 
 		byte Split = (byte) RandomGenerator.roll(0, 1);
@@ -342,23 +338,25 @@ public class Geology implements Serializable {
 	public void loadCellData(Cell TargetCell) {
 		CellCoordinate TargetCoordinates = TargetCell.getCellCoordinates();
 
-		byte TargetCube = 0;
-		do {
-			CubeShape Shape = getCubeShapeAtCoordinates(TargetCube, TargetCoordinates.Z);
+		for (int i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i++) {
+			int Size = (CubeCoordinate.CELLDETAILLEVELS - i) - 1;
+			Size = 1 << Size;
+			Size = Size * Size;
+			for (int j = 0; j < Size; j++) {
+				CubeShape Shape = getCubeShapeAtCoordinates((byte) j, TargetCoordinates.Z);
 
-			if (!Shape.isEmpty()) {
-				short MaterialType = getRockTypeAtCoordinates(TargetCube, TargetCoordinates.Z);
-				TargetCell.setCubeMaterial(TargetCube, MaterialType);
+				if (!Shape.isEmpty()) {
+					short MaterialType = getRockTypeAtCoordinates((byte) j, TargetCoordinates.Z);
+					TargetCell.setCubeMaterial((byte) j, MaterialType);
 
-				if (MaterialType != DataManager.INVALID_INDEX) {
-					TargetCell.setCubeShape(TargetCube, Shape);
-					//TargetCell->setCubeSurface(TargetCubeCoordinates, RoughWallID);
+					if (MaterialType != DataManager.INVALID_INDEX) {
+						TargetCell.setCubeShape((byte) j, Shape, i);
+					}
+				} else {
+					TargetCell.setCubeShape((byte) j, Shape, i);
+					TargetCell.setCubeMaterial((byte) j, DataManager.INVALID_INDEX);
 				}
-			} else {
-				TargetCell.setCubeShape(TargetCube, Shape);
-				TargetCell.setCubeMaterial(TargetCube, DataManager.INVALID_INDEX);
 			}
-			TargetCube++;
-		} while (TargetCube != 0);  // End Loop when Byte rolls over
+		}
 	}
 }

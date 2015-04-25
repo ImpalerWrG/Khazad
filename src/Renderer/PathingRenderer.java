@@ -24,7 +24,7 @@ import Map.Cell;
 import Map.CellCoordinate;
 import Map.Direction;
 import Map.GameMap;
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 
 import PathFinding.PathManager;
 import PathFinding.MovementModality;
@@ -85,7 +85,7 @@ public class PathingRenderer extends AbstractAppState {
 		this.vertices = new Vector3f[Direction.ANGULAR_DIRECTIONS.length];
 
 		for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
-			vertices[dir.ordinal()] = new Vector3f(dir.getValueonAxis(Axis.AXIS_X) * MapCoordinate.HALFCUBE, dir.getValueonAxis(Axis.AXIS_Y) * MapCoordinate.HALFCUBE, dir.getValueonAxis(Axis.AXIS_Z) * MapCoordinate.HALFCUBE);
+			vertices[dir.ordinal()] = new Vector3f(dir.getValueonAxis(Axis.AXIS_X) * CubeCoordinate.HALFCUBE, dir.getValueonAxis(Axis.AXIS_Y) * CubeCoordinate.HALFCUBE, dir.getValueonAxis(Axis.AXIS_Z) * CubeCoordinate.HALFCUBE);
 		}
 	}
 
@@ -106,10 +106,10 @@ public class PathingRenderer extends AbstractAppState {
 
 		CellCoordinate CellCoords = TargetCell.getCellCoordinates();
 
-		for (int x = 0; x < MapCoordinate.CELLEDGESIZE; x++) {
-			for (int y = 0; y < MapCoordinate.CELLEDGESIZE; y++) {
+		for (int x = 0; x < CubeCoordinate.CELLEDGESIZE; x++) {
+			for (int y = 0; y < CubeCoordinate.CELLEDGESIZE; y++) {
 
-				MapCoordinate TargetCoords = new MapCoordinate(CellCoords, x, y);
+				CubeCoordinate TargetCoords = new CubeCoordinate(CellCoords, x, y);
 				BitSet Connectivity = Pathing.getDirectionFlags(TargetCoords, Mod);
 
 				int Zone = Pathing.getConnectivityZone(TargetCoords, Mod);

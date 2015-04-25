@@ -20,7 +20,7 @@ package Renderer;
 import Interface.GameCameraState;
 import Interface.VolumeSelection;
 
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 import Game.Game;
 import Map.CellCoordinate;
 import Map.Zone;
@@ -92,15 +92,15 @@ public class SelectionRenderer extends AbstractAppState {
 		WireBoxMesh.setLineWidth(3);
 
 		Vector3f[] vertices = new Vector3f[8];
-		vertices[0] = new Vector3f(MapCoordinate.HALFCUBE, MapCoordinate.HALFCUBE, MapCoordinate.HALFCUBE);
-		vertices[1] = new Vector3f(-MapCoordinate.HALFCUBE, MapCoordinate.HALFCUBE, MapCoordinate.HALFCUBE);
-		vertices[2] = new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, MapCoordinate.HALFCUBE);
-		vertices[3] = new Vector3f(MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, MapCoordinate.HALFCUBE);
+		vertices[0] = new Vector3f(CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE);
+		vertices[1] = new Vector3f(-CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE);
+		vertices[2] = new Vector3f(-CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE);
+		vertices[3] = new Vector3f(CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE);
 
-		vertices[4] = new Vector3f(MapCoordinate.HALFCUBE, MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-		vertices[5] = new Vector3f(-MapCoordinate.HALFCUBE, MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-		vertices[6] = new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-		vertices[7] = new Vector3f(MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
+		vertices[4] = new Vector3f(CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE);
+		vertices[5] = new Vector3f(-CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE);
+		vertices[6] = new Vector3f(-CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE);
+		vertices[7] = new Vector3f(CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE);
 
 		int[] indexes = {0, 1, 1, 2, 2, 3, 3, 0, 0, 4, 1, 5, 2, 6, 3, 7, 4, 5, 5, 6, 6, 7, 7, 4};
 
@@ -130,15 +130,15 @@ public class SelectionRenderer extends AbstractAppState {
 		int minZ = Math.min(Selection.OriginLocation.Z, Selection.TerminalLocation.Z);
 
 		Vector3f[] vertices = new Vector3f[8];
-		vertices[0] = new Vector3f(maxX - minX + MapCoordinate.HALFCUBE, maxY - minY + MapCoordinate.HALFCUBE, maxZ - minZ + MapCoordinate.HALFCUBE);
-		vertices[1] = new Vector3f(-MapCoordinate.HALFCUBE, maxY - minY + MapCoordinate.HALFCUBE, maxZ - minZ + MapCoordinate.HALFCUBE);
-		vertices[2] = new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, maxZ - minZ + MapCoordinate.HALFCUBE);
-		vertices[3] = new Vector3f(maxX - minX + MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, maxZ - minZ + MapCoordinate.HALFCUBE);
+		vertices[0] = new Vector3f(maxX - minX + CubeCoordinate.HALFCUBE, maxY - minY + CubeCoordinate.HALFCUBE, maxZ - minZ + CubeCoordinate.HALFCUBE);
+		vertices[1] = new Vector3f(-CubeCoordinate.HALFCUBE, maxY - minY + CubeCoordinate.HALFCUBE, maxZ - minZ + CubeCoordinate.HALFCUBE);
+		vertices[2] = new Vector3f(-CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE, maxZ - minZ + CubeCoordinate.HALFCUBE);
+		vertices[3] = new Vector3f(maxX - minX + CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE, maxZ - minZ + CubeCoordinate.HALFCUBE);
 
-		vertices[4] = new Vector3f(maxX - minX + MapCoordinate.HALFCUBE, maxY - minY + MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-		vertices[5] = new Vector3f(-MapCoordinate.HALFCUBE, maxY - minY + MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-		vertices[6] = new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-		vertices[7] = new Vector3f(maxX - minX + MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
+		vertices[4] = new Vector3f(maxX - minX + CubeCoordinate.HALFCUBE, maxY - minY + CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE);
+		vertices[5] = new Vector3f(-CubeCoordinate.HALFCUBE, maxY - minY + CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE);
+		vertices[6] = new Vector3f(-CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE);
+		vertices[7] = new Vector3f(maxX - minX + CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE);
 
 		int[] indexes = {0, 1, 1, 2, 2, 3, 3, 0, 0, 4, 1, 5, 2, 6, 3, 7, 4, 5, 5, 6, 6, 7, 7, 4};
 
@@ -169,10 +169,10 @@ public class SelectionRenderer extends AbstractAppState {
 			BitSet CellBitSet = entry.getValue();
 			CellCoordinate Coords = entry.getKey();
 
-			for (int i = 0; i < MapCoordinate.CUBESPERCELL; i++) {
+			for (int i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
 				if (CellBitSet.get(i)) {
-					Box newBox = new Box(MapCoordinate.HALFCUBE, MapCoordinate.HALFCUBE, MapCoordinate.HALFCUBE);
-					MapCoordinate MapCoords = new MapCoordinate(Coords, (byte) i);
+					Box newBox = new Box(CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE);
+					CubeCoordinate MapCoords = new CubeCoordinate(Coords, (byte) i);
 
 					Geometry ZoneBlock = new Geometry("Box", newBox);
 					ZoneBlock.setLocalTranslation(new Vector3f(MapCoords.X, MapCoords.Y, MapCoords.Z));
@@ -196,7 +196,7 @@ public class SelectionRenderer extends AbstractAppState {
 			// not initialised yet
 			return;
 		}
-		MapCoordinate mouse = cam.getMouseLocation();
+		CubeCoordinate mouse = cam.getMouseLocation();
 		if (cam.getSelectedActor() == null) {
 			CursorBox.setLocalTranslation(new Vector3f(mouse.X, mouse.Y, mouse.Z));
 			CursorBox.setCullHint(CullHint.Dynamic);

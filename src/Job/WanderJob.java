@@ -18,7 +18,7 @@
 package Job;
 
 import Game.Pawn;
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 import PathFinding.PathManager;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -53,7 +53,7 @@ public class WanderJob extends Job implements Serializable {
 	}
 
 	public Task nextTask(Pawn IdlePawn) {
-		MapCoordinate Destination = RandomDestination(IdlePawn);
+		CubeCoordinate Destination = RandomDestination(IdlePawn);
 		if (Destination != null) {
 			return new Task(this, Task.TaskType.TASK_GOTO, Destination);
 		} else {
@@ -73,10 +73,10 @@ public class WanderJob extends Job implements Serializable {
 		return Evaluation + 1;
 	}
 
-	public MapCoordinate RandomDestination(Pawn Wanderer) {
-		MapCoordinate StartLocation = Wanderer.getLocation();
+	public CubeCoordinate RandomDestination(Pawn Wanderer) {
+		CubeCoordinate StartLocation = Wanderer.getLocation();
 		if (Pathing.getDirectionFlags(StartLocation, Wanderer.getMovementModality()).cardinality() != 0) {//Is the current location impassable
-			MapCoordinate DestinationCoordinates = Pathing.Tester.getRandomPassableCoordinate();  // This needs to get DIFFERENT coords each time
+			CubeCoordinate DestinationCoordinates = Pathing.Tester.getRandomPassableCoordinate();  // This needs to get DIFFERENT coords each time
 
 			while (!Wanderer.isDestinationReachable(DestinationCoordinates)) {
 				DestinationCoordinates = Pathing.Tester.getRandomPassableCoordinate();

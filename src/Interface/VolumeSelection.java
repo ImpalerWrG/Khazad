@@ -17,7 +17,7 @@
 
 package Interface;
 
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 
 /**
  *
@@ -26,8 +26,8 @@ import Map.MapCoordinate;
 public class VolumeSelection {
 
 	// End Points of the Bounding Box
-	public MapCoordinate OriginLocation = new MapCoordinate();
-	public MapCoordinate TerminalLocation = new MapCoordinate();
+	public CubeCoordinate OriginLocation = new CubeCoordinate();
+	public CubeCoordinate TerminalLocation = new CubeCoordinate();
 	// Used by Rendering
 	public boolean Dirty;
 
@@ -35,12 +35,12 @@ public class VolumeSelection {
 		Dirty = true;
 	}
 
-	public VolumeSelection(MapCoordinate SelectionOrigin, MapCoordinate SelectionTerminus) {
+	public VolumeSelection(CubeCoordinate SelectionOrigin, CubeCoordinate SelectionTerminus) {
 		setSize(SelectionOrigin, SelectionTerminus);
 		Dirty = true;
 	}
 
-	public final void setSize(MapCoordinate SelectionOrigin, MapCoordinate SelectionTerminus) {
+	public final void setSize(CubeCoordinate SelectionOrigin, CubeCoordinate SelectionTerminus) {
 
 		int maxX = Math.max(SelectionTerminus.X, SelectionOrigin.X);
 		int maxY = Math.max(SelectionTerminus.Y, SelectionOrigin.Y);

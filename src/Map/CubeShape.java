@@ -230,9 +230,9 @@ public class CubeShape implements Serializable {
 
 	public float getCenterHeight() {
 		if (isSplit()) {
-			return (((getNorthWestCorner() + getSouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+			return (((getNorthWestCorner() + getSouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - CubeCoordinate.HALFCUBE;
 		} else {
-			return (((getSouthWestCorner() + getNorthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+			return (((getSouthWestCorner() + getNorthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - CubeCoordinate.HALFCUBE;
 		}
 	}
 
@@ -243,42 +243,42 @@ public class CubeShape implements Serializable {
 			case DIRECTION_NORTH:
 			case DIRECTION_UP_NORTH:
 			case DIRECTION_DOWN_NORTH:
-				return (((getNorthWestCorner() + getNorthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return (((getNorthWestCorner() + getNorthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - CubeCoordinate.HALFCUBE;
 
 			case DIRECTION_SOUTH:
 			case DIRECTION_UP_SOUTH:
 			case DIRECTION_DOWN_SOUTH:
-				return (((getSouthWestCorner() + getSouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return (((getSouthWestCorner() + getSouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - CubeCoordinate.HALFCUBE;
 
 			case DIRECTION_EAST:
 			case DIRECTION_UP_EAST:
 			case DIRECTION_DOWN_EAST:
-				return (((getNorthEastCorner() + getSouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return (((getNorthEastCorner() + getSouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - CubeCoordinate.HALFCUBE;
 
 			case DIRECTION_WEST:
 			case DIRECTION_UP_WEST:
 			case DIRECTION_DOWN_WEST:
-				return (((getNorthWestCorner() + getSouthWestCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return (((getNorthWestCorner() + getSouthWestCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - CubeCoordinate.HALFCUBE;
 
 			case DIRECTION_NORTHWEST:
 			case DIRECTION_UP_NORTHWEST:
 			case DIRECTION_DOWN_NORTHWEST:
-				return ((getNorthWestCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return ((getNorthWestCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - CubeCoordinate.HALFCUBE;
 
 			case DIRECTION_SOUTHWEST:
 			case DIRECTION_UP_SOUTHWEST:
 			case DIRECTION_DOWN_SOUTHWEST:
-				return ((getSouthWestCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return ((getSouthWestCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - CubeCoordinate.HALFCUBE;
 
 			case DIRECTION_SOUTHEAST:
 			case DIRECTION_UP_SOUTHEAST:
 			case DIRECTION_DOWN_SOUTHEAST:
-				return ((getSouthEastCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return ((getSouthEastCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - CubeCoordinate.HALFCUBE;
 
 			case DIRECTION_NORTHEAST:
 			case DIRECTION_UP_NORTHEAST:
 			case DIRECTION_DOWN_NORTHEAST:
-				return ((getNorthEastCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return ((getNorthEastCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - CubeCoordinate.HALFCUBE;
 		}
 
 		return 0;

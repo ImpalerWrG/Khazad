@@ -17,7 +17,7 @@
 
 package PathFinding;
 
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -31,9 +31,9 @@ import java.util.ArrayList;
 public class CoordinatePath extends MapPath implements Serializable {
 
 	private static final long serialVersionUID = 1;
-	ArrayList<MapCoordinate> PathCourse;
+	ArrayList<CubeCoordinate> PathCourse;
 
-	CoordinatePath(float PathLength, ArrayList<MapCoordinate> Course) {
+	CoordinatePath(float PathLength, ArrayList<CubeCoordinate> Course) {
 		Length = PathLength;
 		PathCourse = Course;
 		StepCount = Course.size() - 1;

@@ -20,7 +20,7 @@ package PathFinding;
 import java.util.BitSet;
 import java.util.ArrayList;
 
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 import Map.Direction;
 
 /**
@@ -42,17 +42,17 @@ import Map.Direction;
  */
 public interface GridInterface {
 
-	float getEdgeCost(MapCoordinate TestCoords, Direction DirectionType);
+	float getEdgeCost(CubeCoordinate TestCoords, Direction DirectionType);
 
-	BitSet getDirectionEdgeSet(MapCoordinate TargetCoords);
+	BitSet getDirectionEdgeSet(CubeCoordinate TargetCoords);
 
-	public int getConnectivityZone(MapCoordinate TargetCoords);
+	public int getConnectivityZone(CubeCoordinate TargetCoords);
 
-	boolean isPathPossible(MovementModality MovementType, MapCoordinate StartCoords, MapCoordinate GoalCoords);
+	boolean isPathPossible(MovementModality MovementType, CubeCoordinate StartCoords, CubeCoordinate GoalCoords);
 
-	abstract void dirtyMapCoordinate(MapCoordinate[] TargetCoords);
+	abstract void dirtyMapCoordinate(CubeCoordinate[] TargetCoords);
 
-	boolean contains(MapCoordinate TestCoords);
+	boolean contains(CubeCoordinate TestCoords);
 
-	ArrayList<MapCoordinate> getPassableCoordinates();
+	ArrayList<CubeCoordinate> getPassableCoordinates();
 }

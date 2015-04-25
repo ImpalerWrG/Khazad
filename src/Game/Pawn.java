@@ -23,7 +23,7 @@ import Data.*;
 import Data.Types.*;
 
 import Map.Direction;
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 
 import PathFinding.MovementModality;
 import PathFinding.Navigator;
@@ -60,7 +60,7 @@ public class Pawn extends Actor implements Serializable {
 	private String lastName;
 	private Gender gender;
 
-	public Pawn(short CreatureTypeID, int id, int Seed, MapCoordinate SpawnLocation) {
+	public Pawn(short CreatureTypeID, int id, int Seed, CubeCoordinate SpawnLocation) {
 		super(id, SpawnLocation);
 
 		this.CreatureTypeID = CreatureTypeID;
@@ -103,7 +103,7 @@ public class Pawn extends Actor implements Serializable {
 	}
 
 	public long updatePosition() {
-		setLocation(new MapCoordinate(LocationCoordinates, CurrentMovementDirection));
+		setLocation(new CubeCoordinate(LocationCoordinates, CurrentMovementDirection));
 		CurrentMovementDirection = PathNavigator.getNextStep();
 
 		if (CurrentMovementDirection == Direction.DIRECTION_DESTINATION) {
@@ -114,12 +114,12 @@ public class Pawn extends Actor implements Serializable {
 		}
 	}
 
-	public boolean isDestinationReachable(MapCoordinate Destination) {
+	public boolean isDestinationReachable(CubeCoordinate Destination) {
 		return PathNavigator.isDestinationReachable(Destination);
 	}
 
 	@Override
-	public final void setLocation(MapCoordinate NewLocation) {
+	public final void setLocation(CubeCoordinate NewLocation) {
 		super.setLocation(NewLocation);
 		PathNavigator.setLocation(NewLocation);
 	}

@@ -53,21 +53,21 @@ public class Zone implements Serializable {
 	}
 
 	public final void addSelection(VolumeSelection Selection) {
-		MapCoordinate Origin = Selection.OriginLocation;
-		MapCoordinate Terminal = Selection.TerminalLocation;
+		CubeCoordinate Origin = Selection.OriginLocation;
+		CubeCoordinate Terminal = Selection.TerminalLocation;
 
 		for (int x = Origin.X; x <= Terminal.X; x++) {
 			for (int y = Origin.Y; y <= Terminal.Y; y++) {
 				for (int z = Origin.Z; z <= Terminal.Z; z++) {
 
-					MapCoordinate ZoneCube = new MapCoordinate(x, y, z);
+					CubeCoordinate ZoneCube = new CubeCoordinate(x, y, z);
 					CellCoordinate ZoneCell = new CellCoordinate(ZoneCube);
 
 					BitSet Target = ZoneMap.get(ZoneCell);
 					if (Target != null) {
 						Target.set(ZoneCube.getCubeIntIndex(), true);
 					} else {
-						BitSet Bits = new BitSet(MapCoordinate.CUBESPERCELL);
+						BitSet Bits = new BitSet(CubeCoordinate.CUBESPERCELL);
 						Bits.set(ZoneCube.getCubeIntIndex(), true);
 						ZoneMap.put(ZoneCell, Bits);
 					}
@@ -77,25 +77,25 @@ public class Zone implements Serializable {
 		Dirty = true;
 	}
 
-	public final void addMapCoordinate(MapCoordinate AdditionCoords) {
+	public final void addMapCoordinate(CubeCoordinate AdditionCoords) {
 		CellCoordinate Targt = new CellCoordinate(AdditionCoords);
 		BitSet Target = ZoneMap.get(Targt);
 		if (Target == null) {
-			Target = new BitSet(MapCoordinate.CUBESPERCELL);
+			Target = new BitSet(CubeCoordinate.CUBESPERCELL);
 		}
 		Target.set(AdditionCoords.getCubeIntIndex(), true);
 		Dirty = true;
 	}
 
 	public final void removeSelection(VolumeSelection Selection) {
-		MapCoordinate Origin = Selection.OriginLocation;
-		MapCoordinate Terminal = Selection.TerminalLocation;
+		CubeCoordinate Origin = Selection.OriginLocation;
+		CubeCoordinate Terminal = Selection.TerminalLocation;
 
 		for (int x = Origin.X; x < Terminal.X; x++) {
 			for (int y = Origin.Y; y < Terminal.Y; y++) {
 				for (int z = Origin.Z; z < Terminal.Z; z++) {
 
-					MapCoordinate ZoneCube = new MapCoordinate(x, y, z);
+					CubeCoordinate ZoneCube = new CubeCoordinate(x, y, z);
 					CellCoordinate ZoneCell = new CellCoordinate(ZoneCube);
 
 					BitSet Target = ZoneMap.get(ZoneCell);
@@ -115,7 +115,7 @@ public class Zone implements Serializable {
 		Dirty = true;
 	}
 
-	public final void removeMapCoordinate(MapCoordinate RemovalCoords) {
+	public final void removeMapCoordinate(CubeCoordinate RemovalCoords) {
 		CellCoordinate Targt = new CellCoordinate(RemovalCoords);
 		BitSet Target = ZoneMap.get(Targt);
 		if (Target != null) {
@@ -124,7 +124,7 @@ public class Zone implements Serializable {
 		}
 	}
 
-	boolean isCoordinateInZone(MapCoordinate TestCoordinates) {
+	boolean isCoordinateInZone(CubeCoordinate TestCoordinates) {
 		CellCoordinate Targt = new CellCoordinate(TestCoordinates);
 		BitSet Target = ZoneMap.get(Targt);
 		if (Target != null) {

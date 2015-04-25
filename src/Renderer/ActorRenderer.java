@@ -24,7 +24,7 @@ import Game.Pawn;
 import Map.CubeShape;
 import Map.Direction;
 import Map.GameMap;
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 
 import Interface.GameCameraState;
 
@@ -99,7 +99,7 @@ public class ActorRenderer extends AbstractAppState {
 					}
 
 					actorNode.setCullHint(Spatial.CullHint.Dynamic);
-					MapCoordinate coords = target.getLocation();
+					CubeCoordinate coords = target.getLocation();
 					MapRenderer Renderer = state.getState(MapRenderer.class);
 					
 					Node zNode;
@@ -132,7 +132,7 @@ public class ActorRenderer extends AbstractAppState {
 								MoveFraction = 0;
 							}
 
-							MapCoordinate translated = new MapCoordinate(coords, MovingDirection);
+							CubeCoordinate translated = new CubeCoordinate(coords, MovingDirection);
 							CubeShape shape = map.getCubeShape(translated);
 							float CenterHeight = shape.getCenterHeight() + (translated.Z - coords.Z);
 							float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection.invert()) + (translated.Z - coords.Z);

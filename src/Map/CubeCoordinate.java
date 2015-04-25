@@ -26,40 +26,41 @@ import java.io.Serializable;
  *
  * @author Impaler
  */
-public final class MapCoordinate implements Cloneable, Serializable {
+public final class CubeCoordinate implements Cloneable, Serializable {
 
 	private static final long serialVersionUID = 1;
 	public static final int CELLEDGESIZE = 16;
 	public static final int CELLBITSHIFT = 4;
 	public static final int CELLBITFLAG = 15;
 	public static final int CUBESPERCELL = 256;
+	public static final int CELLDETAILLEVELS = 5;
 	public static final float HALFCUBE = (float) 0.5;
 	// Primary values
 	public int X, Y, Z;
 
-	public MapCoordinate() {
+	public CubeCoordinate() {
 		X = Y = Z = 0;
 	}
 
-	public MapCoordinate(CellCoordinate CellCoords, byte CubeCoords) {
+	public CubeCoordinate(CellCoordinate CellCoords, byte CubeCoords) {
 		X = (CellCoords.X * CELLEDGESIZE) + ((CubeCoords >> CELLBITSHIFT) & CELLBITFLAG);
 		Y = (CellCoords.Y * CELLEDGESIZE) + (CubeCoords & CELLBITFLAG);
 		Z = CellCoords.Z;
 	}
 
-	public MapCoordinate(CellCoordinate CellCoords, int X, int Y) {
+	public CubeCoordinate(CellCoordinate CellCoords, int X, int Y) {
 		this.X = (CellCoords.X * CELLEDGESIZE) + X;
 		this.Y = (CellCoords.Y * CELLEDGESIZE) + Y;
 		Z = CellCoords.Z;
 	}
 
-	public MapCoordinate(MapCoordinate SourceCoords, Direction DirectionType) {
+	public CubeCoordinate(CubeCoordinate SourceCoords, Direction DirectionType) {
 		X = SourceCoords.X + DirectionType.getValueonAxis(Axis.AXIS_X);
 		Y = SourceCoords.Y + DirectionType.getValueonAxis(Axis.AXIS_Y);
 		Z = SourceCoords.Z + DirectionType.getValueonAxis(Axis.AXIS_Z);
 	}
 
-	public MapCoordinate(int NewX, int NewY, int NewZ) {
+	public CubeCoordinate(int NewX, int NewY, int NewZ) {
 		set(NewX, NewY, NewZ);
 	}
 
@@ -108,15 +109,15 @@ public final class MapCoordinate implements Cloneable, Serializable {
 		return ((X & CELLBITFLAG) << CELLBITSHIFT) + (Y & CELLBITFLAG);
 	}
 
-	public void copy(MapCoordinate ArgumentCoordinates) {
+	public void copy(CubeCoordinate ArgumentCoordinates) {
 		X = ArgumentCoordinates.X;
 		Y = ArgumentCoordinates.Y;
 		Z = ArgumentCoordinates.Z;
 	}
 
 	@Override
-	public MapCoordinate clone() {
-		MapCoordinate newCoords = new MapCoordinate();
+	public CubeCoordinate clone() {
+		CubeCoordinate newCoords = new CubeCoordinate();
 		newCoords.copy(this);
 		return newCoords;
 	}
@@ -131,7 +132,7 @@ public final class MapCoordinate implements Cloneable, Serializable {
 		//if (!(ArgumentCoordinates instanceof MapCoordinate))
 		//return false;
 
-		MapCoordinate Arg = (MapCoordinate) ArgumentCoordinates;
+		CubeCoordinate Arg = (CubeCoordinate) ArgumentCoordinates;
 		return (Arg.X == this.X && Arg.Y == this.Y && Arg.Z == this.Z);
 	}
 

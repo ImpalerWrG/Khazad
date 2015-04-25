@@ -160,7 +160,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		return true;
 	}
 
-	public Pawn spawnPawn(MapCoordinate SpawnCoordinates, short CreatureTypeID) {
+	public Pawn spawnPawn(CubeCoordinate SpawnCoordinates, short CreatureTypeID) {
 		Pawn NewPawn = new Pawn(CreatureTypeID, ActorIDcounter, MasterSeed, SpawnCoordinates);
 		ActorIDcounter++;
 		Actors.put(NewPawn.getID(), NewPawn);
@@ -168,7 +168,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		return NewPawn;
 	}
 
-	public Citizen SpawnCitizen(short CreatureTypeID, MapCoordinate SpawnCoordinates) {
+	public Citizen SpawnCitizen(short CreatureTypeID, CubeCoordinate SpawnCoordinates) {
 		Citizen NewCitizen = new Citizen(CreatureTypeID, ActorIDcounter, PawnDice.roll(0, MasterSeed), SpawnCoordinates);
 		ActorIDcounter++;
 		Actors.put(NewCitizen.getID(), NewCitizen);

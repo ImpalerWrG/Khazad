@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.concurrent.Future;
 
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 import Map.Direction;
 import Core.Dice;
 import java.io.IOException;
@@ -60,13 +60,13 @@ public class Navigator implements Serializable {
 	transient PathManager ParentManager;	// The manager which spawned this controller, all data on the map and paths will come from here
 	MovementBehavior CurrentMovementBehavior;
 	MovementModality Modality;
-	MapCoordinate CurrentLocation;
-	MapCoordinate Destination;
+	CubeCoordinate CurrentLocation;
+	CubeCoordinate Destination;
 	transient Future PathFuture = null;
 	MapPath CurrentPath = null;
 	PathWalker CurrentPathWalker = null;
 
-	public Navigator(MapCoordinate SpawnLocation, MovementModality MovementType) {
+	public Navigator(CubeCoordinate SpawnLocation, MovementModality MovementType) {
 		CurrentLocation = SpawnLocation;
 		Destination = SpawnLocation;
 		Modality = MovementType;
@@ -157,7 +157,7 @@ public class Navigator implements Serializable {
 			CurrentMovementBehavior = NewBehavior;
 	}
 
-	public boolean changeDestination(MapCoordinate NewDestination) {
+	public boolean changeDestination(CubeCoordinate NewDestination) {
 		if (NewDestination != Destination) {
 			Destination = NewDestination;
 
@@ -169,7 +169,7 @@ public class Navigator implements Serializable {
 		return false;
 	}
 
-	public MapCoordinate getDestination() {
+	public CubeCoordinate getDestination() {
 		return Destination;
 	}
 
@@ -177,15 +177,15 @@ public class Navigator implements Serializable {
 		return Modality;
 	}
 
-	public void setLocation(MapCoordinate NewLocation) {
+	public void setLocation(CubeCoordinate NewLocation) {
 		CurrentLocation = NewLocation;
 	}
 
-	public float getPathEstimate(MapCoordinate TestDestination) {
+	public float getPathEstimate(CubeCoordinate TestDestination) {
 		return 0;
 	}
 
-	public boolean isDestinationReachable(MapCoordinate TestDestination) {
+	public boolean isDestinationReachable(CubeCoordinate TestDestination) {
 		return ParentManager.isPathPossible(Modality, CurrentLocation, TestDestination);
 	}
 

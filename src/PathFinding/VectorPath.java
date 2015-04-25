@@ -17,7 +17,7 @@
 
 package PathFinding;
 
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 import Map.Direction;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class VectorPath extends MapPath implements Serializable {
 	ArrayList<Direction> Directions;
 	ArrayList<Integer> Magnitudes;
 
-	VectorPath(float PathLength, ArrayList<Direction> RawDirections, MapCoordinate StartCoords, MapCoordinate GoalCoords) {
+	VectorPath(float PathLength, ArrayList<Direction> RawDirections, CubeCoordinate StartCoords, CubeCoordinate GoalCoords) {
 		Directions = new ArrayList<Direction>();
 		Magnitudes = new ArrayList<Integer>();
 

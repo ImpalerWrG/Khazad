@@ -54,16 +54,16 @@ public class FaceCoordinate implements Serializable {
 	}
 
 	public void set(int NewX, int NewY, Direction DirectionComponent) {
-		Coordinates = (byte) ((NewX << MapCoordinate.CELLBITSHIFT) + NewY);
+		Coordinates = (byte) ((NewX << CubeCoordinate.CELLBITSHIFT) + NewY);
 		FaceDirection = DirectionComponent;
 	}
 
 	public int getX() {
-		return (Coordinates >> MapCoordinate.CELLBITSHIFT) & 15;
+		return (Coordinates >> CubeCoordinate.CELLBITSHIFT) & 15;
 	}
 
 	public int getY() {
-		return (Coordinates & MapCoordinate.CELLBITFLAG) & 15;
+		return (Coordinates & CubeCoordinate.CELLBITFLAG) & 15;
 	}
 
 	@Override

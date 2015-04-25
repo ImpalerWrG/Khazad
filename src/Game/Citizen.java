@@ -21,7 +21,7 @@ import Core.Utils;
 import Data.DataManager;
 import Data.Types.GivenNameGroupData;
 import Job.*;
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 import java.io.Serializable;
 
 /**
@@ -38,7 +38,7 @@ public class Citizen extends Pawn implements Serializable {
 	// Happyness/ moods/ hunger/ thirst/ wealth/ honor / other mutable status
 	// personality/ tastes/ other fixed status
 	// Proffessions / levels/ skills
-	public Citizen(short CreatureTypeID, int id, int seed, MapCoordinate SpawnLocation) {
+	public Citizen(short CreatureTypeID, int id, int seed, CubeCoordinate SpawnLocation) {
 		super(CreatureTypeID, id, seed, SpawnLocation);
 		// TODO randomly generated name
 		generateName("GIVEN_NAMEGROUP_TOLKEINESQUE");

@@ -40,16 +40,16 @@ public class CellCoordinate implements Serializable {
 		Z = (short) NewZ;
 	}
 
-	public CellCoordinate(MapCoordinate SourceCoordinates) {
+	public CellCoordinate(CubeCoordinate SourceCoordinates) {
 		if (SourceCoordinates.X >= 0) {
-			X = (short) (SourceCoordinates.X >> MapCoordinate.CELLBITSHIFT);
+			X = (short) (SourceCoordinates.X >> CubeCoordinate.CELLBITSHIFT);
 		} else {
-			X = (short) ((SourceCoordinates.X >> MapCoordinate.CELLBITSHIFT) - 1); //truncate to negative infinity
+			X = (short) ((SourceCoordinates.X >> CubeCoordinate.CELLBITSHIFT) - 1); //truncate to negative infinity
 		}
 		if (SourceCoordinates.Y >= 0) {
-			Y = (short) (SourceCoordinates.Y >> MapCoordinate.CELLBITSHIFT);
+			Y = (short) (SourceCoordinates.Y >> CubeCoordinate.CELLBITSHIFT);
 		} else {
-			Y = (short) ((SourceCoordinates.Y >> MapCoordinate.CELLBITSHIFT) - 1); //truncate to negative infinity
+			Y = (short) ((SourceCoordinates.Y >> CubeCoordinate.CELLBITSHIFT) - 1); //truncate to negative infinity
 		}
 		Z = (short) SourceCoordinates.Z;
 	}

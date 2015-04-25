@@ -17,7 +17,7 @@
 
 package PathFinding;
 
-import Map.MapCoordinate;
+import Map.CubeCoordinate;
 import Map.Direction;
 import java.io.Serializable;
 
@@ -36,7 +36,7 @@ public class AStarNode implements Comparable, Serializable {
 	float TotalCost;
 	float TieBreakerValue;
 	// Where this node is 
-	MapCoordinate LocationCoordinates;
+	CubeCoordinate LocationCoordinates;
 	// Recorded Path data used to judge this node
 	float PathLengthFromStart;
 	float MinimumCostToGoal;
@@ -47,7 +47,7 @@ public class AStarNode implements Comparable, Serializable {
 	AStarNode() {
 	}
 
-	void set(MapCoordinate TargetCoordinates, AStarNode ParentNode, Direction SourceDirection, float DistanceFromStart, float MinimumCost, float TieBreaker) {
+	void set(CubeCoordinate TargetCoordinates, AStarNode ParentNode, Direction SourceDirection, float DistanceFromStart, float MinimumCost, float TieBreaker) {
 		Parent = ParentNode;
 		ParentDirection = SourceDirection;
 		LocationCoordinates = TargetCoordinates;
@@ -79,7 +79,7 @@ public class AStarNode implements Comparable, Serializable {
 		return LocationCoordinates.equals(other.LocationCoordinates);
 	}
 
-	MapCoordinate getCoordinates() {
+	CubeCoordinate getCoordinates() {
 		return LocationCoordinates;
 	}
 }
