@@ -44,7 +44,7 @@ public class Cell implements Serializable {
 	private BitSet SkyView;
 	private BitSet SunLit;
 	// Keeps all Faces between and inside Cubes
-	private HashMap<FaceCoordinate, Face> Faces;
+	private HashMap<FaceCoordinate, Face>[] Faces;
 	// The global position of this cell relative to other cells
 	private CellCoordinate thisCellCoordinates;
 	// Dirty values, set true on changes, set false by rendering
@@ -54,8 +54,10 @@ public class Cell implements Serializable {
 	public Cell() {
 		CubeMaterialTypes = new short[CubeCoordinate.CUBESPERCELL];
 		CubeShapeTypes = new short[CubeCoordinate.CELLDETAILLEVELS][];
+		Faces = (HashMap<FaceCoordinate, Face>[]) new HashMap<?, ?>[CubeCoordinate.CELLDETAILLEVELS];
 
 		for (int i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i++) {
+			Faces[i] = new HashMap<FaceCoordinate, Face>();
 			int Size = (CubeCoordinate.CELLDETAILLEVELS - i) - 1;
 			Size = 1 << Size;
 			CubeShapeTypes[i] = new short[Size * Size];
@@ -68,8 +70,6 @@ public class Cell implements Serializable {
 		SubTerranean = new BitSet(CubeCoordinate.CUBESPERCELL);
 		SkyView = new BitSet(CubeCoordinate.CUBESPERCELL);
 		SunLit = new BitSet(CubeCoordinate.CUBESPERCELL);
-
-		Faces = new HashMap<FaceCoordinate, Face>();
 
 		for (int i = 0; i < CubeMaterialTypes.length; i++) {
 			CubeMaterialTypes[i] = DataManager.INVALID_INDEX;
@@ -100,7 +100,7 @@ public class Cell implements Serializable {
 		if (NewShape.getData() != CubeShapeTypes[Level][Coordinates & 0xFF]) {
 			CubeShapeTypes[Level][Coordinates & 0xFF] = NewShape.getData();
 
-			Face TargetFace = getFace(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE));
+			Face TargetFace = getFace(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE), 0);
 			if (TargetFace != null) {
 				setFaceShape(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE), new FaceShape(NewShape, null, Direction.DIRECTION_NONE));
 			}
@@ -112,7 +112,7 @@ public class Cell implements Serializable {
 		if (NewShape.getData() != CubeShapeTypes[0][Coordinates & 0xFF]) {
 			CubeShapeTypes[0][Coordinates & 0xFF] = NewShape.getData();
 
-			Face TargetFace = getFace(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE));
+			Face TargetFace = getFace(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE), 0);
 			if (TargetFace != null) {
 				setFaceShape(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE), new FaceShape(NewShape, null, Direction.DIRECTION_NONE));
 			}
@@ -120,12 +120,12 @@ public class Cell implements Serializable {
 		}	
 	}
 	
-	public void buildFaces() {
+	public void buildFaces(int LevelofDetail) {
 		GameMap ParentMap = GameMap.getMap();
 
 		byte TargetCube = 0;
 		do {
-			CubeShape Shape = getCubeShape(TargetCube);
+			CubeShape Shape = getCubeShape(TargetCube, LevelofDetail);
 			short CubeMaterial = getCubeMaterial(TargetCube);
 
 			DataManager Data = DataManager.getDataManager();
@@ -166,7 +166,7 @@ public class Cell implements Serializable {
 			}
 
 			if (!Shape.isEmpty() && !Shape.isSolid()) {
-				Face NewFace = addFace(new FaceCoordinate(TargetCube, Direction.DIRECTION_NONE));
+				Face NewFace = addFace(new FaceCoordinate(TargetCube, Direction.DIRECTION_NONE), LevelofDetail);
 
 				NewFace.setFaceMaterialType(CubeMaterial);
 				NewFace.setFaceSurfaceType(FloorSurface);
@@ -182,7 +182,7 @@ public class Cell implements Serializable {
 	public void growGrass() {
 		DataManager Data = DataManager.getDataManager();
 
-		for (Face TargetFace : Faces.values()) {
+		for (Face TargetFace : Faces[0].values()) {
 			if (TargetFace.Sunlit) {
 				short MaterialID = TargetFace.getFaceMaterialType();
 				int GrowthFactor = Data.getMaterialData(MaterialID).PlantGrowthFactor;
@@ -193,26 +193,26 @@ public class Cell implements Serializable {
 		}
 	}
 
-	public Face getFace(FaceCoordinate TargetCoordinates) {
-		return Faces.get(TargetCoordinates);
+	public Face getFace(FaceCoordinate TargetCoordinates, int LevelofDetail) {
+		return Faces[LevelofDetail].get(TargetCoordinates);
 	}
 
-	boolean hasFace(FaceCoordinate TargetCoordinates) {
-		return Faces.containsKey(TargetCoordinates);
+	boolean hasFace(FaceCoordinate TargetCoordinates, int LevelofDetail) {
+		return Faces[LevelofDetail].containsKey(TargetCoordinates);
 	}
 
 	short getFaceMaterialType(FaceCoordinate TargetCoordinates) {
-		Face TargetFace = getFace(TargetCoordinates);
+		Face TargetFace = getFace(TargetCoordinates, 0);
 		return TargetFace != null ? TargetFace.getFaceMaterialType() : DataManager.INVALID_INDEX;
 	}
 
 	short getFaceSurfaceType(FaceCoordinate TargetCoordinates) {
-		Face TargetFace = getFace(TargetCoordinates);
+		Face TargetFace = getFace(TargetCoordinates, 0);
 		return TargetFace != null ? TargetFace.getFaceSurfaceType() : DataManager.INVALID_INDEX;
 	}
 
 	boolean setFaceMaterialType(FaceCoordinate TargetCoordinates, short MaterialTypeID) {
-		Face TargetFace = getFace(TargetCoordinates);
+		Face TargetFace = getFace(TargetCoordinates, 0);
 
 		if (TargetFace != null) {
 			TargetFace.setFaceMaterialType(MaterialTypeID);
@@ -223,7 +223,7 @@ public class Cell implements Serializable {
 	}
 
 	boolean setFaceSurfaceType(FaceCoordinate TargetCoordinates, short SurfaceTypeID) {
-		Face TargetFace = getFace(TargetCoordinates);
+		Face TargetFace = getFace(TargetCoordinates, 0);
 
 		if (TargetFace != null) {
 			TargetFace.setFaceSurfaceType(SurfaceTypeID);
@@ -234,12 +234,12 @@ public class Cell implements Serializable {
 	}
 
 	FaceShape getFaceShape(FaceCoordinate TargetCoordinates) {
-		Face TargetFace = getFace(TargetCoordinates);
+		Face TargetFace = getFace(TargetCoordinates, 0);
 		return TargetFace != null ? TargetFace.getFaceShapeType() : new FaceShape(new CubeShape(), new CubeShape(), Direction.DIRECTION_NONE);
 	}
 
 	boolean setFaceShape(FaceCoordinate TargetCoordinates, FaceShape NewShape) {
-		Face TargetFace = getFace(TargetCoordinates);
+		Face TargetFace = getFace(TargetCoordinates, 0);
 
 		if (TargetFace != null) {
 			TargetFace.setFaceShapeType(NewShape);
@@ -249,20 +249,20 @@ public class Cell implements Serializable {
 		return false;
 	}
 
-	boolean removeFace(FaceCoordinate TargetCoordinates) {
-		if (Faces.containsKey(TargetCoordinates)) {
-			Faces.remove(TargetCoordinates);
+	boolean removeFace(FaceCoordinate TargetCoordinates, int LevelofDetail) {
+		if (Faces[LevelofDetail].containsKey(TargetCoordinates)) {
+			Faces[LevelofDetail].remove(TargetCoordinates);
 			setRenderingDirty();
 			return true;
 		}
 		return false;
 	}
 
-	Face addFace(FaceCoordinate TargetCoordinates) {
-		Face TargetFace = Faces.get(TargetCoordinates);
+	Face addFace(FaceCoordinate TargetCoordinates, int LevelofDetail) {
+		Face TargetFace = Faces[LevelofDetail].get(TargetCoordinates);
 		if (TargetFace == null) {
 			Face NewFace = new Face(TargetCoordinates.Coordinates, TargetCoordinates.FaceDirection);
-			Faces.put(TargetCoordinates, NewFace);
+			Faces[LevelofDetail].put(TargetCoordinates, NewFace);
 			setRenderingDirty();
 			return NewFace;
 		} else {
@@ -270,8 +270,8 @@ public class Cell implements Serializable {
 		}
 	}
 
-	public HashMap<FaceCoordinate, Face> getFaces() {
-		return Faces;
+	public HashMap<FaceCoordinate, Face> getFaces(int LevelofDetail) {
+		return Faces[LevelofDetail];
 	}
 
 	public void setRenderingDirty() {
@@ -297,10 +297,6 @@ public class Cell implements Serializable {
 
 	public CubeShape getCubeShape(byte Coordinates, int Level) {
 		return new CubeShape(CubeShapeTypes[Level][Coordinates & 0xFF]);			
-	}
-
-	public CubeShape getCubeShape(byte Coordinates) {
-		return new CubeShape(CubeShapeTypes[0][Coordinates & 0xFF]);
 	}
 
 	public short getCubeMaterial(byte Coordinates) {

@@ -297,21 +297,19 @@ public class Geology implements Serializable {
 		return RockType0;
 	}
 
-	public CubeShape getCubeShapeAtCoordinates(byte CubeTarget, int Zlevel) {
+	public CubeShape getCubeShapeAtCoordinates(int West, int East, int South, int North, int Zlevel) {
 		float Remainder;
 
-		int Target = CubeTarget & 0xFF;
-
-		Remainder = Height[(Target >> CubeCoordinate.CELLBITSHIFT)][(Target & CubeCoordinate.CELLBITFLAG)] - ((float) Zlevel);
+		Remainder = Height[West][South] - ((float) Zlevel);
 		byte SWCornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * CubeShape.HEIGHT_FRACTIONS) + 1, (float) CubeShape.BELOW_CUBE_HEIGHT), (float) CubeShape.CUBE_TOP_HEIGHT);
 
-		Remainder = Height[(Target >> CubeCoordinate.CELLBITSHIFT) + 1][(Target & CubeCoordinate.CELLBITFLAG)] - ((float) Zlevel);
+		Remainder = Height[East][South] - ((float) Zlevel);
 		byte SECornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * CubeShape.HEIGHT_FRACTIONS) + 1, (float) CubeShape.BELOW_CUBE_HEIGHT), (float) CubeShape.CUBE_TOP_HEIGHT);
 
-		Remainder = Height[(Target >> CubeCoordinate.CELLBITSHIFT)][(Target & CubeCoordinate.CELLBITFLAG) + 1] - ((float) Zlevel);
+		Remainder = Height[West][North] - ((float) Zlevel);
 		byte NWCornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * CubeShape.HEIGHT_FRACTIONS) + 1, (float) CubeShape.BELOW_CUBE_HEIGHT), (float) CubeShape.CUBE_TOP_HEIGHT);
 
-		Remainder = Height[(Target >> CubeCoordinate.CELLBITSHIFT) + 1][(Target & CubeCoordinate.CELLBITFLAG) + 1] - ((float) Zlevel);
+		Remainder = Height[East][North] - ((float) Zlevel);
 		byte NECornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * CubeShape.HEIGHT_FRACTIONS) + 1, (float) CubeShape.BELOW_CUBE_HEIGHT), (float) CubeShape.CUBE_TOP_HEIGHT);
 
 		byte Split = (byte) RandomGenerator.roll(0, 1);
@@ -339,22 +337,27 @@ public class Geology implements Serializable {
 		CellCoordinate TargetCoordinates = TargetCell.getCellCoordinates();
 
 		for (int i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i++) {
-			int Size = (CubeCoordinate.CELLDETAILLEVELS - i) - 1;
-			Size = 1 << Size;
-			Size = Size * Size;
-			for (int j = 0; j < Size; j++) {
-				CubeShape Shape = getCubeShapeAtCoordinates((byte) j, TargetCoordinates.Z);
+			int SizeFactor = (CubeCoordinate.CELLDETAILLEVELS - i) - 1;
+			int Size = 1 << SizeFactor;
+			int Count = Size * Size;
+			int Mask = Size - 1;
+			for (int j = 0; j < Count; j++) {
+				int Row = j >> SizeFactor;
+				int Column = j & Mask;
+				int Offset = 1 << i;
+				
+				CubeShape Shape = getCubeShapeAtCoordinates(Row, Row + Offset, Column, Column + Offset, TargetCoordinates.Z);	
+				TargetCell.setCubeShape((byte) j, Shape, i);
 
-				if (!Shape.isEmpty()) {
+				if (i == 0) {
 					short MaterialType = getRockTypeAtCoordinates((byte) j, TargetCoordinates.Z);
-					TargetCell.setCubeMaterial((byte) j, MaterialType);
-
 					if (MaterialType != DataManager.INVALID_INDEX) {
+						TargetCell.setCubeMaterial((byte) j, MaterialType);	
 						TargetCell.setCubeShape((byte) j, Shape, i);
+					} else {
+						TargetCell.setCubeMaterial((byte) j, DataManager.INVALID_INDEX);
+						//TargetCell.setCubeShape((byte) j, CubeShape.EMPTY_CUBE_DATA);
 					}
-				} else {
-					TargetCell.setCubeShape((byte) j, Shape, i);
-					TargetCell.setCubeMaterial((byte) j, DataManager.INVALID_INDEX);
 				}
 			}
 		}

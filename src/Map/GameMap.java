@@ -173,21 +173,21 @@ public class GameMap implements Serializable {
 		Pair< CubeCoordinate, Direction> ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
-		return TargetCell != null ? TargetCell.getFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1())) : null;
+		return TargetCell != null ? TargetCell.getFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1()), 0) : null;
 	}
 
 	public boolean hasFace(CubeCoordinate TargetMapCoordinates, Direction DirectionType) {
 		Pair< CubeCoordinate, Direction> ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
-		return TargetCell != null ? TargetCell.hasFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1())) : false;
+		return TargetCell != null ? TargetCell.hasFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1()), 0) : false;
 	}
 
 	public boolean removeFace(CubeCoordinate TargetMapCoordinates, Direction DirectionType) {
 		Pair< CubeCoordinate, Direction> ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
-		return TargetCell != null ? TargetCell.removeFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1())) : false;
+		return TargetCell != null ? TargetCell.removeFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1()), 0) : false;
 	}
 
 	public Face addFace(CubeCoordinate TargetMapCoordinates, Direction DirectionType) {
@@ -197,7 +197,7 @@ public class GameMap implements Serializable {
 		if (TargetCell == null)
 			TargetCell = initializeCell(new CellCoordinate(ConvertedValues.getValue0()));
 
-		return TargetCell.addFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1()));
+		return TargetCell.addFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1()), 0);
 	}
 
 	public void setCubeShape(CubeCoordinate Coordinate, CubeShape NewShape) {
@@ -214,7 +214,7 @@ public class GameMap implements Serializable {
 		Cell TargetCell = getCubeOwner(Coordinates);
 
 		if (TargetCell != null) {
-			return TargetCell.getCubeShape(Coordinates.getCubeByteIndex());
+			return TargetCell.getCubeShape(Coordinates.getCubeByteIndex(), 0);
 		} else {
 			return new CubeShape(CubeShape.BELOW_CUBE_HEIGHT);
 		}
@@ -290,7 +290,7 @@ public class GameMap implements Serializable {
 				LightRemains = false;
 				i = 0;
 				do {
-					if (TopCell.isCubeSunLit(i) && !TopCell.getCubeShape(i).hasFace(Direction.DIRECTION_NONE)) {
+					if (TopCell.isCubeSunLit(i) && !TopCell.getCubeShape(i, 0).hasFace(Direction.DIRECTION_NONE)) {
 						BottomCell.setCubeSunLit(i, true);
 						LightRemains = true;
 					}

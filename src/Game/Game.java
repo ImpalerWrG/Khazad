@@ -137,7 +137,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		// Create and add Cells with shape and material data
 		for (int x = X; x < SizeX; x++) {
 			for (int y = Y; y < SizeY; y++) {
-				MapGeology.generateCellHeight(x, y, (float) 10.0, (float) 1.0);
+				MapGeology.generateCellHeight(x, y, (float) 10.0, (float) 1.5);
 
 				for (int z = MapGeology.getCellBottomZLevel() - 2; z <= MapGeology.getCellTopZLevel() + 2; z++) {
 					CellCoordinate TargetCellCoordinates = new CellCoordinate(x, y, z);
@@ -153,7 +153,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		MainMap.generateFirstLight();
 
 		for (Cell TargetCell : MainMap.getCellCollection()) {
-			TargetCell.buildFaces();
+			TargetCell.buildFaces(0);
 			TargetCell.growGrass();
 		}
 

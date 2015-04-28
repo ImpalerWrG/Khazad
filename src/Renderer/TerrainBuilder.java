@@ -73,7 +73,7 @@ public class TerrainBuilder implements Callable<Void> {
 		TextureManager Texturing = TextureManager.getTextureManager();
 
 		// Terrain Faces
-		HashMap<FaceCoordinate, Face> faces = BuildCell.getFaces();
+		HashMap<FaceCoordinate, Face> faces = BuildCell.getFaces(0);
 		Iterator<Map.Entry<FaceCoordinate, Face>> entries = faces.entrySet().iterator();
 		while (entries.hasNext()) {
 			Map.Entry<FaceCoordinate, Face> entry = entries.next();
