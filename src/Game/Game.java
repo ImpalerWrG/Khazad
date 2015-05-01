@@ -153,7 +153,9 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		MainMap.generateFirstLight();
 
 		for (Cell TargetCell : MainMap.getCellCollection()) {
-			TargetCell.buildFaces(0);
+			for (int i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i++) {
+				TargetCell.buildFaces(i);
+			}
 			TargetCell.growGrass();
 		}
 

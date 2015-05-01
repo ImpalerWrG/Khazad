@@ -54,7 +54,7 @@ public class TerrainRenderer extends AbstractAppState {
 	AssetManager assetmanager = null;
 	Game game = null;
 	TileBuilder builder;
-	LodControl TerrainLodControler;
+	int LevelofDetail;
 	private boolean TerrainRendering = true;
 	ExecutorService Executor;
 
@@ -73,14 +73,13 @@ public class TerrainRenderer extends AbstractAppState {
 
 	public void attachToGame(Game TargetGame) {
 		this.game = TargetGame;
-		this.TerrainLodControler = new LodControl();
 	}
 
 	public void rebuildDirtyCells(Collection<Cell> cells) {
 		for (Cell target : cells) {
 			if (target.isTerrainRenderingDirty()) {
 				CellCoordinate Coords = target.getCellCoordinates();
-				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, TerrainLodControler);
+				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, this.LevelofDetail);
 				MapRenderer Renderer = state.getState(MapRenderer.class);
 
 				Builder.setNodes(Renderer.getCellNodeLight(Coords), Renderer.getCellNodeDark(Coords));
@@ -88,15 +87,6 @@ public class TerrainRenderer extends AbstractAppState {
 
 				target.setDirtyTerrainRendering(false);
 			}
-		}
-	}
-
-	@Override
-	public void update(float tpf) {
-		if (this.game != null) {
-			GameMap map = this.game.getMap();
-			if (TerrainRendering)
-				rebuildDirtyCells(map.getCellCollection());
 		}
 	}
 
@@ -122,13 +112,70 @@ public class TerrainRenderer extends AbstractAppState {
 			Node CellLight = Renderer.getCellNodeLight(Coords);
 			Node CellDark = Renderer.getCellNodeDark(Coords);
 
-			Spatial light = CellLight.getChild("LightGeometry Cell" + target.toString());
-			Spatial dark = CellDark.getChild("DarkGeometry Cell" + target.toString());
+			Spatial light = CellLight.getChild("LightGeometry Cell " + target.toString() + "DetailLevel " + this.LevelofDetail);
+			Spatial dark = CellDark.getChild("DarkGeometry Cell " + target.toString() + "DetailLevel " + this.LevelofDetail);
 
 			if (light != null)
 				light.setCullHint(hint);
 			if (dark != null)
 				dark.setCullHint(hint);
+		}
+	}
+
+	public void setLevelofDetail(float ZoomLevel) {
+		int NewDetailLevel = 0;
+		
+		if (ZoomLevel > 40)
+			NewDetailLevel = 1;
+		if (ZoomLevel > 80)
+			NewDetailLevel = 2;
+		if (ZoomLevel > 160)
+			NewDetailLevel = 3;
+		if (ZoomLevel > 320)
+			NewDetailLevel = 4;
+	
+		if (NewDetailLevel != this.LevelofDetail) {
+			changeLevelofDetail(NewDetailLevel);
+		}
+	}
+
+	public void changeLevelofDetail(int NewLevelofDetail) {
+		this.LevelofDetail = NewLevelofDetail;
+		
+		GameMap map = this.game.getMap();
+		for (Cell target : map.getCellCollection()) {
+			setCellDetailLevel(target, this.LevelofDetail);
+		}
+	}
+
+	private void setCellDetailLevel(Cell TargetCell, int LevelofDetail) {
+		CellCoordinate Coords = TargetCell.getCellCoordinates();
+
+		MapRenderer Renderer = state.getState(MapRenderer.class);
+		Node CellLight = Renderer.getCellNodeLight(Coords);
+		Node CellDark = Renderer.getCellNodeDark(Coords);
+
+		for (int i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i++) {
+			Spatial.CullHint hint = Spatial.CullHint.Always;
+			if (i == LevelofDetail)
+				hint = Spatial.CullHint.Dynamic;
+
+			Spatial light = CellLight.getChild("LightGeometry Cell " + TargetCell.toString() + "DetailLevel " + i);
+			Spatial dark = CellDark.getChild("DarkGeometry Cell " + TargetCell.toString() + "DetailLevel " + i);
+
+			if (light != null)
+				light.setCullHint(hint);
+			if (dark != null)
+				dark.setCullHint(hint);
+		}
+	}
+
+	@Override
+	public void update(float tpf) {
+		if (this.game != null) {
+			GameMap map = this.game.getMap();
+			if (TerrainRendering)
+				rebuildDirtyCells(map.getCellCollection());
 		}
 	}
 }

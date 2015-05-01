@@ -20,6 +20,7 @@ package Renderer;
 import com.jme3.app.Application;
 
 import Map.Cell;
+import Map.CubeCoordinate;
 import Map.Face;
 import Map.FaceCoordinate;
 import Map.TileBuilder;
@@ -52,14 +53,17 @@ public class TerrainBuilder implements Callable<Void> {
 	TileBuilder TileSource;
 	Application app;
 	Node TerrainLight, TerrainDark, CellLight, CellDark;
-	Geometry LightBuildGeometry, DarkBuildGeometry;
-	LodControl Controler;
+	Geometry[] LightBuildGeometry, DarkBuildGeometry;
+	int DetailLevel;
 
-	public TerrainBuilder(Application Parentapp, Cell TargetCell, TileBuilder Tiles, LodControl controler) {
+	public TerrainBuilder(Application Parentapp, Cell TargetCell, TileBuilder Tiles, int LevelofDetail) {
 		this.app = Parentapp;
 		this.BuildCell = TargetCell;
 		this.TileSource = Tiles;
-		this.Controler = controler;
+		this.DetailLevel = LevelofDetail;
+		
+		this.LightBuildGeometry = new Geometry[CubeCoordinate.CELLDETAILLEVELS];
+		this.DarkBuildGeometry = new Geometry[CubeCoordinate.CELLDETAILLEVELS];		
 	}
 
 	public void setNodes(Node LightCellNode, Node DarkCellNode) {
@@ -72,64 +76,76 @@ public class TerrainBuilder implements Callable<Void> {
 	public Void call() {
 		TextureManager Texturing = TextureManager.getTextureManager();
 
-		// Terrain Faces
-		HashMap<FaceCoordinate, Face> faces = BuildCell.getFaces(0);
-		Iterator<Map.Entry<FaceCoordinate, Face>> entries = faces.entrySet().iterator();
-		while (entries.hasNext()) {
-			Map.Entry<FaceCoordinate, Face> entry = entries.next();
+		for (int i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i ++) {
+			int SizeFactor = (CubeCoordinate.CELLDETAILLEVELS - i) - 1;
+			int CubeperSide = 1 << SizeFactor;
+			int CubeSize = 1 << i;
+			// Terrain Faces
+			HashMap<FaceCoordinate, Face> faces = BuildCell.getFaces(i);
+			Iterator<Map.Entry<FaceCoordinate, Face>> entries = faces.entrySet().iterator();
+			while (entries.hasNext()) {
+				Map.Entry<FaceCoordinate, Face> entry = entries.next();
+				
+				FaceCoordinate coords = entry.getKey();
+				Face targetface = entry.getValue();
 
-			FaceCoordinate coords = entry.getKey();
-			Face targetface = entry.getValue();
+				TextureAtlasCoordinates AtlasCoords = Texturing.getTextureCoordinates(targetface.getFaceMaterialType(), targetface.getFaceSurfaceType());
+				Mesh facemesh = TileSource.getMesh(targetface.getFaceShapeType(), AtlasCoords);
+				if (facemesh != null) {
+					Geometry geom = new Geometry("face", facemesh);
+					//geom.scale(1.001f);  //T-Cell junction hack
+					geom.scale(CubeSize, CubeSize, 1);
+					int X = (coords.Coordinates >> SizeFactor) & (CubeperSide - 1);
+					int Y = (coords.Coordinates & (CubeperSide - 1));
+					geom.setLocalTranslation(new Vector3f(X * CubeSize, Y * CubeSize, 0));
+					geom.setMaterial(TextureManager.getTextureManager().TerrainMaterial);
 
-			TextureAtlasCoordinates AtlasCoords = Texturing.getTextureCoordinates(targetface.getFaceMaterialType(), targetface.getFaceSurfaceType());
-			Mesh facemesh = TileSource.getMesh(targetface.getFaceShapeType(), AtlasCoords);
-			if (facemesh != null) {
-				Geometry geom = new Geometry("face", facemesh);
-				geom.scale(1.001f);  //T-Cell junction hack
-				geom.setLocalTranslation(new Vector3f(coords.getX(), coords.getY(), 0));
-				geom.setMaterial(TextureManager.getTextureManager().TerrainMaterial);
-
-				if (targetface.isSunlit()) {
-					TerrainLight.attachChild(geom);
-				} else {
-					TerrainDark.attachChild(geom);
+					if (targetface.isSunlit()) {
+						TerrainLight.attachChild(geom);
+					} else {
+						TerrainDark.attachChild(geom);
+					}
 				}
 			}
-		}
 
-		GeometryBatchFactory.optimize(TerrainLight, true);
-		if (TerrainLight.getQuantity() > 0) {
-			LightBuildGeometry = (Geometry) TerrainLight.getChild(0);
+			GeometryBatchFactory.optimize(TerrainLight, true);
+			if (TerrainLight.getQuantity() > 0) {
+				LightBuildGeometry[i] = (Geometry) TerrainLight.getChild(0);
+				LightBuildGeometry[i].setName("LightGeometry Cell " + BuildCell.toString() + "DetailLevel " + i);
+				TerrainLight.detachAllChildren();
+			}
 
-			//LodGenerator lod = new LodGenerator(LightBuildGeometry);
-			//lod.bakeLods(LodGenerator.TriangleReductionMethod.PROPORTIONAL, 0.75f, 0.93f);
-			//LightBuildGeometry.addControl(new LodControl());
-
-			LightBuildGeometry.setName("LightGeometry Cell" + BuildCell.toString());
-		}
-		GeometryBatchFactory.optimize(TerrainDark, true);
-		if (TerrainDark.getQuantity() > 0) {
-			DarkBuildGeometry = (Geometry) TerrainDark.getChild(0);
-
-			//LodGenerator lod = new LodGenerator(DarkBuildGeometry);
-			//lod.bakeLods(LodGenerator.TriangleReductionMethod.PROPORTIONAL, 0.75f, 0.93f);
-			//DarkBuildGeometry.addControl(new LodControl());
-
-			DarkBuildGeometry.setName("DarkGeometry Cell" + BuildCell.toString());
+			GeometryBatchFactory.optimize(TerrainDark, true);
+			if (TerrainDark.getQuantity() > 0) {
+				DarkBuildGeometry[i] = (Geometry) TerrainDark.getChild(0);
+				DarkBuildGeometry[i].setName("DarkGeometry Cell " + BuildCell.toString() + "DetailLevel " + i);
+				TerrainDark.detachAllChildren();
+			}
 		}
 
 		app.enqueue(new Callable() {
 			public Object call() throws Exception {
-				CellLight.detachChildNamed("LightGeometry Cell" + BuildCell.toString());
-				if (LightBuildGeometry != null)
-					CellLight.attachChild(LightBuildGeometry);
-				CellLight.setCullHint(Spatial.CullHint.Dynamic);
+				for (int i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i ++) {
+					CellLight.detachChildNamed("LightGeometry Cell " + BuildCell.toString() + "DetailLevel " + i);
+					if (LightBuildGeometry[i] != null) {
+						CellLight.attachChild(LightBuildGeometry[i]);
+						if (i == DetailLevel) {
+							LightBuildGeometry[i].setCullHint(Spatial.CullHint.Dynamic);
+						} else {
+							LightBuildGeometry[i].setCullHint(Spatial.CullHint.Always);							
+						}
+					}
 
-				CellDark.detachChildNamed("DarkGeometry Cell" + BuildCell.toString());
-				if (DarkBuildGeometry != null)
-					CellDark.attachChild(DarkBuildGeometry);
-				CellDark.setCullHint(Spatial.CullHint.Dynamic);
-
+					CellDark.detachChildNamed("DarkGeometry Cell " + BuildCell.toString() + "DetailLevel " + i);
+					if (DarkBuildGeometry[i] != null) {
+						CellDark.attachChild(DarkBuildGeometry[i]);
+						if (i == DetailLevel) {
+							DarkBuildGeometry[i].setCullHint(Spatial.CullHint.Dynamic);
+						} else {
+							DarkBuildGeometry[i].setCullHint(Spatial.CullHint.Always);							
+						}					
+					}
+				}
 				return null;
 			}
 		});

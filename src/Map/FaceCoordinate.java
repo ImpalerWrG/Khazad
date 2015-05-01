@@ -31,16 +31,16 @@ public class FaceCoordinate implements Serializable {
 
 	private static final long serialVersionUID = 1;
 	public byte Coordinates;
-	public Direction FaceDirection;
+	public byte FaceDirection;
 
 	FaceCoordinate() {
 		Coordinates = 0;
-		FaceDirection = Direction.DIRECTION_DESTINATION;
+		FaceDirection = (byte) Direction.DIRECTION_DESTINATION.ordinal();
 	}
 
 	public FaceCoordinate(byte CubeCoordinates, Direction TargetDirection) {
 		Coordinates = CubeCoordinates;
-		FaceDirection = TargetDirection;
+		FaceDirection = (byte) TargetDirection.ordinal();
 	}
 
 	public void set(FaceCoordinate ArgumentCoordinates) {
@@ -50,12 +50,12 @@ public class FaceCoordinate implements Serializable {
 
 	public void set(byte TargetCoords, Direction DirectionComponent) {
 		Coordinates = TargetCoords;
-		FaceDirection = DirectionComponent;
+		FaceDirection = (byte) DirectionComponent.ordinal();
 	}
 
 	public void set(int NewX, int NewY, Direction DirectionComponent) {
 		Coordinates = (byte) ((NewX << CubeCoordinate.CELLBITSHIFT) + NewY);
-		FaceDirection = DirectionComponent;
+		FaceDirection = (byte) DirectionComponent.ordinal();
 	}
 
 	public int getX() {
@@ -64,6 +64,10 @@ public class FaceCoordinate implements Serializable {
 
 	public int getY() {
 		return (Coordinates & CubeCoordinate.CELLBITFLAG) & 15;
+	}
+
+	public Direction getFaceDirection() {
+		return Direction.ANGULAR_DIRECTIONS[FaceDirection];
 	}
 
 	@Override
@@ -84,7 +88,7 @@ public class FaceCoordinate implements Serializable {
 	public int hashCode() {
 		int Key = Coordinates;
 		Key <<= 8;
-		Key += FaceDirection.ordinal();
+		Key += FaceDirection;
 
 		return Key;
 	}

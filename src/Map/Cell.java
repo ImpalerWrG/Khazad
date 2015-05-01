@@ -122,10 +122,13 @@ public class Cell implements Serializable {
 	
 	public void buildFaces(int LevelofDetail) {
 		GameMap ParentMap = GameMap.getMap();
-
-		byte TargetCube = 0;
-		do {
-			CubeShape Shape = getCubeShape(TargetCube, LevelofDetail);
+	
+		int SizeFactor = (CubeCoordinate.CELLDETAILLEVELS - LevelofDetail) - 1;
+		int Size = 1 << SizeFactor;
+		int Count = Size * Size;
+		for (int j = 0; j < Count; j++) {
+			byte TargetCube = (byte) j;
+			CubeShape Shape = getCubeShape(j, LevelofDetail);
 			short CubeMaterial = getCubeMaterial(TargetCube);
 
 			DataManager Data = DataManager.getDataManager();
@@ -141,7 +144,7 @@ public class Cell implements Serializable {
 
 					if (AdjacentShape.isSky()) {
 						if (Shape.hasFace(DirectionType)) {
-							Face NewFace = ParentMap.addFace(new CubeCoordinate(thisCellCoordinates, TargetCube), DirectionType);
+							Face NewFace = ParentMap.addFace(new CubeCoordinate(thisCellCoordinates, TargetCube), DirectionType, LevelofDetail);
 
 							NewFace.setFaceMaterialType(CubeMaterial);
 							NewFace.setFaceSurfaceType(WallSurface);
@@ -153,7 +156,7 @@ public class Cell implements Serializable {
 
 					if (!AdjacentShape.isEmpty()) {
 						if (DirectionType == Direction.DIRECTION_DOWN && Shape.hasFloor() && AdjacentShape.hasCeiling()) {
-							Face NewFace = ParentMap.addFace(new CubeCoordinate(thisCellCoordinates, TargetCube), DirectionType);
+							Face NewFace = ParentMap.addFace(new CubeCoordinate(thisCellCoordinates, TargetCube), DirectionType, LevelofDetail);
 
 							NewFace.setFaceMaterialType(ParentMap.getCubeMaterial(AdjacentCoordinates));
 							NewFace.setFaceSurfaceType(FloorSurface);
@@ -174,8 +177,7 @@ public class Cell implements Serializable {
 				if (isCubeSunLit(TargetCube))
 					NewFace.Sunlit = true;
 			}
-			TargetCube++;
-		} while (TargetCube != 0);  // End Loop when Byte rolls over
+		}
 		setRenderingDirty();
 	}
 
@@ -261,7 +263,7 @@ public class Cell implements Serializable {
 	Face addFace(FaceCoordinate TargetCoordinates, int LevelofDetail) {
 		Face TargetFace = Faces[LevelofDetail].get(TargetCoordinates);
 		if (TargetFace == null) {
-			Face NewFace = new Face(TargetCoordinates.Coordinates, TargetCoordinates.FaceDirection);
+			Face NewFace = new Face(TargetCoordinates.Coordinates, TargetCoordinates.getFaceDirection());
 			Faces[LevelofDetail].put(TargetCoordinates, NewFace);
 			setRenderingDirty();
 			return NewFace;
@@ -295,8 +297,8 @@ public class Cell implements Serializable {
 		return DirtyPathRendering;
 	}
 
-	public CubeShape getCubeShape(byte Coordinates, int Level) {
-		return new CubeShape(CubeShapeTypes[Level][Coordinates & 0xFF]);			
+	public CubeShape getCubeShape(int Index, int LevelofDetal) {
+		return new CubeShape(CubeShapeTypes[LevelofDetal][Index]);
 	}
 
 	public short getCubeMaterial(byte Coordinates) {

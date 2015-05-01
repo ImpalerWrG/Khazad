@@ -22,6 +22,7 @@ import Game.Actor;
 import Game.Citizen;
 import Game.Game;
 import Map.CubeCoordinate;
+import Renderer.TerrainRenderer;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -29,14 +30,16 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 
 import com.jme3.material.Material;
-import com.jme3.scene.Geometry;
-import com.jme3.math.ColorRGBA;
 
-import com.jme3.scene.Node;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.math.Plane;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
+
+import com.jme3.scene.Spatial;
+import com.jme3.scene.Node;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Sphere;
 
 import com.jme3.collision.CollisionResult;
@@ -44,7 +47,7 @@ import com.jme3.collision.CollisionResults;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
-import com.jme3.scene.Spatial;
+
 
 import Renderer.MapRenderer;
 
@@ -282,12 +285,16 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				changeViewLevel(-1);
 			} else if (mouseWheelEnabled) {
 				MainCamera.zoomCamera(value);
+				TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
+				Terrain.setLevelofDetail(MainCamera.zoomFactor);
 			}
 		} else if (name.equals("ZoomOut")) {
 			if (MiddleDown) {
 				changeViewLevel(1);
 			} else if (mouseWheelEnabled) {
 				MainCamera.zoomCamera(-value);
+				TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
+				Terrain.setLevelofDetail(MainCamera.zoomFactor);
 			}
 		}
 	}
@@ -349,8 +356,12 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			}
 		} else if (name.equals("ZoomIn")) {
 			MainCamera.zoomCamera(value);
+			TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
+			Terrain.setLevelofDetail(MainCamera.zoomFactor);
 		} else if (name.equals("ZoomOut")) {
 			MainCamera.zoomCamera(-value);
+			TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
+			Terrain.setLevelofDetail(MainCamera.zoomFactor);
 		}
 
 	}

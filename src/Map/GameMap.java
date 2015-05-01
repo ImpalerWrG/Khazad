@@ -154,7 +154,7 @@ public class GameMap implements Serializable {
 
 	public CubeCoordinate getFacingCoordinates(CellCoordinate cellcoords, FaceCoordinate facecoords) {
 		CubeCoordinate ModifiedCoordinates = new CubeCoordinate(cellcoords, facecoords.Coordinates);
-		ModifiedCoordinates.translate(facecoords.FaceDirection);
+		ModifiedCoordinates.translate(facecoords.getFaceDirection());
 		return ModifiedCoordinates;
 	}
 
@@ -190,14 +190,14 @@ public class GameMap implements Serializable {
 		return TargetCell != null ? TargetCell.removeFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1()), 0) : false;
 	}
 
-	public Face addFace(CubeCoordinate TargetMapCoordinates, Direction DirectionType) {
+	public Face addFace(CubeCoordinate TargetMapCoordinates, Direction DirectionType, int LevelofDetail) {
 		Pair< CubeCoordinate, Direction> ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
 		if (TargetCell == null)
 			TargetCell = initializeCell(new CellCoordinate(ConvertedValues.getValue0()));
 
-		return TargetCell.addFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1()), 0);
+		return TargetCell.addFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1()), LevelofDetail);
 	}
 
 	public void setCubeShape(CubeCoordinate Coordinate, CubeShape NewShape) {
@@ -214,7 +214,7 @@ public class GameMap implements Serializable {
 		Cell TargetCell = getCubeOwner(Coordinates);
 
 		if (TargetCell != null) {
-			return TargetCell.getCubeShape(Coordinates.getCubeByteIndex(), 0);
+			return TargetCell.getCubeShape(Coordinates.getCubeIntIndex(), 0);
 		} else {
 			return new CubeShape(CubeShape.BELOW_CUBE_HEIGHT);
 		}
@@ -279,23 +279,19 @@ public class GameMap implements Serializable {
 			TargetCoords.Z--;
 			Cell BottomCell = Cells.get(TargetCoords);
 
-			boolean LightRemains;
-			byte i = 0;
+			boolean LightRemains = false;
+
+			for (int i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
+				TopCell.setCubeSunLit((byte) i, true);
+			}
 
 			do {
-				TopCell.setCubeSunLit(i++, true);
-			} while (i != 0);
-
-			do {
-				LightRemains = false;
-				i = 0;
-				do {
-					if (TopCell.isCubeSunLit(i) && !TopCell.getCubeShape(i, 0).hasFace(Direction.DIRECTION_NONE)) {
-						BottomCell.setCubeSunLit(i, true);
+				for (int i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
+					if (TopCell.isCubeSunLit((byte) i) && !TopCell.getCubeShape(i, 0).hasFace(Direction.DIRECTION_NONE)) {
+						BottomCell.setCubeSunLit((byte) i, true);
 						LightRemains = true;
 					}
-					i++;
-				} while (i != 0);
+				}
 
 				TopCell = BottomCell;
 				TargetCoords.Z--;
@@ -492,7 +488,7 @@ public class GameMap implements Serializable {
 				if (!SourceShape.isEmpty() && !SourceShape.isSolid()) {
 					FaceShape NewShape = new FaceShape(getCubeShape(TargetCoordinates), null, Direction.DIRECTION_NONE);
 					if (TargetFace == null) {
-						TargetFace = addFace(TargetCoordinates, Direction.DIRECTION_NONE);
+						TargetFace = addFace(TargetCoordinates, Direction.DIRECTION_NONE, 0);
 						TargetFace.setFaceShapeType(NewShape);
 						TargetFace.setFaceSurfaceType(RoughFloorID);
 						TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
@@ -513,7 +509,7 @@ public class GameMap implements Serializable {
 				if (SourceShape.hasFloor()) {
 					FaceShape NewShape = new FaceShape(SourceShape, AdjacentShape, DirectionType);
 					if (TargetFace == null) {
-						TargetFace = addFace(TargetCoordinates, DirectionType);
+						TargetFace = addFace(TargetCoordinates, DirectionType, 0);
 						TargetFace.setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
 						TargetFace.setFaceSurfaceType(RoughFloorID);
 						TargetFace.setFaceShapeType(NewShape);
@@ -533,7 +529,7 @@ public class GameMap implements Serializable {
 				if (AdjacentShape.hasFloor()) {
 					FaceShape NewShape = new FaceShape(SourceShape, AdjacentShape, DirectionType);
 					if (TargetFace == null) {
-						TargetFace = addFace(TargetCoordinates, DirectionType);
+						TargetFace = addFace(TargetCoordinates, DirectionType, 0);
 						TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
 						TargetFace.setFaceSurfaceType(RoughFloorID);
 						TargetFace.setFaceShapeType(NewShape);
@@ -556,7 +552,7 @@ public class GameMap implements Serializable {
 				if (SourceShape.hasFace(DirectionType)) {
 					FaceShape NewShape = new FaceShape(SourceShape, AdjacentShape, DirectionType);
 					if (TargetFace == null) {
-						TargetFace = addFace(TargetCoordinates, DirectionType);
+						TargetFace = addFace(TargetCoordinates, DirectionType, 0);
 						TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
 						TargetFace.setFaceShapeType(NewShape);
 						TargetFace.setFaceSurfaceType(RoughWallID);
