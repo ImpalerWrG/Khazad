@@ -30,16 +30,22 @@ import java.io.Serializable;
 public class FaceCoordinate implements Serializable {
 
 	private static final long serialVersionUID = 1;
-	public byte Coordinates;
+	private byte Coordinates = 0;
+	private byte LevelofDetail = 0;
 	public byte FaceDirection;
 
 	FaceCoordinate() {
-		Coordinates = 0;
 		FaceDirection = (byte) Direction.DIRECTION_DESTINATION.ordinal();
 	}
 
 	public FaceCoordinate(byte CubeCoordinates, Direction TargetDirection) {
 		Coordinates = CubeCoordinates;
+		FaceDirection = (byte) TargetDirection.ordinal();
+	}
+
+	public FaceCoordinate(byte CubeCoordinates, Direction TargetDirection, int DetailLevel) {
+		Coordinates = CubeCoordinates;
+		LevelofDetail = (byte) DetailLevel;
 		FaceDirection = (byte) TargetDirection.ordinal();
 	}
 
@@ -59,11 +65,19 @@ public class FaceCoordinate implements Serializable {
 	}
 
 	public int getX() {
-		return (Coordinates >> CubeCoordinate.CELLBITSHIFT) & 15;
+		int Shift = (CubeCoordinate.CELLDETAILLEVELS - LevelofDetail) - 1;
+		int Mask = (1 << Shift) - 1;
+		return (Coordinates >> Shift) & Mask;
 	}
 
 	public int getY() {
-		return (Coordinates & CubeCoordinate.CELLBITFLAG) & 15;
+		int Shift = (CubeCoordinate.CELLDETAILLEVELS - LevelofDetail) - 1;
+		int Mask = (1 << Shift) - 1;		
+		return (Coordinates & Mask);
+	}
+
+	byte getCoordinates() {
+		return Coordinates;
 	}
 
 	public Direction getFaceDirection() {

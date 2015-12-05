@@ -22,18 +22,20 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Nun - Labourer Monk
 		Savant - Cleric
 		Exorcist - magic oriented undead/demon driving out inquisitor
-		Acolyte of ???
+		Acolyte of Urist
 	</>
 	<Acolyte of Helga (High Priest of)(female - Wisdom, Martial, Prophecy ) (Holy Symbol, Litergy)>
 		Valkyrie - Warrior Paladin
 		Theurge - Thinker Monk
 		Oracle - Cleric
+		
 		Acolyte of ???
 	</>		
 	<Acolyte of Lodrig (High Priest of)(both - Trickster) (Holy Symbol, Litergy)>
 		Crusader - Cavalier Paladin
 		Ascetic - Gatherer Monk
 		Devotee - Cleric
+		
 		Acolyte of Lofar - Dwarven 'Baucus' merrymaker, revelry, art, the first child born to dwarfkind, the first drunkard
 	</>		
 	<Acolyte of Grund (High Priest of) (male - Forging, Age, Steadfastness) (Holy Symbol, Litergy)>
@@ -56,14 +58,13 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 			Adept
 			Vizier
 			Diviner
-			Judicator
 			Patriarch
 			Arbiter
 			
 		Inquisitor - Seek out heretics
 			Justiciar
 			Tempest
-			Exorcist
+
 			
 			Minor allied Diety branch?
 </>
@@ -117,31 +118,35 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 	<Skirmisher [SPD][JDG] - light fast>
 		Berserker [WIL][CHA] - maximum aggression
 		Javaliner [STR][] - bombard with thrown weapons
-		??? [END][VIT] - 
+		Spelunker [END][VIT] - underground scouting and skimishing
 		Grenadier [DEX][MEM] - throws explosives
 		Ranger [FLX][] - stealthy scouting
 	</>	
 	<Warrior [STR][LOG] - Balanced >
 		???
+		???
 		Housecarl - 2 handed Ax
 		IronBrekers - 2 handed Hammer
-	</>		
+		WurmHunter - specialized in killing mega beasts
+	</>
 	<Calvary-Rider-Cavalier [FLX][MEM] - Mounted combat (Saddle, ???)>
-		Lancer - lances
+		Lancer - lances, balanced Calvary
 		Outrider - scouting skirmishing
-		Messenger - armoured fast travel
+		Messenger - fast travel, diplomatic send new commands to expeditions/armies
 		Hussar - Heavy armoured
-	</>		
+		???
+	</>
 	<Marksman-Missilier [DEX][PER] - Ranged attack>
+		Slinger - David vs Goliath, cheap but effective
 		Archer - Bow
 		SharpShooter
 		Musketeer - Musket
 		Quarreller - Crossbow
 	</>	
-	<Soldier-Defender [END][WIL] - Defensive formation fighting>
+	<Defender [END][WIL] - Defensive formation fighting>
 		Pike Guard - Swiss style pike/polearm infantry, formation fighters
 		???
-		TowerShield - 
+		???
 		Legionnaire - Romanesque towershild and short sword, very heavy armor 
 		HighLander - mountain defensive, better climb mobility, high ground defence by avalanche and rock throwing
 	</>	
@@ -203,30 +208,41 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Bricklayer
 		Engraver
 		Stonecutter
-		
+		Quarryier - block cutting
 	</>		
 	<Miner>
 		Digger - soil digging
 		Tunneller - rock digging
 		Prospector - find ore bodies
 		Sapper - undermine fortifications
-		???
+		FireDamp - detonate gass, fight fire
+		Spelunker - underground exploration
 	</>		
 	<Carpenter>
 		Cooper - Barrel/vessel making
 		Framer - Timber structures
 		Joiner - Cabinetry/furniture
+		Turner - laith/poles
+		Carver - hand carved
+		Luter - musical instrument making
+	</>	
+	<Woodwright>
 		Wainwright - wagon and wheel making
-		Shipwright - makes boats for travel and trade
-	</>		
+		Shipwright - makes boats for travel and trade	
+	</>
 	<Engineer [LOG]>
 		Mechanic
 		Siege Operator
 		road builder?
 		Architect
-	</>	
-	???
-	???
+		Plumber - pipes and steam engines
+	</>
+	<Decorator [][]>
+		<Polisher/>
+		<Tiler/>
+		<Engraver/>
+		<Sculpter/>
+	</>
 </>
 <Labourer (Foreman/Steward) [INT][END] - Most internal domestic jobs and first order resource processing (Aprron, ???)>
 
@@ -234,8 +250,9 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Butcher
 		Baker
 		ChesseMaker
-		Brewer
-		Scullion/Cleaner
+		Brewer  ??
+		Scullion/Cleaner ???
+		Confectioner - fine dwarven chocolates
 	</>		
 	<Miller - Food processing>
 		Thresher - grain processing
@@ -258,7 +275,11 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Paper Maker
 		Candle Maker
 		BookBinder - 
-	</>		
+	</>	
+	<Brewer () [][] - Alcohol maker>
+		<Distiller/>
+		<Vintner/>
+	</>	
 	Hauler?  Porter?
 </>
 <Gatherer (Reeve) [PER][SPD] - Collection of raw materials in unsafe areas, a dangerous and low status profession (Cloak, Basket?)>

@@ -77,8 +77,6 @@ public class TerrainBuilder implements Callable<Void> {
 		TextureManager Texturing = TextureManager.getTextureManager();
 
 		for (int i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i ++) {
-			int SizeFactor = (CubeCoordinate.CELLDETAILLEVELS - i) - 1;
-			int CubeperSide = 1 << SizeFactor;
 			int CubeSize = 1 << i;
 			// Terrain Faces
 			HashMap<FaceCoordinate, Face> faces = BuildCell.getFaces(i);
@@ -95,9 +93,7 @@ public class TerrainBuilder implements Callable<Void> {
 					Geometry geom = new Geometry("face", facemesh);
 					//geom.scale(1.001f);  //T-Cell junction hack
 					geom.scale(CubeSize, CubeSize, 1);
-					int X = (coords.Coordinates >> SizeFactor) & (CubeperSide - 1);
-					int Y = (coords.Coordinates & (CubeperSide - 1));
-					geom.setLocalTranslation(new Vector3f(X * CubeSize, Y * CubeSize, 0));
+					geom.setLocalTranslation(new Vector3f(coords.getX() * CubeSize, coords.getY() * CubeSize, 0));
 					geom.setMaterial(TextureManager.getTextureManager().TerrainMaterial);
 
 					if (targetface.isSunlit()) {

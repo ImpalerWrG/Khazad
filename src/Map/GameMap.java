@@ -153,9 +153,41 @@ public class GameMap implements Serializable {
 	}
 
 	public CubeCoordinate getFacingCoordinates(CellCoordinate cellcoords, FaceCoordinate facecoords) {
-		CubeCoordinate ModifiedCoordinates = new CubeCoordinate(cellcoords, facecoords.Coordinates);
+		CubeCoordinate ModifiedCoordinates = new CubeCoordinate(cellcoords, facecoords.getCoordinates());
 		ModifiedCoordinates.translate(facecoords.getFaceDirection());
 		return ModifiedCoordinates;
+	}
+
+	Pair< CellCoordinate, Integer> TranslateCubeIndex(CellCoordinate Coords, int Index, Direction DirectionType, int LevelofDetail) {
+		int Shift = (CubeCoordinate.CELLDETAILLEVELS - LevelofDetail) - 1;
+		int Mask = (1 << Shift) - 1;
+		
+		int X = Coords.X * (1 << Shift);
+		int Y = Coords.Y * (1 << Shift);
+		int Z = Coords.Z;
+
+
+		X += (Index >> Shift) & Mask;
+		Y += (Index & Mask);
+	
+		X += DirectionType.getValueonAxis(Axis.AXIS_X);
+		Y += DirectionType.getValueonAxis(Axis.AXIS_Y);
+		Z += DirectionType.getValueonAxis(Axis.AXIS_Z);
+
+		CellCoordinate NewCoords = new CellCoordinate(X / (1 << Shift), Y / (1 << Shift), Z);
+
+		if (X < 0)
+			NewCoords.X -= 1;
+		
+		if (Y < 0)
+			NewCoords.Y -= 1;
+		
+		X %= (1 << Shift);
+		Y %= (1 << Shift);
+
+		int NewIndex = (X << Shift) + Y;
+		
+		return new Pair(NewCoords, NewIndex);
 	}
 
 	Pair< CubeCoordinate, Direction> FaceCoordinateConvertion(CubeCoordinate TargetMapCoordinates, Direction DirectionType) {
@@ -197,7 +229,7 @@ public class GameMap implements Serializable {
 		if (TargetCell == null)
 			TargetCell = initializeCell(new CellCoordinate(ConvertedValues.getValue0()));
 
-		return TargetCell.addFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1()), LevelofDetail);
+		return TargetCell.addFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1(), LevelofDetail), LevelofDetail);
 	}
 
 	public void setCubeShape(CubeCoordinate Coordinate, CubeShape NewShape) {

@@ -1,0 +1,24 @@
+
+Hall - Basic clan private space, may contain sub-sections
+
+	Common domestic subdivisions
+
+	Dwelling - individual family living space, generally for married couples only
+	Chreech - area for small children are kept
+	Warren - a group dormitory for adults/guests
+	Dinning - Meal areas
+	Meeting - political gatherings if separate from dining
+	Privy
+	
+Workshop - root working areas
+
+	Smithy, Masonry, Carpentry, Machinery, Pottery
+	
+Governmental
+
+	Dungeon - prisoner holding
+	Guard Post - station for guards
+	Treasury - treasure hoarding
+	Training Ground - military practice
+	
+

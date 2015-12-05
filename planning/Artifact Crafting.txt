@@ -1,0 +1,42 @@
+
+
+Artifact Crafting is an endgame content set-collection based crafting process that micics player
+centered crafting in typical RPG's but utilizes the entire settlment as the tool.
+
+Step 1:  Recipe aquisition, the settlment is initially without any recipies for artifacts, they must
+be aquired in game through one of several methods.  Lore Masters and library nessary to 'store' the
+recipies. Recipies might be procedually generated, material lists are described as well as crafting
+techniques and item type created, but not nessarily the magical effects of the item.  Recipies might
+only be usable once or be severly material limited.
+
+	Method A:  Strange Moods, all dwarves can enter a strange mood and suddently dictate a recipie
+	this is assumed to be divinly inspired, high level of Diety favor incresse the odds of moods
+	with the type of diety influencing the recipie, also higher skill crafters get more moods 
+	overall the moods are much rarer then in DF
+
+	Method B:  Diplomacy, another settlment may trade or gift recipies to you, often as part of a
+	commisioned work which may or maynot include materials.
+
+	Method C:  Research, as LoreMasters 'digest' discovered archives and related materials they 
+	may discover long forgotten recipies in their records which then become available. The 
+	frequency of this process makes Loremasters the most efficient recipie creators provided they
+	are provided with lore to digest.
+
+	Method D:  Expedition, when on an expidition a recipie may be discovered outright and returned
+	with the expedition, either as random unexpected rewards or as actual expedition goals, this
+	would be commonly mixed with raw lore that would feed method C.
+
+
+Step 2:  Ingredient aquisition, the listed special ingredients need to be aquired, these are always
+rare, special and not available at most settlment locations.  Gems would be the most mundane materials
+utilized but most would be of fantastical quality.  Expeditions and trade are the main means of
+finding ingredients.  Many times an ingredient will become available before a recipie becomes available
+and these can be kept or traded.  Lore research can be used to search for locations of desired
+ingredients so expiditions or trade can be conducted to secure them.  The search for ingredients would
+be a large driver of both expeditions and diplomacy late game.
+
+Step 3:  Crafting, highest level crafters will execute the recipie on your command if all prerequites
+are met, the process will likely be slow and require a great deal of labor input.  Failure, even
+catastrophic failure may be possible resulting in injury or death to the crafters.  Crafters and others
+may desided to keep artifacts for themselves triggering strife.  If materials allow more then one copy
+might be possible.

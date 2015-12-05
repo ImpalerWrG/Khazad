@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.BitSet;
 
+import org.javatuples.Pair;
+
 /**
  * Primary MapData storage class, holds all data for describing a 16x16 square
  * 1 level high region of the map, each tile is indexed by a byte for array and
@@ -136,8 +138,8 @@ public class Cell implements Serializable {
 			final short FloorSurface = Data.getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
 			for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
-				FaceCoordinate FaceLocation = new FaceCoordinate(TargetCube, DirectionType);
-				CubeCoordinate AdjacentCoordinates = ParentMap.getFacingCoordinates(thisCellCoordinates, FaceLocation);
+				Pair <CellCoordinate, Integer> values = ParentMap.TranslateCubeIndex(thisCellCoordinates, j, DirectionType, LevelofDetail);				
+				CubeCoordinate AdjacentCoordinates = new CubeCoordinate(values.getValue0(), values.getValue1().byteValue());
 
 				if (ParentMap.isCubeInited(AdjacentCoordinates)) {
 					CubeShape AdjacentShape = ParentMap.getCubeShape(AdjacentCoordinates);
@@ -169,7 +171,7 @@ public class Cell implements Serializable {
 			}
 
 			if (!Shape.isEmpty() && !Shape.isSolid()) {
-				Face NewFace = addFace(new FaceCoordinate(TargetCube, Direction.DIRECTION_NONE), LevelofDetail);
+				Face NewFace = addFace(new FaceCoordinate(TargetCube, Direction.DIRECTION_NONE, LevelofDetail), LevelofDetail);
 
 				NewFace.setFaceMaterialType(CubeMaterial);
 				NewFace.setFaceSurfaceType(FloorSurface);
@@ -263,7 +265,7 @@ public class Cell implements Serializable {
 	Face addFace(FaceCoordinate TargetCoordinates, int LevelofDetail) {
 		Face TargetFace = Faces[LevelofDetail].get(TargetCoordinates);
 		if (TargetFace == null) {
-			Face NewFace = new Face(TargetCoordinates.Coordinates, TargetCoordinates.getFaceDirection());
+			Face NewFace = new Face(TargetCoordinates.getCoordinates(), TargetCoordinates.getFaceDirection());
 			Faces[LevelofDetail].put(TargetCoordinates, NewFace);
 			setRenderingDirty();
 			return NewFace;
