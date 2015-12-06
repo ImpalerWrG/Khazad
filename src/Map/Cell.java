@@ -53,6 +53,8 @@ public class Cell implements Serializable {
 	transient boolean DirtyTerrainRendering;
 	transient boolean DirtyPathRendering;
 
+	String CellString;
+
 	public Cell() {
 		CubeMaterialTypes = new short[CubeCoordinate.CUBESPERCELL];
 		CubeShapeTypes = new short[CubeCoordinate.CELLDETAILLEVELS][];
@@ -91,6 +93,7 @@ public class Cell implements Serializable {
 
 	public void setCellCoordinates(CellCoordinate Coordinates) {
 		thisCellCoordinates = Coordinates;
+		CellString = getClass().getName() + thisCellCoordinates.toString();
 		setRenderingDirty();
 	}
 
@@ -350,6 +353,6 @@ public class Cell implements Serializable {
 
 	@Override
 	public String toString() {
-		return getClass().getName() + thisCellCoordinates.toString();
+		return CellString;
 	}
 }

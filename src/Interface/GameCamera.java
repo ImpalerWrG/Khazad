@@ -21,6 +21,7 @@ import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 
 import com.jme3.scene.control.CameraControl.ControlDirection;
+import com.jme3.bounding.BoundingBox;
 
 import com.jme3.math.Ray;
 import com.jme3.math.FastMath;
@@ -178,6 +179,16 @@ public class GameCamera {
 		Vector3f click3d = camera.getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 0f).clone();
 		Vector3f dir = camera.getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d).normalizeLocal();
 		return new Ray(click3d, dir);
+	}
+
+	public boolean contains(BoundingBox Box) {
+		camera.setPlaneState(0);
+		Camera.FrustumIntersect results = camera.contains(Box);
+		if (results == Camera.FrustumIntersect.Outside)
+			return false;
+		else {
+			return true;
+		}
 	}
 
 	public void write(JmeExporter ex) throws IOException {

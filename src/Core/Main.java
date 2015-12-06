@@ -217,5 +217,7 @@ public class Main extends SimpleApplication {
 		inputManager.addMapping("PathingRenderToggle", new KeyTrigger(KeyInput.KEY_P));
 		inputManager.addMapping("TerrainRenderToggle", new KeyTrigger(KeyInput.KEY_T));
 		inputManager.addMapping("SunnyRenderToggle", new KeyTrigger(KeyInput.KEY_L));
+		inputManager.addMapping("ReduceDetailLevel", new KeyTrigger(KeyInput.KEY_Y));
+		inputManager.addMapping("IncreeseDetailLevel", new KeyTrigger(KeyInput.KEY_U));	
 	}
 }

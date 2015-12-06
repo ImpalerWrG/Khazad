@@ -42,12 +42,14 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Sphere;
 
+import com.jme3.bounding.BoundingBox;
+
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
+
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
-
 
 import Renderer.MapRenderer;
 
@@ -606,5 +608,9 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		// point camera at the target
 		Vector3f target = new Vector3f(mapCoordinate.X, mapCoordinate.Y, mapCoordinate.Z);
 		MainCamera.pointCameraAt(target);
+	}
+	
+	public boolean contains(BoundingBox box) {
+		return MainCamera.contains(box);
 	}
 }

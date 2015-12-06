@@ -19,6 +19,7 @@ package Renderer;
 
 import Map.*;
 import Game.Game;
+import Interface.GameCameraState;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -30,6 +31,9 @@ import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.ActionListener;
+
+import com.jme3.bounding.BoundingBox;
+import com.jme3.math.Vector3f;
 
 import com.jme3.scene.control.LodControl;
 import com.jme3.scene.Node;
@@ -52,15 +56,19 @@ public class TerrainRenderer extends AbstractAppState {
 	SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
+	GameCameraState CameraState = null;
 	Game game = null;
+
 	TileBuilder builder;
 	int LevelofDetail;
 	private boolean TerrainRendering = true;
 	ExecutorService Executor;
+	ArrayList<Cell> MeshedCells;
 
 	public TerrainRenderer(ExecutorService Threadpool) {
 		Executor = Threadpool;
 		builder = new TileBuilder();
+		MeshedCells = new ArrayList<Cell>();
 	}
 
 	@Override
@@ -76,16 +84,35 @@ public class TerrainRenderer extends AbstractAppState {
 	}
 
 	public void rebuildDirtyCells(Collection<Cell> cells) {
-		for (Cell target : cells) {
-			if (target.isTerrainRenderingDirty()) {
-				CellCoordinate Coords = target.getCellCoordinates();
-				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, this.LevelofDetail);
-				MapRenderer Renderer = state.getState(MapRenderer.class);
+		BoundingBox CellBox = new BoundingBox();
+		CellBox.setXExtent(CubeCoordinate.CELLEDGESIZE);
+		CellBox.setYExtent(CubeCoordinate.CELLEDGESIZE);
+		CellBox.setZExtent(1);
+		CellBox.setCheckPlane(0);
 
-				Builder.setNodes(Renderer.getCellNodeLight(Coords), Renderer.getCellNodeDark(Coords));
-				Executor.submit(Builder);
+		this.CameraState = state.getState(GameCameraState.class);
+		MapRenderer Renderer = state.getState(MapRenderer.class);
 
-				target.setDirtyTerrainRendering(false);
+		for (Cell targetCell : cells) {
+			CellCoordinate Coords = targetCell.getCellCoordinates();
+			Vector3f Center = new Vector3f(Coords.X * CubeCoordinate.CELLEDGESIZE, Coords.Y * CubeCoordinate.CELLEDGESIZE, Coords.Z);
+			CellBox.setCenter(Center);
+			if (this.CameraState.contains(CellBox)) {
+				if (targetCell.isTerrainRenderingDirty()) {
+					TerrainBuilder Builder = new TerrainBuilder(app, targetCell, builder, this.LevelofDetail);
+
+					Builder.setNodes(Renderer.getCellNodeLight(Coords), Renderer.getCellNodeDark(Coords));
+					Executor.submit(Builder);
+
+					targetCell.setDirtyTerrainRendering(false);
+				}
+			} else { // Remove from the Scene graph
+				targetCell.setDirtyTerrainRendering(true);
+				for (int i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i ++) {
+					// remove mesh from scenegraph
+					Renderer.getCellNodeLight(Coords).detachChildNamed("LightGeometry Cell " + targetCell.toString() + "DetailLevel " + i);
+					Renderer.getCellNodeDark(Coords).detachChildNamed("DarkGeometry Cell " + targetCell.toString() + "DetailLevel " + i);
+				}
 			}
 		}
 	}
@@ -135,13 +162,29 @@ public class TerrainRenderer extends AbstractAppState {
 			NewDetailLevel = 4;
 	
 		if (NewDetailLevel != this.LevelofDetail) {
-			changeLevelofDetail(NewDetailLevel);
+			this.LevelofDetail = NewDetailLevel;
+
+			GameMap map = this.game.getMap();
+			for (Cell target : map.getCellCollection()) {
+				setCellDetailLevel(target, this.LevelofDetail);
+			}
 		}
 	}
 
-	public void changeLevelofDetail(int NewLevelofDetail) {
-		this.LevelofDetail = NewLevelofDetail;
+	public void changeLevelofDetal(int Change) {
+		if (Change < 0 && this.LevelofDetail == 0)
+			return;
+		if (Change > 1 && this.LevelofDetail == 4)
+			return;
 		
+		this.LevelofDetail += Change;
+		
+		if (this.LevelofDetail < 0)
+			this.LevelofDetail = 0;
+
+		if (this.LevelofDetail > 4)
+			this.LevelofDetail = 4;
+
 		GameMap map = this.game.getMap();
 		for (Cell target : map.getCellCollection()) {
 			setCellDetailLevel(target, this.LevelofDetail);

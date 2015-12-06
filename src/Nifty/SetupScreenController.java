@@ -65,7 +65,7 @@ public class SetupScreenController implements ScreenController {
 
 			Game game = new Game();
 			Main.app.getStateManager().attach(game);
-			game.initializeGame((short) 10, (short) 10, Seed, kingdomName);
+			game.initializeGame((short) 20, (short) 20, Seed, kingdomName);
 
 			Main.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
 			Main.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);

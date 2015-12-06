@@ -99,12 +99,18 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 				terrainCheckBox.toggle();
 			} else if (name.equals("SunnyRenderToggle")) {
 				litSurfacesCheckBox.toggle();
+			} else if (name.equals("ReduceDetailLevel")) {
+				TerrainRenderer terrainRenderer = Main.app.getStateManager().getState(TerrainRenderer.class);
+				terrainRenderer.changeLevelofDetal(1);
+			} else if (name.equals("IncreeseDetailLevel")) {
+				TerrainRenderer terrainRenderer = Main.app.getStateManager().getState(TerrainRenderer.class);
+				terrainRenderer.changeLevelofDetal(-1);
 			}
 		}
 	}
 
 	public void registerWithInput(InputManager inputManager) {
-		String[] inputs = {"PathingRenderToggle", "TerrainRenderToggle", "SunnyRenderToggle"};
+		String[] inputs = {"PathingRenderToggle", "TerrainRenderToggle", "SunnyRenderToggle", "ReduceDetailLevel", "IncreeseDetailLevel"};
 		inputManager.addListener(this, inputs);
 	}
 
