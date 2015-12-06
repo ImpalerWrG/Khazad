@@ -21,6 +21,8 @@ import Map.*;
 import Game.Game;
 import Interface.GameCameraState;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -63,12 +65,12 @@ public class TerrainRenderer extends AbstractAppState {
 	int LevelofDetail;
 	private boolean TerrainRendering = true;
 	ExecutorService Executor;
-	ArrayList<Cell> MeshedCells;
+	ConcurrentHashMap<CellCoordinate, Cell> MeshedCells;
 
 	public TerrainRenderer(ExecutorService Threadpool) {
 		Executor = Threadpool;
 		builder = new TileBuilder();
-		MeshedCells = new ArrayList<Cell>();
+		MeshedCells = new ConcurrentHashMap<CellCoordinate, Cell>();
 	}
 
 	@Override
@@ -83,7 +85,43 @@ public class TerrainRenderer extends AbstractAppState {
 		this.game = TargetGame;
 	}
 
+	public void queueCellBuild(Cell targetCell, int DetailLevel) {
+		MapRenderer Renderer = state.getState(MapRenderer.class);
+		CellCoordinate Coords = targetCell.getCellCoordinates();
+
+		MeshedCells.put(Coords, targetCell);
+		TerrainBuilder Builder = new TerrainBuilder(app, targetCell, builder, DetailLevel);
+
+		Builder.setNodes(Renderer.getCellNodeLight(Coords), Renderer.getCellNodeDark(Coords));
+		Executor.submit(Builder);
+
+		targetCell.setDirtyTerrainRendering(false);
+	}
+
+	public void queueCellDestroy(Cell targetCell, int DetailLevel) {
+		MapRenderer Renderer = state.getState(MapRenderer.class);
+		CellCoordinate Coords = targetCell.getCellCoordinates();
+		
+		MeshedCells.remove(Coords);
+		TerrainDestroyer Destroyer = new TerrainDestroyer(app, targetCell, DetailLevel);
+
+		Destroyer.setNodes(Renderer.getCellNodeLight(Coords), Renderer.getCellNodeDark(Coords));
+		Executor.submit(Destroyer);
+
+		targetCell.setDirtyTerrainRendering(true);
+	}
+
 	public void rebuildDirtyCells(Collection<Cell> cells) {
+		for (Cell targetCell : MeshedCells.values()) {
+			if (targetCell.isTerrainRenderingDirty())
+				queueCellBuild(targetCell, this.LevelofDetail);
+		}
+	}
+
+	public void SwapFrustrumCells() {
+		GameMap map = this.game.getMap();
+		Collection<Cell> cells = map.getCellCollection();
+
 		BoundingBox CellBox = new BoundingBox();
 		CellBox.setXExtent(CubeCoordinate.CELLEDGESIZE);
 		CellBox.setYExtent(CubeCoordinate.CELLEDGESIZE);
@@ -91,28 +129,26 @@ public class TerrainRenderer extends AbstractAppState {
 		CellBox.setCheckPlane(0);
 
 		this.CameraState = state.getState(GameCameraState.class);
-		MapRenderer Renderer = state.getState(MapRenderer.class);
 
+		// Add Cells newly entering the Frustrum
 		for (Cell targetCell : cells) {
 			CellCoordinate Coords = targetCell.getCellCoordinates();
 			Vector3f Center = new Vector3f(Coords.X * CubeCoordinate.CELLEDGESIZE, Coords.Y * CubeCoordinate.CELLEDGESIZE, Coords.Z);
 			CellBox.setCenter(Center);
 			if (this.CameraState.contains(CellBox)) {
 				if (targetCell.isTerrainRenderingDirty()) {
-					TerrainBuilder Builder = new TerrainBuilder(app, targetCell, builder, this.LevelofDetail);
-
-					Builder.setNodes(Renderer.getCellNodeLight(Coords), Renderer.getCellNodeDark(Coords));
-					Executor.submit(Builder);
-
-					targetCell.setDirtyTerrainRendering(false);
+					queueCellBuild(targetCell, this.LevelofDetail);
 				}
-			} else { // Remove from the Scene graph
-				targetCell.setDirtyTerrainRendering(true);
-				for (int i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i ++) {
-					// remove mesh from scenegraph
-					Renderer.getCellNodeLight(Coords).detachChildNamed("LightGeometry Cell " + targetCell.toString() + "DetailLevel " + i);
-					Renderer.getCellNodeDark(Coords).detachChildNamed("DarkGeometry Cell " + targetCell.toString() + "DetailLevel " + i);
-				}
+			}
+		}
+
+		// Remove Cells nolonger in the Frustrum
+		for (Cell targetCell : MeshedCells.values()) {
+			CellCoordinate Coords = targetCell.getCellCoordinates();
+			Vector3f Center = new Vector3f(Coords.X * CubeCoordinate.CELLEDGESIZE, Coords.Y * CubeCoordinate.CELLEDGESIZE, Coords.Z);			
+			CellBox.setCenter(Center);
+			if (this.CameraState.contains(CellBox) == false) {
+				queueCellDestroy(targetCell, this.LevelofDetail);
 			}
 		}
 	}
