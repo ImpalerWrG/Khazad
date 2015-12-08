@@ -171,6 +171,7 @@ public class MapRenderer extends AbstractAppState {
 	}
 
 	public Node getZNodeLight(int zlevel) {
+		//TODO use a primite equipped map to eliminate Integer
 		Node targetnode = ZMapLight.get(new Integer(zlevel));
 		if (targetnode == null) {
 

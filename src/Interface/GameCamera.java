@@ -149,9 +149,11 @@ public class GameCamera {
 	protected void translateCamera(Vector3f Translation) {
 		TargetNode.move(Translation);
 	}
-	
+
 	protected void pointCameraAt(Vector3f target) {
 		TargetNode.setLocalTranslation(target);
+		CamNode.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);
+		this.camera.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);
 	}
 
 	float getShading(int Zlevel) {

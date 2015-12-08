@@ -63,7 +63,8 @@ public class TerrainRenderer extends AbstractAppState {
 
 	TileBuilder builder;
 	int LevelofDetail;
-	private boolean TerrainRendering = true;
+	private boolean TerrainRenderingToggle = true;
+	Spatial.CullHint TerrainHint = Spatial.CullHint.Never;
 	ExecutorService Executor;
 	ConcurrentHashMap<CellCoordinate, Cell> MeshedCells;
 
@@ -93,6 +94,7 @@ public class TerrainRenderer extends AbstractAppState {
 		TerrainBuilder Builder = new TerrainBuilder(app, targetCell, builder, DetailLevel);
 
 		Builder.setNodes(Renderer.getCellNodeLight(Coords), Renderer.getCellNodeDark(Coords));
+		Builder.setHint(TerrainHint);
 		Executor.submit(Builder);
 
 		targetCell.setDirtyTerrainRendering(false);
@@ -154,18 +156,18 @@ public class TerrainRenderer extends AbstractAppState {
 	}
 
 	public boolean getTerrainRendering() {
-		return TerrainRendering;
+		return TerrainRenderingToggle;
 	}
 
 	/**
 	 * @param TerrainRendering the TerrainRendering to set
 	 */
 	public void setTerrainRendering(boolean NewValue) {
-		this.TerrainRendering = NewValue;
-		Spatial.CullHint hint = Spatial.CullHint.Always;
+		this.TerrainRenderingToggle = NewValue;
+		TerrainHint = Spatial.CullHint.Always;
 
 		if (getTerrainRendering())
-			hint = Spatial.CullHint.Dynamic;
+			TerrainHint = Spatial.CullHint.Dynamic;
 
 		GameMap map = this.game.getMap();
 		for (Cell target : map.getCellCollection()) {
@@ -179,9 +181,9 @@ public class TerrainRenderer extends AbstractAppState {
 			Spatial dark = CellDark.getChild("DarkGeometry Cell " + target.toString() + "DetailLevel " + this.LevelofDetail);
 
 			if (light != null)
-				light.setCullHint(hint);
+				light.setCullHint(TerrainHint);
 			if (dark != null)
-				dark.setCullHint(hint);
+				dark.setCullHint(TerrainHint);
 		}
 	}
 
@@ -236,7 +238,7 @@ public class TerrainRenderer extends AbstractAppState {
 
 		for (int i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i++) {
 			Spatial.CullHint hint = Spatial.CullHint.Always;
-			if (i == LevelofDetail)
+			if (i == LevelofDetail && TerrainRenderingToggle)
 				hint = Spatial.CullHint.Dynamic;
 
 			Spatial light = CellLight.getChild("LightGeometry Cell " + TargetCell.toString() + "DetailLevel " + i);
@@ -253,7 +255,7 @@ public class TerrainRenderer extends AbstractAppState {
 	public void update(float tpf) {
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
-			if (TerrainRendering)
+			if (TerrainRenderingToggle)
 				rebuildDirtyCells(map.getCellCollection());
 		}
 	}

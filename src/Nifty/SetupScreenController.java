@@ -54,8 +54,7 @@ public class SetupScreenController implements ScreenController {
 	}
 
 	public void beginGame() {
-		try
-		{
+		try {
 			String kingdomName = nifty.getCurrentScreen().findNiftyControl("KingdomNameTextField", TextField.class).getDisplayedText();
 			if (kingdomName.length() == 0) {
 				ErrorPopupController.ShowErrorMessage(nifty, "Problem starting game", "Please enter a kingdom name");

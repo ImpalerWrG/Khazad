@@ -44,6 +44,8 @@ import java.util.PriorityQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import java.lang.StringBuffer;
+
 /**
  * Game holds all the objects (Map, Settlment, Weather etc) which together make
  * up the simulation and is were saving and loading of game files is initiate
@@ -66,6 +68,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	Geology MapGeology;
 	public Settlement GameSettlement;
 	Weather GameWeather;
+
 	boolean Pause;
 	int TickRate;
 	long CurrentGameTick;
@@ -74,6 +77,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	private long minutes;
 	private long hours;
 	private long days;
+
 	int UniqueIDCounter;
 	PriorityQueue<Temporal> TemporalQueue;
 	HashMap<Integer, Actor> Actors;
@@ -84,6 +88,8 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	private transient String saveGameFileName;
 	private transient GameScreenController gameScreenController;
 
+	private StringBuffer TimeStringBuffer;
+
 	public Game() {
 
 		TickRate = 1;
@@ -93,6 +99,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		Pause = true;
 
 		TemporalQueue = new PriorityQueue<Temporal>();
+		TimeStringBuffer = new StringBuffer();
 	}
 
 	@Override
@@ -293,10 +300,19 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	}
 
 	public String getTimeString() {
-		String hoursString = Utils.padLeadingZero(hours %24);
-		String minutesString = Utils.padLeadingZero(minutes % 60);
-		String secondsString = Utils.padLeadingZero(seconds % 60);
-		return "DAY " + days + "  -  " + hoursString + ":" + minutesString + ":" + secondsString;
+		TimeStringBuffer.delete(0, TimeStringBuffer.length());
+
+		TimeStringBuffer.append("DAY ");
+		TimeStringBuffer.append(days);
+		TimeStringBuffer.append("  -  ");
+
+		TimeStringBuffer.append(Utils.padLeadingZero(hours %24));
+		TimeStringBuffer.append(":");
+		TimeStringBuffer.append(Utils.padLeadingZero(minutes % 60));
+		TimeStringBuffer.append(":");
+		TimeStringBuffer.append(Utils.padLeadingZero(seconds % 60));
+
+		return TimeStringBuffer.toString();
 	}
 
 	public String getKingdomName() {

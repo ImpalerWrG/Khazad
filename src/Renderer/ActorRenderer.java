@@ -60,9 +60,12 @@ public class ActorRenderer extends AbstractAppState {
 	LodControl ActorLodControler;
 	ConcurrentHashMap<Integer, Node> ActorNodeMap;
 	boolean DisplayToggle = true;
+	CubeCoordinate TestingCoords;
+	Vector3f OffsetVector, DirectionVector;
 
 	public ActorRenderer() {
 		ActorNodeMap = new ConcurrentHashMap<Integer, Node>();
+		TestingCoords = new CubeCoordinate();
 	}
 
 	@Override
@@ -72,6 +75,8 @@ public class ActorRenderer extends AbstractAppState {
 		this.state = stateManager;
 		this.assetmanager = app.getAssetManager();
 
+		OffsetVector = new Vector3f();
+		DirectionVector = new Vector3f();
 		//registerWithInput(app.getInputManager());
 	}
 
@@ -101,65 +106,74 @@ public class ActorRenderer extends AbstractAppState {
 					actorNode.setCullHint(Spatial.CullHint.Dynamic);
 					CubeCoordinate coords = target.getLocation();
 					MapRenderer Renderer = state.getState(MapRenderer.class);
-					
+
 					Node zNode;
 					if (map.isCubeSunLit(coords)) {
 						zNode = Renderer.getZNodeLight(coords.Z);
 					} else {
 						zNode = Renderer.getZNodeDark(coords.Z);
 					}
-					
+
 					zNode.attachChild(actorNode);
-					Vector3f Offset = new Vector3f();
 
 					if (target instanceof Pawn) {
-						Pawn PawnTarget = (Pawn) target;
-						float MoveFraction = PawnTarget.getActionFraction(CurrentTick);
-						Direction MovingDirection = PawnTarget.getMovementDirection();
-						float Height = 0;
-
-						if (MoveFraction <= 0.5) {
-							CubeShape shape = map.getCubeShape(coords);
-							float CenterHeight = shape.getCenterHeight();
-							float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection);
-							float CenterFraction = (MoveFraction * 2.0f);
-							float EdgeFraction = 1.0f - CenterFraction;
-							Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
-						}
-
-						if (MoveFraction > 0.5) {
-							if (MoveFraction >= 1.0) {
-								MoveFraction = 0;
-							}
-
-							CubeCoordinate translated = new CubeCoordinate(coords, MovingDirection);
-							CubeShape shape = map.getCubeShape(translated);
-							float CenterHeight = shape.getCenterHeight() + (translated.Z - coords.Z);
-							float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection.invert()) + (translated.Z - coords.Z);
-							float CenterFraction = ((MoveFraction - 0.5f) * 2.0f);
-							float EdgeFraction = 1.0f - CenterFraction;
-							Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
-						}
-
-						if (MovingDirection == Direction.DIRECTION_DESTINATION) {
-							MoveFraction = 0;
-						}
-
-						Vector3f MoveVec = MovingDirection.toVector();
-						Offset.addLocal(MoveVec.mult(MoveFraction));
-
-						Quaternion rotation = actorNode.getLocalRotation();
-						rotation.fromAngleAxis(MovingDirection.toDegree() * FastMath.DEG_TO_RAD, Vector3f.UNIT_Z);
-						actorNode.setLocalRotation(rotation);
-
-						actorNode.setLocalTranslation(coords.X + Offset.x, coords.Y + Offset.y, Height);
-
+						MovePawn((Pawn) target, CurrentTick);
 					} else {
 						actorNode.setLocalTranslation(coords.X, coords.Y, 0);
 					}
 				}
 			}
 		}
+	}
+
+	public void MovePawn(Pawn target, long CurrentTick) {
+		Game game = state.getState(Game.class);
+		GameMap map = game.getMap();
+
+		Pawn PawnTarget = (Pawn) target;
+		float MoveFraction = PawnTarget.getActionFraction(CurrentTick);
+		Direction MovingDirection = PawnTarget.getMovementDirection();
+		CubeCoordinate coords = target.getLocation();
+		Node actorNode = ActorNodeMap.get(target.getID());
+		float Height = 0;
+
+		if (MoveFraction <= 0.5) {
+			CubeShape shape = map.getCubeShape(coords);
+			float CenterHeight = shape.getCenterHeight();
+			float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection);
+			float CenterFraction = (MoveFraction * 2.0f);
+			float EdgeFraction = 1.0f - CenterFraction;
+			Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
+		}
+
+		if (MoveFraction > 0.5) {
+			if (MoveFraction >= 1.0) {
+				MoveFraction = 0;
+			}
+
+			TestingCoords.copy(coords);
+			TestingCoords.translate(MovingDirection);
+
+			CubeShape shape = map.getCubeShape(TestingCoords);
+			float CenterHeight = shape.getCenterHeight() + (TestingCoords.Z - coords.Z);
+			float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection.invert()) + (TestingCoords.Z - coords.Z);
+			float CenterFraction = ((MoveFraction - 0.5f) * 2.0f);
+			float EdgeFraction = 1.0f - CenterFraction;
+			Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
+		}
+
+		if (MovingDirection == Direction.DIRECTION_DESTINATION) {
+			MoveFraction = 0;
+		}
+
+		MovingDirection.setVector(DirectionVector);
+		DirectionVector.mult(MoveFraction, OffsetVector);
+
+		Quaternion rotation = actorNode.getLocalRotation();
+		rotation.fromAngleAxis(MovingDirection.toDegree() * FastMath.DEG_TO_RAD, Vector3f.UNIT_Z);
+		actorNode.setLocalRotation(rotation);
+
+		actorNode.setLocalTranslation(coords.X + OffsetVector.x, coords.Y + OffsetVector.y, Height);
 	}
 
 	public void hideActors() {
@@ -174,7 +188,7 @@ public class ActorRenderer extends AbstractAppState {
 		if (game != null) {
 			GameMap map = game.getMap();
 			GameCameraState cam = state.getState(GameCameraState.class);
-			
+
 			if (game.getTickRate() <= 256 && cam.getZoom() < 200) {
 				populateActors();
 			} else {

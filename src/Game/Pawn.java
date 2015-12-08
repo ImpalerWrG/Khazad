@@ -60,6 +60,8 @@ public class Pawn extends Actor implements Serializable {
 	private String lastName;
 	private Gender gender;
 
+	private final int speedIndex = DataManager.getDataManager().getLabelIndex("BASIC_ATTRIBUTE_SPEED");
+
 	public Pawn(short CreatureTypeID, int id, int Seed, CubeCoordinate SpawnLocation) {
 		super(id, SpawnLocation);
 
@@ -94,7 +96,6 @@ public class Pawn extends Actor implements Serializable {
 
 	public long attemptMove(Direction MovementDirection) {
 		float EdgeCost = PathManager.getSingleton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getMovementModality());
-		final int speedIndex = DataManager.getDataManager().getLabelIndex("BASIC_ATTRIBUTE_SPEED");
 		if (EdgeCost != -1) {
 			return (int) (EdgeCost / ((float) BasicAttributes[speedIndex] / 7.0) * TICKS_PER_SECOND);
 		} else {

@@ -56,6 +56,7 @@ public class TerrainBuilder implements Callable<Void> {
 	Node TerrainLight, TerrainDark, CellLight, CellDark;
 	Geometry[] LightBuildGeometry, DarkBuildGeometry;
 	int DetailLevel;
+	Spatial.CullHint hint;
 
 	public TerrainBuilder(Application Parentapp, Cell TargetCell, TileBuilder Tiles, int LevelofDetail) {
 		this.app = Parentapp;
@@ -72,6 +73,10 @@ public class TerrainBuilder implements Callable<Void> {
 		this.CellDark = DarkCellNode;
 		TerrainLight = new Node("TerrainLight");
 		TerrainDark = new Node("TerrainDark");
+	}
+
+	public void setHint(Spatial.CullHint TerrainHint) {
+		this.hint = TerrainHint;
 	}
 
 	public Void call() {
@@ -127,7 +132,7 @@ public class TerrainBuilder implements Callable<Void> {
 					if (LightBuildGeometry[i] != null) {
 						CellLight.attachChild(LightBuildGeometry[i]);
 						if (i == DetailLevel) {
-							LightBuildGeometry[i].setCullHint(Spatial.CullHint.Dynamic);
+							LightBuildGeometry[i].setCullHint(hint);
 						} else {
 							LightBuildGeometry[i].setCullHint(Spatial.CullHint.Always);							
 						}
@@ -137,7 +142,7 @@ public class TerrainBuilder implements Callable<Void> {
 					if (DarkBuildGeometry[i] != null) {
 						CellDark.attachChild(DarkBuildGeometry[i]);
 						if (i == DetailLevel) {
-							DarkBuildGeometry[i].setCullHint(Spatial.CullHint.Dynamic);
+							DarkBuildGeometry[i].setCullHint(hint);
 						} else {
 							DarkBuildGeometry[i].setCullHint(Spatial.CullHint.Always);							
 						}					

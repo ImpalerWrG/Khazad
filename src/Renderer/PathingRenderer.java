@@ -203,8 +203,6 @@ public class PathingRenderer extends AbstractAppState {
 			GameMap map = this.game.getMap();
 			if (getDisplayToggle()) {
 				rebuildDirtyCells(map.getCellCollection());
-			} else {
-				hideConnectivityRendering(map.getCellCollection());
 			}
 		}
 	}
@@ -221,5 +219,11 @@ public class PathingRenderer extends AbstractAppState {
 	 */
 	public void setDisplayToggle(boolean DisplayToggle) {
 		this.DisplayToggle = DisplayToggle;
+		if (this.game != null) {
+			GameMap map = this.game.getMap();
+			if (DisplayToggle == false) {
+				hideConnectivityRendering(map.getCellCollection());
+			}
+		}
 	}
 }

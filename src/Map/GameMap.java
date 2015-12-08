@@ -50,6 +50,11 @@ public class GameMap implements Serializable {
 	ConcurrentHashMap<CellCoordinate, Cell> BasementCells;
 	int HighestCell;
 	int LowestCell;
+	int WestestCell;
+	int EastestCell;
+	int NorthestCell;
+	int SouthestCell;
+
 	int Seed;
 	Dice ExcavateDice = new Dice();
 	ArrayList<Zone> Zones;
@@ -59,6 +64,10 @@ public class GameMap implements Serializable {
 		MapLoaded = false;
 		HighestCell = -100000000;
 		LowestCell = 10000000;
+		WestestCell = 10000000;
+		EastestCell = -100000000;
+		NorthestCell = -100000000;
+		SouthestCell = 10000000;
 
 		ExcavateDice.seed(Seed);
 		Zones = new ArrayList<Zone>();
@@ -109,6 +118,15 @@ public class GameMap implements Serializable {
 			if (TargetCoordinates.Z < LowestCell)
 				LowestCell = TargetCoordinates.Z;
 
+			if (TargetCoordinates.X > EastestCell)
+				EastestCell = TargetCoordinates.X;
+			if (TargetCoordinates.X < WestestCell)
+				WestestCell = TargetCoordinates.X;
+			if (TargetCoordinates.Y < SouthestCell)
+				SouthestCell = TargetCoordinates.Y;
+			if (TargetCoordinates.Y > NorthestCell)
+				NorthestCell = TargetCoordinates.Y;
+
 			if (BelowCell == null) {
 				BasementCells.put(TargetCoordinates, NewCell);
 				//NewCell.BasementCell = true;
@@ -142,9 +160,16 @@ public class GameMap implements Serializable {
 		return LowestCell;
 	}
 
+	public CubeCoordinate getMapCenter() {
+		int X = (EastestCell - WestestCell) / 2;
+		int Y = (NorthestCell - SouthestCell) / 2;
+
+		return new CubeCoordinate(X * CubeCoordinate.CELLEDGESIZE, Y * CubeCoordinate.CELLEDGESIZE, 0);
+	}
+
 	public Cell getCubeOwner(CubeCoordinate Coordinates) {
 		CellCoordinate TargetCellCoordinates = new CellCoordinate(Coordinates);
-
+		// TODO dont created new CellCoordinate
 		return getCell(TargetCellCoordinates);
 	}
 

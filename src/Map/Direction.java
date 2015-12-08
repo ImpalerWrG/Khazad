@@ -211,8 +211,10 @@ public enum Direction {
 		return false;
 	}
 
-	public Vector3f toVector() {
-		return new Vector3f(getValueonAxis(Axis.AXIS_X), getValueonAxis(Axis.AXIS_Y), getValueonAxis(Axis.AXIS_Z));
+	public void setVector(Vector3f Vec) {
+		Vec.x = getValueonAxis(Axis.AXIS_X);
+		Vec.y = getValueonAxis(Axis.AXIS_Y);
+		Vec.z = getValueonAxis(Axis.AXIS_Z);
 	}
 
 	public int toDegree() {

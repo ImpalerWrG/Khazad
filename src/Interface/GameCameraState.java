@@ -640,6 +640,8 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		// point camera at the target
 		Vector3f target = new Vector3f(mapCoordinate.X, mapCoordinate.Y, mapCoordinate.Z);
 		MainCamera.pointCameraAt(target);
+		TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
+		Terrain.SwapFrustrumCells();
 	}
 	
 	public boolean contains(BoundingBox box) {
