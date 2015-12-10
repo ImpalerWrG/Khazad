@@ -48,12 +48,15 @@ public class GameMap implements Serializable {
 	ConcurrentHashMap<CellCoordinate, Cell> Cells;
 	ConcurrentHashMap<CellCoordinate, Cell> WeatherCells;
 	ConcurrentHashMap<CellCoordinate, Cell> BasementCells;
+
 	int HighestCell;
 	int LowestCell;
 	int WestestCell;
 	int EastestCell;
 	int NorthestCell;
 	int SouthestCell;
+
+	CellCoordinate TestingCooords = new CellCoordinate();
 
 	int Seed;
 	Dice ExcavateDice = new Dice();
@@ -168,9 +171,8 @@ public class GameMap implements Serializable {
 	}
 
 	public Cell getCubeOwner(CubeCoordinate Coordinates) {
-		CellCoordinate TargetCellCoordinates = new CellCoordinate(Coordinates);
-		// TODO dont created new CellCoordinate
-		return getCell(TargetCellCoordinates);
+		TestingCooords.resolveCube(Coordinates);
+		return getCell(TestingCooords);
 	}
 
 	public boolean isCubeInited(CubeCoordinate Coordinates) {

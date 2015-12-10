@@ -47,18 +47,21 @@ public class MapRenderer extends AbstractAppState {
 	SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
+
 	Node MapNode = null;
 	Node sunnyterrainNode = null;
 	Node darkterrainNode = null;
 	TileBuilder builder;
 	Game game;
+
 	ConcurrentHashMap<CellCoordinate, Node> LightCellNodeMap;
 	ConcurrentHashMap<CellCoordinate, Node> DarkCellNodeMap;
 	ConcurrentHashMap<Integer, Node> ZMapLight;
 	ConcurrentHashMap<Integer, Node> ZMapDark;
+
 	Semaphore semaphore;
-	boolean SunnyRendering = true;
-	boolean DarkRendering = true;
+	boolean SunnyRendering, DarkRendering = true;
+
 	int Top;
 	int Bottom;
 

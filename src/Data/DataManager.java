@@ -34,7 +34,7 @@ public class DataManager implements Serializable {
 	private static final long serialVersionUID = 1;
 	public static final short INVALID_INDEX = -1;
 	private static DataManager instance = null;
-	ConcurrentHashMap GlobalLabelMap, GlobalDataTypeMap;
+	private static ConcurrentHashMap GlobalLabelMap, GlobalDataTypeMap;
 
 	protected DataManager() {
 		GlobalLabelMap = new ConcurrentHashMap<String, Integer>();
@@ -352,7 +352,7 @@ public class DataManager implements Serializable {
 		return false;
 	}
 
-	public short getLabelIndex(String Label) {
+	public static short getLabelIndex(String Label) {
 		if (Label == null)
 			return INVALID_INDEX;
 

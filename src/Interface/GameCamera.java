@@ -23,6 +23,7 @@ import com.jme3.export.JmeImporter;
 import com.jme3.scene.control.CameraControl.ControlDirection;
 import com.jme3.bounding.BoundingBox;
 
+import com.jme3.math.Plane;
 import com.jme3.math.Ray;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
@@ -55,20 +56,23 @@ public class GameCamera {
 	protected final float rotationSpeed = 10.0f;
 	protected final float PitchSpeed = 200.0f;
 	// The JMonkey Camera object
-	private Camera camera = null;
+	protected Camera camera = null;
 	// Current Angles and values for slicing
-	
+
 	// Pitch, the angle of the Camera relative to the XY plane
 	private float UserPitchAngle;
 	private float ModifiedPitchAngle;
 	private boolean PitchLock;
 	private float MaxPitch = 80;
 	private float MinPitch = .1f;
-	
+
 	protected int SliceTop;
 	protected int SliceBottom;
 	protected int ViewLevels;
 	protected int ViewMax, ViewMin;
+
+	protected final int FrustumNear = -5;
+	protected final int FrustumFar = 10;
 
 	public GameCamera(Camera cam, final Node target) {
 
@@ -78,7 +82,7 @@ public class GameCamera {
 		TranslationFactor = zoomFactor / camera.getWidth() * aspect * 2;
 
 		camera.setParallelProjection(true);
-		camera.setFrustum(-1000, 1000, -aspect * zoomFactor, aspect * zoomFactor, zoomFactor, -zoomFactor);
+		camera.setFrustum(FrustumNear * zoomFactor, FrustumFar * zoomFactor, -aspect * zoomFactor, aspect * zoomFactor, zoomFactor, -zoomFactor);
 
 		this.TargetNode = target;
 		this.camera.setAxes(Vector3f.UNIT_Y, Vector3f.UNIT_Z, Vector3f.UNIT_X);
@@ -135,8 +139,8 @@ public class GameCamera {
 			float top = zoomFactor;
 			float bottom = -zoomFactor;
 
-			camera.setFrustum(-1000, 1000, left, right, top, bottom);
-			updatePitch();	
+			camera.setFrustum(FrustumNear * zoomFactor, FrustumFar * zoomFactor, left, right, top, bottom);
+			updatePitch();
 		}
 	}
 

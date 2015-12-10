@@ -29,7 +29,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Theurge - Thinker Monk
 		Oracle - Cleric
 		
-		Acolyte of ???
+		Acolyte of Yog
 	</>		
 	<Acolyte of Lodrig (High Priest of)(both - Trickster) (Holy Symbol, Litergy)>
 		Crusader - Cavalier Paladin

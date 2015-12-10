@@ -135,6 +135,10 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				LookNode.setCullHint(Spatial.CullHint.Always);
 
 				MainCamera = new GameCamera(app.getCamera(), LookNode);
+
+				TerrainSlicer Slicer = new TerrainSlicer(app.getAssetManager());
+				Slicer.setCamera(MainCamera);
+				app.getViewPort().addProcessor(Slicer);
 			}
 		}
 		registerWithInput(app.getInputManager());
@@ -409,8 +413,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		String[] inputs = {"LeftClick", "RightClick", "MiddleClick", "mouseDown", "mouseUp", "mouseLeft", "mouseRight", "ZoomIn", "ZoomOut", "ArrowUp", "ArrowDown", "RShift", "LShift", "PanUp", "PanDown", "PanRight", "PanLeft"};
 		this.InputStrings = inputs;
 
-
-
 		inputManager.addListener(this, InputStrings);
 	}
 
@@ -534,9 +536,11 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		if (this.state != null) {
 			MapRenderer render = state.getState(MapRenderer.class);
 			if (render != null) {
-				render.setSliceLevels(SliceTop, SliceBottom);
+				//render.setSliceLevels(SliceTop, SliceBottom);
 			}
 		}
+		if (this.MainCamera != null)
+			this.MainCamera.SliceTop = SliceTop;
 	}
 
 	public void setSliceTop(int newValue) {
@@ -612,6 +616,8 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
 			Terrain.SwapFrustrumCells();
 		}
+		
+		MainCamera.resetClipPlane();
 	}
 
 	@Override

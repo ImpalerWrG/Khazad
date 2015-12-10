@@ -60,7 +60,6 @@ public class TerrainRenderer extends AbstractAppState {
 	AssetManager assetmanager = null;
 	GameCameraState CameraState = null;
 	Game game = null;
-
 	TileBuilder builder;
 	int LevelofDetail;
 	private boolean TerrainRenderingToggle = true;
@@ -103,7 +102,7 @@ public class TerrainRenderer extends AbstractAppState {
 	public void queueCellDestroy(Cell targetCell, int DetailLevel) {
 		MapRenderer Renderer = state.getState(MapRenderer.class);
 		CellCoordinate Coords = targetCell.getCellCoordinates();
-		
+
 		MeshedCells.remove(Coords);
 		TerrainDestroyer Destroyer = new TerrainDestroyer(app, targetCell, DetailLevel);
 
@@ -147,7 +146,7 @@ public class TerrainRenderer extends AbstractAppState {
 		// Remove Cells nolonger in the Frustrum
 		for (Cell targetCell : MeshedCells.values()) {
 			CellCoordinate Coords = targetCell.getCellCoordinates();
-			Vector3f Center = new Vector3f(Coords.X * CubeCoordinate.CELLEDGESIZE, Coords.Y * CubeCoordinate.CELLEDGESIZE, Coords.Z);			
+			Vector3f Center = new Vector3f(Coords.X * CubeCoordinate.CELLEDGESIZE, Coords.Y * CubeCoordinate.CELLEDGESIZE, Coords.Z);
 			CellBox.setCenter(Center);
 			if (this.CameraState.contains(CellBox) == false) {
 				queueCellDestroy(targetCell, this.LevelofDetail);
@@ -189,7 +188,7 @@ public class TerrainRenderer extends AbstractAppState {
 
 	public void setLevelofDetail(float ZoomLevel) {
 		int NewDetailLevel = 0;
-		
+
 		if (ZoomLevel > 40)
 			NewDetailLevel = 1;
 		if (ZoomLevel > 80)
@@ -198,7 +197,7 @@ public class TerrainRenderer extends AbstractAppState {
 			NewDetailLevel = 3;
 		if (ZoomLevel > 320)
 			NewDetailLevel = 4;
-	
+
 		if (NewDetailLevel != this.LevelofDetail) {
 			this.LevelofDetail = NewDetailLevel;
 
@@ -214,9 +213,9 @@ public class TerrainRenderer extends AbstractAppState {
 			return;
 		if (Change > 1 && this.LevelofDetail == 4)
 			return;
-		
+
 		this.LevelofDetail += Change;
-		
+
 		if (this.LevelofDetail < 0)
 			this.LevelofDetail = 0;
 

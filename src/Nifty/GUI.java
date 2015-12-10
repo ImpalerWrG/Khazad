@@ -37,7 +37,7 @@ public class GUI extends AbstractAppState {
 	public GUI(Application app) {
 		this.app = app;
 
-		NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(app.getAssetManager(), app.getInputManager(), app.getAudioRenderer(), app.getGuiViewPort());
+		NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(app.getAssetManager(), app.getInputManager(), app.getAudioRenderer(), app.getGuiViewPort(), 1000, 1000);
 		nifty = niftyDisplay.getNifty();
 
 		//nifty.loadStyleFile("Dwarven.xml");

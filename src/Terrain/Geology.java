@@ -29,21 +29,32 @@ import java.io.Serializable;
 public class Geology implements Serializable {
 
 	private static final long serialVersionUID = 1;
-	int RockType = 42;
+
 	int GeologySeed;
 	Dice RandomGenerator;
 	Noise NoiseGenerator;
 	float[][] WorldHeight;
+
 	short CellTopZ;
 	short CellBottomZ;
+
 	float[] Edge;
 	float[][] Height;
 	boolean[][] Seeded;
 
-	public boolean initialize(int Seed) {
+	public final short RockType0;
+	public final short RockType1;
+	public final short RockType2;
 
-		//Ogre::Plane RockLayer = Ogre::Plane(Ogre::Vector3(0, 0, 1), 1);
-		//LayerBoundries.push_back(make_pair(RockLayer, RockType));
+	public Geology() {
+		DataManager Data = DataManager.getDataManager();
+
+		RockType0 = Data.getLabelIndex("MATERIAL_SOIL");
+		RockType1 = Data.getLabelIndex("MATERIAL_SNOW");
+		RockType2 = Data.getLabelIndex("MATERIAL_GRANITE");
+	}
+
+	public boolean initialize(int Seed) {
 		GeologySeed = Seed;
 
 		RandomGenerator = new Dice();
@@ -283,10 +294,6 @@ public class Geology implements Serializable {
 	}
 
 	public short getRockTypeAtCoordinates(byte Target, int Zlevel) {
-		DataManager Data = DataManager.getDataManager();
-		final short RockType0 = Data.getLabelIndex("MATERIAL_SOIL");
-		final short RockType1 = Data.getLabelIndex("MATERIAL_SNOW");
-		final short RockType2 = Data.getLabelIndex("MATERIAL_GRANITE");
 
 		if (Zlevel > 3) {
 			return RockType1;

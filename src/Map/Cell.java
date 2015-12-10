@@ -53,6 +53,9 @@ public class Cell implements Serializable {
 	transient boolean DirtyTerrainRendering;
 	transient boolean DirtyPathRendering;
 
+	protected static final short WallSurface = DataManager.getLabelIndex("SURFACETYPE_ROUGH_WALL");
+	protected static final short FloorSurface = DataManager.getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
+
 	String CellString;
 
 	public Cell() {
@@ -135,10 +138,6 @@ public class Cell implements Serializable {
 			byte TargetCube = (byte) j;
 			CubeShape Shape = getCubeShape(j, LevelofDetail);
 			short CubeMaterial = getCubeMaterial(TargetCube);
-
-			DataManager Data = DataManager.getDataManager();
-			final short WallSurface = Data.getLabelIndex("SURFACETYPE_ROUGH_WALL");
-			final short FloorSurface = Data.getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
 			for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
 				Pair <CellCoordinate, Integer> values = ParentMap.TranslateCubeIndex(thisCellCoordinates, j, DirectionType, LevelofDetail);				
