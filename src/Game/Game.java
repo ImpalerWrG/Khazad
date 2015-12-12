@@ -16,9 +16,7 @@
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Game;
 
-import Core.Main;
-import Core.Dice;
-import Core.Utils;
+import Core.*;
 import Job.ExcavateJob;
 import Job.JobManager;
 import Map.*;
@@ -27,7 +25,6 @@ import Interface.VolumeSelection;
 import Nifty.GameScreenController;
 
 import com.jme3.app.Application;
-import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 
@@ -73,6 +70,13 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	int TickRate;
 	long CurrentGameTick;
 	float TickRounding;
+	Ticker simulation;
+
+	private float frameTimeAccululator;
+	private float attainedTickRate;
+	private float attainedTickRateAccumulator;
+	private float attainedTickRateCounter;
+
 	private long seconds;
 	private long minutes;
 	private long hours;
@@ -80,6 +84,9 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 
 	int UniqueIDCounter;
 	PriorityQueue<Temporal> TemporalQueue;
+	Temporal[][] FastTemporalMatrix;
+	int[] FastTemporalCounter;
+
 	HashMap<Integer, Actor> Actors;
 	int ActorIDcounter = 0;
 	transient ExecutorService Executor;
@@ -88,7 +95,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	private transient String saveGameFileName;
 	private transient GameScreenController gameScreenController;
 
-	private StringBuffer TimeStringBuffer;
+	private StringBuffer GameClockStringBuffer;
 
 	public Game() {
 
@@ -99,7 +106,9 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		Pause = true;
 
 		TemporalQueue = new PriorityQueue<Temporal>();
-		TimeStringBuffer = new StringBuffer();
+		FastTemporalMatrix = new Temporal[(int) Temporal.TICKS_PER_SECOND * 2][50];
+		FastTemporalCounter = new int[(int) Temporal.TICKS_PER_SECOND * 2];
+		GameClockStringBuffer = new StringBuffer();
 	}
 
 	@Override
@@ -245,13 +254,23 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	@Override
 	public void update(float tpf) {
 		if (!Pause && app.Focus) {
+			frameTimeAccululator += tpf;
 			if (lastUpdate == null || lastUpdate.isDone()) {
 				float TargetTicks = TickRate * tpf * Temporal.TICKS_PER_SECOND;
 				TargetTicks += TickRounding;
 				int FullTicks = (int) TargetTicks;
 				TickRounding = TargetTicks - FullTicks;
 
-				Ticker simulation = new Ticker(this);
+				attainedTickRateAccumulator += TargetTicks / (frameTimeAccululator * Temporal.TICKS_PER_SECOND);
+				attainedTickRateCounter++;
+
+				if (attainedTickRateCounter == 100) {
+					attainedTickRate = attainedTickRateAccumulator / 100;
+					attainedTickRateAccumulator = 0;
+					attainedTickRateCounter = 0;
+				}
+
+				simulation = new Ticker(this);
 				simulation.windup(FullTicks);
 				lastUpdate = Executor.submit(simulation);
 
@@ -264,6 +283,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 					// update UI with any updated state, since some windows can be open while unpaused.
 					gameScreenController.update();
 				}
+				frameTimeAccululator = 0;
 			}
 		}
 	}
@@ -300,19 +320,22 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	}
 
 	public String getTimeString() {
-		TimeStringBuffer.delete(0, TimeStringBuffer.length());
+		GameClockStringBuffer.delete(0, GameClockStringBuffer.length());
 
-		TimeStringBuffer.append("DAY ");
-		TimeStringBuffer.append(days);
-		TimeStringBuffer.append("  -  ");
+		GameClockStringBuffer.append("DAY ");
+		GameClockStringBuffer.append(days);
+		GameClockStringBuffer.append("  -  ");
 
-		TimeStringBuffer.append(Utils.padLeadingZero(hours %24));
-		TimeStringBuffer.append(":");
-		TimeStringBuffer.append(Utils.padLeadingZero(minutes % 60));
-		TimeStringBuffer.append(":");
-		TimeStringBuffer.append(Utils.padLeadingZero(seconds % 60));
+		GameClockStringBuffer.append(Utils.padLeadingZero(hours %24));
+		GameClockStringBuffer.append(":");
+		GameClockStringBuffer.append(Utils.padLeadingZero(minutes % 60));
+		GameClockStringBuffer.append(":");
+		GameClockStringBuffer.append(Utils.padLeadingZero(seconds % 60));
 
-		return TimeStringBuffer.toString();
+		GameClockStringBuffer.append("   ");
+		GameClockStringBuffer.append(attainedTickRate);
+
+		return GameClockStringBuffer.toString();
 	}
 
 	public String getKingdomName() {

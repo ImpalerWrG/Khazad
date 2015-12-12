@@ -46,6 +46,8 @@ public interface GridInterface {
 
 	BitSet getDirectionEdgeSet(CubeCoordinate TargetCoords);
 
+	MovementModality getModality();
+
 	public int getConnectivityZone(CubeCoordinate TargetCoords);
 
 	boolean isPathPossible(MovementModality MovementType, CubeCoordinate StartCoords, CubeCoordinate GoalCoords);

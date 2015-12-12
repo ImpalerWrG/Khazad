@@ -60,18 +60,22 @@ public class Navigator implements Serializable {
 	transient PathManager ParentManager;	// The manager which spawned this controller, all data on the map and paths will come from here
 	MovementBehavior CurrentMovementBehavior;
 	MovementModality Modality;
+	int ModalityGridIndex;
+
 	CubeCoordinate CurrentLocation;
 	CubeCoordinate Destination;
+
 	transient Future PathFuture = null;
 	MapPath CurrentPath = null;
 	PathWalker CurrentPathWalker = null;
 
 	public Navigator(CubeCoordinate SpawnLocation, MovementModality MovementType) {
+		ParentManager = PathManager.getSingleton();
 		CurrentLocation = SpawnLocation;
 		Destination = SpawnLocation;
 		Modality = MovementType;
+		ModalityGridIndex = ParentManager.getModalityGridIndex(Modality);
 
-		ParentManager = PathManager.getSingleton();
 		DirectionDice = new Dice();
 		DirectionDice.seed(SpawnLocation.hashCode());
 	}
@@ -175,6 +179,10 @@ public class Navigator implements Serializable {
 
 	public MovementModality getMovementModality() {
 		return Modality;
+	}
+
+	public int getModalityIndex() {
+		return ModalityGridIndex;
 	}
 
 	public void setLocation(CubeCoordinate NewLocation) {

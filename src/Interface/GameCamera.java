@@ -71,8 +71,8 @@ public class GameCamera {
 	protected int ViewLevels;
 	protected int ViewMax, ViewMin;
 
-	protected final int FrustumNear = -5;
-	protected final int FrustumFar = 10;
+	protected final int FrustumNear = -500;
+	protected final int FrustumFar = 1000;
 
 	public GameCamera(Camera cam, final Node target) {
 

@@ -616,8 +616,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
 			Terrain.SwapFrustrumCells();
 		}
-		
-		MainCamera.resetClipPlane();
 	}
 
 	@Override
@@ -649,7 +647,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
 		Terrain.SwapFrustrumCells();
 	}
-	
+
 	public boolean contains(BoundingBox box) {
 		return MainCamera.contains(box);
 	}

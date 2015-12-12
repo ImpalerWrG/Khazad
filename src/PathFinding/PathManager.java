@@ -59,6 +59,8 @@ public class PathManager extends AbstractAppState {
 	PathAlgorithm HeriarchialAstarImplementation;
 	//KhazadGrid MapGrid;
 	ConcurrentHashMap<MovementModality, GridInterface> Grids;
+	ArrayList<GridInterface> GridArray;
+
 	Heuristic ManhattenHeuristic;
 	Heuristic EuclideanHeuristic;
 	Heuristic MaxDimensionHeuristic;
@@ -77,6 +79,7 @@ public class PathManager extends AbstractAppState {
 
 		PoolList = new ArrayList<Pool>();
 		Grids = new ConcurrentHashMap<MovementModality, GridInterface>();
+		GridArray = new ArrayList<GridInterface>();
 	}
 
 	@Override
@@ -111,10 +114,15 @@ public class PathManager extends AbstractAppState {
 	public void createMapAbstraction(GameMap TargetMap) {
 		MovementModality BasicPawn = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
 		KhazadGrid MainGrid = new KhazadGrid(TargetMap, BasicPawn);
-		Grids.put(BasicPawn, MainGrid);
+		addGrid(MainGrid);
 
 		Tester = new PathTester();
 		Tester.Initialize(this);
+	}
+
+	public void addGrid(GridInterface NewGrid) {
+		Grids.put(NewGrid.getModality(), NewGrid);
+		GridArray.add(NewGrid);
 	}
 
 	public void editMapAbstractions(CubeCoordinate[] Coordinates) {
@@ -124,7 +132,8 @@ public class PathManager extends AbstractAppState {
 	}
 
 	void deleteMapAbstractions() {
-		Grids = null;
+		Grids.clear();
+		GridArray.clear();
 	}
 
 	public Future findFuturePath(MovementModality MovementType, CubeCoordinate StartCoords, CubeCoordinate GoalCoords) {
@@ -199,6 +208,20 @@ public class PathManager extends AbstractAppState {
 		return Grids.get(MovementType);
 	}
 
+	GridInterface getModalityGrid(int GridIndex) {
+		return GridArray.get(GridIndex);
+	}
+
+	int getModalityGridIndex(MovementModality MovementType) {
+		for (int i = 0; i < GridArray.size(); i++) {
+			GridInterface grid = GridArray.get(i);
+			if (grid.getModality().equals(MovementType)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	public BitSet getDirectionFlags(CubeCoordinate Coordinates, MovementModality Modality) {
 		GridInterface TargetGrid = getModalityGrid(Modality);
 		if (TargetGrid != null) {
@@ -217,6 +240,15 @@ public class PathManager extends AbstractAppState {
 
 	public float getEdgeCost(CubeCoordinate TestCoords, Direction DirectionType, MovementModality Modality) {
 		GridInterface TargetGrid = getModalityGrid(Modality);
+		if (TargetGrid != null) {
+			return TargetGrid.getEdgeCost(TestCoords, DirectionType);
+		}
+		return -1;
+	}
+
+	public float getEdgeCost(CubeCoordinate TestCoords, Direction DirectionType, int ModalityIndex) {
+		// TODO find more direct access to desired modality grid rather then hashmap
+		GridInterface TargetGrid = getModalityGrid(ModalityIndex);
 		if (TargetGrid != null) {
 			return TargetGrid.getEdgeCost(TestCoords, DirectionType);
 		}

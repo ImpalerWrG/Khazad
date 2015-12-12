@@ -209,6 +209,10 @@ public class KhazadGrid implements GridInterface, Serializable {
 		return new BitSet();  // No connectivity because Cell is invalid
 	}
 
+	public MovementModality getModality() {
+		return GridModality;
+	}
+
 	public boolean isEdge(CubeCoordinate TargetCoords, Direction DirectionType) {
 		GridCell TargetCell = getCell(new CellCoordinate(TargetCoords));
 		if (TargetCell != null) {

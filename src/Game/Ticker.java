@@ -56,6 +56,13 @@ public class Ticker implements Callable<Object>, Serializable {
 			thegame.CurrentGameTick++;   // Advance Tick count
 			thegame.getSettlement().getJobManager().update();
 
+			// Iterate Fast Temporals
+			for (int i = 0; i < Temporal.TICKS_PER_SECOND * 2; i++) {
+				/* revolving arrays of fast temporals (moving pawns)
+				 * recycled as they expire, if full bump to Heap
+				*/
+			}
+
 			Temporal target;
 			target = thegame.TemporalQueue.poll();
 			if (target != null) {

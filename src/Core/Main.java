@@ -70,6 +70,7 @@ public class Main extends SimpleApplication {
 		setting.setTitle("Khazad");
 		setting.setHeight(600);
 		setting.setWidth(800);
+		setting.setFrameRate(60);
 
 		app.setSettings(setting);
 		app.start();

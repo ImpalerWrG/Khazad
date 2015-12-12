@@ -5,7 +5,6 @@
 
 package Core;
 
-import com.jme3.system.Timer;
 import com.jme3.system.lwjgl.LwjglTimer;
 import java.io.Serializable;
 
@@ -27,9 +26,7 @@ public class Clock implements Serializable {
 	boolean paused;
 	LwjglTimer CPUClock;
 
-	public Clock(int Size) {
-		//System.currentTimeMillis();
-
+	public Clock(int SamplingSize) {
 		CPUClock = new LwjglTimer();
 
 		StartTime = 0;
@@ -39,7 +36,7 @@ public class Clock implements Serializable {
 		AverageTime = 0;
 		SamplingPause = 0;
 
-		setSampleSize(Size);
+		setSampleSize(SamplingSize);
 	}
 
 	public void start() {
@@ -96,7 +93,7 @@ public class Clock implements Serializable {
 		}
 	}
 
-	public void setSampleSize(int Size) {
+	public final void setSampleSize(int Size) {
 		SampleSize = Size;
 		if (SampleSize == 0) {
 			SampleSize = 1;
