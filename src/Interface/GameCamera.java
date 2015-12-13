@@ -74,7 +74,7 @@ public class GameCamera {
 	protected final int FrustumNear = -500;
 	protected final int FrustumFar = 1000;
 
-	public GameCamera(Camera cam, final Node target) {
+	public GameCamera(Camera cam, int SliceLevel, final Node target) {
 
 		this.camera = cam;
 
@@ -83,6 +83,7 @@ public class GameCamera {
 
 		camera.setParallelProjection(true);
 		camera.setFrustum(FrustumNear * zoomFactor, FrustumFar * zoomFactor, -aspect * zoomFactor, aspect * zoomFactor, zoomFactor, -zoomFactor);
+		this.SliceTop = SliceLevel;
 
 		this.TargetNode = target;
 		this.camera.setAxes(Vector3f.UNIT_Y, Vector3f.UNIT_Z, Vector3f.UNIT_X);

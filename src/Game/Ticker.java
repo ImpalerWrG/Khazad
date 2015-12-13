@@ -32,11 +32,18 @@ import java.util.concurrent.Callable;
 public class Ticker implements Callable<Object>, Serializable {
 
 	private static final long serialVersionUID = 1;
+
+	private long FastTickLimit;
+	private int FastArrySize;
+
 	Game thegame;
 	int Tickdown;
+	int CurrentTickModulus;
 
 	public Ticker(Game parent) {
 		thegame = parent;
+		FastTickLimit = thegame.FastTickLimit;
+		FastArrySize = thegame.FastArrySize;
 	}
 
 	public void windup(int Ticks) {
@@ -56,22 +63,23 @@ public class Ticker implements Callable<Object>, Serializable {
 			thegame.CurrentGameTick++;   // Advance Tick count
 			thegame.getSettlement().getJobManager().update();
 
-			// Iterate Fast Temporals
-			for (int i = 0; i < Temporal.TICKS_PER_SECOND * 2; i++) {
-				/* revolving arrays of fast temporals (moving pawns)
-				 * recycled as they expire, if full bump to Heap
-				*/
+			// Iterate Fast Temporals in the Matrix
+			CurrentTickModulus = (int) (thegame.CurrentGameTick % FastTickLimit);
+			for (int i = 0; i < thegame.FastTemporalCounter[CurrentTickModulus]; i++) {
+				Temporal target = thegame.FastTemporalMatrix[CurrentTickModulus][i];
+				long RewakeTick = target.wake(thegame.CurrentGameTick);
+				reInsertTemporal(target, RewakeTick);
 			}
+			thegame.FastTemporalCounter[CurrentTickModulus] = 0;
 
+			// Process the Slow Temporals in the Queue
 			Temporal target;
 			target = thegame.TemporalQueue.poll();
 			if (target != null) {
 				if (target.WakeTick <= thegame.CurrentGameTick) {
 					do {
 						long RewakeTick = target.wake(thegame.CurrentGameTick);
-						if (RewakeTick != -1) {
-							thegame.TemporalQueue.add(target);
-						}
+						reInsertTemporal(target, RewakeTick);
 						target = thegame.TemporalQueue.poll();
 					} while (target.WakeTick <= thegame.CurrentGameTick);
 				}
@@ -82,6 +90,29 @@ public class Ticker implements Callable<Object>, Serializable {
 			System.err.println(e.getLocalizedMessage());
 			System.err.println(e.getMessage());
 			System.err.println(e.toString());
+		}
+	}
+
+	public void reInsertTemporal(Temporal target, long RewakeTick) {
+		if (RewakeTick != -1) {
+			long RewakeDelta = RewakeTick - thegame.CurrentGameTick;
+			if (RewakeDelta < FastTickLimit) {
+				if (RewakeDelta < 1) 
+					RewakeDelta = 1;
+
+				int targetArray = (int) ((CurrentTickModulus + RewakeDelta) % FastTickLimit);
+				int ArrayIndex = thegame.FastTemporalCounter[targetArray];
+				if (ArrayIndex < FastArrySize) {
+					thegame.FastTemporalMatrix[targetArray][ArrayIndex] = target;
+					thegame.FastTemporalCounter[targetArray]++;
+				} else {
+					thegame.TemporalQueue.add(target);
+				}
+			} else {
+				thegame.TemporalQueue.add(target);
+			}
+		} else {
+			// some kind of destruction?
 		}
 	}
 }

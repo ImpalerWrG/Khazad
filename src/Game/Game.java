@@ -86,6 +86,8 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	PriorityQueue<Temporal> TemporalQueue;
 	Temporal[][] FastTemporalMatrix;
 	int[] FastTemporalCounter;
+	protected static final int FastArrySize = 1000;
+	protected static final int FastTickLimit = (int) Temporal.TICKS_PER_SECOND * 2;
 
 	HashMap<Integer, Actor> Actors;
 	int ActorIDcounter = 0;
@@ -106,8 +108,8 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		Pause = true;
 
 		TemporalQueue = new PriorityQueue<Temporal>();
-		FastTemporalMatrix = new Temporal[(int) Temporal.TICKS_PER_SECOND * 2][50];
-		FastTemporalCounter = new int[(int) Temporal.TICKS_PER_SECOND * 2];
+		FastTemporalMatrix = new Temporal[FastTickLimit][FastArrySize];
+		FastTemporalCounter = new int[FastTickLimit];
 		GameClockStringBuffer = new StringBuffer();
 	}
 

@@ -134,7 +134,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				LookNode.attachChild(EyeBall);
 				LookNode.setCullHint(Spatial.CullHint.Always);
 
-				MainCamera = new GameCamera(app.getCamera(), LookNode);
+				MainCamera = new GameCamera(app.getCamera(), SliceTop, LookNode);
 
 				TerrainSlicer Slicer = new TerrainSlicer(app.getAssetManager());
 				Slicer.setCamera(MainCamera);
@@ -520,6 +520,8 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			//TargetNode.move(0, 0, Change);
 			//CamNode.move(0, 0, Change);		
 		}
+		if (this.MainCamera != null)
+			this.MainCamera.SliceTop = SliceTop;
 	}
 
 	public void setSlice(int newTop, int newBottome) {
@@ -559,6 +561,8 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				render.setSliceLevels(SliceTop, SliceBottom);
 			}
 		}
+		if (this.MainCamera != null)
+			this.MainCamera.SliceTop = SliceTop;
 	}
 
 	public void setSliceBottom(int newValue) {
