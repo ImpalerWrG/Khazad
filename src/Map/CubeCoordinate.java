@@ -29,11 +29,17 @@ import java.io.Serializable;
 public final class CubeCoordinate implements Cloneable, Serializable {
 
 	private static final long serialVersionUID = 1;
-	public static final int CELLEDGESIZE = 16;
-	public static final int CELLBITSHIFT = 4;
-	public static final int CELLBITFLAG = 15;
-	public static final int CUBESPERCELL = 256;
-	public static final int CELLDETAILLEVELS = 5;
+	public static final int CELLEDGESIZE = 32;
+
+	public static final int CELLBITSHIFT_X = 5;
+	public static final int CELLBITFLAG_X = 31;
+	public static final int CELLBITSHIFT_Y = 5;
+	public static final int CELLBITFLAG_Y = 31;
+	public static final int CELLBITSHIFT_Z = 5;
+	public static final int CELLBITFLAG_Z = 31;
+	
+	public static final int CUBESPERCELL = 1024;
+	public static final int CELLDETAILLEVELS = 6;
 	public static final float HALFCUBE = (float) 0.5;
 	// Primary values
 	public int X, Y, Z;
@@ -43,8 +49,8 @@ public final class CubeCoordinate implements Cloneable, Serializable {
 	}
 
 	public CubeCoordinate(CellCoordinate CellCoords, short CubeCoords) {
-		X = (CellCoords.X * CELLEDGESIZE) + ((CubeCoords >> CELLBITSHIFT) & CELLBITFLAG);
-		Y = (CellCoords.Y * CELLEDGESIZE) + (CubeCoords & CELLBITFLAG);
+		X = (CellCoords.X * CELLEDGESIZE) + ((CubeCoords >> CELLBITSHIFT_X) & CELLBITFLAG_X);
+		Y = (CellCoords.Y * CELLEDGESIZE) + (CubeCoords & CELLBITFLAG_X);
 		Z = CellCoords.Z;
 	}
 
@@ -100,7 +106,7 @@ public final class CubeCoordinate implements Cloneable, Serializable {
 	}
 
 	public short getCubeIndex() {
-		return (short) (((X & CELLBITFLAG) << CELLBITSHIFT) + (Y & CELLBITFLAG));
+		return (short) (((X & CELLBITFLAG_X) << CELLBITSHIFT_X) + (Y & CELLBITFLAG_X));
 	}
 
 	public void copy(CubeCoordinate ArgumentCoordinates) {

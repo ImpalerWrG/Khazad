@@ -66,7 +66,7 @@ public class FaceCoordinate implements Serializable {
 	}
 
 	public void set(int NewX, int NewY, Direction DirectionComponent) {
-		CubeCoordinates = (byte) ((NewX << CubeCoordinate.CELLBITSHIFT) + NewY);
+		CubeCoordinates = (byte) ((NewX << CubeCoordinate.CELLBITSHIFT_X) + NewY);
 		FaceDirection = (byte) DirectionComponent.ordinal();
 	}
 

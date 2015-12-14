@@ -42,28 +42,28 @@ public class CellCoordinate implements Serializable {
 
 	public CellCoordinate(CubeCoordinate SourceCoordinates) {
 		if (SourceCoordinates.X >= 0) {
-			X = (short) (SourceCoordinates.X >> CubeCoordinate.CELLBITSHIFT);
+			X = (short) (SourceCoordinates.X >> CubeCoordinate.CELLBITSHIFT_X);
 		} else {
-			X = (short) ((SourceCoordinates.X >> CubeCoordinate.CELLBITSHIFT) - 1); //truncate to negative infinity
+			X = (short) ((SourceCoordinates.X >> CubeCoordinate.CELLBITSHIFT_X) - 1); //truncate to negative infinity
 		}
 		if (SourceCoordinates.Y >= 0) {
-			Y = (short) (SourceCoordinates.Y >> CubeCoordinate.CELLBITSHIFT);
+			Y = (short) (SourceCoordinates.Y >> CubeCoordinate.CELLBITSHIFT_X);
 		} else {
-			Y = (short) ((SourceCoordinates.Y >> CubeCoordinate.CELLBITSHIFT) - 1); //truncate to negative infinity
+			Y = (short) ((SourceCoordinates.Y >> CubeCoordinate.CELLBITSHIFT_X) - 1); //truncate to negative infinity
 		}
 		Z = (short) SourceCoordinates.Z;
 	}
 
 	public void resolveCube(CubeCoordinate SourceCoordinates) {
 		if (SourceCoordinates.X >= 0) {
-			X = (short) (SourceCoordinates.X >> CubeCoordinate.CELLBITSHIFT);
+			X = (short) (SourceCoordinates.X >> CubeCoordinate.CELLBITSHIFT_X);
 		} else {
-			X = (short) ((SourceCoordinates.X >> CubeCoordinate.CELLBITSHIFT) - 1); //truncate to negative infinity
+			X = (short) ((SourceCoordinates.X >> CubeCoordinate.CELLBITSHIFT_X) - 1); //truncate to negative infinity
 		}
 		if (SourceCoordinates.Y >= 0) {
-			Y = (short) (SourceCoordinates.Y >> CubeCoordinate.CELLBITSHIFT);
+			Y = (short) (SourceCoordinates.Y >> CubeCoordinate.CELLBITSHIFT_X);
 		} else {
-			Y = (short) ((SourceCoordinates.Y >> CubeCoordinate.CELLBITSHIFT) - 1); //truncate to negative infinity
+			Y = (short) ((SourceCoordinates.Y >> CubeCoordinate.CELLBITSHIFT_X) - 1); //truncate to negative infinity
 		}
 		Z = (short) SourceCoordinates.Z;
 	}

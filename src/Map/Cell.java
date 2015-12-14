@@ -105,8 +105,8 @@ public class Cell implements Serializable {
 	}
 
 	public void setCubeShape(short Coordinates, CubeShape NewShape, int Level) {
-		if (NewShape.getData() != CubeShapeTypes[Level][Coordinates & 0xFF]) {
-			CubeShapeTypes[Level][Coordinates & 0xFF] = NewShape.getData();
+		if (NewShape.getData() != CubeShapeTypes[Level][Coordinates]) {
+			CubeShapeTypes[Level][Coordinates] = NewShape.getData();
 
 			Face TargetFace = getFace(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE), 0);
 			if (TargetFace != null) {
@@ -117,8 +117,8 @@ public class Cell implements Serializable {
 	}
 
 	public void setCubeShape(short Coordinates, CubeShape NewShape) {
-		if (NewShape.getData() != CubeShapeTypes[0][Coordinates & 0xFF]) {
-			CubeShapeTypes[0][Coordinates & 0xFF] = NewShape.getData();
+		if (NewShape.getData() != CubeShapeTypes[0][Coordinates]) {
+			CubeShapeTypes[0][Coordinates] = NewShape.getData();
 
 			Face TargetFace = getFace(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE), 0);
 			if (TargetFace != null) {
@@ -139,8 +139,8 @@ public class Cell implements Serializable {
 			short CubeMaterial = getCubeMaterial(j);
 
 			for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
-				Pair <CellCoordinate, Integer> values = ParentMap.TranslateCubeIndex(thisCellCoordinates, j, DirectionType, LevelofDetail);				
-				CubeCoordinate AdjacentCoordinates = new CubeCoordinate(values.getValue0(), values.getValue1().byteValue());
+				Pair <CellCoordinate, Short> values = ParentMap.TranslateCubeIndex(thisCellCoordinates, j, DirectionType, LevelofDetail);				
+				CubeCoordinate AdjacentCoordinates = new CubeCoordinate(values.getValue0(), values.getValue1().shortValue());
 
 				if (ParentMap.isCubeInited(AdjacentCoordinates)) {
 					CubeShape AdjacentShape = ParentMap.getCubeShape(AdjacentCoordinates);

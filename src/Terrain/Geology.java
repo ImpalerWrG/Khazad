@@ -132,10 +132,10 @@ public class Geology implements Serializable {
 
 		/* Seed the endpoints of the array. To enable seamless wrapping,
 		 * the endpoints need to be the same point. */
-		byte stride = CubeCoordinate.CELLEDGESIZE / 2;
+		short stride = CubeCoordinate.CELLEDGESIZE / 2;
 
 		while (stride > 0) {
-			for (byte i = stride; i < CubeCoordinate.CELLEDGESIZE; i += stride) {
+			for (short i = stride; i < CubeCoordinate.CELLEDGESIZE; i += stride) {
 				Edge[i] = scale * RandomGenerator.roll(-1.0f, 1.0f) + ((Edge[i - stride] + Edge[i + stride]) * .5f);
 				/* reduce random number range */
 				scale *= ratio;
@@ -293,7 +293,7 @@ public class Geology implements Serializable {
 		}
 	}
 
-	public short getRockTypeAtCoordinates(byte Target, int Zlevel) {
+	public short getRockTypeAtCoordinates(short Target, int Zlevel) {
 
 		if (Zlevel > 3) {
 			return RockType1;
@@ -357,7 +357,7 @@ public class Geology implements Serializable {
 				TargetCell.setCubeShape(j, Shape, i);
 
 				if (i == 0) {
-					short MaterialType = getRockTypeAtCoordinates((byte) j, TargetCoordinates.Z);
+					short MaterialType = getRockTypeAtCoordinates(j, TargetCoordinates.Z);
 					if (MaterialType != DataManager.INVALID_INDEX) {
 						TargetCell.setCubeMaterial(j, MaterialType);	
 						TargetCell.setCubeShape(j, Shape, i);

@@ -185,10 +185,10 @@ public class GameMap implements Serializable {
 		return ModifiedCoordinates;
 	}
 
-	Pair< CellCoordinate, Integer> TranslateCubeIndex(CellCoordinate Coords, int Index, Direction DirectionType, int LevelofDetail) {
+	Pair< CellCoordinate, Short> TranslateCubeIndex(CellCoordinate Coords, short Index, Direction DirectionType, int LevelofDetail) {
 		int Shift = (CubeCoordinate.CELLDETAILLEVELS - LevelofDetail) - 1;
 		int Mask = (1 << Shift) - 1;
-		
+
 		int X = Coords.X * (1 << Shift);
 		int Y = Coords.Y * (1 << Shift);
 		int Z = Coords.Z;
@@ -196,7 +196,7 @@ public class GameMap implements Serializable {
 
 		X += (Index >> Shift) & Mask;
 		Y += (Index & Mask);
-	
+
 		X += DirectionType.getValueonAxis(Axis.AXIS_X);
 		Y += DirectionType.getValueonAxis(Axis.AXIS_Y);
 		Z += DirectionType.getValueonAxis(Axis.AXIS_Z);
@@ -205,15 +205,15 @@ public class GameMap implements Serializable {
 
 		if (X < 0)
 			NewCoords.X -= 1;
-		
+
 		if (Y < 0)
 			NewCoords.Y -= 1;
 		
 		X %= (1 << Shift);
 		Y %= (1 << Shift);
 
-		int NewIndex = (X << Shift) + Y;
-		
+		short NewIndex = (short) ((X << Shift) + Y);
+
 		return new Pair(NewCoords, NewIndex);
 	}
 

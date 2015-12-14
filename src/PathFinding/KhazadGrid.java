@@ -62,23 +62,23 @@ public class KhazadGrid implements GridInterface, Serializable {
 			ConnectivityZone = new int[CubeCoordinate.CUBESPERCELL];
 		}
 
-		public int getConnectivityZone(int Cube) {
+		public int getConnectivityZone(short Cube) {
 			return ConnectivityZone[Cube];
 		}
 
-		public void setConnectivityZone(int Cube, int Zone) {
+		public void setConnectivityZone(short Cube, int Zone) {
 			ConnectivityZone[Cube] = Zone;
 		}
 
-		public BitSet getCubeDirections(int Cube) {
+		public BitSet getCubeDirections(short Cube) {
 			return DirectionMatrix.get(Cube * Direction.ANGULAR_DIRECTIONS.length, ((Cube + 1) * Direction.ANGULAR_DIRECTIONS.length));
 		}
 
-		public void setCubeDirection(int Cube, Direction TargetDirection, boolean newValue) {
+		public void setCubeDirection(short Cube, Direction TargetDirection, boolean newValue) {
 			DirectionMatrix.set((Cube * Direction.ANGULAR_DIRECTIONS.length) + TargetDirection.ordinal(), newValue);
 		}
 
-		void setCubeDirections(int Cube, BitSet ArgumentSet) {
+		void setCubeDirections(short Cube, BitSet ArgumentSet) {
 			for (int i = 0; i < Direction.ANGULAR_DIRECTIONS.length; i++) {
 				DirectionMatrix.set((Cube * Direction.ANGULAR_DIRECTIONS.length) + i, ArgumentSet.get(i));
 			}
@@ -111,13 +111,11 @@ public class KhazadGrid implements GridInterface, Serializable {
 				CellCoordinate CellCoords = TargetCell.getCellCoordinates();
 				GridCell NewGridCell = addCell(CellCoords);
 
-				byte TargetCube = 0;
-				do {
-					CubeCoordinate TargetCoords = new CubeCoordinate(CellCoords, TargetCube);
+				for (short i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
+					CubeCoordinate TargetCoords = new CubeCoordinate(CellCoords, i);
 					BitSet Flags = buildConnectivitySet(TargetCoords);
-					NewGridCell.setCubeDirections(TargetCube & 0xFF, Flags);
-					TargetCube++;
-				} while (TargetCube != 0);  // End Loop when Byte rolls over
+					NewGridCell.setCubeDirections(i, Flags);
+				} 
 			}
 		}
 
@@ -132,22 +130,21 @@ public class KhazadGrid implements GridInterface, Serializable {
 			if (TargetCell != null) {
 				CellCoordinate CellCoords = TargetCell.getCellCoordinates();
 
-				byte TargetCube = 0;
-				do {
-					BitSet Flags = getDirectionEdgeSet(new CubeCoordinate(CellCoords, TargetCube));
+				for (short i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
+					BitSet Flags = getDirectionEdgeSet(new CubeCoordinate(CellCoords, i));
 
 					if (Flags.cardinality() > 0) {
-						if (TargetCell.ConnectivityZone[TargetCube & 0xFF] == 0) { // Start a new zone if not connected to another zone
+						if (TargetCell.ConnectivityZone[i] == 0) { // Start a new zone if not connected to another zone
 							ZoneCounter++; // First zone will be 1, 0 will indicate un-ititialized
-							TargetCell.ConnectivityZone[TargetCube & 0xFF] = ZoneCounter;
+							TargetCell.ConnectivityZone[i] = ZoneCounter;
 						}
 						// Push this current zone onto the adjacent area
-						int CurrentZoneIndex = TargetCell.ConnectivityZone[TargetCube & 0xFF];
+						int CurrentZoneIndex = TargetCell.ConnectivityZone[i];
 
 						for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
 							if (Flags.get(dir.ordinal())) {
 								// Find the Zone that the adjcent Tile has
-								CubeCoordinate AdjacentTileCoords = new CubeCoordinate(CellCoords, TargetCube);
+								CubeCoordinate AdjacentTileCoords = new CubeCoordinate(CellCoords, i);
 								AdjacentTileCoords.translate(dir);
 								int AdjacentZoneIndex = getConnectivityZone(AdjacentTileCoords);
 
@@ -161,10 +158,9 @@ public class KhazadGrid implements GridInterface, Serializable {
 							}
 						}
 					} else {
-						TargetCell.ConnectivityZone[TargetCube & 0xFF] = 0;
+						TargetCell.ConnectivityZone[i] = 0;
 					}
-					TargetCube++;
-				} while (TargetCube != 0);  // End Loop when Byte rolls over
+				}
 			}
 		}
 
@@ -402,10 +398,10 @@ public class KhazadGrid implements GridInterface, Serializable {
 			CellCoordinate CellCoords = TargetCell.getCellCoordinates();
 
 			BitSet DirectionSet;
-			for (int TargetCube = 0; TargetCube < 256; TargetCube++) {
+			for (short TargetCube = 0; TargetCube < CubeCoordinate.CUBESPERCELL; TargetCube++) {
 				DirectionSet = TargetCell.getCubeDirections(TargetCube);
 				if (DirectionSet.cardinality() != 0) {  // Any Valid Edge Exists
-					CubeCoordinate TestCoordinates = new CubeCoordinate(CellCoords, (byte) TargetCube);
+					CubeCoordinate TestCoordinates = new CubeCoordinate(CellCoords, TargetCube);
 					TestCoords.add(TestCoordinates);
 				}
 			}
