@@ -232,21 +232,21 @@ public class GameMap implements Serializable {
 		Pair< CubeCoordinate, Direction> ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
-		return TargetCell != null ? TargetCell.getFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1()), 0) : null;
+		return TargetCell != null ? TargetCell.getFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeIndex(), ConvertedValues.getValue1()), 0) : null;
 	}
 
 	public boolean hasFace(CubeCoordinate TargetMapCoordinates, Direction DirectionType) {
 		Pair< CubeCoordinate, Direction> ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
-		return TargetCell != null ? TargetCell.hasFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1()), 0) : false;
+		return TargetCell != null ? TargetCell.hasFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeIndex(), ConvertedValues.getValue1()), 0) : false;
 	}
 
 	public boolean removeFace(CubeCoordinate TargetMapCoordinates, Direction DirectionType) {
 		Pair< CubeCoordinate, Direction> ConvertedValues = FaceCoordinateConvertion(TargetMapCoordinates, DirectionType);
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
-		return TargetCell != null ? TargetCell.removeFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1()), 0) : false;
+		return TargetCell != null ? TargetCell.removeFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeIndex(), ConvertedValues.getValue1()), 0) : false;
 	}
 
 	public Face addFace(CubeCoordinate TargetMapCoordinates, Direction DirectionType, int LevelofDetail) {
@@ -256,14 +256,14 @@ public class GameMap implements Serializable {
 		if (TargetCell == null)
 			TargetCell = initializeCell(new CellCoordinate(ConvertedValues.getValue0()));
 
-		return TargetCell.addFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1(), LevelofDetail), LevelofDetail);
+		return TargetCell.addFace(new FaceCoordinate(ConvertedValues.getValue0().getCubeIndex(), ConvertedValues.getValue1(), LevelofDetail), LevelofDetail);
 	}
 
 	public void setCubeShape(CubeCoordinate Coordinate, CubeShape NewShape) {
 		Cell TargetCell = getCubeOwner(Coordinate);
 
 		if (TargetCell != null) {
-			TargetCell.setCubeShape(Coordinate.getCubeByteIndex(), NewShape);
+			TargetCell.setCubeShape(Coordinate.getCubeIndex(), NewShape);
 			CubeCoordinate[] Coordinates = {Coordinate};
 			PathManager.getSingleton().editMapAbstractions(Coordinates);
 		}
@@ -273,7 +273,7 @@ public class GameMap implements Serializable {
 		Cell TargetCell = getCubeOwner(Coordinates);
 
 		if (TargetCell != null) {
-			return TargetCell.getCubeShape(Coordinates.getCubeIntIndex(), 0);
+			return TargetCell.getCubeShape(Coordinates.getCubeIndex(), 0);
 		} else {
 			return new CubeShape(CubeShape.BELOW_CUBE_HEIGHT);
 		}
@@ -283,13 +283,13 @@ public class GameMap implements Serializable {
 		Cell TargetCell = getCubeOwner(Coordinates);
 
 		if (TargetCell != null) {
-			TargetCell.setCubeMaterial(Coordinates.getCubeByteIndex(), MaterialID);
+			TargetCell.setCubeMaterial(Coordinates.getCubeIndex(), MaterialID);
 		}
 	}
 
 	public short getCubeMaterial(CubeCoordinate Coordinates) {
 		Cell TargetCell = getCubeOwner(Coordinates);
-		return TargetCell != null ? TargetCell.getCubeMaterial(Coordinates.getCubeByteIndex()) : DataManager.INVALID_INDEX;
+		return TargetCell != null ? TargetCell.getCubeMaterial(Coordinates.getCubeIndex()) : DataManager.INVALID_INDEX;
 	}
 
 	public void setFaceMaterial(CubeCoordinate TargetMapCoordinates, Direction DirectionType, short MaterialID) {
@@ -297,7 +297,7 @@ public class GameMap implements Serializable {
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
 		if (TargetCell != null) {
-			TargetCell.setFaceMaterialType(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1()), MaterialID);
+			TargetCell.setFaceMaterialType(new FaceCoordinate(ConvertedValues.getValue0().getCubeIndex(), ConvertedValues.getValue1()), MaterialID);
 		}
 	}
 
@@ -311,7 +311,7 @@ public class GameMap implements Serializable {
 
 		Cell TargetCell = getCell(new CellCoordinate(ConvertedValues.getValue0()));
 		if (TargetCell != null) {
-			TargetCell.setFaceSurfaceType(new FaceCoordinate(ConvertedValues.getValue0().getCubeByteIndex(), ConvertedValues.getValue1()), SurfaceID);
+			TargetCell.setFaceSurfaceType(new FaceCoordinate(ConvertedValues.getValue0().getCubeIndex(), ConvertedValues.getValue1()), SurfaceID);
 		}
 	}
 
@@ -322,13 +322,13 @@ public class GameMap implements Serializable {
 
 	public boolean isCubeHidden(CubeCoordinate Coordinates) {
 		Cell TargetCell = getCubeOwner(Coordinates);
-		return TargetCell != null ? TargetCell.isCubeHidden(Coordinates.getCubeByteIndex()) : true;
+		return TargetCell != null ? TargetCell.isCubeHidden(Coordinates.getCubeIndex()) : true;
 	}
 
 	public void setCubeHidden(CubeCoordinate Coordinates, boolean NewValue) {
 		Cell TargetCell = getCubeOwner(Coordinates);
 		if (TargetCell != null)
-			TargetCell.setCubeHidden(Coordinates.getCubeByteIndex(), NewValue);
+			TargetCell.setCubeHidden(Coordinates.getCubeIndex(), NewValue);
 	}
 
 	public void generateFirstLight() {
@@ -345,7 +345,7 @@ public class GameMap implements Serializable {
 			}
 
 			do {
-				for (int i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
+				for (short i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
 					if (TopCell.isCubeSunLit((byte) i) && !TopCell.getCubeShape(i, 0).hasFace(Direction.DIRECTION_NONE)) {
 						BottomCell.setCubeSunLit((byte) i, true);
 						LightRemains = true;
@@ -361,35 +361,35 @@ public class GameMap implements Serializable {
 
 	public boolean isCubeSubTerranean(CubeCoordinate Coordinates) {
 		Cell TargetCell = getCubeOwner(Coordinates);
-		return TargetCell != null ? TargetCell.isCubeSubTerranean(Coordinates.getCubeByteIndex()) : false;
+		return TargetCell != null ? TargetCell.isCubeSubTerranean(Coordinates.getCubeIndex()) : false;
 	}
 
 	public void setCubeSubTerranean(CubeCoordinate Coordinates, boolean NewValue) {
 		Cell TargetCell = getCubeOwner(Coordinates);
 		if (TargetCell != null)
-			TargetCell.setCubeSubTerranean(Coordinates.getCubeByteIndex(), NewValue);
+			TargetCell.setCubeSubTerranean(Coordinates.getCubeIndex(), NewValue);
 	}
 
 	public boolean isCubeSkyView(CubeCoordinate Coordinates) {
 		Cell TargetCell = getCubeOwner(Coordinates);
-		return TargetCell != null ? TargetCell.isCubeSkyView(Coordinates.getCubeByteIndex()) : false;
+		return TargetCell != null ? TargetCell.isCubeSkyView(Coordinates.getCubeIndex()) : false;
 	}
 
 	public void setCubeSkyView(CubeCoordinate Coordinates, boolean NewValue) {
 		Cell TargetCell = getCubeOwner(Coordinates);
 		if (TargetCell != null)
-			TargetCell.setCubeSkyView(Coordinates.getCubeByteIndex(), NewValue);
+			TargetCell.setCubeSkyView(Coordinates.getCubeIndex(), NewValue);
 	}
 
 	public boolean isCubeSunLit(CubeCoordinate Coordinates) {
 		Cell TargetCell = getCubeOwner(Coordinates);
-		return TargetCell != null ? TargetCell.isCubeSunLit(Coordinates.getCubeByteIndex()) : false;
+		return TargetCell != null ? TargetCell.isCubeSunLit(Coordinates.getCubeIndex()) : false;
 	}
 
 	public void setCubeSunLit(CubeCoordinate Coordinates, boolean NewValue) {
 		Cell TargetCell = getCubeOwner(Coordinates);
 		if (TargetCell != null)
-			TargetCell.setCubeSunLit(Coordinates.getCubeByteIndex(), NewValue);
+			TargetCell.setCubeSunLit(Coordinates.getCubeIndex(), NewValue);
 	}
 
 	public void excavateCube(CubeCoordinate Coordinates, CubeShape GoalShape) {

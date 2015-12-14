@@ -22,15 +22,15 @@ import java.io.Serializable;
 /**
  * Describes the location of a Face, a face is normally the 2D space between
  * two map cube volumes but slopes can occour inside cubic volumes and are identified
- * with a NONE direction, byte Coordinates refere to the Cells array of 256 cubes,
- * a CellCoordinate is thus needed to fully resolve the map location of a Face
+ * with a NONE direction or angular directions, short Coordinates refere to the Cells 
+ * array of cubes, a CellCoordinate is thus needed to fully resolve the map location of a Face
  *
  * @author Impaler
  */
 public class FaceCoordinate implements Serializable {
 
 	private static final long serialVersionUID = 1;
-	private byte Coordinates = 0;
+	private short CubeCoordinates = 0;
 	private byte LevelofDetail = 0;
 	public byte FaceDirection;
 
@@ -38,46 +38,52 @@ public class FaceCoordinate implements Serializable {
 		FaceDirection = (byte) Direction.DIRECTION_DESTINATION.ordinal();
 	}
 
-	public FaceCoordinate(byte CubeCoordinates, Direction TargetDirection) {
-		Coordinates = CubeCoordinates;
+	public FaceCoordinate(short CubeCoordinates, Direction TargetDirection) {
+		this.CubeCoordinates = CubeCoordinates;
 		FaceDirection = (byte) TargetDirection.ordinal();
 	}
 
 	public FaceCoordinate(byte CubeCoordinates, Direction TargetDirection, int DetailLevel) {
-		Coordinates = CubeCoordinates;
+		this.CubeCoordinates = CubeCoordinates;
+		LevelofDetail = (byte) DetailLevel;
+		FaceDirection = (byte) TargetDirection.ordinal();
+	}
+
+	public FaceCoordinate(short CubeCoordinates, Direction TargetDirection, int DetailLevel) {
+		this.CubeCoordinates = CubeCoordinates;
 		LevelofDetail = (byte) DetailLevel;
 		FaceDirection = (byte) TargetDirection.ordinal();
 	}
 
 	public void set(FaceCoordinate ArgumentCoordinates) {
-		Coordinates = ArgumentCoordinates.Coordinates;
+		CubeCoordinates = ArgumentCoordinates.CubeCoordinates;
 		FaceDirection = ArgumentCoordinates.FaceDirection;
 	}
 
 	public void set(byte TargetCoords, Direction DirectionComponent) {
-		Coordinates = TargetCoords;
+		CubeCoordinates = TargetCoords;
 		FaceDirection = (byte) DirectionComponent.ordinal();
 	}
 
 	public void set(int NewX, int NewY, Direction DirectionComponent) {
-		Coordinates = (byte) ((NewX << CubeCoordinate.CELLBITSHIFT) + NewY);
+		CubeCoordinates = (byte) ((NewX << CubeCoordinate.CELLBITSHIFT) + NewY);
 		FaceDirection = (byte) DirectionComponent.ordinal();
 	}
 
 	public int getX() {
 		int Shift = (CubeCoordinate.CELLDETAILLEVELS - LevelofDetail) - 1;
 		int Mask = (1 << Shift) - 1;
-		return (Coordinates >> Shift) & Mask;
+		return (CubeCoordinates >> Shift) & Mask;
 	}
 
 	public int getY() {
 		int Shift = (CubeCoordinate.CELLDETAILLEVELS - LevelofDetail) - 1;
 		int Mask = (1 << Shift) - 1;		
-		return (Coordinates & Mask);
+		return (CubeCoordinates & Mask);
 	}
 
 	byte getCoordinates() {
-		return Coordinates;
+		return (byte) CubeCoordinates;
 	}
 
 	public Direction getFaceDirection() {
@@ -95,12 +101,12 @@ public class FaceCoordinate implements Serializable {
 
 		FaceCoordinate Arg = (FaceCoordinate) ArgumentCoordinates;
 
-		return (Arg.Coordinates == Coordinates && Arg.FaceDirection == FaceDirection);
+		return (Arg.CubeCoordinates == CubeCoordinates && Arg.FaceDirection == FaceDirection);
 	}
 
 	@Override
 	public int hashCode() {
-		int Key = Coordinates;
+		int Key = CubeCoordinates;
 		Key <<= 8;
 		Key += FaceDirection;
 

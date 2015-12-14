@@ -86,7 +86,7 @@ public class ExcavateJob extends Job implements Serializable {
 				for (int z = Origin.Z; z < Terminal.Z + 1; z++) {
 					CubeCoordinate TargetCoords = new CubeCoordinate(x, y, z);
 					CellCoordinate CellCoords = new CellCoordinate(TargetCoords);
-					int CubeIndex = TargetCoords.getCubeIntIndex();
+					int CubeIndex = TargetCoords.getCubeIndex();
 
 					CubeShape[] DesignationShapes = Designations.get(CellCoords);
 					BitSet AccessibleLocation = AccessibleExcavations.get(CellCoords);
@@ -149,7 +149,7 @@ public class ExcavateJob extends Job implements Serializable {
 	public CubeShape getDesignation(CubeCoordinate Coords) {
 		CellCoordinate CellCoords = new CellCoordinate(Coords);
 		CubeShape[] DesignationShapes = Designations.get(CellCoords);
-		return (DesignationShapes != null) ? DesignationShapes[Coords.getCubeIntIndex()] : null;
+		return (DesignationShapes != null) ? DesignationShapes[Coords.getCubeIndex()] : null;
 	}
 
 	public void completeDesignation(CubeCoordinate Coords) {
@@ -171,7 +171,7 @@ public class ExcavateJob extends Job implements Serializable {
 
 				if (DesignationShape != null && !DesignationShape.isExcavationEquivilent(AdjacentShape)) {
 					BitSet AccessibleLocation = AccessibleExcavations.get(new CellCoordinate(Coords));
-					AccessibleLocation.set(Coords.getCubeIntIndex());
+					AccessibleLocation.set(Coords.getCubeIndex());
 					AccessibleMap.put(AdjacentcCoords.clone(), Coords.clone());
 					AccessibleExcavationCount++;
 				}
@@ -190,7 +190,7 @@ public class ExcavateJob extends Job implements Serializable {
 	public boolean isAssigned(CubeCoordinate Coords) {
 		CellCoordinate CellCoords = new CellCoordinate(Coords);
 		BitSet Assignments = AssignedExcavations.get(CellCoords);
-		return Assignments.get(Coords.getCubeIntIndex());
+		return Assignments.get(Coords.getCubeIndex());
 	}
 
 	public Task nextTask(Pawn IdlePawn) {
@@ -220,7 +220,7 @@ public class ExcavateJob extends Job implements Serializable {
 			AssignedWorkers.put(IdlePawn, ExcavateCube);
 			CellCoordinate CellCoords = new CellCoordinate(ExcavateCube);
 			BitSet Assignments = AssignedExcavations.get(CellCoords);
-			Assignments.set(ExcavateCube.getCubeIntIndex());
+			Assignments.set(ExcavateCube.getCubeIndex());
 			AssignedExcavationsCount++;
 
 			Task newTask = new Task(this, Task.TaskType.TASK_GOTO, AccsibleCube);

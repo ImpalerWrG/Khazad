@@ -42,7 +42,7 @@ public final class CubeCoordinate implements Cloneable, Serializable {
 		X = Y = Z = 0;
 	}
 
-	public CubeCoordinate(CellCoordinate CellCoords, byte CubeCoords) {
+	public CubeCoordinate(CellCoordinate CellCoords, short CubeCoords) {
 		X = (CellCoords.X * CELLEDGESIZE) + ((CubeCoords >> CELLBITSHIFT) & CELLBITFLAG);
 		Y = (CellCoords.Y * CELLEDGESIZE) + (CubeCoords & CELLBITFLAG);
 		Z = CellCoords.Z;
@@ -99,14 +99,8 @@ public final class CubeCoordinate implements Cloneable, Serializable {
 		}
 	}
 
-	public byte getCubeByteIndex() {
-		byte tempx = (byte) ((X & CELLBITFLAG) << CELLBITSHIFT);
-		byte tempy = ((byte) (Y & CELLBITFLAG));
-		return (byte) (tempx + tempy);
-	}
-
-	public int getCubeIntIndex() {
-		return ((X & CELLBITFLAG) << CELLBITSHIFT) + (Y & CELLBITFLAG);
+	public short getCubeIndex() {
+		return (short) (((X & CELLBITFLAG) << CELLBITSHIFT) + (Y & CELLBITFLAG));
 	}
 
 	public void copy(CubeCoordinate ArgumentCoordinates) {

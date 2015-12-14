@@ -104,7 +104,7 @@ public class Cell implements Serializable {
 		return thisCellCoordinates.clone();
 	}
 
-	public void setCubeShape(byte Coordinates, CubeShape NewShape, int Level) {
+	public void setCubeShape(short Coordinates, CubeShape NewShape, int Level) {
 		if (NewShape.getData() != CubeShapeTypes[Level][Coordinates & 0xFF]) {
 			CubeShapeTypes[Level][Coordinates & 0xFF] = NewShape.getData();
 
@@ -116,7 +116,7 @@ public class Cell implements Serializable {
 		}
 	}
 
-	public void setCubeShape(byte Coordinates, CubeShape NewShape) {
+	public void setCubeShape(short Coordinates, CubeShape NewShape) {
 		if (NewShape.getData() != CubeShapeTypes[0][Coordinates & 0xFF]) {
 			CubeShapeTypes[0][Coordinates & 0xFF] = NewShape.getData();
 
@@ -134,7 +134,7 @@ public class Cell implements Serializable {
 		int SizeFactor = (CubeCoordinate.CELLDETAILLEVELS - LevelofDetail) - 1;
 		int Size = 1 << SizeFactor;
 		int Count = Size * Size;
-		for (int j = 0; j < Count; j++) {
+		for (short j = 0; j < Count; j++) {
 			byte TargetCube = (byte) j;
 			CubeShape Shape = getCubeShape(j, LevelofDetail);
 			short CubeMaterial = getCubeMaterial(TargetCube);
@@ -301,51 +301,51 @@ public class Cell implements Serializable {
 		return DirtyPathRendering;
 	}
 
-	public CubeShape getCubeShape(int Index, int LevelofDetal) {
+	public CubeShape getCubeShape(short Index, int LevelofDetal) {
 		return new CubeShape(CubeShapeTypes[LevelofDetal][Index]);
 	}
 
-	public short getCubeMaterial(byte Coordinates) {
+	public short getCubeMaterial(short Coordinates) {
 		return CubeMaterialTypes[Coordinates & 0xFF];
 	}
 
-	public void setCubeMaterial(byte Coordinates, short MaterialID) {
+	public void setCubeMaterial(short Coordinates, short MaterialID) {
 		CubeMaterialTypes[Coordinates & 0xFF] = MaterialID;
 		DirtyTerrainRendering = true;
 	}
 
-	public boolean isCubeHidden(byte Coordinates) {
+	public boolean isCubeHidden(short Coordinates) {
 		return Hidden.get(Coordinates & 0xFF);
 	}
 
-	public void setCubeHidden(byte Coordinates, boolean NewValue) {
+	public void setCubeHidden(short Coordinates, boolean NewValue) {
 		Hidden.set(Coordinates & 0xFF, NewValue);
 		DirtyTerrainRendering = true;
 	}
 
-	public boolean isCubeSubTerranean(byte Coordinates) {
+	public boolean isCubeSubTerranean(short Coordinates) {
 		return SubTerranean.get(Coordinates & 0xFF);
 	}
 
-	public void setCubeSubTerranean(byte Coordinates, boolean NewValue) {
+	public void setCubeSubTerranean(short Coordinates, boolean NewValue) {
 		SubTerranean.set(Coordinates & 0xFF, NewValue);
 		DirtyTerrainRendering = true;
 	}
 
-	public boolean isCubeSkyView(byte Coordinates) {
+	public boolean isCubeSkyView(short Coordinates) {
 		return SkyView.get(Coordinates & 0xFF);
 	}
 
-	public void setCubeSkyView(byte Coordinates, boolean NewValue) {
+	public void setCubeSkyView(short Coordinates, boolean NewValue) {
 		SkyView.set(Coordinates & 0xFF, NewValue);
 		DirtyTerrainRendering = true;
 	}
 
-	public boolean isCubeSunLit(byte Coordinates) {
+	public boolean isCubeSunLit(short Coordinates) {
 		return SunLit.get(Coordinates & 0xFF);
 	}
 
-	public void setCubeSunLit(byte Coordinates, boolean NewValue) {
+	public void setCubeSunLit(short Coordinates, boolean NewValue) {
 		SunLit.set(Coordinates & 0xFF, NewValue);
 		DirtyTerrainRendering = true;
 	}

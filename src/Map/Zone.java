@@ -65,10 +65,10 @@ public class Zone implements Serializable {
 
 					BitSet Target = ZoneMap.get(ZoneCell);
 					if (Target != null) {
-						Target.set(ZoneCube.getCubeIntIndex(), true);
+						Target.set(ZoneCube.getCubeIndex(), true);
 					} else {
 						BitSet Bits = new BitSet(CubeCoordinate.CUBESPERCELL);
-						Bits.set(ZoneCube.getCubeIntIndex(), true);
+						Bits.set(ZoneCube.getCubeIndex(), true);
 						ZoneMap.put(ZoneCell, Bits);
 					}
 				}
@@ -83,7 +83,7 @@ public class Zone implements Serializable {
 		if (Target == null) {
 			Target = new BitSet(CubeCoordinate.CUBESPERCELL);
 		}
-		Target.set(AdditionCoords.getCubeIntIndex(), true);
+		Target.set(AdditionCoords.getCubeIndex(), true);
 		Dirty = true;
 	}
 
@@ -100,7 +100,7 @@ public class Zone implements Serializable {
 
 					BitSet Target = ZoneMap.get(ZoneCell);
 					if (Target != null) {
-						Target.set(ZoneCube.getCubeByteIndex(), false);
+						Target.set(ZoneCube.getCubeIndex(), false);
 					}
 				}
 			}
@@ -119,7 +119,7 @@ public class Zone implements Serializable {
 		CellCoordinate Targt = new CellCoordinate(RemovalCoords);
 		BitSet Target = ZoneMap.get(Targt);
 		if (Target != null) {
-			Target.clear(RemovalCoords.getCubeIntIndex());
+			Target.clear(RemovalCoords.getCubeIndex());
 			Dirty = true;
 		}
 	}
@@ -128,7 +128,7 @@ public class Zone implements Serializable {
 		CellCoordinate Targt = new CellCoordinate(TestCoordinates);
 		BitSet Target = ZoneMap.get(Targt);
 		if (Target != null) {
-			return (Target.get(TestCoordinates.getCubeByteIndex()));
+			return (Target.get(TestCoordinates.getCubeIndex()));
 		} else {
 			return false;
 		}
