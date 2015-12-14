@@ -348,21 +348,21 @@ public class Geology implements Serializable {
 			int Size = 1 << SizeFactor;
 			int Count = Size * Size;
 			int Mask = Size - 1;
-			for (int j = 0; j < Count; j++) {
+			for (short j = 0; j < Count; j++) {
 				int Row = j >> SizeFactor;
 				int Column = j & Mask;
 				int Offset = 1 << i;
-				
+
 				CubeShape Shape = getCubeShapeAtCoordinates(Row, Row + Offset, Column, Column + Offset, TargetCoordinates.Z);	
-				TargetCell.setCubeShape((byte) j, Shape, i);
+				TargetCell.setCubeShape(j, Shape, i);
 
 				if (i == 0) {
 					short MaterialType = getRockTypeAtCoordinates((byte) j, TargetCoordinates.Z);
 					if (MaterialType != DataManager.INVALID_INDEX) {
-						TargetCell.setCubeMaterial((byte) j, MaterialType);	
-						TargetCell.setCubeShape((byte) j, Shape, i);
+						TargetCell.setCubeMaterial(j, MaterialType);	
+						TargetCell.setCubeShape(j, Shape, i);
 					} else {
-						TargetCell.setCubeMaterial((byte) j, DataManager.INVALID_INDEX);
+						TargetCell.setCubeMaterial(j, DataManager.INVALID_INDEX);
 						//TargetCell.setCubeShape((byte) j, CubeShape.EMPTY_CUBE_DATA);
 					}
 				}

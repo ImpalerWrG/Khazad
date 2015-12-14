@@ -135,9 +135,8 @@ public class Cell implements Serializable {
 		int Size = 1 << SizeFactor;
 		int Count = Size * Size;
 		for (short j = 0; j < Count; j++) {
-			byte TargetCube = (byte) j;
 			CubeShape Shape = getCubeShape(j, LevelofDetail);
-			short CubeMaterial = getCubeMaterial(TargetCube);
+			short CubeMaterial = getCubeMaterial(j);
 
 			for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
 				Pair <CellCoordinate, Integer> values = ParentMap.TranslateCubeIndex(thisCellCoordinates, j, DirectionType, LevelofDetail);				
@@ -148,7 +147,7 @@ public class Cell implements Serializable {
 
 					if (AdjacentShape.isSky()) {
 						if (Shape.hasFace(DirectionType)) {
-							Face NewFace = ParentMap.addFace(new CubeCoordinate(thisCellCoordinates, TargetCube), DirectionType, LevelofDetail);
+							Face NewFace = ParentMap.addFace(new CubeCoordinate(thisCellCoordinates, j), DirectionType, LevelofDetail);
 
 							NewFace.setFaceMaterialType(CubeMaterial);
 							NewFace.setFaceSurfaceType(WallSurface);
@@ -160,7 +159,7 @@ public class Cell implements Serializable {
 
 					if (!AdjacentShape.isEmpty()) {
 						if (DirectionType == Direction.DIRECTION_DOWN && Shape.hasFloor() && AdjacentShape.hasCeiling()) {
-							Face NewFace = ParentMap.addFace(new CubeCoordinate(thisCellCoordinates, TargetCube), DirectionType, LevelofDetail);
+							Face NewFace = ParentMap.addFace(new CubeCoordinate(thisCellCoordinates, j), DirectionType, LevelofDetail);
 
 							NewFace.setFaceMaterialType(ParentMap.getCubeMaterial(AdjacentCoordinates));
 							NewFace.setFaceSurfaceType(FloorSurface);
@@ -173,12 +172,12 @@ public class Cell implements Serializable {
 			}
 
 			if (!Shape.isEmpty() && !Shape.isSolid()) {
-				Face NewFace = addFace(new FaceCoordinate(TargetCube, Direction.DIRECTION_NONE, LevelofDetail), LevelofDetail);
+				Face NewFace = addFace(new FaceCoordinate(j, Direction.DIRECTION_NONE, LevelofDetail), LevelofDetail);
 
 				NewFace.setFaceMaterialType(CubeMaterial);
 				NewFace.setFaceSurfaceType(FloorSurface);
 				NewFace.setFaceShapeType(new FaceShape(Shape, null, Direction.DIRECTION_NONE));
-				if (isCubeSunLit(TargetCube))
+				if (isCubeSunLit(j))
 					NewFace.Sunlit = true;
 			}
 		}
@@ -306,47 +305,47 @@ public class Cell implements Serializable {
 	}
 
 	public short getCubeMaterial(short Coordinates) {
-		return CubeMaterialTypes[Coordinates & 0xFF];
+		return CubeMaterialTypes[Coordinates];
 	}
 
 	public void setCubeMaterial(short Coordinates, short MaterialID) {
-		CubeMaterialTypes[Coordinates & 0xFF] = MaterialID;
+		CubeMaterialTypes[Coordinates] = MaterialID;
 		DirtyTerrainRendering = true;
 	}
 
 	public boolean isCubeHidden(short Coordinates) {
-		return Hidden.get(Coordinates & 0xFF);
+		return Hidden.get(Coordinates);
 	}
 
 	public void setCubeHidden(short Coordinates, boolean NewValue) {
-		Hidden.set(Coordinates & 0xFF, NewValue);
+		Hidden.set(Coordinates, NewValue);
 		DirtyTerrainRendering = true;
 	}
 
 	public boolean isCubeSubTerranean(short Coordinates) {
-		return SubTerranean.get(Coordinates & 0xFF);
+		return SubTerranean.get(Coordinates);
 	}
 
 	public void setCubeSubTerranean(short Coordinates, boolean NewValue) {
-		SubTerranean.set(Coordinates & 0xFF, NewValue);
+		SubTerranean.set(Coordinates, NewValue);
 		DirtyTerrainRendering = true;
 	}
 
 	public boolean isCubeSkyView(short Coordinates) {
-		return SkyView.get(Coordinates & 0xFF);
+		return SkyView.get(Coordinates);
 	}
 
 	public void setCubeSkyView(short Coordinates, boolean NewValue) {
-		SkyView.set(Coordinates & 0xFF, NewValue);
+		SkyView.set(Coordinates, NewValue);
 		DirtyTerrainRendering = true;
 	}
 
 	public boolean isCubeSunLit(short Coordinates) {
-		return SunLit.get(Coordinates & 0xFF);
+		return SunLit.get(Coordinates);
 	}
 
 	public void setCubeSunLit(short Coordinates, boolean NewValue) {
-		SunLit.set(Coordinates & 0xFF, NewValue);
+		SunLit.set(Coordinates, NewValue);
 		DirtyTerrainRendering = true;
 	}
 

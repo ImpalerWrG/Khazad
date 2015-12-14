@@ -340,14 +340,14 @@ public class GameMap implements Serializable {
 
 			boolean LightRemains = false;
 
-			for (int i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
-				TopCell.setCubeSunLit((byte) i, true);
+			for (short i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
+				TopCell.setCubeSunLit(i, true);
 			}
 
 			do {
 				for (short i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
-					if (TopCell.isCubeSunLit((byte) i) && !TopCell.getCubeShape(i, 0).hasFace(Direction.DIRECTION_NONE)) {
-						BottomCell.setCubeSunLit((byte) i, true);
+					if (TopCell.isCubeSunLit(i) && !TopCell.getCubeShape(i, 0).hasFace(Direction.DIRECTION_NONE)) {
+						BottomCell.setCubeSunLit(i, true);
 						LightRemains = true;
 					}
 				}
