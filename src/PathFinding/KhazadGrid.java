@@ -111,10 +111,10 @@ public class KhazadGrid implements GridInterface, Serializable {
 				CellCoordinate CellCoords = TargetCell.getCellCoordinates();
 				GridCell NewGridCell = addCell(CellCoords);
 
-				for (short i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
-					CubeCoordinate TargetCoords = new CubeCoordinate(CellCoords, i);
+				for (int i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
+					CubeCoordinate TargetCoords = new CubeCoordinate(CellCoords, (short)i);
 					BitSet Flags = buildConnectivitySet(TargetCoords);
-					NewGridCell.setCubeDirections(i, Flags);
+					NewGridCell.setCubeDirections((short)i, Flags);
 				} 
 			}
 		}
@@ -130,8 +130,8 @@ public class KhazadGrid implements GridInterface, Serializable {
 			if (TargetCell != null) {
 				CellCoordinate CellCoords = TargetCell.getCellCoordinates();
 
-				for (short i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
-					BitSet Flags = getDirectionEdgeSet(new CubeCoordinate(CellCoords, i));
+				for (int i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
+					BitSet Flags = getDirectionEdgeSet(new CubeCoordinate(CellCoords, (short)i));
 
 					if (Flags.cardinality() > 0) {
 						if (TargetCell.ConnectivityZone[i] == 0) { // Start a new zone if not connected to another zone
@@ -144,7 +144,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 						for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
 							if (Flags.get(dir.ordinal())) {
 								// Find the Zone that the adjcent Tile has
-								CubeCoordinate AdjacentTileCoords = new CubeCoordinate(CellCoords, i);
+								CubeCoordinate AdjacentTileCoords = new CubeCoordinate(CellCoords, (short)i);
 								AdjacentTileCoords.translate(dir);
 								int AdjacentZoneIndex = getConnectivityZone(AdjacentTileCoords);
 
@@ -158,7 +158,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 							}
 						}
 					} else {
-						TargetCell.ConnectivityZone[i] = 0;
+						TargetCell.ConnectivityZone[(short)i] = 0;
 					}
 				}
 			}
@@ -398,10 +398,10 @@ public class KhazadGrid implements GridInterface, Serializable {
 			CellCoordinate CellCoords = TargetCell.getCellCoordinates();
 
 			BitSet DirectionSet;
-			for (short TargetCube = 0; TargetCube < CubeCoordinate.CUBESPERCELL; TargetCube++) {
-				DirectionSet = TargetCell.getCubeDirections(TargetCube);
+			for (int i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
+				DirectionSet = TargetCell.getCubeDirections((short)i);
 				if (DirectionSet.cardinality() != 0) {  // Any Valid Edge Exists
-					CubeCoordinate TestCoordinates = new CubeCoordinate(CellCoords, TargetCube);
+					CubeCoordinate TestCoordinates = new CubeCoordinate(CellCoords, (short)i);
 					TestCoords.add(TestCoordinates);
 				}
 			}

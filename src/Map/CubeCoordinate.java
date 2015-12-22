@@ -31,33 +31,32 @@ public final class CubeCoordinate implements Cloneable, Serializable {
 	private static final long serialVersionUID = 1;
 	public static final int CELLEDGESIZE = 32;
 
-	public static final int CELLBITSHIFT_X = 5;
-	public static final int CELLBITFLAG_X = 31;
+	public static final int CELLBITMASK = 31;
+	public static final int CELLBITSHIFT_X = 0;
 	public static final int CELLBITSHIFT_Y = 5;
-	public static final int CELLBITFLAG_Y = 31;
-	public static final int CELLBITSHIFT_Z = 5;
-	public static final int CELLBITFLAG_Z = 31;
+	public static final int CELLBITSHIFT_Z = 10;
 	
-	public static final int CUBESPERCELL = 1024;
+	public static final int CUBESPERCELL = 32768;
 	public static final int CELLDETAILLEVELS = 6;
 	public static final float HALFCUBE = (float) 0.5;
 	// Primary values
 	public int X, Y, Z;
+	// Index bitpacking   0 ZZZZZ YYYYY XXXXX
 
 	public CubeCoordinate() {
 		X = Y = Z = 0;
 	}
 
 	public CubeCoordinate(CellCoordinate CellCoords, short CubeCoords) {
-		X = (CellCoords.X * CELLEDGESIZE) + ((CubeCoords >> CELLBITSHIFT_X) & CELLBITFLAG_X);
-		Y = (CellCoords.Y * CELLEDGESIZE) + (CubeCoords & CELLBITFLAG_X);
-		Z = CellCoords.Z;
+		X = (CellCoords.X * CELLEDGESIZE) + ((CubeCoords >> CELLBITSHIFT_X) & CELLBITMASK);
+		Y = (CellCoords.Y * CELLEDGESIZE) + ((CubeCoords >> CELLBITSHIFT_Y) & CELLBITMASK);
+		Z = (CellCoords.Z * 1) + ((CubeCoords >> CELLBITSHIFT_Z) & CELLBITMASK);
 	}
 
-	public CubeCoordinate(CellCoordinate CellCoords, int X, int Y) {
+	public CubeCoordinate(CellCoordinate CellCoords, int X, int Y, int Z) {
 		this.X = (CellCoords.X * CELLEDGESIZE) + X;
 		this.Y = (CellCoords.Y * CELLEDGESIZE) + Y;
-		Z = CellCoords.Z;
+		this.Z = (CellCoords.Z * 1) + Z;
 	}
 
 	public CubeCoordinate(CubeCoordinate SourceCoords, Direction DirectionType) {
@@ -106,7 +105,10 @@ public final class CubeCoordinate implements Cloneable, Serializable {
 	}
 
 	public short getCubeIndex() {
-		return (short) (((X & CELLBITFLAG_X) << CELLBITSHIFT_X) + (Y & CELLBITFLAG_X));
+		int Xcomponent = ((this.X & CELLBITMASK) << CELLBITSHIFT_X);
+		int Ycomponent = ((this.Y & CELLBITMASK) << CELLBITSHIFT_Y);
+		int Zcomponent = ((this.Z & CELLBITMASK) << CELLBITSHIFT_Z);
+		return (short) (Xcomponent + Ycomponent + Zcomponent);
 	}
 
 	public void copy(CubeCoordinate ArgumentCoordinates) {

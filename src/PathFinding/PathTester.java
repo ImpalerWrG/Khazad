@@ -159,7 +159,11 @@ public class PathTester implements Serializable {
 	}
 
 	public CubeCoordinate getRandomPassableCoordinate() {
-		return TestCoords.get(PathDice.roll(0, TestCoords.size() - 1));
+		if (!TestCoords.isEmpty()) {
+			return TestCoords.get(PathDice.roll(0, TestCoords.size() - 1));
+		} else {
+			return null;
+		}
 	}
 
 	void profileManualPath() {

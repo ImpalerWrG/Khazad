@@ -42,16 +42,20 @@ public class CellCoordinate implements Serializable {
 
 	public CellCoordinate(CubeCoordinate SourceCoordinates) {
 		if (SourceCoordinates.X >= 0) {
-			X = (short) (SourceCoordinates.X >> CubeCoordinate.CELLBITSHIFT_X);
+			X = (short) (SourceCoordinates.X >> (CubeCoordinate.CELLDETAILLEVELS - 1));
 		} else {
-			X = (short) ((SourceCoordinates.X >> CubeCoordinate.CELLBITSHIFT_X) - 1); //truncate to negative infinity
+			X = (short) ((SourceCoordinates.X >> (CubeCoordinate.CELLDETAILLEVELS - 1)) - 1); //truncate to negative infinity
 		}
 		if (SourceCoordinates.Y >= 0) {
-			Y = (short) (SourceCoordinates.Y >> CubeCoordinate.CELLBITSHIFT_X);
+			Y = (short) (SourceCoordinates.Y >> (CubeCoordinate.CELLDETAILLEVELS - 1));
 		} else {
-			Y = (short) ((SourceCoordinates.Y >> CubeCoordinate.CELLBITSHIFT_X) - 1); //truncate to negative infinity
+			Y = (short) ((SourceCoordinates.Y >> (CubeCoordinate.CELLDETAILLEVELS - 1)) - 1); //truncate to negative infinity
 		}
-		Z = (short) SourceCoordinates.Z;
+		if (SourceCoordinates.Z >= 0) {
+			Z = (short) (SourceCoordinates.Z >> (CubeCoordinate.CELLDETAILLEVELS - 1));
+		} else {
+			Z = (short) ((SourceCoordinates.Z >> (CubeCoordinate.CELLDETAILLEVELS - 1)) - 1); //truncate to negative infinity
+		}
 	}
 
 	public void resolveCube(CubeCoordinate SourceCoordinates) {

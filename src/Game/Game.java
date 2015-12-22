@@ -157,7 +157,19 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 			for (int y = Y; y < SizeY; y++) {
 				MapGeology.generateCellHeight(x, y, (float) 10.0, (float) 1.5);
 
-				for (int z = MapGeology.getCellBottomZLevel() - 2; z <= MapGeology.getCellTopZLevel() + 2; z++) {
+				int zBottom, zTop;
+				if ((MapGeology.getCellBottomZLevel() - 2) < 0) {
+					zBottom = ((MapGeology.getCellBottomZLevel() - 2) / CubeCoordinate.CELLEDGESIZE) - 1;
+				} else { 
+					zBottom = ((MapGeology.getCellBottomZLevel() - 2) / CubeCoordinate.CELLEDGESIZE);
+				}
+				if ((MapGeology.getCellTopZLevel() + 2) < 0) {
+					zTop = ((MapGeology.getCellTopZLevel() + 2) / CubeCoordinate.CELLEDGESIZE) - 1;
+				} else { 
+					zTop = ((MapGeology.getCellTopZLevel() + 2) / CubeCoordinate.CELLEDGESIZE);
+				}
+				
+				for (int z = zBottom; z <= zTop; z++) {
 					CellCoordinate TargetCellCoordinates = new CellCoordinate(x, y, z);
 					Cell NewCell = new Cell();
 
@@ -189,12 +201,16 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	}
 
 	public Citizen SpawnCitizen(short CreatureTypeID, CubeCoordinate SpawnCoordinates) {
-		Citizen NewCitizen = new Citizen(CreatureTypeID, ActorIDcounter, PawnDice.roll(0, MasterSeed), SpawnCoordinates);
-		ActorIDcounter++;
-		Actors.put(NewCitizen.getID(), NewCitizen);
-		GameSettlement.addCitizen(NewCitizen);
-		addTemporal(NewCitizen);
-		return NewCitizen;
+		if (SpawnCoordinates != null) {
+			Citizen NewCitizen = new Citizen(CreatureTypeID, ActorIDcounter, PawnDice.roll(0, MasterSeed), SpawnCoordinates);
+			ActorIDcounter++;
+			Actors.put(NewCitizen.getID(), NewCitizen);
+			GameSettlement.addCitizen(NewCitizen);
+			addTemporal(NewCitizen);
+			return NewCitizen;
+		} else {
+			return null;
+		}
 	}
 
 	boolean addTemporal(Temporal NewTemporal) {

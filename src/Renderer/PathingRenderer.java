@@ -108,44 +108,46 @@ public class PathingRenderer extends AbstractAppState {
 
 		for (int x = 0; x < CubeCoordinate.CELLEDGESIZE; x++) {
 			for (int y = 0; y < CubeCoordinate.CELLEDGESIZE; y++) {
+				for (int z = 0; z < CubeCoordinate.CELLEDGESIZE; z++) {
 
-				CubeCoordinate TargetCoords = new CubeCoordinate(CellCoords, x, y);
-				BitSet Connectivity = Pathing.getDirectionFlags(TargetCoords, Mod);
+					CubeCoordinate TargetCoords = new CubeCoordinate(CellCoords, x, y, z);
+					BitSet Connectivity = Pathing.getDirectionFlags(TargetCoords, Mod);
 
-				int Zone = Pathing.getConnectivityZone(TargetCoords, Mod);
-				Material mat = ZoneMaterials.get(Zone);
-				if (mat == null) {
-					mat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-					mat.setColor("Color", ColorRGBA.randomColor());
-					ZoneMaterials.put(Zone, mat);
-				}
+					int Zone = Pathing.getConnectivityZone(TargetCoords, Mod);
+					Material mat = ZoneMaterials.get(Zone);
+					if (mat == null) {
+						mat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+						mat.setColor("Color", ColorRGBA.randomColor());
+						ZoneMaterials.put(Zone, mat);
+					}
 
-				if (Connectivity.cardinality() > 0) {
-					Mesh EdgeWires = new Mesh();
-					EdgeWires.setMode(Mesh.Mode.Lines);
-					EdgeWires.setLineWidth(5);
+					if (Connectivity.cardinality() > 0) {
+						Mesh EdgeWires = new Mesh();
+						EdgeWires.setMode(Mesh.Mode.Lines);
+						EdgeWires.setLineWidth(5);
 
-					ArrayList<Integer> Indexes = new ArrayList<Integer>();
-					for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
-						if (Pathing.getEdgeCost(TargetCoords, dir, Mod) != -1) {
-							Indexes.add(0);
-							Indexes.add(dir.ordinal());
+						ArrayList<Integer> Indexes = new ArrayList<Integer>();
+						for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
+							if (Pathing.getEdgeCost(TargetCoords, dir, Mod) != -1) {
+								Indexes.add(0);
+								Indexes.add(dir.ordinal());
+							}
 						}
+
+						int[] indexes = new int[Indexes.size()];
+						for (int i = 0; i < Indexes.size(); i++) {
+							indexes[i] = Indexes.get(i).intValue();
+						}
+
+						EdgeWires.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
+						EdgeWires.setBuffer(VertexBuffer.Type.Index, 2, BufferUtils.createIntBuffer(indexes));
+						EdgeWires.updateBound();
+
+						Geometry Wires = new Geometry("Connection Wires", EdgeWires);
+						Wires.setMaterial(mat);
+						Wires.setLocalTranslation(new Vector3f(x, y, z));
+						PathRenderingNode.attachChild(Wires);
 					}
-
-					int[] indexes = new int[Indexes.size()];
-					for (int i = 0; i < Indexes.size(); i++) {
-						indexes[i] = Indexes.get(i).intValue();
-					}
-
-					EdgeWires.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
-					EdgeWires.setBuffer(VertexBuffer.Type.Index, 2, BufferUtils.createIntBuffer(indexes));
-					EdgeWires.updateBound();
-
-					Geometry Wires = new Geometry("Connection Wires", EdgeWires);
-					Wires.setMaterial(mat);
-					Wires.setLocalTranslation(new Vector3f(x, y, 0));
-					PathRenderingNode.attachChild(Wires);
 				}
 			}
 		}

@@ -19,7 +19,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 	</>		
 	<Acolyte of Valaya (High Priest of)(female - Fertility, Judgement) (Holy Symbol, Litergy)>
 		Shield Maiden - Defender Paladin
-		Nun - Labourer Monk
+		Nun - Labourer Monk, bless child birth
 		Savant - Cleric
 		Exorcist - magic oriented undead/demon driving out inquisitor
 		Acolyte of Urist
@@ -28,23 +28,23 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Valkyrie - Warrior Paladin
 		Theurge - Thinker Monk
 		Oracle - Cleric
-		
+		Tempest - inquisitor or domestic life, proper behavior and piety
 		Acolyte of Yog
-	</>		
-	<Acolyte of Lodrig (High Priest of)(both - Trickster) (Holy Symbol, Litergy)>
+	</>
+	<Acolyte of Lodrig (High Priest of)(both - Trickster/wit) (Holy Symbol, Litergy)>
 		Crusader - Cavalier Paladin
 		Ascetic - Gatherer Monk
 		Devotee - Cleric
-		
+		Saracen - inquisitor of merth, joking, pranking jesters
 		Acolyte of Lofar - Dwarven 'Baucus' merrymaker, revelry, art, the first child born to dwarfkind, the first drunkard
-	</>		
+	</>
 	<Acolyte of Grund (High Priest of) (male - Forging, Age, Steadfastness) (Holy Symbol, Litergy)>
 		Sentinel - Guard Paladin
 		Virtuoso - Crafter Monk
 		Emissary - Cleric
 		Witness - Watches your dwarves on expeditions, detects sabotage/lies by heretics
 		Acolyte of ???
-	</>	
+	</>
 	Pantheon x6 
 		Paladin - Mixed Cleric/Fighter
 	
@@ -63,7 +63,6 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 			
 		Inquisitor - Seek out heretics
 			Justiciar
-			Tempest
 
 			
 			Minor allied Diety branch?

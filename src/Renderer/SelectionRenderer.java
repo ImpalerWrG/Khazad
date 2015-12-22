@@ -169,10 +169,10 @@ public class SelectionRenderer extends AbstractAppState {
 			BitSet CellBitSet = entry.getValue();
 			CellCoordinate Coords = entry.getKey();
 
-			for (int i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
+			for (short i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
 				if (CellBitSet.get(i)) {
 					Box newBox = new Box(CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE);
-					CubeCoordinate MapCoords = new CubeCoordinate(Coords, (byte) i);
+					CubeCoordinate MapCoords = new CubeCoordinate(Coords, i);
 
 					Geometry ZoneBlock = new Geometry("Box", newBox);
 					ZoneBlock.setLocalTranslation(new Vector3f(MapCoords.X, MapCoords.Y, MapCoords.Z));
