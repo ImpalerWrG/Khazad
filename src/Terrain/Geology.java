@@ -17,6 +17,7 @@
 
 package Terrain;
 
+import Map.Coordinates.*;
 import Core.Dice;
 import Map.*;
 import Data.DataManager;
@@ -341,15 +342,15 @@ public class Geology implements Serializable {
 	}
 
 	public void loadCellData(Cell TargetCell) {
-
-		for (short i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i++) {
+		CellCoordinate CellCoords = TargetCell.getCellCoordinates();
+		for (byte i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i++) {
 			for (CubeIndex Index = new CubeIndex(i); !Index.end(); Index.next()) {
 				int Offset = 1 << i;
 				short x = Index.getX();
 				short y = Index.getY();
-				short z = Index.getZ();
+				short z = (short) (Index.getZ() + (CellCoords.Z * CubeCoordinate.CELLEDGESIZE));
 
-				CubeShape Shape = getCubeShapeAtCoordinates(x, x + Offset, y, y + Offset, z, z + Offset);	
+				CubeShape Shape = getCubeShapeAtCoordinates(x, x + Offset, y, y + Offset, z, z + Offset);
 				TargetCell.setCubeShape(Index.getCubeIndex(), Shape, i);
 
 				if (i == 0) {

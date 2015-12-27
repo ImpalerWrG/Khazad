@@ -23,8 +23,8 @@ import java.util.HashSet;
 import java.util.BitSet;
 import java.util.PriorityQueue;
 
-import Map.CubeCoordinate;
-import Map.Direction;
+import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.Direction;
 import java.io.Serializable;
 
 import java.util.concurrent.Callable;

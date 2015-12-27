@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.concurrent.Future;
 
-import Map.CubeCoordinate;
-import Map.Direction;
+import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.Direction;
 import Core.Dice;
 import java.io.IOException;
 import java.io.ObjectInputStream;

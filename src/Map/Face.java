@@ -17,6 +17,7 @@
 
 package Map;
 
+import Map.Coordinates.Direction;
 import Data.DataManager;
 import java.io.Serializable;
 
@@ -31,7 +32,7 @@ public class Face implements Serializable {
 	private static final long serialVersionUID = 1;
 	// Shape and location Index
 	private FaceShape FaceType;
-	byte LocationCoordinates;
+	//byte LocationCoordinates;
 	boolean Sunlit;
 	// DataType Indexes
 	private short SurfaceTypeID;
@@ -53,7 +54,7 @@ public class Face implements Serializable {
 		CubeShape SourceCube = new CubeShape((byte) 0);
 		CubeShape AdjacentCube = new CubeShape((byte) 0);
 		FaceType = new FaceShape(SourceCube, AdjacentCube, Direction.DIRECTION_NONE);
-		LocationCoordinates = TargetCoordinates;
+		//LocationCoordinates = TargetCoordinates;
 	}
 
 	public void setFaceMaterialType(short NewMaterialTypeID) {

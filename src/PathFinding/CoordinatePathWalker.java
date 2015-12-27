@@ -17,8 +17,8 @@
 
 package PathFinding;
 
-import Map.Direction;
-import Map.CubeCoordinate;
+import Map.Coordinates.Direction;
+import Map.Coordinates.CubeCoordinate;
 import java.io.Serializable;
 
 /**

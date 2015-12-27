@@ -24,11 +24,11 @@ import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-import Map.Axis;
+import Map.Coordinates.Axis;
 import Map.GameMap;
-import Map.CubeCoordinate;
-import Map.CellCoordinate;
-import Map.Direction;
+import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.CellCoordinate;
+import Map.Coordinates.Direction;
 import Map.CubeShape;
 import java.io.Serializable;
 

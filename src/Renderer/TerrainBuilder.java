@@ -19,11 +19,8 @@ package Renderer;
 
 import com.jme3.app.Application;
 
-import Map.Cell;
-import Map.CubeCoordinate;
-import Map.Face;
-import Map.FaceCoordinate;
-import Map.TileBuilder;
+import Map.*;
+import Map.Coordinates.*;
 
 import Renderer.TextureManager.TextureAtlasCoordinates;
 import com.jme3.bounding.BoundingVolume;
@@ -98,8 +95,9 @@ public class TerrainBuilder implements Callable<Void> {
 				if (facemesh != null) {
 					Geometry geom = new Geometry("face", facemesh);
 					//geom.scale(1.001f);  //T-Cell junction hack
-					geom.scale(CubeSize, CubeSize, 1);
-					geom.setLocalTranslation(new Vector3f(coords.getX() * CubeSize, coords.getY() * CubeSize, 0));
+					
+					geom.scale(CubeSize, CubeSize, CubeSize);
+					geom.setLocalTranslation(new Vector3f(coords.getX() * CubeSize, coords.getY() * CubeSize, coords.getZ() * CubeSize));
 					geom.setMaterial(TextureManager.getTextureManager().TerrainMaterial);
 
 					if (targetface.isSunlit()) {

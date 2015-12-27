@@ -17,6 +17,8 @@
 
 package Map;
 
+import Map.Coordinates.*;
+
 import Data.DataManager;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -25,12 +27,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.BitSet;
 
-import org.javatuples.Pair;
-
 /**
- * Primary MapData storage class, holds all data for describing a 16x16 square
- * 1 level high region of the map, each tile is indexed by a byte for array and
- * bitset based data and HashMaps hold face objects.
+ * Primary MapData storage class, holds all data for describing a set of cubes
+ * and HashMaps hold face objects.
  *
  * @author Impaler
  */
@@ -130,23 +129,23 @@ public class Cell implements Serializable {
 	
 	public void buildFaces(int LevelofDetail) {
 		GameMap ParentMap = GameMap.getMap();
+		MapCoordinate AdjacentCoordinates = new MapCoordinate();
 	
-		for (CubeIndex Index = new CubeIndex((short) LevelofDetail); !Index.end(); Index.next()) {
-			short j = Index.getCubeIndex();
-
-			CubeShape Shape = getCubeShape((short) j, LevelofDetail);
-			short CubeMaterial = getCubeMaterial((short) j);
+		for (CubeIndex Index = new CubeIndex((byte) LevelofDetail); !Index.end(); Index.next()) {
+			CubeShape Shape = getCubeShape(Index.getCubeIndex(), LevelofDetail);
+			short CubeMaterial = getCubeMaterial(Index.getCubeIndex());
 
 			for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
-				Pair <CellCoordinate, Short> values = ParentMap.TranslateCubeIndex(thisCellCoordinates, (short) j, DirectionType, LevelofDetail);				
-				CubeCoordinate AdjacentCoordinates = new CubeCoordinate(values.getValue0(), values.getValue1().shortValue());
+				AdjacentCoordinates.setCellCoordinate(thisCellCoordinates);
+				AdjacentCoordinates.setCubeCoordinate(Index);
+				AdjacentCoordinates.translate(DirectionType);
 
 				if (ParentMap.isCubeInited(AdjacentCoordinates)) {
 					CubeShape AdjacentShape = ParentMap.getCubeShape(AdjacentCoordinates);
 
 					if (AdjacentShape.isSky()) {
 						if (Shape.hasFace(DirectionType)) {
-							Face NewFace = ParentMap.addFace(new CubeCoordinate(thisCellCoordinates, (short) j), DirectionType, LevelofDetail);
+							Face NewFace = ParentMap.addFace(new MapCoordinate(thisCellCoordinates, Index), DirectionType, LevelofDetail);
 
 							NewFace.setFaceMaterialType(CubeMaterial);
 							NewFace.setFaceSurfaceType(WallSurface);
@@ -158,7 +157,7 @@ public class Cell implements Serializable {
 
 					if (!AdjacentShape.isEmpty()) {
 						if (DirectionType == Direction.DIRECTION_DOWN && Shape.hasFloor() && AdjacentShape.hasCeiling()) {
-							Face NewFace = ParentMap.addFace(new CubeCoordinate(thisCellCoordinates, (short) j), DirectionType, LevelofDetail);
+							Face NewFace = ParentMap.addFace(new MapCoordinate(thisCellCoordinates, Index), DirectionType, LevelofDetail);
 
 							NewFace.setFaceMaterialType(ParentMap.getCubeMaterial(AdjacentCoordinates));
 							NewFace.setFaceSurfaceType(FloorSurface);
@@ -171,12 +170,12 @@ public class Cell implements Serializable {
 			}
 
 			if (!Shape.isEmpty() && !Shape.isSolid()) {
-				Face NewFace = addFace(new FaceCoordinate((short) j, Direction.DIRECTION_NONE, LevelofDetail), LevelofDetail);
+				Face NewFace = addFace(new FaceCoordinate(Index, Direction.DIRECTION_NONE, (byte) LevelofDetail));
 
 				NewFace.setFaceMaterialType(CubeMaterial);
 				NewFace.setFaceSurfaceType(FloorSurface);
 				NewFace.setFaceShapeType(new FaceShape(Shape, null, Direction.DIRECTION_NONE));
-				if (isCubeSunLit((short) j))
+				if (isCubeSunLit(Index.getCubeIndex()))
 					NewFace.Sunlit = true;
 			}
 		}
@@ -262,11 +261,12 @@ public class Cell implements Serializable {
 		return false;
 	}
 
-	Face addFace(FaceCoordinate TargetCoordinates, int LevelofDetail) {
-		Face TargetFace = Faces[LevelofDetail].get(TargetCoordinates);
+	Face addFace(FaceCoordinate TargetCoordinates) {
+		int Detail = TargetCoordinates.DetailLevel;
+		Face TargetFace = Faces[Detail].get(TargetCoordinates);
 		if (TargetFace == null) {
-			Face NewFace = new Face(TargetCoordinates.getCoordinates(), TargetCoordinates.getFaceDirection());
-			Faces[LevelofDetail].put(TargetCoordinates, NewFace);
+			Face NewFace = new Face();
+			Faces[Detail].put(TargetCoordinates, NewFace);
 			setRenderingDirty();
 			return NewFace;
 		} else {

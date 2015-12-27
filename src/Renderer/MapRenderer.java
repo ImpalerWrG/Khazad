@@ -18,12 +18,11 @@
 package Renderer;
 
 import Game.Game;
-import Interface.GameCameraState;
-import Map.CellCoordinate;
 
-import Map.CubeCoordinate;
+import Map.Coordinates.CellCoordinate;
+import Map.Coordinates.CubeCoordinate;
 import Map.TileBuilder;
-import Nifty.GUI;
+
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -130,7 +129,20 @@ public class MapRenderer extends AbstractAppState {
 
 					float x = (float) (TargetCoordinates.X * CubeCoordinate.CELLEDGESIZE);
 					float y = (float) (TargetCoordinates.Y * CubeCoordinate.CELLEDGESIZE);
-					CellNode.move(x, y, 0);
+					float z = (float) (TargetCoordinates.Z * CubeCoordinate.CELLEDGESIZE);
+					
+					if(x < 0)
+						x++;
+					if(y < 0)
+						y++;
+					if(z < 0)
+						z++;
+					
+					//x = y = z = 0;
+					//x = z * 2;
+					//z = 0;
+					
+					CellNode.move(x, y, z);
 
 					getZNodeLight(TargetCoordinates.Z).attachChild(CellNode);
 					LightCellNodeMap.put(TargetCoordinates, CellNode);
@@ -146,21 +158,21 @@ public class MapRenderer extends AbstractAppState {
 		return CellNode;
 	}
 
-	public Node getCellNodeDark(CellCoordinate TargetCell) {
-		Node CellNode = DarkCellNodeMap.get(TargetCell);
+	public Node getCellNodeDark(CellCoordinate TargetCoordinates) {
+		Node CellNode = DarkCellNodeMap.get(TargetCoordinates);
 		try {  // Semaphore prevents multiple copies of the same Cell node from being created
 			semaphore.acquire();
 			try {
 				if (CellNode == null) {
 					CellNode = new Node("DarkCellNode");
 
-					float x = (float) (TargetCell.X * CubeCoordinate.CELLEDGESIZE);
-					float y = (float) (TargetCell.Y * CubeCoordinate.CELLEDGESIZE);
+					float x = (float) (TargetCoordinates.X * CubeCoordinate.CELLEDGESIZE);
+					float y = (float) (TargetCoordinates.Y * CubeCoordinate.CELLEDGESIZE);
+					float z = (float) (TargetCoordinates.Z * CubeCoordinate.CELLEDGESIZE);
+					CellNode.move(x, y, z);
 
-					CellNode.move(x, y, 0);
-
-					getZNodeDark(TargetCell.Z).attachChild(CellNode);
-					DarkCellNodeMap.put(TargetCell, CellNode);
+					getZNodeDark(TargetCoordinates.Z).attachChild(CellNode);
+					DarkCellNodeMap.put(TargetCoordinates, CellNode);
 				}
 			} finally {
 				semaphore.release();

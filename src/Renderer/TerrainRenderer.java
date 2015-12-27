@@ -17,6 +17,8 @@
 
 package Renderer;
 
+import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.CellCoordinate;
 import Map.*;
 import Game.Game;
 import Interface.GameCameraState;
@@ -29,10 +31,6 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 
 import com.jme3.asset.AssetManager;
-import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.controls.ActionListener;
 
 import com.jme3.bounding.BoundingBox;
 import com.jme3.math.Vector3f;
@@ -41,7 +39,6 @@ import com.jme3.scene.control.LodControl;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 
@@ -126,7 +123,7 @@ public class TerrainRenderer extends AbstractAppState {
 		BoundingBox CellBox = new BoundingBox();
 		CellBox.setXExtent(CubeCoordinate.CELLEDGESIZE);
 		CellBox.setYExtent(CubeCoordinate.CELLEDGESIZE);
-		CellBox.setZExtent(1);
+		CellBox.setZExtent(CubeCoordinate.CELLEDGESIZE);
 		CellBox.setCheckPlane(0);
 
 		this.CameraState = state.getState(GameCameraState.class);
@@ -134,7 +131,7 @@ public class TerrainRenderer extends AbstractAppState {
 		// Add Cells newly entering the Frustrum
 		for (Cell targetCell : cells) {
 			CellCoordinate Coords = targetCell.getCellCoordinates();
-			Vector3f Center = new Vector3f(Coords.X * CubeCoordinate.CELLEDGESIZE, Coords.Y * CubeCoordinate.CELLEDGESIZE, Coords.Z);
+			Vector3f Center = new Vector3f(Coords.X * CubeCoordinate.CELLEDGESIZE, Coords.Y * CubeCoordinate.CELLEDGESIZE, Coords.Z * CubeCoordinate.CELLEDGESIZE);
 			CellBox.setCenter(Center);
 			if (this.CameraState.contains(CellBox)) {
 				if (targetCell.isTerrainRenderingDirty()) {
@@ -146,7 +143,7 @@ public class TerrainRenderer extends AbstractAppState {
 		// Remove Cells nolonger in the Frustrum
 		for (Cell targetCell : MeshedCells.values()) {
 			CellCoordinate Coords = targetCell.getCellCoordinates();
-			Vector3f Center = new Vector3f(Coords.X * CubeCoordinate.CELLEDGESIZE, Coords.Y * CubeCoordinate.CELLEDGESIZE, Coords.Z);
+			Vector3f Center = new Vector3f(Coords.X * CubeCoordinate.CELLEDGESIZE, Coords.Y * CubeCoordinate.CELLEDGESIZE, Coords.Z * CubeCoordinate.CELLEDGESIZE);
 			CellBox.setCenter(Center);
 			if (this.CameraState.contains(CellBox) == false) {
 				queueCellDestroy(targetCell, this.LevelofDetail);

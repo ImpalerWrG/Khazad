@@ -18,7 +18,7 @@
 package Renderer;
 
 import Map.Cell;
-import Map.CubeCoordinate;
+import Map.Coordinates.CubeCoordinate;
 
 import com.jme3.app.Application;
 import com.jme3.scene.Node;

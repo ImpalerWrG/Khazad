@@ -22,12 +22,12 @@ import java.util.BitSet;
 
 import Game.Pawn;
 import Map.GameMap;
-import Map.CellCoordinate;
-import Map.CubeCoordinate;
+import Map.Coordinates.CellCoordinate;
+import Map.Coordinates.CubeCoordinate;
 import Map.CubeShape;
 import Map.Zone;
 import Interface.VolumeSelection;
-import Map.Direction;
+import Map.Coordinates.Direction;
 import PathFinding.MovementModality;
 import PathFinding.PathManager;
 import java.io.IOException;

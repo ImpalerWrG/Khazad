@@ -15,7 +15,7 @@
  You should have received a copy of the GNU General Public License
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
-package Map;
+package Map.Coordinates;
 
 import java.io.Serializable;
 
@@ -27,63 +27,53 @@ import java.io.Serializable;
  *
  * @author Impaler
  */
-public class FaceCoordinate implements Serializable {
+public class FaceCoordinate extends CubeIndex implements Serializable {
 
 	private static final long serialVersionUID = 1;
-	private short CubeCoordinates = 0;
-	private byte LevelofDetail = 0;
 	public byte FaceDirection;
 
 	FaceCoordinate() {
+		super((byte) 0);
 		FaceDirection = (byte) Direction.DIRECTION_DESTINATION.ordinal();
 	}
 
-	public FaceCoordinate(short CubeCoordinates, Direction TargetDirection) {
-		this.CubeCoordinates = CubeCoordinates;
+	public FaceCoordinate(short CubeIndex, Direction TargetDirection) {
+		super((byte) 0, CubeIndex);
 		FaceDirection = (byte) TargetDirection.ordinal();
 	}
 
-	public FaceCoordinate(byte CubeCoordinates, Direction TargetDirection, int DetailLevel) {
-		this.CubeCoordinates = CubeCoordinates;
-		LevelofDetail = (byte) DetailLevel;
+	public FaceCoordinate(short CubeIndex, Direction TargetDirection, byte DetailLevel) {
+		super(DetailLevel, CubeIndex);
 		FaceDirection = (byte) TargetDirection.ordinal();
 	}
 
-	public FaceCoordinate(short CubeCoordinates, Direction TargetDirection, int DetailLevel) {
-		this.CubeCoordinates = CubeCoordinates;
-		LevelofDetail = (byte) DetailLevel;
+	public FaceCoordinate(CubeIndex Index, Direction TargetDirection, byte DetailLevel) {
+		super(DetailLevel, Index.Data);
 		FaceDirection = (byte) TargetDirection.ordinal();
+	}
+
+	public FaceCoordinate(FaceCoordinate FaceCoords) {
+		super(FaceCoords);
+		FaceDirection = FaceCoords.FaceDirection;
 	}
 
 	public void set(FaceCoordinate ArgumentCoordinates) {
-		CubeCoordinates = ArgumentCoordinates.CubeCoordinates;
+		super.copy(ArgumentCoordinates);
 		FaceDirection = ArgumentCoordinates.FaceDirection;
 	}
 
-	public void set(byte TargetCoords, Direction DirectionComponent) {
-		CubeCoordinates = TargetCoords;
+	public void set(short CubeIndex, Direction DirectionComponent) {
+		super.set(CubeIndex);
 		FaceDirection = (byte) DirectionComponent.ordinal();
 	}
 
-	public void set(int NewX, int NewY, Direction DirectionComponent) {
-		CubeCoordinates = (byte) ((NewX << CubeCoordinate.CELLBITSHIFT_X) + NewY);
+	public void set(int NewX, int NewY, int Z, Direction DirectionComponent) {
+		super.set(NewX, NewY, NewY);
 		FaceDirection = (byte) DirectionComponent.ordinal();
 	}
 
-	public int getX() {
-		int Shift = (CubeCoordinate.CELLDETAILLEVELS - LevelofDetail) - 1;
-		int Mask = (1 << Shift) - 1;
-		return (CubeCoordinates >> Shift) & Mask;
-	}
-
-	public int getY() {
-		int Shift = (CubeCoordinate.CELLDETAILLEVELS - LevelofDetail) - 1;
-		int Mask = (1 << Shift) - 1;		
-		return (CubeCoordinates & Mask);
-	}
-
-	byte getCoordinates() {
-		return (byte) CubeCoordinates;
+	public short getCoordinates() {
+		return super.getCubeIndex();
 	}
 
 	public Direction getFaceDirection() {
@@ -101,13 +91,13 @@ public class FaceCoordinate implements Serializable {
 
 		FaceCoordinate Arg = (FaceCoordinate) ArgumentCoordinates;
 
-		return (Arg.CubeCoordinates == CubeCoordinates && Arg.FaceDirection == FaceDirection);
+		return (Arg.DetailLevel == this.DetailLevel && Arg.Data == this.Data && Arg.FaceDirection == this.FaceDirection);
 	}
 
 	@Override
 	public int hashCode() {
-		int Key = CubeCoordinates;
-		Key <<= 8;
+		int Key = Data;
+		Key <<= 10;
 		Key += FaceDirection;
 
 		return Key;

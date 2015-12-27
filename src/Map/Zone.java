@@ -17,6 +17,8 @@
 
 package Map;
 
+import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.CellCoordinate;
 import java.util.*;
 import Interface.VolumeSelection;
 import java.io.IOException;

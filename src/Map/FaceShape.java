@@ -17,6 +17,7 @@
 
 package Map;
 
+import Map.Coordinates.Direction;
 import java.io.Serializable;
 
 /**

@@ -17,7 +17,7 @@
 
 package Game;
 
-import Map.CubeCoordinate;
+import Map.Coordinates.CubeCoordinate;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;

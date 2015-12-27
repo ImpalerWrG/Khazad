@@ -21,7 +21,7 @@ import Core.Utils;
 import Data.DataManager;
 import Data.Types.GivenNameGroupData;
 import Job.*;
-import Map.CubeCoordinate;
+import Map.Coordinates.CubeCoordinate;
 import java.io.Serializable;
 
 /**

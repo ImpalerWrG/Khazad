@@ -16,6 +16,8 @@
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Game;
 
+import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.CellCoordinate;
 import Core.*;
 import Job.ExcavateJob;
 import Job.JobManager;

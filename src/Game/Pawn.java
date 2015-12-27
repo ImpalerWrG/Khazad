@@ -22,8 +22,8 @@ import Core.Dice;
 import Data.*;
 import Data.Types.*;
 
-import Map.Direction;
-import Map.CubeCoordinate;
+import Map.Coordinates.Direction;
+import Map.Coordinates.CubeCoordinate;
 
 import PathFinding.MovementModality;
 import PathFinding.Navigator;

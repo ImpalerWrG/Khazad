@@ -15,8 +15,9 @@
  You should have received a copy of the GNU General Public License
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
-package Map;
+package Map.Coordinates;
 
+import Map.Coordinates.Axis;
 import com.jme3.math.Vector3f;
 
 /**

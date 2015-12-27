@@ -20,8 +20,8 @@ package PathFinding;
 import java.util.BitSet;
 import java.util.ArrayList;
 
-import Map.CubeCoordinate;
-import Map.Direction;
+import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.Direction;
 
 /**
  * Basic interface for Pathfinding Grids, all PathAlgorithms operate on a Grid

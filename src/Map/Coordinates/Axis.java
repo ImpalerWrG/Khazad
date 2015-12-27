@@ -15,27 +15,16 @@
  You should have received a copy of the GNU General Public License
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
-package PathFinding;
-
-import Map.Coordinates.CubeCoordinate;
-import java.io.Serializable;
+package Map.Coordinates;
 
 /**
- * Abstract Base for the Path representations, all Paths implementations have a
- * corresponding PathWalker class that they will return and which will read
- * from only that type of Path.
- *
- * Implementations: CoordinatePath, VectorPath
+ * Extreamly simple Axis system used to build the rest of the Map system
  *
  * @author Impaler
  */
-public abstract class MapPath implements Serializable {
+public enum Axis {
 
-	private static final long serialVersionUID = 1;
-	float Length;   // The travel cost of the path
-	int StepCount;  // The number of individual steps in the path
-	MovementModality MovementType;
-	CubeCoordinate StartCoordinates, GoalCoordinates;
-
-	public abstract PathWalker getPathWalker();
+	AXIS_Z,	// Vertical
+	AXIS_Y,	// North/South
+	AXIS_X;	// East/West
 }

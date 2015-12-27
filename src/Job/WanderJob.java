@@ -18,7 +18,7 @@
 package Job;
 
 import Game.Pawn;
-import Map.CubeCoordinate;
+import Map.Coordinates.CubeCoordinate;
 import PathFinding.PathManager;
 import java.io.IOException;
 import java.io.ObjectInputStream;

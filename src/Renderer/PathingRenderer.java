@@ -19,12 +19,12 @@ package Renderer;
 
 import Game.Game;
 
-import Map.Axis;
+import Map.Coordinates.Axis;
 import Map.Cell;
-import Map.CellCoordinate;
-import Map.Direction;
+import Map.Coordinates.CellCoordinate;
+import Map.Coordinates.Direction;
 import Map.GameMap;
-import Map.CubeCoordinate;
+import Map.Coordinates.CubeCoordinate;
 
 import PathFinding.PathManager;
 import PathFinding.MovementModality;

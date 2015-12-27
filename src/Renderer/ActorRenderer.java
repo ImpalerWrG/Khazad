@@ -22,9 +22,9 @@ import Game.Game;
 import Game.Pawn;
 
 import Map.CubeShape;
-import Map.Direction;
+import Map.Coordinates.Direction;
 import Map.GameMap;
-import Map.CubeCoordinate;
+import Map.Coordinates.CubeCoordinate;
 
 import Interface.GameCameraState;
 
@@ -119,7 +119,7 @@ public class ActorRenderer extends AbstractAppState {
 					if (target instanceof Pawn) {
 						MovePawn((Pawn) target, CurrentTick);
 					} else {
-						actorNode.setLocalTranslation(coords.X, coords.Y, 0);
+						actorNode.setLocalTranslation(coords.X, coords.Y, coords.Z);
 					}
 				}
 			}

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package Map;
+package Map.Coordinates;
 
 /**
  *
@@ -21,24 +21,34 @@ public class CubeIndex {
 
 	public short Data;  // Index bitpacking   0 ZZZZZ YYYYY XXXXX
 
-	public short DetailLevel;
+	public byte DetailLevel;
 	public short Size;
 	public short Max;
 	public short Mask;
 	public short Shift;
 
-	public CubeIndex(short DetailLevel) {
-		this.DetailLevel = DetailLevel;
+	public CubeIndex() {
+		this.DetailLevel = 0;
 		setDetailLevel(DetailLevel);
 	}
 
-	public CubeIndex(short DetailLevel, short Data) {
+	public CubeIndex(byte DetailLevel) {
+		this.DetailLevel = (byte) DetailLevel;
+		setDetailLevel(DetailLevel);
+	}
+
+	public CubeIndex(byte DetailLevel, short Data) {
 		this.Data = Data;
 		setDetailLevel(DetailLevel);
 	}
 
-	public final void setDetailLevel(short DetailLevel) {
-		this.DetailLevel = DetailLevel;
+	public CubeIndex(CubeIndex CopySource) {
+		this.Data = CopySource.Data;
+		setDetailLevel(CopySource.DetailLevel);
+	}
+
+	public final void setDetailLevel(int DetailLevel) {
+		this.DetailLevel = (byte) DetailLevel;
 		this.Shift = (short) ((CubeCoordinate.CELLDETAILLEVELS - DetailLevel) - 1);
 		this.Size = (short) (1 << this.Shift);
 		
@@ -55,10 +65,6 @@ public class CubeIndex {
 		//Y = (short) (SourceCoords.Y + DirectionType.getValueonAxis(Axis.AXIS_Y));
 		//Z = (short) (SourceCoords.Z + DirectionType.getValueonAxis(Axis.AXIS_Z));
 	}
-
-	//public CubeIndex(int NewX, int NewY, int NewZ) {
-	//	set(NewX, NewY, NewZ);
-	//}
 
 	public void translate(Direction DirectionType) {
 		short Xcomponent = (short) ((this.Data >> (this.Shift * 0)) & Mask);
@@ -108,6 +114,10 @@ public class CubeIndex {
 		Data = (short) (Xcomponent | Ycomponent | Zcomponent);
 	}
 
+	public void set(short Data) {
+		this.Data = Data;
+	}
+
 	public void set(int NewX, int NewY, int NewZ) {
 		short Xcomponent = (short) (NewX & Mask);
 		short Ycomponent = (short) (NewY & Mask);
@@ -147,10 +157,6 @@ public class CubeIndex {
 	}
 
 	public short getCubeIndex() {
-		//short Xcomponent = (short) ((this.Data >> CUBEBITSHIFT_X) & CUBEBITMASK);
-		//short Ycomponent = (short) ((this.Data >> CUBEBITSHIFT_Y) & CUBEBITMASK);
-		//short Zcomponent = (short) ((this.Data >> CUBEBITSHIFT_Z) & CUBEBITMASK);
-
 		return Data;
 	}
 	
@@ -167,41 +173,12 @@ public class CubeIndex {
 	}
 
 	public void next() {
-		//short Xcomponent = (short) ((this.Data >> CUBEBITSHIFT_X) & CUBEBITMASK);
-		//short Ycomponent = (short) ((this.Data >> CUBEBITSHIFT_Y) & CUBEBITMASK);
-		//short Zcomponent = (short) ((this.Data >> CUBEBITSHIFT_Z) & CUBEBITMASK);
-
 		Data++;
-		//consolidate();
 	}
 	
 	public boolean end() {
 		return (Data > this.Max || Data < 0);
 	}
-	/*
-	private void consolidate() {
-		short Xcomponent = (short) ((this.Data >> (this.Shift * 0)) & Mask);
-		short Ycomponent = (short) ((this.Data >> (this.Shift * 1)) & Mask);
-		short Zcomponent = (short) ((this.Data >> (this.Shift * 2)) & Mask);
-
-		if (Xcomponent >= Size) {
-			Xcomponent = 0;
-			Ycomponent++;
-			if (Ycomponent >= Size) {
-				Ycomponent = 0;
-				Zcomponent++;
-				if (Zcomponent >= Size) {
-					Zcomponent = 0;
-				}
-			}
-		}
-
-		Xcomponent = (short) (Xcomponent << (this.Shift * 0));
-		Ycomponent = (short) (Ycomponent << (this.Shift * 1));
-		Zcomponent = (short) (Zcomponent << (this.Shift * 2));
-		
-		Data = (short) (Xcomponent | Ycomponent | Zcomponent);		
-	}*/
 
 	public void copy(CubeIndex ArgumentCoordinates) {
 		this.Data = ArgumentCoordinates.Data;
@@ -210,7 +187,7 @@ public class CubeIndex {
 
 	@Override
 	public CubeIndex clone() {
-		return new CubeIndex(Data, DetailLevel);
+		return new CubeIndex(DetailLevel, Data);
 	}
 
 	@Override

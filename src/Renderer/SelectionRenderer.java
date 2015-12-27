@@ -20,9 +20,9 @@ package Renderer;
 import Interface.GameCameraState;
 import Interface.VolumeSelection;
 
-import Map.CubeCoordinate;
+import Map.Coordinates.CubeCoordinate;
 import Game.Game;
-import Map.CellCoordinate;
+import Map.Coordinates.CellCoordinate;
 import Map.Zone;
 
 import com.jme3.app.Application;

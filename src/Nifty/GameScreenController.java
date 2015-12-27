@@ -32,6 +32,7 @@ import de.lessvoid.nifty.NiftyEventSubscriber;
 
 import Game.Game;
 import Interface.GameCameraState;
+import Map.Coordinates.CubeCoordinate;
 import Renderer.PathingRenderer;
 import Renderer.TerrainRenderer;
 import Renderer.MapRenderer;
@@ -224,8 +225,8 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 
 		Scrollbar bar = event.getScrollbar();
 		Game game = Main.app.getStateManager().getState(Game.class);
-		int High = game.getMap().getHighestCell();
-		int Low = game.getMap().getLowestCell();
+		int High = game.getMap().getHighestCell() * CubeCoordinate.CELLEDGESIZE;
+		int Low = game.getMap().getLowestCell() * CubeCoordinate.CELLEDGESIZE;
 		bar.setWorldMax(High - Low);
 
 		GameCameraState camera = Main.app.getStateManager().getState(GameCameraState.class);

@@ -28,8 +28,8 @@ import Core.Clock;
 import Core.Main;
 
 import Map.GameMap;
-import Map.CubeCoordinate;
-import Map.Direction;
+import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.Direction;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;

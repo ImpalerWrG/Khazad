@@ -19,8 +19,8 @@ package Job;
 
 
 import Map.GameMap;
-import Map.CubeCoordinate;
-import Map.Direction;
+import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.Direction;
 import Map.CubeShape;
 import Game.Pawn;
 import PathFinding.Navigator;

@@ -17,7 +17,7 @@
 
 package Interface;
 
-import Map.CubeCoordinate;
+import Map.Coordinates.CubeCoordinate;
 
 /**
  *

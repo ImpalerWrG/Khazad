@@ -21,7 +21,7 @@ import Core.Main;
 import Game.Actor;
 import Game.Citizen;
 import Game.Game;
-import Map.CubeCoordinate;
+import Map.Coordinates.CubeCoordinate;
 import Renderer.TerrainRenderer;
 
 import com.jme3.app.Application;

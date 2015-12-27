@@ -125,7 +125,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		???
 		???
 		Housecarl - 2 handed Ax
-		IronBrekers - 2 handed Hammer
+		IronBreakers - 2 handed Hammer
 		WurmHunter - specialized in killing mega beasts
 	</>
 	<Calvary-Rider-Cavalier [FLX][MEM] - Mounted combat (Saddle, ???)>

@@ -17,8 +17,10 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Map;
 
+import Map.Coordinates.Direction;
+import Map.Coordinates.CubeCoordinate;
 import com.jme3.scene.Mesh;
-//import com.jme3.util.BufferUtils;
+
 import com.jme3.scene.VertexBuffer.Type;
 import com.jme3.math.Vector3f;
 import com.jme3.math.Vector2f;
