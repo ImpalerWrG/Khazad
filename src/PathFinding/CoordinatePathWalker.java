@@ -18,7 +18,7 @@
 package PathFinding;
 
 import Map.Coordinates.Direction;
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.MapCoordinate;
 import java.io.Serializable;
 
 /**
@@ -45,7 +45,7 @@ public class CoordinatePathWalker implements PathWalker, Serializable {
 		CurrentStep = 0;
 	}
 
-	public CubeCoordinate nextCoordinate() {
+	public MapCoordinate nextCoordinate() {
 		if (CurrentStep < TargetPath.StepCount) {
 			CurrentStep++;
 			return TargetPath.PathCourse.get(CurrentStep);
@@ -57,7 +57,7 @@ public class CoordinatePathWalker implements PathWalker, Serializable {
 		return Direction.DIRECTION_NONE;
 	}
 
-	public CubeCoordinate peekCoordinate() {
+	public MapCoordinate peekCoordinate() {
 		if (CurrentStep < TargetPath.StepCount) {
 			//CurrentStep++;
 			return TargetPath.PathCourse.get(CurrentStep);

@@ -28,7 +28,7 @@ import Core.Clock;
 import Core.Main;
 
 import Map.GameMap;
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.MapCoordinate;
 import Map.Coordinates.Direction;
 
 import com.jme3.app.Application;
@@ -125,7 +125,7 @@ public class PathManager extends AbstractAppState {
 		GridArray.add(NewGrid);
 	}
 
-	public void editMapAbstractions(CubeCoordinate[] Coordinates) {
+	public void editMapAbstractions(MapCoordinate[] Coordinates) {
 		for (GridInterface Grid : Grids.values()) {
 			Grid.dirtyMapCoordinate(Coordinates.clone());
 		}
@@ -136,7 +136,7 @@ public class PathManager extends AbstractAppState {
 		GridArray.clear();
 	}
 
-	public Future findFuturePath(MovementModality MovementType, CubeCoordinate StartCoords, CubeCoordinate GoalCoords) {
+	public Future findFuturePath(MovementModality MovementType, MapCoordinate StartCoords, MapCoordinate GoalCoords) {
 		GridInterface TargetGrid = getModalityGrid(MovementType);
 		if (TargetGrid != null) {
 			if (TargetGrid.contains(StartCoords) && TargetGrid.contains(GoalCoords)) {
@@ -155,7 +155,7 @@ public class PathManager extends AbstractAppState {
 		return null;
 	}
 
-	public MapPath profilePath(MovementModality MovementType, CubeCoordinate StartCoords, CubeCoordinate GoalCoords, PathTester.Profile TargetProfile) {
+	public MapPath profilePath(MovementModality MovementType, MapCoordinate StartCoords, MapCoordinate GoalCoords, PathTester.Profile TargetProfile) {
 		GridInterface TargetGrid = getModalityGrid(MovementType);
 		if (TargetGrid != null) {
 			if (TargetGrid.contains(StartCoords) && TargetGrid.contains(GoalCoords)) {
@@ -196,7 +196,7 @@ public class PathManager extends AbstractAppState {
 		}
 	}
 
-	public boolean isPathPossible(MovementModality MovementType, CubeCoordinate StartCoords, CubeCoordinate GoalCoords) {
+	public boolean isPathPossible(MovementModality MovementType, MapCoordinate StartCoords, MapCoordinate GoalCoords) {
 		GridInterface TargetGrid = getModalityGrid(MovementType);
 		if (TargetGrid != null) {
 			return TargetGrid.isPathPossible(MovementType, StartCoords, GoalCoords);
@@ -222,7 +222,7 @@ public class PathManager extends AbstractAppState {
 		return -1;
 	}
 
-	public BitSet getDirectionFlags(CubeCoordinate Coordinates, MovementModality Modality) {
+	public BitSet getDirectionFlags(MapCoordinate Coordinates, MovementModality Modality) {
 		GridInterface TargetGrid = getModalityGrid(Modality);
 		if (TargetGrid != null) {
 			return TargetGrid.getDirectionEdgeSet(Coordinates);
@@ -230,7 +230,7 @@ public class PathManager extends AbstractAppState {
 		return null;
 	}
 
-	boolean contains(CubeCoordinate Coordinates, MovementModality Modality) {
+	boolean contains(MapCoordinate Coordinates, MovementModality Modality) {
 		GridInterface TargetGrid = getModalityGrid(Modality);
 		if (TargetGrid != null) {
 			return TargetGrid.contains(Coordinates);
@@ -238,7 +238,7 @@ public class PathManager extends AbstractAppState {
 		return false;
 	}
 
-	public float getEdgeCost(CubeCoordinate TestCoords, Direction DirectionType, MovementModality Modality) {
+	public float getEdgeCost(MapCoordinate TestCoords, Direction DirectionType, MovementModality Modality) {
 		GridInterface TargetGrid = getModalityGrid(Modality);
 		if (TargetGrid != null) {
 			return TargetGrid.getEdgeCost(TestCoords, DirectionType);
@@ -246,7 +246,7 @@ public class PathManager extends AbstractAppState {
 		return -1;
 	}
 
-	public float getEdgeCost(CubeCoordinate TestCoords, Direction DirectionType, int ModalityIndex) {
+	public float getEdgeCost(MapCoordinate TestCoords, Direction DirectionType, int ModalityIndex) {
 		// TODO find more direct access to desired modality grid rather then hashmap
 		GridInterface TargetGrid = getModalityGrid(ModalityIndex);
 		if (TargetGrid != null) {
@@ -255,7 +255,7 @@ public class PathManager extends AbstractAppState {
 		return -1;
 	}
 
-	public int getConnectivityZone(CubeCoordinate TestCoords, MovementModality Modality) {
+	public int getConnectivityZone(MapCoordinate TestCoords, MovementModality Modality) {
 		GridInterface TargetGrid = getModalityGrid(Modality);
 		if (TargetGrid != null) {
 			return TargetGrid.getConnectivityZone(TestCoords);

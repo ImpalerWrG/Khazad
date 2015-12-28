@@ -21,7 +21,7 @@ import Core.Main;
 import Game.Actor;
 import Game.Citizen;
 import Game.Game;
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.MapCoordinate;
 import Renderer.TerrainRenderer;
 
 import com.jme3.app.Application;
@@ -94,9 +94,9 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	private float XChange;
 	private float YChange;
 	private Plane SelectionPlane = null;
-	private CubeCoordinate MouseLocation = new CubeCoordinate();
-	public CubeCoordinate SelectionOrigin = new CubeCoordinate();
-	public CubeCoordinate SelectionTerminus = new CubeCoordinate();
+	private MapCoordinate MouseLocation = new MapCoordinate();
+	public MapCoordinate SelectionOrigin = new MapCoordinate();
+	public MapCoordinate SelectionTerminus = new MapCoordinate();
 	public VolumeSelection Volume;
 	protected int SliceTop;
 	protected int SliceBottom;
@@ -331,7 +331,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			Vector3f IntersectLocation = new Vector3f();
 			ray.intersectsWherePlane(SelectionPlane, IntersectLocation);
 
-			SelectionTerminus.set((int) IntersectLocation.x, (int) IntersectLocation.y, (int) SelectionOrigin.Z);
+			SelectionTerminus.set((int) IntersectLocation.x, (int) IntersectLocation.y, (int) SelectionOrigin.Cube.getZ());
 			Volume.setSize(SelectionOrigin, SelectionTerminus);
 		}
 
@@ -469,7 +469,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		identifyNode(node.getParent());
 	}
 
-	public CubeCoordinate getMouseLocation() {
+	public MapCoordinate getMouseLocation() {
 		return MouseLocation;
 	}
 
@@ -482,8 +482,8 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				SelectionTerminus.copy(MouseLocation);
 				Volume = new VolumeSelection(SelectionTerminus, SelectionOrigin);
 
-				SelectionPlane = new Plane(Vector3f.UNIT_Z, MouseLocation.Z);
-				//this.rootnode.detachChild(SelectionBox);	
+				SelectionPlane = new Plane(Vector3f.UNIT_Z, MouseLocation.getZ());
+				//this.rootnode.detachChild(SelectionBox);
 			}
 
 			if (CurrentMode == CameraMode.NORMAL) {
@@ -641,12 +641,12 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		return selectedActor;
 	}
 
-	public void pointCameraAt(CubeCoordinate mapCoordinate) {
+	public void pointCameraAt(MapCoordinate Coordinate) {
 		// change to the same Z level as the target
-		SliceTop = mapCoordinate.Z;
+		SliceTop = Coordinate.Cell.Z;
 		SliceBottom = SliceTop + ViewLevels;
 		// point camera at the target
-		Vector3f target = new Vector3f(mapCoordinate.X, mapCoordinate.Y, mapCoordinate.Z);
+		Vector3f target = Coordinate.getVector();
 		MainCamera.pointCameraAt(target);
 		TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
 		Terrain.SwapFrustrumCells();

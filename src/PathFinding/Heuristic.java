@@ -17,7 +17,7 @@
 
 package PathFinding;
 
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.MapCoordinate;
 import java.io.Serializable;
 
 /**
@@ -28,14 +28,14 @@ import java.io.Serializable;
  */
 public interface Heuristic {
 
-	public float estimate(CubeCoordinate StartCoord, CubeCoordinate GoalCoord);
+	public float estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord);
 
 	public class Manhatten implements Heuristic, Serializable {
 
 		private static final long serialVersionUID = 1;
 
-		public float estimate(CubeCoordinate StartCoord, CubeCoordinate GoalCoord) {
-			return (float) Math.abs(StartCoord.X - GoalCoord.X) + Math.abs(StartCoord.Y - GoalCoord.Y) + Math.abs(StartCoord.Z - GoalCoord.Z);
+		public float estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
+			return (float) Math.abs(StartCoord.getX() - GoalCoord.getX()) + Math.abs(StartCoord.getY() - GoalCoord.getY()) + Math.abs(StartCoord.getZ() - GoalCoord.getZ());
 		}
 	}
 
@@ -43,19 +43,19 @@ public interface Heuristic {
 
 		private static final long serialVersionUID = 1;
 
-		public float estimate(CubeCoordinate StartCoord, CubeCoordinate GoalCoord) {
+		public float estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
 			float max = 0;
 			float cost;
 
-			cost = Math.abs(StartCoord.X - GoalCoord.X);
+			cost = Math.abs(StartCoord.getX() - GoalCoord.getX());
 			if (cost > max)
 				max = cost;
 
-			cost = Math.abs(StartCoord.Y - GoalCoord.Y);
+			cost = Math.abs(StartCoord.getY() - GoalCoord.getY());
 			if (cost > max)
 				max = cost;
 
-			cost = Math.abs(StartCoord.Z - GoalCoord.Z);
+			cost = Math.abs(StartCoord.getZ() - GoalCoord.getZ());
 			if (cost > max)
 				max = cost;
 
@@ -65,11 +65,11 @@ public interface Heuristic {
 
 	public class Euclidean implements Heuristic, Serializable {
 
-		public float estimate(CubeCoordinate StartCoord, CubeCoordinate GoalCoord) {
-			float cost = StartCoord.X - GoalCoord.X;
+		public float estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
+			float cost = StartCoord.getX() - GoalCoord.getX();
 			float sum = cost * cost;
 
-			cost = StartCoord.Y - GoalCoord.Y;
+			cost = StartCoord.getY() - GoalCoord.getY();
 			sum += cost * cost;
 
 			// Use Z as well?  cuberoot?
@@ -80,10 +80,10 @@ public interface Heuristic {
 
 	public class Diagonal implements Heuristic, Serializable {
 
-		public float estimate(CubeCoordinate StartCoord, CubeCoordinate GoalCoord) {
-			float DiagonalsX = Math.abs(StartCoord.X - GoalCoord.X);
-			float DiagonalsY = Math.abs(StartCoord.Y - GoalCoord.Y);
-			float ZDifference = Math.abs(StartCoord.Z - GoalCoord.Z);
+		public float estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
+			float DiagonalsX = Math.abs(StartCoord.getX() - GoalCoord.getX());
+			float DiagonalsY = Math.abs(StartCoord.getY() - GoalCoord.getY());
+			float ZDifference = Math.abs(StartCoord.getZ() - GoalCoord.getZ());
 
 			final float SquareRootTwo = (float) Math.sqrt(2);
 
@@ -97,7 +97,7 @@ public interface Heuristic {
 
 	public class StraitLine implements Heuristic, Serializable {
 
-		public float estimate(CubeCoordinate StartCoord, CubeCoordinate GoalCoord) {
+		public float estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
 
 			//float dx1 = current.x - goal.x
 			//float dy1 = current.y - goal.y
@@ -114,7 +114,7 @@ public interface Heuristic {
 
 	public class Dijkstra implements Heuristic, Serializable {
 
-		public float estimate(CubeCoordinate StartCoord, CubeCoordinate GoalCoord) {
+		public float estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
 			return 0;
 		}
 	}

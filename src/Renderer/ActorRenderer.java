@@ -25,6 +25,7 @@ import Map.CubeShape;
 import Map.Coordinates.Direction;
 import Map.GameMap;
 import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.MapCoordinate;
 
 import Interface.GameCameraState;
 
@@ -60,12 +61,12 @@ public class ActorRenderer extends AbstractAppState {
 	LodControl ActorLodControler;
 	ConcurrentHashMap<Integer, Node> ActorNodeMap;
 	boolean DisplayToggle = true;
-	CubeCoordinate TestingCoords;
+	MapCoordinate TestingCoords;
 	Vector3f OffsetVector, DirectionVector;
 
 	public ActorRenderer() {
 		ActorNodeMap = new ConcurrentHashMap<Integer, Node>();
-		TestingCoords = new CubeCoordinate();
+		TestingCoords = new MapCoordinate();
 	}
 
 	@Override
@@ -104,14 +105,14 @@ public class ActorRenderer extends AbstractAppState {
 					}
 
 					actorNode.setCullHint(Spatial.CullHint.Dynamic);
-					CubeCoordinate coords = target.getLocation();
+					MapCoordinate coords = target.getLocation();
 					MapRenderer Renderer = state.getState(MapRenderer.class);
 
 					Node zNode;
 					if (map.isCubeSunLit(coords)) {
-						zNode = Renderer.getZNodeLight(coords.Z);
+						zNode = Renderer.getZNodeLight(coords.Cell.Z);
 					} else {
-						zNode = Renderer.getZNodeDark(coords.Z);
+						zNode = Renderer.getZNodeDark(coords.Cell.Z);
 					}
 
 					zNode.attachChild(actorNode);
@@ -119,7 +120,7 @@ public class ActorRenderer extends AbstractAppState {
 					if (target instanceof Pawn) {
 						MovePawn((Pawn) target, CurrentTick);
 					} else {
-						actorNode.setLocalTranslation(coords.X, coords.Y, coords.Z);
+						actorNode.setLocalTranslation(coords.Cube.getX(), coords.Cube.getY(), coords.Cube.getZ());
 					}
 				}
 			}
@@ -133,7 +134,7 @@ public class ActorRenderer extends AbstractAppState {
 		Pawn PawnTarget = (Pawn) target;
 		float MoveFraction = PawnTarget.getActionFraction(CurrentTick);
 		Direction MovingDirection = PawnTarget.getMovementDirection();
-		CubeCoordinate coords = target.getLocation();
+		MapCoordinate coords = target.getLocation();
 		Node actorNode = ActorNodeMap.get(target.getID());
 		float Height = 0;
 
@@ -155,8 +156,8 @@ public class ActorRenderer extends AbstractAppState {
 			TestingCoords.translate(MovingDirection);
 
 			CubeShape shape = map.getCubeShape(TestingCoords);
-			float CenterHeight = shape.getCenterHeight() + (TestingCoords.Z - coords.Z);
-			float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection.invert()) + (TestingCoords.Z - coords.Z);
+			float CenterHeight = shape.getCenterHeight() + (TestingCoords.Cube.getZ() - coords.Cube.getZ());
+			float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection.invert()) + (TestingCoords.Cube.getZ() - coords.Cube.getZ());
 			float CenterFraction = ((MoveFraction - 0.5f) * 2.0f);
 			float EdgeFraction = 1.0f - CenterFraction;
 			Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
@@ -173,7 +174,7 @@ public class ActorRenderer extends AbstractAppState {
 		rotation.fromAngleAxis(MovingDirection.toDegree() * FastMath.DEG_TO_RAD, Vector3f.UNIT_Z);
 		actorNode.setLocalRotation(rotation);
 
-		actorNode.setLocalTranslation(coords.X + OffsetVector.x, coords.Y + OffsetVector.y, Height);
+		actorNode.setLocalTranslation(coords.Cube.getX() + OffsetVector.x, coords.Cube.getY() + OffsetVector.y, Height);
 	}
 
 	public void hideActors() {

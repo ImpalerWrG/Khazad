@@ -16,6 +16,7 @@
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Game;
 
+import Map.Coordinates.MapCoordinate;
 import Map.Coordinates.CubeCoordinate;
 import Map.Coordinates.CellCoordinate;
 import Core.*;
@@ -194,7 +195,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		return true;
 	}
 
-	public Pawn spawnPawn(CubeCoordinate SpawnCoordinates, short CreatureTypeID) {
+	public Pawn spawnPawn(MapCoordinate SpawnCoordinates, short CreatureTypeID) {
 		Pawn NewPawn = new Pawn(CreatureTypeID, ActorIDcounter, MasterSeed, SpawnCoordinates);
 		ActorIDcounter++;
 		Actors.put(NewPawn.getID(), NewPawn);
@@ -202,7 +203,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		return NewPawn;
 	}
 
-	public Citizen SpawnCitizen(short CreatureTypeID, CubeCoordinate SpawnCoordinates) {
+	public Citizen SpawnCitizen(short CreatureTypeID, MapCoordinate SpawnCoordinates) {
 		if (SpawnCoordinates != null) {
 			Citizen NewCitizen = new Citizen(CreatureTypeID, ActorIDcounter, PawnDice.roll(0, MasterSeed), SpawnCoordinates);
 			ActorIDcounter++;

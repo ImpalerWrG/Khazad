@@ -17,7 +17,7 @@
 
 package PathFinding;
 
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.MapCoordinate;
 import java.io.Serializable;
 
 /**
@@ -35,7 +35,7 @@ public abstract class MapPath implements Serializable {
 	float Length;   // The travel cost of the path
 	int StepCount;  // The number of individual steps in the path
 	MovementModality MovementType;
-	CubeCoordinate StartCoordinates, GoalCoordinates;
+	MapCoordinate StartCoordinates, GoalCoordinates;
 
 	public abstract PathWalker getPathWalker();
 }

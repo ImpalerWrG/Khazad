@@ -17,7 +17,7 @@
 
 package Game;
 
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.MapCoordinate;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -35,20 +35,20 @@ public abstract class Actor extends Temporal implements Serializable {
 	private static final long serialVersionUID = 1;
 
 	// The location for gameplay logic purposes
-	CubeCoordinate LocationCoordinates;
+	MapCoordinate LocationCoordinates;
 	boolean Visible;
 	boolean Hidden;
 	// Used by Rendering
 	transient boolean Dirty;
 
-	public Actor(int id, CubeCoordinate SpawnLocation) {
+	public Actor(int id, MapCoordinate SpawnLocation) {
 		this.ID = id;
 
 		LocationCoordinates = SpawnLocation;
 		Dirty = true;
 	}
 
-	public void setLocation(CubeCoordinate NewPosition) {
+	public void setLocation(MapCoordinate NewPosition) {
 		LocationCoordinates = NewPosition;
 		Dirty = true;
 	}
@@ -64,7 +64,7 @@ public abstract class Actor extends Temporal implements Serializable {
 		return Dirty;
 	}
 
-	public CubeCoordinate getLocation() {
+	public MapCoordinate getLocation() {
 		return LocationCoordinates;
 	}
 

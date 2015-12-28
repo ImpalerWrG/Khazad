@@ -5,7 +5,7 @@
 
 package PathFinding;
 
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.MapCoordinate;
 import Map.Zone;
 import java.io.Serializable;
 
@@ -18,7 +18,7 @@ import java.io.Serializable;
 public class RouteRequest implements Serializable {
 
 	private static final long serialVersionUID = 1;
-	CubeCoordinate Start;
-	CubeCoordinate Goal;
+	MapCoordinate Start;
+	MapCoordinate Goal;
 	Zone GoalZone;
 }

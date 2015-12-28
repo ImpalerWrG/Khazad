@@ -17,7 +17,7 @@
 
 package PathFinding;
 
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.MapCoordinate;
 import Map.Coordinates.Direction;
 import java.io.Serializable;
 
@@ -30,7 +30,7 @@ import java.io.Serializable;
 public class VectorPathWalker implements PathWalker, Serializable {
 
 	private static final long serialVersionUID = 1;
-	private CubeCoordinate StepCoordinates;
+	private MapCoordinate StepCoordinates;
 	private int MagnitudeCountDown;
 	private short LegCounter;
 	private int CurrentStep;
@@ -56,7 +56,7 @@ public class VectorPathWalker implements PathWalker, Serializable {
 		CurrentStep = 0;
 	}
 
-	public CubeCoordinate nextCoordinate() {
+	public MapCoordinate nextCoordinate() {
 		if (CurrentStep < TargetPath.StepCount) {
 			if (MagnitudeCountDown == 0) {
 				LegCounter++;
@@ -88,7 +88,7 @@ public class VectorPathWalker implements PathWalker, Serializable {
 		return Direction.DIRECTION_DESTINATION;
 	}
 
-	public CubeCoordinate peekCoordinate() {
+	public MapCoordinate peekCoordinate() {
 		if (CurrentStep < TargetPath.StepCount) {
 			Direction dir;
 			if (MagnitudeCountDown == 0) {

@@ -17,7 +17,7 @@
 
 package Interface;
 
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.MapCoordinate;
 
 /**
  *
@@ -26,8 +26,8 @@ import Map.Coordinates.CubeCoordinate;
 public class VolumeSelection {
 
 	// End Points of the Bounding Box
-	public CubeCoordinate OriginLocation = new CubeCoordinate();
-	public CubeCoordinate TerminalLocation = new CubeCoordinate();
+	public MapCoordinate OriginLocation = new MapCoordinate();
+	public MapCoordinate TerminalLocation = new MapCoordinate();
 	// Used by Rendering
 	public boolean Dirty;
 
@@ -35,20 +35,20 @@ public class VolumeSelection {
 		Dirty = true;
 	}
 
-	public VolumeSelection(CubeCoordinate SelectionOrigin, CubeCoordinate SelectionTerminus) {
+	public VolumeSelection(MapCoordinate SelectionOrigin, MapCoordinate SelectionTerminus) {
 		setSize(SelectionOrigin, SelectionTerminus);
 		Dirty = true;
 	}
 
-	public final void setSize(CubeCoordinate SelectionOrigin, CubeCoordinate SelectionTerminus) {
+	public final void setSize(MapCoordinate SelectionOrigin, MapCoordinate SelectionTerminus) {
 
-		int maxX = Math.max(SelectionTerminus.X, SelectionOrigin.X);
-		int maxY = Math.max(SelectionTerminus.Y, SelectionOrigin.Y);
-		int maxZ = Math.max(SelectionTerminus.Z, SelectionOrigin.Z);
+		int maxX = Math.max(SelectionTerminus.getX(), SelectionOrigin.getX());
+		int maxY = Math.max(SelectionTerminus.getY(), SelectionOrigin.getY());
+		int maxZ = Math.max(SelectionTerminus.getZ(), SelectionOrigin.getZ());
 
-		int minX = Math.min(SelectionTerminus.X, SelectionOrigin.X);
-		int minY = Math.min(SelectionTerminus.Y, SelectionOrigin.Y);
-		int minZ = Math.min(SelectionTerminus.Z, SelectionOrigin.Z);
+		int minX = Math.min(SelectionTerminus.getX(), SelectionOrigin.getX());
+		int minY = Math.min(SelectionTerminus.getY(), SelectionOrigin.getY());
+		int minZ = Math.min(SelectionTerminus.getZ(), SelectionOrigin.getZ());
 
 		OriginLocation.set(minX, minY, minZ);
 		TerminalLocation.set(maxX, maxY, maxZ);

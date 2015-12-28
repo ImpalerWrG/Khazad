@@ -17,7 +17,7 @@
 
 package PathFinding;
 
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.MapCoordinate;
 import java.io.Serializable;
 
 /**
@@ -35,13 +35,13 @@ public abstract class PathAlgorithm<T> implements Serializable {
 	int ExpandedNodes;
 	GridInterface SearchGraph;
 	MovementModality Modality;
-	CubeCoordinate StartCoordinates;
-	CubeCoordinate GoalCoordinates;
+	MapCoordinate StartCoordinates;
+	MapCoordinate GoalCoordinates;
 	Heuristic MainHeuristic;
 	Heuristic TieBreakerHeuristic;
 	MapPath FinalPath;
 
-	void setEndPoints(CubeCoordinate StartCoords, CubeCoordinate GoalCoords) {
+	void setEndPoints(MapCoordinate StartCoords, MapCoordinate GoalCoords) {
 		StartCoordinates = StartCoords;
 		GoalCoordinates = GoalCoords;
 		GraphReads = ExpandedNodes = 0;

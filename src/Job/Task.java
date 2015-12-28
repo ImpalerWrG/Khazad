@@ -19,7 +19,7 @@ package Job;
 
 
 import Map.GameMap;
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.MapCoordinate;
 import Map.Coordinates.Direction;
 import Map.CubeShape;
 import Game.Pawn;
@@ -50,12 +50,12 @@ public class Task implements Serializable {
 	private static final long serialVersionUID = 1;
 	public final Job ParentJob;
 	public final TaskType type;
-	public final CubeCoordinate worklocation;
+	public final MapCoordinate worklocation;
 	public final Direction workdirection;
 	public boolean Completed;
 	public boolean Begun;
 
-	public Task(Job Parent, TaskType NewType, CubeCoordinate location) {
+	public Task(Job Parent, TaskType NewType, MapCoordinate location) {
 		ParentJob = Parent;
 		type = NewType;
 		worklocation = location;
@@ -126,7 +126,7 @@ public class Task implements Serializable {
 				//Fall down to the new surface
 				CubeShape NewShape = GameMap.getMap().getCubeShape(Host.getLocation());
 				if (NewShape.isSky()) {
-					CubeCoordinate Newlocation = Host.getLocation().clone();
+					MapCoordinate Newlocation = Host.getLocation().clone();
 					Newlocation.translate(Direction.DIRECTION_DOWN);
 					Host.setLocation(Newlocation);
 				}

@@ -25,6 +25,7 @@ import java.util.PriorityQueue;
 
 import Map.Coordinates.CubeCoordinate;
 import Map.Coordinates.Direction;
+import Map.Coordinates.MapCoordinate;
 import java.io.Serializable;
 
 import java.util.concurrent.Callable;
@@ -48,7 +49,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 	private static final long serialVersionUID = 1;
 	// Core storage sturctures of AStar
 	PriorityQueue<AStarNode> FringeNodes;
-	HashSet<CubeCoordinate> VisitedCoordinates;
+	HashSet<MapCoordinate> VisitedCoordinates;
 	// Values used in iteration loop
 	AStarNode CurrentNode;
 	boolean FringeExausted;
@@ -57,7 +58,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 
 	AStar(GridInterface TargetSearchGraph) {
 		FringeNodes = new PriorityQueue<AStarNode>();
-		VisitedCoordinates = new HashSet<CubeCoordinate>();
+		VisitedCoordinates = new HashSet<MapCoordinate>();
 
 		SearchGraph = TargetSearchGraph;
 		FinalPath = null;
@@ -69,7 +70,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 	}
 
 	@Override
-	void setEndPoints(CubeCoordinate StartCoords, CubeCoordinate GoalCoords) {
+	void setEndPoints(MapCoordinate StartCoords, MapCoordinate GoalCoords) {
 		StartCoordinates = StartCoords;
 		GoalCoordinates = GoalCoords;
 		GraphReads = ExpandedNodes = 0;
@@ -139,7 +140,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 
 	boolean expandNode() {
 		CurrentNode = FringeNodes.poll();
-		CubeCoordinate TestCoordinates = CurrentNode.LocationCoordinates;
+		MapCoordinate TestCoordinates = CurrentNode.LocationCoordinates;
 
 		if (VisitedCoordinates.contains(TestCoordinates))
 			return false;
@@ -150,13 +151,15 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		// mark as VisitedCoordinates if not already Visited
 		VisitedCoordinates.add(TestCoordinates);
 
-		CubeCoordinate NeiboringCoordinates;
+		MapCoordinate NeiboringCoordinates;
 		BitSet TestDirections = SearchGraph.getDirectionEdgeSet(TestCoordinates);
+		NeiboringCoordinates = TestCoordinates.clone();
 
 		// Check all Neibors
 		for (int i = TestDirections.nextSetBit(0); i >= 0; i = TestDirections.nextSetBit(i + 1)) {
 			Direction DirectionType = Direction.ANGULAR_DIRECTIONS[i];
-			NeiboringCoordinates = new CubeCoordinate(TestCoordinates, DirectionType);
+			NeiboringCoordinates.copy(TestCoordinates);
+			NeiboringCoordinates.translate(DirectionType);
 
 			// If Coordinate is not already on the VisitedCoordinates list
 			if (VisitedCoordinates.contains(NeiboringCoordinates) == false) {
@@ -177,7 +180,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		ExpandedNodes = VisitedCoordinates.size();
 
 		float PathLength = CurrentNode.PathLengthFromStart;
-		ArrayList<CubeCoordinate> Course = new ArrayList();
+		ArrayList<MapCoordinate> Course = new ArrayList();
 
 		while (CurrentNode != null) {
 			Course.add(CurrentNode.LocationCoordinates);

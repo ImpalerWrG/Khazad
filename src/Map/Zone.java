@@ -18,6 +18,7 @@
 package Map;
 
 import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.MapCoordinate;
 import Map.Coordinates.CellCoordinate;
 import java.util.*;
 import Interface.VolumeSelection;
@@ -55,23 +56,22 @@ public class Zone implements Serializable {
 	}
 
 	public final void addSelection(VolumeSelection Selection) {
-		CubeCoordinate Origin = Selection.OriginLocation;
-		CubeCoordinate Terminal = Selection.TerminalLocation;
+		MapCoordinate Origin = Selection.OriginLocation;
+		MapCoordinate Terminal = Selection.TerminalLocation;
+		MapCoordinate TargetCoords = new MapCoordinate();
 
-		for (int x = Origin.X; x <= Terminal.X; x++) {
-			for (int y = Origin.Y; y <= Terminal.Y; y++) {
-				for (int z = Origin.Z; z <= Terminal.Z; z++) {
+		for (int x = Origin.getX(); x < Terminal.getX(); x++) {
+			for (int y = Origin.getY(); y < Terminal.getY(); y++) {
+				for (int z = Origin.getZ(); z < Terminal.getZ(); z++) {
+					TargetCoords.set(x, y, z);
 
-					CubeCoordinate ZoneCube = new CubeCoordinate(x, y, z);
-					CellCoordinate ZoneCell = new CellCoordinate(ZoneCube);
-
-					BitSet Target = ZoneMap.get(ZoneCell);
+					BitSet Target = ZoneMap.get(TargetCoords.Cell);
 					if (Target != null) {
-						Target.set(ZoneCube.getCubeIndex(), true);
+						Target.set(TargetCoords.Cube.getCubeIndex(), true);
 					} else {
 						BitSet Bits = new BitSet(CubeCoordinate.CUBESPERCELL);
-						Bits.set(ZoneCube.getCubeIndex(), true);
-						ZoneMap.put(ZoneCell, Bits);
+						Bits.set(TargetCoords.Cube.getCubeIndex(), true);
+						ZoneMap.put(TargetCoords.Cell, Bits);
 					}
 				}
 			}
@@ -79,30 +79,28 @@ public class Zone implements Serializable {
 		Dirty = true;
 	}
 
-	public final void addMapCoordinate(CubeCoordinate AdditionCoords) {
-		CellCoordinate Targt = new CellCoordinate(AdditionCoords);
-		BitSet Target = ZoneMap.get(Targt);
+	public final void addMapCoordinate(MapCoordinate AdditionCoords) {
+		BitSet Target = ZoneMap.get(AdditionCoords.Cell);
 		if (Target == null) {
 			Target = new BitSet(CubeCoordinate.CUBESPERCELL);
 		}
-		Target.set(AdditionCoords.getCubeIndex(), true);
+		Target.set(AdditionCoords.Cube.getCubeIndex(), true);
 		Dirty = true;
 	}
 
 	public final void removeSelection(VolumeSelection Selection) {
-		CubeCoordinate Origin = Selection.OriginLocation;
-		CubeCoordinate Terminal = Selection.TerminalLocation;
+		MapCoordinate Origin = Selection.OriginLocation;
+		MapCoordinate Terminal = Selection.TerminalLocation;
+		MapCoordinate TargetCoords = new MapCoordinate();
 
-		for (int x = Origin.X; x < Terminal.X; x++) {
-			for (int y = Origin.Y; y < Terminal.Y; y++) {
-				for (int z = Origin.Z; z < Terminal.Z; z++) {
+		for (int x = Origin.getX(); x < Terminal.getX(); x++) {
+			for (int y = Origin.getY(); y < Terminal.getY(); y++) {
+				for (int z = Origin.getZ(); z < Terminal.getZ(); z++) {
+					TargetCoords.set(x, y, z);
 
-					CubeCoordinate ZoneCube = new CubeCoordinate(x, y, z);
-					CellCoordinate ZoneCell = new CellCoordinate(ZoneCube);
-
-					BitSet Target = ZoneMap.get(ZoneCell);
+					BitSet Target = ZoneMap.get(TargetCoords.Cell);
 					if (Target != null) {
-						Target.set(ZoneCube.getCubeIndex(), false);
+						Target.set(TargetCoords.Cube.getCubeIndex(), false);
 					}
 				}
 			}
@@ -117,20 +115,18 @@ public class Zone implements Serializable {
 		Dirty = true;
 	}
 
-	public final void removeMapCoordinate(CubeCoordinate RemovalCoords) {
-		CellCoordinate Targt = new CellCoordinate(RemovalCoords);
-		BitSet Target = ZoneMap.get(Targt);
+	public final void removeMapCoordinate(MapCoordinate RemovalCoords) {
+		BitSet Target = ZoneMap.get(RemovalCoords.Cell);
 		if (Target != null) {
-			Target.clear(RemovalCoords.getCubeIndex());
+			Target.clear(RemovalCoords.Cube.getCubeIndex());
 			Dirty = true;
 		}
 	}
 
-	boolean isCoordinateInZone(CubeCoordinate TestCoordinates) {
-		CellCoordinate Targt = new CellCoordinate(TestCoordinates);
-		BitSet Target = ZoneMap.get(Targt);
+	boolean isCoordinateInZone(MapCoordinate TestCoordinates) {
+		BitSet Target = ZoneMap.get(TestCoordinates.Cell);
 		if (Target != null) {
-			return (Target.get(TestCoordinates.getCubeIndex()));
+			return (Target.get(TestCoordinates.Cube.getCubeIndex()));
 		} else {
 			return false;
 		}

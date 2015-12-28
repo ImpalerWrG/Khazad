@@ -17,7 +17,7 @@
 
 package Map.Coordinates;
 
-
+import com.jme3.math.Vector3f;
 /**
  * Consolidated all other coordinates under one object allowing full resolution
  * of any point in the game world and proper translation across all boundries
@@ -26,8 +26,8 @@ package Map.Coordinates;
  */
 public class MapCoordinate {
 
-	// Region Coordinate Region;
-	// Block Coordinate Block;
+	//public RegionCoordinate Region = null;
+	//public ChunkCoordinate Chunk = null;
 	public CellCoordinate Cell = null;
 	public CubeIndex Cube = null;
 	
@@ -48,7 +48,14 @@ public class MapCoordinate {
 	public void setCubeCoordinate(CubeIndex Cube) {
 		this.Cube.copy(Cube);
 	}
-	
+
+	public void set(int x, int y, int z) {
+		this.Cell.X = (short) (x / CubeCoordinate.CELLEDGESIZE);
+		this.Cell.Y = (short) (y / CubeCoordinate.CELLEDGESIZE);
+		this.Cell.Z = (short) (z / CubeCoordinate.CELLEDGESIZE);
+		this.Cube.set(x % CubeCoordinate.CELLEDGESIZE, y % CubeCoordinate.CELLEDGESIZE, z % CubeCoordinate.CELLEDGESIZE);
+	}
+
 	public void translate(Direction DirectionType) {
 		translateCube(DirectionType, 1);
 	}
@@ -89,5 +96,31 @@ public class MapCoordinate {
 		short CubeZ = (short) (RawZ % CubeCoordinate.CELLEDGESIZE);
 
 		this.Cube.set(CubeX, CubeY, CubeZ);	
+	}
+
+	public void copy(MapCoordinate CopyCoordinates) {
+		this.Cell.copy(CopyCoordinates.Cell);
+		this.Cube.copy(CopyCoordinates.Cube);
+	}
+
+	public Vector3f getVector() {
+		return new Vector3f(getX(), getY(), getZ());
+	}
+
+	public int getX() {
+		return (Cell.X * CubeCoordinate.CELLEDGESIZE) + Cube.getX();
+	}
+
+	public int getY() {
+		return (Cell.Y * CubeCoordinate.CELLEDGESIZE) + Cube.getY();
+	}
+
+	public int getZ() {
+		return (Cell.Z * CubeCoordinate.CELLEDGESIZE) + Cube.getZ();
+	}
+
+	@Override
+	public MapCoordinate clone() {
+		return new MapCoordinate(this.Cell, this.Cube);
 	}
 }

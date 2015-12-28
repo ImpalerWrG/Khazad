@@ -18,7 +18,7 @@
 package PathFinding;
 
 import Map.Coordinates.Direction;
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.MapCoordinate;
 
 /**
  * PathWalkers are objects that organizes the reading and following of Paths,
@@ -31,11 +31,11 @@ import Map.Coordinates.CubeCoordinate;
  */
 public interface PathWalker {
 
-	public CubeCoordinate nextCoordinate();
+	public MapCoordinate nextCoordinate();
 
 	public Direction nextDirection();
 
-	public CubeCoordinate peekCoordinate();
+	public MapCoordinate peekCoordinate();
 
 	public Direction peekDirection();
 

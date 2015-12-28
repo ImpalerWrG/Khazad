@@ -26,8 +26,10 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 import Map.Coordinates.Axis;
 import Map.GameMap;
+import Map.Coordinates.MapCoordinate;
 import Map.Coordinates.CubeCoordinate;
 import Map.Coordinates.CellCoordinate;
+import Map.Coordinates.CubeIndex;
 import Map.Coordinates.Direction;
 import Map.CubeShape;
 import java.io.Serializable;
@@ -90,7 +92,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 	}
 
 	ConcurrentHashMap<CellCoordinate, GridCell> GridCells;
-	ConcurrentLinkedDeque<CubeCoordinate> DirtyLocations;
+	ConcurrentLinkedDeque<MapCoordinate> DirtyLocations;
 	// Connections between groups of Coordinates
 	ArrayList<Integer> ConnectivityCache;
 	ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, Integer>> ConnectivityMap;
@@ -102,7 +104,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 		GridCells = new ConcurrentHashMap<CellCoordinate, GridCell>();
 		ConnectivityMap = new ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, Integer>>();
 		ConnectivityCache = new ArrayList<Integer>();
-		DirtyLocations = new ConcurrentLinkedDeque<CubeCoordinate>();
+		DirtyLocations = new ConcurrentLinkedDeque<MapCoordinate>();
 		GridModality = Modality;
 		SourceMap = TargetMap;
 
@@ -111,10 +113,10 @@ public class KhazadGrid implements GridInterface, Serializable {
 				CellCoordinate CellCoords = TargetCell.getCellCoordinates();
 				GridCell NewGridCell = addCell(CellCoords);
 
-				for (int i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
-					CubeCoordinate TargetCoords = new CubeCoordinate(CellCoords, (short)i);
+				for (CubeIndex Index = new CubeIndex(); !Index.end(); Index.next()) {
+					MapCoordinate TargetCoords = new MapCoordinate(CellCoords, Index);
 					BitSet Flags = buildConnectivitySet(TargetCoords);
-					NewGridCell.setCubeDirections((short)i, Flags);
+					NewGridCell.setCubeDirections(Index.getCubeIndex(), Flags);
 				} 
 			}
 		}
@@ -130,21 +132,21 @@ public class KhazadGrid implements GridInterface, Serializable {
 			if (TargetCell != null) {
 				CellCoordinate CellCoords = TargetCell.getCellCoordinates();
 
-				for (int i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
-					BitSet Flags = getDirectionEdgeSet(new CubeCoordinate(CellCoords, (short)i));
+				for (CubeIndex Index = new CubeIndex(); !Index.end(); Index.next()) {
+					BitSet Flags = getDirectionEdgeSet(new MapCoordinate(CellCoords, Index));
 
 					if (Flags.cardinality() > 0) {
-						if (TargetCell.ConnectivityZone[i] == 0) { // Start a new zone if not connected to another zone
+						if (TargetCell.ConnectivityZone[Index.getCubeIndex()] == 0) { // Start a new zone if not connected to another zone
 							ZoneCounter++; // First zone will be 1, 0 will indicate un-ititialized
-							TargetCell.ConnectivityZone[i] = ZoneCounter;
+							TargetCell.ConnectivityZone[Index.getCubeIndex()] = ZoneCounter;
 						}
 						// Push this current zone onto the adjacent area
-						int CurrentZoneIndex = TargetCell.ConnectivityZone[i];
+						int CurrentZoneIndex = TargetCell.ConnectivityZone[Index.getCubeIndex()];
 
 						for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
 							if (Flags.get(dir.ordinal())) {
 								// Find the Zone that the adjcent Tile has
-								CubeCoordinate AdjacentTileCoords = new CubeCoordinate(CellCoords, (short)i);
+								MapCoordinate AdjacentTileCoords = new MapCoordinate(CellCoords, Index);
 								AdjacentTileCoords.translate(dir);
 								int AdjacentZoneIndex = getConnectivityZone(AdjacentTileCoords);
 
@@ -158,7 +160,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 							}
 						}
 					} else {
-						TargetCell.ConnectivityZone[(short)i] = 0;
+						TargetCell.ConnectivityZone[Index.getCubeIndex()] = 0;
 					}
 				}
 			}
@@ -167,18 +169,18 @@ public class KhazadGrid implements GridInterface, Serializable {
 		RebuildConnectivityCache(ZoneCounter);
 	}
 
-	private BitSet buildConnectivitySet(CubeCoordinate TargetCoords) {
+	private BitSet buildConnectivitySet(MapCoordinate TargetCoords) {
 		BitSet Flags = new BitSet(CubeCoordinate.CUBESPERCELL);
 		CubeShape TargetShape = SourceMap.getCubeShape(TargetCoords);
 
 		if (!TargetShape.isSky() && !TargetShape.hasCeiling()) {
-			CubeCoordinate OverheadTileCoords = TargetCoords.clone();
+			MapCoordinate OverheadTileCoords = TargetCoords.clone();
 			OverheadTileCoords.translate(Direction.DIRECTION_UP);
 			CubeShape OverheadCube = SourceMap.getCubeShape(OverheadTileCoords);
 			boolean OverheadPassable = !OverheadCube.isSolid();
 
 			for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
-				CubeCoordinate AdjacentTileCoords = TargetCoords.clone();
+				MapCoordinate AdjacentTileCoords = TargetCoords.clone();
 				AdjacentTileCoords.translate(dir);
 				CubeShape AdjacentCubeShape = SourceMap.getCubeShape(AdjacentTileCoords);
 
@@ -197,10 +199,10 @@ public class KhazadGrid implements GridInterface, Serializable {
 		return Flags;
 	}
 
-	public BitSet getDirectionEdgeSet(CubeCoordinate TargetCoords) {
-		GridCell TargetCell = getCell(new CellCoordinate(TargetCoords));
+	public BitSet getDirectionEdgeSet(MapCoordinate TargetCoords) {
+		GridCell TargetCell = getCell(TargetCoords.Cell);
 		if (TargetCell != null) {
-			return TargetCell.getCubeDirections(TargetCoords.getCubeIndex());
+			return TargetCell.getCubeDirections(TargetCoords.Cube.getCubeIndex());
 		}
 		return new BitSet();  // No connectivity because Cell is invalid
 	}
@@ -209,35 +211,36 @@ public class KhazadGrid implements GridInterface, Serializable {
 		return GridModality;
 	}
 
-	public boolean isEdge(CubeCoordinate TargetCoords, Direction DirectionType) {
-		GridCell TargetCell = getCell(new CellCoordinate(TargetCoords));
+	public boolean isEdge(MapCoordinate TargetCoords, Direction DirectionType) {
+		GridCell TargetCell = getCell(TargetCoords.Cell);
 		if (TargetCell != null) {
-			int Positition = ((TargetCoords.getCubeIndex()) * Direction.ANGULAR_DIRECTIONS.length) + DirectionType.ordinal();
+			int Positition = ((TargetCoords.Cube.getCubeIndex()) * Direction.ANGULAR_DIRECTIONS.length) + DirectionType.ordinal();
 			return TargetCell.DirectionMatrix.get(Positition);
 		}
 		return false;
 	}
 
-	public int getConnectivityZone(CubeCoordinate TargetCoords) {
-		GridCell TargetCell = getCell(new CellCoordinate(TargetCoords));
+	public int getConnectivityZone(MapCoordinate TargetCoords) {
+		GridCell TargetCell = getCell(TargetCoords.Cell);
 		if (TargetCell != null) {
-			return TargetCell.ConnectivityZone[TargetCoords.getCubeIndex()];
+			return TargetCell.ConnectivityZone[TargetCoords.Cube.getCubeIndex()];
 		}
 		return 0;  // No connectivity zone because Cell is invalid
 	}
 
-	void setConnectivityZone(CubeCoordinate TargetCoords, int NewZone) {
-		GridCell TargetCell = getCell(new CellCoordinate(TargetCoords));
+	void setConnectivityZone(MapCoordinate TargetCoords, int NewZone) {
+		GridCell TargetCell = getCell(TargetCoords.Cell);
 		if (TargetCell != null) {
-			TargetCell.ConnectivityZone[TargetCoords.getCubeIndex()] = NewZone;
+			TargetCell.ConnectivityZone[TargetCoords.Cube.getCubeIndex()] = NewZone;
 		}
 	}
 
-	void setDirectionFlags(CubeCoordinate MapCoords, BitSet Flags) {
-		//find the Target cell (add if necessary)
-		GridCell TargetCell = addCell(new CellCoordinate(MapCoords));
-
-		TargetCell.setCubeDirections(MapCoords.getCubeIndex(), Flags);
+	void setDirectionFlags(MapCoordinate TargetCoords, BitSet Flags) {
+		GridCell TargetCell = getCell(TargetCoords.Cell);
+		if (TargetCell == null)
+			TargetCell = addCell(TargetCoords.Cell);
+			
+		TargetCell.setCubeDirections(TargetCoords.Cube.getCubeIndex(), Flags);
 	}
 
 	ConcurrentHashMap<Integer, Integer> getConnectivtySubMap(int Zone) {
@@ -270,8 +273,8 @@ public class KhazadGrid implements GridInterface, Serializable {
 		}
 	}
 
-	public boolean contains(CubeCoordinate TestCoords) {
-		return getCell(new CellCoordinate(TestCoords)) != null;
+	public boolean contains(MapCoordinate TestCoords) {
+		return getCell(TestCoords.Cell) != null;
 	}
 
 	GridCell getCell(CellCoordinate TestCoords) {
@@ -288,7 +291,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 		return TargetCell;
 	}
 
-	public float getEdgeCost(CubeCoordinate TestCoords, Direction DirectionType) {
+	public float getEdgeCost(MapCoordinate TestCoords, Direction DirectionType) {
 		if (isEdge(TestCoords, DirectionType)) {
 			if (DirectionType.getValueonAxis(Axis.AXIS_Z) != 0) // True for Up and Down
 				return 2;
@@ -310,27 +313,27 @@ public class KhazadGrid implements GridInterface, Serializable {
 		return -1;  // No Edge exists
 	}
 
-	public boolean isPathPossible(MovementModality MovementType, CubeCoordinate StartCoords, CubeCoordinate GoalCoords) {
+	public boolean isPathPossible(MovementModality MovementType, MapCoordinate StartCoords, MapCoordinate GoalCoords) {
 		return getZoneEquivilency(StartCoords) == getZoneEquivilency(GoalCoords);
 	}
 
-	public void dirtyMapCoordinate(CubeCoordinate[] DirtyCoords) {
+	public void dirtyMapCoordinate(MapCoordinate[] DirtyCoords) {
 		Collections.addAll(DirtyLocations, DirtyCoords);
 
 		do {
-			CubeCoordinate TargetCoords = DirtyLocations.poll();
+			MapCoordinate TargetCoords = DirtyLocations.poll();
 			BitSet NewConnectivitySet = buildConnectivitySet(TargetCoords);
 
-			CellCoordinate TargetCell = new CellCoordinate(TargetCoords);
+			CellCoordinate TargetCell = TargetCoords.Cell;
 			GridCell TargetGridCell = getCell(TargetCell);
 			BitSet CurrentConnectivity = getDirectionEdgeSet(TargetCoords);
 			int SourceZone = getConnectivityZone(TargetCoords);
 
 			for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
 				boolean NewConnectionValue = NewConnectivitySet.get(dir.ordinal());
-				CubeCoordinate AdjacentTileCoords = TargetCoords.clone();
+				MapCoordinate AdjacentTileCoords = TargetCoords.clone();
 				AdjacentTileCoords.translate(dir);
-				CellCoordinate AdjacentCell = new CellCoordinate(AdjacentTileCoords);
+				CellCoordinate AdjacentCell = AdjacentTileCoords.Cell;
 				GridCell AdjacentGridCell = getCell(AdjacentCell);
 				int AdjacentZone = getConnectivityZone(AdjacentTileCoords);
 
@@ -338,11 +341,11 @@ public class KhazadGrid implements GridInterface, Serializable {
 
 					if (NewConnectionValue) { // Connection created
 						if (SourceZone == 0 && AdjacentZone != 0) {  // Match the zone any adjacent connected zone
-							TargetGridCell.setConnectivityZone(TargetCoords.getCubeIndex(), AdjacentZone);
+							TargetGridCell.setConnectivityZone(TargetCoords.Cube.getCubeIndex(), AdjacentZone);
 						}
 
 						if (AdjacentZone == 0 && SourceZone != 0) {  // Alternativly push the existing zone into unitialized space
-							TargetGridCell.setConnectivityZone(AdjacentTileCoords.getCubeIndex(), SourceZone);
+							TargetGridCell.setConnectivityZone(AdjacentTileCoords.Cube.getCubeIndex(), SourceZone);
 						}
 					}
 
@@ -353,17 +356,17 @@ public class KhazadGrid implements GridInterface, Serializable {
 							changeConnectivityMap(SourceZone, AdjacentZone, -1);
 						}
 					}
-					AdjacentGridCell.setCubeDirection(AdjacentTileCoords.getCubeIndex(), dir.invert(), NewConnectionValue);
+					AdjacentGridCell.setCubeDirection(AdjacentTileCoords.Cube.getCubeIndex(), dir.invert(), NewConnectionValue);
 					SourceMap.getCell(AdjacentCell).setDirtyPathingRendering(true);
 				}
 			}
-			TargetGridCell.setCubeDirections(TargetCoords.getCubeIndex(), NewConnectivitySet);
+			TargetGridCell.setCubeDirections(TargetCoords.Cube.getCubeIndex(), NewConnectivitySet);
 			SourceMap.getCell(TargetCell).setDirtyPathingRendering(true);
 
 		} while (!DirtyLocations.isEmpty());
 	}
 
-	int getZoneEquivilency(CubeCoordinate TargetCoords) {
+	int getZoneEquivilency(MapCoordinate TargetCoords) {
 		return ConnectivityCache.get(getConnectivityZone(TargetCoords));
 	}
 
@@ -392,16 +395,16 @@ public class KhazadGrid implements GridInterface, Serializable {
 		}
 	}
 
-	public ArrayList<CubeCoordinate> getPassableCoordinates() {
-		ArrayList<CubeCoordinate> TestCoords = new ArrayList<CubeCoordinate>();
+	public ArrayList<MapCoordinate> getPassableCoordinates() {
+		ArrayList<MapCoordinate> TestCoords = new ArrayList<MapCoordinate>();
 		for (KhazadGrid.GridCell TargetCell : GridCells.values()) {
 			CellCoordinate CellCoords = TargetCell.getCellCoordinates();
 
 			BitSet DirectionSet;
-			for (int i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
-				DirectionSet = TargetCell.getCubeDirections((short)i);
+			for (CubeIndex Index = new CubeIndex(); !Index.end(); Index.next()) {
+				DirectionSet = TargetCell.getCubeDirections(Index.getCubeIndex());
 				if (DirectionSet.cardinality() != 0) {  // Any Valid Edge Exists
-					CubeCoordinate TestCoordinates = new CubeCoordinate(CellCoords, (short)i);
+					MapCoordinate TestCoordinates = new MapCoordinate(CellCoords, Index);
 					TestCoords.add(TestCoordinates);
 				}
 			}

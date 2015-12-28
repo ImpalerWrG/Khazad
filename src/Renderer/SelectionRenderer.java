@@ -20,6 +20,7 @@ package Renderer;
 import Interface.GameCameraState;
 import Interface.VolumeSelection;
 
+import Map.Coordinates.MapCoordinate;
 import Map.Coordinates.CubeCoordinate;
 import Game.Game;
 import Map.Coordinates.CellCoordinate;
@@ -121,13 +122,13 @@ public class SelectionRenderer extends AbstractAppState {
 		WireBoxMesh.setMode(Mesh.Mode.Lines);
 		WireBoxMesh.setLineWidth(3);
 
-		int maxX = Math.max(Selection.OriginLocation.X, Selection.TerminalLocation.X);
-		int maxY = Math.max(Selection.OriginLocation.Y, Selection.TerminalLocation.Y);
-		int maxZ = Math.max(Selection.OriginLocation.Z, Selection.TerminalLocation.Z);
+		int maxX = Math.max(Selection.OriginLocation.getX(), Selection.TerminalLocation.getX());
+		int maxY = Math.max(Selection.OriginLocation.getY(), Selection.TerminalLocation.getY());
+		int maxZ = Math.max(Selection.OriginLocation.getZ(), Selection.TerminalLocation.getZ());
 
-		int minX = Math.min(Selection.OriginLocation.X, Selection.TerminalLocation.X);
-		int minY = Math.min(Selection.OriginLocation.Y, Selection.TerminalLocation.Y);
-		int minZ = Math.min(Selection.OriginLocation.Z, Selection.TerminalLocation.Z);
+		int minX = Math.min(Selection.OriginLocation.getX(), Selection.TerminalLocation.getX());
+		int minY = Math.min(Selection.OriginLocation.getY(), Selection.TerminalLocation.getY());
+		int minZ = Math.min(Selection.OriginLocation.getZ(), Selection.TerminalLocation.getZ());
 
 		Vector3f[] vertices = new Vector3f[8];
 		vertices[0] = new Vector3f(maxX - minX + CubeCoordinate.HALFCUBE, maxY - minY + CubeCoordinate.HALFCUBE, maxZ - minZ + CubeCoordinate.HALFCUBE);
@@ -196,9 +197,9 @@ public class SelectionRenderer extends AbstractAppState {
 			// not initialised yet
 			return;
 		}
-		CubeCoordinate mouse = cam.getMouseLocation();
+		MapCoordinate mouse = cam.getMouseLocation();
 		if (cam.getSelectedActor() == null) {
-			CursorBox.setLocalTranslation(new Vector3f(mouse.X, mouse.Y, mouse.Z));
+			CursorBox.setLocalTranslation(mouse.getVector());
 			CursorBox.setCullHint(CullHint.Dynamic);
 		} else {
 			// hide the cursor if over an actor
@@ -213,9 +214,9 @@ public class SelectionRenderer extends AbstractAppState {
 
 				buildSelectionBox();
 
-				int minX = Math.min(Selection.OriginLocation.X, Selection.TerminalLocation.X);
-				int minY = Math.min(Selection.OriginLocation.Y, Selection.TerminalLocation.Y);
-				int minZ = Math.min(Selection.OriginLocation.Z, Selection.TerminalLocation.Z);
+				int minX = Math.min(Selection.OriginLocation.getX(), Selection.TerminalLocation.getX());
+				int minY = Math.min(Selection.OriginLocation.getY(), Selection.TerminalLocation.getY());
+				int minZ = Math.min(Selection.OriginLocation.getZ(), Selection.TerminalLocation.getZ());
 
 				SelectionBox.setLocalTranslation(new Vector3f(minX, minY, minZ));
 				app.getRootNode().attachChild(SelectionBox);
@@ -244,6 +245,6 @@ public class SelectionRenderer extends AbstractAppState {
 			}
 		}
 
-		hudText.setText("X: " + mouse.X + "  Y: " + mouse.Y + "  Z: " + mouse.Z);
+		hudText.setText("X: " + mouse.Cube.getX() + "  Y: " + mouse.Cube.getY() + "  Z: " + mouse.Cube.getZ());
 	}
 }

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.concurrent.Future;
 
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.MapCoordinate;
 import Map.Coordinates.Direction;
 import Core.Dice;
 import java.io.IOException;
@@ -62,14 +62,14 @@ public class Navigator implements Serializable {
 	MovementModality Modality;
 	int ModalityGridIndex;
 
-	CubeCoordinate CurrentLocation;
-	CubeCoordinate Destination;
+	MapCoordinate CurrentLocation;
+	MapCoordinate Destination;
 
 	transient Future PathFuture = null;
 	MapPath CurrentPath = null;
 	PathWalker CurrentPathWalker = null;
 
-	public Navigator(CubeCoordinate SpawnLocation, MovementModality MovementType) {
+	public Navigator(MapCoordinate SpawnLocation, MovementModality MovementType) {
 		ParentManager = PathManager.getSingleton();
 		CurrentLocation = SpawnLocation;
 		Destination = SpawnLocation;
@@ -161,7 +161,7 @@ public class Navigator implements Serializable {
 			CurrentMovementBehavior = NewBehavior;
 	}
 
-	public boolean changeDestination(CubeCoordinate NewDestination) {
+	public boolean changeDestination(MapCoordinate NewDestination) {
 		if (NewDestination != Destination) {
 			Destination = NewDestination;
 
@@ -173,7 +173,7 @@ public class Navigator implements Serializable {
 		return false;
 	}
 
-	public CubeCoordinate getDestination() {
+	public MapCoordinate getDestination() {
 		return Destination;
 	}
 
@@ -185,15 +185,15 @@ public class Navigator implements Serializable {
 		return ModalityGridIndex;
 	}
 
-	public void setLocation(CubeCoordinate NewLocation) {
+	public void setLocation(MapCoordinate NewLocation) {
 		CurrentLocation = NewLocation;
 	}
 
-	public float getPathEstimate(CubeCoordinate TestDestination) {
+	public float getPathEstimate(MapCoordinate TestDestination) {
 		return 0;
 	}
 
-	public boolean isDestinationReachable(CubeCoordinate TestDestination) {
+	public boolean isDestinationReachable(MapCoordinate TestDestination) {
 		return ParentManager.isPathPossible(Modality, CurrentLocation, TestDestination);
 	}
 
