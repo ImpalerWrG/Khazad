@@ -120,7 +120,7 @@ public class ActorRenderer extends AbstractAppState {
 					if (target instanceof Pawn) {
 						MovePawn((Pawn) target, CurrentTick);
 					} else {
-						actorNode.setLocalTranslation(coords.Cube.getX(), coords.Cube.getY(), coords.Cube.getZ());
+						actorNode.setLocalTranslation(coords.getX(), coords.getY(), coords.getZ());
 					}
 				}
 			}
@@ -134,12 +134,12 @@ public class ActorRenderer extends AbstractAppState {
 		Pawn PawnTarget = (Pawn) target;
 		float MoveFraction = PawnTarget.getActionFraction(CurrentTick);
 		Direction MovingDirection = PawnTarget.getMovementDirection();
-		MapCoordinate coords = target.getLocation();
+		MapCoordinate LocationCoordinates = target.getLocation();
 		Node actorNode = ActorNodeMap.get(target.getID());
 		float Height = 0;
 
 		if (MoveFraction <= 0.5) {
-			CubeShape shape = map.getCubeShape(coords);
+			CubeShape shape = map.getCubeShape(LocationCoordinates);
 			float CenterHeight = shape.getCenterHeight();
 			float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection);
 			float CenterFraction = (MoveFraction * 2.0f);
@@ -152,12 +152,12 @@ public class ActorRenderer extends AbstractAppState {
 				MoveFraction = 0;
 			}
 
-			TestingCoords.copy(coords);
+			TestingCoords.copy(LocationCoordinates);
 			TestingCoords.translate(MovingDirection);
 
 			CubeShape shape = map.getCubeShape(TestingCoords);
-			float CenterHeight = shape.getCenterHeight() + (TestingCoords.Cube.getZ() - coords.Cube.getZ());
-			float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection.invert()) + (TestingCoords.Cube.getZ() - coords.Cube.getZ());
+			float CenterHeight = shape.getCenterHeight() + (TestingCoords.Cube.getZ() - LocationCoordinates.Cube.getZ());
+			float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection.invert()) + (TestingCoords.Cube.getZ() - LocationCoordinates.Cube.getZ());
 			float CenterFraction = ((MoveFraction - 0.5f) * 2.0f);
 			float EdgeFraction = 1.0f - CenterFraction;
 			Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
@@ -174,7 +174,7 @@ public class ActorRenderer extends AbstractAppState {
 		rotation.fromAngleAxis(MovingDirection.toDegree() * FastMath.DEG_TO_RAD, Vector3f.UNIT_Z);
 		actorNode.setLocalRotation(rotation);
 
-		actorNode.setLocalTranslation(coords.Cube.getX() + OffsetVector.x, coords.Cube.getY() + OffsetVector.y, Height);
+		actorNode.setLocalTranslation(LocationCoordinates.getX() + OffsetVector.x, LocationCoordinates.getY() + OffsetVector.y, LocationCoordinates.getZ() + Height);
 	}
 
 	public void hideActors() {

@@ -50,10 +50,27 @@ public class MapCoordinate {
 	}
 
 	public void set(int x, int y, int z) {
+
 		this.Cell.X = (short) (x / CubeCoordinate.CELLEDGESIZE);
+		if (x < 0) {
+			this.Cell.X--;
+			x += (CubeCoordinate.CELLEDGESIZE * this.Cell.X);
+		}
+		this.Cube.set(Axis.AXIS_X, x % CubeCoordinate.CELLEDGESIZE);
+		
 		this.Cell.Y = (short) (y / CubeCoordinate.CELLEDGESIZE);
+		if (y < 0) {
+			this.Cell.Y--;
+			y += (CubeCoordinate.CELLEDGESIZE * this.Cell.Y);
+		}
+		this.Cube.set(Axis.AXIS_Y, y % CubeCoordinate.CELLEDGESIZE);
+		
 		this.Cell.Z = (short) (z / CubeCoordinate.CELLEDGESIZE);
-		this.Cube.set(x % CubeCoordinate.CELLEDGESIZE, y % CubeCoordinate.CELLEDGESIZE, z % CubeCoordinate.CELLEDGESIZE);
+		if (z < 0) {
+			this.Cell.Z--;
+			z += (CubeCoordinate.CELLEDGESIZE * this.Cell.Z);			
+		}
+		this.Cube.set(Axis.AXIS_Z, z % CubeCoordinate.CELLEDGESIZE);
 	}
 
 	public void translate(Direction DirectionType) {

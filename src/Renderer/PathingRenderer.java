@@ -144,7 +144,7 @@ public class PathingRenderer extends AbstractAppState {
 
 				Geometry Wires = new Geometry("Connection Wires", EdgeWires);
 				Wires.setMaterial(mat);
-				Wires.setLocalTranslation(TargetCoords.getVector());
+				Wires.setLocalTranslation(TargetCoords.Cube.getX(), TargetCoords.Cube.getY(), TargetCoords.Cube.getZ());
 				PathRenderingNode.attachChild(Wires);
 			}
 		}

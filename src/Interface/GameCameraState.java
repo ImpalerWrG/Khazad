@@ -52,6 +52,7 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 
 import Renderer.MapRenderer;
+import java.util.Iterator;
 
 /**
  * Manages the main games parrelel projection Camera
@@ -433,9 +434,15 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			Mapnode.collideWith(ray, results);
 
 			if (results.size() > 0) {
-				// The closest collision point is what was truly hit:
-				CollisionResult closest = results.getClosestCollision();
+				Iterator<CollisionResult> collisions = results.iterator();
+				CollisionResult closest = collisions.next();
 				identifyNode(closest.getGeometry().getParent());
+				Spatial.CullHint hint = closest.getGeometry().getCullHint();
+
+				while (hint == Spatial.CullHint.Always && collisions.hasNext()) {
+					closest = collisions.next();
+					hint = closest.getGeometry().getCullHint();
+				}
 
 				Vector3f contact = closest.getContactPoint();
 				Vector3f normal = closest.getContactNormal();
@@ -643,7 +650,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 	public void pointCameraAt(MapCoordinate Coordinate) {
 		// change to the same Z level as the target
-		SliceTop = Coordinate.Cell.Z;
+		SliceTop = Coordinate.getZ();
 		SliceBottom = SliceTop + ViewLevels;
 		// point camera at the target
 		Vector3f target = Coordinate.getVector();
