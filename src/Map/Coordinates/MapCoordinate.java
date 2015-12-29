@@ -147,7 +147,7 @@ public class MapCoordinate {
 		//return false;
 
 		MapCoordinate Arg = (MapCoordinate) ArgumentCoordinates;
-		return (Cell.equals(Arg.Cell) && Cube.equals(Arg.Cube));
+		return (Cell.equals(Arg.Cell) && Cube.Data == Arg.Cube.Data && Cube.DetailLevel == Arg.Cube.DetailLevel);
 	}
 
 	@Override

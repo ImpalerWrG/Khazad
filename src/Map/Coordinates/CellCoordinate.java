@@ -87,12 +87,13 @@ public class CellCoordinate implements Serializable {
 
 	@Override
 	public boolean equals(Object ArgumentCoordinates) {
+		/*
 		if (ArgumentCoordinates == null)
 			return false;
 		if (ArgumentCoordinates == this)
 			return true;
 		if (!(ArgumentCoordinates instanceof CellCoordinate))
-			return false;
+			return false;*/
 
 		CellCoordinate Arg = (CellCoordinate) ArgumentCoordinates;
 		return (X == Arg.X && Y == Arg.Y && Z == Arg.Z);

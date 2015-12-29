@@ -12,12 +12,16 @@ package Map.Coordinates;
 public class CubeIndex {
 
 	public static final float HALFCUBE = (float) 0.5;
-	public static final int MAX_CUBE = 32768;
 
-	//public static final int CUBEBITSHIFT_X = 0;
-	//public static final int CUBEBITSHIFT_Y = 5;
-	//public static final int CUBEBITSHIFT_Z = 10;
-	//public static final int CUBEBITMASK = 31;
+	public static final int CELLEDGESIZE = 32;
+	public static final int CELLBITMASK = 31;
+
+	public static final int CELLBITSHIFT_X = 0;
+	public static final int CELLBITSHIFT_Y = 5;
+	public static final int CELLBITSHIFT_Z = 10;
+	
+	public static final int CUBESPERCELL = 32768;
+	public static final int CELLDETAILLEVELS = 6;
 
 	public short Data;  // Index bitpacking   0 ZZZZZ YYYYY XXXXX
 

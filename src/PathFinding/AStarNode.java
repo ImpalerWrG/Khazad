@@ -45,12 +45,13 @@ public class AStarNode implements Comparable, Serializable {
 	Direction ParentDirection;
 
 	AStarNode() {
+		LocationCoordinates = new MapCoordinate();
 	}
 
 	void set(MapCoordinate TargetCoordinates, AStarNode ParentNode, Direction SourceDirection, float DistanceFromStart, float MinimumCost, float TieBreaker) {
 		Parent = ParentNode;
 		ParentDirection = SourceDirection;
-		LocationCoordinates = TargetCoordinates;
+		LocationCoordinates.copy(TargetCoordinates);
 		PathLengthFromStart = DistanceFromStart;
 		MinimumCostToGoal = MinimumCost;
 		TieBreakerValue = TieBreaker;

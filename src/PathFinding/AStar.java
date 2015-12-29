@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.BitSet;
 import java.util.PriorityQueue;
 
-import Map.Coordinates.CubeCoordinate;
 import Map.Coordinates.Direction;
 import Map.Coordinates.MapCoordinate;
 import java.io.Serializable;
@@ -50,6 +49,8 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 	// Core storage sturctures of AStar
 	PriorityQueue<AStarNode> FringeNodes;
 	HashSet<MapCoordinate> VisitedCoordinates;
+	MapCoordinate NeiboringCoordinates;
+
 	// Values used in iteration loop
 	AStarNode CurrentNode;
 	boolean FringeExausted;
@@ -59,6 +60,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 	AStar(GridInterface TargetSearchGraph) {
 		FringeNodes = new PriorityQueue<AStarNode>();
 		VisitedCoordinates = new HashSet<MapCoordinate>();
+		NeiboringCoordinates = new MapCoordinate();
 
 		SearchGraph = TargetSearchGraph;
 		FinalPath = null;
@@ -152,7 +154,6 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		VisitedCoordinates.add(TestCoordinates);
 
 		BitSet TestDirections = SearchGraph.getDirectionEdgeSet(TestCoordinates);
-		MapCoordinate NeiboringCoordinates = TestCoordinates.clone();
 
 		// Check all Neibors
 		for (int i = TestDirections.nextSetBit(0); i >= 0; i = TestDirections.nextSetBit(i + 1)) {
@@ -169,7 +170,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 				GraphReads++;
 
 				AStarNode NewNode = NodePool.provide();
-				NewNode.set(NeiboringCoordinates.clone(), CurrentNode, DirectionType, CurrentNode.PathLengthFromStart + EdgeCost, MainHeuristic.estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic.estimate(NeiboringCoordinates, GoalCoordinates));
+				NewNode.set(NeiboringCoordinates, CurrentNode, DirectionType, CurrentNode.PathLengthFromStart + EdgeCost, MainHeuristic.estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic.estimate(NeiboringCoordinates, GoalCoordinates));
 
 				FringeNodes.add(NewNode);
 			}
