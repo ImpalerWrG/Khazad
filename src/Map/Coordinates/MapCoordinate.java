@@ -27,9 +27,9 @@ import com.jme3.math.Vector3f;
 public class MapCoordinate {
 
 	//public RegionCoordinate Region = null;
-	//public ChunkCoordinate Chunk = null;
-	public CellCoordinate Cell = null;
-	public CubeIndex Cube = null;
+	//public SectionCoordinate Section = null;
+	public CellCoordinate Cell = null; // Rename to Chunk
+	public CubeIndex Cube = null;    // Rename to Block
 	
 	public MapCoordinate() {
 		this.Cell = new CellCoordinate();
@@ -137,7 +137,30 @@ public class MapCoordinate {
 	}
 
 	@Override
+	public boolean equals(Object ArgumentCoordinates) {
+
+		//if (ArgumentCoordinates == null)
+		//return false;
+		//if (ArgumentCoordinates == this)
+		//return true;
+		//if (!(ArgumentCoordinates instanceof MapCoordinate))
+		//return false;
+
+		MapCoordinate Arg = (MapCoordinate) ArgumentCoordinates;
+		return (Cell.equals(Arg.Cell) && Cube.equals(Arg.Cube));
+	}
+
+	@Override
 	public MapCoordinate clone() {
 		return new MapCoordinate(this.Cell, this.Cube);
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 3;
+		hash += 17 * Cell.X;
+		hash += 37 * Cell.Y;
+		hash += 5 * Cube.Data;
+		return hash;
 	}
 }

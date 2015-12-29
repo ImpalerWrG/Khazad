@@ -151,13 +151,15 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		// mark as VisitedCoordinates if not already Visited
 		VisitedCoordinates.add(TestCoordinates);
 
-		MapCoordinate NeiboringCoordinates;
 		BitSet TestDirections = SearchGraph.getDirectionEdgeSet(TestCoordinates);
-		NeiboringCoordinates = TestCoordinates.clone();
+		MapCoordinate NeiboringCoordinates = TestCoordinates.clone();
 
 		// Check all Neibors
 		for (int i = TestDirections.nextSetBit(0); i >= 0; i = TestDirections.nextSetBit(i + 1)) {
 			Direction DirectionType = Direction.ANGULAR_DIRECTIONS[i];
+			if (DirectionType == Direction.DIRECTION_NONE)
+				continue;
+
 			NeiboringCoordinates.copy(TestCoordinates);
 			NeiboringCoordinates.translate(DirectionType);
 
@@ -167,7 +169,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 				GraphReads++;
 
 				AStarNode NewNode = NodePool.provide();
-				NewNode.set(NeiboringCoordinates, CurrentNode, DirectionType, CurrentNode.PathLengthFromStart + EdgeCost, MainHeuristic.estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic.estimate(NeiboringCoordinates, GoalCoordinates));
+				NewNode.set(NeiboringCoordinates.clone(), CurrentNode, DirectionType, CurrentNode.PathLengthFromStart + EdgeCost, MainHeuristic.estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic.estimate(NeiboringCoordinates, GoalCoordinates));
 
 				FringeNodes.add(NewNode);
 			}

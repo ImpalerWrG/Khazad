@@ -64,25 +64,25 @@ public class KhazadGrid implements GridInterface, Serializable {
 			ConnectivityZone = new int[CubeCoordinate.CUBESPERCELL];
 		}
 
-		public int getConnectivityZone(short Cube) {
-			return ConnectivityZone[Cube];
+		public int getConnectivityZone(short CubeIndex) {
+			return ConnectivityZone[CubeIndex];
 		}
 
-		public void setConnectivityZone(short Cube, int Zone) {
-			ConnectivityZone[Cube] = Zone;
+		public void setConnectivityZone(short CubeIndex, int Zone) {
+			ConnectivityZone[CubeIndex] = Zone;
 		}
 
-		public BitSet getCubeDirections(short Cube) {
-			return DirectionMatrix.get(Cube * Direction.ANGULAR_DIRECTIONS.length, ((Cube + 1) * Direction.ANGULAR_DIRECTIONS.length));
+		public BitSet getCubeDirections(short CubeIndex) {
+			return DirectionMatrix.get(CubeIndex * Direction.ANGULAR_DIRECTIONS.length, ((CubeIndex + 1) * Direction.ANGULAR_DIRECTIONS.length));
 		}
 
-		public void setCubeDirection(short Cube, Direction TargetDirection, boolean newValue) {
-			DirectionMatrix.set((Cube * Direction.ANGULAR_DIRECTIONS.length) + TargetDirection.ordinal(), newValue);
+		public void setCubeDirection(short CubeIndex, Direction TargetDirection, boolean newValue) {
+			DirectionMatrix.set((CubeIndex * Direction.ANGULAR_DIRECTIONS.length) + TargetDirection.ordinal(), newValue);
 		}
 
-		void setCubeDirections(short Cube, BitSet ArgumentSet) {
+		void setCubeDirections(short CubeIndex, BitSet ArgumentSet) {
 			for (int i = 0; i < Direction.ANGULAR_DIRECTIONS.length; i++) {
-				DirectionMatrix.set((Cube * Direction.ANGULAR_DIRECTIONS.length) + i, ArgumentSet.get(i));
+				DirectionMatrix.set((CubeIndex * Direction.ANGULAR_DIRECTIONS.length) + i, ArgumentSet.get(i));
 			}
 		}
 
