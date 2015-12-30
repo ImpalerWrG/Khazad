@@ -27,7 +27,7 @@ import java.io.Serializable;
  *
  * @author Impaler
  */
-public class FaceCoordinate extends CubeIndex implements Serializable {
+public class FaceCoordinate extends BlockCoordinate implements Serializable {
 
 	private static final long serialVersionUID = 1;
 	public byte FaceDirection;
@@ -47,7 +47,7 @@ public class FaceCoordinate extends CubeIndex implements Serializable {
 		FaceDirection = (byte) TargetDirection.ordinal();
 	}
 
-	public FaceCoordinate(CubeIndex Index, Direction TargetDirection, byte DetailLevel) {
+	public FaceCoordinate(BlockCoordinate Index, Direction TargetDirection, byte DetailLevel) {
 		super(DetailLevel, Index.Data);
 		FaceDirection = (byte) TargetDirection.ordinal();
 	}
@@ -73,7 +73,7 @@ public class FaceCoordinate extends CubeIndex implements Serializable {
 	}
 
 	public short getCoordinates() {
-		return super.getCubeIndex();
+		return super.getBlockIndex();
 	}
 
 	public Direction getFaceDirection() {

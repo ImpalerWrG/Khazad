@@ -34,8 +34,8 @@ import java.io.Serializable;
 import org.javatuples.Pair;
 
 /**
- * Master Class for holding the playing Map, holds primaraly Cells in HashMap
- * structure and pipes changes to the Cells/Faces to abstract them away from the
+ * Master Class for holding the playing Map, holds primaraly Chunk in HashMap
+ * structure and pipes changes to the Chunk/Faces to abstract them away from the
  * rest of the code base
  *
  * @author Impaler
@@ -45,19 +45,19 @@ public class GameMap implements Serializable {
 	private static final long serialVersionUID = 1;
 	boolean Initialized;
 	boolean MapLoaded;
-	// Storage of Cells
-	ConcurrentHashMap<CellCoordinate, Cell> Cells;
-	ConcurrentHashMap<CellCoordinate, Cell> WeatherCells;
-	ConcurrentHashMap<CellCoordinate, Cell> BasementCells;
+	// Storage of Chunks
+	ConcurrentHashMap<ChunkCoordinate, Chunk> Chunks;
+	ConcurrentHashMap<ChunkCoordinate, Chunk> WeatherChunks;
+	ConcurrentHashMap<ChunkCoordinate, Chunk> BasementChunks;
 
-	int HighestCell;
-	int LowestCell;
-	int WestestCell;
-	int EastestCell;
-	int NorthestCell;
-	int SouthestCell;
+	int HighestChunk;
+	int LowestChunk;
+	int WestestChunk;
+	int EastestChunk;
+	int NorthestChunk;
+	int SouthestChunk;
 
-	CellCoordinate TestingCooords = new CellCoordinate();
+	ChunkCoordinate TestingCooords = new ChunkCoordinate();
 
 	int Seed;
 	Dice ExcavateDice = new Dice();
@@ -66,18 +66,18 @@ public class GameMap implements Serializable {
 	public GameMap() {
 		Initialized = false;
 		MapLoaded = false;
-		HighestCell = -100000000;
-		LowestCell = 10000000;
-		WestestCell = 10000000;
-		EastestCell = -100000000;
-		NorthestCell = -100000000;
-		SouthestCell = 10000000;
+		HighestChunk = -100000000;
+		LowestChunk = 10000000;
+		WestestChunk = 10000000;
+		EastestChunk = -100000000;
+		NorthestChunk = -100000000;
+		SouthestChunk = 10000000;
 
 		ExcavateDice.seed(Seed);
 		Zones = new ArrayList<Zone>();
-		Cells = new ConcurrentHashMap<CellCoordinate, Cell>();
-		WeatherCells = new ConcurrentHashMap<CellCoordinate, Cell>();
-		BasementCells = new ConcurrentHashMap<CellCoordinate, Cell>();
+		Chunks = new ConcurrentHashMap<ChunkCoordinate, Chunk>();
+		WeatherChunks = new ConcurrentHashMap<ChunkCoordinate, Chunk>();
+		BasementChunks = new ConcurrentHashMap<ChunkCoordinate, Chunk>();
 	}
 
 	public static GameMap getMap() {
@@ -90,162 +90,157 @@ public class GameMap implements Serializable {
 		ExcavateDice.seed(Seed);
 	}
 
-	public Cell getCell(CellCoordinate TestCoords) {
-		return Cells.get(TestCoords);
+	public Chunk getChunk(ChunkCoordinate TestCoords) {
+		return Chunks.get(TestCoords);
 	}
 
-	public boolean insertCell(Cell NewCell) {
-		CellCoordinate TargetCoordinates = NewCell.getCellCoordinates();
-		if (getCell(TargetCoordinates) == null) {
-			Cells.put(TargetCoordinates, NewCell);
+	public boolean insertChunk(Chunk NewChunk) {
+		ChunkCoordinate TargetCoordinates = NewChunk.getChunkCoordinates();
+		if (getChunk(TargetCoordinates) == null) {
+			Chunks.put(TargetCoordinates, NewChunk);
 
-			CellCoordinate AboveCoords = TargetCoordinates.clone();
+			ChunkCoordinate AboveCoords = TargetCoordinates.clone();
 			AboveCoords.Z++;
-			Cell AboveCell = Cells.get(AboveCoords);
+			Chunk AboveChunk = Chunks.get(AboveCoords);
 
-			CellCoordinate BelowCoords = TargetCoordinates.clone();
+			ChunkCoordinate BelowCoords = TargetCoordinates.clone();
 			BelowCoords.Z--;
-			Cell BelowCell = Cells.get(BelowCoords);
+			Chunk BelowChunk = Chunks.get(BelowCoords);
 
-			if (TargetCoordinates.Z > HighestCell)
-				HighestCell = TargetCoordinates.Z;
+			if (TargetCoordinates.Z > HighestChunk)
+				HighestChunk = TargetCoordinates.Z;
 
-			if (AboveCell == null) {
-				WeatherCells.put(TargetCoordinates, NewCell);
-				//NewCell.WeatherCell = true;
-				if (BelowCell != null) {
-					WeatherCells.remove(BelowCoords);
-					//BelowCell.WeatherCell = false;
+			if (AboveChunk == null) {
+				WeatherChunks.put(TargetCoordinates, NewChunk);
+				//NewChunk.WeatherChunk = true;
+				if (BelowChunk != null) {
+					WeatherChunks.remove(BelowCoords);
+					//BelowChunk.WeatherChunk = false;
 				}
 			}
 
-			if (TargetCoordinates.Z < LowestCell)
-				LowestCell = TargetCoordinates.Z;
+			if (TargetCoordinates.Z < LowestChunk)
+				LowestChunk = TargetCoordinates.Z;
 
-			if (TargetCoordinates.X > EastestCell)
-				EastestCell = TargetCoordinates.X;
-			if (TargetCoordinates.X < WestestCell)
-				WestestCell = TargetCoordinates.X;
-			if (TargetCoordinates.Y < SouthestCell)
-				SouthestCell = TargetCoordinates.Y;
-			if (TargetCoordinates.Y > NorthestCell)
-				NorthestCell = TargetCoordinates.Y;
+			if (TargetCoordinates.X > EastestChunk)
+				EastestChunk = TargetCoordinates.X;
+			if (TargetCoordinates.X < WestestChunk)
+				WestestChunk = TargetCoordinates.X;
+			if (TargetCoordinates.Y < SouthestChunk)
+				SouthestChunk = TargetCoordinates.Y;
+			if (TargetCoordinates.Y > NorthestChunk)
+				NorthestChunk = TargetCoordinates.Y;
 
-			if (BelowCell == null) {
-				BasementCells.put(TargetCoordinates, NewCell);
-				//NewCell.BasementCell = true;
-				if (AboveCell != null) {
-					BasementCells.remove(AboveCoords);
-					//AboveCell.BasementCell = false;
+			if (BelowChunk == null) {
+				BasementChunks.put(TargetCoordinates, NewChunk);
+				//NewChunk.BasementChunk = true;
+				if (AboveChunk != null) {
+					BasementChunks.remove(AboveCoords);
+					//AboveChunk.BasementChunk = false;
 				}
 			}
 
 			return true;
 		}
-		return false;  // A Cell already exists at that spot
+		return false;  // A Chunk already exists at that spot
 	}
 
-	public Cell initializeCell(CellCoordinate Coords) {
-		Cell TargetCell = getCell(Coords);
-		if (TargetCell == null) {
-			TargetCell = new Cell();
-			TargetCell.setCellCoordinates(Coords);
-			insertCell(TargetCell);
-			return TargetCell;
+	public Chunk initializeChunk(ChunkCoordinate Coords) {
+		Chunk TargetChunk = getChunk(Coords);
+		if (TargetChunk == null) {
+			TargetChunk = new Chunk();
+			TargetChunk.setChunkCoordinates(Coords);
+			insertChunk(TargetChunk);
+			return TargetChunk;
 		}
-		return TargetCell;  // A Cell already exists at that spot		
+		return TargetChunk;  // A Chunk already exists at that spot		
 	}
 
-	public int getHighestCell() {
-		return HighestCell;
+	public int getHighestChunk() {
+		return HighestChunk;
 	}
 
-	public int getLowestCell() {
-		return LowestCell;
+	public int getLowestChunk() {
+		return LowestChunk;
 	}
 
 	public MapCoordinate getMapCenter() {
-		int X = (EastestCell - WestestCell) / 2;
-		int Y = (NorthestCell - SouthestCell) / 2;
+		int X = (EastestChunk - WestestChunk) / 2;
+		int Y = (NorthestChunk - SouthestChunk) / 2;
 
-		return new MapCoordinate(new CellCoordinate(X, Y, 0), new CubeIndex());
+		return new MapCoordinate(new ChunkCoordinate(X, Y, 0), new BlockCoordinate());
 	}
 
-	public Cell getCubeOwner(CubeCoordinate Coordinates) {
-		TestingCooords.resolveCube(Coordinates);
-		return getCell(TestingCooords);
+	public boolean isBlockInitialized(MapCoordinate Coordinates) {
+		return Chunks.containsKey(Coordinates.Chunk);
 	}
 
-	public boolean isCubeInited(MapCoordinate Coordinates) {
-		return Cells.containsKey(Coordinates.Cell);
-	}
-
-	public MapCoordinate getFacingCoordinates(CellCoordinate cellcoords, FaceCoordinate facecoords) {
-		MapCoordinate ModifiedCoordinates = new MapCoordinate(cellcoords, facecoords);
+	public MapCoordinate getFacingCoordinates(ChunkCoordinate chunkcoords, FaceCoordinate facecoords) {
+		MapCoordinate ModifiedCoordinates = new MapCoordinate(chunkcoords, facecoords);
 		ModifiedCoordinates.translate(facecoords.getFaceDirection());
 		return ModifiedCoordinates;
 	}
 
 	public Face getFace(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
-		Cell TargetCell = Cells.get(TargetMapCoordinates.Cell);
-		return TargetCell != null ? TargetCell.getFace(new FaceCoordinate(TargetMapCoordinates.Cube.getCubeIndex(), DirectionType), 0) : null;
+		Chunk TargetChunk = Chunks.get(TargetMapCoordinates.Chunk);
+		return TargetChunk != null ? TargetChunk.getFace(new FaceCoordinate(TargetMapCoordinates.Block.getBlockIndex(), DirectionType), 0) : null;
 	}
 
 	public boolean hasFace(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
-		Cell TargetCell = Cells.get(TargetMapCoordinates.Cell);
-		return TargetCell != null ? TargetCell.hasFace(new FaceCoordinate(TargetMapCoordinates.Cube.getCubeIndex(), DirectionType), 0) : false;
+		Chunk TargetChunk = Chunks.get(TargetMapCoordinates.Chunk);
+		return TargetChunk != null ? TargetChunk.hasFace(new FaceCoordinate(TargetMapCoordinates.Block.getBlockIndex(), DirectionType), 0) : false;
 	}
 
 	public boolean removeFace(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
-		Cell TargetCell = Cells.get(TargetMapCoordinates.Cell);
-		return TargetCell != null ? TargetCell.removeFace(new FaceCoordinate(TargetMapCoordinates.Cube.getCubeIndex(), DirectionType), 0) : false;
+		Chunk TargetChunk = Chunks.get(TargetMapCoordinates.Chunk);
+		return TargetChunk != null ? TargetChunk.removeFace(new FaceCoordinate(TargetMapCoordinates.Block.getBlockIndex(), DirectionType), 0) : false;
 	}
 
 	public Face addFace(MapCoordinate TargetMapCoordinates, Direction DirectionType, int LevelofDetail) {
-		Cell TargetCell = getCell(TargetMapCoordinates.Cell);
-		if (TargetCell == null)
-			TargetCell = initializeCell(TargetMapCoordinates.Cell);
+		Chunk TargetChunk = getChunk(TargetMapCoordinates.Chunk);
+		if (TargetChunk == null)
+			TargetChunk = initializeChunk(TargetMapCoordinates.Chunk);
 
-		return TargetCell.addFace(new FaceCoordinate(TargetMapCoordinates.Cube, DirectionType, (byte) LevelofDetail));
+		return TargetChunk.addFace(new FaceCoordinate(TargetMapCoordinates.Block, DirectionType, (byte) LevelofDetail));
 	}
 
-	public void setCubeShape(MapCoordinate TargetMapCoordinates, CubeShape NewShape) {
-		Cell TargetCell = getCell(TargetMapCoordinates.Cell);
+	public void setBlockShape(MapCoordinate TargetMapCoordinates, BlockShape NewShape) {
+		Chunk TargetChunk = getChunk(TargetMapCoordinates.Chunk);
 
-		if (TargetCell != null) {
-			TargetCell.setCubeShape(TargetMapCoordinates.Cube.getCubeIndex(), NewShape);
+		if (TargetChunk != null) {
+			TargetChunk.setBlockShape(TargetMapCoordinates.Block.getBlockIndex(), NewShape);
 			MapCoordinate[] Coordinates = {TargetMapCoordinates};
 			PathManager.getSingleton().editMapAbstractions(Coordinates);
 		}
 	}
 
-	public CubeShape getCubeShape(MapCoordinate Coordinates) {
-		Cell TargetCell = Cells.get(Coordinates.Cell);
+	public BlockShape getBlockShape(MapCoordinate Coordinates) {
+		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
 
-		if (TargetCell != null) {
-			return TargetCell.getCubeShape(Coordinates.Cube.getCubeIndex(), 0);
+		if (TargetChunk != null) {
+			return TargetChunk.getBlockShape(Coordinates.Block.getBlockIndex(), 0);
 		} else {
-			return new CubeShape(CubeShape.BELOW_CUBE_HEIGHT);
+			return new BlockShape(BlockShape.BELOW_CUBE_HEIGHT);
 		}
 	}
 
-	public void setCubeMaterial(MapCoordinate Coordinates, short MaterialID) {
-		Cell TargetCell = Cells.get(Coordinates.Cell);
+	public void setBlockMaterial(MapCoordinate Coordinates, short MaterialID) {
+		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
 
-		if (TargetCell != null) {
-			TargetCell.setCubeMaterial(Coordinates.Cube.getCubeIndex(), MaterialID);
+		if (TargetChunk != null) {
+			TargetChunk.setBlockMaterial(Coordinates.Block.getBlockIndex(), MaterialID);
 		}
 	}
 
-	public short getCubeMaterial(MapCoordinate Coordinates) {
-		Cell TargetCell = Cells.get(Coordinates.Cell);
-		return TargetCell != null ? TargetCell.getCubeMaterial(Coordinates.Cube.getCubeIndex()) : DataManager.INVALID_INDEX;
+	public short getBlockMaterial(MapCoordinate Coordinates) {
+		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
+		return TargetChunk != null ? TargetChunk.getBlockMaterial(Coordinates.Block.getBlockIndex()) : DataManager.INVALID_INDEX;
 	}
 
 	public void setFaceMaterial(MapCoordinate TargetMapCoordinates, Direction DirectionType, short MaterialID) {
-		Cell TargetCell = getCell(TargetMapCoordinates.Cell);
-		if (TargetCell != null) {
-			TargetCell.setFaceMaterialType(new FaceCoordinate(TargetMapCoordinates.Cube.getCubeIndex(), DirectionType), MaterialID);
+		Chunk TargetChunk = getChunk(TargetMapCoordinates.Chunk);
+		if (TargetChunk != null) {
+			TargetChunk.setFaceMaterialType(new FaceCoordinate(TargetMapCoordinates.Block.getBlockIndex(), DirectionType), MaterialID);
 		}
 	}
 
@@ -255,9 +250,9 @@ public class GameMap implements Serializable {
 	}
 
 	public void setFaceSurfaceType(MapCoordinate TargetMapCoordinates, Direction DirectionType, short SurfaceID) {
-		Cell TargetCell = getCell(TargetMapCoordinates.Cell);
-		if (TargetCell != null) {
-			TargetCell.setFaceSurfaceType(new FaceCoordinate(TargetMapCoordinates.Cube.getCubeIndex(), DirectionType), SurfaceID);
+		Chunk TargetChunk = getChunk(TargetMapCoordinates.Chunk);
+		if (TargetChunk != null) {
+			TargetChunk.setFaceSurfaceType(new FaceCoordinate(TargetMapCoordinates.Block.getBlockIndex(), DirectionType), SurfaceID);
 		}
 	}
 
@@ -266,150 +261,150 @@ public class GameMap implements Serializable {
 		return TargetFace != null ? TargetFace.getFaceSurfaceType() : DataManager.INVALID_INDEX;
 	}
 
-	public boolean isCubeHidden(MapCoordinate Coordinates) {
-		Cell TargetCell = Cells.get(Coordinates.Cell);
-		return TargetCell != null ? TargetCell.isCubeHidden(Coordinates.Cube.getCubeIndex()) : true;
+	public boolean isBlockHidden(MapCoordinate Coordinates) {
+		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
+		return TargetChunk != null ? TargetChunk.isBlockHidden(Coordinates.Block.getBlockIndex()) : true;
 	}
 
-	public void setCubeHidden(MapCoordinate Coordinates, boolean NewValue) {
-		Cell TargetCell = Cells.get(Coordinates.Cell);
-		if (TargetCell != null)
-			TargetCell.setCubeHidden(Coordinates.Cube.getCubeIndex(), NewValue);
+	public void setBlockHidden(MapCoordinate Coordinates, boolean NewValue) {
+		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
+		if (TargetChunk != null)
+			TargetChunk.setBlockHidden(Coordinates.Block.getBlockIndex(), NewValue);
 	}
 
 	public void generateFirstLight() {
-		for (Cell WeatherCell : WeatherCells.values()) {
-			CellCoordinate TargetCoords = WeatherCell.getCellCoordinates();
-			Cell TopCell = Cells.get(TargetCoords);
+		for (Chunk WeatherChunk : WeatherChunks.values()) {
+			ChunkCoordinate TargetCoords = WeatherChunk.getChunkCoordinates();
+			Chunk TopChunk = Chunks.get(TargetCoords);
 			TargetCoords.Z--;
-			Cell BottomCell = Cells.get(TargetCoords);
+			Chunk BottomChunk = Chunks.get(TargetCoords);
 
 			boolean LightRemains = false;
 
-			for (int i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
-				TopCell.setCubeSunLit((short) i, true);
+			for (int i = 0; i < BlockCoordinate.BLOCKS_PER_CHUNK; i++) {
+				TopChunk.setBlockSunLit((short) i, true);
 			}
 
 			do {
-				for (int i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
-					if (TopCell.isCubeSunLit((short) i) && !TopCell.getCubeShape((short) i, 0).hasFace(Direction.DIRECTION_NONE)) {
-						BottomCell.setCubeSunLit((short) i, true);
+				for (int i = 0; i < BlockCoordinate.BLOCKS_PER_CHUNK; i++) {
+					if (TopChunk.isBlockSunLit((short) i) && !TopChunk.getBlockShape((short) i, 0).hasFace(Direction.DIRECTION_NONE)) {
+						BottomChunk.setBlockSunLit((short) i, true);
 						LightRemains = true;
 					}
 				}
 
-				TopCell = BottomCell;
+				TopChunk = BottomChunk;
 				TargetCoords.Z--;
-				BottomCell = Cells.get(TargetCoords);
-			} while (BottomCell != null && LightRemains);
+				BottomChunk = Chunks.get(TargetCoords);
+			} while (BottomChunk != null && LightRemains);
 		}
 	}
 
-	public boolean isCubeSubTerranean(MapCoordinate Coordinates) {
-		Cell TargetCell = Cells.get(Coordinates.Cell);
-		return TargetCell != null ? TargetCell.isCubeSubTerranean(Coordinates.Cube.getCubeIndex()) : false;
+	public boolean isBlockSubTerranean(MapCoordinate Coordinates) {
+		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
+		return TargetChunk != null ? TargetChunk.isBlockSubTerranean(Coordinates.Block.getBlockIndex()) : false;
 	}
 
-	public void setCubeSubTerranean(MapCoordinate Coordinates, boolean NewValue) {
-		Cell TargetCell = Cells.get(Coordinates.Cell);
-		if (TargetCell != null)
-			TargetCell.setCubeSubTerranean(Coordinates.Cube.getCubeIndex(), NewValue);
+	public void setBlockSubTerranean(MapCoordinate Coordinates, boolean NewValue) {
+		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
+		if (TargetChunk != null)
+			TargetChunk.setBlockSubTerranean(Coordinates.Block.getBlockIndex(), NewValue);
 	}
 
-	public boolean isCubeSkyView(MapCoordinate Coordinates) {
-		Cell TargetCell = Cells.get(Coordinates.Cell);
-		return TargetCell != null ? TargetCell.isCubeSkyView(Coordinates.Cube.getCubeIndex()) : false;
+	public boolean isBlockSkyView(MapCoordinate Coordinates) {
+		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
+		return TargetChunk != null ? TargetChunk.isBlockSkyView(Coordinates.Block.getBlockIndex()) : false;
 	}
 
-	public void setCubeSkyView(MapCoordinate Coordinates, boolean NewValue) {
-		Cell TargetCell = Cells.get(Coordinates.Cell);
-		if (TargetCell != null)
-			TargetCell.setCubeSkyView(Coordinates.Cube.getCubeIndex(), NewValue);
+	public void setBlockSkyView(MapCoordinate Coordinates, boolean NewValue) {
+		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
+		if (TargetChunk != null)
+			TargetChunk.setBlockSkyView(Coordinates.Block.getBlockIndex(), NewValue);
 	}
 
-	public boolean isCubeSunLit(MapCoordinate Coordinates) {
-		Cell TargetCell = Cells.get(Coordinates.Cell);
-		return TargetCell != null ? TargetCell.isCubeSunLit(Coordinates.Cube.getCubeIndex()) : false;
+	public boolean isBlockSunLit(MapCoordinate Coordinates) {
+		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
+		return TargetChunk != null ? TargetChunk.isBlockSunLit(Coordinates.Block.getBlockIndex()) : false;
 	}
 
-	public void setCubeSunLit(MapCoordinate Coordinates, boolean NewValue) {
-		Cell TargetCell = Cells.get(Coordinates.Cell);
-		if (TargetCell != null)
-			TargetCell.setCubeSunLit(Coordinates.Cube.getCubeIndex(), NewValue);
+	public void setBlockSunLit(MapCoordinate Coordinates, boolean NewValue) {
+		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
+		if (TargetChunk != null)
+			TargetChunk.setBlockSunLit(Coordinates.Block.getBlockIndex(), NewValue);
 	}
 
-	public void excavateCube(MapCoordinate Coordinates, CubeShape GoalShape) {
+	public void excavateBlock(MapCoordinate Coordinates, BlockShape GoalShape) {
 		int Corner = ExcavateDice.roll(0, Direction.CARDINAL_DIRECTIONS.length - 1);
-		CubeShape OldShape = getCubeShape(Coordinates);
-		CubeShape IntermediateShape;
+		BlockShape OldShape = getBlockShape(Coordinates);
+		BlockShape IntermediateShape;
 
 		switch (Corner) {
 			case 0:
 				if (GoalShape.getNorthEastCorner() < OldShape.getNorthEastCorner()) {
 					IntermediateShape = OldShape.clone();
 					IntermediateShape.setNorthEastCorner((byte) (OldShape.getNorthEastCorner() - 1));
-					updateCubeShape(Coordinates, IntermediateShape);
+					updateBlockShape(Coordinates, IntermediateShape);
 					break;
 				}
 			case 1:
 				if (GoalShape.getSouthEastCorner() < OldShape.getSouthEastCorner()) {
 					IntermediateShape = OldShape.clone();
 					IntermediateShape.setSouthEastCorner((byte) (OldShape.getSouthEastCorner() - 1));
-					updateCubeShape(Coordinates, IntermediateShape);
+					updateBlockShape(Coordinates, IntermediateShape);
 					break;
 				}
 			case 2:
 				if (GoalShape.getNorthWestCorner() < OldShape.getNorthWestCorner()) {
 					IntermediateShape = OldShape.clone();
 					IntermediateShape.setNorthWestCorner((byte) (OldShape.getNorthWestCorner() - 1));
-					updateCubeShape(Coordinates, IntermediateShape);
+					updateBlockShape(Coordinates, IntermediateShape);
 					break;
 				}
 			case 3:
 				if (GoalShape.getSouthWestCorner() < OldShape.getSouthWestCorner()) {
 					IntermediateShape = OldShape.clone();
 					IntermediateShape.setSouthWestCorner((byte) (OldShape.getSouthWestCorner() - 1));
-					updateCubeShape(Coordinates, IntermediateShape);
+					updateBlockShape(Coordinates, IntermediateShape);
 					break;
 				}
 			default:
-			//UpdateCubeShape(Coordinates, GoalShape);				
+			//UpdateBlockShape(Coordinates, GoalShape);				
 		}
 		// Always set material to native cube if were excavating
 		Face SloppedFace = getFace(Coordinates, Direction.DIRECTION_NONE);
 		if (SloppedFace != null)
-			SloppedFace.setFaceMaterialType(getCubeMaterial(Coordinates));
+			SloppedFace.setFaceMaterialType(getBlockMaterial(Coordinates));
 	}
 
-	public void updateCubeShape(MapCoordinate Coordinates, CubeShape NewShape) {
-		if (isCubeInited(Coordinates)) {
-			CubeShape Shape = getCubeShape(Coordinates);
+	public void updateBlockShape(MapCoordinate Coordinates, BlockShape NewShape) {
+		if (isBlockInitialized(Coordinates)) {
+			BlockShape Shape = getBlockShape(Coordinates);
 			if (!Shape.equals(NewShape)) {
 
 				// check bottoms
-				MapCoordinate belowCube = Coordinates.clone();
-				belowCube.translate(Direction.DIRECTION_DOWN);
-				if (!isCubeInited(belowCube)) {
-					initializeCell(belowCube.Cell);
+				MapCoordinate belowBlock = Coordinates.clone();
+				belowBlock.translate(Direction.DIRECTION_DOWN);
+				if (!isBlockInitialized(belowBlock)) {
+					initializeChunk(belowBlock.Chunk);
 				}
-				CubeShape belowShape = getCubeShape(belowCube);
+				BlockShape belowShape = getBlockShape(belowBlock);
 
-				if (belowShape.getNorthEastCorner() < CubeShape.CUBE_TOP_HEIGHT)
-					NewShape.setNorthEastCorner(CubeShape.BELOW_CUBE_HEIGHT);
+				if (belowShape.getNorthEastCorner() < BlockShape.CUBE_TOP_HEIGHT)
+					NewShape.setNorthEastCorner(BlockShape.BELOW_CUBE_HEIGHT);
 
-				if (belowShape.getNorthWestCorner() < CubeShape.CUBE_TOP_HEIGHT)
-					NewShape.setNorthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
+				if (belowShape.getNorthWestCorner() < BlockShape.CUBE_TOP_HEIGHT)
+					NewShape.setNorthWestCorner(BlockShape.BELOW_CUBE_HEIGHT);
 
-				if (belowShape.getSouthEastCorner() < CubeShape.CUBE_TOP_HEIGHT)
-					NewShape.setSouthEastCorner(CubeShape.BELOW_CUBE_HEIGHT);
+				if (belowShape.getSouthEastCorner() < BlockShape.CUBE_TOP_HEIGHT)
+					NewShape.setSouthEastCorner(BlockShape.BELOW_CUBE_HEIGHT);
 
-				if (belowShape.getSouthWestCorner() < CubeShape.CUBE_TOP_HEIGHT)
-					NewShape.setSouthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
+				if (belowShape.getSouthWestCorner() < BlockShape.CUBE_TOP_HEIGHT)
+					NewShape.setSouthWestCorner(BlockShape.BELOW_CUBE_HEIGHT);
 
 
-				setCubeShape(Coordinates, NewShape);
+				setBlockShape(Coordinates, NewShape);
 				if (NewShape.isEmpty()) {
-					setCubeMaterial(Coordinates, DataManager.INVALID_INDEX);
+					setBlockMaterial(Coordinates, DataManager.INVALID_INDEX);
 				}
 
 				for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
@@ -419,53 +414,53 @@ public class GameMap implements Serializable {
 					updateFace(AdjacentCoords, DirectionType.invert());
 				}
 				updateFace(Coordinates, Direction.DIRECTION_NONE);
-				setCubeHidden(Coordinates, false);
+				setBlockHidden(Coordinates, false);
 
 				// check and push changes above
-				MapCoordinate aboveCube = Coordinates.clone();
-				aboveCube.translate(Direction.DIRECTION_UP);
-				if (isCubeInited(aboveCube)) {
-					CubeShape aboveShape = getCubeShape(aboveCube).clone();
-					CubeShape NewAboveShape = aboveShape.clone();
+				MapCoordinate aboveBlock = Coordinates.clone();
+				aboveBlock.translate(Direction.DIRECTION_UP);
+				if (isBlockInitialized(aboveBlock)) {
+					BlockShape aboveShape = getBlockShape(aboveBlock).clone();
+					BlockShape NewAboveShape = aboveShape.clone();
 
-					if (NewShape.getNorthEastCorner() < CubeShape.CUBE_TOP_HEIGHT) {
-						if (aboveShape.getNorthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.getNorthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.getSouthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
-							NewAboveShape.setNorthEastCorner(CubeShape.BELOW_CUBE_HEIGHT);
+					if (NewShape.getNorthEastCorner() < BlockShape.CUBE_TOP_HEIGHT) {
+						if (aboveShape.getNorthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && aboveShape.getNorthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && aboveShape.getSouthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT)
+							NewAboveShape.setNorthEastCorner(BlockShape.BELOW_CUBE_HEIGHT);
 					}
 
-					if (NewShape.getSouthWestCorner() < CubeShape.CUBE_TOP_HEIGHT) {
-						if (aboveShape.getSouthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.getNorthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.getSouthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
-							NewAboveShape.setSouthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
+					if (NewShape.getSouthWestCorner() < BlockShape.CUBE_TOP_HEIGHT) {
+						if (aboveShape.getSouthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && aboveShape.getNorthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && aboveShape.getSouthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT)
+							NewAboveShape.setSouthWestCorner(BlockShape.BELOW_CUBE_HEIGHT);
 					}
 
-					if (NewShape.getNorthWestCorner() < CubeShape.CUBE_TOP_HEIGHT) {
-						if (aboveShape.getNorthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.getNorthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.getSouthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
-							NewAboveShape.setNorthWestCorner(CubeShape.BELOW_CUBE_HEIGHT);
+					if (NewShape.getNorthWestCorner() < BlockShape.CUBE_TOP_HEIGHT) {
+						if (aboveShape.getNorthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && aboveShape.getNorthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && aboveShape.getSouthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT)
+							NewAboveShape.setNorthWestCorner(BlockShape.BELOW_CUBE_HEIGHT);
 					}
 
-					if (NewShape.getSouthEastCorner() < CubeShape.CUBE_TOP_HEIGHT) {
-						if (aboveShape.getNorthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.getSouthEastCorner() == CubeShape.CUBE_BOTTOM_HEIGHT && aboveShape.getSouthWestCorner() == CubeShape.CUBE_BOTTOM_HEIGHT)
-							NewAboveShape.setSouthEastCorner(CubeShape.BELOW_CUBE_HEIGHT);
+					if (NewShape.getSouthEastCorner() < BlockShape.CUBE_TOP_HEIGHT) {
+						if (aboveShape.getNorthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && aboveShape.getSouthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && aboveShape.getSouthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT)
+							NewAboveShape.setSouthEastCorner(BlockShape.BELOW_CUBE_HEIGHT);
 					}
 
 					if (!aboveShape.equals(NewAboveShape))
-						setCubeShape(aboveCube, NewAboveShape);
+						setBlockShape(aboveBlock, NewAboveShape);
 					if (NewAboveShape.isEmpty()) {
-						setCubeMaterial(aboveCube, DataManager.INVALID_INDEX);
+						setBlockMaterial(aboveBlock, DataManager.INVALID_INDEX);
 					}
 
 					for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
-						updateFace(aboveCube, DirectionType);
+						updateFace(aboveBlock, DirectionType);
 					}
-					updateFace(aboveCube, Direction.DIRECTION_NONE);
-					setCubeHidden(aboveCube, false);
+					updateFace(aboveBlock, Direction.DIRECTION_NONE);
+					setBlockHidden(aboveBlock, false);
 				}
 			}
 
 			// reveal tiles around
 			//for(Direction DirectionType = COMPASS_DIRECTIONS_START; DirectionType < NUM_COMPASS_DIRECTIONS; ++DirectionType)
 			//{
-			//    setCubeHidden(MapCoordinates(Coordinates, DirectionType), false);
+			//    setBlockHidden(MapCoordinates(Coordinates, DirectionType), false);
 			//}
 		}
 	}
@@ -478,31 +473,31 @@ public class GameMap implements Serializable {
 		MapCoordinate ModifiedCoordinates = TargetCoordinates.clone();
 		ModifiedCoordinates.translate(DirectionType);
 
-		if (!isCubeInited(ModifiedCoordinates)) {
+		if (!isBlockInitialized(ModifiedCoordinates)) {
 			// Init it
 			return;
 		}
 
-		CubeShape SourceShape = getCubeShape(TargetCoordinates);
-		CubeShape AdjacentShape = getCubeShape(ModifiedCoordinates);
+		BlockShape SourceShape = getBlockShape(TargetCoordinates);
+		BlockShape AdjacentShape = getBlockShape(ModifiedCoordinates);
 		Face TargetFace = getFace(TargetCoordinates, DirectionType);
 
 		switch (DirectionType) {
 
 			case DIRECTION_NONE:
 				if (!SourceShape.isEmpty() && !SourceShape.isSolid()) {
-					FaceShape NewShape = new FaceShape(getCubeShape(TargetCoordinates), null, Direction.DIRECTION_NONE);
+					FaceShape NewShape = new FaceShape(getBlockShape(TargetCoordinates), null, Direction.DIRECTION_NONE);
 					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, Direction.DIRECTION_NONE, 0);
 						TargetFace.setFaceShapeType(NewShape);
 						TargetFace.setFaceSurfaceType(RoughFloorID);
-						TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
-						// Dirty Cell if edge case
+						TargetFace.setFaceMaterialType(getBlockMaterial(TargetCoordinates));
+						// Dirty Chunk if edge case
 					} else {
 						if (!TargetFace.getFaceShapeType().equals(NewShape)) {
 							TargetFace.setFaceShapeType(NewShape);
 							TargetFace.setFaceSurfaceType(RoughFloorID);
-							TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
+							TargetFace.setFaceMaterialType(getBlockMaterial(TargetCoordinates));
 						}
 					}
 				} else {
@@ -515,12 +510,12 @@ public class GameMap implements Serializable {
 					FaceShape NewShape = new FaceShape(SourceShape, AdjacentShape, DirectionType);
 					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, DirectionType, 0);
-						TargetFace.setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
+						TargetFace.setFaceMaterialType(getBlockMaterial(ModifiedCoordinates));
 						TargetFace.setFaceSurfaceType(RoughFloorID);
 						TargetFace.setFaceShapeType(NewShape);
 					} else {
 						if (!TargetFace.getFaceShapeType().equals(NewShape)) {
-							TargetFace.setFaceMaterialType(getCubeMaterial(ModifiedCoordinates));
+							TargetFace.setFaceMaterialType(getBlockMaterial(ModifiedCoordinates));
 							TargetFace.setFaceSurfaceType(RoughFloorID);
 							TargetFace.setFaceShapeType(NewShape);
 						}
@@ -535,12 +530,12 @@ public class GameMap implements Serializable {
 					FaceShape NewShape = new FaceShape(SourceShape, AdjacentShape, DirectionType);
 					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, DirectionType, 0);
-						TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
+						TargetFace.setFaceMaterialType(getBlockMaterial(TargetCoordinates));
 						TargetFace.setFaceSurfaceType(RoughFloorID);
 						TargetFace.setFaceShapeType(NewShape);
 					} else {
 						if (!TargetFace.getFaceShapeType().equals(NewShape)) {
-							TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
+							TargetFace.setFaceMaterialType(getBlockMaterial(TargetCoordinates));
 							TargetFace.setFaceSurfaceType(RoughFloorID);
 							TargetFace.setFaceShapeType(NewShape);
 						}
@@ -558,12 +553,12 @@ public class GameMap implements Serializable {
 					FaceShape NewShape = new FaceShape(SourceShape, AdjacentShape, DirectionType);
 					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, DirectionType, 0);
-						TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
+						TargetFace.setFaceMaterialType(getBlockMaterial(TargetCoordinates));
 						TargetFace.setFaceShapeType(NewShape);
 						TargetFace.setFaceSurfaceType(RoughWallID);
 					} else {
 						if (!TargetFace.getFaceShapeType().equals(NewShape)) {
-							TargetFace.setFaceMaterialType(getCubeMaterial(TargetCoordinates));
+							TargetFace.setFaceMaterialType(getBlockMaterial(TargetCoordinates));
 							TargetFace.setFaceShapeType(NewShape);
 							TargetFace.setFaceSurfaceType(RoughWallID);
 						}
@@ -581,7 +576,7 @@ public class GameMap implements Serializable {
 	public void releaseMap() {
 		MapLoaded = false;
 
-		Cells.clear();
+		Chunks.clear();
 		Zones.clear();
 	}
 
@@ -604,7 +599,7 @@ public class GameMap implements Serializable {
 		return Zones;
 	}
 
-	public Collection<Cell> getCellCollection() {
-		return Cells.values();
+	public Collection<Chunk> getChunkCollection() {
+		return Chunks.values();
 	}
 }

@@ -9,19 +9,19 @@ package Map.Coordinates;
  *
  * @author Impaler
  */
-public class CubeIndex {
+public class BlockCoordinate {
 
-	public static final float HALFCUBE = (float) 0.5;
+	public static final float HALF_BLOCK = (float) 0.5;
 
-	public static final int CELLEDGESIZE = 32;
-	public static final int CELLBITMASK = 31;
+	public static final int CHUNK_EDGE_SIZE = 32;
+	public static final int BLOCK_BITMASK = 31;
 
-	public static final int CELLBITSHIFT_X = 0;
-	public static final int CELLBITSHIFT_Y = 5;
-	public static final int CELLBITSHIFT_Z = 10;
+	public static final int BLOCK_BITSHIFT_X = 0;
+	public static final int BLOCK_BITSHIFT_Y = 5;
+	public static final int BLOCK_BITSHIFT_Z = 10;
 	
-	public static final int CUBESPERCELL = 32768;
-	public static final int CELLDETAILLEVELS = 6;
+	public static final int BLOCKS_PER_CHUNK = 32768;
+	public static final int CHUNK_DETAIL_LEVELS = 6;
 
 	public short Data;  // Index bitpacking   0 ZZZZZ YYYYY XXXXX
 
@@ -31,29 +31,29 @@ public class CubeIndex {
 	public short Mask;
 	public short Shift;
 
-	public CubeIndex() {
+	public BlockCoordinate() {
 		this.DetailLevel = 0;
 		setDetailLevel(DetailLevel);
 	}
 
-	public CubeIndex(byte DetailLevel) {
+	public BlockCoordinate(byte DetailLevel) {
 		this.DetailLevel = (byte) DetailLevel;
 		setDetailLevel(DetailLevel);
 	}
 
-	public CubeIndex(byte DetailLevel, short Data) {
+	public BlockCoordinate(byte DetailLevel, short Data) {
 		this.Data = Data;
 		setDetailLevel(DetailLevel);
 	}
 
-	public CubeIndex(CubeIndex CopySource) {
+	public BlockCoordinate(BlockCoordinate CopySource) {
 		this.Data = CopySource.Data;
 		setDetailLevel(CopySource.DetailLevel);
 	}
 
 	public final void setDetailLevel(int DetailLevel) {
 		this.DetailLevel = (byte) DetailLevel;
-		this.Shift = (short) ((CubeCoordinate.CELLDETAILLEVELS - DetailLevel) - 1);
+		this.Shift = (short) ((BlockCoordinate.CHUNK_DETAIL_LEVELS - DetailLevel) - 1);
 		this.Size = (short) (1 << this.Shift);
 		
 		this.Mask = (short) (this.Size - 1);
@@ -64,7 +64,7 @@ public class CubeIndex {
 		this.Max = (short) (Xcomponent | Ycomponent | Zcomponent);
 	}
 
-	public CubeIndex(CubeIndex SourceCoords, Direction DirectionType) {
+	public BlockCoordinate(BlockCoordinate SourceCoords, Direction DirectionType) {
 		//X = (short) (SourceCoords.X + DirectionType.getValueonAxis(Axis.AXIS_X));
 		//Y = (short) (SourceCoords.Y + DirectionType.getValueonAxis(Axis.AXIS_Y));
 		//Z = (short) (SourceCoords.Z + DirectionType.getValueonAxis(Axis.AXIS_Z));
@@ -160,7 +160,7 @@ public class CubeIndex {
 		Data = (short) (Xcomponent | Ycomponent | Zcomponent);		
 	}
 
-	public short getCubeIndex() {
+	public short getBlockIndex() {
 		return Data;
 	}
 	
@@ -184,14 +184,14 @@ public class CubeIndex {
 		return (Data > this.Max || Data < 0);
 	}
 
-	public void copy(CubeIndex ArgumentCoordinates) {
+	public void copy(BlockCoordinate ArgumentCoordinates) {
 		this.Data = ArgumentCoordinates.Data;
 		setDetailLevel(ArgumentCoordinates.DetailLevel);
 	}
 
 	@Override
-	public CubeIndex clone() {
-		return new CubeIndex(DetailLevel, Data);
+	public BlockCoordinate clone() {
+		return new BlockCoordinate(DetailLevel, Data);
 	}
 
 	@Override
@@ -204,7 +204,7 @@ public class CubeIndex {
 		//if (!(ArgumentCoordinates instanceof MapCoordinate))
 		//return false;
 
-		CubeIndex Arg = (CubeIndex) ArgumentCoordinates;
+		BlockCoordinate Arg = (BlockCoordinate) ArgumentCoordinates;
 		return (Arg.Data == this.Data && Arg.DetailLevel == this.DetailLevel);
 	}
 

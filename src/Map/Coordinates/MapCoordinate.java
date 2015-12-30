@@ -26,51 +26,51 @@ import com.jme3.math.Vector3f;
  */
 public class MapCoordinate {
 
-	//public RegionCoordinate Region = null;
-	//public SectionCoordinate Section = null;
-	public CellCoordinate Cell = null; // Rename to Chunk
-	public CubeIndex Cube = null;    // Rename to Block
+	public RegionCoordinate Region = null;
+	public SectorCoordinate Section = null;
+	public ChunkCoordinate Chunk = null;
+	public BlockCoordinate Block = null;
 	
 	public MapCoordinate() {
-		this.Cell = new CellCoordinate();
-		this.Cube = new CubeIndex();
+		this.Chunk = new ChunkCoordinate();
+		this.Block = new BlockCoordinate();
 	}
 
-	public MapCoordinate(CellCoordinate Cell, CubeIndex Cube) {
-		this.Cell = Cell.clone();
-		this.Cube = Cube.clone();
+	public MapCoordinate(ChunkCoordinate Cell, BlockCoordinate Cube) {
+		this.Chunk = Cell.clone();
+		this.Block = Cube.clone();
 	}
 
-	public void setCellCoordinate(CellCoordinate Cell) {
-		this.Cell.copy(Cell);
+	public void setChunkCoordinate(ChunkCoordinate Cell) {
+		this.Chunk.copy(Cell);
 	}
 
-	public void setCubeCoordinate(CubeIndex Cube) {
-		this.Cube.copy(Cube);
+	public void setBlockCoordinate(BlockCoordinate Cube) {
+		this.Block.copy(Cube);
 	}
 
 	public void set(int x, int y, int z) {
 
-		this.Cell.X = (short) (x / CubeCoordinate.CELLEDGESIZE);
+		this.Chunk.X = (short) (x / BlockCoordinate.CHUNK_EDGE_SIZE);
 		if (x < 0) {
-			this.Cell.X--;
-			x += (CubeCoordinate.CELLEDGESIZE * this.Cell.X);
+			this.Chunk.X--;
+			x += (BlockCoordinate.CHUNK_EDGE_SIZE * this.Chunk.X);
 		}
-		this.Cube.set(Axis.AXIS_X, x % CubeCoordinate.CELLEDGESIZE);
+		this.Block.set(Axis.AXIS_X, x % BlockCoordinate.CHUNK_EDGE_SIZE);
 		
-		this.Cell.Y = (short) (y / CubeCoordinate.CELLEDGESIZE);
+		this.Chunk.Y = (short) (y / BlockCoordinate.CHUNK_EDGE_SIZE);
 		if (y < 0) {
-			this.Cell.Y--;
-			y += (CubeCoordinate.CELLEDGESIZE * this.Cell.Y);
+			this.Chunk.Y--;
+			y += (BlockCoordinate.CHUNK_EDGE_SIZE * this.Chunk.Y);
 		}
-		this.Cube.set(Axis.AXIS_Y, y % CubeCoordinate.CELLEDGESIZE);
+		this.Block.set(Axis.AXIS_Y, y % BlockCoordinate.CHUNK_EDGE_SIZE);
 		
-		this.Cell.Z = (short) (z / CubeCoordinate.CELLEDGESIZE);
+		this.Chunk.Z = (short) (z / BlockCoordinate.CHUNK_EDGE_SIZE);
 		if (z < 0) {
-			this.Cell.Z--;
-			z += (CubeCoordinate.CELLEDGESIZE * this.Cell.Z);			
+			this.Chunk.Z--;
+			z += (BlockCoordinate.CHUNK_EDGE_SIZE * this.Chunk.Z);			
 		}
-		this.Cube.set(Axis.AXIS_Z, z % CubeCoordinate.CELLEDGESIZE);
+		this.Block.set(Axis.AXIS_Z, z % BlockCoordinate.CHUNK_EDGE_SIZE);
 	}
 
 	public void translate(Direction DirectionType) {
@@ -83,13 +83,13 @@ public class MapCoordinate {
 		int Ytranslation = DirectionType.getValueonAxis(Axis.AXIS_Y) * Quantity;
 		int Ztranslation = DirectionType.getValueonAxis(Axis.AXIS_Z) * Quantity;
 
-		int RawX = this.Cube.getX() + Xtranslation;
-		int RawY = this.Cube.getY() + Ytranslation;
-		int RawZ = this.Cube.getZ() + Ztranslation;
+		int RawX = this.Block.getX() + Xtranslation;
+		int RawY = this.Block.getY() + Ytranslation;
+		int RawZ = this.Block.getZ() + Ztranslation;
 
-		int CelltranslateX = RawX / CubeCoordinate.CELLEDGESIZE;
-		int CelltranslateY = RawY / CubeCoordinate.CELLEDGESIZE;
-		int CelltranslateZ = RawZ / CubeCoordinate.CELLEDGESIZE;
+		int CelltranslateX = RawX / BlockCoordinate.CHUNK_EDGE_SIZE;
+		int CelltranslateY = RawY / BlockCoordinate.CHUNK_EDGE_SIZE;
+		int CelltranslateZ = RawZ / BlockCoordinate.CHUNK_EDGE_SIZE;
 
 		if (RawX < 0) {
 			//RawX += CubeCoordinate.CELLEDGESIZE;
@@ -104,20 +104,20 @@ public class MapCoordinate {
 			CelltranslateZ += -1;
 		}
 
-		this.Cell.X += CelltranslateX;
-		this.Cell.Y += CelltranslateY;
-		this.Cell.Z += CelltranslateZ;
+		this.Chunk.X += CelltranslateX;
+		this.Chunk.Y += CelltranslateY;
+		this.Chunk.Z += CelltranslateZ;
 
-		short CubeX = (short) (RawX % CubeCoordinate.CELLEDGESIZE);
-		short CubeY = (short) (RawY % CubeCoordinate.CELLEDGESIZE);
-		short CubeZ = (short) (RawZ % CubeCoordinate.CELLEDGESIZE);
+		short CubeX = (short) (RawX % BlockCoordinate.CHUNK_EDGE_SIZE);
+		short CubeY = (short) (RawY % BlockCoordinate.CHUNK_EDGE_SIZE);
+		short CubeZ = (short) (RawZ % BlockCoordinate.CHUNK_EDGE_SIZE);
 
-		this.Cube.set(CubeX, CubeY, CubeZ);	
+		this.Block.set(CubeX, CubeY, CubeZ);	
 	}
 
 	public void copy(MapCoordinate CopyCoordinates) {
-		this.Cell.copy(CopyCoordinates.Cell);
-		this.Cube.copy(CopyCoordinates.Cube);
+		this.Chunk.copy(CopyCoordinates.Chunk);
+		this.Block.copy(CopyCoordinates.Block);
 	}
 
 	public Vector3f getVector() {
@@ -125,15 +125,15 @@ public class MapCoordinate {
 	}
 
 	public int getX() {
-		return (Cell.X * CubeCoordinate.CELLEDGESIZE) + Cube.getX();
+		return (Chunk.X * BlockCoordinate.CHUNK_EDGE_SIZE) + Block.getX();
 	}
 
 	public int getY() {
-		return (Cell.Y * CubeCoordinate.CELLEDGESIZE) + Cube.getY();
+		return (Chunk.Y * BlockCoordinate.CHUNK_EDGE_SIZE) + Block.getY();
 	}
 
 	public int getZ() {
-		return (Cell.Z * CubeCoordinate.CELLEDGESIZE) + Cube.getZ();
+		return (Chunk.Z * BlockCoordinate.CHUNK_EDGE_SIZE) + Block.getZ();
 	}
 
 	@Override
@@ -147,20 +147,20 @@ public class MapCoordinate {
 		//return false;
 
 		MapCoordinate Arg = (MapCoordinate) ArgumentCoordinates;
-		return (Cell.equals(Arg.Cell) && Cube.Data == Arg.Cube.Data && Cube.DetailLevel == Arg.Cube.DetailLevel);
+		return (Chunk.equals(Arg.Chunk) && Block.Data == Arg.Block.Data && Block.DetailLevel == Arg.Block.DetailLevel);
 	}
 
 	@Override
 	public MapCoordinate clone() {
-		return new MapCoordinate(this.Cell, this.Cube);
+		return new MapCoordinate(this.Chunk, this.Block);
 	}
 
 	@Override
 	public int hashCode() {
 		int hash = 3;
-		hash += 17 * Cell.X;
-		hash += 37 * Cell.Y;
-		hash += 5 * Cube.Data;
+		hash += 17 * Chunk.X;
+		hash += 37 * Chunk.Y;
+		hash += 5 * Block.Data;
 		return hash;
 	}
 }

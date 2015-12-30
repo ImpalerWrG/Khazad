@@ -15,16 +15,79 @@
  You should have received a copy of the GNU General Public License
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
-
 package Map.Coordinates;
 
+import com.jme3.math.Vector3f;
+import java.io.Serializable;
+
 /**
- * Provides the location of a Chunk within a Region, the world is only 1 Chunk thick 
- * meaning a Chunk has only an X and Y location coordinates within it's Region.
- * 
+ * Used to refrence Cells in HashMaps by relative position, X and Y values are 16
+ * times the true Map Coordinate, Z values are equal.
+ *
  * @author Impaler
  */
-public class ChunkCoordinate {
+public class ChunkCoordinate implements Serializable {
 
-	byte X, Y;
+	private static final long serialVersionUID = 1;
+	public short X, Y, Z;
+
+	public ChunkCoordinate() {
+		X = Y = Z = 0;
+	}
+
+	public ChunkCoordinate(int NewX, int NewY, int NewZ) {
+		X = (short) NewX;
+		Y = (short) NewY;
+		Z = (short) NewZ;
+	}
+
+	public void copy(ChunkCoordinate ArgumentCoordinates) {
+		X = ArgumentCoordinates.X;
+		Y = ArgumentCoordinates.Y;
+		Z = ArgumentCoordinates.Z;
+	}
+
+	@Override
+	public ChunkCoordinate clone() {
+		ChunkCoordinate newCoords = new ChunkCoordinate();
+		newCoords.copy(this);
+		return newCoords;
+	}
+
+	@Override
+	public boolean equals(Object ArgumentCoordinates) {
+		/*
+		if (ArgumentCoordinates == null)
+			return false;
+		if (ArgumentCoordinates == this)
+			return true;
+		if (!(ArgumentCoordinates instanceof CellCoordinate))
+			return false;*/
+
+		ChunkCoordinate Arg = (ChunkCoordinate) ArgumentCoordinates;
+		return (X == Arg.X && Y == Arg.Y && Z == Arg.Z);
+	}
+
+	@Override
+	public int hashCode() {
+		int Key = 0;
+
+		Key += X;
+		Key <<= 12;
+		Key += Y;
+		Key <<= 12;
+		Key += Z;
+
+		return Key;
+	}
+
+	public Vector3f getVector() {
+		Vector3f Vec = new Vector3f(X * BlockCoordinate.CHUNK_EDGE_SIZE, Y * BlockCoordinate.CHUNK_EDGE_SIZE, Z * BlockCoordinate.CHUNK_EDGE_SIZE);
+		return Vec;
+	}
+
+	@Override
+	public String toString() {
+		return "X " + Integer.toString(X) + "Y " + Integer.toString(Y) + "Z " + Integer.toString(Z);
+	}
 }

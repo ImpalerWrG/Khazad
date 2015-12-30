@@ -256,64 +256,64 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		if (name.equals("mouseLeft")) {
 			if (MiddleDown) {
 				MainCamera.rotateCamera(value);
-				Terrain.SwapFrustrumCells();
+				Terrain.SwapFrustrumChunks();
 			} else {
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
-					Terrain.SwapFrustrumCells();
+					Terrain.SwapFrustrumChunks();
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("mouseRight")) {
 			if (MiddleDown) {
 				MainCamera.rotateCamera(-value);
-				Terrain.SwapFrustrumCells();
+				Terrain.SwapFrustrumChunks();
 			} else {
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
-					Terrain.SwapFrustrumCells();
+					Terrain.SwapFrustrumChunks();
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("mouseUp")) {
 			if (MiddleDown) {
 				MainCamera.pitchCamera(value);
-				Terrain.SwapFrustrumCells();
+				Terrain.SwapFrustrumChunks();
 			} else {
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
-					Terrain.SwapFrustrumCells();
+					Terrain.SwapFrustrumChunks();
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("mouseDown")) {
 			if (MiddleDown) {
 				MainCamera.pitchCamera(-value);
-				Terrain.SwapFrustrumCells();
+				Terrain.SwapFrustrumChunks();
 			} else {
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
-					Terrain.SwapFrustrumCells();
+					Terrain.SwapFrustrumChunks();
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("ZoomIn")) {
 			if (MiddleDown) {
 				changeViewLevel(-1);
-				Terrain.SwapFrustrumCells();
+				Terrain.SwapFrustrumChunks();
 			} else if (mouseWheelEnabled) {
 				MainCamera.zoomCamera(value);
 				Terrain.setLevelofDetail(MainCamera.zoomFactor);
-				Terrain.SwapFrustrumCells();
+				Terrain.SwapFrustrumChunks();
 			}
 		} else if (name.equals("ZoomOut")) {
 			if (MiddleDown) {
 				changeViewLevel(1);
-				Terrain.SwapFrustrumCells();
+				Terrain.SwapFrustrumChunks();
 			} else if (mouseWheelEnabled) {
 				MainCamera.zoomCamera(-value);
 				Terrain.setLevelofDetail(MainCamera.zoomFactor);
-				Terrain.SwapFrustrumCells();
+				Terrain.SwapFrustrumChunks();
 			}
 		}
 	}
@@ -332,7 +332,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			Vector3f IntersectLocation = new Vector3f();
 			ray.intersectsWherePlane(SelectionPlane, IntersectLocation);
 
-			SelectionTerminus.set((int) IntersectLocation.x, (int) IntersectLocation.y, (int) SelectionOrigin.Cube.getZ());
+			SelectionTerminus.set((int) IntersectLocation.x, (int) IntersectLocation.y, (int) SelectionOrigin.Block.getZ());
 			Volume.setSize(SelectionOrigin, SelectionTerminus);
 		}
 
@@ -341,55 +341,55 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		if (name.equals("mouseLeft")) {
 			if (MiddleDown) {
 				MainCamera.rotateCamera(value);
-				Terrain.SwapFrustrumCells();
+				Terrain.SwapFrustrumChunks();
 			} else {
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
-					Terrain.SwapFrustrumCells();
+					Terrain.SwapFrustrumChunks();
 					XChange = YChange = 0; // Consume the Mouse movement		
 				}
 			}
 		} else if (name.equals("mouseRight")) {
 			if (MiddleDown) {
 				MainCamera.rotateCamera(-value);
-				Terrain.SwapFrustrumCells();
+				Terrain.SwapFrustrumChunks();
 			} else {
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
-					Terrain.SwapFrustrumCells();
+					Terrain.SwapFrustrumChunks();
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("mouseUp")) {
 			if (MiddleDown) {
 				MainCamera.pitchCamera(value);
-				Terrain.SwapFrustrumCells();
+				Terrain.SwapFrustrumChunks();
 			} else {
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
-					Terrain.SwapFrustrumCells();
+					Terrain.SwapFrustrumChunks();
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("mouseDown")) {
 			if (MiddleDown) {
 				MainCamera.pitchCamera(-value);
-				Terrain.SwapFrustrumCells();
+				Terrain.SwapFrustrumChunks();
 			} else {
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
-					Terrain.SwapFrustrumCells();
+					Terrain.SwapFrustrumChunks();
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("ZoomIn")) {
 			MainCamera.zoomCamera(value);
 			Terrain.setLevelofDetail(MainCamera.zoomFactor);
-			Terrain.SwapFrustrumCells();
+			Terrain.SwapFrustrumChunks();
 		} else if (name.equals("ZoomOut")) {
 			MainCamera.zoomCamera(-value);
 			Terrain.setLevelofDetail(MainCamera.zoomFactor);
-			Terrain.SwapFrustrumCells();
+			Terrain.SwapFrustrumChunks();
 		}
 	}
 
@@ -607,25 +607,25 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		if (RightwardPaning) {
 			MainCamera.translateCamera(createTranslationVector(PanningSpeed, 0));
 			TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
-			Terrain.SwapFrustrumCells();
+			Terrain.SwapFrustrumChunks();
 		}
 
 		if (LeftwardPaning) {
 			MainCamera.translateCamera(createTranslationVector(-PanningSpeed, 0));
 			TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
-			Terrain.SwapFrustrumCells();
+			Terrain.SwapFrustrumChunks();
 		}
 
 		if (UpwardPaning) {
 			MainCamera.translateCamera(createTranslationVector(0, PanningSpeed));
 			TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
-			Terrain.SwapFrustrumCells();
+			Terrain.SwapFrustrumChunks();
 		}
 
 		if (DownwardPaning) {
 			MainCamera.translateCamera(createTranslationVector(0, -PanningSpeed));
 			TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
-			Terrain.SwapFrustrumCells();
+			Terrain.SwapFrustrumChunks();
 		}
 	}
 
@@ -656,7 +656,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		Vector3f target = Coordinate.getVector();
 		MainCamera.pointCameraAt(target);
 		TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
-		Terrain.SwapFrustrumCells();
+		Terrain.SwapFrustrumChunks();
 	}
 
 	public boolean contains(BoundingBox box) {

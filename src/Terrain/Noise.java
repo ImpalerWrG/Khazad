@@ -103,14 +103,14 @@ public class Noise implements Serializable {  // Simplex noise in 2D, 3D and 4D
   // 2D simplex noise
   public static double noise(double xin, double yin) {
     double n0, n1, n2; // Noise contributions from the three corners
-    // Skew the input space to determine which simplex cell we're in
+    // Skew the input space to determine which simplex chunk we're in
     double s = (xin+yin)*F2; // Hairy factor for 2D
     int i = fastfloor(xin+s);
     int j = fastfloor(yin+s);
     double t = (i+j)*G2;
-    double X0 = i-t; // Unskew the cell origin back to (x,y) space
+    double X0 = i-t; // Unskew the chunk origin back to (x,y) space
     double Y0 = j-t;
-    double x0 = xin-X0; // The x,y distances from the cell origin
+    double x0 = xin-X0; // The x,y distances from the chunk origin
     double y0 = yin-Y0;
     // For the 2D case, the simplex shape is an equilateral triangle.
     // Determine which simplex we are in.
@@ -158,16 +158,16 @@ public class Noise implements Serializable {  // Simplex noise in 2D, 3D and 4D
   // 3D simplex noise
   public static double noise(double xin, double yin, double zin) {
     double n0, n1, n2, n3; // Noise contributions from the four corners
-    // Skew the input space to determine which simplex cell we're in
+    // Skew the input space to determine which simplex chunk we're in
     double s = (xin+yin+zin)*F3; // Very nice and simple skew factor for 3D
     int i = fastfloor(xin+s);
     int j = fastfloor(yin+s);
     int k = fastfloor(zin+s);
     double t = (i+j+k)*G3;
-    double X0 = i-t; // Unskew the cell origin back to (x,y,z) space
+    double X0 = i-t; // Unskew the chunk origin back to (x,y,z) space
     double Y0 = j-t;
     double Z0 = k-t;
-    double x0 = xin-X0; // The x,y,z distances from the cell origin
+    double x0 = xin-X0; // The x,y,z distances from the chunk origin
     double y0 = yin-Y0;
     double z0 = zin-Z0;
     // For the 3D case, the simplex shape is a slightly irregular tetrahedron.
@@ -241,18 +241,18 @@ public class Noise implements Serializable {  // Simplex noise in 2D, 3D and 4D
   public static double noise(double x, double y, double z, double w) {
 
     double n0, n1, n2, n3, n4; // Noise contributions from the five corners
-    // Skew the (x,y,z,w) space to determine which cell of 24 simplices we're in
+    // Skew the (x,y,z,w) space to determine which chunk of 24 simplices we're in
     double s = (x + y + z + w) * F4; // Factor for 4D skewing
     int i = fastfloor(x + s);
     int j = fastfloor(y + s);
     int k = fastfloor(z + s);
     int l = fastfloor(w + s);
     double t = (i + j + k + l) * G4; // Factor for 4D unskewing
-    double X0 = i - t; // Unskew the cell origin back to (x,y,z,w) space
+    double X0 = i - t; // Unskew the chunk origin back to (x,y,z,w) space
     double Y0 = j - t;
     double Z0 = k - t;
     double W0 = l - t;
-    double x0 = x - X0;  // The x,y,z,w distances from the cell origin
+    double x0 = x - X0;  // The x,y,z,w distances from the chunk origin
     double y0 = y - Y0;
     double z0 = z - Z0;
     double w0 = w - W0;

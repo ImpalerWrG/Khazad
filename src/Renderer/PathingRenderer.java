@@ -20,13 +20,13 @@ package Renderer;
 import Game.Game;
 
 import Map.Coordinates.Axis;
-import Map.Cell;
-import Map.Coordinates.CellCoordinate;
+import Map.Chunk;
+import Map.Coordinates.ChunkCoordinate;
 import Map.Coordinates.Direction;
 import Map.GameMap;
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.BlockCoordinate;
 import Map.Coordinates.MapCoordinate;
-import Map.Coordinates.CubeIndex;
+import Map.Coordinates.BlockCoordinate;
 
 import PathFinding.PathManager;
 import PathFinding.MovementModality;
@@ -72,7 +72,7 @@ public class PathingRenderer extends AbstractAppState {
 	Game game = null;
 	PathManager Pathing;
 	Node PathingNode;
-	HashMap<CellCoordinate, Node> cells;
+	HashMap<ChunkCoordinate, Node> chunks;
 	HashMap<Integer, Material> ZoneMaterials;
 	private boolean DisplayToggle = false;
 	Vector3f[] vertices;
@@ -87,7 +87,7 @@ public class PathingRenderer extends AbstractAppState {
 		this.vertices = new Vector3f[Direction.ANGULAR_DIRECTIONS.length];
 
 		for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
-			vertices[dir.ordinal()] = new Vector3f(dir.getValueonAxis(Axis.AXIS_X) * CubeCoordinate.HALFCUBE, dir.getValueonAxis(Axis.AXIS_Y) * CubeCoordinate.HALFCUBE, dir.getValueonAxis(Axis.AXIS_Z) * CubeCoordinate.HALFCUBE);
+			vertices[dir.ordinal()] = new Vector3f(dir.getValueonAxis(Axis.AXIS_X) * BlockCoordinate.HALF_BLOCK, dir.getValueonAxis(Axis.AXIS_Y) * BlockCoordinate.HALF_BLOCK, dir.getValueonAxis(Axis.AXIS_Z) * BlockCoordinate.HALF_BLOCK);
 		}
 	}
 
@@ -101,15 +101,15 @@ public class PathingRenderer extends AbstractAppState {
 		ZoneMaterials = new HashMap<Integer, Material>();
 	}
 
-	public Node buildRendering(Cell TargetCell) {
+	public Node buildRendering(Chunk TargetChunk) {
 
 		Node PathRenderingNode = new Node("PathRenderingNode");
 		MovementModality Mod = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
 
-		CellCoordinate CellCoords = TargetCell.getCellCoordinates();
+		ChunkCoordinate ChunkCoords = TargetChunk.getChunkCoordinates();
 
-		for (CubeIndex Index = new CubeIndex(); !Index.end(); Index.next()) {
-			MapCoordinate TargetCoords = new MapCoordinate(CellCoords, Index);
+		for (BlockCoordinate Index = new BlockCoordinate(); !Index.end(); Index.next()) {
+			MapCoordinate TargetCoords = new MapCoordinate(ChunkCoords, Index);
 			BitSet Connectivity = Pathing.getDirectionFlags(TargetCoords, Mod);
 
 			int Zone = Pathing.getConnectivityZone(TargetCoords, Mod);
@@ -144,7 +144,7 @@ public class PathingRenderer extends AbstractAppState {
 
 				Geometry Wires = new Geometry("Connection Wires", EdgeWires);
 				Wires.setMaterial(mat);
-				Wires.setLocalTranslation(TargetCoords.Cube.getX(), TargetCoords.Cube.getY(), TargetCoords.Cube.getZ());
+				Wires.setLocalTranslation(TargetCoords.Block.getX(), TargetCoords.Block.getY(), TargetCoords.Block.getZ());
 				PathRenderingNode.attachChild(Wires);
 			}
 		}
@@ -152,27 +152,27 @@ public class PathingRenderer extends AbstractAppState {
 		GeometryBatchFactory.optimize(PathRenderingNode, true);
 		if (PathRenderingNode.getQuantity() > 0) {
 			Spatial ConnectionRendering = PathRenderingNode.getChild(0);
-			PathRenderingNode.setName("Connection Rendering" + CellCoords.toString());
+			PathRenderingNode.setName("Connection Rendering" + ChunkCoords.toString());
 			return PathRenderingNode;
 		} else {
 			return null;
 		}
 	}
 
-	public void rebuildDirtyCells(Collection<Cell> cells) {
-		for (Cell target : cells) {
-			CellCoordinate Coords = target.getCellCoordinates();
+	public void rebuildDirtyChunks(Collection<Chunk> chunks) {
+		for (Chunk target : chunks) {
+			ChunkCoordinate Coords = target.getChunkCoordinates();
 
 			MapRenderer Renderer = state.getState(MapRenderer.class);
-			Node CellNode = Renderer.getCellNodeLight(Coords);
-			Spatial ConnectivityNode = CellNode.getChild("Connection Rendering" + Coords.toString());
+			Node ChunkNode = Renderer.getChunkNodeLight(Coords);
+			Spatial ConnectivityNode = ChunkNode.getChild("Connection Rendering" + Coords.toString());
 
 			if (target.isPathingRenderingDirty()) {
 				Node NewConnectivity = buildRendering(target);
 				if (ConnectivityNode != null)
-					CellNode.detachChild(ConnectivityNode);
+					ChunkNode.detachChild(ConnectivityNode);
 				if (NewConnectivity != null) {
-					CellNode.attachChild(NewConnectivity);
+					ChunkNode.attachChild(NewConnectivity);
 				}
 				target.setDirtyPathingRendering(false);
 			}
@@ -183,12 +183,12 @@ public class PathingRenderer extends AbstractAppState {
 		}
 	}
 
-	void hideConnectivityRendering(Collection<Cell> cells) {
-		for (Cell target : cells) {
-			CellCoordinate Coords = target.getCellCoordinates();
+	void hideConnectivityRendering(Collection<Chunk> chunks) {
+		for (Chunk target : chunks) {
+			ChunkCoordinate Coords = target.getChunkCoordinates();
 			MapRenderer Renderer = state.getState(MapRenderer.class);
-			Node CellNode = Renderer.getCellNodeLight(Coords);
-			Spatial ConnectivityNode = CellNode.getChild("Connection Rendering" + Coords.toString());
+			Node ChunkNode = Renderer.getChunkNodeLight(Coords);
+			Spatial ConnectivityNode = ChunkNode.getChild("Connection Rendering" + Coords.toString());
 
 			if (ConnectivityNode != null) {
 				ConnectivityNode.setCullHint(Spatial.CullHint.Always);
@@ -201,7 +201,7 @@ public class PathingRenderer extends AbstractAppState {
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
 			if (getDisplayToggle()) {
-				rebuildDirtyCells(map.getCellCollection());
+				rebuildDirtyChunks(map.getChunkCollection());
 			}
 		}
 	}
@@ -221,7 +221,7 @@ public class PathingRenderer extends AbstractAppState {
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
 			if (DisplayToggle == false) {
-				hideConnectivityRendering(map.getCellCollection());
+				hideConnectivityRendering(map.getChunkCollection());
 			}
 		}
 	}

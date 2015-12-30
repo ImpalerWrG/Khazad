@@ -17,8 +17,8 @@
 
 package Renderer;
 
-import Map.Cell;
-import Map.Coordinates.CubeCoordinate;
+import Map.Chunk;
+import Map.Coordinates.BlockCoordinate;
 
 import com.jme3.app.Application;
 import com.jme3.scene.Node;
@@ -34,28 +34,28 @@ import java.util.concurrent.Callable;
 
 public class TerrainDestroyer implements Callable<Void>{
 
-	Cell BuildCell;
+	Chunk BuildChunk;
 	Application app;
-	Node CellLight, CellDark;
+	Node ChunkLight, ChunkDark;
 	int DetailLevel;
 
-	public TerrainDestroyer(Application Parentapp, Cell TargetCell, int LevelofDetail) {
+	public TerrainDestroyer(Application Parentapp, Chunk TargetChunk, int LevelofDetail) {
 		this.app = Parentapp;
-		this.BuildCell = TargetCell;
+		this.BuildChunk = TargetChunk;
 		this.DetailLevel = LevelofDetail;
 	}
 
-	public void setNodes(Node LightCellNode, Node DarkCellNode) {
-		this.CellLight = LightCellNode;
-		this.CellDark = DarkCellNode;
+	public void setNodes(Node LightChunkNode, Node DarkChunkNode) {
+		this.ChunkLight = LightChunkNode;
+		this.ChunkDark = DarkChunkNode;
 	}
 
 	public Void call() {
 			app.enqueue(new Callable() {
 			public Object call() throws Exception {
-				for (int i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i ++) {
-					CellLight.detachChildNamed("LightGeometry Cell " + BuildCell.toString() + "DetailLevel " + i);
-					CellDark.detachChildNamed("DarkGeometry Cell " + BuildCell.toString() + "DetailLevel " + i);
+				for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i ++) {
+					ChunkLight.detachChildNamed("LightGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + i);
+					ChunkDark.detachChildNamed("DarkGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + i);
 				}
 				return null;
 			}

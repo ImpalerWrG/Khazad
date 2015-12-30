@@ -17,11 +17,11 @@
 
 package Renderer;
 
-import Map.Coordinates.CubeCoordinate;
-import Map.Coordinates.CellCoordinate;
+import Map.Coordinates.ChunkCoordinate;
 import Map.*;
 import Game.Game;
 import Interface.GameCameraState;
+import Map.Coordinates.BlockCoordinate;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -44,7 +44,7 @@ import java.util.concurrent.ExecutorService;
 
 /**
  * Rendering class for Terrain, tracks all Scene Nodes that Terrain geometry
- * attaches too and rebuilds the geometry when Cells are dirty. Division of
+ * attaches too and rebuilds the geometry when Chunks are dirty. Division of
  * Terrain into light/dark allows easy hiding of surface terrain and restriction
  * of directional sunlight to appropriate surfaces.
  *
@@ -62,12 +62,12 @@ public class TerrainRenderer extends AbstractAppState {
 	private boolean TerrainRenderingToggle = true;
 	Spatial.CullHint TerrainHint = Spatial.CullHint.Never;
 	ExecutorService Executor;
-	ConcurrentHashMap<CellCoordinate, Cell> MeshedCells;
+	ConcurrentHashMap<ChunkCoordinate, Chunk> MeshedChunks;
 
 	public TerrainRenderer(ExecutorService Threadpool) {
 		Executor = Threadpool;
 		builder = new TileBuilder();
-		MeshedCells = new ConcurrentHashMap<CellCoordinate, Cell>();
+		MeshedChunks = new ConcurrentHashMap<ChunkCoordinate, Chunk>();
 	}
 
 	@Override
@@ -82,71 +82,71 @@ public class TerrainRenderer extends AbstractAppState {
 		this.game = TargetGame;
 	}
 
-	public void queueCellBuild(Cell targetCell, int DetailLevel) {
+	public void queueChunkBuild(Chunk targetChunk, int DetailLevel) {
 		MapRenderer Renderer = state.getState(MapRenderer.class);
-		CellCoordinate Coords = targetCell.getCellCoordinates();
+		ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
 
-		MeshedCells.put(Coords, targetCell);
-		TerrainBuilder Builder = new TerrainBuilder(app, targetCell, builder, DetailLevel);
+		MeshedChunks.put(Coords, targetChunk);
+		TerrainBuilder Builder = new TerrainBuilder(app, targetChunk, builder, DetailLevel);
 
-		Builder.setNodes(Renderer.getCellNodeLight(Coords), Renderer.getCellNodeDark(Coords));
+		Builder.setNodes(Renderer.getChunkNodeLight(Coords), Renderer.getChunkNodeDark(Coords));
 		Builder.setHint(TerrainHint);
 		Executor.submit(Builder);
 
-		targetCell.setDirtyTerrainRendering(false);
+		targetChunk.setDirtyTerrainRendering(false);
 	}
 
-	public void queueCellDestroy(Cell targetCell, int DetailLevel) {
+	public void queueChunkDestroy(Chunk targetChunk, int DetailLevel) {
 		MapRenderer Renderer = state.getState(MapRenderer.class);
-		CellCoordinate Coords = targetCell.getCellCoordinates();
+		ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
 
-		MeshedCells.remove(Coords);
-		TerrainDestroyer Destroyer = new TerrainDestroyer(app, targetCell, DetailLevel);
+		MeshedChunks.remove(Coords);
+		TerrainDestroyer Destroyer = new TerrainDestroyer(app, targetChunk, DetailLevel);
 
-		Destroyer.setNodes(Renderer.getCellNodeLight(Coords), Renderer.getCellNodeDark(Coords));
+		Destroyer.setNodes(Renderer.getChunkNodeLight(Coords), Renderer.getChunkNodeDark(Coords));
 		Executor.submit(Destroyer);
 
-		targetCell.setDirtyTerrainRendering(true);
+		targetChunk.setDirtyTerrainRendering(true);
 	}
 
-	public void rebuildDirtyCells(Collection<Cell> cells) {
-		for (Cell targetCell : MeshedCells.values()) {
-			if (targetCell.isTerrainRenderingDirty())
-				queueCellBuild(targetCell, this.LevelofDetail);
+	public void rebuildDirtyChunks(Collection<Chunk> cells) {
+		for (Chunk targetChunk : MeshedChunks.values()) {
+			if (targetChunk.isTerrainRenderingDirty())
+				queueChunkBuild(targetChunk, this.LevelofDetail);
 		}
 	}
 
-	public void SwapFrustrumCells() {
+	public void SwapFrustrumChunks() {
 		GameMap map = this.game.getMap();
-		Collection<Cell> cells = map.getCellCollection();
+		Collection<Chunk> cells = map.getChunkCollection();
 
-		BoundingBox CellBox = new BoundingBox();
-		CellBox.setXExtent(CubeCoordinate.CELLEDGESIZE);
-		CellBox.setYExtent(CubeCoordinate.CELLEDGESIZE);
-		CellBox.setZExtent(CubeCoordinate.CELLEDGESIZE);
-		CellBox.setCheckPlane(0);
+		BoundingBox ChunkBox = new BoundingBox();
+		ChunkBox.setXExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
+		ChunkBox.setYExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
+		ChunkBox.setZExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
+		ChunkBox.setCheckPlane(0);
 
 		this.CameraState = state.getState(GameCameraState.class);
 
-		// Add Cells newly entering the Frustrum
-		for (Cell targetCell : cells) {
-			CellCoordinate Coords = targetCell.getCellCoordinates();
-			Vector3f Center = new Vector3f(Coords.X * CubeCoordinate.CELLEDGESIZE, Coords.Y * CubeCoordinate.CELLEDGESIZE, Coords.Z * CubeCoordinate.CELLEDGESIZE);
-			CellBox.setCenter(Center);
-			if (this.CameraState.contains(CellBox)) {
-				if (targetCell.isTerrainRenderingDirty()) {
-					queueCellBuild(targetCell, this.LevelofDetail);
+		// Add Chunks newly entering the Frustrum
+		for (Chunk targetChunk : cells) {
+			ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
+			Vector3f Center = Coords.getVector();
+			ChunkBox.setCenter(Center);
+			if (this.CameraState.contains(ChunkBox)) {
+				if (targetChunk.isTerrainRenderingDirty()) {
+					queueChunkBuild(targetChunk, this.LevelofDetail);
 				}
 			}
 		}
 
-		// Remove Cells nolonger in the Frustrum
-		for (Cell targetCell : MeshedCells.values()) {
-			CellCoordinate Coords = targetCell.getCellCoordinates();
-			Vector3f Center = new Vector3f(Coords.X * CubeCoordinate.CELLEDGESIZE, Coords.Y * CubeCoordinate.CELLEDGESIZE, Coords.Z * CubeCoordinate.CELLEDGESIZE);
-			CellBox.setCenter(Center);
-			if (this.CameraState.contains(CellBox) == false) {
-				queueCellDestroy(targetCell, this.LevelofDetail);
+		// Remove Chunks nolonger in the Frustrum
+		for (Chunk targetChunk : MeshedChunks.values()) {
+			ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
+			Vector3f Center = Coords.getVector();
+			ChunkBox.setCenter(Center);
+			if (this.CameraState.contains(ChunkBox) == false) {
+				queueChunkDestroy(targetChunk, this.LevelofDetail);
 			}
 		}
 	}
@@ -166,15 +166,15 @@ public class TerrainRenderer extends AbstractAppState {
 			TerrainHint = Spatial.CullHint.Dynamic;
 
 		GameMap map = this.game.getMap();
-		for (Cell target : map.getCellCollection()) {
-			CellCoordinate Coords = target.getCellCoordinates();
+		for (Chunk target : map.getChunkCollection()) {
+			ChunkCoordinate Coords = target.getChunkCoordinates();
 
 			MapRenderer Renderer = state.getState(MapRenderer.class);
-			Node CellLight = Renderer.getCellNodeLight(Coords);
-			Node CellDark = Renderer.getCellNodeDark(Coords);
+			Node ChunkLight = Renderer.getChunkNodeLight(Coords);
+			Node ChunkDark = Renderer.getChunkNodeDark(Coords);
 
-			Spatial light = CellLight.getChild("LightGeometry Cell " + target.toString() + "DetailLevel " + this.LevelofDetail);
-			Spatial dark = CellDark.getChild("DarkGeometry Cell " + target.toString() + "DetailLevel " + this.LevelofDetail);
+			Spatial light = ChunkLight.getChild("LightGeometry Chunk " + target.toString() + "DetailLevel " + this.LevelofDetail);
+			Spatial dark = ChunkDark.getChild("DarkGeometry Chunk " + target.toString() + "DetailLevel " + this.LevelofDetail);
 
 			if (light != null)
 				light.setCullHint(TerrainHint);
@@ -199,8 +199,8 @@ public class TerrainRenderer extends AbstractAppState {
 			this.LevelofDetail = NewDetailLevel;
 
 			GameMap map = this.game.getMap();
-			for (Cell target : map.getCellCollection()) {
-				setCellDetailLevel(target, this.LevelofDetail);
+			for (Chunk target : map.getChunkCollection()) {
+				setChunkDetailLevel(target, this.LevelofDetail);
 			}
 		}
 	}
@@ -220,25 +220,25 @@ public class TerrainRenderer extends AbstractAppState {
 			this.LevelofDetail = 4;
 
 		GameMap map = this.game.getMap();
-		for (Cell target : map.getCellCollection()) {
-			setCellDetailLevel(target, this.LevelofDetail);
+		for (Chunk target : map.getChunkCollection()) {
+			setChunkDetailLevel(target, this.LevelofDetail);
 		}
 	}
 
-	private void setCellDetailLevel(Cell TargetCell, int LevelofDetail) {
-		CellCoordinate Coords = TargetCell.getCellCoordinates();
+	private void setChunkDetailLevel(Chunk TargetChunk, int LevelofDetail) {
+		ChunkCoordinate Coords = TargetChunk.getChunkCoordinates();
 
 		MapRenderer Renderer = state.getState(MapRenderer.class);
-		Node CellLight = Renderer.getCellNodeLight(Coords);
-		Node CellDark = Renderer.getCellNodeDark(Coords);
+		Node ChunkLight = Renderer.getChunkNodeLight(Coords);
+		Node ChunkDark = Renderer.getChunkNodeDark(Coords);
 
-		for (int i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i++) {
+		for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i++) {
 			Spatial.CullHint hint = Spatial.CullHint.Always;
 			if (i == LevelofDetail && TerrainRenderingToggle)
 				hint = Spatial.CullHint.Dynamic;
 
-			Spatial light = CellLight.getChild("LightGeometry Cell " + TargetCell.toString() + "DetailLevel " + i);
-			Spatial dark = CellDark.getChild("DarkGeometry Cell " + TargetCell.toString() + "DetailLevel " + i);
+			Spatial light = ChunkLight.getChild("LightGeometry Chunk " + TargetChunk.toString() + "DetailLevel " + i);
+			Spatial dark = ChunkDark.getChild("DarkGeometry Chunk " + TargetChunk.toString() + "DetailLevel " + i);
 
 			if (light != null)
 				light.setCullHint(hint);
@@ -252,7 +252,7 @@ public class TerrainRenderer extends AbstractAppState {
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
 			if (TerrainRenderingToggle)
-				rebuildDirtyCells(map.getCellCollection());
+				rebuildDirtyChunks(map.getChunkCollection());
 		}
 	}
 }

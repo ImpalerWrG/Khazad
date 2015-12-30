@@ -21,57 +21,57 @@ import Map.Coordinates.Direction;
 import java.io.Serializable;
 
 /**
- * Used to determine the Mesh used to build a Rendering of a Cell
+ * Used to determine the Mesh used to build a Rendering of a Chunk
  *
  * @author Impaler
  */
 public class FaceShape implements Serializable {
 
 	private static final long serialVersionUID = 1;
-	private short SourceCubeData;
-	private short AdjacentCubeData;
+	private short SourceBlockData;
+	private short AdjacentBlockData;
 	private byte FaceDirection;
 
 	public FaceShape() {
-		SourceCubeData = CubeShape.EMPTY_CUBE_DATA;
-		AdjacentCubeData = CubeShape.EMPTY_CUBE_DATA;
+		SourceBlockData = BlockShape.EMPTY_CUBE_DATA;
+		AdjacentBlockData = BlockShape.EMPTY_CUBE_DATA;
 		FaceDirection = (byte) Direction.DIRECTION_DESTINATION.ordinal();
 	}
 
-	public FaceShape(CubeShape SourceShapeType, CubeShape AdjacentShapeType, Direction DirectionType) {
-		SourceCubeData = SourceShapeType.Data;
+	public FaceShape(BlockShape SourceShapeType, BlockShape AdjacentShapeType, Direction DirectionType) {
+		SourceBlockData = SourceShapeType.Data;
 		if (AdjacentShapeType != null)
-			AdjacentCubeData = AdjacentShapeType.Data;
+			AdjacentBlockData = AdjacentShapeType.Data;
 		FaceDirection = (byte) DirectionType.ordinal();		
 	}
 
 	boolean equals(FaceShape ArgumentShape) {
 		boolean AdjacentEqual, SourceEqual, FaceEqual;
 		if (ArgumentShape != null) {
-			AdjacentEqual = ArgumentShape.AdjacentCubeData == AdjacentCubeData;
-			SourceEqual = SourceCubeData == ArgumentShape.SourceCubeData;
+			AdjacentEqual = ArgumentShape.AdjacentBlockData == AdjacentBlockData;
+			SourceEqual = SourceBlockData == ArgumentShape.SourceBlockData;
 			FaceEqual = FaceDirection == ArgumentShape.FaceDirection;
 		} else {
-			AdjacentEqual = AdjacentCubeData == CubeShape.EMPTY_CUBE_DATA;
-			SourceEqual =  SourceCubeData == CubeShape.EMPTY_CUBE_DATA;
+			AdjacentEqual = AdjacentBlockData == BlockShape.EMPTY_CUBE_DATA;
+			SourceEqual =  SourceBlockData == BlockShape.EMPTY_CUBE_DATA;
 			FaceEqual = FaceDirection == Direction.DIRECTION_NONE.ordinal();
 		}
 		return SourceEqual && AdjacentEqual && FaceEqual;
 	}
 
 	boolean notequal(FaceShape ArgumentShape) {
-		return SourceCubeData != ArgumentShape.SourceCubeData || AdjacentCubeData != ArgumentShape.AdjacentCubeData || FaceDirection != ArgumentShape.FaceDirection;
+		return SourceBlockData != ArgumentShape.SourceBlockData || AdjacentBlockData != ArgumentShape.AdjacentBlockData || FaceDirection != ArgumentShape.FaceDirection;
 	}
 
 	public Direction getFaceDirection() {
 		return Direction.ANGULAR_DIRECTIONS[FaceDirection];
 	}
 	
-	public CubeShape getSourceCubeShape() {
-		return new CubeShape(SourceCubeData);
+	public BlockShape getSourceBlockShape() {
+		return new BlockShape(SourceBlockData);
 	}
 
-	public CubeShape getAdjacentCubeShape() {
-		return new CubeShape(AdjacentCubeData);
+	public BlockShape getAdjacentBlockShape() {
+		return new BlockShape(AdjacentBlockData);
 	}
 }

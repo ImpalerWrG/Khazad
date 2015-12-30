@@ -21,7 +21,7 @@ import java.util.BitSet;
 import java.util.ArrayList;
 
 import Map.Coordinates.MapCoordinate;
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.BlockCoordinate;
 import Map.Coordinates.Direction;
 
 /**

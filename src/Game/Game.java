@@ -17,8 +17,8 @@
 package Game;
 
 import Map.Coordinates.MapCoordinate;
-import Map.Coordinates.CubeCoordinate;
-import Map.Coordinates.CellCoordinate;
+import Map.Coordinates.BlockCoordinate;
+import Map.Coordinates.ChunkCoordinate;
 import Core.*;
 import Job.ExcavateJob;
 import Job.JobManager;
@@ -155,41 +155,41 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		short SizeX = (short) (X + Width);
 		short SizeY = (short) (Y + Height);
 
-		// Create and add Cells with shape and material data
+		// Create and add Chunks with shape and material data
 		for (int x = X; x < SizeX; x++) {
 			for (int y = Y; y < SizeY; y++) {
-				MapGeology.generateCellHeight(x, y, (float) 10.0, (float) 1.5);
+				MapGeology.generateChunkHeight(x, y, (float) 10.0, (float) 1.5);
 
 				int zBottom, zTop;
-				if ((MapGeology.getCellBottomZLevel() - 2) < 0) {
-					zBottom = ((MapGeology.getCellBottomZLevel() - 2) / CubeCoordinate.CELLEDGESIZE) - 1;
+				if ((MapGeology.getChunkBottomZLevel() - 2) < 0) {
+					zBottom = ((MapGeology.getChunkBottomZLevel() - 2) / BlockCoordinate.CHUNK_EDGE_SIZE) - 1;
 				} else { 
-					zBottom = ((MapGeology.getCellBottomZLevel() - 2) / CubeCoordinate.CELLEDGESIZE);
+					zBottom = ((MapGeology.getChunkBottomZLevel() - 2) / BlockCoordinate.CHUNK_EDGE_SIZE);
 				}
-				if ((MapGeology.getCellTopZLevel() + 2) < 0) {
-					zTop = ((MapGeology.getCellTopZLevel() + 2) / CubeCoordinate.CELLEDGESIZE) - 1;
+				if ((MapGeology.getChunkTopZLevel() + 2) < 0) {
+					zTop = ((MapGeology.getChunkTopZLevel() + 2) / BlockCoordinate.CHUNK_EDGE_SIZE) - 1;
 				} else { 
-					zTop = ((MapGeology.getCellTopZLevel() + 2) / CubeCoordinate.CELLEDGESIZE);
+					zTop = ((MapGeology.getChunkTopZLevel() + 2) / BlockCoordinate.CHUNK_EDGE_SIZE);
 				}
 				
 				for (int z = zBottom; z <= zTop; z++) {
-					CellCoordinate TargetCellCoordinates = new CellCoordinate(x, y, z);
-					Cell NewCell = new Cell();
+					ChunkCoordinate TargetChunkCoordinates = new ChunkCoordinate(x, y, z);
+					Chunk NewChunk = new Chunk();
 
-					NewCell.setCellCoordinates(TargetCellCoordinates);
-					MainMap.insertCell(NewCell);
-					MapGeology.loadCellData(NewCell);
+					NewChunk.setChunkCoordinates(TargetChunkCoordinates);
+					MainMap.insertChunk(NewChunk);
+					MapGeology.loadChunkData(NewChunk);
 				}
 			}
 		}
 
 		MainMap.generateFirstLight();
 
-		for (Cell TargetCell : MainMap.getCellCollection()) {
-			for (int i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i++) {
-				TargetCell.buildFaces(i);
+		for (Chunk TargetChunk : MainMap.getChunkCollection()) {
+			for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i++) {
+				TargetChunk.buildFaces(i);
 			}
-			TargetCell.growGrass();
+			TargetChunk.growGrass();
 		}
 
 		return true;
@@ -242,7 +242,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		Volumes.add(newVolume);
 		Zone newZone = getMap().createZone(Volumes);
 
-		newJob.addDesignations(newVolume, newZone, new CubeShape(CubeShape.CUBE_BOTTOM_HEIGHT));
+		newJob.addDesignations(newVolume, newZone, new BlockShape(BlockShape.CUBE_BOTTOM_HEIGHT));
 		jobs.addJob(newJob);
 	}
 

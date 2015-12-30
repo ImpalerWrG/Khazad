@@ -17,9 +17,9 @@
 
 package Map;
 
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.BlockCoordinate;
 import Map.Coordinates.MapCoordinate;
-import Map.Coordinates.CellCoordinate;
+import Map.Coordinates.ChunkCoordinate;
 import java.util.*;
 import Interface.VolumeSelection;
 import java.io.IOException;
@@ -28,19 +28,19 @@ import java.io.Serializable;
 
 /**
  * Basic description of a volume in the game Map, high efficiency storage by bitset
- * mapped to CellCoordinates to give fast query, zones have no trouble overlapping
+ * mapped to ChunkCoordinates to give fast query, zones have no trouble overlapping
  *
  * @author Impaler
  */
 public class Zone implements Serializable {
 
 	private static final long serialVersionUID = 1;
-	HashMap<CellCoordinate, BitSet> ZoneMap;
+	HashMap<ChunkCoordinate, BitSet> ZoneMap;
 	transient public boolean Dirty;
 	private final int ID;
 
 	public Zone(List<VolumeSelection> Volumes, int ID) {
-		ZoneMap = new HashMap<CellCoordinate, BitSet>();
+		ZoneMap = new HashMap<ChunkCoordinate, BitSet>();
 		for (VolumeSelection Selection : Volumes) {
 			addSelection(Selection);
 		}
@@ -65,13 +65,13 @@ public class Zone implements Serializable {
 				for (int z = Origin.getZ(); z < Terminal.getZ(); z++) {
 					TargetCoords.set(x, y, z);
 
-					BitSet Target = ZoneMap.get(TargetCoords.Cell);
+					BitSet Target = ZoneMap.get(TargetCoords.Chunk);
 					if (Target != null) {
-						Target.set(TargetCoords.Cube.getCubeIndex(), true);
+						Target.set(TargetCoords.Block.getBlockIndex(), true);
 					} else {
-						BitSet Bits = new BitSet(CubeCoordinate.CUBESPERCELL);
-						Bits.set(TargetCoords.Cube.getCubeIndex(), true);
-						ZoneMap.put(TargetCoords.Cell, Bits);
+						BitSet Bits = new BitSet(BlockCoordinate.BLOCKS_PER_CHUNK);
+						Bits.set(TargetCoords.Block.getBlockIndex(), true);
+						ZoneMap.put(TargetCoords.Chunk, Bits);
 					}
 				}
 			}
@@ -80,11 +80,11 @@ public class Zone implements Serializable {
 	}
 
 	public final void addMapCoordinate(MapCoordinate AdditionCoords) {
-		BitSet Target = ZoneMap.get(AdditionCoords.Cell);
+		BitSet Target = ZoneMap.get(AdditionCoords.Chunk);
 		if (Target == null) {
-			Target = new BitSet(CubeCoordinate.CUBESPERCELL);
+			Target = new BitSet(BlockCoordinate.BLOCKS_PER_CHUNK);
 		}
-		Target.set(AdditionCoords.Cube.getCubeIndex(), true);
+		Target.set(AdditionCoords.Block.getBlockIndex(), true);
 		Dirty = true;
 	}
 
@@ -98,17 +98,17 @@ public class Zone implements Serializable {
 				for (int z = Origin.getZ(); z < Terminal.getZ(); z++) {
 					TargetCoords.set(x, y, z);
 
-					BitSet Target = ZoneMap.get(TargetCoords.Cell);
+					BitSet Target = ZoneMap.get(TargetCoords.Chunk);
 					if (Target != null) {
-						Target.set(TargetCoords.Cube.getCubeIndex(), false);
+						Target.set(TargetCoords.Block.getBlockIndex(), false);
 					}
 				}
 			}
 		}
 
-		for (Map.Entry<CellCoordinate, BitSet> entry : ZoneMap.entrySet()) {
-			BitSet CellBitSet = entry.getValue();
-			if (CellBitSet.cardinality() == 0)
+		for (Map.Entry<ChunkCoordinate, BitSet> entry : ZoneMap.entrySet()) {
+			BitSet ChunkBitSet = entry.getValue();
+			if (ChunkBitSet.cardinality() == 0)
 				ZoneMap.remove(entry.getKey());
 		}
 
@@ -116,23 +116,23 @@ public class Zone implements Serializable {
 	}
 
 	public final void removeMapCoordinate(MapCoordinate RemovalCoords) {
-		BitSet Target = ZoneMap.get(RemovalCoords.Cell);
+		BitSet Target = ZoneMap.get(RemovalCoords.Chunk);
 		if (Target != null) {
-			Target.clear(RemovalCoords.Cube.getCubeIndex());
+			Target.clear(RemovalCoords.Block.getBlockIndex());
 			Dirty = true;
 		}
 	}
 
 	boolean isCoordinateInZone(MapCoordinate TestCoordinates) {
-		BitSet Target = ZoneMap.get(TestCoordinates.Cell);
+		BitSet Target = ZoneMap.get(TestCoordinates.Chunk);
 		if (Target != null) {
-			return (Target.get(TestCoordinates.Cube.getCubeIndex()));
+			return (Target.get(TestCoordinates.Block.getBlockIndex()));
 		} else {
 			return false;
 		}
 	}
 
-	public HashMap<CellCoordinate, BitSet> getZoneMap() {
+	public HashMap<ChunkCoordinate, BitSet> getZoneMap() {
 		return ZoneMap;
 	}
 

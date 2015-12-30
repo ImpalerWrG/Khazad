@@ -21,10 +21,10 @@ import Game.Actor;
 import Game.Game;
 import Game.Pawn;
 
-import Map.CubeShape;
+import Map.BlockShape;
 import Map.Coordinates.Direction;
 import Map.GameMap;
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.BlockCoordinate;
 import Map.Coordinates.MapCoordinate;
 
 import Interface.GameCameraState;
@@ -109,10 +109,10 @@ public class ActorRenderer extends AbstractAppState {
 					MapRenderer Renderer = state.getState(MapRenderer.class);
 
 					Node zNode;
-					if (map.isCubeSunLit(coords)) {
-						zNode = Renderer.getZNodeLight(coords.Cell.Z);
+					if (map.isBlockSunLit(coords)) {
+						zNode = Renderer.getZNodeLight(coords.Chunk.Z);
 					} else {
-						zNode = Renderer.getZNodeDark(coords.Cell.Z);
+						zNode = Renderer.getZNodeDark(coords.Chunk.Z);
 					}
 
 					zNode.attachChild(actorNode);
@@ -139,7 +139,7 @@ public class ActorRenderer extends AbstractAppState {
 		float Height = 0;
 
 		if (MoveFraction <= 0.5) {
-			CubeShape shape = map.getCubeShape(LocationCoordinates);
+			BlockShape shape = map.getBlockShape(LocationCoordinates);
 			float CenterHeight = shape.getCenterHeight();
 			float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection);
 			float CenterFraction = (MoveFraction * 2.0f);
@@ -155,9 +155,9 @@ public class ActorRenderer extends AbstractAppState {
 			TestingCoords.copy(LocationCoordinates);
 			TestingCoords.translate(MovingDirection);
 
-			CubeShape shape = map.getCubeShape(TestingCoords);
-			float CenterHeight = shape.getCenterHeight() + (TestingCoords.Cube.getZ() - LocationCoordinates.Cube.getZ());
-			float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection.invert()) + (TestingCoords.Cube.getZ() - LocationCoordinates.Cube.getZ());
+			BlockShape shape = map.getBlockShape(TestingCoords);
+			float CenterHeight = shape.getCenterHeight() + (TestingCoords.Block.getZ() - LocationCoordinates.Block.getZ());
+			float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection.invert()) + (TestingCoords.Block.getZ() - LocationCoordinates.Block.getZ());
 			float CenterFraction = ((MoveFraction - 0.5f) * 2.0f);
 			float EdgeFraction = 1.0f - CenterFraction;
 			Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);

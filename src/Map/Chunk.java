@@ -28,26 +28,26 @@ import java.util.HashMap;
 import java.util.BitSet;
 
 /**
- * Primary MapData storage class, holds all data for describing a set of cubes
+ * Primary MapData storage class, holds all data for describing a set of blocks
  * and HashMaps hold face objects.
  *
  * @author Impaler
  */
-public class Cell implements Serializable {
+public class Chunk implements Serializable {
 
 	private static final long serialVersionUID = 1;
-	// Larger DataValues specific to each Cube
-	private short[] CubeMaterialTypes;
-	private short[][] CubeShapeTypes;
-	// Bit values for each Cube
+	// Larger DataValues specific to each Block
+	private short[] BlockMaterialTypes;
+	private short[][] BlockShapeTypes;
+	// Bit values for each Block
 	private BitSet Hidden;
 	private BitSet SubTerranean;
 	private BitSet SkyView;
 	private BitSet SunLit;
-	// Keeps all Faces between and inside Cubes
+	// Keeps all Faces between and inside Blocks
 	private HashMap<FaceCoordinate, Face>[] Faces;
-	// The global position of this cell relative to other cells
-	private CellCoordinate thisCellCoordinates;
+	// The global position of this chunk relative to other chunks
+	private ChunkCoordinate thisChunkCoordinates;
 	// Dirty values, set true on changes, set false by rendering
 	transient boolean DirtyTerrainRendering;
 	transient boolean DirtyPathRendering;
@@ -55,30 +55,30 @@ public class Cell implements Serializable {
 	protected static final short WallSurface = DataManager.getLabelIndex("SURFACETYPE_ROUGH_WALL");
 	protected static final short FloorSurface = DataManager.getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
-	String CellString;
+	String ChunkString;
 
-	public Cell() {
-		CubeMaterialTypes = new short[CubeCoordinate.CUBESPERCELL];
-		CubeShapeTypes = new short[CubeCoordinate.CELLDETAILLEVELS][];
-		Faces = (HashMap<FaceCoordinate, Face>[]) new HashMap<?, ?>[CubeCoordinate.CELLDETAILLEVELS];
+	public Chunk() {
+		BlockMaterialTypes = new short[BlockCoordinate.BLOCKS_PER_CHUNK];
+		BlockShapeTypes = new short[BlockCoordinate.CHUNK_DETAIL_LEVELS][];
+		Faces = (HashMap<FaceCoordinate, Face>[]) new HashMap<?, ?>[BlockCoordinate.CHUNK_DETAIL_LEVELS];
 
-		for (int i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i++) {
+		for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i++) {
 			Faces[i] = new HashMap<FaceCoordinate, Face>();
-			int Size = (CubeCoordinate.CELLDETAILLEVELS - i) - 1;
+			int Size = (BlockCoordinate.CHUNK_DETAIL_LEVELS - i) - 1;
 			Size = 1 << Size;
-			CubeShapeTypes[i] = new short[Size * Size * Size];
-			for (int j = 0; j < CubeShapeTypes[i].length; j++) {
-				CubeShapeTypes[i][j] = CubeShape.EMPTY_CUBE_DATA;
+			BlockShapeTypes[i] = new short[Size * Size * Size];
+			for (int j = 0; j < BlockShapeTypes[i].length; j++) {
+				BlockShapeTypes[i][j] = BlockShape.EMPTY_CUBE_DATA;
 			}
 		}
 
-		Hidden = new BitSet(CubeCoordinate.CUBESPERCELL);
-		SubTerranean = new BitSet(CubeCoordinate.CUBESPERCELL);
-		SkyView = new BitSet(CubeCoordinate.CUBESPERCELL);
-		SunLit = new BitSet(CubeCoordinate.CUBESPERCELL);
+		Hidden = new BitSet(BlockCoordinate.BLOCKS_PER_CHUNK);
+		SubTerranean = new BitSet(BlockCoordinate.BLOCKS_PER_CHUNK);
+		SkyView = new BitSet(BlockCoordinate.BLOCKS_PER_CHUNK);
+		SunLit = new BitSet(BlockCoordinate.BLOCKS_PER_CHUNK);
 
-		for (int i = 0; i < CubeMaterialTypes.length; i++) {
-			CubeMaterialTypes[i] = DataManager.INVALID_INDEX;
+		for (int i = 0; i < BlockMaterialTypes.length; i++) {
+			BlockMaterialTypes[i] = DataManager.INVALID_INDEX;
 		}
 
 		DirtyTerrainRendering = true;
@@ -93,19 +93,19 @@ public class Cell implements Serializable {
 		DirtyPathRendering = true;
 	}
 
-	public void setCellCoordinates(CellCoordinate Coordinates) {
-		thisCellCoordinates = Coordinates;
-		CellString = getClass().getName() + thisCellCoordinates.toString();
+	public void setChunkCoordinates(ChunkCoordinate Coordinates) {
+		thisChunkCoordinates = Coordinates;
+		ChunkString = getClass().getName() + thisChunkCoordinates.toString();
 		setRenderingDirty();
 	}
 
-	public CellCoordinate getCellCoordinates() {
-		return thisCellCoordinates.clone();
+	public ChunkCoordinate getChunkCoordinates() {
+		return thisChunkCoordinates.clone();
 	}
 
-	public void setCubeShape(short Coordinates, CubeShape NewShape, int Level) {
-		if (NewShape.getData() != CubeShapeTypes[Level][Coordinates]) {
-			CubeShapeTypes[Level][Coordinates] = NewShape.getData();
+	public void setBlockShape(short Coordinates, BlockShape NewShape, int Level) {
+		if (NewShape.getData() != BlockShapeTypes[Level][Coordinates]) {
+			BlockShapeTypes[Level][Coordinates] = NewShape.getData();
 
 			Face TargetFace = getFace(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE), 0);
 			if (TargetFace != null) {
@@ -115,9 +115,9 @@ public class Cell implements Serializable {
 		}
 	}
 
-	public void setCubeShape(short Coordinates, CubeShape NewShape) {
-		if (NewShape.getData() != CubeShapeTypes[0][Coordinates]) {
-			CubeShapeTypes[0][Coordinates] = NewShape.getData();
+	public void setBlockShape(short Coordinates, BlockShape NewShape) {
+		if (NewShape.getData() != BlockShapeTypes[0][Coordinates]) {
+			BlockShapeTypes[0][Coordinates] = NewShape.getData();
 
 			Face TargetFace = getFace(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE), 0);
 			if (TargetFace != null) {
@@ -131,38 +131,38 @@ public class Cell implements Serializable {
 		GameMap ParentMap = GameMap.getMap();
 		MapCoordinate AdjacentCoordinates = new MapCoordinate();
 	
-		for (CubeIndex Index = new CubeIndex((byte) LevelofDetail); !Index.end(); Index.next()) {
-			CubeShape Shape = getCubeShape(Index.getCubeIndex(), LevelofDetail);
-			short CubeMaterial = getCubeMaterial(Index.getCubeIndex());
+		for (BlockCoordinate Index = new BlockCoordinate((byte) LevelofDetail); !Index.end(); Index.next()) {
+			BlockShape Shape = getBlockShape(Index.getBlockIndex(), LevelofDetail);
+			short BlockMaterial = getBlockMaterial(Index.getBlockIndex());
 
 			for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
-				AdjacentCoordinates.setCellCoordinate(thisCellCoordinates);
-				AdjacentCoordinates.setCubeCoordinate(Index);
+				AdjacentCoordinates.setChunkCoordinate(thisChunkCoordinates);
+				AdjacentCoordinates.setBlockCoordinate(Index);
 				AdjacentCoordinates.translate(DirectionType);
 
-				if (ParentMap.isCubeInited(AdjacentCoordinates)) {
-					CubeShape AdjacentShape = ParentMap.getCubeShape(AdjacentCoordinates);
+				if (ParentMap.isBlockInitialized(AdjacentCoordinates)) {
+					BlockShape AdjacentShape = ParentMap.getBlockShape(AdjacentCoordinates);
 
 					if (AdjacentShape.isSky()) {
 						if (Shape.hasFace(DirectionType)) {
-							Face NewFace = ParentMap.addFace(new MapCoordinate(thisCellCoordinates, Index), DirectionType, LevelofDetail);
+							Face NewFace = ParentMap.addFace(new MapCoordinate(thisChunkCoordinates, Index), DirectionType, LevelofDetail);
 
-							NewFace.setFaceMaterialType(CubeMaterial);
+							NewFace.setFaceMaterialType(BlockMaterial);
 							NewFace.setFaceSurfaceType(WallSurface);
 							NewFace.setFaceShapeType(new FaceShape(Shape, AdjacentShape, DirectionType));
-							if (ParentMap.isCubeSunLit(AdjacentCoordinates))
+							if (ParentMap.isBlockSunLit(AdjacentCoordinates))
 								NewFace.Sunlit = true;
 						}
 					}
 
 					if (!AdjacentShape.isEmpty()) {
 						if (DirectionType == Direction.DIRECTION_DOWN && Shape.hasFloor() && AdjacentShape.hasCeiling()) {
-							Face NewFace = ParentMap.addFace(new MapCoordinate(thisCellCoordinates, Index), DirectionType, LevelofDetail);
+							Face NewFace = ParentMap.addFace(new MapCoordinate(thisChunkCoordinates, Index), DirectionType, LevelofDetail);
 
-							NewFace.setFaceMaterialType(ParentMap.getCubeMaterial(AdjacentCoordinates));
+							NewFace.setFaceMaterialType(ParentMap.getBlockMaterial(AdjacentCoordinates));
 							NewFace.setFaceSurfaceType(FloorSurface);
 							NewFace.setFaceShapeType(new FaceShape(Shape, AdjacentShape, DirectionType));
-							if (ParentMap.isCubeSunLit(AdjacentCoordinates))
+							if (ParentMap.isBlockSunLit(AdjacentCoordinates))
 								NewFace.Sunlit = true;
 						}
 					}
@@ -172,10 +172,10 @@ public class Cell implements Serializable {
 			if (!Shape.isEmpty() && !Shape.isSolid()) {
 				Face NewFace = addFace(new FaceCoordinate(Index, Direction.DIRECTION_NONE, (byte) LevelofDetail));
 
-				NewFace.setFaceMaterialType(CubeMaterial);
+				NewFace.setFaceMaterialType(BlockMaterial);
 				NewFace.setFaceSurfaceType(FloorSurface);
 				NewFace.setFaceShapeType(new FaceShape(Shape, null, Direction.DIRECTION_NONE));
-				if (isCubeSunLit(Index.getCubeIndex()))
+				if (isBlockSunLit(Index.getBlockIndex()))
 					NewFace.Sunlit = true;
 			}
 		}
@@ -238,7 +238,7 @@ public class Cell implements Serializable {
 
 	FaceShape getFaceShape(FaceCoordinate TargetCoordinates) {
 		Face TargetFace = getFace(TargetCoordinates, 0);
-		return TargetFace != null ? TargetFace.getFaceShapeType() : new FaceShape(new CubeShape(), new CubeShape(), Direction.DIRECTION_NONE);
+		return TargetFace != null ? TargetFace.getFaceShapeType() : new FaceShape(new BlockShape(), new BlockShape(), Direction.DIRECTION_NONE);
 	}
 
 	boolean setFaceShape(FaceCoordinate TargetCoordinates, FaceShape NewShape) {
@@ -299,57 +299,57 @@ public class Cell implements Serializable {
 		return DirtyPathRendering;
 	}
 
-	public CubeShape getCubeShape(short Index, int LevelofDetal) {
-		return new CubeShape(CubeShapeTypes[LevelofDetal][Index]);
+	public BlockShape getBlockShape(short Index, int LevelofDetal) {
+		return new BlockShape(BlockShapeTypes[LevelofDetal][Index]);
 	}
 
-	public short getCubeMaterial(short Coordinates) {
-		return CubeMaterialTypes[Coordinates];
+	public short getBlockMaterial(short Coordinates) {
+		return BlockMaterialTypes[Coordinates];
 	}
 
-	public void setCubeMaterial(short Coordinates, short MaterialID) {
-		CubeMaterialTypes[Coordinates] = MaterialID;
+	public void setBlockMaterial(short Coordinates, short MaterialID) {
+		BlockMaterialTypes[Coordinates] = MaterialID;
 		DirtyTerrainRendering = true;
 	}
 
-	public boolean isCubeHidden(short Coordinates) {
+	public boolean isBlockHidden(short Coordinates) {
 		return Hidden.get(Coordinates);
 	}
 
-	public void setCubeHidden(short Coordinates, boolean NewValue) {
+	public void setBlockHidden(short Coordinates, boolean NewValue) {
 		Hidden.set(Coordinates, NewValue);
 		DirtyTerrainRendering = true;
 	}
 
-	public boolean isCubeSubTerranean(short Coordinates) {
+	public boolean isBlockSubTerranean(short Coordinates) {
 		return SubTerranean.get(Coordinates);
 	}
 
-	public void setCubeSubTerranean(short Coordinates, boolean NewValue) {
+	public void setBlockSubTerranean(short Coordinates, boolean NewValue) {
 		SubTerranean.set(Coordinates, NewValue);
 		DirtyTerrainRendering = true;
 	}
 
-	public boolean isCubeSkyView(short Coordinates) {
+	public boolean isBlockSkyView(short Coordinates) {
 		return SkyView.get(Coordinates);
 	}
 
-	public void setCubeSkyView(short Coordinates, boolean NewValue) {
+	public void setBlockSkyView(short Coordinates, boolean NewValue) {
 		SkyView.set(Coordinates, NewValue);
 		DirtyTerrainRendering = true;
 	}
 
-	public boolean isCubeSunLit(short Coordinates) {
+	public boolean isBlockSunLit(short Coordinates) {
 		return SunLit.get(Coordinates);
 	}
 
-	public void setCubeSunLit(short Coordinates, boolean NewValue) {
+	public void setBlockSunLit(short Coordinates, boolean NewValue) {
 		SunLit.set(Coordinates, NewValue);
 		DirtyTerrainRendering = true;
 	}
 
 	@Override
 	public String toString() {
-		return CellString;
+		return ChunkString;
 	}
 }

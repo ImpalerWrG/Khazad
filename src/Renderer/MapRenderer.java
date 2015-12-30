@@ -19,8 +19,8 @@ package Renderer;
 
 import Game.Game;
 
-import Map.Coordinates.CellCoordinate;
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.ChunkCoordinate;
+import Map.Coordinates.BlockCoordinate;
 import Map.TileBuilder;
 
 import com.jme3.app.Application;
@@ -53,8 +53,8 @@ public class MapRenderer extends AbstractAppState {
 	TileBuilder builder;
 	Game game;
 
-	ConcurrentHashMap<CellCoordinate, Node> LightCellNodeMap;
-	ConcurrentHashMap<CellCoordinate, Node> DarkCellNodeMap;
+	ConcurrentHashMap<ChunkCoordinate, Node> LightChunkNodeMap;
+	ConcurrentHashMap<ChunkCoordinate, Node> DarkChunkNodeMap;
 	ConcurrentHashMap<Integer, Node> ZMapLight;
 	ConcurrentHashMap<Integer, Node> ZMapDark;
 
@@ -65,8 +65,8 @@ public class MapRenderer extends AbstractAppState {
 	int Bottom;
 
 	public MapRenderer() {
-		LightCellNodeMap = new ConcurrentHashMap<CellCoordinate, Node>();
-		DarkCellNodeMap = new ConcurrentHashMap<CellCoordinate, Node>();
+		LightChunkNodeMap = new ConcurrentHashMap<ChunkCoordinate, Node>();
+		DarkChunkNodeMap = new ConcurrentHashMap<ChunkCoordinate, Node>();
 		ZMapLight = new ConcurrentHashMap<Integer, Node>();
 		ZMapDark = new ConcurrentHashMap<Integer, Node>();
 		builder = new TileBuilder();
@@ -112,24 +112,24 @@ public class MapRenderer extends AbstractAppState {
 		darkterrainNode = null;
 		sunnyterrainNode = null;
 
-		LightCellNodeMap.clear();
-		DarkCellNodeMap.clear();
+		LightChunkNodeMap.clear();
+		DarkChunkNodeMap.clear();
 		ZMapLight.clear();
 		ZMapDark.clear();
 	}
 
-	public Node getCellNodeLight(CellCoordinate TargetCoordinates) {
-		Node CellNode = null;
-		try {  // Semaphore prevents multiple copies of the same Cell node from being created
+	public Node getChunkNodeLight(ChunkCoordinate TargetCoordinates) {
+		Node ChunkNode = null;
+		try {  // Semaphore prevents multiple copies of the same Chunk node from being created
 			semaphore.acquire();
 			try {
-				CellNode = LightCellNodeMap.get(TargetCoordinates);
-				if (CellNode == null) {
-					CellNode = new Node("LightNode" + TargetCoordinates.toString());
+				ChunkNode = LightChunkNodeMap.get(TargetCoordinates);
+				if (ChunkNode == null) {
+					ChunkNode = new Node("LightNode" + TargetCoordinates.toString());
 
-					float x = (float) (TargetCoordinates.X * CubeCoordinate.CELLEDGESIZE);
-					float y = (float) (TargetCoordinates.Y * CubeCoordinate.CELLEDGESIZE);
-					float z = (float) (TargetCoordinates.Z * CubeCoordinate.CELLEDGESIZE);
+					float x = (float) (TargetCoordinates.X * BlockCoordinate.CHUNK_EDGE_SIZE);
+					float y = (float) (TargetCoordinates.Y * BlockCoordinate.CHUNK_EDGE_SIZE);
+					float z = (float) (TargetCoordinates.Z * BlockCoordinate.CHUNK_EDGE_SIZE);
 					
 					if(x < 0)
 						x++;
@@ -142,10 +142,10 @@ public class MapRenderer extends AbstractAppState {
 					//x = z * 2;
 					//z = 0;
 					
-					CellNode.move(x, y, z);
+					ChunkNode.move(x, y, z);
 
-					getZNodeLight(TargetCoordinates.Z).attachChild(CellNode);
-					LightCellNodeMap.put(TargetCoordinates, CellNode);
+					getZNodeLight(TargetCoordinates.Z).attachChild(ChunkNode);
+					LightChunkNodeMap.put(TargetCoordinates, ChunkNode);
 				}
 			} finally {
 				semaphore.release();
@@ -155,24 +155,24 @@ public class MapRenderer extends AbstractAppState {
 			System.err.println(e.getMessage());
 			System.err.println(e.toString());
 		}
-		return CellNode;
+		return ChunkNode;
 	}
 
-	public Node getCellNodeDark(CellCoordinate TargetCoordinates) {
-		Node CellNode = DarkCellNodeMap.get(TargetCoordinates);
-		try {  // Semaphore prevents multiple copies of the same Cell node from being created
+	public Node getChunkNodeDark(ChunkCoordinate TargetCoordinates) {
+		Node ChunkNode = DarkChunkNodeMap.get(TargetCoordinates);
+		try {  // Semaphore prevents multiple copies of the same Chunk node from being created
 			semaphore.acquire();
 			try {
-				if (CellNode == null) {
-					CellNode = new Node("DarkCellNode");
+				if (ChunkNode == null) {
+					ChunkNode = new Node("DarkChunkNode");
 
-					float x = (float) (TargetCoordinates.X * CubeCoordinate.CELLEDGESIZE);
-					float y = (float) (TargetCoordinates.Y * CubeCoordinate.CELLEDGESIZE);
-					float z = (float) (TargetCoordinates.Z * CubeCoordinate.CELLEDGESIZE);
-					CellNode.move(x, y, z);
+					float x = (float) (TargetCoordinates.X * BlockCoordinate.CHUNK_EDGE_SIZE);
+					float y = (float) (TargetCoordinates.Y * BlockCoordinate.CHUNK_EDGE_SIZE);
+					float z = (float) (TargetCoordinates.Z * BlockCoordinate.CHUNK_EDGE_SIZE);
+					ChunkNode.move(x, y, z);
 
-					getZNodeDark(TargetCoordinates.Z).attachChild(CellNode);
-					DarkCellNodeMap.put(TargetCoordinates, CellNode);
+					getZNodeDark(TargetCoordinates.Z).attachChild(ChunkNode);
+					DarkChunkNodeMap.put(TargetCoordinates, ChunkNode);
 				}
 			} finally {
 				semaphore.release();
@@ -182,7 +182,7 @@ public class MapRenderer extends AbstractAppState {
 			System.err.println(e.getMessage());
 			System.err.println(e.toString());
 		}
-		return CellNode;
+		return ChunkNode;
 	}
 
 	public Node getZNodeLight(int zlevel) {

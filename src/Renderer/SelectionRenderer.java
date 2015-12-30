@@ -21,9 +21,9 @@ import Interface.GameCameraState;
 import Interface.VolumeSelection;
 
 import Map.Coordinates.MapCoordinate;
-import Map.Coordinates.CubeCoordinate;
+import Map.Coordinates.BlockCoordinate;
 import Game.Game;
-import Map.Coordinates.CellCoordinate;
+import Map.Coordinates.ChunkCoordinate;
 import Map.Zone;
 
 import com.jme3.app.Application;
@@ -93,15 +93,15 @@ public class SelectionRenderer extends AbstractAppState {
 		WireBoxMesh.setLineWidth(3);
 
 		Vector3f[] vertices = new Vector3f[8];
-		vertices[0] = new Vector3f(CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE);
-		vertices[1] = new Vector3f(-CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE);
-		vertices[2] = new Vector3f(-CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE);
-		vertices[3] = new Vector3f(CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE);
+		vertices[0] = new Vector3f(BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK);
+		vertices[1] = new Vector3f(-BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK);
+		vertices[2] = new Vector3f(-BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK);
+		vertices[3] = new Vector3f(BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK);
 
-		vertices[4] = new Vector3f(CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE);
-		vertices[5] = new Vector3f(-CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE);
-		vertices[6] = new Vector3f(-CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE);
-		vertices[7] = new Vector3f(CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE);
+		vertices[4] = new Vector3f(BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK);
+		vertices[5] = new Vector3f(-BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK);
+		vertices[6] = new Vector3f(-BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK);
+		vertices[7] = new Vector3f(BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK);
 
 		int[] indexes = {0, 1, 1, 2, 2, 3, 3, 0, 0, 4, 1, 5, 2, 6, 3, 7, 4, 5, 5, 6, 6, 7, 7, 4};
 
@@ -131,15 +131,15 @@ public class SelectionRenderer extends AbstractAppState {
 		int minZ = Math.min(Selection.OriginLocation.getZ(), Selection.TerminalLocation.getZ());
 
 		Vector3f[] vertices = new Vector3f[8];
-		vertices[0] = new Vector3f(maxX - minX + CubeCoordinate.HALFCUBE, maxY - minY + CubeCoordinate.HALFCUBE, maxZ - minZ + CubeCoordinate.HALFCUBE);
-		vertices[1] = new Vector3f(-CubeCoordinate.HALFCUBE, maxY - minY + CubeCoordinate.HALFCUBE, maxZ - minZ + CubeCoordinate.HALFCUBE);
-		vertices[2] = new Vector3f(-CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE, maxZ - minZ + CubeCoordinate.HALFCUBE);
-		vertices[3] = new Vector3f(maxX - minX + CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE, maxZ - minZ + CubeCoordinate.HALFCUBE);
+		vertices[0] = new Vector3f(maxX - minX + BlockCoordinate.HALF_BLOCK, maxY - minY + BlockCoordinate.HALF_BLOCK, maxZ - minZ + BlockCoordinate.HALF_BLOCK);
+		vertices[1] = new Vector3f(-BlockCoordinate.HALF_BLOCK, maxY - minY + BlockCoordinate.HALF_BLOCK, maxZ - minZ + BlockCoordinate.HALF_BLOCK);
+		vertices[2] = new Vector3f(-BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, maxZ - minZ + BlockCoordinate.HALF_BLOCK);
+		vertices[3] = new Vector3f(maxX - minX + BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, maxZ - minZ + BlockCoordinate.HALF_BLOCK);
 
-		vertices[4] = new Vector3f(maxX - minX + CubeCoordinate.HALFCUBE, maxY - minY + CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE);
-		vertices[5] = new Vector3f(-CubeCoordinate.HALFCUBE, maxY - minY + CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE);
-		vertices[6] = new Vector3f(-CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE);
-		vertices[7] = new Vector3f(maxX - minX + CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE, -CubeCoordinate.HALFCUBE);
+		vertices[4] = new Vector3f(maxX - minX + BlockCoordinate.HALF_BLOCK, maxY - minY + BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK);
+		vertices[5] = new Vector3f(-BlockCoordinate.HALF_BLOCK, maxY - minY + BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK);
+		vertices[6] = new Vector3f(-BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK);
+		vertices[7] = new Vector3f(maxX - minX + BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK);
 
 		int[] indexes = {0, 1, 1, 2, 2, 3, 3, 0, 0, 4, 1, 5, 2, 6, 3, 7, 4, 5, 5, 6, 6, 7, 7, 4};
 
@@ -165,18 +165,18 @@ public class SelectionRenderer extends AbstractAppState {
 	public Node buildZone(Zone TargetZone) {
 		Node ZoneNode = new Node("ZoneNode");
 
-		HashMap<CellCoordinate, BitSet> ZoneMap = TargetZone.getZoneMap();
-		for (Map.Entry<CellCoordinate, BitSet> entry : ZoneMap.entrySet()) {
-			BitSet CellBitSet = entry.getValue();
-			CellCoordinate Coords = entry.getKey();
+		HashMap<ChunkCoordinate, BitSet> ZoneMap = TargetZone.getZoneMap();
+		for (Map.Entry<ChunkCoordinate, BitSet> entry : ZoneMap.entrySet()) {
+			BitSet ChunkBitSet = entry.getValue();
+			ChunkCoordinate Coords = entry.getKey();
 
-			for (short i = 0; i < CubeCoordinate.CUBESPERCELL; i++) {
-				if (CellBitSet.get(i)) {
-					Box newBox = new Box(CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE, CubeCoordinate.HALFCUBE);
-					CubeCoordinate MapCoords = new CubeCoordinate(Coords, i);
+			for (BlockCoordinate Index = new BlockCoordinate(); !Index.end(); Index.next()) {
+				if (ChunkBitSet.get(Index.getBlockIndex())) {
+					Box newBox = new Box(BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK);
+					MapCoordinate MapCoords = new MapCoordinate(Coords, Index);
 
 					Geometry ZoneBlock = new Geometry("Box", newBox);
-					ZoneBlock.setLocalTranslation(new Vector3f(MapCoords.X, MapCoords.Y, MapCoords.Z));
+					ZoneBlock.setLocalTranslation(MapCoords.getVector());
 
 					Material BrownMat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
 					BrownMat.setColor("Color", ColorRGBA.Brown);

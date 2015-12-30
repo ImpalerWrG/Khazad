@@ -36,8 +36,8 @@ public class Geology implements Serializable {
 	Noise NoiseGenerator;
 	float[][] WorldHeight;
 
-	short CellTopZ;
-	short CellBottomZ;
+	short ChunkTopZ;
+	short ChunkBottomZ;
 
 	float[] Edge;
 	float[][] Height;
@@ -67,9 +67,9 @@ public class Geology implements Serializable {
 	public void generateWorldHeightMap(int X, int Y) {
 		WorldHeight = new float[X + 1][Y + 1];
 
-		Edge = new float[CubeCoordinate.CELLEDGESIZE + 1];
-		Height = new float[CubeCoordinate.CELLEDGESIZE + 1][CubeCoordinate.CELLEDGESIZE + 1];
-		Seeded = new boolean[CubeCoordinate.CELLEDGESIZE + 1][CubeCoordinate.CELLEDGESIZE + 1];
+		Edge = new float[BlockCoordinate.CHUNK_EDGE_SIZE + 1];
+		Height = new float[BlockCoordinate.CHUNK_EDGE_SIZE + 1][BlockCoordinate.CHUNK_EDGE_SIZE + 1];
+		Seeded = new boolean[BlockCoordinate.CHUNK_EDGE_SIZE + 1][BlockCoordinate.CHUNK_EDGE_SIZE + 1];
 
 		int Octives = 9;
 		double lacunarity = 2.1379201;
@@ -112,31 +112,31 @@ public class Geology implements Serializable {
 		 * } */
 	}
 
-	public short getCellBottomZLevel() {
-		return CellBottomZ;
+	public short getChunkBottomZLevel() {
+		return ChunkBottomZ;
 	}
 
-	public short getCellTopZLevel() {
-		return CellTopZ;
+	public short getChunkTopZLevel() {
+		return ChunkTopZ;
 	}
 
-	public void generateCellEdge(float X, float Y, float heightScale, float Roughness) {
-		CellCoordinate coords = new CellCoordinate((int) X, (int) Y, 0);
+	public void generateChunkEdge(float X, float Y, float heightScale, float Roughness) {
+		ChunkCoordinate coords = new ChunkCoordinate((int) X, (int) Y, 0);
 		coords.hashCode();
 		RandomGenerator.seed(coords.hashCode());
 
 		Edge[0] = X;
-		Edge[CubeCoordinate.CELLEDGESIZE] = Y;
+		Edge[BlockCoordinate.CHUNK_EDGE_SIZE] = Y;
 
 		float ratio = (float) Math.pow(2.0, -Roughness);
 		float scale = heightScale * ratio;
 
 		/* Seed the endpoints of the array. To enable seamless wrapping,
 		 * the endpoints need to be the same point. */
-		short stride = CubeCoordinate.CELLEDGESIZE / 2;
+		short stride = BlockCoordinate.CHUNK_EDGE_SIZE / 2;
 
 		while (stride > 0) {
-			for (short i = stride; i < CubeCoordinate.CELLEDGESIZE; i += stride) {
+			for (short i = stride; i < BlockCoordinate.CHUNK_EDGE_SIZE; i += stride) {
 				Edge[i] = scale * RandomGenerator.roll(-1.0f, 1.0f) + ((Edge[i - stride] + Edge[i + stride]) * .5f);
 				/* reduce random number range */
 				scale *= ratio;
@@ -146,8 +146,8 @@ public class Geology implements Serializable {
 		}
 	}
 
-	public void generateCellHeight(int X, int Y, float heightScale, float Roughness) {
-		byte size = CubeCoordinate.CELLEDGESIZE + 1;
+	public void generateChunkHeight(int X, int Y, float heightScale, float Roughness) {
+		byte size = BlockCoordinate.CHUNK_EDGE_SIZE + 1;
 
 		// Mark edges as Seeded to prevent them from being overwritten
 		for (short x = 0; x < size; x++) {
@@ -158,39 +158,39 @@ public class Geology implements Serializable {
 		}
 
 		// Edges Initialized to anchor values to create contiguousness
-		generateCellEdge(WorldHeight[X][Y], WorldHeight[X + 1][Y], heightScale, Roughness);
+		generateChunkEdge(WorldHeight[X][Y], WorldHeight[X + 1][Y], heightScale, Roughness);
 
 		for (short x = 0; x < size; x++) {
 			Height[x][0] = Edge[x];
 			Seeded[x][0] = true;
 		}
 
-		generateCellEdge(WorldHeight[X][Y + 1], WorldHeight[X + 1][Y + 1], heightScale, Roughness);
+		generateChunkEdge(WorldHeight[X][Y + 1], WorldHeight[X + 1][Y + 1], heightScale, Roughness);
 
 		for (short x = 0; x < size; x++) {
-			Height[x][CubeCoordinate.CELLEDGESIZE] = Edge[x];
-			Seeded[x][CubeCoordinate.CELLEDGESIZE] = true;
+			Height[x][BlockCoordinate.CHUNK_EDGE_SIZE] = Edge[x];
+			Seeded[x][BlockCoordinate.CHUNK_EDGE_SIZE] = true;
 		}
 
-		generateCellEdge(WorldHeight[X][Y], WorldHeight[X][Y + 1], heightScale, Roughness);
+		generateChunkEdge(WorldHeight[X][Y], WorldHeight[X][Y + 1], heightScale, Roughness);
 
 		for (short y = 0; y < size; y++) {
 			Height[0][y] = Edge[y];
 			Seeded[0][y] = true;
 		}
 
-		generateCellEdge(WorldHeight[X + 1][Y], WorldHeight[X + 1][Y + 1], heightScale, Roughness);
+		generateChunkEdge(WorldHeight[X + 1][Y], WorldHeight[X + 1][Y + 1], heightScale, Roughness);
 
 		for (short y = 0; y < size; y++) {
-			Height[CubeCoordinate.CELLEDGESIZE][y] = Edge[y];
-			Seeded[CubeCoordinate.CELLEDGESIZE][y] = true;
+			Height[BlockCoordinate.CHUNK_EDGE_SIZE][y] = Edge[y];
+			Seeded[BlockCoordinate.CHUNK_EDGE_SIZE][y] = true;
 		}
 
 		// Reseed Random Number Generator
-		CellCoordinate HashCell = new CellCoordinate(X, Y, 0);
+		ChunkCoordinate HashChunk = new ChunkCoordinate(X, Y, 0);
 
 		RandomGenerator.seed(GeologySeed);
-		int FinalSeed = RandomGenerator.roll(0, 100000) ^ HashCell.hashCode();
+		int FinalSeed = RandomGenerator.roll(0, 100000) ^ HashChunk.hashCode();
 
 		RandomGenerator.seed(FinalSeed);
 
@@ -211,19 +211,19 @@ public class Geology implements Serializable {
 		 * point. This will allow us to tile the arrays next to each other
 		 * such that they join seemlessly. */
 
-		byte stride = CubeCoordinate.CELLEDGESIZE / 2;
+		byte stride = BlockCoordinate.CHUNK_EDGE_SIZE / 2;
 
 		Height[0][0] = WorldHeight[X][Y];
 		Seeded[0][0] = true;
 
-		Height[CubeCoordinate.CELLEDGESIZE][0] = WorldHeight[X + 1][Y];
-		Seeded[CubeCoordinate.CELLEDGESIZE][0] = true;
+		Height[BlockCoordinate.CHUNK_EDGE_SIZE][0] = WorldHeight[X + 1][Y];
+		Seeded[BlockCoordinate.CHUNK_EDGE_SIZE][0] = true;
 
-		Height[0][CubeCoordinate.CELLEDGESIZE] = WorldHeight[X][Y + 1];
-		Seeded[0][CubeCoordinate.CELLEDGESIZE] = true;
+		Height[0][BlockCoordinate.CHUNK_EDGE_SIZE] = WorldHeight[X][Y + 1];
+		Seeded[0][BlockCoordinate.CHUNK_EDGE_SIZE] = true;
 
-		Height[CubeCoordinate.CELLEDGESIZE][CubeCoordinate.CELLEDGESIZE] = WorldHeight[X + 1][Y + 1];
-		Seeded[CubeCoordinate.CELLEDGESIZE][CubeCoordinate.CELLEDGESIZE] = true;
+		Height[BlockCoordinate.CHUNK_EDGE_SIZE][BlockCoordinate.CHUNK_EDGE_SIZE] = WorldHeight[X + 1][Y + 1];
+		Seeded[BlockCoordinate.CHUNK_EDGE_SIZE][BlockCoordinate.CHUNK_EDGE_SIZE] = true;
 
 
 		// Set initial Fractal value range (scale) and the rate of decrese (ratio)
@@ -236,18 +236,18 @@ public class Geology implements Serializable {
 		 * will produce a zero result, terminating the loop. */
 
 		while (stride > 0) {
-			for (short x = stride; x < CubeCoordinate.CELLEDGESIZE; x += stride) {
-				for (short y = stride; y < CubeCoordinate.CELLEDGESIZE; y += stride) {
+			for (short x = stride; x < BlockCoordinate.CHUNK_EDGE_SIZE; x += stride) {
+				for (short y = stride; y < BlockCoordinate.CHUNK_EDGE_SIZE; y += stride) {
 					if (!Seeded[x][y]) {
 						float Average = (float) ((Height[x - stride][y - stride] + Height[x - stride][y + stride] + Height[x + stride][y - stride] + Height[x + stride][y + stride]) * 0.25);
 						float RandomFactor = scale * RandomGenerator.roll(-1.0f, 1.0f);
 
 						Height[x][y] = RandomFactor + Average;
 
-						if (((short) Height[x][y]) > CellTopZ)
-							CellTopZ = (short) Height[x][y];
-						if (((short) Height[x][y]) < CellBottomZ)
-							CellBottomZ = (short) Height[x][y];
+						if (((short) Height[x][y]) > ChunkTopZ)
+							ChunkTopZ = (short) Height[x][y];
+						if (((short) Height[x][y]) < ChunkBottomZ)
+							ChunkBottomZ = (short) Height[x][y];
 					}
 
 					y += stride;
@@ -261,13 +261,13 @@ public class Geology implements Serializable {
 			 * "oddline" and "stride" to increment j to the desired value.
 			 */
 			short oddline = 0;
-			for (short x = 0; x < CubeCoordinate.CELLEDGESIZE; x += stride) {
+			for (short x = 0; x < BlockCoordinate.CHUNK_EDGE_SIZE; x += stride) {
 				//oddline = (oddline == 0);
 				if (oddline == 0)
 					oddline = 1;
 				else
 					oddline = 0;
-				for (short y = 0; y < CubeCoordinate.CELLEDGESIZE; y += stride) {
+				for (short y = 0; y < BlockCoordinate.CHUNK_EDGE_SIZE; y += stride) {
 					if ((y == 0) && oddline != 0) {
 						y += stride;
 					}
@@ -279,10 +279,10 @@ public class Geology implements Serializable {
 						Height[x][y] = Average + RandomFactor;
 
 						// Record Maximum and Minimum Height
-						if (((short) Height[x][y]) > CellTopZ)
-							CellTopZ = (short) Height[x][y];
-						if (((short) Height[x][y]) < CellBottomZ)
-							CellBottomZ = (short) Height[x][y];
+						if (((short) Height[x][y]) > ChunkTopZ)
+							ChunkTopZ = (short) Height[x][y];
+						if (((short) Height[x][y]) < ChunkBottomZ)
+							ChunkBottomZ = (short) Height[x][y];
 					}
 					y += stride;
 				}
@@ -305,62 +305,62 @@ public class Geology implements Serializable {
 		return RockType0;
 	}
 
-	public CubeShape getCubeShapeAtCoordinates(int West, int East, int South, int North, int Top, int Bottom) {
+	public BlockShape getBlockShapeAtCoordinates(int West, int East, int South, int North, int Top, int Bottom) {
 		float Remainder;
 
 		Remainder = Height[West][South] - ((float) Top);
-		byte SWCornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * CubeShape.HEIGHT_FRACTIONS) + 1, (float) CubeShape.BELOW_CUBE_HEIGHT), (float) CubeShape.CUBE_TOP_HEIGHT);
+		byte SWCornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * BlockShape.HEIGHT_FRACTIONS) + 1, (float) BlockShape.BELOW_CUBE_HEIGHT), (float) BlockShape.CUBE_TOP_HEIGHT);
 
 		Remainder = Height[East][South] - ((float) Top);
-		byte SECornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * CubeShape.HEIGHT_FRACTIONS) + 1, (float) CubeShape.BELOW_CUBE_HEIGHT), (float) CubeShape.CUBE_TOP_HEIGHT);
+		byte SECornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * BlockShape.HEIGHT_FRACTIONS) + 1, (float) BlockShape.BELOW_CUBE_HEIGHT), (float) BlockShape.CUBE_TOP_HEIGHT);
 
 		Remainder = Height[West][North] - ((float) Top);
-		byte NWCornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * CubeShape.HEIGHT_FRACTIONS) + 1, (float) CubeShape.BELOW_CUBE_HEIGHT), (float) CubeShape.CUBE_TOP_HEIGHT);
+		byte NWCornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * BlockShape.HEIGHT_FRACTIONS) + 1, (float) BlockShape.BELOW_CUBE_HEIGHT), (float) BlockShape.CUBE_TOP_HEIGHT);
 
 		Remainder = Height[East][North] - ((float) Top);
-		byte NECornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * CubeShape.HEIGHT_FRACTIONS) + 1, (float) CubeShape.BELOW_CUBE_HEIGHT), (float) CubeShape.CUBE_TOP_HEIGHT);
+		byte NECornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * BlockShape.HEIGHT_FRACTIONS) + 1, (float) BlockShape.BELOW_CUBE_HEIGHT), (float) BlockShape.CUBE_TOP_HEIGHT);
 
 		byte Split = (byte) RandomGenerator.roll(0, 1);
 
-		if (NWCornerHeight == CubeShape.CUBE_TOP_HEIGHT && SECornerHeight == CubeShape.CUBE_TOP_HEIGHT) {
+		if (NWCornerHeight == BlockShape.CUBE_TOP_HEIGHT && SECornerHeight == BlockShape.CUBE_TOP_HEIGHT) {
 			Split = 1;
 		}
 
-		if (SWCornerHeight == CubeShape.CUBE_TOP_HEIGHT && NECornerHeight == CubeShape.CUBE_TOP_HEIGHT) {
+		if (SWCornerHeight == BlockShape.CUBE_TOP_HEIGHT && NECornerHeight == BlockShape.CUBE_TOP_HEIGHT) {
 			Split = 0;
 		}
 
-		if (SWCornerHeight == CubeShape.BELOW_CUBE_HEIGHT || NECornerHeight == CubeShape.BELOW_CUBE_HEIGHT) {
+		if (SWCornerHeight == BlockShape.BELOW_CUBE_HEIGHT || NECornerHeight == BlockShape.BELOW_CUBE_HEIGHT) {
 			Split = 1;
 		}
 
-		if (SECornerHeight == CubeShape.BELOW_CUBE_HEIGHT || NWCornerHeight == CubeShape.BELOW_CUBE_HEIGHT) {
+		if (SECornerHeight == BlockShape.BELOW_CUBE_HEIGHT || NWCornerHeight == BlockShape.BELOW_CUBE_HEIGHT) {
 			Split = 0;
 		}
 
-		return new CubeShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, (byte) Split);
+		return new BlockShape(SWCornerHeight, SECornerHeight, NWCornerHeight, NECornerHeight, (byte) Split);
 	}
 
-	public void loadCellData(Cell TargetCell) {
-		CellCoordinate CellCoords = TargetCell.getCellCoordinates();
-		for (byte i = 0; i < CubeCoordinate.CELLDETAILLEVELS; i++) {
-			for (CubeIndex Index = new CubeIndex(i); !Index.end(); Index.next()) {
+	public void loadChunkData(Chunk TargetChunk) {
+		ChunkCoordinate ChunkCoords = TargetChunk.getChunkCoordinates();
+		for (byte i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i++) {
+			for (BlockCoordinate Index = new BlockCoordinate(i); !Index.end(); Index.next()) {
 				int Offset = 1 << i;
 				short x = Index.getX();
 				short y = Index.getY();
-				short z = (short) (Index.getZ() + (CellCoords.Z * CubeCoordinate.CELLEDGESIZE));
+				short z = (short) (Index.getZ() + (ChunkCoords.Z * BlockCoordinate.CHUNK_EDGE_SIZE));
 
-				CubeShape Shape = getCubeShapeAtCoordinates(x, x + Offset, y, y + Offset, z, z + Offset);
-				TargetCell.setCubeShape(Index.getCubeIndex(), Shape, i);
+				BlockShape Shape = getBlockShapeAtCoordinates(x, x + Offset, y, y + Offset, z, z + Offset);
+				TargetChunk.setBlockShape(Index.getBlockIndex(), Shape, i);
 
 				if (i == 0) {
-					short MaterialType = getRockTypeAtCoordinates(Index.getCubeIndex(), z);
+					short MaterialType = getRockTypeAtCoordinates(Index.getBlockIndex(), z);
 					if (MaterialType != DataManager.INVALID_INDEX) {
-						TargetCell.setCubeMaterial(Index.getCubeIndex(), MaterialType);	
-						TargetCell.setCubeShape(Index.getCubeIndex(), Shape, i);
+						TargetChunk.setBlockMaterial(Index.getBlockIndex(), MaterialType);	
+						TargetChunk.setBlockShape(Index.getBlockIndex(), Shape, i);
 					} else {
-						TargetCell.setCubeMaterial(Index.getCubeIndex(), DataManager.INVALID_INDEX);
-						//TargetCell.setCubeShape((byte) j, CubeShape.EMPTY_CUBE_DATA);
+						TargetChunk.setBlockMaterial(Index.getBlockIndex(), DataManager.INVALID_INDEX);
+						//TargetChunk.setBlockShape((byte) j, BlockShape.EMPTY_CUBE_DATA);
 					}
 				}
 			}
