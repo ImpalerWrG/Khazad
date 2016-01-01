@@ -80,6 +80,10 @@ public class BlockShape implements Serializable {
 	public short getData() {
 		return Data;
 	}
+	
+	public void setData(short newData) {
+		this.Data = newData;
+	}
 
 	public boolean isSolid() {
 		return (getSouthWestCorner() >= CUBE_TOP_HEIGHT) && (getSouthEastCorner() >= CUBE_TOP_HEIGHT) && (getNorthWestCorner() >= CUBE_TOP_HEIGHT) && (getNorthEastCorner() >= CUBE_TOP_HEIGHT);

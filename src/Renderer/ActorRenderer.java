@@ -62,11 +62,13 @@ public class ActorRenderer extends AbstractAppState {
 	ConcurrentHashMap<Integer, Node> ActorNodeMap;
 	boolean DisplayToggle = true;
 	MapCoordinate TestingCoords;
+	BlockShape TestingBlockShape;
 	Vector3f OffsetVector, DirectionVector;
 
 	public ActorRenderer() {
 		ActorNodeMap = new ConcurrentHashMap<Integer, Node>();
 		TestingCoords = new MapCoordinate();
+		TestingBlockShape = new BlockShape();
 	}
 
 	@Override
@@ -139,9 +141,9 @@ public class ActorRenderer extends AbstractAppState {
 		float Height = 0;
 
 		if (MoveFraction <= 0.5) {
-			BlockShape shape = map.getBlockShape(LocationCoordinates);
-			float CenterHeight = shape.getCenterHeight();
-			float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection);
+			map.getBlockShape(LocationCoordinates, TestingBlockShape);
+			float CenterHeight = TestingBlockShape.getCenterHeight();
+			float EdgeHeight = TestingBlockShape.getDirectionEdgeHeight(MovingDirection);
 			float CenterFraction = (MoveFraction * 2.0f);
 			float EdgeFraction = 1.0f - CenterFraction;
 			Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
@@ -155,9 +157,9 @@ public class ActorRenderer extends AbstractAppState {
 			TestingCoords.copy(LocationCoordinates);
 			TestingCoords.translate(MovingDirection);
 
-			BlockShape shape = map.getBlockShape(TestingCoords);
-			float CenterHeight = shape.getCenterHeight() + (TestingCoords.Block.getZ() - LocationCoordinates.Block.getZ());
-			float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection.invert()) + (TestingCoords.Block.getZ() - LocationCoordinates.Block.getZ());
+			map.getBlockShape(TestingCoords, TestingBlockShape);
+			float CenterHeight = TestingBlockShape.getCenterHeight() + (TestingCoords.Block.getZ() - LocationCoordinates.Block.getZ());
+			float EdgeHeight = TestingBlockShape.getDirectionEdgeHeight(MovingDirection.invert()) + (TestingCoords.Block.getZ() - LocationCoordinates.Block.getZ());
 			float CenterFraction = ((MoveFraction - 0.5f) * 2.0f);
 			float EdgeFraction = 1.0f - CenterFraction;
 			Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);

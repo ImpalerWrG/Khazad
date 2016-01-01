@@ -39,6 +39,7 @@ public class Chunk implements Serializable {
 	// Larger DataValues specific to each Block
 	private short[] BlockMaterialTypes;
 	private short[][] BlockShapeTypes;
+	private BlockShape TestingBlockShape, AdjacentBlockShape;
 	// Bit values for each Block
 	private BitSet Hidden;
 	private BitSet SubTerranean;
@@ -81,6 +82,8 @@ public class Chunk implements Serializable {
 			BlockMaterialTypes[i] = DataManager.INVALID_INDEX;
 		}
 
+		TestingBlockShape = new BlockShape();
+		AdjacentBlockShape = new BlockShape();
 		DirtyTerrainRendering = true;
 		DirtyPathRendering = true;
 	}
@@ -132,7 +135,7 @@ public class Chunk implements Serializable {
 		MapCoordinate AdjacentCoordinates = new MapCoordinate();
 	
 		for (BlockCoordinate Index = new BlockCoordinate((byte) LevelofDetail); !Index.end(); Index.next()) {
-			BlockShape Shape = getBlockShape(Index.getBlockIndex(), LevelofDetail);
+			getBlockShape(Index.getBlockIndex(), LevelofDetail, TestingBlockShape);
 			short BlockMaterial = getBlockMaterial(Index.getBlockIndex());
 
 			for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
@@ -141,27 +144,27 @@ public class Chunk implements Serializable {
 				AdjacentCoordinates.translate(DirectionType);
 
 				if (ParentMap.isBlockInitialized(AdjacentCoordinates)) {
-					BlockShape AdjacentShape = ParentMap.getBlockShape(AdjacentCoordinates);
+					ParentMap.getBlockShape(AdjacentCoordinates, AdjacentBlockShape);
 
-					if (AdjacentShape.isSky()) {
-						if (Shape.hasFace(DirectionType)) {
+					if (AdjacentBlockShape.isSky()) {
+						if (TestingBlockShape.hasFace(DirectionType)) {
 							Face NewFace = ParentMap.addFace(new MapCoordinate(thisChunkCoordinates, Index), DirectionType, LevelofDetail);
 
 							NewFace.setFaceMaterialType(BlockMaterial);
 							NewFace.setFaceSurfaceType(WallSurface);
-							NewFace.setFaceShapeType(new FaceShape(Shape, AdjacentShape, DirectionType));
+							NewFace.setFaceShapeType(new FaceShape(TestingBlockShape, AdjacentBlockShape, DirectionType));
 							if (ParentMap.isBlockSunLit(AdjacentCoordinates))
 								NewFace.Sunlit = true;
 						}
 					}
 
-					if (!AdjacentShape.isEmpty()) {
-						if (DirectionType == Direction.DIRECTION_DOWN && Shape.hasFloor() && AdjacentShape.hasCeiling()) {
+					if (!AdjacentBlockShape.isEmpty()) {
+						if (DirectionType == Direction.DIRECTION_DOWN && TestingBlockShape.hasFloor() && AdjacentBlockShape.hasCeiling()) {
 							Face NewFace = ParentMap.addFace(new MapCoordinate(thisChunkCoordinates, Index), DirectionType, LevelofDetail);
 
 							NewFace.setFaceMaterialType(ParentMap.getBlockMaterial(AdjacentCoordinates));
 							NewFace.setFaceSurfaceType(FloorSurface);
-							NewFace.setFaceShapeType(new FaceShape(Shape, AdjacentShape, DirectionType));
+							NewFace.setFaceShapeType(new FaceShape(TestingBlockShape, AdjacentBlockShape, DirectionType));
 							if (ParentMap.isBlockSunLit(AdjacentCoordinates))
 								NewFace.Sunlit = true;
 						}
@@ -169,12 +172,12 @@ public class Chunk implements Serializable {
 				}
 			}
 
-			if (!Shape.isEmpty() && !Shape.isSolid()) {
+			if (!TestingBlockShape.isEmpty() && !TestingBlockShape.isSolid()) {
 				Face NewFace = addFace(new FaceCoordinate(Index, Direction.DIRECTION_NONE, (byte) LevelofDetail));
 
 				NewFace.setFaceMaterialType(BlockMaterial);
 				NewFace.setFaceSurfaceType(FloorSurface);
-				NewFace.setFaceShapeType(new FaceShape(Shape, null, Direction.DIRECTION_NONE));
+				NewFace.setFaceShapeType(new FaceShape(TestingBlockShape, null, Direction.DIRECTION_NONE));
 				if (isBlockSunLit(Index.getBlockIndex()))
 					NewFace.Sunlit = true;
 			}
@@ -299,8 +302,8 @@ public class Chunk implements Serializable {
 		return DirtyPathRendering;
 	}
 
-	public BlockShape getBlockShape(short Index, int LevelofDetal) {
-		return new BlockShape(BlockShapeTypes[LevelofDetal][Index]);
+	public void getBlockShape(short Index, int LevelofDetal, BlockShape writeBlock) {
+		writeBlock.setData(BlockShapeTypes[LevelofDetal][Index]);
 	}
 
 	public short getBlockMaterial(short Coordinates) {

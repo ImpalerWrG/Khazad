@@ -36,11 +36,12 @@ public class TerrainSlicer implements SceneProcessor {
     protected RenderManager rm;
 	protected ViewPort vp;
 	protected GameCamera Cam;
-	protected Plane SlicingPlane;
+	protected Plane SlicingTopPlane, SlicingBottomPlane;
 		
 	public TerrainSlicer(AssetManager manager) {
 		this.manager = manager;
-		SlicingPlane = new Plane(Vector3f.UNIT_Z, 0);
+		SlicingTopPlane = new Plane(Vector3f.UNIT_Z, 0);
+		SlicingBottomPlane = new Plane(Vector3f.UNIT_Z, 0);
 	}
 	
     public void initialize(RenderManager rm, ViewPort vp) {
@@ -60,9 +61,13 @@ public class TerrainSlicer implements SceneProcessor {
 	}
 
 	public void preFrame(float tpf) {
-		//float SliceLevel = this.Cam.SliceTop;
-		//this.SlicingPlane.setConstant(SliceLevel + 0.499f);
-		//this.Cam.camera.setClipPlane(SlicingPlane, Plane.Side.Negative);		
+		float SliceTopLevel = this.Cam.SliceTop;
+		this.SlicingTopPlane.setConstant(SliceTopLevel + 0.499f);
+		this.Cam.camera.setClipPlane(SlicingTopPlane, Plane.Side.Negative);		
+		
+		//float SliceBottomLevel = this.Cam.SliceBottom;
+		//this.SlicingBottomPlane.setConstant(SliceBottomLevel + 0.499f);
+		//this.Cam.camera.setClipPlane(SlicingBottomPlane, Plane.Side.Negative);		
     }
 
 	public void postFrame(FrameBuffer out) {

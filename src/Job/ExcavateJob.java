@@ -48,6 +48,8 @@ public class ExcavateJob extends Job implements Serializable {
 	// Boolens for Excavation targets that are accesible and assigned respectivly
 	HashMap<ChunkCoordinate, BitSet> AccessibleExcavations;
 	HashMap<ChunkCoordinate, BitSet> AssignedExcavations;
+	
+	BlockShape CurrentBlockShape, AdjacentBlockShape;
 	// Counts on each stage of work
 	int DesignationCount = 0;
 	int AccessibleExcavationCount = 0;
@@ -58,7 +60,6 @@ public class ExcavateJob extends Job implements Serializable {
 	HashMap<Pawn, MapCoordinate> AssignedWorkers;
 	// The Zone and other classes needed for accessability checks
 	Zone ExcavationZone;
-	GameMap map = null;
 	transient PathManager paths;
 	MovementModality Modality;
 
@@ -71,8 +72,10 @@ public class ExcavateJob extends Job implements Serializable {
 		AccessibleMap = new HashMap<MapCoordinate, MapCoordinate>();
 		AssignedWorkers = new HashMap<Pawn, MapCoordinate>();
 
+		CurrentBlockShape = new BlockShape(); 
+		AdjacentBlockShape = new BlockShape();
+
 		Modality = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
-		this.map = map;
 		Priority = 10;
 		paths = PathManager.getSingleton();
 	}
@@ -94,7 +97,8 @@ public class ExcavateJob extends Job implements Serializable {
 					BitSet AccessibleLocation = AccessibleExcavations.get(ChunkCoords);
 					BitSet AssignedLocations = AssignedExcavations.get(ChunkCoords);
 
-					if (map.getBlockShape(TargetCoords) != NewShape) {
+					GameMap.getMap().getBlockShape(TargetCoords, CurrentBlockShape);
+					if (CurrentBlockShape != NewShape) {
 						if (DesignationShapes == null) {
 							DesignationShapes = new BlockShape[BlockCoordinate.BLOCKS_PER_CHUNK];
 							Designations.put(ChunkCoords, DesignationShapes);
@@ -111,9 +115,7 @@ public class ExcavateJob extends Job implements Serializable {
 							AssignedExcavations.put(ChunkCoords, AssignedLocations);
 						}
 
-						BlockShape CurrentShape = GameMap.getMap().getBlockShape(TargetCoords);
-
-						if (!CurrentShape.isSolid()) {
+						if (!CurrentBlockShape.isSolid()) {
 							BitSet DirectionFlags = paths.getDirectionFlags(TargetCoords, Modality);
 							if (DirectionFlags.cardinality() != 0) {
 								AccessibleMap.put(TargetCoords.clone(), TargetCoords.clone());
@@ -127,9 +129,9 @@ public class ExcavateJob extends Job implements Serializable {
 						for (Direction dir : Direction.AXIAL_DIRECTIONS) {
 							MapCoordinate AdjacentcCoords = TargetCoords.clone();
 							AdjacentcCoords.translate(dir);
-							BlockShape AdjacentShape = GameMap.getMap().getBlockShape(AdjacentcCoords);
+							GameMap.getMap().getBlockShape(AdjacentcCoords, AdjacentBlockShape);
 
-							if (AdjacentShape.isEmpty() || (dir == Direction.DIRECTION_DOWN && !AdjacentShape.isSolid())) {
+							if (AdjacentBlockShape.isEmpty() || (dir == Direction.DIRECTION_DOWN && !AdjacentBlockShape.isSolid())) {
 								DirectionFlags = paths.getDirectionFlags(AdjacentcCoords, Modality);
 								if (DirectionFlags.cardinality() != 0) {
 									AccessibleLocation.set(BlockIndex);
@@ -168,10 +170,10 @@ public class ExcavateJob extends Job implements Serializable {
 			for (Direction dir : Direction.AXIAL_DIRECTIONS) {
 				MapCoordinate AdjacentcCoords = Coords.clone();
 				AdjacentcCoords.translate(dir);
-				BlockShape AdjacentShape = GameMap.getMap().getBlockShape(AdjacentcCoords);
+				GameMap.getMap().getBlockShape(AdjacentcCoords, AdjacentBlockShape);
 				BlockShape DesignationShape = getDesignation(AdjacentcCoords);
 
-				if (DesignationShape != null && !DesignationShape.isExcavationEquivilent(AdjacentShape)) {
+				if (DesignationShape != null && !DesignationShape.isExcavationEquivilent(AdjacentBlockShape)) {
 					BitSet AccessibleLocation = AccessibleExcavations.get(Coords.Chunk);
 					AccessibleLocation.set(Coords.Block.getBlockIndex());
 					AccessibleMap.put(AdjacentcCoords.clone(), Coords.clone());

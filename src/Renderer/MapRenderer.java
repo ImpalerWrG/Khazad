@@ -37,6 +37,9 @@ import com.jme3.scene.Spatial;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
+
 /**
  *
  * @author Impaler
@@ -51,27 +54,27 @@ public class MapRenderer extends AbstractAppState {
 	Node sunnyterrainNode = null;
 	Node darkterrainNode = null;
 	TileBuilder builder;
-	Game game;
+	//Game game;
 
 	ConcurrentHashMap<ChunkCoordinate, Node> LightChunkNodeMap;
 	ConcurrentHashMap<ChunkCoordinate, Node> DarkChunkNodeMap;
-	ConcurrentHashMap<Integer, Node> ZMapLight;
-	ConcurrentHashMap<Integer, Node> ZMapDark;
+	TIntObjectMap<Node> ZMapLight;
+	TIntObjectMap<Node> ZMapDark;
 
 	Semaphore semaphore;
-	boolean SunnyRendering, DarkRendering = true;
+	boolean SunnyRendering, DarkRendering;
 
-	int Top;
-	int Bottom;
+	int Top, Bottom;
 
 	public MapRenderer() {
 		LightChunkNodeMap = new ConcurrentHashMap<ChunkCoordinate, Node>();
 		DarkChunkNodeMap = new ConcurrentHashMap<ChunkCoordinate, Node>();
-		ZMapLight = new ConcurrentHashMap<Integer, Node>();
-		ZMapDark = new ConcurrentHashMap<Integer, Node>();
+		ZMapLight = new TIntObjectHashMap<Node>();
+		ZMapDark = new TIntObjectHashMap<Node>();
 		builder = new TileBuilder();
 
 		semaphore = new Semaphore(1);
+		SunnyRendering = DarkRendering = true;
 	}
 
 	@Override
@@ -80,12 +83,10 @@ public class MapRenderer extends AbstractAppState {
 		this.app = (SimpleApplication) app;
 		this.state = stateManager;
 		this.assetmanager = app.getAssetManager();
-
-		//registerWithInput(app.getInputManager());
 	}
 
 	public void attachToGame(Game TargetGame) {
-		this.game = TargetGame;
+		//this.game = TargetGame;
 		this.MapNode = new Node("MapNode");
 		this.app.getRootNode().attachChild(MapNode);
 
@@ -107,7 +108,7 @@ public class MapRenderer extends AbstractAppState {
 	}
 
 	public void detachFromGame() {
-		this.game = null;
+		//this.game = null;
 		MapNode = null;
 		darkterrainNode = null;
 		sunnyterrainNode = null;
@@ -126,23 +127,7 @@ public class MapRenderer extends AbstractAppState {
 				ChunkNode = LightChunkNodeMap.get(TargetCoordinates);
 				if (ChunkNode == null) {
 					ChunkNode = new Node("LightNode" + TargetCoordinates.toString());
-
-					float x = (float) (TargetCoordinates.X * BlockCoordinate.CHUNK_EDGE_SIZE);
-					float y = (float) (TargetCoordinates.Y * BlockCoordinate.CHUNK_EDGE_SIZE);
-					float z = (float) (TargetCoordinates.Z * BlockCoordinate.CHUNK_EDGE_SIZE);
-					
-					if(x < 0)
-						x++;
-					if(y < 0)
-						y++;
-					if(z < 0)
-						z++;
-					
-					//x = y = z = 0;
-					//x = z * 2;
-					//z = 0;
-					
-					ChunkNode.move(x, y, z);
+					ChunkNode.move(TargetCoordinates.getVector());
 
 					getZNodeLight(TargetCoordinates.Z).attachChild(ChunkNode);
 					LightChunkNodeMap.put(TargetCoordinates, ChunkNode);
@@ -165,11 +150,7 @@ public class MapRenderer extends AbstractAppState {
 			try {
 				if (ChunkNode == null) {
 					ChunkNode = new Node("DarkChunkNode");
-
-					float x = (float) (TargetCoordinates.X * BlockCoordinate.CHUNK_EDGE_SIZE);
-					float y = (float) (TargetCoordinates.Y * BlockCoordinate.CHUNK_EDGE_SIZE);
-					float z = (float) (TargetCoordinates.Z * BlockCoordinate.CHUNK_EDGE_SIZE);
-					ChunkNode.move(x, y, z);
+					ChunkNode.move(TargetCoordinates.getVector());
 
 					getZNodeDark(TargetCoordinates.Z).attachChild(ChunkNode);
 					DarkChunkNodeMap.put(TargetCoordinates, ChunkNode);
@@ -187,24 +168,24 @@ public class MapRenderer extends AbstractAppState {
 
 	public Node getZNodeLight(int zlevel) {
 		//TODO use a primite equipped map to eliminate Integer
-		Node targetnode = ZMapLight.get(new Integer(zlevel));
+		Node targetnode = ZMapLight.get(zlevel);
 		if (targetnode == null) {
 
 			targetnode = new Node("ZMapLightNode");
 			targetnode.move(0, 0, zlevel);
-			ZMapLight.put(new Integer(zlevel), targetnode);
+			ZMapLight.put(zlevel, targetnode);
 			sunnyterrainNode.attachChild(targetnode);
 		}
 		return targetnode;
 	}
 
 	public Node getZNodeDark(int zlevel) {
-		Node targetnode = ZMapDark.get(new Integer(zlevel));
+		Node targetnode = ZMapDark.get(zlevel);
 		if (targetnode == null) {
 
 			targetnode = new Node("ZMapDarkNode");
 			targetnode.move(0, 0, zlevel);
-			ZMapDark.put(new Integer(zlevel), targetnode);
+			ZMapDark.put(zlevel, targetnode);
 			darkterrainNode.attachChild(targetnode);
 		}
 		return targetnode;
@@ -214,18 +195,22 @@ public class MapRenderer extends AbstractAppState {
 		Top = top;
 		Bottom = bottom;
 
-		for (Node targetnode : ZMapLight.values()) {
+		for (Node targetnode : ZMapLight.valueCollection()) {
 			float Z = targetnode.getLocalTranslation().getZ();
-			if (Z <= Top && SunnyRendering) {
+			float ChunkBottom = (Z * BlockCoordinate.CHUNK_EDGE_SIZE);
+			float ChunkTop = ChunkBottom + BlockCoordinate.CHUNK_EDGE_SIZE;
+			if (ChunkBottom <= Top && Bottom <= ChunkTop && SunnyRendering) {
 				sunnyterrainNode.attachChild(targetnode);
 			} else {
 				sunnyterrainNode.detachChild(targetnode);
 			}
 		}
 
-		for (Node targetnode : ZMapDark.values()) {
+		for (Node targetnode : ZMapDark.valueCollection()) {
 			float Z = targetnode.getLocalTranslation().getZ();
-			if (Z <= Top) {
+			float ChunkBottom = (Z * BlockCoordinate.CHUNK_EDGE_SIZE);
+			float ChunkTop = ChunkBottom + BlockCoordinate.CHUNK_EDGE_SIZE;
+			if (ChunkBottom <= Top && Bottom <= ChunkTop) {
 				darkterrainNode.attachChild(targetnode);
 			} else {
 				darkterrainNode.detachChild(targetnode);

@@ -28,7 +28,6 @@ import Map.Coordinates.MapCoordinate;
 import java.io.Serializable;
 
 import java.util.concurrent.Callable;
-//import org.teneighty.heap.FibonacciHeap;
 
 /**
  * A simple uni-direction A* implementation, it utilizes it's own Node type
@@ -47,7 +46,8 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 
 	private static final long serialVersionUID = 1;
 	// Core storage sturctures of AStar
-	PriorityQueue<AStarNode> FringeNodes;
+	PriorityQueue<AStarNode> FringeHeap;
+	LinkedListDeque<AStarNode> FringeDeque;
 	HashSet<MapCoordinate> VisitedCoordinates;
 	MapCoordinate NeiboringCoordinates;
 
@@ -58,16 +58,17 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 	Pool<AStarNode> NodePool;
 
 	AStar(GridInterface TargetSearchGraph) {
-		FringeNodes = new PriorityQueue<AStarNode>();
-		VisitedCoordinates = new HashSet<MapCoordinate>();
+		FringeHeap = new PriorityQueue<AStarNode>(100);
+		VisitedCoordinates = new HashSet<MapCoordinate>(100);
 		NeiboringCoordinates = new MapCoordinate();
 
 		SearchGraph = TargetSearchGraph;
 		FinalPath = null;
 	}
 
-	public void assignNodePool(Pool TargetPool) {
+	public void assignResources(Pool TargetPool, LinkedListDeque<AStarNode> List) {
 		NodePool = TargetPool;
+		FringeDeque = List;
 		NodePool.setFactory(this);
 	}
 
@@ -79,13 +80,14 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		FinalPath = null;
 		FringeExausted = false;
 
-		FringeNodes.clear();
+		FringeHeap.clear();
 		VisitedCoordinates.clear();
 
 		AStarNode StartNode = NodePool.provide();
 		StartNode.set(StartCoordinates, null, Direction.DIRECTION_NONE, 0, MainHeuristic.estimate(StartCoords, GoalCoords), TieBreakerHeuristic.estimate(StartCoords, GoalCoords));
 
-		FringeNodes.add(StartNode);
+		FringeDeque.insertFront(StartNode);
+		//FringeHeap.add(StartNode);
 	}
 
 	boolean searchPath(int NodesToExpand) {
@@ -97,7 +99,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 			boolean GoalFound;
 			if (NodesToExpand > 0) { // Search for a limited time
 				for (int RemainingNodes = NodesToExpand; RemainingNodes > 0; RemainingNodes--) {
-					if (FringeNodes.size() == 0) {
+					if (FringeDeque.isEmpty() && FringeHeap.isEmpty()) {
 						FringeExausted = true; // Path could not be found
 						return false;
 					}
@@ -108,7 +110,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 				}
 				return false; // Path not yet found
 			} else { // Search untill Path is found or Fringe is exhausted
-				while (FringeNodes.size() != 0) {
+				while (!FringeDeque.isEmpty()) {
 					if (expandNode()) {
 						return true;
 					}
@@ -137,11 +139,15 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 			return CurrentPath;
 		}
 		NodePool.release();
+		FringeDeque.clear();
 		return FinalPath;
 	}
 
 	boolean expandNode() {
-		CurrentNode = FringeNodes.poll();
+		CurrentNode = FringeDeque.removeFirst();
+		if (CurrentNode == null)
+			CurrentNode = FringeHeap.poll();
+
 		MapCoordinate TestCoordinates = CurrentNode.LocationCoordinates;
 
 		if (VisitedCoordinates.contains(TestCoordinates))
@@ -172,8 +178,13 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 				AStarNode NewNode = NodePool.provide();
 				NewNode.set(NeiboringCoordinates, CurrentNode, DirectionType, CurrentNode.PathLengthFromStart + EdgeCost, MainHeuristic.estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic.estimate(NeiboringCoordinates, GoalCoordinates));
 
-				FringeNodes.add(NewNode);
-			}
+				//FringeHeap.add(NewNode);
+				FringeDeque.insertFront(NewNode);
+			} // modify existing node with new distance?
+		}
+
+		while(FringeDeque.size() > 4) {
+			FringeHeap.add(FringeDeque.removeLast());
 		}
 
 		return false; // Goal was not found

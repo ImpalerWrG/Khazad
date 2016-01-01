@@ -82,8 +82,18 @@ public class ChunkCoordinate implements Serializable {
 	}
 
 	public Vector3f getVector() {
-		Vector3f Vec = new Vector3f(X * BlockCoordinate.CHUNK_EDGE_SIZE, Y * BlockCoordinate.CHUNK_EDGE_SIZE, Z * BlockCoordinate.CHUNK_EDGE_SIZE);
-		return Vec;
+		float x = (float) (X * BlockCoordinate.CHUNK_EDGE_SIZE);
+		float y = (float) (Y * BlockCoordinate.CHUNK_EDGE_SIZE);
+		float z = (float) (Z * BlockCoordinate.CHUNK_EDGE_SIZE);
+
+		if(x < 0)
+			x++;
+		if(y < 0)
+			y++;
+		if(z < 0)
+			z++;
+
+		return new Vector3f(x, y, z);
 	}
 
 	@Override

@@ -29,7 +29,7 @@ import java.io.Serializable;
  *
  * @author Impaler
  */
-public class AStarNode implements Comparable, Serializable {
+public class AStarNode implements Comparable<AStarNode>, Serializable {
 
 	private static final long serialVersionUID = 1;
 	// Cumulative distance used to judge Path
@@ -58,9 +58,7 @@ public class AStarNode implements Comparable, Serializable {
 		TotalCost = PathLengthFromStart + MinimumCostToGoal;
 	}
 
-	public int compareTo(Object TargetObject) {
-		//if (TargetObject instanceof AStarNode) {
-		AStarNode TargetNode = (AStarNode) TargetObject;
+	public int compareTo(AStarNode TargetNode) {
 		if (TotalCost < TargetNode.TotalCost) {
 			return -1;
 		} else if (TotalCost == TargetNode.TotalCost) {

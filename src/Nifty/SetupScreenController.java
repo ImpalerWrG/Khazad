@@ -75,7 +75,7 @@ public class SetupScreenController implements ScreenController {
 			GameCameraState cam = new GameCameraState();
 			Main.app.getStateManager().attach(cam);
 			cam.setViewSize(game.getMap().getHighestChunk(), game.getMap().getLowestChunk());
-			cam.setSlice(game.getMap().getHighestChunk() - 2, game.getMap().getLowestChunk() + 2);
+			cam.setSlice(game.getMap().getHighestChunk() + 2, game.getMap().getLowestChunk() - 2);
 
 			// PATHING
 			PathManager Pather = PathManager.getSingleton();
@@ -86,7 +86,7 @@ public class SetupScreenController implements ScreenController {
 
 
 			short DwarfID = Data.DataManager.getDataManager().getLabelIndex("CREATURE_DWARF");
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 200; i++) {
 				game.SpawnCitizen(DwarfID, Pather.Tester.getRandomPassableCoordinate());
 			}
 			nifty.gotoScreen("GameScreen");

@@ -58,6 +58,7 @@ public class GameMap implements Serializable {
 	int SouthestChunk;
 
 	ChunkCoordinate TestingCooords = new ChunkCoordinate();
+	BlockShape TargetBlockShape, AboveBlockShape, BelowBlockShape, AdjacentBlockShape;
 
 	int Seed;
 	Dice ExcavateDice = new Dice();
@@ -78,6 +79,11 @@ public class GameMap implements Serializable {
 		Chunks = new ConcurrentHashMap<ChunkCoordinate, Chunk>();
 		WeatherChunks = new ConcurrentHashMap<ChunkCoordinate, Chunk>();
 		BasementChunks = new ConcurrentHashMap<ChunkCoordinate, Chunk>();
+
+		TargetBlockShape = new BlockShape(); 
+		AboveBlockShape = new BlockShape(); 
+		BelowBlockShape = new BlockShape();
+		AdjacentBlockShape = new BlockShape();
 	}
 
 	public static GameMap getMap() {
@@ -156,6 +162,14 @@ public class GameMap implements Serializable {
 		return TargetChunk;  // A Chunk already exists at that spot		
 	}
 
+	public int getHighestBlock() {
+		return (HighestChunk + 1) * BlockCoordinate.CHUNK_EDGE_SIZE;
+	}
+
+	public int getLowestBlock() {
+		return LowestChunk * BlockCoordinate.CHUNK_EDGE_SIZE;
+	}
+
 	public int getHighestChunk() {
 		return HighestChunk;
 	}
@@ -214,13 +228,13 @@ public class GameMap implements Serializable {
 		}
 	}
 
-	public BlockShape getBlockShape(MapCoordinate Coordinates) {
+	public void getBlockShape(MapCoordinate Coordinates, BlockShape writeBlock) {
 		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
 
 		if (TargetChunk != null) {
-			return TargetChunk.getBlockShape(Coordinates.Block.getBlockIndex(), 0);
+			TargetChunk.getBlockShape(Coordinates.Block.getBlockIndex(), 0, writeBlock);
 		} else {
-			return new BlockShape(BlockShape.BELOW_CUBE_HEIGHT);
+			writeBlock.setData(BlockShape.BELOW_CUBE_HEIGHT);
 		}
 	}
 
@@ -286,9 +300,10 @@ public class GameMap implements Serializable {
 			}
 
 			do {
-				for (int i = 0; i < BlockCoordinate.BLOCKS_PER_CHUNK; i++) {
-					if (TopChunk.isBlockSunLit((short) i) && !TopChunk.getBlockShape((short) i, 0).hasFace(Direction.DIRECTION_NONE)) {
-						BottomChunk.setBlockSunLit((short) i, true);
+				for (BlockCoordinate Index = new BlockCoordinate(); !Index.end(); Index.next()) {
+					TopChunk.getBlockShape(Index.getBlockIndex(), 0, TargetBlockShape);
+					if (TopChunk.isBlockSunLit(Index.getBlockIndex()) && !TargetBlockShape.hasFace(Direction.DIRECTION_NONE)) {
+						BottomChunk.setBlockSunLit(Index.getBlockIndex(), true);
 						LightRemains = true;
 					}
 				}
@@ -335,35 +350,35 @@ public class GameMap implements Serializable {
 
 	public void excavateBlock(MapCoordinate Coordinates, BlockShape GoalShape) {
 		int Corner = ExcavateDice.roll(0, Direction.CARDINAL_DIRECTIONS.length - 1);
-		BlockShape OldShape = getBlockShape(Coordinates);
+		getBlockShape(Coordinates, TargetBlockShape);
 		BlockShape IntermediateShape;
 
 		switch (Corner) {
 			case 0:
-				if (GoalShape.getNorthEastCorner() < OldShape.getNorthEastCorner()) {
-					IntermediateShape = OldShape.clone();
-					IntermediateShape.setNorthEastCorner((byte) (OldShape.getNorthEastCorner() - 1));
+				if (GoalShape.getNorthEastCorner() < TargetBlockShape.getNorthEastCorner()) {
+					IntermediateShape = TargetBlockShape.clone();
+					IntermediateShape.setNorthEastCorner((byte) (TargetBlockShape.getNorthEastCorner() - 1));
 					updateBlockShape(Coordinates, IntermediateShape);
 					break;
 				}
 			case 1:
-				if (GoalShape.getSouthEastCorner() < OldShape.getSouthEastCorner()) {
-					IntermediateShape = OldShape.clone();
-					IntermediateShape.setSouthEastCorner((byte) (OldShape.getSouthEastCorner() - 1));
+				if (GoalShape.getSouthEastCorner() < TargetBlockShape.getSouthEastCorner()) {
+					IntermediateShape = TargetBlockShape.clone();
+					IntermediateShape.setSouthEastCorner((byte) (TargetBlockShape.getSouthEastCorner() - 1));
 					updateBlockShape(Coordinates, IntermediateShape);
 					break;
 				}
 			case 2:
-				if (GoalShape.getNorthWestCorner() < OldShape.getNorthWestCorner()) {
-					IntermediateShape = OldShape.clone();
-					IntermediateShape.setNorthWestCorner((byte) (OldShape.getNorthWestCorner() - 1));
+				if (GoalShape.getNorthWestCorner() < TargetBlockShape.getNorthWestCorner()) {
+					IntermediateShape = TargetBlockShape.clone();
+					IntermediateShape.setNorthWestCorner((byte) (TargetBlockShape.getNorthWestCorner() - 1));
 					updateBlockShape(Coordinates, IntermediateShape);
 					break;
 				}
 			case 3:
-				if (GoalShape.getSouthWestCorner() < OldShape.getSouthWestCorner()) {
-					IntermediateShape = OldShape.clone();
-					IntermediateShape.setSouthWestCorner((byte) (OldShape.getSouthWestCorner() - 1));
+				if (GoalShape.getSouthWestCorner() < TargetBlockShape.getSouthWestCorner()) {
+					IntermediateShape = TargetBlockShape.clone();
+					IntermediateShape.setSouthWestCorner((byte) (TargetBlockShape.getSouthWestCorner() - 1));
 					updateBlockShape(Coordinates, IntermediateShape);
 					break;
 				}
@@ -378,8 +393,8 @@ public class GameMap implements Serializable {
 
 	public void updateBlockShape(MapCoordinate Coordinates, BlockShape NewShape) {
 		if (isBlockInitialized(Coordinates)) {
-			BlockShape Shape = getBlockShape(Coordinates);
-			if (!Shape.equals(NewShape)) {
+			getBlockShape(Coordinates, TargetBlockShape);
+			if (!TargetBlockShape.equals(NewShape)) {
 
 				// check bottoms
 				MapCoordinate belowBlock = Coordinates.clone();
@@ -387,18 +402,18 @@ public class GameMap implements Serializable {
 				if (!isBlockInitialized(belowBlock)) {
 					initializeChunk(belowBlock.Chunk);
 				}
-				BlockShape belowShape = getBlockShape(belowBlock);
+				getBlockShape(belowBlock, BelowBlockShape);
 
-				if (belowShape.getNorthEastCorner() < BlockShape.CUBE_TOP_HEIGHT)
+				if (BelowBlockShape.getNorthEastCorner() < BlockShape.CUBE_TOP_HEIGHT)
 					NewShape.setNorthEastCorner(BlockShape.BELOW_CUBE_HEIGHT);
 
-				if (belowShape.getNorthWestCorner() < BlockShape.CUBE_TOP_HEIGHT)
+				if (BelowBlockShape.getNorthWestCorner() < BlockShape.CUBE_TOP_HEIGHT)
 					NewShape.setNorthWestCorner(BlockShape.BELOW_CUBE_HEIGHT);
 
-				if (belowShape.getSouthEastCorner() < BlockShape.CUBE_TOP_HEIGHT)
+				if (BelowBlockShape.getSouthEastCorner() < BlockShape.CUBE_TOP_HEIGHT)
 					NewShape.setSouthEastCorner(BlockShape.BELOW_CUBE_HEIGHT);
 
-				if (belowShape.getSouthWestCorner() < BlockShape.CUBE_TOP_HEIGHT)
+				if (BelowBlockShape.getSouthWestCorner() < BlockShape.CUBE_TOP_HEIGHT)
 					NewShape.setSouthWestCorner(BlockShape.BELOW_CUBE_HEIGHT);
 
 
@@ -420,30 +435,30 @@ public class GameMap implements Serializable {
 				MapCoordinate aboveBlock = Coordinates.clone();
 				aboveBlock.translate(Direction.DIRECTION_UP);
 				if (isBlockInitialized(aboveBlock)) {
-					BlockShape aboveShape = getBlockShape(aboveBlock).clone();
-					BlockShape NewAboveShape = aboveShape.clone();
+					getBlockShape(aboveBlock, AboveBlockShape);
+					BlockShape NewAboveShape = AboveBlockShape.clone();
 
 					if (NewShape.getNorthEastCorner() < BlockShape.CUBE_TOP_HEIGHT) {
-						if (aboveShape.getNorthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && aboveShape.getNorthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && aboveShape.getSouthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT)
+						if (AboveBlockShape.getNorthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && AboveBlockShape.getNorthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && AboveBlockShape.getSouthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT)
 							NewAboveShape.setNorthEastCorner(BlockShape.BELOW_CUBE_HEIGHT);
 					}
 
 					if (NewShape.getSouthWestCorner() < BlockShape.CUBE_TOP_HEIGHT) {
-						if (aboveShape.getSouthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && aboveShape.getNorthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && aboveShape.getSouthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT)
+						if (AboveBlockShape.getSouthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && AboveBlockShape.getNorthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && AboveBlockShape.getSouthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT)
 							NewAboveShape.setSouthWestCorner(BlockShape.BELOW_CUBE_HEIGHT);
 					}
 
 					if (NewShape.getNorthWestCorner() < BlockShape.CUBE_TOP_HEIGHT) {
-						if (aboveShape.getNorthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && aboveShape.getNorthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && aboveShape.getSouthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT)
+						if (AboveBlockShape.getNorthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && AboveBlockShape.getNorthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && AboveBlockShape.getSouthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT)
 							NewAboveShape.setNorthWestCorner(BlockShape.BELOW_CUBE_HEIGHT);
 					}
 
 					if (NewShape.getSouthEastCorner() < BlockShape.CUBE_TOP_HEIGHT) {
-						if (aboveShape.getNorthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && aboveShape.getSouthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && aboveShape.getSouthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT)
+						if (AboveBlockShape.getNorthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && AboveBlockShape.getSouthEastCorner() == BlockShape.CUBE_BOTTOM_HEIGHT && AboveBlockShape.getSouthWestCorner() == BlockShape.CUBE_BOTTOM_HEIGHT)
 							NewAboveShape.setSouthEastCorner(BlockShape.BELOW_CUBE_HEIGHT);
 					}
 
-					if (!aboveShape.equals(NewAboveShape))
+					if (!AboveBlockShape.equals(NewAboveShape))
 						setBlockShape(aboveBlock, NewAboveShape);
 					if (NewAboveShape.isEmpty()) {
 						setBlockMaterial(aboveBlock, DataManager.INVALID_INDEX);
@@ -478,15 +493,15 @@ public class GameMap implements Serializable {
 			return;
 		}
 
-		BlockShape SourceShape = getBlockShape(TargetCoordinates);
-		BlockShape AdjacentShape = getBlockShape(ModifiedCoordinates);
+		getBlockShape(TargetCoordinates, TargetBlockShape);
+		getBlockShape(ModifiedCoordinates, AdjacentBlockShape);
 		Face TargetFace = getFace(TargetCoordinates, DirectionType);
 
 		switch (DirectionType) {
 
 			case DIRECTION_NONE:
-				if (!SourceShape.isEmpty() && !SourceShape.isSolid()) {
-					FaceShape NewShape = new FaceShape(getBlockShape(TargetCoordinates), null, Direction.DIRECTION_NONE);
+				if (!TargetBlockShape.isEmpty() && !TargetBlockShape.isSolid()) {
+					FaceShape NewShape = new FaceShape(TargetBlockShape, null, Direction.DIRECTION_NONE);
 					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, Direction.DIRECTION_NONE, 0);
 						TargetFace.setFaceShapeType(NewShape);
@@ -506,8 +521,8 @@ public class GameMap implements Serializable {
 				break;
 
 			case DIRECTION_DOWN:
-				if (SourceShape.hasFloor()) {
-					FaceShape NewShape = new FaceShape(SourceShape, AdjacentShape, DirectionType);
+				if (TargetBlockShape.hasFloor()) {
+					FaceShape NewShape = new FaceShape(TargetBlockShape, AdjacentBlockShape, DirectionType);
 					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, DirectionType, 0);
 						TargetFace.setFaceMaterialType(getBlockMaterial(ModifiedCoordinates));
@@ -526,8 +541,8 @@ public class GameMap implements Serializable {
 				break;
 
 			case DIRECTION_UP:
-				if (AdjacentShape.hasFloor()) {
-					FaceShape NewShape = new FaceShape(SourceShape, AdjacentShape, DirectionType);
+				if (AdjacentBlockShape.hasFloor()) {
+					FaceShape NewShape = new FaceShape(TargetBlockShape, AdjacentBlockShape, DirectionType);
 					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, DirectionType, 0);
 						TargetFace.setFaceMaterialType(getBlockMaterial(TargetCoordinates));
@@ -549,8 +564,8 @@ public class GameMap implements Serializable {
 			case DIRECTION_WEST:
 			case DIRECTION_NORTH:
 			case DIRECTION_SOUTH:
-				if (SourceShape.hasFace(DirectionType)) {
-					FaceShape NewShape = new FaceShape(SourceShape, AdjacentShape, DirectionType);
+				if (TargetBlockShape.hasFace(DirectionType)) {
+					FaceShape NewShape = new FaceShape(TargetBlockShape, AdjacentBlockShape, DirectionType);
 					if (TargetFace == null) {
 						TargetFace = addFace(TargetCoordinates, DirectionType, 0);
 						TargetFace.setFaceMaterialType(getBlockMaterial(TargetCoordinates));

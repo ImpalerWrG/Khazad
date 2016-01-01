@@ -99,8 +99,8 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	public MapCoordinate SelectionOrigin = new MapCoordinate();
 	public MapCoordinate SelectionTerminus = new MapCoordinate();
 	public VolumeSelection Volume;
-	protected int SliceTop;
-	protected int SliceBottom;
+	private int SliceTop;
+	private int SliceBottom;
 	protected int ViewLevels;
 	protected int ViewMax, ViewMin;
 	private boolean mouseWheelEnabled = true;
@@ -545,7 +545,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		if (this.state != null) {
 			MapRenderer render = state.getState(MapRenderer.class);
 			if (render != null) {
-				//render.setSliceLevels(SliceTop, SliceBottom);
+				render.setSliceLevels(SliceTop, SliceBottom);
 			}
 		}
 		if (this.MainCamera != null)
@@ -651,7 +651,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	public void pointCameraAt(MapCoordinate Coordinate) {
 		// change to the same Z level as the target
 		SliceTop = Coordinate.getZ();
-		SliceBottom = SliceTop + ViewLevels;
+		SliceBottom = SliceTop - ViewLevels;
 		// point camera at the target
 		Vector3f target = Coordinate.getVector();
 		MainCamera.pointCameraAt(target);

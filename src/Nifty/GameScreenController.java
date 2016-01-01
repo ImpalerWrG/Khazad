@@ -227,11 +227,10 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 		Game game = Main.app.getStateManager().getState(Game.class);
 		int High = game.getMap().getHighestChunk() * BlockCoordinate.CHUNK_EDGE_SIZE;
 		int Low = game.getMap().getLowestChunk() * BlockCoordinate.CHUNK_EDGE_SIZE;
+		High += BlockCoordinate.CHUNK_EDGE_SIZE;
 		bar.setWorldMax(High - Low);
 
 		GameCameraState camera = Main.app.getStateManager().getState(GameCameraState.class);
-		int top = camera.getSliceTop();
-		int bottom = camera.getSliceBottom();
 
 		int value = (int) event.getValue();
 		int slice = camera.getSliceTop() - camera.getSliceBottom();

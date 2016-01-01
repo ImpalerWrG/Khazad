@@ -66,6 +66,8 @@ public class Main extends SimpleApplication {
 	public static void main(String[] args) {
 		app = new Main();
 
+		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
 		AppSettings setting = new AppSettings(true);
 		setting.setTitle("Khazad");
 		setting.setHeight(600);

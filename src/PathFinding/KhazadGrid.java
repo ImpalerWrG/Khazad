@@ -94,8 +94,10 @@ public class KhazadGrid implements GridInterface, Serializable {
 	ConcurrentHashMap<ChunkCoordinate, GridChunk> GridChunks;
 	ConcurrentLinkedDeque<MapCoordinate> DirtyLocations;
 	// Connections between groups of Coordinates
+	BlockShape TargetBlockShape, AboveBlockShape, AdjacentBlockShape;
 	ArrayList<Integer> ConnectivityCache;
 	ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, Integer>> ConnectivityMap;
+	MapCoordinate ConnectivityTestCoordinates;
 	// The unique mix of movements this Grid is modeling
 	MovementModality GridModality;
 	GameMap SourceMap;
@@ -105,8 +107,13 @@ public class KhazadGrid implements GridInterface, Serializable {
 		ConnectivityMap = new ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, Integer>>();
 		ConnectivityCache = new ArrayList<Integer>();
 		DirtyLocations = new ConcurrentLinkedDeque<MapCoordinate>();
+		ConnectivityTestCoordinates = new MapCoordinate();
 		GridModality = Modality;
 		SourceMap = TargetMap;
+
+		TargetBlockShape = new BlockShape(); 
+		AboveBlockShape = new BlockShape(); 
+		AdjacentBlockShape = new BlockShape();
 
 		for (Chunk TargetChunk : TargetMap.getChunkCollection()) {
 			if (TargetChunk != null) {
@@ -131,9 +138,11 @@ public class KhazadGrid implements GridInterface, Serializable {
 		for (GridChunk TargetChunk : GridChunks.values()) {
 			if (TargetChunk != null) {
 				ChunkCoordinate ChunkCoords = TargetChunk.getChunkCoordinates();
+				ConnectivityTestCoordinates.setChunkCoordinate(ChunkCoords);
 
 				for (BlockCoordinate Index = new BlockCoordinate(); !Index.end(); Index.next()) {
-					BitSet Flags = getDirectionEdgeSet(new MapCoordinate(ChunkCoords, Index));
+					ConnectivityTestCoordinates.setBlockCoordinate(Index);
+					BitSet Flags = getDirectionEdgeSet(ConnectivityTestCoordinates);
 
 					if (Flags.cardinality() > 0) {
 						if (TargetChunk.ConnectivityZone[Index.getBlockIndex()] == 0) { // Start a new zone if not connected to another zone
@@ -171,18 +180,18 @@ public class KhazadGrid implements GridInterface, Serializable {
 
 	private BitSet buildConnectivitySet(MapCoordinate TargetCoords) {
 		BitSet Flags = new BitSet(BlockCoordinate.BLOCKS_PER_CHUNK);
-		BlockShape TargetShape = SourceMap.getBlockShape(TargetCoords);
+		SourceMap.getBlockShape(TargetCoords, TargetBlockShape);
 
-		if (!TargetShape.isSky() && !TargetShape.hasCeiling()) {
+		if (!TargetBlockShape.isSky() && !TargetBlockShape.hasCeiling()) {
 			MapCoordinate OverheadTileCoords = TargetCoords.clone();
 			OverheadTileCoords.translate(Direction.DIRECTION_UP);
-			BlockShape OverheadBlock = SourceMap.getBlockShape(OverheadTileCoords);
-			boolean OverheadPassable = !OverheadBlock.isSolid();
+			SourceMap.getBlockShape(OverheadTileCoords, AboveBlockShape);
+			boolean OverheadPassable = !AboveBlockShape.isSolid();
 
 			for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
 				MapCoordinate AdjacentTileCoords = TargetCoords.clone();
 				AdjacentTileCoords.translate(dir);
-				BlockShape AdjacentBlockShape = SourceMap.getBlockShape(AdjacentTileCoords);
+				SourceMap.getBlockShape(AdjacentTileCoords, AdjacentBlockShape);
 
 				if (!AdjacentBlockShape.isSky() && !AdjacentBlockShape.hasCeiling()) {
 					if (dir.getValueonAxis(Axis.AXIS_Z) == 1) {
