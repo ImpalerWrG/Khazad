@@ -63,9 +63,10 @@ public class PathManager extends AbstractAppState {
 
 	Heuristic ManhattenHeuristic;
 	Heuristic EuclideanHeuristic;
-	Heuristic MaxDimensionHeuristic;
+	Heuristic ChebyshevHeuristic;
 	Heuristic DijkstraHeuristic;
 	Heuristic DiagonalHeuristic;
+	Heuristic OctileHeuristic;
 	ArrayList<Pool> PoolList;
 	ExecutorService Executor;
 	public PathTester Tester;
@@ -73,9 +74,10 @@ public class PathManager extends AbstractAppState {
 	private PathManager() {
 		ManhattenHeuristic = new Heuristic.Manhatten();
 		EuclideanHeuristic = new Heuristic.Euclidean();
-		MaxDimensionHeuristic = new Heuristic.MaxDimension();
+		ChebyshevHeuristic = new Heuristic.Chebyshev();
 		DijkstraHeuristic = new Heuristic.Dijkstra();
 		DiagonalHeuristic = new Heuristic.Diagonal();
+		OctileHeuristic = new Heuristic.Octile();
 
 		PoolList = new ArrayList<Pool>();
 		Grids = new ConcurrentHashMap<MovementModality, GridInterface>();
@@ -144,7 +146,7 @@ public class PathManager extends AbstractAppState {
 					AStar PathTask = new AStar(TargetGrid);
 					PathTask.assignResources(ProvidePool(), new LinkedListDeque<AStarNode>(30));
 					PathTask.setModality(MovementType);
-					PathTask.setHeuristics(ManhattenHeuristic, EuclideanHeuristic);
+					PathTask.setHeuristics(OctileHeuristic);
 					PathTask.setEndPoints(StartCoords, GoalCoords);
 
 					return Executor.submit(PathTask);
@@ -164,7 +166,7 @@ public class PathManager extends AbstractAppState {
 					AStar PathTask = new AStar(TargetGrid);
 					PathTask.assignResources(ProvidePool(), new LinkedListDeque<AStarNode>(30));
 					PathTask.setModality(MovementType);
-					PathTask.setHeuristics(ManhattenHeuristic, EuclideanHeuristic);
+					PathTask.setHeuristics(OctileHeuristic);
 					PathTask.setEndPoints(StartCoords, GoalCoords);
 					MapPath FoundPath = PathTask.call();
 

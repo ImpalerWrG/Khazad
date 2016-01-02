@@ -84,10 +84,9 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		VisitedCoordinates.clear();
 
 		AStarNode StartNode = NodePool.provide();
-		StartNode.set(StartCoordinates, null, Direction.DIRECTION_NONE, 0, MainHeuristic.estimate(StartCoords, GoalCoords), TieBreakerHeuristic.estimate(StartCoords, GoalCoords));
+		StartNode.set(StartCoordinates, null, Direction.DIRECTION_NONE, 0, MainHeuristic.estimate(StartCoords, GoalCoords));
 
 		FringeDeque.insertFront(StartNode);
-		//FringeHeap.add(StartNode);
 	}
 
 	boolean searchPath(int NodesToExpand) {
@@ -149,6 +148,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 			CurrentNode = FringeHeap.poll();
 
 		MapCoordinate TestCoordinates = CurrentNode.LocationCoordinates;
+		Direction ParentDirection = CurrentNode.ParentDirection.invert();
 
 		if (VisitedCoordinates.contains(TestCoordinates))
 			return false;
@@ -164,7 +164,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		// Check all Neibors
 		for (int i = TestDirections.nextSetBit(0); i >= 0; i = TestDirections.nextSetBit(i + 1)) {
 			Direction DirectionType = Direction.ANGULAR_DIRECTIONS[i];
-			if (DirectionType == Direction.DIRECTION_NONE)
+			if (DirectionType == Direction.DIRECTION_NONE || DirectionType == ParentDirection)
 				continue;
 
 			NeiboringCoordinates.copy(TestCoordinates);
@@ -176,14 +176,14 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 				GraphReads++;
 
 				AStarNode NewNode = NodePool.provide();
-				NewNode.set(NeiboringCoordinates, CurrentNode, DirectionType, CurrentNode.PathLengthFromStart + EdgeCost, MainHeuristic.estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic.estimate(NeiboringCoordinates, GoalCoordinates));
+				NewNode.set(NeiboringCoordinates, CurrentNode, DirectionType, CurrentNode.PathLengthFromStart + EdgeCost, MainHeuristic.estimate(NeiboringCoordinates, GoalCoordinates));
 
 				//FringeHeap.add(NewNode);
 				FringeDeque.insertFront(NewNode);
 			} // modify existing node with new distance?
 		}
 
-		while(FringeDeque.size() > 4) {
+		while(FringeDeque.size() > 1) {
 			FringeHeap.add(FringeDeque.removeLast());
 		}
 

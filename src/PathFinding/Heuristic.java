@@ -39,7 +39,7 @@ public interface Heuristic {
 		}
 	}
 
-	public class MaxDimension implements Heuristic, Serializable {
+	public class Chebyshev implements Heuristic, Serializable {
 
 		private static final long serialVersionUID = 1;
 
@@ -79,19 +79,32 @@ public interface Heuristic {
 	}
 
 	public class Diagonal implements Heuristic, Serializable {
+		final float SquareRootTwo = (float) Math.sqrt(2);
 
 		public float estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
 			float DiagonalsX = Math.abs(StartCoord.getX() - GoalCoord.getX());
 			float DiagonalsY = Math.abs(StartCoord.getY() - GoalCoord.getY());
 			float ZDifference = Math.abs(StartCoord.getZ() - GoalCoord.getZ());
 
-			final float SquareRootTwo = (float) Math.sqrt(2);
 
 			if (DiagonalsX < DiagonalsY) {
 				return (SquareRootTwo * DiagonalsX) + (DiagonalsY - DiagonalsX) + (ZDifference * 2);
 			} else {
 				return (SquareRootTwo * DiagonalsY) + (DiagonalsX - DiagonalsY) + (ZDifference * 2);
 			}
+		}
+	}
+
+	public class Octile implements Heuristic, Serializable {
+		final float DiagonalFactor = ((float) Math.sqrt(2)) -1;
+
+		public float estimate(MapCoordinate StartCoord, MapCoordinate GoalCoord) {
+			float DiagonalsX = Math.abs(StartCoord.getX() - GoalCoord.getX());
+			float DiagonalsY = Math.abs(StartCoord.getY() - GoalCoord.getY());
+			float ZDifference = Math.abs(StartCoord.getZ() - GoalCoord.getZ());
+
+			float estimate = Math.max(DiagonalsX, DiagonalsY) + (DiagonalFactor * Math.min(DiagonalsX, DiagonalsY)) + (ZDifference * 2);
+			return estimate;
 		}
 	}
 
