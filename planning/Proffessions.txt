@@ -67,7 +67,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 			
 			Minor allied Diety branch?
 </>
-<Thinker (Chancellor/Seneschal) [LOG][MEM] - Intelectual pursuits, government, science ect (Quil&Ink, Book)>
+<Thinker (Chancellor) [LOG][MEM] - Intelectual pursuits, government, science ect (Quil&Ink, Book)>
 
 	<Healer (Chief Physician) [INT][CHA] >
 		Chiurgeon
@@ -76,16 +76,17 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Diagnosis
 		Dentist
 		Barber?
-		Pharmacologist/Apothecary - gives medicine
 	</>		
-	<Alchemist [DEX][]>
-		Apothecary - gives medicine
+	<Alchemist (Philosopher, Thaumaturge) [DEX][]>
+		Apothecary - gives medicine, medical orientation
 		Powderer - makes extra black-powder for weapons and blasting
 		Transmuter - converts metals (Mithril/Adimantium?)
 		Philosopher - 
 		Naturalist - finds weaknesses and uses of natural creatures/extracts etc
+		Astrologer - studies sky for signs and omens
+		Numerologist - search for omens in numbers and records
 	</>	
-	<Mage (Court Magician) [END][]>
+	<Mage (Arch Mage) [END][]>
 		Sorcerer - mind controlling magic
 		Wizard - 
 		Druid - nature controlling magic
@@ -103,6 +104,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Spy [WIL][JDG] - Sent to foreign lands for intelligence
 		Assassin [SPD][RFL] - 
 		??? [END][INT] - 
+		Herald ???
 	</>
 	<Sage (LoreMaster)[JDG][] >
 		Fortune-teller [END][INT] - entertainment source
@@ -114,14 +116,14 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 </>
 <Fighter (Grand Marshal) [VIT][REF] - Combat in all forms (Helmet, ???)>
 
-	<Skirmisher [SPD][JDG] - light fast>
+	<Skirmisher [SPD][JDG] - light fast (leather armor, )>
 		Berserker [WIL][CHA] - maximum aggression
 		Javaliner [STR][] - bombard with thrown weapons
 		Spelunker [END][VIT] - underground scouting and skimishing
 		Grenadier [DEX][MEM] - throws explosives
 		Ranger [FLX][] - stealthy scouting
 	</>	
-	<Warrior [STR][LOG] - Balanced >
+	<Warrior [STR][LOG] - Balanced (round shield, )>
 		???
 		???
 		Housecarl - 2 handed Ax
@@ -135,16 +137,17 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Hussar - Heavy armoured
 		???
 	</>
-	<Marksman-Missilier [DEX][PER] - Ranged attack>
+	<Marksman-Missilier [DEX][PER] - Ranged attack >
 		Slinger - David vs Goliath, cheap but effective
 		Archer - Bow
 		SharpShooter
 		Musketeer - Musket
 		Quarreller - Crossbow
+		Bombardier - siege weapons?
 	</>	
 	<Defender [END][WIL] - Defensive formation fighting>
 		Pike Guard - Swiss style pike/polearm infantry, formation fighters
-		???
+		Sentinel - guards locations?
 		???
 		Legionnaire - Romanesque towershild and short sword, very heavy armor 
 		HighLander - mountain defensive, better climb mobility, high ground defence by avalanche and rock throwing
@@ -193,7 +196,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Stone Shaper
 		Potter / Glayver?
 	</>		
-	<Artist [][]>
+	<Artist (Maestro) [][]>
 		Bard/Singer
 		Painter
 		Thespian
@@ -201,9 +204,9 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Acrobat
 	</>	
 </>
-<Builder (Master Architect) [STR][FLX] - Any structure/space/building space creation (Helmet, ToolBelt?)>
+<Builder (Architect) [STR][FLX] - Any structure/space/building space creation (Helmet, ToolBelt?)>
 
-	<Mason>
+	<Mason (???)>
 		Bricklayer
 		Engraver
 		Stonecutter
@@ -231,9 +234,9 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 	</>
 	<Engineer [LOG]>
 		Mechanic
-		Siege Operator
+		Bombardier - siege weapon operator?
 		road builder?
-		Architect
+		Architect?
 		Plumber - pipes and steam engines
 	</>
 	<Decorator [][]>
@@ -249,76 +252,78 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Butcher
 		Baker
 		ChesseMaker
-		Brewer  ??
 		Scullion/Cleaner ???
 		Confectioner - fine dwarven chocolates
-	</>		
+	</>
 	<Miller - Food processing>
 		Thresher - grain processing
 		Smoker - preserves food by smoking
 		Tanner - leather making
-	</>		
-	<CareGiver - Domestic work>
+	</>
+	<CareGiver (Steward) - Domestic work>
 		Nurse - care for wounded
 		Nanny - care for children
 		Midwife - care for pregnant
 		Innkeeper - care for guests
 		Steward - care for royals
-	</>	
-	<Burner>
+	</>
+	<Hearth-Tender ()>
 		Coaler - makes charcoal
 		Soapier - makes lye & Soap
-		Smelter?
-	</>		
+		Smelter - specialist in metal smelting
+		Wood-splitter - makes kindling
+	</>
 	<Tinkerer - non durable goods>
 		Paper Maker
-		Candle Maker
+		Candle Maker - Candles and Soaps
 		BookBinder - 
-	</>	
-	<Brewer () [][] - Alcohol maker>
+	</>
+	<Brewer (Brew Master) [][] - Alcohol maker>
 		<Distiller/>
 		<Vintner/>
-	</>	
+	</>
 	Hauler?  Porter?
 </>
-<Gatherer (Reeve) [PER][SPD] - Collection of raw materials in unsafe areas, a dangerous and low status profession (Cloak, Basket?)>
+<Gatherer (Reeve/Seneschal) [PER][SPD] - Collection of raw materials in unsafe areas, a dangerous and low status profession (Cloak, Basket?)>
 	
 	<Farmer (Gardener) [END][JDG]>
-		fruit/grain/underground?
+		grain/underground?
+		Mycoler - mushroom grower
+		Orcharder - tree crops
 		Plower
 		Gong-farmer?
-	</>	
+	</>
 	<Merchant (Trader) [CHA][LOG]>
 		Pedlar - lone barter, no diplomatic relations necessary
 		Teamster - larger scale, wagon load trade
 		Grocer - local consumables sales?
 		Mercer - runs shops for foreigners in 'Bazaar' zone
 		Sailor - largest scale trade by boat
-	</>	
+	</>
 	<Woodsman (Warden) [STR][FLX]>
 		LumberJack
 		Sawyer
-		Forester - replants trees
-	</>		
+		Forester/planter - replants trees
+	</>
 	<Hunter (Master of the Hunt) [RFL][VIT]>
 		Trapper - hunts by trap setting
 		Animal Trainer - trains tame animals
 		Scouts
 		Falconer - hunts small game and birds with trained Falcon
-	</>		
-	<Forager [MEM][DEX]>
-		Picker? Herbalist - Berry picking
+	</>
+	<Forager (???)[MEM][DEX]>
+		Picker/Herbalist - Berry picking
 		Fisher - 
 		BeeKeeper - 
 		Scavenger - collects junk
-	</>		
+	</>
 	<Herder (Master of the Herd) [WIL][INT]>
 		<Shepard [VIT][MEM] watches over flocks /> 
 		<Milker [DEX][FLX]- milks domestic animals /> 
 		<Groom [JDG][END]- cares for mounts /> 
 		<Shearer [STR][RFL]- collects fur from domestic animals /> 
 		<AnimalTrainer [LOG][CHA]- trains tame animals /> 
-	</>	
+	</>
 </>
 
 [SPD]  [END][STR][FLX][DEX]       [VIT][REF]

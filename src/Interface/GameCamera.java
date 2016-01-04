@@ -66,9 +66,9 @@ public class GameCamera {
 	private float MaxPitch = 80;
 	private float MinPitch = .1f;
 
-	protected int SliceTop;
-	protected int SliceBottom;
-	protected int ViewLevels;
+	private int SliceTop;
+	private int SliceBottom;
+	private int ViewLevels;
 	protected int ViewMax, ViewMin;
 
 	protected final int FrustumNear = -500;
@@ -123,26 +123,45 @@ public class GameCamera {
 		pitch.fromAngleAxis(FastMath.PI * this.ModifiedPitchAngle / 180, new Vector3f(1, 0, 0));
 		PitchNode.setLocalRotation(pitch);
 
-		CamNode.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);		
+		CamNode.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);
+		//setClipPlane();
 	}
 
 	//expand or contract frustrum for paralax zooming
 	protected void zoomCamera(float value) {
 		float change = (value * zoomSpeed) + 1;
 		if ((zoomFactor < maxzoom && change > 1) || (zoomFactor > minzoom && change < 1)) {
-			float aspect = (float) camera.getWidth() / camera.getHeight();
 
-			zoomFactor *= change;
-			TranslationFactor = zoomFactor / camera.getWidth() * aspect * 2;
-
-			float left = -zoomFactor * aspect;
-			float right = zoomFactor * aspect;
-			float top = zoomFactor;
-			float bottom = -zoomFactor;
-
-			camera.setFrustum(FrustumNear * zoomFactor, FrustumFar * zoomFactor, left, right, top, bottom);
-			updatePitch();
+			if (change > 0) {
+				zoomFactor *= change;
+				zoomFactor = Math.min(zoomFactor, maxzoom);
+				zoomFactor = Math.max(zoomFactor, minzoom);
+				
+				frustrumReset();
+				updatePitch();
+				//setClipPlane();
+			}
 		}
+	}
+
+	protected void frustrumReset() {
+		float aspect = (float) camera.getWidth() / camera.getHeight();
+		TranslationFactor = zoomFactor / camera.getWidth() * aspect * 2;
+
+		float left = -zoomFactor * aspect;
+		float right = zoomFactor * aspect;
+		float top = zoomFactor;
+		float bottom = -zoomFactor;
+
+		camera.setFrustum(FrustumNear * zoomFactor, FrustumFar * zoomFactor, left, right, top, bottom);	
+	}
+
+	protected void setClipPlane() {
+		float SliceTopLevel = SliceTop;
+
+		Plane SlicingTopPlane = new Plane(Vector3f.UNIT_Z, 0);
+		SlicingTopPlane.setConstant(SliceTopLevel + 0.499f);
+		camera.setClipPlane(SlicingTopPlane, Plane.Side.Negative);	
 	}
 
 	//rotate the camera around the target on the Horizonatal XY plane
@@ -180,6 +199,14 @@ public class GameCamera {
 			return Minimum;
 		}
 		return Minimum;
+	}
+
+	public void setSlice(int Top, int Bottom) {
+		SliceTop = Top;
+		SliceBottom = Bottom;
+		Vector3f NewLocation = TargetNode.getLocalTranslation();
+		NewLocation.z = Top;
+		TargetNode.setLocalTranslation(NewLocation);
 	}
 
 	public Ray getMouseRay(Vector2f click2d) {

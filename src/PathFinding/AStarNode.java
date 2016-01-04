@@ -39,6 +39,7 @@ public class AStarNode implements Comparable<AStarNode>, Serializable {
 	// Recorded Path data used to judge this node
 	float PathLengthFromStart;
 	float MinimumCostToGoal;
+	float TieBreakerValue;
 	// Data about our Parent
 	AStarNode Parent;
 	Direction ParentDirection;
@@ -47,12 +48,13 @@ public class AStarNode implements Comparable<AStarNode>, Serializable {
 		LocationCoordinates = new MapCoordinate();
 	}
 
-	void set(MapCoordinate TargetCoordinates, AStarNode ParentNode, Direction SourceDirection, float DistanceFromStart, float MinimumCost) {
+	void set(MapCoordinate TargetCoordinates, AStarNode ParentNode, Direction SourceDirection, float DistanceFromStart, float MinimumCost, float TieBreaker) {
 		Parent = ParentNode;
 		ParentDirection = SourceDirection;
 		LocationCoordinates.copy(TargetCoordinates);
 		PathLengthFromStart = DistanceFromStart;
 		MinimumCostToGoal = MinimumCost;
+		TieBreakerValue = TieBreaker;
 		TotalCost = PathLengthFromStart + MinimumCostToGoal;
 	}
 
@@ -60,7 +62,7 @@ public class AStarNode implements Comparable<AStarNode>, Serializable {
 		if (TotalCost < TargetNode.TotalCost) {
 			return -1;
 		} else if (TotalCost == TargetNode.TotalCost) {
-			if (PathLengthFromStart > TargetNode.PathLengthFromStart) {
+			if (TieBreakerValue < TargetNode.TieBreakerValue) {
 				return -1;
 			} else {
 				return 1;
@@ -68,8 +70,6 @@ public class AStarNode implements Comparable<AStarNode>, Serializable {
 		} else {
 			return 1;
 		}
-		//}
-		//return 0;
 	}
 
 	boolean equals(AStarNode other) {

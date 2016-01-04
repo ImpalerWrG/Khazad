@@ -303,18 +303,20 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				Terrain.SwapFrustrumChunks();
 			} else if (mouseWheelEnabled) {
 				MainCamera.zoomCamera(value);
-				Terrain.setLevelofDetail(MainCamera.zoomFactor);
-				Terrain.SwapFrustrumChunks();
 			}
+			Terrain.setLevelofDetail(MainCamera.zoomFactor);
+			Terrain.SwapFrustrumChunks();
+
 		} else if (name.equals("ZoomOut")) {
 			if (MiddleDown) {
 				changeViewLevel(1);
 				Terrain.SwapFrustrumChunks();
 			} else if (mouseWheelEnabled) {
 				MainCamera.zoomCamera(-value);
-				Terrain.setLevelofDetail(MainCamera.zoomFactor);
-				Terrain.SwapFrustrumChunks();
 			}
+			Terrain.setLevelofDetail(MainCamera.zoomFactor);
+			Terrain.SwapFrustrumChunks();
+
 		}
 	}
 
@@ -471,8 +473,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			selectedActor = game.getActors().get(actorId);
 			return;
 		}
-		//System.out.println("Skipped: " + nodeName);
-		// keep searching;
 		identifyNode(node.getParent());
 	}
 
@@ -524,11 +524,17 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			SliceBottom += Change;
 			ViewLevels = SliceTop - SliceBottom;
 
-			//TargetNode.move(0, 0, Change);
-			//CamNode.move(0, 0, Change);		
+			if (this.state != null) {
+				MapRenderer render = state.getState(MapRenderer.class);
+				if (render != null) {
+					render.setSliceLevels(SliceTop, SliceBottom);
+				}
+			}
+			if (this.MainCamera != null) {
+				this.MainCamera.translateCamera(Vector3f.UNIT_Z.mult(Change));
+				this.MainCamera.setSlice(SliceTop, SliceBottom);
+			}
 		}
-		if (this.MainCamera != null)
-			this.MainCamera.SliceTop = SliceTop;
 	}
 
 	public void setSlice(int newTop, int newBottome) {
@@ -548,14 +554,12 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				render.setSliceLevels(SliceTop, SliceBottom);
 			}
 		}
-		if (this.MainCamera != null)
-			this.MainCamera.SliceTop = SliceTop;
+		if (this.MainCamera != null) {
+			this.MainCamera.setSlice(SliceTop, SliceBottom);
+		}
 	}
 
 	public void setSliceTop(int newValue) {
-		//TargetNode.move(0, 0, newValue - SliceTop);
-		//CamNode.move(0, 0, newValue - SliceTop);
-
 		SliceTop = newValue;
 		if (SliceBottom >= SliceTop)
 			SliceBottom = SliceTop - 1;
@@ -568,14 +572,12 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				render.setSliceLevels(SliceTop, SliceBottom);
 			}
 		}
-		if (this.MainCamera != null)
-			this.MainCamera.SliceTop = SliceTop;
+		if (this.MainCamera != null) {
+			this.MainCamera.setSlice(SliceTop, SliceBottom);
+		}
 	}
 
 	public void setSliceBottom(int newValue) {
-		//TargetNode.move(0, 0, newValue - SliceBottom);
-		//CamNode.move(0, 0, newValue - SliceBottom);
-
 		SliceBottom = newValue;
 		if (SliceTop <= SliceBottom)
 			SliceTop = SliceBottom + 1;

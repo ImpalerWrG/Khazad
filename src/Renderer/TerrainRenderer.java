@@ -186,13 +186,13 @@ public class TerrainRenderer extends AbstractAppState {
 	public void setLevelofDetail(float ZoomLevel) {
 		int NewDetailLevel = 0;
 
-		if (ZoomLevel > 40)
+		if (ZoomLevel > 60)
 			NewDetailLevel = 1;
-		if (ZoomLevel > 80)
+		if (ZoomLevel > 120)
 			NewDetailLevel = 2;
-		if (ZoomLevel > 160)
+		if (ZoomLevel > 240)
 			NewDetailLevel = 3;
-		if (ZoomLevel > 320)
+		if (ZoomLevel > 480)
 			NewDetailLevel = 4;
 
 		if (NewDetailLevel != this.LevelofDetail) {

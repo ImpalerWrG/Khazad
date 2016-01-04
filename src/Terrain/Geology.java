@@ -305,20 +305,25 @@ public class Geology implements Serializable {
 		return RockType0;
 	}
 
-	public BlockShape getBlockShapeAtCoordinates(int West, int East, int South, int North, int Top, int Bottom) {
+	public BlockShape getBlockShapeAtCoordinates(int West, int East, int South, int North, int Bottom, int Top) {
 		float Remainder;
+		float BlockSize = Top - Bottom;
 
-		Remainder = Height[West][South] - ((float) Top);
-		byte SWCornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * BlockShape.HEIGHT_FRACTIONS) + 1, (float) BlockShape.BELOW_CUBE_HEIGHT), (float) BlockShape.CUBE_TOP_HEIGHT);
+		Remainder = Height[West][South] - ((float) Bottom);
+		Remainder = Math.round((Remainder / BlockSize) * ((float) BlockShape.HEIGHT_FRACTIONS)) + BlockShape.CUBE_BOTTOM_HEIGHT;
+		byte SWCornerHeight = (byte) Math.min(Math.max(Remainder, BlockShape.BELOW_CUBE_HEIGHT), BlockShape.CUBE_TOP_HEIGHT);
 
-		Remainder = Height[East][South] - ((float) Top);
-		byte SECornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * BlockShape.HEIGHT_FRACTIONS) + 1, (float) BlockShape.BELOW_CUBE_HEIGHT), (float) BlockShape.CUBE_TOP_HEIGHT);
+		Remainder = Height[East][South] - ((float) Bottom);
+		Remainder = Math.round((Remainder / BlockSize) * ((float) BlockShape.HEIGHT_FRACTIONS)) + BlockShape.CUBE_BOTTOM_HEIGHT;
+		byte SECornerHeight = (byte) Math.min(Math.max(Remainder, (float) BlockShape.BELOW_CUBE_HEIGHT), (float) BlockShape.CUBE_TOP_HEIGHT);
 
-		Remainder = Height[West][North] - ((float) Top);
-		byte NWCornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * BlockShape.HEIGHT_FRACTIONS) + 1, (float) BlockShape.BELOW_CUBE_HEIGHT), (float) BlockShape.CUBE_TOP_HEIGHT);
+		Remainder = Height[West][North] - ((float) Bottom);
+		Remainder = Math.round((Remainder / BlockSize) * ((float) BlockShape.HEIGHT_FRACTIONS)) + BlockShape.CUBE_BOTTOM_HEIGHT;
+		byte NWCornerHeight = (byte) Math.min(Math.max(Remainder, (float) BlockShape.BELOW_CUBE_HEIGHT), (float) BlockShape.CUBE_TOP_HEIGHT);
 
-		Remainder = Height[East][North] - ((float) Top);
-		byte NECornerHeight = (byte) Math.min(Math.max(Math.round(Remainder * BlockShape.HEIGHT_FRACTIONS) + 1, (float) BlockShape.BELOW_CUBE_HEIGHT), (float) BlockShape.CUBE_TOP_HEIGHT);
+		Remainder = Height[East][North] - ((float) Bottom);
+		Remainder = Math.round((Remainder / BlockSize) * ((float) BlockShape.HEIGHT_FRACTIONS)) + BlockShape.CUBE_BOTTOM_HEIGHT;
+		byte NECornerHeight = (byte) Math.min(Math.max(Remainder, (float) BlockShape.BELOW_CUBE_HEIGHT), (float) BlockShape.CUBE_TOP_HEIGHT);
 
 		byte Split = (byte) RandomGenerator.roll(0, 1);
 
@@ -343,25 +348,23 @@ public class Geology implements Serializable {
 
 	public void loadChunkData(Chunk TargetChunk) {
 		ChunkCoordinate ChunkCoords = TargetChunk.getChunkCoordinates();
-		for (byte i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i++) {
-			for (BlockCoordinate Index = new BlockCoordinate(i); !Index.end(); Index.next()) {
-				int Offset = 1 << i;
+		for (byte DetailLevel = 0; DetailLevel < BlockCoordinate.CHUNK_DETAIL_LEVELS; DetailLevel++) {
+			for (BlockCoordinate Index = new BlockCoordinate(DetailLevel); !Index.end(); Index.next()) {
+				int Offset = 1 << DetailLevel;
 				short x = Index.getX();
 				short y = Index.getY();
-				short z = (short) (Index.getZ() + (ChunkCoords.Z * BlockCoordinate.CHUNK_EDGE_SIZE));
+				short z = (short) ((Index.getZ() * Offset) + (ChunkCoords.Z * BlockCoordinate.CHUNK_EDGE_SIZE));
 
 				BlockShape Shape = getBlockShapeAtCoordinates(x, x + Offset, y, y + Offset, z, z + Offset);
-				TargetChunk.setBlockShape(Index.getBlockIndex(), Shape, i);
+				TargetChunk.setBlockShape(Index, Shape);
 
-				if (i == 0) {
-					short MaterialType = getRockTypeAtCoordinates(Index.getBlockIndex(), z);
-					if (MaterialType != DataManager.INVALID_INDEX) {
-						TargetChunk.setBlockMaterial(Index.getBlockIndex(), MaterialType);	
-						TargetChunk.setBlockShape(Index.getBlockIndex(), Shape, i);
-					} else {
-						TargetChunk.setBlockMaterial(Index.getBlockIndex(), DataManager.INVALID_INDEX);
-						//TargetChunk.setBlockShape((byte) j, BlockShape.EMPTY_CUBE_DATA);
-					}
+				short MaterialType = getRockTypeAtCoordinates(Index.getBlockIndex(), z);
+				if (MaterialType != DataManager.INVALID_INDEX) {
+					TargetChunk.setBlockMaterial(Index, MaterialType);	
+					TargetChunk.setBlockShape(Index, Shape);
+				} else {
+					TargetChunk.setBlockMaterial(Index, DataManager.INVALID_INDEX);
+					TargetChunk.setBlockShape(Index, new BlockShape());
 				}
 			}
 		}

@@ -84,7 +84,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		VisitedCoordinates.clear();
 
 		AStarNode StartNode = NodePool.provide();
-		StartNode.set(StartCoordinates, null, Direction.DIRECTION_NONE, 0, MainHeuristic.estimate(StartCoords, GoalCoords));
+		StartNode.set(StartCoordinates, null, Direction.DIRECTION_NONE, 0, MainHeuristic.estimate(StartCoords, GoalCoords), TieBreakerHeuristic.estimate(StartCoords, GoalCoords));
 
 		FringeDeque.insertFront(StartNode);
 	}
@@ -176,7 +176,7 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 				GraphReads++;
 
 				AStarNode NewNode = NodePool.provide();
-				NewNode.set(NeiboringCoordinates, CurrentNode, DirectionType, CurrentNode.PathLengthFromStart + EdgeCost, MainHeuristic.estimate(NeiboringCoordinates, GoalCoordinates));
+				NewNode.set(NeiboringCoordinates, CurrentNode, DirectionType, CurrentNode.PathLengthFromStart + EdgeCost, MainHeuristic.estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic.estimate(NeiboringCoordinates, GoalCoordinates));
 
 				//FringeHeap.add(NewNode);
 				FringeDeque.insertFront(NewNode);

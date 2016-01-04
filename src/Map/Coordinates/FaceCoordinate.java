@@ -37,18 +37,8 @@ public class FaceCoordinate extends BlockCoordinate implements Serializable {
 		FaceDirection = (byte) Direction.DIRECTION_DESTINATION.ordinal();
 	}
 
-	public FaceCoordinate(short CubeIndex, Direction TargetDirection) {
-		super((byte) 0, CubeIndex);
-		FaceDirection = (byte) TargetDirection.ordinal();
-	}
-
-	public FaceCoordinate(short CubeIndex, Direction TargetDirection, byte DetailLevel) {
-		super(DetailLevel, CubeIndex);
-		FaceDirection = (byte) TargetDirection.ordinal();
-	}
-
-	public FaceCoordinate(BlockCoordinate Index, Direction TargetDirection, byte DetailLevel) {
-		super(DetailLevel, Index.Data);
+	public FaceCoordinate(BlockCoordinate Index, Direction TargetDirection) {
+		super(Index.DetailLevel, Index.Data);
 		FaceDirection = (byte) TargetDirection.ordinal();
 	}
 

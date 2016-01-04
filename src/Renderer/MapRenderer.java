@@ -39,6 +39,7 @@ import java.util.concurrent.Semaphore;
 
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import java.util.concurrent.ExecutorService;
 
 /**
  *
@@ -49,6 +50,7 @@ public class MapRenderer extends AbstractAppState {
 	SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
+	ExecutorService Executor;
 
 	Node MapNode = null;
 	Node sunnyterrainNode = null;
@@ -65,8 +67,11 @@ public class MapRenderer extends AbstractAppState {
 	boolean SunnyRendering, DarkRendering;
 
 	int Top, Bottom;
+	boolean DirtySlice;
 
-	public MapRenderer() {
+	public MapRenderer(ExecutorService Threadpool) {
+		Executor = Threadpool;
+
 		LightChunkNodeMap = new ConcurrentHashMap<ChunkCoordinate, Node>();
 		DarkChunkNodeMap = new ConcurrentHashMap<ChunkCoordinate, Node>();
 		ZMapLight = new TIntObjectHashMap<Node>();
@@ -192,29 +197,19 @@ public class MapRenderer extends AbstractAppState {
 	}
 
 	public void setSliceLevels(int top, int bottom) {
-		Top = top;
-		Bottom = bottom;
-
-		for (Node targetnode : ZMapLight.valueCollection()) {
-			float Z = targetnode.getLocalTranslation().getZ();
-			float ChunkBottom = (Z * BlockCoordinate.CHUNK_EDGE_SIZE);
-			float ChunkTop = ChunkBottom + BlockCoordinate.CHUNK_EDGE_SIZE;
-			if (ChunkBottom <= Top && Bottom <= ChunkTop && SunnyRendering) {
-				sunnyterrainNode.attachChild(targetnode);
-			} else {
-				sunnyterrainNode.detachChild(targetnode);
+		try {  // Semaphore prevents multiple copies of the same Chunk node from being created
+			semaphore.acquire();
+			try {
+				Top = top;
+				Bottom = bottom;
+				DirtySlice = true;
+			} finally {
+				semaphore.release();
 			}
-		}
-
-		for (Node targetnode : ZMapDark.valueCollection()) {
-			float Z = targetnode.getLocalTranslation().getZ();
-			float ChunkBottom = (Z * BlockCoordinate.CHUNK_EDGE_SIZE);
-			float ChunkTop = ChunkBottom + BlockCoordinate.CHUNK_EDGE_SIZE;
-			if (ChunkBottom <= Top && Bottom <= ChunkTop) {
-				darkterrainNode.attachChild(targetnode);
-			} else {
-				darkterrainNode.detachChild(targetnode);
-			}
+		} catch (final InterruptedException e) {
+			System.err.println(e.getLocalizedMessage());
+			System.err.println(e.getMessage());
+			System.err.println(e.toString());
 		}
 	}
 
@@ -250,5 +245,10 @@ public class MapRenderer extends AbstractAppState {
 
 	@Override
 	public void update(float tpf) {
+		if (DirtySlice) {
+			DirtySlice = false;
+			MapSlicer Slicer = new MapSlicer(app, this);
+			Executor.submit(Slicer);
+		}
 	}
 }

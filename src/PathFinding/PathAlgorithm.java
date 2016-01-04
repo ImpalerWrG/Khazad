@@ -38,6 +38,7 @@ public abstract class PathAlgorithm<T> implements Serializable {
 	MapCoordinate StartCoordinates;
 	MapCoordinate GoalCoordinates;
 	Heuristic MainHeuristic;
+	Heuristic TieBreakerHeuristic;
 	MapPath FinalPath;
 
 	void setEndPoints(MapCoordinate StartCoords, MapCoordinate GoalCoords) {
@@ -47,8 +48,9 @@ public abstract class PathAlgorithm<T> implements Serializable {
 		FinalPath = null;
 	}
 
-	void setHeuristics(Heuristic PrimaryHeuristic) {
+	void setHeuristics(Heuristic PrimaryHeuristic, Heuristic SecondaryHeuristic) {
 		MainHeuristic = PrimaryHeuristic;
+		TieBreakerHeuristic = SecondaryHeuristic;
 	}
 
 	void setModality(MovementModality MovementType) {

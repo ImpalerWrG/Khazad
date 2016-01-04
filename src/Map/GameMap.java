@@ -197,32 +197,32 @@ public class GameMap implements Serializable {
 
 	public Face getFace(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
 		Chunk TargetChunk = Chunks.get(TargetMapCoordinates.Chunk);
-		return TargetChunk != null ? TargetChunk.getFace(new FaceCoordinate(TargetMapCoordinates.Block.getBlockIndex(), DirectionType), 0) : null;
+		return TargetChunk != null ? TargetChunk.getFace(new FaceCoordinate(TargetMapCoordinates.Block, DirectionType)) : null;
 	}
 
 	public boolean hasFace(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
 		Chunk TargetChunk = Chunks.get(TargetMapCoordinates.Chunk);
-		return TargetChunk != null ? TargetChunk.hasFace(new FaceCoordinate(TargetMapCoordinates.Block.getBlockIndex(), DirectionType), 0) : false;
+		return TargetChunk != null ? TargetChunk.hasFace(new FaceCoordinate(TargetMapCoordinates.Block, DirectionType)) : false;
 	}
 
 	public boolean removeFace(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
 		Chunk TargetChunk = Chunks.get(TargetMapCoordinates.Chunk);
-		return TargetChunk != null ? TargetChunk.removeFace(new FaceCoordinate(TargetMapCoordinates.Block.getBlockIndex(), DirectionType), 0) : false;
+		return TargetChunk != null ? TargetChunk.removeFace(new FaceCoordinate(TargetMapCoordinates.Block, DirectionType)) : false;
 	}
 
-	public Face addFace(MapCoordinate TargetMapCoordinates, Direction DirectionType, int LevelofDetail) {
+	public Face addFace(MapCoordinate TargetMapCoordinates, Direction DirectionType) {
 		Chunk TargetChunk = getChunk(TargetMapCoordinates.Chunk);
 		if (TargetChunk == null)
 			TargetChunk = initializeChunk(TargetMapCoordinates.Chunk);
 
-		return TargetChunk.addFace(new FaceCoordinate(TargetMapCoordinates.Block, DirectionType, (byte) LevelofDetail));
+		return TargetChunk.addFace(new FaceCoordinate(TargetMapCoordinates.Block, DirectionType));
 	}
 
 	public void setBlockShape(MapCoordinate TargetMapCoordinates, BlockShape NewShape) {
 		Chunk TargetChunk = getChunk(TargetMapCoordinates.Chunk);
 
 		if (TargetChunk != null) {
-			TargetChunk.setBlockShape(TargetMapCoordinates.Block.getBlockIndex(), NewShape);
+			TargetChunk.setBlockShape(TargetMapCoordinates.Block, NewShape);
 			MapCoordinate[] Coordinates = {TargetMapCoordinates};
 			PathManager.getSingleton().editMapAbstractions(Coordinates);
 		}
@@ -232,7 +232,7 @@ public class GameMap implements Serializable {
 		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
 
 		if (TargetChunk != null) {
-			TargetChunk.getBlockShape(Coordinates.Block.getBlockIndex(), 0, writeBlock);
+			TargetChunk.getBlockShape(Coordinates.Block, writeBlock);
 		} else {
 			writeBlock.setData(BlockShape.BELOW_CUBE_HEIGHT);
 		}
@@ -242,19 +242,19 @@ public class GameMap implements Serializable {
 		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
 
 		if (TargetChunk != null) {
-			TargetChunk.setBlockMaterial(Coordinates.Block.getBlockIndex(), MaterialID);
+			TargetChunk.setBlockMaterial(Coordinates.Block, MaterialID);
 		}
 	}
 
 	public short getBlockMaterial(MapCoordinate Coordinates) {
 		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
-		return TargetChunk != null ? TargetChunk.getBlockMaterial(Coordinates.Block.getBlockIndex()) : DataManager.INVALID_INDEX;
+		return TargetChunk != null ? TargetChunk.getBlockMaterial(Coordinates.Block) : DataManager.INVALID_INDEX;
 	}
 
 	public void setFaceMaterial(MapCoordinate TargetMapCoordinates, Direction DirectionType, short MaterialID) {
 		Chunk TargetChunk = getChunk(TargetMapCoordinates.Chunk);
 		if (TargetChunk != null) {
-			TargetChunk.setFaceMaterialType(new FaceCoordinate(TargetMapCoordinates.Block.getBlockIndex(), DirectionType), MaterialID);
+			TargetChunk.setFaceMaterialType(new FaceCoordinate(TargetMapCoordinates.Block, DirectionType), MaterialID);
 		}
 	}
 
@@ -266,7 +266,7 @@ public class GameMap implements Serializable {
 	public void setFaceSurfaceType(MapCoordinate TargetMapCoordinates, Direction DirectionType, short SurfaceID) {
 		Chunk TargetChunk = getChunk(TargetMapCoordinates.Chunk);
 		if (TargetChunk != null) {
-			TargetChunk.setFaceSurfaceType(new FaceCoordinate(TargetMapCoordinates.Block.getBlockIndex(), DirectionType), SurfaceID);
+			TargetChunk.setFaceSurfaceType(new FaceCoordinate(TargetMapCoordinates.Block, DirectionType), SurfaceID);
 		}
 	}
 
@@ -301,7 +301,7 @@ public class GameMap implements Serializable {
 
 			do {
 				for (BlockCoordinate Index = new BlockCoordinate(); !Index.end(); Index.next()) {
-					TopChunk.getBlockShape(Index.getBlockIndex(), 0, TargetBlockShape);
+					TopChunk.getBlockShape(Index, TargetBlockShape);
 					if (TopChunk.isBlockSunLit(Index.getBlockIndex()) && !TargetBlockShape.hasFace(Direction.DIRECTION_NONE)) {
 						BottomChunk.setBlockSunLit(Index.getBlockIndex(), true);
 						LightRemains = true;
@@ -503,7 +503,7 @@ public class GameMap implements Serializable {
 				if (!TargetBlockShape.isEmpty() && !TargetBlockShape.isSolid()) {
 					FaceShape NewShape = new FaceShape(TargetBlockShape, null, Direction.DIRECTION_NONE);
 					if (TargetFace == null) {
-						TargetFace = addFace(TargetCoordinates, Direction.DIRECTION_NONE, 0);
+						TargetFace = addFace(TargetCoordinates, Direction.DIRECTION_NONE);
 						TargetFace.setFaceShapeType(NewShape);
 						TargetFace.setFaceSurfaceType(RoughFloorID);
 						TargetFace.setFaceMaterialType(getBlockMaterial(TargetCoordinates));
@@ -524,7 +524,7 @@ public class GameMap implements Serializable {
 				if (TargetBlockShape.hasFloor()) {
 					FaceShape NewShape = new FaceShape(TargetBlockShape, AdjacentBlockShape, DirectionType);
 					if (TargetFace == null) {
-						TargetFace = addFace(TargetCoordinates, DirectionType, 0);
+						TargetFace = addFace(TargetCoordinates, DirectionType);
 						TargetFace.setFaceMaterialType(getBlockMaterial(ModifiedCoordinates));
 						TargetFace.setFaceSurfaceType(RoughFloorID);
 						TargetFace.setFaceShapeType(NewShape);
@@ -544,7 +544,7 @@ public class GameMap implements Serializable {
 				if (AdjacentBlockShape.hasFloor()) {
 					FaceShape NewShape = new FaceShape(TargetBlockShape, AdjacentBlockShape, DirectionType);
 					if (TargetFace == null) {
-						TargetFace = addFace(TargetCoordinates, DirectionType, 0);
+						TargetFace = addFace(TargetCoordinates, DirectionType);
 						TargetFace.setFaceMaterialType(getBlockMaterial(TargetCoordinates));
 						TargetFace.setFaceSurfaceType(RoughFloorID);
 						TargetFace.setFaceShapeType(NewShape);
@@ -567,7 +567,7 @@ public class GameMap implements Serializable {
 				if (TargetBlockShape.hasFace(DirectionType)) {
 					FaceShape NewShape = new FaceShape(TargetBlockShape, AdjacentBlockShape, DirectionType);
 					if (TargetFace == null) {
-						TargetFace = addFace(TargetCoordinates, DirectionType, 0);
+						TargetFace = addFace(TargetCoordinates, DirectionType);
 						TargetFace.setFaceMaterialType(getBlockMaterial(TargetCoordinates));
 						TargetFace.setFaceShapeType(NewShape);
 						TargetFace.setFaceSurfaceType(RoughWallID);
