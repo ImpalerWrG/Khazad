@@ -17,8 +17,8 @@
 
 package PathFinding;
 
-import Map.Direction;
-import Map.MapCoordinate;
+import Map.Coordinates.Direction;
+import Map.Coordinates.MapCoordinate;
 import java.io.Serializable;
 
 /**

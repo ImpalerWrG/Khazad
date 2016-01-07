@@ -19,17 +19,17 @@ package Renderer;
 
 import com.jme3.app.Application;
 
-import Map.Cell;
-import Map.Face;
-import Map.FaceCoordinate;
-import Map.TileBuilder;
+import Map.*;
+import Map.Coordinates.*;
 
 import Renderer.TextureManager.TextureAtlasCoordinates;
+import com.jme3.bounding.BoundingVolume;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.control.LodControl;
 
 import jme3tools.optimize.GeometryBatchFactory;
@@ -40,93 +40,112 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 /**
- * Callable class that creates a optimized mesh for a Cell and swaps it into
+ * Callable class that creates a optimized mesh for a Chunk and swaps it into
  * the Scene graph.
  *
  * @author Impaler
  */
 public class TerrainBuilder implements Callable<Void> {
 
-	Cell BuildCell;
+	Chunk BuildChunk;
 	TileBuilder TileSource;
 	Application app;
-	Node TerrainLight, TerrainDark, CellLight, CellDark;
-	Geometry LightBuildGeometry, DarkBuildGeometry;
-	LodControl Controler;
+	Node TerrainLight, TerrainDark, ChunkLight, ChunkDark;
+	Geometry[] LightBuildGeometry, DarkBuildGeometry;
+	int DetailLevel;
+	Spatial.CullHint hint;
 
-	public TerrainBuilder(Application Parentapp, Cell TargetCell, TileBuilder Tiles, LodControl controler) {
+	public TerrainBuilder(Application Parentapp, Chunk TargetChunk, TileBuilder Tiles, int LevelofDetail) {
 		this.app = Parentapp;
-		this.BuildCell = TargetCell;
+		this.BuildChunk = TargetChunk;
 		this.TileSource = Tiles;
-		this.Controler = controler;
+		this.DetailLevel = LevelofDetail;
+		
+		this.LightBuildGeometry = new Geometry[BlockCoordinate.CHUNK_DETAIL_LEVELS];
+		this.DarkBuildGeometry = new Geometry[BlockCoordinate.CHUNK_DETAIL_LEVELS];		
 	}
 
-	public void setNodes(Node LightCellNode, Node DarkCellNode) {
-		this.CellLight = LightCellNode;
-		this.CellDark = DarkCellNode;
+	public void setNodes(Node LightChunkNode, Node DarkChunkNode) {
+		this.ChunkLight = LightChunkNode;
+		this.ChunkDark = DarkChunkNode;
 		TerrainLight = new Node("TerrainLight");
 		TerrainDark = new Node("TerrainDark");
+	}
+
+	public void setHint(Spatial.CullHint TerrainHint) {
+		this.hint = TerrainHint;
 	}
 
 	public Void call() {
 		TextureManager Texturing = TextureManager.getTextureManager();
 
-		// Terrain Faces
-		HashMap<FaceCoordinate, Face> faces = BuildCell.getFaces();
-		Iterator<Map.Entry<FaceCoordinate, Face>> entries = faces.entrySet().iterator();
-		while (entries.hasNext()) {
-			Map.Entry<FaceCoordinate, Face> entry = entries.next();
+		for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i ++) {
+			int BlockSize = 1 << i;
+			// Terrain Faces
+			HashMap<FaceCoordinate, Face> faces = BuildChunk.getFaces(i);
+			Iterator<Map.Entry<FaceCoordinate, Face>> entries = faces.entrySet().iterator();
+			while (entries.hasNext()) {
+				Map.Entry<FaceCoordinate, Face> entry = entries.next();
+				
+				FaceCoordinate coords = entry.getKey();
+				Face targetface = entry.getValue();
 
-			FaceCoordinate coords = entry.getKey();
-			Face targetface = entry.getValue();
+				TextureAtlasCoordinates AtlasCoords = Texturing.getTextureCoordinates(targetface.getFaceMaterialType(), targetface.getFaceSurfaceType());
+				Mesh facemesh = TileSource.getMesh(targetface.getFaceShapeType(), AtlasCoords);
+				if (facemesh != null) {
+					Geometry geom = new Geometry("face", facemesh);
+					//geom.scale(1.001f);  //T-Chunk junction hack
+					
+					geom.scale(BlockSize, BlockSize, BlockSize);
+					geom.setLocalTranslation(new Vector3f(coords.getX() * BlockSize, coords.getY() * BlockSize, coords.getZ() * BlockSize));
+					geom.setMaterial(TextureManager.getTextureManager().TerrainMaterial);
 
-			TextureAtlasCoordinates AtlasCoords = Texturing.getTextureCoordinates(targetface.getFaceMaterialType(), targetface.getFaceSurfaceType());
-			Mesh facemesh = TileSource.getMesh(targetface.getFaceShapeType(), AtlasCoords);
-			if (facemesh != null) {
-				Geometry geom = new Geometry("face", facemesh);
-				geom.scale(1.001f);  //T-Cell junction hack
-				geom.setLocalTranslation(new Vector3f(coords.getX(), coords.getY(), 0));
-				geom.setMaterial(TextureManager.getTextureManager().TerrainMaterial);
-
-				if (targetface.isSunlit()) {
-					TerrainLight.attachChild(geom);
-				} else {
-					TerrainDark.attachChild(geom);
+					if (targetface.isSunlit()) {
+						TerrainLight.attachChild(geom);
+					} else {
+						TerrainDark.attachChild(geom);
+					}
 				}
 			}
-		}
 
-		GeometryBatchFactory.optimize(TerrainLight, true);
-		if (TerrainLight.getQuantity() > 0) {
-			LightBuildGeometry = (Geometry) TerrainLight.getChild(0);
+			GeometryBatchFactory.optimize(TerrainLight, true);
+			if (TerrainLight.getQuantity() > 0) {
+				LightBuildGeometry[i] = (Geometry) TerrainLight.getChild(0);
+				LightBuildGeometry[i].setName("LightGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + i);
+				TerrainLight.detachAllChildren();
+			}
 
-			//LodGenerator lod = new LodGenerator(LightBuildGeometry);
-			//lod.bakeLods(LodGenerator.TriangleReductionMethod.PROPORTIONAL, 0.75f, 0.93f);
-			//LightBuildGeometry.addControl(new LodControl());
-
-			LightBuildGeometry.setName("LightGeometry Cell" + BuildCell.toString());
-		}
-		GeometryBatchFactory.optimize(TerrainDark, true);
-		if (TerrainDark.getQuantity() > 0) {
-			DarkBuildGeometry = (Geometry) TerrainDark.getChild(0);
-
-			//LodGenerator lod = new LodGenerator(DarkBuildGeometry);
-			//lod.bakeLods(LodGenerator.TriangleReductionMethod.PROPORTIONAL, 0.75f, 0.93f);
-			//DarkBuildGeometry.addControl(new LodControl());
-
-			DarkBuildGeometry.setName("DarkGeometry Cell" + BuildCell.toString());
+			GeometryBatchFactory.optimize(TerrainDark, true);
+			if (TerrainDark.getQuantity() > 0) {
+				DarkBuildGeometry[i] = (Geometry) TerrainDark.getChild(0);
+				DarkBuildGeometry[i].setName("DarkGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + i);
+				TerrainDark.detachAllChildren();
+			}
 		}
 
 		app.enqueue(new Callable() {
 			public Object call() throws Exception {
-				CellLight.detachChildNamed("LightGeometry Cell" + BuildCell.toString());
-				if (LightBuildGeometry != null)
-					CellLight.attachChild(LightBuildGeometry);
+				for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i ++) {
+					ChunkLight.detachChildNamed("LightGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + i);
+					if (LightBuildGeometry[i] != null) {
+						ChunkLight.attachChild(LightBuildGeometry[i]);
+						if (i == DetailLevel) {
+							LightBuildGeometry[i].setCullHint(hint);
+						} else {
+							LightBuildGeometry[i].setCullHint(Spatial.CullHint.Always);							
+						}
+					}
 
-				CellDark.detachChildNamed("DarkGeometry Cell" + BuildCell.toString());
-				if (DarkBuildGeometry != null)
-					CellDark.attachChild(DarkBuildGeometry);
-
+					ChunkDark.detachChildNamed("DarkGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + i);
+					if (DarkBuildGeometry[i] != null) {
+						ChunkDark.attachChild(DarkBuildGeometry[i]);
+						if (i == DetailLevel) {
+							DarkBuildGeometry[i].setCullHint(hint);
+						} else {
+							DarkBuildGeometry[i].setCullHint(Spatial.CullHint.Always);							
+						}					
+					}
+				}
 				return null;
 			}
 		});

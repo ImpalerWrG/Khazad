@@ -17,11 +17,12 @@
 
 package Map;
 
+import Map.Coordinates.Direction;
 import Data.DataManager;
 import java.io.Serializable;
 
 /**
- * Describes a Face both its shape, location inside a Cell and it's material
+ * Describes a Face both its shape, location inside a Chunk and it's material
  * for gameplay purposes.
  *
  * @author Impaler
@@ -31,7 +32,7 @@ public class Face implements Serializable {
 	private static final long serialVersionUID = 1;
 	// Shape and location Index
 	private FaceShape FaceType;
-	byte LocationCoordinates;
+	//byte LocationCoordinates;
 	boolean Sunlit;
 	// DataType Indexes
 	private short SurfaceTypeID;
@@ -41,25 +42,25 @@ public class Face implements Serializable {
 		SurfaceTypeID = DataManager.INVALID_INDEX;
 		MaterialTypeID = DataManager.INVALID_INDEX;
 
-		CubeShape SourceCube = new CubeShape((byte) 0);
-		CubeShape AdjacentCube = new CubeShape((byte) 0);
-		FaceType = new FaceShape(SourceCube, AdjacentCube, Direction.DIRECTION_NONE);
+		BlockShape SourceBlock = new BlockShape((byte) 0);
+		BlockShape AdjacentBlock = new BlockShape((byte) 0);
+		FaceType = new FaceShape(SourceBlock, AdjacentBlock, Direction.DIRECTION_NONE);
 	}
 
 	public Face(byte TargetCoordinates, Direction DirectionType) {
 		SurfaceTypeID = DataManager.INVALID_INDEX;
 		MaterialTypeID = DataManager.INVALID_INDEX;
 
-		CubeShape SourceCube = new CubeShape((byte) 0);
-		CubeShape AdjacentCube = new CubeShape((byte) 0);
-		FaceType = new FaceShape(SourceCube, AdjacentCube, Direction.DIRECTION_NONE);
-		LocationCoordinates = TargetCoordinates;
+		BlockShape SourceBlock = new BlockShape((byte) 0);
+		BlockShape AdjacentBlock = new BlockShape((byte) 0);
+		FaceType = new FaceShape(SourceBlock, AdjacentBlock, Direction.DIRECTION_NONE);
+		//LocationCoordinates = TargetCoordinates;
 	}
 
 	public void setFaceMaterialType(short NewMaterialTypeID) {
 		if (NewMaterialTypeID != MaterialTypeID) {
 			MaterialTypeID = NewMaterialTypeID;
-			//Set Cell needsRedraw
+			//Set Chunk needsRedraw
 			if (MaterialTypeID == -1) {
 				int x = 0;
 			}
@@ -69,14 +70,14 @@ public class Face implements Serializable {
 	public void setFaceSurfaceType(short NewSurfaceTypeID) {
 		if (NewSurfaceTypeID != SurfaceTypeID) {
 			SurfaceTypeID = NewSurfaceTypeID;
-			//Set Cell needsRedraw
+			//Set Chunk needsRedraw
 		}
 	}
 
 	public void setFaceShapeType(FaceShape NewShape) {
 		if (NewShape != FaceType) {
 			FaceType = NewShape;
-			//Set Cell needsRedraw
+			//Set Chunk needsRedraw
 		}
 	}
 

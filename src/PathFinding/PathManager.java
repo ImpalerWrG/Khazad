@@ -28,8 +28,8 @@ import Core.Clock;
 import Core.Main;
 
 import Map.GameMap;
-import Map.MapCoordinate;
-import Map.Direction;
+import Map.Coordinates.MapCoordinate;
+import Map.Coordinates.Direction;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -59,11 +59,14 @@ public class PathManager extends AbstractAppState {
 	PathAlgorithm HeriarchialAstarImplementation;
 	//KhazadGrid MapGrid;
 	ConcurrentHashMap<MovementModality, GridInterface> Grids;
+	ArrayList<GridInterface> GridArray;
+
 	Heuristic ManhattenHeuristic;
 	Heuristic EuclideanHeuristic;
-	Heuristic MaxDimensionHeuristic;
+	Heuristic ChebyshevHeuristic;
 	Heuristic DijkstraHeuristic;
 	Heuristic DiagonalHeuristic;
+	Heuristic OctileHeuristic;
 	ArrayList<Pool> PoolList;
 	ExecutorService Executor;
 	public PathTester Tester;
@@ -71,12 +74,14 @@ public class PathManager extends AbstractAppState {
 	private PathManager() {
 		ManhattenHeuristic = new Heuristic.Manhatten();
 		EuclideanHeuristic = new Heuristic.Euclidean();
-		MaxDimensionHeuristic = new Heuristic.MaxDimension();
+		ChebyshevHeuristic = new Heuristic.Chebyshev();
 		DijkstraHeuristic = new Heuristic.Dijkstra();
 		DiagonalHeuristic = new Heuristic.Diagonal();
+		OctileHeuristic = new Heuristic.Octile();
 
 		PoolList = new ArrayList<Pool>();
 		Grids = new ConcurrentHashMap<MovementModality, GridInterface>();
+		GridArray = new ArrayList<GridInterface>();
 	}
 
 	@Override
@@ -111,10 +116,15 @@ public class PathManager extends AbstractAppState {
 	public void createMapAbstraction(GameMap TargetMap) {
 		MovementModality BasicPawn = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
 		KhazadGrid MainGrid = new KhazadGrid(TargetMap, BasicPawn);
-		Grids.put(BasicPawn, MainGrid);
+		addGrid(MainGrid);
 
 		Tester = new PathTester();
 		Tester.Initialize(this);
+	}
+
+	public void addGrid(GridInterface NewGrid) {
+		Grids.put(NewGrid.getModality(), NewGrid);
+		GridArray.add(NewGrid);
 	}
 
 	public void editMapAbstractions(MapCoordinate[] Coordinates) {
@@ -124,7 +134,8 @@ public class PathManager extends AbstractAppState {
 	}
 
 	void deleteMapAbstractions() {
-		Grids = null;
+		Grids.clear();
+		GridArray.clear();
 	}
 
 	public Future findFuturePath(MovementModality MovementType, MapCoordinate StartCoords, MapCoordinate GoalCoords) {
@@ -133,7 +144,7 @@ public class PathManager extends AbstractAppState {
 			if (TargetGrid.contains(StartCoords) && TargetGrid.contains(GoalCoords)) {
 				if (isPathPossible(MovementType, StartCoords, GoalCoords)) {
 					AStar PathTask = new AStar(TargetGrid);
-					PathTask.assignNodePool(ProvidePool());
+					PathTask.assignResources(ProvidePool(), new LinkedListDeque<AStarNode>(30));
 					PathTask.setModality(MovementType);
 					PathTask.setHeuristics(ManhattenHeuristic, EuclideanHeuristic);
 					PathTask.setEndPoints(StartCoords, GoalCoords);
@@ -153,7 +164,7 @@ public class PathManager extends AbstractAppState {
 				if (isPathPossible(MovementType, StartCoords, GoalCoords)) {
 					PathingTimer.start();
 					AStar PathTask = new AStar(TargetGrid);
-					PathTask.assignNodePool(ProvidePool());
+					PathTask.assignResources(ProvidePool(), new LinkedListDeque<AStarNode>(30));
 					PathTask.setModality(MovementType);
 					PathTask.setHeuristics(ManhattenHeuristic, EuclideanHeuristic);
 					PathTask.setEndPoints(StartCoords, GoalCoords);
@@ -199,6 +210,20 @@ public class PathManager extends AbstractAppState {
 		return Grids.get(MovementType);
 	}
 
+	GridInterface getModalityGrid(int GridIndex) {
+		return GridArray.get(GridIndex);
+	}
+
+	int getModalityGridIndex(MovementModality MovementType) {
+		for (int i = 0; i < GridArray.size(); i++) {
+			GridInterface grid = GridArray.get(i);
+			if (grid.getModality().equals(MovementType)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	public BitSet getDirectionFlags(MapCoordinate Coordinates, MovementModality Modality) {
 		GridInterface TargetGrid = getModalityGrid(Modality);
 		if (TargetGrid != null) {
@@ -217,6 +242,15 @@ public class PathManager extends AbstractAppState {
 
 	public float getEdgeCost(MapCoordinate TestCoords, Direction DirectionType, MovementModality Modality) {
 		GridInterface TargetGrid = getModalityGrid(Modality);
+		if (TargetGrid != null) {
+			return TargetGrid.getEdgeCost(TestCoords, DirectionType);
+		}
+		return -1;
+	}
+
+	public float getEdgeCost(MapCoordinate TestCoords, Direction DirectionType, int ModalityIndex) {
+		// TODO find more direct access to desired modality grid rather then hashmap
+		GridInterface TargetGrid = getModalityGrid(ModalityIndex);
 		if (TargetGrid != null) {
 			return TargetGrid.getEdgeCost(TestCoords, DirectionType);
 		}

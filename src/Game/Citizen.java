@@ -21,7 +21,7 @@ import Core.Utils;
 import Data.DataManager;
 import Data.Types.GivenNameGroupData;
 import Job.*;
-import Map.MapCoordinate;
+import Map.Coordinates.MapCoordinate;
 import java.io.Serializable;
 
 /**

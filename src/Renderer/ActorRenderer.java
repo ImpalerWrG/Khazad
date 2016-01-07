@@ -21,10 +21,13 @@ import Game.Actor;
 import Game.Game;
 import Game.Pawn;
 
-import Map.CubeShape;
-import Map.Direction;
+import Map.BlockShape;
+import Map.Coordinates.Direction;
 import Map.GameMap;
-import Map.MapCoordinate;
+import Map.Coordinates.BlockCoordinate;
+import Map.Coordinates.MapCoordinate;
+
+import Interface.GameCameraState;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -45,7 +48,7 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Rendering class for Actors, used Nodes from the Terrain rendered to attach
+ * Rendering class for Actors, used Nodes from the Map rendered to attach
  * Actors to the correct locations for rendering and lighting.
  *
  * @author Impaler
@@ -58,9 +61,14 @@ public class ActorRenderer extends AbstractAppState {
 	LodControl ActorLodControler;
 	ConcurrentHashMap<Integer, Node> ActorNodeMap;
 	boolean DisplayToggle = true;
+	MapCoordinate TestingCoords;
+	BlockShape TestingBlockShape;
+	Vector3f OffsetVector, DirectionVector;
 
 	public ActorRenderer() {
 		ActorNodeMap = new ConcurrentHashMap<Integer, Node>();
+		TestingCoords = new MapCoordinate();
+		TestingBlockShape = new BlockShape();
 	}
 
 	@Override
@@ -70,6 +78,8 @@ public class ActorRenderer extends AbstractAppState {
 		this.state = stateManager;
 		this.assetmanager = app.getAssetManager();
 
+		OffsetVector = new Vector3f();
+		DirectionVector = new Vector3f();
 		//registerWithInput(app.getInputManager());
 	}
 
@@ -99,58 +109,74 @@ public class ActorRenderer extends AbstractAppState {
 					actorNode.setCullHint(Spatial.CullHint.Dynamic);
 					MapCoordinate coords = target.getLocation();
 					MapRenderer Renderer = state.getState(MapRenderer.class);
-					Node z = Renderer.getZNodeLight(coords.Z);
-					z.attachChild(actorNode);
-					Vector3f Offset = new Vector3f();
+
+					Node zNode;
+					if (map.isBlockSunLit(coords)) {
+						zNode = Renderer.getZNodeLight(coords.Chunk.Z);
+					} else {
+						zNode = Renderer.getZNodeDark(coords.Chunk.Z);
+					}
+
+					zNode.attachChild(actorNode);
 
 					if (target instanceof Pawn) {
-						Pawn PawnTarget = (Pawn) target;
-						float MoveFraction = PawnTarget.getActionFraction(CurrentTick);
-						Direction MovingDirection = PawnTarget.getMovementDirection();
-						float Height = 0;
-
-						if (MoveFraction <= 0.5) {
-							CubeShape shape = map.getCubeShape(coords);
-							float CenterHeight = shape.getCenterHeight();
-							float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection);
-							float CenterFraction = (MoveFraction * 2.0f);
-							float EdgeFraction = 1.0f - CenterFraction;
-							Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
-						}
-
-						if (MoveFraction > 0.5) {
-							if (MoveFraction >= 1.0) {
-								MoveFraction = 0;
-							}
-
-							MapCoordinate translated = new MapCoordinate(coords, MovingDirection);
-							CubeShape shape = map.getCubeShape(translated);
-							float CenterHeight = shape.getCenterHeight() + (translated.Z - coords.Z);
-							float EdgeHeight = shape.getDirectionEdgeHeight(MovingDirection.invert()) + (translated.Z - coords.Z);
-							float CenterFraction = ((MoveFraction - 0.5f) * 2.0f);
-							float EdgeFraction = 1.0f - CenterFraction;
-							Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
-						}
-
-						if (MovingDirection == Direction.DIRECTION_DESTINATION) {
-							MoveFraction = 0;
-						}
-
-						Vector3f MoveVec = MovingDirection.toVector();
-						Offset.addLocal(MoveVec.mult(MoveFraction));
-
-						Quaternion rotation = actorNode.getLocalRotation();
-						rotation.fromAngleAxis(MovingDirection.toDegree() * FastMath.DEG_TO_RAD, Vector3f.UNIT_Z);
-						actorNode.setLocalRotation(rotation);
-
-						actorNode.setLocalTranslation(coords.X + Offset.x, coords.Y + Offset.y, Height);
-
+						MovePawn((Pawn) target, CurrentTick);
 					} else {
-						actorNode.setLocalTranslation(coords.X, coords.Y, 0);
+						actorNode.setLocalTranslation(coords.getX(), coords.getY(), coords.getZ());
 					}
 				}
 			}
 		}
+	}
+
+	public void MovePawn(Pawn target, long CurrentTick) {
+		Game game = state.getState(Game.class);
+		GameMap map = game.getMap();
+
+		Pawn PawnTarget = (Pawn) target;
+		float MoveFraction = PawnTarget.getActionFraction(CurrentTick);
+		Direction MovingDirection = PawnTarget.getMovementDirection();
+		MapCoordinate LocationCoordinates = target.getLocation();
+		Node actorNode = ActorNodeMap.get(target.getID());
+		float Height = 0;
+
+		if (MoveFraction <= 0.5) {
+			map.getBlockShape(LocationCoordinates, TestingBlockShape);
+			float CenterHeight = TestingBlockShape.getCenterHeight();
+			float EdgeHeight = TestingBlockShape.getDirectionEdgeHeight(MovingDirection);
+			float CenterFraction = (MoveFraction * 2.0f);
+			float EdgeFraction = 1.0f - CenterFraction;
+			Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
+		}
+
+		if (MoveFraction > 0.5) {
+			if (MoveFraction >= 1.0) {
+				MoveFraction = 0;
+			}
+
+			TestingCoords.copy(LocationCoordinates);
+			TestingCoords.translate(MovingDirection);
+
+			map.getBlockShape(TestingCoords, TestingBlockShape);
+			float CenterHeight = TestingBlockShape.getCenterHeight() + (TestingCoords.Block.getZ() - LocationCoordinates.Block.getZ());
+			float EdgeHeight = TestingBlockShape.getDirectionEdgeHeight(MovingDirection.invert()) + (TestingCoords.Block.getZ() - LocationCoordinates.Block.getZ());
+			float CenterFraction = ((MoveFraction - 0.5f) * 2.0f);
+			float EdgeFraction = 1.0f - CenterFraction;
+			Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
+		}
+
+		if (MovingDirection == Direction.DIRECTION_DESTINATION) {
+			MoveFraction = 0;
+		}
+
+		MovingDirection.setVector(DirectionVector);
+		DirectionVector.mult(MoveFraction, OffsetVector);
+
+		Quaternion rotation = actorNode.getLocalRotation();
+		rotation.fromAngleAxis(MovingDirection.toDegree() * FastMath.DEG_TO_RAD, Vector3f.UNIT_Z);
+		actorNode.setLocalRotation(rotation);
+
+		actorNode.setLocalTranslation(LocationCoordinates.getX() + OffsetVector.x, LocationCoordinates.getY() + OffsetVector.y, LocationCoordinates.getZ() + Height);
 	}
 
 	public void hideActors() {
@@ -164,11 +190,13 @@ public class ActorRenderer extends AbstractAppState {
 		Game game = state.getState(Game.class);
 		if (game != null) {
 			GameMap map = game.getMap();
-
-			if (game.getTickRate() <= 256) {
-				populateActors();
-			} else {
-				hideActors();
+			GameCameraState cam = state.getState(GameCameraState.class);
+			if (cam != null) {
+				if (game.getTickRate() <= 256 && cam.getZoom() < 200) {
+					populateActors();
+				} else {
+					hideActors();
+				}
 			}
 		}
 	}

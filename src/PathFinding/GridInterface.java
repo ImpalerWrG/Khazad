@@ -20,8 +20,9 @@ package PathFinding;
 import java.util.BitSet;
 import java.util.ArrayList;
 
-import Map.MapCoordinate;
-import Map.Direction;
+import Map.Coordinates.MapCoordinate;
+import Map.Coordinates.BlockCoordinate;
+import Map.Coordinates.Direction;
 
 /**
  * Basic interface for Pathfinding Grids, all PathAlgorithms operate on a Grid
@@ -45,6 +46,8 @@ public interface GridInterface {
 	float getEdgeCost(MapCoordinate TestCoords, Direction DirectionType);
 
 	BitSet getDirectionEdgeSet(MapCoordinate TargetCoords);
+
+	MovementModality getModality();
 
 	public int getConnectivityZone(MapCoordinate TargetCoords);
 

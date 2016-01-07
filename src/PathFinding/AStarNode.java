@@ -17,8 +17,8 @@
 
 package PathFinding;
 
-import Map.MapCoordinate;
-import Map.Direction;
+import Map.Coordinates.MapCoordinate;
+import Map.Coordinates.Direction;
 import java.io.Serializable;
 
 /**
@@ -29,40 +29,40 @@ import java.io.Serializable;
  *
  * @author Impaler
  */
-public class AStarNode implements Comparable, Serializable {
+public class AStarNode implements Comparable<AStarNode>, Serializable {
 
 	private static final long serialVersionUID = 1;
 	// Cumulative distance used to judge Path
 	float TotalCost;
-	float TieBreakerValue;
 	// Where this node is 
 	MapCoordinate LocationCoordinates;
 	// Recorded Path data used to judge this node
 	float PathLengthFromStart;
 	float MinimumCostToGoal;
+	float TieBreakerValue;
 	// Data about our Parent
 	AStarNode Parent;
 	Direction ParentDirection;
 
 	AStarNode() {
+		LocationCoordinates = new MapCoordinate();
 	}
 
 	void set(MapCoordinate TargetCoordinates, AStarNode ParentNode, Direction SourceDirection, float DistanceFromStart, float MinimumCost, float TieBreaker) {
 		Parent = ParentNode;
 		ParentDirection = SourceDirection;
-		LocationCoordinates = TargetCoordinates;
+		LocationCoordinates.copy(TargetCoordinates);
 		PathLengthFromStart = DistanceFromStart;
 		MinimumCostToGoal = MinimumCost;
 		TieBreakerValue = TieBreaker;
 		TotalCost = PathLengthFromStart + MinimumCostToGoal;
 	}
 
-	public int compareTo(Object TargetObject) {
-		//if (TargetObject instanceof AStarNode) {
-		AStarNode TargetNode = (AStarNode) TargetObject;
+	public int compareTo(AStarNode TargetNode) {
 		if (TotalCost < TargetNode.TotalCost) {
 			return -1;
 		} else if (TotalCost == TargetNode.TotalCost) {
+			//if (PathLengthFromStart > TargetNode.PathLengthFromStart) {
 			if (TieBreakerValue < TargetNode.TieBreakerValue) {
 				return -1;
 			} else {
@@ -71,8 +71,6 @@ public class AStarNode implements Comparable, Serializable {
 		} else {
 			return 1;
 		}
-		//}
-		//return 0;
 	}
 
 	boolean equals(AStarNode other) {

@@ -87,18 +87,6 @@ ceremonies in each temple periodicly.  Priests conduct funerals, gin-up the mora
 of warriors and commoners, but do NOT heal physical wounds, only spiritual ones.
 
 
-Ages:  Options to start a game under different ages, these change the nature of the 
-technology the Dwarves and enemies have access too and the global political stances
-of the races, the degree and density of trade, availability of resources and ultimate 
-politcial objective (generally achived after consolidating the High Kingship)
-Possible ages
-
-Age of the Ancestors: lead the original 7 dwarven gods (easy mod)
-Age of Chaos:  Original war against chaos/deamons and alliance with elves
-The Golden Age:  Height of wealth and power
-The Age of War:  War between dwarves and elves, new Orc threats
-The Age of Heors:  Man becomes dominant but are friendly with Dwarves, elves reduced to wood elves
-The Age of Man:  Victorian level technology, Dwarves are a remnent in a world of men
 
 Improve Hold in multiple directions that Dwarves value
 

@@ -32,11 +32,13 @@ import de.lessvoid.nifty.NiftyEventSubscriber;
 
 import Game.Game;
 import Interface.GameCameraState;
+import Map.Coordinates.BlockCoordinate;
 import Renderer.PathingRenderer;
 import Renderer.TerrainRenderer;
+import Renderer.MapRenderer;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
-import com.jme3.math.Vector3f;
+
 import de.lessvoid.nifty.NiftyIdCreator;
 import de.lessvoid.nifty.controls.CheckBox;
 import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
@@ -45,6 +47,7 @@ import de.lessvoid.nifty.controls.WindowClosedEvent;
 import de.lessvoid.nifty.controls.dynamic.CustomControlCreator;
 import java.text.NumberFormat;
 import java.util.HashMap;
+
 import PathFinding.PathManager;
 
 /**
@@ -87,6 +90,9 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 		Game game = Main.app.getStateManager().getState(Game.class);
 		game.setGameScreenController(this);
 		timeLabel.setText(game.getTimeString());
+
+		GameCameraState Cam = Main.app.getStateManager().getState(GameCameraState.class);
+		Cam.pointCameraAt(game.getMap().getMapCenter());
 	}
 
 	public void onAction(String name, boolean keyPressed, float tpf) {
@@ -97,12 +103,18 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 				terrainCheckBox.toggle();
 			} else if (name.equals("SunnyRenderToggle")) {
 				litSurfacesCheckBox.toggle();
+			} else if (name.equals("ReduceDetailLevel")) {
+				TerrainRenderer terrainRenderer = Main.app.getStateManager().getState(TerrainRenderer.class);
+				terrainRenderer.changeLevelofDetal(1);
+			} else if (name.equals("IncreeseDetailLevel")) {
+				TerrainRenderer terrainRenderer = Main.app.getStateManager().getState(TerrainRenderer.class);
+				terrainRenderer.changeLevelofDetal(-1);
 			}
 		}
 	}
 
 	public void registerWithInput(InputManager inputManager) {
-		String[] inputs = {"PathingRenderToggle", "TerrainRenderToggle", "SunnyRenderToggle"};
+		String[] inputs = {"PathingRenderToggle", "TerrainRenderToggle", "SunnyRenderToggle", "ReduceDetailLevel", "IncreeseDetailLevel"};
 		inputManager.addListener(this, inputs);
 	}
 
@@ -213,13 +225,12 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 
 		Scrollbar bar = event.getScrollbar();
 		Game game = Main.app.getStateManager().getState(Game.class);
-		int High = game.getMap().getHighestCell();
-		int Low = game.getMap().getLowestCell();
+		int High = 1 * BlockCoordinate.CHUNK_EDGE_SIZE;
+		int Low = -1 * BlockCoordinate.CHUNK_EDGE_SIZE;
+		High += BlockCoordinate.CHUNK_EDGE_SIZE;
 		bar.setWorldMax(High - Low);
 
 		GameCameraState camera = Main.app.getStateManager().getState(GameCameraState.class);
-		int top = camera.getSliceTop();
-		int bottom = camera.getSliceBottom();
 
 		int value = (int) event.getValue();
 		int slice = camera.getSliceTop() - camera.getSliceBottom();
@@ -260,8 +271,8 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 			PathingRenderer pathingRenderer = Main.app.getStateManager().getState(PathingRenderer.class);
 			pathingRenderer.setDisplayToggle(pathingCheckBox.isChecked());
 		} else if (id.equals("litSurfacesCheckBox")) {
-			TerrainRenderer terrainRenderer = Main.app.getStateManager().getState(TerrainRenderer.class);
-			terrainRenderer.setSunnyRendering(litSurfacesCheckBox.isChecked());
+			MapRenderer mapRenderer = Main.app.getStateManager().getState(MapRenderer.class);
+			mapRenderer.setSunnyRendering(litSurfacesCheckBox.isChecked());
 		} else if (id.equals("terrainCheckBox")) {
 			TerrainRenderer terrainRenderer = Main.app.getStateManager().getState(TerrainRenderer.class);
 			terrainRenderer.setTerrainRendering(terrainCheckBox.isChecked());

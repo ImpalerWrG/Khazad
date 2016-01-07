@@ -17,8 +17,13 @@
 
 package Renderer;
 
+import Map.Coordinates.ChunkCoordinate;
 import Map.*;
 import Game.Game;
+import Interface.GameCameraState;
+import Map.Coordinates.BlockCoordinate;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -26,10 +31,9 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 
 import com.jme3.asset.AssetManager;
-import com.jme3.input.InputManager;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.controls.ActionListener;
+
+import com.jme3.bounding.BoundingBox;
+import com.jme3.math.Vector3f;
 
 import com.jme3.scene.control.LodControl;
 import com.jme3.scene.Node;
@@ -40,7 +44,7 @@ import java.util.concurrent.ExecutorService;
 
 /**
  * Rendering class for Terrain, tracks all Scene Nodes that Terrain geometry
- * attaches too and rebuilds the geometry when Cells are dirty. Division of
+ * attaches too and rebuilds the geometry when Chunks are dirty. Division of
  * Terrain into light/dark allows easy hiding of surface terrain and restriction
  * of directional sunlight to appropriate surfaces.
  *
@@ -51,17 +55,19 @@ public class TerrainRenderer extends AbstractAppState {
 	SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
+	GameCameraState CameraState = null;
 	Game game = null;
 	TileBuilder builder;
-	LodControl TerrainLodControler;
-	private boolean SunnyRendering = true;
-	private boolean DarkRendering = true;
-	private boolean TerrainRendering = true;
+	int LevelofDetail;
+	private boolean TerrainRenderingToggle = true;
+	Spatial.CullHint TerrainHint = Spatial.CullHint.Never;
 	ExecutorService Executor;
+	ConcurrentHashMap<ChunkCoordinate, Chunk> MeshedChunks;
 
 	public TerrainRenderer(ExecutorService Threadpool) {
 		Executor = Threadpool;
 		builder = new TileBuilder();
+		MeshedChunks = new ConcurrentHashMap<ChunkCoordinate, Chunk>();
 	}
 
 	@Override
@@ -74,51 +80,180 @@ public class TerrainRenderer extends AbstractAppState {
 
 	public void attachToGame(Game TargetGame) {
 		this.game = TargetGame;
-		this.TerrainLodControler = new LodControl();
 	}
 
-	public void rebuildDirtyCells(Collection<Cell> cells) {
-		for (Cell target : cells) {
-			if (target.isTerrainRenderingDirty()) {
-				CellCoordinate Coords = target.getCellCoordinates();
-				TerrainBuilder Builder = new TerrainBuilder(app, target, builder, TerrainLodControler);
-				MapRenderer Renderer = state.getState(MapRenderer.class);
+	public void queueChunkBuild(Chunk targetChunk, int DetailLevel) {
+		MapRenderer Renderer = state.getState(MapRenderer.class);
+		ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
 
-				Builder.setNodes(Renderer.getCellNodeLight(Coords), Renderer.getCellNodeDark(Coords));
-				Executor.submit(Builder);
+		MeshedChunks.put(Coords, targetChunk);
+		TerrainBuilder Builder = new TerrainBuilder(app, targetChunk, builder, DetailLevel);
 
-				target.setDirtyTerrainRendering(false);
+		Builder.setNodes(Renderer.getChunkNodeLight(Coords), Renderer.getChunkNodeDark(Coords));
+		Builder.setHint(TerrainHint);
+		Executor.submit(Builder);
+
+		targetChunk.setDirtyTerrainRendering(false);
+	}
+
+	public void queueChunkDestroy(Chunk targetChunk, int DetailLevel) {
+		MapRenderer Renderer = state.getState(MapRenderer.class);
+		ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
+
+		MeshedChunks.remove(Coords);
+		TerrainDestroyer Destroyer = new TerrainDestroyer(app, targetChunk, DetailLevel);
+
+		Destroyer.setNodes(Renderer.getChunkNodeLight(Coords), Renderer.getChunkNodeDark(Coords));
+		Executor.submit(Destroyer);
+
+		targetChunk.setDirtyTerrainRendering(true);
+	}
+
+	public void rebuildDirtyChunks(Collection<Chunk> cells) {
+		for (Chunk targetChunk : MeshedChunks.values()) {
+			if (targetChunk.isTerrainRenderingDirty())
+				queueChunkBuild(targetChunk, this.LevelofDetail);
+		}
+	}
+
+	public void SwapFrustrumChunks() {
+		GameMap map = this.game.getMap();
+		for (Sector targetSector : map.getSectorCollection()) {
+			
+			// DO bounding box test on whole sector
+			Collection<Chunk> cells = targetSector.getChunkCollection();
+
+			BoundingBox ChunkBox = new BoundingBox();
+			ChunkBox.setXExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
+			ChunkBox.setYExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
+			ChunkBox.setZExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
+			ChunkBox.setCheckPlane(0);
+
+			this.CameraState = state.getState(GameCameraState.class);
+
+			// Add Chunks newly entering the Frustrum
+			for (Chunk targetChunk : cells) {
+				ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
+				Vector3f Center = Coords.getVector();
+				ChunkBox.setCenter(Center);
+				if (this.CameraState.contains(ChunkBox)) {
+					if (targetChunk.isTerrainRenderingDirty()) {
+						queueChunkBuild(targetChunk, this.LevelofDetail);
+					}
+				}
+			}
+
+			// Remove Chunks nolonger in the Frustrum
+			for (Chunk targetChunk : MeshedChunks.values()) {
+				ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
+				Vector3f Center = Coords.getVector();
+				ChunkBox.setCenter(Center);
+				if (this.CameraState.contains(ChunkBox) == false) {
+					queueChunkDestroy(targetChunk, this.LevelofDetail);
+				}
 			}
 		}
 	}
 
-	public void setTerrainRendering(Collection<Cell> cells) {
-		Spatial.CullHint Sunnyhint = Spatial.CullHint.Always;
-		Spatial.CullHint Darkhint = Spatial.CullHint.Always;
+	public boolean getTerrainRendering() {
+		return TerrainRenderingToggle;
+	}
 
-		if (getSunnyRendering())
-			Sunnyhint = Spatial.CullHint.Dynamic;
+	/**
+	 * @param TerrainRendering the TerrainRendering to set
+	 */
+	public void setTerrainRendering(boolean NewValue) {
+		this.TerrainRenderingToggle = NewValue;
+		TerrainHint = Spatial.CullHint.Always;
 
-		if (getDarkRendering())
-			Darkhint = Spatial.CullHint.Dynamic;
+		if (getTerrainRendering())
+			TerrainHint = Spatial.CullHint.Dynamic;
 
-		if (!getTerrainRendering())
-			Darkhint = Sunnyhint = Spatial.CullHint.Always;
+		GameMap map = this.game.getMap();
+		for (Sector targetSector : map.getSectorCollection()) {
+			for (Chunk target : targetSector.getChunkCollection()) {
+				ChunkCoordinate Coords = target.getChunkCoordinates();
 
-		for (Cell target : cells) {
-			CellCoordinate Coords = target.getCellCoordinates();
+				MapRenderer Renderer = state.getState(MapRenderer.class);
+				Node ChunkLight = Renderer.getChunkNodeLight(Coords);
+				Node ChunkDark = Renderer.getChunkNodeDark(Coords);
 
-			MapRenderer Renderer = state.getState(MapRenderer.class);
-			Node CellLight = Renderer.getCellNodeLight(Coords);
-			Node CellDark = Renderer.getCellNodeDark(Coords);
+				Spatial light = ChunkLight.getChild("LightGeometry Chunk " + target.toString() + "DetailLevel " + this.LevelofDetail);
+				Spatial dark = ChunkDark.getChild("DarkGeometry Chunk " + target.toString() + "DetailLevel " + this.LevelofDetail);
 
-			Spatial light = CellLight.getChild("LightGeometry Cell" + target.toString());
-			Spatial dark = CellDark.getChild("DarkGeometry Cell" + target.toString());
+				if (light != null)
+					light.setCullHint(TerrainHint);
+				if (dark != null)
+					dark.setCullHint(TerrainHint);
+			}
+		}
+	}
+
+	public void setLevelofDetail(float ZoomLevel) {
+		int NewDetailLevel = 0;
+
+		if (ZoomLevel > 60)
+			NewDetailLevel = 1;
+		if (ZoomLevel > 120)
+			NewDetailLevel = 2;
+		if (ZoomLevel > 240)
+			NewDetailLevel = 3;
+		if (ZoomLevel > 480)
+			NewDetailLevel = 4;
+
+		if (NewDetailLevel != this.LevelofDetail) {
+			this.LevelofDetail = NewDetailLevel;
+
+			GameMap map = this.game.getMap();
+			for (Sector targetSector : map.getSectorCollection()) {
+				for (Chunk target : targetSector.getChunkCollection()) {
+					setChunkDetailLevel(target, this.LevelofDetail);
+				}
+			}
+		}
+	}
+
+	public void changeLevelofDetal(int Change) {
+		if (Change < 0 && this.LevelofDetail == 0)
+			return;
+		if (Change > 1 && this.LevelofDetail == 4)
+			return;
+
+		this.LevelofDetail += Change;
+
+		if (this.LevelofDetail < 0)
+			this.LevelofDetail = 0;
+
+		if (this.LevelofDetail > 4)
+			this.LevelofDetail = 4;
+
+		GameMap map = this.game.getMap();
+		for (Sector targetSector : map.getSectorCollection()) {
+			for (Chunk target : targetSector.getChunkCollection()) {
+				setChunkDetailLevel(target, this.LevelofDetail);
+			}
+		}
+	}
+
+	private void setChunkDetailLevel(Chunk TargetChunk, int LevelofDetail) {
+		ChunkCoordinate Coords = TargetChunk.getChunkCoordinates();
+
+		MapRenderer Renderer = state.getState(MapRenderer.class);
+		Node ChunkLight = Renderer.getChunkNodeLight(Coords);
+		Node ChunkDark = Renderer.getChunkNodeDark(Coords);
+
+		for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i++) {
+			Spatial.CullHint hint = Spatial.CullHint.Always;
+			if (i == LevelofDetail && TerrainRenderingToggle)
+				hint = Spatial.CullHint.Dynamic;
+
+			Spatial light = ChunkLight.getChild("LightGeometry Chunk " + TargetChunk.toString() + "DetailLevel " + i);
+			Spatial dark = ChunkDark.getChild("DarkGeometry Chunk " + TargetChunk.toString() + "DetailLevel " + i);
 
 			if (light != null)
-				light.setCullHint(Sunnyhint);
+				light.setCullHint(hint);
 			if (dark != null)
-				dark.setCullHint(Darkhint);
+				dark.setCullHint(hint);
 		}
 	}
 
@@ -126,39 +261,11 @@ public class TerrainRenderer extends AbstractAppState {
 	public void update(float tpf) {
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
-			if (getTerrainRendering()) {
-				setTerrainRendering(map.getCellCollection());
-				rebuildDirtyCells(map.getCellCollection());
-			} else {
-				setTerrainRendering(map.getCellCollection());
+			if (TerrainRenderingToggle) {
+				for (Sector targetSector : map.getSectorCollection()) {
+					rebuildDirtyChunks(targetSector.getChunkCollection());
+				}
 			}
 		}
-	}
-
-	public boolean getSunnyRendering() {
-		return SunnyRendering;
-	}
-
-	public void setSunnyRendering(boolean SunnyRendering) {
-		this.SunnyRendering = SunnyRendering;
-	}
-
-	public boolean getDarkRendering() {
-		return DarkRendering;
-	}
-
-	public void setDarkRendering(boolean DarkRendering) {
-		this.DarkRendering = DarkRendering;
-	}
-
-	public boolean getTerrainRendering() {
-		return TerrainRendering;
-	}
-
-	/**
-	 * @param TerrainRendering the TerrainRendering to set
-	 */
-	public void setTerrainRendering(boolean TerrainRendering) {
-		this.TerrainRendering = TerrainRendering;
 	}
 }

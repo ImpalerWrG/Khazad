@@ -19,12 +19,15 @@ package Renderer;
 
 import Game.Game;
 
-import Map.Axis;
-import Map.Cell;
-import Map.CellCoordinate;
-import Map.Direction;
+import Map.Coordinates.Axis;
+import Map.Chunk;
+import Map.Coordinates.ChunkCoordinate;
+import Map.Coordinates.Direction;
 import Map.GameMap;
-import Map.MapCoordinate;
+import Map.Coordinates.BlockCoordinate;
+import Map.Coordinates.MapCoordinate;
+import Map.Coordinates.BlockCoordinate;
+import Map.Sector;
 
 import PathFinding.PathManager;
 import PathFinding.MovementModality;
@@ -70,7 +73,7 @@ public class PathingRenderer extends AbstractAppState {
 	Game game = null;
 	PathManager Pathing;
 	Node PathingNode;
-	HashMap<CellCoordinate, Node> cells;
+	HashMap<ChunkCoordinate, Node> chunks;
 	HashMap<Integer, Material> ZoneMaterials;
 	private boolean DisplayToggle = false;
 	Vector3f[] vertices;
@@ -85,7 +88,7 @@ public class PathingRenderer extends AbstractAppState {
 		this.vertices = new Vector3f[Direction.ANGULAR_DIRECTIONS.length];
 
 		for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
-			vertices[dir.ordinal()] = new Vector3f(dir.getValueonAxis(Axis.AXIS_X) * MapCoordinate.HALFCUBE, dir.getValueonAxis(Axis.AXIS_Y) * MapCoordinate.HALFCUBE, dir.getValueonAxis(Axis.AXIS_Z) * MapCoordinate.HALFCUBE);
+			vertices[dir.ordinal()] = new Vector3f(dir.getValueonAxis(Axis.AXIS_X) * BlockCoordinate.HALF_BLOCK, dir.getValueonAxis(Axis.AXIS_Y) * BlockCoordinate.HALF_BLOCK, dir.getValueonAxis(Axis.AXIS_Z) * BlockCoordinate.HALF_BLOCK);
 		}
 	}
 
@@ -99,81 +102,78 @@ public class PathingRenderer extends AbstractAppState {
 		ZoneMaterials = new HashMap<Integer, Material>();
 	}
 
-	public Node buildRendering(Cell TargetCell) {
+	public Node buildRendering(Chunk TargetChunk) {
 
 		Node PathRenderingNode = new Node("PathRenderingNode");
 		MovementModality Mod = new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1);
 
-		CellCoordinate CellCoords = TargetCell.getCellCoordinates();
+		ChunkCoordinate ChunkCoords = TargetChunk.getChunkCoordinates();
 
-		for (int x = 0; x < MapCoordinate.CELLEDGESIZE; x++) {
-			for (int y = 0; y < MapCoordinate.CELLEDGESIZE; y++) {
+		for (BlockCoordinate Index = new BlockCoordinate(); !Index.end(); Index.next()) {
+			MapCoordinate TargetCoords = new MapCoordinate(ChunkCoords, Index);
+			BitSet Connectivity = Pathing.getDirectionFlags(TargetCoords, Mod);
 
-				MapCoordinate TargetCoords = new MapCoordinate(CellCoords, x, y);
-				BitSet Connectivity = Pathing.getDirectionFlags(TargetCoords, Mod);
+			int Zone = Pathing.getConnectivityZone(TargetCoords, Mod);
+			Material mat = ZoneMaterials.get(Zone);
+			if (mat == null) {
+				mat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+				mat.setColor("Color", ColorRGBA.randomColor());
+				ZoneMaterials.put(Zone, mat);
+			}
 
-				int Zone = Pathing.getConnectivityZone(TargetCoords, Mod);
-				Material mat = ZoneMaterials.get(Zone);
-				if (mat == null) {
-					mat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-					mat.setColor("Color", ColorRGBA.randomColor());
-					ZoneMaterials.put(Zone, mat);
+			if (Connectivity.cardinality() > 0) {
+				Mesh EdgeWires = new Mesh();
+				EdgeWires.setMode(Mesh.Mode.Lines);
+				EdgeWires.setLineWidth(5);
+
+				ArrayList<Integer> Indexes = new ArrayList<Integer>();
+				for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
+					if (Pathing.getEdgeCost(TargetCoords, dir, Mod) != -1) {
+						Indexes.add(0);
+						Indexes.add(dir.ordinal());
+					}
 				}
 
-				if (Connectivity.cardinality() > 0) {
-					Mesh EdgeWires = new Mesh();
-					EdgeWires.setMode(Mesh.Mode.Lines);
-					EdgeWires.setLineWidth(5);
-
-					ArrayList<Integer> Indexes = new ArrayList<Integer>();
-					for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
-						if (Pathing.getEdgeCost(TargetCoords, dir, Mod) != -1) {
-							Indexes.add(0);
-							Indexes.add(dir.ordinal());
-						}
-					}
-
-					int[] indexes = new int[Indexes.size()];
-					for (int i = 0; i < Indexes.size(); i++) {
-						indexes[i] = Indexes.get(i).intValue();
-					}
-
-					EdgeWires.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
-					EdgeWires.setBuffer(VertexBuffer.Type.Index, 2, BufferUtils.createIntBuffer(indexes));
-					EdgeWires.updateBound();
-
-					Geometry Wires = new Geometry("Connection Wires", EdgeWires);
-					Wires.setMaterial(mat);
-					Wires.setLocalTranslation(new Vector3f(x, y, 0));
-					PathRenderingNode.attachChild(Wires);
+				int[] indexes = new int[Indexes.size()];
+				for (int i = 0; i < Indexes.size(); i++) {
+					indexes[i] = Indexes.get(i).intValue();
 				}
+
+				EdgeWires.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
+				EdgeWires.setBuffer(VertexBuffer.Type.Index, 2, BufferUtils.createIntBuffer(indexes));
+				EdgeWires.updateBound();
+
+				Geometry Wires = new Geometry("Connection Wires", EdgeWires);
+				Wires.setMaterial(mat);
+				Wires.setLocalTranslation(TargetCoords.Block.getX(), TargetCoords.Block.getY(), TargetCoords.Block.getZ());
+				PathRenderingNode.attachChild(Wires);
 			}
 		}
 
 		GeometryBatchFactory.optimize(PathRenderingNode, true);
 		if (PathRenderingNode.getQuantity() > 0) {
 			Spatial ConnectionRendering = PathRenderingNode.getChild(0);
-			PathRenderingNode.setName("Connection Rendering" + CellCoords.toString());
+			PathRenderingNode.setName("Connection Rendering" + ChunkCoords.toString());
 			return PathRenderingNode;
 		} else {
 			return null;
 		}
 	}
 
-	public void rebuildDirtyCells(Collection<Cell> cells) {
-		for (Cell target : cells) {
-			CellCoordinate Coords = target.getCellCoordinates();
+	public void rebuildDirtyChunks(Collection<Chunk> chunks) {
+		for (Chunk target : chunks) {
+			ChunkCoordinate Coords = target.getChunkCoordinates();
 
 			MapRenderer Renderer = state.getState(MapRenderer.class);
-			Node CellNode = Renderer.getCellNodeLight(Coords);
-			Spatial ConnectivityNode = CellNode.getChild("Connection Rendering" + Coords.toString());
+			Node ChunkNode = Renderer.getChunkNodeLight(Coords);
+			Spatial ConnectivityNode = ChunkNode.getChild("Connection Rendering" + Coords.toString());
 
 			if (target.isPathingRenderingDirty()) {
 				Node NewConnectivity = buildRendering(target);
 				if (ConnectivityNode != null)
-					CellNode.detachChild(ConnectivityNode);
+					ChunkNode.detachChild(ConnectivityNode);
 				if (NewConnectivity != null) {
-					CellNode.attachChild(NewConnectivity);
+					ChunkNode.attachChild(NewConnectivity);
 				}
 				target.setDirtyPathingRendering(false);
 			}
@@ -184,12 +184,12 @@ public class PathingRenderer extends AbstractAppState {
 		}
 	}
 
-	void hideConnectivityRendering(Collection<Cell> cells) {
-		for (Cell target : cells) {
-			CellCoordinate Coords = target.getCellCoordinates();
+	void hideConnectivityRendering(Collection<Chunk> chunks) {
+		for (Chunk target : chunks) {
+			ChunkCoordinate Coords = target.getChunkCoordinates();
 			MapRenderer Renderer = state.getState(MapRenderer.class);
-			Node CellNode = Renderer.getCellNodeLight(Coords);
-			Spatial ConnectivityNode = CellNode.getChild("Connection Rendering" + Coords.toString());
+			Node ChunkNode = Renderer.getChunkNodeLight(Coords);
+			Spatial ConnectivityNode = ChunkNode.getChild("Connection Rendering" + Coords.toString());
 
 			if (ConnectivityNode != null) {
 				ConnectivityNode.setCullHint(Spatial.CullHint.Always);
@@ -202,9 +202,9 @@ public class PathingRenderer extends AbstractAppState {
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
 			if (getDisplayToggle()) {
-				rebuildDirtyCells(map.getCellCollection());
-			} else {
-				hideConnectivityRendering(map.getCellCollection());
+				for (Sector targetSector : map.getSectorCollection()) {
+					rebuildDirtyChunks(targetSector.getChunkCollection());
+				}
 			}
 		}
 	}
@@ -221,5 +221,13 @@ public class PathingRenderer extends AbstractAppState {
 	 */
 	public void setDisplayToggle(boolean DisplayToggle) {
 		this.DisplayToggle = DisplayToggle;
+		if (this.game != null) {
+			GameMap map = this.game.getMap();
+			if (DisplayToggle == false) {
+				for (Sector targetSector : map.getSectorCollection()) {
+					rebuildDirtyChunks(targetSector.getChunkCollection());
+				}
+			}
+		}
 	}
 }

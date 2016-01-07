@@ -22,8 +22,8 @@ import Core.Dice;
 import Data.*;
 import Data.Types.*;
 
-import Map.Direction;
-import Map.MapCoordinate;
+import Map.Coordinates.Direction;
+import Map.Coordinates.MapCoordinate;
 
 import PathFinding.MovementModality;
 import PathFinding.Navigator;
@@ -56,9 +56,13 @@ public class Pawn extends Actor implements Serializable {
 	// The 14 Basic Attributes
 	Dice AttributeDice;
 	byte[] BasicAttributes;
+	float FastSpeed;
+
 	private String firstName;
 	private String lastName;
 	private Gender gender;
+
+	private final int speedIndex = DataManager.getDataManager().getLabelIndex("BASIC_ATTRIBUTE_SPEED");
 
 	public Pawn(short CreatureTypeID, int id, int Seed, MapCoordinate SpawnLocation) {
 		super(id, SpawnLocation);
@@ -81,6 +85,8 @@ public class Pawn extends Actor implements Serializable {
 			BasicAttributes[i] += CreatureDataEntry.AttributeModifierVales[i];  //Size class adjustment
 			BasicAttributes[i] += CreatureSizeDataEntry.AttributeModifierVales[i];  //Size class adjustment
 		}
+		FastSpeed = ((float)7.0f * Temporal.TICKS_PER_SECOND) / (float) BasicAttributes[speedIndex];
+
 		if (AttributeDice.roll(1,3) == 1) {
 			gender = Gender.GENDER_FEMALE;
 		} else {
@@ -93,17 +99,16 @@ public class Pawn extends Actor implements Serializable {
 	}
 
 	public long attemptMove(Direction MovementDirection) {
-		float EdgeCost = PathManager.getSingleton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getMovementModality());
-		final int speedIndex = DataManager.getDataManager().getLabelIndex("BASIC_ATTRIBUTE_SPEED");
+		float EdgeCost = PathManager.getSingleton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getModalityIndex());
 		if (EdgeCost != -1) {
-			return (int) (EdgeCost / ((float) BasicAttributes[speedIndex] / 7.0) * TICKS_PER_SECOND);
+			return (int) (EdgeCost * FastSpeed);
 		} else {
 			return 1;  // signal falure to job manager?
 		}
 	}
 
 	public long updatePosition() {
-		setLocation(new MapCoordinate(LocationCoordinates, CurrentMovementDirection));
+		LocationCoordinates.translate(CurrentMovementDirection);
 		CurrentMovementDirection = PathNavigator.getNextStep();
 
 		if (CurrentMovementDirection == Direction.DIRECTION_DESTINATION) {

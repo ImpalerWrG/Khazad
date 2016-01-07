@@ -19,9 +19,9 @@ package Job;
 
 
 import Map.GameMap;
-import Map.MapCoordinate;
-import Map.Direction;
-import Map.CubeShape;
+import Map.Coordinates.MapCoordinate;
+import Map.Coordinates.Direction;
+import Map.BlockShape;
 import Game.Pawn;
 import PathFinding.Navigator;
 import java.io.Serializable;
@@ -51,6 +51,7 @@ public class Task implements Serializable {
 	public final Job ParentJob;
 	public final TaskType type;
 	public final MapCoordinate worklocation;
+	public BlockShape TestingBlockShape;
 	public final Direction workdirection;
 	public boolean Completed;
 	public boolean Begun;
@@ -120,22 +121,23 @@ public class Task implements Serializable {
 				break;
 			case TASK_DIG:
 				ExcavateJob Excavation = (ExcavateJob) ParentJob;
-				CubeShape DesignatedShape = Excavation.getDesignation(worklocation);
-				GameMap.getMap().excavateCube(worklocation, DesignatedShape.clone());
+				BlockShape DesignatedShape = Excavation.getDesignation(worklocation);
+				GameMap.getMap().excavateBlock(worklocation, DesignatedShape.clone());
 
 				//Fall down to the new surface
-				CubeShape NewShape = GameMap.getMap().getCubeShape(Host.getLocation());
-				if (NewShape.isSky()) {
+				GameMap.getMap().getBlockShape(Host.getLocation(), TestingBlockShape);
+				if (TestingBlockShape.isSky()) {
 					MapCoordinate Newlocation = Host.getLocation().clone();
 					Newlocation.translate(Direction.DIRECTION_DOWN);
 					Host.setLocation(Newlocation);
 				}
 
-				if (DesignatedShape.isExcavationEquivilent(GameMap.getMap().getCubeShape(worklocation))) {
+				GameMap.getMap().getBlockShape(worklocation, TestingBlockShape);
+				if (DesignatedShape.isExcavationEquivilent(TestingBlockShape)) {
 					Excavation.completeDesignation(worklocation);
 					Completed = true;
 				} else {
-					return 100;  // Base on material hardness
+					return 1000;  // Base on material hardness
 				}
 				break;
 			case TASK_LOITER:
@@ -162,7 +164,7 @@ public class Task implements Serializable {
 			case TASK_DROP_OFF:
 				break;
 			case TASK_DIG:
-				//GameMap.getMap().UpdateCubeShape(worklocation, new CubeShape());
+				//GameMap.getMap().UpdateBlockShape(worklocation, new BlockShape());
 				break;
 		}
 	}

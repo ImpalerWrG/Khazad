@@ -18,12 +18,11 @@
 package Renderer;
 
 import Game.Game;
-import Interface.GameCameraState;
-import Map.CellCoordinate;
 
-import Map.MapCoordinate;
+import Map.Coordinates.ChunkCoordinate;
+import Map.Coordinates.BlockCoordinate;
 import Map.TileBuilder;
-import Nifty.GUI;
+
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -38,6 +37,10 @@ import com.jme3.scene.Spatial;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
+import java.util.concurrent.ExecutorService;
+
 /**
  *
  * @author Impaler
@@ -47,28 +50,36 @@ public class MapRenderer extends AbstractAppState {
 	SimpleApplication app = null;
 	AppStateManager state = null;
 	AssetManager assetmanager = null;
+	ExecutorService Executor;
+
 	Node MapNode = null;
 	Node sunnyterrainNode = null;
 	Node darkterrainNode = null;
 	TileBuilder builder;
-	Game game;
-	ConcurrentHashMap<CellCoordinate, Node> LightCellNodeMap;
-	ConcurrentHashMap<CellCoordinate, Node> DarkCellNodeMap;
-	ConcurrentHashMap<Integer, Node> ZMapLight;
-	ConcurrentHashMap<Integer, Node> ZMapDark;
-	Semaphore semaphore;
-	boolean SunnyRendering = true;
-	int Top;
-	int Bottom;
+	//Game game;
 
-	public MapRenderer() {
-		LightCellNodeMap = new ConcurrentHashMap<CellCoordinate, Node>();
-		DarkCellNodeMap = new ConcurrentHashMap<CellCoordinate, Node>();
-		ZMapLight = new ConcurrentHashMap<Integer, Node>();
-		ZMapDark = new ConcurrentHashMap<Integer, Node>();
+	ConcurrentHashMap<ChunkCoordinate, Node> LightChunkNodeMap;
+	ConcurrentHashMap<ChunkCoordinate, Node> DarkChunkNodeMap;
+	TIntObjectMap<Node> ZMapLight;
+	TIntObjectMap<Node> ZMapDark;
+
+	Semaphore semaphore;
+	boolean SunnyRendering, DarkRendering;
+
+	int Top, Bottom;
+	boolean DirtySlice;
+
+	public MapRenderer(ExecutorService Threadpool) {
+		Executor = Threadpool;
+
+		LightChunkNodeMap = new ConcurrentHashMap<ChunkCoordinate, Node>();
+		DarkChunkNodeMap = new ConcurrentHashMap<ChunkCoordinate, Node>();
+		ZMapLight = new TIntObjectHashMap<Node>();
+		ZMapDark = new TIntObjectHashMap<Node>();
 		builder = new TileBuilder();
 
 		semaphore = new Semaphore(1);
+		SunnyRendering = DarkRendering = true;
 	}
 
 	@Override
@@ -77,12 +88,10 @@ public class MapRenderer extends AbstractAppState {
 		this.app = (SimpleApplication) app;
 		this.state = stateManager;
 		this.assetmanager = app.getAssetManager();
-
-		//registerWithInput(app.getInputManager());
 	}
 
 	public void attachToGame(Game TargetGame) {
-		this.game = TargetGame;
+		//this.game = TargetGame;
 		this.MapNode = new Node("MapNode");
 		this.app.getRootNode().attachChild(MapNode);
 
@@ -104,32 +113,29 @@ public class MapRenderer extends AbstractAppState {
 	}
 
 	public void detachFromGame() {
-		this.game = null;
+		//this.game = null;
 		MapNode = null;
 		darkterrainNode = null;
 		sunnyterrainNode = null;
 
-		LightCellNodeMap.clear();
-		DarkCellNodeMap.clear();
+		LightChunkNodeMap.clear();
+		DarkChunkNodeMap.clear();
 		ZMapLight.clear();
 		ZMapDark.clear();
 	}
 
-	public Node getCellNodeLight(CellCoordinate TargetCoordinates) {
-		Node CellNode = null;
-		try {  // Semaphore prevents multiple copies of the same Cell node from being created
+	public Node getChunkNodeLight(ChunkCoordinate TargetCoordinates) {
+		Node ChunkNode = null;
+		try {  // Semaphore prevents multiple copies of the same Chunk node from being created
 			semaphore.acquire();
 			try {
-				CellNode = LightCellNodeMap.get(TargetCoordinates);
-				if (CellNode == null) {
-					CellNode = new Node("LightNode" + TargetCoordinates.toString());
+				ChunkNode = LightChunkNodeMap.get(TargetCoordinates);
+				if (ChunkNode == null) {
+					ChunkNode = new Node("LightNode" + TargetCoordinates.toString());
+					ChunkNode.move(TargetCoordinates.getVector());
 
-					float x = (float) (TargetCoordinates.X * MapCoordinate.CELLEDGESIZE);
-					float y = (float) (TargetCoordinates.Y * MapCoordinate.CELLEDGESIZE);
-					CellNode.move(x, y, 0);
-
-					getZNodeLight(TargetCoordinates.Z).attachChild(CellNode);
-					LightCellNodeMap.put(TargetCoordinates, CellNode);
+					getZNodeLight(TargetCoordinates.Z).attachChild(ChunkNode);
+					LightChunkNodeMap.put(TargetCoordinates, ChunkNode);
 				}
 			} finally {
 				semaphore.release();
@@ -139,24 +145,20 @@ public class MapRenderer extends AbstractAppState {
 			System.err.println(e.getMessage());
 			System.err.println(e.toString());
 		}
-		return CellNode;
+		return ChunkNode;
 	}
 
-	public Node getCellNodeDark(CellCoordinate TargetCell) {
-		Node CellNode = DarkCellNodeMap.get(TargetCell);
-		try {  // Semaphore prevents multiple copies of the same Cell node from being created
+	public Node getChunkNodeDark(ChunkCoordinate TargetCoordinates) {
+		Node ChunkNode = DarkChunkNodeMap.get(TargetCoordinates);
+		try {  // Semaphore prevents multiple copies of the same Chunk node from being created
 			semaphore.acquire();
 			try {
-				if (CellNode == null) {
-					CellNode = new Node("DarkCellNode");
+				if (ChunkNode == null) {
+					ChunkNode = new Node("DarkChunkNode");
+					ChunkNode.move(TargetCoordinates.getVector());
 
-					float x = (float) (TargetCell.X * MapCoordinate.CELLEDGESIZE);
-					float y = (float) (TargetCell.Y * MapCoordinate.CELLEDGESIZE);
-
-					CellNode.move(x, y, 0);
-
-					getZNodeDark(TargetCell.Z).attachChild(CellNode);
-					DarkCellNodeMap.put(TargetCell, CellNode);
+					getZNodeDark(TargetCoordinates.Z).attachChild(ChunkNode);
+					DarkChunkNodeMap.put(TargetCoordinates, ChunkNode);
 				}
 			} finally {
 				semaphore.release();
@@ -166,66 +168,66 @@ public class MapRenderer extends AbstractAppState {
 			System.err.println(e.getMessage());
 			System.err.println(e.toString());
 		}
-		return CellNode;
+		return ChunkNode;
 	}
 
 	public Node getZNodeLight(int zlevel) {
-		Node targetnode = ZMapLight.get(new Integer(zlevel));
+		//TODO use a primite equipped map to eliminate Integer
+		Node targetnode = ZMapLight.get(zlevel);
 		if (targetnode == null) {
 
 			targetnode = new Node("ZMapLightNode");
 			targetnode.move(0, 0, zlevel);
-			ZMapLight.put(new Integer(zlevel), targetnode);
+			ZMapLight.put(zlevel, targetnode);
+			sunnyterrainNode.attachChild(targetnode);
 		}
 		return targetnode;
 	}
 
 	public Node getZNodeDark(int zlevel) {
-		Node targetnode = ZMapDark.get(new Integer(zlevel));
+		Node targetnode = ZMapDark.get(zlevel);
 		if (targetnode == null) {
 
 			targetnode = new Node("ZMapDarkNode");
 			targetnode.move(0, 0, zlevel);
-			ZMapDark.put(new Integer(zlevel), targetnode);
+			ZMapDark.put(zlevel, targetnode);
+			darkterrainNode.attachChild(targetnode);
 		}
 		return targetnode;
 	}
 
 	public void setSliceLevels(int top, int bottom) {
-		Top = top;
-		Bottom = bottom;
-
-		for (Node targetnode : ZMapLight.values()) {
-			float Z = targetnode.getLocalTranslation().getZ();
-			if (Z <= Top && SunnyRendering) {
-				sunnyterrainNode.attachChild(targetnode);
-			} else {
-				sunnyterrainNode.detachChild(targetnode);
+		try {  // Semaphore prevents multiple copies of the same Chunk node from being created
+			semaphore.acquire();
+			try {
+				Top = top;
+				Bottom = bottom;
+				DirtySlice = true;
+			} finally {
+				semaphore.release();
 			}
-		}
-
-		for (Node targetnode : ZMapDark.values()) {
-			float Z = targetnode.getLocalTranslation().getZ();
-			if (Z <= Top) {
-				darkterrainNode.attachChild(targetnode);
-			} else {
-				darkterrainNode.detachChild(targetnode);
-			}
+		} catch (final InterruptedException e) {
+			System.err.println(e.getLocalizedMessage());
+			System.err.println(e.getMessage());
+			System.err.println(e.toString());
 		}
 	}
 
-	public void setSunnyVisibility(boolean newValue) {
-		if (SunnyRendering != newValue) {
-			SunnyRendering = newValue;
+	public void setSunnyRendering(boolean SunnyRendering) {
+		this.SunnyRendering = SunnyRendering;
+		if (SunnyRendering) {
+			sunnyterrainNode.setCullHint(Spatial.CullHint.Dynamic);
+		} else {
+			sunnyterrainNode.setCullHint(Spatial.CullHint.Always);
+		}
+	}
 
-			for (Node target : ZMapLight.values()) {
-				float Z = target.getLocalTranslation().getZ();
-				if (Z > Bottom && Z <= Top && SunnyRendering) {
-					target.setCullHint(Spatial.CullHint.Dynamic);
-				} else {
-					target.setCullHint(Spatial.CullHint.Always);
-				}
-			}
+	public void setDarkRendering(boolean DarkRendering) {
+		this.DarkRendering = DarkRendering;
+		if (DarkRendering) {
+			darkterrainNode.setCullHint(Spatial.CullHint.Dynamic);
+		} else {
+			darkterrainNode.setCullHint(Spatial.CullHint.Always);
 		}
 	}
 
@@ -243,9 +245,10 @@ public class MapRenderer extends AbstractAppState {
 
 	@Override
 	public void update(float tpf) {
-		GameCameraState cam = state.getState(GameCameraState.class);
-		if (cam != null) {
-			setSliceLevels(cam.getSliceTop(), cam.getSliceBottom());
+		if (DirtySlice) {
+			DirtySlice = false;
+			MapSlicer Slicer = new MapSlicer(app, this);
+			Executor.submit(Slicer);
 		}
 	}
 }

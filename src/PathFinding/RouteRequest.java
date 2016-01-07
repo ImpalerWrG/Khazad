@@ -5,7 +5,7 @@
 
 package PathFinding;
 
-import Map.MapCoordinate;
+import Map.Coordinates.MapCoordinate;
 import Map.Zone;
 import java.io.Serializable;
 

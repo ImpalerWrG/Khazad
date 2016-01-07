@@ -21,7 +21,9 @@ import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 
 import com.jme3.scene.control.CameraControl.ControlDirection;
+import com.jme3.bounding.BoundingBox;
 
+import com.jme3.math.Plane;
 import com.jme3.math.Ray;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
@@ -45,24 +47,34 @@ public class GameCamera {
 	protected Node PitchNode = null;
 	protected CameraNode CamNode = null;
 	// Factor values determining speed of most Camera changes
-	protected float maxzoom = 400;
+	protected final float flatzoom = 400;
+	protected final float maxzoom = 400;
 	protected float zoomFactor = 20;
-	protected float minzoom = 5;
+	protected final float minzoom = 5;
 	protected float TranslationFactor;
-	protected float zoomSpeed = 0.1f;
-	protected float rotationSpeed = 10.0f;
-	protected float PitchSpeed = 200.0f;
+	protected final float zoomSpeed = 0.1f;
+	protected final float rotationSpeed = 10.0f;
+	protected final float PitchSpeed = 200.0f;
 	// The JMonkey Camera object
-	private Camera camera = null;
+	protected Camera camera = null;
 	// Current Angles and values for slicing
-	private float PitchAngle;
+
+	// Pitch, the angle of the Camera relative to the XY plane
+	private float UserPitchAngle;
+	private float ModifiedPitchAngle;
 	private boolean PitchLock;
-	protected int SliceTop;
-	protected int SliceBottom;
-	protected int ViewLevels;
+	private float MaxPitch = 80;
+	private float MinPitch = .1f;
+
+	private int SliceTop;
+	private int SliceBottom;
+	private int ViewLevels;
 	protected int ViewMax, ViewMin;
 
-	public GameCamera(Camera cam, final Node target) {
+	protected final int FrustumNear = -500;
+	protected final int FrustumFar = 1000;
+
+	public GameCamera(Camera cam, int SliceLevel, final Node target) {
 
 		this.camera = cam;
 
@@ -70,7 +82,8 @@ public class GameCamera {
 		TranslationFactor = zoomFactor / camera.getWidth() * aspect * 2;
 
 		camera.setParallelProjection(true);
-		camera.setFrustum(-1000, 1000, -aspect * zoomFactor, aspect * zoomFactor, zoomFactor, -zoomFactor);
+		camera.setFrustum(FrustumNear * zoomFactor, FrustumFar * zoomFactor, -aspect * zoomFactor, aspect * zoomFactor, zoomFactor, -zoomFactor);
+		this.SliceTop = SliceLevel;
 
 		this.TargetNode = target;
 		this.camera.setAxes(Vector3f.UNIT_Y, Vector3f.UNIT_Z, Vector3f.UNIT_X);
@@ -87,43 +100,68 @@ public class GameCamera {
 		PitchNode.attachChild(CamNode);
 
 		CamNode.setLocalTranslation(0, 0, 10);
-		PitchAngle = 45;
+		UserPitchAngle = 45;
 		pitchCamera(0);
 		CamNode.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);
 	}
 
 	//rotate the camera around the target on the horizontal plane
 	protected void pitchCamera(float value) {
-
-		if (PitchAngle < 80 && value > 0) { // Allow Pitch to increese if not above maximum
-			PitchAngle += value * PitchSpeed;
-		} else if (PitchAngle > 1 && value < 0) {// Allow Pitch to decreese if not below minimum
-			PitchAngle += value * PitchSpeed;
+		if (UserPitchAngle < MaxPitch && value > 0) { // Allow Pitch to increese if not above maximum
+			UserPitchAngle += value * PitchSpeed;
+		} else if (UserPitchAngle > MinPitch && value < 0) {// Allow Pitch to decreese if not below minimum
+			UserPitchAngle += value * PitchSpeed;
 		}
+		updatePitch();
+	}
+	
+	protected void updatePitch() {
+		float flatzoomfraction = (flatzoom - zoomFactor) / flatzoom;
+		this.ModifiedPitchAngle = UserPitchAngle * flatzoomfraction;
 
 		Quaternion pitch = new Quaternion();
-		pitch.fromAngleAxis(FastMath.PI * PitchAngle / 180, new Vector3f(1, 0, 0));
+		pitch.fromAngleAxis(FastMath.PI * this.ModifiedPitchAngle / 180, new Vector3f(1, 0, 0));
 		PitchNode.setLocalRotation(pitch);
 
 		CamNode.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);
+		//setClipPlane();
 	}
 
 	//expand or contract frustrum for paralax zooming
 	protected void zoomCamera(float value) {
 		float change = (value * zoomSpeed) + 1;
 		if ((zoomFactor < maxzoom && change > 1) || (zoomFactor > minzoom && change < 1)) {
-			float aspect = (float) camera.getWidth() / camera.getHeight();
 
-			zoomFactor *= change;
-			TranslationFactor = zoomFactor / camera.getWidth() * aspect * 2;
-
-			float left = -zoomFactor * aspect;
-			float right = zoomFactor * aspect;
-			float top = zoomFactor;
-			float bottom = -zoomFactor;
-
-			camera.setFrustum(-1000, 1000, left, right, top, bottom);
+			if (change > 0) {
+				zoomFactor *= change;
+				zoomFactor = Math.min(zoomFactor, maxzoom);
+				zoomFactor = Math.max(zoomFactor, minzoom);
+				
+				frustrumReset();
+				updatePitch();
+				//setClipPlane();
+			}
 		}
+	}
+
+	protected void frustrumReset() {
+		float aspect = (float) camera.getWidth() / camera.getHeight();
+		TranslationFactor = zoomFactor / camera.getWidth() * aspect * 2;
+
+		float left = -zoomFactor * aspect;
+		float right = zoomFactor * aspect;
+		float top = zoomFactor;
+		float bottom = -zoomFactor;
+
+		camera.setFrustum(FrustumNear * zoomFactor, FrustumFar * zoomFactor, left, right, top, bottom);	
+	}
+
+	protected void setClipPlane() {
+		float SliceTopLevel = SliceTop;
+
+		Plane SlicingTopPlane = new Plane(Vector3f.UNIT_Z, 0);
+		SlicingTopPlane.setConstant(SliceTopLevel + 0.499f);
+		camera.setClipPlane(SlicingTopPlane, Plane.Side.Negative);	
 	}
 
 	//rotate the camera around the target on the Horizonatal XY plane
@@ -135,9 +173,11 @@ public class GameCamera {
 	protected void translateCamera(Vector3f Translation) {
 		TargetNode.move(Translation);
 	}
-	
+
 	protected void pointCameraAt(Vector3f target) {
 		TargetNode.setLocalTranslation(target);
+		CamNode.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);
+		this.camera.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);
 	}
 
 	float getShading(int Zlevel) {
@@ -161,10 +201,28 @@ public class GameCamera {
 		return Minimum;
 	}
 
+	public void setSlice(int Top, int Bottom) {
+		SliceTop = Top;
+		SliceBottom = Bottom;
+		Vector3f NewLocation = TargetNode.getLocalTranslation();
+		NewLocation.z = Top;
+		TargetNode.setLocalTranslation(NewLocation);
+	}
+
 	public Ray getMouseRay(Vector2f click2d) {
 		Vector3f click3d = camera.getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 0f).clone();
 		Vector3f dir = camera.getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d).normalizeLocal();
 		return new Ray(click3d, dir);
+	}
+
+	public boolean contains(BoundingBox Box) {
+		camera.setPlaneState(0);
+		Camera.FrustumIntersect results = camera.contains(Box);
+		if (results == Camera.FrustumIntersect.Outside)
+			return false;
+		else {
+			return true;
+		}
 	}
 
 	public void write(JmeExporter ex) throws IOException {

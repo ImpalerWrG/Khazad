@@ -15,16 +15,22 @@
  You should have received a copy of the GNU General Public License
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
-package Map;
+
+package Map.Coordinates;
+
+import java.io.Serializable;
 
 /**
- * Extreamly simple Axis system used to build the rest of the Map system
- *
+ * Describes the location of a Region within the World map,
+ * 
  * @author Impaler
  */
-public enum Axis {
+public class RegionCoordinate implements Serializable {
 
-	AXIS_Z,	// Vertical
-	AXIS_Y,	// North/South
-	AXIS_X;	// East/West
+	byte X, Y;
+	
+	public void copy(RegionCoordinate ArgumentCoordinates) {
+		this.X = ArgumentCoordinates.X;
+		this.Y = ArgumentCoordinates.Y;
+	}
 }

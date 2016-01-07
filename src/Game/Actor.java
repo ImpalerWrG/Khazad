@@ -17,7 +17,7 @@
 
 package Game;
 
-import Map.MapCoordinate;
+import Map.Coordinates.MapCoordinate;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;

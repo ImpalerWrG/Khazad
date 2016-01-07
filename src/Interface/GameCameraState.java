@@ -21,7 +21,8 @@ import Core.Main;
 import Game.Actor;
 import Game.Citizen;
 import Game.Game;
-import Map.MapCoordinate;
+import Map.Coordinates.MapCoordinate;
+import Renderer.TerrainRenderer;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -29,24 +30,29 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 
 import com.jme3.material.Material;
-import com.jme3.scene.Geometry;
-import com.jme3.math.ColorRGBA;
 
-import com.jme3.scene.Node;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.math.Plane;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
+
+import com.jme3.scene.Spatial;
+import com.jme3.scene.Node;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Sphere;
+
+import com.jme3.bounding.BoundingBox;
 
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
+
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
-import com.jme3.scene.Spatial;
 
 import Renderer.MapRenderer;
+import java.util.Iterator;
 
 /**
  * Manages the main games parrelel projection Camera
@@ -93,8 +99,8 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	public MapCoordinate SelectionOrigin = new MapCoordinate();
 	public MapCoordinate SelectionTerminus = new MapCoordinate();
 	public VolumeSelection Volume;
-	protected int SliceTop;
-	protected int SliceBottom;
+	private int SliceTop;
+	private int SliceBottom;
 	protected int ViewLevels;
 	protected int ViewMax, ViewMin;
 	private boolean mouseWheelEnabled = true;
@@ -129,7 +135,11 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				LookNode.attachChild(EyeBall);
 				LookNode.setCullHint(Spatial.CullHint.Always);
 
-				MainCamera = new GameCamera(app.getCamera(), LookNode);
+				MainCamera = new GameCamera(app.getCamera(), SliceTop, LookNode);
+
+				TerrainSlicer Slicer = new TerrainSlicer(app.getAssetManager());
+				Slicer.setCamera(MainCamera);
+				app.getViewPort().addProcessor(Slicer);
 			}
 		}
 		registerWithInput(app.getInputManager());
@@ -241,59 +251,76 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	private void analogNormal(String name, float value, float tpf) {
 		updateMousePosition();
 
+		TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
+
 		if (name.equals("mouseLeft")) {
 			if (MiddleDown) {
 				MainCamera.rotateCamera(value);
+				Terrain.SwapFrustrumChunks();
 			} else {
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
+					Terrain.SwapFrustrumChunks();
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("mouseRight")) {
 			if (MiddleDown) {
 				MainCamera.rotateCamera(-value);
+				Terrain.SwapFrustrumChunks();
 			} else {
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
+					Terrain.SwapFrustrumChunks();
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("mouseUp")) {
 			if (MiddleDown) {
 				MainCamera.pitchCamera(value);
+				Terrain.SwapFrustrumChunks();
 			} else {
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
+					Terrain.SwapFrustrumChunks();
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("mouseDown")) {
 			if (MiddleDown) {
 				MainCamera.pitchCamera(-value);
+				Terrain.SwapFrustrumChunks();
 			} else {
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
+					Terrain.SwapFrustrumChunks();
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("ZoomIn")) {
 			if (MiddleDown) {
 				changeViewLevel(-1);
+				Terrain.SwapFrustrumChunks();
 			} else if (mouseWheelEnabled) {
 				MainCamera.zoomCamera(value);
 			}
+			Terrain.setLevelofDetail(MainCamera.zoomFactor);
+			Terrain.SwapFrustrumChunks();
+
 		} else if (name.equals("ZoomOut")) {
 			if (MiddleDown) {
 				changeViewLevel(1);
+				Terrain.SwapFrustrumChunks();
 			} else if (mouseWheelEnabled) {
 				MainCamera.zoomCamera(-value);
 			}
+			Terrain.setLevelofDetail(MainCamera.zoomFactor);
+			Terrain.SwapFrustrumChunks();
+
 		}
 	}
 
 	private void analogSelectingVolume(String name, float value, float tpf) {
-
 		if (Shift) { // Z axis stretching
 			Vector3f LookVector = MainCamera.TargetNode.getWorldTranslation().subtract(MainCamera.CamNode.getWorldTranslation());
 
@@ -307,52 +334,65 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			Vector3f IntersectLocation = new Vector3f();
 			ray.intersectsWherePlane(SelectionPlane, IntersectLocation);
 
-			SelectionTerminus.set((int) IntersectLocation.x, (int) IntersectLocation.y, (int) SelectionOrigin.Z);
+			SelectionTerminus.set((int) IntersectLocation.x, (int) IntersectLocation.y, (int) SelectionOrigin.Block.getZ());
 			Volume.setSize(SelectionOrigin, SelectionTerminus);
 		}
+
+		TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
 
 		if (name.equals("mouseLeft")) {
 			if (MiddleDown) {
 				MainCamera.rotateCamera(value);
+				Terrain.SwapFrustrumChunks();
 			} else {
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
+					Terrain.SwapFrustrumChunks();
 					XChange = YChange = 0; // Consume the Mouse movement		
 				}
 			}
 		} else if (name.equals("mouseRight")) {
 			if (MiddleDown) {
 				MainCamera.rotateCamera(-value);
+				Terrain.SwapFrustrumChunks();
 			} else {
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
+					Terrain.SwapFrustrumChunks();
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("mouseUp")) {
 			if (MiddleDown) {
 				MainCamera.pitchCamera(value);
+				Terrain.SwapFrustrumChunks();
 			} else {
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
+					Terrain.SwapFrustrumChunks();
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("mouseDown")) {
 			if (MiddleDown) {
 				MainCamera.pitchCamera(-value);
+				Terrain.SwapFrustrumChunks();
 			} else {
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
+					Terrain.SwapFrustrumChunks();
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("ZoomIn")) {
 			MainCamera.zoomCamera(value);
+			Terrain.setLevelofDetail(MainCamera.zoomFactor);
+			Terrain.SwapFrustrumChunks();
 		} else if (name.equals("ZoomOut")) {
 			MainCamera.zoomCamera(-value);
+			Terrain.setLevelofDetail(MainCamera.zoomFactor);
+			Terrain.SwapFrustrumChunks();
 		}
-
 	}
 
 	public void onAnalog(String name, float value, float tpf) {
@@ -376,8 +416,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		String[] inputs = {"LeftClick", "RightClick", "MiddleClick", "mouseDown", "mouseUp", "mouseLeft", "mouseRight", "ZoomIn", "ZoomOut", "ArrowUp", "ArrowDown", "RShift", "LShift", "PanUp", "PanDown", "PanRight", "PanLeft"};
 		this.InputStrings = inputs;
 
-
-
 		inputManager.addListener(this, InputStrings);
 	}
 
@@ -398,9 +436,15 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			Mapnode.collideWith(ray, results);
 
 			if (results.size() > 0) {
-				// The closest collision point is what was truly hit:
-				CollisionResult closest = results.getClosestCollision();
+				Iterator<CollisionResult> collisions = results.iterator();
+				CollisionResult closest = collisions.next();
 				identifyNode(closest.getGeometry().getParent());
+				Spatial.CullHint hint = closest.getGeometry().getCullHint();
+
+				while (hint == Spatial.CullHint.Always && collisions.hasNext()) {
+					closest = collisions.next();
+					hint = closest.getGeometry().getCullHint();
+				}
 
 				Vector3f contact = closest.getContactPoint();
 				Vector3f normal = closest.getContactNormal();
@@ -429,8 +473,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			selectedActor = game.getActors().get(actorId);
 			return;
 		}
-		//System.out.println("Skipped: " + nodeName);
-		// keep searching;
 		identifyNode(node.getParent());
 	}
 
@@ -447,8 +489,8 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				SelectionTerminus.copy(MouseLocation);
 				Volume = new VolumeSelection(SelectionTerminus, SelectionOrigin);
 
-				SelectionPlane = new Plane(Vector3f.UNIT_Z, MouseLocation.Z);
-				//this.rootnode.detachChild(SelectionBox);	
+				SelectionPlane = new Plane(Vector3f.UNIT_Z, MouseLocation.getZ());
+				//this.rootnode.detachChild(SelectionBox);
 			}
 
 			if (CurrentMode == CameraMode.NORMAL) {
@@ -482,8 +524,16 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			SliceBottom += Change;
 			ViewLevels = SliceTop - SliceBottom;
 
-			//TargetNode.move(0, 0, Change);
-			//CamNode.move(0, 0, Change);		
+			if (this.state != null) {
+				MapRenderer render = state.getState(MapRenderer.class);
+				if (render != null) {
+					render.setSliceLevels(SliceTop, SliceBottom);
+				}
+			}
+			if (this.MainCamera != null) {
+				this.MainCamera.translateCamera(Vector3f.UNIT_Z.mult(Change));
+				this.MainCamera.setSlice(SliceTop, SliceBottom);
+			}
 		}
 	}
 
@@ -497,28 +547,49 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			SliceTop = SliceBottom + 1;
 
 		ViewLevels = SliceTop - SliceBottom;
+		
+		if (this.state != null) {
+			MapRenderer render = state.getState(MapRenderer.class);
+			if (render != null) {
+				render.setSliceLevels(SliceTop, SliceBottom);
+			}
+		}
+		if (this.MainCamera != null) {
+			this.MainCamera.setSlice(SliceTop, SliceBottom);
+		}
 	}
 
 	public void setSliceTop(int newValue) {
-		//TargetNode.move(0, 0, newValue - SliceTop);
-		//CamNode.move(0, 0, newValue - SliceTop);
-
 		SliceTop = newValue;
 		if (SliceBottom >= SliceTop)
 			SliceBottom = SliceTop - 1;
 
 		ViewLevels = SliceTop - SliceBottom;
+		
+		if (this.state != null) {
+			MapRenderer render = state.getState(MapRenderer.class);
+			if (render != null) {
+				render.setSliceLevels(SliceTop, SliceBottom);
+			}
+		}
+		if (this.MainCamera != null) {
+			this.MainCamera.setSlice(SliceTop, SliceBottom);
+		}
 	}
 
 	public void setSliceBottom(int newValue) {
-		//TargetNode.move(0, 0, newValue - SliceBottom);
-		//CamNode.move(0, 0, newValue - SliceBottom);
-
 		SliceBottom = newValue;
 		if (SliceTop <= SliceBottom)
 			SliceTop = SliceBottom + 1;
 
 		ViewLevels = SliceTop - SliceBottom;
+		
+		if (this.state != null) {
+			MapRenderer render = state.getState(MapRenderer.class);
+			if (render != null) {
+				render.setSliceLevels(SliceTop, SliceBottom);
+			}
+		}
 	}
 
 	public int getSliceTop() {
@@ -529,19 +600,35 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		return SliceBottom;
 	}
 
+	public float getZoom() {
+		return this.MainCamera.zoomFactor;
+	}
+
 	@Override
 	public void update(float tpf) {
-		if (RightwardPaning)
+		if (RightwardPaning) {
 			MainCamera.translateCamera(createTranslationVector(PanningSpeed, 0));
+			TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
+			Terrain.SwapFrustrumChunks();
+		}
 
-		if (LeftwardPaning)
+		if (LeftwardPaning) {
 			MainCamera.translateCamera(createTranslationVector(-PanningSpeed, 0));
+			TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
+			Terrain.SwapFrustrumChunks();
+		}
 
-		if (UpwardPaning)
+		if (UpwardPaning) {
 			MainCamera.translateCamera(createTranslationVector(0, PanningSpeed));
+			TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
+			Terrain.SwapFrustrumChunks();
+		}
 
-		if (DownwardPaning)
+		if (DownwardPaning) {
 			MainCamera.translateCamera(createTranslationVector(0, -PanningSpeed));
+			TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
+			Terrain.SwapFrustrumChunks();
+		}
 	}
 
 	@Override
@@ -563,12 +650,18 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		return selectedActor;
 	}
 
-	public void pointCameraAt(MapCoordinate mapCoordinate) {
+	public void pointCameraAt(MapCoordinate Coordinate) {
 		// change to the same Z level as the target
-		SliceTop = mapCoordinate.Z;
-		SliceBottom = SliceTop + ViewLevels;
+		SliceTop = Coordinate.getZ();
+		SliceBottom = SliceTop - ViewLevels;
 		// point camera at the target
-		Vector3f target = new Vector3f(mapCoordinate.X, mapCoordinate.Y, mapCoordinate.Z);
+		Vector3f target = Coordinate.getVector();
 		MainCamera.pointCameraAt(target);
+		TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
+		Terrain.SwapFrustrumChunks();
+	}
+
+	public boolean contains(BoundingBox box) {
+		return MainCamera.contains(box);
 	}
 }

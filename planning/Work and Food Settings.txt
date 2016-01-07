@@ -1,0 +1,14 @@
+
+Food Consumption settings
+
+Barebones (low)
+meager (med low)
+Filling (med high)
+Sumptuous (high)
+
+Workload settings
+
+Whistle while you Work (low)
+Diggy Diggy Hole (med low)
+A Hard Days Night (med high)
+Double, double toil and trouble (high)

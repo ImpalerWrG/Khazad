@@ -17,7 +17,7 @@
 
 package Interface;
 
-import Map.MapCoordinate;
+import Map.Coordinates.MapCoordinate;
 
 /**
  *
@@ -42,13 +42,13 @@ public class VolumeSelection {
 
 	public final void setSize(MapCoordinate SelectionOrigin, MapCoordinate SelectionTerminus) {
 
-		int maxX = Math.max(SelectionTerminus.X, SelectionOrigin.X);
-		int maxY = Math.max(SelectionTerminus.Y, SelectionOrigin.Y);
-		int maxZ = Math.max(SelectionTerminus.Z, SelectionOrigin.Z);
+		int maxX = Math.max(SelectionTerminus.getX(), SelectionOrigin.getX());
+		int maxY = Math.max(SelectionTerminus.getY(), SelectionOrigin.getY());
+		int maxZ = Math.max(SelectionTerminus.getZ(), SelectionOrigin.getZ());
 
-		int minX = Math.min(SelectionTerminus.X, SelectionOrigin.X);
-		int minY = Math.min(SelectionTerminus.Y, SelectionOrigin.Y);
-		int minZ = Math.min(SelectionTerminus.Z, SelectionOrigin.Z);
+		int minX = Math.min(SelectionTerminus.getX(), SelectionOrigin.getX());
+		int minY = Math.min(SelectionTerminus.getY(), SelectionOrigin.getY());
+		int minZ = Math.min(SelectionTerminus.getZ(), SelectionOrigin.getZ());
 
 		OriginLocation.set(minX, minY, minZ);
 		TerminalLocation.set(maxX, maxY, maxZ);

@@ -17,8 +17,10 @@ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Map;
 
+import Map.Coordinates.Direction;
+import Map.Coordinates.BlockCoordinate;
 import com.jme3.scene.Mesh;
-//import com.jme3.util.BufferUtils;
+
 import com.jme3.scene.VertexBuffer.Type;
 import com.jme3.math.Vector3f;
 import com.jme3.math.Vector2f;
@@ -80,7 +82,7 @@ public class TileBuilder implements Serializable {
 				return finalizeMesh(TargetMeshData, AtlasCoords);
 			} else {
 				if (Shape.getFaceDirection() == Direction.DIRECTION_DOWN || Shape.getFaceDirection() == Direction.DIRECTION_UP) {
-					if (Shape.getSourceCubeShape().hasFloor() || Shape.getSourceCubeShape().hasCeiling()) {
+					if (Shape.getSourceBlockShape().hasFloor() || Shape.getSourceBlockShape().hasCeiling()) {
 						TargetMeshData = createFlatFaceMesh(Shape);
 						if (TargetMeshData != null)
 							MesheDataMap.put(Shape, TargetMeshData);
@@ -153,10 +155,10 @@ public class TileBuilder implements Serializable {
 		boolean Triangle1 = false;
 		boolean Triangle2 = false;
 
-		byte NorthEastCorner = Shape.getSourceCubeShape().getNorthEastCorner();
-		byte NorthWestCorner = Shape.getSourceCubeShape().getNorthWestCorner();
-		byte SouthEastCorner = Shape.getSourceCubeShape().getSouthEastCorner();
-		byte SouthWestCorner = Shape.getSourceCubeShape().getSouthWestCorner();
+		byte NorthEastCorner = Shape.getSourceBlockShape().getNorthEastCorner();
+		byte NorthWestCorner = Shape.getSourceBlockShape().getNorthWestCorner();
+		byte SouthEastCorner = Shape.getSourceBlockShape().getSouthEastCorner();
+		byte SouthWestCorner = Shape.getSourceBlockShape().getSouthWestCorner();
 				
 		ArrayList<Vector3f> Vertices = new ArrayList<Vector3f>(4);
 		ArrayList<Vector3f> Normals = new ArrayList<Vector3f>(4);
@@ -165,10 +167,10 @@ public class TileBuilder implements Serializable {
 
 			final int SW = 0;  final int SE = 1;  final int NW = 2;  final int NE = 3;
 
-			Vertices.add(SW, new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, ((SouthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
-			Vertices.add(SE, new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, ((SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
-			Vertices.add(NW, new Vector3f(-MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, ((NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
-			Vertices.add(NE, new Vector3f( MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, ((NorthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
+			Vertices.add(SW, new Vector3f(-BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, ((SouthWestCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK));
+			Vertices.add(SE, new Vector3f( BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, ((SouthEastCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK));
+			Vertices.add(NW, new Vector3f(-BlockCoordinate.HALF_BLOCK,  BlockCoordinate.HALF_BLOCK, ((NorthWestCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK));
+			Vertices.add(NE, new Vector3f( BlockCoordinate.HALF_BLOCK,  BlockCoordinate.HALF_BLOCK, ((NorthEastCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK));
 
 			Normals.add(SW, Vector3f.UNIT_Z);
 			Normals.add(SE, Vector3f.UNIT_Z);
@@ -180,9 +182,9 @@ public class TileBuilder implements Serializable {
 			TextureCoords.add(NW, new Vector2f(0.0f, 1.0f));
 			TextureCoords.add(NE, new Vector2f(1.0f, 1.0f));
 
-			if (Shape.getSourceCubeShape().isSplit()) // Split along NW-SE line
+			if (Shape.getSourceBlockShape().isSplit()) // Split along NW-SE line
 			{
-				if ((SouthEastCorner == CubeShape.CUBE_BOTTOM_HEIGHT && NorthEastCorner == CubeShape.CUBE_BOTTOM_HEIGHT && NorthWestCorner == CubeShape.CUBE_BOTTOM_HEIGHT) || (SouthEastCorner == CubeShape.CUBE_TOP_HEIGHT && NorthEastCorner == CubeShape.CUBE_TOP_HEIGHT && NorthWestCorner == CubeShape.CUBE_TOP_HEIGHT))
+				if ((SouthEastCorner == BlockShape.CUBE_BOTTOM_HEIGHT && NorthEastCorner == BlockShape.CUBE_BOTTOM_HEIGHT && NorthWestCorner == BlockShape.CUBE_BOTTOM_HEIGHT) || (SouthEastCorner == BlockShape.CUBE_TOP_HEIGHT && NorthEastCorner == BlockShape.CUBE_TOP_HEIGHT && NorthWestCorner == BlockShape.CUBE_TOP_HEIGHT))
 				{
 					Indexes.add(SE);  // South East
 					Indexes.add(NE);  // North East
@@ -191,7 +193,7 @@ public class TileBuilder implements Serializable {
 					Triangle1 = true;
 				}
 
-				if ((NorthWestCorner == CubeShape.CUBE_BOTTOM_HEIGHT && SouthWestCorner == CubeShape.CUBE_BOTTOM_HEIGHT && SouthEastCorner == CubeShape.CUBE_BOTTOM_HEIGHT) || (NorthWestCorner == CubeShape.CUBE_TOP_HEIGHT && SouthWestCorner == CubeShape.CUBE_TOP_HEIGHT && SouthEastCorner == CubeShape.CUBE_TOP_HEIGHT))
+				if ((NorthWestCorner == BlockShape.CUBE_BOTTOM_HEIGHT && SouthWestCorner == BlockShape.CUBE_BOTTOM_HEIGHT && SouthEastCorner == BlockShape.CUBE_BOTTOM_HEIGHT) || (NorthWestCorner == BlockShape.CUBE_TOP_HEIGHT && SouthWestCorner == BlockShape.CUBE_TOP_HEIGHT && SouthEastCorner == BlockShape.CUBE_TOP_HEIGHT))
 				{
 					Indexes.add(NW);
 					Indexes.add(SW);
@@ -202,7 +204,7 @@ public class TileBuilder implements Serializable {
 			}
 			else // Split along SW-NE line
 			{
-				if ((NorthEastCorner == CubeShape.CUBE_BOTTOM_HEIGHT && NorthWestCorner == CubeShape.CUBE_BOTTOM_HEIGHT && SouthWestCorner == CubeShape.CUBE_BOTTOM_HEIGHT) || (NorthEastCorner == CubeShape.CUBE_TOP_HEIGHT && NorthWestCorner == CubeShape.CUBE_TOP_HEIGHT && SouthWestCorner == CubeShape.CUBE_TOP_HEIGHT))
+				if ((NorthEastCorner == BlockShape.CUBE_BOTTOM_HEIGHT && NorthWestCorner == BlockShape.CUBE_BOTTOM_HEIGHT && SouthWestCorner == BlockShape.CUBE_BOTTOM_HEIGHT) || (NorthEastCorner == BlockShape.CUBE_TOP_HEIGHT && NorthWestCorner == BlockShape.CUBE_TOP_HEIGHT && SouthWestCorner == BlockShape.CUBE_TOP_HEIGHT))
 				{
 					Indexes.add(NE);
 					Indexes.add(NW);
@@ -211,7 +213,7 @@ public class TileBuilder implements Serializable {
 					Triangle1 = true;
 				}
 
-				if ((SouthWestCorner == CubeShape.CUBE_BOTTOM_HEIGHT && SouthEastCorner == CubeShape.CUBE_BOTTOM_HEIGHT && NorthEastCorner == CubeShape.CUBE_BOTTOM_HEIGHT) || (SouthWestCorner == CubeShape.CUBE_TOP_HEIGHT && SouthEastCorner == CubeShape.CUBE_TOP_HEIGHT && NorthEastCorner == CubeShape.CUBE_TOP_HEIGHT))
+				if ((SouthWestCorner == BlockShape.CUBE_BOTTOM_HEIGHT && SouthEastCorner == BlockShape.CUBE_BOTTOM_HEIGHT && NorthEastCorner == BlockShape.CUBE_BOTTOM_HEIGHT) || (SouthWestCorner == BlockShape.CUBE_TOP_HEIGHT && SouthEastCorner == BlockShape.CUBE_TOP_HEIGHT && NorthEastCorner == BlockShape.CUBE_TOP_HEIGHT))
 				{
 					Indexes.add(SW);
 					Indexes.add(SE);
@@ -230,10 +232,10 @@ public class TileBuilder implements Serializable {
  
 	private MeshData createSideFaceMesh(FaceShape Shape) {
 		
-		byte NorthEastCorner = Shape.getSourceCubeShape().getNorthEastCorner();
-		byte NorthWestCorner = Shape.getSourceCubeShape().getNorthWestCorner();
-		byte SouthEastCorner = Shape.getSourceCubeShape().getSouthEastCorner();
-		byte SouthWestCorner = Shape.getSourceCubeShape().getSouthWestCorner();		
+		byte NorthEastCorner = Shape.getSourceBlockShape().getNorthEastCorner();
+		byte NorthWestCorner = Shape.getSourceBlockShape().getNorthWestCorner();
+		byte SouthEastCorner = Shape.getSourceBlockShape().getSouthEastCorner();
+		byte SouthWestCorner = Shape.getSourceBlockShape().getSouthWestCorner();		
 
 		ArrayList<Vector3f> Vertices = new ArrayList<Vector3f>();
 		ArrayList<Vector3f> Normals = new ArrayList<Vector3f>();
@@ -241,8 +243,8 @@ public class TileBuilder implements Serializable {
 		ArrayList<Integer> Indexes = new ArrayList<Integer>();	
 
 		boolean Triangle = false;
-		CubeShape Cube = Shape.getSourceCubeShape();
-		CubeShape Adjacent = Shape.getAdjacentCubeShape();
+		BlockShape Block = Shape.getSourceBlockShape();
+		BlockShape Adjacent = Shape.getAdjacentBlockShape();
 
 
 		float XLeft = 0; float XRight = 0; float YLeft = 0; float YRight = 0;
@@ -253,29 +255,29 @@ public class TileBuilder implements Serializable {
 		switch (Shape.getFaceDirection())
 		{
 			case DIRECTION_SOUTH:
-				XLeft = -MapCoordinate.HALFCUBE;  YLeft = -MapCoordinate.HALFCUBE;  XRight =  MapCoordinate.HALFCUBE;  YRight = -MapCoordinate.HALFCUBE;
-				LeftCorner = Cube.getSouthWestCorner();   RightCorner = Cube.getSouthEastCorner();
+				XLeft = -BlockCoordinate.HALF_BLOCK;  YLeft = -BlockCoordinate.HALF_BLOCK;  XRight =  BlockCoordinate.HALF_BLOCK;  YRight = -BlockCoordinate.HALF_BLOCK;
+				LeftCorner = Block.getSouthWestCorner();   RightCorner = Block.getSouthEastCorner();
 				LeftAdjacentCorner = Adjacent.getNorthWestCorner();  RightAdjacentCorner = Adjacent.getNorthEastCorner();
 				Normal = Vector3f.UNIT_Y.negate();
 				break;
 
 			case DIRECTION_NORTH:
-				XLeft =  MapCoordinate.HALFCUBE;  YLeft =  MapCoordinate.HALFCUBE;  XRight = -MapCoordinate.HALFCUBE;  YRight =  MapCoordinate.HALFCUBE;
-				LeftCorner = Cube.getNorthEastCorner();  RightCorner = Cube.getNorthWestCorner();
+				XLeft =  BlockCoordinate.HALF_BLOCK;  YLeft =  BlockCoordinate.HALF_BLOCK;  XRight = -BlockCoordinate.HALF_BLOCK;  YRight =  BlockCoordinate.HALF_BLOCK;
+				LeftCorner = Block.getNorthEastCorner();  RightCorner = Block.getNorthWestCorner();
 				LeftAdjacentCorner = Adjacent.getSouthEastCorner();  RightAdjacentCorner = Adjacent.getSouthWestCorner();
 				Normal = Vector3f.UNIT_Y;
 				break;
 
 			case DIRECTION_WEST:
-				XLeft = -MapCoordinate.HALFCUBE;  YLeft =  MapCoordinate.HALFCUBE;  XRight = -MapCoordinate.HALFCUBE;  YRight = -MapCoordinate.HALFCUBE;
-				LeftCorner = Cube.getNorthWestCorner();  RightCorner = Cube.getSouthWestCorner();
+				XLeft = -BlockCoordinate.HALF_BLOCK;  YLeft =  BlockCoordinate.HALF_BLOCK;  XRight = -BlockCoordinate.HALF_BLOCK;  YRight = -BlockCoordinate.HALF_BLOCK;
+				LeftCorner = Block.getNorthWestCorner();  RightCorner = Block.getSouthWestCorner();
 				LeftAdjacentCorner = Adjacent.getNorthEastCorner();  RightAdjacentCorner = Adjacent.getSouthEastCorner();
 				Normal = Vector3f.UNIT_X.negate();
 				break;
 
 			case DIRECTION_EAST:
-				XLeft =  MapCoordinate.HALFCUBE;  YLeft = -MapCoordinate.HALFCUBE;  XRight =  MapCoordinate.HALFCUBE;  YRight =  MapCoordinate.HALFCUBE;
-				LeftCorner = Cube.getSouthEastCorner();  RightCorner = Cube.getNorthEastCorner();
+				XLeft =  BlockCoordinate.HALF_BLOCK;  YLeft = -BlockCoordinate.HALF_BLOCK;  XRight =  BlockCoordinate.HALF_BLOCK;  YRight =  BlockCoordinate.HALF_BLOCK;
+				LeftCorner = Block.getSouthEastCorner();  RightCorner = Block.getNorthEastCorner();
 				LeftAdjacentCorner = Adjacent.getSouthWestCorner();  RightAdjacentCorner = Adjacent.getNorthWestCorner();
 				Normal = Vector3f.UNIT_X;
 				break;
@@ -285,49 +287,49 @@ public class TileBuilder implements Serializable {
 		}
 
 		float LeftTop = Math.max(LeftCorner, LeftAdjacentCorner);
-		LeftTop = (Math.min(CubeShape.CUBE_TOP_HEIGHT, Math.max(CubeShape.CUBE_BOTTOM_HEIGHT, LeftTop)) - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
+		LeftTop = (Math.min(BlockShape.CUBE_TOP_HEIGHT, Math.max(BlockShape.CUBE_BOTTOM_HEIGHT, LeftTop)) - 1.0f) / BlockShape.HEIGHT_FRACTIONS;
 
 		float RightTop = Math.max(RightCorner, RightAdjacentCorner);
-		RightTop = (Math.min(CubeShape.CUBE_TOP_HEIGHT, Math.max(CubeShape.CUBE_BOTTOM_HEIGHT, RightTop)) - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
+		RightTop = (Math.min(BlockShape.CUBE_TOP_HEIGHT, Math.max(BlockShape.CUBE_BOTTOM_HEIGHT, RightTop)) - 1.0f) / BlockShape.HEIGHT_FRACTIONS;
 		
 		float LeftBottom = Math.min(LeftCorner, LeftAdjacentCorner);
-		LeftBottom = (Math.min(CubeShape.CUBE_TOP_HEIGHT, Math.max(CubeShape.CUBE_BOTTOM_HEIGHT, LeftBottom)) - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
-		if (Adjacent.isSky() && Cube.hasFace(Shape.getFaceDirection()) && !Cube.isSky()) {
-			LeftBottom = (CubeShape.CUBE_BOTTOM_HEIGHT - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
+		LeftBottom = (Math.min(BlockShape.CUBE_TOP_HEIGHT, Math.max(BlockShape.CUBE_BOTTOM_HEIGHT, LeftBottom)) - 1.0f) / BlockShape.HEIGHT_FRACTIONS;
+		if (Adjacent.isSky() && Block.hasFace(Shape.getFaceDirection()) && !Block.isSky()) {
+			LeftBottom = (BlockShape.CUBE_BOTTOM_HEIGHT - 1.0f) / BlockShape.HEIGHT_FRACTIONS;
 		}
 		
 		float RightBottom = Math.min(RightCorner, RightAdjacentCorner);
-		RightBottom = (Math.min(CubeShape.CUBE_TOP_HEIGHT, Math.max(CubeShape.CUBE_BOTTOM_HEIGHT, RightBottom)) - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
-		if (Adjacent.isSky() && Cube.hasFace(Shape.getFaceDirection()) && !Cube.isSky()) {
-			RightBottom = (CubeShape.CUBE_BOTTOM_HEIGHT - 1.0f) / CubeShape.HEIGHT_FRACTIONS;
+		RightBottom = (Math.min(BlockShape.CUBE_TOP_HEIGHT, Math.max(BlockShape.CUBE_BOTTOM_HEIGHT, RightBottom)) - 1.0f) / BlockShape.HEIGHT_FRACTIONS;
+		if (Adjacent.isSky() && Block.hasFace(Shape.getFaceDirection()) && !Block.isSky()) {
+			RightBottom = (BlockShape.CUBE_BOTTOM_HEIGHT - 1.0f) / BlockShape.HEIGHT_FRACTIONS;
 		}
 	
-		Vertices.add(new Vector3f(XLeft, YLeft, LeftBottom - MapCoordinate.HALFCUBE));  // Left Bottom
+		Vertices.add(new Vector3f(XLeft, YLeft, LeftBottom - BlockCoordinate.HALF_BLOCK));  // Left Bottom
 		Normals.add(Normal);
 		TextureCoords.add(new Vector2f(0.0f, LeftBottom));
 
-		Vertices.add(new Vector3f(XLeft, YLeft, LeftTop - MapCoordinate.HALFCUBE));  // Left Top
+		Vertices.add(new Vector3f(XLeft, YLeft, LeftTop - BlockCoordinate.HALF_BLOCK));  // Left Top
 		Normals.add(Normal);
 		TextureCoords.add(new Vector2f(0.0f, LeftTop));
 
-		Vertices.add(new Vector3f(XRight, YRight, RightBottom - MapCoordinate.HALFCUBE));  // Right Bottom
+		Vertices.add(new Vector3f(XRight, YRight, RightBottom - BlockCoordinate.HALF_BLOCK));  // Right Bottom
 		Normals.add(Normal);
 		TextureCoords.add(new Vector2f(1.0f, RightBottom));
 
-		Vertices.add(new Vector3f(XRight, YRight, RightTop - MapCoordinate.HALFCUBE));  // Right Top
+		Vertices.add(new Vector3f(XRight, YRight, RightTop - BlockCoordinate.HALF_BLOCK));  // Right Top
 		Normals.add(Normal);
 		TextureCoords.add(new Vector2f(1.0f, RightTop));
 
 
 		if (LeftCorner >= LeftAdjacentCorner || RightCorner >= RightAdjacentCorner) { 
-			if (LeftCorner > CubeShape.BELOW_CUBE_HEIGHT && RightCorner != CubeShape.BELOW_CUBE_HEIGHT) {
+			if (LeftCorner > BlockShape.BELOW_CUBE_HEIGHT && RightCorner != BlockShape.BELOW_CUBE_HEIGHT) {
 				Indexes.add(3);
 				Indexes.add(1);
 				Indexes.add(0);
 				Triangle = true;
 			}
 
-			if (LeftCorner != CubeShape.BELOW_CUBE_HEIGHT && RightCorner > CubeShape.CUBE_BOTTOM_HEIGHT) {
+			if (LeftCorner != BlockShape.BELOW_CUBE_HEIGHT && RightCorner > BlockShape.CUBE_BOTTOM_HEIGHT) {
 				Indexes.add(0);
 				Indexes.add(2);
 				Indexes.add(3);
@@ -335,14 +337,14 @@ public class TileBuilder implements Serializable {
 			}
 		} else {
 
-			if (LeftAdjacentCorner > CubeShape.BELOW_CUBE_HEIGHT && RightAdjacentCorner != CubeShape.BELOW_CUBE_HEIGHT) {
+			if (LeftAdjacentCorner > BlockShape.BELOW_CUBE_HEIGHT && RightAdjacentCorner != BlockShape.BELOW_CUBE_HEIGHT) {
 				//Indexes.add(0);
 				//Indexes.add(1);
 				//Indexes.add(3);
 				//Triangle = true;
 			}
 
-			if (LeftAdjacentCorner != CubeShape.BELOW_CUBE_HEIGHT && RightAdjacentCorner > CubeShape.CUBE_BOTTOM_HEIGHT) {
+			if (LeftAdjacentCorner != BlockShape.BELOW_CUBE_HEIGHT && RightAdjacentCorner > BlockShape.CUBE_BOTTOM_HEIGHT) {
 				//Indexes.add(3);
 				//Indexes.add(2);
 				//Indexes.add(0);
@@ -363,10 +365,10 @@ public class TileBuilder implements Serializable {
 		boolean Triangle1 = false;
 		boolean Triangle2 = false;
 
-		byte NorthEastCorner = Shape.getSourceCubeShape().getNorthEastCorner();
-		byte NorthWestCorner = Shape.getSourceCubeShape().getNorthWestCorner();
-		byte SouthEastCorner = Shape.getSourceCubeShape().getSouthEastCorner();
-		byte SouthWestCorner = Shape.getSourceCubeShape().getSouthWestCorner();
+		byte NorthEastCorner = Shape.getSourceBlockShape().getNorthEastCorner();
+		byte NorthWestCorner = Shape.getSourceBlockShape().getNorthWestCorner();
+		byte SouthEastCorner = Shape.getSourceBlockShape().getSouthEastCorner();
+		byte SouthWestCorner = Shape.getSourceBlockShape().getSouthWestCorner();
 
 		ArrayList<Vector3f> Vertices = new ArrayList<Vector3f>();
 		ArrayList<Vector3f> Normals = new ArrayList<Vector3f>();
@@ -377,15 +379,15 @@ public class TileBuilder implements Serializable {
 		final int SW = 0;  final int SE = 1;  final int NW = 2;  final int NE = 3;
 
 		{
-			Vector3f SWv = new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, (((float) SouthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE);
-			Vector3f SEv = new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, (((float) SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE);
-			Vector3f NWv = new Vector3f(-MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, (((float) NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE);
-			Vector3f NEv = new Vector3f( MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, (((float) NorthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE);
+			Vector3f SWv = new Vector3f(-BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, (((float) SouthWestCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK);
+			Vector3f SEv = new Vector3f( BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, (((float) SouthEastCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK);
+			Vector3f NWv = new Vector3f(-BlockCoordinate.HALF_BLOCK,  BlockCoordinate.HALF_BLOCK, (((float) NorthWestCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK);
+			Vector3f NEv = new Vector3f( BlockCoordinate.HALF_BLOCK,  BlockCoordinate.HALF_BLOCK, (((float) NorthEastCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK);
 
-			Vector3f NWBv = new Vector3f(-MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-			Vector3f SEBv = new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-			Vector3f NEBv = new Vector3f( MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
-			Vector3f SWBv = new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE);
+			Vector3f NWBv = new Vector3f(-BlockCoordinate.HALF_BLOCK,  BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK);
+			Vector3f SEBv = new Vector3f( BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK);
+			Vector3f NEBv = new Vector3f( BlockCoordinate.HALF_BLOCK,  BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK);
+			Vector3f SWBv = new Vector3f(-BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK);
 
 					
 			Vector3f Normal = new Vector3f();
@@ -393,14 +395,14 @@ public class TileBuilder implements Serializable {
 			Vector3f X = Vector3f.UNIT_X;
 			Vector3f Y = Vector3f.UNIT_Y;
 
-			if (Shape.getSourceCubeShape().isSplit()) // Split along the NW-SE line
+			if (Shape.getSourceBlockShape().isSplit()) // Split along the NW-SE line
 			{
 				// Triangle1 SE->NE->NW
-				if (SouthEastCorner > CubeShape.BELOW_CUBE_HEIGHT && NorthEastCorner > CubeShape.BELOW_CUBE_HEIGHT && NorthWestCorner > CubeShape.BELOW_CUBE_HEIGHT)
+				if (SouthEastCorner > BlockShape.BELOW_CUBE_HEIGHT && NorthEastCorner > BlockShape.BELOW_CUBE_HEIGHT && NorthWestCorner > BlockShape.BELOW_CUBE_HEIGHT)
 				{
-					if (SouthEastCorner > CubeShape.CUBE_BOTTOM_HEIGHT || NorthEastCorner > CubeShape.CUBE_BOTTOM_HEIGHT || NorthWestCorner > CubeShape.CUBE_BOTTOM_HEIGHT)
+					if (SouthEastCorner > BlockShape.CUBE_BOTTOM_HEIGHT || NorthEastCorner > BlockShape.CUBE_BOTTOM_HEIGHT || NorthWestCorner > BlockShape.CUBE_BOTTOM_HEIGHT)
 					{
-						if (SouthEastCorner < CubeShape.CUBE_TOP_HEIGHT || NorthEastCorner < CubeShape.CUBE_TOP_HEIGHT || NorthWestCorner < CubeShape.CUBE_TOP_HEIGHT)
+						if (SouthEastCorner < BlockShape.CUBE_TOP_HEIGHT || NorthEastCorner < BlockShape.CUBE_TOP_HEIGHT || NorthWestCorner < BlockShape.CUBE_TOP_HEIGHT)
 						{
 							Vertices.add(SEv);
 							Normals.add(new Vector3f( NEv.subtract(SEv).cross( NWv.subtract(SEv)).normalize()));
@@ -423,23 +425,23 @@ public class TileBuilder implements Serializable {
 				}
 
 				// Triangle2 NW->SW->SE
-				if (NorthWestCorner > CubeShape.BELOW_CUBE_HEIGHT && SouthWestCorner > CubeShape.BELOW_CUBE_HEIGHT && SouthEastCorner > CubeShape.BELOW_CUBE_HEIGHT)
+				if (NorthWestCorner > BlockShape.BELOW_CUBE_HEIGHT && SouthWestCorner > BlockShape.BELOW_CUBE_HEIGHT && SouthEastCorner > BlockShape.BELOW_CUBE_HEIGHT)
 				{
-					if (NorthWestCorner > CubeShape.CUBE_BOTTOM_HEIGHT || SouthWestCorner > CubeShape.CUBE_BOTTOM_HEIGHT || SouthEastCorner > CubeShape.CUBE_BOTTOM_HEIGHT)
+					if (NorthWestCorner > BlockShape.CUBE_BOTTOM_HEIGHT || SouthWestCorner > BlockShape.CUBE_BOTTOM_HEIGHT || SouthEastCorner > BlockShape.CUBE_BOTTOM_HEIGHT)
 					{
-						if (NorthWestCorner < CubeShape.CUBE_TOP_HEIGHT || SouthWestCorner < CubeShape.CUBE_TOP_HEIGHT || SouthEastCorner < CubeShape.CUBE_TOP_HEIGHT)
+						if (NorthWestCorner < BlockShape.CUBE_TOP_HEIGHT || SouthWestCorner < BlockShape.CUBE_TOP_HEIGHT || SouthEastCorner < BlockShape.CUBE_TOP_HEIGHT)
 						{
-							Vertices.add(new Vector3f(-MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, (((float) NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
+							Vertices.add(new Vector3f(-BlockCoordinate.HALF_BLOCK,  BlockCoordinate.HALF_BLOCK, (((float) NorthWestCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK));
 							Normals.add(new Vector3f( SWv.subtract(NWv).cross(SEv.subtract(NWv)).normalize()));
 							TextureCoords.add(new Vector2f(0.0f, 1.0f));
 							Indexes.add(Vertices.size() - 1);
 
-							Vertices.add(new Vector3f(-MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, (((float) SouthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
+							Vertices.add(new Vector3f(-BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, (((float) SouthWestCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK));
 							Normals.add(new Vector3f( SEv.subtract(SWv)).cross(NWv.subtract(SWv)).normalize());
 							TextureCoords.add(new Vector2f(0.0f, 0.0f));
 							Indexes.add(Vertices.size() - 1);
 
-							Vertices.add(new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, (((float) SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
+							Vertices.add(new Vector3f( BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, (((float) SouthEastCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK));
 							Normals.add(new Vector3f( NWv.subtract(SEv)).cross(SWv.subtract(SEv)).normalize());
 							TextureCoords.add(new Vector2f(1.0f, 0.0f));
 							Indexes.add(Vertices.size() - 1);
@@ -449,23 +451,23 @@ public class TileBuilder implements Serializable {
 					}
 				}
 
-				// Vertical face inside Cube when only one triangle is drawn
-				if ((Triangle1 ^ Triangle2) && ((NorthWestCorner > CubeShape.CUBE_BOTTOM_HEIGHT || SouthEastCorner > CubeShape.CUBE_BOTTOM_HEIGHT)))
+				// Vertical face inside Block when only one triangle is drawn
+				if ((Triangle1 ^ Triangle2) && ((NorthWestCorner > BlockShape.CUBE_BOTTOM_HEIGHT || SouthEastCorner > BlockShape.CUBE_BOTTOM_HEIGHT)))
 				{
-					if ((Triangle1 && SouthWestCorner < CubeShape.CUBE_TOP_HEIGHT) || (Triangle2 && NorthEastCorner < CubeShape.CUBE_TOP_HEIGHT))
+					if ((Triangle1 && SouthWestCorner < BlockShape.CUBE_TOP_HEIGHT) || (Triangle2 && NorthEastCorner < BlockShape.CUBE_TOP_HEIGHT))
 					{
 						/*
 						Vector3f Vertex4 = new Vector3f( -MapCoordinates.HALFCUBE, MapCoordinates.HALFCUBE, -MapCoordinates.HALFCUBE);
 						Vector3f Vertex5 = new Vector3f( MapCoordinates.HALFCUBE, -MapCoordinates.HALFCUBE, -MapCoordinates.HALFCUBE);
 
 						
-						Vertices.add(new Vector3f(-MapCoordinates.HALFCUBE,  MapCoordinates.HALFCUBE, (((float) NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinates.HALFCUBE));
+						Vertices.add(new Vector3f(-MapCoordinates.HALFCUBE,  MapCoordinates.HALFCUBE, (((float) NorthWestCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -MapCoordinates.HALFCUBE));
 						Normals.add(Normal);
-						TextureCoords.add(new Vector2f(1.0f - ((float) NorthWestCorner / CubeShape.HEIGHT_FRACTIONS), 0.0f));
+						TextureCoords.add(new Vector2f(1.0f - ((float) NorthWestCorner / BlockShape.HEIGHT_FRACTIONS), 0.0f));
 
-						Vertices.add(new Vector3f( MapCoordinates.HALFCUBE, -MapCoordinates.HALFCUBE, (((float) SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinates.HALFCUBE));
+						Vertices.add(new Vector3f( MapCoordinates.HALFCUBE, -MapCoordinates.HALFCUBE, (((float) SouthEastCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -MapCoordinates.HALFCUBE));
 						Normals.add(Normal);
-						TextureCoords.add(new Vector2f(1.0f - ((float) SouthEastCorner / CubeShape.HEIGHT_FRACTIONS), 1.0f));
+						TextureCoords.add(new Vector2f(1.0f - ((float) SouthEastCorner / BlockShape.HEIGHT_FRACTIONS), 1.0f));
 
 						Vertices.add(new Vector3f( -MapCoordinates.HALFCUBE, MapCoordinates.HALFCUBE, -MapCoordinates.HALFCUBE));  // North West Bottom  5
 						Normals.add(Normal);
@@ -480,40 +482,40 @@ public class TileBuilder implements Serializable {
 						{
 							Normal = X.negate().add(Y.negate());
 
-							if (NorthWestCorner > CubeShape.CUBE_BOTTOM_HEIGHT)
+							if (NorthWestCorner > BlockShape.CUBE_BOTTOM_HEIGHT)
 							{
-								Vertices.add(new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, (((float) SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
+								Vertices.add(new Vector3f( BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, (((float) SouthEastCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK));
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - (((float) SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 1.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) SouthEastCorner - 1) / BlockShape.HEIGHT_FRACTIONS), 1.0f));
 								Indexes.add(Vertices.size() - 1);
 								
-								Vertices.add(new Vector3f(-MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, (((float) NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
+								Vertices.add(new Vector3f(-BlockCoordinate.HALF_BLOCK,  BlockCoordinate.HALF_BLOCK, (((float) NorthWestCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK));
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - (((float) NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 0.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) NorthWestCorner - 1) / BlockShape.HEIGHT_FRACTIONS), 0.0f));
 								Indexes.add(Vertices.size() - 1);
 								
-								Vertices.add(new Vector3f( -MapCoordinate.HALFCUBE, MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE));  // North West Bottom  5
+								Vertices.add(new Vector3f( -BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK));  // North West Bottom  5
 								Normals.add(Normal);
 								TextureCoords.add(new Vector2f(1.0f, 0.0f));
 								Indexes.add(Vertices.size() - 1);
 								
 								// SE->NW->NW Bottom
 							}
-							if (SouthEastCorner > CubeShape.CUBE_BOTTOM_HEIGHT)
+							if (SouthEastCorner > BlockShape.CUBE_BOTTOM_HEIGHT)
 							{
-								Vertices.add(new Vector3f( -MapCoordinate.HALFCUBE, MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE));  // North West Bottom  5
+								Vertices.add(new Vector3f( -BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK));  // North West Bottom  5
 								Normals.add(Normal);
 								TextureCoords.add(new Vector2f(1.0f, 0.0f));
 								Indexes.add(Vertices.size() - 1);
 
-								Vertices.add(new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE));  // South East Bottom  6
+								Vertices.add(new Vector3f( BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK));  // South East Bottom  6
 								Normals.add(Normal);
 								TextureCoords.add(new Vector2f(1.0f, 1.0f));
 								Indexes.add(Vertices.size() - 1);
 								
-								Vertices.add(new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, (((float) SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
+								Vertices.add(new Vector3f( BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, (((float) SouthEastCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK));
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - (((float) SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 1.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) SouthEastCorner - 1) / BlockShape.HEIGHT_FRACTIONS), 1.0f));
 								Indexes.add(Vertices.size() - 1);
 								
 								// NW Bottom->SE Bottom->SE
@@ -524,40 +526,40 @@ public class TileBuilder implements Serializable {
 						{
 							Normal = X.add(Y);
 
-							if (SouthEastCorner > CubeShape.CUBE_BOTTOM_HEIGHT)
+							if (SouthEastCorner > BlockShape.CUBE_BOTTOM_HEIGHT)
 							{
-								Vertices.add(new Vector3f(-MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, (((float) NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
+								Vertices.add(new Vector3f(-BlockCoordinate.HALF_BLOCK,  BlockCoordinate.HALF_BLOCK, (((float) NorthWestCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK));
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - (((float) NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 0.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) NorthWestCorner - 1) / BlockShape.HEIGHT_FRACTIONS), 0.0f));
 								Indexes.add(Vertices.size() - 1);
 
-								Vertices.add(new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, (((float) SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
+								Vertices.add(new Vector3f( BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, (((float) SouthEastCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK));
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - (((float) SouthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 1.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) SouthEastCorner - 1) / BlockShape.HEIGHT_FRACTIONS), 1.0f));
 								Indexes.add(Vertices.size() - 1);
 
-								Vertices.add(new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE));  // South East Bottom  6
+								Vertices.add(new Vector3f( BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK));  // South East Bottom  6
 								Normals.add(Normal);
 								TextureCoords.add(new Vector2f(1.0f, 1.0f));
 								Indexes.add(Vertices.size() - 1);
 
 								//ManualObject->triangle(3, 4, 6);  // NW->SE->SE Bottom
 							}
-							if (NorthWestCorner > CubeShape.CUBE_BOTTOM_HEIGHT)
+							if (NorthWestCorner > BlockShape.CUBE_BOTTOM_HEIGHT)
 							{
-								Vertices.add(new Vector3f( MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE));  // South East Bottom  6
+								Vertices.add(new Vector3f( BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK));  // South East Bottom  6
 								Normals.add(Normal);
 								TextureCoords.add(new Vector2f(1.0f, 1.0f));
 								Indexes.add(Vertices.size() - 1);
 								
-								Vertices.add(new Vector3f( -MapCoordinate.HALFCUBE, MapCoordinate.HALFCUBE, -MapCoordinate.HALFCUBE));  // North West Bottom  5
+								Vertices.add(new Vector3f( -BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK, -BlockCoordinate.HALF_BLOCK));  // North West Bottom  5
 								Normals.add(Normal);
 								TextureCoords.add(new Vector2f(1.0f, 0.0f));
 								Indexes.add(Vertices.size() - 1);
 								
-								Vertices.add(new Vector3f(-MapCoordinate.HALFCUBE,  MapCoordinate.HALFCUBE, (((float) NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS) -MapCoordinate.HALFCUBE));
+								Vertices.add(new Vector3f(-BlockCoordinate.HALF_BLOCK,  BlockCoordinate.HALF_BLOCK, (((float) NorthWestCorner - 1) / BlockShape.HEIGHT_FRACTIONS) -BlockCoordinate.HALF_BLOCK));
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - (((float) NorthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 0.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) NorthWestCorner - 1) / BlockShape.HEIGHT_FRACTIONS), 0.0f));
 								Indexes.add(Vertices.size() - 1);
 
 								//ManualObject->triangle(6, 5, 3);  // SE Bottom->NW Bottom->NW
@@ -567,13 +569,13 @@ public class TileBuilder implements Serializable {
 				}
 
 				// Vertical bisector through whole cube
-				if (!Triangle1 && !Triangle2 && NorthWestCorner >= CubeShape.CUBE_TOP_HEIGHT && SouthEastCorner >= CubeShape.CUBE_TOP_HEIGHT)
+				if (!Triangle1 && !Triangle2 && NorthWestCorner >= BlockShape.CUBE_TOP_HEIGHT && SouthEastCorner >= BlockShape.CUBE_TOP_HEIGHT)
 				{
-					if (NorthEastCorner < CubeShape.CUBE_BOTTOM_HEIGHT)
+					if (NorthEastCorner < BlockShape.CUBE_BOTTOM_HEIGHT)
 					{
 						Normal = X.add(Y);
 					}
-					if (SouthWestCorner < CubeShape.CUBE_BOTTOM_HEIGHT)
+					if (SouthWestCorner < BlockShape.CUBE_BOTTOM_HEIGHT)
 					{
 						Normal = X.negate().add(Y.negate());	
 					}
@@ -596,7 +598,7 @@ public class TileBuilder implements Serializable {
 					Normals.add(Normal);
 					TextureCoords.add(new Vector2f(1.0f, 1.0f));
 
-					if (NorthEastCorner < CubeShape.CUBE_BOTTOM_HEIGHT)
+					if (NorthEastCorner < BlockShape.CUBE_BOTTOM_HEIGHT)
 					{
 						// NW Bottom-> NW-> SE
 						Indexes.add(Start + 2);
@@ -628,11 +630,11 @@ public class TileBuilder implements Serializable {
 			else // Split along the SW-NE line
 			{
 				// Triangle1 NE->NW->SW
-				if (NorthEastCorner > CubeShape.BELOW_CUBE_HEIGHT && NorthWestCorner > CubeShape.BELOW_CUBE_HEIGHT && SouthWestCorner > CubeShape.BELOW_CUBE_HEIGHT)
+				if (NorthEastCorner > BlockShape.BELOW_CUBE_HEIGHT && NorthWestCorner > BlockShape.BELOW_CUBE_HEIGHT && SouthWestCorner > BlockShape.BELOW_CUBE_HEIGHT)
 				{
-					if (NorthEastCorner > CubeShape.CUBE_BOTTOM_HEIGHT || NorthWestCorner > CubeShape.CUBE_BOTTOM_HEIGHT || SouthWestCorner > CubeShape.CUBE_BOTTOM_HEIGHT)
+					if (NorthEastCorner > BlockShape.CUBE_BOTTOM_HEIGHT || NorthWestCorner > BlockShape.CUBE_BOTTOM_HEIGHT || SouthWestCorner > BlockShape.CUBE_BOTTOM_HEIGHT)
 					{
-						if (NorthEastCorner < CubeShape.CUBE_TOP_HEIGHT || NorthWestCorner < CubeShape.CUBE_TOP_HEIGHT || SouthWestCorner < CubeShape.CUBE_TOP_HEIGHT)
+						if (NorthEastCorner < BlockShape.CUBE_TOP_HEIGHT || NorthWestCorner < BlockShape.CUBE_TOP_HEIGHT || SouthWestCorner < BlockShape.CUBE_TOP_HEIGHT)
 						{
 							Vertices.add(NEv);  // North East
 							Normals.add( (NWv.subtract(NEv)).cross(SWv.subtract(NEv)).normalize());
@@ -655,11 +657,11 @@ public class TileBuilder implements Serializable {
 				}
 
 				// Triangle2 SW->SE->NE
-				if (SouthWestCorner > CubeShape.BELOW_CUBE_HEIGHT && SouthEastCorner > CubeShape.BELOW_CUBE_HEIGHT && NorthEastCorner > CubeShape.BELOW_CUBE_HEIGHT)
+				if (SouthWestCorner > BlockShape.BELOW_CUBE_HEIGHT && SouthEastCorner > BlockShape.BELOW_CUBE_HEIGHT && NorthEastCorner > BlockShape.BELOW_CUBE_HEIGHT)
 				{
-					if (SouthWestCorner > CubeShape.CUBE_BOTTOM_HEIGHT || SouthEastCorner > CubeShape.CUBE_BOTTOM_HEIGHT || NorthEastCorner > CubeShape.CUBE_BOTTOM_HEIGHT)
+					if (SouthWestCorner > BlockShape.CUBE_BOTTOM_HEIGHT || SouthEastCorner > BlockShape.CUBE_BOTTOM_HEIGHT || NorthEastCorner > BlockShape.CUBE_BOTTOM_HEIGHT)
 					{
-						if (SouthWestCorner < CubeShape.CUBE_TOP_HEIGHT || SouthEastCorner < CubeShape.CUBE_TOP_HEIGHT || NorthEastCorner < CubeShape.CUBE_TOP_HEIGHT)
+						if (SouthWestCorner < BlockShape.CUBE_TOP_HEIGHT || SouthEastCorner < BlockShape.CUBE_TOP_HEIGHT || NorthEastCorner < BlockShape.CUBE_TOP_HEIGHT)
 						{
 							Vertices.add(SWv);  // South West
 							Normals.add(( SEv.subtract(SWv)).cross( NEv.subtract(SWv)).normalize());
@@ -681,16 +683,16 @@ public class TileBuilder implements Serializable {
 					}
 				}
 
-				// Vertical face inside Cube when only one triangle is drawn
-				if ((Triangle1 ^ Triangle2) && ((NorthEastCorner > CubeShape.CUBE_BOTTOM_HEIGHT || SouthWestCorner > CubeShape.CUBE_BOTTOM_HEIGHT)))
+				// Vertical face inside Block when only one triangle is drawn
+				if ((Triangle1 ^ Triangle2) && ((NorthEastCorner > BlockShape.CUBE_BOTTOM_HEIGHT || SouthWestCorner > BlockShape.CUBE_BOTTOM_HEIGHT)))
 				{
-					if ((Triangle1 && SouthEastCorner < CubeShape.CUBE_TOP_HEIGHT) || (Triangle2 && NorthWestCorner < CubeShape.CUBE_TOP_HEIGHT))
+					if ((Triangle1 && SouthEastCorner < BlockShape.CUBE_TOP_HEIGHT) || (Triangle2 && NorthWestCorner < BlockShape.CUBE_TOP_HEIGHT))
 					{
 						if (Triangle1)
 						{
 							Normal = X.add(Y.negate());
 
-							if (NorthEastCorner > CubeShape.CUBE_BOTTOM_HEIGHT)
+							if (NorthEastCorner > BlockShape.CUBE_BOTTOM_HEIGHT)
 							{
 								Vertices.add(SWBv);  // South West Bottom  6
 								Normals.add(Normal);
@@ -704,21 +706,21 @@ public class TileBuilder implements Serializable {
 								
 								Vertices.add(NEv);  // North East  3
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - (((float) NorthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 0.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) NorthEastCorner - 1) / BlockShape.HEIGHT_FRACTIONS), 0.0f));
 								Indexes.add(Vertices.size() - 1);
 								
 								// SW Bottom->NE Bottom->NE
 							}
-							if (SouthWestCorner > CubeShape.CUBE_BOTTOM_HEIGHT)
+							if (SouthWestCorner > BlockShape.CUBE_BOTTOM_HEIGHT)
 							{
 								Vertices.add(NEv);  // North East
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - (((float) NorthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 0.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) NorthEastCorner - 1) / BlockShape.HEIGHT_FRACTIONS), 0.0f));
 								Indexes.add(Vertices.size() - 1);
 
 								Vertices.add(SWv);  // South West
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - (((float) SouthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 1.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) SouthWestCorner - 1) / BlockShape.HEIGHT_FRACTIONS), 1.0f));
 								Indexes.add(Vertices.size() - 1);
 
 								Vertices.add(SWBv);  // South West Bottom
@@ -733,16 +735,16 @@ public class TileBuilder implements Serializable {
 						{
 							Normal = Y.add(X.negate());
 		
-							if (NorthEastCorner > CubeShape.CUBE_BOTTOM_HEIGHT)
+							if (NorthEastCorner > BlockShape.CUBE_BOTTOM_HEIGHT)
 							{
 								Vertices.add(SWv);  // South West  4
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - (((float) SouthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 1.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) SouthWestCorner - 1) / BlockShape.HEIGHT_FRACTIONS), 1.0f));
 								Indexes.add(Vertices.size() - 1);
 								
 								Vertices.add(NEv);  // North East  3
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - (((float) NorthEastCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 0.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) NorthEastCorner - 1) / BlockShape.HEIGHT_FRACTIONS), 0.0f));
 								Indexes.add(Vertices.size() - 1);
 
 								Vertices.add(NEBv);  // North East Bottom  5
@@ -752,7 +754,7 @@ public class TileBuilder implements Serializable {
 
 								// SW->NE->NE Bottom
 							}
-							if (SouthWestCorner > CubeShape.CUBE_BOTTOM_HEIGHT)
+							if (SouthWestCorner > BlockShape.CUBE_BOTTOM_HEIGHT)
 							{
 								Vertices.add(NEBv);  // North East Bottom
 								Normals.add(Normal);
@@ -766,7 +768,7 @@ public class TileBuilder implements Serializable {
 
 								Vertices.add(SWv);  // South West
 								Normals.add(Normal);
-								TextureCoords.add(new Vector2f(1.0f - (((float) SouthWestCorner - 1) / CubeShape.HEIGHT_FRACTIONS), 1.0f));
+								TextureCoords.add(new Vector2f(1.0f - (((float) SouthWestCorner - 1) / BlockShape.HEIGHT_FRACTIONS), 1.0f));
 								Indexes.add(Vertices.size() - 1);
 							
 								// NE Bottom->SW Bottom->SW
@@ -776,13 +778,13 @@ public class TileBuilder implements Serializable {
 				}
 
 				// Vertical bisector through whole cube
-				if (!Triangle1 && !Triangle2 && SouthWestCorner >= CubeShape.CUBE_TOP_HEIGHT && NorthEastCorner >= CubeShape.CUBE_TOP_HEIGHT)
+				if (!Triangle1 && !Triangle2 && SouthWestCorner >= BlockShape.CUBE_TOP_HEIGHT && NorthEastCorner >= BlockShape.CUBE_TOP_HEIGHT)
 				{
-					if (SouthEastCorner < CubeShape.CUBE_BOTTOM_HEIGHT)
+					if (SouthEastCorner < BlockShape.CUBE_BOTTOM_HEIGHT)
 					{
 						Normal = (X.negate()).add(Y.negate());
 					}
-					if (NorthWestCorner < CubeShape.CUBE_BOTTOM_HEIGHT)
+					if (NorthWestCorner < BlockShape.CUBE_BOTTOM_HEIGHT)
 					{
 						Normal = X.add(Y);
 					}
@@ -805,7 +807,7 @@ public class TileBuilder implements Serializable {
 					Normals.add(Normal);
 					TextureCoords.add(new Vector2f(1.0f, 1.0f));
 
-					if (SouthEastCorner < CubeShape.CUBE_BOTTOM_HEIGHT)
+					if (SouthEastCorner < BlockShape.CUBE_BOTTOM_HEIGHT)
 					{
 						Indexes.add(Start + 2);
 						Indexes.add(Start + 0);

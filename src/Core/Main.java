@@ -66,10 +66,13 @@ public class Main extends SimpleApplication {
 	public static void main(String[] args) {
 		app = new Main();
 
+		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
 		AppSettings setting = new AppSettings(true);
 		setting.setTitle("Khazad");
 		setting.setHeight(600);
 		setting.setWidth(800);
+		setting.setFrameRate(60);
 
 		app.setSettings(setting);
 		app.start();
@@ -108,7 +111,7 @@ public class Main extends SimpleApplication {
 		initialiseKeyboardMappings();
 
 		// RENDER
-		this.stateManager.attach(new MapRenderer());
+		this.stateManager.attach(new MapRenderer(pool));
 		this.stateManager.attach(new TerrainRenderer(pool));
 		this.stateManager.attach(new PathingRenderer());
 		this.stateManager.attach(new ActorRenderer());
@@ -217,5 +220,7 @@ public class Main extends SimpleApplication {
 		inputManager.addMapping("PathingRenderToggle", new KeyTrigger(KeyInput.KEY_P));
 		inputManager.addMapping("TerrainRenderToggle", new KeyTrigger(KeyInput.KEY_T));
 		inputManager.addMapping("SunnyRenderToggle", new KeyTrigger(KeyInput.KEY_L));
+		inputManager.addMapping("ReduceDetailLevel", new KeyTrigger(KeyInput.KEY_Y));
+		inputManager.addMapping("IncreeseDetailLevel", new KeyTrigger(KeyInput.KEY_U));	
 	}
 }

@@ -17,6 +17,7 @@
 
 package Map;
 
+import Map.Coordinates.*;
 import java.io.Serializable;
 
 /**
@@ -25,7 +26,7 @@ import java.io.Serializable;
  *
  * @author Impaler
  */
-public class CubeShape implements Serializable {
+public class BlockShape implements Serializable {
 
 	private static final long serialVersionUID = 1;
 	// Defined values for determining how many vertical fractions exist in a cube
@@ -52,30 +53,36 @@ public class CubeShape implements Serializable {
 	public static final short NWSHIFT = 7;
 	public static final short NESHIFT = 4;
 	// Bit compressed heights of each corner and flags
+	
+	public static final short EMPTY_CUBE_DATA = 0;
 	short Data;
 
-	public CubeShape(byte SWCornerHeight, byte SECornerHeight, byte NWCornerHeight, byte NECornerHeight, byte NewFlags) {
+	public BlockShape(byte SWCornerHeight, byte SECornerHeight, byte NWCornerHeight, byte NECornerHeight, byte NewFlags) {
 		Data = (short) (((SWCornerHeight << SWSHIFT) & SWMASK) | ((SECornerHeight << SESHIFT) & SEMASK) | ((NWCornerHeight << NWSHIFT) & NWMASK) | ((NECornerHeight << NESHIFT) & NEMASK) | (NewFlags & FLAGMASK));
 	}
 
-	public CubeShape(byte NewHeight, byte flags) {
+	public BlockShape(byte NewHeight, byte flags) {
 		this(NewHeight, NewHeight, NewHeight, NewHeight, flags);
 	}
 
-	public CubeShape(byte NewHeight) {
+	public BlockShape(byte NewHeight) {
 		this(NewHeight, NewHeight, NewHeight, NewHeight, (byte) 0);
 	}
 
-	public CubeShape() {
+	public BlockShape() {
 		this(CUBE_TOP_HEIGHT);
 	}
 
-	public CubeShape(short newData) {
+	public BlockShape(short newData) {
 		Data = newData;
 	}
 
 	public short getData() {
 		return Data;
+	}
+	
+	public void setData(short newData) {
+		this.Data = newData;
 	}
 
 	public boolean isSolid() {
@@ -84,6 +91,18 @@ public class CubeShape implements Serializable {
 
 	public boolean isEmpty() {
 		return (getSouthWestCorner() <= CUBE_BOTTOM_HEIGHT) && (getSouthEastCorner() <= CUBE_BOTTOM_HEIGHT) && (getNorthWestCorner() <= CUBE_BOTTOM_HEIGHT) && (getNorthEastCorner() <= CUBE_BOTTOM_HEIGHT);
+	}
+
+	public int volume() {
+		int sum1, sum2;
+		if (isSplit()) {
+			sum1 = getNorthWestCorner() + getNorthEastCorner() + getSouthEastCorner() - 3;
+			sum2 = getNorthWestCorner() + getSouthWestCorner() + getSouthEastCorner() - 3;
+		} else {
+			sum1 = getSouthWestCorner() + getNorthWestCorner() + getNorthEastCorner() - 3;
+			sum2 = getSouthWestCorner() + getSouthEastCorner() + getNorthEastCorner() - 3;
+		}
+		return ((Math.min(sum1, 0) + Math.min(sum2, 0))  * 4);
 	}
 
 	public boolean isSky() {
@@ -196,12 +215,12 @@ public class CubeShape implements Serializable {
 
 	@Override
 	public boolean equals(Object ArgumentShape) {
-		CubeShape Arg = (CubeShape) ArgumentShape;
+		BlockShape Arg = (BlockShape) ArgumentShape;
 		return Data == Arg.Data;
 	}
 
 	public boolean isExcavationEquivilent(Object ArgumentShape) {
-		CubeShape Arg = (CubeShape) ArgumentShape;
+		BlockShape Arg = (BlockShape) ArgumentShape;
 
 		boolean NE = Arg.getNorthEastCorner() <= this.getNorthEastCorner();
 		boolean SE = Arg.getSouthEastCorner() <= this.getSouthEastCorner();
@@ -211,26 +230,26 @@ public class CubeShape implements Serializable {
 		return NE && SE && NW && SW;
 	}
 
-	public void copy(CubeShape ArgumentShape) {
+	public void copy(BlockShape ArgumentShape) {
 		Data = ArgumentShape.Data;
 	}
 
 	@Override
-	public CubeShape clone() {
-		CubeShape newShape = new CubeShape();
+	public BlockShape clone() {
+		BlockShape newShape = new BlockShape();
 		newShape.copy(this);
 		return newShape;
 	}
 
-	public boolean notequal(CubeShape ArgumentShape) {
+	public boolean notequal(BlockShape ArgumentShape) {
 		return Data != ArgumentShape.Data;
 	}
 
 	public float getCenterHeight() {
 		if (isSplit()) {
-			return (((getNorthWestCorner() + getSouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+			return (((getNorthWestCorner() + getSouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - BlockCoordinate.HALF_BLOCK;
 		} else {
-			return (((getSouthWestCorner() + getNorthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+			return (((getSouthWestCorner() + getNorthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - BlockCoordinate.HALF_BLOCK;
 		}
 	}
 
@@ -241,42 +260,42 @@ public class CubeShape implements Serializable {
 			case DIRECTION_NORTH:
 			case DIRECTION_UP_NORTH:
 			case DIRECTION_DOWN_NORTH:
-				return (((getNorthWestCorner() + getNorthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return (((getNorthWestCorner() + getNorthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - BlockCoordinate.HALF_BLOCK;
 
 			case DIRECTION_SOUTH:
 			case DIRECTION_UP_SOUTH:
 			case DIRECTION_DOWN_SOUTH:
-				return (((getSouthWestCorner() + getSouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return (((getSouthWestCorner() + getSouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - BlockCoordinate.HALF_BLOCK;
 
 			case DIRECTION_EAST:
 			case DIRECTION_UP_EAST:
 			case DIRECTION_DOWN_EAST:
-				return (((getNorthEastCorner() + getSouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return (((getNorthEastCorner() + getSouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - BlockCoordinate.HALF_BLOCK;
 
 			case DIRECTION_WEST:
 			case DIRECTION_UP_WEST:
 			case DIRECTION_DOWN_WEST:
-				return (((getNorthWestCorner() + getSouthWestCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return (((getNorthWestCorner() + getSouthWestCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - BlockCoordinate.HALF_BLOCK;
 
 			case DIRECTION_NORTHWEST:
 			case DIRECTION_UP_NORTHWEST:
 			case DIRECTION_DOWN_NORTHWEST:
-				return ((getNorthWestCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return ((getNorthWestCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - BlockCoordinate.HALF_BLOCK;
 
 			case DIRECTION_SOUTHWEST:
 			case DIRECTION_UP_SOUTHWEST:
 			case DIRECTION_DOWN_SOUTHWEST:
-				return ((getSouthWestCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return ((getSouthWestCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - BlockCoordinate.HALF_BLOCK;
 
 			case DIRECTION_SOUTHEAST:
 			case DIRECTION_UP_SOUTHEAST:
 			case DIRECTION_DOWN_SOUTHEAST:
-				return ((getSouthEastCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return ((getSouthEastCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - BlockCoordinate.HALF_BLOCK;
 
 			case DIRECTION_NORTHEAST:
 			case DIRECTION_UP_NORTHEAST:
 			case DIRECTION_DOWN_NORTHEAST:
-				return ((getNorthEastCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - MapCoordinate.HALFCUBE;
+				return ((getNorthEastCorner() - 1.0f) / (float) HEIGHT_FRACTIONS) - BlockCoordinate.HALF_BLOCK;
 		}
 
 		return 0;

@@ -15,8 +15,9 @@
  You should have received a copy of the GNU General Public License
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
-package Map;
+package Map.Coordinates;
 
+import com.jme3.math.Vector3f;
 import java.io.Serializable;
 
 /**
@@ -25,58 +26,45 @@ import java.io.Serializable;
  *
  * @author Impaler
  */
-public class CellCoordinate implements Serializable {
+public class ChunkCoordinate implements Serializable {
 
 	private static final long serialVersionUID = 1;
 	public short X, Y, Z;
 
-	public CellCoordinate() {
+	public ChunkCoordinate() {
 		X = Y = Z = 0;
 	}
 
-	public CellCoordinate(int NewX, int NewY, int NewZ) {
+	public ChunkCoordinate(int NewX, int NewY, int NewZ) {
 		X = (short) NewX;
 		Y = (short) NewY;
 		Z = (short) NewZ;
 	}
 
-	public CellCoordinate(MapCoordinate SourceCoordinates) {
-		if (SourceCoordinates.X >= 0) {
-			X = (short) (SourceCoordinates.X >> MapCoordinate.CELLBITSHIFT);
-		} else {
-			X = (short) ((SourceCoordinates.X >> MapCoordinate.CELLBITSHIFT) - 1); //truncate to negative infinity
-		}
-		if (SourceCoordinates.Y >= 0) {
-			Y = (short) (SourceCoordinates.Y >> MapCoordinate.CELLBITSHIFT);
-		} else {
-			Y = (short) ((SourceCoordinates.Y >> MapCoordinate.CELLBITSHIFT) - 1); //truncate to negative infinity
-		}
-		Z = (short) SourceCoordinates.Z;
-	}
-
-	public void copy(CellCoordinate ArgumentCoordinates) {
+	public void copy(ChunkCoordinate ArgumentCoordinates) {
 		X = ArgumentCoordinates.X;
 		Y = ArgumentCoordinates.Y;
 		Z = ArgumentCoordinates.Z;
 	}
 
 	@Override
-	public CellCoordinate clone() {
-		CellCoordinate newCoords = new CellCoordinate();
+	public ChunkCoordinate clone() {
+		ChunkCoordinate newCoords = new ChunkCoordinate();
 		newCoords.copy(this);
 		return newCoords;
 	}
 
 	@Override
 	public boolean equals(Object ArgumentCoordinates) {
+		/*
 		if (ArgumentCoordinates == null)
 			return false;
 		if (ArgumentCoordinates == this)
 			return true;
 		if (!(ArgumentCoordinates instanceof CellCoordinate))
-			return false;
+			return false;*/
 
-		CellCoordinate Arg = (CellCoordinate) ArgumentCoordinates;
+		ChunkCoordinate Arg = (ChunkCoordinate) ArgumentCoordinates;
 		return (X == Arg.X && Y == Arg.Y && Z == Arg.Z);
 	}
 
@@ -91,6 +79,21 @@ public class CellCoordinate implements Serializable {
 		Key += Z;
 
 		return Key;
+	}
+
+	public Vector3f getVector() {
+		float x = (float) (X * BlockCoordinate.CHUNK_EDGE_SIZE);
+		float y = (float) (Y * BlockCoordinate.CHUNK_EDGE_SIZE);
+		float z = (float) (Z * BlockCoordinate.CHUNK_EDGE_SIZE);
+
+		if(x < 0)
+			x++;
+		if(y < 0)
+			y++;
+		if(z < 0)
+			z++;
+
+		return new Vector3f(x, y, z);
 	}
 
 	@Override

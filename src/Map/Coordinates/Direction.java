@@ -15,9 +15,10 @@
  You should have received a copy of the GNU General Public License
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
-package Map;
+package Map.Coordinates;
 
 import com.jme3.math.Vector3f;
+import java.io.Serializable;
 
 /**
  * Core Enum for describing directions in cubic map space, all 26 cubes surrounding
@@ -27,7 +28,7 @@ import com.jme3.math.Vector3f;
  *
  * @author Impaler
  */
-public enum Direction {
+public enum Direction implements Serializable  {
 
 	// BitPacking  XX 0 YY 0 ZZ
 	//             76 5 43 2 10
@@ -211,8 +212,10 @@ public enum Direction {
 		return false;
 	}
 
-	public Vector3f toVector() {
-		return new Vector3f(getValueonAxis(Axis.AXIS_X), getValueonAxis(Axis.AXIS_Y), getValueonAxis(Axis.AXIS_Z));
+	public void setVector(Vector3f Vec) {
+		Vec.x = getValueonAxis(Axis.AXIS_X);
+		Vec.y = getValueonAxis(Axis.AXIS_Y);
+		Vec.z = getValueonAxis(Axis.AXIS_Z);
 	}
 
 	public int toDegree() {

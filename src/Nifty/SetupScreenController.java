@@ -54,8 +54,7 @@ public class SetupScreenController implements ScreenController {
 	}
 
 	public void beginGame() {
-		try
-		{
+		try {
 			String kingdomName = nifty.getCurrentScreen().findNiftyControl("KingdomNameTextField", TextField.class).getDisplayedText();
 			if (kingdomName.length() == 0) {
 				ErrorPopupController.ShowErrorMessage(nifty, "Problem starting game", "Please enter a kingdom name");
@@ -75,8 +74,7 @@ public class SetupScreenController implements ScreenController {
 
 			GameCameraState cam = new GameCameraState();
 			Main.app.getStateManager().attach(cam);
-			cam.setViewSize(game.getMap().getHighestCell(), game.getMap().getLowestCell());
-			cam.setSlice(game.getMap().getHighestCell() - 2, game.getMap().getLowestCell() + 2);
+			cam.setSlice(10, -10);
 
 			// PATHING
 			PathManager Pather = PathManager.getSingleton();
@@ -87,7 +85,7 @@ public class SetupScreenController implements ScreenController {
 
 
 			short DwarfID = Data.DataManager.getDataManager().getLabelIndex("CREATURE_DWARF");
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 200; i++) {
 				game.SpawnCitizen(DwarfID, Pather.Tester.getRandomPassableCoordinate());
 			}
 			nifty.gotoScreen("GameScreen");

@@ -17,58 +17,61 @@
 
 package Map;
 
+import Map.Coordinates.Direction;
 import java.io.Serializable;
 
 /**
- * Used to determine the Mesh used to build a Rendering of a Cell
+ * Used to determine the Mesh used to build a Rendering of a Chunk
  *
  * @author Impaler
  */
 public class FaceShape implements Serializable {
 
 	private static final long serialVersionUID = 1;
-	// TODO store as shorts, not objects as in Cell
-	private CubeShape SourceCubeComponent;
-	private CubeShape AdjacentCubeComponent;
+	private short SourceBlockData;
+	private short AdjacentBlockData;
 	private byte FaceDirection;
 
 	public FaceShape() {
-		SourceCubeComponent = new CubeShape(CubeShape.BELOW_CUBE_HEIGHT);
-		AdjacentCubeComponent = new CubeShape(CubeShape.BELOW_CUBE_HEIGHT);
+		SourceBlockData = BlockShape.EMPTY_CUBE_DATA;
+		AdjacentBlockData = BlockShape.EMPTY_CUBE_DATA;
 		FaceDirection = (byte) Direction.DIRECTION_DESTINATION.ordinal();
 	}
 
-	public FaceShape(CubeShape SourceShapeType, CubeShape AdjacentShapeType, Direction DirectionType) {
-		SourceCubeComponent = SourceShapeType;
-		AdjacentCubeComponent = AdjacentShapeType;
+	public FaceShape(BlockShape SourceShapeType, BlockShape AdjacentShapeType, Direction DirectionType) {
+		SourceBlockData = SourceShapeType.Data;
+		if (AdjacentShapeType != null)
+			AdjacentBlockData = AdjacentShapeType.Data;
 		FaceDirection = (byte) DirectionType.ordinal();		
 	}
 
 	boolean equals(FaceShape ArgumentShape) {
-		boolean SourceEqual = SourceCubeComponent.equals(ArgumentShape.SourceCubeComponent);
-		boolean AdjacentEqual = false;
-		if (AdjacentCubeComponent == null) {
-			if (ArgumentShape.AdjacentCubeComponent == null)
-				AdjacentEqual = true;
+		boolean AdjacentEqual, SourceEqual, FaceEqual;
+		if (ArgumentShape != null) {
+			AdjacentEqual = ArgumentShape.AdjacentBlockData == AdjacentBlockData;
+			SourceEqual = SourceBlockData == ArgumentShape.SourceBlockData;
+			FaceEqual = FaceDirection == ArgumentShape.FaceDirection;
 		} else {
-			AdjacentEqual = AdjacentCubeComponent.equals(ArgumentShape.AdjacentCubeComponent);
+			AdjacentEqual = AdjacentBlockData == BlockShape.EMPTY_CUBE_DATA;
+			SourceEqual =  SourceBlockData == BlockShape.EMPTY_CUBE_DATA;
+			FaceEqual = FaceDirection == Direction.DIRECTION_NONE.ordinal();
 		}
-		return SourceEqual && AdjacentEqual && FaceDirection == ArgumentShape.FaceDirection;
+		return SourceEqual && AdjacentEqual && FaceEqual;
 	}
 
 	boolean notequal(FaceShape ArgumentShape) {
-		return !SourceCubeComponent.equals(ArgumentShape.SourceCubeComponent) || !AdjacentCubeComponent.equals(ArgumentShape.AdjacentCubeComponent) || FaceDirection != ArgumentShape.FaceDirection;
+		return SourceBlockData != ArgumentShape.SourceBlockData || AdjacentBlockData != ArgumentShape.AdjacentBlockData || FaceDirection != ArgumentShape.FaceDirection;
 	}
 
 	public Direction getFaceDirection() {
 		return Direction.ANGULAR_DIRECTIONS[FaceDirection];
 	}
 	
-	public CubeShape getSourceCubeShape() {
-		return SourceCubeComponent;
+	public BlockShape getSourceBlockShape() {
+		return new BlockShape(SourceBlockData);
 	}
 
-	public CubeShape getAdjacentCubeShape() {
-		return AdjacentCubeComponent;
+	public BlockShape getAdjacentBlockShape() {
+		return new BlockShape(AdjacentBlockData);
 	}
 }

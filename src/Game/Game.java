@@ -16,18 +16,17 @@
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Game;
 
-import Core.Main;
-import Core.Dice;
-import Core.Utils;
+
+import Core.*;
 import Job.ExcavateJob;
 import Job.JobManager;
 import Map.*;
+import Map.Coordinates.*;
 import Terrain.Geology;
 import Interface.VolumeSelection;
 import Nifty.GameScreenController;
 
 import com.jme3.app.Application;
-import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 
@@ -43,6 +42,8 @@ import java.util.PriorityQueue;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+
+import java.lang.StringBuffer;
 
 /**
  * Game holds all the objects (Map, Settlment, Weather etc) which together make
@@ -66,16 +67,30 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	Geology MapGeology;
 	public Settlement GameSettlement;
 	Weather GameWeather;
+
 	boolean Pause;
 	int TickRate;
 	long CurrentGameTick;
 	float TickRounding;
+	Ticker simulation;
+
+	private float frameTimeAccululator;
+	private float attainedTickRate;
+	private float attainedTickRateAccumulator;
+	private float attainedTickRateCounter;
+
 	private long seconds;
 	private long minutes;
 	private long hours;
 	private long days;
+
 	int UniqueIDCounter;
 	PriorityQueue<Temporal> TemporalQueue;
+	Temporal[][] FastTemporalMatrix;
+	int[] FastTemporalCounter;
+	protected static final int FastArrySize = 1000;
+	protected static final int FastTickLimit = (int) Temporal.TICKS_PER_SECOND * 2;
+
 	HashMap<Integer, Actor> Actors;
 	int ActorIDcounter = 0;
 	transient ExecutorService Executor;
@@ -83,6 +98,8 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	private transient String kingdomName;
 	private transient String saveGameFileName;
 	private transient GameScreenController gameScreenController;
+
+	private StringBuffer GameClockStringBuffer;
 
 	public Game() {
 
@@ -93,6 +110,9 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		Pause = true;
 
 		TemporalQueue = new PriorityQueue<Temporal>();
+		FastTemporalMatrix = new Temporal[FastTickLimit][FastArrySize];
+		FastTemporalCounter = new int[FastTickLimit];
+		GameClockStringBuffer = new StringBuffer();
 	}
 
 	@Override
@@ -116,13 +136,12 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		MapGeology.initialize(MasterSeed);
 		MapGeology.generateWorldHeightMap(X, Y);
 
-		MainMap = new GameMap();
-		MainMap.initialize(MasterSeed);
+		MainMap = new GameMap(MasterSeed);
 
 		GameWeather = new Weather();
 		addTemporal(GameWeather);
 
-		buildMapChunk((short) 0, (short) 0, (byte) X, (byte) Y);
+		buildMapChunks((short) 0, (short) 0, (byte) X, (byte) Y);
 
 		GameSettlement = new Settlement();
 		Actors = new HashMap<Integer, Actor>();
@@ -130,31 +149,45 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		return true;
 	}
 
-	boolean buildMapChunk(short X, short Y, byte Width, byte Height) {
+	boolean buildMapChunks(short X, short Y, byte Width, byte Height) {
 		short SizeX = (short) (X + Width);
 		short SizeY = (short) (Y + Height);
 
-		// Create and add Cells with shape and material data
+		// Create and add Chunks with shape and material data
 		for (int x = X; x < SizeX; x++) {
 			for (int y = Y; y < SizeY; y++) {
-				MapGeology.generateCellHeight(x, y, (float) 10.0, (float) 1.0);
+				MapGeology.generateChunkHeight(x, y, (float) 10.0, (float) 1.5);
 
-				for (int z = MapGeology.getCellBottomZLevel() - 2; z <= MapGeology.getCellTopZLevel() + 2; z++) {
-					CellCoordinate TargetCellCoordinates = new CellCoordinate(x, y, z);
-					Cell NewCell = new Cell();
+				int zBottom, zTop;
+				if ((MapGeology.getChunkBottomZLevel() - 2) < 0) {
+					zBottom = ((MapGeology.getChunkBottomZLevel() - 2) / BlockCoordinate.CHUNK_EDGE_SIZE) - 1;
+				} else { 
+					zBottom = ((MapGeology.getChunkBottomZLevel() - 2) / BlockCoordinate.CHUNK_EDGE_SIZE);
+				}
+				if ((MapGeology.getChunkTopZLevel() + 2) < 0) {
+					zTop = ((MapGeology.getChunkTopZLevel() + 2) / BlockCoordinate.CHUNK_EDGE_SIZE) - 1;
+				} else { 
+					zTop = ((MapGeology.getChunkTopZLevel() + 2) / BlockCoordinate.CHUNK_EDGE_SIZE);
+				}
 
-					NewCell.setCellCoordinates(TargetCellCoordinates);
-					MainMap.insertCell(NewCell);
-					MapGeology.loadCellData(NewCell);
+				Sector targetSector = MainMap.getSector(new SectorCoordinate((byte)0, (byte)0));
+				for (int z = zBottom; z <= zTop; z++) {
+					ChunkCoordinate TargetChunkCoordinates = new ChunkCoordinate(x, y, z);
+					Chunk targetChunk = targetSector.getChunk(TargetChunkCoordinates);
+					MapGeology.loadChunkData(targetChunk);
 				}
 			}
 		}
 
 		MainMap.generateFirstLight();
 
-		for (Cell TargetCell : MainMap.getCellCollection()) {
-			TargetCell.buildFaces();
-			TargetCell.growGrass();
+		for (Sector targetSector : MainMap.getSectorCollection()) {
+			for (Chunk TargetChunk : targetSector.getChunkCollection()) {
+				for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i++) {
+					TargetChunk.buildFaces(i);
+				}
+				TargetChunk.growGrass();
+			}
 		}
 
 		return true;
@@ -169,12 +202,16 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	}
 
 	public Citizen SpawnCitizen(short CreatureTypeID, MapCoordinate SpawnCoordinates) {
-		Citizen NewCitizen = new Citizen(CreatureTypeID, ActorIDcounter, PawnDice.roll(0, MasterSeed), SpawnCoordinates);
-		ActorIDcounter++;
-		Actors.put(NewCitizen.getID(), NewCitizen);
-		GameSettlement.addCitizen(NewCitizen);
-		addTemporal(NewCitizen);
-		return NewCitizen;
+		if (SpawnCoordinates != null) {
+			Citizen NewCitizen = new Citizen(CreatureTypeID, ActorIDcounter, PawnDice.roll(0, MasterSeed), SpawnCoordinates);
+			ActorIDcounter++;
+			Actors.put(NewCitizen.getID(), NewCitizen);
+			GameSettlement.addCitizen(NewCitizen);
+			addTemporal(NewCitizen);
+			return NewCitizen;
+		} else {
+			return null;
+		}
 	}
 
 	boolean addTemporal(Temporal NewTemporal) {
@@ -203,7 +240,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		Volumes.add(newVolume);
 		Zone newZone = getMap().createZone(Volumes);
 
-		newJob.addDesignations(newVolume, newZone, new CubeShape(CubeShape.CUBE_BOTTOM_HEIGHT));
+		newJob.addDesignations(newVolume, newZone, new BlockShape(BlockShape.CUBE_BOTTOM_HEIGHT));
 		jobs.addJob(newJob);
 	}
 
@@ -236,13 +273,23 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	@Override
 	public void update(float tpf) {
 		if (!Pause && app.Focus) {
+			frameTimeAccululator += tpf;
 			if (lastUpdate == null || lastUpdate.isDone()) {
 				float TargetTicks = TickRate * tpf * Temporal.TICKS_PER_SECOND;
 				TargetTicks += TickRounding;
 				int FullTicks = (int) TargetTicks;
 				TickRounding = TargetTicks - FullTicks;
 
-				Ticker simulation = new Ticker(this);
+				attainedTickRateAccumulator += TargetTicks / (frameTimeAccululator * Temporal.TICKS_PER_SECOND);
+				attainedTickRateCounter++;
+
+				if (attainedTickRateCounter == 100) {
+					attainedTickRate = attainedTickRateAccumulator / 100;
+					attainedTickRateAccumulator = 0;
+					attainedTickRateCounter = 0;
+				}
+
+				simulation = new Ticker(this);
 				simulation.windup(FullTicks);
 				lastUpdate = Executor.submit(simulation);
 
@@ -255,6 +302,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 					// update UI with any updated state, since some windows can be open while unpaused.
 					gameScreenController.update();
 				}
+				frameTimeAccululator = 0;
 			}
 		}
 	}
@@ -291,10 +339,22 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	}
 
 	public String getTimeString() {
-		String hoursString = Utils.padLeadingZero(hours %24);
-		String minutesString = Utils.padLeadingZero(minutes % 60);
-		String secondsString = Utils.padLeadingZero(seconds % 60);
-		return "DAY " + days + "  -  " + hoursString + ":" + minutesString + ":" + secondsString;
+		GameClockStringBuffer.delete(0, GameClockStringBuffer.length());
+
+		GameClockStringBuffer.append("DAY ");
+		GameClockStringBuffer.append(days);
+		GameClockStringBuffer.append("  -  ");
+
+		GameClockStringBuffer.append(Utils.padLeadingZero(hours %24));
+		GameClockStringBuffer.append(":");
+		GameClockStringBuffer.append(Utils.padLeadingZero(minutes % 60));
+		GameClockStringBuffer.append(":");
+		GameClockStringBuffer.append(Utils.padLeadingZero(seconds % 60));
+
+		GameClockStringBuffer.append("   ");
+		GameClockStringBuffer.append(attainedTickRate);
+
+		return GameClockStringBuffer.toString();
 	}
 
 	public String getKingdomName() {

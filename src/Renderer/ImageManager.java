@@ -60,6 +60,8 @@ public class ImageManager {
 	ConcurrentHashMap<Integer, Image> RawTextureMap;
 	ConcurrentHashMap<Integer, Image> CompletedImageMap;
 
+	final static short DefaultTextureID = DataManager.getLabelIndex("TEXTURE_DEFAULT");
+
 	protected ImageManager() {
 		RawTextureGridMap = new ConcurrentHashMap<Integer, Image>();
 		RawTextureSheetMap = new ConcurrentHashMap<Integer, Image>();

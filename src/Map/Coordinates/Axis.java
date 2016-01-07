@@ -15,31 +15,18 @@
  You should have received a copy of the GNU General Public License
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
-package PathFinding;
+package Map.Coordinates;
 
-import Map.Coordinates.Direction;
-import Map.Coordinates.MapCoordinate;
+import java.io.Serializable;
 
 /**
- * PathWalkers are objects that organizes the reading and following of Paths,
- * each instance of a PathWalker is spawned from a specifice Path and caries
- * it's own internal location along that Path, so multiple PathWalkers can
- * exist and read from a single Path. Next methods advance the Walker down the
- * Path while Peek methods do not.
+ * Extreamly simple Axis system used to build the rest of the Map system
  *
  * @author Impaler
  */
-public interface PathWalker {
+public enum Axis implements Serializable {
 
-	public MapCoordinate nextCoordinate();
-
-	public Direction nextDirection();
-
-	public MapCoordinate peekCoordinate();
-
-	public Direction peekDirection();
-
-	public int getCurrentStep();
-
-	void reset();
+	AXIS_Z,	// Vertical
+	AXIS_Y,	// North/South
+	AXIS_X;	// East/West
 }

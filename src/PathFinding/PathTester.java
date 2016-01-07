@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 import Core.Dice;
 
-import Map.MapCoordinate;
+import Map.Coordinates.MapCoordinate;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -159,7 +159,11 @@ public class PathTester implements Serializable {
 	}
 
 	public MapCoordinate getRandomPassableCoordinate() {
-		return TestCoords.get(PathDice.roll(0, TestCoords.size() - 1));
+		if (!TestCoords.isEmpty()) {
+			return TestCoords.get(PathDice.roll(0, TestCoords.size() - 1));
+		} else {
+			return null;
+		}
 	}
 
 	void profileManualPath() {
