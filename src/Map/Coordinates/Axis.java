@@ -17,12 +17,14 @@
 
 package Map.Coordinates;
 
+import java.io.Serializable;
+
 /**
  * Extreamly simple Axis system used to build the rest of the Map system
  *
  * @author Impaler
  */
-public enum Axis {
+public enum Axis implements Serializable {
 
 	AXIS_Z,	// Vertical
 	AXIS_Y,	// North/South

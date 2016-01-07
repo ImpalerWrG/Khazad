@@ -16,13 +16,12 @@
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 package Game;
 
-import Map.Coordinates.MapCoordinate;
-import Map.Coordinates.BlockCoordinate;
-import Map.Coordinates.ChunkCoordinate;
+
 import Core.*;
 import Job.ExcavateJob;
 import Job.JobManager;
 import Map.*;
+import Map.Coordinates.*;
 import Terrain.Geology;
 import Interface.VolumeSelection;
 import Nifty.GameScreenController;
@@ -137,13 +136,12 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		MapGeology.initialize(MasterSeed);
 		MapGeology.generateWorldHeightMap(X, Y);
 
-		MainMap = new GameMap();
-		MainMap.initialize(MasterSeed);
+		MainMap = new GameMap(MasterSeed);
 
 		GameWeather = new Weather();
 		addTemporal(GameWeather);
 
-		buildMapChunk((short) 0, (short) 0, (byte) X, (byte) Y);
+		buildMapChunks((short) 0, (short) 0, (byte) X, (byte) Y);
 
 		GameSettlement = new Settlement();
 		Actors = new HashMap<Integer, Actor>();
@@ -151,7 +149,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		return true;
 	}
 
-	boolean buildMapChunk(short X, short Y, byte Width, byte Height) {
+	boolean buildMapChunks(short X, short Y, byte Width, byte Height) {
 		short SizeX = (short) (X + Width);
 		short SizeY = (short) (Y + Height);
 
@@ -171,25 +169,25 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 				} else { 
 					zTop = ((MapGeology.getChunkTopZLevel() + 2) / BlockCoordinate.CHUNK_EDGE_SIZE);
 				}
-				
+
+				Sector targetSector = MainMap.getSector(new SectorCoordinate((byte)0, (byte)0));
 				for (int z = zBottom; z <= zTop; z++) {
 					ChunkCoordinate TargetChunkCoordinates = new ChunkCoordinate(x, y, z);
-					Chunk NewChunk = new Chunk();
-
-					NewChunk.setChunkCoordinates(TargetChunkCoordinates);
-					MainMap.insertChunk(NewChunk);
-					MapGeology.loadChunkData(NewChunk);
+					Chunk targetChunk = targetSector.getChunk(TargetChunkCoordinates);
+					MapGeology.loadChunkData(targetChunk);
 				}
 			}
 		}
 
 		MainMap.generateFirstLight();
 
-		for (Chunk TargetChunk : MainMap.getChunkCollection()) {
-			for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i++) {
-				TargetChunk.buildFaces(i);
+		for (Sector targetSector : MainMap.getSectorCollection()) {
+			for (Chunk TargetChunk : targetSector.getChunkCollection()) {
+				for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i++) {
+					TargetChunk.buildFaces(i);
+				}
+				TargetChunk.growGrass();
 			}
-			TargetChunk.growGrass();
 		}
 
 		return true;

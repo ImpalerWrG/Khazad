@@ -27,6 +27,7 @@ import Map.GameMap;
 import Map.Coordinates.BlockCoordinate;
 import Map.Coordinates.MapCoordinate;
 import Map.Coordinates.BlockCoordinate;
+import Map.Sector;
 
 import PathFinding.PathManager;
 import PathFinding.MovementModality;
@@ -201,7 +202,9 @@ public class PathingRenderer extends AbstractAppState {
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
 			if (getDisplayToggle()) {
-				rebuildDirtyChunks(map.getChunkCollection());
+				for (Sector targetSector : map.getSectorCollection()) {
+					rebuildDirtyChunks(targetSector.getChunkCollection());
+				}
 			}
 		}
 	}
@@ -221,7 +224,9 @@ public class PathingRenderer extends AbstractAppState {
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
 			if (DisplayToggle == false) {
-				hideConnectivityRendering(map.getChunkCollection());
+				for (Sector targetSector : map.getSectorCollection()) {
+					rebuildDirtyChunks(targetSector.getChunkCollection());
+				}
 			}
 		}
 	}

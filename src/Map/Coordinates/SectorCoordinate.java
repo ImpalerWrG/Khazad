@@ -18,13 +18,51 @@
 
 package Map.Coordinates;
 
+import java.io.Serializable;
+
 /**
  * Provides the location of a Sector within a Region, the world is only 1 Sector thick 
- * meaning a Chunk has only an X and Y location coordinates within it's Region.
+ * meaning a Sector has only an X and Y location coordinates within it's Region.
  * 
  * @author Impaler
  */
-public class SectorCoordinate {
+public class SectorCoordinate implements Serializable {
 
 	byte X, Y;
+
+	public SectorCoordinate() {
+		X = 0;  Y = 0;
+	}
+
+	public SectorCoordinate(byte x, byte y) {
+		X = x;  Y = y;
+	}
+
+	@Override
+	public boolean equals(Object ArgumentCoordinates) {
+
+		//if (ArgumentCoordinates == null)
+		//return false;
+		//if (ArgumentCoordinates == this)
+		//return true;
+		//if (!(ArgumentCoordinates instanceof MapCoordinate))
+		//return false;
+
+		SectorCoordinate Arg = (SectorCoordinate) ArgumentCoordinates;
+		return (Arg.X == this.X && Arg.Y == this.Y);
+	}
+
+	public void copy(SectorCoordinate ArgumentCoordinates) {
+		this.X = ArgumentCoordinates.X;
+		this.Y = ArgumentCoordinates.Y;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 3;
+		hash += 17 * X;
+		hash += 37 * Y;
+		//hash += 5 * Z;
+		return hash;
+	}
 }

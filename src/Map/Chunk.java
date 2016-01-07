@@ -37,8 +37,13 @@ public class Chunk implements Serializable {
 
 	private static final long serialVersionUID = 1;
 	// Larger DataValues specific to each Block
-	private short[][] BlockMaterialTypes;
-	private short[][] BlockShapeTypes;
+	private short[][][] BlockMaterialTypes;
+	private short[][][] BlockShapeTypes;
+	private short[][] SlabMaterialTypes;
+	private short[][] SlabShapeTypes;
+	private BitSet[] SlabMaterialInitialized;
+	private BitSet[] SlabShapeInitialized;
+
 	private BlockShape TestingBlockShape, AdjacentBlockShape;
 	// Bit values for each Block
 	private BitSet Hidden;
@@ -49,6 +54,7 @@ public class Chunk implements Serializable {
 	private HashMap<FaceCoordinate, Face>[] Faces;
 	// The global position of this chunk relative to other chunks
 	private ChunkCoordinate thisChunkCoordinates;
+	private Sector parentSector;
 	// Dirty values, set true on changes, set false by rendering
 	transient boolean DirtyTerrainRendering;
 	transient boolean DirtyPathRendering;
@@ -58,20 +64,32 @@ public class Chunk implements Serializable {
 
 	String ChunkString;
 
-	public Chunk() {
-		BlockMaterialTypes = new short[BlockCoordinate.BLOCKS_PER_CHUNK][];
-		BlockShapeTypes = new short[BlockCoordinate.CHUNK_DETAIL_LEVELS][];
+	public Chunk(Sector Parent) {
+		parentSector = Parent;
+
+		BlockMaterialTypes = new short[BlockCoordinate.CHUNK_DETAIL_LEVELS][][];
+		BlockShapeTypes = new short[BlockCoordinate.CHUNK_DETAIL_LEVELS][][];
+		SlabMaterialTypes = new short[BlockCoordinate.CHUNK_DETAIL_LEVELS][];
+		SlabShapeTypes = new short[BlockCoordinate.CHUNK_DETAIL_LEVELS][];
+		SlabMaterialInitialized = new BitSet[BlockCoordinate.CHUNK_DETAIL_LEVELS];
+		SlabShapeInitialized = new BitSet[BlockCoordinate.CHUNK_DETAIL_LEVELS];
+
 		Faces = (HashMap<FaceCoordinate, Face>[]) new HashMap<?, ?>[BlockCoordinate.CHUNK_DETAIL_LEVELS];
 
 		for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i++) {
 			Faces[i] = new HashMap<FaceCoordinate, Face>();
 			int Size = (BlockCoordinate.CHUNK_DETAIL_LEVELS - i) - 1;
 			Size = 1 << Size;
-			BlockShapeTypes[i] = new short[Size * Size * Size];
-			BlockMaterialTypes[i] = new short[Size * Size * Size];
-			for (int j = 0; j < BlockShapeTypes[i].length; j++) {
-				BlockShapeTypes[i][j] = BlockShape.EMPTY_CUBE_DATA;
-				BlockMaterialTypes[i][j] = DataManager.INVALID_INDEX;
+			BlockShapeTypes[i] = new short[Size][];
+			BlockMaterialTypes[i] = new short[Size][];
+			SlabMaterialTypes[i] = new short[Size];
+			SlabShapeTypes[i] = new short[Size];
+			SlabMaterialInitialized[i] = new BitSet(Size);
+			SlabShapeInitialized[i] = new BitSet(Size);
+
+			for (int j = 0; j < Size; j++) {
+				SlabMaterialTypes[i][j] = DataManager.INVALID_INDEX;
+				SlabShapeTypes[i][j] = BlockShape.EMPTY_CUBE_DATA;
 			}
 		}
 
@@ -104,26 +122,72 @@ public class Chunk implements Serializable {
 		return thisChunkCoordinates.clone();
 	}
 
-	public void setBlockShape(BlockCoordinate Coordinates, BlockShape NewShape) {
-		if (NewShape.getData() != BlockShapeTypes[Coordinates.DetailLevel][Coordinates.getBlockIndex()]) {
-			BlockShapeTypes[Coordinates.DetailLevel][Coordinates.getBlockIndex()] = NewShape.getData();
+	public void getBlockShape(BlockCoordinate Coordinates, BlockShape writeBlock) {
+		short retrivedData;
+		if (!SlabShapeInitialized[Coordinates.DetailLevel].get(Coordinates.getZ())) {
+			retrivedData = SlabShapeTypes[Coordinates.DetailLevel][Coordinates.getZ()];
+		} else {
+			retrivedData = BlockShapeTypes[Coordinates.DetailLevel][Coordinates.getZ()][Coordinates.getXY()];	
+		}
+		writeBlock.setData(retrivedData);
+	}
 
-			Face TargetFace = getFace(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE));
-			if (TargetFace != null) {
-				setFaceShape(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE), new FaceShape(NewShape, null, Direction.DIRECTION_NONE));
+	public void setBlockShape(BlockCoordinate Coordinates, BlockShape NewShape) {
+		if (NewShape.Data != SlabShapeTypes[Coordinates.DetailLevel][Coordinates.getZ()]) {
+
+			if (!SlabShapeInitialized[Coordinates.DetailLevel].get(Coordinates.getZ())) {
+				BlockShapeTypes[Coordinates.DetailLevel][Coordinates.getZ()] = new short[Coordinates.Size * Coordinates.Size];
+				SlabShapeInitialized[Coordinates.DetailLevel].set(Coordinates.getZ());
+				SlabShapeTypes[Coordinates.DetailLevel][Coordinates.getZ()] = BlockShape.EMPTY_CUBE_DATA;
 			}
-			setRenderingDirty();
+
+			if (NewShape.getData() != BlockShapeTypes[Coordinates.DetailLevel][Coordinates.getZ()][Coordinates.getXY()]) {
+				BlockShapeTypes[Coordinates.DetailLevel][Coordinates.getZ()][Coordinates.getXY()] = NewShape.getData();
+
+				Face TargetFace = getFace(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE));
+				if (TargetFace != null) {
+					setFaceShape(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE), new FaceShape(NewShape, null, Direction.DIRECTION_NONE));
+				}
+				setRenderingDirty();
+			}
 		}
 	}
-	
+
+	public short getBlockMaterial(BlockCoordinate Coordinates) {
+		if (!SlabMaterialInitialized[Coordinates.DetailLevel].get(Coordinates.getZ())) {
+			return SlabMaterialTypes[Coordinates.DetailLevel][Coordinates.getZ()];
+		} else {
+			return BlockMaterialTypes[Coordinates.DetailLevel][Coordinates.getZ()][Coordinates.getXY()];	
+		}
+	}
+
+	public void setBlockMaterial(BlockCoordinate Coordinates, short MaterialID) {		
+		if (MaterialID != SlabMaterialTypes[Coordinates.DetailLevel][Coordinates.getZ()]) {
+
+			if (!SlabMaterialInitialized[Coordinates.DetailLevel].get(Coordinates.getZ())) {
+				BlockMaterialTypes[Coordinates.DetailLevel][Coordinates.getZ()] = new short[Coordinates.Size * Coordinates.Size];
+				SlabMaterialInitialized[Coordinates.DetailLevel].set(Coordinates.getZ());
+				SlabMaterialTypes[Coordinates.DetailLevel][Coordinates.getZ()] = DataManager.INVALID_INDEX;
+			}
+
+			if (MaterialID != BlockMaterialTypes[Coordinates.DetailLevel][Coordinates.getZ()][Coordinates.getXY()]) {
+				BlockMaterialTypes[Coordinates.DetailLevel][Coordinates.getZ()][Coordinates.getXY()] = MaterialID;
+			}
+		}
+	}
+
 	public void buildFaces(int LevelofDetail) {
 		GameMap ParentMap = GameMap.getMap();
 		MapCoordinate AdjacentCoordinates = new MapCoordinate();
+		MapCoordinate TargetCoordinates = new MapCoordinate();
 	
 		for (BlockCoordinate Index = new BlockCoordinate((byte) LevelofDetail); !Index.end(); Index.next()) {
 			TestingBlockShape.Data = BlockShape.EMPTY_CUBE_DATA;
 			getBlockShape(Index, TestingBlockShape);
 			short BlockMaterial = getBlockMaterial(Index);
+
+			TargetCoordinates.Chunk.copy(thisChunkCoordinates);
+			TargetCoordinates.Block.copy(Index);
 
 			for (Direction DirectionType : Direction.AXIAL_DIRECTIONS) {
 				AdjacentCoordinates.setChunkCoordinate(thisChunkCoordinates);
@@ -135,7 +199,7 @@ public class Chunk implements Serializable {
 
 					if (AdjacentBlockShape.isSky()) {
 						if (TestingBlockShape.hasFace(DirectionType)) {
-							Face NewFace = ParentMap.addFace(new MapCoordinate(thisChunkCoordinates, Index), DirectionType);
+							Face NewFace = ParentMap.addFace(TargetCoordinates, DirectionType);
 
 							NewFace.setFaceMaterialType(BlockMaterial);
 							NewFace.setFaceSurfaceType(WallSurface);
@@ -147,7 +211,7 @@ public class Chunk implements Serializable {
 
 					if (!AdjacentBlockShape.isEmpty()) {
 						if (DirectionType == Direction.DIRECTION_DOWN && TestingBlockShape.hasFloor() && AdjacentBlockShape.hasCeiling()) {
-							Face NewFace = ParentMap.addFace(new MapCoordinate(thisChunkCoordinates, Index), DirectionType);
+							Face NewFace = ParentMap.addFace(TargetCoordinates, DirectionType);
 
 							NewFace.setFaceMaterialType(ParentMap.getBlockMaterial(AdjacentCoordinates));
 							NewFace.setFaceSurfaceType(FloorSurface);
@@ -287,21 +351,6 @@ public class Chunk implements Serializable {
 
 	public boolean isPathingRenderingDirty() {
 		return DirtyPathRendering;
-	}
-
-	public void getBlockShape(BlockCoordinate Coordintaes, BlockShape writeBlock) {
-		writeBlock.setData(BlockShapeTypes[Coordintaes.DetailLevel][Coordintaes.getBlockIndex()]);
-	}
-
-	public short getBlockMaterial(BlockCoordinate Coordintaes) {
-		return BlockMaterialTypes[Coordintaes.DetailLevel][Coordintaes.getBlockIndex()];
-	}
-
-	public void setBlockMaterial(BlockCoordinate Coordintaes, short MaterialID) {
-		if (MaterialID != BlockMaterialTypes[Coordintaes.DetailLevel][Coordintaes.getBlockIndex()]) {
-			BlockMaterialTypes[Coordintaes.DetailLevel][Coordintaes.getBlockIndex()] = MaterialID;
-			setRenderingDirty();
-		}
 	}
 
 	public boolean isBlockHidden(short Coordinates) {

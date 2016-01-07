@@ -93,6 +93,18 @@ public class BlockShape implements Serializable {
 		return (getSouthWestCorner() <= CUBE_BOTTOM_HEIGHT) && (getSouthEastCorner() <= CUBE_BOTTOM_HEIGHT) && (getNorthWestCorner() <= CUBE_BOTTOM_HEIGHT) && (getNorthEastCorner() <= CUBE_BOTTOM_HEIGHT);
 	}
 
+	public int volume() {
+		int sum1, sum2;
+		if (isSplit()) {
+			sum1 = getNorthWestCorner() + getNorthEastCorner() + getSouthEastCorner() - 3;
+			sum2 = getNorthWestCorner() + getSouthWestCorner() + getSouthEastCorner() - 3;
+		} else {
+			sum1 = getSouthWestCorner() + getNorthWestCorner() + getNorthEastCorner() - 3;
+			sum2 = getSouthWestCorner() + getSouthEastCorner() + getNorthEastCorner() - 3;
+		}
+		return ((Math.min(sum1, 0) + Math.min(sum2, 0))  * 4);
+	}
+
 	public boolean isSky() {
 		int Counter = 0;
 

@@ -5,25 +5,27 @@
 
 package Map.Coordinates;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Impaler
  */
-public class BlockCoordinate {
+public class BlockCoordinate implements Serializable {
 
 	public static final float HALF_BLOCK = (float) 0.5;
 
 	public static final int CHUNK_EDGE_SIZE = 32;
 	public static final int BLOCK_BITMASK = 31;
 
-	public static final int BLOCK_BITSHIFT_X = 0;
-	public static final int BLOCK_BITSHIFT_Y = 5;
-	public static final int BLOCK_BITSHIFT_Z = 10;
+	public static final int BLOCK_BITSHIFT_X = 2;
+	public static final int BLOCK_BITSHIFT_Y = 1;
+	public static final int BLOCK_BITSHIFT_Z = 0;
 	
 	public static final int BLOCKS_PER_CHUNK = 32768;
 	public static final int CHUNK_DETAIL_LEVELS = 6;
 
-	public short Data;  // Index bitpacking   0 ZZZZZ YYYYY XXXXX
+	public short Data;  // Index bitpacking   0 YYYYY XXXXX ZZZZZ
 
 	public byte DetailLevel;
 	public short Size;
@@ -57,23 +59,17 @@ public class BlockCoordinate {
 		this.Size = (short) (1 << this.Shift);
 		
 		this.Mask = (short) (this.Size - 1);
-		short Xcomponent = (short) (Mask << (this.Shift * 0));
-		short Ycomponent = (short) (Mask << (this.Shift * 1));
-		short Zcomponent = (short) (Mask << (this.Shift * 2));
+		short Xcomponent = (short) (Mask << (this.Shift * BLOCK_BITSHIFT_X));
+		short Ycomponent = (short) (Mask << (this.Shift * BLOCK_BITSHIFT_Y));
+		short Zcomponent = (short) (Mask << (this.Shift * BLOCK_BITSHIFT_Z));
 		
 		this.Max = (short) (Xcomponent | Ycomponent | Zcomponent);
 	}
 
-	public BlockCoordinate(BlockCoordinate SourceCoords, Direction DirectionType) {
-		//X = (short) (SourceCoords.X + DirectionType.getValueonAxis(Axis.AXIS_X));
-		//Y = (short) (SourceCoords.Y + DirectionType.getValueonAxis(Axis.AXIS_Y));
-		//Z = (short) (SourceCoords.Z + DirectionType.getValueonAxis(Axis.AXIS_Z));
-	}
-
 	public void translate(Direction DirectionType) {
-		short Xcomponent = (short) ((this.Data >> (this.Shift * 0)) & Mask);
-		short Ycomponent = (short) ((this.Data >> (this.Shift * 1)) & Mask);
-		short Zcomponent = (short) ((this.Data >> (this.Shift * 2)) & Mask);
+		short Xcomponent = (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_X)) & Mask);
+		short Ycomponent = (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_Y)) & Mask);
+		short Zcomponent = (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_Z)) & Mask);
 
 		Xcomponent += DirectionType.getValueonAxis(Axis.AXIS_X);
 		Ycomponent += DirectionType.getValueonAxis(Axis.AXIS_Y);
@@ -91,17 +87,17 @@ public class BlockCoordinate {
 			}	
 		}
 
-		Xcomponent = (short) (Xcomponent << (this.Shift * 0));
-		Ycomponent = (short) (Ycomponent << (this.Shift * 1));
-		Zcomponent = (short) (Zcomponent << (this.Shift * 2));
+		Xcomponent = (short) (Xcomponent << (this.Shift * BLOCK_BITSHIFT_X));
+		Ycomponent = (short) (Ycomponent << (this.Shift * BLOCK_BITSHIFT_Y));
+		Zcomponent = (short) (Zcomponent << (this.Shift * BLOCK_BITSHIFT_Z));
 
 		Data = (short) (Xcomponent | Ycomponent | Zcomponent);
 	}
 
 	public void translate(Direction DirectionType, int Length) {
-		short Xcomponent = (short) ((this.Data >> (this.Shift * 0)) & Mask);
-		short Ycomponent = (short) ((this.Data >> (this.Shift * 1)) & Mask);
-		short Zcomponent = (short) ((this.Data >> (this.Shift * 2)) & Mask);
+		short Xcomponent = (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_X)) & Mask);
+		short Ycomponent = (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_Y)) & Mask);
+		short Zcomponent = (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_Z)) & Mask);
 
 		Xcomponent += DirectionType.getValueonAxis(Axis.AXIS_X) * Length;
 		Ycomponent += DirectionType.getValueonAxis(Axis.AXIS_Y) * Length;
@@ -111,9 +107,9 @@ public class BlockCoordinate {
 		Ycomponent %= this.Size;
 		Zcomponent %= this.Size;
 		
-		Xcomponent = (short) (Xcomponent << (this.Shift * 0));
-		Ycomponent = (short) (Ycomponent << (this.Shift * 1));
-		Zcomponent = (short) (Zcomponent << (this.Shift * 2));
+		Xcomponent = (short) (Xcomponent << (this.Shift * BLOCK_BITSHIFT_X));
+		Ycomponent = (short) (Ycomponent << (this.Shift * BLOCK_BITSHIFT_Y));
+		Zcomponent = (short) (Zcomponent << (this.Shift * BLOCK_BITSHIFT_Z));
 
 		Data = (short) (Xcomponent | Ycomponent | Zcomponent);
 	}
@@ -127,17 +123,17 @@ public class BlockCoordinate {
 		short Ycomponent = (short) (NewY & Mask);
 		short Zcomponent = (short) (NewZ & Mask);
 
-		Xcomponent = (short) (Xcomponent << (this.Shift * 0));
-		Ycomponent = (short) (Ycomponent << (this.Shift * 1));
-		Zcomponent = (short) (Zcomponent << (this.Shift * 2));
+		Xcomponent = (short) (Xcomponent << (this.Shift * BLOCK_BITSHIFT_X));
+		Ycomponent = (short) (Ycomponent << (this.Shift * BLOCK_BITSHIFT_Y));
+		Zcomponent = (short) (Zcomponent << (this.Shift * BLOCK_BITSHIFT_Z));
 
 		Data = (short) (Xcomponent | Ycomponent | Zcomponent);
 	}
 
 	public void set(Axis AxialComponent, int NewValue) {
-		short Xcomponent = (short) ((this.Data >> (this.Shift * 0)) & Mask);
-		short Ycomponent = (short) ((this.Data >> (this.Shift * 1)) & Mask);
-		short Zcomponent = (short) ((this.Data >> (this.Shift * 2)) & Mask);
+		short Xcomponent = (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_X)) & Mask);
+		short Ycomponent = (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_Y)) & Mask);
+		short Zcomponent = (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_Z)) & Mask);
 
 		switch (AxialComponent) {
 			case AXIS_Z:
@@ -153,9 +149,9 @@ public class BlockCoordinate {
 			default:
 				break;
 		}
-		Xcomponent = (short) (Xcomponent << (this.Shift * 0));
-		Ycomponent = (short) (Ycomponent << (this.Shift * 1));
-		Zcomponent = (short) (Zcomponent << (this.Shift * 2));
+		Xcomponent = (short) (Xcomponent << (this.Shift * BLOCK_BITSHIFT_X));
+		Ycomponent = (short) (Ycomponent << (this.Shift * BLOCK_BITSHIFT_Y));
+		Zcomponent = (short) (Zcomponent << (this.Shift * BLOCK_BITSHIFT_Z));
 
 		Data = (short) (Xcomponent | Ycomponent | Zcomponent);		
 	}
@@ -165,21 +161,47 @@ public class BlockCoordinate {
 	}
 	
 	public short getX() {
-		return (short) ((this.Data >> (this.Shift * 0)) & Mask);
+		return (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_X)) & Mask);
 	}
 
 	public short getY() {
-		return (short) ((this.Data >> (this.Shift * 1)) & Mask);
+		return (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_Y)) & Mask);
 	}
 
 	public short getZ() {
-		return (short) ((this.Data >> (this.Shift * 2)) & Mask);
+		return (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_Z)) & Mask);
+	}
+
+	public short getXY() {
+		return (short) (this.Data >> (this.Shift * (BLOCK_BITSHIFT_Z + 1)));
 	}
 
 	public void next() {
 		Data++;
 	}
-	
+
+	public void skipAlongAxis(Axis SkippingAxis) {
+		short Xcomponent = (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_X)) & Mask);
+		short Ycomponent = (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_Y)) & Mask);
+		short Zcomponent = (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_Z)) & Mask);
+
+		short Skip = 0;
+		switch (SkippingAxis) {
+			case AXIS_X:
+				Skip = (short) ((Size - Xcomponent) << (this.Shift * BLOCK_BITSHIFT_X));
+				break;
+
+			case AXIS_Y:
+				Skip = (short) ((Size - Ycomponent) << (this.Shift * BLOCK_BITSHIFT_Y));
+				break;
+
+			case AXIS_Z:
+				Skip = (short) ((Size - Zcomponent) << (this.Shift * BLOCK_BITSHIFT_Z));
+				break;
+		}
+		Data += Skip;
+	}
+
 	public boolean end() {
 		return (Data > this.Max || Data < 0);
 	}
@@ -211,11 +233,11 @@ public class BlockCoordinate {
 	public int getValueonAxis(Axis AxialComponent) {
 		switch (AxialComponent) {
 			case AXIS_X:
-				return (short) ((this.Data >> (this.Shift * 0)) & Mask);
+				return (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_X)) & Mask);
 			case AXIS_Y:
-				return (short) ((this.Data >> (this.Shift * 1)) & Mask);
+				return (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_Y)) & Mask);
 			case AXIS_Z:
-				return (short) ((this.Data >> (this.Shift * 2)) & Mask);
+				return (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_Z)) & Mask);
 			default:
 				return 0;
 		}

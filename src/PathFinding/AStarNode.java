@@ -62,6 +62,7 @@ public class AStarNode implements Comparable<AStarNode>, Serializable {
 		if (TotalCost < TargetNode.TotalCost) {
 			return -1;
 		} else if (TotalCost == TargetNode.TotalCost) {
+			//if (PathLengthFromStart > TargetNode.PathLengthFromStart) {
 			if (TieBreakerValue < TargetNode.TieBreakerValue) {
 				return -1;
 			} else {

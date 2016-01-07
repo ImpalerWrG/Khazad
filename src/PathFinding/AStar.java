@@ -177,8 +177,6 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 
 				AStarNode NewNode = NodePool.provide();
 				NewNode.set(NeiboringCoordinates, CurrentNode, DirectionType, CurrentNode.PathLengthFromStart + EdgeCost, MainHeuristic.estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic.estimate(NeiboringCoordinates, GoalCoordinates));
-
-				//FringeHeap.add(NewNode);
 				FringeDeque.insertFront(NewNode);
 			} // modify existing node with new distance?
 		}

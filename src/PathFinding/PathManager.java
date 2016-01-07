@@ -146,7 +146,7 @@ public class PathManager extends AbstractAppState {
 					AStar PathTask = new AStar(TargetGrid);
 					PathTask.assignResources(ProvidePool(), new LinkedListDeque<AStarNode>(30));
 					PathTask.setModality(MovementType);
-					PathTask.setHeuristics(OctileHeuristic, EuclideanHeuristic);
+					PathTask.setHeuristics(ManhattenHeuristic, EuclideanHeuristic);
 					PathTask.setEndPoints(StartCoords, GoalCoords);
 
 					return Executor.submit(PathTask);
@@ -166,7 +166,7 @@ public class PathManager extends AbstractAppState {
 					AStar PathTask = new AStar(TargetGrid);
 					PathTask.assignResources(ProvidePool(), new LinkedListDeque<AStarNode>(30));
 					PathTask.setModality(MovementType);
-					PathTask.setHeuristics(OctileHeuristic, EuclideanHeuristic);
+					PathTask.setHeuristics(ManhattenHeuristic, EuclideanHeuristic);
 					PathTask.setEndPoints(StartCoords, GoalCoords);
 					MapPath FoundPath = PathTask.call();
 

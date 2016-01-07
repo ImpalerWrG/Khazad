@@ -24,14 +24,10 @@ import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-import Map.Coordinates.Axis;
 import Map.GameMap;
-import Map.Coordinates.MapCoordinate;
-import Map.Coordinates.BlockCoordinate;
-import Map.Coordinates.ChunkCoordinate;
-import Map.Coordinates.BlockCoordinate;
-import Map.Coordinates.Direction;
+import Map.Coordinates.*;
 import Map.BlockShape;
+import Map.Sector;
 import java.io.Serializable;
 
 /**
@@ -97,7 +93,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 	BlockShape TargetBlockShape, AboveBlockShape, AdjacentBlockShape;
 	ArrayList<Integer> ConnectivityCache;
 	ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, Integer>> ConnectivityMap;
-	MapCoordinate ConnectivityTestCoordinates;
+	MapCoordinate TestCoordinates;
 	// The unique mix of movements this Grid is modeling
 	MovementModality GridModality;
 	GameMap SourceMap;
@@ -107,7 +103,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 		ConnectivityMap = new ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, Integer>>();
 		ConnectivityCache = new ArrayList<Integer>();
 		DirtyLocations = new ConcurrentLinkedDeque<MapCoordinate>();
-		ConnectivityTestCoordinates = new MapCoordinate();
+		TestCoordinates = new MapCoordinate();
 		GridModality = Modality;
 		SourceMap = TargetMap;
 
@@ -115,14 +111,16 @@ public class KhazadGrid implements GridInterface, Serializable {
 		AboveBlockShape = new BlockShape(); 
 		AdjacentBlockShape = new BlockShape();
 
-		for (Chunk TargetChunk : TargetMap.getChunkCollection()) {
-			if (TargetChunk != null) {
+		for (Sector targetSector : TargetMap.getSectorCollection()) {
+			TestCoordinates.Sector.copy(targetSector.getSectorCoordinates());
+			for (Chunk TargetChunk : targetSector.getChunkCollection()) {
+				TestCoordinates.Chunk.copy(TargetChunk.getChunkCoordinates());
 				ChunkCoordinate ChunkCoords = TargetChunk.getChunkCoordinates();
 				GridChunk NewGridChunk = addChunk(ChunkCoords);
 
 				for (BlockCoordinate Index = new BlockCoordinate(); !Index.end(); Index.next()) {
-					MapCoordinate TargetCoords = new MapCoordinate(ChunkCoords, Index);
-					BitSet Flags = buildConnectivitySet(TargetCoords);
+					TestCoordinates.Block.copy(Index);
+					BitSet Flags = buildConnectivitySet(TestCoordinates);
 					NewGridChunk.setBlockDirections(Index.getBlockIndex(), Flags);
 				} 
 			}
@@ -131,18 +129,18 @@ public class KhazadGrid implements GridInterface, Serializable {
 		buildConnectivityZones();
 	}
 
-	void buildConnectivityZones() {
+	final void buildConnectivityZones() {
 		int ZoneCounter = 0;
 
 		// Loop to do connectivity
 		for (GridChunk TargetChunk : GridChunks.values()) {
 			if (TargetChunk != null) {
 				ChunkCoordinate ChunkCoords = TargetChunk.getChunkCoordinates();
-				ConnectivityTestCoordinates.setChunkCoordinate(ChunkCoords);
+				TestCoordinates.setChunkCoordinate(ChunkCoords);
 
 				for (BlockCoordinate Index = new BlockCoordinate(); !Index.end(); Index.next()) {
-					ConnectivityTestCoordinates.setBlockCoordinate(Index);
-					BitSet Flags = getDirectionEdgeSet(ConnectivityTestCoordinates);
+					TestCoordinates.setBlockCoordinate(Index);
+					BitSet Flags = getDirectionEdgeSet(TestCoordinates);
 
 					if (Flags.cardinality() > 0) {
 						if (TargetChunk.ConnectivityZone[Index.getBlockIndex()] == 0) { // Start a new zone if not connected to another zone
@@ -366,11 +364,13 @@ public class KhazadGrid implements GridInterface, Serializable {
 						}
 					}
 					AdjacentGridChunk.setBlockDirection(AdjacentTileCoords.Block.getBlockIndex(), dir.invert(), NewConnectionValue);
-					SourceMap.getChunk(AdjacentChunk).setDirtyPathingRendering(true);
+					Sector AdjacentSector = SourceMap.getSector(AdjacentTileCoords.Sector);
+					AdjacentSector.getChunk(AdjacentChunk).setDirtyPathingRendering(true);
 				}
 			}
 			TargetGridChunk.setBlockDirections(TargetCoords.Block.getBlockIndex(), NewConnectivitySet);
-			SourceMap.getChunk(TargetChunk).setDirtyPathingRendering(true);
+			Sector AdjacentSector = SourceMap.getSector(TargetCoords.Sector);
+			AdjacentSector.getChunk(TargetCoords.Chunk).setDirtyPathingRendering(true);
 
 		} while (!DirtyLocations.isEmpty());
 	}

@@ -18,25 +18,30 @@
 package Map.Coordinates;
 
 import com.jme3.math.Vector3f;
+import java.io.Serializable;
 /**
  * Consolidated all other coordinates under one object allowing full resolution
  * of any point in the game world and proper translation across all boundries
  * 
  * @author Impaler
  */
-public class MapCoordinate {
+public class MapCoordinate implements Serializable  {
 
-	public RegionCoordinate Region = null;
-	public SectorCoordinate Section = null;
+	private RegionCoordinate Region = null;
+	public SectorCoordinate Sector = null;
 	public ChunkCoordinate Chunk = null;
 	public BlockCoordinate Block = null;
 	
 	public MapCoordinate() {
+		this.Region = new RegionCoordinate();
+		this.Sector = new SectorCoordinate();
 		this.Chunk = new ChunkCoordinate();
 		this.Block = new BlockCoordinate();
 	}
 
 	public MapCoordinate(ChunkCoordinate Cell, BlockCoordinate Cube) {
+		this.Region = new RegionCoordinate();
+		this.Sector = new SectorCoordinate();
 		this.Chunk = Cell.clone();
 		this.Block = Cube.clone();
 	}
@@ -115,11 +120,6 @@ public class MapCoordinate {
 		this.Block.set(CubeX, CubeY, CubeZ);	
 	}
 
-	public void copy(MapCoordinate CopyCoordinates) {
-		this.Chunk.copy(CopyCoordinates.Chunk);
-		this.Block.copy(CopyCoordinates.Block);
-	}
-
 	public Vector3f getVector() {
 		return new Vector3f(getX(), getY(), getZ());
 	}
@@ -152,7 +152,19 @@ public class MapCoordinate {
 
 	@Override
 	public MapCoordinate clone() {
-		return new MapCoordinate(this.Chunk, this.Block);
+		MapCoordinate newCoords = new MapCoordinate();
+		newCoords.Block.copy(Block);
+		newCoords.Chunk.copy(Chunk);
+		newCoords.Sector.copy(Sector);
+		newCoords.Region.copy(Region);
+		return newCoords;
+	}
+
+	public void copy(MapCoordinate CopyCoordinates) {
+		this.Chunk.copy(CopyCoordinates.Chunk);
+		this.Block.copy(CopyCoordinates.Block);
+		this.Sector.copy(CopyCoordinates.Sector);
+		this.Region.copy(CopyCoordinates.Region);
 	}
 
 	@Override

@@ -225,8 +225,8 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 
 		Scrollbar bar = event.getScrollbar();
 		Game game = Main.app.getStateManager().getState(Game.class);
-		int High = game.getMap().getHighestChunk() * BlockCoordinate.CHUNK_EDGE_SIZE;
-		int Low = game.getMap().getLowestChunk() * BlockCoordinate.CHUNK_EDGE_SIZE;
+		int High = 1 * BlockCoordinate.CHUNK_EDGE_SIZE;
+		int Low = -1 * BlockCoordinate.CHUNK_EDGE_SIZE;
 		High += BlockCoordinate.CHUNK_EDGE_SIZE;
 		bar.setWorldMax(High - Low);
 

@@ -351,13 +351,11 @@ public class Geology implements Serializable {
 		for (byte DetailLevel = 0; DetailLevel < BlockCoordinate.CHUNK_DETAIL_LEVELS; DetailLevel++) {
 			for (BlockCoordinate Index = new BlockCoordinate(DetailLevel); !Index.end(); Index.next()) {
 				int Offset = 1 << DetailLevel;
-				short x = Index.getX();
-				short y = Index.getY();
+				short x = (short) (Index.getX() * Offset);
+				short y = (short) (Index.getY() * Offset);
 				short z = (short) ((Index.getZ() * Offset) + (ChunkCoords.Z * BlockCoordinate.CHUNK_EDGE_SIZE));
 
 				BlockShape Shape = getBlockShapeAtCoordinates(x, x + Offset, y, y + Offset, z, z + Offset);
-				TargetChunk.setBlockShape(Index, Shape);
-
 				short MaterialType = getRockTypeAtCoordinates(Index.getBlockIndex(), z);
 				if (MaterialType != DataManager.INVALID_INDEX) {
 					TargetChunk.setBlockMaterial(Index, MaterialType);	

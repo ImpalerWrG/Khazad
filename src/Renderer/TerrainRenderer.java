@@ -118,35 +118,39 @@ public class TerrainRenderer extends AbstractAppState {
 
 	public void SwapFrustrumChunks() {
 		GameMap map = this.game.getMap();
-		Collection<Chunk> cells = map.getChunkCollection();
+		for (Sector targetSector : map.getSectorCollection()) {
+			
+			// DO bounding box test on whole sector
+			Collection<Chunk> cells = targetSector.getChunkCollection();
 
-		BoundingBox ChunkBox = new BoundingBox();
-		ChunkBox.setXExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
-		ChunkBox.setYExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
-		ChunkBox.setZExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
-		ChunkBox.setCheckPlane(0);
+			BoundingBox ChunkBox = new BoundingBox();
+			ChunkBox.setXExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
+			ChunkBox.setYExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
+			ChunkBox.setZExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
+			ChunkBox.setCheckPlane(0);
 
-		this.CameraState = state.getState(GameCameraState.class);
+			this.CameraState = state.getState(GameCameraState.class);
 
-		// Add Chunks newly entering the Frustrum
-		for (Chunk targetChunk : cells) {
-			ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
-			Vector3f Center = Coords.getVector();
-			ChunkBox.setCenter(Center);
-			if (this.CameraState.contains(ChunkBox)) {
-				if (targetChunk.isTerrainRenderingDirty()) {
-					queueChunkBuild(targetChunk, this.LevelofDetail);
+			// Add Chunks newly entering the Frustrum
+			for (Chunk targetChunk : cells) {
+				ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
+				Vector3f Center = Coords.getVector();
+				ChunkBox.setCenter(Center);
+				if (this.CameraState.contains(ChunkBox)) {
+					if (targetChunk.isTerrainRenderingDirty()) {
+						queueChunkBuild(targetChunk, this.LevelofDetail);
+					}
 				}
 			}
-		}
 
-		// Remove Chunks nolonger in the Frustrum
-		for (Chunk targetChunk : MeshedChunks.values()) {
-			ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
-			Vector3f Center = Coords.getVector();
-			ChunkBox.setCenter(Center);
-			if (this.CameraState.contains(ChunkBox) == false) {
-				queueChunkDestroy(targetChunk, this.LevelofDetail);
+			// Remove Chunks nolonger in the Frustrum
+			for (Chunk targetChunk : MeshedChunks.values()) {
+				ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
+				Vector3f Center = Coords.getVector();
+				ChunkBox.setCenter(Center);
+				if (this.CameraState.contains(ChunkBox) == false) {
+					queueChunkDestroy(targetChunk, this.LevelofDetail);
+				}
 			}
 		}
 	}
@@ -166,20 +170,22 @@ public class TerrainRenderer extends AbstractAppState {
 			TerrainHint = Spatial.CullHint.Dynamic;
 
 		GameMap map = this.game.getMap();
-		for (Chunk target : map.getChunkCollection()) {
-			ChunkCoordinate Coords = target.getChunkCoordinates();
+		for (Sector targetSector : map.getSectorCollection()) {
+			for (Chunk target : targetSector.getChunkCollection()) {
+				ChunkCoordinate Coords = target.getChunkCoordinates();
 
-			MapRenderer Renderer = state.getState(MapRenderer.class);
-			Node ChunkLight = Renderer.getChunkNodeLight(Coords);
-			Node ChunkDark = Renderer.getChunkNodeDark(Coords);
+				MapRenderer Renderer = state.getState(MapRenderer.class);
+				Node ChunkLight = Renderer.getChunkNodeLight(Coords);
+				Node ChunkDark = Renderer.getChunkNodeDark(Coords);
 
-			Spatial light = ChunkLight.getChild("LightGeometry Chunk " + target.toString() + "DetailLevel " + this.LevelofDetail);
-			Spatial dark = ChunkDark.getChild("DarkGeometry Chunk " + target.toString() + "DetailLevel " + this.LevelofDetail);
+				Spatial light = ChunkLight.getChild("LightGeometry Chunk " + target.toString() + "DetailLevel " + this.LevelofDetail);
+				Spatial dark = ChunkDark.getChild("DarkGeometry Chunk " + target.toString() + "DetailLevel " + this.LevelofDetail);
 
-			if (light != null)
-				light.setCullHint(TerrainHint);
-			if (dark != null)
-				dark.setCullHint(TerrainHint);
+				if (light != null)
+					light.setCullHint(TerrainHint);
+				if (dark != null)
+					dark.setCullHint(TerrainHint);
+			}
 		}
 	}
 
@@ -199,8 +205,10 @@ public class TerrainRenderer extends AbstractAppState {
 			this.LevelofDetail = NewDetailLevel;
 
 			GameMap map = this.game.getMap();
-			for (Chunk target : map.getChunkCollection()) {
-				setChunkDetailLevel(target, this.LevelofDetail);
+			for (Sector targetSector : map.getSectorCollection()) {
+				for (Chunk target : targetSector.getChunkCollection()) {
+					setChunkDetailLevel(target, this.LevelofDetail);
+				}
 			}
 		}
 	}
@@ -220,8 +228,10 @@ public class TerrainRenderer extends AbstractAppState {
 			this.LevelofDetail = 4;
 
 		GameMap map = this.game.getMap();
-		for (Chunk target : map.getChunkCollection()) {
-			setChunkDetailLevel(target, this.LevelofDetail);
+		for (Sector targetSector : map.getSectorCollection()) {
+			for (Chunk target : targetSector.getChunkCollection()) {
+				setChunkDetailLevel(target, this.LevelofDetail);
+			}
 		}
 	}
 
@@ -251,8 +261,11 @@ public class TerrainRenderer extends AbstractAppState {
 	public void update(float tpf) {
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
-			if (TerrainRenderingToggle)
-				rebuildDirtyChunks(map.getChunkCollection());
+			if (TerrainRenderingToggle) {
+				for (Sector targetSector : map.getSectorCollection()) {
+					rebuildDirtyChunks(targetSector.getChunkCollection());
+				}
+			}
 		}
 	}
 }

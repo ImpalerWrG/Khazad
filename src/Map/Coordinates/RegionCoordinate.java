@@ -18,13 +18,19 @@
 
 package Map.Coordinates;
 
+import java.io.Serializable;
+
 /**
  * Describes the location of a Region within the World map,
  * 
  * @author Impaler
  */
-public class RegionCoordinate {
+public class RegionCoordinate implements Serializable {
 
 	byte X, Y;
 	
+	public void copy(RegionCoordinate ArgumentCoordinates) {
+		this.X = ArgumentCoordinates.X;
+		this.Y = ArgumentCoordinates.Y;
+	}
 }
