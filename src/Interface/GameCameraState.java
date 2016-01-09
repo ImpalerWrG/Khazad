@@ -24,6 +24,10 @@ import Game.Game;
 import Map.Coordinates.MapCoordinate;
 import Renderer.TerrainRenderer;
 
+import Nifty.GUI;
+import Nifty.GameScreenController;
+import de.lessvoid.nifty.screen.ScreenController;
+
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -512,6 +516,16 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		ViewMin = min;
 	}
 
+	private void setNiftyDepthSlider() {
+		if (app != null) {
+			GUI mainGui = app.getStateManager().getState(GUI.class);
+			ScreenController control = mainGui.getScreenControler("GameScreen");
+			GameScreenController gamecontroler = (GameScreenController) control;
+
+			gamecontroler.setDepthSlider(SliceTop, SliceBottom);			
+		}
+	}
+
 	public void changeViewLevel(int Change) {
 		if (Change != 0) {
 			//if(SliceTop + Change > ViewMax) {
@@ -524,20 +538,11 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			SliceBottom += Change;
 			ViewLevels = SliceTop - SliceBottom;
 
-			if (this.state != null) {
-				MapRenderer render = state.getState(MapRenderer.class);
-				if (render != null) {
-					render.setSliceLevels(SliceTop, SliceBottom);
-				}
-			}
-			if (this.MainCamera != null) {
-				this.MainCamera.translateCamera(Vector3f.UNIT_Z.mult(Change));
-				this.MainCamera.setSlice(SliceTop, SliceBottom);
-			}
+			setSlice(SliceTop, SliceBottom, true);
 		}
 	}
 
-	public void setSlice(int newTop, int newBottome) {
+	public void setSlice(int newTop, int newBottome, boolean pushToNifty) {
 		SliceTop = newTop;
 		if (SliceBottom >= SliceTop)
 			SliceBottom = SliceTop - 1;
@@ -557,39 +562,16 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		if (this.MainCamera != null) {
 			this.MainCamera.setSlice(SliceTop, SliceBottom);
 		}
+		if (pushToNifty)
+			setNiftyDepthSlider();
 	}
 
 	public void setSliceTop(int newValue) {
-		SliceTop = newValue;
-		if (SliceBottom >= SliceTop)
-			SliceBottom = SliceTop - 1;
-
-		ViewLevels = SliceTop - SliceBottom;
-		
-		if (this.state != null) {
-			MapRenderer render = state.getState(MapRenderer.class);
-			if (render != null) {
-				render.setSliceLevels(SliceTop, SliceBottom);
-			}
-		}
-		if (this.MainCamera != null) {
-			this.MainCamera.setSlice(SliceTop, SliceBottom);
-		}
+		setSlice(newValue, SliceBottom, false);
 	}
 
 	public void setSliceBottom(int newValue) {
-		SliceBottom = newValue;
-		if (SliceTop <= SliceBottom)
-			SliceTop = SliceBottom + 1;
-
-		ViewLevels = SliceTop - SliceBottom;
-		
-		if (this.state != null) {
-			MapRenderer render = state.getState(MapRenderer.class);
-			if (render != null) {
-				render.setSliceLevels(SliceTop, SliceBottom);
-			}
-		}
+		setSlice(SliceTop, newValue, false);
 	}
 
 	public int getSliceTop() {

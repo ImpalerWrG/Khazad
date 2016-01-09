@@ -18,11 +18,9 @@
 package Map;
 
 import Map.Coordinates.*;
-import Core.Dice;
 import Core.Main;
 import Data.DataManager;
 import Game.Game;
-import PathFinding.PathManager;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
@@ -98,6 +96,24 @@ public class GameMap implements Serializable {
 
 	public MapCoordinate getMapCenter() {
 		return new MapCoordinate();
+	}
+
+	public int getHighestFace() {
+		int Highest = -1000000;
+		for (Sector targetSector : Sectors.values()) {
+			if (targetSector.getHighestFace() > Highest)
+				Highest = targetSector.getHighestFace();
+		}
+		return Highest;
+	}
+
+	public int getLowestFace() {
+		int Lowest = 1000000;
+		for (Sector targetSector : Sectors.values()) {
+			if (targetSector.getLowestFace() < Lowest)
+				Lowest = targetSector.getLowestFace();
+		}
+		return Lowest;
 	}
 
 	public void generateFirstLight() {

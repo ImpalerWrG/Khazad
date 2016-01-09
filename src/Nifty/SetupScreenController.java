@@ -74,7 +74,7 @@ public class SetupScreenController implements ScreenController {
 
 			GameCameraState cam = new GameCameraState();
 			Main.app.getStateManager().attach(cam);
-			cam.setSlice(10, -10);
+			cam.setSlice(10, -10, false);
 
 			// PATHING
 			PathManager Pather = PathManager.getSingleton();

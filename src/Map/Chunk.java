@@ -58,6 +58,9 @@ public class Chunk implements Serializable {
 	// Dirty values, set true on changes, set false by rendering
 	transient boolean DirtyTerrainRendering;
 	transient boolean DirtyPathRendering;
+	
+	short HighestFace = 0;
+	short LowestFace = BlockCoordinate.CHUNK_EDGE_SIZE;
 
 	protected static final short WallSurface = DataManager.getLabelIndex("SURFACETYPE_ROUGH_WALL");
 	protected static final short FloorSurface = DataManager.getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
@@ -200,6 +203,7 @@ public class Chunk implements Serializable {
 					if (AdjacentBlockShape.isSky()) {
 						if (TestingBlockShape.hasFace(DirectionType)) {
 							Face NewFace = ParentMap.addFace(TargetCoordinates, DirectionType);
+							checkHeight(TargetCoordinates.Block);
 
 							NewFace.setFaceMaterialType(BlockMaterial);
 							NewFace.setFaceSurfaceType(WallSurface);
@@ -212,6 +216,7 @@ public class Chunk implements Serializable {
 					if (!AdjacentBlockShape.isEmpty()) {
 						if (DirectionType == Direction.DIRECTION_DOWN && TestingBlockShape.hasFloor() && AdjacentBlockShape.hasCeiling()) {
 							Face NewFace = ParentMap.addFace(TargetCoordinates, DirectionType);
+							checkHeight(TargetCoordinates.Block);
 
 							NewFace.setFaceMaterialType(ParentMap.getBlockMaterial(AdjacentCoordinates));
 							NewFace.setFaceSurfaceType(FloorSurface);
@@ -225,6 +230,7 @@ public class Chunk implements Serializable {
 
 			if (!TestingBlockShape.isEmpty() && !TestingBlockShape.isSolid()) {
 				Face NewFace = addFace(new FaceCoordinate(Index, Direction.DIRECTION_NONE));
+				checkHeight(Index);
 
 				NewFace.setFaceMaterialType(BlockMaterial);
 				NewFace.setFaceSurfaceType(FloorSurface);
@@ -234,6 +240,16 @@ public class Chunk implements Serializable {
 			}
 		}
 		setRenderingDirty();
+	}
+
+	private void checkHeight(BlockCoordinate TargetCoordinates) {
+		if (TargetCoordinates.DetailLevel == 0) {
+			if (TargetCoordinates.getZ() > HighestFace)
+				HighestFace = TargetCoordinates.getZ();
+			if (TargetCoordinates.getZ() < LowestFace)
+				LowestFace = TargetCoordinates.getZ();
+			parentSector.checkHeight(this);
+		}
 	}
 
 	public void growGrass() {

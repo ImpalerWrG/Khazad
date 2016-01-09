@@ -39,12 +39,15 @@ public class Sector implements Serializable {
 	ConcurrentHashMap<ChunkCoordinate, Chunk> WeatherChunks;
 	ConcurrentHashMap<ChunkCoordinate, Chunk> BasementChunks;
 
-	int HighestChunk;
-	int LowestChunk;
-	int WestestChunk;
-	int EastestChunk;
-	int NorthestChunk;
-	int SouthestChunk;
+	Chunk HighestChunk = null;
+	Chunk LowestChunk = null;
+
+	int HighestChunkZ = -100000000;
+	int LowestChunkZ = 10000000;
+	int WestestChunk = 10000000;
+	int EastestChunk = -100000000;
+	int NorthestChunk = -100000000;
+	int SouthestChunk = 10000000;
 
 	int Seed;
 	Dice ExcavateDice = new Dice();
@@ -54,13 +57,6 @@ public class Sector implements Serializable {
 
 	protected Sector(int Seed) {
 		this.Seed = Seed;
-
-		HighestChunk = -100000000;
-		LowestChunk = 10000000;
-		WestestChunk = 10000000;
-		EastestChunk = -100000000;
-		NorthestChunk = -100000000;
-		SouthestChunk = 10000000;
 
 		TargetBlockShape = new BlockShape();
 		AboveBlockShape = new BlockShape();
@@ -101,8 +97,14 @@ public class Sector implements Serializable {
 		BelowCoords.Z--;
 		Chunk BelowChunk = Chunks.get(BelowCoords);
 
-		if (TargetCoordinates.Z > HighestChunk)
-			HighestChunk = TargetCoordinates.Z;
+		if (TargetCoordinates.Z > HighestChunkZ)
+			HighestChunkZ = TargetCoordinates.Z;
+		if (HighestChunk != null) {
+			if (TargetCoordinates.Z > HighestChunk.getChunkCoordinates().Z)
+				HighestChunk = NewChunk;
+		} else {
+			HighestChunk = NewChunk;
+		}
 
 		if (AboveChunk == null) {
 			WeatherChunks.put(TargetCoordinates, NewChunk);
@@ -113,8 +115,15 @@ public class Sector implements Serializable {
 			}
 		}
 
-		if (TargetCoordinates.Z < LowestChunk)
-			LowestChunk = TargetCoordinates.Z;
+		if (TargetCoordinates.Z < LowestChunkZ)
+			LowestChunkZ = TargetCoordinates.Z;
+		if (LowestChunk != null) {
+			if (TargetCoordinates.Z < LowestChunk.getChunkCoordinates().Z)
+				LowestChunk = NewChunk;
+		} else {
+			LowestChunk = NewChunk;
+		}
+
 
 		if (TargetCoordinates.X > EastestChunk)
 			EastestChunk = TargetCoordinates.X;
@@ -145,11 +154,11 @@ public class Sector implements Serializable {
 	}
 
 	public int getHighestChunk() {
-		return HighestChunk;
+		return HighestChunkZ;
 	}
 
 	public int getLowestChunk() {
-		return LowestChunk;
+		return LowestChunkZ;
 	}
 	
 	public boolean isBlockInitialized(MapCoordinate Coordinates) {
@@ -285,6 +294,25 @@ public class Sector implements Serializable {
 		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
 		if (TargetChunk != null)
 			TargetChunk.setBlockSunLit(Coordinates.Block.getBlockIndex(), NewValue);
+	}
+
+	protected void checkHeight(Chunk ArgumentChunk) {
+		if (ArgumentChunk.getChunkCoordinates().Z >= HighestChunkZ) {
+			if (ArgumentChunk.HighestFace > HighestChunk.HighestFace)
+				HighestChunk = ArgumentChunk;
+		}
+		if (ArgumentChunk.getChunkCoordinates().Z <= LowestChunkZ) {
+			if (ArgumentChunk.LowestFace < LowestChunk.LowestFace)
+				LowestChunk = ArgumentChunk;
+		}
+	}
+
+	public int getHighestFace() {
+		return (HighestChunk.getChunkCoordinates().Z * BlockCoordinate.CHUNK_EDGE_SIZE) + HighestChunk.HighestFace;
+	}
+
+	public int getLowestFace() {
+		return (LowestChunk.getChunkCoordinates().Z * BlockCoordinate.CHUNK_EDGE_SIZE) + LowestChunk.LowestFace;
 	}
 
 	public void generateFirstLight() {

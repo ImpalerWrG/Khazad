@@ -28,6 +28,7 @@ import de.lessvoid.nifty.input.NiftyInputEvent;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.controls.ScrollbarChangedEvent;
 import de.lessvoid.nifty.controls.Scrollbar;
+import de.lessvoid.nifty.controls.scrollbar.ScrollbarControl;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 
 import Game.Game;
@@ -45,6 +46,7 @@ import de.lessvoid.nifty.controls.CheckBoxStateChangedEvent;
 import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.WindowClosedEvent;
 import de.lessvoid.nifty.controls.dynamic.CustomControlCreator;
+
 import java.text.NumberFormat;
 import java.util.HashMap;
 
@@ -225,16 +227,30 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 
 		Scrollbar bar = event.getScrollbar();
 		Game game = Main.app.getStateManager().getState(Game.class);
-		int High = 1 * BlockCoordinate.CHUNK_EDGE_SIZE;
-		int Low = -1 * BlockCoordinate.CHUNK_EDGE_SIZE;
-		High += BlockCoordinate.CHUNK_EDGE_SIZE;
-		bar.setWorldMax(High - Low);
+		int high = game.getMap().getHighestFace();
+		int low = game.getMap().getLowestFace();
 
 		GameCameraState camera = Main.app.getStateManager().getState(GameCameraState.class);
 
 		int value = (int) event.getValue();
 		int slice = camera.getSliceTop() - camera.getSliceBottom();
-		camera.setSlice(High - value, High - value - slice);
+		camera.setSlice(high - value, high - value - slice, false);
+
+		bar.setWorldMax(high - low);
+	}
+
+	public void setDepthSlider(int Top, int Bottom) {
+		Element root = screen.getRootElement();
+		Element element = root.findElementByName("DepthSlider");
+		ScrollbarControl control = element.getControl(ScrollbarControl.class);
+
+		Game game = Main.app.getStateManager().getState(Game.class);
+		int high = game.getMap().getHighestFace();
+		int low = game.getMap().getLowestFace();
+
+		control.setWorldMax(high - low);
+		float Size = control.getWorldMax();
+		control.setValue(high - Top);
 	}
 
 	private void disableMouseWheel() {

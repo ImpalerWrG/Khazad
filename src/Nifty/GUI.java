@@ -18,11 +18,13 @@
 package Nifty;
 
 import com.jme3.app.Application;
-import com.jme3.niftygui.NiftyJmeDisplay;
-import de.lessvoid.nifty.Nifty;
-
 import com.jme3.app.state.AbstractAppState;
-import de.lessvoid.nifty.controls.Label;
+
+import com.jme3.niftygui.NiftyJmeDisplay;
+
+import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.screen.Screen;
+import de.lessvoid.nifty.screen.ScreenController;
 
 /**
  * Core initialization fo the Nifty GUI system
@@ -56,5 +58,10 @@ public class GUI extends AbstractAppState {
 		nifty.gotoScreen("StartScreen");
 
 		app.getGuiViewPort().addProcessor(niftyDisplay);
+	}
+
+	public ScreenController getScreenControler(String Screen) {
+		Screen targetScreen = nifty.getScreen(Screen);
+		return targetScreen != null ? targetScreen.getScreenController() : null;
 	}
 }

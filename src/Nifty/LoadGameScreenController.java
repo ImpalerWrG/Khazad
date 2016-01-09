@@ -209,8 +209,7 @@ public class LoadGameScreenController implements ScreenController {
 			GameCameraState cam = new GameCameraState();
 
 			Main.app.getStateManager().attach(cam);
-			cam.setViewSize(10, -10);
-			cam.setSlice(10, -10);
+			cam.setSlice(10, -10, false);
 
 			JobManager jobs = game.getSettlement().getJobManager();
 			// PATHING
