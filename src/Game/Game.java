@@ -134,7 +134,6 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 
 		MapGeology = new Geology();
 		MapGeology.initialize(MasterSeed);
-		MapGeology.generateWorldHeightMap(X, Y);
 
 		MainMap = new GameMap(MasterSeed);
 
@@ -152,11 +151,14 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	boolean buildMapChunks(short X, short Y, byte Width, byte Height) {
 		short SizeX = (short) (X + Width);
 		short SizeY = (short) (Y + Height);
+		MapCoordinate targetCoordinates = new MapCoordinate();
 
 		// Create and add Chunks with shape and material data
 		for (int x = X; x < SizeX; x++) {
 			for (int y = Y; y < SizeY; y++) {
-				MapGeology.generateChunkHeight(x, y, (float) 10.0, (float) 1.5);
+				targetCoordinates.Chunk.X = (short) x;
+				targetCoordinates.Chunk.Y = (short) y;
+				MapGeology.generateChunk(targetCoordinates);
 
 				int zBottom, zTop;
 				if ((MapGeology.getChunkBottomZLevel() - 2) < 0) {

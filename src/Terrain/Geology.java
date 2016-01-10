@@ -61,55 +61,8 @@ public class Geology implements Serializable {
 		RandomGenerator = new Dice();
 		NoiseGenerator = new Noise();
 
-		return true;
-	}
-
-	public void generateWorldHeightMap(int X, int Y) {
-		WorldHeight = new float[X + 1][Y + 1];
-
-		Edge = new float[BlockCoordinate.CHUNK_EDGE_SIZE + 1];
 		Height = new float[BlockCoordinate.CHUNK_EDGE_SIZE + 1][BlockCoordinate.CHUNK_EDGE_SIZE + 1];
-		Seeded = new boolean[BlockCoordinate.CHUNK_EDGE_SIZE + 1][BlockCoordinate.CHUNK_EDGE_SIZE + 1];
-
-		int Octives = 9;
-		double lacunarity = 2.1379201;
-		double persistence = 0.036281;
-
-
-		for (int x = 0; x < X + 1; x++) {
-			for (int y = 0; y < Y + 1; y++) {
-
-				double workingX = x;
-				double workingY = y;
-				double result = 0.0;
-
-				for (int i = 0; i < Octives; i++) {
-
-					double SpectralWeight = Math.pow(lacunarity, -persistence * i);
-					result += NoiseGenerator.noise(workingX, workingY) * SpectralWeight;
-
-					workingX *= lacunarity;
-					workingY *= lacunarity;
-				}
-				WorldHeight[x][y] = (float) result;
-			}
-		}
-
-		/* double PerlinNoise::Total(double i, double j) const
-		 * {
-		 * //properties of one octave (changing each loop)
-		 * double t = 0.0f;
-		 * double _amplitude = 1;
-		 * double freq = frequency;
-		 *
-		 * for(int k = 0; k < octaves; k++) {
-		 * t += GetValue(j * freq + randomseed, i * freq + randomseed) * _amplitude;
-		 * _amplitude *= persistence;
-		 * freq *= 2;
-		 * }
-		 *
-		 * return t;
-		 * } */
+		return true;
 	}
 
 	public short getChunkBottomZLevel() {
@@ -118,6 +71,52 @@ public class Geology implements Serializable {
 
 	public short getChunkTopZLevel() {
 		return ChunkTopZ;
+	}
+	
+	public void generateChunk(MapCoordinate targetCoordinates) {
+		int X = targetCoordinates.getX() + GeologySeed;
+		int Y = targetCoordinates.getY() + GeologySeed;
+
+		int Octives = 4;
+		double persistence = 0.4;
+
+		for (int x = 0; x < BlockCoordinate.CHUNK_EDGE_SIZE + 1; x++) {
+			for (int y = 0; y < BlockCoordinate.CHUNK_EDGE_SIZE + 1; y++) {
+
+				double workingX = (x + X) / 200f;
+				double workingY = (y + Y) / 200f;
+				Height[x][y] = (float) OctavePerlin(workingX, workingY, Octives, persistence);
+			}
+		}
+	}
+
+	private double bias(double input, double bias) {
+		return input + bias;
+	}
+
+	private double SmoothNoise(double x, double y) {
+		double corners = ( NoiseGenerator.noise(x-1, y-1) + NoiseGenerator.noise(x+1, y-1) + NoiseGenerator.noise(x-1, y+1) + NoiseGenerator.noise(x+1, y+1) ) / 16;
+		double sides   = ( NoiseGenerator.noise(x-1, y) + NoiseGenerator.noise(x+1, y) + NoiseGenerator.noise(x, y-1) + NoiseGenerator.noise(x, y+1) ) /  8;
+		double center  =  NoiseGenerator.noise(x, y) / 4;
+
+		return corners + sides + center;
+	}
+
+	public double OctavePerlin(double x, double y, int octaves, double persistence) {
+		double total = 0;
+		double raw;
+		double frequency = 1;
+		double amplitude = 20;
+
+		for(int i = 0 ; i < octaves; i++) {
+			raw = NoiseGenerator.noise(x * frequency, y * frequency);
+			total += raw * amplitude;
+			persistence *= raw + 1;
+			amplitude *= persistence;
+			frequency *= 2;
+		}
+
+		return total;
 	}
 
 	public void generateChunkEdge(float X, float Y, float heightScale, float Roughness) {
@@ -142,154 +141,6 @@ public class Geology implements Serializable {
 				scale *= ratio;
 				i += stride;
 			}
-			stride >>= 1;
-		}
-	}
-
-	public void generateChunkHeight(int X, int Y, float heightScale, float Roughness) {
-		byte size = BlockCoordinate.CHUNK_EDGE_SIZE + 1;
-
-		// Mark edges as Seeded to prevent them from being overwritten
-		for (short x = 0; x < size; x++) {
-			for (short y = 0; y < size; y++) {
-				Seeded[x][y] = false;
-				//Height[x][y] = 0.0f;
-			}
-		}
-
-		// Edges Initialized to anchor values to create contiguousness
-		generateChunkEdge(WorldHeight[X][Y], WorldHeight[X + 1][Y], heightScale, Roughness);
-
-		for (short x = 0; x < size; x++) {
-			Height[x][0] = Edge[x];
-			Seeded[x][0] = true;
-		}
-
-		generateChunkEdge(WorldHeight[X][Y + 1], WorldHeight[X + 1][Y + 1], heightScale, Roughness);
-
-		for (short x = 0; x < size; x++) {
-			Height[x][BlockCoordinate.CHUNK_EDGE_SIZE] = Edge[x];
-			Seeded[x][BlockCoordinate.CHUNK_EDGE_SIZE] = true;
-		}
-
-		generateChunkEdge(WorldHeight[X][Y], WorldHeight[X][Y + 1], heightScale, Roughness);
-
-		for (short y = 0; y < size; y++) {
-			Height[0][y] = Edge[y];
-			Seeded[0][y] = true;
-		}
-
-		generateChunkEdge(WorldHeight[X + 1][Y], WorldHeight[X + 1][Y + 1], heightScale, Roughness);
-
-		for (short y = 0; y < size; y++) {
-			Height[BlockCoordinate.CHUNK_EDGE_SIZE][y] = Edge[y];
-			Seeded[BlockCoordinate.CHUNK_EDGE_SIZE][y] = true;
-		}
-
-		// Reseed Random Number Generator
-		ChunkCoordinate HashChunk = new ChunkCoordinate(X, Y, 0);
-
-		RandomGenerator.seed(GeologySeed);
-		int FinalSeed = RandomGenerator.roll(0, 100000) ^ HashChunk.hashCode();
-
-		RandomGenerator.seed(FinalSeed);
-
-
-		/* Set up our roughness constants.
-		 * Random numbers are always generated in the range 0.0 to 1.0.
-		 * 'scale' is multiplied by the randum number.
-		 * 'ratio' is multiplied by 'scale' after each iteration
-		 * to effectively reduce the randum number range.
-		 */
-
-		/* Seed the first four values at the corners
-		 *
-		 * In terms of the "diamond-square" algorithm, this gives us
-		 * "squares".
-		 *
-		 * We want the four corners of the array to have the same
-		 * point. This will allow us to tile the arrays next to each other
-		 * such that they join seemlessly. */
-
-		byte stride = BlockCoordinate.CHUNK_EDGE_SIZE / 2;
-
-		Height[0][0] = WorldHeight[X][Y];
-		Seeded[0][0] = true;
-
-		Height[BlockCoordinate.CHUNK_EDGE_SIZE][0] = WorldHeight[X + 1][Y];
-		Seeded[BlockCoordinate.CHUNK_EDGE_SIZE][0] = true;
-
-		Height[0][BlockCoordinate.CHUNK_EDGE_SIZE] = WorldHeight[X][Y + 1];
-		Seeded[0][BlockCoordinate.CHUNK_EDGE_SIZE] = true;
-
-		Height[BlockCoordinate.CHUNK_EDGE_SIZE][BlockCoordinate.CHUNK_EDGE_SIZE] = WorldHeight[X + 1][Y + 1];
-		Seeded[BlockCoordinate.CHUNK_EDGE_SIZE][BlockCoordinate.CHUNK_EDGE_SIZE] = true;
-
-
-		// Set initial Fractal value range (scale) and the rate of decrese (ratio)
-		float ratio = (float) Math.pow(2.0, -Roughness);
-		float scale = heightScale * ratio;
-
-		/* Now we add ever-increasing detail based on the "diamond" seeded
-		 * values. We loop over stride, which gets cut in half at the
-		 * bottom of the loop. Since it's an int, eventually division by 2
-		 * will produce a zero result, terminating the loop. */
-
-		while (stride > 0) {
-			for (short x = stride; x < BlockCoordinate.CHUNK_EDGE_SIZE; x += stride) {
-				for (short y = stride; y < BlockCoordinate.CHUNK_EDGE_SIZE; y += stride) {
-					if (!Seeded[x][y]) {
-						float Average = (float) ((Height[x - stride][y - stride] + Height[x - stride][y + stride] + Height[x + stride][y - stride] + Height[x + stride][y + stride]) * 0.25);
-						float RandomFactor = scale * RandomGenerator.roll(-1.0f, 1.0f);
-
-						Height[x][y] = RandomFactor + Average;
-
-						if (((short) Height[x][y]) > ChunkTopZ)
-							ChunkTopZ = (short) Height[x][y];
-						if (((short) Height[x][y]) < ChunkBottomZ)
-							ChunkBottomZ = (short) Height[x][y];
-					}
-
-					y += stride;
-				}
-				x += stride;
-			}
-
-			/* Take the existing "diamond" data and make it into "squares"
-			 * i and j represent our (x,y) position in the array. The
-			 * first value we want to generate is at (i=2,j=0), and we use
-			 * "oddline" and "stride" to increment j to the desired value.
-			 */
-			short oddline = 0;
-			for (short x = 0; x < BlockCoordinate.CHUNK_EDGE_SIZE; x += stride) {
-				//oddline = (oddline == 0);
-				if (oddline == 0)
-					oddline = 1;
-				else
-					oddline = 0;
-				for (short y = 0; y < BlockCoordinate.CHUNK_EDGE_SIZE; y += stride) {
-					if ((y == 0) && oddline != 0) {
-						y += stride;
-					}
-
-					if (!Seeded[x][y]) {
-						float Average = (float) ((Height[x - stride][y] + Height[x + stride][y] + Height[x][y - stride] + Height[x][y + stride]) * 0.25);
-						float RandomFactor = scale * RandomGenerator.roll(-1.0f, 1.0f);
-
-						Height[x][y] = Average + RandomFactor;
-
-						// Record Maximum and Minimum Height
-						if (((short) Height[x][y]) > ChunkTopZ)
-							ChunkTopZ = (short) Height[x][y];
-						if (((short) Height[x][y]) < ChunkBottomZ)
-							ChunkBottomZ = (short) Height[x][y];
-					}
-					y += stride;
-				}
-			}
-
-			/* reduce random number range. */
-			scale *= ratio;
 			stride >>= 1;
 		}
 	}

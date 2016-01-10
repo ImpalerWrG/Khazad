@@ -43,7 +43,11 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.LodControl;
 
-import java.util.ArrayList;
+import com.jme3.animation.AnimChannel;
+import com.jme3.animation.AnimControl;
+import com.jme3.animation.AnimEventListener;
+import com.jme3.animation.LoopMode;
+
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
