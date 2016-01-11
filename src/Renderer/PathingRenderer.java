@@ -223,9 +223,13 @@ public class PathingRenderer extends AbstractAppState {
 		this.DisplayToggle = DisplayToggle;
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
-			if (DisplayToggle == false) {
+			if (DisplayToggle) {
 				for (Sector targetSector : map.getSectorCollection()) {
 					rebuildDirtyChunks(targetSector.getChunkCollection());
+				}
+			} else {
+				for (Sector targetSector : map.getSectorCollection()) {
+					hideConnectivityRendering(targetSector.getChunkCollection());
 				}
 			}
 		}

@@ -196,7 +196,7 @@ public class ActorRenderer extends AbstractAppState {
 			GameMap map = game.getMap();
 			GameCameraState cam = state.getState(GameCameraState.class);
 			if (cam != null) {
-				if (game.getTickRate() <= 256 && cam.getZoom() < 200) {
+				if ((game.getTickRate() <= 256 || game.isPaused()) && cam.getZoom() < 200) {
 					populateActors();
 				} else {
 					hideActors();

@@ -39,19 +39,19 @@ public class MapCoordinate implements Serializable  {
 		this.Block = new BlockCoordinate();
 	}
 
-	public MapCoordinate(ChunkCoordinate Cell, BlockCoordinate Cube) {
+	public MapCoordinate(ChunkCoordinate Chunk, BlockCoordinate Block) {
 		this.Region = new RegionCoordinate();
 		this.Sector = new SectorCoordinate();
-		this.Chunk = Cell.clone();
-		this.Block = Cube.clone();
+		this.Chunk = Chunk.clone();
+		this.Block = Block.clone();
 	}
 
-	public void setChunkCoordinate(ChunkCoordinate Cell) {
-		this.Chunk.copy(Cell);
+	public void setChunkCoordinate(ChunkCoordinate Chunk) {
+		this.Chunk.copy(Chunk);
 	}
 
-	public void setBlockCoordinate(BlockCoordinate Cube) {
-		this.Block.copy(Cube);
+	public void setBlockCoordinate(BlockCoordinate Block) {
+		this.Block.copy(Block);
 	}
 
 	public void set(int x, int y, int z) {
