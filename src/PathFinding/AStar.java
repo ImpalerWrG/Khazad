@@ -159,31 +159,39 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		// mark as VisitedCoordinates if not already Visited
 		VisitedCoordinates.add(TestCoordinates);
 
-		BitSet TestDirections = SearchGraph.getDirectionEdgeSet(TestCoordinates);
+		int TestDirections = SearchGraph.getDirectionEdgeSet(TestCoordinates);
 
 		// Check all Neibors
-		for (int i = TestDirections.nextSetBit(0); i >= 0; i = TestDirections.nextSetBit(i + 1)) {
-			Direction DirectionType = Direction.ANGULAR_DIRECTIONS[i];
-			if (DirectionType == Direction.DIRECTION_NONE || DirectionType == ParentDirection)
-				continue;
+		for (int i = 1; i < 32; i++) { // Skip DIRECTION_NONE
+			if ((TestDirections & (1 << i)) != 0) {
+			
+				Direction DirectionType = Direction.ANGULAR_DIRECTIONS[i];
+				if (DirectionType == ParentDirection)
+					continue;
 
-			NeiboringCoordinates.copy(TestCoordinates);
-			NeiboringCoordinates.translate(DirectionType);
+				NeiboringCoordinates.copy(TestCoordinates);
+				NeiboringCoordinates.translate(DirectionType);
 
-			// If Coordinate is not already on the VisitedCoordinates list
-			if (VisitedCoordinates.contains(NeiboringCoordinates) == false) {
-				float EdgeCost = SearchGraph.getEdgeCost(TestCoordinates, DirectionType);
-				GraphReads++;
+				// If Coordinate is not already on the VisitedCoordinates list
+				if (VisitedCoordinates.contains(NeiboringCoordinates) == false) {
+					float EdgeCost = SearchGraph.getEdgeCost(TestCoordinates, DirectionType);
+					GraphReads++;
 
-				AStarNode NewNode = NodePool.provide();
-				NewNode.set(NeiboringCoordinates, CurrentNode, DirectionType, CurrentNode.PathLengthFromStart + EdgeCost, MainHeuristic.estimate(NeiboringCoordinates, GoalCoordinates), TieBreakerHeuristic.estimate(NeiboringCoordinates, GoalCoordinates));
-				FringeDeque.insertFront(NewNode);
-			} // modify existing node with new distance?
+					AStarNode NewNode = NodePool.provide();
+					float mainHeuristicValue = MainHeuristic.estimate(NeiboringCoordinates, GoalCoordinates);
+					float secondaryHeuristicValue = TieBreakerHeuristic.estimate(NeiboringCoordinates, GoalCoordinates);
+					NewNode.set(NeiboringCoordinates, CurrentNode, DirectionType, CurrentNode.PathLengthFromStart + EdgeCost, mainHeuristicValue, secondaryHeuristicValue);
+					FringeDeque.insertFront(NewNode);
+				} // modify existing node with new distance?
+			}
 		}
 
 		while(FringeDeque.size() > 1) {
 			FringeHeap.add(FringeDeque.removeLast());
 		}
+		//if (FringeDeque.peekFirst().compareTo(FringeHeap.peek()) > 0) {
+		//	FringeHeap.add(FringeDeque.removeLast());
+		//}
 
 		return false; // Goal was not found
 	}

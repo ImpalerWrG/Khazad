@@ -45,7 +45,7 @@ public interface GridInterface {
 
 	float getEdgeCost(MapCoordinate TestCoords, Direction DirectionType);
 
-	BitSet getDirectionEdgeSet(MapCoordinate TargetCoords);
+	int getDirectionEdgeSet(MapCoordinate TargetCoords);
 
 	MovementModality getModality();
 

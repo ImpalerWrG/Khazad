@@ -23,6 +23,7 @@ import java.io.Serializable;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
 
 /**
  * Manager for prioritizing and alocating all Jobs and tasks inside a Settlment
@@ -32,12 +33,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class JobManager implements Serializable {
 
 	private static final long serialVersionUID = 1;
-	private ConcurrentHashMap<String, Job> JobMap;
+	private ArrayList<Job> JobList;
 	private ConcurrentLinkedQueue<Pawn> IdleCitizens;
 	boolean JobsDirty;
 
 	public JobManager() {
-		JobMap = new ConcurrentHashMap<String, Job>();
+		JobList = new ArrayList<Job>();
 		IdleCitizens = new ConcurrentLinkedQueue<Pawn>();
 		JobsDirty = false;
 	}
@@ -64,7 +65,8 @@ public class JobManager implements Serializable {
 	public Job findBestJob(Pawn TargetCitizen) {
 		Job BestJob = null;
 		float BestJobFitness = 0;
-		for (Job TargetJob : JobMap.values()) {
+		for (int i = 0; i < JobList.size(); i++) {
+			Job TargetJob = JobList.get(i);
 			if (!TargetJob.Paused && TargetJob.needsWorkers()) {
 				float TempFitness = TargetJob.evaluatePawn(TargetCitizen);
 				if (TempFitness > BestJobFitness) {
@@ -77,7 +79,7 @@ public class JobManager implements Serializable {
 	}
 
 	public void addJob(Job NewJob) {
-		JobMap.put(NewJob.toString(), NewJob);
+		JobList.add(NewJob);
 		NewJob.Manager = this;
 		JobsDirty = true;
 	}
@@ -87,7 +89,8 @@ public class JobManager implements Serializable {
 
 	private void rebalanceJobs() {
 		if (JobsDirty) {
-			for (Job TargetJob : JobMap.values()) {
+			for (int i = 0; i < JobList.size(); i++) {
+				Job TargetJob = JobList.get(i);
 				while (TargetJob.needsWorkers() && !IdleCitizens.isEmpty()) {
 					Pawn IdlePawn = IdleCitizens.poll();
 					//IdleJob.releaseCitizen(IdlePawn);
@@ -104,7 +107,7 @@ public class JobManager implements Serializable {
 			idleCitizen(Worker);
 		}
 		CompletedJob.Workers.clear();
-		JobMap.remove(CompletedJob.toString());
+		JobList.remove(CompletedJob);
 	}
 
 	public void update() {

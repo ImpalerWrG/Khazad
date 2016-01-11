@@ -33,4 +33,18 @@ public class RegionCoordinate implements Serializable {
 		this.X = ArgumentCoordinates.X;
 		this.Y = ArgumentCoordinates.Y;
 	}
+
+	@Override
+	public boolean equals(Object ArgumentCoordinates) {
+
+		//if (ArgumentCoordinates == null)
+		//return false;
+		//if (ArgumentCoordinates == this)
+		//return true;
+		//if (!(ArgumentCoordinates instanceof MapCoordinate))
+		//return false;
+
+		RegionCoordinate Arg = (RegionCoordinate) ArgumentCoordinates;
+		return (Arg.X == this.X && Arg.Y == this.Y);
+	}
 }

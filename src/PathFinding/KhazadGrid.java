@@ -52,50 +52,6 @@ public class KhazadGrid implements GridInterface, Serializable {
 
 	private static final long serialVersionUID = 1;
 
-	protected class OldGridChunk {
-
-		private BitSet DirectionMatrix;
-		private int[] ConnectivityZone;
-		private ChunkCoordinate thisChunkCoodinates;
-
-		OldGridChunk(ChunkCoordinate Coordinates) {
-			thisChunkCoodinates = Coordinates;
-			DirectionMatrix = new BitSet(BlockCoordinate.BLOCKS_PER_CHUNK * Direction.ANGULAR_DIRECTIONS.length);
-			ConnectivityZone = new int[BlockCoordinate.BLOCKS_PER_CHUNK];
-		}
-
-		public int getConnectivityZone(short BlockIndex) {
-			return ConnectivityZone[BlockIndex];
-		}
-
-		public void setConnectivityZone(short BlockIndex, int Zone) {
-			ConnectivityZone[BlockIndex] = Zone;
-		}
-
-		public BitSet getBlockDirections(BlockCoordinate Block) {
-			return DirectionMatrix.get(Block.getBlockIndex() * Direction.ANGULAR_DIRECTIONS.length, ((Block.getBlockIndex() + 1) * Direction.ANGULAR_DIRECTIONS.length));
-		}
-
-		public boolean isEdge(BlockCoordinate Block, Direction DirectionType) {
-			int Positition = ((Block.getBlockIndex()) * Direction.ANGULAR_DIRECTIONS.length) + DirectionType.ordinal();
-			return DirectionMatrix.get(Positition);
-		}
-
-		public void setBlockDirection(BlockCoordinate Block, Direction TargetDirection, boolean newValue) {
-			DirectionMatrix.set((Block.getBlockIndex() * Direction.ANGULAR_DIRECTIONS.length) + TargetDirection.ordinal(), newValue);
-		}
-
-		void setBlockDirections(BlockCoordinate Block, BitSet ArgumentSet) {
-			for (int i = 0; i < Direction.ANGULAR_DIRECTIONS.length; i++) {
-				DirectionMatrix.set((Block.getBlockIndex() * Direction.ANGULAR_DIRECTIONS.length) + i, ArgumentSet.get(i));
-			}
-		}
-
-		ChunkCoordinate getChunkCoordinates() {
-			return thisChunkCoodinates;
-		}
-	}
-
 	protected class GridChunk {
 
 		private TShortIntMap DirectionHashMap;
@@ -145,7 +101,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 		void setBlockDirections(BlockCoordinate Block, int ArgumentSet) {
 			DirectionHashMap.put(Block.getBlockIndex(), ArgumentSet);
 		}
-		
+
 		ChunkCoordinate getChunkCoordinates() {
 			return thisChunkCoodinates;
 		}
@@ -162,6 +118,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 	// The unique mix of movements this Grid is modeling
 	MovementModality GridModality;
 	GameMap SourceMap;
+	final float root2 = (float) Math.sqrt(2);
 
 	public KhazadGrid(GameMap TargetMap, MovementModality Modality) {
 		GridChunks = new ConcurrentHashMap<ChunkCoordinate, GridChunk>();
@@ -207,9 +164,9 @@ public class KhazadGrid implements GridInterface, Serializable {
 
 				for (BlockCoordinate Index = new BlockCoordinate(); !Index.end(); Index.next()) {
 					TestCoordinates.setBlockCoordinate(Index);
-					BitSet Flags = getDirectionEdgeSet(TestCoordinates);
+					int Flags = getDirectionEdgeSet(TestCoordinates);
 
-					if (Flags.cardinality() > 0) {
+					if (Flags == 0) {
 						if (TargetChunk.getConnectivityZone(Index) == 0) { // Start a new zone if not connected to another zone
 							ZoneCounter++; // First zone will be 1, 0 will indicate un-ititialized
 							TargetChunk.setConnectivityZone(Index, ZoneCounter);
@@ -218,7 +175,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 						int CurrentZoneIndex = TargetChunk.getConnectivityZone(Index);
 
 						for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
-							if (Flags.get(dir.ordinal())) {
+							if ((Flags & (1 << dir.ordinal())) != 0) {
 								// Find the Zone that the adjcent Tile has
 								MapCoordinate AdjacentTileCoords = new MapCoordinate(ChunkCoords, Index);
 								AdjacentTileCoords.translate(dir);
@@ -273,23 +230,10 @@ public class KhazadGrid implements GridInterface, Serializable {
 		return Flags;
 	}
 
-	public BitSet getDirectionEdgeSet(MapCoordinate TargetCoords) {
+	public int getDirectionEdgeSet(MapCoordinate TargetCoords) {
 		GridChunk TargetChunk = getChunk(TargetCoords.Chunk);
-		int rawSet = TargetChunk.getBlockDirections(TargetCoords.Block);
-		return packReturnSet(rawSet);
-	}
+		return TargetChunk != null ? TargetChunk.getBlockDirections(TargetCoords.Block) : 0;
 
-	private BitSet packReturnSet(int returnData) {
-		int Mask = 1;
-		//returnSet.clear();
-		BitSet returnSet = new BitSet(32);
-		for (int i = 0; i < 32; i++) {
-			if((returnData & Mask) > 0) 
-				returnSet.set(i);
-
-			Mask <<= 1;
-		}
-		return returnSet;
 	}
 
 	public MovementModality getModality() {
@@ -379,7 +323,6 @@ public class KhazadGrid implements GridInterface, Serializable {
 
 			boolean X = DirectionType.getValueonAxis(Axis.AXIS_X) != 0;
 			boolean Y = DirectionType.getValueonAxis(Axis.AXIS_Y) != 0;
-			final float root2 = (float) Math.sqrt(2);
 
 			if (X ^ Y) // N, S, E, W
 				return 1;
@@ -408,7 +351,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 
 			ChunkCoordinate TargetChunk = TargetCoords.Chunk;
 			GridChunk TargetGridChunk = getChunk(TargetChunk);
-			BitSet CurrentConnectivity = getDirectionEdgeSet(TargetCoords);
+			int CurrentConnectivity = getDirectionEdgeSet(TargetCoords);
 			int SourceZone = getConnectivityZone(TargetCoords);
 
 			for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
@@ -419,8 +362,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 				GridChunk AdjacentGridChunk = getChunk(AdjacentChunk);
 				int AdjacentZone = getConnectivityZone(AdjacentTileCoords);
 
-				if (NewConnectionValue != CurrentConnectivity.get(dir.ordinal())) {
-
+				if (NewConnectionValue != ((CurrentConnectivity & (1 << dir.ordinal())) != 0)) {
 					if (NewConnectionValue) { // Connection created
 						if (SourceZone == 0 && AdjacentZone != 0) {  // Match the zone any adjacent connected zone
 							TargetGridChunk.setConnectivityZone(TargetCoords.Block, AdjacentZone);

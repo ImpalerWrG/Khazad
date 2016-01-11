@@ -227,9 +227,22 @@ public class PathManager extends AbstractAppState {
 	public BitSet getDirectionFlags(MapCoordinate Coordinates, MovementModality Modality) {
 		GridInterface TargetGrid = getModalityGrid(Modality);
 		if (TargetGrid != null) {
-			return TargetGrid.getDirectionEdgeSet(Coordinates);
+			return packReturnSet(TargetGrid.getDirectionEdgeSet(Coordinates));
 		}
 		return null;
+	}
+
+	private BitSet packReturnSet(int returnData) {
+		int Mask = 1;
+		//returnSet.clear();
+		BitSet returnSet = new BitSet(32);
+		for (int i = 0; i < 32; i++) {
+			if((returnData & Mask) > 0) 
+				returnSet.set(i);
+
+			Mask <<= 1;
+		}
+		return returnSet;
 	}
 
 	boolean contains(MapCoordinate Coordinates, MovementModality Modality) {

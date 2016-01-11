@@ -147,7 +147,7 @@ public class MapCoordinate implements Serializable  {
 		//return false;
 
 		MapCoordinate Arg = (MapCoordinate) ArgumentCoordinates;
-		return (Chunk.equals(Arg.Chunk) && Block.Data == Arg.Block.Data && Block.DetailLevel == Arg.Block.DetailLevel);
+		return (Block.equals(Arg.Block) && Chunk.equals(Arg.Chunk) && Sector.equals(Arg.Sector) && Region.equals(Arg.Region));
 	}
 
 	@Override
@@ -161,8 +161,8 @@ public class MapCoordinate implements Serializable  {
 	}
 
 	public void copy(MapCoordinate CopyCoordinates) {
-		this.Chunk.copy(CopyCoordinates.Chunk);
 		this.Block.copy(CopyCoordinates.Block);
+		this.Chunk.copy(CopyCoordinates.Chunk);
 		this.Sector.copy(CopyCoordinates.Sector);
 		this.Region.copy(CopyCoordinates.Region);
 	}
