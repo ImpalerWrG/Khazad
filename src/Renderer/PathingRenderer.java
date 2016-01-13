@@ -109,7 +109,7 @@ public class PathingRenderer extends AbstractAppState {
 
 		ChunkCoordinate ChunkCoords = TargetChunk.getChunkCoordinates();
 
-		for (BlockCoordinate Index = new BlockCoordinate(); !Index.end(); Index.next()) {
+		for (BlockCoordinate Index = new BlockCoordinate(); !Index.isEnd(); Index.next()) {
 			MapCoordinate TargetCoords = new MapCoordinate(ChunkCoords, Index);
 			BitSet Connectivity = Pathing.getDirectionFlags(TargetCoords, Mod);
 

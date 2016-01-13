@@ -21,8 +21,10 @@ import Core.Dice;
 import Data.DataManager;
 import Map.Coordinates.*;
 import PathFinding.PathManager;
+
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.BitSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -253,47 +255,47 @@ public class Sector implements Serializable {
 
 	public boolean isBlockHidden(MapCoordinate Coordinates) {
 		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
-		return TargetChunk != null ? TargetChunk.isBlockHidden(Coordinates.Block.getBlockIndex()) : true;
+		return TargetChunk != null ? TargetChunk.isBlockHidden(Coordinates.Block) : true;
 	}
 
 	public void setBlockHidden(MapCoordinate Coordinates, boolean NewValue) {
 		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
 		if (TargetChunk != null)
-			TargetChunk.setBlockHidden(Coordinates.Block.getBlockIndex(), NewValue);
+			TargetChunk.setBlockHidden(Coordinates.Block, NewValue);
 	}
 
 
 	public boolean isBlockSubTerranean(MapCoordinate Coordinates) {
 		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
-		return TargetChunk != null ? TargetChunk.isBlockSubTerranean(Coordinates.Block.getBlockIndex()) : false;
+		return TargetChunk != null ? TargetChunk.isBlockSubTerranean(Coordinates.Block) : false;
 	}
 
 	public void setBlockSubTerranean(MapCoordinate Coordinates, boolean NewValue) {
 		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
 		if (TargetChunk != null)
-			TargetChunk.setBlockSubTerranean(Coordinates.Block.getBlockIndex(), NewValue);
+			TargetChunk.setBlockSubTerranean(Coordinates.Block, NewValue);
 	}
 
 	public boolean isBlockSkyView(MapCoordinate Coordinates) {
 		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
-		return TargetChunk != null ? TargetChunk.isBlockSkyView(Coordinates.Block.getBlockIndex()) : false;
+		return TargetChunk != null ? TargetChunk.isBlockSkyView(Coordinates.Block) : false;
 	}
 
 	public void setBlockSkyView(MapCoordinate Coordinates, boolean NewValue) {
 		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
 		if (TargetChunk != null)
-			TargetChunk.setBlockSkyView(Coordinates.Block.getBlockIndex(), NewValue);
+			TargetChunk.setBlockSkyView(Coordinates.Block, NewValue);
 	}
 
 	public boolean isBlockSunLit(MapCoordinate Coordinates) {
 		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
-		return TargetChunk != null ? TargetChunk.isBlockSunLit(Coordinates.Block.getBlockIndex()) : false;
+		return TargetChunk != null ? TargetChunk.isBlockSunLit(Coordinates.Block) : false;
 	}
 
 	public void setBlockSunLit(MapCoordinate Coordinates, boolean NewValue) {
 		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
 		if (TargetChunk != null)
-			TargetChunk.setBlockSunLit(Coordinates.Block.getBlockIndex(), NewValue);
+			TargetChunk.setBlockSunLit(Coordinates.Block, NewValue);
 	}
 
 	protected void checkHeight(Chunk ArgumentChunk) {
@@ -316,31 +318,38 @@ public class Sector implements Serializable {
 	}
 
 	public void generateFirstLight() {
-		for (Chunk WeatherChunk : WeatherChunks.values()) {
-			ChunkCoordinate TargetCoords = WeatherChunk.getChunkCoordinates();
-			Chunk TopChunk = Chunks.get(TargetCoords);
-			TargetCoords.Z--;
-			Chunk BottomChunk = Chunks.get(TargetCoords);
+		for (byte i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i++) {
+			BlockCoordinate TargetCoordinates = new BlockCoordinate(i);
+			BlockShape AboveTestBlockShape = new BlockShape();
+			for (Chunk WeatherChunk : WeatherChunks.values()) { // Chunks at the top
+				ChunkCoordinate TargetCoords = WeatherChunk.getChunkCoordinates();
+				Chunk CurrentChunk;
 
-			boolean LightRemains = false;
+				short Size = TargetCoordinates.Size;
+				for (short xy = 0; xy < Size * Size; xy++) {
+					CurrentChunk = WeatherChunk;
+					TargetCoords = CurrentChunk.getChunkCoordinates();
+					TargetCoordinates.setXY(xy);
+					AboveTestBlockShape.setData(BlockShape.EMPTY_CUBE_DATA);
 
-			for (int i = 0; i < BlockCoordinate.BLOCKS_PER_CHUNK; i++) {
-				TopChunk.setBlockSunLit((short) i, true);
-			}
+					loopbreak: do {
+						for (short z = (short) (TargetCoordinates.Size - 1); z >= 0; z--) {
+							TargetCoordinates.setZ(z);
 
-			do {
-				for (BlockCoordinate Index = new BlockCoordinate(); !Index.end(); Index.next()) {
-					TopChunk.getBlockShape(Index, TargetBlockShape);
-					if (TopChunk.isBlockSunLit(Index.getBlockIndex()) && !TargetBlockShape.hasFace(Direction.DIRECTION_NONE)) {
-						BottomChunk.setBlockSunLit(Index.getBlockIndex(), true);
-						LightRemains = true;
-					}
+							if (AboveTestBlockShape.isLightPassable(Axis.AXIS_Z)) {
+								CurrentChunk.setBlockSunLit(TargetCoordinates, true);
+								CurrentChunk.getBlockShape(TargetCoordinates, AboveTestBlockShape);	
+							} else {
+								boolean debug = true;
+								break loopbreak;
+							}
+						}
+						// drill down to next chunk
+						TargetCoords.Z--;
+						CurrentChunk = Chunks.get(TargetCoords);
+					} while (CurrentChunk != null);
 				}
-
-				TopChunk = BottomChunk;
-				TargetCoords.Z--;
-				BottomChunk = Chunks.get(TargetCoords);
-			} while (BottomChunk != null && LightRemains);
+			}
 		}
 	}
 

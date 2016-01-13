@@ -311,15 +311,15 @@ public class BlockShape implements Serializable {
 				return false;
 			case AXIS_Z:
 				if (isSplit()) {
-					if (getSouthEastCorner() <= CUBE_BOTTOM_HEIGHT && getNorthEastCorner() <= CUBE_BOTTOM_HEIGHT && getNorthWestCorner() <= CUBE_BOTTOM_HEIGHT)
+					if (getSouthEastCorner() <= CUBE_BOTTOM_HEIGHT || getNorthEastCorner() <= CUBE_BOTTOM_HEIGHT || getNorthWestCorner() <= CUBE_BOTTOM_HEIGHT)
 						return true;
-					if (getNorthWestCorner() <= CUBE_BOTTOM_HEIGHT && getSouthWestCorner() == CUBE_BOTTOM_HEIGHT && getSouthEastCorner() <= CUBE_BOTTOM_HEIGHT)
+					if (getNorthWestCorner() <= CUBE_BOTTOM_HEIGHT || getSouthWestCorner() <= CUBE_BOTTOM_HEIGHT || getSouthEastCorner() <= CUBE_BOTTOM_HEIGHT)
 						return true;
 					return false;
 				} else {
-					if (getNorthEastCorner() <= CUBE_BOTTOM_HEIGHT && getNorthWestCorner() <= CUBE_BOTTOM_HEIGHT && getSouthWestCorner() <= CUBE_BOTTOM_HEIGHT)
+					if (getNorthEastCorner() <= CUBE_BOTTOM_HEIGHT || getNorthWestCorner() <= CUBE_BOTTOM_HEIGHT || getSouthWestCorner() <= CUBE_BOTTOM_HEIGHT)
 						return true;
-					if (getSouthWestCorner() <= CUBE_BOTTOM_HEIGHT && getSouthEastCorner() <= CUBE_BOTTOM_HEIGHT && getNorthEastCorner() <= CUBE_BOTTOM_HEIGHT)
+					if (getSouthWestCorner() <= CUBE_BOTTOM_HEIGHT || getSouthEastCorner() <= CUBE_BOTTOM_HEIGHT || getNorthEastCorner() <= CUBE_BOTTOM_HEIGHT)
 						return true;
 					return false;
 				}

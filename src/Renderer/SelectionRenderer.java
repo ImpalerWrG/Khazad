@@ -170,7 +170,7 @@ public class SelectionRenderer extends AbstractAppState {
 			BitSet ChunkBitSet = entry.getValue();
 			ChunkCoordinate Coords = entry.getKey();
 
-			for (BlockCoordinate Index = new BlockCoordinate(); !Index.end(); Index.next()) {
+			for (BlockCoordinate Index = new BlockCoordinate(); !Index.isEnd(); Index.next()) {
 				if (ChunkBitSet.get(Index.getBlockIndex())) {
 					Box newBox = new Box(BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK);
 					MapCoordinate MapCoords = new MapCoordinate(Coords, Index);

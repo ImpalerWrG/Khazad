@@ -46,10 +46,10 @@ public class Chunk implements Serializable {
 
 	private BlockShape TestingBlockShape, AdjacentBlockShape;
 	// Bit values for each Block
-	private BitSet Hidden;
-	private BitSet SubTerranean;
-	private BitSet SkyView;
-	private BitSet SunLit;
+	private BitSet[] Hidden;
+	private BitSet[] SubTerranean;
+	private BitSet[] SkyView;
+	private BitSet[] SunLit;
 	// Keeps all Faces between and inside Blocks
 	private HashMap<FaceCoordinate, Face>[] Faces;
 	// The global position of this chunk relative to other chunks
@@ -79,27 +79,33 @@ public class Chunk implements Serializable {
 
 		Faces = (HashMap<FaceCoordinate, Face>[]) new HashMap<?, ?>[BlockCoordinate.CHUNK_DETAIL_LEVELS];
 
+		Hidden = new BitSet[BlockCoordinate.CHUNK_DETAIL_LEVELS];
+		SubTerranean = new BitSet[BlockCoordinate.CHUNK_DETAIL_LEVELS];
+		SkyView = new BitSet[BlockCoordinate.CHUNK_DETAIL_LEVELS];
+		SunLit = new BitSet[BlockCoordinate.CHUNK_DETAIL_LEVELS];
+
 		for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i++) {
 			Faces[i] = new HashMap<FaceCoordinate, Face>();
 			int Size = (BlockCoordinate.CHUNK_DETAIL_LEVELS - i) - 1;
 			Size = 1 << Size;
 			BlockShapeTypes[i] = new short[Size][];
 			BlockMaterialTypes[i] = new short[Size][];
+
 			SlabMaterialTypes[i] = new short[Size];
 			SlabShapeTypes[i] = new short[Size];
 			SlabMaterialInitialized[i] = new BitSet(Size);
 			SlabShapeInitialized[i] = new BitSet(Size);
+
+			Hidden[i] = new BitSet(Size * Size * Size);
+			SubTerranean[i] = new BitSet(Size * Size * Size);
+			SkyView[i] = new BitSet(Size * Size * Size);
+			SunLit[i] = new BitSet(Size * Size * Size);
 
 			for (int j = 0; j < Size; j++) {
 				SlabMaterialTypes[i][j] = DataManager.INVALID_INDEX;
 				SlabShapeTypes[i][j] = BlockShape.EMPTY_CUBE_DATA;
 			}
 		}
-
-		Hidden = new BitSet(BlockCoordinate.BLOCKS_PER_CHUNK);
-		SubTerranean = new BitSet(BlockCoordinate.BLOCKS_PER_CHUNK);
-		SkyView = new BitSet(BlockCoordinate.BLOCKS_PER_CHUNK);
-		SunLit = new BitSet(BlockCoordinate.BLOCKS_PER_CHUNK);
 
 		TestingBlockShape = new BlockShape();
 		AdjacentBlockShape = new BlockShape();
@@ -184,7 +190,7 @@ public class Chunk implements Serializable {
 		MapCoordinate AdjacentCoordinates = new MapCoordinate();
 		MapCoordinate TargetCoordinates = new MapCoordinate();
 	
-		for (BlockCoordinate Index = new BlockCoordinate((byte) LevelofDetail); !Index.end(); Index.next()) {
+		for (BlockCoordinate Index = new BlockCoordinate((byte) LevelofDetail); !Index.isEnd(); Index.next()) {
 			TestingBlockShape.Data = BlockShape.EMPTY_CUBE_DATA;
 			getBlockShape(Index, TestingBlockShape);
 			short BlockMaterial = getBlockMaterial(Index);
@@ -235,7 +241,7 @@ public class Chunk implements Serializable {
 				NewFace.setFaceMaterialType(BlockMaterial);
 				NewFace.setFaceSurfaceType(FloorSurface);
 				NewFace.setFaceShapeType(new FaceShape(TestingBlockShape, null, Direction.DIRECTION_NONE));
-				if (isBlockSunLit(Index.getBlockIndex()))
+				if (isBlockSunLit(Index))
 					NewFace.Sunlit = true;
 			}
 		}
@@ -255,12 +261,14 @@ public class Chunk implements Serializable {
 	public void growGrass() {
 		DataManager Data = DataManager.getDataManager();
 
-		for (Face TargetFace : Faces[0].values()) {
-			if (TargetFace.Sunlit) {
-				short MaterialID = TargetFace.getFaceMaterialType();
-				int GrowthFactor = Data.getMaterialData(MaterialID).PlantGrowthFactor;
-				if (GrowthFactor > 0) {
-					TargetFace.setFaceMaterialType(Data.getLabelIndex("MATERIAL_DARK_GRASS"));
+		for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i ++) {
+			for (Face TargetFace : Faces[i].values()) {
+				if (TargetFace.Sunlit) {
+					short MaterialID = TargetFace.getFaceMaterialType();
+					int GrowthFactor = Data.getMaterialData(MaterialID).PlantGrowthFactor;
+					if (GrowthFactor > 0) {
+						TargetFace.setFaceMaterialType(Data.getLabelIndex("MATERIAL_DARK_GRASS"));
+					}
 				}
 			}
 		}
@@ -369,39 +377,39 @@ public class Chunk implements Serializable {
 		return DirtyPathRendering;
 	}
 
-	public boolean isBlockHidden(short Coordinates) {
-		return Hidden.get(Coordinates);
+	public boolean isBlockHidden(BlockCoordinate TargetCoordinates) {
+		return Hidden[TargetCoordinates.DetailLevel].get(TargetCoordinates.getBlockIndex());
 	}
 
-	public void setBlockHidden(short Coordinates, boolean NewValue) {
-		Hidden.set(Coordinates, NewValue);
+	public void setBlockHidden(BlockCoordinate TargetCoordinates, boolean NewValue) {
+		Hidden[TargetCoordinates.DetailLevel].set(TargetCoordinates.getBlockIndex(), NewValue);
 		DirtyTerrainRendering = true;
 	}
 
-	public boolean isBlockSubTerranean(short Coordinates) {
-		return SubTerranean.get(Coordinates);
+	public boolean isBlockSubTerranean(BlockCoordinate TargetCoordinates) {
+		return SubTerranean[TargetCoordinates.DetailLevel].get(TargetCoordinates.getBlockIndex());
 	}
 
-	public void setBlockSubTerranean(short Coordinates, boolean NewValue) {
-		SubTerranean.set(Coordinates, NewValue);
+	public void setBlockSubTerranean(BlockCoordinate TargetCoordinates, boolean NewValue) {
+		SubTerranean[TargetCoordinates.DetailLevel].set(TargetCoordinates.getBlockIndex(), NewValue);
 		DirtyTerrainRendering = true;
 	}
 
-	public boolean isBlockSkyView(short Coordinates) {
-		return SkyView.get(Coordinates);
+	public boolean isBlockSkyView(BlockCoordinate TargetCoordinates) {
+		return SkyView[TargetCoordinates.DetailLevel].get(TargetCoordinates.getBlockIndex());
 	}
 
-	public void setBlockSkyView(short Coordinates, boolean NewValue) {
-		SkyView.set(Coordinates, NewValue);
+	public void setBlockSkyView(BlockCoordinate TargetCoordinates, boolean NewValue) {
+		SkyView[TargetCoordinates.DetailLevel].set(TargetCoordinates.getBlockIndex(), NewValue);
 		DirtyTerrainRendering = true;
 	}
 
-	public boolean isBlockSunLit(short Coordinates) {
-		return SunLit.get(Coordinates);
+	public boolean isBlockSunLit(BlockCoordinate TargetCoordinates) {
+		return SunLit[TargetCoordinates.DetailLevel].get(TargetCoordinates.getBlockIndex());
 	}
 
-	public void setBlockSunLit(short Coordinates, boolean NewValue) {
-		SunLit.set(Coordinates, NewValue);
+	public void setBlockSunLit(BlockCoordinate TargetCoordinates, boolean NewValue) {
+		SunLit[TargetCoordinates.DetailLevel].set(TargetCoordinates.getBlockIndex(), NewValue);
 		DirtyTerrainRendering = true;
 	}
 

@@ -200,7 +200,7 @@ public class Geology implements Serializable {
 	public void loadChunkData(Chunk TargetChunk) {
 		ChunkCoordinate ChunkCoords = TargetChunk.getChunkCoordinates();
 		for (byte DetailLevel = 0; DetailLevel < BlockCoordinate.CHUNK_DETAIL_LEVELS; DetailLevel++) {
-			for (BlockCoordinate Index = new BlockCoordinate(DetailLevel); !Index.end(); Index.next()) {
+			for (BlockCoordinate Index = new BlockCoordinate(DetailLevel); !Index.isEnd(); Index.next()) {
 				int Offset = 1 << DetailLevel;
 				short x = (short) (Index.getX() * Offset);
 				short y = (short) (Index.getY() * Offset);

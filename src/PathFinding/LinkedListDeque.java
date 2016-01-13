@@ -1,7 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* Copyright 2010 Kenneth 'Impaler' Ferland
+
+ This file is part of Khazad.
+
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package PathFinding;
 
@@ -11,11 +23,12 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
 /**
+ * Doubly linked list that sorts elements by comparable interface
  *
  * @author Impaler
  */
 public class LinkedListDeque<E> implements Deque<E> {
-	
+
 	public class Node {
 
 		public E Data;
@@ -30,55 +43,55 @@ public class LinkedListDeque<E> implements Deque<E> {
 			//System.out.println( + " ");
 		}
 	}
-	
+
 	private int size;
-    private Node first;
-    private Node last;
-	
+	private Node first;
+	private Node last;
+
 	Node Pool;
 
 	private transient int modCount = 0;
 
-    public LinkedListDeque(int Capacity) {
+	public LinkedListDeque(int Capacity) {
 		Node current = new Node();
 		Pool = current;
 		for (int i = 1; i < Capacity; i++) {
 			current.next = new Node();
 			current = current.next;
 		}
-    }
+	}
 
-    public boolean isEmpty() {
-        return first == null;
-    }
+	public boolean isEmpty() {
+		return first == null;
+	}
 
-    public int size() {
-        return size;
-    }
+	public int size() {
+		return size;
+	}
 
 	public boolean offer(E e) {
-        if (e == null)
-            throw new NullPointerException();
-        modCount++;
-        insertFront(e);
-        return true;
-    }
+		if (e == null)
+			throw new NullPointerException();
+		modCount++;
+		insertFront(e);
+		return true;
+	}
 
-    public E peek() {
+	public E peek() {
 		if (first != null)
 			return first.Data;
 		return null;
-    }
-	
+	}
+
 	private Node getNode(E e) {
 		Node result = Pool;
-		
+
 		if (Pool.next != null) {
 			Pool = Pool.next;
 		} else {
 			Pool = new Node();
 		}
-		
+
 		result.Data = e;
 		result.next = null;
 		return result;
@@ -90,63 +103,63 @@ public class LinkedListDeque<E> implements Deque<E> {
 	}
 
 	public void insertFront(E e) {
-        Node newNode = getNode(e);
-        Node previous = null;
-        Node current = first;
+		Node newNode = getNode(e);
+		Node previous = null;
+		Node current = first;
 		size++;
 
 		Comparable<? super E> key = (Comparable<? super E>) e;
 
-        while (current != null && key.compareTo(current.Data) > 0) {
-            previous = current;
-            current = current.next;
-        }
+		while (current != null && key.compareTo(current.Data) > 0) {
+			previous = current;
+			current = current.next;
+		}
 
-        if (previous == null) {
+		if (previous == null) {
 			newNode.prior = previous;
-            newNode.next = first;
+			newNode.next = first;
 			if (first != null)
 				first.prior = newNode;
-            first = newNode;
-        } else {
-            previous.next = newNode;
+			first = newNode;
+		} else {
+			previous.next = newNode;
 			newNode.prior = previous;
-            newNode.next = current;
+			newNode.next = current;
 			if (current != null)
 				current.prior = newNode;
-        }
-		
+		}
+
 		if (newNode.next == null)
 			last = newNode;
-    }
+	}
 
 	public void insertBack(E e) {
-        Node newNode = getNode(e);
-        Node previous = null;
-        Node current = last;
+		Node newNode = getNode(e);
+		Node previous = null;
+		Node current = last;
 		size++;
 
 		Comparable<? super E> key = (Comparable<? super E>) e;
 
-        while (current != null && key.compareTo(current.Data) < 0) {
-            previous = current;
-            current = current.prior;
-        }
+		while (current != null && key.compareTo(current.Data) < 0) {
+			previous = current;
+			current = current.prior;
+		}
 
-        if (previous == null) {
+		if (previous == null) {
 			newNode.next = current;
-            newNode.prior = last;
-            first = newNode;
-        } else {
-            previous.prior = newNode;
- 			newNode.next = previous;
+			newNode.prior = last;
+			first = newNode;
+		} else {
+			previous.prior = newNode;
+			newNode.next = previous;
 			newNode.prior = current;
 			if (current != null)
 				current.next = newNode;
-        }
+		}
 		if (first == null)
 			first = last;
-    }
+	}
 
 	public void addFirst(E e) {
 		offerFirst(e);
@@ -157,54 +170,63 @@ public class LinkedListDeque<E> implements Deque<E> {
 	}
 
 	public boolean offerFirst(E e) {
-        if (e == null)
-            throw new NullPointerException();
-        modCount++;
-        insertFront(e);
+		if (e == null)
+			throw new NullPointerException();
+		modCount++;
+		insertFront(e);
 		return true;
 	}
 
 	public boolean offerLast(E e) {
-        if (e == null)
-            throw new NullPointerException();
-        modCount++;
-        insertBack(e);
+		if (e == null)
+			throw new NullPointerException();
+		modCount++;
+		insertBack(e);
 		return true;
 	}
 
 	public E removeFirst() {
 		Node result = first;
 
-		if (first.next == null) {
-			last = first = null;
+		if (result != null) {
+			if (first.next == null) {
+				last = null;
+				first = null;
+			} else {
+				first.next.prior = null;
+				first = first.next;	
+				result.next = null;
+			}
+			E returnData = result.Data;
+			recycleNode(result);
+			size--;
+			return returnData;
 		} else {
-			first.next.prior = null;
-			first = first.next;	
-			result.next = null;
+			return null;
 		}
-		E returnData = result.Data;
-		recycleNode(result);
-		size--;
-		return returnData;
 	}
 
 	public E removeLast() {
- 		Node result = last;
-		
-		if (last.prior == null) {
-			first = last = null;			
-		} else {
-			last.prior.next = null;
-			last = last.prior;		
-			result.prior = null;
-		}
+		Node result = last;
 
-		E returnData = result.Data;
-		recycleNode(result);
-		size--;
-		return returnData;
+		if (result != null) {
+			if (last.prior == null) {
+				first = null;
+				last = null;
+			} else {
+				last.prior.next = null;
+				last = last.prior;
+				result.prior = null;
+			}
+			E returnData = result.Data;
+			recycleNode(result);
+			size--;
+			return returnData;
+		} else {
+			return null;
+		}
 	}
-	
+
 	public E pollFirst() {
 		return removeFirst();
 	}
@@ -212,45 +234,45 @@ public class LinkedListDeque<E> implements Deque<E> {
 	public E pollLast() {
 		return removeLast();
 	}
-	
+
 	public E getFirst() {
-		return first.Data;
-	}	
-	
-	public E getLast() {
-		return last.Data;
+		return first != null ? first.Data : null;
 	}
-	
+
+	public E getLast() {
+		return last != null ? last.Data : null;
+	}
+
 	public E peekFirst() {
-		return first.Data;
+		return first != null ? first.Data : null;
 	}
 
 	public E peekLast() {
-		return last.Data;
+		return last != null ? last.Data : null;
 	}
 
 	public boolean removeFirstOccurrence(Object o) {
 		return false;
-	}	
+	}
 
-    public boolean removeLastOccurrence(Object o) {
+	public boolean removeLastOccurrence(Object o) {
 		return false;
-	}	
+	}
 
 	public void clear() {
-        first = null;
+		first = null;
 		last = null;
-        size = 0;
+		size = 0;
 		modCount = 0;
-    }
+	}
 
-    public E poll() {
-        if (size == 0)
-            return null;
-        modCount++;
+	public E poll() {
+		if (size == 0)
+			return null;
+		modCount++;
 
-        return removeFirst();
-    }
+		return removeFirst();
+	}
 
 	public boolean add(E e) {
 		return offerFirst(e);
@@ -281,96 +303,96 @@ public class LinkedListDeque<E> implements Deque<E> {
 	}
 
 	public Iterator<E> iterator() {
-        return new ForwardItr(this);
-    }
+		return new ForwardItr(this);
+	}
 
 	public Iterator<E> descendingIterator() {
 		return new BackItr(this);
 	}
 
-    private final class ForwardItr implements Iterator<E> {
+	private final class ForwardItr implements Iterator<E> {
 
 		private LinkedListDeque.Node current = null;
 
-        /**
-         * The modCount value that the iterator believes that the backing
-         * Queue should have.  If this expectation is violated, the iterator
-         * has detected concurrent modification.
-         */
-        private int expectedModCount = modCount;
+		/**
+		 * The modCount value that the iterator believes that the backing
+		 * Queue should have.  If this expectation is violated, the iterator
+		 * has detected concurrent modification.
+		 */
+		private int expectedModCount = modCount;
 		
 		private ForwardItr(LinkedListDeque Parent) {
 			current = Parent.first;
 		}
 
-        public boolean hasNext() {
-            return current.next != null;
-        }
+		public boolean hasNext() {
+			return current.next != null;
+		}
 
-        public E next() {
-            if (expectedModCount != modCount)
-                throw new ConcurrentModificationException();
+		public E next() {
+			if (expectedModCount != modCount)
+				throw new ConcurrentModificationException();
 			E result = (E) current.Data;
 			current = current.next;
 			return result;
-        }
+		}
 
-        public void remove() {
-            if (expectedModCount != modCount)
-                throw new ConcurrentModificationException();
+		public void remove() {
+			if (expectedModCount != modCount)
+				throw new ConcurrentModificationException();
 
 			current.prior.next = current.next;
 			current.next.prior = current.prior;
 			current = current.next;
 
-            expectedModCount = modCount;
-        }
-    }
-	
-    private final class BackItr implements Iterator<E> {
+			expectedModCount = modCount;
+		}
+	}
+
+	private final class BackItr implements Iterator<E> {
 
 		private LinkedListDeque.Node current = null;
 
-        /**
-         * The modCount value that the iterator believes that the backing
-         * Queue should have.  If this expectation is violated, the iterator
-         * has detected concurrent modification.
-         */
-        private int expectedModCount = modCount;
-		
+		/**
+		 * The modCount value that the iterator believes that the backing
+		 * Queue should have.  If this expectation is violated, the iterator
+		 * has detected concurrent modification.
+		 */
+		private int expectedModCount = modCount;
+
 		private BackItr(LinkedListDeque Parent) {
 			current = Parent.first;
 		}
 
-        public boolean hasNext() {
-            return current.prior != null;
-        }
+		public boolean hasNext() {
+			return current.prior != null;
+		}
 
-        public E next() {
-            if (expectedModCount != modCount)
-                throw new ConcurrentModificationException();
+		public E next() {
+			if (expectedModCount != modCount)
+				throw new ConcurrentModificationException();
 			E result = (E) current.Data;
 			current = current.prior;
 			return result;
-        }
+		}
 
-        public void remove() {
-            if (expectedModCount != modCount)
-                throw new ConcurrentModificationException();
+		public void remove() {
+			if (expectedModCount != modCount)
+				throw new ConcurrentModificationException();
 
 			current.prior.next = current.next;
 			current.next.prior = current.prior;
 			current = current.prior;
 
-            expectedModCount = modCount;
-        }
-    }
-	
+			expectedModCount = modCount;
+		}
+	}
+
 	public boolean containsAll(Collection<?> e) {
 		return false;
 	}
 
-    public boolean addAll(Collection<? extends E> e) {
+	public boolean addAll(Collection<? extends E> e) {
 		return false;
 	}
 
@@ -385,7 +407,7 @@ public class LinkedListDeque<E> implements Deque<E> {
 	public <T> T[] toArray(T[] e) {
 		return null;
 	}
-	
+
 	public Object[] toArray() {
 		return null;
 	}

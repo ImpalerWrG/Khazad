@@ -18,14 +18,14 @@ public class BlockCoordinate implements Serializable {
 	public static final int CHUNK_EDGE_SIZE = 32;
 	public static final int BLOCK_BITMASK = 31;
 
-	public static final int BLOCK_BITSHIFT_X = 2;
+	public static final int BLOCK_BITSHIFT_X = 0;
 	public static final int BLOCK_BITSHIFT_Y = 1;
-	public static final int BLOCK_BITSHIFT_Z = 0;
+	public static final int BLOCK_BITSHIFT_Z = 2;
 	
 	public static final int BLOCKS_PER_CHUNK = 32768;
 	public static final int CHUNK_DETAIL_LEVELS = 6;
 
-	public short Data;  // Index bitpacking   0 YYYYY XXXXX ZZZZZ
+	public short Data;  // Index bitpacking   0 ZZZZZ YYYYY XXXXX 
 
 	public byte DetailLevel;
 	public short Size;
@@ -57,12 +57,12 @@ public class BlockCoordinate implements Serializable {
 		this.DetailLevel = (byte) DetailLevel;
 		this.Shift = (short) ((BlockCoordinate.CHUNK_DETAIL_LEVELS - DetailLevel) - 1);
 		this.Size = (short) (1 << this.Shift);
-		
+
 		this.Mask = (short) (this.Size - 1);
 		short Xcomponent = (short) (Mask << (this.Shift * BLOCK_BITSHIFT_X));
 		short Ycomponent = (short) (Mask << (this.Shift * BLOCK_BITSHIFT_Y));
 		short Zcomponent = (short) (Mask << (this.Shift * BLOCK_BITSHIFT_Z));
-		
+
 		this.Max = (short) (Xcomponent | Ycomponent | Zcomponent);
 	}
 
@@ -74,7 +74,7 @@ public class BlockCoordinate implements Serializable {
 		Xcomponent += DirectionType.getValueonAxis(Axis.AXIS_X);
 		Ycomponent += DirectionType.getValueonAxis(Axis.AXIS_Y);
 		Zcomponent += DirectionType.getValueonAxis(Axis.AXIS_Z);
-		
+
 		if ((Xcomponent / Size) == 0) {
 			Xcomponent = 0;
 			Ycomponent++;
@@ -84,7 +84,7 @@ public class BlockCoordinate implements Serializable {
 				if ((Zcomponent / Size) == 0) {
 					Zcomponent = 0;
 				}
-			}	
+			}
 		}
 
 		Xcomponent = (short) (Xcomponent << (this.Shift * BLOCK_BITSHIFT_X));
@@ -106,7 +106,7 @@ public class BlockCoordinate implements Serializable {
 		Xcomponent %= this.Size;
 		Ycomponent %= this.Size;
 		Zcomponent %= this.Size;
-		
+
 		Xcomponent = (short) (Xcomponent << (this.Shift * BLOCK_BITSHIFT_X));
 		Ycomponent = (short) (Ycomponent << (this.Shift * BLOCK_BITSHIFT_Y));
 		Zcomponent = (short) (Zcomponent << (this.Shift * BLOCK_BITSHIFT_Z));
@@ -128,6 +128,26 @@ public class BlockCoordinate implements Serializable {
 		Zcomponent = (short) (Zcomponent << (this.Shift * BLOCK_BITSHIFT_Z));
 
 		Data = (short) (Xcomponent | Ycomponent | Zcomponent);
+	}
+
+	public void setX(short x) {
+		this.Data &= ~(Mask << (this.Shift * (BLOCK_BITSHIFT_X)));
+		this.Data |= (x << (this.Shift * (BLOCK_BITSHIFT_X)));
+	}
+
+	public void setY(short y) {
+		this.Data &= ~(Mask << (this.Shift * (BLOCK_BITSHIFT_Y)));
+		this.Data |= (y << (this.Shift * (BLOCK_BITSHIFT_Y)));
+	}
+
+	public void setZ(short z) {
+		this.Data &= ~(Mask << (this.Shift * (BLOCK_BITSHIFT_Z)));
+		this.Data |= (z << (this.Shift * (BLOCK_BITSHIFT_Z)));
+	}
+
+	public void setXY(short xy) {
+		short z = (short) (this.Data & (Mask << (this.Shift * BLOCK_BITSHIFT_Z)));
+		this.Data = (short) (z | xy);
 	}
 
 	public void set(Axis AxialComponent, int NewValue) {
@@ -159,7 +179,7 @@ public class BlockCoordinate implements Serializable {
 	public short getBlockIndex() {
 		return Data;
 	}
-	
+
 	public short getX() {
 		return (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_X)) & Mask);
 	}
@@ -173,11 +193,23 @@ public class BlockCoordinate implements Serializable {
 	}
 
 	public short getXY() {
-		return (short) (this.Data >> (this.Shift * (BLOCK_BITSHIFT_Z + 1)));
+		return (short) (~(Mask << (this.Shift * (BLOCK_BITSHIFT_Z))) & this.Data);
 	}
 
 	public void next() {
 		Data++;
+	}
+
+	public void previous() {
+		Data--;
+	}
+
+	public void SetToStartPoint() {
+		Data = 0;
+	}
+
+	public void SetToEndPoint() {
+		Data = Max;
 	}
 
 	public void skipAlongAxis(Axis SkippingAxis) {
@@ -202,7 +234,7 @@ public class BlockCoordinate implements Serializable {
 		Data += Skip;
 	}
 
-	public boolean end() {
+	public boolean isEnd() {
 		return (Data > this.Max || Data < 0);
 	}
 

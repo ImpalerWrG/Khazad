@@ -56,7 +56,6 @@ public class KhazadGrid implements GridInterface, Serializable {
 
 		private TShortIntMap DirectionHashMap;
 		private TShortShortHashMap ConnectivityHashMap;
-
 		private ChunkCoordinate thisChunkCoodinates;
 
 		GridChunk(ChunkCoordinate Coordinates) {
@@ -141,7 +140,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 				ChunkCoordinate ChunkCoords = TargetChunk.getChunkCoordinates();
 				GridChunk NewGridChunk = addChunk(ChunkCoords);
 
-				for (BlockCoordinate Index = new BlockCoordinate(); !Index.end(); Index.next()) {
+				for (BlockCoordinate Index = new BlockCoordinate(); !Index.isEnd(); Index.next()) {
 					TestCoordinates.Block.copy(Index);
 					BlockDirections.clear();
 					BitSet Flags = buildConnectivitySet(TestCoordinates, BlockDirections);
@@ -162,7 +161,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 				ChunkCoordinate ChunkCoords = TargetChunk.getChunkCoordinates();
 				TestCoordinates.setChunkCoordinate(ChunkCoords);
 
-				for (BlockCoordinate Index = new BlockCoordinate(); !Index.end(); Index.next()) {
+				for (BlockCoordinate Index = new BlockCoordinate(); !Index.isEnd(); Index.next()) {
 					TestCoordinates.setBlockCoordinate(Index);
 					int Flags = getDirectionEdgeSet(TestCoordinates);
 
@@ -414,7 +413,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 	void RebuildConnectivityCache(int ZoneCount) {
 		ConnectivityCache = new ArrayList<Integer>(Collections.nCopies(ZoneCount + 1, 0));
 
-		for (int i : ConnectivityCache) {  // Skip zero, no such zone		
+		for (int i : ConnectivityCache) {  // Skip zero, no such zone
 			if (ConnectivityCache.get(i) == 0) {
 				updateConnectivityCache(i, i);
 			}
@@ -427,7 +426,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 			ChunkCoordinate ChunkCoords = TargetChunk.getChunkCoordinates();
 
 			BitSet DirectionSet;
-			for (BlockCoordinate Index = new BlockCoordinate(); !Index.end(); Index.next()) {
+			for (BlockCoordinate Index = new BlockCoordinate(); !Index.isEnd(); Index.next()) {
 				if (TargetChunk.getBlockDirections(Index) != 0) {  // Any Valid Edge Exists
 					MapCoordinate PassableCoordinates = new MapCoordinate(ChunkCoords, Index);
 					TestCoords.add(PassableCoordinates);

@@ -158,7 +158,6 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 
 		// mark as VisitedCoordinates if not already Visited
 		VisitedCoordinates.add(TestCoordinates);
-
 		int TestDirections = SearchGraph.getDirectionEdgeSet(TestCoordinates);
 
 		// Check all Neibors
@@ -189,9 +188,14 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		while(FringeDeque.size() > 1) {
 			FringeHeap.add(FringeDeque.removeLast());
 		}
-		//if (FringeDeque.peekFirst().compareTo(FringeHeap.peek()) > 0) {
-		//	FringeHeap.add(FringeDeque.removeLast());
-		//}
+
+		AStarNode DequeNode = FringeDeque.peekFirst();
+		AStarNode HeapNode = FringeHeap.peek();
+		if (DequeNode != null && HeapNode != null) {
+			if (DequeNode.compareTo(HeapNode) > 0) {
+				FringeHeap.add(FringeDeque.removeLast());
+			}
+		}
 
 		return false; // Goal was not found
 	}
