@@ -639,8 +639,10 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		// point camera at the target
 		Vector3f target = Coordinate.getVector();
 		MainCamera.pointCameraAt(target);
+
 		TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
-		Terrain.SwapFrustrumChunks();
+		if (Terrain != null)
+			Terrain.SwapFrustrumChunks();
 	}
 
 	public boolean contains(BoundingBox box) {

@@ -29,6 +29,9 @@ import Nifty.*;
 import Renderer.*;
 import Sound.Music;
 import Data.DataManager;
+import Game.Game;
+import Game.MapGenerator;
+import Interface.GameCameraState;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -46,6 +49,7 @@ import com.jme3.input.MouseInput;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
+import de.lessvoid.nifty.screen.ScreenController;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -82,6 +86,10 @@ public class Main extends SimpleApplication {
 		super(new StatsAppState());
 	}
 
+	public static Main getMain() {
+		return app;
+	}
+
 	@Override
 	public void simpleInitApp() {
 
@@ -110,16 +118,38 @@ public class Main extends SimpleApplication {
 
 		initialiseKeyboardMappings();
 
-		// RENDER
-		this.stateManager.attach(new MapRenderer(pool));
-		this.stateManager.attach(new TerrainRenderer(pool));
-		this.stateManager.attach(new PathingRenderer());
-		this.stateManager.attach(new ActorRenderer());
-
 		this.stateManager.attach(new Music());
 		this.stateManager.attach(new GUI(this));
+	}
 
-		this.stateManager.attach(new ScreenshotAppState(new String()));
+	public static void attachRenderers() {
+		try {
+			MapRenderer mapRender = new MapRenderer(pool);
+			TerrainRenderer terrainRender = new TerrainRenderer(pool);
+			PathingRenderer pathRender = new PathingRenderer();
+			GameCameraState IsoCamera = new GameCameraState();
+
+			Game game = app.getStateManager().getState(Game.class);
+
+			mapRender.attachToGame(game);
+			terrainRender.attachToGame(game);
+			pathRender.attachToGame(game);
+
+			app.stateManager.attach(mapRender);
+			app.stateManager.attach(terrainRender);
+			app.stateManager.attach(pathRender);
+			app.stateManager.attach(IsoCamera);
+
+			app.stateManager.attach(new ActorRenderer());
+			app.stateManager.attach(new ScreenshotAppState(new String()));
+			app.stateManager.attach(new SelectionRenderer());
+
+			IsoCamera.setSlice(15, -15, false);
+			IsoCamera.pointCameraAt(game.getMap().getMapCenter());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void createAxialMarker() {
@@ -180,7 +210,7 @@ public class Main extends SimpleApplication {
 		super.destroy();
 		pool.shutdown();
 	}
-	
+
 	public void initialiseKeyboardMappings() {
 		// TODO move this to some key mappings UI
 
@@ -222,5 +252,24 @@ public class Main extends SimpleApplication {
 		inputManager.addMapping("SunnyRenderToggle", new KeyTrigger(KeyInput.KEY_L));
 		inputManager.addMapping("ReduceDetailLevel", new KeyTrigger(KeyInput.KEY_Y));
 		inputManager.addMapping("IncreeseDetailLevel", new KeyTrigger(KeyInput.KEY_U));	
+	}
+
+	public static void createGame(short x, short y, String Seed, String Name) {
+		setProgress(0.1f, "Begining Map Generation");
+		Game game = new Game();
+		app.getStateManager().attach(game);
+
+		MapGenerator gen = new MapGenerator();
+		gen.setGame(game);
+		gen.setParameters(x, y, Seed, Name);
+
+		pool.submit(gen);
+	}
+
+	public static void setProgress(final float progress, final String loadingText) {
+		GUI mainGui = app.getStateManager().getState(GUI.class);
+		ScreenController control = mainGui.getScreenControler("ProgressBarScreen");
+		ProgressBarController controler = (ProgressBarController) control;
+		controler.setProgress(progress, loadingText);
 	}
 }

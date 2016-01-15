@@ -82,9 +82,10 @@ public class PathingRenderer extends AbstractAppState {
 	public void initialize(AppStateManager stateManager, Application app) {
 		super.initialize(stateManager, app);
 		this.app = (SimpleApplication) app;
+		this.app.getRootNode().attachChild(PathingNode);
+
 		this.state = stateManager;
 		this.assetmanager = app.getAssetManager();
-
 		this.vertices = new Vector3f[Direction.ANGULAR_DIRECTIONS.length];
 
 		for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
@@ -96,8 +97,6 @@ public class PathingRenderer extends AbstractAppState {
 		this.game = TargetGame;
 
 		PathingNode = new Node("PathingNode");
-		this.app.getRootNode().attachChild(PathingNode);
-
 		this.Pathing = PathManager.getSingleton();
 		ZoneMaterials = new HashMap<Integer, Material>();
 	}

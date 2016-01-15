@@ -54,6 +54,7 @@ public class GUI extends AbstractAppState {
 		nifty.addXml("Interface/Nifty/SetupScreenNifty.xml");
 		nifty.addXml("Interface/Nifty/StartScreenNifty.xml");
 		nifty.addXml("Interface/Nifty/TutorialPopup.xml");
+		nifty.addXml("Interface/Nifty/ProgressBarScreenNifty.xml");
 
 		nifty.gotoScreen("StartScreen");
 
@@ -63,5 +64,9 @@ public class GUI extends AbstractAppState {
 	public ScreenController getScreenControler(String Screen) {
 		Screen targetScreen = nifty.getScreen(Screen);
 		return targetScreen != null ? targetScreen.getScreenController() : null;
+	}
+
+	public void gotoScreen(String Screen) {
+		nifty.gotoScreen(Screen);
 	}
 }

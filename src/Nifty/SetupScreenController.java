@@ -1,20 +1,25 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* Copyright 2010 Kenneth 'Impaler' Ferland
+
+ This file is part of Khazad.
+
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Nifty;
 
 import Core.Main;
-import Game.Game;
-import Interface.GameCameraState;
-import PathFinding.PathManager;
-import Renderer.MapRenderer;
-import Renderer.PathingRenderer;
-import Renderer.SelectionRenderer;
-import Renderer.TerrainRenderer;
+
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
@@ -27,11 +32,14 @@ import de.lessvoid.nifty.screen.ScreenController;
 public class SetupScreenController implements ScreenController {
 
 	private Nifty nifty;
+	private Screen screen;
 	Element TutorialPopup = null;
 	Element ErrorPopup = null;
+	Element MenuPopup = null;
 
 	public void bind(Nifty nifty, Screen screen) {
 		this.nifty = nifty;
+		this.screen = screen;
 	}
 
 	public void onStartScreen() {
@@ -54,6 +62,8 @@ public class SetupScreenController implements ScreenController {
 	}
 
 	public void beginGame() {
+		nifty.gotoScreen("ProgressBarScreen");
+
 		try {
 			String kingdomName = nifty.getCurrentScreen().findNiftyControl("KingdomNameTextField", TextField.class).getDisplayedText();
 			if (kingdomName.length() == 0) {
@@ -61,34 +71,8 @@ public class SetupScreenController implements ScreenController {
 				return;
 			}
 			String Seed = nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).getDisplayedText();
+			Main.createGame((short) 10, (short) 10, Seed, kingdomName);
 
-			Game game = new Game();
-			Main.app.getStateManager().attach(game);
-			game.initializeGame((short) 10, (short) 10, Seed, kingdomName);
-
-			Main.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
-			Main.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
-			Main.app.getStateManager().attach(new SelectionRenderer());
-			PathingRenderer pathingRenderer = Main.app.getStateManager().getState(PathingRenderer.class);
-			pathingRenderer.attachToGame(game);
-
-			GameCameraState cam = new GameCameraState();
-			Main.app.getStateManager().attach(cam);
-			cam.setSlice(15, -15, false);
-
-			// PATHING
-			PathManager Pather = PathManager.getSingleton();
-			Pather.initialize(Main.app.getStateManager(), Main.app);
-			Pather.createMapAbstraction(game.getMap());
-			//Pather.AllocateThreadPool(ExecutionThreadpool);
-			Main.app.getStateManager().attach(Pather);
-
-
-			short DwarfID = Data.DataManager.getDataManager().getLabelIndex("CREATURE_DWARF");
-			for (int i = 0; i < 300; i++) {
-				game.SpawnCitizen(DwarfID, Pather.Tester.getRandomPassableCoordinate());
-			}
-			nifty.gotoScreen("GameScreen");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

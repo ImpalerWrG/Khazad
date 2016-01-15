@@ -94,39 +94,41 @@ public class ActorRenderer extends AbstractAppState {
 		long CurrentTick = game.getCurrentTimeTick();
 
 		HashMap<Integer, Actor> actors = game.getActors();
-		for (Actor target : actors.values()) {
-			if (target != null) {
-				if (target.isDirty()) {
-					Node actorNode = ActorNodeMap.get(target.getID());
-					if (actorNode == null) {
+		if (actors != null) {
+			for (Actor target : actors.values()) {
+				if (target != null) {
+					if (target.isDirty()) {
+						Node actorNode = ActorNodeMap.get(target.getID());
+						if (actorNode == null) {
 
-						//Geometry = new Sphere();
-						Spatial actorModel = assetmanager.loadModel("Models/Dwarf/Dwarf.j3o");
-						actorModel.scale(0.25f, 0.25f, 0.25f);
-						actorModel.rotate(1.5f, 0.0f, 0.0f);
+							//Geometry = new Sphere();
+							Spatial actorModel = assetmanager.loadModel("Models/Dwarf/Dwarf.j3o");
+							actorModel.scale(0.25f, 0.25f, 0.25f);
+							actorModel.rotate(1.5f, 0.0f, 0.0f);
 
-						actorNode = new Node("ActorNode-" + target.getID());
-						actorNode.attachChild(actorModel);
-						ActorNodeMap.put(new Integer(target.getID()), actorNode);
-					}
+							actorNode = new Node("ActorNode-" + target.getID());
+							actorNode.attachChild(actorModel);
+							ActorNodeMap.put(new Integer(target.getID()), actorNode);
+						}
 
-					actorNode.setCullHint(Spatial.CullHint.Dynamic);
-					MapCoordinate coords = target.getLocation();
-					MapRenderer Renderer = state.getState(MapRenderer.class);
+						actorNode.setCullHint(Spatial.CullHint.Dynamic);
+						MapCoordinate coords = target.getLocation();
+						MapRenderer Renderer = state.getState(MapRenderer.class);
 
-					Node zNode;
-					if (map.isBlockSunLit(coords)) {
-						zNode = Renderer.getZNodeLight(coords.Chunk.Z);
-					} else {
-						zNode = Renderer.getZNodeDark(coords.Chunk.Z);
-					}
+						Node zNode;
+						if (map.isBlockSunLit(coords)) {
+							zNode = Renderer.getZNodeLight(coords.Chunk.Z);
+						} else {
+							zNode = Renderer.getZNodeDark(coords.Chunk.Z);
+						}
 
-					zNode.attachChild(actorNode);
+						zNode.attachChild(actorNode);
 
-					if (target instanceof Pawn) {
-						MovePawn((Pawn) target, CurrentTick);
-					} else {
-						actorNode.setLocalTranslation(coords.getX(), coords.getY(), coords.getZ());
+						if (target instanceof Pawn) {
+							MovePawn((Pawn) target, CurrentTick);
+						} else {
+							actorNode.setLocalTranslation(coords.getX(), coords.getY(), coords.getZ());
+						}
 					}
 				}
 			}

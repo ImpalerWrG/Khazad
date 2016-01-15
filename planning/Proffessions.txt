@@ -126,6 +126,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 	<Warrior [STR][LOG] - Balanced (round shield, )>
 		???
 		???
+		Flail - imune to flanking?
 		Housecarl - 2 handed Ax
 		IronBreakers - 2 handed Hammer
 		WurmHunter - specialized in killing mega beasts
@@ -135,6 +136,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Outrider - scouting skirmishing
 		Messenger - fast travel, diplomatic send new commands to expeditions/armies
 		Hussar - Heavy armoured
+		Cossack - live off the land raiders?
 		???
 	</>
 	<Marksman-Missilier [DEX][PER] - Ranged attack >
@@ -144,21 +146,21 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Musketeer - Musket
 		Quarreller - Crossbow
 		Bombardier - siege weapons?
-	</>	
-	<Defender [END][WIL] - Defensive formation fighting>
-		Pike Guard - Swiss style pike/polearm infantry, formation fighters
+	</>
+	<Defender [END][WIL] - Defensive formation fighting (armor?)>
+		Pike Guard - Swiss style pike/pole-arm infantry, formation fighters, no shields
 		Sentinel - guards locations?
-		???
-		Legionnaire - Romanesque towershild and short sword, very heavy armor 
+		Immortal - Heaviest plate armour, no shield, 2 handed hammer, slow moving
+		Legionnaire - Romanesque tower-shield and short sword, heavy armour 
 		HighLander - mountain defensive, better climb mobility, high ground defence by avalanche and rock throwing
-	</>	
+	</>
 	<Guard (Captain of the Guard) [INT][CHA] - Police (Cudgle, KeyChain)>
 		Royal Guard [WIL][SPD] - Guards royalty
 		Constable [FLX][END] - Street cop,
 		Detective [LOG][JDG] - solves crimes
 		Jailer [STR][DEX] - watches dungeons, reduced unhappiness from interacting with prisoners
 		GateKeeper [PER][MEM] - open and close city gates
-	</>	
+	</>
 </>
 <Crafter (GuildMaster) [JDG][DEX] - Creates items of value at end of resource chains, most happiness sources (ToolBelt?, )>
 
@@ -166,7 +168,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Glass-blower
 		Gem Cutter
 		Coin Minter
-	</>		
+	</>
 	<Smith>
 		Weaponer
 		Armorer
@@ -176,7 +178,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 				WhiteSmith
 				BrightSmith
 		Smelter?
-	</>		
+	</>
 	<Clothier>
 		Weaver
 		Spinner

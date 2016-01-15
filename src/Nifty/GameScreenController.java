@@ -92,9 +92,6 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 		Game game = Main.app.getStateManager().getState(Game.class);
 		game.setGameScreenController(this);
 		timeLabel.setText(game.getTimeString());
-
-		GameCameraState Cam = Main.app.getStateManager().getState(GameCameraState.class);
-		Cam.pointCameraAt(game.getMap().getMapCenter());
 	}
 
 	public void onAction(String name, boolean keyPressed, float tpf) {

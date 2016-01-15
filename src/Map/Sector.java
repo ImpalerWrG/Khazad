@@ -46,10 +46,10 @@ public class Sector implements Serializable {
 
 	int HighestChunkZ = -100000000;
 	int LowestChunkZ = 10000000;
-	int WestestChunk = 10000000;
-	int EastestChunk = -100000000;
-	int NorthestChunk = -100000000;
-	int SouthestChunk = 10000000;
+	public int WestestChunk = 10000000;
+	public int EastestChunk = -100000000;
+	public int NorthestChunk = -100000000;
+	public int SouthestChunk = 10000000;
 
 	int Seed;
 	Dice ExcavateDice = new Dice();

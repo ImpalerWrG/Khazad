@@ -117,39 +117,43 @@ public class TerrainRenderer extends AbstractAppState {
 	}
 
 	public void SwapFrustrumChunks() {
-		GameMap map = this.game.getMap();
-		for (Sector targetSector : map.getSectorCollection()) {
-			
-			// DO bounding box test on whole sector
-			Collection<Chunk> cells = targetSector.getChunkCollection();
+		if (this.game != null) {
+			GameMap map = this.game.getMap();
+			if (map != null) {
+				for (Sector targetSector : map.getSectorCollection()) {
 
-			BoundingBox ChunkBox = new BoundingBox();
-			ChunkBox.setXExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
-			ChunkBox.setYExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
-			ChunkBox.setZExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
-			ChunkBox.setCheckPlane(0);
+					// DO bounding box test on whole sector
+					Collection<Chunk> cells = targetSector.getChunkCollection();
 
-			this.CameraState = state.getState(GameCameraState.class);
+					BoundingBox ChunkBox = new BoundingBox();
+					ChunkBox.setXExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
+					ChunkBox.setYExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
+					ChunkBox.setZExtent(BlockCoordinate.CHUNK_EDGE_SIZE);
+					ChunkBox.setCheckPlane(0);
 
-			// Add Chunks newly entering the Frustrum
-			for (Chunk targetChunk : cells) {
-				ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
-				Vector3f Center = Coords.getVector();
-				ChunkBox.setCenter(Center);
-				if (this.CameraState.contains(ChunkBox)) {
-					if (targetChunk.isTerrainRenderingDirty()) {
-						queueChunkBuild(targetChunk, this.LevelofDetail);
+					this.CameraState = state.getState(GameCameraState.class);
+
+					// Add Chunks newly entering the Frustrum
+					for (Chunk targetChunk : cells) {
+						ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
+						Vector3f Center = Coords.getVector();
+						ChunkBox.setCenter(Center);
+						if (this.CameraState.contains(ChunkBox)) {
+							if (targetChunk.isTerrainRenderingDirty()) {
+								queueChunkBuild(targetChunk, this.LevelofDetail);
+							}
+						}
 					}
-				}
-			}
 
-			// Remove Chunks nolonger in the Frustrum
-			for (Chunk targetChunk : MeshedChunks.values()) {
-				ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
-				Vector3f Center = Coords.getVector();
-				ChunkBox.setCenter(Center);
-				if (this.CameraState.contains(ChunkBox) == false) {
-					queueChunkDestroy(targetChunk, this.LevelofDetail);
+					// Remove Chunks nolonger in the Frustrum
+					for (Chunk targetChunk : MeshedChunks.values()) {
+						ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
+						Vector3f Center = Coords.getVector();
+						ChunkBox.setCenter(Center);
+						if (this.CameraState.contains(ChunkBox) == false) {
+							queueChunkDestroy(targetChunk, this.LevelofDetail);
+						}
+					}
 				}
 			}
 		}
@@ -261,7 +265,7 @@ public class TerrainRenderer extends AbstractAppState {
 	public void update(float tpf) {
 		if (this.game != null) {
 			GameMap map = this.game.getMap();
-			if (TerrainRenderingToggle) {
+			if (map != null && TerrainRenderingToggle) {
 				for (Sector targetSector : map.getSectorCollection()) {
 					rebuildDirtyChunks(targetSector.getChunkCollection());
 				}

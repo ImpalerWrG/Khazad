@@ -93,8 +93,10 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 
 	HashMap<Integer, Actor> Actors;
 	int ActorIDcounter = 0;
+
 	transient ExecutorService Executor;
 	transient Future lastUpdate;
+
 	private transient String kingdomName;
 	private transient String saveGameFileName;
 	private transient GameScreenController gameScreenController;
@@ -124,75 +126,6 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 		Executor = core.getThreadPool();
 
 		registerWithInput(app.getInputManager());
-	}
-
-	public boolean initializeGame(short X, short Y, String SeedString, String kingdomName) {
-		MasterSeed = SeedString.hashCode();
-		this.setKingdomName(kingdomName);
-		setSaveGameFileName(null);
-		PawnDice.seed(MasterSeed);
-
-		MapGeology = new Geology();
-		MapGeology.initialize(MasterSeed);
-
-		MainMap = new GameMap(MasterSeed);
-
-		GameWeather = new Weather();
-		addTemporal(GameWeather);
-
-		buildMapChunks((short) 0, (short) 0, (byte) X, (byte) Y);
-
-		GameSettlement = new Settlement();
-		Actors = new HashMap<Integer, Actor>();
-
-		return true;
-	}
-
-	boolean buildMapChunks(short X, short Y, byte Width, byte Height) {
-		short SizeX = (short) (X + Width);
-		short SizeY = (short) (Y + Height);
-		MapCoordinate targetCoordinates = new MapCoordinate();
-
-		// Create and add Chunks with shape and material data
-		for (int x = X; x < SizeX; x++) {
-			for (int y = Y; y < SizeY; y++) {
-				targetCoordinates.Chunk.X = (short) x;
-				targetCoordinates.Chunk.Y = (short) y;
-				MapGeology.generateChunk(targetCoordinates);
-
-				int zBottom, zTop;
-				if ((MapGeology.getChunkBottomZLevel() - 2) < 0) {
-					zBottom = ((MapGeology.getChunkBottomZLevel() - 2) / BlockCoordinate.CHUNK_EDGE_SIZE) - 1;
-				} else { 
-					zBottom = ((MapGeology.getChunkBottomZLevel() - 2) / BlockCoordinate.CHUNK_EDGE_SIZE);
-				}
-				if ((MapGeology.getChunkTopZLevel() + 2) < 0) {
-					zTop = ((MapGeology.getChunkTopZLevel() + 2) / BlockCoordinate.CHUNK_EDGE_SIZE) - 1;
-				} else { 
-					zTop = ((MapGeology.getChunkTopZLevel() + 2) / BlockCoordinate.CHUNK_EDGE_SIZE);
-				}
-
-				Sector targetSector = MainMap.getSector(new SectorCoordinate((byte)0, (byte)0));
-				for (int z = zBottom; z <= zTop; z++) {
-					ChunkCoordinate TargetChunkCoordinates = new ChunkCoordinate(x, y, z);
-					Chunk targetChunk = targetSector.getChunk(TargetChunkCoordinates);
-					MapGeology.loadChunkData(targetChunk);
-				}
-			}
-		}
-
-		MainMap.generateFirstLight();
-
-		for (Sector targetSector : MainMap.getSectorCollection()) {
-			for (Chunk TargetChunk : targetSector.getChunkCollection()) {
-				for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i++) {
-					TargetChunk.buildFaces(i);
-				}
-				TargetChunk.growGrass();
-			}
-		}
-
-		return true;
 	}
 
 	public Pawn spawnPawn(MapCoordinate SpawnCoordinates, short CreatureTypeID) {

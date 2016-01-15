@@ -95,7 +95,29 @@ public class GameMap implements Serializable {
 	}
 
 	public MapCoordinate getMapCenter() {
-		return new MapCoordinate();
+		int Eastest = -100000;
+		int Northest = -100000;
+		int Westest = 100000;
+		int Southest = 100000;
+
+		for (Sector sector : Sectors.values()) {
+			if (sector.EastestChunk > Eastest)
+				Eastest = sector.EastestChunk;
+			if (sector.WestestChunk < Westest)
+				Westest = sector.WestestChunk;
+			if (sector.SouthestChunk < Southest)
+				Southest = sector.SouthestChunk;
+			if (sector.NorthestChunk > Northest)
+				Northest = sector.NorthestChunk;
+		}
+
+		int X = (Eastest - Westest) / 2;
+		int Y = (Northest - Southest) / 2;
+
+		byte size = BlockCoordinate.CHUNK_EDGE_SIZE / 2;
+		BlockCoordinate block = new BlockCoordinate();
+		block.set(size, size, size);
+		return new MapCoordinate(new ChunkCoordinate(X, Y, 0), block);
 	}
 
 	public int getHighestFace() {

@@ -86,14 +86,14 @@ public class MapRenderer extends AbstractAppState {
 	public void initialize(AppStateManager stateManager, Application app) {
 		super.initialize(stateManager, app);
 		this.app = (SimpleApplication) app;
+		this.app.getRootNode().attachChild(MapNode);
+
 		this.state = stateManager;
 		this.assetmanager = app.getAssetManager();
 	}
 
 	public void attachToGame(Game TargetGame) {
-		//this.game = TargetGame;
 		this.MapNode = new Node("MapNode");
-		this.app.getRootNode().attachChild(MapNode);
 
 		darkterrainNode = new Node("DarkTerrainNode");
 		sunnyterrainNode = new Node("SunnyTerrainNode");
