@@ -62,12 +62,15 @@ public class TerrainRenderer extends AbstractAppState {
 	private boolean TerrainRenderingToggle = true;
 	Spatial.CullHint TerrainHint = Spatial.CullHint.Never;
 	ExecutorService Executor;
-	ConcurrentHashMap<ChunkCoordinate, Chunk> MeshedChunks;
+	ConcurrentHashMap<ChunkCoordinate, Chunk>[] MeshedChunks;
 
 	public TerrainRenderer(ExecutorService Threadpool) {
 		Executor = Threadpool;
 		builder = new TileBuilder();
-		MeshedChunks = new ConcurrentHashMap<ChunkCoordinate, Chunk>();
+		MeshedChunks = (ConcurrentHashMap<ChunkCoordinate, Chunk>[]) new ConcurrentHashMap<?, ?>[BlockCoordinate.CHUNK_DETAIL_LEVELS];
+		for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i++) {
+			MeshedChunks[i] = new ConcurrentHashMap<ChunkCoordinate, Chunk>();
+		}
 	}
 
 	@Override
@@ -86,7 +89,7 @@ public class TerrainRenderer extends AbstractAppState {
 		MapRenderer Renderer = state.getState(MapRenderer.class);
 		ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
 
-		MeshedChunks.put(Coords, targetChunk);
+		MeshedChunks[DetailLevel].put(Coords, targetChunk);
 		TerrainBuilder Builder = new TerrainBuilder(app, targetChunk, builder, DetailLevel);
 
 		Builder.setNodes(Renderer.getChunkNodeLight(Coords), Renderer.getChunkNodeDark(Coords));
@@ -100,7 +103,7 @@ public class TerrainRenderer extends AbstractAppState {
 		MapRenderer Renderer = state.getState(MapRenderer.class);
 		ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
 
-		MeshedChunks.remove(Coords);
+		MeshedChunks[DetailLevel].remove(Coords);
 		TerrainDestroyer Destroyer = new TerrainDestroyer(app, targetChunk, DetailLevel);
 
 		Destroyer.setNodes(Renderer.getChunkNodeLight(Coords), Renderer.getChunkNodeDark(Coords));
@@ -110,7 +113,7 @@ public class TerrainRenderer extends AbstractAppState {
 	}
 
 	public void rebuildDirtyChunks(Collection<Chunk> cells) {
-		for (Chunk targetChunk : MeshedChunks.values()) {
+		for (Chunk targetChunk : MeshedChunks[this.LevelofDetail].values()) {
 			if (targetChunk.isTerrainRenderingDirty())
 				queueChunkBuild(targetChunk, this.LevelofDetail);
 		}
@@ -133,25 +136,25 @@ public class TerrainRenderer extends AbstractAppState {
 
 					this.CameraState = state.getState(GameCameraState.class);
 
+					// Remove Chunks nolonger in the Frustrum
+					for (Chunk targetChunk : MeshedChunks[this.LevelofDetail].values()) {
+						ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
+						Vector3f Center = Coords.getVector();
+						ChunkBox.setCenter(Center);
+						if (this.CameraState.contains(ChunkBox) == false) {
+							queueChunkDestroy(targetChunk, this.LevelofDetail);
+						}
+					}
+
 					// Add Chunks newly entering the Frustrum
 					for (Chunk targetChunk : cells) {
 						ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
 						Vector3f Center = Coords.getVector();
 						ChunkBox.setCenter(Center);
 						if (this.CameraState.contains(ChunkBox)) {
-							if (targetChunk.isTerrainRenderingDirty()) {
+							if (!MeshedChunks[this.LevelofDetail].contains(targetChunk)) {
 								queueChunkBuild(targetChunk, this.LevelofDetail);
 							}
-						}
-					}
-
-					// Remove Chunks nolonger in the Frustrum
-					for (Chunk targetChunk : MeshedChunks.values()) {
-						ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
-						Vector3f Center = Coords.getVector();
-						ChunkBox.setCenter(Center);
-						if (this.CameraState.contains(ChunkBox) == false) {
-							queueChunkDestroy(targetChunk, this.LevelofDetail);
 						}
 					}
 				}

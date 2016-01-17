@@ -72,22 +72,22 @@ public class FaceCoordinate extends BlockCoordinate implements Serializable {
 
 	@Override
 	public boolean equals(Object ArgumentCoordinates) {
+		/*
 		if (ArgumentCoordinates == null)
 			return false;
 		if (ArgumentCoordinates == this)
 			return true;
 		if (!(ArgumentCoordinates instanceof FaceCoordinate))
-			return false;
+			return false;*/
 
 		FaceCoordinate Arg = (FaceCoordinate) ArgumentCoordinates;
-
 		return (Arg.DetailLevel == this.DetailLevel && Arg.Data == this.Data && Arg.FaceDirection == this.FaceDirection);
 	}
 
 	@Override
 	public int hashCode() {
 		int Key = Data;
-		Key <<= 10;
+		Key <<= 8;
 		Key += FaceDirection;
 
 		return Key;

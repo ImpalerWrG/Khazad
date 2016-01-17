@@ -98,7 +98,8 @@ public class KhazadGrid implements GridInterface, Serializable {
 		}
 
 		void setBlockDirections(BlockCoordinate Block, int ArgumentSet) {
-			DirectionHashMap.put(Block.getBlockIndex(), ArgumentSet);
+			if (ArgumentSet != 0)
+				DirectionHashMap.put(Block.getBlockIndex(), ArgumentSet);
 		}
 
 		ChunkCoordinate getChunkCoordinates() {
@@ -165,7 +166,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 					TestCoordinates.setBlockCoordinate(Index);
 					int Flags = getDirectionEdgeSet(TestCoordinates);
 
-					if (Flags == 0) {
+					if (Flags != 0) {
 						if (TargetChunk.getConnectivityZone(Index) == 0) { // Start a new zone if not connected to another zone
 							ZoneCounter++; // First zone will be 1, 0 will indicate un-ititialized
 							TargetChunk.setConnectivityZone(Index, ZoneCounter);

@@ -71,7 +71,7 @@ public class SetupScreenController implements ScreenController {
 				return;
 			}
 			String Seed = nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).getDisplayedText();
-			Main.createGame((short) 10, (short) 10, Seed, kingdomName);
+			Main.createGame((short) 16, (short) 16, Seed, kingdomName);
 
 		} catch (Exception e) {
 			e.printStackTrace();

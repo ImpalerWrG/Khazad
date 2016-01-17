@@ -53,10 +53,8 @@ public class TerrainDestroyer implements Callable<Void>{
 	public Void call() {
 			app.enqueue(new Callable() {
 			public Object call() throws Exception {
-				for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i ++) {
-					ChunkLight.detachChildNamed("LightGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + i);
-					ChunkDark.detachChildNamed("DarkGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + i);
-				}
+				ChunkLight.detachChildNamed("LightGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + DetailLevel);
+				ChunkDark.detachChildNamed("DarkGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + DetailLevel);
 				return null;
 			}
 		});
