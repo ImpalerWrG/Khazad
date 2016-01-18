@@ -98,7 +98,7 @@ public class MapGenerator implements Callable<Object>{
 			game.SpawnCitizen(DwarfID, Pather.Tester.getRandomPassableCoordinate());
 		}
 
-		Main.attachRenderers();
+		Main.attachRenderers(game);
 		GUI nifty = app.getStateManager().getState(GUI.class);
 		nifty.gotoScreen("GameScreen");
 

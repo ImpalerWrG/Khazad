@@ -31,6 +31,7 @@ import Sound.Music;
 import Data.DataManager;
 import Game.Game;
 import Game.MapGenerator;
+import Game.GameLoader;
 import Interface.GameCameraState;
 
 import java.io.File;
@@ -50,6 +51,7 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import de.lessvoid.nifty.screen.ScreenController;
+import java.io.ObjectInputStream;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -122,14 +124,12 @@ public class Main extends SimpleApplication {
 		this.stateManager.attach(new GUI(this));
 	}
 
-	public static void attachRenderers() {
+	public static void attachRenderers(Game game) {
 		try {
 			MapRenderer mapRender = new MapRenderer(pool);
 			TerrainRenderer terrainRender = new TerrainRenderer(pool);
 			PathingRenderer pathRender = new PathingRenderer();
 			GameCameraState IsoCamera = new GameCameraState();
-
-			Game game = app.getStateManager().getState(Game.class);
 
 			mapRender.attachToGame(game);
 			terrainRender.attachToGame(game);
@@ -145,7 +145,7 @@ public class Main extends SimpleApplication {
 			app.stateManager.attach(new SelectionRenderer());
 
 			IsoCamera.setSlice(15, -15, false);
-			IsoCamera.pointCameraAt(game.getMap().getMapCenter());
+			//IsoCamera.pointCameraAt(game.getMap().getMapCenter());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -254,7 +254,7 @@ public class Main extends SimpleApplication {
 		inputManager.addMapping("IncreeseDetailLevel", new KeyTrigger(KeyInput.KEY_U));	
 	}
 
-	public static void createGame(short x, short y, String Seed, String Name) {
+	public static Game createGame(short x, short y, String Seed, String Name) {
 		setProgress(0.1f, "Begining Map Generation");
 		Game game = new Game();
 		app.getStateManager().attach(game);
@@ -264,6 +264,29 @@ public class Main extends SimpleApplication {
 		gen.setParameters(x, y, Seed, Name);
 
 		pool.submit(gen);
+		return game;
+	}
+
+	public static Game loadGame(ObjectInputStream ois) {
+		try { // now read the save file stream
+			Game game = new Game();
+
+			GameLoader loader = new GameLoader();
+			loader.setParameters(ois, game);
+			pool.submit(loader);
+			return game;
+
+		} catch (Exception e) {
+			// TODO show a better message to the user
+			showErrorPopup("Problem loading game", e.toString());
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static void showErrorPopup(String Title, String Message) {
+		GUI mainGui = app.getStateManager().getState(GUI.class);
+		ErrorPopupController.ShowErrorMessage(mainGui.getNifty(), Title, Message);
 	}
 
 	public static void setProgress(final float progress, final String loadingText) {

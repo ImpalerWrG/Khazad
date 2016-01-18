@@ -69,4 +69,8 @@ public class GUI extends AbstractAppState {
 	public void gotoScreen(String Screen) {
 		nifty.gotoScreen(Screen);
 	}
+
+	public Nifty getNifty() {
+		return nifty;
+	}
 }

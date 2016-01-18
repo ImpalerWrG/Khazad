@@ -59,8 +59,7 @@ public class ErrorPopupController implements Controller {
 		nifty.closePopup(popup.getId());
 	}
 	
-	public static void ShowErrorMessage(Nifty nifty, String title, String message)
-	{
+	public static void ShowErrorMessage(Nifty nifty, String title, String message) {
 		Element popup = nifty.createPopup("ErrorPopup");
 		Label errorTitleLabel = popup.findNiftyControl("ErrorTitleLabel", Label.class);
 		if (errorTitleLabel != null) {

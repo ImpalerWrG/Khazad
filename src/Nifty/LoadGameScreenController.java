@@ -192,59 +192,27 @@ public class LoadGameScreenController implements ScreenController {
 				refreshSaveGameList();
 				return;
 			}
-
-			// now read the save file
 			ois = new ObjectInputStream(new FileInputStream(saveFile));
+	
 			// first thing should always be the version number, so that we can give helpful error messages.
 			SaveGameHeader saveGameHeader = (SaveGameHeader) ois.readObject();
 			if (!saveGameHeader.version.equals(Game.version)) {
 				// TODO it might still be possible to load these saves
-				ErrorPopupController.ShowErrorMessage(nifty, "Problem loading game",
-						"Game save is version " + saveGameHeader.version + ", current game version is " + Game.version + "." + System.lineSeparator()
-						+ System.lineSeparator()
-						+ "Unfortunately game saves from version " + saveGameHeader.version + " are no longer supported, please start a new game.");
+				ErrorPopupController.ShowErrorMessage(nifty, "Problem loading game", "Game save is version " + saveGameHeader.version + ", current game version is " + Game.version + "." + System.lineSeparator() + System.lineSeparator() + "Unfortunately game saves from version " + saveGameHeader.version + " are no longer supported, please start a new game.");
 				return;
 			}
-			Game game = (Game) ois.readObject();
+
+			Game game = Main.loadGame(ois);
 			// copy a few things from the header into the game (since we don't keep the header)
 			game.setKingdomName(saveGameHeader.kingdomName);
 			game.setSaveGameFileName(SelectedSaveGameHeader.fileName);
-			nifty.gotoScreen("GameScreen");
 
-			// initialize the game
-			Main.app.getStateManager().attach(game);
-			Main.app.getStateManager().getState(MapRenderer.class).attachToGame(game);
-			Main.app.getStateManager().getState(TerrainRenderer.class).attachToGame(game);
-			Main.app.getStateManager().attach(new SelectionRenderer());
-			Main.app.getStateManager().getState(PathingRenderer.class).attachToGame(game);
+			nifty.gotoScreen("ProgressBarScreen");
 
-			GameCameraState cam = new GameCameraState();
-
-			Main.app.getStateManager().attach(cam);
-			cam.setSlice(10, -10, false);
-
-			JobManager jobs = game.getSettlement().getJobManager();
-			// PATHING
-			PathManager Pather = PathManager.getSingleton();
-
-			Pather.initialize(Main.app.getStateManager(), Main.app);
-			Pather.createMapAbstraction(game.getMap());
-			//Pather.AllocateThreadPool(ExecutionThreadpool);
-			Main.app.getStateManager().attach(Pather);
 		} catch (Exception e) {
 			// TODO show a better message to the user
 			ErrorPopupController.ShowErrorMessage(nifty, "Problem loading game", e.toString());
 			e.printStackTrace();
-		} finally {
-			try {
-				if (ois != null) {
-					ois.close();
-				}
-			} catch (IOException e) {
-				// TODO show a better message to the user
-				ErrorPopupController.ShowErrorMessage(nifty, "Problem loading game", e.toString());
-				e.printStackTrace();
-			}
 		}
 	}
 }
