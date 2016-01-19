@@ -47,6 +47,10 @@ import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
 import com.jme3.animation.AnimEventListener;
 import com.jme3.animation.LoopMode;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.shape.Sphere;
 
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -84,7 +88,26 @@ public class ActorRenderer extends AbstractAppState {
 
 		OffsetVector = new Vector3f();
 		DirectionVector = new Vector3f();
-		//registerWithInput(app.getInputManager());
+	}
+
+	private Node getModel(Actor actor) {
+		Sphere eye = new Sphere(10, 10, 0.1f);
+		Geometry EyeBall = new Geometry("EyeBall", eye);
+		EyeBall.setLocalTranslation(new Vector3f(0, 0, 0));
+		Material mat1 = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+		mat1.setColor("Color", ColorRGBA.Red);
+		EyeBall.setMaterial(mat1);
+
+		Spatial actorModel = EyeBall;
+		//Spatial actorModel = assetmanager.loadModel("Models/Dwarf/Dwarf.j3o");
+		//actorModel.scale(0.25f, 0.25f, 0.25f);
+		//actorModel.rotate(1.5f, 0.0f, 0.0f);
+
+		Node actorNode = new Node("ActorNode-" + actor.getID());
+		actorNode.attachChild(actorModel);
+		ActorNodeMap.put(new Integer(actor.getID()), actorNode);
+
+		return actorNode;
 	}
 
 	public void populateActors() {
@@ -100,15 +123,7 @@ public class ActorRenderer extends AbstractAppState {
 					if (target.isDirty()) {
 						Node actorNode = ActorNodeMap.get(target.getID());
 						if (actorNode == null) {
-
-							//Geometry = new Sphere();
-							Spatial actorModel = assetmanager.loadModel("Models/Dwarf/Dwarf.j3o");
-							actorModel.scale(0.25f, 0.25f, 0.25f);
-							actorModel.rotate(1.5f, 0.0f, 0.0f);
-
-							actorNode = new Node("ActorNode-" + target.getID());
-							actorNode.attachChild(actorModel);
-							ActorNodeMap.put(new Integer(target.getID()), actorNode);
+							actorNode = getModel(target);
 						}
 
 						actorNode.setCullHint(Spatial.CullHint.Dynamic);
@@ -195,7 +210,6 @@ public class ActorRenderer extends AbstractAppState {
 	public void update(float tpf) {
 		Game game = state.getState(Game.class);
 		if (game != null) {
-			GameMap map = game.getMap();
 			GameCameraState cam = state.getState(GameCameraState.class);
 			if (cam != null) {
 				if ((game.getTickRate() <= 256 || game.isPaused()) && cam.getZoom() < 200) {

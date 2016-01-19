@@ -23,12 +23,12 @@ import java.util.concurrent.Callable;
  * @author Impaler
  */
 public class MapGenerator implements Callable<Object>{
-	
+
 	Game game;
 	short X, Y;
 	String Name;
 	int MasterSeed;
-	
+
 	public void setGame(Game game) {
 		this.game = game;
 	}
@@ -53,13 +53,22 @@ public class MapGenerator implements Callable<Object>{
 		game.GameWeather = new Weather();
 		game.addTemporal(game.GameWeather);
 
-		short Xorigin = 0;
-		short Yorigin = 0;
+		MapCoordinate SettlmentHeart = new MapCoordinate();
+		SettlmentHeart.Chunk.X = ChunkCoordinate.SECTOR_EDGE_SIZE / 2;
+		SettlmentHeart.Chunk.Y = ChunkCoordinate.SECTOR_EDGE_SIZE / 2;
+		SettlmentHeart.Chunk.Z = 2; //ChunkCoordinate.SECTOR_EDGE_SIZE / 2;
+		SettlmentHeart.Block.set(BlockCoordinate.CHUNK_EDGE_SIZE / 2, BlockCoordinate.CHUNK_EDGE_SIZE / 2, BlockCoordinate.CHUNK_EDGE_SIZE / 2);
+		game.GameSettlement = new Settlement(SettlmentHeart);
+
+		short Xorigin = (short) (SettlmentHeart.Chunk.X - (X / 2));
+		short Yorigin = (short) (SettlmentHeart.Chunk.Y - (Y / 2));
+		short Xend = (short) (SettlmentHeart.Chunk.X + (X / 2));
+		short Yend = (short) (SettlmentHeart.Chunk.Y + (Y / 2));
 
 		setProgress(.1f, "Building Chunk Geology");
-		for (short x = Xorigin; x < Xorigin + X; x++) {
-			for (short y = Yorigin; y < Yorigin + Y; y++) {
-				buildMapChunk(x, y);
+		for (short x = Xorigin; x < Xend; x++) {
+			for (short y = Yorigin; y < Yend; y++) {
+				buildMapChunk(x, y, SettlmentHeart.getZ());
 			}
 		}
 
@@ -82,7 +91,6 @@ public class MapGenerator implements Callable<Object>{
 			}
 		}
 
-		game.GameSettlement = new Settlement();
 		game.Actors = new HashMap<Integer, Actor>();
 
 		// PATHING
@@ -105,25 +113,16 @@ public class MapGenerator implements Callable<Object>{
 		return null;
 	}
 
-	private boolean buildMapChunk(short x, short y) {
+	private boolean buildMapChunk(short x, short y, int baseHeight) {
 		MapCoordinate targetCoordinates = new MapCoordinate();
 		// Create and add Chunks with shape and material data
 
 		targetCoordinates.Chunk.X = (short) x;
 		targetCoordinates.Chunk.Y = (short) y;
-		game.MapGeology.generateChunk(targetCoordinates);
+		game.MapGeology.generateChunk(targetCoordinates, baseHeight);
 
-		int zBottom, zTop;
-		if ((game.MapGeology.getChunkBottomZLevel() - 2) < 0) {
-			zBottom = ((game.MapGeology.getChunkBottomZLevel() - 2) / BlockCoordinate.CHUNK_EDGE_SIZE) - 1;
-		} else { 
-			zBottom = ((game.MapGeology.getChunkBottomZLevel() - 2) / BlockCoordinate.CHUNK_EDGE_SIZE);
-		}
-		if ((game.MapGeology.getChunkTopZLevel() + 2) < 0) {
-			zTop = ((game.MapGeology.getChunkTopZLevel() + 2) / BlockCoordinate.CHUNK_EDGE_SIZE) - 1;
-		} else { 
-			zTop = ((game.MapGeology.getChunkTopZLevel() + 2) / BlockCoordinate.CHUNK_EDGE_SIZE);
-		}
+		int zTop = game.MapGeology.getChunkTopZLevel() / BlockCoordinate.CHUNK_EDGE_SIZE;
+		int zBottom = game.MapGeology.getChunkBottomZLevel() / BlockCoordinate.CHUNK_EDGE_SIZE;
 
 		Sector targetSector = game.MainMap.getSector(new SectorCoordinate((byte)0, (byte)0));
 		for (int z = zBottom; z <= zTop; z++) {

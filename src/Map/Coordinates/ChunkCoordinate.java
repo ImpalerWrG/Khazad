@@ -21,14 +21,15 @@ import com.jme3.math.Vector3f;
 import java.io.Serializable;
 
 /**
- * Used to refrence Cells in HashMaps by relative position, X and Y values are 16
- * times the true Map Coordinate, Z values are equal.
+ * Used to refrence Chunk within a Sector
  *
  * @author Impaler
  */
 public class ChunkCoordinate implements Serializable {
 
+
 	private static final long serialVersionUID = 1;
+	public static final short SECTOR_EDGE_SIZE = 512;
 	public short X, Y, Z;
 
 	public ChunkCoordinate() {
@@ -86,14 +87,14 @@ public class ChunkCoordinate implements Serializable {
 		float y = (float) (Y * BlockCoordinate.CHUNK_EDGE_SIZE);
 		float z = (float) (Z * BlockCoordinate.CHUNK_EDGE_SIZE);
 
-		if(x < 0)
-			x++;
-		if(y < 0)
-			y++;
-		if(z < 0)
-			z++;
-
 		return new Vector3f(x, y, z);
+	}
+
+	public Vector3f getXYVector() {
+		float x = (float) (X * BlockCoordinate.CHUNK_EDGE_SIZE);
+		float y = (float) (Y * BlockCoordinate.CHUNK_EDGE_SIZE);
+
+		return new Vector3f(x, y, 0);
 	}
 
 	@Override

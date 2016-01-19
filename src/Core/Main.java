@@ -145,7 +145,7 @@ public class Main extends SimpleApplication {
 			app.stateManager.attach(new SelectionRenderer());
 
 			IsoCamera.setSlice(15, -15, false);
-			//IsoCamera.pointCameraAt(game.getMap().getMapCenter());
+			IsoCamera.pointCameraAt(game.GameSettlement.getLocation());
 
 		} catch (Exception e) {
 			e.printStackTrace();

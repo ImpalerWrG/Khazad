@@ -71,5 +71,13 @@ public abstract class Temporal implements Comparable, Serializable {
 		}
 	}
 
-	abstract long wake(long CurrentTick);
+	final long wake(long CurrentTick) {
+		if (WakeTick > CurrentTick) {
+			return WakeTick;
+		} else {
+			return wakeChild(CurrentTick);
+		}
+	}
+
+	abstract long wakeChild(long CurrentTick);
 }

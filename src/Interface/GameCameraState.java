@@ -99,6 +99,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	private float XChange;
 	private float YChange;
 	private Plane SelectionPlane = null;
+	private MapCoordinate QueuedLookLocation = new MapCoordinate();
 	private MapCoordinate MouseLocation = new MapCoordinate();
 	public MapCoordinate SelectionOrigin = new MapCoordinate();
 	public MapCoordinate SelectionTerminus = new MapCoordinate();
@@ -588,6 +589,21 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 
 	@Override
 	public void update(float tpf) {
+		if (QueuedLookLocation != null) {
+			// change to the same Z level as the target
+			SliceTop = QueuedLookLocation.getZ();
+			SliceBottom = SliceTop - ViewLevels;
+			setSlice(SliceTop, SliceBottom, false);
+			// point camera at the target
+			Vector3f target = QueuedLookLocation.getVector();
+			MainCamera.pointCameraAt(target);
+			QueuedLookLocation = null;
+
+			TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
+			if (Terrain != null)
+				Terrain.SwapFrustrumChunks();
+		}
+
 		if (RightwardPaning) {
 			MainCamera.translateCamera(createTranslationVector(PanningSpeed, 0));
 			TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
@@ -633,16 +649,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	}
 
 	public void pointCameraAt(MapCoordinate Coordinate) {
-		// change to the same Z level as the target
-		SliceTop = Coordinate.getZ();
-		SliceBottom = SliceTop - ViewLevels;
-		// point camera at the target
-		Vector3f target = Coordinate.getVector();
-		MainCamera.pointCameraAt(target);
-
-		TerrainRenderer Terrain = state.getState(TerrainRenderer.class);
-		if (Terrain != null)
-			Terrain.SwapFrustrumChunks();
+		QueuedLookLocation = Coordinate.clone();
 	}
 
 	public boolean contains(BoundingBox box) {

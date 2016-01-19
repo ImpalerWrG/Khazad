@@ -59,7 +59,7 @@ public class Weather extends Temporal implements Serializable {
 		TerrainNode.addLight(Sun);
 	}
 
-	public long wake(long CurrentTick) {
+	public long wakeChild(long CurrentTick) {
 		if (CurrentTick >= WakeTick) {
 			// Day Rotation
 			SunVec = Rotation.mult(SunVec);

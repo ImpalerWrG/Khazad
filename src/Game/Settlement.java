@@ -17,6 +17,7 @@
 
 package Game;
 
+import Map.Coordinates.MapCoordinate;
 import Job.JobManager;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,7 +35,10 @@ public class Settlement implements Serializable {
 	public ArrayList<Citizen> Citizens;
 	JobManager JobSystem;
 
-	public Settlement() {
+	private MapCoordinate Heart;
+
+	public Settlement(MapCoordinate Heart) {
+		this.Heart = Heart.clone();
 		Citizens = new ArrayList<Citizen>();
 		JobSystem = new JobManager();
 	}
@@ -46,5 +50,9 @@ public class Settlement implements Serializable {
 
 	public JobManager getJobManager() {
 		return JobSystem;
+	}
+
+	public MapCoordinate getLocation() {
+		return Heart;
 	}
 }

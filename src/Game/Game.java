@@ -14,8 +14,8 @@
 
  You should have received a copy of the GNU General Public License
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
-package Game;
 
+package Game;
 
 import Core.*;
 import Job.ExcavateJob;
@@ -43,12 +43,10 @@ import java.util.PriorityQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import java.lang.StringBuffer;
 
 /**
  * Game holds all the objects (Map, Settlment, Weather etc) which together make
- * up the simulation and is were saving and loading of game files is initiate
- * before being piped to the particular sub-objects. Game is also responsible
+ * up the simulation and is Serilized for creating Saves. Game is also responsible
  * for the simulation logic loop which is called by update each frame, a Ticker
  * instance is created and submitted to the thread pool to keep the core JME
  * thread fully devoted to rendering.
@@ -68,10 +66,10 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	public Settlement GameSettlement;
 	Weather GameWeather;
 
-	boolean Pause;
-	int TickRate;
+	boolean Pause = true;
+	int TickRate = 1;
 	long CurrentGameTick;
-	float TickRounding;
+	float TickRounding = 0;
 	Ticker simulation;
 
 	private float frameTimeAccululator;
@@ -104,12 +102,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	private StringBuffer GameClockStringBuffer;
 
 	public Game() {
-
-		TickRate = 1;
-		TickRounding = 0;
 		CurrentGameTick = Temporal.TICKS_PER_DAY / 2;
-		UniqueIDCounter = 0;
-		Pause = true;
 
 		TemporalQueue = new PriorityQueue<Temporal>();
 		FastTemporalMatrix = new Temporal[FastTickLimit][FastArrySize];
@@ -129,7 +122,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 	}
 
 	public Pawn spawnPawn(MapCoordinate SpawnCoordinates, short CreatureTypeID) {
-		Pawn NewPawn = new Pawn(CreatureTypeID, ActorIDcounter, MasterSeed, SpawnCoordinates);
+		Pawn NewPawn = new Pawn(CreatureTypeID, ActorIDcounter, MasterSeed, SpawnCoordinates, CurrentGameTick);
 		ActorIDcounter++;
 		Actors.put(NewPawn.getID(), NewPawn);
 		addTemporal(NewPawn);
@@ -138,7 +131,7 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 
 	public Citizen SpawnCitizen(short CreatureTypeID, MapCoordinate SpawnCoordinates) {
 		if (SpawnCoordinates != null) {
-			Citizen NewCitizen = new Citizen(CreatureTypeID, ActorIDcounter, PawnDice.roll(0, MasterSeed), SpawnCoordinates);
+			Citizen NewCitizen = new Citizen(CreatureTypeID, ActorIDcounter, PawnDice.roll(0, MasterSeed), SpawnCoordinates, CurrentGameTick);
 			ActorIDcounter++;
 			Actors.put(NewCitizen.getID(), NewCitizen);
 			GameSettlement.addCitizen(NewCitizen);

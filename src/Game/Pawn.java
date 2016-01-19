@@ -64,11 +64,13 @@ public class Pawn extends Actor implements Serializable {
 
 	private final int speedIndex = DataManager.getDataManager().getLabelIndex("BASIC_ATTRIBUTE_SPEED");
 
-	public Pawn(short CreatureTypeID, int id, int Seed, MapCoordinate SpawnLocation) {
+	public Pawn(short CreatureTypeID, int id, int Seed, MapCoordinate SpawnLocation, long currentGameTick) {
 		super(id, SpawnLocation);
 
 		this.CreatureTypeID = CreatureTypeID;
 		Moving = false;
+		ActionStarted = currentGameTick;
+
 		PathNavigator = new Navigator(SpawnLocation, new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1));
 		CurrentMovementDirection = Direction.DIRECTION_NONE;
 
@@ -166,7 +168,7 @@ public class Pawn extends Actor implements Serializable {
 	}
 
 	@Override
-	long wake(long CurrentTick) {
+	long wakeChild(long CurrentTick) {
 		//super.Wake(CurrentTick);
 		if (CurrentTask != null) {
 			if (CurrentTask.Completed) {

@@ -36,13 +36,14 @@ public class Geology implements Serializable {
 	Noise NoiseGenerator;
 	float[][] WorldHeight;
 
-	short ChunkTopZ;
-	short ChunkBottomZ;
+	short ChunkTopZ = 0;
+	short ChunkBottomZ = ChunkCoordinate.SECTOR_EDGE_SIZE * BlockCoordinate.CHUNK_EDGE_SIZE;
 
 	float[] Edge;
 	float[][] Height;
 	boolean[][] Seeded;
 
+	int ChunkBaseHeight;
 	public final short RockType0;
 	public final short RockType1;
 	public final short RockType2;
@@ -73,30 +74,39 @@ public class Geology implements Serializable {
 		return ChunkTopZ;
 	}
 	
-	public void generateChunk(MapCoordinate targetCoordinates) {
+	public void generateChunk(MapCoordinate targetCoordinates, int BaseHeight) {
 		int X = targetCoordinates.getX() + GeologySeed;
 		int Y = targetCoordinates.getY() + GeologySeed;
 
 		int Octives = 4;
 		double persistence = 0.4;
 
+		ChunkBaseHeight = BaseHeight;
+		ChunkTopZ = 0;
+		ChunkBottomZ = ChunkCoordinate.SECTOR_EDGE_SIZE * BlockCoordinate.CHUNK_EDGE_SIZE;	
+
 		for (int x = 0; x < BlockCoordinate.CHUNK_EDGE_SIZE + 1; x++) {
 			for (int y = 0; y < BlockCoordinate.CHUNK_EDGE_SIZE + 1; y++) {
 
 				double workingX = (x + X) / 200f;
 				double workingY = (y + Y) / 200f;
-				Height[x][y] = (float) OctavePerlin(workingX, workingY, Octives, persistence);
+				
+				double baseHeight = ChunkBaseHeight; //256 * 32; // Get this from some kind of world map
+				double TempHeight = (baseHeight + OctavePerlin(workingX, workingY, Octives, persistence));
+
+				if (TempHeight > ChunkTopZ)
+					ChunkTopZ = (short) TempHeight;
+				if (TempHeight < ChunkBottomZ)
+					ChunkBottomZ = (short) TempHeight;
+
+				Height[x][y] = (float) TempHeight;
 			}
 		}
 	}
 
-	private double bias(double input, double bias) {
-		return input + bias;
-	}
-
 	private double SmoothNoise(double x, double y) {
-		double corners = ( NoiseGenerator.noise(x-1, y-1) + NoiseGenerator.noise(x+1, y-1) + NoiseGenerator.noise(x-1, y+1) + NoiseGenerator.noise(x+1, y+1) ) / 16;
-		double sides   = ( NoiseGenerator.noise(x-1, y) + NoiseGenerator.noise(x+1, y) + NoiseGenerator.noise(x, y-1) + NoiseGenerator.noise(x, y+1) ) /  8;
+		double corners = ( NoiseGenerator.noise(x - 1, y - 1) + NoiseGenerator.noise(x + 1, y - 1) + NoiseGenerator.noise(x - 1, y + 1) + NoiseGenerator.noise(x + 1, y + 1) ) / 16;
+		double sides   = ( NoiseGenerator.noise(x - 1, y) + NoiseGenerator.noise(x + 1, y) + NoiseGenerator.noise(x, y - 1) + NoiseGenerator.noise(x, y + 1) ) /  8;
 		double center  =  NoiseGenerator.noise(x, y) / 4;
 
 		return corners + sides + center;
@@ -112,7 +122,7 @@ public class Geology implements Serializable {
 			raw = NoiseGenerator.noise(x * frequency, y * frequency);
 			total += raw * amplitude;
 			persistence *= raw + 1;
-			amplitude *= persistence;
+			amplitude *= persistence;  // Modify persistence to get peaks
 			frequency *= 2;
 		}
 
@@ -147,10 +157,10 @@ public class Geology implements Serializable {
 
 	public short getRockTypeAtCoordinates(short Target, int Zlevel) {
 
-		if (Zlevel > 3) {
+		if (Zlevel > ChunkBaseHeight + 8) {
 			return RockType1;
 		}
-		if (Zlevel > 1) {
+		if (Zlevel > ChunkBaseHeight) {
 			return RockType2;
 		}
 		return RockType0;

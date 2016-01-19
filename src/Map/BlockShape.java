@@ -247,9 +247,13 @@ public class BlockShape implements Serializable {
 
 	public float getCenterHeight() {
 		if (isSplit()) {
-			return (((getNorthWestCorner() + getSouthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - BlockCoordinate.HALF_BLOCK;
+			byte NW = getNorthWestCorner();
+			byte SE = getSouthEastCorner();
+			return (((NW + SE - 2) / 2.0f) / HEIGHT_FRACTIONS) - BlockCoordinate.HALF_BLOCK;
 		} else {
-			return (((getSouthWestCorner() + getNorthEastCorner() - 2) / 2.0f) / HEIGHT_FRACTIONS) - BlockCoordinate.HALF_BLOCK;
+			byte SW = getSouthWestCorner();
+			byte NE = getNorthEastCorner();
+			return (((SW + NE - 2) / 2.0f) / HEIGHT_FRACTIONS) - BlockCoordinate.HALF_BLOCK;
 		}
 	}
 
