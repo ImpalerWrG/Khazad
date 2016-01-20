@@ -55,26 +55,22 @@ public class MapCoordinate implements Serializable  {
 	}
 
 	public void set(int x, int y, int z) {
+		setX(x);
+		setY(y);
+		setZ(z);
+	}
 
+	public void setX(int x) {
 		this.Chunk.X = (short) (x / BlockCoordinate.CHUNK_EDGE_SIZE);
-		if (x < 0) {
-			this.Chunk.X--;
-			x += (BlockCoordinate.CHUNK_EDGE_SIZE * this.Chunk.X);
-		}
 		this.Block.set(Axis.AXIS_X, x % BlockCoordinate.CHUNK_EDGE_SIZE);
-		
+	}
+
+	public void setY(int y) {
 		this.Chunk.Y = (short) (y / BlockCoordinate.CHUNK_EDGE_SIZE);
-		if (y < 0) {
-			this.Chunk.Y--;
-			y += (BlockCoordinate.CHUNK_EDGE_SIZE * this.Chunk.Y);
-		}
 		this.Block.set(Axis.AXIS_Y, y % BlockCoordinate.CHUNK_EDGE_SIZE);
-		
-		this.Chunk.Z = (short) (z / BlockCoordinate.CHUNK_EDGE_SIZE);
-		if (z < 0) {
-			this.Chunk.Z--;
-			z += (BlockCoordinate.CHUNK_EDGE_SIZE * this.Chunk.Z);			
-		}
+	}
+
+	public void setZ(int z) {
 		this.Block.set(Axis.AXIS_Z, z % BlockCoordinate.CHUNK_EDGE_SIZE);
 	}
 

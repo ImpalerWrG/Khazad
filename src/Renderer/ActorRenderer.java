@@ -132,9 +132,9 @@ public class ActorRenderer extends AbstractAppState {
 
 						Node zNode;
 						if (map.isBlockSunLit(coords)) {
-							zNode = Renderer.getZNodeLight(coords.Chunk.Z);
+							zNode = Renderer.getChunkNodeLight(coords.Chunk);
 						} else {
-							zNode = Renderer.getZNodeDark(coords.Chunk.Z);
+							zNode = Renderer.getChunkNodeDark(coords.Chunk);
 						}
 
 						zNode.attachChild(actorNode);
@@ -142,7 +142,7 @@ public class ActorRenderer extends AbstractAppState {
 						if (target instanceof Pawn) {
 							MovePawn((Pawn) target, CurrentTick);
 						} else {
-							actorNode.setLocalTranslation(coords.getX(), coords.getY(), coords.getZ());
+							actorNode.setLocalTranslation(coords.Block.getX(), coords.Block.getY(), coords.Block.getZ());
 						}
 					}
 				}
@@ -197,7 +197,7 @@ public class ActorRenderer extends AbstractAppState {
 		rotation.fromAngleAxis(MovingDirection.toDegree() * FastMath.DEG_TO_RAD, Vector3f.UNIT_Z);
 		actorNode.setLocalRotation(rotation);
 
-		actorNode.setLocalTranslation(LocationCoordinates.getX() + OffsetVector.x, LocationCoordinates.getY() + OffsetVector.y, LocationCoordinates.getZ() + Height);
+		actorNode.setLocalTranslation(LocationCoordinates.Block.getX() + OffsetVector.x, LocationCoordinates.Block.getY() + OffsetVector.y, LocationCoordinates.Block.getZ() + Height);
 	}
 
 	public void hideActors() {

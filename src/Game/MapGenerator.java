@@ -56,8 +56,7 @@ public class MapGenerator implements Callable<Object>{
 		MapCoordinate SettlmentHeart = new MapCoordinate();
 		SettlmentHeart.Chunk.X = ChunkCoordinate.SECTOR_EDGE_SIZE / 2;
 		SettlmentHeart.Chunk.Y = ChunkCoordinate.SECTOR_EDGE_SIZE / 2;
-		SettlmentHeart.Chunk.Z = 2; //ChunkCoordinate.SECTOR_EDGE_SIZE / 2;
-		SettlmentHeart.Block.set(BlockCoordinate.CHUNK_EDGE_SIZE / 2, BlockCoordinate.CHUNK_EDGE_SIZE / 2, BlockCoordinate.CHUNK_EDGE_SIZE / 2);
+		SettlmentHeart.Chunk.Z = ChunkCoordinate.SECTOR_EDGE_SIZE / 2;
 		game.GameSettlement = new Settlement(SettlmentHeart);
 
 		short Xorigin = (short) (SettlmentHeart.Chunk.X - (X / 2));

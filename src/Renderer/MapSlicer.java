@@ -52,8 +52,7 @@ public class MapSlicer implements Callable<Void>{
 				TIntObjectMap<Node> ZMapDark =  renderer.ZMapDark;
 
 				for (Node targetnode : ZMapLight.valueCollection()) {
-					float Z = targetnode.getLocalTranslation().getZ();
-					float ChunkBottom = (Z * BlockCoordinate.CHUNK_EDGE_SIZE);
+					float ChunkBottom = targetnode.getLocalTranslation().getZ();
 					float ChunkTop = ChunkBottom + BlockCoordinate.CHUNK_EDGE_SIZE;
 					if (ChunkBottom <= Top && Bottom <= ChunkTop && renderer.SunnyRendering) {
 						targetnode.setCullHint(Spatial.CullHint.Inherit);
@@ -63,8 +62,7 @@ public class MapSlicer implements Callable<Void>{
 				}
 
 				for (Node targetnode : ZMapDark.valueCollection()) {
-					float Z = targetnode.getLocalTranslation().getZ();
-					float ChunkBottom = (Z * BlockCoordinate.CHUNK_EDGE_SIZE);
+					float ChunkBottom = targetnode.getLocalTranslation().getZ();
 					float ChunkTop = ChunkBottom + BlockCoordinate.CHUNK_EDGE_SIZE;
 					if (ChunkBottom <= Top && Bottom <= ChunkTop) {
 						targetnode.setCullHint(Spatial.CullHint.Inherit);

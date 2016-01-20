@@ -47,10 +47,10 @@ public class GameCamera {
 	protected Node PitchNode = null;
 	protected CameraNode CamNode = null;
 	// Factor values determining speed of most Camera changes
-	protected final float flatzoom = 400;
-	protected final float maxzoom = 400;
-	protected float zoomFactor = 20;
-	protected final float minzoom = 5;
+	protected final float flatzoom = 2000;
+	protected final float maxzoom = 1000;
+	protected float zoomFactor = 30;
+	protected final float minzoom = 4;
 	protected float TranslationFactor;
 	protected final float zoomSpeed = 0.1f;
 	protected final float rotationSpeed = 10.0f;
@@ -99,7 +99,7 @@ public class GameCamera {
 		RotationNode.attachChild(PitchNode);
 		PitchNode.attachChild(CamNode);
 
-		CamNode.setLocalTranslation(0, 0, 10);
+		CamNode.setLocalTranslation(0, 0, 1000);
 		UserPitchAngle = 45;
 		pitchCamera(0);
 		CamNode.lookAt(TargetNode.getWorldTranslation(), Vector3f.UNIT_Z);
@@ -139,7 +139,6 @@ public class GameCamera {
 				
 				frustrumReset();
 				updatePitch();
-				//setClipPlane();
 			}
 		}
 	}
@@ -153,6 +152,7 @@ public class GameCamera {
 		float top = zoomFactor;
 		float bottom = -zoomFactor;
 
+		CamNode.setLocalTranslation(0, 0, 100 * zoomFactor);
 		camera.setFrustum(FrustumNear * zoomFactor, FrustumFar * zoomFactor, left, right, top, bottom);	
 	}
 

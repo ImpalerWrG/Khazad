@@ -32,6 +32,7 @@ import Data.DataManager;
 import Game.Game;
 import Game.MapGenerator;
 import Game.GameLoader;
+import Map.Coordinates.MapCoordinate;
 import Interface.GameCameraState;
 
 import java.io.File;
@@ -144,8 +145,10 @@ public class Main extends SimpleApplication {
 			app.stateManager.attach(new ScreenshotAppState(new String()));
 			app.stateManager.attach(new SelectionRenderer());
 
-			IsoCamera.setSlice(15, -15, false);
-			IsoCamera.pointCameraAt(game.GameSettlement.getLocation());
+			IsoCamera.setSlice(game.getMap().getHighestFace(), game.getMap().getLowestFace(), false);
+			MapCoordinate Look = game.GameSettlement.getLocation().clone();
+			Look.setZ(game.getMap().getHighestFace());
+			IsoCamera.pointCameraAt(Look);
 
 		} catch (Exception e) {
 			e.printStackTrace();

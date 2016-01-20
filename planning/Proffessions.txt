@@ -114,32 +114,30 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Rune Scribe [][] - enhance items with rune magic
 	</>	
 </>
-<Fighter (Grand Marshal) [VIT][REF] - Combat in all forms (Helmet, ???)>
+<Fighter (Grand Marshal) [VIT][REF] - Combat in all forms (Ax, small shield)>
 
 	<Skirmisher [SPD][JDG] - light fast (leather armor, )>
-		Berserker [WIL][CHA] - maximum aggression
+		Berserker [WIL][CHA] - maximum aggression (Ax, war-paint)
 		Javaliner [STR][] - bombard with thrown weapons
-		Spelunker [END][VIT] - underground scouting and skimishing
-		Grenadier [DEX][MEM] - throws explosives
-		Ranger [FLX][] - stealthy scouting
+		Spelunker [END][VIT] - underground scouting and skirmishing (lamp, rope)
+		Grenadier [DEX][MEM] - throws explosives  
+		Ranger [FLX][] - stealthy scouting (cloak, spyglass)
 	</>	
-	<Warrior [STR][LOG] - Balanced (round shield, )>
+	<Warrior [STR][LOG] - Balanced (chain mail, mace)>
 		???
-		???
-		Flail - imune to flanking?
-		Housecarl - 2 handed Ax
-		IronBreakers - 2 handed Hammer
+		Flail - immune to flanking?  (Flail, 
+		Housecarl - (2 handed Ax, helmet)
+		IronBreakers - (2 handed Hammer, helmet)
 		WurmHunter - specialized in killing mega beasts
 	</>
-	<Calvary-Rider-Cavalier [FLX][MEM] - Mounted combat (Saddle, ???)>
+	<Calvary-Rider-Cavalier [FLX][MEM] - Mounted combat (Saddle, Riding boots)>
 		Lancer - lances, balanced Calvary
 		Outrider - scouting skirmishing
 		Messenger - fast travel, diplomatic send new commands to expeditions/armies
 		Hussar - Heavy armoured
 		Cossack - live off the land raiders?
-		???
 	</>
-	<Marksman-Missilier [DEX][PER] - Ranged attack >
+	<Marksman-Missilier [DEX][PER] - Ranged attack (Bow, quiver)>
 		Slinger - David vs Goliath, cheap but effective
 		Archer - Bow
 		SharpShooter
@@ -147,11 +145,11 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Quarreller - Crossbow
 		Bombardier - siege weapons?
 	</>
-	<Defender [END][WIL] - Defensive formation fighting (armor?)>
-		Pike Guard - Swiss style pike/pole-arm infantry, formation fighters, no shields
+	<Defender [END][WIL] - Defensive formation fighting (plate armor, helmet)>
+		Pike Guard - Swiss style pike/pole-arm infantry, formation fighters, no shields   (pike, ???)
 		Sentinel - guards locations?
-		Immortal - Heaviest plate armour, no shield, 2 handed hammer, slow moving
-		Legionnaire - Romanesque tower-shield and short sword, heavy armour 
+		Immortal - Heaviest plate armour, no shield, 2 handed hammer, slow moving   (hammer, ???)
+		Legionnaire - Romanesque tower-shield and short sword, heavy armour     (tower-shield, sword)
 		HighLander - mountain defensive, better climb mobility, high ground defence by avalanche and rock throwing
 	</>
 	<Guard (Captain of the Guard) [INT][CHA] - Police (Cudgle, KeyChain)>

@@ -137,12 +137,14 @@ public class TerrainRenderer extends AbstractAppState {
 					this.CameraState = state.getState(GameCameraState.class);
 
 					// Remove Chunks nolonger in the Frustrum
-					for (Chunk targetChunk : MeshedChunks[this.LevelofDetail].values()) {
-						ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
-						Vector3f Center = Coords.getVector();
-						ChunkBox.setCenter(Center);
-						if (this.CameraState.contains(ChunkBox) == false) {
-							queueChunkDestroy(targetChunk, this.LevelofDetail);
+					for (int i = 0; i < BlockCoordinate.CHUNK_DETAIL_LEVELS; i++) {
+						for (Chunk targetChunk : MeshedChunks[i].values()) {
+							ChunkCoordinate Coords = targetChunk.getChunkCoordinates();
+							Vector3f Center = Coords.getVector();
+							ChunkBox.setCenter(Center);
+							if (this.CameraState.contains(ChunkBox) == false) {
+								queueChunkDestroy(targetChunk, this.LevelofDetail);
+							}
 						}
 					}
 

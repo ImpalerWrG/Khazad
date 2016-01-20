@@ -244,7 +244,9 @@ public class SelectionRenderer extends AbstractAppState {
 				}
 			}
 		}
-
-		hudText.setText("X: " + mouse.getX() + "  Y: " + mouse.getY() + "  Z: " + mouse.getZ());
+		int x = mouse.getX() - game.getSettlement().getLocation().getX();
+		int y = mouse.getY() - game.getSettlement().getLocation().getY();
+		int z = mouse.getZ() - game.getSettlement().getLocation().getZ();
+		hudText.setText("X: " + x + "  Y: " + y + "  Z: " + z);
 	}
 }

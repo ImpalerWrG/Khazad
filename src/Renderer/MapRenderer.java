@@ -132,7 +132,7 @@ public class MapRenderer extends AbstractAppState {
 				ChunkNode = LightChunkNodeMap.get(TargetCoordinates);
 				if (ChunkNode == null) {
 					ChunkNode = new Node("LightNode" + TargetCoordinates.toString());
-					ChunkNode.move(TargetCoordinates.getVector());
+					ChunkNode.setLocalTranslation(TargetCoordinates.getXYVector());
 
 					getZNodeLight(TargetCoordinates.Z).attachChild(ChunkNode);
 					LightChunkNodeMap.put(TargetCoordinates, ChunkNode);
@@ -155,7 +155,7 @@ public class MapRenderer extends AbstractAppState {
 			try {
 				if (ChunkNode == null) {
 					ChunkNode = new Node("DarkChunkNode");
-					ChunkNode.move(TargetCoordinates.getVector());
+					ChunkNode.setLocalTranslation(TargetCoordinates.getXYVector());
 
 					getZNodeDark(TargetCoordinates.Z).attachChild(ChunkNode);
 					DarkChunkNodeMap.put(TargetCoordinates, ChunkNode);
@@ -177,7 +177,7 @@ public class MapRenderer extends AbstractAppState {
 		if (targetnode == null) {
 
 			targetnode = new Node("ZMapLightNode");
-			targetnode.move(0, 0, zlevel);
+			targetnode.setLocalTranslation(0, 0, zlevel * BlockCoordinate.CHUNK_EDGE_SIZE);
 			ZMapLight.put(zlevel, targetnode);
 			sunnyterrainNode.attachChild(targetnode);
 		}
@@ -189,7 +189,7 @@ public class MapRenderer extends AbstractAppState {
 		if (targetnode == null) {
 
 			targetnode = new Node("ZMapDarkNode");
-			targetnode.move(0, 0, zlevel);
+			targetnode.setLocalTranslation(0, 0, zlevel * BlockCoordinate.CHUNK_EDGE_SIZE);
 			ZMapDark.put(zlevel, targetnode);
 			darkterrainNode.attachChild(targetnode);
 		}

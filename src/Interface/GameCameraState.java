@@ -99,7 +99,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	private float XChange;
 	private float YChange;
 	private Plane SelectionPlane = null;
-	private MapCoordinate QueuedLookLocation = new MapCoordinate();
+	private MapCoordinate QueuedLookLocation = null;
 	private MapCoordinate MouseLocation = new MapCoordinate();
 	public MapCoordinate SelectionOrigin = new MapCoordinate();
 	public MapCoordinate SelectionTerminus = new MapCoordinate();
@@ -495,7 +495,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				Volume = new VolumeSelection(SelectionTerminus, SelectionOrigin);
 
 				SelectionPlane = new Plane(Vector3f.UNIT_Z, MouseLocation.getZ());
-				//this.rootnode.detachChild(SelectionBox);
 			}
 
 			if (CurrentMode == CameraMode.NORMAL) {
