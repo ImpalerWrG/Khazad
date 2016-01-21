@@ -65,7 +65,7 @@ public class Task implements Serializable {
 		Completed = false;
 	}
 
-	public long beginTask(Pawn Host) {
+	public long beginTask(long CurrentTick, Pawn Host) {
 		Direction MovementDirection;
 		switch (type) {
 
@@ -103,7 +103,7 @@ public class Task implements Serializable {
 		return 1;
 	}
 
-	public long continueTask(Pawn Host) {
+	public long continueTask(long CurrentTick, Pawn Host) {
 		switch (type) {
 
 			case TASK_IDLE:
@@ -115,7 +115,7 @@ public class Task implements Serializable {
 			case TASK_HAUL:
 				break;
 			case TASK_GOTO:
-				return Host.updatePosition();
+				return Host.updatePosition(CurrentTick);
 
 			case TASK_DROP_OFF:
 				break;
@@ -142,7 +142,7 @@ public class Task implements Serializable {
 				break;
 			case TASK_LOITER:
 				Completed = true;
-				return Host.updatePosition();
+				return Host.updatePosition(CurrentTick);
 		}
 		return 1;
 	}

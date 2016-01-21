@@ -103,22 +103,29 @@ public class Pawn extends Actor implements Serializable {
 	public long attemptMove(Direction MovementDirection) {
 		float EdgeCost = PathManager.getSingleton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getModalityIndex());
 		if (EdgeCost != -1) {
-			return (int) (EdgeCost * FastSpeed);
+			ActionDuration = (long) (EdgeCost * FastSpeed);
+			return (int) ActionDuration - (ActionDuration / 2);
 		} else {
+			CurrentMovementDirection = Direction.DIRECTION_NONE;
 			return 1;  // signal falure to job manager?
 		}
 	}
 
-	public long updatePosition() {
-		LocationCoordinates.translate(CurrentMovementDirection);
-		CurrentMovementDirection = PathNavigator.getNextStep();
+	public long updatePosition(long CurrentTick) {
+		if (CurrentTick >= (ActionStarted + ActionDuration)) {
+			CurrentMovementDirection = PathNavigator.getNextStep();
 
-		if (CurrentMovementDirection == Direction.DIRECTION_DESTINATION) {
-			CurrentTask.Completed = true;
-			return 1;
-		} else {
-			return attemptMove(CurrentMovementDirection);
+			if (CurrentMovementDirection == Direction.DIRECTION_DESTINATION) {
+				CurrentTask.Completed = true;
+				return 1;
+			} else {
+				ActionStarted = CurrentTick;
+				return attemptMove(CurrentMovementDirection);			
+			}
 		}
+
+		LocationCoordinates.translate(CurrentMovementDirection);
+		return ActionDuration / 2;
 	}
 
 	public boolean isDestinationReachable(MapCoordinate Destination) {
@@ -170,6 +177,7 @@ public class Pawn extends Actor implements Serializable {
 	@Override
 	long wakeChild(long CurrentTick) {
 		//super.Wake(CurrentTick);
+		long futureTick;
 		if (CurrentTask != null) {
 			if (CurrentTask.Completed) {
 				CurrentTask.finalizeTask(CurrentTick, this);
@@ -178,16 +186,16 @@ public class Pawn extends Actor implements Serializable {
 			}
 
 			if (!CurrentTask.Begun) {
-				ActionDuration = CurrentTask.beginTask(this);
+				futureTick = CurrentTask.beginTask(CurrentTick, this);
+				ActionStarted = CurrentTick;
 			} else {
-				ActionDuration = CurrentTask.continueTask(this);
+				futureTick = CurrentTask.continueTask(CurrentTick, this);
 				if (CurrentTask.Completed) {
 					CurrentTask.finalizeTask(CurrentTick, this);
 					setTask(CurrentTask.ParentJob.nextTask(this));
 				}
 			}
-			ActionStarted = CurrentTick;
-			WakeTick = CurrentTick + ActionDuration;
+			WakeTick = CurrentTick + futureTick;
 		} else {
 			WakeTick = CurrentTick + 1;
 		}

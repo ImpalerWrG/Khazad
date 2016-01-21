@@ -91,17 +91,9 @@ public class ActorRenderer extends AbstractAppState {
 	}
 
 	private Node getModel(Actor actor) {
-		Sphere eye = new Sphere(10, 10, 0.1f);
-		Geometry EyeBall = new Geometry("EyeBall", eye);
-		EyeBall.setLocalTranslation(new Vector3f(0, 0, 0));
-		Material mat1 = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-		mat1.setColor("Color", ColorRGBA.Red);
-		EyeBall.setMaterial(mat1);
-
-		Spatial actorModel = EyeBall;
-		//Spatial actorModel = assetmanager.loadModel("Models/Dwarf/Dwarf.j3o");
-		//actorModel.scale(0.25f, 0.25f, 0.25f);
-		//actorModel.rotate(1.5f, 0.0f, 0.0f);
+		Spatial actorModel = assetmanager.loadModel("Models/Dwarf/Dwarf.j3o");
+		actorModel.scale(0.25f, 0.25f, 0.25f);
+		actorModel.rotate(1.5f, 0.0f, 0.0f);
 
 		Node actorNode = new Node("ActorNode-" + actor.getID());
 		actorNode.attachChild(actorModel);
@@ -161,43 +153,47 @@ public class ActorRenderer extends AbstractAppState {
 		Node actorNode = ActorNodeMap.get(target.getID());
 		float Height = 0;
 
-		if (MoveFraction <= 0.5) {
-			map.getBlockShape(LocationCoordinates, TestingBlockShape);
-			float CenterHeight = TestingBlockShape.getCenterHeight();
-			float EdgeHeight = TestingBlockShape.getDirectionEdgeHeight(MovingDirection);
-			float CenterFraction = (MoveFraction * 2.0f);
-			float EdgeFraction = 1.0f - CenterFraction;
-			Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
-		}
-
-		if (MoveFraction > 0.5) {
-			if (MoveFraction >= 1.0) {
-				MoveFraction = 0;
-			}
-
-			TestingCoords.copy(LocationCoordinates);
-			TestingCoords.translate(MovingDirection);
-
-			map.getBlockShape(TestingCoords, TestingBlockShape);
-			float CenterHeight = TestingBlockShape.getCenterHeight() + (TestingCoords.Block.getZ() - LocationCoordinates.Block.getZ());
-			float EdgeHeight = TestingBlockShape.getDirectionEdgeHeight(MovingDirection.invert()) + (TestingCoords.Block.getZ() - LocationCoordinates.Block.getZ());
-			float CenterFraction = ((MoveFraction - 0.5f) * 2.0f);
-			float EdgeFraction = 1.0f - CenterFraction;
-			Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
-		}
+		map.getBlockShape(LocationCoordinates, TestingBlockShape);
+		float CenterHeight = TestingBlockShape.getCenterHeight();
 
 		if (MovingDirection == Direction.DIRECTION_DESTINATION) {
-			MoveFraction = 0;
-		}
+			MoveFraction = 0.0f;
+			Height = CenterHeight;
+		} else {
+			if (MoveFraction < 0.5f) {
+				if (MoveFraction < 0.0f)
+					MoveFraction = 0.0f;
 
-		MovingDirection.setVector(DirectionVector);
-		DirectionVector.mult(MoveFraction, OffsetVector);
+				float EdgeHeight = TestingBlockShape.getDirectionEdgeHeight(MovingDirection);
+				float EdgeFraction = MoveFraction * 2.0f;
+				float CenterFraction = 1.0f - EdgeFraction;
+				Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
+				MovingDirection.setVector(DirectionVector);
+				DirectionVector.mult(MoveFraction, OffsetVector);
+			}
+
+			if (MoveFraction >= 0.5) {
+				if (MoveFraction > 1.0f)
+					MoveFraction = 1.0f;
+
+				float EdgeFraction = 2.0f - (MoveFraction * 2.0f);
+				float EdgeHeight = TestingBlockShape.getDirectionEdgeHeight(MovingDirection.invert());
+				float CenterFraction = 1.0f - EdgeFraction;
+				Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
+				MovingDirection.invert().setVector(DirectionVector);
+				DirectionVector.mult(1.0f - MoveFraction, OffsetVector);
+			}
+		}
 
 		Quaternion rotation = actorNode.getLocalRotation();
 		rotation.fromAngleAxis(MovingDirection.toDegree() * FastMath.DEG_TO_RAD, Vector3f.UNIT_Z);
 		actorNode.setLocalRotation(rotation);
 
-		actorNode.setLocalTranslation(LocationCoordinates.Block.getX() + OffsetVector.x, LocationCoordinates.Block.getY() + OffsetVector.y, LocationCoordinates.Block.getZ() + Height);
+		float x = LocationCoordinates.Block.getX() + OffsetVector.x;
+		float y = LocationCoordinates.Block.getY() + OffsetVector.y;
+		float z = LocationCoordinates.Block.getZ() + Height;
+
+		actorNode.setLocalTranslation(x, y, z);
 	}
 
 	public void hideActors() {

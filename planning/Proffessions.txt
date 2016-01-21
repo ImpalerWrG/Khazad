@@ -118,24 +118,24 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 
 	<Skirmisher [SPD][JDG] - light fast (leather armor, )>
 		Berserker [WIL][CHA] - maximum aggression (Ax, war-paint)
-		Javaliner [STR][] - bombard with thrown weapons
+		Javaliner/ax-thrower [STR][] - bombard with thrown weapons/axes?
 		Spelunker [END][VIT] - underground scouting and skirmishing (lamp, rope)
 		Grenadier [DEX][MEM] - throws explosives  
 		Ranger [FLX][] - stealthy scouting (cloak, spyglass)
 	</>	
 	<Warrior [STR][LOG] - Balanced (chain mail, mace)>
 		???
-		Flail - immune to flanking?  (Flail, 
+		Flail - immune to flanking?  (Flail, helm)
 		Housecarl - (2 handed Ax, helmet)
 		IronBreakers - (2 handed Hammer, helmet)
 		WurmHunter - specialized in killing mega beasts
 	</>
 	<Calvary-Rider-Cavalier [FLX][MEM] - Mounted combat (Saddle, Riding boots)>
-		Lancer - lances, balanced Calvary
+		Lancer - lances, balanced Calvary (lance, ??)
 		Outrider - scouting skirmishing
-		Messenger - fast travel, diplomatic send new commands to expeditions/armies
-		Hussar - Heavy armoured
-		Cossack - live off the land raiders?
+		Messenger - fast travel, diplomatic send new commands to expeditions/armies (saddlebag)
+		Hussar - Heavy armoured (mount armour, weapon?)
+		Cossack - live off the land raiders? (saddlebag)
 	</>
 	<Marksman-Missilier [DEX][PER] - Ranged attack (Bow, quiver)>
 		Slinger - David vs Goliath, cheap but effective

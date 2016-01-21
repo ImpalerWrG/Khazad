@@ -71,6 +71,7 @@ public class MapCoordinate implements Serializable  {
 	}
 
 	public void setZ(int z) {
+		this.Chunk.Z = (short) (z / BlockCoordinate.CHUNK_EDGE_SIZE);
 		this.Block.set(Axis.AXIS_Z, z % BlockCoordinate.CHUNK_EDGE_SIZE);
 	}
 
