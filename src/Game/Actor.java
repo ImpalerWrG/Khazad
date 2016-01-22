@@ -35,7 +35,7 @@ public abstract class Actor extends Temporal implements Serializable {
 	private static final long serialVersionUID = 1;
 
 	// The location for gameplay logic purposes
-	MapCoordinate LocationCoordinates;
+	private MapCoordinate LocationCoordinates;
 	boolean Visible;
 	boolean Hidden;
 	// Used by Rendering
@@ -48,8 +48,8 @@ public abstract class Actor extends Temporal implements Serializable {
 		Dirty = true;
 	}
 
-	public void setLocation(MapCoordinate NewPosition) {
-		LocationCoordinates = NewPosition;
+	public synchronized void setLocation(MapCoordinate NewPosition) {
+		LocationCoordinates.copy(NewPosition);
 		Dirty = true;
 	}
 
@@ -64,7 +64,7 @@ public abstract class Actor extends Temporal implements Serializable {
 		return Dirty;
 	}
 
-	public MapCoordinate getLocation() {
+	public synchronized MapCoordinate getLocation() {
 		return LocationCoordinates;
 	}
 

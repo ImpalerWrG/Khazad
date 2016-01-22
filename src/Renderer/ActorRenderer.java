@@ -146,21 +146,27 @@ public class ActorRenderer extends AbstractAppState {
 		Game game = state.getState(Game.class);
 		GameMap map = game.getMap();
 
-		Pawn PawnTarget = (Pawn) target;
-		float MoveFraction = PawnTarget.getActionFraction(CurrentTick);
-		Direction MovingDirection = PawnTarget.getMovementDirection();
-		MapCoordinate LocationCoordinates = target.getLocation();
-		Node actorNode = ActorNodeMap.get(target.getID());
-		float Height = 0;
+		float MoveFraction;
+		Direction MovingDirection;
+		boolean FirstHalf;
 
-		map.getBlockShape(LocationCoordinates, TestingBlockShape);
+		synchronized(target) {
+			TestingCoords.copy(target.getLocation());
+			MoveFraction = target.getActionFraction(CurrentTick);
+			MovingDirection = target.getMovementDirection();
+			FirstHalf = target.FirstHalfMovement;
+		}
+
+		Node actorNode = ActorNodeMap.get(target.getID());
+		float Height;
+
+		map.getBlockShape(TestingCoords, TestingBlockShape);
 		float CenterHeight = TestingBlockShape.getCenterHeight();
 
 		if (MovingDirection == Direction.DIRECTION_DESTINATION) {
-			MoveFraction = 0.0f;
 			Height = CenterHeight;
 		} else {
-			if (MoveFraction < 0.5f) {
+			if (FirstHalf) {
 				if (MoveFraction < 0.0f)
 					MoveFraction = 0.0f;
 
@@ -170,9 +176,7 @@ public class ActorRenderer extends AbstractAppState {
 				Height = (CenterHeight * CenterFraction) + (EdgeHeight * EdgeFraction);
 				MovingDirection.setVector(DirectionVector);
 				DirectionVector.mult(MoveFraction, OffsetVector);
-			}
-
-			if (MoveFraction >= 0.5) {
+			} else {
 				if (MoveFraction > 1.0f)
 					MoveFraction = 1.0f;
 
@@ -189,9 +193,9 @@ public class ActorRenderer extends AbstractAppState {
 		rotation.fromAngleAxis(MovingDirection.toDegree() * FastMath.DEG_TO_RAD, Vector3f.UNIT_Z);
 		actorNode.setLocalRotation(rotation);
 
-		float x = LocationCoordinates.Block.getX() + OffsetVector.x;
-		float y = LocationCoordinates.Block.getY() + OffsetVector.y;
-		float z = LocationCoordinates.Block.getZ() + Height;
+		float x = TestingCoords.Block.getX() + OffsetVector.x;
+		float y = TestingCoords.Block.getY() + OffsetVector.y;
+		float z = TestingCoords.Block.getZ() + Height;
 
 		actorNode.setLocalTranslation(x, y, z);
 	}

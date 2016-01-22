@@ -77,7 +77,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 		System.out.println("bind( " + screen.getScreenId() + ")");
 		screen.addKeyboardInputHandler(new KeyBoardMapping(), this);
 		windows = screen.findElementByName("windows");
-		//screen.addPreKeyboardInputHandler(new KeyBoardMapping(), this);
+
 		pathingCheckBox = screen.findNiftyControl("pathingCheckBox", CheckBox.class);
 		litSurfacesCheckBox = screen.findNiftyControl("litSurfacesCheckBox", CheckBox.class);
 		terrainCheckBox = screen.findNiftyControl("terrainCheckBox", CheckBox.class);
@@ -96,13 +96,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 
 	public void onAction(String name, boolean keyPressed, float tpf) {
 		if (keyPressed) {
-			if (name.equals("PathingRenderToggle")) {
-				pathingCheckBox.toggle();
-			} else if (name.equals("TerrainRenderToggle")) {
-				terrainCheckBox.toggle();
-			} else if (name.equals("SunnyRenderToggle")) {
-				litSurfacesCheckBox.toggle();
-			} else if (name.equals("ReduceDetailLevel")) {
+			if (name.equals("ReduceDetailLevel")) {
 				TerrainRenderer terrainRenderer = Main.app.getStateManager().getState(TerrainRenderer.class);
 				terrainRenderer.changeLevelofDetal(1);
 			} else if (name.equals("IncreeseDetailLevel")) {
@@ -113,7 +107,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 	}
 
 	public void registerWithInput(InputManager inputManager) {
-		String[] inputs = {"PathingRenderToggle", "TerrainRenderToggle", "SunnyRenderToggle", "ReduceDetailLevel", "IncreeseDetailLevel"};
+		String[] inputs = {"ReduceDetailLevel", "IncreeseDetailLevel"};
 		inputManager.addListener(this, inputs);
 	}
 
@@ -135,7 +129,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 		Game game = Main.app.getStateManager().getState(Game.class);
 		timeLabel.setText(game.getTimeString());
 		// update pathfinding statistics
-		PathManager pathFinding = PathManager.getSingleton();
+		//PathManager pathFinding = PathManager.getSingleton();
 		NumberFormat numberFormat = NumberFormat.getIntegerInstance(); // comma seperated
 		expandedNodesLabel.setText(numberFormat.format(-1));
 		graphReadsLabel.setText(numberFormat.format(-1));
@@ -246,7 +240,7 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 		int low = game.getMap().getLowestFace();
 
 		control.setWorldMax(high - low);
-		float Size = control.getWorldMax();
+		//float Size = control.getWorldMax();
 		control.setValue(high - Top);
 	}
 

@@ -190,11 +190,16 @@ public class Game extends AbstractAppState implements ActionListener, Serializab
 				if (keyPressed)
 					TickRate /= 4;
 			}
+			if (name.equals("Tick") && Pause) {
+				simulation = new Ticker(this);
+				simulation.windup(1);
+				lastUpdate = Executor.submit(simulation);
+			}
 		}
 	}
 
 	public void registerWithInput(InputManager inputManager) {
-		String[] inputs = {"Pause", "Faster", "Slower"};
+		String[] inputs = {"Pause", "Faster", "Slower", "Tick"};
 		inputManager.addListener(this, inputs);
 	}
 

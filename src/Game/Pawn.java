@@ -47,7 +47,8 @@ public class Pawn extends Actor implements Serializable {
 	// Movement and Pathfinding
 	Navigator PathNavigator;
 	boolean Moving;
-	Direction CurrentMovementDirection;
+	public boolean FirstHalfMovement;
+	private Direction CurrentMovementDirection;
 	// Job/Task Managment
 	private Task CurrentTask;
 	public Job PrimaryJob;
@@ -68,7 +69,6 @@ public class Pawn extends Actor implements Serializable {
 		super(id, SpawnLocation);
 
 		this.CreatureTypeID = CreatureTypeID;
-		Moving = false;
 		ActionStarted = currentGameTick;
 
 		PathNavigator = new Navigator(SpawnLocation, new MovementModality(MovementModality.MovementType.MOVEMENT_TYPE_WALK, 1, 1));
@@ -100,10 +100,11 @@ public class Pawn extends Actor implements Serializable {
 		return PathNavigator;
 	}
 
-	public long attemptMove(Direction MovementDirection) {
-		float EdgeCost = PathManager.getSingleton().getEdgeCost(LocationCoordinates, MovementDirection, PathNavigator.getModalityIndex());
+	public synchronized long attemptMove(Direction MovementDirection) {
+		float EdgeCost = PathManager.getSingleton().getEdgeCost(getLocation(), MovementDirection, PathNavigator.getModalityIndex());
 		if (EdgeCost != -1) {
 			ActionDuration = (long) (EdgeCost * FastSpeed);
+			FirstHalfMovement = true;
 			return (int) ActionDuration - (ActionDuration / 2);
 		} else {
 			CurrentMovementDirection = Direction.DIRECTION_NONE;
@@ -111,7 +112,7 @@ public class Pawn extends Actor implements Serializable {
 		}
 	}
 
-	public long updatePosition(long CurrentTick) {
+	public synchronized long updatePosition(long CurrentTick) {
 		if (CurrentTick >= (ActionStarted + ActionDuration)) {
 			CurrentMovementDirection = PathNavigator.getNextStep();
 
@@ -120,11 +121,12 @@ public class Pawn extends Actor implements Serializable {
 				return 1;
 			} else {
 				ActionStarted = CurrentTick;
-				return attemptMove(CurrentMovementDirection);			
+				return attemptMove(CurrentMovementDirection);
 			}
 		}
 
-		LocationCoordinates.translate(CurrentMovementDirection);
+		FirstHalfMovement = false;
+		getLocation().translate(CurrentMovementDirection);
 		return ActionDuration / 2;
 	}
 
@@ -148,15 +150,15 @@ public class Pawn extends Actor implements Serializable {
 		}
 	}
 
-	public float getActionFraction(long CurrentTick) {
+	public synchronized float getActionFraction(long CurrentTick) {
 		return (CurrentTick - ActionStarted) / ((float) ActionDuration);
 	}
 
-	public void setMovementDiretion(Direction newDirection) {
+	public synchronized void setMovementDiretion(Direction newDirection) {
 		CurrentMovementDirection = newDirection;
 	}
 
-	public Direction getMovementDirection() {
+	public synchronized Direction getMovementDirection() {
 		return CurrentMovementDirection;
 	}
 
@@ -175,7 +177,7 @@ public class Pawn extends Actor implements Serializable {
 	}
 
 	@Override
-	long wakeChild(long CurrentTick) {
+	synchronized long wakeChild(long CurrentTick) {
 		//super.Wake(CurrentTick);
 		long futureTick;
 		if (CurrentTask != null) {
