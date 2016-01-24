@@ -60,9 +60,9 @@ public class Zone implements Serializable {
 		MapCoordinate Terminal = Selection.TerminalLocation;
 		MapCoordinate TargetCoords = new MapCoordinate();
 
-		for (int x = Origin.getX(); x < Terminal.getX(); x++) {
-			for (int y = Origin.getY(); y < Terminal.getY(); y++) {
-				for (int z = Origin.getZ(); z < Terminal.getZ(); z++) {
+		for (int x = Origin.getX(); x <= Terminal.getX(); x++) {
+			for (int y = Origin.getY(); y <= Terminal.getY(); y++) {
+				for (int z = Origin.getZ(); z <= Terminal.getZ(); z++) {
 					TargetCoords.set(x, y, z);
 
 					BitSet Target = ZoneMap.get(TargetCoords.Chunk);

@@ -249,6 +249,7 @@ public class Main extends SimpleApplication {
 		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_MINUS));
 		inputManager.addMapping("Slower", new KeyTrigger(KeyInput.KEY_SUBTRACT));
 		inputManager.addMapping("Tick", new KeyTrigger(KeyInput.KEY_T));
+		inputManager.addMapping("Mute", new KeyTrigger(KeyInput.KEY_M));
 
 		// used in GameScreenController
 		inputManager.addMapping("ReduceDetailLevel", new KeyTrigger(KeyInput.KEY_Y));

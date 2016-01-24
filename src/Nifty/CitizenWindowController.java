@@ -67,8 +67,13 @@ public class CitizenWindowController implements Controller, Updatable {
 	public void update() {
 		nameLabel.setText("Name: " + citizen.getName());
 		genderLabel.setText("Gender: " + citizen.getGenderText());
-		jobLabel.setText("Current Job: " + citizen.PrimaryJob.getName());
-		taskLabel.setText("Current Task: " + citizen.getTask().getName());
+		if (citizen.PrimaryJob != null) {
+			jobLabel.setText("Current Job: " + citizen.PrimaryJob.getName());
+			taskLabel.setText("Current Task: " + citizen.getTask().getName());
+		} else {  // should never be null but is and null point exception results
+			jobLabel.setText("Current Job: " + "NONE");
+			taskLabel.setText("Current Task: " + "NONE");
+		}
 	}
 
 	public void init(Properties parameter, Attributes controlDefinitionAttributes) {

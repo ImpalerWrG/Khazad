@@ -339,7 +339,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			Vector3f IntersectLocation = new Vector3f();
 			ray.intersectsWherePlane(SelectionPlane, IntersectLocation);
 
-			SelectionTerminus.set((int) IntersectLocation.x, (int) IntersectLocation.y, (int) SelectionOrigin.Block.getZ());
+			SelectionTerminus.set((int) IntersectLocation.x, (int) IntersectLocation.y, (int) IntersectLocation.z);
 			Volume.setSize(SelectionOrigin, SelectionTerminus);
 		}
 

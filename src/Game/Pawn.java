@@ -105,23 +105,24 @@ public class Pawn extends Actor implements Serializable {
 		if (EdgeCost != -1) {
 			ActionDuration = (long) (EdgeCost * FastSpeed);
 			FirstHalfMovement = true;
+			setMovementDiretion(MovementDirection);
 			return (int) ActionDuration - (ActionDuration / 2);
 		} else {
-			CurrentMovementDirection = Direction.DIRECTION_NONE;
+			setMovementDiretion(Direction.DIRECTION_NONE);
 			return 1;  // signal falure to job manager?
 		}
 	}
 
 	public synchronized long updatePosition(long CurrentTick) {
 		if (CurrentTick >= (ActionStarted + ActionDuration)) {
-			CurrentMovementDirection = PathNavigator.getNextStep();
+			Direction MovementDirection = PathNavigator.getNextStep();
 
-			if (CurrentMovementDirection == Direction.DIRECTION_DESTINATION) {
+			if (MovementDirection == Direction.DIRECTION_DESTINATION) {
 				CurrentTask.Completed = true;
 				return 1;
 			} else {
 				ActionStarted = CurrentTick;
-				return attemptMove(CurrentMovementDirection);
+				return attemptMove(MovementDirection);
 			}
 		}
 

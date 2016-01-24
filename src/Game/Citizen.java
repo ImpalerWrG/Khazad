@@ -38,12 +38,12 @@ public class Citizen extends Pawn implements Serializable {
 	// Happyness/ moods/ hunger/ thirst/ wealth/ honor / other mutable status
 	// personality/ tastes/ other fixed status
 	// Proffessions / levels/ skills
+
 	public Citizen(short CreatureTypeID, int id, int seed, MapCoordinate SpawnLocation, long currentGameTick) {
 		super(CreatureTypeID, id, seed, SpawnLocation, currentGameTick);
 		// TODO randomly generated name
 		generateName("GIVEN_NAMEGROUP_TOLKEINESQUE");
-		//setFirstName("Urist");
-		//setLastName(Integer.toString(id));
+
 		setTask(new Task(null, Task.TaskType.TASK_IDLE, SpawnLocation));
 	}
 

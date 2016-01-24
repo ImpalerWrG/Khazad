@@ -50,7 +50,6 @@ import de.lessvoid.nifty.controls.dynamic.CustomControlCreator;
 import java.text.NumberFormat;
 import java.util.HashMap;
 
-import PathFinding.PathManager;
 
 /**
  *
@@ -64,9 +63,11 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 	Element PopulationPopup;
 	Element windows;
 	HashMap<String, Updatable> updatables = new HashMap<String, Updatable>();
+
 	CheckBox pathingCheckBox;
 	CheckBox litSurfacesCheckBox;
 	CheckBox terrainCheckBox;
+
 	Label timeLabel;
 	Label expandedNodesLabel;
 	Label graphReadsLabel;

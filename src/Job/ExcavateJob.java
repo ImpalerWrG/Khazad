@@ -86,9 +86,9 @@ public class ExcavateJob extends Job implements Serializable {
 		MapCoordinate Terminal = Selection.TerminalLocation;
 		MapCoordinate TargetCoords = new MapCoordinate();
 
-		for (int x = Origin.getX(); x < Terminal.getX() + 1; x++) {
-			for (int y = Origin.getY(); y < Terminal.getY() + 1; y++) {
-				for (int z = Origin.getZ(); z < Terminal.getZ() + 1; z++) {
+		for (int x = Origin.getX(); x <= Terminal.getX(); x++) {
+			for (int y = Origin.getY(); y <= Terminal.getY(); y++) {
+				for (int z = Origin.getZ(); z <= Terminal.getZ(); z++) {
 					TargetCoords.set(x, y, z);
 					ChunkCoordinate ChunkCoords = TargetCoords.Chunk;
 					int BlockIndex = TargetCoords.Block.getBlockIndex();

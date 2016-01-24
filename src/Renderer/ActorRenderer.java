@@ -163,7 +163,7 @@ public class ActorRenderer extends AbstractAppState {
 		map.getBlockShape(TestingCoords, TestingBlockShape);
 		float CenterHeight = TestingBlockShape.getCenterHeight();
 
-		if (MovingDirection == Direction.DIRECTION_DESTINATION) {
+		if (MovingDirection == Direction.DIRECTION_DESTINATION || MovingDirection == Direction.DIRECTION_NONE) {
 			Height = CenterHeight;
 		} else {
 			if (FirstHalf) {

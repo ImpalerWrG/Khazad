@@ -63,6 +63,7 @@ public class Task implements Serializable {
 		workdirection = null;
 		Begun = false;
 		Completed = false;
+		TestingBlockShape = new BlockShape();
 	}
 
 	public long beginTask(long CurrentTick, Pawn Host) {
@@ -81,7 +82,6 @@ public class Task implements Serializable {
 				Host.getNavigator().setBehaviorMode(Navigator.MovementBehavior.PATH_BEHAVIOR_ROUTE_TO_LOCATION);
 				Host.getNavigator().changeDestination(worklocation);
 				MovementDirection = Host.getNavigator().getNextStep();
-				Host.setMovementDiretion(MovementDirection);
 				Begun = true;
 
 				return Host.attemptMove(MovementDirection);
@@ -90,12 +90,11 @@ public class Task implements Serializable {
 				break;
 			case TASK_DIG:
 				Begun = true;
-				return 100;  // Base on material hardness
+				return 10000;  // Base on material hardness
 
 			case TASK_LOITER:
 				Host.getNavigator().setBehaviorMode(Navigator.MovementBehavior.PATH_BEHAVIOR_WANDER_AIMLESSLY);
 				MovementDirection = Host.getNavigator().getNextStep();
-				Host.setMovementDiretion(MovementDirection);
 				Begun = true;
 
 				return Host.attemptMove(MovementDirection);
@@ -137,7 +136,7 @@ public class Task implements Serializable {
 					Excavation.completeDesignation(worklocation);
 					Completed = true;
 				} else {
-					return 1000;  // Base on material hardness
+					return 10000;  // Base on material hardness
 				}
 				break;
 			case TASK_LOITER:

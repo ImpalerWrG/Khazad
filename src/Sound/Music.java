@@ -29,13 +29,15 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioNode;
 import com.jme3.audio.AudioSource;
+import com.jme3.input.InputManager;
+import com.jme3.input.controls.ActionListener;
 import java.util.ArrayList;
 
 /**
  *
  * @author Impaler
  */
-public class Music extends AbstractAppState {
+public class Music extends AbstractAppState implements ActionListener {
 
 	ArrayList<String> Tracks = null;
 	SimpleApplication app = null;
@@ -43,6 +45,7 @@ public class Music extends AbstractAppState {
 	Dice RandomGenerator = null;
 	private AudioNode audio_music;
 	float Volume = 0.15f;
+	boolean Mute = false;
 
 	public Music() {
 	}
@@ -52,6 +55,7 @@ public class Music extends AbstractAppState {
 		super.initialize(stateManager, app);
 		this.app = (SimpleApplication) app;
 		this.assets = app.getAssetManager();
+		registerWithInput(this.app.getInputManager());
 
 		RandomGenerator = new Dice();
 		RandomGenerator.seed(42);
@@ -59,6 +63,24 @@ public class Music extends AbstractAppState {
 		Tracks = new ArrayList<String>();
 		loadTrackLocations();
 		playNewTrack();
+	}
+
+	public void onAction(String name, boolean keyPressed, float tpf) {
+		if (this.isEnabled()) {
+			if (name.equals("Mute") && keyPressed) {
+				Mute = !Mute;
+				if (Mute) {
+					audio_music.setVolume(0);
+				} else {
+					audio_music.setVolume(Volume);
+				}
+			}
+		}
+	}
+
+	public void registerWithInput(InputManager inputManager) {
+		String[] inputs = {"Mute"};
+		inputManager.addListener(this, inputs);
 	}
 
 	public void loadTrackLocations() {

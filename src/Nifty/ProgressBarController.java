@@ -33,10 +33,13 @@ import java.util.Properties;
 import java.util.concurrent.Callable;
 
 /**
- *
+ * Simple horizontal progress Bar on black background with text underneath, used
+ * for both game creation and save game loading.  Based on JMonkey tutorial found 
+ * at http://wiki.jmonkeyengine.org/doku.php/jme3:advanced:loading_screen
+ * 
  * @author Impaler
  */
-public class ProgressBarController implements ScreenController  {
+public class ProgressBarController implements ScreenController {
 
 	Nifty nifty;
 	private Screen screen;
