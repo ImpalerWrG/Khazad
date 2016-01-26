@@ -31,6 +31,7 @@ public class ChunkCoordinate implements Serializable {
 	private static final long serialVersionUID = 1;
 	public static final short SECTOR_EDGE_SIZE = 512;
 	public short X, Y, Z;
+	// TODO bitpack into an int
 
 	public ChunkCoordinate() {
 		X = Y = Z = 0;

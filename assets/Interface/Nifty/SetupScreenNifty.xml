@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <nifty>
 	<useStyles filename="nifty-default-styles.xml"/>
-	<useControls filename="nifty-default-controls.xml"/>
-  
+	<useControls filename="Interface/Nifty/KhazadControls.xml"/>
+
 	<screen controller="Nifty.SetupScreenController" id="SetupScreen">
 		<layer childLayout="center" id="SetupLayer">
 			<panel align="center" childLayout="vertical" height="300px" id="MainSetupPanel" style="nifty-panel-simple" width="400px">
@@ -16,8 +16,14 @@
 					<control height="100%" id="SeedTextField" name="textfield" width="285px" maxLength="50"/>
 				</panel>
 				<panel childLayout="horizontal" height="80px" id="panel11" width="100%">
-					<control font="aurulent-sans-16.fnt" height="50px" id="label5" name="label" text="Size X" width="50%" x="0" y="5"/>
-					<control font="aurulent-sans-16.fnt" height="50px" id="label3" name="label" text="Size Y" width="50%" x="253" y="2"/>
+					<panel align="center" childLayout="vertical" height="100%" id="MapSizePanel" width="50%">
+						<control font="aurulent-sans-16.fnt" height="50%" id="MapSizelabel" name="label" text="Map Size" valign="center" width="90%" />
+						<control font="aurulent-sans-16.fnt" height="50px" id="MapSizeSpinner" name="spinnerselector" value="6" minimum="3" maximum="24" width="100%" />
+					</panel>
+					<panel align="center" childLayout="vertical" height="100%" id="PopulationPanel" width="50%">				
+						<control font="aurulent-sans-16.fnt" height="50%" id="Populationlabel" name="label" text="Population" valign="center" width="90%" />
+						<control font="aurulent-sans-16.fnt" height="50px" id="PopulationSpinner" name="spinnerselector" value="300" minimum="200" maximum="5000" width="100%" />
+					</panel>
 				</panel>
 				<panel childLayout="horizontal" height="40px" id="panel12" width="100%">
 					<panel childLayout="center" height="89px" id="panel0" width="50%">
@@ -28,11 +34,11 @@
 					<panel childLayout="center" height="89px" id="panel2" width="50%">
 						<control childLayout="center" height="38px" id="BeginButton" label="Begin Game" name="button" width="130px">
 							<interact onClick="BeginGame()"/>
-						</control>						
+						</control>
 					</panel>
 				</panel>
 				<effect>
-					  <onEndScreen direction="bottom" inherit="true" length="300" mode="out" name="move" startDelay="0"/>
+					<onEndScreen direction="bottom" inherit="true" length="300" mode="out" name="move" startDelay="0"/>
 				</effect>
 			</panel>
 		</layer>

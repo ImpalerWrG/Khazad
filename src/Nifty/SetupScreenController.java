@@ -71,6 +71,8 @@ public class SetupScreenController implements ScreenController {
 				return;
 			}
 			String Seed = nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).getDisplayedText();
+			//int size = this.screen.findNiftyControl("MapSizeSpinner", NiftySpinnerSelector.class);
+
 			Main.createGame((short) 16, (short) 16, Seed, kingdomName);
 
 		} catch (Exception e) {

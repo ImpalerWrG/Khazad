@@ -2,7 +2,7 @@
 <nifty>
 	<useControls filename="nifty-default-controls.xml"/>
 	<useStyles filename="nifty-default-styles.xml"/>
-	<screen id="StartScreen" controller="Nifty.ShellScreenController">
+	<screen id="StartScreen" controller="Nifty.ShellScreenController" defaultFocusElement="newgamebutton">
 		<layer id="Splash" childLayout="vertical">
 			<panel id="panel0" height="10%" width="100%" childLayout="center" padding="0px"/>
 			<panel id="panel1" height="35%" width="100%" childLayout="center">

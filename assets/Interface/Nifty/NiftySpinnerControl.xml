@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<nifty-controls>
+	<controlDefinition name="spinnerselector" controller="Nifty.NiftySpinnerSelector">
+		<panel childLayout="horizontal" backgroundColor="#8001" height="32px" paddingTop="6px" paddingBottom="6px">
+			<control id="spinnerField" name="textfield" style="nifty-textfield" width="60px" height="40px" paddingRight="3px"/>
+			<panel childLayout="vertical">
+				<control id="spinnerUpButton" width="20px" height="20px" name="button">
+					<image filename="Interface/slider-arrow-up.png" />
+					<interact onClick="SpinnerButtonUp()"/>
+				</control>
+				<control id="spinnerDownButton" width="20px" height="20px" name="button">
+					<image filename="Interface/slider-arrow-down.png" />
+					<interact onClick="SpinnerButtonDown()"/>
+				</control>
+			</panel>
+		</panel>
+	</controlDefinition>
+</nifty-controls>

@@ -88,9 +88,9 @@ public class Geology implements Serializable {
 		for (int x = 0; x < BlockCoordinate.CHUNK_EDGE_SIZE + 1; x++) {
 			for (int y = 0; y < BlockCoordinate.CHUNK_EDGE_SIZE + 1; y++) {
 
-				double workingX = (x + X) / 200f;
-				double workingY = (y + Y) / 200f;
-				
+				double workingX = (x + X) / 300f;
+				double workingY = (y + Y) / 300f;
+
 				double baseHeight = ChunkBaseHeight; //256 * 32; // Get this from some kind of world map
 				double TempHeight = (baseHeight + OctavePerlin(workingX, workingY, Octives, persistence));
 
