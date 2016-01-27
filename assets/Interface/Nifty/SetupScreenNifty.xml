@@ -18,11 +18,11 @@
 				<panel childLayout="horizontal" height="80px" id="panel11" width="100%">
 					<panel align="center" childLayout="vertical" height="100%" id="MapSizePanel" width="50%">
 						<control font="aurulent-sans-16.fnt" height="50%" id="MapSizelabel" name="label" text="Map Size" valign="center" width="90%" />
-						<control font="aurulent-sans-16.fnt" height="50px" id="MapSizeSpinner" name="spinnerselector" value="6" minimum="3" maximum="24" width="100%" />
+						<control font="aurulent-sans-16.fnt" height="50px" id="MapSizeSpinner" name="spinnerselector" value="6" minimum="3" maximum="24" increment="1" width="100%" />
 					</panel>
-					<panel align="center" childLayout="vertical" height="100%" id="PopulationPanel" width="50%">				
+					<panel align="center" childLayout="vertical" height="100%" id="PopulationPanel" width="50%">
 						<control font="aurulent-sans-16.fnt" height="50%" id="Populationlabel" name="label" text="Population" valign="center" width="90%" />
-						<control font="aurulent-sans-16.fnt" height="50px" id="PopulationSpinner" name="spinnerselector" value="300" minimum="200" maximum="5000" width="100%" />
+						<control font="aurulent-sans-16.fnt" height="50px" id="PopulationSpinner" name="spinnerselector" value="300" minimum="200" maximum="5000" increment="100" width="100%" />
 					</panel>
 				</panel>
 				<panel childLayout="horizontal" height="40px" id="panel12" width="100%">

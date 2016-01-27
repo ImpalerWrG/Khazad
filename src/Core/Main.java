@@ -256,14 +256,14 @@ public class Main extends SimpleApplication {
 		inputManager.addMapping("IncreeseDetailLevel", new KeyTrigger(KeyInput.KEY_U));	
 	}
 
-	public static Game createGame(short x, short y, String Seed, String Name) {
+	public static Game createGame(short x, short y, int Population, String Seed, String Name) {
 		setProgress(0.1f, "Begining Map Generation");
 		Game game = new Game();
 		app.getStateManager().attach(game);
 
 		MapGenerator gen = new MapGenerator();
 		gen.setGame(game);
-		gen.setParameters(x, y, Seed, Name);
+		gen.setParameters(x, y, Population, Seed, Name);
 
 		pool.submit(gen);
 		return game;

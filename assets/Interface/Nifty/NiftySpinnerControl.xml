@@ -6,11 +6,11 @@
 			<panel childLayout="vertical">
 				<control id="spinnerUpButton" width="20px" height="20px" name="button">
 					<image filename="Interface/slider-arrow-up.png" />
-					<interact onClick="SpinnerButtonUp()"/>
+					<interact onClick="incresseValue()"/>
 				</control>
 				<control id="spinnerDownButton" width="20px" height="20px" name="button">
 					<image filename="Interface/slider-arrow-down.png" />
-					<interact onClick="SpinnerButtonDown()"/>
+					<interact onClick="decreaseValue()"/>
 				</control>
 			</panel>
 		</panel>

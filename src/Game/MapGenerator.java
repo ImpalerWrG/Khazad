@@ -28,14 +28,16 @@ public class MapGenerator implements Callable<Object>{
 	short X, Y;
 	String Name;
 	int MasterSeed;
+	int Population;
 
 	public void setGame(Game game) {
 		this.game = game;
 	}
 
-	public void setParameters(short X, short Y, String SeedString, String kingdomName) {
+	public void setParameters(short X, short Y, int Population, String SeedString, String kingdomName) {
 		this.X = X;  this.Y = Y;
 		Name = kingdomName;
+		this.Population = Population;
 
 		this.MasterSeed = SeedString.hashCode();
 	}
@@ -101,7 +103,7 @@ public class MapGenerator implements Callable<Object>{
 
 		setProgress(.9f, "Spawning Dwarves");
 		short DwarfID = Data.DataManager.getDataManager().getLabelIndex("CREATURE_DWARF");
-		for (int i = 0; i < 300; i++) {
+		for (int i = 0; i < Population; i++) {
 			game.SpawnCitizen(DwarfID, Pather.Tester.getRandomPassableCoordinate());
 		}
 

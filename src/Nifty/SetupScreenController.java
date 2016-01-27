@@ -71,9 +71,12 @@ public class SetupScreenController implements ScreenController {
 				return;
 			}
 			String Seed = nifty.getCurrentScreen().findNiftyControl("SeedTextField", TextField.class).getDisplayedText();
-			//int size = this.screen.findNiftyControl("MapSizeSpinner", NiftySpinnerSelector.class);
+			Spinner Sizecontrol = this.screen.findNiftyControl("MapSizeSpinner", Spinner.class);
+			int Size = Sizecontrol.getValue();
+			Spinner Popcontrol = this.screen.findNiftyControl("PopulationSpinner", Spinner.class);
+			int Population = Popcontrol.getValue();
 
-			Main.createGame((short) 16, (short) 16, Seed, kingdomName);
+			Main.createGame((short) Size, (short) Size, Population, Seed, kingdomName);
 
 		} catch (Exception e) {
 			e.printStackTrace();
