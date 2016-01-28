@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <nifty-controls>
-	<controlDefinition name="spinnerselector" controller="Nifty.NiftySpinnerSelector">
+	<controlDefinition name="spinnerselector" controller="Nifty.NiftySpinner">
 		<panel childLayout="horizontal" backgroundColor="#8001" height="32px" paddingTop="6px" paddingBottom="6px">
 			<control id="spinnerField" name="textfield" style="nifty-textfield" width="60px" height="40px" paddingRight="3px"/>
 			<panel childLayout="vertical">

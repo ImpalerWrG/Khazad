@@ -30,16 +30,14 @@ import Interface.VolumeSelection;
 import java.io.Serializable;
 
 /**
- * Master Class for holding the playing Map, holds primaraly Chunk in HashMap
- * structure and pipes changes to the Chunk/Faces to abstract them away from the
- * rest of the code base
+ * Master Class for holding the playing Map, holds highest level map subdivisions
+ * and pipes changes to them to abstract them away from the rest of the code base
  *
  * @author Impaler
  */
 public class GameMap implements Serializable {
 
 	private static final long serialVersionUID = 1;
-	boolean Initialized;
 	boolean MapLoaded;
 
 	ConcurrentHashMap<SectorCoordinate, Sector> Sectors;
@@ -50,7 +48,6 @@ public class GameMap implements Serializable {
 	public GameMap(int MasterSeed) {
 		Seed = MasterSeed;
 
-		Initialized = false;
 		MapLoaded = false;
 
 		Zones = new ArrayList<Zone>();

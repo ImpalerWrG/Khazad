@@ -61,60 +61,47 @@ public class MapCoordinate implements Serializable  {
 	}
 
 	public void setX(int x) {
-		this.Chunk.X = (short) (x / BlockCoordinate.CHUNK_EDGE_SIZE);
-		this.Block.set(Axis.AXIS_X, x % BlockCoordinate.CHUNK_EDGE_SIZE);
+		this.Chunk.X = (short) (x / this.Block.Size);
+		this.Block.set(Axis.AXIS_X, x % this.Block.Size);
 	}
 
 	public void setY(int y) {
-		this.Chunk.Y = (short) (y / BlockCoordinate.CHUNK_EDGE_SIZE);
-		this.Block.set(Axis.AXIS_Y, y % BlockCoordinate.CHUNK_EDGE_SIZE);
+		this.Chunk.Y = (short) (y / this.Block.Size);
+		this.Block.set(Axis.AXIS_Y, y % this.Block.Size);
 	}
 
 	public void setZ(int z) {
-		this.Chunk.Z = (short) (z / BlockCoordinate.CHUNK_EDGE_SIZE);
-		this.Block.set(Axis.AXIS_Z, z % BlockCoordinate.CHUNK_EDGE_SIZE);
+		this.Chunk.Z = (short) (z / this.Block.Size);
+		this.Block.set(Axis.AXIS_Z, z % this.Block.Size);
 	}
 
 	public void translate(Direction DirectionType) {
-		translateCube(DirectionType, 1);
+		translateBlock(DirectionType, 1);
 	}
 
-	public void translateCube(Direction DirectionType, int Quantity) {
+	public void translateBlock(Direction DirectionType, int Quantity) {
 
 		int Xtranslation = DirectionType.getValueonAxis(Axis.AXIS_X) * Quantity;
 		int Ytranslation = DirectionType.getValueonAxis(Axis.AXIS_Y) * Quantity;
 		int Ztranslation = DirectionType.getValueonAxis(Axis.AXIS_Z) * Quantity;
 
-		int RawX = this.Block.getX() + Xtranslation;
-		int RawY = this.Block.getY() + Ytranslation;
-		int RawZ = this.Block.getZ() + Ztranslation;
+		int RawX = this.getX() + Xtranslation;
+		int RawY = this.getY() + Ytranslation;
+		int RawZ = this.getZ() + Ztranslation;
 
-		int CelltranslateX = RawX / BlockCoordinate.CHUNK_EDGE_SIZE;
-		int CelltranslateY = RawY / BlockCoordinate.CHUNK_EDGE_SIZE;
-		int CelltranslateZ = RawZ / BlockCoordinate.CHUNK_EDGE_SIZE;
+		int CelltranslateX = RawX / this.Block.Size;
+		int CelltranslateY = RawY / this.Block.Size;
+		int CelltranslateZ = RawZ / this.Block.Size;
 
-		if (RawX < 0) {
-			//RawX += CubeCoordinate.CELLEDGESIZE;
-			CelltranslateX += -1;
-		}
-		if (RawY < 0) {
-			//RawY += CubeCoordinate.CELLEDGESIZE;
-			CelltranslateY += -1;
-		}
-		if (RawZ < 0) {
-			//RawZ += CubeCoordinate.CELLEDGESIZE;
-			CelltranslateZ += -1;
-		}
+		this.Chunk.X = (short) CelltranslateX;
+		this.Chunk.Y = (short) CelltranslateY;
+		this.Chunk.Z = (short) CelltranslateZ;
 
-		this.Chunk.X += CelltranslateX;
-		this.Chunk.Y += CelltranslateY;
-		this.Chunk.Z += CelltranslateZ;
+		short CubeX = (short) (RawX % this.Block.Size);
+		short CubeY = (short) (RawY % this.Block.Size);
+		short CubeZ = (short) (RawZ % this.Block.Size);
 
-		short CubeX = (short) (RawX % BlockCoordinate.CHUNK_EDGE_SIZE);
-		short CubeY = (short) (RawY % BlockCoordinate.CHUNK_EDGE_SIZE);
-		short CubeZ = (short) (RawZ % BlockCoordinate.CHUNK_EDGE_SIZE);
-
-		this.Block.set(CubeX, CubeY, CubeZ);	
+		this.Block.set(CubeX, CubeY, CubeZ);
 	}
 
 	public Vector3f getVector() {
@@ -122,15 +109,15 @@ public class MapCoordinate implements Serializable  {
 	}
 
 	public int getX() {
-		return (Chunk.X * BlockCoordinate.CHUNK_EDGE_SIZE) + Block.getX();
+		return (Chunk.X * this.Block.Size) + Block.getX();
 	}
 
 	public int getY() {
-		return (Chunk.Y * BlockCoordinate.CHUNK_EDGE_SIZE) + Block.getY();
+		return (Chunk.Y * this.Block.Size) + Block.getY();
 	}
 
 	public int getZ() {
-		return (Chunk.Z * BlockCoordinate.CHUNK_EDGE_SIZE) + Block.getZ();
+		return (Chunk.Z * this.Block.Size) + Block.getZ();
 	}
 
 	@Override
