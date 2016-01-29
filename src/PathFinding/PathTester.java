@@ -160,7 +160,7 @@ public class PathTester implements Serializable {
 
 	public MapCoordinate getRandomPassableCoordinate() {
 		if (!TestCoords.isEmpty()) {
-			return TestCoords.get(PathDice.roll(0, TestCoords.size() - 1));
+			return TestCoords.get(PathDice.roll(0, TestCoords.size() - 1)).clone();
 		} else {
 			return null;
 		}
