@@ -143,7 +143,7 @@ public class TerrainRenderer extends AbstractAppState {
 							Vector3f Center = Coords.getVector();
 							ChunkBox.setCenter(Center);
 							if (this.CameraState.contains(ChunkBox) == false) {
-								queueChunkDestroy(targetChunk, this.LevelofDetail);
+								queueChunkDestroy(targetChunk, i);
 							}
 						}
 					}

@@ -51,7 +51,7 @@ public class TerrainDestroyer implements Callable<Void>{
 	}
 
 	public Void call() {
-			app.enqueue(new Callable() {
+		app.enqueue(new Callable() {
 			public Object call() throws Exception {
 				ChunkLight.detachChildNamed("LightGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + DetailLevel);
 				ChunkDark.detachChildNamed("DarkGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + DetailLevel);

@@ -50,7 +50,7 @@ public class TerrainBuilder implements Callable<Void> {
 	TileBuilder TileSource;
 	Application app;
 	Node TerrainLight, TerrainDark, ChunkLight, ChunkDark;
-	Geometry[] LightBuildGeometry, DarkBuildGeometry;
+	Geometry LightBuildGeometry, DarkBuildGeometry;
 	int DetailLevel;
 	Spatial.CullHint hint;
 
@@ -59,9 +59,6 @@ public class TerrainBuilder implements Callable<Void> {
 		this.BuildChunk = TargetChunk;
 		this.TileSource = Tiles;
 		this.DetailLevel = LevelofDetail;
-		
-		this.LightBuildGeometry = new Geometry[BlockCoordinate.CHUNK_DETAIL_LEVELS];
-		this.DarkBuildGeometry = new Geometry[BlockCoordinate.CHUNK_DETAIL_LEVELS];		
 	}
 
 	public void setNodes(Node LightChunkNode, Node DarkChunkNode) {
@@ -94,7 +91,9 @@ public class TerrainBuilder implements Callable<Void> {
 					//geom.scale(1.001f);  //T-Chunk junction hack
 					
 					geom.scale(BlockSize, BlockSize, BlockSize);
-					geom.setLocalTranslation(new Vector3f(coords.getX() * BlockSize, coords.getY() * BlockSize, coords.getZ() * BlockSize));
+					Vector3f position = new Vector3f(coords.getX() * BlockSize, coords.getY() * BlockSize, coords.getZ() * BlockSize);
+					position.addLocal((BlockSize / 2.0f) - BlockCoordinate.HALF_BLOCK, BlockSize / 2.0f - BlockCoordinate.HALF_BLOCK, BlockSize / 2.0f - BlockCoordinate.HALF_BLOCK);
+					geom.setLocalTranslation(position);
 					geom.setMaterial(TextureManager.getTextureManager().TerrainMaterial);
 
 					if (targetface.isSunlit()) {
@@ -107,15 +106,15 @@ public class TerrainBuilder implements Callable<Void> {
 
 			GeometryBatchFactory.optimize(TerrainLight, true);
 			if (TerrainLight.getQuantity() > 0) {
-				LightBuildGeometry[this.DetailLevel] = (Geometry) TerrainLight.getChild(0);
-				LightBuildGeometry[this.DetailLevel].setName("LightGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + this.DetailLevel);
+				LightBuildGeometry = (Geometry) TerrainLight.getChild(0);
+				LightBuildGeometry.setName("LightGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + DetailLevel);
 				TerrainLight.detachAllChildren();
 			}
 
 			GeometryBatchFactory.optimize(TerrainDark, true);
 			if (TerrainDark.getQuantity() > 0) {
-				DarkBuildGeometry[this.DetailLevel] = (Geometry) TerrainDark.getChild(0);
-				DarkBuildGeometry[this.DetailLevel].setName("DarkGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + this.DetailLevel);
+				DarkBuildGeometry = (Geometry) TerrainDark.getChild(0);
+				DarkBuildGeometry.setName("DarkGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + DetailLevel);
 				TerrainDark.detachAllChildren();
 			}
 
@@ -123,15 +122,15 @@ public class TerrainBuilder implements Callable<Void> {
 			public Object call() throws Exception {
 
 				ChunkLight.detachChildNamed("LightGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + DetailLevel);
-				if (LightBuildGeometry[DetailLevel] != null) {
-					ChunkLight.attachChild(LightBuildGeometry[DetailLevel]);
-					LightBuildGeometry[DetailLevel].setCullHint(hint);
+				if (LightBuildGeometry != null) {
+					ChunkLight.attachChild(LightBuildGeometry);
+					LightBuildGeometry.setCullHint(hint);
 				}
 
 				ChunkDark.detachChildNamed("DarkGeometry Chunk " + BuildChunk.toString() + "DetailLevel " + DetailLevel);
-				if (DarkBuildGeometry[DetailLevel] != null) {
-					ChunkDark.attachChild(DarkBuildGeometry[DetailLevel]);
-					DarkBuildGeometry[DetailLevel].setCullHint(hint);
+				if (DarkBuildGeometry != null) {
+					ChunkDark.attachChild(DarkBuildGeometry);
+					DarkBuildGeometry.setCullHint(hint);
 				}
 				return null;
 			}

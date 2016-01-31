@@ -305,7 +305,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		} else if (name.equals("ZoomIn")) {
 			if (MiddleDown) {
 				changeViewLevel(-1);
-				Terrain.SwapFrustrumChunks();
+				//Terrain.SwapFrustrumChunks();
 			} else if (mouseWheelEnabled) {
 				MainCamera.zoomCamera(value);
 			}
@@ -315,7 +315,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		} else if (name.equals("ZoomOut")) {
 			if (MiddleDown) {
 				changeViewLevel(1);
-				Terrain.SwapFrustrumChunks();
+				//Terrain.SwapFrustrumChunks();
 			} else if (mouseWheelEnabled) {
 				MainCamera.zoomCamera(-value);
 			}

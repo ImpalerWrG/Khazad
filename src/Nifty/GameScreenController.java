@@ -100,9 +100,11 @@ public class GameScreenController implements ScreenController, KeyInputHandler, 
 			if (name.equals("ReduceDetailLevel")) {
 				TerrainRenderer terrainRenderer = Main.app.getStateManager().getState(TerrainRenderer.class);
 				terrainRenderer.changeLevelofDetal(1);
+				terrainRenderer.SwapFrustrumChunks();
 			} else if (name.equals("IncreeseDetailLevel")) {
 				TerrainRenderer terrainRenderer = Main.app.getStateManager().getState(TerrainRenderer.class);
 				terrainRenderer.changeLevelofDetal(-1);
+				terrainRenderer.SwapFrustrumChunks();
 			}
 		}
 	}
