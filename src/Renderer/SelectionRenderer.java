@@ -164,25 +164,29 @@ public class SelectionRenderer extends AbstractAppState {
 
 	public Node buildZone(Zone TargetZone) {
 		Node ZoneNode = new Node("ZoneNode");
+		BlockCoordinate Index = new BlockCoordinate();
 
 		HashMap<ChunkCoordinate, BitSet> ZoneMap = TargetZone.getZoneMap();
 		for (Map.Entry<ChunkCoordinate, BitSet> entry : ZoneMap.entrySet()) {
 			BitSet ChunkBitSet = entry.getValue();
-			ChunkCoordinate Coords = entry.getKey();
+			ChunkCoordinate Chunk = entry.getKey();
+			Node ChunkNode = new Node(Chunk.toString());
+			ChunkNode.setLocalTranslation(Chunk.getVector());
+			ZoneNode.attachChild(ChunkNode);
 
-			for (BlockCoordinate Index = new BlockCoordinate(); !Index.isEnd(); Index.next()) {
+			for (int i = ChunkBitSet.nextSetBit(0); i != -1; i = ChunkBitSet.nextSetBit(i + 1)) {
+				Index.set((short)i);
+				Box newBox = new Box(BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK);
+
 				if (ChunkBitSet.get(Index.getBlockIndex())) {
-					Box newBox = new Box(BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK, BlockCoordinate.HALF_BLOCK);
-					MapCoordinate MapCoords = new MapCoordinate(Coords, Index);
-
 					Geometry ZoneBlock = new Geometry("Box", newBox);
-					ZoneBlock.setLocalTranslation(MapCoords.getVector());
+					ZoneBlock.setLocalTranslation(Index.getVector());
 
 					Material BrownMat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
 					BrownMat.setColor("Color", ColorRGBA.Brown);
 					ZoneBlock.setMaterial(BrownMat);
 
-					ZoneNode.attachChild(ZoneBlock);
+					ChunkNode.attachChild(ZoneBlock);
 				}
 			}
 		}
@@ -223,8 +227,6 @@ public class SelectionRenderer extends AbstractAppState {
 				Selection.Dirty = false;
 			}
 		}
-		//cam.SelectionOrigin
-		//cam.SelectionTerminus;
 
 		Game game = state.getState(Game.class);
 		ArrayList<Zone> zones = game.getMap().getZones();
@@ -237,10 +239,10 @@ public class SelectionRenderer extends AbstractAppState {
 					if (ZoneNode != null)
 						app.getRootNode().detachChild(ZoneNode);
 
-					//ZoneNode = BuildZone(targetZone);
-					//app.getRootNode().attachChild(ZoneNode);					
-					//ZoneGeometries.put(ID, ZoneNode);
-					//targetZone.Dirty = false;
+					ZoneNode = buildZone(targetZone);
+					app.getRootNode().attachChild(ZoneNode);					
+					ZoneGeometries.put(ID, ZoneNode);
+					targetZone.Dirty = false;
 				}
 			}
 		}

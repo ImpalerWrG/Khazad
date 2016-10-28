@@ -70,11 +70,13 @@ public class NiftySpinner extends de.lessvoid.nifty.controls.AbstractController 
 	}
 
 	public void incresseValue() {
+		value = getValue();
 		setValue(value + increment); 
 		field.setText(getValueString()); 
 	}
 
 	public void decreaseValue() {
+		value = getValue();
 		setValue(value - increment); 
 		field.setText(getValueString()); 
 	}
@@ -86,10 +88,10 @@ public class NiftySpinner extends de.lessvoid.nifty.controls.AbstractController 
 	}
 
 	public int getValue() {
-		return value; 
+		return Integer.decode(field.getDisplayedText()); 
 	}
 
 	public String getValueString() {
-		return Integer.toString(value); 
+		return field.getDisplayedText(); 
 	}
 }

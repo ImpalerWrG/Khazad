@@ -90,7 +90,7 @@ public class ExcavateJob extends Job implements Serializable {
 			for (int y = Origin.getY(); y <= Terminal.getY(); y++) {
 				for (int z = Origin.getZ(); z <= Terminal.getZ(); z++) {
 					TargetCoords.set(x, y, z);
-					ChunkCoordinate ChunkCoords = TargetCoords.Chunk;
+					ChunkCoordinate ChunkCoords = TargetCoords.Chunk.clone();
 					int BlockIndex = TargetCoords.Block.getBlockIndex();
 
 					BlockShape[] DesignationShapes = Designations.get(ChunkCoords);
@@ -159,6 +159,8 @@ public class ExcavateJob extends Job implements Serializable {
 	public void completeDesignation(MapCoordinate Coords) {
 		AccessibleMap.remove(Coords);
 		ExcavationZone.removeMapCoordinate(Coords);
+		AssignedExcavations.get(Coords.Chunk).clear(Coords.Block.getBlockIndex());
+		AccessibleExcavations.get(Coords.Chunk).clear(Coords.Block.getBlockIndex());
 
 		DesignationCount--;
 		AccessibleExcavationCount--;
@@ -166,7 +168,7 @@ public class ExcavateJob extends Job implements Serializable {
 
 		// test adjacent for new accesability
 		if (paths.getDirectionFlags(Coords, Modality).cardinality() > 0) {
-			BitSet DirectionFlags;
+
 			for (Direction dir : Direction.AXIAL_DIRECTIONS) {
 				MapCoordinate AdjacentcCoords = Coords.clone();
 				AdjacentcCoords.translate(dir);
@@ -176,8 +178,10 @@ public class ExcavateJob extends Job implements Serializable {
 				if (DesignationShape != null && !DesignationShape.isExcavationEquivilent(AdjacentBlockShape)) {
 					BitSet AccessibleLocation = AccessibleExcavations.get(Coords.Chunk);
 					AccessibleLocation.set(Coords.Block.getBlockIndex());
-					AccessibleMap.put(AdjacentcCoords.clone(), Coords.clone());
-					AccessibleExcavationCount++;
+					if (!AccessibleMap.containsKey(AdjacentcCoords.clone())) {
+						AccessibleMap.put(AdjacentcCoords.clone(), Coords.clone());
+						AccessibleExcavationCount++;
+					}
 				}
 			}
 		}
@@ -202,8 +206,7 @@ public class ExcavateJob extends Job implements Serializable {
 			if (OldTask.type == Task.TaskType.TASK_GOTO) {
 				MapCoordinate TargetExcavation = AssignedWorkers.get(IdlePawn);
 
-				Task newTask = new Task(this, Task.TaskType.TASK_DIG, TargetExcavation);
-				return newTask;
+				return new Task(this, Task.TaskType.TASK_DIG, TargetExcavation);
 			}
 		}
 
@@ -225,8 +228,7 @@ public class ExcavateJob extends Job implements Serializable {
 			Assignments.set(ExcavateBlock.Block.getBlockIndex());
 			AssignedExcavationsCount++;
 
-			Task newTask = new Task(this, Task.TaskType.TASK_GOTO, AccsibleBlock);
-			return newTask;
+			return new Task(this, Task.TaskType.TASK_GOTO, AccsibleBlock);
 		}
 
 		if (!needsWorkers()) {

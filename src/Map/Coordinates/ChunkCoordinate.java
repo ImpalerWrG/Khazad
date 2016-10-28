@@ -75,9 +75,9 @@ public class ChunkCoordinate implements Serializable {
 		int Key = 0;
 
 		Key += X;
-		Key <<= 12;
+		Key <<= 10;
 		Key += Y;
-		Key <<= 12;
+		Key <<= 10;
 		Key += Z;
 
 		return Key;

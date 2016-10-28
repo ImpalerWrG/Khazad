@@ -29,7 +29,7 @@ import java.io.Serializable;
  *
  * @author Impaler
  */
-public class AStarNode implements Comparable<AStarNode>, Serializable {
+public class PathingNode implements Comparable<PathingNode>, Serializable {
 
 	private static final long serialVersionUID = 1;
 	// Cumulative distance used to judge Path
@@ -41,14 +41,14 @@ public class AStarNode implements Comparable<AStarNode>, Serializable {
 	float MinimumCostToGoal;
 	float TieBreakerValue;
 	// Data about our Parent
-	AStarNode Parent;
+	PathingNode Parent;
 	Direction ParentDirection;
 
-	AStarNode() {
+	PathingNode() {
 		LocationCoordinates = new MapCoordinate();
 	}
 
-	void set(MapCoordinate TargetCoordinates, AStarNode ParentNode, Direction SourceDirection, float DistanceFromStart, float MinimumCost, float TieBreaker) {
+	void set(MapCoordinate TargetCoordinates, PathingNode ParentNode, Direction SourceDirection, float DistanceFromStart, float MinimumCost, float TieBreaker) {
 		Parent = ParentNode;
 		ParentDirection = SourceDirection;
 		LocationCoordinates.copy(TargetCoordinates);
@@ -58,7 +58,7 @@ public class AStarNode implements Comparable<AStarNode>, Serializable {
 		TotalCost = PathLengthFromStart + MinimumCostToGoal;
 	}
 
-	public int compareTo(AStarNode TargetNode) {
+	public int compareTo(PathingNode TargetNode) {
 		if (TotalCost < TargetNode.TotalCost) {
 			return -1;
 		} else if (TotalCost == TargetNode.TotalCost) {
@@ -73,7 +73,7 @@ public class AStarNode implements Comparable<AStarNode>, Serializable {
 		}
 	}
 
-	boolean equals(AStarNode other) {
+	boolean equals(PathingNode other) {
 		return LocationCoordinates.equals(other.LocationCoordinates);
 	}
 

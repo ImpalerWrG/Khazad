@@ -56,8 +56,8 @@ public class Zone implements Serializable {
 	}
 
 	public final void addSelection(VolumeSelection Selection) {
-		MapCoordinate Origin = Selection.OriginLocation;
-		MapCoordinate Terminal = Selection.TerminalLocation;
+		MapCoordinate Origin = Selection.OriginLocation.clone();
+		MapCoordinate Terminal = Selection.TerminalLocation.clone();
 		MapCoordinate TargetCoords = new MapCoordinate();
 
 		for (int x = Origin.getX(); x <= Terminal.getX(); x++) {
@@ -71,7 +71,7 @@ public class Zone implements Serializable {
 					} else {
 						BitSet Bits = new BitSet(BlockCoordinate.BLOCKS_PER_CHUNK);
 						Bits.set(TargetCoords.Block.getBlockIndex(), true);
-						ZoneMap.put(TargetCoords.Chunk, Bits);
+						ZoneMap.put(TargetCoords.Chunk.clone(), Bits);
 					}
 				}
 			}

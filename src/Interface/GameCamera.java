@@ -204,9 +204,9 @@ public class GameCamera {
 	public void setSlice(int Top, int Bottom) {
 		SliceTop = Top;
 		SliceBottom = Bottom;
-		Vector3f NewLocation = TargetNode.getLocalTranslation();
-		NewLocation.z = Top;
-		TargetNode.setLocalTranslation(NewLocation);
+		//Vector3f NewLocation = TargetNode.getLocalTranslation();
+		//NewLocation.z = Top;
+		//TargetNode.setLocalTranslation(NewLocation);
 	}
 
 	public Ray getMouseRay(Vector2f click2d) {

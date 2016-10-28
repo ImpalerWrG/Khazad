@@ -143,8 +143,12 @@ public class PathManager extends AbstractAppState {
 		if (TargetGrid != null) {
 			if (TargetGrid.contains(StartCoords) && TargetGrid.contains(GoalCoords)) {
 				if (isPathPossible(MovementType, StartCoords, GoalCoords)) {
-					AStar PathTask = new AStar(TargetGrid);
-					PathTask.assignResources(ProvidePool(), new LinkedListDeque<AStarNode>(30));
+					//AStar PathTask = new AStar(TargetGrid);
+					//PathTask.assignNodePool(ProvidePool());
+					
+					DStar PathTask = new DStar(TargetGrid);
+					PathTask.assignResources(ProvidePool(), new LinkedListDeque<PathingNode>(30));
+					
 					PathTask.setModality(MovementType);
 					PathTask.setHeuristics(ManhattenHeuristic, EuclideanHeuristic);
 					PathTask.setEndPoints(StartCoords, GoalCoords);
@@ -163,8 +167,8 @@ public class PathManager extends AbstractAppState {
 			if (TargetGrid.contains(StartCoords) && TargetGrid.contains(GoalCoords)) {
 				if (isPathPossible(MovementType, StartCoords, GoalCoords)) {
 					PathingTimer.start();
-					AStar PathTask = new AStar(TargetGrid);
-					PathTask.assignResources(ProvidePool(), new LinkedListDeque<AStarNode>(30));
+					DStar PathTask = new DStar(TargetGrid);
+					PathTask.assignResources(ProvidePool(), new LinkedListDeque<PathingNode>(30));
 					PathTask.setModality(MovementType);
 					PathTask.setHeuristics(ManhattenHeuristic, EuclideanHeuristic);
 					PathTask.setEndPoints(StartCoords, GoalCoords);

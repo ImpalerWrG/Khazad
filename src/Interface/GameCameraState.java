@@ -74,7 +74,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		SELECTING_SURFACE
 	}
 
-	private Node rootnode;
 	private Node Mapnode;
 	private Node LookNode;
 	private SimpleApplication app;
@@ -94,6 +93,11 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	private boolean UpwardPaning;
 	private boolean DownwardPaning;
 	private int PanningSpeed = 3;
+
+	private boolean DoubleClickStarted = false;
+	private long DoubleClickTimer = 0;
+	private int DoubleClickThreshold = 250;
+
 	private float OldMouseX;
 	private float OldMouseY;
 	private float XChange;
@@ -119,7 +123,6 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		super.initialize(stateManager, app);
 		this.app = (SimpleApplication) app;
 		this.state = stateManager;
-		this.rootnode = this.app.getRootNode();
 
 		MapRenderer rend = stateManager.getState(MapRenderer.class);
 		this.Mapnode = rend.getMapNode();
@@ -183,6 +186,16 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		if (this.isEnabled()) {
 			if (name.equals("LeftClick")) {
 				LeftDown = keyPressed;
+				if (!DoubleClickStarted) {
+					DoubleClickStarted = !LeftDown;
+					DoubleClickTimer = System.currentTimeMillis();
+				} else {
+					long interval = System.currentTimeMillis() - DoubleClickTimer;
+					if (interval <= DoubleClickThreshold) {
+						pointCameraAt(MouseLocation);
+					}
+					DoubleClickStarted = false;
+				}
 
 				if (CurrentMode == CameraMode.SELECTING_VOLUME && !keyPressed)
 					completeVolumeSelection();
@@ -303,7 +316,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				}
 			}
 		} else if (name.equals("ZoomIn")) {
-			if (MiddleDown) {
+			if (RightDown) {
 				changeViewLevel(-1);
 				//Terrain.SwapFrustrumChunks();
 			} else if (mouseWheelEnabled) {
@@ -313,7 +326,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			Terrain.SwapFrustrumChunks();
 
 		} else if (name.equals("ZoomOut")) {
-			if (MiddleDown) {
+			if (RightDown) {
 				changeViewLevel(1);
 				//Terrain.SwapFrustrumChunks();
 			} else if (mouseWheelEnabled) {
@@ -590,9 +603,9 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	public void update(float tpf) {
 		if (QueuedLookLocation != null) {
 			// change to the same Z level as the target
-			SliceTop = QueuedLookLocation.getZ();
-			SliceBottom = SliceTop - ViewLevels;
-			setSlice(SliceTop, SliceBottom, false);
+			//SliceTop = QueuedLookLocation.getZ();
+			//SliceBottom = SliceTop - ViewLevels;
+			//setSlice(SliceTop, SliceBottom, true);
 			// point camera at the target
 			Vector3f target = QueuedLookLocation.getVector();
 			MainCamera.pointCameraAt(target);

@@ -5,6 +5,7 @@
 
 package Map.Coordinates;
 
+import com.jme3.math.Vector3f;
 import java.io.Serializable;
 
 /**
@@ -196,6 +197,10 @@ public class BlockCoordinate implements Serializable {
 		return (short) (~(Mask << (this.Shift * (BLOCK_BITSHIFT_Z))) & this.Data);
 	}
 
+	public Vector3f getVector() {
+		return new Vector3f(getX(), getY(), getZ());
+	}
+
 	public void next() {
 		Data++;
 	}
@@ -277,10 +282,7 @@ public class BlockCoordinate implements Serializable {
 
 	@Override
 	public int hashCode() {
-		//int hash = 3;
-		//hash += 17 * X;
-		//hash += 37 * Y;
-		//hash += 5 * Z;
+
 		return Data;
 	}
 }
