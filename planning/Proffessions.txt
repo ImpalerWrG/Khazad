@@ -1,49 +1,52 @@
 Professions work on Branching system similar to EvilGenius minions or A Game of Dwarves.  Three tiers of professions exist, Basic, Intermediate, Advanced.  Choices are 7 for Basic, 6 for Intermediate and 5 for Advanced
 
-<Commoner - Root generalist proffession>
-<Worshipper (Concvlave) [WIL][CHA] - Religion, high status (Cloak/Cloth, Quil&Ink>
 
-	<Acolyte of Krom (High Priest of) (male - Martial) (Holy Symbol, Litergy)>
+http://www.rootsweb.ancestry.com/~usgwkidz/oldjobs.htm
+
+<Commoner - Root generalist proffession>
+<Worshipper (Concvlave) [WIL][CHA] - Religion, high status (Cloak/Cloth, Quil&Ink. breast plate of 7 gem types per https://en.wikipedia.org/wiki/Priestly_breastplate>
+
+	<Acolyte of Krom (High Priest of) (male - Martial, husband of Valaya) (Holy Symbol, Litergy)>
 		Zealot - Skirmisher Paladin
 		Dervish - Fighter Monk
 		Apostle - Cleric
 		Jagar - Fighting Inquisitor - classic red hat vampire hunter
-		Acolyte of ???
-	</>		
-	<Acolyte of Sedmur (High Priest of)(male - Wisdom, Mining, Rune magic) (Holy Symbol, Litergy)>
+		Acolyte of Feone - 
+	</>
+	<Acolyte of Lodrig (High Priest of)(male - Wisdom, Mining, Rune magic) (Holy Symbol, Litergy)>
 		Zealot - Marksman Paladin
 		Mystic - Builder Monk
 		Initiate - Cleric
 		Judicator - Domestic judge/inquisitor for civil and religious crimes
-		Acolyte of ???
-	</>		
-	<Acolyte of Valaya (High Priest of)(female - Fertility, Judgement) (Holy Symbol, Litergy)>
+		Acolyte of Bes - daughter of Lodrig and Valaya, creator of writing (runes were just nouns before this)
+	</>
+	<Acolyte of Valaya (High Priest of)(female - Fertility, Judgement, wife of Krom and Doulin) (Holy Symbol, Litergy)>
 		Shield Maiden - Defender Paladin
 		Nun - Labourer Monk, bless child birth
 		Savant - Cleric
 		Exorcist - magic oriented undead/demon driving out inquisitor
-		Acolyte of Urist
+		Acolyte of Urist - son of Valaya and Krom, perform burrial rituals
 	</>
-	<Acolyte of Helga (High Priest of)(female - Wisdom, Martial, Prophecy ) (Holy Symbol, Litergy)>
+	<Acolyte of Helga (High Priest of)(female - Wisdom, Martial, Prophecy, wife of Grund) (Holy Symbol, Litergy)>
 		Valkyrie - Warrior Paladin
-		Theurge - Thinker Monk
-		Oracle - Cleric
-		Tempest - inquisitor or domestic life, proper behavior and piety
-		Acolyte of Yog
+		Theurge - Thinker/Prophocizing Monk
+		Oracle / Krivis - Cleric
+		Tempest / Hasidim - inquisitor or domestic life, proper behaviour and piety
+		Acolyte of Yog - son of first chronicler of dwarven history, son of Helga and Grund, Brother of Lofar
 	</>
-	<Acolyte of Lodrig (High Priest of)(both - Trickster/wit) (Holy Symbol, Litergy)>
+	<Acolyte of Doulin (High Priest of)(both - Trickster/wit) (Holy Symbol, Litergy)>
 		Crusader - Cavalier Paladin
-		Ascetic - Gatherer Monk
+		Ascetic / Sadhu - Gatherer Monk
 		Devotee - Cleric
 		Saracen - inquisitor of merth, joking, pranking jesters
-		Acolyte of Lofar - Dwarven 'Baucus' merrymaker, revelry, art, the first child born to dwarfkind, the first drunkard
+		Acolyte of Lofar - Son of Doulin and Helga brother of Yog, Dwarven 'Baucus' merrymaker, revelry, art, the first child born to dwarfkind, the first drunkard
 	</>
-	<Acolyte of Grund (High Priest of) (male - Forging, Age, Steadfastness) (Holy Symbol, Litergy)>
+	<Acolyte of Grund (High Priest of) (male - Forging, Age, Steadfastness, husband of Bes) (Holy Symbol, Litergy)>
 		Sentinel - Guard Paladin
 		Virtuoso - Crafter Monk
 		Emissary - Cleric
 		Witness - Watches your dwarves on expeditions, detects sabotage/lies by heretics
-		Acolyte of ???
+		Acolyte of Phat - son of Grund and Bes - greatest dwarven engineer
 	</>
 	Pantheon x6 
 		Paladin - Mixed Cleric/Fighter
@@ -60,6 +63,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 			Diviner
 			Patriarch
 			Arbiter
+			Hasidim
 			
 		Inquisitor - Seek out heretics
 			Justiciar
@@ -125,14 +129,14 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 	</>	
 	<Warrior [STR][LOG] - Balanced (chain mail, mace)>
 		???
-		Flail - immune to flanking?  (Flail, helm)
+		Flail? - immune to flanking?  (Flail, helm)
 		Housecarl - (2 handed Ax, helmet)
 		IronBreakers - (2 handed Hammer, helmet)
 		WurmHunter - specialized in killing mega beasts
 	</>
 	<Calvary-Rider-Cavalier [FLX][MEM] - Mounted combat (Saddle, Riding boots)>
 		Lancer - lances, balanced Calvary (lance, ??)
-		Outrider - scouting skirmishing
+		Outrider / Hakkapeliitta - scouting skirmishing
 		Messenger - fast travel, diplomatic send new commands to expeditions/armies (saddlebag)
 		Hussar - Heavy armoured (mount armour, weapon?)
 		Cossack - live off the land raiders? (saddlebag)
@@ -141,7 +145,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Slinger - David vs Goliath, cheap but effective
 		Archer - Bow
 		SharpShooter
-		Musketeer - Musket
+		Musketeer / Fusiler - Musket
 		Quarreller - Crossbow
 		Bombardier - siege weapons?
 	</>
@@ -153,7 +157,7 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		HighLander - mountain defensive, better climb mobility, high ground defence by avalanche and rock throwing
 	</>
 	<Guard (Captain of the Guard) [INT][CHA] - Police (Cudgle, KeyChain)>
-		Royal Guard [WIL][SPD] - Guards royalty
+		Royal Guard / Keshik [WIL][SPD] - Guards royalty
 		Constable [FLX][END] - Street cop,
 		Detective [LOG][JDG] - solves crimes
 		Jailer [STR][DEX] - watches dungeons, reduced unhappiness from interacting with prisoners
@@ -187,17 +191,19 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Haberdasher 
 	</>	
 	<Carver>
-		Wood Carver / lute-maker
+		Ébéniste / Marquetar - veneer and inlay additions to wood items
+		Wood Carver / lute-maker / luter
 		Wax Carver
 		Bone Carver
-		Bowyer / Fletcher
+		Bowyer - creator of bows and crossbows
+		Fletcher  - creator of arrows and bolts
 	</>	
 	<Sculptor>
 		Stone Shaper
-		Potter / Glayver?
+		Potter / Glazier
 	</>		
 	<Artist (Maestro) [][]>
-		Bard/Singer
+		Bard/Singer/Skald
 		Painter
 		Thespian
 		Poet
@@ -206,11 +212,12 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 </>
 <Builder (Architect) [STR][FLX] - Any structure/space/building space creation (Helmet, ToolBelt?)>
 
+	Glazer - glass windows???
 	<Mason (???)>
 		Bricklayer
-		Engraver
+		
 		Stonecutter
-		Quarryier - block cutting
+		Quarrier - block cutting
 	</>		
 	<Miner>
 		Digger - soil digging
@@ -225,12 +232,12 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Framer - Timber structures
 		Joiner - Cabinetry/furniture
 		Turner - laith/poles
-		Carver - hand carved
+		Carver / Whittler - hand carved
 		Luter - musical instrument making
 	</>	
 	<Woodwright>
 		Wainwright - wagon and wheel making
-		Shipwright - makes boats for travel and trade	
+		Shipwright - makes boats for travel and trade
 	</>
 	<Engineer [LOG]>
 		Mechanic
@@ -239,16 +246,17 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 		Architect?
 		Plumber - pipes and steam engines
 	</>
-	<Decorator [][]>
+	<Decorator (Interior Decorator[][]>
 		<Polisher/>
 		<Tiler/>
 		<Engraver/>
 		<Sculpter/>
+		<Plasterer/>
 	</>
 </>
 <Labourer (Foreman/Steward) [INT][END] - Most internal domestic jobs and first order resource processing (Aprron, ???)>
 
-	<Cook (Chef) [][] - Food preperation>
+	<Cook (Master Chef) [][] - Food preperation>
 		Butcher
 		Baker
 		ChesseMaker
@@ -275,50 +283,59 @@ Professions work on Branching system similar to EvilGenius minions or A Game of 
 	</>
 	<Tinkerer - non durable goods>
 		Paper Maker
-		Candle Maker - Candles and Soaps
+		Candle Maker - Candles and Soaps, and Rushlight (reeds soaked in tallow a low grade candle)
 		BookBinder - 
+		Basket Maker
+		Spinnster - spin yarn?
 	</>
 	<Brewer (Brew Master) [][] - Alcohol maker>
+		<Ale/>
 		<Distiller/>
 		<Vintner/>
+		<Ciderer/>
+		<Lager/>
+		<Mead/>
 	</>
-	Hauler?  Porter?
 </>
 <Gatherer (Reeve/Seneschal) [PER][SPD] - Collection of raw materials in unsafe areas, a dangerous and low status profession (Cloak, Basket?)>
 	
-	<Farmer (Gardener) [END][JDG]>
-		grain/underground?
-		Mycoler - mushroom grower
-		Orcharder - tree crops
-		Plower
+	<Farmer (Master Gardener) [END][JDG]>
+		
+		Mycoler - underground mushroom grower
+		Orchardist - tree crops
+		Plowman
 		Gong-farmer?
 	</>
-	<Merchant (Trader) [CHA][LOG]>
-		Pedlar - lone barter, no diplomatic relations necessary
+	<Merchant (Master Trader) [CHA][LOG]>
+		Pedlar - lone barter, no diplomatic relations necessary, low volume
 		Teamster - larger scale, wagon load trade
 		Grocer - local consumables sales?
 		Mercer - runs shops for foreigners in 'Bazaar' zone
-		Sailor - largest scale trade by boat
+		Sailor - largest scale trade by boat, in the undersea for dwarves
 	</>
 	<Woodsman (Warden) [STR][FLX]>
-		LumberJack
-		Sawyer
+		LumberJack - fels trees
+		Log Skidder - moves logs
+		Sawyer - makes lumber
 		Forester/planter - replants trees
+		Wood splitter - chop firewood
 	</>
 	<Hunter (Master of the Hunt) [RFL][VIT]>
-		Trapper - hunts by trap setting
-		Animal Trainer - trains tame animals
-		Scouts
-		Falconer - hunts small game and birds with trained Falcon
+		Trapper - hunts by trap setting, good for catching furs like Beaver
+		Falconer - hunts small game and birds with trained Falcon, good for catching birds
+		Vermin Catcher - catches rats and other vermin (dog Terrier, Ferret)
+		Tracker - Hunting by slow stalking, (dog lymer), good in dense woods
+		Courser/Corsair - Hunt by chase, (dog, hound), good in open terrain
 	</>
-	<Forager (???)[MEM][DEX]>
-		Picker/Herbalist - Berry picking
+	<Forager (Master of the Field???)[MEM][DEX]> can collect small amounts of firewood
+		Picker - Berry, mushroom and edibles picking
+		Herbalist - medicinal herb specialist
 		Fisher - 
 		BeeKeeper - 
-		Scavenger - collects junk
+		Scavenger - collects junk, good for sending on expeditions to abandoned settlments
 	</>
 	<Herder (Master of the Herd) [WIL][INT]>
-		<Shepard [VIT][MEM] watches over flocks /> 
+		<Shepard [VIT][MEM] watches over flocks (dog Collie)/> 
 		<Milker [DEX][FLX]- milks domestic animals /> 
 		<Groom [JDG][END]- cares for mounts /> 
 		<Shearer [STR][RFL]- collects fur from domestic animals /> 

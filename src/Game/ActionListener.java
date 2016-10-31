@@ -15,36 +15,17 @@
  You should have received a copy of the GNU General Public License
  along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
-
-package Map.Coordinates;
-
-import java.io.Serializable;
+package Game;
 
 /**
- * Describes the location of a Region within the World map,
- * 
+ *
  * @author Impaler
  */
-public class RegionCoordinate implements Serializable {
+public interface ActionListener {
+	
+	public void registerwithSpeaker(ActionSpeaker Speaker, String... Bindings);
 
-	byte X, Y;
-
-	public void copy(RegionCoordinate ArgumentCoordinates) {
-		this.X = ArgumentCoordinates.X;
-		this.Y = ArgumentCoordinates.Y;
-	}
-
-	@Override
-	public boolean equals(Object ArgumentCoordinates) {
-
-		//if (ArgumentCoordinates == null)
-		//return false;
-		//if (ArgumentCoordinates == this)
-		//return true;
-		//if (!(ArgumentCoordinates instanceof MapCoordinate))
-		//return false;
-
-		RegionCoordinate Arg = (RegionCoordinate) ArgumentCoordinates;
-		return (Arg.X == this.X && Arg.Y == this.Y);
-	}
+	public void unregisterwithSpeaker(ActionSpeaker Speaker);
+	
+	public void onAction(ActionSpeaker.ActionData Data);
 }

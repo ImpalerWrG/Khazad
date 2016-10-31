@@ -30,6 +30,8 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.material.RenderState;
+import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.asset.AssetManager;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
@@ -62,6 +64,7 @@ public class SelectionRenderer extends AbstractAppState {
 	private Geometry SelectionBox;
 	private HashMap<Integer, Node> ZoneGeometries;
 	private VolumeSelection Selection;
+	private Material ExcavationMat;
 	BitmapText hudText;
 
 	@Override
@@ -72,6 +75,11 @@ public class SelectionRenderer extends AbstractAppState {
 		this.assetmanager = app.getAssetManager();
 
 		ZoneGeometries = new HashMap<Integer, Node>();
+
+		ExcavationMat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+		ColorRGBA TranslusentOrange = new ColorRGBA(251f / 255f, 130f / 255f, 0f, .5f);
+		ExcavationMat.setColor("Color", TranslusentOrange);
+		ExcavationMat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
 
 		buildCursorBox();
 		buildText();
@@ -182,15 +190,13 @@ public class SelectionRenderer extends AbstractAppState {
 					Geometry ZoneBlock = new Geometry("Box", newBox);
 					ZoneBlock.setLocalTranslation(Index.getVector());
 
-					Material BrownMat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-					BrownMat.setColor("Color", ColorRGBA.Brown);
-					ZoneBlock.setMaterial(BrownMat);
-
+					ZoneBlock.setMaterial(this.ExcavationMat);
 					ChunkNode.attachChild(ZoneBlock);
 				}
 			}
 		}
 
+		ZoneNode.setQueueBucket(Bucket.Transparent);
 		return ZoneNode;
 	}
 
@@ -226,6 +232,10 @@ public class SelectionRenderer extends AbstractAppState {
 				app.getRootNode().attachChild(SelectionBox);
 				Selection.Dirty = false;
 			}
+		} else {
+			if (SelectionBox != null) {
+				app.getRootNode().detachChild(SelectionBox);
+			}
 		}
 
 		Game game = state.getState(Game.class);
@@ -240,7 +250,7 @@ public class SelectionRenderer extends AbstractAppState {
 						app.getRootNode().detachChild(ZoneNode);
 
 					ZoneNode = buildZone(targetZone);
-					app.getRootNode().attachChild(ZoneNode);					
+					app.getRootNode().attachChild(ZoneNode);
 					ZoneGeometries.put(ID, ZoneNode);
 					targetZone.Dirty = false;
 				}

@@ -19,19 +19,22 @@ package Map;
 
 import Core.Dice;
 import Data.DataManager;
+import Game.ActionListener;
 import Map.Coordinates.*;
 import PathFinding.PathManager;
 
+import Game.ActionSpeaker;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.BitSet;
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
  * @author Impaler
  */
-public class Sector implements Serializable {
+public class Sector implements ActionSpeaker, Serializable {
 
 	private static final long serialVersionUID = 1;
 	private SectorCoordinate thisSectorCoordinates;
@@ -264,7 +267,6 @@ public class Sector implements Serializable {
 			TargetChunk.setBlockHidden(Coordinates.Block, NewValue);
 	}
 
-
 	public boolean isBlockSubTerranean(MapCoordinate Coordinates) {
 		Chunk TargetChunk = Chunks.get(Coordinates.Chunk);
 		return TargetChunk != null ? TargetChunk.isBlockSubTerranean(Coordinates.Block) : false;
@@ -354,6 +356,16 @@ public class Sector implements Serializable {
 	}
 
 	public boolean excavateBlock(MapCoordinate Coordinates, BlockShape GoalShape) {
+		Direction DiggerDirection = Direction.DIRECTION_EAST;
+		switch (DiggerDirection) {
+			case DIRECTION_EAST:
+				
+			case DIRECTION_WEST:
+				
+			case DIRECTION_SOUTH:
+				
+			case DIRECTION_NORTH:
+		}
 		int Corner = ExcavateDice.roll(0, Direction.CARDINAL_DIRECTIONS.length - 1);
 		getBlockShape(Coordinates, TargetBlockShape);
 		BlockShape IntermediateShape;
@@ -591,6 +603,31 @@ public class Sector implements Serializable {
 
 			default:
 				break;
+		}
+	}
+
+	public void addListener(ActionListener listener, String... Bindings) {
+		for (String bindingname : Bindings) {
+			ArrayList<ActionListener> binding = bindings.get(bindingname);
+			if (binding == null) {
+				binding = new ArrayList<ActionListener>();
+			} 
+			binding.add(listener);
+		}
+	}
+
+    public void removeListener(ActionListener listener) {
+		for (ArrayList<ActionListener> binding : bindings.values()) {
+			binding.remove(listener);
+		}	
+	}
+
+	public void invokeActions(String Binding, ActionData Data) {
+		ArrayList<ActionListener> targetbinding = bindings.get(Binding);
+		if (targetbinding != null) {
+			for (ActionListener targetlistener : targetbinding) {
+				targetlistener.onAction(Data);
+			}
 		}
 	}
 

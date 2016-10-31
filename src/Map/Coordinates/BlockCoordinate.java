@@ -1,7 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* Copyright 2010 Kenneth 'Impaler' Ferland
+
+ This file is part of Khazad.
+
+ Khazad is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Khazad is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Khazad.  If not, see <http://www.gnu.org/licenses/> */
 
 package Map.Coordinates;
 
@@ -217,26 +229,57 @@ public class BlockCoordinate implements Serializable {
 		Data = Max;
 	}
 
-	public void skipAlongAxis(Axis SkippingAxis) {
-		short Xcomponent = (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_X)) & Mask);
-		short Ycomponent = (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_Y)) & Mask);
-		short Zcomponent = (short) ((this.Data >> (this.Shift * BLOCK_BITSHIFT_Z)) & Mask);
+	public boolean isonEdge(Direction testDirection) {
 
-		short Skip = 0;
-		switch (SkippingAxis) {
-			case AXIS_X:
-				Skip = (short) ((Size - Xcomponent) << (this.Shift * BLOCK_BITSHIFT_X));
-				break;
-
-			case AXIS_Y:
-				Skip = (short) ((Size - Ycomponent) << (this.Shift * BLOCK_BITSHIFT_Y));
-				break;
-
-			case AXIS_Z:
-				Skip = (short) ((Size - Zcomponent) << (this.Shift * BLOCK_BITSHIFT_Z));
-				break;
+		int XAxis = testDirection.getValueonAxis(Axis.AXIS_X);
+		boolean xresult = false;
+		if (XAxis == 1) {
+			if (getX() == (CHUNK_EDGE_SIZE - 1)) {
+				xresult = true;
+			}
 		}
-		Data += Skip;
+		if (XAxis == -1) {
+			if (getX() == 0) {
+				xresult = true;
+			}
+		}
+		if (XAxis == 0) {
+			xresult = true;
+		}
+
+		int YAxis = testDirection.getValueonAxis(Axis.AXIS_Y);
+		boolean yresult = false;
+		if (YAxis == 1) {
+			if (getY() == (CHUNK_EDGE_SIZE - 1)) {
+				yresult = true;
+			}
+		}
+		if (YAxis == -1) {
+			if (getY() == 0) {
+				yresult = true;
+			}
+		}
+		if (YAxis == 0) {
+			yresult = true;
+		}
+
+		int ZAxis = testDirection.getValueonAxis(Axis.AXIS_Z);
+		boolean zresult = false;
+		if (ZAxis == 1) {
+			if (getZ() == (CHUNK_EDGE_SIZE - 1)) {
+				zresult = true;
+			}
+		}
+		if (YAxis == -1) {
+			if (getZ() == 0) {
+				zresult = true;
+			}
+		}
+		if (ZAxis == 0) {
+			zresult = true;
+		}
+
+		return xresult && yresult && zresult;
 	}
 
 	public boolean isEnd() {

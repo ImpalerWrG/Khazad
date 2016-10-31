@@ -72,19 +72,23 @@ public class NiftySpinner extends de.lessvoid.nifty.controls.AbstractController 
 	public void incresseValue() {
 		value = getValue();
 		setValue(value + increment); 
-		field.setText(getValueString()); 
 	}
 
 	public void decreaseValue() {
 		value = getValue();
 		setValue(value - increment); 
-		field.setText(getValueString()); 
 	}
 
 	public void setValue(int nvalue) {
-		if(nvalue >= minimum && nvalue <= maximum) { 
-			value = nvalue; 
+		value = nvalue;
+		if(nvalue < minimum) {
+			value = minimum;
 		}
+		if(nvalue > maximum) {
+			value = maximum;
+		}
+
+		field.setText(getValueString());
 	}
 
 	public int getValue() {
@@ -92,6 +96,6 @@ public class NiftySpinner extends de.lessvoid.nifty.controls.AbstractController 
 	}
 
 	public String getValueString() {
-		return field.getDisplayedText(); 
+		return Integer.toString(value);
 	}
 }

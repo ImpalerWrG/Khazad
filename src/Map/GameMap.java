@@ -161,8 +161,13 @@ public class GameMap implements Serializable {
 
 	public Collection<Sector> getSectorCollection() {
 		return Sectors.values();
-	}	
-	
+	}
+
+	public Chunk getChunk(MapCoordinate Coordinates) {
+		Sector targetSector = Sectors.get(Coordinates.Sector);
+		return targetSector != null ? targetSector.getChunk(Coordinates.Chunk) : null;
+	}
+
 	public void releaseMap() {
 		MapLoaded = false;
 

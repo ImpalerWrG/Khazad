@@ -49,6 +49,16 @@ public class ChunkCoordinate implements Serializable {
 		Z = ArgumentCoordinates.Z;
 	}
 
+	public void translate(Direction DirectionType) {
+		translate(DirectionType, 1);
+	}
+
+	public void translate(Direction DirectionType, int Length) {
+		X += DirectionType.getValueonAxis(Axis.AXIS_X) * Length;
+		Y += DirectionType.getValueonAxis(Axis.AXIS_Y) * Length;
+		Z += DirectionType.getValueonAxis(Axis.AXIS_Z) * Length;
+	}
+
 	@Override
 	public ChunkCoordinate clone() {
 		ChunkCoordinate newCoords = new ChunkCoordinate();

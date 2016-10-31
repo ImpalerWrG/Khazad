@@ -33,4 +33,5 @@ Toxic Gas Asphiation
 Net thrower
 Temple of Doom giant rock ball
 Flooding with water (link to floodgates)
-Moving Crushing Wall
+Moving Crushing Wall or floor
+Disabling lights, sounds, smells, sensory effects

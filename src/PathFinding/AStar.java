@@ -94,7 +94,6 @@ public class AStar extends PathAlgorithm implements Callable, Serializable {
 		}
 
 		if (FinalPath == null) {
-			boolean GoalFound;
 			if (NodesToExpand > 0) { // Search for a limited time
 				for (int RemainingNodes = NodesToExpand; RemainingNodes > 0; RemainingNodes--) {
 					if (FringeNodes.size() == 0) {

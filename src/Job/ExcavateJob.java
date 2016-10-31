@@ -21,14 +21,12 @@ import java.util.HashMap;
 import java.util.BitSet;
 
 import Game.Pawn;
-import Map.GameMap;
-import Map.Coordinates.ChunkCoordinate;
-import Map.Coordinates.MapCoordinate;
-import Map.Coordinates.BlockCoordinate;
-import Map.BlockShape;
-import Map.Zone;
+import Game.ActionListener;
+import Game.ActionSpeaker;
+import Map.*;
+import Map.Coordinates.*;
+
 import Interface.VolumeSelection;
-import Map.Coordinates.Direction;
 import PathFinding.MovementModality;
 import PathFinding.PathManager;
 import java.io.IOException;
@@ -40,7 +38,7 @@ import java.util.Map;
  *
  * @author Impaler
  */
-public class ExcavateJob extends Job implements Serializable {
+public class ExcavateJob extends Job implements ActionListener, Serializable {
 
 	private static final long serialVersionUID = 1;
 	// The desired final shapes of Blocks
@@ -90,7 +88,19 @@ public class ExcavateJob extends Job implements Serializable {
 			for (int y = Origin.getY(); y <= Terminal.getY(); y++) {
 				for (int z = Origin.getZ(); z <= Terminal.getZ(); z++) {
 					TargetCoords.set(x, y, z);
+					
 					ChunkCoordinate ChunkCoords = TargetCoords.Chunk.clone();
+					registerwithSpeaker(GameMap.getMap().getChunk(TargetCoords), "BlockShapeChange");
+
+					// register with adjacent chunks if near edges
+					for (Direction dir : Direction.AXIAL_DIRECTIONS) {
+						if (TargetCoords.Block.isonEdge(dir)) {
+							MapCoordinate adjacent = TargetCoords.clone();
+							adjacent.translate(dir);
+							registerwithSpeaker(GameMap.getMap().getChunk(adjacent), "BlockShapeChange");
+						}
+					}
+
 					int BlockIndex = TargetCoords.Block.getBlockIndex();
 
 					BlockShape[] DesignationShapes = Designations.get(ChunkCoords);
@@ -144,6 +154,8 @@ public class ExcavateJob extends Job implements Serializable {
 
 						AccessibleLocation.set(BlockIndex, false);
 						AssignedLocations.set(BlockIndex, false);
+					} else {
+						SourceZone.removeMapCoordinate(TargetCoords);
 					}
 				}
 			}
@@ -151,7 +163,7 @@ public class ExcavateJob extends Job implements Serializable {
 	}
 
 	public BlockShape getDesignation(MapCoordinate Coords) {
-		MapCoordinate ChunkCoords = Coords.clone();
+		//MapCoordinate ChunkCoords = Coords.clone();
 		BlockShape[] DesignationShapes = Designations.get(Coords.Chunk);
 		return (DesignationShapes != null) ? DesignationShapes[Coords.Block.getBlockIndex()] : null;
 	}
@@ -167,7 +179,20 @@ public class ExcavateJob extends Job implements Serializable {
 		AssignedExcavationsCount--;
 
 		// test adjacent for new accesability
-		if (paths.getDirectionFlags(Coords, Modality).cardinality() > 0) {
+		GameMap.getMap().getBlockShape(Coords, CurrentBlockShape);
+		updateAccesibility(Coords, CurrentBlockShape);
+		if (DesignationCount == 0) {
+			Manager.terminateJob(this);
+		} else {
+			if (AccessibleExcavationCount == 0 && AssignedExcavationsCount == 0) {
+				this.Paused = true;
+			}
+		}
+	}
+
+	private void updateAccesibility(MapCoordinate Coords, BlockShape shape) {
+		// test adjacent for new accesability
+		if (shape.isEmpty()) {
 
 			for (Direction dir : Direction.AXIAL_DIRECTIONS) {
 				MapCoordinate AdjacentcCoords = Coords.clone();
@@ -183,14 +208,6 @@ public class ExcavateJob extends Job implements Serializable {
 						AccessibleExcavationCount++;
 					}
 				}
-			}
-		}
-
-		if (DesignationCount == 0) {
-			Manager.terminateJob(this);
-		} else {
-			if (AccessibleExcavationCount == 0 && AssignedExcavationsCount == 0) {
-				this.Paused = true;
 			}
 		}
 	}
@@ -253,6 +270,20 @@ public class ExcavateJob extends Job implements Serializable {
 	}
 
 	public void finishJob() {
+	}
+
+	public void registerwithSpeaker(ActionSpeaker Speaker, String... Bindings) {
+		Speaker.addListener(this, Bindings);
+	}
+
+	public void unregisterwithSpeaker(ActionSpeaker Speaker) {
+		Speaker.removeListener(this);
+	}
+
+	public void onAction(ActionSpeaker.ActionData Data) {
+		Chunk.BlockShapeChangeAction blockData = (Chunk.BlockShapeChangeAction) Data;
+		MapCoordinate location = new MapCoordinate(blockData.chunk, blockData.block);
+		updateAccesibility(location, blockData.shape);
 	}
 
 	// this method is used by serialization

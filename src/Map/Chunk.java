@@ -20,9 +20,12 @@ package Map;
 import Map.Coordinates.*;
 
 import Data.DataManager;
+import Game.ActionListener;
+import Game.ActionSpeaker;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.BitSet;
@@ -33,7 +36,7 @@ import java.util.BitSet;
  *
  * @author Impaler
  */
-public class Chunk implements Serializable {
+public class Chunk implements ActionSpeaker, Serializable {
 
 	private static final long serialVersionUID = 1;
 	// Larger DataValues specific to each Block
@@ -66,6 +69,12 @@ public class Chunk implements Serializable {
 	protected static final short FloorSurface = DataManager.getLabelIndex("SURFACETYPE_ROUGH_FLOOR_1");
 
 	String ChunkString;
+
+	public class BlockShapeChangeAction extends ActionData {
+		public ChunkCoordinate chunk;
+		public BlockCoordinate block;
+		public BlockShape shape;
+	}
 
 	public Chunk(Sector Parent) {
 		parentSector = Parent;
@@ -158,6 +167,11 @@ public class Chunk implements Serializable {
 					setFaceShape(new FaceCoordinate(Coordinates, Direction.DIRECTION_NONE), new FaceShape(NewShape, null, Direction.DIRECTION_NONE));
 				}
 				setRenderingDirty();
+
+				BlockShapeChangeAction data = new BlockShapeChangeAction();
+				data.chunk = this.thisChunkCoordinates;
+				data.block = Coordinates;  data.shape = NewShape;
+				invokeActions("BlockShapeChange", data);
 			}
 		}
 	}
@@ -411,6 +425,34 @@ public class Chunk implements Serializable {
 	public void setBlockSunLit(BlockCoordinate TargetCoordinates, boolean NewValue) {
 		SunLit[TargetCoordinates.DetailLevel].set(TargetCoordinates.getBlockIndex(), NewValue);
 		DirtyTerrainRendering = true;
+	}
+
+	public void addListener(ActionListener listener, String... Bindings) {
+		for (String bindingname : Bindings) {
+			ArrayList<ActionListener> binding = bindings.get(bindingname);
+			if (binding == null) {
+				binding = new ArrayList<ActionListener>();
+				bindings.put(bindingname, binding);
+			} 
+			if (!binding.contains(listener)) {
+				binding.add(listener);
+			}
+		}
+	}
+
+	public void removeListener(ActionListener listener) {
+		for (ArrayList<ActionListener> binding : bindings.values()) {
+			binding.remove(listener);
+		}
+	}
+
+	public void invokeActions(String Binding, ActionSpeaker.ActionData Data) {
+		ArrayList<ActionListener> targetbinding = bindings.get(Binding);
+		if (targetbinding != null) {
+			for (ActionListener targetlistener : targetbinding) {
+				targetlistener.onAction(Data);
+			}
+		}
 	}
 
 	@Override
