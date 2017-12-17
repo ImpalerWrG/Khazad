@@ -76,15 +76,37 @@ public class MapCoordinate implements Serializable  {
 	}
 
 	public void translate(Direction DirectionType) {
-		translateBlock(DirectionType, 1);
+		translate(DirectionType, 1);
 	}
 
-	public void translateBlock(Direction DirectionType, int Quantity) {
+	public void translate(Direction DirectionType, int Quantity) {
+		int X = DirectionType.getValueonAxis(Axis.AXIS_X) * Quantity;
+		int Y = DirectionType.getValueonAxis(Axis.AXIS_Y) * Quantity;
+		int Z = DirectionType.getValueonAxis(Axis.AXIS_Z) * Quantity;
 
-		int Xtranslation = DirectionType.getValueonAxis(Axis.AXIS_X) * Quantity;
-		int Ytranslation = DirectionType.getValueonAxis(Axis.AXIS_Y) * Quantity;
-		int Ztranslation = DirectionType.getValueonAxis(Axis.AXIS_Z) * Quantity;
+		translate(X, Y, Z);
+	}
 
+	public void translate(Axis axis) {
+		translate(axis, 1);
+	}
+
+	public void translate(Axis axis, int Quantity) {
+		int X = 0;
+		int Y = 0;
+		int Z = 0;
+
+		if (axis == Axis.AXIS_X)
+			X = Quantity;
+		if (axis == Axis.AXIS_Y)
+			Y = Quantity;
+		if (axis == Axis.AXIS_Z)
+			Z = Quantity;
+
+		translate(X, Y, Z);
+	}
+
+	public void translate(int Xtranslation, int Ytranslation, int Ztranslation) {
 		int RawX = this.getX() + Xtranslation;
 		int RawY = this.getY() + Ytranslation;
 		int RawZ = this.getZ() + Ztranslation;

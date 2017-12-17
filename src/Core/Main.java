@@ -131,17 +131,19 @@ public class Main extends SimpleApplication {
 			TerrainRenderer terrainRender = new TerrainRenderer(pool);
 			PathingRenderer pathRender = new PathingRenderer();
 			GameCameraState IsoCamera = new GameCameraState();
+			ActorRenderer ActRender = new ActorRenderer();
 
 			mapRender.attachToGame(game);
 			terrainRender.attachToGame(game);
 			pathRender.attachToGame(game);
+			ActRender.attachToGame(game);
 
 			app.stateManager.attach(mapRender);
 			app.stateManager.attach(terrainRender);
 			app.stateManager.attach(pathRender);
 			app.stateManager.attach(IsoCamera);
-
-			app.stateManager.attach(new ActorRenderer());
+			app.stateManager.attach(ActRender);
+			
 			app.stateManager.attach(new ScreenshotAppState(new String()));
 			app.stateManager.attach(new SelectionRenderer());
 
@@ -153,6 +155,40 @@ public class Main extends SimpleApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void endgame() {
+		Game game = Main.app.getStateManager().getState(Game.class);
+		if (game != null) {
+			detatchRenderers(game);
+			Main.app.getStateManager().detach(game);
+			game.cleanup();
+		}
+	}
+
+	public void detatchRenderers(Game game) {
+		// Destroy Game object
+		GameCameraState camera = Main.app.getStateManager().getState(GameCameraState.class);
+		Main.app.getStateManager().detach(camera);
+		camera.cleanup();
+
+		SelectionRenderer selectionRenderer = Main.app.getStateManager().getState(SelectionRenderer.class);
+		Main.app.getStateManager().detach(selectionRenderer);
+		selectionRenderer.cleanup();
+		
+		TerrainRenderer TerrainRender = Main.app.getStateManager().getState(TerrainRenderer.class);
+		Main.app.getStateManager().detach(TerrainRender);
+		
+		ActorRenderer ActorRender = Main.app.getStateManager().getState(ActorRenderer.class);
+		Main.app.getStateManager().detach(ActorRender);
+		
+		MapRenderer MapRender = Main.app.getStateManager().getState(MapRenderer.class);
+		Main.app.getStateManager().detach(MapRender);
+		
+		PathingRenderer PathRender = Main.app.getStateManager().getState(PathingRenderer.class);
+		Main.app.getStateManager().detach(PathRender);
+
+		Main.app.getRootNode().detachAllChildren();		
 	}
 
 	public void createAxialMarker() {

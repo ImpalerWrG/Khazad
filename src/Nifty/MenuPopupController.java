@@ -22,6 +22,8 @@ import Core.Utils;
 import Game.Game;
 import Game.SaveGameHeader;
 import Interface.GameCameraState;
+import Renderer.TerrainRenderer;
+import Renderer.ActorRenderer;
 import Renderer.MapRenderer;
 import Renderer.SelectionRenderer;
 
@@ -80,20 +82,7 @@ public class MenuPopupController implements Controller {
 
 	public void Abandon() {
 		// Destroy Game object
-		SelectionRenderer selectionRenderer = Main.app.getStateManager().getState(SelectionRenderer.class);
-		Main.app.getStateManager().detach(selectionRenderer);
-		selectionRenderer.cleanup();
-		
-		GameCameraState camera = Main.app.getStateManager().getState(GameCameraState.class);
-		Main.app.getStateManager().detach(camera);
-		camera.cleanup();
-		
-		Game game = Main.app.getStateManager().getState(Game.class);
-		Main.app.getStateManager().getState(MapRenderer.class).detachFromGame();
-		Main.app.getStateManager().detach(game);
-		game.cleanup();
-
-		Main.app.getRootNode().detachAllChildren();
+		Main.app.endgame();
 
 		screenController.CloseMenuPopup();
 		nifty.gotoScreen("StartScreen");
@@ -101,7 +90,7 @@ public class MenuPopupController implements Controller {
 
 	public void SaveGame() {
 		// TODO maybe a GUI to pick a save game slot
-		// otherwise, lets just hard code World01.sav for now
+		// otherwise, lets just hard code World01.kav for now
 
 		ObjectOutputStream oos = null;
 
@@ -159,11 +148,11 @@ public class MenuPopupController implements Controller {
 
 	private HashSet<String> getFilesInFolder(File folder) {
 		HashSet<String> fileNames = new HashSet<String>();
-		// get all the files that end with .sav, and put in a HashSet
+		// get all the files that end with .kav, and put in a HashSet
 		for (final File fileEntry : folder.listFiles()) {
 			if (!fileEntry.isDirectory()) {
 				String fileEntryName = fileEntry.getName();
-				if (fileEntryName.endsWith(".sav")) {
+				if (fileEntryName.endsWith(".kav")) {
 					fileNames.add(fileEntryName);
 				}
 			}
@@ -175,7 +164,7 @@ public class MenuPopupController implements Controller {
 		long saveNumber = 1;
 		while (true) {
 			String saveNumberString = Utils.padLeadingZero(saveNumber);
-			String fileName = "World" + saveNumberString + ".sav";
+			String fileName = "World" + saveNumberString + ".kav";
 			if (!saveFileNames.contains(fileName)) {
 				return fileName;
 			}

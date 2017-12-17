@@ -98,7 +98,11 @@ public class Music extends AbstractAppState implements ActionListener {
 	public void playNewTrack() {
 		audio_music = new AudioNode(assets, selectTrack(), false);
 		audio_music.setPositional(false);
-		audio_music.setVolume(Volume);
+		if (Mute) {
+			audio_music.setVolume(0);
+		} else {
+			audio_music.setVolume(Volume);
+		}
 
 		this.app.getRootNode().attachChild(audio_music);
 		audio_music.play();

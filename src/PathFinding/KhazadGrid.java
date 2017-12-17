@@ -110,7 +110,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 	ConcurrentHashMap<ChunkCoordinate, GridChunk> GridChunks;
 	ConcurrentLinkedDeque<MapCoordinate> DirtyLocations;
 	// Connections between groups of Coordinates
-	BlockShape TargetBlockShape, AboveBlockShape, AdjacentBlockShape;
+	BlockShape TargetBlockShape, AboveBlockShape, AdjacentBlockShape, DigonalBlockShape;
 	BitSet BlockDirections;
 	ArrayList<Integer> ConnectivityCache;
 	ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, Integer>> ConnectivityMap;
@@ -132,6 +132,7 @@ public class KhazadGrid implements GridInterface, Serializable {
 		TargetBlockShape = new BlockShape(); 
 		AboveBlockShape = new BlockShape(); 
 		AdjacentBlockShape = new BlockShape();
+		DigonalBlockShape = new BlockShape();
 		BlockDirections = new BitSet(Direction.ANGULAR_DIRECTIONS.length);
 
 		for (Sector targetSector : TargetMap.getSectorCollection()) {
@@ -208,23 +209,36 @@ public class KhazadGrid implements GridInterface, Serializable {
 			MapCoordinate OverheadTileCoords = TargetCoords.clone();
 			OverheadTileCoords.translate(Direction.DIRECTION_UP);
 			SourceMap.getBlockShape(OverheadTileCoords, AboveBlockShape);
-			boolean OverheadPassable = !AboveBlockShape.isSolid();
 
 			for (Direction dir : Direction.ANGULAR_DIRECTIONS) {
 				MapCoordinate AdjacentTileCoords = TargetCoords.clone();
 				AdjacentTileCoords.translate(dir);
 				SourceMap.getBlockShape(AdjacentTileCoords, AdjacentBlockShape);
+				boolean Passable = false;
+
 
 				if (!AdjacentBlockShape.isSky() && !AdjacentBlockShape.hasCeiling()) {
 					if (dir.getValueonAxis(Axis.AXIS_Z) == 1) {
-						if (OverheadPassable) {
-							Flags.set(dir.ordinal());
-						}
+						Passable |= AboveBlockShape.isSky();
 					} else {
-						//If no vertical direction, we only care that this tile is passable
-						Flags.set(dir.ordinal());
+						Passable = true;
 					}
 				}
+
+				/* Check for diagonals not being blocked 
+				if (dir.isDiagonal()) {
+					for (Axis axis : Axis.values()) {
+						if (dir.getValueonAxis(axis) != 0) {
+							MapCoordinate DiagonalCoords = TargetCoords.clone();
+							DiagonalCoords.translate(axis);
+							SourceMap.getBlockShape(DiagonalCoords, DigonalBlockShape);
+							Passable &= !DigonalBlockShape.isSolid();
+						}
+					}
+				}*/
+
+				if (Passable)
+					Flags.set(dir.ordinal());	
 			}
 		}
 		return Flags;

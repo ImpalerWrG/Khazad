@@ -42,8 +42,8 @@ public abstract class Job implements Serializable {
 	public enum JobClass {
 
 		JOB_REAL, // Jobs ordered by the player that compete for workers
-		JOB_BREAK, // Short Jobs to fill worker needs
-		JOB_IDLE  // Jobs originating from the workers themselves
+		JOB_BREAK, // Short Jobs to fill worker needs 
+		JOB_IDLE  // Jobs originating from the workers themselves durring idle time
 	}
 
 	JobType Type;

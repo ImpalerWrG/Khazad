@@ -88,7 +88,7 @@ public class ExcavateJob extends Job implements ActionListener, Serializable {
 			for (int y = Origin.getY(); y <= Terminal.getY(); y++) {
 				for (int z = Origin.getZ(); z <= Terminal.getZ(); z++) {
 					TargetCoords.set(x, y, z);
-					
+
 					ChunkCoordinate ChunkCoords = TargetCoords.Chunk.clone();
 					registerwithSpeaker(GameMap.getMap().getChunk(TargetCoords), "BlockShapeChange");
 
@@ -108,7 +108,7 @@ public class ExcavateJob extends Job implements ActionListener, Serializable {
 					BitSet AssignedLocations = AssignedExcavations.get(ChunkCoords);
 
 					GameMap.getMap().getBlockShape(TargetCoords, CurrentBlockShape);
-					if (CurrentBlockShape != NewShape) {
+					if (CurrentBlockShape.isExcavationEquivilent(NewShape)) {
 						if (DesignationShapes == null) {
 							DesignationShapes = new BlockShape[BlockCoordinate.BLOCKS_PER_CHUNK];
 							Designations.put(ChunkCoords, DesignationShapes);

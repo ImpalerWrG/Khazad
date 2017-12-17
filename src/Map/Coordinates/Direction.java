@@ -69,6 +69,7 @@ public enum Direction implements Serializable  {
 	DIRECTION_DOWN_SOUTHWEST((byte) 146, -1, -1, -1), // Index 25
 
 	DIRECTION_DESTINATION((byte) 36, 0, 0, 0);
+
 	public final byte Data;
 	private final int[] AxisValues = new int[Axis.values().length];
 	
@@ -216,6 +217,36 @@ public enum Direction implements Serializable  {
 		Vec.x = getValueonAxis(Axis.AXIS_X);
 		Vec.y = getValueonAxis(Axis.AXIS_Y);
 		Vec.z = getValueonAxis(Axis.AXIS_Z);
+	}
+
+	public float length() {
+		int axiscounter = this.axiscount();
+		final float Diagonal = (float) Math.sqrt(2);
+		final float DoubleDiagonal = (float) Math.sqrt(3);
+
+		if (axiscounter == 3)
+			return DoubleDiagonal;
+		if (axiscounter == 2)
+			return Diagonal;
+		if (axiscounter == 1)
+			return 1;
+		return 0;
+	}
+
+	public int axiscount() {
+		int axiscounter = 0;
+		axiscounter += Math.abs(this.getValueonAxis(Axis.AXIS_X));
+		axiscounter += Math.abs(this.getValueonAxis(Axis.AXIS_Y));
+		axiscounter += Math.abs(this.getValueonAxis(Axis.AXIS_Z));
+		return axiscounter;
+	}
+
+	public boolean isDiagonal() {
+		return this.axiscount() == 2;
+	}
+
+	public boolean isTriagonal() {
+		return this.axiscount() == 3;
 	}
 
 	public int toDegree() {

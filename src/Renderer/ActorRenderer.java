@@ -73,6 +73,9 @@ public class ActorRenderer extends AbstractAppState {
 	BlockShape TestingBlockShape;
 	Vector3f OffsetVector, DirectionVector;
 
+	Game game = null;
+	GameMap Map = null; 
+
 	public ActorRenderer() {
 		ActorNodeMap = new ConcurrentHashMap<Integer, Node>();
 		TestingCoords = new MapCoordinate();
@@ -90,6 +93,11 @@ public class ActorRenderer extends AbstractAppState {
 		DirectionVector = new Vector3f();
 	}
 
+	public void attachToGame(Game TargetGame) {
+		this.game = TargetGame;
+		this.Map = game.getMap();
+	}
+
 	private Node getModel(Actor actor) {
 		Spatial actorModel = assetmanager.loadModel("Models/Dwarf/Dwarf.j3o");
 		actorModel.scale(0.25f, 0.25f, 0.25f);
@@ -103,9 +111,6 @@ public class ActorRenderer extends AbstractAppState {
 	}
 
 	public void populateActors() {
-		Game game = state.getState(Game.class);
-		GameMap map = game.getMap();
-
 		long CurrentTick = game.getCurrentTimeTick();
 
 		HashMap<Integer, Actor> actors = game.getActors();
@@ -123,7 +128,7 @@ public class ActorRenderer extends AbstractAppState {
 						MapRenderer Renderer = state.getState(MapRenderer.class);
 
 						Node zNode;
-						if (map.isBlockSunLit(coords)) {
+						if (Map.isBlockSunLit(coords)) {
 							zNode = Renderer.getChunkNodeLight(coords.Chunk);
 						} else {
 							zNode = Renderer.getChunkNodeDark(coords.Chunk);
@@ -143,9 +148,6 @@ public class ActorRenderer extends AbstractAppState {
 	}
 
 	public void MovePawn(Pawn target, long CurrentTick) {
-		Game game = state.getState(Game.class);
-		GameMap map = game.getMap();
-
 		float MoveFraction;
 		Direction MovingDirection;
 		boolean FirstHalf;
@@ -160,7 +162,7 @@ public class ActorRenderer extends AbstractAppState {
 		Node actorNode = ActorNodeMap.get(target.getID());
 		float Height;
 
-		map.getBlockShape(TestingCoords, TestingBlockShape);
+		Map.getBlockShape(TestingCoords, TestingBlockShape);
 		float CenterHeight = TestingBlockShape.getCenterHeight();
 
 		if (MovingDirection == Direction.DIRECTION_DESTINATION || MovingDirection == Direction.DIRECTION_NONE) {
@@ -208,8 +210,7 @@ public class ActorRenderer extends AbstractAppState {
 
 	@Override
 	public void update(float tpf) {
-		Game game = state.getState(Game.class);
-		if (game != null) {
+		if (this.game != null) {
 			GameCameraState cam = state.getState(GameCameraState.class);
 			if (cam != null) {
 				if ((game.getTickRate() <= 256 || game.isPaused()) && cam.getZoom() < 200) {

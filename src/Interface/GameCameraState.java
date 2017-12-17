@@ -107,6 +107,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 	private MapCoordinate MouseLocation = new MapCoordinate();
 	public MapCoordinate SelectionOrigin = new MapCoordinate();
 	public MapCoordinate SelectionTerminus = new MapCoordinate();
+	int SelectionZ = 0;
 	public VolumeSelection Volume;
 	private int SliceTop;
 	private int SliceBottom;
@@ -352,7 +353,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 			Vector3f IntersectLocation = new Vector3f();
 			ray.intersectsWherePlane(SelectionPlane, IntersectLocation);
 
-			SelectionTerminus.set((int) IntersectLocation.x, (int) IntersectLocation.y, (int) IntersectLocation.z);
+			SelectionTerminus.set((int) IntersectLocation.x, (int) IntersectLocation.y, (int) IntersectLocation.z - SelectionZ);
 			Volume.setSize(SelectionOrigin, SelectionTerminus);
 		}
 
@@ -366,7 +367,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 				if (RightDown) {
 					MainCamera.translateCamera(createTranslationVector(XChange, YChange));
 					Terrain.SwapFrustrumChunks();
-					XChange = YChange = 0; // Consume the Mouse movement		
+					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
 		} else if (name.equals("mouseRight")) {
@@ -402,14 +403,13 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 					XChange = YChange = 0; // Consume the Mouse movement
 				}
 			}
-		} else if (name.equals("ZoomIn")) {
-			MainCamera.zoomCamera(value);
-			Terrain.setLevelofDetail(MainCamera.zoomFactor);
-			Terrain.SwapFrustrumChunks();
+		} else if (name.equals("ZoomIn")) { //Stretch selection volume in Z axis
+			SelectionZ++;
 		} else if (name.equals("ZoomOut")) {
-			MainCamera.zoomCamera(-value);
-			Terrain.setLevelofDetail(MainCamera.zoomFactor);
-			Terrain.SwapFrustrumChunks();
+			SelectionZ--;
+			if (SelectionZ < 0 ) {
+				SelectionZ = 0;
+			}
 		}
 	}
 
@@ -520,6 +520,7 @@ public class GameCameraState extends AbstractAppState implements ActionListener,
 		Game game = state.getState(Game.class);
 		game.volumeSelectionCompleted(Volume);
 		Volume = null;
+		SelectionZ = 0;
 
 		setMode(CameraMode.SELECT_VOLUME);
 	}

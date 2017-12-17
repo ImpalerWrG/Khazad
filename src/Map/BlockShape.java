@@ -105,6 +105,31 @@ public class BlockShape implements Serializable {
 		return ((Math.min(sum1, 0) + Math.min(sum2, 0))  * 4);
 	}
 
+	public boolean cornerPassable(Direction DirectionType) {
+		if (isSplit()) {
+			if (DirectionType == Direction.DIRECTION_NORTHEAST) {
+				int sum1 = getNorthWestCorner() + getNorthEastCorner() + getSouthEastCorner() - 3;
+				return sum1 <= 0 ? true : false;
+			}
+			if (DirectionType == Direction.DIRECTION_SOUTHWEST) {
+				int sum2 = getNorthWestCorner() + getSouthWestCorner() + getSouthEastCorner() - 3;
+				return sum2 <= 0 ? true : false;
+			}
+			return false;
+		} else {
+			if (DirectionType == Direction.DIRECTION_NORTHWEST) {
+				int sum1 = getSouthWestCorner() + getNorthWestCorner() + getNorthEastCorner() - 3;
+				return sum1 <= 0 ? true : false;
+
+			}
+			if (DirectionType == Direction.DIRECTION_SOUTHEAST) {
+				int sum2 = getSouthWestCorner() + getSouthEastCorner() + getNorthEastCorner() - 3;
+				return sum2 <= 0 ? true : false;
+			}
+			return false;
+		}
+	}
+
 	public boolean isSky() {
 		int Counter = 0;
 
